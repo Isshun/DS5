@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
  * Created by Alex on 09/07/2015.
  */
 public class WorldHelper {
+    public static int                  currentFloor;
     public static ParcelModel[][][]     _parcels;
     private static int                  _width;
     private static int                  _height;
@@ -18,13 +19,13 @@ public class WorldHelper {
         _height = _parcels[0].length;
     }
 
-    public static ItemModel getItem(int x, int y) { return getItem(x, y, 0); }
+    public static ItemModel         getItem(int x, int y) { return getItem(x, y, 0); }
     public static ItemModel         getItem(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getItem() : null; }
-    public static ConsumableModel getConsumable(int x, int y) { return getConsumable(x, y, 0); }
+    public static ConsumableModel   getConsumable(int x, int y) { return getConsumable(x, y, 0); }
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
-    public static StructureModel getStructure(int x, int y) { return getStructure(x, y, 0); }
+    public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructure() : null; }
-    public static ResourceModel getResource(int x, int y) { return getResource(x, y, 0); }
+    public static ResourceModel     getResource(int x, int y) { return getResource(x, y, 0); }
     public static ResourceModel     getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getResource() : null; }
 
     public static boolean isSurroundedByRock(ParcelModel parcel) {
@@ -44,13 +45,14 @@ public class WorldHelper {
     /**
      * Search for model free to receive a ConsumableItem
      *
+     * @param parcel
      * @param itemInfo
-     * @param x
-     * @param y
      * @return nearest free model
      */
-    public static ParcelModel getNearestFreeArea(ItemInfo itemInfo, int x, int y, int quantity) {
-        if (itemInfo.isConsumable) {
+    public static ParcelModel getNearestFreeArea(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+        if (parcel != null && itemInfo.isConsumable) {
+            int x = parcel.x;
+            int y = parcel.y;
             for (int d = 0; d < 8; d++) {
                 for (int i = 0; i <= d; i++) {
                     if (areaFreeForConsumable(x + i, y + d, itemInfo, quantity)) return _parcels[x + i][y + d][0];
@@ -112,7 +114,17 @@ public class WorldHelper {
         return !(x < 0 || y < 0 || x >= _width || y >= _height);
     }
 
+    public static boolean inMapBounds(int x, int y, int z) {
+        return !(x < 0 || y < 0 || x >= _width || y >= _height);
+    }
+
     public static ParcelModel getNearestFreeParcel(int x, int y, boolean acceptInterior, boolean acceptExterior) {
+        return getNearestFreeParcel(WorldHelper.getParcel(x, y), acceptInterior, acceptExterior);
+    }
+
+    public static ParcelModel getNearestFreeParcel(ParcelModel parcel, boolean acceptInterior, boolean acceptExterior) {
+        int x = parcel.x;
+        int y = parcel.y;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < i; j++) {
                 // Top
@@ -243,7 +255,14 @@ public class WorldHelper {
 
     public static ParcelModel getParcel(int x, int y) {
         if (inMapBounds(x, y)) {
-            return _parcels[x][y][0];
+            return _parcels[x][y][currentFloor];
+        }
+        return null;
+    }
+
+    public static ParcelModel getParcel(int x, int y, int z) {
+        if (inMapBounds(x, y, z)) {
+            return _parcels[x][y][z];
         }
         return null;
     }

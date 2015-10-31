@@ -36,7 +36,7 @@ public class StoreJob extends JobModel implements GameObserver {
             return null;
         }
 
-        ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel().x, consumable.getParcel().y, true, true, 1, 1);
+         ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel().x, consumable.getParcel().y, true, true, 1, 1);
         if (targetParcel == null) {
             return null;
         }
@@ -130,7 +130,7 @@ public class StoreJob extends JobModel implements GameObserver {
     @Override
     public void onQuit(CharacterModel character) {
         if (character.getInventory() != null) {
-            ModuleHelper.getWorldModule().putConsumable(character.getInventory(), character.getX(), character.getY());
+            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
             character.setInventory(null);
         }
         _consumables.forEach(consumable -> consumable.lock(null));
@@ -138,8 +138,6 @@ public class StoreJob extends JobModel implements GameObserver {
 
     @Override
     protected void onStart(CharacterModel character) {
-        super.onStart(character);
-
         // Lock items
         _consumables.forEach(c -> {
             c.lock(this);
@@ -223,7 +221,7 @@ public class StoreJob extends JobModel implements GameObserver {
                 return JobActionReturn.ABORT;
             }
             if (_targetParcel != null && _targetParcel.getConsumable() == null) {
-                ModuleHelper.getWorldModule().putConsumable(_character.getInventory(), _targetParcel.x, _targetParcel.y);
+                ModuleHelper.getWorldModule().putConsumable(_targetParcel, _character.getInventory());
                 _character.setInventory(null);
                 return JobActionReturn.FINISH;
             }
@@ -252,7 +250,7 @@ public class StoreJob extends JobModel implements GameObserver {
             // No empty space in any storage
             else {
                 Log.error("No empty space in any storage");
-                ModuleHelper.getWorldModule().putConsumable(_character.getInventory(), _character.getX(), _character.getY());
+                ModuleHelper.getWorldModule().putConsumable(_character.getParcel(), _character.getInventory());
                 _character.setInventory(null);
                 return JobActionReturn.ABORT;
             }

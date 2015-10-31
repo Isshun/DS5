@@ -4,7 +4,7 @@ data:extend({
     position = {200, 20},
     size = {200, 600},
     background = 0x121c1e,
-    visible = true,
+    visible = false,
     views = {
         { type = "label", text = "Consomables", text_size = 16, padding = 10, size = {200, 30}, background = 0x333333},
         { type = "list", id = "list_consumables", position = {10, 40}},
@@ -30,5 +30,13 @@ data:extend({
             lb_consumable:setSize(200, 24)
             list_consumables:addView(lb_consumable)
         end
-    end
+    end,
+
+    on_event =
+    function(event, view, data)
+        if event == game.events.on_key_press and data == "F2" then
+            view:setVisible(not view:isVisible())
+        end
+    end,
+
 })

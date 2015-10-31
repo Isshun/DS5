@@ -91,14 +91,14 @@ public class Game extends BaseGame {
     }
 
     public void init(WorldFactory factory) {
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getPriority() > 0).forEach(GameModule::create);
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(GameModule::create);
         _observers.addAll(ModuleManager.getInstance().getModules());
         _observers.addAll(ModuleManager.getInstance().getRenders());
         _luaModuleManager.init();
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getPriority() == 0).forEach(GameModule::create);
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
 
         System.out.println("Load third party modules");
-        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getPriority() == 0).forEach(GameModule::create);
+        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
 
         notify(GameObserver::onReloadUI);
     }

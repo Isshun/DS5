@@ -9,7 +9,8 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.character.model.BuffModel;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
+import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.TimeTableModel;
 import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
@@ -35,6 +36,7 @@ public abstract class CharacterModel extends MovableModel {
 
     private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
     private UILabel _label;
+    private PathModel _path;
 
     public UILabel getLabelDrawable() {
         if (_label == null) {
@@ -50,8 +52,15 @@ public abstract class CharacterModel extends MovableModel {
 
     public void setParcel(ParcelModel parcel) {
         this._parcel = parcel;
-        _posX = parcel.x;
-        _posY = parcel.y;
+    }
+
+    public boolean hasDisease(String name) {
+        for (DiseaseCharacterModel disease: _diseases) {
+            if (disease.disease.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public enum TalentType {
@@ -114,15 +123,13 @@ public abstract class CharacterModel extends MovableModel {
     protected boolean                           _isFaint;
     private HashMap<TalentType, TalentEntry>    _talentsMap;
     private List<TalentEntry>                   _talents;
-    private ParcelModel                         _toParcel;
-    private ParcelModel                         _fromParcel;
     private double                              _moveStep;
     private List<BuffModel>                     _buffs;
-    public List<DiseaseModel>                   _diseases;
+    public List<DiseaseCharacterModel>          _diseases;
     protected CharacterTypeInfo                 _type;
 
-    public CharacterModel(int id, int x, int y, String name, String lastName, double old, CharacterTypeInfo type) {
-        super(id, x, y);
+    public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterTypeInfo type) {
+        super(id, parcel);
 
         Log.info("Character #" + id);
 
@@ -133,11 +140,8 @@ public abstract class CharacterModel extends MovableModel {
         _old = old;
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
-        _blocked = 0;
         _direction = Direction.NONE;
-        _steps = 0;
         _info = new CharacterInfoModel(name, lastName);
-        _parcel = ModuleHelper.getWorldModule().getParcel(x, y);
 
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
@@ -159,12 +163,11 @@ public abstract class CharacterModel extends MovableModel {
 
         _needs = new CharacterNeeds(this, _stats);
 
-        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
+//        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
     public JobModel                     getJob() { return _job; }
     public CharacterNeeds               getNeeds() { return _needs; }
-    public GraphPath<ParcelModel>       getPath() { return _path; }
     public int                          getLag() { return _lag; }
     public double                       getOld() { return _old; }
     public RoomModel                    getQuarter() { return _quarter; }
@@ -185,9 +188,10 @@ public abstract class CharacterModel extends MovableModel {
     public double                       getMoveStep() { return _moveStep; }
     public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
     public List<BuffModel>              getBuffs() { return _buffs; }
+    public List<DiseaseCharacterModel>  getDiseases() { return _diseases; }
 
     public abstract void                addBodyStats(CharacterStats stats);
-    public void                         addDisease(DiseaseModel disease) { _diseases.add(disease); }
+    public void                         addDisease(DiseaseCharacterModel disease) { _diseases.add(disease); }
     public void                         addBuff(BuffModel buff) { _buffs.add(buff); }
 
     public void                         setSelected(boolean selected) { _isSelected = selected; }
@@ -215,39 +219,31 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public DiseaseModel getDisease(String name) {
-        for (DiseaseModel disease: _diseases) {
-            if (disease.name.equals(name)) {
+    public DiseaseCharacterModel getDisease(String name) {
+        for (DiseaseCharacterModel disease: _diseases) {
+            if (disease.disease.name.equals(name)) {
                 return disease;
             }
         }
         return null;
     }
 
-    public void move(GraphPath<ParcelModel> path) {
+    public void move(PathModel path) {
         move(path, null);
     }
 
-    public void move(GraphPath<ParcelModel> path, MoveListener<CharacterModel> moveListener) {
+    public void move(PathModel path, MoveListener<CharacterModel> listener) {
         if (path != null) {
 
-            if (path.getCount() == 0) {
-                if (moveListener != null) {
-                    moveListener.onReach(this);
+            if (path.getLength() == 0) {
+                if (listener != null) {
+                    listener.onReach(this);
                 }
                 return;
             }
 
-            ParcelModel toParcel = path.get(path.getCount()-1);
-
-            _blocked = 0;
-
-            _toX = toParcel.x;
-            _toY = toParcel.y;
             _path = path;
-            _steps = 0;
-
-            _moveListener = moveListener;
+            _moveListener = listener;
         }
     }
 
@@ -271,32 +267,21 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void moveTo(JobModel job, ParcelModel toParcel, MoveListener<CharacterModel> moveListener) {
-        _toX = toParcel.x;
-        _toY = toParcel.y;
-
-        _fromParcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
-        _toParcel = toParcel;
-
         // Already on position
-        if (_posX == _toX && _posY == _toY) {
+        if (toParcel == _parcel) {
             if (moveListener != null) {
                 moveListener.onReach(this);
             }
-        } else {
-            _moveListener = moveListener;
-            Log.debug("move to: " + _toX + "x" + _toY);
-            PathManager.getInstance().getPathAsync(moveListener, this, job, _toX, _toY);
+            return;
         }
+
+        _path = PathManager.getInstance().getPath(_parcel, toParcel);
+        _moveListener = moveListener;
     }
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            ParcelModel parcel = WorldHelper.getNearestFreeParcel(_posX, _posY, true, false);
-            if (parcel != null) {
-                this._parcel = parcel;
-                _posX = parcel.x;
-                _posY = parcel.y;
-            }
+            _parcel = WorldHelper.getNearestFreeParcel(_parcel, true, false);
         }
     }
 
@@ -355,75 +340,52 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void        move() {
-        _move = Direction.NONE;
-
-        if (_path == null) {
-            return;
-        }
-
-        // Character is sleeping
-        if (_needs.isSleeping()) {
-            Log.debug("Character #" + _id + ": sleeping . move canceled");
-            return;
-        }
-
-        // Goto node
-        if (_node != null) {
-            // _node.PrintNodeInfo();
-
-            // Set direction
-            int x = _node.x;
-            int y = _node.y;
-            if (x > _posX && y > _posY) setMove(Direction.BOTTOM_RIGHT);
-            else if (x < _posX && y > _posY) setMove(Direction.BOTTOM_LEFT);
-            else if (x > _posX && y < _posY) setMove(Direction.TOP_RIGHT);
-            else if (x < _posX && y < _posY) setMove(Direction.TOP_LEFT);
-            else if (x > _posX) setMove(Direction.RIGHT);
-            else if (x < _posX) setMove(Direction.LEFT);
-            else if (y > _posY) setMove(Direction.BOTTOM);
-            else if (y < _posY) setMove(Direction.TOP);
-
-            // Increase move progress
-            if (_moveProgress >= 1) {
-                _moveProgress = 0;
-            }
-            _moveStep = 1 * _stats.speed * (_job != null ? _job.getSpeedModifier() : 1);
-            _moveProgress += _moveStep;
-            if (_moveProgress < 1) {
+        if (_path != null) {
+            // Character is sleeping
+            if (_needs.isSleeping()) {
+                Log.debug("Character #" + _id + ": sleeping . move canceled");
                 return;
             }
-            _moveProgress = 1;
-            _moveStep = 1;
 
-            _parcel = _node;
-            _posX = x;
-            _posY = y;
-            _steps++;
-            Log.debug("Character #" + _id + ": goto " + _posX + " x " + _posY + ", step: " + _steps);
-        }
+            // Increase move progress
+            _moveStep = 1 * _stats.speed * (_job != null ? _job.getSpeedModifier() : 1);
+            _moveProgress += _moveStep;
 
-        // Next node
-        if (_path.getCount() > _steps) {
-            Log.debug("Character #" + _id + ": move");
-            _node = _path.get(_steps);
-        } else {
-            Log.debug("Character #" + _id + ": reached");
+            // Character has reach next parcel
+            if (_moveProgress >= 1 && _path.getCurrentParcel() != null) {
+                _moveProgress = 0;
+                _parcel = _path.getCurrentParcel();
 
-            _steps = 0;
-            _path = null;
-            _node = null;
-            _moveProgress = 0;
+                // Move continue, set next parcel + direction
+                if (_path.next()) {
+                    int fromX = _parcel.x;
+                    int fromY = _parcel.y;
+                    int toX = _path.getCurrentParcel().x;
+                    int toY = _path.getCurrentParcel().y;
+                    if (toX > fromX && toY > fromY) _direction = Direction.BOTTOM_RIGHT;
+                    else if (toX < fromX && toY > fromY) _direction = Direction.BOTTOM_LEFT;
+                    else if (toX > fromX && toY < fromY) _direction = Direction.TOP_RIGHT;
+                    else if (toX < fromX && toY < fromY) _direction = Direction.TOP_LEFT;
+                    else if (toX > fromX) _direction = Direction.RIGHT;
+                    else if (toX < fromX) _direction = Direction.LEFT;
+                    else if (toY > fromY) _direction = Direction.BOTTOM;
+                    else if (toY < fromY) _direction = Direction.TOP;
+                    else _direction = Direction.NONE;
+                }
 
-            // TODO: why characters sometimes not reach job location
-            if (_posX != _toX || _posY != _toY) {
-                setJob(null);
+                // Move complete, set path to null and call listener
+                else {
+                    _path = null;
+
+                    if (_moveListener != null) {
+                        MoveListener listener = _moveListener;
+                        _moveListener = null;
+                        listener.onReach(this);
+                    }
+                }
             }
 
-            if (_moveListener != null) {
-                MoveListener listener = _moveListener;
-                _moveListener = null;
-                listener.onReach(this);
-            }
+
         }
     }
 
@@ -431,6 +393,8 @@ public abstract class CharacterModel extends MovableModel {
         if (_job == null) {
             return;
         }
+
+//        if (_job.getTargetParcel())
 
         if (!_job.hasCharacter(this)) {
             _job = null;
@@ -456,38 +420,23 @@ public abstract class CharacterModel extends MovableModel {
 
     @Override
     public void    onPathFailed(JobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
-        if (_fromParcel == fromParcel && _toParcel == toParcel) {
-            Log.warning("Job failed (no path)");
+        Log.warning("Job failed (no path)");
 
-            // Abort job
-            ModuleHelper.getJobModule().quitJob(job, JobModel.JobAbortReason.BLOCKED);
-            _job = null;
+        // Abort job
+        ModuleHelper.getJobModule().quitJob(job, JobModel.JobAbortReason.BLOCKED);
+        _job = null;
 
-            if (_onPathComplete != null) {
-                _onPathComplete.onPathFailed(job);
-            }
+        if (_onPathComplete != null) {
+            _onPathComplete.onPathFailed(job);
         }
     }
 
     @Override
     public void    onPathComplete(GraphPath<ParcelModel> path, JobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
-        if (_fromParcel == fromParcel && _toParcel == toParcel) {
-            Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
+//            Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
 
-            if (path.getCount() == 0) {
-                return;
-            }
-
-            _blocked = 0;
-
-            _toX = toParcel.x;
-            _toY = toParcel.y;
-            _path = path;
-            _steps = 0;
-
-            if (_onPathComplete != null) {
-                _onPathComplete.onPathComplete(path, job);
-            }
+        if (_onPathComplete != null) {
+            _onPathComplete.onPathComplete(path, job);
         }
     }
 

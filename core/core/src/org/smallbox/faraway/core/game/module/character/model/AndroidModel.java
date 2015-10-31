@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -23,8 +24,8 @@ public class AndroidModel extends CharacterModel {
             new String[] {"bt_tool_3",  "tool"}
     };
 
-    public AndroidModel(int id, int x, int y, String name, String lastName, double old) {
-        super(id, x, y, name, lastName, old, GameData.getData().characters.get("android"));
+    public AndroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
+        super(id, parcel, name, lastName, old, GameData.getData().characters.get("android"));
         _info.setColor(new Color(0xc57de6));
     }
 

@@ -69,22 +69,6 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.category = getString(value, "category", null);
         itemInfo.type = getString(value, "type", null);
 
-        // Get category
-        if ("consumable".equals(itemInfo.type)) {
-            itemInfo.isConsumable = true;
-        } else if ("structure".equals(itemInfo.type)) {
-            itemInfo.isStructure = true;
-        } else if ("item".equals(itemInfo.type)) {
-            itemInfo.isUserItem = true;
-        } else if ("resource".equals(itemInfo.type)) {
-            itemInfo.isResource = true;
-        } else if ("equipment".equals(itemInfo.type) || itemInfo.equipment != null) {
-            itemInfo.isEquipment = true;
-            itemInfo.isConsumable = true;
-        } else {
-            throw new RuntimeException("unknown item type: " + itemInfo.type);
-        }
-
         LuaValue luaGraphics = value.get("graphics");
         if (!luaGraphics.isnil()) {
             if (!luaGraphics.get("path").isnil()) {
@@ -109,6 +93,10 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("walkable").isnil()) {
             itemInfo.isWalkable = value.get("walkable").toboolean();
+        }
+
+        if (!value.get("door").isnil()) {
+            itemInfo.isDoor = value.get("door").toboolean();
         }
 
         if (!value.get("build").isnil()) {
@@ -169,6 +157,23 @@ public class LuaItemExtend extends LuaExtend {
                     readReceiptValue(itemInfo, value.get("receipts").get(i));
                 }
             }
+        }
+
+        // Get category
+        if ("consumable".equals(itemInfo.type)) {
+            itemInfo.isConsumable = true;
+        } else if ("structure".equals(itemInfo.type)) {
+            itemInfo.isStructure = true;
+            itemInfo.canSupportRoof = !itemInfo.isWalkable || itemInfo.isDoor;
+        } else if ("item".equals(itemInfo.type)) {
+            itemInfo.isUserItem = true;
+        } else if ("resource".equals(itemInfo.type)) {
+            itemInfo.isResource = true;
+            itemInfo.isRock = itemInfo.actions != null && "mine".equals(itemInfo.actions.get(0).type);
+            itemInfo.canSupportRoof = itemInfo.actions != null && "mine".equals(itemInfo.actions.get(0).type);
+        } else if ("equipment".equals(itemInfo.type) || itemInfo.equipment != null) {
+            itemInfo.isEquipment = true;
+            itemInfo.isConsumable = true;
         }
     }
 

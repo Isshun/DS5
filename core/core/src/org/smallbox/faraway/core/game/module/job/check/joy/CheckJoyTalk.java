@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.check.joy;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -27,9 +28,9 @@ public class CheckJoyTalk extends CharacterCheck {
         CharacterModel bestCharacter = null;
         for (CharacterModel friend: ModuleHelper.getCharacterModule().getCharacters()) {
             if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isEntertainment())) {
-                GraphPath<ParcelModel> path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());
-                if (path != null && path.getCount() < bestDistance) {
-                    bestDistance = path.getCount();
+                PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());
+                if (path != null && path.getLength() < bestDistance) {
+                    bestDistance = path.getLength();
                     bestCharacter = friend;
                 }
             }

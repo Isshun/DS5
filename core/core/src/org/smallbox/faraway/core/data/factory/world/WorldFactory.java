@@ -120,7 +120,7 @@ public class WorldFactory {
                 if (b != null && b.getResource() != null) isAlone = false;
 
                 if (isAlone) {
-                    worldModule.getParcelContent(parcel).resource = null;
+                    parcel.setResource(null);
                 }
             }
         });

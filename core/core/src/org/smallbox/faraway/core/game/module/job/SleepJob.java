@@ -48,6 +48,10 @@ public class SleepJob extends JobModel {
     }
 
     @Override
+    protected void onStart(CharacterModel character) {
+    }
+
+    @Override
     public JobActionReturn onAction(CharacterModel character) {
         if (Game.getInstance().getTick() < _wakeTime) {
             character.getNeeds().isSleeping = true;

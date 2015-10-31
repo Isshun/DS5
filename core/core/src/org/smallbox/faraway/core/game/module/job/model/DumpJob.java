@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -62,10 +63,10 @@ public class DumpJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        GraphPath<ParcelModel> path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
 
         if (path != null) {
-            _targetParcel = path.get(path.getCount() - 1);
+            _targetParcel = path.getLastParcel();
 
             System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
             character.move(path, new MoveListener<CharacterModel>() {

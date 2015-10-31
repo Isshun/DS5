@@ -80,6 +80,10 @@ public class ConsumeJob extends JobModel {
         return true;
     }
 
+    @Override
+    protected void onStart(CharacterModel character) {
+    }
+
     // TODO: make objects stats table instead switch
     @Override
     public JobActionReturn onAction(CharacterModel character) {

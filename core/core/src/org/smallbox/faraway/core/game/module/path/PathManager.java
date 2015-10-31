@@ -9,11 +9,13 @@ import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.MoveListener;
 
@@ -132,7 +134,7 @@ public class PathManager extends GameModule {
 
     public void getPathAsync(final MoveListener listener, final MovableModel movable, final JobModel job, final int x, final int y) {
 //        _threadPool.execute(() -> {
-        ParcelModel fromParcel = ModuleHelper.getWorldModule().getParcel(movable.getX(), movable.getY());
+        ParcelModel fromParcel = movable.getParcel();
         ParcelModel toParcel = ModuleHelper.getWorldModule().getParcel(x, y);
 
         if (WorldHelper.isBlocked(x + 1, y) &&
@@ -189,22 +191,22 @@ public class PathManager extends GameModule {
         return findPath(fromParcel, toParcel) != null;
     }
 
-    public GraphPath<ParcelModel> getPath(AreaModel fromArea, ParcelModel toParcel) {
+    public PathModel getPath(AreaModel fromArea, ParcelModel toParcel) {
         for (ParcelModel parcel: fromArea.getParcels()) {
             return getPath(parcel, toParcel);
         }
         return null;
     }
 
-    public GraphPath<ParcelModel> getPath(ParcelModel fromParcel, ParcelModel toParcel) {
+    public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
         PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
         if (pathCache != null && pathCache.isValid()) {
-            return pathCache.getPath();
+            return PathModel.create(pathCache.getPath());
         }
 
-        return findPath(fromParcel, toParcel);
+        return PathModel.create(findPath(fromParcel, toParcel));
 //
 //        // Return path cache
 //        {
@@ -270,8 +272,8 @@ public class PathManager extends GameModule {
         return null;
     }
 
-    public GraphPath<ParcelModel> getBestApprox(ParcelModel fromParcel, ParcelModel toParcel) {
-        GraphPath<ParcelModel> bestPath = null;
+    public PathModel getBestApprox(ParcelModel fromParcel, ParcelModel toParcel) {
+        PathModel bestPath = null;
         if (toParcel != null) {
             if (toParcel.isWalkable()) {
                 bestPath = getPath(fromParcel, toParcel);
@@ -280,8 +282,8 @@ public class PathManager extends GameModule {
                     for (int y = toParcel.y -1; y <= toParcel.y + 1; y++) {
                         ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
                         if (parcel != null && parcel.isWalkable()) {
-                            GraphPath<ParcelModel> path = getPath(fromParcel, parcel);
-                            if (path != null && (bestPath == null || path.getCount() < bestPath.getCount())) {
+                            PathModel path = getPath(fromParcel, parcel);
+                            if (path != null && (bestPath == null || path.getLength() < bestPath.getLength())) {
                                 bestPath = path;
                             }
                         }
@@ -291,6 +293,9 @@ public class PathManager extends GameModule {
         }
         return bestPath;
     }
+
+    @Override
+    public void onStructureComplete(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
     @Override
     public void onAddStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }

@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
@@ -21,7 +22,7 @@ public class ItemFinder extends GameModule {
     private int                     _height;
     private WorldModule             _worldModule;
     private PathManager             _pathManager;
-    private List<ConsumableModel>     _consumables;
+    private List<ConsumableModel>   _consumables;
     private List<ItemModel>         _items;
 
     @Override
@@ -113,34 +114,6 @@ public class ItemFinder extends GameModule {
         return null;
     }
 
-    private boolean getNearestItemCheck(MapObjectModel item, ItemFilter filter) {
-        // Item not exists
-        if (item == null) {
-            return false;
-        }
-
-        // Item is blocked
-        if (item.getLastBlocked() != -1 && item.getLastBlocked() < Game.getUpdate() + Constant.COUNT_BEFORE_REUSE_BLOCKED_ITEM) {
-            return false;
-        }
-
-        // Item is not completed
-        if (!item.isComplete()) {
-            return false;
-        }
-
-        // Item don't match filter
-        if (!item.matchFilter(filter)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public ConsumableModel getNearest(ItemInfo info, ParcelModel parcel) {
-        return getNearest(info, parcel.x, parcel.y);
-    }
-
     public ConsumableModel getNearest(ItemInfo info, int startX, int startY) {
         int maxX = Math.max(startX, _width - startX);
         int maxY = Math.max(startY, _height - startY);
@@ -168,11 +141,10 @@ public class ItemFinder extends GameModule {
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, CharacterModel character) {
-        return getRandomNearest(filter, character.getX(), character.getY());
+        return getRandomNearest(filter, character.getParcel());
     }
 
-    public MapObjectModel getRandomNearest(ItemFilter filter, int x, int y) {
-        ParcelModel fromParcel = _worldModule.getParcel(x, y);
+    public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
         List<? extends MapObjectModel> list = filter.needConsumable ? _consumables : _items;
 
         // Get matching items
@@ -182,7 +154,7 @@ public class ItemFinder extends GameModule {
         Map<MapObjectModel, Integer> ObjectsMatchingFilter = new HashMap<>();
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
-            int distance = Math.abs(mapObject.getX() - x) + Math.abs(mapObject.getY() - y);
+            int distance = Math.abs(mapObject.getX() - fromParcel.x) + Math.abs(mapObject.getY() - fromParcel.y);
             if (mapObject.matchFilter(filter) && _pathManager.getPath(fromParcel, mapObject.getParcel()) != null) {
                 ObjectsMatchingFilter.put(mapObject, distance);
                 if (bestDistance > distance) {

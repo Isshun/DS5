@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
@@ -14,11 +15,11 @@ public class LuaFactoryModel {
     public LuaCharacterModel createCharacter(String type) {
         switch (type) {
             case "human":
-                return new LuaCharacterModel(new HumanModel(Utils.getUUID(), 5, 5, null, null, 16));
+                return new LuaCharacterModel(new HumanModel(Utils.getUUID(), WorldHelper.getParcel(5, 5), null, null, 16));
             case "android":
-                return new LuaCharacterModel(new AndroidModel(Utils.getUUID(), 5, 5, null, null, 16));
+                return new LuaCharacterModel(new AndroidModel(Utils.getUUID(), WorldHelper.getParcel(5, 5), null, null, 16));
             case "droid":
-                return new LuaCharacterModel(new DroidModel(Utils.getUUID(), 5, 5, null, null, 16));
+                return new LuaCharacterModel(new DroidModel(Utils.getUUID(), WorldHelper.getParcel(5, 5), null, null, 16));
         }
         return null;
     }

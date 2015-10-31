@@ -42,7 +42,7 @@ public class CheckJoyWalk extends CharacterCheck {
         int bestDistance = Integer.MAX_VALUE;
         for (AreaModel area: ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getAreas()) {
             if (area.isHome()) {
-                int distance = Math.abs(character.getX() - area.getX()) + Math.abs(character.getY() - area.getY());
+                int distance = Math.abs(character.getParcel().x - area.getX()) + Math.abs(character.getParcel().y - area.getY());
                 if (bestDistance > distance) {
                     bestDistance = distance;
                     _area = area;

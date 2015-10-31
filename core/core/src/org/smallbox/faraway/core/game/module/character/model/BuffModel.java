@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.model.ObjectModel;
  */
 public class BuffModel extends ObjectModel {
     public interface BuffListener {
-        void onStart(BuffCharacterModel character);
+        void onStart(BuffCharacterModel data);
         void onUpdate(BuffCharacterModel data, int update);
     }
 

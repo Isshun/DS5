@@ -16,9 +16,8 @@ import org.smallbox.faraway.core.util.Constant;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class GDXAreaRenderer extends BaseRenderer {
+public class AreaRenderer extends BaseRenderer {
     private final SpriteManager _spriteManager;
-
     private final TextureRegion[] _regions;
     private final TextureRegion[] _regionsSelected;
 
@@ -30,7 +29,7 @@ public class GDXAreaRenderer extends BaseRenderer {
             new Color(1, 0.5f, 0.5f, 0.4f)
     };
 
-    public GDXAreaRenderer() {
+    public AreaRenderer() {
         _spriteManager = SpriteManager.getInstance();
         _regions = new TextureRegion[5];
         _regions[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);

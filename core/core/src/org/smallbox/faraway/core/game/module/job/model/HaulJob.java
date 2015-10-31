@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -40,6 +41,8 @@ public class HaulJob extends JobModel {
     public HaulJob(BuildableMapObject item, BuildableMapObject.ComponentModel component) {
         super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
 
+        _label = "Build " + item.getInfo().label;
+        _message = "Move to " + component.info.label;
         _buildItem = item;
         _component = component;
         _component.job = this;
@@ -62,11 +65,20 @@ public class HaulJob extends JobModel {
 
     @Override
     public boolean onCheck(CharacterModel character) {
+        // Check if parcel is walkable
+        if (!_targetParcel.isWalkable()) {
+            _status = JobStatus.BLOCKED;
+            return false;
+        }
+
+        // Check if consumable exists
         for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
-            if (consumable.getInfo() == _component.info) {
+            if (consumable.getInfo() == _component.info && (consumable.getLock() == null || consumable.getLock() == this)) {
                 return true;
             }
         }
+        _status = JobStatus.MISSING_COMPONENT;
+
         return false;
     }
 
@@ -82,9 +94,9 @@ public class HaulJob extends JobModel {
                 .filter(consumable -> consumable.getInfo() == _component.info)
                 .filter(consumable -> consumable.getParcel().isWalkable())
                 .forEach(consumable -> {
-                    GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel());
+                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel());
                     if (path != null) {
-                        _potentialConsumables.add(new PotentialConsumable(consumable, path.getCount()));
+                        _potentialConsumables.add(new PotentialConsumable(consumable, path.getLength()));
                     }
                 });
         Collections.sort(_potentialConsumables, (c1, c2) -> c2.distance - c1.distance);
@@ -138,7 +150,7 @@ public class HaulJob extends JobModel {
     }
 
     protected void moveToMainItem() {
-        _message = "Carry " + _character.getInventory().getInfo().label + " to " + _buildItem.getInfo().label;
+        _message = "Bring " + _character.getInventory().getInfo().label + " to " + _buildItem.getInfo().label;
 
         // TODO: Reliquat
         _targetParcel = _buildItem.getParcel();

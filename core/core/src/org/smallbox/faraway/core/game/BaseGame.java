@@ -26,10 +26,15 @@ public abstract class BaseGame {
     private int                     _frame;
     private int                     _renderTime;
     private double                  animationProgress;
+    private boolean                 _paused;
+
+    public boolean isPaused() {
+        return _paused;
+    }
 
     public void update() {
         // Update
-        if (_nextUpdate < System.currentTimeMillis()) {
+        if (_nextUpdate < System.currentTimeMillis() && !_paused) {
             _nextUpdate = System.currentTimeMillis() + _tickInterval;
             _tick += 1;
             MainRenderer.getInstance().onUpdate();
@@ -43,7 +48,9 @@ public abstract class BaseGame {
         long time = System.currentTimeMillis();
 
         // Draw
-        animationProgress = 1 - ((double)(_nextUpdate - System.currentTimeMillis()) / _tickInterval);
+        if (!GameManager.getInstance().isPaused()) {
+            animationProgress = 1 - ((double) (_nextUpdate - System.currentTimeMillis()) / _tickInterval);
+        }
         renderer.clear(new Color(0, 0, 0));
         renderer.begin();
         MainRenderer.getInstance().onDraw(renderer, viewport, animationProgress);
@@ -74,13 +81,14 @@ public abstract class BaseGame {
     public void setSpeed(int speed) {
         switch (speed) {
             case 0:
-                _tickInterval = Integer.MAX_VALUE;
+                _paused = !_paused;
                 if (GameManager.getInstance().isRunning()) {
-                    GameManager.getInstance().getGame().setRunning(false);
+                    GameManager.getInstance().getGame().setRunning(!_paused);
                 }
                 break;
 
             case 1:
+                _paused = false;
                 _tickInterval = SPEED_1_TICK_INTERVAL;
                 if (GameManager.getInstance().isRunning()) {
                     GameManager.getInstance().getGame().setRunning(true);
@@ -88,6 +96,7 @@ public abstract class BaseGame {
                 break;
 
             case 2:
+                _paused = false;
                 _tickInterval = SPEED_2_TICK_INTERVAL;
                 if (GameManager.getInstance().isRunning()) {
                     GameManager.getInstance().getGame().setRunning(true);
@@ -95,6 +104,7 @@ public abstract class BaseGame {
                 break;
 
             case 3:
+                _paused = false;
                 _tickInterval = SPEED_3_TICK_INTERVAL;
                 if (GameManager.getInstance().isRunning()) {
                     GameManager.getInstance().getGame().setRunning(true);
@@ -102,6 +112,7 @@ public abstract class BaseGame {
                 break;
 
             case 4:
+                _paused = false;
                 _tickInterval = SPEED_4_TICK_INTERVAL;
                 if (GameManager.getInstance().isRunning()) {
                     GameManager.getInstance().getGame().setRunning(true);

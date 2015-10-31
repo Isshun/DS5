@@ -18,6 +18,8 @@ public interface GameObserver {
     default void onAddItem(ItemModel item){}
     default void onAddConsumable(ConsumableModel consumable){}
     default void onAddResource(ResourceModel resource) {}
+    default void onStructureComplete(StructureModel structure){}
+    default void onItemComplete(ItemModel item){}
     default void onRemoveItem(ItemModel item){}
     default void onRemoveConsumable(ConsumableModel consumable){}
     default void onRemoveStructure(StructureModel structure){}

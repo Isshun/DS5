@@ -17,42 +17,6 @@ import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
 public class WorldRenderer extends BaseRenderer {
-    private int[][][] TEMPLATES = new int[][][] {
-            new int[][] {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}},
-            new int[][] {{1, 1, 1}, {1, 1, 1}, {1, 1, 0}},
-            new int[][] {{1, 1, 1}, {1, 1, 1}, {0, 1, 1}},
-            new int[][] {{1, 1, 0}, {1, 1, 1}, {1, 1, 1}},
-            new int[][] {{0, 1, 1}, {1, 1, 1}, {1, 1, 1}},
-
-            // Inner without corners
-            new int[][] {{0, 1, 0}, {1, 1, 1}, {0, 1, 0}},
-            new int[][] {{0, 0, 0}, {1, 1, 1}, {0, 1, 0}},
-            new int[][] {{0, 1, 0}, {1, 1, 1}, {0, 0, 0}},
-            new int[][] {{0, 1, 0}, {0, 1, 1}, {0, 1, 0}},
-            new int[][] {{0, 1, 0}, {1, 1, 0}, {0, 1, 0}},
-
-            // T
-            new int[][] {{2, 1, 2}, {0, 1, 0}, {2, 0, 2}},
-            new int[][] {{2, 0, 2}, {0, 1, 0}, {2, 1, 2}},
-            new int[][] {{2, 0, 2}, {1, 1, 0}, {2, 0, 2}},
-            new int[][] {{2, 0, 2}, {0, 1, 1}, {2, 0, 2}},
-
-            // =
-            new int[][] {{2, 1, 2}, {0, 1, 0}, {2, 1, 2}},
-            new int[][] {{2, 0, 2}, {1, 1, 1}, {2, 0, 2}},
-
-            // Corners
-            new int[][] {{2, 2, 2}, {2, 2, 1}, {2, 1, 1}},
-            new int[][] {{2, 1, 1}, {2, 2, 1}, {2, 2, 2}},
-            new int[][] {{2, 2, 2}, {1, 2, 2}, {1, 1, 2}},
-            new int[][] {{1, 1, 2}, {1, 2, 2}, {2, 2, 2}},
-
-            new int[][] {{0, 0, 0}, {0, 0, 1}, {2, 1, 0}},
-            new int[][] {{2, 1, 2}, {1, 0, 0}, {0, 0, 2}},
-            new int[][] {{2, 0, 2}, {1, 0, 0}, {2, 1, 2}},
-            new int[][] {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
-    };
-
     private static final int    CACHE_SIZE = 25;
 
     private int                 _cacheCols;
@@ -434,8 +398,8 @@ public class WorldRenderer extends BaseRenderer {
             layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
 
             // Display components
-            if (item.getFactory() != null && item.getFactory().getShoppingList() != null) {
-                for (ItemFactoryModel.FactoryShoppingItemModel component : item.getFactory().getShoppingList()) {
+            if (item.getFactory() != null && item.getFactory().getActiveReceipt() != null && item.getFactory().getActiveReceipt().getShoppingList() != null) {
+                for (ItemFactoryReceiptModel.FactoryShoppingItemModel component : item.getFactory().getActiveReceipt().getShoppingList()) {
                     SpriteModel sprite = _spriteManager.getItem(component.consumable.getInfo());
                     if (sprite != null) {
                         if (item.getInfo().factory != null && item.getInfo().factory.inputSlots != null) {

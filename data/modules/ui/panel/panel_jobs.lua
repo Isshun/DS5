@@ -11,7 +11,7 @@ data:extend({
             game.ui:findById("panel_jobs"):setVisible(false)
         end},
         { type = "label", text = "Jobs", text_size = 28, padding = 10, position = {46, 0}},
-        { type = "list", id = "list_jobs", position = {0, 40}},
+        { type = "list", id = "list_jobs", position = {10, 40}},
     },
     on_event = function(event, view, data)
         if event == game.events.on_key_press and data == "ESCAPE" then
@@ -31,13 +31,14 @@ data:extend({
             frame_job:setSize(400, 22)
 
             local lb_job = game.ui:createLabel()
-            lb_job:setText(job:getLabel())
+--            lb_job:setText(job:getLabel())
+            lb_job:setDashedString(job:getLabel(), job:getStatus():toString(), 47)
             frame_job:addView(lb_job)
 
-            local lb_job_message = game.ui:createLabel()
-            lb_job_message:setText(job:getMessage())
-            lb_job_message:setPosition(200, 0)
-            frame_job:addView(lb_job_message)
+--            local lb_job_message = game.ui:createLabel()
+--            lb_job_message:setText(job:getMessage())
+--            lb_job_message:setPosition(200, 0)
+--            frame_job:addView(lb_job_message)
 
             list:addView(frame_job)
         end

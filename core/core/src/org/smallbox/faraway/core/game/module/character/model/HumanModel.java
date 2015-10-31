@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterInfoModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -24,8 +25,8 @@ public class HumanModel extends CharacterModel {
             new String[] {"bt_tool_3", "tool"}
     };
 
-    public HumanModel(int id, int x, int y, String name, String lastName, double old) {
-        super(id, x, y, name, lastName, old, GameData.getData().characters.get("human"));
+    public HumanModel(int id, ParcelModel parcel, String name, String lastName, double old) {
+        super(id, parcel, name, lastName, old, GameData.getData().characters.get("human"));
         _info.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterInfoModel.Gender.MALE : CharacterInfoModel.Gender.FEMALE);
     }
 

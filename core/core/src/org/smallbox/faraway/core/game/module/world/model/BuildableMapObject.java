@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -37,11 +39,12 @@ public class BuildableMapObject extends MapObjectModel {
         }
     }
 
-    private ItemInfo.ItemInfoReceipt _receipt;
-    private int                     _totalBuild;
-    private int                     _currentBuild;
-    private BuildJob                _buildJob;
-    private List<ComponentModel>    _components = new ArrayList<>();
+    protected boolean                   _isComplete = false;
+    private ItemInfo.ItemInfoReceipt    _receipt;
+    private int                         _totalBuild;
+    private int                         _currentBuild;
+    private BuildJob                    _buildJob;
+    private List<ComponentModel>        _components = new ArrayList<>();
 
     public BuildableMapObject(ItemInfo info, int id) {
         super(info, id);
@@ -81,7 +84,18 @@ public class BuildableMapObject extends MapObjectModel {
         return true;
     }
 
-    public boolean          build() { return _isComplete = (_isComplete || ++_currentBuild >= _totalBuild); }
+    public boolean          build() {
+        _currentBuild++;
+        if (!_isComplete && _currentBuild >= _totalBuild) {
+            _isComplete = true;
+            if (this instanceof ItemModel) {
+                Game.getInstance().notify(observer -> observer.onItemComplete((ItemModel)this));
+            } else if (this instanceof StructureModel) {
+                Game.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)this));
+            }
+        }
+        return _isComplete;
+    }
 
     public void             setComponents(List<ComponentModel> components) {
         _components = components;
@@ -96,11 +110,15 @@ public class BuildableMapObject extends MapObjectModel {
     public CharacterModel   getBuilder() { return _buildJob != null ? _buildJob.getCharacter() : null; }
     public double           getBuildProgress() { return (double)_currentBuild / _totalBuild; }
 
+    @Override
+    public boolean          isWalkable() { return !_isComplete || _info.isWalkable; }
+    public boolean          isComplete() { return _isComplete; }
+
     public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
 
         // Drop all existing components on the floor
         _components.stream().filter(component -> component.currentQuantity > 0)
-                .forEach(component -> ModuleHelper.getWorldModule().putConsumable(component.info, component.currentQuantity, _x, _y, 0));
+                .forEach(component -> ModuleHelper.getWorldModule().putConsumable(_parcel, component.info, component.currentQuantity));
 
         // Set new receipt
         _receipt = receipt;

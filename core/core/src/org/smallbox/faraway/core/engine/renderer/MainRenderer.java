@@ -32,7 +32,7 @@ public class MainRenderer {
     }
 
     public void onUpdate() {
-        _renders.stream().filter(BaseRenderer::isLoaded).forEach(render -> render.update());
+        _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::update);
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {

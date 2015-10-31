@@ -106,7 +106,7 @@ public class UserInteraction {
                     }
                 }
 
-                ModuleHelper.getWorldModule().putObject(itemInfo, x, y, 0, 0);
+                ModuleHelper.getWorldModule().putObject(WorldHelper.getParcel(x, y), itemInfo, 0);
 
 //                JobHelper.addBuildJob(itemInfo, x, y);
 
@@ -133,7 +133,7 @@ public class UserInteraction {
             for (int y = toY; y >= startY; y--) {
                 if (_selectedItemInfo != null) {
                     Log.warning("3 " + _selectedItemInfo.name);
-                    ModuleHelper.getWorldModule().putObject(_selectedItemInfo, x, y, 0, 10);
+                    ModuleHelper.getWorldModule().putObject(WorldHelper.getParcel(x, y), _selectedItemInfo, 10);
                 }
             }
         }
@@ -234,7 +234,7 @@ public class UserInteraction {
         switch (_selectedPlan) {
         case "destroy": planDestroy(startX, startY, toX, toY); break;
         case "gather": planGather(startX, startY, toX, toY); break;
-        case "mining": planMining(startX, startY, toX, toY); break;
+        case "mine": planMining(startX, startY, toX, toY); break;
         case "pick": planPick(startX, startY, toX, toY); break;
         case "haul": planHaul(startX, startY, toX, toY); break;
         case "cut": planCut(startX, startY, toX, toY); break;
@@ -256,25 +256,29 @@ public class UserInteraction {
         _action = action;
         _selectedPlan = plan;
         switch (plan) {
-            case "gather":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.gather"));
+            case "build":
+                UserInterface.getInstance().setCursor("base.cursor.build");
                 break;
-            case "mining":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.mine"));
+            case "gather":
+                UserInterface.getInstance().setCursor("base.cursor.gather");
+                break;
+            case "mine":
+                UserInterface.getInstance().setCursor("base.cursor.mine");
                 break;
             case "cut":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.cut"));
+                UserInterface.getInstance().setCursor("base.cursor.cut");
                 break;
             case "destroy":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.destroy"));
+                UserInterface.getInstance().setCursor("base.cursor.destroy");
                 break;
             case "haul":
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.haul"));
+                UserInterface.getInstance().setCursor("base.cursor.haul");
                 break;
         }
     }
 
     public void set(Action action, ItemInfo info) {
+        UserInterface.getInstance().setCursor("base.cursor.build");
         _action = action;
         _selectedItemInfo = info;
     }

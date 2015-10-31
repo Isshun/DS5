@@ -139,6 +139,10 @@ public class UseJob extends JobModel {
     }
 
     @Override
+    protected void onStart(CharacterModel character) {
+    }
+
+    @Override
     protected void onFinish() {
 
     }

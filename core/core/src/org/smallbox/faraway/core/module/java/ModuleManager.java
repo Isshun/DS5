@@ -48,6 +48,9 @@ public class ModuleManager {
         new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
             try {
                 GameModule module = cls.getConstructor().newInstance();
+                ModuleInfo info = new ModuleInfo();
+                info.name = module.getClass().getSimpleName();
+                module.setInfo(info);
                 _modulesBase.add(module);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
@@ -126,15 +129,15 @@ public class ModuleManager {
             });
         });
 
-        _modulesBase.sort((m1, m2) -> m2.getPriority() - m1.getPriority());
+        _modulesBase.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
 
         _modules.addAll(_modulesBase);
 //        _modules.addAll(_modulesThird);
-        _modules.sort((m1, m2) -> m2.getPriority() - m1.getPriority());
+        _modules.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
 
         _renders.addAll(_rendersBase);
         _renders.addAll(_rendersThird);
-//        _renders.sort((m1, m2) -> m2.getPriority() - m1.getPriority());
+//        _renders.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
     }
 
     public GameModule           getModule(Class<? extends GameModule> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
@@ -149,7 +152,7 @@ public class ModuleManager {
     public void toggleModule(Class<? extends GameModule> cls) { toggleModule(getModule(cls)); }
 
     public void unloadModule(GameModule module) {
-        if (!module.isMandatory()) {
+        if (!module.isModuleMandatory()) {
             module.destroy();
             Game.getInstance().removeObserver(module);
         }
@@ -162,7 +165,7 @@ public class ModuleManager {
 
     public void toggleModule(GameModule module) {
         if (module.isLoaded()) {
-            if (!module.isMandatory()) {
+            if (!module.isModuleMandatory()) {
                 module.destroy();
                 Game.getInstance().removeObserver(module);
             }

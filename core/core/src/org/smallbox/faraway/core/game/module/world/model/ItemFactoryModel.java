@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.module.world.model;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.PotentialConsumable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.CraftJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -25,34 +26,11 @@ public class ItemFactoryModel {
         }
     }
 
-    public static class FactoryShoppingItemModel {
-        public ConsumableModel  consumable;
-        public int              quantity;
-
-        public FactoryShoppingItemModel(ConsumableModel consumable, int quantity) {
-            this.consumable = consumable;
-            this.quantity = quantity;
-        }
-    }
-
-    public static class FactoryComponentModel {
-        public ItemInfo         itemInfo;
-        public int              currentQuantity;
-        public int              totalQuantity;
-
-        public FactoryComponentModel(ItemInfo itemInfo, int quantity) {
-            this.itemInfo = itemInfo;
-            this.totalQuantity = quantity;
-        }
-    }
-
     private final ItemModel                 _item;
     private CraftJob                        _job;
     private ItemFactoryReceiptModel         _activeReceipt;
     private List<OrderEntry>                _orderEntries;
     private List<ItemFactoryReceiptModel>   _receiptEntries;
-    private List<FactoryComponentModel>     _components;
-    private List<FactoryShoppingItemModel>  _shoppingList;
     // TODO: file d'attente de sortie
 //    private List<FactoryShoppingItemModel>  _shoppingList;
     private final ItemInfo.ItemInfoFactory  _info;
@@ -81,28 +59,16 @@ public class ItemFactoryModel {
     }
 
     public void setJob(CraftJob job) { _job = job; }
+    public void setMessage(String message) { _message = message; }
 
     public CraftJob                         getJob() { return _job; }
     public List<OrderEntry>                 getOrders() { return _orderEntries; }
     public List<ItemFactoryReceiptModel>    getReceipts() { return _receiptEntries; }
-    public List<FactoryComponentModel>      getComponents() { return _components; }
-    public List<FactoryShoppingItemModel>   getShoppingList() { return _shoppingList; }
     public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _activeReceipt != null ? _activeReceipt.receiptGroupInfo : null; }
     public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _activeReceipt != null ? _activeReceipt.receiptInfo : null; }
     public ItemFactoryReceiptModel          getActiveReceipt() { return _activeReceipt; }
     public ParcelModel                      getStorageParcel() { return _storageParcel; }
     public String                           getMessage() { return _message; }
-
-    public int getQuantityNeeded(ItemInfo itemInfo) {
-        if (_activeReceipt != null) {
-            for (FactoryComponentModel component: _components) {
-                if (itemInfo.instanceOf(component.itemInfo)) {
-                    return component.totalQuantity - component.currentQuantity;
-                }
-            }
-        }
-        return 0;
-    }
 
     public void moveReceipt(ReceiptGroupInfo receiptGroupInfo, int offset) {
         Optional<OrderEntry> optionalEntry = _orderEntries.stream().filter(entry -> entry.receiptGroupInfo == receiptGroupInfo).findFirst();
@@ -110,30 +76,6 @@ public class ItemFactoryModel {
             int position = _orderEntries.indexOf(optionalEntry.get()) + offset;
             _orderEntries.remove(optionalEntry.get());
             _orderEntries.add(Math.min(Math.max(position, 0), _orderEntries.size()), optionalEntry.get());
-        }
-    }
-
-    public void addComponent(ItemInfo itemInfo, int quantity) {
-        if (_activeReceipt != null) {
-
-            // Add current components to component list
-            for (FactoryComponentModel component: _components) {
-                if (itemInfo.instanceOf(component.itemInfo)) {
-                    component.currentQuantity += quantity;
-                    break;
-                }
-            }
-
-            // Check if all components is present
-            boolean allComponentsPresent = true;
-            for (FactoryComponentModel component: _components) {
-                if (component.currentQuantity < component.totalQuantity) {
-                    allComponentsPresent = false;
-                }
-            }
-            if (allComponentsPresent) {
-                _message = "Crafting";
-            }
         }
     }
 
@@ -174,22 +116,23 @@ public class ItemFactoryModel {
 //            _activeReceipt.receiptInfo.outputs.forEach(productInfo -> _outputsList.add(new FactoryOutputModel(productInfo.item, productInfo.quantity)));
 
             _message = "Stand-by";
+            _activeReceipt.clear();
         }
-
-        _components.clear();
-        _shoppingList.clear();
     }
 
     public void clear() {
-        _activeReceipt = null;
-        _components.clear();
-        _shoppingList.clear();
+        if (_activeReceipt != null) {
+            _activeReceipt.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_item.getParcel(), component.consumable));
+            _activeReceipt.clear();
+            _activeReceipt = null;
+        }
         _job = null;
     }
 
     // TODO: ne pas utiliser les consomables lock�
     public void scan() {
-        System.out.println("scan");
+//        System.out.println("scan");
+
         long time = System.currentTimeMillis();
         _activeReceipt = null;
 
@@ -210,10 +153,11 @@ public class ItemFactoryModel {
                 ModuleHelper.getWorldModule().getConsumables().stream()
                         .filter(consumable -> consumable.getInfo().instanceOf(inputInfo))
                         .filter(consumable -> consumable.getParcel().isWalkable())
+                        .filter(consumable -> consumable.getLock() == null)
                         .forEach(consumable -> {
-                            GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel());
+                            PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel());
                             if (path != null) {
-                                componentsDistance.add(new PotentialConsumable(consumable, path.getCount()));
+                                componentsDistance.add(new PotentialConsumable(consumable, path.getLength()));
                             }
                         }));
         Collections.sort(componentsDistance, (c1, c2) -> c2.distance - c1.distance);
@@ -250,60 +194,10 @@ public class ItemFactoryModel {
         }
 
         // Fill components list
-        _components = _activeReceipt.receiptInfo.inputs.stream()
-                .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
-                .collect(Collectors.toList());
-
-        // Fill consumables shopping list
-        _shoppingList = new ArrayList<>();
-        _activeReceipt.receiptInfo.inputs.forEach(receiptInputInfo -> {
-            int quantity = 0;
-            for (PotentialConsumable potential: componentsDistance) {
-                if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
-                    int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
-                    _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
-                    quantity += neededQuantity;
-                }
-            }
-        });
-
-        System.out.println("shopping list");
-        _shoppingList.forEach(input -> {
-            System.out.println(input.consumable.getInfo().label + " x" + input.quantity + " (" + input.consumable.getParcel().x + "x" + input.consumable.getParcel().y + ")");
-        });
+        _activeReceipt.prepare(componentsDistance);
 
         _message = "Refilling";
 
-        System.out.println("total time: " + (System.currentTimeMillis() - time) + "ms");
+//        System.out.println("total time: " + (System.currentTimeMillis() - time) + "ms");
     }
-
-    public FactoryShoppingItemModel getNextInput() {
-        return !_shoppingList.isEmpty() ? _shoppingList.get(0) : null;
-    }
-
-//    // Get potential consumables on WorldModule
-//    private void scanComponents(List<ReceiptInfo.ReceiptProductComponentInfo> componentsInfo) {
-//        if (componentsInfo != null) {
-//            _componentsInfo = componentsInfo;
-//
-//            // Add components to receipt
-//            Map<ItemInfo, Integer> componentsDistance = new HashMap<>();
-//            for (ReceiptInfo.ReceiptProductComponentInfo componentInfo : componentsInfo) {
-//                componentsDistance.put(componentInfo.item, componentInfo.quantity);
-//            }
-//
-//            _potentialComponents.clear();
-//            ModuleHelper.getWorldModule().getConsumables().stream()
-//                    .filter(consumable -> componentsDistance.containsKey(consumable.getInfo()))
-//                    .filter(consumable -> consumable.getParcel().isWalkable())
-//                    .forEach(consumable -> {
-//                        GraphPath<ParcelModel> path = PathManager.getInstance().getPath(_factory.getParcel(), consumable.getParcel());
-//                        if (path != null) {
-//                            _potentialComponents.add(new PotentialConsumable(consumable, path.getCount()));
-//                        }
-//                    });
-//            Collections.sort(_potentialComponents, (c1, c2) -> c2.distance - c1.distance);
-//        }
-//    }
-
 }

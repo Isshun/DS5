@@ -53,20 +53,31 @@ public class CraftJob extends JobModel {
             throw new RuntimeException("Try to start CraftJob without active receipt");
         }
 
+        for (ItemFactoryReceiptModel.FactoryShoppingItemModel shoppingItem: _receipt.getShoppingList()) {
+            if (shoppingItem.consumable.getLock() != null && shoppingItem.consumable.getLock() != this) {
+                throw new RuntimeException("Shopping item are already been locked");
+            }
+        }
+
+        // Lock items from current receipt shopping list
+        _receipt.getShoppingList().forEach(shoppingItem -> {if (shoppingItem.consumable.getLock() == this) shoppingItem.consumable.lock(null);});
+
         _cost = _receipt.receiptInfo.cost;
 
         // Move character to first receipt component
-        moveToIngredient(character, _factory.getNextInput());
+        moveToIngredient(character, _receipt.getNextInput());
     }
 
     @Override
     public void onQuit(CharacterModel character) {
+        if (_receipt != null) {
+            _receipt.getShoppingList().forEach(shoppingItem -> {if (shoppingItem.consumable.getLock() == this) shoppingItem.consumable.lock(null);});
+        }
     }
 
     @Override
     protected void onFinish() {
         // Unload factory
-        _factory.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(component.consumable, _item.getX(), _item.getY()));
         _factory.clear();
     }
 
@@ -120,7 +131,7 @@ public class CraftJob extends JobModel {
 
         // Move to ingredient
         if (_status == Status.WAITING) {
-            moveToIngredient(_character, _factory.getNextInput());
+            moveToIngredient(_character, _receipt.getNextInput());
             return JobActionReturn.CONTINUE;
         }
 
@@ -133,6 +144,7 @@ public class CraftJob extends JobModel {
         if (_status == Status.MAIN_ACTION) {
             _current += character.getTalent(CharacterModel.TalentType.CRAFT).work();;
             _progress = _current / _cost;
+            _factory.setMessage("Crafting");
 
             if (_current < _cost) {
                 Log.debug("Character #" + character.getInfo().getName() + ": Crafting (" + _progress + ")");
@@ -167,10 +179,9 @@ public class CraftJob extends JobModel {
 //        return closeOrQuit(character);
 //    }
 
-    protected void moveToIngredient(CharacterModel character, ItemFactoryModel.FactoryShoppingItemModel input) {
+    protected void moveToIngredient(CharacterModel character, ItemFactoryReceiptModel.FactoryShoppingItemModel input) {
         ItemInfo info = input.consumable.getInfo();
         ParcelModel parcel = input.consumable.getParcel();
-        input.consumable.lock(this);
         _targetParcel = parcel;
         _status = Status.MOVE_TO_INGREDIENT;
         character.moveTo(this, parcel, new MoveListener<CharacterModel>() {
@@ -184,14 +195,16 @@ public class CraftJob extends JobModel {
                     character.addInventory(input.consumable, neededQuantity);
                     if (input.consumable.getQuantity() == 0) {
                         ModuleHelper.getWorldModule().removeConsumable(input.consumable);
+                    } else {
+                        input.consumable.lock(null);
                     }
                 }
 
                 // Remove consumable from factory input list
-                _factory.getShoppingList().remove(input);
+                _receipt.getShoppingList().remove(input);
 
                 // Move to next input (if same ingredient), or get back to factory
-                Optional<ItemFactoryModel.FactoryShoppingItemModel> optionalNextInput = _factory.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
+                Optional<ItemFactoryReceiptModel.FactoryShoppingItemModel> optionalNextInput = _receipt.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
                 if (optionalNextInput.isPresent() && optionalNextInput.get().quantity + character.getInventory().getQuantity() <= info.stack) {
                     moveToIngredient(character, optionalNextInput.get());
                 } else {
@@ -225,12 +238,12 @@ public class CraftJob extends JobModel {
         _character.moveTo(this, _targetParcel, new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel character) {
-                if (_factory != null) {
+                if (_receipt != null) {
                     if (character.getInventory() != null) {
-                        int quantityNeeded = Math.min(character.getInventory().getQuantity(), _factory.getQuantityNeeded(character.getInventory().getInfo()));
+                        int quantityNeeded = Math.min(character.getInventory().getQuantity(), _receipt.getQuantityNeeded(character.getInventory().getInfo()));
                         if (quantityNeeded > 0) {
                             // Add components to factory
-                            _factory.addComponent(character.getInventory().getInfo(), quantityNeeded);
+                            _receipt.addComponent(character.getInventory().getInfo(), quantityNeeded);
 
                             // Remove components from character's inventory
                             if (character.getInventory().getQuantity() > quantityNeeded) {
@@ -241,9 +254,9 @@ public class CraftJob extends JobModel {
                         }
                     }
 
-                    if (_factory.getNextInput() != null) {
+                    if (_receipt.getNextInput() != null) {
                         _status = Status.MOVE_TO_INGREDIENT;
-                        moveToIngredient(character, _factory.getNextInput());
+                        moveToIngredient(character, _receipt.getNextInput());
                     } else {
                         _status = Status.MAIN_ACTION;
                     }

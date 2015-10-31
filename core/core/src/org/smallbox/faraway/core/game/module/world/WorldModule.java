@@ -1,44 +1,42 @@
 package org.smallbox.faraway.core.game.module.world;
 
-import org.smallbox.faraway.core.data.factory.ItemFactory;
-import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.util.Constant;
 
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule {
-    private static final int                            NB_FLOOR = 10;
+    private static final int                    NB_FLOOR = 10;
 
-    private WorldFactory                                _factory;
-    private ParcelModel[][][]                           _parcels;
-    private int                                         _width;
-    private int                                         _height;
-    private int                                         _floor;
-    private Game                                        _game;
-    private Set<ConsumableModel>                        _consumables = new HashSet<>();
-    private BlockingQueue<ResourceModel>                _resources = new LinkedBlockingQueue<>();
-    private Set<ItemModel>                              _items = new HashSet<>();
-    private Set<StructureModel>                         _structures = new HashSet<>();
-    private List<ParcelModel>                           _parcelList;
-    private int                                         _light;
+    private ParcelModel[][][]                   _parcels;
+    private int                                 _width;
+    private int                                 _height;
+    private Game                                _game;
+    private Set<ConsumableModel>                _consumables = new HashSet<>();
+    private BlockingQueue<ResourceModel>        _resources = new LinkedBlockingQueue<>();
+    private Set<ItemModel>                      _items = new HashSet<>();
+    private Set<StructureModel>                 _structures = new HashSet<>();
+    private List<ParcelModel>                   _parcelList;
+    private int                                 _light;
 
-    public ParcelModel[][][]            getParcels() { return _parcels; }
-    public List<ParcelModel>            getParcelList() { return _parcelList; }
-    public Collection<ItemModel>        getItems() { return _items; }
-    public Collection<ConsumableModel>  getConsumables() { return _consumables; }
-    public Collection<StructureModel>   getStructures() { return _structures; }
-    public Collection<ResourceModel>    getResources() { return _resources; }
-    public int                          getLight() { return _light; }
-    public ParcelModel                  getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
+    public ParcelModel[][][]                    getParcels() { return _parcels; }
+    public List<ParcelModel>                    getParcelList() { return _parcelList; }
+    public Collection<ItemModel>                getItems() { return _items; }
+    public Collection<ConsumableModel>          getConsumables() { return _consumables; }
+    public Collection<StructureModel>           getStructures() { return _structures; }
+    public Collection<ResourceModel>            getResources() { return _resources; }
+    public int                                  getLight() { return _light; }
+    public ParcelModel                          getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
 
-    public void                         setLight(int light) { _light = light; }
+    public void                                 setLight(int light) { _light = light; }
 
     @Override
     public void onLoaded() {
@@ -80,19 +78,11 @@ public class WorldModule extends GameModule {
         WorldHelper.init(_parcels);
 
         _parcelList = parcelList;
-
-        if (_factory != null) {
-            _factory.create(this, _game.getRegion().getInfo());
-        }
     }
 
-    @Override
-    public boolean isMandatory() {
-        return true;
-    }
-
+    // Used only by serializers
     public MapObjectModel putObject(String name, int x, int y, int z, int data, boolean complete) {
-        return putObject(GameData.getData().getItemInfo(name), x, y, z, data, complete);
+        return putObject(WorldHelper.getParcel(x, y), GameData.getData().getItemInfo(name), data, complete);
     }
 
     public void removeItem(ItemModel item) {
@@ -131,75 +121,70 @@ public class WorldModule extends GameModule {
         }
     }
 
-    public ConsumableModel putConsumable(ItemInfo itemInfo, int quantity, int x, int y, int z) {
-        return putConsumable(WorldHelper.getParcel(x, y), itemInfo, quantity);
-    }
-
     public ConsumableModel putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+        ConsumableModel consumable = null;
         if (parcel != null) {
-            final ParcelModel finalParcel = WorldHelper.getNearestFreeArea(itemInfo, parcel.x, parcel.y, quantity);
+            final ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, itemInfo, quantity);
             if (finalParcel != null) {
                 if (finalParcel.getConsumable() != null) {
-                    finalParcel.getConsumable().addQuantity(quantity);
+                    consumable = finalParcel.getConsumable();
+                    consumable.addQuantity(quantity);
                 } else {
-                    moveConsumableToParcel(finalParcel, ItemFactory.createConsumable(finalParcel, itemInfo, quantity));
+                    consumable = new ConsumableModel(itemInfo);
+                    consumable.setQuantity(quantity);
+                    moveConsumableToParcel(finalParcel, consumable);
                     _consumables.add(finalParcel.getConsumable());
                 }
                 _game.notify(observer -> observer.onAddConsumable(finalParcel.getConsumable()));
-                return finalParcel.getConsumable();
             }
+        }
+        return consumable;
+    }
+
+    public ConsumableModel putConsumable(ParcelModel parcel, ConsumableModel consumable) {
+        if (parcel != null) {
+            ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, consumable.getInfo(), consumable.getQuantity());
+            if (finalParcel == null) {
+                return null;
+            }
+
+            // Put consumable on free model
+            if (finalParcel.getConsumable() != null) {
+                finalParcel.getConsumable().addQuantity(consumable.getQuantity());
+            } else {
+                moveConsumableToParcel(finalParcel, consumable);
+                _consumables.add(finalParcel.getConsumable());
+            }
+
+            _game.notify(observer -> observer.onAddConsumable(consumable));
+
+            return consumable;
         }
         return null;
     }
 
-    public ConsumableModel putConsumable(ConsumableModel consumable, int x, int y) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return null;
-        }
-
-        ParcelModel finalParcel = WorldHelper.getNearestFreeArea(consumable.getInfo(), x, y, consumable.getQuantity());
-        if (finalParcel == null) {
-            return null;
-        }
-
-        // Put consumable on free model
-        if (finalParcel.getConsumable() != null) {
-            finalParcel.getConsumable().addQuantity(consumable.getQuantity());
-        } else {
-            moveConsumableToParcel(finalParcel, consumable);
-            _consumables.add(finalParcel.getConsumable());
-        }
-
-        _game.notify(observer -> observer.onAddConsumable(consumable));
-
-        return consumable;
+    public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+        return putObject(parcel, itemInfo, quantity, false);
     }
 
-    public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int data) {
-        return putObject(itemInfo, x, y, z, data, true);
-    }
+    private MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+        if (parcel != null) {
+            if (itemInfo.isConsumable) {
+                return putConsumable(parcel, itemInfo, data);
+            }
 
-    public MapObjectModel putObject(ItemInfo itemInfo, int x, int y, int z, int data, boolean complete) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return null;
+            if (itemInfo.isStructure) {
+                return putStructure(parcel, itemInfo, data, complete);
+            }
+
+            if (itemInfo.isUserItem) {
+                return putItem(parcel, itemInfo, data);
+            }
+
+            if (itemInfo.isResource) {
+                return putResource(parcel, itemInfo, data);
+            }
         }
-
-        if (itemInfo.isConsumable) {
-            return putConsumable(itemInfo, data, x, y, z);
-        }
-
-        if (itemInfo.isStructure) {
-            return putStructure(itemInfo, data, x, y, z, complete);
-        }
-
-        if (itemInfo.isUserItem) {
-            return putItem(itemInfo, data, x, y, z);
-        }
-
-        if (itemInfo.isResource) {
-            return putResource(itemInfo, data, x, y, z);
-        }
-
         return null;
     }
 
@@ -207,16 +192,13 @@ public class WorldModule extends GameModule {
         return putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);
     }
 
-    private ResourceModel putResource(ItemInfo itemInfo, int matterSupply, int x, int y, int z) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return null;
-        }
-
+    private ResourceModel putResource(ParcelModel parcel, ItemInfo itemInfo, int matterSupply) {
         // Put item on floor
-        ResourceModel resource = (ResourceModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
+        ResourceModel resource = new ResourceModel(itemInfo);
+        resource.setValue(matterSupply);
         for (int i = 0; i < resource.getWidth(); i++) {
             for (int j = 0; j < resource.getHeight(); j++) {
-                moveResourceToParcel(_parcels[x][y][z], resource);
+                moveResourceToParcel(parcel, resource);
             }
         }
         _resources.add(resource);
@@ -225,14 +207,11 @@ public class WorldModule extends GameModule {
         return resource;
     }
 
-    private ItemModel putItem(ItemInfo itemInfo, int progress, int x, int y, int z) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return null;
-        }
-
+    private ItemModel putItem(ParcelModel parcel, ItemInfo itemInfo, int progress) {
         // Put item on floor
-        ItemModel item = (ItemModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, progress);
-        moveItemToParcel(_parcels[x][y][z], item);
+        ItemModel item = new ItemModel(itemInfo, parcel);
+        item.addProgress(progress);
+        moveItemToParcel(parcel, item);
         if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
             item.setReceipt(item.getInfo().receipts.get(0));
         }
@@ -242,42 +221,33 @@ public class WorldModule extends GameModule {
         return item;
     }
 
-    private StructureModel putStructure(ItemInfo itemInfo, int matterSupply, int x, int y, int z, boolean complete) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return null;
-        }
-
+    private StructureModel putStructure(ParcelModel parcel, ItemInfo itemInfo, int matterSupply, boolean complete) {
         // TODO
-        if (_parcels[x][y][z].getStructure() == null || _parcels[x][y][z].getStructure().isFloor()) {
-            StructureModel structure = (StructureModel) ItemFactory.create(this, _parcels[x][y][z], itemInfo, matterSupply);
-            if (structure != null) {
-                structure.setComplete(complete);
-                if (structure.getInfo().receipts != null && structure.getInfo().receipts.size() > 0) {
-                    structure.setReceipt(structure.getInfo().receipts.get(0));
-                }
-                moveStructureToParcel(_parcels[x][y][z], structure);
-                _structures.add(structure);
-                _game.notify(observer -> observer.onAddStructure(structure));
+        if (parcel.getStructure() == null || parcel.getStructure().isFloor()) {
+            StructureModel structure = new StructureModel(itemInfo);
+            structure.addProgress(complete ? itemInfo.cost : 0);
+            structure.setComplete(complete);
+            if (structure.getInfo().receipts != null && structure.getInfo().receipts.size() > 0) {
+                structure.setReceipt(structure.getInfo().receipts.get(0));
             }
+            moveStructureToParcel(parcel, structure);
+            _structures.add(structure);
+            _game.notify(observer -> observer.onAddStructure(structure));
             return structure;
         }
 
         return null;
     }
 
-    public void replaceItem(ItemInfo info, int x, int y, int matterSupply) {
-        replaceItem(info, x, y, _floor, matterSupply);
-    }
-
-    private void replaceItem(ItemInfo info, int x, int y, int z, int matterSupply) {
+    public void replaceItem(ParcelModel parcel, ItemInfo info, int matterSupply) {
         if (info.isResource) {
-            moveResourceToParcel(_parcels[x][y][z], null);
+            moveResourceToParcel(parcel, null);
         } else if (info.isStructure) {
-            moveStructureToParcel(_parcels[x][y][z], null);
+            moveStructureToParcel(parcel, null);
         } else {
-            moveItemToParcel(_parcels[x][y][z], null);
+            moveItemToParcel(parcel, null);
         }
-        putObject(info, x, y, z, matterSupply, true);
+        putObject(parcel, info, matterSupply, true);
     }
 
     public void removeResource(ResourceModel resource) {
@@ -295,18 +265,6 @@ public class WorldModule extends GameModule {
         _resources.remove(resource);
         moveResourceToParcel(_parcels[resource.getX()][resource.getY()][0], null);
         _game.notify(observer -> observer.onRemoveResource(resource));
-    }
-
-    public ParcelModel getParcel(int z, int x, int y) {
-        if (WorldHelper.inMapBounds(x, y)) {
-            if (_parcels[x][y][z] == null) {
-//                _parcels[x][y][z] = new ParcelModel(x, y, z);
-//                _parcels[x][y][z].setIndex(x * _width + y);
-                throw new RuntimeException("todo");
-            }
-            return _parcels[x][y][z];
-        }
-        return null;
     }
 
     private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
@@ -402,13 +360,6 @@ public class WorldModule extends GameModule {
         }
     }
 
-//    public ParcelModel.ParcelContent getOrCreateContent(ParcelModel parcel) {
-//        if (_parcelsContent.containsKey(parcel)) {
-//            _parcelsContent.put(parcel, new ParcelModel.ParcelContent());
-//        }
-//        return _parcelsContent.get(parcel);
-//    }
-
     private void moveStructureToParcel(ParcelModel parcel, StructureModel structure) {
         parcel.setStructure(structure);
         if (structure != null) {
@@ -440,13 +391,14 @@ public class WorldModule extends GameModule {
         }
     }
 
-    public ParcelModel.ParcelContent getParcelContent(ParcelModel parcel) {
-        return parcel.getContent();
+    @Override
+    public int getModulePriority() {
+        return Constant.MODULE_WORLD_PRIORITY;
     }
 
     @Override
-    public int getPriority() {
-        return 102;
+    public boolean isModuleMandatory() {
+        return true;
     }
 
     public int getWidth() { return _width; }

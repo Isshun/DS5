@@ -12,14 +12,8 @@ public abstract class MovableModel extends ObjectModel {
         return _moveProgress;
     }
 
-    public void setY(int y) {
-        _posY = y;
-        _parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
-    }
-
-    public void setX(int x) {
-        _posX = x;
-        _parcel = ModuleHelper.getWorldModule().getParcel(_posX, _posY);
+    public void setDirection(Direction direction) {
+        _direction = direction;
     }
 
     public interface OnPathComplete {
@@ -39,48 +33,27 @@ public abstract class MovableModel extends ObjectModel {
         NONE
     };
 
-    protected ParcelModel               _node;
-    protected int                       _posX;
-    protected int                       _posY;
-    protected int                       _toX;
-    protected int                       _toY;
     protected int                       _id;
     protected int                       _frameIndex;
-    protected int                       _blocked;
     protected Direction                 _direction;
-    protected Direction                 _move;
-    protected GraphPath<ParcelModel>    _path;
-    protected int                       _steps;
     protected JobModel                  _job;
     protected OnPathComplete            _onPathComplete;
     protected double                    _moveProgress;
     protected ParcelModel               _parcel;
 
-    public MovableModel(int id, int x, int y) {
+    public MovableModel(int id, ParcelModel parcel) {
         Utils.useUUID(id);
         _id = id;
-        _posX = _toX = x;
-        _posY = _toY = y;
+        _parcel = parcel;
         _frameIndex = (int) (Math.random() * 1000 % 20);
     }
 
     public int              getId() { return _id; }
-    public int              getX() { return _posX; }
-    public int              getY() { return _posY; }
+    public ParcelModel      getParcel() { return _parcel; }
     public Direction        getDirection() { return _direction; }
-    public Direction        getMove() { return _move; }
     public int              getFrameIndex() { return _frameIndex++; }
 
-    public void    setDirection(Direction direction) {
-        if (_direction != direction) {
-            _direction = direction;
-        }
-    }
-
-    protected void setMove(Direction move) {
-        _move = move;
-        setDirection(move);
-    }
+    public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
 
     public abstract void    onPathFailed(JobModel job, ParcelModel fromParcel, ParcelModel toParcel);
     public abstract void    onPathComplete(GraphPath<ParcelModel> path, JobModel job, ParcelModel fromParcel, ParcelModel toParcel);

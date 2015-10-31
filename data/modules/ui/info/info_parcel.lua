@@ -13,6 +13,7 @@ data:extend({
             { type = "label", id = "lb_name", text = "name", text_size = 22, padding = 5, size = {100, 30}},
             { type = "label", id = "lb_position", text_size = 14, padding = 5},
             { type = "label", id = "lb_connections", text_size = 14, padding = 5},
+            { type = "label", id = "lb_room", text_size = 14, padding = 5},
             { type = "label", id = "lb_walkable", text_size = 14, padding = 5},
             { type = "label", id = "lb_light", text_size = 14, padding = 5},
             { type = "label", id = "lb_oxygen", text_size = 14, padding = 5},
@@ -35,6 +36,7 @@ data:extend({
             local room = parcel:getRoom()
             view:findById("lb_name"):setText("Ground")
             view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y)
+            view:findById("lb_room"):setText("Room", ": ", parcel:getRoom() and parcel:getRoom():getName() or "no")
             view:findById("lb_light"):setText("Light", ": ", parcel:getLight())
             view:findById("lb_oxygen"):setText("Oxygen", ": ", parcel:getOxygen())
             view:findById("lb_room"):setText("Room", ": ", (room and (room:isExterior() and "exterior" or room:getType():name()) or "no"))

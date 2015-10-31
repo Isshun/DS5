@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,26 +19,37 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         public abstract void onEvent(T data);
     }
 
-    protected final String TAG = getClass().getSimpleName();
-    protected ModuleInfo          _info = new ModuleInfo();
+    protected final String      TAG = getClass().getSimpleName();
+
+    protected ModuleInfo        _info;
     private List<EventListener> _listeners;
     private int                 _nbUpdate;
     private long                _totalTime;
     protected int               _updateInterval = 1;
     private boolean             _isLoaded;
+    private List<Long>          _updateTimeHistory = new ArrayList<>();
+    private long                _updateTime;
+
+    public GameModule() {
+        _isLoaded = loadOnStart();
+    }
 
     public void update(int tick) {
         if (tick % _updateInterval == 0) {
             long time = System.currentTimeMillis();
             onUpdate(tick);
+            _updateTimeHistory.add((System.currentTimeMillis() - time));
+            if (_updateTimeHistory.size() > 10) {
+                _updateTimeHistory.remove(0);
+            }
+            _updateTime = 0;
+            for (long t: _updateTimeHistory) {
+                _updateTime += t;
+            }
+            _updateTime = _updateTime / _updateTimeHistory.size();
             _totalTime += (System.currentTimeMillis() - time);
             _nbUpdate++;
         }
-    }
-
-    public GameModule() {
-        _info.id = _info.name = getClass().getSimpleName();
-        _isLoaded = loadOnStart();
     }
 
     protected void addEventListener(String tag, EventListener<CharacterModel> listener) {
@@ -75,7 +87,8 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         Game.getInstance().notify(observer -> observer.onLog(TAG, message));
     }
     protected void printInfo(String message) {
-        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
+        System.out.println(message);
+//        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
     }
     protected void printError(String message) {
         Game.getInstance().notify(observer -> observer.onLog(TAG, message));
@@ -95,11 +108,7 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         return true;
     }
 
-    public boolean isLoaded() {
-        return _isLoaded;
-    }
-
-    public boolean isMandatory() {
+    public boolean isModuleMandatory() {
         return false;
     }
 
@@ -114,19 +123,16 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
     public void refresh(int update) {
     }
 
-    public int getPriority() {
+    public long         getModuleUpdateTime() { return _updateTime; }
+    public int          getModulePriority() {
         return 0;
     }
+    public ModuleInfo   getInfo() { return _info; }
 
-    public boolean isThirdParty() {
+    public void         setInfo(ModuleInfo info) { _info = info; }
+
+    public boolean      isThirdParty() {
         return false;
     }
-
-    public ModuleInfo getInfo() {
-        return _info;
-    }
-    public void setInfo(ModuleInfo info) {
-        _info = info;
-    }
-
+    public boolean      isLoaded() { return _isLoaded; }
 }

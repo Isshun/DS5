@@ -7,18 +7,31 @@ import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 
 public class ParcelModel implements IndexedNode<ParcelModel> {
+    public boolean isRoomOpen() {
+        if (!isWalkable()) {
+            return false;
+        }
+        if (_connections == null || _connections.size == 0) {
+            return false;
+        }
+        if (getStructure() != null && getStructure().getInfo().isDoor) {
+            return false;
+        }
+        return true;
+    }
+
     public static class ParcelContent {
         public ConsumableModel      consumable;
-        public StructureModel         structure;
-        public ResourceModel         resource;
+        public StructureModel       structure;
+        public ResourceModel        resource;
         public ItemModel            item;
     }
 
     public static class ParcelEnvironment {
-        public double                 rubble;
-        public double                 dirt;
-        public double                 blood;
-        public double                 snow;
+        public double               rubble;
+        public double               dirt;
+        public double               blood;
+        public double               snow;
 
         public int getScore() {
             int score = 0;
@@ -47,8 +60,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ParcelModel[]            _neighbors;
     private ParcelContent           _content;
     private ParcelEnvironment       _environment;
-    private double                     _light;
-    private RoomModel                 _room;
+    private double                  _light;
+    private RoomModel               _room;
     private boolean                 _isStorage;
     private AreaModel               _area;
     private int                     _index;
@@ -82,14 +95,18 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void             setResource(ResourceModel resource) { if (_content == null) _content = new ParcelContent(); _content.resource = resource; }
     public void             setStructure(StructureModel structure) { if (_content == null) _content = new ParcelContent(); _content.structure = structure; }
 
+    public boolean          isStorage() { return _isStorage; }
+    public boolean          isExterior() { return _isExterior; }
+    public boolean          canSupportRoof() { return (getStructure() != null && getStructure().getInfo().canSupportRoof) || (getResource() != null && getResource().getInfo().canSupportRoof); }
+
     public ParcelContent    getContent() { return _content; }
-    public ItemModel         getItem() { return _content != null ? _content.item : null; }
-    public StructureModel     getStructure() { return _content != null ? _content.structure : null; }
-    public ResourceModel     getResource() { return _content != null ? _content.resource : null; }
-    public ConsumableModel     getConsumable() { return _content != null ? _content.consumable : null; }
+    public ItemModel        getItem() { return _content != null ? _content.item : null; }
+    public StructureModel   getStructure() { return _content != null ? _content.structure : null; }
+    public ResourceModel    getResource() { return _content != null ? _content.resource : null; }
+    public ConsumableModel  getConsumable() { return _content != null ? _content.consumable : null; }
     public double           getOxygen() { return _oxygen; }
-    public double             getLight() { return _light; }
-    public RoomModel         getRoom() { return _room; }
+    public double           getLight() { return _light; }
+    public RoomModel        getRoom() { return _room; }
     public AreaModel        getArea() { return _area; }
     public int              getType() { return _type; }
 //    public double           getTemperature() { return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class)).getTemperature(); }
@@ -113,10 +130,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
         return true;
     }
-
-    public boolean            isStorage() { return _isStorage; }
-    public boolean          isExterior() { return _isExterior; }
-    public boolean             canSupportRoof() { return (_content != null && _content.structure != null && (_content.structure.isWall() || _content.structure.isDoor())) || (_content != null && _content.resource != null && _content.resource.isRock()); }
 
     public double getSealing() {
         if (_content.structure != null) {

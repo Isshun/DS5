@@ -62,6 +62,10 @@ public class UILabel extends View {
         }
     }
 
+    public void setText(String str1, String str2, int int3) {
+        setText(str1, str2, String.valueOf(int3));
+    }
+
     public void setText(String str1, String str2, String str3) {
         if (str1 == null) { str1 = ""; }
         if (str2 == null) { str2 = ""; }

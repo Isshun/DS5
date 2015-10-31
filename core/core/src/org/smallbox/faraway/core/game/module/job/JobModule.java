@@ -17,6 +17,7 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReas
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -163,7 +164,7 @@ public class JobModule extends GameModule {
     }
 
     @Override
-    public boolean isMandatory() {
+    public boolean isModuleMandatory() {
         return true;
     }
 
@@ -243,19 +244,21 @@ public class JobModule extends GameModule {
      */
     // TODO: one pass + onCheck profession
     private JobModel getBestRegular(CharacterModel character) {
-        int x = character.getX();
-        int y = character.getY();
+        int x = character.getParcel().x;
+        int y = character.getParcel().y;
         int bestDistance = Integer.MAX_VALUE;
         JobModel bestJob = null;
 
         // Regular jobs
         for (CharacterModel.TalentEntry talent: character.getTalents()) {
-            for (JobModel job: _jobs) {
-                if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
-                    int distance = Math.abs(x - job.getJobParcel().x) + Math.abs(y - job.getJobParcel().y);
-                    if (distance < bestDistance && job.check(character)) {
-                        bestJob = job;
-                        bestDistance = distance;
+            if (bestJob == null) {
+                for (JobModel job: _jobs) {
+                    if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
+                        int distance = Math.abs(x - job.getJobParcel().x) + Math.abs(y - job.getJobParcel().y);
+                        if (distance < bestDistance && job.check(character)) {
+                            bestJob = job;
+                            bestDistance = distance;
+                        }
                     }
                 }
             }
@@ -282,8 +285,8 @@ public class JobModule extends GameModule {
      * @return
      */
     private JobModel getFailedJob(CharacterModel character) {
-        int x = character.getX();
-        int y = character.getY();
+        int x = character.getParcel().x;
+        int y = character.getParcel().y;
         int bestDistance = Integer.MAX_VALUE;
         JobModel bestJob = null;
 
@@ -405,8 +408,8 @@ public class JobModule extends GameModule {
         return new JobModuleSerializer(this);
     }
 
-    public int getPriority() {
-        return 100;
+    public int getModulePriority() {
+        return Constant.MODULE_JOB_PRIORITY;
     }
 
 }

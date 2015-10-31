@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -72,7 +73,7 @@ public class MoveJob extends JobModel {
     }
 
     protected void onStart(CharacterModel character){
-        _distance = character != null ? Math.abs(character.getX() - _targetParcel.x) + Math.abs(character.getY() - _targetParcel.y) : 0;
+        _distance = character != null ? WorldHelper.getApproxDistance(character.getParcel(), _targetParcel) : 0;
     }
 
     public double               getProgress() { return (double)(_limit - _currentLimit) / _limit; }

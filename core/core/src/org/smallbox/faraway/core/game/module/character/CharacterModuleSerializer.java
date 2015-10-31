@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.character;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
@@ -35,8 +36,8 @@ public class CharacterModuleSerializer implements SerializerInterface {
         FileUtils.write(fos, "<lastname>" + character.getInfo().getLastName().trim() + "</lastname>");
         FileUtils.write(fos, "<firstname>" + character.getInfo().getFirstName().trim() + "</firstname>");
         FileUtils.write(fos, "<old>" + character.getInfo().getLastName() + "</old>");
-        FileUtils.write(fos, "<x>" + character.getX() + "</x>");
-        FileUtils.write(fos, "<y>" + character.getY() + "</y>");
+        FileUtils.write(fos, "<x>" + character.getParcel().x + "</x>");
+        FileUtils.write(fos, "<y>" + character.getParcel().y + "</y>");
         FileUtils.write(fos, "<gender>" + character.getInfo().getGender() + "</gender>");
 
         writeCharacterNeeds(fos, character.getNeeds());
@@ -94,16 +95,18 @@ public class CharacterModuleSerializer implements SerializerInterface {
 
     private void readCharacter(AutoPilot ap2, AutoPilot ap3, VTDNav vn) throws NavException, XPathEvalException {
         CharacterModel character;
+        int x = 0;
+        int y = 0;
 
         switch (vn.toString(vn.getCurrentIndex())) {
             default:
-                character = new HumanModel(0, 10, 10, null, null, 0);
+                character = new HumanModel(0, WorldHelper.getParcel(10, 10), null, null, 0);
                 break;
             case "android":
-                character = new AndroidModel(0, 10, 10, null, null, 0);
+                character = new AndroidModel(0, WorldHelper.getParcel(10, 10), null, null, 0);
                 break;
             case "droid":
-                character = new DroidModel(0, 10, 10, null, null, 0);
+                character = new DroidModel(0, WorldHelper.getParcel(10, 10), null, null, 0);
                 break;
         }
 
@@ -123,10 +126,10 @@ public class CharacterModuleSerializer implements SerializerInterface {
                     character.setOld((int)vn.parseDouble(vn.getText()));
                     break;
                 case "x":
-                    character.setX(vn.parseInt(vn.getText()));
+                    x = vn.parseInt(vn.getText());
                     break;
                 case "y":
-                    character.setY(vn.parseInt(vn.getText()));
+                    y = vn.parseInt(vn.getText());
                     break;
                 case "gender":
                     character.getInfo().setGender(CharacterInfoModel.Gender.valueOf(vn.toString(vn.getText())));
@@ -191,6 +194,7 @@ public class CharacterModuleSerializer implements SerializerInterface {
         ap2.resetXPath();
         vn.pop();
 
+        character.setParcel(WorldHelper.getParcel(x, y));
         ModuleHelper.getCharacterModule().add(character);
     }
 }

@@ -57,6 +57,7 @@ public class LuaModuleManager implements GameObserver {
         _luaExtendManager.addExtendFactory(new LuaReceiptExtend());
         _luaExtendManager.addExtendFactory(new LuaCursorExtend());
         _luaExtendManager.addExtendFactory(new LuaCharacterBuffExtend());
+        _luaExtendManager.addExtendFactory(new LuaCharacterDiseaseExtend());
         _luaExtendManager.addExtendFactory(new LuaLangExtend());
 
         _luaCrew = new LuaCrewModel();
@@ -82,7 +83,9 @@ public class LuaModuleManager implements GameObserver {
             try {
                 ModuleInfo info = ModuleInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(new File(file, "module.json").toPath()), StandardCharsets.UTF_8)));
                 if ("lua".equals(info.type)) {
-                    _modules.add(new LuaModule(info, file));
+                    LuaModule module = new LuaModule(file);
+                    module.setInfo(info);
+                    _modules.add(module);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -72,9 +72,8 @@ function openCategory(list, category, items)
         local bt_item = game.ui:createView()
         bt_item:setSize(68, 90)
         bt_item:setBackgroundColor(0x448866)
-        bt_item:setOnClickListener(function(view)
+        bt_item:setOnClickListener(function()
             game:setBuild(value)
-            game.ui:setCursor("base.build_cursor")
         end)
 
         if value.fileName ~= nil then

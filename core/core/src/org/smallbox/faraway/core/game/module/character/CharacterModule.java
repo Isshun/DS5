@@ -8,7 +8,9 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
 import org.smallbox.faraway.core.util.Utils;
 
@@ -21,18 +23,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterModule extends GameModule {
-    private BlockingQueue<CharacterModel>       _characters;
-    private List<CharacterModel>                _addOnUpdate;
+    private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
+    private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private int                                 _count;
 
-    public CharacterModule() {
-        _characters = new LinkedBlockingQueue<>();
-        _addOnUpdate = new ArrayList<>();
-        _count = 0;
-    }
-
     @Override
-    public boolean isMandatory() {
+    public boolean isModuleMandatory() {
         return true;
     }
 
@@ -124,7 +120,7 @@ public class CharacterModule extends GameModule {
         printDebug("getCharacterAtPos: " + x + "x" + y);
 
         for (CharacterModel c: _characters) {
-            if (c.getX() == x && c.getY() == y) {
+            if (c.getParcel().x == x && c.getParcel().y == y) {
                 printDebug("getCharacterAtPos: found");
                 return c;
             }
@@ -158,13 +154,13 @@ public class CharacterModule extends GameModule {
     }
 
     public CharacterModel addRandom(int x, int y) {
-        CharacterModel character = new HumanModel(Utils.getUUID(), x, y, null, null, 16);
+        CharacterModel character = new HumanModel(Utils.getUUID(), WorldHelper.getParcel(x, y), null, null, 16);
         add(character);
         return character;
     }
 
     public CharacterModel addRandom(ParcelModel parcel) {
-        CharacterModel character = new HumanModel(Utils.getUUID(), parcel.x, parcel.y, null, null, 16);
+        CharacterModel character = new HumanModel(Utils.getUUID(), parcel, null, null, 16);
         add(character);
         return character;
     }
@@ -181,7 +177,7 @@ public class CharacterModule extends GameModule {
 
     public boolean havePeopleOnProximity(CharacterModel character) {
         for (CharacterModel c: _characters) {
-            if (c != character && Math.abs(c.getX() - character.getX()) + Math.abs(c.getY() - character.getY()) < 4) {
+            if (c != character && WorldHelper.getApproxDistance(character.getParcel(), c.getParcel()) < 4) {
                 return true;
             }
         }
@@ -191,7 +187,7 @@ public class CharacterModule extends GameModule {
     public int countCharacterAtPos(int posX, int posY) {
         int count = 0;
         for (CharacterModel character: _characters) {
-            if (character.getX() == posX && character.getY() == posY) {
+            if (character.getParcel().x == posX && character.getParcel().y == posY) {
                 count++;
             }
         }
@@ -199,8 +195,8 @@ public class CharacterModule extends GameModule {
     }
 
     @Override
-    public int getPriority() {
-        return 101;
+    public int getModulePriority() {
+        return Constant.MODULE_CHARACTER_PRIORITY;
     }
 
 }

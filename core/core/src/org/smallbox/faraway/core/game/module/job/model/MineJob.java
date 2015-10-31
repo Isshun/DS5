@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -16,7 +17,9 @@ import org.smallbox.faraway.core.util.MoveListener;
 import org.smallbox.faraway.core.util.Utils;
 
 public class MineJob extends JobModel {
-    private ResourceModel         _resource;
+    private ResourceModel       _resource;
+    private int                 _totalCost;
+    private double              _current;
 
     private MineJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
         super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
@@ -38,6 +41,9 @@ public class MineJob extends JobModel {
                         }
                     });
                     job._resource = res;
+                    job._totalCost = job._cost * job._resource.getQuantity();
+                    job._label = "Mine " + res.getInfo().label;
+                    job._message = "Move to resource";
                     return job;
                 }
             }
@@ -48,10 +54,10 @@ public class MineJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        GraphPath<ParcelModel> path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
 
         if (path != null) {
-            _targetParcel = path.get(path.getCount() - 1);
+            _targetParcel = path.getLastParcel();
 
             System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
             character.move(path, new MoveListener<CharacterModel>() {
@@ -76,6 +82,7 @@ public class MineJob extends JobModel {
 
         // Item is null
         if (_resource == null) {
+            _status = JobStatus.INVALID;
             _reason = JobAbortReason.INVALID;
             return false;
         }
@@ -87,11 +94,13 @@ public class MineJob extends JobModel {
 
         // Item is no longer exists
         if (_resource != WorldHelper.getResource(_resource.getX(), _resource.getY())) {
+            _status = JobStatus.INVALID;
             _reason = JobAbortReason.INVALID;
             return false;
         }
 
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _resource.getParcel())) {
+        if (PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel) == null) {
+            _status = JobStatus.BLOCKED;
             return false;
         }
 
@@ -142,7 +151,7 @@ public class MineJob extends JobModel {
 
         if (_actionInfo.finalProducts != null) {
             _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
-                ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity));
+                ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity));
             });
         }
     }
@@ -165,22 +174,19 @@ public class MineJob extends JobModel {
             return JobActionReturn.ABORT;
         }
 
-        _progress += character.getTalent(CharacterModel.TalentType.MINE).work();
-        if (_progress < _cost) {
+        _message = "Mining";
+
+        _current += character.getTalent(CharacterModel.TalentType.MINE).work();
+        _progress = _current / _totalCost;
+        if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
         }
 
         // Remove a single unit
-        _progress = 0;
-        _resource.addQuantity(-1);
+        _resource.setQuantity(0);
         if (_actionInfo.products != null) {
             _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
-                    ModuleHelper.getWorldModule().putObject(productInfo.item, _resource.getX(), _resource.getY(), 0, Utils.getRandom(productInfo.quantity)));
-        }
-
-        // Check if resource is depleted
-        if (!_resource.isDepleted()) {
-            return JobActionReturn.CONTINUE;
+                    ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
         }
 
         return JobActionReturn.FINISH;

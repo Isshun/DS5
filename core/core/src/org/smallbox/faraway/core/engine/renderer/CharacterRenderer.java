@@ -37,30 +37,29 @@ public class CharacterRenderer extends BaseRenderer {
 
         for (CharacterModel c : _characters) {
             ParcelModel parcel = c.getParcel();
-            int posX = c.getX() * Constant.TILE_WIDTH + viewPortX;
-            int posY = c.getY() * Constant.TILE_HEIGHT + viewPortY;
+            int posX = c.getParcel().x * Constant.TILE_WIDTH + viewPortX;
+            int posY = c.getParcel().y * Constant.TILE_HEIGHT + viewPortY;
 
             if (c.isAlive()) {
                 // Get game position and direction
                 Direction direction = c.getDirection();
-                Direction move = c.getMove();
                 int frame = 0;
                 int dirIndex = 0;
 
                 // Get offset based on current frame
                 if (c.isAlive()) {
                     int offset = 0;
-                    if (move != Direction.NONE) {
+                    if (direction != Direction.NONE) {
 //                    offset = (int) ((-c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
-                        offset = -(int)(((c.getMoveStep() * (1-animProgress))) * Constant.TILE_WIDTH);
+//                        offset = -(int)(((c.getMoveStep() * (1-animProgress))) * Constant.TILE_WIDTH);
 //                        if (animProgress > 1) {
 //                            offset += Constant.TILE_WIDTH;
 //                        }
-                        if ("paige".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
-//                            System.out.println("offset: " + c.getMoveProgress());
-//                            System.out.println("offset: " + offset + ", animProgress: " + animProgress);
-                            System.out.println("animProgress: " + animProgress);
-                        }
+//                        if ("paige".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
+////                            System.out.println("offset: " + c.getMoveProgress());
+////                            System.out.println("offset: " + offset + ", animProgress: " + animProgress);
+//                            System.out.println("animProgress: " + animProgress);
+//                        }
 //                        offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
                         frame = c.getFrameIndex() / 20 % 4;
                     }

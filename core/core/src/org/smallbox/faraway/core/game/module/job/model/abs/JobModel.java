@@ -25,7 +25,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public enum JobStatus {
-        WAITING, RUNNING, COMPLETE, ABORTED
+        WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
     }
 
     public enum JobAbortReason {
@@ -177,7 +177,7 @@ public abstract class JobModel extends ObjectModel {
 
     protected void onCreate() {}
     protected abstract boolean onCheck(CharacterModel character);
-    protected void onStart(CharacterModel character) { if (_jobParcel != null) character.moveTo(this, _jobParcel, null); }
+    protected abstract void onStart(CharacterModel character);
     public abstract JobActionReturn onAction(CharacterModel character);
     protected void onQuit(CharacterModel character) {}
     protected abstract void onFinish();

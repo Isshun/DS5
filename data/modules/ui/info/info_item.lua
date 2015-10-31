@@ -99,24 +99,28 @@ data:extend({
                 view:findById("lb_factory_character"):setText("Crafter", ": ",
                     factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
 
-                if item:getFactory():getShoppingList() then
+                if item:getFactory():getActiveReceipt() then
                     local str = "shopping list: "
-                    local iterator = item:getFactory():getShoppingList():iterator()
+                    local iterator = item:getFactory():getActiveReceipt():getShoppingList():iterator()
                     while iterator:hasNext() do
                         local product = iterator:next()
                         str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
                     end
                     view:findById("lb_factory_components"):setText(str)
+                else
+                    view:findById("lb_factory_components"):setText("shopping list: none")
                 end
 
-                if item:getFactory():getComponents() then
+                if item:getFactory():getActiveReceipt() then
                     local str = "components: "
-                    local iterator = item:getFactory():getComponents():iterator()
+                    local iterator = item:getFactory():getActiveReceipt():getComponents():iterator()
                     while iterator:hasNext() do
                         local component = iterator:next()
                         str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
                     end
                     view:findById("lb_factory_inputs"):setText(str)
+                else
+                    view:findById("lb_factory_inputs"):setText("components: none")
                 end
             end
         end

@@ -35,7 +35,6 @@ public abstract class MapObjectModel extends ObjectModel {
     private double              _progress;
 //    private JobBuild            _jobBuild;
     private GraphicInfo         _graphic;
-    protected boolean           _isComplete = false;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -119,8 +118,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          isConsumable() { return _info.isConsumable; }
     public boolean          isSelected() { return _selected; }
     public boolean          isSolid() { return _progress >= _info.cost && !_info.isWalkable; }
-    public boolean          isWalkable() { return !_isComplete || _info.isWalkable; }
-    public boolean          isComplete() { return _isComplete; }
+    public boolean          isWalkable() { return _info.isWalkable; }
     public boolean          isSleepingItem() { return _info.isBed; }
     public boolean          isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }

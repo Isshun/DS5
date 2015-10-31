@@ -1,8 +1,10 @@
 
 package org.smallbox.faraway.core.game.module.room;
 
+import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
@@ -17,18 +19,15 @@ import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.AsyncTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RoomModule extends GameModule implements GameObserver {
-    private List<RoomModel>                _roomList;
+    private List<RoomModel>             _roomList;
     private double[][]                  _oxygenLevels;
     private boolean                     _needRefresh;
     private List<ParcelModel>           _roomlessParcels;
-    private AsyncTask<List<RoomModel>> _task;
+    private AsyncTask<List<RoomModel>>  _task;
 
     @Override
     protected void onLoaded() {
@@ -78,52 +77,52 @@ public class RoomModule extends GameModule implements GameObserver {
             _task = null;
         }
     }
-
-    public void makeRooms(List<RoomModel> rooms, ParcelModel[][][] parcels) {
-        for (int x = 0; x < parcels.length; x++) {
-            for (int y = 0; y < parcels[x].length; y++) {
-                parcels[x][y][0].setRoom(null);
-                parcels[x][y][0].tmpData = 0;
-            }
-        }
-
-        boolean newRoomFound;
-        do {
-            newRoomFound = false;
-            for (int x = 0; x < parcels.length; x++) {
-                for (int y = 0; y < parcels[x].length; y++) {
-                    if (!Thread.currentThread().isInterrupted()) {
-                        ParcelModel parcel = parcels[x][y][0];
-                        if (parcel.getRoom() != null) {
-                            continue;
-                        }
-                        if (parcel.getStructure() != null && (parcel.getStructure().isSolid() || parcel.getStructure().isDoor())) {
-                            continue;
-                        }
-                        if (parcel.getResource() != null && parcel.getResource().isSolid()) {
-                            continue;
-                        }
-
-                        newRoomFound = true;
-                        RoomModel room = new RoomModel(RoomType.NONE);
-                        room.setExterior(false);
-                        room.addParcel(parcel);
-                        parcel.setRoom(room);
-                        rooms.add(room);
-                        exploreRoom(parcels, room);
-                        checkRoof(parcels, room);
-                        addSpecialsItems(room);
-                        if (room.isExterior()) {
-                            room.getParcels().forEach(p -> p.setExterior(true));
-                        }
-                        room.setAutoName(autoName(room));
-                    }
-                }
-            }
-        } while (newRoomFound);
-
-        printInfo("[RoomModule] " + _roomList.size() + " rooms found");
-    }
+//
+//    public void makeRooms(List<RoomModel> rooms, ParcelModel[][][] parcels) {
+//        for (int x = 0; x < parcels.length; x++) {
+//            for (int y = 0; y < parcels[x].length; y++) {
+//                parcels[x][y][0].setRoom(null);
+//                parcels[x][y][0].tmpData = 0;
+//            }
+//        }
+//
+//        boolean newRoomFound;
+//        do {
+//            newRoomFound = false;
+//            for (int x = 0; x < parcels.length; x++) {
+//                for (int y = 0; y < parcels[x].length; y++) {
+//                    if (!Thread.currentThread().isInterrupted()) {
+//                        ParcelModel parcel = parcels[x][y][0];
+//                        if (parcel.getRoom() != null) {
+//                            continue;
+//                        }
+//                        if (parcel.getStructure() != null && (parcel.getStructure().isSolid() || parcel.getStructure().isDoor())) {
+//                            continue;
+//                        }
+//                        if (parcel.getResource() != null && parcel.getResource().isSolid()) {
+//                            continue;
+//                        }
+//
+//                        newRoomFound = true;
+//                        RoomModel room = new RoomModel(RoomType.NONE);
+//                        room.setExterior(false);
+//                        room.addParcel(parcel);
+//                        parcel.setRoom(room);
+//                        rooms.add(room);
+//                        exploreRoom(parcels, room);
+//                        checkRoof(parcels, room);
+//                        addSpecialsItems(room);
+//                        if (room.isExterior()) {
+//                            room.getParcels().forEach(p -> p.setExterior(true));
+//                        }
+//                        room.setAutoName(autoName(room));
+//                    }
+//                }
+//            }
+//        } while (newRoomFound);
+//
+//        printInfo("[RoomModule] " + _roomList.size() + " rooms found");
+//    }
 
     private void addSpecialsItems(RoomModel room) {
         for (ParcelModel parcel: room.getParcels()) {
@@ -214,10 +213,13 @@ public class RoomModule extends GameModule implements GameObserver {
                 if (checkAreaCanSupportRoof(parcels, parcel.x, parcel.y - i)) isUnsupported = false;
             }
             if (isUnsupported) {
+                printInfo("[RoomModule] roof collapse");
                 room.setExterior(true);
                 return;
             }
         }
+        printInfo("[RoomModule] roof ok");
+        room.setExterior(false);
     }
 
     private void exploreRoom(ParcelModel[][][] parcels, RoomModel room) {
@@ -276,61 +278,105 @@ public class RoomModule extends GameModule implements GameObserver {
         printInfo("RoomModule: refresh");
         long time = System.currentTimeMillis();
 
-        _task = new AsyncTask<List<RoomModel>>() {
-            @Override
-            public void onStart() {
-                // Store o2 levels
-                ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
-                for (int x = 0; x < parcels.length; x++) {
-                    for (int y = 0; y < parcels[x].length; y++) {
-                        _oxygenLevels[x][x] = parcels[x][y][0].getOxygen();
-                    }
-                }
+        _roomList.forEach(room -> {
+            ParcelModel parcel = room.getBaseParcel();
+            room.getParcels().forEach(p -> p.setRoom(null));
+            room.getParcels().clear();
+            inspect(room, parcel);
+        });
 
-                // Clear rooms
-                ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> {
-                    parcel.setRoom(null);
-                    parcel.tmpData = 0;
-                });
+        ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> {
+            if (parcel.getRoom() == null && parcel.isRoomOpen()) {
+                RoomModel room = new RoomModel(RoomType.NONE);
+                inspect(room, parcel);
+                checkRoof(ModuleHelper.getWorldModule().getParcels(), room);
+                _roomList.add(room);
             }
+        });
 
-            @Override
-            public List<RoomModel> onBackground() {
-                List<RoomModel> rooms = new ArrayList<>();
-                makeRooms(rooms, ModuleHelper.getWorldModule().getParcels());
-                makeNeighborhood(rooms);
-                return rooms;
-            }
+        _roomList.removeAll(_roomList.stream().filter(room -> room.getSize() == 0).collect(Collectors.toList()));
 
-            @Override
-            public void onComplete(List<RoomModel> rooms) {
-                long time = System.currentTimeMillis();
+//        _roomList.forEach(room -> {
+//            if (!room.isExterior()) {
+//                System.out.println("Room info: " + room.getId());
+//                room.getParcels().forEach(p -> System.out.println(p.x + "x" + p.y));
+//            }
+//        });
 
-                _roomList = rooms;
+//        RoomModel room = new RoomModel(RoomType.NONE);
+//        ParcelModel parcel = WorldHelper.getParcel(17, 11);
+//        inspect(room, parcel);
 
-                // Restore o2 levels
-                if (!Thread.currentThread().isInterrupted()) {
-                    for (RoomModel room : _roomList) {
-                        double oxygen = 0;
-                        for (ParcelModel parcel : room.getParcels()) {
-                            if (parcel != null) {
-                                oxygen += _oxygenLevels[parcel.x][parcel.y];
-                            }
-                        }
-                        room.setOxygen(oxygen / room.getParcels().size());
-                        printInfo("Set room oxygen: " + oxygen / room.getParcels().size());
-                    }
-                }
-
-                _roomlessParcels = ModuleHelper.getWorldModule().getParcelList().stream().filter(parcel -> parcel.getRoom() == null).collect(Collectors.toList());
-
-                printNotice("complete done in " + (System.currentTimeMillis() - time));
-            }
-        };
-
-        _task.start();
+//
+//        _task = new AsyncTask<List<RoomModel>>() {
+//            @Override
+//            public void onStart() {
+//                // Store o2 levels
+//                ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
+//                for (int x = 0; x < parcels.length; x++) {
+//                    for (int y = 0; y < parcels[x].length; y++) {
+//                        _oxygenLevels[x][x] = parcels[x][y][0].getOxygen();
+//                    }
+//                }
+//
+//                // Clear rooms
+//                ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> {
+//                    parcel.setRoom(null);
+//                    parcel.tmpData = 0;
+//                });
+//            }
+//
+//            @Override
+//            public List<RoomModel> onBackground() {
+//                List<RoomModel> rooms = new ArrayList<>();
+//                makeRooms(rooms, ModuleHelper.getWorldModule().getParcels());
+//                makeNeighborhood(rooms);
+//                return rooms;
+//            }
+//
+//            @Override
+//            public void onComplete(List<RoomModel> rooms) {
+//                long time = System.currentTimeMillis();
+//
+//                _roomList = rooms;
+//
+//                // Restore o2 levels
+//                if (!Thread.currentThread().isInterrupted()) {
+//                    for (RoomModel room : _roomList) {
+//                        double oxygen = 0;
+//                        for (ParcelModel parcel : room.getParcels()) {
+//                            if (parcel != null) {
+//                                oxygen += _oxygenLevels[parcel.x][parcel.y];
+//                            }
+//                        }
+//                        room.setOxygen(oxygen / room.getParcels().size());
+//                        printInfo("Set room oxygen: " + oxygen / room.getParcels().size());
+//                    }
+//                }
+//
+//                _roomlessParcels = ModuleHelper.getWorldModule().getParcelList().stream().filter(parcel -> parcel.getRoom() == null).collect(Collectors.toList());
+//
+//                printNotice("complete done in " + (System.currentTimeMillis() - time));
+//            }
+//        };
+//
+//        _task.start();
 
         printInfo("RoomModule: refresh done " + (System.currentTimeMillis() - time));
+    }
+
+    private void inspect(RoomModel room, ParcelModel parcel) {
+        if (parcel != null && parcel.getConnections() != null && parcel.isRoomOpen()) {
+            parcel.setRoom(room);
+            room.setBaseParcel(parcel);
+            room.getParcels().add(parcel);
+            for (int i = parcel.getConnections().size - 1; i >= 0; i--) {
+                Connection<ParcelModel> connection = parcel.getConnections().get(i);
+                if (!room.getParcels().contains(connection.getToNode()) && connection.getToNode().isRoomOpen()) {
+                    inspect(room, connection.getToNode());
+                }
+            }
+        }
     }
 
     private void makeNeighborhood(List<RoomModel> rooms) {
@@ -398,23 +444,38 @@ public class RoomModule extends GameModule implements GameObserver {
 
     @Override
     public void onAddStructure(StructureModel structure){
-        if (!structure.isFloor()) {
-            _needRefresh = true;
-        }
+        _needRefresh = true;
+        structure.getParcel().setRoom(null);
+//        if (!structure.isFloor()) {
+//            _needRefresh = true;
+//        }
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure) {
-        if (!structure.isFloor()) {
-            _needRefresh = true;
-        }
+        _needRefresh = true;
+        structure.getParcel().setRoom(null);
+//        if (!structure.isFloor()) {
+//            _needRefresh = true;
+//        }
+    }
+
+    @Override
+    public void onAddResource(ResourceModel resource){
+        _needRefresh = true;
+        resource.getParcel().setRoom(null);
+//        if (!structure.isFloor()) {
+//            _needRefresh = true;
+//        }
     }
 
     @Override
     public void onRemoveResource(ResourceModel resource){
-        if (resource.isRock()) {
-            _needRefresh = true;
-        }
+        _needRefresh = true;
+        resource.getParcel().setRoom(null);
+//        if (resource.isRock()) {
+//            _needRefresh = true;
+//        }
     }
 
     @Override

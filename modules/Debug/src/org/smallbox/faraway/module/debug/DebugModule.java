@@ -38,6 +38,7 @@ public class DebugModule extends GameModule {
     private UIList          _listCommands;
     private ItemModel       _item;
     private UILabel         _lbMemory;
+    private UIFrame         _view;
 
     private static class CommandEntry {
         public final OnClickListener    listener;
@@ -144,9 +145,9 @@ public class DebugModule extends GameModule {
 
     @Override
     public void onReloadUI() {
-        UIFrame view = new UIFrame(200, 1000);
-        view.setBackgroundColor(0x121c1e);
-        view.setPosition(0, 32);
+        _view = new UIFrame(200, 1000);
+        _view.setBackgroundColor(0x121c1e);
+        _view.setPosition(0, 32);
 
         UILabel lbTitle = new UILabel();
         lbTitle.setText("Debug");
@@ -154,7 +155,7 @@ public class DebugModule extends GameModule {
         lbTitle.setSize(200, 22);
         lbTitle.setBackgroundColor(0x55000000);
         lbTitle.setPadding(5);
-        view.addView(lbTitle);
+        _view.addView(lbTitle);
 
         UILabel btBack = new UILabel();
         btBack.setText("[Back]");
@@ -165,15 +166,15 @@ public class DebugModule extends GameModule {
         btBack.setOnClickListener(v -> {
             openFrame(COMMANDS);
         });
-        view.addView(btBack);
+        _view.addView(btBack);
 
         _listCommands = new UIList(-1, -1);
         _listCommands.setPosition(0, 20);
         openFrame(COMMANDS);
-        view.addView(_listCommands);
+        _view.addView(_listCommands);
 //        view.setModule();
 
-        UserInterface.getInstance()._views.add(view);
+        UserInterface.getInstance()._views.add(_view);
 
         _lbMemory = new UILabel();
         _lbMemory.setTextSize(14);
@@ -237,13 +238,12 @@ public class DebugModule extends GameModule {
         _item = item;
     }
 
-//    @Override
-//    protected void onWindowRefresh(int update) {
-//    }
-
     public void onKeyPress(GameEventListener.Key key) {
         if (key == GameEventListener.Key.BACKSPACE) {
             openFrame(COMMANDS);
+        }
+        if (key == GameEventListener.Key.TILDE) {
+            _view.setVisible(!_view.isVisible());
         }
     }
 

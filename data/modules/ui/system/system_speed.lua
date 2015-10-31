@@ -1,8 +1,8 @@
 data:extend({
     type = "view",
     name = "ui-test",
-    position = {1200, 0},
-    size = {400, 65},
+    position = {1200, 32},
+    size = {400, 32},
     background = 0x2b3036,
     visible = true,
     views = {

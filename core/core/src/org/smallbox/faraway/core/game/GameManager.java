@@ -96,4 +96,8 @@ public class GameManager {
     public Game getGame() {
         return _game;
     }
+
+    public boolean isPaused() {
+        return _game != null && _game.isPaused();
+    }
 }

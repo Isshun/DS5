@@ -9,23 +9,34 @@ import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Utils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RoomModel {
+    int                                 _id;
+    int                                 _zoneId;
+    List<MapObjectModel>                _doors;
+    private RoomType                    _type;
+    private CharacterModel              _owner;
+    private int                         _x;
+    private int                         _y;
+    private Color                       _color;
+    private int                         _minX;
+    private int                         _maxX;
+    private boolean                     _isCommon;
+    private Set<CharacterModel>         _occupants;
+    protected Set<ParcelModel>          _parcels;
     private boolean                     _isExterior;
     private int                         _lightValue;
-    private double                         _permeability;
+    private double                      _permeability;
     private List<NeighborModel>         _neighborhood;
     private List<ItemModel>             _heatItems = new ArrayList<>();
     private List<ItemModel>             _coldItems = new ArrayList<>();
     private List<ItemModel>             _oxygenItems = new ArrayList<>();
     private RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
-    private String                         _autoName;
-    private String                         _name;
-    private double                         _oxygen;
+    private String                      _autoName;
+    private String                      _name;
+    private double                      _oxygen;
+    private ParcelModel                 _baseParcel;
 
     public double getOxygen() { return _oxygen; }
     public void setOxygen(double oxygen) {
@@ -34,32 +45,23 @@ public class RoomModel {
         }
     }
 
-    public void addOxygen(double oxygen) {
-        _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size()));
-    }
-
-    public void addParcels(List<ParcelModel> parcels) {
-        _parcels.addAll(parcels);
-    }
-
-    public void setAutoName(String autoName) {
-        _autoName = autoName;
-    }
-
-    public List<ItemModel> getHeatItems() {
-        return _heatItems;
-    }
-
-    public List<ItemModel> getColdItems() {
-        return _coldItems;
-    }
-
-    public List<ItemModel> getOxygenItems() {
-        return _oxygenItems;
-    }
+    public void addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
+    public void addParcels(List<ParcelModel> parcels) { _parcels.addAll(parcels); }
+    public void setAutoName(String autoName) { _autoName = autoName; }
+    public List<ItemModel> getHeatItems() { return _heatItems; }
+    public List<ItemModel> getColdItems() { return _coldItems; }
+    public List<ItemModel> getOxygenItems() { return _oxygenItems; }
 
     public boolean hasNeighbors() {
         return !_neighborhood.isEmpty();
+    }
+
+    public ParcelModel getBaseParcel() {
+        return _baseParcel;
+    }
+
+    public void setBaseParcel(ParcelModel parcel) {
+        _baseParcel = parcel;
     }
 
     public enum RoomType {
@@ -73,20 +75,6 @@ public class RoomModel {
         GARDEN
     }
 
-    int                                _id;
-    int                                _zoneId;
-    List<MapObjectModel>            _doors;
-    private RoomType                _type;
-    private CharacterModel          _owner;
-    private int                     _x;
-    private int                     _y;
-    private Color                     _color;
-    private int                     _minX;
-    private int                     _maxX;
-    private boolean                 _isCommon;
-    private Set<CharacterModel>     _occupants;
-    protected List<ParcelModel>     _parcels;
-
     public RoomModel(int id, RoomType type) {
         init(id, type);
     }
@@ -97,7 +85,7 @@ public class RoomModel {
 
     private void init(int id, RoomType type) {
         _color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
-        _parcels = new ArrayList<>();
+        _parcels = new HashSet<>();
         _id = id;
         _isCommon = true;
         _maxX = Integer.MIN_VALUE;
@@ -109,24 +97,26 @@ public class RoomModel {
         _occupants = new HashSet<>();
         _oxygen = Game.getInstance().getPlanet().getOxygen();
         _neighborhood = new ArrayList<>();
+
+        _autoName = type.toString();
     }
 
-    public int                        getId() { return _id; }
-    public int                        getZoneId() { return _zoneId; }
-    public CharacterModel             getOwner() { return _owner; }
-    public int                         getX() { return _x; }
-    public int                         getY() { return _y; }
-    public Color                     getColor() { return _color; }
-    public int                         getMinX() { return _minX; }
-    public int                         getMaxX() { return _maxX; }
-    public int                         getWidth() { return _maxX - _minX + 1; }
+    public int                      getId() { return _id; }
+    public int                      getZoneId() { return _zoneId; }
+    public CharacterModel           getOwner() { return _owner; }
+    public int                      getX() { return _x; }
+    public int                      getY() { return _y; }
+    public Color                    getColor() { return _color; }
+    public int                      getMinX() { return _minX; }
+    public int                      getMaxX() { return _maxX; }
+    public int                      getWidth() { return _maxX - _minX + 1; }
     public RoomType                 getType() { return _type; }
     public int                      getSize() { return _parcels.size(); }
     public int                      getLight() { return _lightValue; }
-    public Set<CharacterModel>        getOccupants() { return _occupants; }
+    public Set<CharacterModel>      getOccupants() { return _occupants; }
     public RoomTemperatureModel     getTemperatureInfo() { return _temperatureInfo; }
     public List<NeighborModel>      getNeighbors() { return _neighborhood; }
-    public List<ParcelModel>        getParcels() { return _parcels; }
+    public Set<ParcelModel>         getParcels() { return _parcels; }
 
     public void addParcel(ParcelModel area) { _parcels.add(area); }
     public void                     setMaxX(int x) { _maxX = x; }
@@ -136,8 +126,8 @@ public class RoomModel {
     public void                     setLight(int lightValue) { _lightValue = lightValue; }
     public void                     setNeighborhoods(List<NeighborModel> neighborhood) { _neighborhood = neighborhood; }
 
-    public boolean                     isCommon() { return _isCommon; }
-    public boolean                    isType(RoomType type) { return _type == type; }
+    public boolean                  isCommon() { return _isCommon; }
+    public boolean                  isType(RoomType type) { return _type == type; }
     public boolean                  isExterior() { return _isExterior; }
     public boolean                  isPrivate() { return _type == RoomType.QUARTER; }
     public boolean                  isStorage() { return _type == RoomType.STORAGE; }

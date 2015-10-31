@@ -3,12 +3,10 @@ package org.smallbox.faraway.module.extra;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.util.Utils;
-import org.smallbox.faraway.module.extra.model.AnimalModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,7 @@ public class FaunaModule extends GameModule {
     private List<RegionInfo.RegionFauna>    FAUNA_COMMON_POOL = new ArrayList<>();
     private List<RegionInfo.RegionFauna>    FAUNA_UNUSUAL_POOL = new ArrayList<>();
 
-    private List<AnimalModel>               _animals = new ArrayList<>();
+//    private List<AnimalModel>               _animals = new ArrayList<>();
 
     @Override
     protected void onLoaded() {
@@ -77,27 +75,26 @@ public class FaunaModule extends GameModule {
             addFauna(faunaInfo, count);
         }
 
-        for (AnimalModel animal: _animals) {
-            if (!animal.isMoving()) {
-                ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
-                animal.moveTo(parcel.x, parcel.y);
-            }
-            animal.move();
-            animal.action();
-        }
-
+//        for (AnimalModel animal: _animals) {
+//            if (!animal.isMoving()) {
+//                ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
+//                animal.moveTo(parcel.x, parcel.y);
+//            }
+//            animal.move();
+//            animal.action();
+//        }
     }
 
     private void addFauna(RegionInfo.RegionFauna faunaInfo, int count) {
         ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
         if (parcel != null) {
-            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
+//            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
         } else {
             printError("[FaunaModule] No space to proc fauna");
         }
     }
 
-    public List<AnimalModel> getAnimals() {
-        return _animals;
-    }
+//    public List<AnimalModel> getAnimals() {
+//        return _animals;
+//    }
 }

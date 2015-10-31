@@ -38,7 +38,8 @@ data:extend({
             end,
             views = {
                 { type = "label", text = "Current occupation", text_size = 28},
-                { type = "label", id = "lb_job", text_size = 18, position = {0, 12}, size = {-1, 40}},
+                { type = "label", id = "lb_job", text_size = 18, position = {0, 12}, size = {-1, 28}},
+                { type = "label", id = "lb_job_detail", text_size = 14, position = {0, 12}, size = {-1, 40}},
 
                 { type = "label", position = {0, 10}, text = "Needs", text_size = 28},
                 { type = "grid", position = {0, 24}, columns = 2, column_width = 200, row_height = 44, views = {
@@ -79,6 +80,9 @@ data:extend({
                         if data.message then
                             view:setDashedString(data.message, data.mood, 47)
                             view:setTextColor(data.mood > 0 and 0xb3d035 or 0xff5555)
+                            view:setOnClickListener(function()
+                                game.events:send("debug.open_buff", data)
+                            end)
                         end
                         if data.onClickListener then
                             view:setOnClickListener(data.onClickListener)
@@ -152,9 +156,16 @@ data:extend({
             }
         },
 
+        -- Heal page
         { type = "view", position = {0, 200}, size = {400, 400}, on_refresh = function(view)
             view:setVisible(mode == 4)
-        end},
+        end,
+        views = {
+            { type = "list", position = {10, 16}, views = {
+                { type = "label", text = "Diseases", position = {0, 10}, text_size = 24},
+                { type = "list", id = "list_diseases", position = {0, 20}},
+            }},
+        }},
     },
 
     on_load =
@@ -194,10 +205,19 @@ data:extend({
         if character ~= nil then
             local job = character:getJob()
             if job then
-                view:findById("lb_job"):setDashedString(job:getMessage() and job:getMessage() or job:getLabel(), math.floor(job:getProgress() * 100), 38)
+                view:findById("lb_job"):setDashedString(job:getLabel(), math.floor(job:getProgress() * 100), 38)
             else
                 view:findById("lb_job"):setText("No job")
             end
+
+            if job and job:getMessage() then
+                view:findById("lb_job_detail"):setText(job:getMessage())
+                view:findById("lb_job_detail"):setVisible(true)
+            else
+                view:findById("lb_job_detail"):setVisible(false)
+            end
+
+            display_diseases(view, character)
 
             view:findById("lb_need_energy"):setDashedString("Energy", math.floor(character:getNeeds().energy), 22)
             view:findById("lb_need_food"):setDashedString("Food", math.floor(character:getNeeds().food), 22)
@@ -226,6 +246,20 @@ data:extend({
         end
     end
 })
+
+function display_diseases(view, character)
+    local list = view:findById("list_diseases")
+    list:removeAllViews()
+
+    local iterator = character:getDiseases():iterator()
+    while iterator:hasNext() do
+        local disease = iterator:next()
+        local lb_disease = game.ui:createLabel()
+        lb_disease:setText(disease.disease.name)
+        lb_disease:setSize(400, 22)
+        list:addView(lb_disease)
+    end
+end
 
 function display_talents(view)
     local list = view:findById("list_talents")

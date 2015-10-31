@@ -34,7 +34,7 @@ data:extend(
                                 local prefix = "[B]"
                                 if module:getInfo().type == "java" then prefix = "[T]" end
                                 if module:getInfo().type == "lua" then prefix = "[L]" end
-                                view:setText(prefix .. " " .. module:getInfo().name)
+                                view:setText(prefix .. " " .. module:getInfo().name .. " (" .. module:getModuleUpdateTime() .. ")")
                                 view:setTextColor(module:isLoaded() and 0x00ff00 or 0xff0000)
                                 view:setOnClickListener(function(subview)
                                     game.events:send("module.open_detail", module:getInfo().name)

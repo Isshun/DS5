@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.data.loader.*;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.character.model.BuffModel;
+import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.ui.UICursor;
@@ -31,6 +32,7 @@ public class GameData {
     public HashMap<String, CharacterTypeInfo>   characters;
     public Map<String, UICursor>                cursors = new HashMap<>();
     public List<BuffModel>                      buffs = new ArrayList<>();
+    public List<DiseaseModel>                   diseases = new ArrayList<>();
     public List<ItemInfo>                       consumables;
 
     public GameData() {
@@ -151,4 +153,13 @@ public class GameData {
     }
 
     public UICursor getCursor(String name) { return this.cursors.get(name); }
+
+    public DiseaseModel getDisease(String name) {
+        for (DiseaseModel disease: diseases) {
+            if (disease.name.equals(name)) {
+                return disease;
+            }
+        }
+        return null;
+    }
 }
