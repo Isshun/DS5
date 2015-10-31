@@ -291,5 +291,4 @@ public class StoreJob extends JobModel implements GameObserver {
     public ParcelModel getActionParcel() {
         return null;
     }
-
 }

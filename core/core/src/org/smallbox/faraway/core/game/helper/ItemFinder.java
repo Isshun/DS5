@@ -38,6 +38,7 @@ public class ItemFinder extends GameModule {
         _height = Game.getInstance().getInfo().worldHeight;
     }
 
+    // TODO: lock item
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
         if (filter.needItem) {
             int bestDistance = Integer.MAX_VALUE;
@@ -58,7 +59,7 @@ public class ItemFinder extends GameModule {
             int bestDistance = Integer.MAX_VALUE;
             ConsumableModel bestConsumable = null;
             for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
-                if (consumable.matchFilter(filter)) {
+                if (consumable.getLock() == null && consumable.matchFilter(filter)) {
                     int distance = WorldHelper.getApproxDistance(consumable.getParcel(), character.getParcel());
                     if (bestDistance > distance) {
                         bestDistance = distance;

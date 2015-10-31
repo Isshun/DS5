@@ -190,5 +190,4 @@ public class HaulJob extends JobModel {
     public JobActionReturn onAction(CharacterModel character) {
         return _return;
     }
-
 }

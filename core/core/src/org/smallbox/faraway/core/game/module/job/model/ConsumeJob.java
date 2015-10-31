@@ -4,8 +4,10 @@ import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -21,6 +23,7 @@ public class ConsumeJob extends JobModel {
 
     private ConsumableModel     _consumable;
     private ItemInfo            _itemInfo;
+    private double              _current;
 
     private ConsumeJob(ParcelModel parcel) {
         super(null, parcel, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
@@ -45,18 +48,10 @@ public class ConsumeJob extends JobModel {
         }
         job.setCharacterRequire(character);
         job.setActionInfo(consumable.getInfo().actions.get(0));
-        job.setConsumable(consumable);
+        job._consumable = consumable;
         job._itemInfo = consumable.getInfo();
 
         return job;
-    }
-
-    private void setConsumable(ConsumableModel consumable) {
-        _consumable = consumable;
-    }
-
-    @Override
-    public void onQuit(CharacterModel character) {
     }
 
     @Override
@@ -72,17 +67,31 @@ public class ConsumeJob extends JobModel {
             return false;
         }
 
-        // Item is no longer exists
-        if (_consumable != _targetParcel.getConsumable()) {
-            _reason = JobAbortReason.INVALID;
-            return false;
-        }
+//        // Item is no longer exists
+//        if (_consumable != _targetParcel.getConsumable()) {
+//            _reason = JobAbortReason.INVALID;
+//            return false;
+//        }
 
         return true;
     }
 
     @Override
     protected void onStart(CharacterModel character) {
+        if (_consumable.getLock() != null && _consumable.getLock() != this) {
+            _status = JobStatus.ABORTED;
+            return;
+        }
+
+        PathModel path = PathManager.getInstance().getBestAround(character.getParcel(), _consumable.getParcel());
+        if (path == null) {
+            _status = JobStatus.ABORTED;
+            return;
+        }
+
+        _consumable.lock(this);
+        _jobParcel = _targetParcel = path.getLastParcel();
+        character.move(path);
     }
 
     // TODO: make objects stats table instead switch
@@ -107,24 +116,29 @@ public class ConsumeJob extends JobModel {
                 return JobActionReturn.ABORT;
             }
 
-            ParcelModel parcel = WorldHelper.getNearest(_targetParcel.x, _targetParcel.y, true, true, false, false, false, false, false);
-            if (parcel == null) {
+            if (_consumable.getLock() != this) {
+                Log.error("consumable is not locked for current job");
                 return JobActionReturn.ABORT;
             }
 
-            _targetParcel = parcel;
+//            ParcelModel parcel = WorldHelper.getNearest(_targetParcel.x, _targetParcel.y, true, true, false, false, false, false, false);
+//            if (parcel == null) {
+//                return JobActionReturn.ABORT;
+//            }
+
+//            _targetParcel = parcel;
             _character.addInventory(_consumable, 1);
             if (_character.getInventory() == null || _character.getInventory().getInfo() != _consumable.getInfo()) {
                 return JobActionReturn.ABORT;
             }
+            _consumable.lock(null);
 
             // Remove consumable if depleted
             if (_consumable.getQuantity() <= 0) {
                 ModuleHelper.getWorldModule().removeConsumable(_consumable);
             }
-            _consumable = null;
 
-            character.moveTo(parcel, null);
+//            character.moveTo(parcel, null);
 
             return JobActionReturn.CONTINUE;
         }
@@ -133,12 +147,11 @@ public class ConsumeJob extends JobModel {
         if (_state == State.MOVE_TO_FREE_SPACE) {
             Log.debug("Character #" + character.getPersonals().getName() + ": actionUse (" + _progress + ")");
 
-            // Character using item
-            if (_progress++ < _cost) {
-
-                // Use item
-                _character.getInventory().use(_character, (int) (_cost - _progress));
-
+            // Character use item
+            _current++;
+            _progress = _current / _cost;
+            _character.getInventory().use(_character, 0);
+            if (_current < _cost) {
                 return JobActionReturn.CONTINUE;
             }
 
@@ -150,7 +163,17 @@ public class ConsumeJob extends JobModel {
     }
 
     @Override
+    public void onQuit(CharacterModel character) {
+        if (_consumable != null && _consumable.getLock() == this) {
+            _consumable.lock(null);
+        }
+    }
+
+    @Override
     protected void onFinish() {
+        if (_consumable != null && _consumable.getLock() == this) {
+            _consumable.lock(null);
+        }
     }
 
     @Override
@@ -179,9 +202,5 @@ public class ConsumeJob extends JobModel {
     @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return null;
-    }
-
-    public ConsumableModel getConsumable() {
-        return _consumable;
     }
 }

@@ -7,6 +7,8 @@ import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
+import org.smallbox.faraway.core.game.module.job.model.HaulJob;
+import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -130,12 +132,7 @@ public class CharacterRenderer extends BaseRenderer {
                 }
 
                 if (c.getInventory() != null) {
-                    renderer.draw(_spriteManager.getItem(c.getInventory()), posX, posY);
-                }
-
-                // Draw consume job
-                if (!c.isSleeping() && c.getJob() != null && c.getJob() instanceof ConsumeJob && c.getJob().getTargetParcel() == c.getParcel()) {
-                    renderer.draw(_spriteManager.getItem(((ConsumeJob) c.getJob()).getConsumable()), posX + 2, posY + 8);
+                    renderer.draw(_spriteManager.getItem(c.getInventory()), posX + 2, posY + 8);
                 }
 
                 // Draw action icon
@@ -149,11 +146,11 @@ public class CharacterRenderer extends BaseRenderer {
                         if (actionParcel.x < parcel.x) x -= 16;
                         if (actionParcel.x > parcel.x) x += 16;
                     }
-                    ((GDXRenderer) renderer).draw(c.getJob().getActionDrawable(), x, y);
+                    renderer.draw(c.getJob().getActionDrawable(), x, y);
                 }
 
                 if (c.isSleeping()) {
-                    ((GDXRenderer) renderer).draw(c.getSleepDrawable(), posX + 16, posY - 16);
+                    renderer.draw(c.getSleepDrawable(), posX + 16, posY - 16);
                 }
             }
 

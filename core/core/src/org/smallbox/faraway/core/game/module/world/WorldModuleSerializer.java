@@ -229,7 +229,7 @@ public class WorldModuleSerializer implements SerializerInterface {
                     break;
 
                 case "maturity":
-                    maturity = vn.parseInt(vn.getText());
+                    maturity = vn.parseDouble(vn.getText());
 //                    maturity = 1;
                     break;
             }

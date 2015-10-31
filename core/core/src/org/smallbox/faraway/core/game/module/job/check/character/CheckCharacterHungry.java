@@ -35,7 +35,7 @@ public class CheckCharacterHungry extends CharacterCheck {
             return ConsumeJob.create(character, character.getInventory());
         }
 
-        // Get consumable on old
+        // Get consumable on ground
         ConsumableModel nearestItem = (ConsumableModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
         if (nearestItem != null && nearestItem.hasFreeSlot()) {
             return ConsumeJob.create(character, nearestItem);

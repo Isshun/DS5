@@ -190,8 +190,8 @@ data:extend({
             view:setVisible(true)
             view:findById("lb_name"):setText(data:getName())
 
-            view:findById("lb_info_birth"):setDashedString("Birth", data:getInfo():getEnlisted(), 47)
-            view:findById("lb_info_enlisted"):setDashedString("Enlisted", data:getInfo():getEnlisted(), 47)
+            view:findById("lb_info_birth"):setDashedString("Birth", data:getPersonals():getEnlisted(), 47)
+            view:findById("lb_info_enlisted"):setDashedString("Enlisted", data:getPersonals():getEnlisted(), 47)
             character = data;
 
             display_talents(view)
@@ -265,7 +265,7 @@ function display_talents(view)
     local list = view:findById("list_talents")
     list:removeAllViews()
 
-    local iterator = character:getTalents():iterator()
+    local iterator = character:getTalents():getAll():iterator()
     while iterator:hasNext() do
         local talent = iterator:next()
         local frame_talent = game.ui:createView()

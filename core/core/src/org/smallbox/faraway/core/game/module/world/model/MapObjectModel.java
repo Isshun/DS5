@@ -160,7 +160,7 @@ public abstract class MapObjectModel extends ObjectModel {
 
             if (_info.actions != null) {
                 for (ItemInfo.ItemInfoAction action: _info.actions) {
-                    if (_info.matchFilter(action.effects, filter)) {
+                    if ("use".equals(action.type) && _info.matchFilter(action.effects, filter)) {
                         filter.itemMatched = _info;
                         return true;
                     }

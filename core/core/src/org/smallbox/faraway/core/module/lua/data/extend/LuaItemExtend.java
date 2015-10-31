@@ -137,6 +137,12 @@ public class LuaItemExtend extends LuaExtend {
             readFactoryValue(itemInfo, value.get("factory"));
         }
 
+//        // Effects on consumable
+//        if (!value.get("effects").isnil()) {
+//            itemInfo.effects = new ItemInfo.ItemInfoEffects();
+//            readEffectValues(itemInfo.effects, value.get("effects"));
+//        }
+
         if (!value.get("actions").isnil()) {
             itemInfo.actions = new ArrayList<>();
             if (!value.get("actions").get("type").isnil()) {
@@ -270,11 +276,7 @@ public class LuaItemExtend extends LuaExtend {
         LuaValue luaEffects = value.get("effects");
         if (!luaEffects.isnil()) {
             action.effects = new ItemInfo.ItemInfoEffects();
-            for (int i = 1; i <= luaEffects.length(); i++) {
-                if ("energy".equals(luaEffects.get(i).get("type").toString())) {
-                    action.effects.energy = luaEffects.get(i).get("quantity").toint();
-                }
-            }
+            readEffectValues(action.effects, luaEffects);
         }
 
         LuaValue luaProducts = value.get("products");
@@ -304,6 +306,17 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         itemInfo.actions.add(action);
+    }
+
+    private void readEffectValues(ItemInfo.ItemInfoEffects effects, LuaValue luaEffects) {
+        for (int i = 1; i <= luaEffects.length(); i++) {
+            if ("energy".equals(luaEffects.get(i).get("type").toString())) {
+                effects.energy = luaEffects.get(i).get("quantity").toint();
+            }
+            if ("food".equals(luaEffects.get(i).get("type").toString())) {
+                effects.food = luaEffects.get(i).get("quantity").toint();
+            }
+        }
     }
 
     private void readPlantValues(ItemInfo itemInfo, LuaValue value) {
