@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.ui.UserInterface;
 
 /**
@@ -20,6 +21,7 @@ public abstract class BaseGame {
     // Update
     private int                     _tick;
     private long                    _nextUpdate;
+    private long                    _nextUpdateDo;
     private int                     _tickInterval = SPEED_1_TICK_INTERVAL;
 
     // Render
@@ -40,6 +42,15 @@ public abstract class BaseGame {
             MainRenderer.getInstance().onUpdate();
             onUpdate(_tick);
         }
+
+        // Update
+        if (_nextUpdateDo < System.currentTimeMillis() && !_paused) {
+            _nextUpdateDo = System.currentTimeMillis() + _tickInterval / 4;
+            onUpdateDo();
+        }
+    }
+
+    public void onUpdateDo() {
     }
 
     protected abstract void onUpdate(int tick);

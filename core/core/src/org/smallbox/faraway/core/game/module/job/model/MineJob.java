@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -8,9 +7,9 @@ import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
@@ -41,7 +40,7 @@ public class MineJob extends JobModel {
                         }
                     });
                     job._resource = res;
-                    job._totalCost = job._cost * job._resource.getQuantity();
+                    job._totalCost = job._cost * job._resource.getRock().getQuantity();
                     job._label = "Mine " + res.getInfo().label;
                     job._message = "Move to resource";
                     return job;
@@ -119,30 +118,30 @@ public class MineJob extends JobModel {
         return true;
     }
 
-    private ParcelModel getFreeParcel() {
-        int x = _resource.getX();
-        int y = _resource.getY();
-        ParcelModel parcel = null;
-
-        // Corner
-        if (!WorldHelper.isBlocked(x - 1, y - 1)) parcel = WorldHelper.getParcel(x-1, y-1);
-        if (!WorldHelper.isBlocked(x + 1, y - 1)) parcel = WorldHelper.getParcel(x+1, y-1);
-        if (!WorldHelper.isBlocked(x-1, y+1)) parcel = WorldHelper.getParcel(x-1, y+1);
-        if (!WorldHelper.isBlocked(x+1, y+1)) parcel = WorldHelper.getParcel(x+1, y+1);
-
-        // Cross
-        if (!WorldHelper.isBlocked(x, y-1)) parcel = WorldHelper.getParcel(x, y-1);
-        if (!WorldHelper.isBlocked(x, y+1)) parcel = WorldHelper.getParcel(x, y+1);
-        if (!WorldHelper.isBlocked(x-1, y)) parcel = WorldHelper.getParcel(x-1, y);
-        if (!WorldHelper.isBlocked(x+1, y)) parcel = WorldHelper.getParcel(x+1, y);
-
-        _parcel = parcel;
-        if (parcel != null) {
-            _targetParcel = parcel;
-        }
-
-        return parcel;
-    }
+//    private ParcelModel getFreeParcel() {
+//        int x = _resource.getX();
+//        int y = _resource.getY();
+//        ParcelModel parcel = null;
+//
+//        // Corner
+//        if (!WorldHelper.isBlocked(x - 1, y - 1)) parcel = WorldHelper.getParcel(x-1, y-1);
+//        if (!WorldHelper.isBlocked(x + 1, y - 1)) parcel = WorldHelper.getParcel(x+1, y-1);
+//        if (!WorldHelper.isBlocked(x-1, y+1)) parcel = WorldHelper.getParcel(x-1, y+1);
+//        if (!WorldHelper.isBlocked(x+1, y+1)) parcel = WorldHelper.getParcel(x+1, y+1);
+//
+//        // Cross
+//        if (!WorldHelper.isBlocked(x, y-1)) parcel = WorldHelper.getParcel(x, y-1);
+//        if (!WorldHelper.isBlocked(x, y+1)) parcel = WorldHelper.getParcel(x, y+1);
+//        if (!WorldHelper.isBlocked(x-1, y)) parcel = WorldHelper.getParcel(x-1, y);
+//        if (!WorldHelper.isBlocked(x+1, y)) parcel = WorldHelper.getParcel(x+1, y);
+//
+//        _parcel = parcel;
+//        if (parcel != null) {
+//            _targetParcel = parcel;
+//        }
+//
+//        return parcel;
+//    }
 
     @Override
     protected void onFinish() {

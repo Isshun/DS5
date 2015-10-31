@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterNeeds;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**

@@ -4,7 +4,7 @@ import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.game.model.CategoryInfo;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 
 import java.util.List;
 

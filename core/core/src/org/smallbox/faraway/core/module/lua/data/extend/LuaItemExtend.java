@@ -4,7 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -309,7 +309,7 @@ public class LuaItemExtend extends LuaExtend {
     private void readPlantValues(ItemInfo itemInfo, LuaValue value) {
         itemInfo.isPlant = true;
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
-        itemInfo.plant.mature = getInt(value, "mature", 1);
+        itemInfo.plant.minMaturity = getDouble(value, "gather", 1);
         itemInfo.plant.growing = getDouble(value, "growing", 1);
 
         if (!value.get("states").isnil()) {

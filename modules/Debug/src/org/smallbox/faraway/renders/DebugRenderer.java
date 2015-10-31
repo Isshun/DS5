@@ -56,8 +56,8 @@ public class DebugRenderer extends BaseRenderer {
 
         for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
             if (parcel.z == 0) {
-                Color color = new Color(parcel.getResource().getQuantity() * 250 / 1300, 0, 0);
-                renderer.draw(color, (int) (parcel.x * Constant.TILE_WIDTH + viewport.getPosX()), (int) (parcel.y * Constant.TILE_HEIGHT + viewport.getPosY()), 32, 32);
+//                Color color = new Color(parcel.getResource().getQuantity() * 250 / 1300, 0, 0);
+//                renderer.draw(color, (int) (parcel.x * Constant.TILE_WIDTH + viewport.getPosX()), (int) (parcel.y * Constant.TILE_HEIGHT + viewport.getPosY()), 32, 32);
             }
         }
 

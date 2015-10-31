@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -8,9 +7,9 @@ import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
@@ -161,17 +160,17 @@ public class CutJob extends JobModel {
 
         // Remove a single unit
         _progress = 0;
-        _resource.addQuantity(-1);
         if (_actionInfo.products != null) {
             _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
                     ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
         }
 
-        // Check if resource is depleted
-        if (!_resource.isDepleted()) {
-            return JobActionReturn.CONTINUE;
-        }
-
+//        // Check if resource is depleted
+//        if (!_resource.isDepleted()) {
+//            return JobActionReturn.CONTINUE;
+//        }
+//
+//        return JobActionReturn.FINISH;
         return JobActionReturn.FINISH;
     }
 

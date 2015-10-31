@@ -1,9 +1,9 @@
 //package org.smallbox.faraway.core.game.module.job.model.abs;
 //
-//import org.smallbox.faraway.core.game.module.world.model.ItemFactoryReceiptModel;
+//import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 //import org.smallbox.faraway.core.game.model.OldReceiptModel;
 //import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-//import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+//import org.smallbox.faraway.core.data.ItemInfo;
 //import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 //import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.engine.drawable.GDXDrawable;

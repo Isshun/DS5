@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 
 /**
  * Created by Alex on 20/06/2015.

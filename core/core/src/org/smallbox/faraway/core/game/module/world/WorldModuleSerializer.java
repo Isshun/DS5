@@ -4,6 +4,8 @@ import com.ximpleware.*;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.FileUtils;
 
@@ -85,7 +87,12 @@ public class WorldModuleSerializer implements SerializerInterface {
         FileUtils.write(fos, "<resource id='" + resource.getId() + "' name='" + resource.getInfo().name + "'>");
         FileUtils.write(fos, "<health>" + resource.getHealth() + "</health>");
         FileUtils.write(fos, "<progress>" + resource.getProgress() + "</progress>");
-        FileUtils.write(fos, "<quantity>" + resource.getQuantity() + "</quantity>");
+        if (resource.isRock()) {
+            FileUtils.write(fos, "<quantity>" + resource.getRock().getQuantity() + "</quantity>");
+        }
+        if (resource.isPlant()) {
+            FileUtils.write(fos, "<maturity>" + resource.getPlant().getMaturity() + "</maturity>");
+        }
         FileUtils.write(fos, "</resource>");
     }
 
@@ -199,7 +206,8 @@ public class WorldModuleSerializer implements SerializerInterface {
         String name = vn.toString(vn.getAttrVal("name"));
         int id = vn.parseInt(vn.getAttrVal("id"));
         int health = 0;
-        int quantity = 10;
+        int quantity = 0;
+        double maturity = 0;
         int progress = 0;
 
         while (apElement.evalXPath() != -1) {
@@ -214,7 +222,12 @@ public class WorldModuleSerializer implements SerializerInterface {
 
                 case "quantity":
                     quantity = vn.parseInt(vn.getText());
-                    quantity = 1;
+//                    quantity = 1;
+                    break;
+
+                case "maturity":
+                    maturity = vn.parseInt(vn.getText());
+//                    maturity = 1;
                     break;
             }
         }
@@ -225,6 +238,14 @@ public class WorldModuleSerializer implements SerializerInterface {
 //            resource.setTile(tile);
 //            resource.setValue(value);
             resource.setId(id);
+
+            if (resource.isPlant()) {
+                resource.getPlant().setMaturity(maturity);
+            }
+
+            if (resource.isRock()) {
+                resource.getRock().setQuantity(quantity);
+            }
         }
     }
 

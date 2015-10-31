@@ -1,7 +1,9 @@
-package org.smallbox.faraway.core.game.module.world.model;
+package org.smallbox.faraway.core.game.module.world.model.item;
 
 import org.smallbox.faraway.core.PotentialConsumable;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public class ItemFactoryReceiptModel {
     public static class FactoryShoppingItemModel {
-        public ConsumableModel  consumable;
+        public ConsumableModel consumable;
         public int              quantity;
 
         public FactoryShoppingItemModel(ConsumableModel consumable, int quantity) {
@@ -22,7 +24,7 @@ public class ItemFactoryReceiptModel {
     }
 
     public static class FactoryComponentModel {
-        public ItemInfo         itemInfo;
+        public ItemInfo itemInfo;
         public int              currentQuantity;
         public int              totalQuantity;
 
@@ -37,7 +39,7 @@ public class ItemFactoryReceiptModel {
     private boolean                             _allComponentsPresent;
 
     public final ItemFactoryModel.OrderEntry    order;
-    public final ReceiptGroupInfo.ReceiptInfo   receiptInfo;
+    public final ReceiptGroupInfo.ReceiptInfo receiptInfo;
     public final ReceiptGroupInfo               receiptGroupInfo;
     public int                                  totalDistance;
     public boolean                              enoughComponents;

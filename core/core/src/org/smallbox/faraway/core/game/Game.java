@@ -104,6 +104,11 @@ public class Game extends BaseGame {
     }
 
     @Override
+    public void onUpdateDo() {
+        _modulesBase.stream().filter(GameModule::isLoaded).forEach(GameModule::onUpdateDo);
+    }
+
+    @Override
     protected void onUpdate(int tick) {
         if (!_isRunning) {
             return;

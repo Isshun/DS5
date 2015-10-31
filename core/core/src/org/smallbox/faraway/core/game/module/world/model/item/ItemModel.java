@@ -1,6 +1,8 @@
-package org.smallbox.faraway.core.game.module.world.model;
+package org.smallbox.faraway.core.game.module.world.model.item;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

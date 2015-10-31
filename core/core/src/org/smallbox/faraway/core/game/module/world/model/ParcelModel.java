@@ -5,6 +5,8 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 
 public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean isRoomOpen() {
@@ -23,7 +25,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public static class ParcelContent {
         public ConsumableModel      consumable;
         public StructureModel       structure;
-        public ResourceModel        resource;
+        public ResourceModel resource;
         public ItemModel            item;
     }
 
@@ -96,7 +98,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void             setStructure(StructureModel structure) { if (_content == null) _content = new ParcelContent(); _content.structure = structure; }
 
     public boolean          isStorage() { return _isStorage; }
-    public boolean          isExterior() { return _isExterior; }
+    public boolean          isExterior() { return _room != null && _room.isExterior(); }
     public boolean          canSupportRoof() { return (getStructure() != null && getStructure().getInfo().canSupportRoof) || (getResource() != null && getResource().getInfo().canSupportRoof); }
 
     public ParcelContent    getContent() { return _content; }

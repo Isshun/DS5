@@ -2,6 +2,8 @@ package org.smallbox.faraway.module.world;
 
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 

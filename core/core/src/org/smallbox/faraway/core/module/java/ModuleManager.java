@@ -47,6 +47,7 @@ public class ModuleManager {
         _modulesBase.clear();
         new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
             try {
+                System.out.println("Find module: " + cls.getSimpleName());
                 GameModule module = cls.getConstructor().newInstance();
                 ModuleInfo info = new ModuleInfo();
                 info.name = module.getClass().getSimpleName();
@@ -56,6 +57,7 @@ public class ModuleManager {
                 e.printStackTrace();
             }
         });
+        _modules.addAll(_modulesBase);
 
         // Load game renders
         _rendersBase.clear();
@@ -131,7 +133,6 @@ public class ModuleManager {
 
         _modulesBase.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
 
-        _modules.addAll(_modulesBase);
 //        _modules.addAll(_modulesThird);
         _modules.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
 

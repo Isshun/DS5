@@ -1,11 +1,13 @@
 package org.smallbox.faraway.core.game.module.world;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -195,7 +197,9 @@ public class WorldModule extends GameModule {
     private ResourceModel putResource(ParcelModel parcel, ItemInfo itemInfo, int matterSupply) {
         // Put item on floor
         ResourceModel resource = new ResourceModel(itemInfo);
-        resource.setValue(matterSupply);
+        if (resource.isRock()) {
+            resource.getRock().setQuantity(matterSupply);
+        }
         for (int i = 0; i < resource.getWidth(); i++) {
             for (int j = 0; j < resource.getHeight(); j++) {
                 moveResourceToParcel(parcel, resource);

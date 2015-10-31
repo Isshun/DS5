@@ -1,9 +1,11 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
 import org.smallbox.faraway.core.GraphicInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 import java.util.ArrayList;
 import java.util.List;

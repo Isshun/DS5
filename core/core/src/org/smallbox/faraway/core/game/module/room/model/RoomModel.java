@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Utils;
@@ -72,7 +72,7 @@ public class RoomModel {
         METTING,
         HOLODECK,
         STORAGE,
-        GARDEN
+        WORLD, GARDEN
     }
 
     public RoomModel(int id, RoomType type) {

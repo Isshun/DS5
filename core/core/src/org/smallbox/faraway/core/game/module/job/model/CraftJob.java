@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -7,6 +8,9 @@ import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
@@ -17,11 +21,11 @@ public class CraftJob extends JobModel {
     protected int                       _itemPosX;
     protected int                       _itemPosY;
     protected StorageAreaModel          _storage;
-    protected ItemModel                 _item;
-    protected ItemFactoryModel          _factory;
+    protected ItemModel _item;
+    protected ItemFactoryModel _factory;
     protected double                    _current;
     protected Status                    _status;
-    protected ItemFactoryReceiptModel   _receipt;
+    protected ItemFactoryReceiptModel _receipt;
 
     public enum Status {
         WAITING, MAIN_ACTION, MOVE_TO_INGREDIENT, MOVE_TO_FACTORY, MOVE_TO_STORAGE

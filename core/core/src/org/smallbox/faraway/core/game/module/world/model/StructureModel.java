@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
 
+import org.smallbox.faraway.core.data.ItemInfo;
+
 public class StructureModel extends BuildableMapObject {
 
     public StructureModel(ItemInfo info, int id) {

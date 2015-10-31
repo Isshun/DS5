@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.character.model.BuffModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.ui.UICursor;
 

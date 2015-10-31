@@ -1,11 +1,13 @@
-package org.smallbox.faraway.core.game.module.world.model;
+package org.smallbox.faraway.core.game.module.world.model.item;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.PotentialConsumable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.CraftJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class ItemFactoryModel {
     public static class OrderEntry {
-        public final ReceiptGroupInfo   receiptGroupInfo;
+        public final ReceiptGroupInfo receiptGroupInfo;
         public int                      mode;
         public boolean                  isActive;
 
@@ -33,8 +35,8 @@ public class ItemFactoryModel {
     private List<ItemFactoryReceiptModel>   _receiptEntries;
     // TODO: file d'attente de sortie
 //    private List<FactoryShoppingItemModel>  _shoppingList;
-    private final ItemInfo.ItemInfoFactory  _info;
-    private ParcelModel                     _storageParcel;
+    private final ItemInfo.ItemInfoFactory _info;
+    private ParcelModel _storageParcel;
     private String                          _message;
 
     public ItemFactoryModel(ItemModel item, ItemInfo.ItemInfoFactory factoryInfo) {

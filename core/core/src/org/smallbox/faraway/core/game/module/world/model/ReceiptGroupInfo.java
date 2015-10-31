@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
 public class ReceiptGroupInfo {
     public static class ReceiptInputInfo {
         public String       itemName;
-        public ItemInfo     item;
+        public ItemInfo item;
         public int          quantity;
     }
 

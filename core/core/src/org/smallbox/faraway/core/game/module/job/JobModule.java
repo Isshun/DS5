@@ -67,6 +67,11 @@ public class JobModule extends GameModule {
     }
 
     @Override
+    public void onUpdateDo() {
+        _jobs.forEach(JobModel::onActionDo);
+    }
+
+    @Override
     protected void onUpdate(int tick) {
         cleanJobs();
 

@@ -3,16 +3,15 @@ package org.smallbox.faraway.module.extra;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
-import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 //import org.smallbox.faraway.module.world.TemperatureModule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.smallbox.faraway.core.game.module.world.model.ItemInfo.ItemInfoPlant.GrowingInfo;
+import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 /**
  * Created by Alex on 05/07/2015.
@@ -21,14 +20,6 @@ public class FloraModule extends GameModule {
 
     private List<ResourceModel>     _plants = new ArrayList<>();
 //    private TemperatureModule       _temperatureModule;
-
-    public FloraModule() {
-        _info.id = "base_flora";
-        _info.name = "base_flora";
-        _info.type = "java";
-        _info.version = 0.1;
-        _updateInterval = 10;
-    }
 
     @Override
     protected void onLoaded() {
@@ -52,7 +43,7 @@ public class FloraModule extends GameModule {
 //        double temperature = _temperatureModule.getTemperature();
         // Growing
 // Plan to gather
-        _plants.stream().filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
+        _plants.stream().filter(ResourceModel::isPlant).filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
             grow(resource, light, temperature);
 
             // Plan to gather
@@ -63,8 +54,6 @@ public class FloraModule extends GameModule {
     }
 
     public void grow(ResourceModel resource, double light, double temperature) {
-        double growing = resource.getInfo().plant.growing;
-
         GrowingInfo bestState = null;
         double bestValue = -1;
         for (GrowingInfo state: resource.getInfo().plant.states) {
@@ -75,9 +64,7 @@ public class FloraModule extends GameModule {
         }
 
         if (bestState != null) {
-            resource.setQuantity(Math.min(resource.getInfo().plant.mature, resource.getQuantity() + (growing * bestValue)));
-            resource.setGrowRate(bestValue);
-            resource.setGrowState(bestState);
+            resource.getPlant().grow(bestState);
         }
     }
 

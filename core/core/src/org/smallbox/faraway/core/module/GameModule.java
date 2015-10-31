@@ -135,4 +135,6 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         return false;
     }
     public boolean      isLoaded() { return _isLoaded; }
+
+    public void         onUpdateDo() {}
 }

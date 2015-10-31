@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -8,9 +7,9 @@ import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
@@ -44,7 +43,7 @@ public class GatherJob extends JobModel {
         });
         job._resource = resource;
         job._resource.addJob(job);
-        job._totalCost = job._cost * job._resource.getQuantity();
+        job._totalCost = job._cost;
 
         return job;
     }
@@ -106,6 +105,13 @@ public class GatherJob extends JobModel {
     }
 
     @Override
+    public void onActionDo() {
+        if (_current > 0) {
+            _progress += 0.01;
+        }
+    }
+
+    @Override
     public JobActionReturn onAction(CharacterModel character) {
         // Wrong call
         if (_resource == null) {
@@ -121,7 +127,7 @@ public class GatherJob extends JobModel {
         }
 
         _current += character.getTalent(CharacterModel.TalentType.GATHER).work();
-        _progress = _current / _totalCost;
+//        _progress = _current / _totalCost;
         if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
         }

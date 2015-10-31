@@ -1,6 +1,8 @@
-package org.smallbox.faraway.core.game.module.world.model;
+package org.smallbox.faraway.core.data;
 
 import org.smallbox.faraway.core.GraphicInfo;
+import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,7 @@ public class ItemInfo {
         }
         public List<GrowingInfo>        states;
         public double                   growing;
-        public int                      mature;
+        public double                   minMaturity;
         public boolean                  cutOnGathering = true;
     }
 
@@ -211,7 +213,7 @@ public class ItemInfo {
         isWalkable = true;
     }
 
-    boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
+    public boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
         if (effects != null) {
             if (filter.effectEntertainment && effects.joy > 0) { return true; }
             if (filter.effectDrink && effects.drink > 0) { return true; }

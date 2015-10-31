@@ -1,5 +1,4 @@
-data:extend(
-{
+data:extend({
     {
         label = "Euglena bloom",
         name = "base.seaweed1",
@@ -8,7 +7,7 @@ data:extend(
         type = "resource",
         category = "algae",
         plant = {
-            mature = 5,
+            gather = 0.25,
             growing = 0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
@@ -35,7 +34,7 @@ data:extend(
         type = "resource",
         category = "algae",
         plant = {
-            mature = 5,
+            gather = 0.25,
             growing = 0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
@@ -67,7 +66,7 @@ data:extend(
         size = {1, 1},
         light = { power = .5, radius = 5 },
         plant = {
-            mature = 5,
+            gather = 0.25,
             growing = 0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
@@ -96,7 +95,7 @@ data:extend(
         category = "algae",
         size = {1, 1},
         plant = {
-            mature = 5,
+            gather = 0.25,
             growing = 0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
@@ -125,7 +124,7 @@ data:extend(
         category = "algae",
         size = {1, 1},
         plant = {
-            mature = 5,
+            gather = 0.25,
             growing = 0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
@@ -145,5 +144,4 @@ data:extend(
             },
         },
     },
-}
-)
+})

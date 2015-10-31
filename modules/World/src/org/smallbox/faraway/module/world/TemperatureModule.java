@@ -3,7 +3,7 @@ package org.smallbox.faraway.module.world;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class TemperatureModule extends GameModule implements GameObserver {
+public class TemperatureModule extends GameModule {
     private RoomModule _roomModule;
     private List<ItemModel>     _items = new ArrayList<>();
     private double              _temperature;

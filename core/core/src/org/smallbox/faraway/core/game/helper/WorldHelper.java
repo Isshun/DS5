@@ -1,7 +1,10 @@
 package org.smallbox.faraway.core.game.helper;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 /**
@@ -20,12 +23,12 @@ public class WorldHelper {
     }
 
     public static ItemModel         getItem(int x, int y) { return getItem(x, y, 0); }
-    public static ItemModel         getItem(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getItem() : null; }
+    public static ItemModel getItem(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getItem() : null; }
     public static ConsumableModel   getConsumable(int x, int y) { return getConsumable(x, y, 0); }
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructure() : null; }
-    public static ResourceModel     getResource(int x, int y) { return getResource(x, y, 0); }
+    public static ResourceModel getResource(int x, int y) { return getResource(x, y, 0); }
     public static ResourceModel     getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getResource() : null; }
 
     public static boolean isSurroundedByRock(ParcelModel parcel) {

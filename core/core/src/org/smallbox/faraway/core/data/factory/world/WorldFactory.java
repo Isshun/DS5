@@ -6,9 +6,10 @@ import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.util.Utils;
 
 import java.util.*;
 
@@ -89,22 +90,10 @@ public class WorldFactory {
 
                 if (isSurrounded) {
                     ResourceModel resource = null;
-                    if (l != null) {
-                        resource = new ResourceModel(l.getResource().getInfo());
-                        resource.addQuantity(l.getResource().getQuantity());
-                    }
-                    if (r != null) {
-                        resource = new ResourceModel(r.getResource().getInfo());
-                        resource.addQuantity(r.getResource().getQuantity());
-                    }
-                    if (t != null) {
-                        resource = new ResourceModel(t.getResource().getInfo());
-                        resource.addQuantity(t.getResource().getQuantity());
-                    }
-                    if (b != null) {
-                        resource = new ResourceModel(b.getResource().getInfo());
-                        resource.addQuantity(b.getResource().getQuantity());
-                    }
+                    if (l != null) resource = copyResource(l.getResource());
+                    if (r != null) resource = copyResource(r.getResource());
+                    if (t != null) resource = copyResource(t.getResource());
+                    if (b != null) resource = copyResource(b.getResource());
                     if (resource != null) {
                         parcel.setResource(resource);
                     }
@@ -126,6 +115,20 @@ public class WorldFactory {
         });
     }
 
+    private ResourceModel copyResource(ResourceModel fromResource) {
+        ResourceModel resource = new ResourceModel(fromResource.getInfo());
+
+        if (resource.isPlant()) {
+            resource.getPlant().setMaturity(fromResource.getPlant().getMaturity());
+        }
+
+        if (resource.isRock()) {
+            resource.getRock().setQuantity(fromResource.getRock().getQuantity());
+        }
+
+        return resource;
+    }
+
     private void applyToParcel(WorldModule worldModule, RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
         if (terrain.condition == null
                 || ("rock".equals(terrain.condition) && parcel.getResource() != null && parcel.getResource().isRock())
@@ -139,12 +142,8 @@ public class WorldFactory {
             // Add resource
             if (terrain.resource != null) {
                 ResourceModel resource = new ResourceModel(GameData.getData().getItemInfo(terrain.resource));
-                if (terrain.quantity != null && terrain.quantity[1] != terrain.quantity[0]) {
-                    resource.setValue(new Random().nextInt(terrain.quantity[1] - terrain.quantity[0]) + terrain.quantity[0]);
-                } else if (terrain.quantity != null) {
-                    resource.setValue(terrain.quantity[0]);
-                } else {
-                    resource.setValue(10);
+                if (resource.isRock()) {
+                    resource.getRock().setQuantity(terrain.quantity != null ? Utils.getRandom(terrain.quantity) : 10);
                 }
                 parcel.setResource(resource);
                 resource.setParcel(parcel);

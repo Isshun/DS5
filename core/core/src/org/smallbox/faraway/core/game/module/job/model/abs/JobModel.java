@@ -1,11 +1,13 @@
 package org.smallbox.faraway.core.game.module.job.model.abs;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.helper.ItemFinder;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
 
@@ -179,6 +181,7 @@ public abstract class JobModel extends ObjectModel {
     protected abstract boolean onCheck(CharacterModel character);
     protected abstract void onStart(CharacterModel character);
     public abstract JobActionReturn onAction(CharacterModel character);
+    public void onActionDo() {}
     protected void onQuit(CharacterModel character) {}
     protected abstract void onFinish();
 

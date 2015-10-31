@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.game.module.world.model.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 
@@ -55,7 +55,7 @@ public class BuildJob extends JobModel {
         _label = "Build " + _buildItem.getInfo().label;
         _message = "Building";
 
-        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        PathModel path = PathManager.getInstance().getBestAround(character.getParcel(), _jobParcel);
         if (path != null) {
             _targetParcel = path.getLastParcel();
             System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");

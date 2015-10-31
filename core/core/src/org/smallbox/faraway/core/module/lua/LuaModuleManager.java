@@ -15,6 +15,8 @@ import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.module.lua.data.LuaExtendManager;

@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.data.loader;
 
 import org.smallbox.faraway.core.game.model.CategoryInfo;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
