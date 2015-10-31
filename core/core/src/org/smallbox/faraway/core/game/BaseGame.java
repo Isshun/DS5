@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.ui.UserInterface;
 
 /**

@@ -2775,8 +2775,8 @@ public class CharacterName {
     };
 
 
-    public static String getFirstname(CharacterInfoModel.Gender gender) {
-        if (gender == CharacterInfoModel.Gender.MALE) {
+    public static String getFirstname(CharacterPersonalsExtra.Gender gender) {
+        if (gender == CharacterPersonalsExtra.Gender.MALE) {
             return maleFirstName[(int)(Math.random() * 10000) % maleFirstName.length];
         } else {
             return femaleFirstName[(int)(Math.random() * 10000) % femaleFirstName.length];

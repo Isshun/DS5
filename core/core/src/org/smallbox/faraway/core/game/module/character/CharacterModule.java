@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
@@ -141,7 +140,7 @@ public class CharacterModule extends GameModule {
 
     public void remove(CharacterModel c) {
         c.setIsDead();
-        c.getInfo().setName(Strings.LB_DECEADED);
+        c.getPersonals().setName(Strings.LB_DECEADED);
     }
 
     public CharacterModel getCharacter(int characterId) {

@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.character.model;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
@@ -23,11 +23,11 @@ public class DroidModel extends CharacterModel {
 
     public DroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel, name, lastName, old, GameData.getData().characters.get("droid"));
-        _info.setColor(new Color(0xf1f1f1));
+        _personals.setColor(new Color(0xf1f1f1));
     }
 
     @Override
-    public void addBodyStats(CharacterStats stats) {
+    public void addBodyStats(CharacterStatsExtra stats) {
         stats.debuff.cold += BODY_COLD_ABSORB;
         stats.resist.cold += BODY_COLD_RESIST;
     }

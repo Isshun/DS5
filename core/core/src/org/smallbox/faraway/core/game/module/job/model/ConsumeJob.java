@@ -1,12 +1,12 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
@@ -124,14 +124,14 @@ public class ConsumeJob extends JobModel {
             }
             _consumable = null;
 
-            character.moveTo(this, parcel, null);
+            character.moveTo(parcel, null);
 
             return JobActionReturn.CONTINUE;
         }
 
         // Part 2 - Move to free space
         if (_state == State.MOVE_TO_FREE_SPACE) {
-            Log.debug("Character #" + character.getInfo().getName() + ": actionUse (" + _progress + ")");
+            Log.debug("Character #" + character.getPersonals().getName() + ": actionUse (" + _progress + ")");
 
             // Character using item
             if (_progress++ < _cost) {
@@ -177,7 +177,7 @@ public class ConsumeJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

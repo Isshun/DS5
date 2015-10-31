@@ -4,15 +4,15 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**
  * Created by Alex on 09/10/2015.
@@ -38,8 +38,8 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
-        return TalentExtra.TalentType.BUILD;
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.BUILD;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BuildJob extends JobModel {
         PathModel path = PathManager.getInstance().getBestAround(character.getParcel(), _jobParcel);
         if (path != null) {
             _targetParcel = path.getLastParcel();
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
             character.move(path);
         }
     }

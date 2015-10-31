@@ -1,8 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.check.joy;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -35,8 +34,8 @@ public class JobTalk extends JobModel {
         friend.setJob(job);
         character.setJob(job);
 
-        character.moveTo(job, path.getNodes().get(path.getLength() / 2), null);
-        friend.moveTo(job, path.getNodes().get(Math.min(path.getLength() / 2 + 1, path.getLength() - 1)), null);
+        character.moveTo(path.getNodes().get(path.getLength() / 2), null);
+        friend.moveTo(path.getNodes().get(Math.min(path.getLength() / 2 + 1, path.getLength() - 1)), null);
 
         return job;
     }
@@ -61,7 +60,7 @@ public class JobTalk extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

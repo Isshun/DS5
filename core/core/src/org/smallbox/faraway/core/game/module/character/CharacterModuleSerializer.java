@@ -7,9 +7,9 @@ import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.TimeTableModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterInfoModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterNeeds;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterNeedsExtra;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.FileUtils;
 
@@ -33,12 +33,12 @@ public class CharacterModuleSerializer implements SerializerInterface {
     private void writeCharacter(FileOutputStream fos, CharacterModel character) throws IOException {
         FileUtils.write(fos, "<characters id='" + character.getId() + "' type='" + character.getType().name + "'>");
 
-        FileUtils.write(fos, "<lastname>" + character.getInfo().getLastName().trim() + "</lastname>");
-        FileUtils.write(fos, "<firstname>" + character.getInfo().getFirstName().trim() + "</firstname>");
-        FileUtils.write(fos, "<old>" + character.getInfo().getLastName() + "</old>");
+        FileUtils.write(fos, "<lastname>" + character.getPersonals().getLastName().trim() + "</lastname>");
+        FileUtils.write(fos, "<firstname>" + character.getPersonals().getFirstName().trim() + "</firstname>");
+        FileUtils.write(fos, "<old>" + character.getPersonals().getLastName() + "</old>");
         FileUtils.write(fos, "<x>" + character.getParcel().x + "</x>");
         FileUtils.write(fos, "<y>" + character.getParcel().y + "</y>");
-        FileUtils.write(fos, "<gender>" + character.getInfo().getGender() + "</gender>");
+        FileUtils.write(fos, "<gender>" + character.getPersonals().getGender() + "</gender>");
 
         writeCharacterNeeds(fos, character.getNeeds());
         writeCharacterTimetable(fos, character.getTimetable());
@@ -56,7 +56,7 @@ public class CharacterModuleSerializer implements SerializerInterface {
         FileUtils.write(fos, "</timetable>");
     }
 
-    private void writeCharacterNeeds(FileOutputStream fos, CharacterNeeds needs) throws IOException {
+    private void writeCharacterNeeds(FileOutputStream fos, CharacterNeedsExtra needs) throws IOException {
         FileUtils.write(fos, "<needs>");
 
         FileUtils.write(fos, "<isSleeping>" + needs.isSleeping() + "</isSleeping>");
@@ -117,13 +117,13 @@ public class CharacterModuleSerializer implements SerializerInterface {
                     character.setId(vn.parseInt(vn.getText()));
                     break;
                 case "lastname":
-                    character.getInfo().setLastName(vn.toString(vn.getText()));
+                    character.getPersonals().setLastName(vn.toString(vn.getText()));
                     break;
                 case "firstname":
-                    character.getInfo().setFirstName(vn.toString(vn.getText()));
+                    character.getPersonals().setFirstName(vn.toString(vn.getText()));
                     break;
                 case "old":
-                    character.setOld((int)vn.parseDouble(vn.getText()));
+                    character.getPersonals().setOld((int) vn.parseDouble(vn.getText()));
                     break;
                 case "x":
                     x = vn.parseInt(vn.getText());
@@ -132,7 +132,7 @@ public class CharacterModuleSerializer implements SerializerInterface {
                     y = vn.parseInt(vn.getText());
                     break;
                 case "gender":
-                    character.getInfo().setGender(CharacterInfoModel.Gender.valueOf(vn.toString(vn.getText())));
+                    character.getPersonals().setGender(CharacterPersonalsExtra.Gender.valueOf(vn.toString(vn.getText())));
                     break;
                 case "timetable":
                     while (ap3.evalXPath() != -1) {

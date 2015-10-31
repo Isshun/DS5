@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.module.GameModule;
 
@@ -65,7 +65,7 @@ public class CharacterStuffModule extends GameModule {
 //        _data.put(model, stuff);
     }
 
-    private void addValues(CharacterStats.CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {
+    private void addValues(CharacterStatsExtra.CharacterStatsValues values, ItemInfo.EquipmentEffectValues effect) {
         values.coldScore += effect.cold;
         values.heatScore += effect.heat;
         values.oxygenScore += effect.oxygen;

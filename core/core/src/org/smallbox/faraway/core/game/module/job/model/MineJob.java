@@ -1,14 +1,14 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -59,7 +59,7 @@ public class MineJob extends JobModel {
         if (path != null) {
             _targetParcel = path.getLastParcel();
 
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
             character.move(path, new MoveListener<CharacterModel>() {
                 @Override
                 public void onReach(CharacterModel character) {
@@ -176,7 +176,7 @@ public class MineJob extends JobModel {
 
         _message = "Mining";
 
-        _current += character.getTalents().get(TalentExtra.TalentType.MINE).work();
+        _current += character.getTalents().get(CharacterTalentExtra.TalentType.MINE).work();
         _progress = _current / _totalCost;
         if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
@@ -208,8 +208,8 @@ public class MineJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
-        return TalentExtra.TalentType.MINE;
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.MINE;
     }
 
     @Override

@@ -7,16 +7,13 @@ import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.util.MoveListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,49 +128,6 @@ public class PathManager extends GameModule {
 
     }
 
-    public void getPathAsync(final MoveListener listener, final MovableModel movable, final JobModel job, final int x, final int y) {
-//        _threadPool.execute(() -> {
-        ParcelModel fromParcel = movable.getParcel();
-        ParcelModel toParcel = ModuleHelper.getWorldModule().getParcel(x, y);
-
-        if (WorldHelper.isBlocked(x + 1, y) &&
-                WorldHelper.isBlocked(x - 1, y) &&
-                WorldHelper.isBlocked(x, y + 1) &&
-                WorldHelper.isBlocked(x, y - 1)) {
-            printInfo("characters: path fail (surrounded by solid parcel)");
-            movable.onPathFailed(job, fromParcel, toParcel);
-            if (listener != null) {
-                listener.onFail(movable);
-            }
-            return;
-        }
-
-        printDebug("getPathAsync");
-        GraphPath<ParcelModel> path = findPath(fromParcel, toParcel);
-        if (path != null) {
-            printInfo("characters: path success (" + fromParcel.x + "x" + fromParcel.y + " to " + toParcel.x + "x" + toParcel.y + "), job: " + job);
-            synchronized (_runnable) {
-                _runnable.add(() -> {
-                    movable.onPathComplete(path, job, fromParcel, toParcel);
-                    if (listener != null) {
-                        listener.onSuccess(movable);
-                    }
-                });
-            }
-        } else {
-            printInfo("characters: path fail");
-            synchronized (_runnable) {
-                _runnable.add(() -> {
-                    movable.onPathFailed(job, fromParcel, toParcel);
-                    if (listener != null) {
-                        listener.onFail(movable);
-                    }
-                });
-            }
-        }
-//        });
-    }
-
     public static PathManager getInstance() {
         return _self;
     }
@@ -200,6 +154,10 @@ public class PathManager extends GameModule {
     public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
         fromParcel = fixFromParcel(fromParcel);
+
+        if (fromParcel == toParcel) {
+            return PathModel.create(new DefaultGraphPath<>());
+        }
 
         PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
         if (pathCache != null && pathCache.isValid()) {

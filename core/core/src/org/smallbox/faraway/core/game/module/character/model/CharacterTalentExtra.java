@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Alex on 31/10/2015.
  */
-public class TalentExtra {
+public class CharacterTalentExtra {
     public static class TalentEntry {
         public final String         name;
         public final TalentType     type;
@@ -55,7 +55,7 @@ public class TalentExtra {
     private HashMap<TalentType, TalentEntry>    _talentsMap;
     private List<TalentEntry>                   _talents;
 
-    public TalentExtra() {
+    public CharacterTalentExtra() {
         _talentsMap = new HashMap<>();
         _talents = new ArrayList<>();
         for (TalentEntry talent: TALENTS) {
@@ -67,4 +67,14 @@ public class TalentExtra {
 
     public List<TalentEntry>            getAll() { return _talents; }
     public TalentEntry                  get(TalentType type) { return _talentsMap.get(type); }
+
+    //    public void moveTalent(TalentEntry talent, int offset) {
+//        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
+//        if (optionalEntry.isPresent()) {
+//            int position = _talents.indexOf(optionalEntry.get()) + offset;
+//            _talents.remove(optionalEntry.get());
+//            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
+//        }
+//    }
+
 }

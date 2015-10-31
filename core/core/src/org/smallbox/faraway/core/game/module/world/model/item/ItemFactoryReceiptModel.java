@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.world.model.item;
 
 import org.smallbox.faraway.core.PotentialConsumable;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
 import java.util.ArrayList;

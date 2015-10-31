@@ -1,26 +1,10 @@
 package org.smallbox.faraway.core.game.model;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
 public abstract class MovableModel extends ObjectModel {
-
-    public double getMoveProgress() {
-        return _moveProgress;
-    }
-
-    public void setDirection(Direction direction) {
-        _direction = direction;
-    }
-
-    public interface OnPathComplete {
-        void    onPathFailed(JobModel job);
-        void    onPathComplete(GraphPath<ParcelModel> path, JobModel job);
-    }
-
     public enum Direction {
         BOTTOM,
         LEFT,
@@ -37,7 +21,6 @@ public abstract class MovableModel extends ObjectModel {
     protected int                       _frameIndex;
     protected Direction                 _direction;
     protected JobModel                  _job;
-    protected OnPathComplete            _onPathComplete;
     protected double                    _moveProgress;
     protected ParcelModel               _parcel;
 
@@ -54,8 +37,7 @@ public abstract class MovableModel extends ObjectModel {
     public int              getFrameIndex() { return _frameIndex++; }
 
     public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
-
-    public abstract void    onPathFailed(JobModel job, ParcelModel fromParcel, ParcelModel toParcel);
-    public abstract void    onPathComplete(GraphPath<ParcelModel> path, JobModel job, ParcelModel fromParcel, ParcelModel toParcel);
-
+    public void             setDirection(Direction direction) {
+        _direction = direction;
+    }
 }

@@ -1,8 +1,6 @@
 package org.smallbox.faraway.core.module.lua;
 
-import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.ModuleInfo;
 
 import java.io.File;
 

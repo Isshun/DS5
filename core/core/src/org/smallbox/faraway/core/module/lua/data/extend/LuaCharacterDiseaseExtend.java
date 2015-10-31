@@ -3,8 +3,6 @@ package org.smallbox.faraway.core.module.lua.data.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.BuffModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
 import org.smallbox.faraway.core.module.lua.DataExtendException;

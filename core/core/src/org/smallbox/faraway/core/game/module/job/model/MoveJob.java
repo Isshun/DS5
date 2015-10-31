@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -54,7 +54,7 @@ public class MoveJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

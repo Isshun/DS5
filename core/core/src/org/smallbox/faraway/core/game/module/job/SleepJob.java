@@ -2,11 +2,11 @@ package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**
  * Created by Alex on 25/10/2015.
@@ -74,7 +74,7 @@ public class SleepJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

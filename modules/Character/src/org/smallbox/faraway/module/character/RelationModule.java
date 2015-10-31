@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.game.Game;
 //import org.smallbox.faraway.game.model.model.HumanModel;
-//import org.smallbox.faraway.game.model.model.base.CharacterInfoModel;
+//import org.smallbox.faraway.game.model.model.base.CharacterPersonalsExtra;
 //import org.smallbox.faraway.game.model.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.model.base.CharacterRelation;
 //import org.smallbox.faraway.game.model.model.base.CharacterRelation.Relation;
@@ -63,7 +63,7 @@
 //    }
 //
 //    public CharacterModel createChildren(CharacterModel c1, CharacterModel c2) {
-//        String lastName = c1.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? c1.getInfo().getLastName() : c2.getInfo().getLastName();
+//        String lastName = c1.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? c1.getInfo().getLastName() : c2.getInfo().getLastName();
 //        CharacterModel child = new HumanModel(Utils.getUUID(), c1.getX(), c2.getY(), null, lastName, 0);
 //
 //        // Set child's parents
@@ -105,21 +105,21 @@
 //        for (CharacterModel c: childrensFirstParent) {
 //            // Add real brother
 //            if (childrensSecondParent.contains(c)) {
-//                child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.BROTHER : Relation.SISTER));
-//                c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.BROTHER : Relation.SISTER));
+//                child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? Relation.BROTHER : Relation.SISTER));
+//                c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? Relation.BROTHER : Relation.SISTER));
 //            }
 //            // Add half-brother
 //            else {
-//                child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
-//                c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+//                child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+//                c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 //            }
 //        }
 //
 //        for (CharacterModel c: childrensSecondParent) {
 //            // Add half-brother for second parent
 //            if (!childrensFirstParent.contains(c)) {
-//                child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
-//                c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterInfoModel.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+//                child.getRelations().getRelations().add(new CharacterRelation(child, c, c.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
+//                c.getRelations().getRelations().add(new CharacterRelation(c, child, child.getInfo().getGender() == CharacterPersonalsExtra.Gender.MALE ? Relation.HALF_BROTHER : Relation.HALF_SISTER));
 //            }
 //        }
 //    }

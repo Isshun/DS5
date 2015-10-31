@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.character.model;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
@@ -26,17 +26,17 @@ public class AndroidModel extends CharacterModel {
 
     public AndroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel, name, lastName, old, GameData.getData().characters.get("android"));
-        _info.setColor(new Color(0xc57de6));
+        _personals.setColor(new Color(0xc57de6));
     }
 
     @Override
-    public void addBodyStats(CharacterStats stats) {
+    public void addBodyStats(CharacterStatsExtra stats) {
         stats.debuff.cold += BODY_COLD_ABSORB;
         stats.resist.cold += BODY_COLD_RESIST;
     }
 
     @Override
-    public String        getName() { return _info.getFirstName(); }
+    public String        getName() { return _personals.getFirstName(); }
 
     @Override
     public String[][]   getEquipmentViewIds() {

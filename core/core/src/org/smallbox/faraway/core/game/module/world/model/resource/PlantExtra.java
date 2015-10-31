@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.world.model.resource;
 
 import org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
 
-import static org.smallbox.faraway.core.data.ItemInfo.*;
+import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant;
 
 /**
  * Created by Alex on 31/10/2015.

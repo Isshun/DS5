@@ -1,11 +1,10 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -60,8 +59,8 @@ public class HaulJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
-        return TalentExtra.TalentType.BUILD;
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.BUILD;
     }
 
     @Override
@@ -115,7 +114,7 @@ public class HaulJob extends JobModel {
         // TODO: reliquat
         _targetParcel = _currentConsumable.getParcel();
 
-        _character.moveTo(this, _currentConsumable.getParcel(), new MoveListener<CharacterModel>() {
+        _character.moveTo(_currentConsumable.getParcel(), new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel movable) {
                 int missingQuantity = _component.neededQuantity - _component.currentQuantity;
@@ -157,7 +156,7 @@ public class HaulJob extends JobModel {
         _targetParcel = _buildItem.getParcel();
 
         // Store component in factory
-        _character.moveTo(this, _buildItem.getParcel(), new MoveListener<CharacterModel>() {
+        _character.moveTo(_buildItem.getParcel(), new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel movable) {
                 _buildItem.addComponent(_character.getInventory());

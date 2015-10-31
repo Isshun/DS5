@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
-import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
@@ -9,7 +8,6 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.character.model.*;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra.TalentEntry;
 import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
 import org.smallbox.faraway.core.game.module.job.model.UseJob;
@@ -26,9 +24,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -38,8 +34,8 @@ public abstract class CharacterModel extends MovableModel {
 
     public UILabel getLabelDrawable() {
         if (_label == null) {
-            _label = new UILabel(_info.getFirstName().trim().length() * 6 + 1, 13);
-            _label.setText(_info.getFirstName().trim());
+            _label = new UILabel(_personals.getFirstName().trim().length() * 6 + 1, 13);
+            _label.setText(_personals.getFirstName().trim());
             _label.setTextSize(10);
             _label.setTextColor(Color.YELLOW);
             _label.setBackgroundColor(Color.BLUE);
@@ -48,34 +44,21 @@ public abstract class CharacterModel extends MovableModel {
         return _label;
     }
 
-    public void setParcel(ParcelModel parcel) {
-        this._parcel = parcel;
-    }
+    protected CharacterPersonalsExtra           _personals;
+    protected CharacterStatsExtra               _stats;
+    protected CharacterTalentExtra              _talents;
+    protected CharacterNeedsExtra               _needs;
 
-    public boolean hasDisease(String name) {
-        for (DiseaseCharacterModel disease: _diseases) {
-            if (disease.disease.name.equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private CharacterNeeds                      _needs;
     private TimeTableModel                      _timeTable;
     protected boolean                           _isSelected;
     protected int                               _lag;
-    protected double                            _old;
-    protected CharacterInfoModel                _info;
     protected RoomModel                         _quarter;
     protected boolean                           _needRefresh;
     protected ConsumableModel                   _inventory;
     protected MoveListener                      _moveListener;
-    protected CharacterStats                    _stats;
-    protected TalentExtra                       _talents;
     protected boolean                           _isFaint;
     private double                              _moveStep;
-    private List<BuffModel>                     _buffs;
+    private List<BuffCharacterModel>            _buffs;
     public List<DiseaseCharacterModel>          _diseases;
     protected CharacterTypeInfo                 _type;
 
@@ -88,13 +71,13 @@ public abstract class CharacterModel extends MovableModel {
         _buffs = new ArrayList<>();
         _diseases = new ArrayList<>();
         _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
-        _old = old;
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
         _direction = Direction.NONE;
-        _info = new CharacterInfoModel(name, lastName);
+        _personals = new CharacterPersonalsExtra(name, lastName);
+        _personals.setOld(old);
 
-        _talents = new TalentExtra();
+        _talents = new CharacterTalentExtra();
 
 //        _equipments = new ArrayList<>();
 //        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
@@ -103,22 +86,22 @@ public abstract class CharacterModel extends MovableModel {
 //        _equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
 //        _equipments.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
 
-        _stats = new CharacterStats();
+        _stats = new CharacterStatsExtra();
         _stats.speed = 1;
 
-        _needs = new CharacterNeeds(this, _stats);
+        _needs = new CharacterNeedsExtra(this, _stats);
 
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
+    public CharacterNeedsExtra          getNeeds() { return _needs; }
+    public CharacterTalentExtra         getTalents() { return _talents; }
+    public CharacterStatsExtra          getStats() { return _stats; }
+    public CharacterPersonalsExtra      getPersonals() { return _personals; }
     public JobModel                     getJob() { return _job; }
-    public CharacterNeeds               getNeeds() { return _needs; }
     public int                          getLag() { return _lag; }
-    public double                       getOld() { return _old; }
     public RoomModel                    getQuarter() { return _quarter; }
-    public TalentExtra                  getTalents() { return _talents; }
     public double                       getBodyHeat() { return _needs.heat; }
-    public CharacterStats               getStats() { return _stats; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableModel              getInventory() { return _inventory; }
     public abstract String[][]          getEquipmentViewIds();
@@ -128,40 +111,29 @@ public abstract class CharacterModel extends MovableModel {
     public String                       getTypeName() { return _type.name; }
     public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();
-    public CharacterInfoModel           getInfo() { return _info; }
     public double                       getMoveStep() { return _moveStep; }
     public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
-    public List<BuffModel>              getBuffs() { return _buffs; }
+    public List<BuffCharacterModel>     getBuffs() { return _buffs; }
     public List<DiseaseCharacterModel>  getDiseases() { return _diseases; }
 
-    public abstract void                addBodyStats(CharacterStats stats);
+    public abstract void                addBodyStats(CharacterStatsExtra stats);
     public void                         addDisease(DiseaseCharacterModel disease) { _diseases.add(disease); }
-    public void                         addBuff(BuffModel buff) { _buffs.add(buff); }
+    public void                         addBuff(BuffCharacterModel buff) { _buffs.add(buff); }
 
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
     public void                         setInventory(ConsumableModel consumable) { _inventory = consumable; }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setId(int id) { _id = id; }
-    public void                         setOld(int old) { _old = old; }
     public void                         setIsDead() {
         _stats.isAlive = false;
     }
+    public void                         setParcel(ParcelModel parcel) { _parcel = parcel; }
 
     public boolean                      isSelected() { return _isSelected; }
     public boolean                      isAlive() { return _stats.isAlive; }
     public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob; }
     public boolean                      needRefresh() { return _needRefresh; }
-
-
-//    public void moveTalent(TalentEntry talent, int offset) {
-//        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
-//        if (optionalEntry.isPresent()) {
-//            int position = _talents.indexOf(optionalEntry.get()) + offset;
-//            _talents.remove(optionalEntry.get());
-//            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
-//        }
-//    }
 
     public DiseaseCharacterModel getDisease(String name) {
         for (DiseaseCharacterModel disease: _diseases) {
@@ -172,6 +144,15 @@ public abstract class CharacterModel extends MovableModel {
         return null;
     }
 
+    public boolean hasDisease(String name) {
+        for (DiseaseCharacterModel disease: _diseases) {
+            if (disease.disease.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void move(PathModel path) {
         move(path, null);
     }
@@ -179,6 +160,7 @@ public abstract class CharacterModel extends MovableModel {
     public void move(PathModel path, MoveListener<CharacterModel> listener) {
         if (path != null) {
 
+            // Already on position
             if (path.getLength() == 0) {
                 if (listener != null) {
                     listener.onReach(this);
@@ -191,36 +173,17 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void moveTo(JobModel job, int toX, int toY, MoveListener moveListener) {
-        moveTo(job, ModuleHelper.getWorldModule().getParcel(toX, toY), moveListener);
-    }
-
-    public void moveApprox(JobModel job, ParcelModel toParcel, MoveListener moveListener) {
-        ParcelModel walkableParcel = null;
-        for (int offsetX = 0; offsetX <= 1; offsetX++) {
-            for (int offsetY = 0; offsetY <= 1; offsetY++) {
-                if (walkableParcel == null) {
-                    ParcelModel parcel = WorldHelper.getParcel(toParcel.x + offsetX, toParcel.y + offsetY);
-                    if (parcel != null && parcel.isWalkable()) {
-                        walkableParcel = parcel;
-                    }
-                }
-            }
-        }
-        moveTo(job, walkableParcel, moveListener);
-    }
-
-    public void moveTo(JobModel job, ParcelModel toParcel, MoveListener<CharacterModel> moveListener) {
+    public void moveTo(ParcelModel parcel, MoveListener<CharacterModel> listener) {
         // Already on position
-        if (toParcel == _parcel) {
-            if (moveListener != null) {
-                moveListener.onReach(this);
+        if (parcel == _parcel) {
+            if (listener != null) {
+                listener.onReach(this);
             }
             return;
         }
 
-        _path = PathManager.getInstance().getPath(_parcel, toParcel);
-        _moveListener = moveListener;
+        _path = PathManager.getInstance().getPath(_parcel, parcel);
+        _moveListener = listener;
     }
 
     public void fixPosition() {
@@ -263,9 +226,9 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void  longUpdate() {
-        _old += Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL;
+        _personals.setOld(_personals.getOld() + Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL);
 
-        if (_old > Constant.CHARACTER_MAX_OLD) {
+        if (_personals.getOld()> Constant.CHARACTER_MAX_OLD) {
             _stats.isAlive = false;
         }
 
@@ -338,8 +301,6 @@ public abstract class CharacterModel extends MovableModel {
             return;
         }
 
-//        if (_job.getTargetParcel())
-
         if (!_job.hasCharacter(this)) {
             _job = null;
             Log.error("Job not owned by this characters");
@@ -362,28 +323,6 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    @Override
-    public void    onPathFailed(JobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
-        Log.warning("Job failed (no path)");
-
-        // Abort job
-        ModuleHelper.getJobModule().quitJob(job, JobModel.JobAbortReason.BLOCKED);
-        _job = null;
-
-        if (_onPathComplete != null) {
-            _onPathComplete.onPathFailed(job);
-        }
-    }
-
-    @Override
-    public void    onPathComplete(GraphPath<ParcelModel> path, JobModel job, ParcelModel fromParcel, ParcelModel toParcel) {
-//            Log.debug("Character #" + _id + ": go(" + _posX + ", " + _posY + " to " + _toX + ", " + _toY + ")");
-
-        if (_onPathComplete != null) {
-            _onPathComplete.onPathComplete(path, job);
-        }
-    }
-
     public void addInventory(ConsumableModel consumable, int quantity) {
         if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
             Log.error("Character inventory has non-compatible item");
@@ -400,5 +339,4 @@ public abstract class CharacterModel extends MovableModel {
         _inventory.addQuantity(quantity);
         consumable.addQuantity(-quantity);
     }
-
 }

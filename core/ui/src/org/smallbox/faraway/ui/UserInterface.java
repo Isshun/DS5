@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.data.ItemInfo;
@@ -326,7 +327,7 @@ public class UserInterface implements GameEventListener {
                         new ContextEntry("Dump", view -> character.getNeeds().setSleeping(false)),
                 }, x, y);
             } else {
-                _selector.getSelectedCharacter().moveTo(null, getRelativePosX(x), getRelativePosY(y), null);
+                _selector.getSelectedCharacter().moveTo(WorldHelper.getParcel(getRelativePosX(x), getRelativePosY(y)), null);
             }
         }
 

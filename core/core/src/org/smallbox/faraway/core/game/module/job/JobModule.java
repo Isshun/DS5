@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.job;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.*;
 import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterEnergyWarning;
@@ -18,7 +18,6 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReas
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -162,7 +161,7 @@ public class JobModule extends GameModule {
             if (character.getJob() != job) {
                 printError("Fail to assign job");
             } else {
-                printDebug("assign job (" + character.getInfo().getName() + " -> " + character.getJob().getLabel() + ")");
+                printDebug("assign job (" + character.getPersonals().getName() + " -> " + character.getJob().getLabel() + ")");
             }
         } else {
             printError("Try to assign null job");
@@ -256,7 +255,7 @@ public class JobModule extends GameModule {
         JobModel bestJob = null;
 
         // Regular jobs
-        for (TalentExtra.TalentEntry talent: character.getTalents().getAll()) {
+        for (CharacterTalentExtra.TalentEntry talent: character.getTalents().getAll()) {
             if (bestJob == null) {
                 for (JobModel job: _jobs) {
                     if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {

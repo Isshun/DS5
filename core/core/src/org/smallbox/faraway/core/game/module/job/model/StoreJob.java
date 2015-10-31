@@ -1,16 +1,16 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
@@ -114,7 +114,7 @@ public class StoreJob extends JobModel implements GameObserver {
         }
 
         if (_character != null) {
-            _character.moveTo(this, _targetParcel, null);
+            _character.moveTo(_targetParcel, null);
         }
     }
 
@@ -124,8 +124,8 @@ public class StoreJob extends JobModel implements GameObserver {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
-        return TalentExtra.TalentType.STORE;
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.STORE;
     }
 
     @Override
@@ -245,7 +245,7 @@ public class StoreJob extends JobModel implements GameObserver {
             _targetParcel = _jobParcel = _storage.getNearestFreeParcel(_character.getInventory());
             if (_targetParcel != null) {
                 Log.info("Continue job to: " + _targetParcel.x + "x" + _targetParcel.y + ", left: " + _character.getInventory().getQuantity());
-                _character.moveTo(this, _targetParcel, null);
+                _character.moveTo(_targetParcel, null);
                 return JobActionReturn.CONTINUE;
             }
             // No empty space in any storage

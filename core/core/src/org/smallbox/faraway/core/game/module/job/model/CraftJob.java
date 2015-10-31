@@ -5,10 +5,10 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
@@ -102,8 +102,8 @@ public class CraftJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
-        return TalentExtra.TalentType.CRAFT;
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.CRAFT;
     }
 
     @Override
@@ -147,12 +147,12 @@ public class CraftJob extends JobModel {
 
         // Work on factory
         if (_status == Status.MAIN_ACTION) {
-            _current += character.getTalents().get(TalentExtra.TalentType.CRAFT).work();;
+            _current += character.getTalents().get(CharacterTalentExtra.TalentType.CRAFT).work();;
             _progress = _current / _cost;
             _factory.setMessage("Crafting");
 
             if (_current < _cost) {
-                Log.debug("Character #" + character.getInfo().getName() + ": Crafting (" + _progress + ")");
+                Log.debug("Character #" + character.getPersonals().getName() + ": Crafting (" + _progress + ")");
                 return JobActionReturn.CONTINUE;
             }
 
@@ -189,7 +189,7 @@ public class CraftJob extends JobModel {
         ParcelModel parcel = input.consumable.getParcel();
         _targetParcel = parcel;
         _status = Status.MOVE_TO_INGREDIENT;
-        character.moveTo(this, parcel, new MoveListener<CharacterModel>() {
+        character.moveTo(parcel, new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel character) {
                 input.consumable.lock(null);
@@ -240,7 +240,7 @@ public class CraftJob extends JobModel {
         }
 
         // Store component in factory
-        _character.moveTo(this, _targetParcel, new MoveListener<CharacterModel>() {
+        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel character) {
                 if (_receipt != null) {

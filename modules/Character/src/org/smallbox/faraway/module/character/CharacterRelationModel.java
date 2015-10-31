@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.character;
 
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterInfoModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterRelation;
 
@@ -51,8 +51,8 @@ public class CharacterRelationModel {
         }
 
         // Update lastName
-        if (character.getInfo().getGender() == CharacterInfoModel.Gender.FEMALE && mate.getInfo().getGender() == CharacterInfoModel.Gender.MALE) {
-            character.getInfo().setLastName(mate.getInfo().getLastName());
+        if (character.getPersonals().getGender() == CharacterPersonalsExtra.Gender.FEMALE && mate.getPersonals().getGender() == CharacterPersonalsExtra.Gender.MALE) {
+            character.getPersonals().setLastName(mate.getPersonals().getLastName());
         }
 
 //        // Break up

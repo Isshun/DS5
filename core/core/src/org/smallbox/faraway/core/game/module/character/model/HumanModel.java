@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.character.model;
 
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterInfoModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterStats;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterPersonalsExtra;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 /**
@@ -27,11 +27,11 @@ public class HumanModel extends CharacterModel {
 
     public HumanModel(int id, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel, name, lastName, old, GameData.getData().characters.get("human"));
-        _info.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterInfoModel.Gender.MALE : CharacterInfoModel.Gender.FEMALE);
+        _personals.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE);
     }
 
     @Override
-    public void addBodyStats(CharacterStats stats) {
+    public void addBodyStats(CharacterStatsExtra stats) {
         stats.debuff.cold += BODY_COLD_ABSORB;
         stats.resist.cold += BODY_COLD_RESIST;
     }
@@ -53,6 +53,6 @@ public class HumanModel extends CharacterModel {
 
     @Override
     public String getName() {
-        return _info.getFirstName() + " " + _info.getLastName();
+        return _personals.getFirstName() + " " + _personals.getLastName();
     }
 }

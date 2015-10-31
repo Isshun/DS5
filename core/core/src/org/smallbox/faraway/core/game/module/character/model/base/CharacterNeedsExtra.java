@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
+import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
-public class CharacterNeeds {
+public class CharacterNeedsExtra {
     private final CharacterModel     _character;
     private final GameData          _data;
 
@@ -37,10 +37,10 @@ public class CharacterNeeds {
     public int         pain;
 
     private MapObjectModel     _sleepItem;
-    private CharacterStats    _stats;
+    private CharacterStatsExtra _stats;
     private boolean isFainting;
 
-    public CharacterNeeds(CharacterModel character, CharacterStats stats) {
+    public CharacterNeedsExtra(CharacterModel character, CharacterStatsExtra stats) {
         _data = GameData.getData();
         _character = character;
         _stats = stats;

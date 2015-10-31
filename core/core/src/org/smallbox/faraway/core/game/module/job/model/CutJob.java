@@ -1,14 +1,14 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -120,7 +120,7 @@ public class CutJob extends JobModel {
 
         if (path != null) {
             _targetParcel = path.getLastParcel();
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getInfo().getFirstName() + ")");
+            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
             character.move(path);
         }
     }
@@ -154,7 +154,7 @@ public class CutJob extends JobModel {
             return JobActionReturn.ABORT;
         }
 
-        _progress += character.getTalents().get(TalentExtra.TalentType.CUT).work();
+        _progress += character.getTalents().get(CharacterTalentExtra.TalentType.CUT).work();
         if (_progress < _cost) {
             return JobActionReturn.CONTINUE;
         }
@@ -191,8 +191,8 @@ public class CutJob extends JobModel {
     }
 
     @Override
-    public TalentExtra.TalentType getTalentNeeded() {
-        return TalentExtra.TalentType.CUT;
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.CUT;
     }
 
     @Override
