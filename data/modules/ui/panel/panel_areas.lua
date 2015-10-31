@@ -1,6 +1,6 @@
 data:extend({
     type = "view",
-    position = {1200, 65},
+    position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,
     id = "panel_areas",
@@ -16,12 +16,14 @@ data:extend({
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "+ Dump", text_size = 18, padding = 10, on_click = "game:setArea('dump')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "+ Home", text_size = 18, padding = 10, on_click = "game:setArea('home')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "+ Sector", text_size = 18, padding = 10, on_click = "game:setArea('sector')"},
+            { type = "label", size = {180, 40}, background = 0x8b9076, text = "+ Garden", text_size = 18, padding = 10, on_click = "game:setArea('garden')"},
         }},
         { type = "list", id = "list_areas", position = {205, 40}, views = {
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "- Storage", text_size = 18, padding = 10, on_click = "game:removeArea('storage')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "- Dump", text_size = 18, padding = 10, on_click = "game:removeArea('dump')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "- Home", text_size = 18, padding = 10, on_click = "game:removeArea('home')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "- Sector", text_size = 18, padding = 10, on_click = "game:removeArea('sector')"},
+            { type = "label", size = {180, 40}, background = 0x8b9076, text = "- Garden", text_size = 18, padding = 10, on_click = "game:removeArea('garden')"},
         }},
     },
     on_event = function(event, view, data)

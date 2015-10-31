@@ -24,7 +24,7 @@ end
 data:extend({
     type = "list",
     id = "info_area",
-    position = {1200, 65},
+    position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,
     visible = false,
@@ -90,7 +90,7 @@ data:extend({
             view:setVisible(false)
         end
 
-        if event == game.events.on_area_selected then
+        if event == game.events.on_area_selected and data:getTypeName() == "STORAGE" then
             g_area = data;
             g_need_refresh = true
             view:setVisible(true)

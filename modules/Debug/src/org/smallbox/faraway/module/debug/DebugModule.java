@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.debug;
 
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
@@ -117,7 +118,7 @@ public class DebugModule extends GameModule {
             }),
             new CommandEntry("Dump renders",       view -> {
                 Log.notice("\n----------- dump -----------");
-                MainRenderer.getInstance().getRenders().forEach(renderer -> renderer.dump());
+                MainRenderer.getInstance().getRenders().forEach(BaseRenderer::dump);
             })
 //            new CommandEntry("Dump panels",       view -> {
 //                Log.notice("\n----------- dump -----------");
@@ -145,9 +146,11 @@ public class DebugModule extends GameModule {
 
     @Override
     public void onReloadUI() {
-        _view = new UIFrame(200, 1000);
+        _view = new UIFrame(400, 800);
         _view.setBackgroundColor(0x121c1e);
-        _view.setPosition(0, 32);
+        _view.setPosition(1200, 38);
+        _view.setVisible(false);
+        _view.setId("panel_debug");
 
         UILabel lbTitle = new UILabel();
         lbTitle.setText("Debug");
@@ -244,6 +247,9 @@ public class DebugModule extends GameModule {
         }
         if (key == GameEventListener.Key.TILDE) {
             _view.setVisible(!_view.isVisible());
+        }
+        if (key == GameEventListener.Key.ESCAPE) {
+            _view.setVisible(false);
         }
     }
 

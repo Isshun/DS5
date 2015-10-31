@@ -3,6 +3,8 @@ package org.smallbox.faraway.module.extra;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
+import org.smallbox.faraway.core.game.module.job.model.GatherJob;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantExtra;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -44,11 +46,32 @@ public class FloraModule extends GameModule {
         // Growing
 // Plan to gather
         _plants.stream().filter(ResourceModel::isPlant).filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
-            grow(resource, light, temperature);
+            PlantExtra plant = resource.getPlant();
 
-            // Plan to gather
-            if (resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
-                JobHelper.addGather(resource);
+            if (plant.hasSeed()) {
+                grow(resource, light, temperature);
+            }
+
+            // Launch jobs on garden
+            if (resource.getJob() == null && resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
+                GardenAreaModel garden = (GardenAreaModel)resource.getParcel().getArea();
+
+                plant.setNourish(Math.max(0, plant.getNourish() - resource.getInfo().plant.nourish));
+
+                // Plan to harvest
+                if (plant.isMature()) {
+                    JobHelper.addGather(resource, GatherJob.Mode.HARVEST);
+                }
+
+                // Plan to plant seed
+                else if (!plant.hasSeed()) {
+                    JobHelper.addGather(resource, GatherJob.Mode.PLANT_SEED);
+                }
+
+                // Plan to nourish
+                if (plant.getNourish() < 0.75) {
+                    JobHelper.addGather(resource, GatherJob.Mode.NOURISH);
+                }
             }
         });
     }
@@ -65,6 +88,12 @@ public class FloraModule extends GameModule {
 
         if (bestState != null) {
             resource.getPlant().grow(bestState);
+
+            // Plant in garden grow 3x faster
+            if (resource.getPlant().getNourish() > 0.25) {
+                resource.getPlant().grow(bestState);
+                resource.getPlant().grow(bestState);
+            }
         }
     }
 

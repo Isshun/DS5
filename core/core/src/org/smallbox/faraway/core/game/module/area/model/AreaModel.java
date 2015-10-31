@@ -57,6 +57,7 @@ public class AreaModel {
     }
 
     public AreaType getType() { return _type; }
+    public String getTypeName() { return _type.name(); }
     public int getTypeIndex() { return _typeIndex; }
 
     public void removeParcel(ParcelModel parcel) {

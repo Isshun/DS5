@@ -30,7 +30,7 @@ public class JobHelper {
         if (res == null) {
             return null;
         }
-        return GatherJob.create(res);
+        return GatherJob.create(res, GatherJob.Mode.HARVEST);
     }
 
     public static JobModel createMiningJob(int x, int y) {
@@ -88,7 +88,7 @@ public class JobHelper {
 //        return job;
 //    }
 
-    public static JobModel addGather(ResourceModel resource) {
+    public static JobModel addGather(ResourceModel resource, GatherJob.Mode mode) {
         if (resource == null) {
             Log.error("JobModule: gather on null model");
             return null;
@@ -101,7 +101,7 @@ public class JobHelper {
             }
         }
 
-        JobModel job = GatherJob.create(resource);
+        JobModel job = GatherJob.create(resource, mode);
         ModuleHelper.getJobModule().addJob(job);
 
         return job;

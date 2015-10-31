@@ -16,16 +16,17 @@ public class SleepJob extends JobModel {
     private ItemModel       _sleepItem;
     private long            _sleepTime;
 
-    public SleepJob() {
+    public SleepJob(ParcelModel parcel) {
         _label = "Sleep";
+        _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
         _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
     }
 
-    public SleepJob(ItemModel item) {
+    public SleepJob(ParcelModel parcel, ItemModel item) {
         _label = "Sleep";
         _sleepItem = item;
-        _jobParcel = _targetParcel = item.getParcel();
+        _jobParcel = _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
         _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
     }
@@ -52,6 +53,7 @@ public class SleepJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
+        character.moveTo(_targetParcel, null);
     }
 
     @Override

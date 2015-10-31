@@ -9,6 +9,7 @@ data:extend({
         plant = {
             gather = 0.25,
             growing = 0.005,
+            nourish = -0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -36,6 +37,7 @@ data:extend({
         plant = {
             gather = 0.25,
             growing = 0.005,
+            nourish = -0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -68,6 +70,7 @@ data:extend({
         plant = {
             gather = 0.25,
             growing = 0.005,
+            nourish = -0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -97,6 +100,7 @@ data:extend({
         plant = {
             gather = 0.25,
             growing = 0.005,
+            nourish = -0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -126,6 +130,7 @@ data:extend({
         plant = {
             gather = 0.25,
             growing = 0.005,
+            nourish = -0.005,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },

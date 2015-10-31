@@ -56,7 +56,12 @@ public class LuaLayoutFactory {
                     grid.setColumnWidth(columnWidth.toint());
                 }
 
-                grid.setSize(grid.getColumns() * grid.getColumnWidth(), grid.getHeight());
+                if (width != -1 && height != -1) {
+                    grid.setFixedSize(width, height);
+                    grid.setSize(width, height);
+                } else {
+                    grid.setSize(grid.getColumns() * grid.getColumnWidth(), grid.getHeight());
+                }
 
                 view = grid;
                 break;

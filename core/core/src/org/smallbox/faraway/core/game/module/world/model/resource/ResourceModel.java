@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.game.module.world.model.resource;
 
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.module.job.model.GatherJob;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 
 public class ResourceModel extends MapObjectModel {
@@ -8,6 +10,7 @@ public class ResourceModel extends MapObjectModel {
     private RockExtra           _rock;
     private double              _quantity;
     private int                 _tile;
+    private JobModel            _job;
 
     public ResourceModel(ItemInfo info, int id) {
         super(info, id);
@@ -36,6 +39,7 @@ public class ResourceModel extends MapObjectModel {
     public int          getTile() { return _tile; }
     public PlantExtra   getPlant() { return _plant; }
     public RockExtra    getRock() { return _rock; }
+    public JobModel     getJob() { return _job; }
 
     public boolean      canBeMined() { return _info.isRock; }
     public boolean      canBeHarvested() { return _info.isPlant; }
@@ -45,4 +49,5 @@ public class ResourceModel extends MapObjectModel {
 
     public void         setTile(int tile) { _tile = tile; }
     public void         setQuantity(double quantity) { _quantity = quantity; }
+    public void         setJob(JobModel job) { _job = job; }
 }

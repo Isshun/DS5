@@ -156,7 +156,9 @@ public class PathManager extends GameModule {
         fromParcel = fixFromParcel(fromParcel);
 
         if (fromParcel == toParcel) {
-            return PathModel.create(new DefaultGraphPath<>());
+            DefaultGraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
+            nodes.add(toParcel);
+            return PathModel.create(nodes);
         }
 
         PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
@@ -236,7 +238,7 @@ public class PathManager extends GameModule {
         PathModel bestPath = null;
         for (int x = toParcel.x -1; x <= toParcel.x + 1; x++) {
             for (int y = toParcel.y -1; y <= toParcel.y + 1; y++) {
-                if (x != fromParcel.x || y != fromParcel.y) {
+                if (x != toParcel.x || y != toParcel.y) {
                     ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
                     if (parcel != null && parcel.isWalkable()) {
                         PathModel path = getPath(fromParcel, parcel);

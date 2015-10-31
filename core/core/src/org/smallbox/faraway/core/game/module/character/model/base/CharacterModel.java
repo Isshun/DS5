@@ -132,7 +132,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public boolean                      isSelected() { return _isSelected; }
     public boolean                      isAlive() { return _stats.isAlive; }
-    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob; }
+    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
 
     public DiseaseCharacterModel getDisease(String name) {

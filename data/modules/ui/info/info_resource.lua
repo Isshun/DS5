@@ -3,7 +3,7 @@ resource = nil
 data:extend({
     type = "view",
     name = "ui-test",
-    position = {1200, 65},
+    position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,
     visible = false,
@@ -14,10 +14,13 @@ data:extend({
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "list", position = {0, 60}, views = {
             { type = "label", id = "lb_position", text_size = 18, padding = 10},
+            { type = "label", id = "lb_job", text_size = 18, padding = 10},
             { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
             { type = "label", id = "lb_maturity", text_size = 18, padding = 10},
             { type = "label", id = "lb_grow_state", text_size = 18, padding = 10},
             { type = "label", id = "lb_tile", text_size = 18, padding = 10},
+            { type = "label", id = "lb_seed", text_size = 18, padding = 10},
+            { type = "label", id = "lb_nourish", text_size = 18, padding = 10},
         }},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 30}, size = {90, 40}, on_click = function()
             game.events:send("encyclopedia.open_resource", resource)
@@ -51,8 +54,14 @@ data:extend({
             view:findById("lb_position"):setText("Position", ": ", resource:getX() .. "x" .. resource:getY())
             view:findById("lb_tile"):setText("Tile: " .. resource:getTile())
 
+            if resource:getJob() then
+                view:findById("lb_job"):setText("Job: " .. resource:getJob():getLabel())
+            end
+
             if info.isPlant then
                 local plant = resource:getPlant()
+                view:findById("lb_seed"):setText("Seed", ": ", plant:hasSeed() and "yes" or "no")
+                view:findById("lb_nourish"):setText("Nourish", ": ", math.floor(plant:getNourish() * 100) .. "%")
                 view:findById("lb_maturity"):setText("Maturity", ": ", math.floor(plant:getMaturity() * 100) .. "%")
                 view:findById("lb_maturity"):setVisible(true)
                 local growState = plant:getGrowState()

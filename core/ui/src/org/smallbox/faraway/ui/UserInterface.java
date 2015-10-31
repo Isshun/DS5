@@ -311,6 +311,8 @@ public class UserInterface implements GameEventListener {
     }
 
     public void onRightClick(int x, int y) {
+        _keyRightPressed = false;
+
         final CharacterModel character = _selector.getSelectedCharacter();
         final ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(getRelativePosX(x), getRelativePosY(y));
 
@@ -319,6 +321,7 @@ public class UserInterface implements GameEventListener {
                 openContextMenu(new ContextEntry[] {
                         new ContextEntry("Wake up", view -> character.getNeeds().setSleeping(false)),
                 }, x, y);
+                return;
             } else if (parcel != null && (parcel.getItem() != null || parcel.getConsumable() != null || parcel.getResource() != null || (parcel.getStructure() != null && !parcel.getStructure().isFloor()))) {
                 openContextMenu(new ContextEntry[] {
                         new ContextEntry("Use", view -> character.getNeeds().setSleeping(false)),
@@ -326,12 +329,15 @@ public class UserInterface implements GameEventListener {
                         new ContextEntry("Clean", view -> character.getNeeds().setSleeping(false)),
                         new ContextEntry("Dump", view -> character.getNeeds().setSleeping(false)),
                 }, x, y);
+                return;
             } else {
                 _selector.getSelectedCharacter().moveTo(WorldHelper.getParcel(getRelativePosX(x), getRelativePosY(y)), null);
+                return;
             }
         }
 
-        _keyRightPressed = false;
+        // TODO: clean
+        Game.getInstance().notify(observer -> observer.onKeyPress(Key.ESCAPE));
     }
 
     private void openContextMenu(ContextEntry[] entries, int x, int y) {
@@ -357,6 +363,9 @@ public class UserInterface implements GameEventListener {
     public View findById(String id) {
         int resId = id.hashCode();
         for (View view: _views) {
+            if (view.getId() == resId) {
+                return view;
+            }
             View v = view.findById(resId);
             if (v != null) {
                 return v;

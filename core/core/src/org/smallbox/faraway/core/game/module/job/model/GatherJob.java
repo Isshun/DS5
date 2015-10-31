@@ -16,6 +16,9 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 
 public class GatherJob extends JobModel {
+    public enum Mode {PLANT_SEED, NOURISH, HARVEST}
+
+    private Mode                _mode;
     private ResourceModel       _resource;
     private int                 _totalCost;
     private double              _current;
@@ -29,9 +32,9 @@ public class GatherJob extends JobModel {
         super(actionInfo, jobParcel, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
     }
 
-    public static JobModel create(ResourceModel resource) {
+    public static JobModel create(ResourceModel resource, Mode mode) {
         // Resource is not gatherable
-        if (resource == null || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
+        if (resource == null || !resource.isPlant() || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
             return null;
         }
 
@@ -44,7 +47,15 @@ public class GatherJob extends JobModel {
         });
         job._resource = resource;
         job._resource.addJob(job);
+        job._resource.setJob(job);
         job._totalCost = job._cost;
+        job._mode = mode;
+
+        switch (mode) {
+            case PLANT_SEED: job._label = "Plant seed"; break;
+            case NOURISH: job._label = "Nourish"; break;
+            case HARVEST: job._label = "Harvest"; break;
+        }
 
         return job;
     }
@@ -75,6 +86,10 @@ public class GatherJob extends JobModel {
             return false;
         }
 
+        if (_mode == Mode.NOURISH && _resource.getPlant().isMature()) {
+            return false;
+        }
+
 //        // Resource is depleted
 //        if (_resource.isDepleted()) {
 //            _reason = Abort.INVALID;
@@ -93,23 +108,35 @@ public class GatherJob extends JobModel {
     @Override
     protected void onFinish() {
         Log.info("Gather complete");
-        _resource.removeJob(null);
+        _resource.removeJob(this);
+        _resource.setJob(null);
 
-        if (_resource.getInfo().plant.cutOnGathering) {
-            ModuleHelper.getWorldModule().removeResource(_resource);
+        if (_mode == Mode.PLANT_SEED) {
+            _resource.getPlant().setSeed(true);
+            _resource.getPlant().setNourish(1);
         }
 
-        if (_actionInfo.finalProducts != null) {
-            _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
-                    ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
+        if (_mode == Mode.NOURISH) {
+            _resource.getPlant().setNourish(Math.min(1, _resource.getPlant().getNourish() + 0.5));
+        }
+
+        if (_mode == Mode.HARVEST) {
+            if (_resource.getInfo().plant.cutOnGathering) {
+                ModuleHelper.getWorldModule().removeResource(_resource);
+            }
+
+            if (_actionInfo.finalProducts != null) {
+                _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
+                        ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
+            }
         }
     }
 
     @Override
     public void onActionDo() {
-        if (_current > 0) {
-            _progress += 0.01;
-        }
+//        if (_current > 0) {
+//            _progress += 0.01;
+//        }
     }
 
     @Override
@@ -128,16 +155,9 @@ public class GatherJob extends JobModel {
         }
 
         _current += character.getTalents().get(CharacterTalentExtra.TalentType.GATHER).work();
-//        _progress = _current / _totalCost;
+        _progress = _current / _totalCost;
         if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
-        }
-
-        // Remove a single unit
-        _resource.setQuantity(0);
-        if (_actionInfo.products != null) {
-            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
-                    ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
         }
 
         return JobActionReturn.FINISH;
@@ -145,7 +165,7 @@ public class GatherJob extends JobModel {
 
     @Override
     public String getLabel() {
-        return "gather " + _resource.getLabel();
+        return _label;
     }
 
     @Override

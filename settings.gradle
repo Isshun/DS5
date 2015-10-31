@@ -9,6 +9,8 @@ include 'modules/Character'
 include 'modules/Debug'
 include 'modules/Quest'
 include 'modules/World'
+include 'modules/Music'
+include 'modules/Resource'
 include 'PortraitModule'
 include 'TestModule'
 

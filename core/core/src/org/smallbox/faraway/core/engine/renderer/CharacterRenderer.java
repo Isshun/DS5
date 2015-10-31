@@ -109,7 +109,6 @@ public class CharacterRenderer extends BaseRenderer {
                     }
                 }
 
-
                 // Draw characters
                 renderer.draw(_spriteManager.getCharacter(c, dirIndex, frame), posX, posY);
 
@@ -131,8 +130,9 @@ public class CharacterRenderer extends BaseRenderer {
                     renderer.draw(_spriteManager.getSelectorCorner(3), posX + 24, posY + 28);
                 }
 
+                // Draw inventory
                 if (c.getInventory() != null) {
-                    renderer.draw(_spriteManager.getItem(c.getInventory()), posX + 2, posY + 8);
+                    renderer.draw(_spriteManager.getItem(c.getInventory()), posX, posY + 2);
                 }
 
                 // Draw action icon

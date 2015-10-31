@@ -57,6 +57,7 @@ public class ItemInfo {
         public double                   growing;
         public double                   minMaturity;
         public boolean                  cutOnGathering = true;
+        public double                   nourish;
     }
 
     public static class ItemInfoReceipt {

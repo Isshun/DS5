@@ -43,9 +43,9 @@ public class CheckCharacterEnergyWarning extends CharacterCheck {
     @Override
     public JobModel create(CharacterModel character) {
         // Get nearest bed
-        ItemModel item = (ItemModel) ((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(bedFilter, character);
+        ItemModel item = (ItemModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(bedFilter, character);
         if (item != null) {
-            return new SleepJob(item);
+            return new SleepJob(item.getParcel(), item);
         }
 
         // Get energy consumable

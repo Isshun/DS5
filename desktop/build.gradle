@@ -56,6 +56,8 @@ dependencies {
     compile project(":modules/Quest")
     compile project(":modules/Stats")
     compile project(":modules/World")
+    compile project(":modules/Music")
+    compile project(":modules/Resource")
 }
 
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {

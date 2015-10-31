@@ -35,9 +35,14 @@ public class CheckCharacterTimetableSleep extends CharacterCheck {
         }
 
         ItemFinder finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
-        SleepJob job = new SleepJob((ItemModel)finder.getNearest(bedFilter, character));
-        job.setWakeTime(wakeTime);
-        return job;
+        ItemModel item = (ItemModel)finder.getNearest(bedFilter, character);
+        if (item != null) {
+            SleepJob job = new SleepJob(item.getParcel(), item);
+            job.setWakeTime(wakeTime);
+            return job;
+        }
+
+        return null;
     }
 
     @Override

@@ -1,6 +1,6 @@
 data:extend({
     type = "view",
-    position = {1200, 65},
+    position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,
     id = "panel_jobs",

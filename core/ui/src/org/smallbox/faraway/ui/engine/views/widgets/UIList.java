@@ -32,6 +32,7 @@ public class UIList extends View {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
+
 //            if (_needResetPos) {
 //                _finalX = x;
 //                _finalY = y;
@@ -51,8 +52,10 @@ public class UIList extends View {
 
             int offset = 0;
             for (View view : _views) {
-                view.draw(renderer, _x + x, _y + y + offset);
-                offset += view.getHeight();
+                if (view.isVisible()) {
+                    view.draw(renderer, _x + x, _y + y + offset);
+                    offset += view.getHeight();
+                }
             }
         }
     }
