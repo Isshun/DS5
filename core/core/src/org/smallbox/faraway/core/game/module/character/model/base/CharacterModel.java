@@ -8,10 +8,8 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.game.module.character.model.BuffModel;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.character.model.TimeTableModel;
+import org.smallbox.faraway.core.game.module.character.model.*;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra.TalentEntry;
 import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
 import org.smallbox.faraway.core.game.module.job.model.UseJob;
@@ -63,52 +61,6 @@ public abstract class CharacterModel extends MovableModel {
         return false;
     }
 
-    public enum TalentType {
-        HEAL,
-        CRAFT,
-        COOK,
-        GATHER,
-        MINE,
-        HAUL,
-        STORE,
-        BUILD,
-        CUT,
-        CLEAN
-    }
-
-    public static class TalentEntry {
-        public final String         name;
-        public final TalentType     type;
-        public int                  index;
-        public double               level;
-        public double               learnCoef;
-
-        public TalentEntry(TalentType type, String name) {
-            this.type = type;
-            this.name = name;
-            this.level = 1;
-            this.learnCoef = 1;
-        }
-
-        public double work() {
-            this.level = Math.min(10, this.level + 0.5 * this.learnCoef);
-            return this.level / 2;
-        }
-    }
-
-    private static final TalentEntry[] TALENTS = new TalentEntry[] {
-            new TalentEntry(TalentType.HEAL,    "Heal"),
-            new TalentEntry(TalentType.CRAFT,   "Craft"),
-            new TalentEntry(TalentType.COOK,    "Cook"),
-            new TalentEntry(TalentType.STORE,   "Store"),
-            new TalentEntry(TalentType.GATHER,  "Gather"),
-            new TalentEntry(TalentType.CUT,     "Cut"),
-            new TalentEntry(TalentType.MINE,    "Mine"),
-            new TalentEntry(TalentType.HAUL,    "Haul"),
-            new TalentEntry(TalentType.CLEAN,   "Clean"),
-            new TalentEntry(TalentType.BUILD,   "Build"),
-    };
-
     private CharacterNeeds                      _needs;
     private TimeTableModel                      _timeTable;
     protected boolean                           _isSelected;
@@ -120,9 +72,8 @@ public abstract class CharacterModel extends MovableModel {
     protected ConsumableModel                   _inventory;
     protected MoveListener                      _moveListener;
     protected CharacterStats                    _stats;
+    protected TalentExtra                       _talents;
     protected boolean                           _isFaint;
-    private HashMap<TalentType, TalentEntry>    _talentsMap;
-    private List<TalentEntry>                   _talents;
     private double                              _moveStep;
     private List<BuffModel>                     _buffs;
     public List<DiseaseCharacterModel>          _diseases;
@@ -143,13 +94,7 @@ public abstract class CharacterModel extends MovableModel {
         _direction = Direction.NONE;
         _info = new CharacterInfoModel(name, lastName);
 
-        _talentsMap = new HashMap<>();
-        _talents = new ArrayList<>();
-        for (TalentEntry talent: TALENTS) {
-            _talents.add(talent);
-            _talentsMap.put(talent.type, talent);
-            talent.index = _talents.indexOf(talent);
-        }
+        _talents = new TalentExtra();
 
 //        _equipments = new ArrayList<>();
 //        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
@@ -171,8 +116,7 @@ public abstract class CharacterModel extends MovableModel {
     public int                          getLag() { return _lag; }
     public double                       getOld() { return _old; }
     public RoomModel                    getQuarter() { return _quarter; }
-    public List<TalentEntry>            getTalents() { return _talents; }
-    public TalentEntry                  getTalent(TalentType type) { return _talentsMap.get(type); }
+    public TalentExtra                  getTalents() { return _talents; }
     public double                       getBodyHeat() { return _needs.heat; }
     public CharacterStats               getStats() { return _stats; }
     public ParcelModel                  getParcel() { return _parcel; }
@@ -210,14 +154,14 @@ public abstract class CharacterModel extends MovableModel {
     public boolean                      needRefresh() { return _needRefresh; }
 
 
-    public void moveTalent(TalentEntry talent, int offset) {
-        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
-        if (optionalEntry.isPresent()) {
-            int position = _talents.indexOf(optionalEntry.get()) + offset;
-            _talents.remove(optionalEntry.get());
-            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
-        }
-    }
+//    public void moveTalent(TalentEntry talent, int offset) {
+//        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
+//        if (optionalEntry.isPresent()) {
+//            int position = _talents.indexOf(optionalEntry.get()) + offset;
+//            _talents.remove(optionalEntry.get());
+//            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
+//        }
+//    }
 
     public DiseaseCharacterModel getDisease(String name) {
         for (DiseaseCharacterModel disease: _diseases) {

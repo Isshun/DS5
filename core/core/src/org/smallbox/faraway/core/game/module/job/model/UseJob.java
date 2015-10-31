@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.data.ItemInfo;
@@ -18,7 +19,7 @@ public class UseJob extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
+    public TalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

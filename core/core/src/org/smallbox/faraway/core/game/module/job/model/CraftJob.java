@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
@@ -101,8 +102,8 @@ public class CraftJob extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
-        return CharacterModel.TalentType.CRAFT;
+    public TalentExtra.TalentType getTalentNeeded() {
+        return TalentExtra.TalentType.CRAFT;
     }
 
     @Override
@@ -146,7 +147,7 @@ public class CraftJob extends JobModel {
 
         // Work on factory
         if (_status == Status.MAIN_ACTION) {
-            _current += character.getTalent(CharacterModel.TalentType.CRAFT).work();;
+            _current += character.getTalents().get(TalentExtra.TalentType.CRAFT).work();;
             _progress = _current / _cost;
             _factory.setMessage("Crafting");
 

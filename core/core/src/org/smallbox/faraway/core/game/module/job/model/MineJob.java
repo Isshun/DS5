@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -175,7 +176,7 @@ public class MineJob extends JobModel {
 
         _message = "Mining";
 
-        _current += character.getTalent(CharacterModel.TalentType.MINE).work();
+        _current += character.getTalents().get(TalentExtra.TalentType.MINE).work();
         _progress = _current / _totalCost;
         if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
@@ -207,8 +208,8 @@ public class MineJob extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
-        return CharacterModel.TalentType.MINE;
+    public TalentExtra.TalentType getTalentNeeded() {
+        return TalentExtra.TalentType.MINE;
     }
 
     @Override

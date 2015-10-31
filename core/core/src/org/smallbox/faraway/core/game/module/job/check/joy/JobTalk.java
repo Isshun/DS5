@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.job.check.joy;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -60,7 +61,7 @@ public class JobTalk extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
+    public TalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

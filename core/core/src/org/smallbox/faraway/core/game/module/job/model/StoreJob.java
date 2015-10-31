@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -123,8 +124,8 @@ public class StoreJob extends JobModel implements GameObserver {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
-        return CharacterModel.TalentType.STORE;
+    public TalentExtra.TalentType getTalentNeeded() {
+        return TalentExtra.TalentType.STORE;
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.helper.ItemFinder;
 import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
@@ -186,7 +187,7 @@ public abstract class JobModel extends ObjectModel {
     protected abstract void onFinish();
 
 
-    public abstract CharacterModel.TalentType getTalentNeeded();
+    public abstract TalentExtra.TalentType getTalentNeeded();
 
     /**
      *

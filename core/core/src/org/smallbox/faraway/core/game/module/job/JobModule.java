@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.module.job;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.*;
 import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterEnergyWarning;
@@ -255,7 +256,7 @@ public class JobModule extends GameModule {
         JobModel bestJob = null;
 
         // Regular jobs
-        for (CharacterModel.TalentEntry talent: character.getTalents()) {
+        for (TalentExtra.TalentEntry talent: character.getTalents().getAll()) {
             if (bestJob == null) {
                 for (JobModel job: _jobs) {
                     if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {

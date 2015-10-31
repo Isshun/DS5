@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
@@ -16,11 +17,13 @@ public class SleepJob extends JobModel {
     private long            _sleepTime;
 
     public SleepJob() {
+        _label = "Sleep";
         _sleepTime = Game.getInstance().getTick();
         _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
     }
 
     public SleepJob(ItemModel item) {
+        _label = "Sleep";
         _sleepItem = item;
         _jobParcel = _targetParcel = item.getParcel();
         _sleepTime = Game.getInstance().getTick();
@@ -71,7 +74,7 @@ public class SleepJob extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
+    public TalentExtra.TalentType getTalentNeeded() {
         return null;
     }
 

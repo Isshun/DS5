@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -37,8 +38,8 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
-        return CharacterModel.TalentType.BUILD;
+    public TalentExtra.TalentType getTalentNeeded() {
+        return TalentExtra.TalentType.BUILD;
     }
 
     @Override

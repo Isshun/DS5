@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -153,7 +154,7 @@ public class CutJob extends JobModel {
             return JobActionReturn.ABORT;
         }
 
-        _progress += character.getTalent(CharacterModel.TalentType.CUT).work();
+        _progress += character.getTalents().get(TalentExtra.TalentType.CUT).work();
         if (_progress < _cost) {
             return JobActionReturn.CONTINUE;
         }
@@ -190,8 +191,8 @@ public class CutJob extends JobModel {
     }
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
-        return CharacterModel.TalentType.CUT;
+    public TalentExtra.TalentType getTalentNeeded() {
+        return TalentExtra.TalentType.CUT;
     }
 
     @Override

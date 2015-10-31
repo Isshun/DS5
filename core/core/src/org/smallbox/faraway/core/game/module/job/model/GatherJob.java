@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
+import org.smallbox.faraway.core.game.module.character.model.TalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -20,8 +21,8 @@ public class GatherJob extends JobModel {
     private double              _current;
 
     @Override
-    public CharacterModel.TalentType getTalentNeeded() {
-        return CharacterModel.TalentType.GATHER;
+    public TalentExtra.TalentType getTalentNeeded() {
+        return TalentExtra.TalentType.GATHER;
     }
 
     private GatherJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
@@ -126,7 +127,7 @@ public class GatherJob extends JobModel {
             return JobActionReturn.ABORT;
         }
 
-        _current += character.getTalent(CharacterModel.TalentType.GATHER).work();
+        _current += character.getTalents().get(TalentExtra.TalentType.GATHER).work();
 //        _progress = _current / _totalCost;
         if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
