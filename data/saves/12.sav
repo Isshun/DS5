@@ -1933,7 +1933,7 @@
 <progress>10</progress>
 </structure>
 <item id='637' name='base.cooker'>
-<health>0</health>
+<health>50</health>
 <progress>0</progress>
 </item>
 </parcel>

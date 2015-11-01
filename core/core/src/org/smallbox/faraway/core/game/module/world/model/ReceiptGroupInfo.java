@@ -10,7 +10,7 @@ import java.util.List;
 public class ReceiptGroupInfo {
     public static class ReceiptInputInfo {
         public String       itemName;
-        public ItemInfo item;
+        public ItemInfo     item;
         public int          quantity;
     }
 

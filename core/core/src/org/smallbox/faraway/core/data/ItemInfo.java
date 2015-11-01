@@ -43,7 +43,6 @@ public class ItemInfo {
         public String                   name;
         public float                    dropRate;
         public List<ItemProductInfo>    products;
-        public List<ItemProductInfo>    finalProducts;
     }
 
     public static class ItemInfoPlant {
@@ -194,7 +193,7 @@ public class ItemInfo {
     public boolean                      isCloseRoom;
     public boolean                      isFloor;
     public ItemBuildInfo                build;
-    public int                          maxHealth;
+    public int                          health = 1;
     public int                          power;
     public double                       sealing;
     public boolean                      isLive;

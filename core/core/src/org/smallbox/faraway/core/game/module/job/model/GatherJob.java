@@ -122,10 +122,13 @@ public class GatherJob extends JobModel {
         }
 
         if (_mode == Mode.HARVEST || _mode == Mode.CUT) {
+            double maturity = _resource.getPlant().getMaturity();
+
             // Create consumable from resource
-            if (_actionInfo.finalProducts != null) {
-                _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
-                        ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
+            if (_actionInfo.products != null) {
+                _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
+                    ModuleHelper.getWorldModule().putConsumable(_resource.getParcel(), productInfo.item, (int) Math.round(Utils.getRandom(productInfo.quantity) * maturity));
+                });
             }
 
             // Remove resource from parcel function of mode or resource info

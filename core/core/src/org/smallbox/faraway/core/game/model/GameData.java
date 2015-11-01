@@ -43,7 +43,6 @@ public class GameData {
         _loaders.add(new ConfigLoader());
         _loaders.add(new WeatherLoader());
         _loaders.add(new EquipmentLoader());
-        _loaders.add(new ItemLoader());
         _loaders.add(new PlanetLoader());
         _loaders.add(new CategoryLoader());
         _loaders.add(new CharacterLoader());
@@ -55,24 +54,8 @@ public class GameData {
                 return info;
             }
         }
-
         throw new RuntimeException("item not exists: " + name);
     }
-
-    public ItemInfo getRandomGatherItem() {
-        if (gatherItems.size() > 0) {
-            return gatherItems.get((int)(Math.random() * gatherItems.size()));
-        }
-        return null;
-    }
-
-//    public String getString(String string) {
-//        String str = strings.get(string);
-//        if (str != null) {
-//            return str;
-//        }
-//        return string;
-//    }
 
     public static GameData getData() {
         return _data;

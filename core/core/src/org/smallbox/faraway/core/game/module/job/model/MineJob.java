@@ -149,8 +149,8 @@ public class MineJob extends JobModel {
         Log.info("Mine complete");
         ModuleHelper.getWorldModule().removeResource(_resource);
 
-        if (_actionInfo.finalProducts != null) {
-            _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
+        if (_actionInfo.products != null) {
+            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
                 ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity));
             });
         }
@@ -180,13 +180,6 @@ public class MineJob extends JobModel {
         _progress = _current / _totalCost;
         if (_current < _totalCost) {
             return JobActionReturn.CONTINUE;
-        }
-
-        // Remove a single unit
-        _resource.setQuantity(0);
-        if (_actionInfo.products != null) {
-            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
-                    ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
         }
 
         return JobActionReturn.FINISH;

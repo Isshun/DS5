@@ -51,7 +51,7 @@ public abstract class MapObjectModel extends ObjectModel {
 
     private void init(ItemInfo info, int id) {
         // Init
-        _health = info.maxHealth;
+        _health = info.health / 2;
         _lastBlocked = -1;
         _owner = null;
         _id = id;
@@ -112,7 +112,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public double           getSealing() { return _info.sealing; }
     public int              getCurrentFrame() { return _currentFrame; }
     public int              getHealth() { return _health; }
-    public int              getMaxHealth() { return _info.maxHealth; }
+    public int              getMaxHealth() { return _info.health; }
     public List<JobModel> getJobs() { return _jobs; }
 //    public JobBuild         getJobBuild() { return _jobBuild; }
 

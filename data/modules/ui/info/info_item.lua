@@ -7,14 +7,20 @@ data:extend({
     size = {400, 800},
     background = 0x121c1e,
     visible = false,
-    views =
-    {
+    views = {
         { type = "label", text = "Item", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
+        { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {60, 18}, on_click = function()
+            game.events:send("encyclopedia.open_item", item)
+        end},
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
+        { type = "view", position = {310, 30}, size = {80, 25}, background = 0x3e4b0b, views = {
+            { type = "view", id = "progress_health", size = {50, 25}, background = 0x89ab00 },
+            { type = "label", id = "lb_health", text = "80/120", text_size = 16, padding = 7 },
+        }},
         { type = "list", position = {0, 60}, views = {
-            { type = "label", id = "lb_position", text_size = 18, padding = 10},
-            { type = "label", id = "lb_complete", text_size = 18, padding = 10},
+            --            { type = "label", id = "lb_position", text_size = 18, padding = 10},
+            --            { type = "label", id = "lb_complete", text_size = 18, padding = 10},
             { type = "list", id = "frame_building", position = {0, 40}, views = {
                 { type = "label", id = "lb_building", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
                 { type = "image", id = "img_building_progress", position = {10, 12}, src = "data/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
@@ -29,22 +35,22 @@ data:extend({
                     end
                 }},
             }},
-            { type = "list", id = "frame_factory", position = {10, 0}, views = {
-                { type = "label", text = "Factory", text_size = 22},
-                { type = "label", text = "Current", text_size = 18, position = {0, 15}},
-                { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 20}},
-                { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
-                { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
-                { type = "label", id = "lb_factory_components", position = {0, 20}},
-                { type = "label", id = "lb_factory_inputs", position = {0, 20}},
-                { type = "label", id = "lb_factory_products", position = {0, 20}},
-                { type = "label", text = "Orders", text_size = 18, position = {0, 30}},
-                { type = "list", id = "list_receipt", position = {0, 35}},
+            { type = "list", id = "frame_factory_progress", position = {10, 10}, views = {
+                { type = "label", text = "Work in progress", text_size = 22},
+                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", position = {0, 10}},
+                { type = "image", id = "img_factory_progress", position = {0, 10}, src = "data/graphics/needbar.png", size = {380, 16}},
+                --                { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 10}},
+                --                { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
+                --                { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
+                --                { type = "label", id = "lb_factory_components", position = {0, 20}},
+                --                { type = "label", id = "lb_factory_inputs", position = {0, 20}},
+                --                { type = "label", id = "lb_factory_products", position = {0, 20}},
+            }},
+            { type = "list", id = "frame_factory_orders", position = {10, 15}, views = {
+                { type = "label", text = "Orders", text_size = 22},
+                { type = "list", id = "list_orders", position = {0, 8}},
             }},
         }},
-        { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
-            game.events:send("encyclopedia.open_item", item)
-        end},
     },
 
     on_event = function(event, view, data)
@@ -63,22 +69,27 @@ data:extend({
             item = data;
             view:setVisible(true)
             view:findById("lb_name"):setText(item:getLabel())
-            view:findById("lb_position"):setText("Position: " .. item:getX() .. "x" .. item:getY())
 
             if item:getInfo().factory and item:getInfo().factory.receipts then
                 display_factory_info(view, item:getFactory(), item:getInfo().factory)
+                view:findById("frame_factory_progress"):setVisible(true)
+                view:findById("frame_factory_orders"):setVisible(true)
             else
-                view:findById("frame_factory"):setVisible(false)
+                view:findById("frame_factory_progress"):setVisible(false)
+                view:findById("frame_factory_orders"):setVisible(false)
             end
         end
     end,
 
     on_refresh = function(view)
         if item ~= nil then
-            view:findById("frame_building"):setVisible(not item:isComplete())
+            view:findById("lb_health"):setText(item:getHealth() .. "/" .. item:getMaxHealth())
+            view:findById("progress_health"):setSize(item:getHealth() / item:getMaxHealth() * 80, 25)
 
-            view:findById("lb_complete"):setText("Complete", ": ", item:isComplete())
-            if not item:isComplete() then
+            if item:isComplete() then
+                view:findById("frame_building"):setVisible(false)
+            else
+                view:findById("frame_building"):setVisible(true)
                 view:findById("lb_building"):setDashedString("Building", item:getBuildProgress() > 0 and math.floor(item:getBuildProgress() * 100) or "waiting", 32)
                 view:findById("img_building_progress"):setTextureRect(0, 80, math.floor(item:getBuildProgress() * 380 / 10) * 10, 16)
                 view:findById("lb_building_progress"):setText("Progress: " .. item:getCurrentBuild() .. "/" .. item:getTotalBuild())
@@ -89,65 +100,108 @@ data:extend({
 
             if item:getFactory() then
                 local factory = item:getFactory()
+                local progress = factory:getJob() and factory:getJob():getProgress() or 0
 
-                view:findById("lb_factory_progress"):setText("Status", ": ",
-                    factory:getMessage() and item:getFactory():getMessage() or "unknown")
+                --                view:findById("lb_factory_progress"):setText("Status", ": ", factory:getMessage())
+                view:findById("img_factory_progress"):setTextureRect(0, 80, math.floor(progress * 380 / 10) * 10, 16)
 
-                view:findById("lb_factory_receipt"):setText("Receipt", ": ",
-                    factory:getActiveReceipt() and factory:getActiveReceipt().receiptInfo.label or "none")
-
-                view:findById("lb_factory_character"):setText("Crafter", ": ",
-                    factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
-
-                if item:getFactory():getActiveReceipt() then
-                    local str = "shopping list: "
-                    local iterator = item:getFactory():getActiveReceipt():getShoppingList():iterator()
-                    while iterator:hasNext() do
-                        local product = iterator:next()
-                        str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
-                    end
-                    view:findById("lb_factory_components"):setText(str)
+                if factory:getActiveReceipt() then
+                    view:findById("lb_factory_status"):setDashedString(
+                        factory:getActiveReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 48)
                 else
-                    view:findById("lb_factory_components"):setText("shopping list: none")
+                    view:findById("lb_factory_status"):setText("None", " (", factory:getMessage():lower(), ")");
                 end
 
-                if item:getFactory():getActiveReceipt() then
-                    local str = "components: "
-                    local iterator = item:getFactory():getActiveReceipt():getComponents():iterator()
-                    while iterator:hasNext() do
-                        local component = iterator:next()
-                        str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
-                    end
-                    view:findById("lb_factory_inputs"):setText(str)
-                else
-                    view:findById("lb_factory_inputs"):setText("components: none")
-                end
+                --                view:findById("lb_factory_character"):setText("Crafter", ": ",
+                --                    factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
+                --
+                --                if item:getFactory():getActiveReceipt() then
+                --                    local str = "shopping list: "
+                --                    local iterator = item:getFactory():getActiveReceipt():getShoppingList():iterator()
+                --                    while iterator:hasNext() do
+                --                        local product = iterator:next()
+                --                        str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
+                --                    end
+                --                    view:findById("lb_factory_components"):setText(str)
+                --                else
+                --                    view:findById("lb_factory_components"):setText("shopping list: none")
+                --                end
+                --
+                --                if item:getFactory():getActiveReceipt() then
+                --                    local str = "components: "
+                --                    local iterator = item:getFactory():getActiveReceipt():getComponents():iterator()
+                --                    while iterator:hasNext() do
+                --                        local component = iterator:next()
+                --                        str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
+                --                    end
+                --                    view:findById("lb_factory_inputs"):setText(str)
+                --                else
+                --                    view:findById("lb_factory_inputs"):setText("components: none")
+                --                end
             end
         end
     end
 })
 
 function display_factory_info(view, factory, factoryInfo)
-    view:findById("frame_factory"):setVisible(true)
-
-    local list = view:findById("list_receipt")
+    local list = view:findById("list_orders")
     list:removeAllViews()
 
     local iterator = factory:getOrders():iterator()
     while iterator:hasNext() do
         local order = iterator:next()
-        local receipt = order.receiptGroupInfo
+        local receipt_group = order.receiptGroupInfo
+
+        -- Create frame receipt detail
+        local frame_receipt_detail = game.ui:createList()
+        frame_receipt_detail:setSize(400, 100)
+        frame_receipt_detail:setVisible(false)
+        local iterator_receipt = receipt_group.receipts:iterator()
+        while iterator_receipt:hasNext() do
+            local receipt = iterator_receipt:next()
+
+            local str_inputs = ""
+            local iterator_inputs = receipt.inputs:iterator()
+            while iterator_inputs:hasNext() do
+                local input = iterator_inputs:next()
+                str_inputs = str_inputs .. (string.len(str_inputs) > 0 and " + " or "") .. input.quantity .. " " .. input.item.label
+            end
+
+            local lb_receipt = game.ui:createLabel()
+            lb_receipt:setSize(400, 22)
+            lb_receipt:setText(str_inputs)
+            lb_receipt:setTextSize(14)
+            frame_receipt_detail:addView(lb_receipt)
+        end
+
+        -- Create frame receipt
         local frame_receipt = game.ui:createView()
         frame_receipt:setSize(400, 22)
 
-        local lb_receipt = game.ui:createLabel()
-        lb_receipt:setText(receipt.label)
-        frame_receipt:addView(lb_receipt)
+        local lb_receipt_expend = game.ui:createLabel()
+        lb_receipt_expend:setSize(14, 14)
+        lb_receipt_expend:setText("+")
+        lb_receipt_expend:setTextSize(14)
+        lb_receipt_expend:setPadding(1, 4)
+        lb_receipt_expend:setBackgroundColor(0x329596)
+        lb_receipt_expend:setOnClickListener(function()
+            frame_receipt_detail:setVisible(not frame_receipt_detail:isVisible())
+            lb_receipt_expend:setText(frame_receipt_detail:isVisible() and "-" or "+");
+        end)
+        frame_receipt:addView(lb_receipt_expend)
+
+        local lb_receipt_group = game.ui:createLabel()
+        lb_receipt_group:setSize(400, 32)
+        lb_receipt_group:setPosition(20, 0)
+        lb_receipt_group:setPadding(3)
+        lb_receipt_group:setText(receipt_group.label)
+        frame_receipt:addView(lb_receipt_group)
 
         local lb_mode = game.ui:createLabel()
         lb_mode:setText("mode")
         lb_mode:setSize(50, 22)
         lb_mode:setPosition(300, 0)
+        lb_mode:setPadding(3)
         lb_mode:setOnClickListener(function(v)
             lb_mode:setText("gg")
         end)
@@ -157,8 +211,9 @@ function display_factory_info(view, factory, factoryInfo)
         lb_up:setText("up")
         lb_up:setSize(50, 22)
         lb_up:setPosition(200, 0)
+        lb_up:setPadding(3)
         lb_up:setOnClickListener(function(v)
-            factory:moveReceipt(receipt, -1)
+            factory:moveReceipt(receipt_group, -1)
             display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_up)
@@ -167,8 +222,9 @@ function display_factory_info(view, factory, factoryInfo)
         lb_down:setText("down")
         lb_down:setSize(50, 22)
         lb_down:setPosition(250, 0)
+        lb_down:setPadding(3)
         lb_down:setOnClickListener(function(v)
-            factory:moveReceipt(receipt, 1)
+            factory:moveReceipt(receipt_group, 1)
             display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_down)
@@ -177,6 +233,7 @@ function display_factory_info(view, factory, factoryInfo)
         lb_active:setText(order.isActive and "[x]" or "[ ]")
         lb_active:setSize(50, 22)
         lb_active:setPosition(358, 0)
+        lb_active:setPadding(3)
         lb_active:setOnClickListener(function(v)
             order.isActive = not order.isActive
             display_factory_info(view, factory, factoryInfo)
@@ -184,5 +241,6 @@ function display_factory_info(view, factory, factoryInfo)
         frame_receipt:addView(lb_active)
 
         list:addView(frame_receipt)
+        list:addView(frame_receipt_detail)
     end
 end

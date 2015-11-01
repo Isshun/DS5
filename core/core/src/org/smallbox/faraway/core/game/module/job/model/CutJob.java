@@ -130,8 +130,8 @@ public class CutJob extends JobModel {
         Log.info("Cut complete");
         ModuleHelper.getWorldModule().removeResource(_resource);
 
-        if (_actionInfo.finalProducts != null) {
-            _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random())
+        if (_actionInfo.products != null) {
+            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random())
                     .forEach(productInfo -> ModuleHelper.getWorldModule().putConsumable(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
         }
     }
@@ -161,10 +161,6 @@ public class CutJob extends JobModel {
 
         // Remove a single unit
         _progress = 0;
-        if (_actionInfo.products != null) {
-            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
-                    ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
-        }
 
 //        // Check if resource is depleted
 //        if (!_resource.isDepleted()) {

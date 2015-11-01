@@ -95,6 +95,10 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.isWalkable = value.get("walkable").toboolean();
         }
 
+        if (!value.get("health").isnil()) {
+            itemInfo.health = value.get("health").toint();
+        }
+
         if (!value.get("door").isnil()) {
             itemInfo.isDoor = value.get("door").toboolean();
         }

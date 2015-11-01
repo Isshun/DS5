@@ -22,7 +22,7 @@ public class BuildableMapObject extends MapObjectModel {
         public ItemInfo         info;
         public int              currentQuantity;
         public int              neededQuantity;
-        public JobModel job;
+        public JobModel         job;
 
         public ComponentModel(ItemInfo itemInfo) {
             this.info = itemInfo;

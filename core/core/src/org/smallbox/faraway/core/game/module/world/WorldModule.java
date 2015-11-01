@@ -128,7 +128,7 @@ public class WorldModule extends GameModule {
 
     public ConsumableModel putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
         ConsumableModel consumable = null;
-        if (parcel != null) {
+        if (parcel != null && quantity > 0) {
             final ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, itemInfo, quantity);
             if (finalParcel != null) {
                 if (finalParcel.getConsumable() != null) {

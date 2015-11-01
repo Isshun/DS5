@@ -6,6 +6,7 @@ data:extend({
         category = "kitchen",
         graphics = { path = "[base]/graphics/items/kitchen/cooker.png" },
         size = {3, 1},
+        health = 100,
         slots = {{1, 1}},
         cost = 42,
         factory = {
