@@ -29,7 +29,7 @@ public class DumpJob extends JobModel {
         job.setCost(objectModel.getInfo().cost);
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
-                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+                j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
             }
         });
         return job;

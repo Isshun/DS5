@@ -31,6 +31,8 @@ public class SleepJob extends JobModel {
         _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
     }
 
+    public ItemModel getItem() { return _sleepItem; }
+
     @Override
     public String getShortLabel() {
         return "Sleep";
@@ -59,11 +61,13 @@ public class SleepJob extends JobModel {
     @Override
     public JobActionReturn onAction(CharacterModel character) {
         if (Game.getInstance().getTick() < _wakeTime) {
+            character.setSleeping(true);
             character.getNeeds().isSleeping = true;
             _progress = (double)(Game.getInstance().getTick() - _sleepTime) / (_wakeTime - _sleepTime);
             return JobActionReturn.CONTINUE;
         }
 
+        character.setSleeping(false);
         character.getNeeds().isSleeping = false;
         return JobActionReturn.FINISH;
     }

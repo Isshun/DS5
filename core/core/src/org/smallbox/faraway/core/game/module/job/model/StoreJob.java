@@ -51,7 +51,7 @@ public class StoreJob extends JobModel implements GameObserver {
         job._itemInfo = consumable.getInfo();
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
-                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+                j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
             }
         });
         job.foundConsumablesAround(consumable);

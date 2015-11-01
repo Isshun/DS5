@@ -60,19 +60,18 @@ public class CharacterModuleSerializer implements SerializerInterface {
         FileUtils.write(fos, "<needs>");
 
         FileUtils.write(fos, "<isSleeping>" + needs.isSleeping() + "</isSleeping>");
-        FileUtils.write(fos, "<drinking>" + needs.drinking + "</drinking>");
+        FileUtils.write(fos, "<water>" + needs.get("water") + "</water>");
         FileUtils.write(fos, "<socialize>" + needs.socialize + "</socialize>");
-        FileUtils.write(fos, "<food>" + needs.food + "</food>");
-        FileUtils.write(fos, "<happiness>" + needs.happiness + "</happiness>");
-        FileUtils.write(fos, "<relation>" + needs.relation + "</relation>");
-        FileUtils.write(fos, "<security>" + needs.security + "</security>");
-        FileUtils.write(fos, "<oxygen>" + needs.oxygen + "</oxygen>");
-        FileUtils.write(fos, "<energy>" + needs.energy + "</energy>");
+        FileUtils.write(fos, "<food>" + needs.get("food") + "</food>");
+        FileUtils.write(fos, "<happiness>" + needs.get("happiness") + "</happiness>");
+        FileUtils.write(fos, "<relation>" + needs.get("relation") + "</relation>");
+        FileUtils.write(fos, "<security>" + needs.get("security") + "</security>");
+        FileUtils.write(fos, "<oxygen>" + needs.get("oxygen") + "</oxygen>");
+        FileUtils.write(fos, "<energy>" + needs.get("energy") + "</energy>");
         FileUtils.write(fos, "<health>" + needs.health + "</health>");
         FileUtils.write(fos, "<sickness>" + needs.sickness + "</sickness>");
         FileUtils.write(fos, "<injuries>" + needs.injuries + "</injuries>");
-        FileUtils.write(fos, "<satiety>" + needs.satiety + "</satiety>");
-        FileUtils.write(fos, "<joy>" + needs.joy + "</joy>");
+        FileUtils.write(fos, "<entertainment>" + needs.get("entertainment") + "</entertainment>");
 
         FileUtils.write(fos, "</needs>");
     }
@@ -146,29 +145,29 @@ public class CharacterModuleSerializer implements SerializerInterface {
                             case "isSleeping":
                                 character.getNeeds().setSleeping("true".equals(vn.toString(vn.getText())));
                                 break;
-                            case "drinking":
-                                character.getNeeds().drinking = vn.parseDouble(vn.getText());
+                            case "water":
+                                character.getNeeds().setValue("water", vn.parseDouble(vn.getText()));
                                 break;
                             case "socialize":
                                 character.getNeeds().socialize = vn.parseDouble(vn.getText());
                                 break;
                             case "food":
-                                character.getNeeds().food = vn.parseDouble(vn.getText());
+                                character.getNeeds().setValue("food", vn.parseDouble(vn.getText()));
                                 break;
                             case "happiness":
-                                character.getNeeds().happiness = vn.parseDouble(vn.getText());
+                                character.getNeeds().setValue("happiness", vn.parseDouble(vn.getText()));
                                 break;
                             case "relation":
-                                character.getNeeds().relation = vn.parseDouble(vn.getText());
+                                character.getNeeds().setValue("relation", vn.parseDouble(vn.getText()));
                                 break;
                             case "security":
-                                character.getNeeds().security = vn.parseDouble(vn.getText());
+                                character.getNeeds().setValue("security", vn.parseDouble(vn.getText()));
                                 break;
                             case "oxygen":
-                                character.getNeeds().oxygen = vn.parseDouble(vn.getText());
+                                character.getNeeds().setValue("oxygen", vn.parseDouble(vn.getText()));
                                 break;
                             case "energy":
-                                character.getNeeds().energy = vn.parseDouble(vn.getText());
+                                character.getNeeds().setValue("energy", vn.parseDouble(vn.getText()));
                                 break;
                             case "health":
                                 character.getNeeds().health = vn.parseDouble(vn.getText());
@@ -179,11 +178,8 @@ public class CharacterModuleSerializer implements SerializerInterface {
                             case "injuries":
                                 character.getNeeds().injuries = vn.parseDouble(vn.getText());
                                 break;
-                            case "satiety":
-                                character.getNeeds().satiety = vn.parseDouble(vn.getText());
-                                break;
-                            case "joy":
-                                character.getNeeds().joy = vn.parseDouble(vn.getText());
+                            case "entertainment":
+                                character.getNeeds().setValue("entertainment", vn.parseDouble(vn.getText()));
                                 break;
                         }
                     }

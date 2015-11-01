@@ -310,12 +310,11 @@ public class LuaItemExtend extends LuaExtend {
 
     private void readEffectValues(ItemInfo.ItemInfoEffects effects, LuaValue luaEffects) {
         for (int i = 1; i <= luaEffects.length(); i++) {
-            if ("energy".equals(luaEffects.get(i).get("type").toString())) {
-                effects.energy = luaEffects.get(i).get("quantity").toint();
-            }
-            if ("food".equals(luaEffects.get(i).get("type").toString())) {
-                effects.food = luaEffects.get(i).get("quantity").toint();
-            }
+            String type = luaEffects.get(i).get("type").toString();
+            int quantity = luaEffects.get(i).get("quantity").toint();
+            if ("energy".equals(type)) effects.energy = quantity;
+            if ("food".equals(type)) effects.food = quantity;
+            if ("drink".equals(type)) effects.drink = quantity;
         }
     }
 

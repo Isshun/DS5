@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -99,22 +100,22 @@ public class DebugModule extends GameModule {
             ),
             new CommandEntry("Set need...",         view ->
                     openFrame(Arrays.asList(
-                            new CommandEntry("Energy (f)", v -> _character.getNeeds().energy = 100),
-                            new CommandEntry("Energy (w)", v -> _character.getNeeds().energy = _character.getType().needs.energy.warning),
-                            new CommandEntry("Energy (c)", v -> _character.getNeeds().energy = _character.getType().needs.energy.critical),
-                            new CommandEntry("Food (f)", v -> _character.getNeeds().food = 100),
-                            new CommandEntry("Food (w)", v -> _character.getNeeds().food = _character.getType().needs.food.warning),
-                            new CommandEntry("Food (c)", v -> _character.getNeeds().food = _character.getType().needs.food.critical),
-                            new CommandEntry("Relation (f)", v -> _character.getNeeds().relation = 100),
-                            new CommandEntry("Relation (w)", v -> _character.getNeeds().relation = _character.getType().needs.relation.warning),
-                            new CommandEntry("Relation (c)", v -> _character.getNeeds().relation = _character.getType().needs.relation.critical),
-                            new CommandEntry("Entertainment (f)", v -> _character.getNeeds().joy = 100),
-                            new CommandEntry("Entertainment (w)", v -> _character.getNeeds().joy = _character.getType().needs.joy.warning),
-                            new CommandEntry("Entertainment (c)", v -> _character.getNeeds().joy = _character.getType().needs.joy.critical)))
+                            new CommandEntry("Energy (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, 100)),
+                            new CommandEntry("Energy (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, _character.getType().needs.energy.warning)),
+                            new CommandEntry("Energy (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, _character.getType().needs.energy.critical)),
+                            new CommandEntry("Food (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, 100)),
+                            new CommandEntry("Food (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, _character.getType().needs.food.warning)),
+                            new CommandEntry("Food (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, _character.getType().needs.food.critical)),
+                            new CommandEntry("Relation (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, 100)),
+                            new CommandEntry("Relation (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, _character.getType().needs.relation.warning)),
+                            new CommandEntry("Relation (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, _character.getType().needs.relation.critical)),
+                            new CommandEntry("Entertainment (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, 100)),
+                            new CommandEntry("Entertainment (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, _character.getType().needs.joy.warning)),
+                            new CommandEntry("Entertainment (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, _character.getType().needs.joy.critical))))
             ),
             new CommandEntry("Dump managers",       view -> {
                 Log.notice("\n----------- dump -----------");
-                ModuleManager.getInstance().getModules().forEach(manager -> manager.dump());
+                ModuleManager.getInstance().getModules().forEach(GameModule::dump);
             }),
             new CommandEntry("Dump renders",       view -> {
                 Log.notice("\n----------- dump -----------");

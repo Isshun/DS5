@@ -1,11 +1,14 @@
 data:extend({
     label = "Starter",
-    name = "base.buff_starter",
+    name = "base.buff.starter",
     type = "buff",
     encyclopedia = {
         title = "Excited by new colony",
         content = "The settlers are excited by the challenge of building a new home on this distant planet."
     },
+    on_check = function (data, character)
+        return game.day < 20
+    end,
     on_update = function (data, character)
         if game.day < 10 then
             return { message = "Excited by new colony", level = 1, mood = 15 }

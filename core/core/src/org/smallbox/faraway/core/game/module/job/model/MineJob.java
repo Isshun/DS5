@@ -37,7 +37,7 @@ public class MineJob extends JobModel {
                     MineJob job = new MineJob(action, res.getParcel());
                     job.setStrategy(j -> {
                         if (j.getCharacter().getType().needs.joy != null) {
-                            j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+                            j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
                         }
                     });
                     job._resource = res;

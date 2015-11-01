@@ -12,22 +12,22 @@ import org.smallbox.faraway.core.module.java.ModuleManager;
 /**
  * Created by Alex on 01/06/2015.
  */
-public class CheckCharacterHungry extends CharacterCheck {
+public class CheckCharacterFoodWarning extends CharacterCheck {
 
     @Override
     public boolean check(CharacterModel character) {
-        return character.getType().needs.food != null && character.getNeeds().food < character.getType().needs.food.warning;
+        return character.getType().needs.food != null && character.getNeeds().get("food") < character.getType().needs.food.warning;
     }
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getType().needs.food != null && character.getNeeds().food < character.getType().needs.food.warning;
+        return character.getType().needs.food != null && character.getNeeds().get("food") < character.getType().needs.food.warning;
     }
 
     // TODO: change name by filter
     @Override
     public JobModel create(CharacterModel character) {
-        ItemFilter filter = ItemFilter.createConsomableFilter();
+        ItemFilter filter = ItemFilter.createConsumableFilter();
         filter.effectFood = true;
 
         // Get consumable on inventory

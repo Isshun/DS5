@@ -7,7 +7,16 @@ import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CharacterNeedsExtra {
+    public final static String TAG_ENERGY = "energy";
+    public final static String TAG_FOOD = "food";
+    public final static String TAG_WATER = "water";
+    public final static String TAG_RELATION = "relation";
+    public final static String TAG_ENTERTAINMENT = "entertainment";
+
     private final CharacterModel     _character;
     private final GameData          _data;
 
@@ -16,20 +25,12 @@ public class CharacterNeedsExtra {
     private int    _eating;
 
     // Stats
+    private Map<String, Double> _values = new HashMap<>();
     public double     socialize;
-    public double     drinking;
-    public double     food;
-    public double     happiness;
     public double   happinessChange;
-    public double     relation;
-    public double     security;
-    public double     oxygen;
-    public double     energy;
     public double     health;
     public double     sickness;
     public double     injuries;
-    public double     satiety;
-    public double     joy;
     public double     heat;
     public double   heatDifferenceReal;
     public int         environment;
@@ -45,66 +46,35 @@ public class CharacterNeedsExtra {
         _character = character;
         _stats = stats;
         _sleepItem = null;
-        food = (int) (Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
-        oxygen = (int) (Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 20 - 10);
-        happiness = (Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 20 - 10);
+        _values.put("food", Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
+        _values.put("oxygen", Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 40 - 20);
+        _values.put("happiness", Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 40 - 20);
+        _values.put("energy", Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 40 - 20);
+        _values.put("entertainment", 0.0);
+        _values.put("relation", 0.0);
+        _values.put("security", 0.0);
         health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
-        energy = (int) (Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 100);
         heat = character.getType().needs.heat.optimal;
-        energy = 100;
-        relation = 0;
-        security = 0;
         injuries = 0;
         sickness = 0;
-        satiety = 0;
-        joy = 0;
     }
 
-    public int    getFood() { return (int)Math.ceil(food); }
-    public int    getEnergy() { return (int)Math.ceil(energy); }
+    public double   get(String name) { return _values.containsKey(name) ? _values.get(name) : -1; }
 
     public boolean    isSleeping() { return isSleeping; }
 
     public void    update() {
-        updateNeeds(_character.getType().needs);
+        CharacterTypeInfo.Needs needs = _character.getType().needs;
 
-        // Check peoples on proximity
-        if (ModuleHelper.getCharacterModule().havePeopleOnProximity(_character)) {
-            this.relation += 1;
-        } else {
-            this.relation -= 0.25;
-        }
-
-        happiness += happinessChange / 100;
-
-        if (energy >= 100) {
-            isSleeping = false;
-        }
-
-        // Set needs bounds
-        food = Math.max(0, Math.min(100, food));
-        energy = Math.max(0, Math.min(100, energy));
-        oxygen = Math.max(0, Math.min(100, oxygen));
-        happiness = Math.max(0, Math.min(100, happiness));
-        relation = Math.max(0, Math.min(100, relation));
-        security = Math.max(0, Math.min(100, security));
-        joy = Math.max(0, Math.min(100, joy));
-    }
-
-    public void updateNeeds(CharacterTypeInfo.Needs needs) {
-        if (needs.energy != null) {
-            energy += isSleeping ? needs.energy.change.sleep : needs.energy.change.wake;
-        }
-
-        if (needs.food != null) {
-            food += isSleeping ? needs.food.change.sleep : needs.food.change.wake;
-        }
-
-        if (needs.joy != null) {
-            joy += isSleeping ? isSleeping && _sleepItem == null ? needs.joy.change.sleepOnFloor : needs.joy.change.sleep : needs.joy.change.wake;
-        }
+        addValue("energy", isSleeping ? needs.energy.change.sleep : needs.energy.change.wake);
+        addValue("food", isSleeping ? needs.food.change.sleep : needs.food.change.wake);
+        addValue("water", 0);
+        addValue("entertainment", isSleeping ? needs.joy.change.sleep : needs.joy.change.wake);
+        addValue("relation", ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
+        addValue("happiness", happinessChange / 100);
 
         // Oxygen
+        double oxygen = _values.get("oxygen");
         if (_character.getParcel() != null) {
             int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
             if (oxygen < oxygenLevel || oxygen > oxygenLevel + 1) {
@@ -118,52 +88,54 @@ public class CharacterNeedsExtra {
                 }
             }
         }
+        _values.put("oxygen", oxygen);
 
-        // Body heat
-        // TODO
-//        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
-        double heatDifference = 0;
-        double heatDifferenceReal = 0;
-//        System.out.println("heatDifference: " + heatDifference);
+        // Set needs bounds
+        _values.entrySet().forEach(entry -> entry.setValue(Math.max(0, Math.min(100, entry.getValue()))));
+    }
 
-        if (heatDifference < 0) {
-            heatDifferenceReal = Math.min(0, heatDifference + _stats.buff.heat);
-        } else if (heatDifference > 0) {
-            heatDifferenceReal = Math.max(0, heatDifference - _stats.buff.cold);
-        }
+    public void addValue(String name, double value) {
+        _values.put(name, Math.max(0, Math.min(100, (_values.containsKey(name) ? _values.get(name) : 0) + value)));
+    }
 
-        this.heatDifferenceReal = heatDifferenceReal;
+    public void setValue(String name, double value) {
+        _values.put(name, Math.max(0, Math.min(100, value)));
+    }
 
-//        System.out.println("heatDifferenceReal: " + heatDifferenceReal);
-
-        if (heatDifferenceReal < 0) {
-            this.heat += heatDifferenceReal * (1 - _stats.resist.cold / 100f) / 100f;
-        } else if (heatDifferenceReal > 0) {
-            this.heat += heatDifferenceReal * (1 - _stats.resist.heat / 100f) / 100f;
-        } else {
-            if (this.heat > _character.getType().needs.heat.optimal + 0.25) {
-                this.heat += (heatDifference - _stats.buff.cold) / 1000f;
-            } else if (this.heat < _character.getType().needs.heat.optimal - 0.25) {
-                this.heat += (heatDifference + _stats.buff.heat) / 1000f;
-            } else {
-                this.heat = _character.getType().needs.heat.optimal;
-            }
-        }
+    public void updateNeeds(CharacterTypeInfo.Needs needs) {
+//
+//        // Body heat
+//        // TODO
+////        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
+//        double heatDifference = 0;
+//        double heatDifferenceReal = 0;
+////        System.out.println("heatDifference: " + heatDifference);
+//
+//        if (heatDifference < 0) {
+//            heatDifferenceReal = Math.min(0, heatDifference + _stats.buff.heat);
+//        } else if (heatDifference > 0) {
+//            heatDifferenceReal = Math.max(0, heatDifference - _stats.buff.cold);
+//        }
+//
+//        this.heatDifferenceReal = heatDifferenceReal;
+//
+////        System.out.println("heatDifferenceReal: " + heatDifferenceReal);
+//
+//        if (heatDifferenceReal < 0) {
+//            this.heat += heatDifferenceReal * (1 - _stats.resist.cold / 100f) / 100f;
+//        } else if (heatDifferenceReal > 0) {
+//            this.heat += heatDifferenceReal * (1 - _stats.resist.heat / 100f) / 100f;
+//        } else {
+//            if (this.heat > _character.getType().needs.heat.optimal + 0.25) {
+//                this.heat += (heatDifference - _stats.buff.cold) / 1000f;
+//            } else if (this.heat < _character.getType().needs.heat.optimal - 0.25) {
+//                this.heat += (heatDifference + _stats.buff.heat) / 1000f;
+//            } else {
+//                this.heat = _character.getType().needs.heat.optimal;
+//            }
+//        }
 
 //        System.out.println("bodyHeat: " + this.heat);
-    }
-
-    private void updateNeeds(ItemInfoAction action) {
-        food += action.effects.food / (double)action.cost;
-        energy += action.effects.energy / (double)action.cost;
-        oxygen += action.effects.oxygen / (double)action.cost;
-        happiness += action.effects.happiness / (double)action.cost;
-        relation += action.effects.relation / (double)action.cost;
-        security += action.effects.security / (double)action.cost;
-    }
-
-    public void addRelation(int i) {
-        relation = Math.min(relation + 1, 100);
     }
 
     public void use(MapObjectModel item, ItemInfoAction action) {
@@ -175,12 +147,13 @@ public class CharacterNeedsExtra {
         }
 
         if (action != null && action.effects != null) {
-            energy = Math.min(energy + (double)action.effects.energy / action.cost, 100);
-            food = Math.min(food + (double)action.effects.food / action.cost, 100);
-            happiness = Math.min(happiness + (double)action.effects.happiness / action.cost, 100);
+            addValue("energy", (double)action.effects.energy / action.cost);
+            addValue("food", (double)action.effects.food / action.cost);
+            addValue("drink", (double)action.effects.drink / action.cost);
+            addValue("entertainment", (double)action.effects.joy / action.cost);
+            addValue("relation", (double)action.effects.relation / action.cost);
+            addValue("happiness", (double)action.effects.happiness / action.cost);
             health = Math.min(health + (double)action.effects.health / action.cost, 100);
-            relation = Math.min(relation + (double)action.effects.relation / action.cost, 100);
-            joy = Math.min(joy + (double)action.effects.joy / action.cost, 100);
         }
     }
 

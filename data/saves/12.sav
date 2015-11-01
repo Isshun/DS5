@@ -2297,7 +2297,7 @@
 <progress>10</progress>
 </structure>
 <consumable id='655' name='base.easy_meal'>
-<quantity>70</quantity>
+<quantity>64</quantity>
 </consumable>
 </parcel>
 <parcel x='19' y='11' z='0' type='1'>
@@ -2612,6 +2612,10 @@
 <health>0</health>
 <progress>10</progress>
 </structure>
+<item id='644' name='base.fountain'>
+<health>0</health>
+<progress>0</progress>
+</item>
 </parcel>
 <parcel x='21' y='9' z='0' type='1'>
 <structure id='598' name='base.wood_floor'>
@@ -6200,24 +6204,23 @@
 <lastname>Banks</lastname>
 <firstname>Paige</firstname>
 <old>Banks</old>
-<x>24</x>
-<y>12</y>
+<x>16</x>
+<y>3</y>
 <gender>MALE</gender>
 <needs>
-<isSleeping>false</isSleeping>
-<drinking>0.0</drinking>
+<isSleeping>true</isSleeping>
+<water>0.0</water>
 <socialize>0.0</socialize>
-<food>0.0</food>
+<food>52.29999999999934</food>
 <happiness>0.0</happiness>
-<relation>2.0</relation>
+<relation>96.75</relation>
 <security>0.0</security>
-<oxygen>100.0</oxygen>
-<energy>25.800000000001504</energy>
+<oxygen>80.0</oxygen>
+<energy>16.62000000000137</energy>
 <health>79.49120330810547</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
-<satiety>0.0</satiety>
-<joy>0.0</joy>
+<entertainment>0.0</entertainment>
 </needs>
 <timetable>
 <period h='0'>0</period>
@@ -6250,24 +6253,23 @@
 <lastname>Wagner</lastname>
 <firstname>Olive</firstname>
 <old>Wagner</old>
-<x>18</x>
-<y>9</y>
+<x>21</x>
+<y>8</y>
 <gender>MALE</gender>
 <needs>
 <isSleeping>false</isSleeping>
-<drinking>0.0</drinking>
+<water>0.0</water>
 <socialize>0.0</socialize>
-<food>0.0</food>
+<food>65.79999999999951</food>
 <happiness>0.0</happiness>
-<relation>1.75</relation>
+<relation>96.5</relation>
 <security>0.0</security>
-<oxygen>50.0</oxygen>
-<energy>92.500000000001</energy>
+<oxygen>51.0</oxygen>
+<energy>78.00000000000125</energy>
 <health>78.74639129638672</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
-<satiety>0.0</satiety>
-<joy>0.0</joy>
+<entertainment>0.0</entertainment>
 </needs>
 <timetable>
 <period h='0'>0</period>
@@ -6302,44 +6304,44 @@
 <storage>
 <priority>1</priority>
 <accept>
-<item>base.seaweed1</item>
-<item>base.glasses</item>
-<item>base.easy_meal</item>
 <item>base.seaweed</item>
 <item>base.sandstone</item>
-<item>base.human_body</item>
-<item>base.oxygen_bottle</item>
-<item>base.regular_shirt</item>
 <item>base.seaweed2</item>
 <item>base.military_ration</item>
+<item>base.easy_meal</item>
+<item>base.glasses</item>
+<item>base.regular_shirt</item>
+<item>base.human_body</item>
+<item>base.oxygen_bottle</item>
 <item>base.vegetable</item>
+<item>base.seaweed1</item>
 </accept>
 </storage>
 <parcels>
-<parcel x='19' y='11' />
-<parcel x='18' y='11' />
-<parcel x='20' y='10' />
 <parcel x='17' y='12' />
 <parcel x='19' y='12' />
-<parcel x='15' y='10' />
-<parcel x='15' y='11' />
-<parcel x='20' y='12' />
 <parcel x='19' y='10' />
+<parcel x='19' y='13' />
+<parcel x='15' y='11' />
+<parcel x='20' y='10' />
+<parcel x='17' y='13' />
+<parcel x='18' y='12' />
+<parcel x='15' y='10' />
+<parcel x='20' y='11' />
+<parcel x='16' y='13' />
+<parcel x='16' y='11' />
 <parcel x='17' y='10' />
 <parcel x='20' y='13' />
-<parcel x='19' y='13' />
-<parcel x='16' y='12' />
-<parcel x='17' y='11' />
-<parcel x='18' y='12' />
-<parcel x='18' y='13' />
-<parcel x='16' y='10' />
-<parcel x='18' y='10' />
-<parcel x='16' y='13' />
-<parcel x='20' y='11' />
-<parcel x='16' y='11' />
-<parcel x='15' y='12' />
-<parcel x='17' y='13' />
 <parcel x='15' y='13' />
+<parcel x='15' y='12' />
+<parcel x='18' y='11' />
+<parcel x='18' y='13' />
+<parcel x='20' y='12' />
+<parcel x='16' y='12' />
+<parcel x='18' y='10' />
+<parcel x='17' y='11' />
+<parcel x='16' y='10' />
+<parcel x='19' y='11' />
 </parcels>
 </model>
 <model id='0' name='Storage Area #2' type='STORAGE'>
@@ -6349,37 +6351,37 @@
 <item>base.wood_log</item>
 <item>base.calcite_rubble</item>
 <item>base.raw_spice</item>
-<item>base.sandstone_rubble</item>
+<item>base.calcite_brick</item>
 <item>base.granite_rubble</item>
 <item>base.vegetable</item>
-<item>base.calcite_brick</item>
+<item>base.sandstone_rubble</item>
 </accept>
 </storage>
 <parcels>
-<parcel x='24' y='16' />
+<parcel x='25' y='12' />
+<parcel x='24' y='15' />
+<parcel x='23' y='14' />
 <parcel x='25' y='13' />
-<parcel x='24' y='13' />
-<parcel x='26' y='12' />
-<parcel x='26' y='14' />
+<parcel x='23' y='13' />
+<parcel x='26' y='16' />
 <parcel x='26' y='13' />
 <parcel x='24' y='12' />
-<parcel x='23' y='13' />
-<parcel x='26' y='11' />
+<parcel x='26' y='14' />
 <parcel x='24' y='11' />
+<parcel x='26' y='11' />
 <parcel x='25' y='15' />
-<parcel x='24' y='14' />
-<parcel x='23' y='11' />
-<parcel x='25' y='11' />
-<parcel x='25' y='12' />
-<parcel x='23' y='16' />
 <parcel x='25' y='14' />
-<parcel x='26' y='15' />
 <parcel x='23' y='12' />
+<parcel x='25' y='11' />
+<parcel x='24' y='16' />
+<parcel x='23' y='11' />
 <parcel x='25' y='16' />
-<parcel x='26' y='16' />
-<parcel x='23' y='14' />
-<parcel x='24' y='15' />
 <parcel x='23' y='15' />
+<parcel x='24' y='13' />
+<parcel x='26' y='15' />
+<parcel x='26' y='12' />
+<parcel x='24' y='14' />
+<parcel x='23' y='16' />
 </parcels>
 </model>
 </areas>

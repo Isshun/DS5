@@ -118,6 +118,10 @@ public class ItemModel extends BuildableMapObject {
             return false;
         }
 
+        if (!_isComplete) {
+            return false;
+        }
+
         return super.matchFilter(filter);
     }
 

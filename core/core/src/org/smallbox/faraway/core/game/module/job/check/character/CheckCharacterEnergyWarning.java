@@ -37,7 +37,7 @@ public class CheckCharacterEnergyWarning extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getNeeds().energy < character.getType().needs.energy.warning;
+        return character.getNeeds().get("energy") < character.getType().needs.energy.warning;
     }
 
     @Override

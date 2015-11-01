@@ -25,7 +25,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public static class ParcelContent {
         public ConsumableModel      consumable;
         public StructureModel       structure;
-        public ResourceModel resource;
+        public ResourceModel        resource;
         public ItemModel            item;
     }
 
@@ -112,6 +112,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public AreaModel        getArea() { return _area; }
     public int              getType() { return _type; }
 //    public double           getTemperature() { return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class)).getTemperature(); }
+
+    /**
+     * @return ParcelEnvironment or null
+     */
     public ParcelEnvironment getEnvironment() { return _environment; }
 
     public boolean          isWalkable() {

@@ -19,6 +19,7 @@ public class CharacterTypeInfo {
     }
 
     public static class Needs {
+        public NeedInfo     water;
         public NeedInfo     food;
         public NeedInfo     energy;
         public NeedInfo     oxygen;

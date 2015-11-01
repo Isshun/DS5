@@ -10,6 +10,13 @@ needs:
             wake: -0.2
             sleep: -0.05
 
+    water:
+        warning: 35
+        critical: 15
+        change:
+            wake: -0.2
+            sleep: -0.05
+
     happiness:
         warning: 35
         critical: 15

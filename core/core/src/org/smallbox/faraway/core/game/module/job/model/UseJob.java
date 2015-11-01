@@ -13,6 +13,8 @@ import org.smallbox.faraway.core.util.Log;
 
 public class UseJob extends JobModel {
 
+    private int _current;
+
     @Override
     public boolean canBeResume() {
         return false;
@@ -49,7 +51,7 @@ public class UseJob extends JobModel {
         return job;
     }
 
-    public static UseJob create(ItemModel item, CharacterModel character) {
+    public static UseJob create(CharacterModel character, ItemModel item) {
         if (character == null) {
             return null;
         }
@@ -89,35 +91,18 @@ public class UseJob extends JobModel {
         Log.debug("Character #" + character.getName() + ": actionUse");
 
         // Character using item
-        if (_progress++ < _cost) {
-            // Set running
-            _status = JobStatus.RUNNING;
-
-            // Item is use by 2 or more characters
-            if (_item.getNbFreeSlots() + 1 < _item.getNbSlots()) {
-                character.getNeeds().addRelation(1);
-                for (ItemSlot slot: _item.getSlots()) {
-                    CharacterModel slotCharacter = slot.getJob() != null ? slot.getJob().getCharacter() : null;
-                    //TODO
-//                    ((RelationModule) ModuleManager.getInstance().getModule(RelationModule.class)).meet(model, slotCharacter);
-                }
-            }
-
-            // Set characters direction
-            if (_item.getX() > _targetParcel.x) { character.setDirection(Direction.RIGHT); }
-            if (_item.getX() < _targetParcel.x) { character.setDirection(Direction.LEFT); }
-            if (_item.getY() > _targetParcel.y) { character.setDirection(Direction.TOP); }
-            if (_item.getY() < _targetParcel.y) { character.setDirection(Direction.BOTTOM); }
-
-            // Use item
-            _item.use(_character, (int) (_cost - _progress));
-
+        _current++;
+        _progress = (double)_current / _cost;
+        _item.use(_character, 0);
+        if (_current < _cost) {
             return JobActionReturn.CONTINUE;
         }
 
-        if (_item.isSleepingItem()) {
-            _character.getNeeds().setSleeping(false);
-        }
+//        // Set characters direction
+//        if (_item.getX() > _targetParcel.x) { character.setDirection(Direction.RIGHT); }
+//        if (_item.getX() < _targetParcel.x) { character.setDirection(Direction.LEFT); }
+//        if (_item.getY() > _targetParcel.y) { character.setDirection(Direction.TOP); }
+//        if (_item.getY() < _targetParcel.y) { character.setDirection(Direction.BOTTOM); }
 
         return JobActionReturn.FINISH;
     }
@@ -141,6 +126,7 @@ public class UseJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
+        character.moveTo(_targetParcel, null);
     }
 
     @Override

@@ -7,7 +7,8 @@ import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtr
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.*;
 import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterEnergyWarning;
-import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterHungry;
+import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterFoodWarning;
+import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterWaterWarning;
 import org.smallbox.faraway.core.game.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
@@ -46,11 +47,11 @@ public class JobModule extends GameModule {
         _updateInterval = 10;
 
         _priorities = new ArrayList<>();
-        _priorities.add(new CheckCharacterEnergyCritical());
         _priorities.add(new CheckCharacterOxygen());
-        _priorities.add(new CheckCharacterUse());
+        _priorities.add(new CheckCharacterEnergyCritical());
+        _priorities.add(new CheckCharacterWaterWarning());
+        _priorities.add(new CheckCharacterFoodWarning());
         _priorities.add(new CheckCharacterEnergyWarning());
-        _priorities.add(new CheckCharacterHungry());
 //        _priorities.add(new CheckCharacterEntertainmentDepleted());
 
 
@@ -234,12 +235,13 @@ public class JobModule extends GameModule {
      * @return
      */
     private JobModel getBestPriority(CharacterModel character) {
+        JobModel job = null;
         for (CharacterCheck jobCheck: _priorities) {
-            if (jobCheck.need(character) && jobCheck.check(character)) {
-                return jobCheck.create(character);
+            if (job == null && jobCheck.need(character) && jobCheck.check(character)) {
+                job = jobCheck.create(character);
             }
         }
-        return null;
+        return job;
     }
 
     /**

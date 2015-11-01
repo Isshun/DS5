@@ -25,7 +25,7 @@ public class ItemFilter {
         this.lookingForItem = isImmediate;
     }
 
-    public static ItemFilter createConsomableFilter() {
+    public static ItemFilter createConsumableFilter() {
         ItemFilter filter = new ItemFilter(false, true);
         filter.needConsumable = true;
         filter.isFree = true;
@@ -33,7 +33,7 @@ public class ItemFilter {
         return filter;
     }
 
-    public static ItemFilter createConsomableFilter(ItemInfo neededItemInfo) {
+    public static ItemFilter createConsumableFilter(ItemInfo neededItemInfo) {
         ItemFilter filter = new ItemFilter(false, true);
         filter.needConsumable = true;
         filter.needFreeSlot = false;

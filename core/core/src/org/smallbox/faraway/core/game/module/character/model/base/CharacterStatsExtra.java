@@ -8,9 +8,9 @@ import java.util.List;
  * Created by Alex on 16/06/2015.
  */
 public class CharacterStatsExtra {
-    public String deathMessage;
-    public double speed;
-    public boolean isAlive = true;
+    public double       speed;
+    public boolean      isAlive = true;
+    public boolean      isFaint = false;
 
     public static class CharacterStatsValues {
         public double   cold;

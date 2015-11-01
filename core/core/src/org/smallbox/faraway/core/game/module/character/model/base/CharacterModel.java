@@ -61,6 +61,7 @@ public abstract class CharacterModel extends MovableModel {
     private List<BuffCharacterModel>            _buffs;
     public List<DiseaseCharacterModel>          _diseases;
     protected CharacterTypeInfo                 _type;
+    private boolean                             _isSleeping;
 
     public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterTypeInfo type) {
         super(id, parcel);
@@ -128,11 +129,17 @@ public abstract class CharacterModel extends MovableModel {
     public void                         setIsDead() {
         _stats.isAlive = false;
     }
-    public void                         setParcel(ParcelModel parcel) { _parcel = parcel; }
+    public void                         setParcel(ParcelModel parcel) {
+        _parcel = parcel;
+        if (_inventory != null) {
+            _inventory.setParcel(parcel);
+        }
+    }
 
     public boolean                      isSelected() { return _isSelected; }
     public boolean                      isAlive() { return _stats.isAlive; }
-    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
+    public boolean                      isSleeping() { return _isSleeping; }
+//    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
 
     public DiseaseCharacterModel getDisease(String name) {
@@ -147,6 +154,15 @@ public abstract class CharacterModel extends MovableModel {
     public boolean hasDisease(String name) {
         for (DiseaseCharacterModel disease: _diseases) {
             if (disease.disease.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasDisease(DiseaseModel diseaseModel) {
+        for (DiseaseCharacterModel disease: _diseases) {
+            if (disease.disease == diseaseModel) {
                 return true;
             }
         }
@@ -188,7 +204,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            _parcel = WorldHelper.getNearestFreeParcel(_parcel, true, false);
+            setParcel(WorldHelper.getNearestFreeParcel(_parcel, true, false));
         }
     }
 
@@ -200,7 +216,7 @@ public abstract class CharacterModel extends MovableModel {
         // TODO: create JobSleep class with auto-cancel capability
         // Cancel model sleeping
         int timetable = _timeTable.get(Game.getInstance().getHour());
-        if (timetable != 0 && timetable != 1 && _needs.isSleeping && _needs.energy > 75) {
+        if (timetable != 0 && timetable != 1 && _needs.isSleeping && _needs.get("energy") > 75) {
             _needs.isSleeping = false;
             if (_job != null && _job instanceof UseJob && _job.getItem() != null && _job.getItem().isSleepingItem()) {
                 ModuleHelper.getJobModule().quitJob(_job);
@@ -239,7 +255,7 @@ public abstract class CharacterModel extends MovableModel {
 
         // TODO
         // No energy + no job to sleepingItem -> sleep on the ground
-        if (_needs.getEnergy() <= 0 && !_needs.isSleeping()) {
+        if (_needs.get("energy") <= 0 && !_needs.isSleeping()) {
             if (_job == null || _job.getItem() == null || !_job.getItem().isSleepingItem()) {
                 _needs.setSleeping(true);
             }
@@ -261,7 +277,7 @@ public abstract class CharacterModel extends MovableModel {
             // Character has reach next parcel
             if (_moveProgress >= 1 && _path.getCurrentParcel() != null) {
                 _moveProgress = 0;
-                _parcel = _path.getCurrentParcel();
+                setParcel(_path.getCurrentParcel());
 
                 // Move continue, set next parcel + direction
                 if (_path.next()) {
@@ -338,5 +354,9 @@ public abstract class CharacterModel extends MovableModel {
         // Add quantity
         _inventory.addQuantity(quantity);
         consumable.addQuantity(-quantity);
+    }
+
+    public void setSleeping(boolean isSleeping) {
+        _isSleeping = isSleeping;
     }
 }

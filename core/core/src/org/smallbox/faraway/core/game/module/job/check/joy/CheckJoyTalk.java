@@ -38,6 +38,6 @@ public class CheckJoyTalk extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getNeeds().relation < character.getType().needs.relation.critical;
+        return character.getNeeds().get("relation") < character.getType().needs.relation.critical;
     }
 }

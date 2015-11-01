@@ -27,19 +27,22 @@ public class ResourceModule extends GameModule {
         }
     }
 
-    private Map<ItemInfo, ConsumableCollection> _consumablesCollection;
-    private List<ConsumableModel>           _foods;
+    private Map<ItemInfo, ConsumableCollection> _consumablesCollection = new HashMap<>();
+    private List<ConsumableModel>           _drinks = new ArrayList<>();
+    private int                             _drinkCount;
+    private int                             _waterNetwork = 100;
+    private List<ConsumableModel>           _foods = new ArrayList<>();
     private int                             _foodCount;
 
     public int                      getConsumableCount(String name) { return getConsumableCount(GameData.getData().getItemInfo(name)); }
     public int                      getConsumableCount(ItemInfo info) { return _consumablesCollection.containsKey(info) ? _consumablesCollection.get(info).count : 0; }
     public List<ConsumableModel>    getFoods() { return _foods; }
     public int                      getFoodCount() { return _foodCount; }
+    public List<ConsumableModel>    getDrinks() { return _drinks; }
+    public int                      getDrinkCount() { return _drinkCount + _waterNetwork; }
 
     @Override
     protected void onLoaded() {
-        _consumablesCollection = new HashMap<>();
-        _foods = new ArrayList<>();
     }
 
     @Override
@@ -52,6 +55,11 @@ public class ResourceModule extends GameModule {
         _foodCount = 0;
         for (ConsumableModel consumable: _foods) {
             _foodCount += consumable.getQuantity();
+        }
+
+        _drinkCount = 0;
+        for (ConsumableModel consumable: _drinks) {
+            _drinkCount += consumable.getQuantity();
         }
 
         _consumablesCollection.values().forEach(ConsumableCollection::update);

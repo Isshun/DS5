@@ -16,7 +16,7 @@
 //    @Override
 //    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
 //        if (characters.getNeeds().isHungry()) {
-//            ItemFilter consomableItemFilter = ItemFilter.createConsomableFilter();
+//            ItemFilter consomableItemFilter = ItemFilter.createConsumableFilter();
 //            consomableItemFilter.effectFood = true;
 //
 //            // Have item in inventory

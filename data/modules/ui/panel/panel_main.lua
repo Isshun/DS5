@@ -14,15 +14,19 @@ data:extend({
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {220, 0}, padding = 10 },
             }},
             { type = "image", src = "data/graphics/fake_map.png", size = {380, 240}},
-            { type = "view", id = "view_resource", background = 0x203636, size = {380, 32}, views = {
+            { type = "view", id = "view_resource", background = 0x203636, size = {380, 34}, views = {
                 { type = "grid", id = "grid_resource", columns = 8, column_width = 70, views = {
-                    { type = "view", size = {70, 32}, position = {5, 5}, views = {
+                    { type = "view", size = {70, 32}, position = {0, 0}, views = {
                         { type = "image", src = "data/graphics/icons/food.png", size = {32, 32}},
-                        { type = "label", id = "lb_resource_food", text = "32", text_size = 16, padding = 5, position = {24, 0}, size = {32, 32}},
+                        { type = "label", id = "lb_resource_food", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
+                    }},
+                    { type = "view", size = {70, 32}, position = {0, 0}, views = {
+                        { type = "image", src = "data/graphics/icons/water.png", size = {32, 32}},
+                        { type = "label", id = "lb_resource_water", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                     }},
                     { type = "view", size = {70, 32}, views = {
                         { type = "image", src = "data/graphics/icons/wood.png", size = {32, 32}},
-                        { type = "label", id = "lb_resource_wood", text = "32", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
+                        { type = "label", id = "lb_resource_wood", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                     }},
                 }},
                 { type = "image", src = "data/graphics/icons/setting.png", position = {356, 8}, size = {32, 32}, on_click = function()
@@ -66,6 +70,7 @@ data:extend({
         if resource_module then
             view:findById("lb_resource_food"):setText(resource_module:getFoodCount());
             view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.wood_log"));
+            view:findById("lb_resource_water"):setText(resource_module:getDrinkCount());
             view:findById("view_resource"):setVisible(true)
         else
             view:findById("view_resource"):setVisible(false)

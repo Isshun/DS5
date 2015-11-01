@@ -18,7 +18,7 @@ public class CheckJoyItem extends CharacterCheck {
     public JobModel create(CharacterModel character) {
         ItemModel item = getItem(character);
         if (item != null) {
-            UseJob job = UseJob.create(item, character);
+            UseJob job = UseJob.create(character, item);
             job.start(character);
             job.setCharacterRequire(character);
             return job;
@@ -39,7 +39,7 @@ public class CheckJoyItem extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getNeeds().joy < character.getType().needs.joy.warning;
+        return character.getNeeds().get("entertainment") < character.getType().needs.joy.warning;
     }
 }
 

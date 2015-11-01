@@ -15,9 +15,10 @@ public class DiseaseCharacterModel {
     public String           message;
     public int              level;
 
-    public DiseaseCharacterModel(DiseaseModel disease, LuaValue luaCharacter, CharacterModel character) {
+    public DiseaseCharacterModel(DiseaseModel disease, LuaValue luaCharacter, CharacterModel character, LuaValue data) {
         this.disease = disease;
-        this.luaData = new LuaTable();
+        this.luaData = data;
+//        this.luaData = new LuaTable();
         this.luaCharacter = luaCharacter;
         this.character = character;
     }

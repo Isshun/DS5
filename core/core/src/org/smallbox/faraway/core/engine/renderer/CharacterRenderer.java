@@ -113,9 +113,9 @@ public class CharacterRenderer extends BaseRenderer {
                 renderer.draw(_spriteManager.getCharacter(c, dirIndex, frame), posX, posY);
 
                 // Draw label
-                if (c.getNeeds().happiness < 20) {
+                if (c.getNeeds().get("happiness") < 20) {
                     c.getLabelDrawable().setBackgroundColor(COLOR_CRITICAL);
-                } else if (c.getNeeds().happiness < 40) {
+                } else if (c.getNeeds().get("happiness") < 40) {
                     c.getLabelDrawable().setBackgroundColor(COLOR_WARNING);
                 } else {
                     c.getLabelDrawable().setBackgroundColor(COLOR_OK);

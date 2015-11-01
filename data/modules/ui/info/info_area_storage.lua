@@ -23,41 +23,38 @@ end
 
 data:extend({
     type = "list",
-    id = "info_area",
+    id = "info_area_storage",
     position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,
     visible = false,
     views = {
-        { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 40}},
-        { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()
-            game.events:send("encyclopedia.open_area", g_area)
-        end},
-        { type = "grid", position = {10, 10}, columns = 2, column_width = 190, row_height = 60, views = {
+        { type = "view", size = {400, 40}, views = {
+            { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 45}, position = {0, 8}},
+            { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {90, 32}, on_click = function()
+                game.events:send("encyclopedia.open_area", g_area)
+            end},
+        }},
+        { type = "grid", position = {10, 18}, columns = 2, column_width = 195, row_height = 60, views = {
             { type = "label", id = "bt_inventory", text = "Content", text_size = 20, padding = 18, background = 0x4be7da, size = {180, 50},
                 on_click = function()
-                    game.ui:findById("info_area"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
-                    game.ui:findById("info_area"):findById("bt_rules"):setBackgroundColor(0x689999);
-                    game.ui:findById("info_area"):findById("frame_inventory"):setVisible(true);
-                    game.ui:findById("info_area"):findById("frame_rules"):setVisible(false);
+                    game.ui:findById("info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
+                    game.ui:findById("info_area_storage"):findById("bt_rules"):setBackgroundColor(0x689999);
+                    game.ui:findById("info_area_storage"):findById("frame_inventory"):setVisible(true);
+                    game.ui:findById("info_area_storage"):findById("frame_rules"):setVisible(false);
                 end},
             { type = "label", id = "bt_rules", text = "Rules", text_size = 20, padding = 18, background = 0x689999, size = {180, 50},
                 on_click = function()
-                    game.ui:findById("info_area"):findById("bt_inventory"):setBackgroundColor(0x689999);
-                    game.ui:findById("info_area"):findById("bt_rules"):setBackgroundColor(0x4be7da);
-                    game.ui:findById("info_area"):findById("frame_inventory"):setVisible(false);
-                    game.ui:findById("info_area"):findById("frame_rules"):setVisible(true);
+                    game.ui:findById("info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x689999);
+                    game.ui:findById("info_area_storage"):findById("bt_rules"):setBackgroundColor(0x4be7da);
+                    game.ui:findById("info_area_storage"):findById("frame_inventory"):setVisible(false);
+                    game.ui:findById("info_area_storage"):findById("frame_rules"):setVisible(true);
                 end},
         }},
-        { type = "list", position = {0, 40}, views = {
-            { type = "label", id = "lb_position", text_size = 18, padding = 10},
-            { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
+        { type = "list", id = "frame_inventory", position = {0, 18}, views = {
+            { type = "list", id = "list_storage_content", position = {5, 5}},
         }},
-        { type = "list", id = "frame_inventory", position = {0, 40}, views = {
-            { type = "label", text = "Inventory", text_size = 18, padding = 10},
-            { type = "list", id = "list_storage_content", position = {5, 75}},
-        }},
-        { type = "list", id = "frame_rules", visible = false, position = {0, 40}, views = {
+        { type = "list", id = "frame_rules", visible = false, position = {0, 18}, views = {
             { type = "view", size = {400, 32}, views = {
                 { type = "label", text = "Priority", text_size = 18, padding = 10},
                 { type = "label", text = "[1]", id = "bt_priority_1", text_size = 18, padding = 10, size = {32, 32}, position = {230, 0}, on_click = function(v) setPriority(v, 1) end},
@@ -158,7 +155,7 @@ data:extend({
             list_storage_content:removeAllViews()
             for key, value in pairs(item_map) do
                 local lb_item = game.ui:createLabel()
-                lb_item:setDashedString(key, value, 48)
+                lb_item:setDashedString(key, value, 47)
                 lb_item:setTextSize(14)
                 lb_item:setSize(180, 20)
                 lb_item:setPadding(5)

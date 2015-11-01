@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.character.model;
 
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 
@@ -16,6 +17,8 @@ public class BuffCharacterModel extends ObjectModel {
     public String           message;
     public int              level;
     public int              mood;
+    public long             startTick;
+    public boolean          active;
 
     public BuffCharacterModel(BuffModel buff, LuaValue luaCharacter, CharacterModel character) {
         this.buff = buff;
@@ -34,5 +37,12 @@ public class BuffCharacterModel extends ObjectModel {
         if (this.character.isAlive()) {
             this.buff.update(this, tick);
         }
+        if (tick % GameData.config.tickPerHour == 0) {
+            this.buff.updateHourly(this, tick);
+        }
+    }
+
+    public void check(int tick) {
+        this.buff.check(this, tick);
     }
 }

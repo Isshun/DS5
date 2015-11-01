@@ -45,7 +45,7 @@ public abstract class JobModel extends ObjectModel {
     protected int               _blocked;
     protected int               _nbBlocked;
     protected int               _nbUsed;
-    protected int               _cost;
+    protected int               _cost = 1;
     protected int               _durationLeft;
     protected boolean           _isFinish;
     protected double            _progress;

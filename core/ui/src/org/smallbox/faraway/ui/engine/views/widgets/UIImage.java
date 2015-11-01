@@ -58,29 +58,31 @@ public class UIImage extends View {
     public void draw(GDXRenderer renderer, int x, int y) {
         super.draw(renderer, x, y);
 
-        if (_sprite == null && _spriteModel != null) {
-            _sprite = ((GDXSpriteModel)_spriteModel).getData();
-        }
+        if (_isVisible) {
+            if (_sprite == null && _spriteModel != null) {
+                _sprite = ((GDXSpriteModel) _spriteModel).getData();
+            }
 
-        if (_sprite == null && _path != null) {
-            try {
-                Texture texture = new Texture(_path);
-                _sprite = new Sprite();
-                _sprite.setTexture(texture);
-                _sprite.setRegion(0, 0, _width, _height);
-                _sprite.flip(false, true);
-            } catch (GdxRuntimeException e) {
+            if (_sprite == null && _path != null) {
+                try {
+                    Texture texture = new Texture(_path);
+                    _sprite = new Sprite();
+                    _sprite.setTexture(texture);
+                    _sprite.setRegion(0, 0, _width, _height);
+                    _sprite.flip(false, true);
+                } catch (GdxRuntimeException e) {
 //                e.printStackTrace();
+                }
             }
-        }
 
-        if (_sprite != null) {
-            // TODO
-            if (_textureHeight != 0) {
-                _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
-                _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
+            if (_sprite != null) {
+                // TODO
+                if (_textureHeight != 0) {
+                    _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
+                    _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
+                }
+                renderer.draw(_sprite, _x + x, _y + y);
             }
-            renderer.draw(_sprite, _x + x, _y + y);
         }
     }
 

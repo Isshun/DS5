@@ -27,7 +27,7 @@ public class CheckJoyWalk extends CharacterCheck {
         MoveJob job = MoveJob.create(character, _parcel);
         job.start(character);
         job.setLabel("Move for a walk");
-        job.setStrategy(j -> j.getCharacter().getNeeds().joy += 1);
+        job.setStrategy(j -> j.getCharacter().getNeeds().addValue("entertainment", 1));
         job.setSpeedModifier(0.5);
         job.setLimit(150);
         job.setEntertainment(true);
@@ -70,6 +70,6 @@ public class CheckJoyWalk extends CharacterCheck {
 
     @Override
     public boolean need(CharacterModel character) {
-        return character.getNeeds().joy < character.getType().needs.joy.warning;
+        return character.getNeeds().get("entertainment") < character.getType().needs.joy.warning;
     }
 }

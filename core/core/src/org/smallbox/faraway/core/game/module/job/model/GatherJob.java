@@ -42,7 +42,7 @@ public class GatherJob extends JobModel {
         GatherJob job = new GatherJob(resource.getInfo().actions.get(0), resource.getParcel());
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
-                j.getCharacter().getNeeds().joy += j.getCharacter().getType().needs.joy.change.work;
+                j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
             }
         });
         job._resource = resource;

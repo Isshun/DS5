@@ -277,6 +277,10 @@ public class WorldHelper {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
     }
 
+    public static int getDistance(ParcelModel p1, ParcelModel p2) {
+        return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+    }
+
     public static ParcelModel getNearest(int x, int y, boolean allowExterior, boolean allowInterior, boolean allowCharacter, boolean allowStructure, boolean allowItem, boolean allowConsumable, boolean allowResource) {
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < i; j++) {

@@ -39,6 +39,7 @@ public class ItemFinder extends GameModule {
     }
 
     // TODO: lock item
+    // TODO: check path
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
         if (filter.needItem) {
             int bestDistance = Integer.MAX_VALUE;
