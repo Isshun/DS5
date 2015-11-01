@@ -40,36 +40,24 @@ public class AreaModel {
         return false;
     }
 
-    public Collection<ParcelModel> getParcels() {
+    public void                     setAccept(ItemInfo itemInfo, boolean isAccepted) { _items.put(itemInfo, isAccepted); }
+
+    public Collection<ParcelModel>  getParcels() {
         return _parcels;
     }
+    public Map<ItemInfo, Boolean>   getItemsAccepts() { return _items; }
+    public String                   getName() { return "Area #n"; }
+    public AreaType                 getType() { return _type; }
+    public String                   getTypeName() { return _type.name(); }
+    public int                      getTypeIndex() { return _typeIndex; }
+    public int                      getX() { return _x; }
+    public int                      getY() { return _y; }
 
-    public String getName() {
-        return "Area #n";
-    }
-
-    public boolean isStorage() {
-        return false;
-    }
-
-    public boolean isHome() {
-        return false;
-    }
-
-    public AreaType getType() { return _type; }
-    public String getTypeName() { return _type.name(); }
-    public int getTypeIndex() { return _typeIndex; }
+    public boolean                  isStorage() { return false; }
+    public boolean                  isHome() { return false; }
 
     public void removeParcel(ParcelModel parcel) {
         _parcels.remove(parcel);
-    }
-
-    public int getX() {
-        return _x;
-    }
-
-    public int getY() {
-        return _y;
     }
 
     public boolean accept(ItemInfo itemInfo) {
@@ -80,13 +68,4 @@ public class AreaModel {
         }
         return false;
     }
-
-    public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
-        _items.put(itemInfo, isAccepted);
-    }
-
-    public Map<ItemInfo, Boolean> getItemsAccepts() {
-        return _items;
-    }
-
 }

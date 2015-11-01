@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.module.area;
 
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.job.model.StoreJob;
@@ -125,7 +126,19 @@ public class AreaModule extends GameModule {
 
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                area.addParcel(worldModule.getParcel(x, y));
+                ParcelModel parcel = worldModule.getParcel(x, y);
+
+                // Add parcel to area
+                area.addParcel(parcel);
+
+                // Remove existing resource on parcel
+                if (parcel.getResource() != null) {
+                    if (parcel.getResource().canBeMined()) {
+                        JobHelper.addMineJob(x, y);
+                    } else if (parcel.getResource().canBeHarvested()) {
+                        JobHelper.addGatherJob(x, y, true);
+                    }
+                }
             }
         }
     }

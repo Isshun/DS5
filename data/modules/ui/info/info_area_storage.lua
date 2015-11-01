@@ -66,6 +66,7 @@ data:extend({
             { type = "grid", columns = 4, column_width = 98, row_height = 40, position = {10, 10}, views = {
                 { type = "label", text = "none", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, nil) end},
                 { type = "label", text = "mineral", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, "mineral") end},
+                { type = "label", text = "metal", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, "metal") end},
                 { type = "label", text = "organic", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, "organic") end},
                 { type = "label", text = "component", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, "component") end},
                 { type = "label", text = "food", text_size = 16, padding = 10, size = {88, 32}, background = 0x556644, on_click = function(view) setCategory(view, "food") end},

@@ -16,7 +16,7 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 
 public class GatherJob extends JobModel {
-    public enum Mode {PLANT_SEED, NOURISH, HARVEST}
+    public enum Mode {PLANT_SEED, NOURISH, HARVEST, CUT}
 
     private Mode                _mode;
     private ResourceModel       _resource;
@@ -55,6 +55,7 @@ public class GatherJob extends JobModel {
             case PLANT_SEED: job._label = "Plant seed"; break;
             case NOURISH: job._label = "Nourish"; break;
             case HARVEST: job._label = "Harvest"; break;
+            case CUT: job._label = "Cut"; break;
         }
 
         return job;
@@ -120,14 +121,16 @@ public class GatherJob extends JobModel {
             _resource.getPlant().setNourish(Math.min(1, _resource.getPlant().getNourish() + 0.5));
         }
 
-        if (_mode == Mode.HARVEST) {
-            if (_resource.getInfo().plant.cutOnGathering) {
-                ModuleHelper.getWorldModule().removeResource(_resource);
-            }
-
+        if (_mode == Mode.HARVEST || _mode == Mode.CUT) {
+            // Create consumable from resource
             if (_actionInfo.finalProducts != null) {
                 _actionInfo.finalProducts.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo ->
                         ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity)));
+            }
+
+            // Remove resource from parcel function of mode or resource info
+            if (_mode == Mode.CUT || _resource.getInfo().plant.cutOnGathering) {
+                ModuleHelper.getWorldModule().removeResource(_resource);
             }
         }
     }

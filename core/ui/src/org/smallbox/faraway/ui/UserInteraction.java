@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
@@ -95,31 +96,20 @@ public class UserInteraction {
         ItemInfo itemInfo = _selectedItemInfo;
         for (int x = toX; x >= startX; x--) {
             for (int y = toY; y >= startY; y--) {
+                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                if (parcel != null) {
 
-                // Check if resource is present on model
-                ResourceModel res = WorldHelper.getResource(x, y);
-                if (res != null) {
-                    if (res.canBeMined()) {
-                        JobHelper.addMineJob(x, y);
-                    } else if (res.canBeHarvested()) {
-                        JobHelper.addGatherJob(x, y, true);
+                    // Check if resource is present on parcel
+                    if (parcel.getResource() != null) {
+                        if (parcel.getResource().canBeMined()) {
+                            JobHelper.addMineJob(x, y);
+                        } else if (parcel.getResource().canBeHarvested()) {
+                            JobHelper.addGatherJob(x, y, true);
+                        }
                     }
+
+                    ModuleHelper.getWorldModule().putObject(parcel, itemInfo, 0);
                 }
-
-                ModuleHelper.getWorldModule().putObject(WorldHelper.getParcel(x, y), itemInfo, 0);
-
-//                JobHelper.addBuildJob(itemInfo, x, y);
-
-//                if (_selectedItemInfo.name.equals("base.room")) {
-//                    if (x == startX || x == toX || y == startY || y == toY) {
-//                        StructureModel structure = ModuleHelper.getWorldModule().getStructure(x, y);
-//                        if (structure == null || !structure.isDoor()) {
-//                            JobHelper.addBuildJob(GameData.getData().getItemInfo("base.wall"), x, y);
-//                        }
-//                    } else {
-//                        JobHelper.addBuildJob(GameData.getData().getItemInfo("base.floor"), x, y);
-//                    }
-//                }
             }
         }
     }
