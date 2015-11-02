@@ -25,7 +25,7 @@ public class GameData {
     public List<CategoryInfo>                   categories;
     public List<ItemInfo>                       equipments;
     public List<PlanetInfo>                     planets = new ArrayList<>();
-    public Map<String, WeatherModel>            weathers;
+    public Map<String, WeatherModel>            weathers = new HashMap<>();
     public HashMap<Integer, String>             strings = new HashMap<>();
     public boolean                              needUIRefresh;
     public List<IDataLoader>                    _loaders;
@@ -41,7 +41,6 @@ public class GameData {
         _loaders = new ArrayList<>();
 
         _loaders.add(new ConfigLoader());
-        _loaders.add(new WeatherLoader());
         _loaders.add(new EquipmentLoader());
         _loaders.add(new CategoryLoader());
         _loaders.add(new CharacterLoader());

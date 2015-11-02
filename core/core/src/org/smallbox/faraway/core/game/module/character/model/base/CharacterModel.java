@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.character.model.*;
-import org.smallbox.faraway.core.game.module.job.SleepJob;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
 import org.smallbox.faraway.core.game.module.job.model.UseJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;

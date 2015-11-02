@@ -13,7 +13,7 @@ data:extend({
         { type = "label", text = "Jobs", text_size = 28, padding = 10, position = {46, 0}},
         { type = "list", id = "list_jobs", position = {10, 40}},
     },
-    on_event = function(event, view, data)
+    on_event = function(view, event , data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
             game.ui:findById("panel_main"):setVisible(true)

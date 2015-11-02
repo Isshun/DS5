@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;

@@ -8,6 +8,14 @@ data:extend({
         {"Consumable", "Consommable"},
         {"Character", "Personnage"},
 
+        -- Main panel
+        {"Build", "Construction"},
+        {"Plan", "Planification"},
+        {"Stats", "Statistiques"},
+        {"Crew", "Colons"},
+        {"Jobs", "Tâches"},
+        {"Areas", "Zones"},
+
         -- Character info
         {"Current occupation", "Occupation"},
         {"Personal records", "Informations personnelles"},
@@ -31,6 +39,7 @@ data:extend({
         {"Health", "Santé"},
         {"Relation", "Relation"},
         {"Entertainment", "Divertissement"},
+        {"Mood", "Morale"},
 
         -- Talents
         {"Healing", "Soin"},

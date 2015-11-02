@@ -22,7 +22,7 @@ data:extend(
             end,
 
             on_event =
-            function(event, view, data)
+            function(view, event, data)
                 if event == "module.open_detail" then
                     local module = data
 

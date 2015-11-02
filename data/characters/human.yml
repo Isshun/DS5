@@ -7,7 +7,7 @@ needs:
         warning: 35
         critical: 15
         change:
-            wake: -0.2
+            wake: -0.15
             sleep: -0.05
 
     water:

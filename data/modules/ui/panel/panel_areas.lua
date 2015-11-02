@@ -26,7 +26,7 @@ data:extend({
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "- Garden", text_size = 18, padding = 10, on_click = "game:removeArea('garden')"},
         }},
     },
-    on_event = function(event, view, data)
+    on_event = function(view, event , data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
             game.ui:findById("panel_main"):setVisible(true)

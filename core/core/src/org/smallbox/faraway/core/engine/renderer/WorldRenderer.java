@@ -2,11 +2,7 @@ package org.smallbox.faraway.core.engine.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.core.GraphicInfo;
-import org.smallbox.faraway.core.RenderLayer;
-import org.smallbox.faraway.core.SpriteManager;
-import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.SpriteModel;
+import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;

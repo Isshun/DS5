@@ -16,7 +16,7 @@ data:extend({
     },
 
     on_event =
-    function(event, view, data)
+    function(view, event, data)
         if event == game.events.on_parcel_over then
             room = data and data:getRoom() or nil;
         end

@@ -20,7 +20,7 @@ data:extend({
     },
 
     on_event =
-    function(event, view, data)
+    function(view, event, data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             g_garden = nil
             view:setVisible(false)

@@ -56,7 +56,7 @@ data:extend(
             end,
 
             on_event =
-            function(event, view, data)
+            function(view, event, data)
                 if event == game.events.on_key_press and data == "F9" then
                     view:setVisible(not view:isVisible())
                 end

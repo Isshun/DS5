@@ -33,8 +33,8 @@ data:extend({
             { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
         },
         weather = {
-            {name = "dust_storm", frequency = {2, 10}, duration = {1, 1}},
-            {name = "el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
+            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
         },
         fauna = {
             {name = "kulon", frequency = 0.4, count = {5, 8}},
@@ -59,8 +59,8 @@ data:extend({
             { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
         },
         weather = {
-            {name = "dust_storm", frequency = {2, 10}, duration = {1, 1}},
-            {name = "el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
+            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
         },
         fauna = {
             {name = "kulon", frequency = 0.4, count = {5, 8}},
@@ -84,9 +84,9 @@ data:extend({
             { type = "resource", name = "base.desert_laitue", pattern = "random_light", condition = "ground" },
         },
         weather = {
-            {name = "dust_whirl", frequency = {2, 10}, duration = {0.5, 2}},
-            {name = "dust_storm", frequency = {2, 10}, duration = {1, 1}},
-            {name = "el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
+            {name = "base.weather.sandwhirl", frequency = {2, 10}, duration = {0.5, 2}},
+            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
         },
         fauna = {
             {name = "sandworm", frequency = 0.5, count = {1, 1}},

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.model.WeatherModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -53,4 +54,5 @@ public interface GameObserver {
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
     default void onKeyPress(GameEventListener.Key key) {}
+    default void onWeatherChange(WeatherModel weather) {}
 }

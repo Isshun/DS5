@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model.resource;
 
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 

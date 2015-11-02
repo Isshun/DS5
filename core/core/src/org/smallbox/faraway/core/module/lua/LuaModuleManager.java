@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.WeatherModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -47,6 +48,7 @@ public class LuaModuleManager implements GameObserver {
     private static final List<LuaExtend> EXTENDS = Arrays.asList(
             new LuaUIExtend(),
             new LuaItemExtend(),
+            new LuaWeatherExtend(),
             new LuaPlanetExtend(),
             new LuaReceiptExtend(),
             new LuaCursorExtend(),
@@ -237,6 +239,7 @@ public class LuaModuleManager implements GameObserver {
     public void onReloadUI() {loadUI();}
     public void onRefreshUI() { _luaRefreshListeners.forEach(LuaRefreshListener::onRefresh); }
     public void onKeyPress(GameEventListener.Key key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name());}
+    public void onWeatherChange(WeatherModel weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
 
 //    default void onStartGame() {}
 //    default void onLog(String tag, String message) {}

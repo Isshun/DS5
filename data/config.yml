@@ -28,7 +28,7 @@ render:
     debug:          false
     room:           true
     light:          true
-    particle:       false
+    particle:       true
     fauna:          false
 
 manager:

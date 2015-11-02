@@ -1,23 +1,11 @@
 package org.smallbox.faraway.core.engine.renderer;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.RenderLayer;
-import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.SpriteModel;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;

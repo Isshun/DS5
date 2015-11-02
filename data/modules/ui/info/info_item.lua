@@ -23,7 +23,7 @@ data:extend({
             --            { type = "label", id = "lb_complete", text_size = 18, padding = 10},
             { type = "list", id = "frame_building", position = {0, 40}, views = {
                 { type = "label", id = "lb_building", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
-                { type = "image", id = "img_building_progress", position = {10, 12}, src = "data/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
+                { type = "image", id = "img_building_progress", position = {10, 12}, src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
                 { type = "label", id = "lb_building_progress", text_size = 14, padding = 10, position = {0, 10}},
                 { type = "label", id = "lb_building_job", text_size = 14, padding = 10, position = {0, 10}},
                 { type = "label", id = "lb_building_character", text_size = 14, padding = 10, position = {0, 10}},
@@ -38,7 +38,7 @@ data:extend({
             { type = "list", id = "frame_factory_progress", position = {10, 10}, views = {
                 { type = "label", text = "Work in progress", text_size = 22},
                 { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", position = {0, 10}},
-                { type = "image", id = "img_factory_progress", position = {0, 10}, src = "data/graphics/needbar.png", size = {380, 16}},
+                { type = "image", id = "img_factory_progress", position = {0, 10}, src = "[base]/graphics/needbar.png", size = {380, 16}},
                 --                { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 10}},
                 --                { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
                 --                { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
@@ -53,7 +53,7 @@ data:extend({
         }},
     },
 
-    on_event = function(event, view, data)
+    on_event = function(view, event , data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
             game.ui:clearSelection();

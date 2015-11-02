@@ -16,8 +16,7 @@ data:extend({
         end
     end,
 
-    on_event =
-    function(event, view, data)
+    on_event = function(view, event, data)
         if event == "debug.open_buff" then
             view:setVisible(view:isVisible())
             g_buff = data
@@ -26,5 +25,4 @@ data:extend({
             view:setVisible(false)
         end
     end,
-
 })

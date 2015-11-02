@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.engine.SpriteModel;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -39,14 +38,15 @@ public class SpriteManager {
     private static final int                BOTTOM = 0b00000010;
     private static final int                BOTTOM_RIGHT = 0b00000001;
 
-    private static int                         _count;
+    private static int                      _count;
     private static SpriteManager            _self;
-    private Map<Integer, GDXSpriteModel>    _spritesCharacters;
-    private Map<Long, GDXSpriteModel>         _sprites;
-    private Texture[]                         _textureCharacters;
-    private GDXSpriteModel[]                _selectors;
+    private Map<Integer, SpriteModel>       _spritesCharacters;
+    private Map<Long, SpriteModel>          _sprites;
+    private Texture[]                       _textureCharacters;
+    private SpriteModel[]                   _selectors;
     private Map<String, SpriteModel>        _icons;
-    private ItemInfo _groundItemInfo;
+    private ItemInfo                        _groundItemInfo;
+    private Map<String, Texture>            _textureCache = new HashMap<>();
 
     private int[] _random = {
             0, 0, 1, 3, 2, 3, 1, 3, 0, 1,
@@ -54,8 +54,6 @@ public class SpriteManager {
             0, 1, 2, 1, 3, 0, 1, 3, 0, 1,
             0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
             3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
-
-    private Map<String, Texture>            _textureCache = new HashMap<>();
 
     public static SpriteManager getInstance() {
         return _self;
@@ -90,23 +88,24 @@ public class SpriteManager {
         _textureCharacters[3] = new Texture("data/res/Characters/NuChara01.png");
 
         Texture itemSelector = new Texture("data/res/item_selector.png");
-        _selectors = new GDXSpriteModel[NB_SELECTOR_TILE];
-        _selectors[0] = new GDXSpriteModel(itemSelector, 0, 0, 8, 8);
-        _selectors[1] = new GDXSpriteModel(itemSelector, 8, 0, 8, 8);
-        _selectors[2] = new GDXSpriteModel(itemSelector, 0, 8, 8, 8);
-        _selectors[3] = new GDXSpriteModel(itemSelector, 8, 8, 8, 8);
+        _selectors = new SpriteModel[NB_SELECTOR_TILE];
+        _selectors[0] = new SpriteModel(itemSelector, 0, 0, 8, 8);
+        _selectors[1] = new SpriteModel(itemSelector, 8, 0, 8, 8);
+        _selectors[2] = new SpriteModel(itemSelector, 0, 8, 8, 8);
+        _selectors[3] = new SpriteModel(itemSelector, 8, 8, 8, 8);
 
 //        _textureItemSelector = new Texture("data/res/Tilesets/item_selector.png");
-//        _itemSelectors = new GDXSpriteModel[NB_ITEM_SELECTOR_TILE];
+//        _itemSelectors = new SpriteModel[NB_ITEM_SELECTOR_TILE];
 //        for (int i = 0; i < NB_ITEM_SELECTOR_TILE; i++) {
-//            _itemSelectors[i] = new GDXSpriteModel(_textureItemSelector, i * 32, 0, 32, 32);
+//            _itemSelectors[i] = new SpriteModel(_textureItemSelector, i * 32, 0, 32, 32);
 //        }
     }
 
     public SpriteModel getIcon(String path) {
         if (!_icons.containsKey(path)) {
-            Texture texture = new Texture(path);
-            GDXSpriteModel sprite = new GDXSpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
+            File file = getFile(path);
+            Texture texture = new Texture(new FileHandle(file));
+            SpriteModel sprite = new SpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
             _icons.put(path, sprite);
         }
         return _icons.get(path);
@@ -188,7 +187,7 @@ public class SpriteManager {
                 getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
                 getSum(graphicInfo.spriteId, offsetX, offsetY, isIcon ? 1 : 0);
 
-        GDXSpriteModel sprite = _sprites.get(sum);
+        SpriteModel sprite = _sprites.get(sum);
         if (sprite == null) {
             File imgFile = getFile(graphicInfo);
             if (imgFile.exists()) {
@@ -226,7 +225,7 @@ public class SpriteManager {
                     } else {
                         pixmap.drawPixmap(texturePixmap, 16, 0, 48, 0, 16, 16);
                     }
-                    
+
                     // Bottom left
                     if ((tile & BOTTOM_LEFT) > 0 && (tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 16, 64, 16, 16, 16);
@@ -255,17 +254,17 @@ public class SpriteManager {
 
                     texture.getTextureData().disposePixmap();
 
-                    sprite = new GDXSpriteModel(new Texture(pixmap), 0, 0, 64, 64);
+                    sprite = new SpriteModel(new Texture(pixmap), 0, 0, 64, 64);
                     sprite.getData().setColor(new Color(255, 255, 255, alpha));
                     _sprites.put(sum, sprite);
 
-//                    sprite = new GDXSpriteModel(texture, (tile % 3) * 32, (tile / 3) * 32, 32, 32);
+//                    sprite = new SpriteModel(texture, (tile % 3) * 32, (tile / 3) * 32, 32, 32);
 //                    sprite.getData().setColor(new Color(255, 255, 255, alpha));
 //                    _sprites.put(sum, sprite);
                 }
 
                 else {
-                    sprite = new GDXSpriteModel(texture,
+                    sprite = new SpriteModel(texture,
                             offsetX,
                             offsetY,
                             itemInfo.width * width,
@@ -300,6 +299,20 @@ public class SpriteManager {
             return new File("data", graphicInfo.path);
         } else {
             return new File("mods/" + graphicInfo.packageName + "/items/" + graphicInfo.path + ".png");
+        }
+    }
+
+    private File getFile(String path) {
+        String packageName = "base";
+        if (path.startsWith("[")) {
+            packageName = path.substring(1, path.indexOf(']'));
+            path = path.substring(path.indexOf(']') + 1, path.length());
+        }
+
+        if ("base".equals(packageName)) {
+            return new File("data", path);
+        } else {
+            return new File("mods/" + packageName + "/items/" + path + ".png");
         }
     }
 
@@ -426,13 +439,13 @@ public class SpriteManager {
         GraphicInfo graphicInfo = _groundItemInfo.graphics != null ? _groundItemInfo.graphics.get(0) : null;
         long sum = getSum(graphicInfo.spriteId, offsetX, offsetY, 0);
 
-        GDXSpriteModel sprite = _sprites.get(sum);
+        SpriteModel sprite = _sprites.get(sum);
         if (sprite == null) {
             File imgFile = getFile(graphicInfo);
             if (imgFile.exists()) {
                 Texture texture = new Texture(new FileHandle(imgFile));
 
-                sprite = new GDXSpriteModel(texture,
+                sprite = new SpriteModel(texture,
                         0,
                         32,
                         32,
@@ -449,7 +462,7 @@ public class SpriteManager {
     public SpriteModel getAnimal(String path) {
         if (!_icons.containsKey(path)) {
             Texture texture = new Texture(path);
-            GDXSpriteModel sprite = new GDXSpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
+            SpriteModel sprite = new SpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
             _icons.put(path, sprite);
         }
         return _icons.get(path);
@@ -465,17 +478,17 @@ public class SpriteManager {
         sum = sum << 8;
         sum += extra;
 
-        GDXSpriteModel sprite = _spritesCharacters.get(sum);
+        SpriteModel sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
             Texture texture = new Texture("data/characters/" + c.getType().name + ".png");
 
-            sprite = new GDXSpriteModel(texture,
+            sprite = new SpriteModel(texture,
                     0,
                     0,
                     Constant.CHAR_WIDTH,
                     Constant.CHAR_HEIGHT);
 
-//            sprite = new GDXSpriteModel(texture,
+//            sprite = new SpriteModel(texture,
 //                    Constant.CHAR_WIDTH * frame + (extra * 128),
 //                    Constant.CHAR_HEIGHT * direction,
 //                    Constant.CHAR_WIDTH,

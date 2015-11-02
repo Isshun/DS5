@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.smallbox.faraway.core.engine.renderer.GDXParticleRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -117,9 +117,9 @@ public class GDXApplication extends ApplicationAdapter {
 //                lightRenderer = new GDXLightRenderer();
 //            }
 
-            GDXParticleRenderer particleRenderer = null;
+            ParticleRenderer particleRenderer = null;
             if (GameData.config.render.particle) {
-                particleRenderer = new GDXParticleRenderer();
+                particleRenderer = new ParticleRenderer();
             }
             _application.create(_renderer, null, particleRenderer, GameData.getData(), GameData.config);
 

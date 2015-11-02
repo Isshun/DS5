@@ -141,6 +141,7 @@ public class ModuleManager {
 //        _renders.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
     }
 
+    public BaseRenderer         getRender(Class<? extends BaseRenderer> cls) { return _renders.stream().filter(cls::isInstance).findFirst().get(); }
     public GameModule           getModule(Class<? extends GameModule> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
     public GameModule           getModule(String className) { return _modules.stream().filter(module -> module.getClass().getSimpleName().equals(className)).findFirst().get(); }
     public List<BaseRenderer>   getRenders() { return _renders; }
@@ -175,5 +176,4 @@ public class ModuleManager {
             Game.getInstance().addObserver(module);
         }
     }
-
 }

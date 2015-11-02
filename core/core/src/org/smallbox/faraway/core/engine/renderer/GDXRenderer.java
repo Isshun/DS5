@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.core.GDXSpriteModel;
+import org.smallbox.faraway.core.SpriteModel;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.SpriteModel;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
@@ -58,11 +57,11 @@ public class GDXRenderer {
     public void draw(SpriteModel sprite, int x, int y) {
         if (sprite != null) {
             _batch.begin();
-            ((GDXSpriteModel)sprite).getData().setPosition(x, y);
-            ((GDXSpriteModel)sprite).getData().draw(_batch);
+            ((SpriteModel)sprite).getData().setPosition(x, y);
+            ((SpriteModel)sprite).getData().draw(_batch);
 //            if (effect != null) {
 //                if (effect.getViewport() != null) {
-//                    Sprite s = ((GDXSpriteModel) sprite).getData();
+//                    Sprite s = ((SpriteModel) sprite).getData();
 //                    s.setScale(effect.getViewport().getScale());
 //                    _batch.draw(s,
 //                            s.getX() + effect.getViewport().getPosX() * effect.getViewport().getScale(),
@@ -70,11 +69,11 @@ public class GDXRenderer {
 //                            s.getWidth() * effect.getViewport().getScale(),
 //                            s.getHeight() * effect.getViewport().getScale());
 //                } else {
-//                    Sprite s = ((GDXSpriteModel) sprite).getData();
+//                    Sprite s = ((SpriteModel) sprite).getData();
 //                    _batch.draw(s, ((GDXRenderEffect) effect).getPosX(), ((GDXRenderEffect) effect).getPosY());
 //                }
 //            } else {
-//                ((GDXSpriteModel) sprite).getData().draw(_batch);
+//                ((SpriteModel) sprite).getData().draw(_batch);
 //            }
             _batch.end();
         }

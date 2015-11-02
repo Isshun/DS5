@@ -206,7 +206,7 @@
 //
 //    private void pass4(GameData data) {
 ////        for (ItemInfo item: data.items) {
-////            TextureData textureData = ((GDXSpriteModel) GDXSpriteManager.getInstance().getIcon(item)).getData().getTexture().getTextureData();
+////            TextureData textureData = ((SpriteModel) GDXSpriteManager.getInstance().getIcon(item)).getData().getTexture().getTextureData();
 ////            textureData.prepare();
 ////            Pixmap pixmap = textureData.consumePixmap();
 ////            //pixmap.

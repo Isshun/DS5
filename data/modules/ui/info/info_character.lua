@@ -43,48 +43,48 @@ data:extend({
             views = {
                 { type = "label", text = "Current occupation", text_size = 28, position = {0, 5}},
                 { type = "label", id = "lb_job", text_size = 18, position = {0, 15}, size = {-1, 28}},
-                { type = "label", id = "lb_job_detail", text_size = 14, position = {0, 12}, size = {-1, 40}},
+                { type = "label", id = "lb_job_detail", visible = false, text_size = 14, position = {0, 12}, size = {-1, 40}},
 
                 { type = "label", position = {0, 20}, text = "Needs", text_size = 28},
                 { type = "grid", position = {0, 33}, columns = 2, column_width = 200, row_height = 44, views = {
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_food", position = {0, 0}, text = "food", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_food", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_food", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                         --                        { type = "label", id = "lb_need_food_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_drink", position = {0, 0}, text = "drink", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_drink", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_drink", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                         --                        { type = "label", id = "lb_need_drink_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_energy", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_energy", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_energy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                         --                        { type = "label", id = "lb_need_energy_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_happiness", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_happiness", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_happiness", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_health", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_health", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_health", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_joy", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_joy", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_joy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_relation", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_relation", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "lb_need_oxygen", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
                     { type = "view", size = {190, 44}, views = {
                         { type = "label", id = "", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "", position = {0, 16}, src = "data/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        { type = "image", id = "", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
                 }},
 
@@ -104,34 +104,34 @@ data:extend({
             views = {
                 { type = "label", id = "lb_inventory", position = {0, 10}, text_size = 14},
                 { type = "grid", position = {0, 24}, columns = 10, column_width = 32, row_height = 32, views = {
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
-                    { type = "image", position = {0, 16}, src = "data/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
+                    { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
                 }}
             }
         },
@@ -174,7 +174,7 @@ data:extend({
     end,
 
     on_event =
-    function(event, view, data)
+    function(view, event, data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             game.ui:clearSelection();
             view:setVisible(false)
@@ -210,12 +210,12 @@ data:extend({
                 view:findById("lb_job"):setText("No job")
             end
 
-            if job and job:getMessage() then
-                view:findById("lb_job_detail"):setText(job:getMessage())
-                view:findById("lb_job_detail"):setVisible(true)
-            else
-                view:findById("lb_job_detail"):setVisible(false)
-            end
+--            if job and job:getMessage() then
+--                view:findById("lb_job_detail"):setText(job:getMessage())
+--                view:findById("lb_job_detail"):setVisible(true)
+--            else
+--                view:findById("lb_job_detail"):setVisible(false)
+--            end
 
             display_buffs(view, character)
             display_diseases(view, character)
@@ -224,7 +224,7 @@ data:extend({
             displayNeed(view, "lb_need_energy", "gauge_energy", "Energy", character:getNeeds():get("energy"))
             displayNeed(view, "lb_need_food", "gauge_food", "Food", character:getNeeds():get("food"))
             displayNeed(view, "lb_need_drink", "gauge_drink", "Drink", needs:get("drink"))
-            displayNeed(view, "lb_need_happiness", "gauge_happiness", "Happiness", character:getNeeds():get("happiness"))
+            displayNeed(view, "lb_need_happiness", "gauge_happiness", "Mood", character:getNeeds():get("happiness"))
             displayNeed(view, "lb_need_health", "gauge_health", "Health", 0)
             displayNeed(view, "lb_need_joy", "gauge_joy", "Entertainment", character:getNeeds():get("entertainment"))
             displayNeed(view, "lb_need_relation", "gauge_relation", "Relation", character:getNeeds():get("relation"))
@@ -298,7 +298,7 @@ function display_diseases(view, character)
 
     --    local bt_health_image = view:findById("bt_health_image")
     --    bt_health_image:setVisible(level > 0)
-    --    bt_health_image:setImage(level > 2 and "data/graphics/icons/warning_hight.png" or "data/graphics/icons/warning_low.png")
+    --    bt_health_image:setImage(level > 2 and "[base]/graphics/icons/warning_hight.png" or "[base]/graphics/icons/warning_low.png")
 
     local bt_health_warning = view:findById("bt_health_warning")
     bt_health_warning:setVisible(level > 0)

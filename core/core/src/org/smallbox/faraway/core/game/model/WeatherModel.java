@@ -16,7 +16,9 @@ public class WeatherModel {
     }
 
     public String           name;
+    public String           label;
     public String           particle;
+    public String           icon;
     public WeatherSunModel  sun;
     public WeatherCondition condition;
     public boolean          unique;

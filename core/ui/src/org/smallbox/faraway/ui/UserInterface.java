@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;

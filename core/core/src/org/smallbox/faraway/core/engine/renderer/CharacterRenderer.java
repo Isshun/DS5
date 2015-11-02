@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
-import org.smallbox.faraway.core.game.module.job.model.HaulJob;
-import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 

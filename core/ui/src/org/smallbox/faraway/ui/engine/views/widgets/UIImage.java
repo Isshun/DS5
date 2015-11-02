@@ -3,8 +3,8 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.smallbox.faraway.core.GDXSpriteModel;
-import org.smallbox.faraway.core.engine.SpriteModel;
+import org.smallbox.faraway.core.SpriteManager;
+import org.smallbox.faraway.core.SpriteModel;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 
 public class UIImage extends View {
@@ -13,11 +13,11 @@ public class UIImage extends View {
     protected int _textureWidth;
     protected int _textureHeight;
 
-    private Sprite             _sprite;
+    private Sprite          _sprite;
     private SpriteModel     _spriteModel;
-    protected String         _path;
-    protected double         _scaleX = 1;
-    protected double         _scaleY = 1;
+    protected String        _path;
+    protected double        _scaleX = 1;
+    protected double        _scaleY = 1;
 
     public UIImage(int width, int height) {
         super(width, height);
@@ -32,6 +32,7 @@ public class UIImage extends View {
 
     public void setImage(String path) {
         if (!path.equals(_path)) {
+            _spriteModel = null;
             _sprite = null;
             _path = path;
         }
@@ -60,16 +61,14 @@ public class UIImage extends View {
 
         if (_isVisible) {
             if (_sprite == null && _spriteModel != null) {
-                _sprite = ((GDXSpriteModel) _spriteModel).getData();
+                _sprite = _spriteModel.getData();
             }
 
             if (_sprite == null && _path != null) {
                 try {
-                    Texture texture = new Texture(_path);
-                    _sprite = new Sprite();
-                    _sprite.setTexture(texture);
-                    _sprite.setRegion(0, 0, _width, _height);
-                    _sprite.flip(false, true);
+                    _spriteModel = SpriteManager.getInstance().getIcon(_path);
+                    _spriteModel.getData().setRegion(0, 0, _width, _height);
+                    _spriteModel.getData().flip(false, true);
                 } catch (GdxRuntimeException e) {
 //                e.printStackTrace();
                 }

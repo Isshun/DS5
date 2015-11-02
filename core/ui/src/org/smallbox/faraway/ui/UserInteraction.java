@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
@@ -8,9 +9,7 @@ import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

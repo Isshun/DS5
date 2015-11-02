@@ -180,7 +180,7 @@ public class LuaLayoutFactory {
             if (!onEvent.isnil()) {
                 luaModuleManager.addLuaEventListener((event, luaData, luaTag) -> {
                     try {
-                        onEvent.call(luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaView, luaData);
+                        onEvent.call(luaView, luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaData);
                     } catch (LuaError e) {
                         e.printStackTrace();
                     }

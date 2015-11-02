@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.LightRenderer;
 import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
@@ -32,10 +33,10 @@ public class WeatherModule extends GameModule implements GameObserver {
     private double                  _lightChange;
     private double                  _lightProgress;
     private double                  _light;
+    private double                  _previousLight;
 
-    private TemperatureModule _temperatureModule;
-    private LightModule _lightModule;
-    private double          _previousLight;
+    private TemperatureModule       _temperatureModule;
+    private LightModule             _lightModule;
 
     @Override
     protected void onLoaded() {
@@ -54,6 +55,8 @@ public class WeatherModule extends GameModule implements GameObserver {
     @Override
     public void onHourChange(int hour) {
         PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+
+        loadRandomWeather();
 
         if (hour == planetInfo.hours.dawn) {
             _lightChange = 1f / GameData.config.tickPerHour;
@@ -92,7 +95,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     protected void onUpdate(int tick) {
         if (_duration-- <= 0) {
             _duration = 2500;
-            loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int) (Math.random() * GameData.getData().weathers.size())));
+            loadRandomWeather();
         }
 
         // Set light
@@ -108,10 +111,15 @@ public class WeatherModule extends GameModule implements GameObserver {
         }
     }
 
+    private void loadRandomWeather() {
+        loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int) (Math.random() * GameData.getData().weathers.size())));
+    }
+
     private void loadWeather(WeatherModel weather) {
         _weather = weather;
 
         printInfo("Start weather: " + _weather.name);
+        Game.getInstance().notify(observer -> observer.onWeatherChange(weather));
 
         // Sun color
         switchSunColor(_dayTime);

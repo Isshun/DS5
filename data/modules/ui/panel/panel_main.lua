@@ -13,23 +13,23 @@ data:extend({
                 { type = "label", text = "Far Point", text_size = 16, padding = 10 },
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {220, 0}, padding = 10 },
             }},
-            { type = "image", src = "data/graphics/fake_map.png", size = {380, 240}},
+            { type = "image", src = "[base]/graphics/fake_map.png", size = {380, 240}},
             { type = "view", id = "view_resource", background = 0x203636, size = {380, 34}, views = {
                 { type = "grid", id = "grid_resource", columns = 8, column_width = 70, views = {
                     { type = "view", size = {70, 32}, position = {0, 0}, views = {
-                        { type = "image", src = "data/graphics/icons/food.png", size = {32, 32}},
+                        { type = "image", src = "[base]/graphics/icons/food.png", size = {32, 32}},
                         { type = "label", id = "lb_resource_food", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                     }},
                     { type = "view", size = {70, 32}, position = {0, 0}, views = {
-                        { type = "image", src = "data/graphics/icons/water.png", size = {32, 32}},
+                        { type = "image", src = "[base]/graphics/icons/water.png", size = {32, 32}},
                         { type = "label", id = "lb_resource_water", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                     }},
                     { type = "view", size = {70, 32}, views = {
-                        { type = "image", src = "data/graphics/icons/wood.png", size = {32, 32}},
+                        { type = "image", src = "[base]/graphics/icons/wood.png", size = {32, 32}},
                         { type = "label", id = "lb_resource_wood", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                     }},
                 }},
-                { type = "image", src = "data/graphics/icons/setting.png", position = {356, 8}, size = {32, 32}, on_click = function()
+                { type = "image", src = "[base]/graphics/icons/setting.png", position = {356, 8}, size = {32, 32}, on_click = function()
                 end},
             }},
             { type = "grid", id = "main_grid", position = {0, 18}, columns = 2, column_width = 195, row_height = 60, views = {
@@ -77,7 +77,7 @@ data:extend({
         end
     end,
 
-    on_event = function(event, view, data)
+    on_event = function(view, event , data)
         if event == game.events.on_deselect then
             view:setVisible(true)
         end
