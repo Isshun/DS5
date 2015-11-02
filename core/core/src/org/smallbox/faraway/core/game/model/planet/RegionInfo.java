@@ -37,7 +37,7 @@ public class RegionInfo {
     public String                    name;
     public String                    label;
     public int                      color;
-    public List<RegionDistribution> distribution;
+    public List<RegionDistribution> spots;
     public List<RegionTerrain>        terrains;
     public List<RegionWeather>        weather;
     public List<RegionFauna>        fauna;

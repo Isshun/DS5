@@ -38,7 +38,7 @@ public class PlanetInfo {
     public PlanetHours                     hours;
     public String                        name;
     public String                        label;
-    public String                        type;
+    public String cls;
     public String                        desc;
     public PlanetStats                     stats;
     public PlanetImage                     image;

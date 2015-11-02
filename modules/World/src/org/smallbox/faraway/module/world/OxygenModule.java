@@ -20,7 +20,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected void onLoaded() {
-        _oxygen = (int)(Game.getInstance().getPlanet().getOxygen() * 100);
+//        _oxygen = (int)(Game.getInstance().getPlanet().getOxygen() * 100);
     }
 
     @Override

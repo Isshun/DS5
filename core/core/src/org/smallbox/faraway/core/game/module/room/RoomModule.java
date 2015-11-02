@@ -45,14 +45,14 @@ public class RoomModule extends GameModule implements GameObserver {
             throw new RuntimeException("Cannot onCreate RoomModule with 0 sized world old");
         }
 
-        double oxygenLevel = Game.getInstance().getPlanet().getOxygen();
+//        double oxygenLevel = Game.getInstance().getPlanet().getOxygen();
         _roomlessParcels = new ArrayList<>();
-        _oxygenLevels = new double[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                _oxygenLevels[x][y] = oxygenLevel;
-            }
-        }
+//        _oxygenLevels = new double[width][height];
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                _oxygenLevels[x][y] = oxygenLevel;
+//            }
+//        }
     }
 
     @Override

@@ -22,7 +22,7 @@ import java.util.Random;
 public class WeatherModule extends GameModule implements GameObserver {
     private LightRenderer           _lightRenderer;
     private ParticleRenderer        _particleRenderer;
-    private WorldModule _worldModule;
+    private WorldModule             _worldModule;
     private int                     _duration;
     private WeatherModel            _weather;
     private String                  _dayTime = GameData.config.time;
@@ -33,23 +33,17 @@ public class WeatherModule extends GameModule implements GameObserver {
     private double                  _lightProgress;
     private double                  _light;
 
-    private PlanetInfo              _planetInfo;
     private TemperatureModule _temperatureModule;
     private LightModule _lightModule;
-
-//    public WeatherModule(LightRenderer lightRenderer, ParticleRenderer particleRenderer, WorldModule worldManager) {
-//        _lightRenderer = lightRenderer;
-//        _particleRenderer = particleRenderer;
-//        _worldModule = worldManager;
-//        _dayTime = GameData.config.time;
-//        _lightProgress = 1;
-//    }
+    private double          _previousLight;
 
     @Override
     protected void onLoaded() {
-        _planetInfo = Game.getInstance().getPlanet().getInfo();
         _temperatureModule = (TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class);
         _lightModule = (LightModule)ModuleManager.getInstance().getModule(LightModule.class);
+        _light = 1;
+        _lightProgress = 1;
+        ModuleHelper.getWorldModule().setLight(1);
     }
 
     @Override
@@ -59,28 +53,34 @@ public class WeatherModule extends GameModule implements GameObserver {
 
     @Override
     public void onHourChange(int hour) {
-        if (hour == _planetInfo.hours.dawn) {
+        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+
+        if (hour == planetInfo.hours.dawn) {
             _lightChange = 1f / GameData.config.tickPerHour;
             _lightProgress = 0;
+            _previousLight = _light;
             _light = 0.5;
             switchSunColor("dawn");
         }
-        if (hour == _planetInfo.hours.noon) {
+        if (hour == planetInfo.hours.noon) {
             _lightChange = 0.5f / GameData.config.tickPerHour;
             _lightProgress = 0;
+            _previousLight = _light;
             _light = 1;
             _temperatureModule.setTemperature(Game.getInstance().getRegion().getInfo().temperature[1]);
             switchSunColor("noon");
         }
-        if (hour == _planetInfo.hours.twilight) {
+        if (hour == planetInfo.hours.twilight) {
             _lightChange = 1f / GameData.config.tickPerHour;
             _lightProgress = 0;
+            _previousLight = _light;
             _light = 0.5;
             switchSunColor("twilight");
         }
-        if (hour == _planetInfo.hours.midnight) {
+        if (hour == planetInfo.hours.midnight) {
             _lightChange = 0.5f / GameData.config.tickPerHour;
             _lightProgress = 0;
+            _previousLight = _light;
             _light = 0.2;
             _temperatureModule.setTemperature(Game.getInstance().getRegion().getInfo().temperature[0]);
 //            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[0] - Game.getInstance().getRegion().getInfo().temperature[1]) / 120.0;
@@ -98,7 +98,7 @@ public class WeatherModule extends GameModule implements GameObserver {
         // Set light
         if (_lightProgress <= 1) {
             _lightProgress += _lightChange;
-            ModuleHelper.getWorldModule().setLight((int) (_light * _lightProgress));
+            ModuleHelper.getWorldModule().setLight(Math.max(0, Math.min(1, _previousLight * (1 - _lightProgress) + (_light * _lightProgress))));
             if (_lightRenderer != null) {
                 _lightRenderer.setSunColor(new Color(
                         (int) ((_previousLightColor.r * (1 - _lightProgress)) + (_nextLightColor.r * _lightProgress)),

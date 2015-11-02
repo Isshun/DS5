@@ -98,7 +98,6 @@ public class RoomModel {
         _type = type;
         _doors = new ArrayList<>();
         _occupants = new HashSet<>();
-        _oxygen = Game.getInstance().getPlanet().getOxygen();
         _neighborhood = new ArrayList<>();
 
         _autoName = type.toString();

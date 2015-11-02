@@ -28,9 +28,11 @@ public class LightModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        for (MapObjectModel item: _items) {
-            update(item.getX(), item.getY());
-        }
+        double light = ModuleHelper.getWorldModule().getLight();
+        ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> parcel.setLight(light));
+//        for (MapObjectModel item: _items) {
+//            update(item.getX(), item.getY());
+//        }
     }
 
     private void update(int x, int y) {

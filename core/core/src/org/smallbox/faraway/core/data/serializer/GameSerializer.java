@@ -51,7 +51,7 @@ public class GameSerializer {
             AutoPilot ap = new AutoPilot(vn);
             ap.selectXPath("/save/width|/save/height");
 
-            Game.getInstance().setRegion(GameData.getData().getRegion("arrakis", "desert"));
+            Game.getInstance().setRegion(GameData.getData().getRegion("base.planet.arrakis", "desert"));
 
             new ParamSerializer().load(vn.duplicateNav());
             new WorldModuleSerializer().load(vn.duplicateNav());

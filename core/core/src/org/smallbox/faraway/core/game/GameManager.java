@@ -31,7 +31,6 @@ public class GameManager {
         _game = new Game(250, 250, GameData.getData(), GameData.config, fileName, null, null, null);
 
         // TODO
-        _game.setRegion(GameData.getData().getRegion("arrakis", "desert"));
         _game.preload();
 
         startGame(true);
@@ -55,6 +54,7 @@ public class GameManager {
 //        }
 
         _game.init(null);
+        _game.setRegion(GameData.getData().getRegion("base.planet.arrakis", "desert"));
         _game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
 
         time = System.currentTimeMillis();

@@ -19,6 +19,7 @@ public class BuffModel extends ObjectModel {
     private BuffListener    _listener;
     private boolean         _visible;
     private int             _duration;
+    private String          _name;
 
     public void setListener(BuffListener listener) { _listener = listener; }
     public void setLevel(int level) { _level = level; }
@@ -26,9 +27,11 @@ public class BuffModel extends ObjectModel {
     public void setMessage(String message) { _message = message; }
     public void setVisible(boolean visible) { _visible = visible; }
     public void setDuration(int duration) { _duration = duration; }
+    public void setName(String name) { _name = name; }
 
     public boolean  isVisible() { return _visible; }
     public int      getDuration() { return _duration; }
+    public String   getName() { return _name; }
 
     public void start(BuffCharacterModel data) { _listener.onStart(data); }
     public void check(BuffCharacterModel data, int tick) { _listener.onCheck(data, tick); }

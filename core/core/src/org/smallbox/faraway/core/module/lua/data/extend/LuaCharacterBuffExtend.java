@@ -26,8 +26,20 @@ public class LuaCharacterBuffExtend extends LuaExtend {
 
     @Override
     public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
+        String name = getString(value, "name", null);
+        if (name == null) {
+            return;
+        }
+
+        for (BuffModel buff: GameData.getData().buffs) {
+            if (name.equals(buff.getName())) {
+                return;
+            }
+        }
+
         BuffModel buff = new BuffModel();
 
+        buff.setName(name);
         buff.setVisible(value.get("visible").isnil() || value.get("visible").toboolean());
         buff.setDuration(value.get("duration").isnil() ? value.get("duration").toint() : 0);
 

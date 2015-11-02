@@ -30,7 +30,7 @@ public class WorldModule extends GameModule {
     private Set<ItemModel>                      _items = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
     private List<ParcelModel>                   _parcelList;
-    private int                                 _light;
+    private double                              _light;
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
     public List<ParcelModel>                    getParcelList() { return _parcelList; }
@@ -38,10 +38,10 @@ public class WorldModule extends GameModule {
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
     public Collection<ResourceModel>            getResources() { return _resources; }
-    public int                                  getLight() { return _light; }
+    public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
 
-    public void                                 setLight(int light) { _light = light; }
+    public void                                 setLight(double light) { _light = light; }
 
     @Override
     public void onLoaded() {

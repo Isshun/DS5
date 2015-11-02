@@ -31,11 +31,7 @@ public class BuffModule extends GameModule {
     protected void onUpdate(int tick) {
         _charactersData.forEach(buff -> {buff.check(tick); buff.update(tick);});
         for (Map.Entry<CharacterModel, List<BuffCharacterModel>> entry: _characters.entrySet()) {
-            Collections.sort(entry.getValue(), (b1, b2) -> {
-                if (b1.level == 0) return 1;
-                if (b2.level == 0) return -1;
-                return b2.mood - b1.mood;
-            });
+            Collections.sort(entry.getValue(), (b1, b2) -> b2.mood - b1.mood);
         }
     }
 

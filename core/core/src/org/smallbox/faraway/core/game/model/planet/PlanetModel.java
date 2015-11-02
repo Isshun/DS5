@@ -30,7 +30,7 @@ public class PlanetModel {
             double frequencySum = 0;
             double totalFrequency = getTotalFrequency(latitude);
             for (RegionInfo infoRegion: _info.regions) {
-                for (RegionInfo.RegionDistribution distribution: infoRegion.distribution) {
+                for (RegionInfo.RegionDistribution distribution: infoRegion.spots) {
                     if (latitude >= distribution.latitude[0] && latitude <= distribution.latitude[1]) {
                         regions.put(infoRegion, frequencySum + distribution.frequency / totalFrequency);
                         frequencySum += distribution.frequency / totalFrequency;
@@ -64,7 +64,7 @@ public class PlanetModel {
     private double getTotalFrequency(int latitude) {
         double totalFrequency = 0;
         for (RegionInfo infoRegion: _info.regions) {
-            for (RegionInfo.RegionDistribution distribution: infoRegion.distribution) {
+            for (RegionInfo.RegionDistribution distribution: infoRegion.spots) {
                 if (latitude >= distribution.latitude[0] && latitude <= distribution.latitude[1]) {
                     totalFrequency += distribution.frequency;
                 }

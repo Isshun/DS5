@@ -3,7 +3,7 @@ label: Arrakis
 type: Desertic
 desc: |
     Arrakis is a hostile desertic planet, its sands contains rare resource
-    carefully kept by strong local forces
+    carefully protected by strong local forces
 
 farming:
     growing: [20, 80]

@@ -24,7 +24,7 @@ public class GameData {
     public List<ItemInfo>                       gatherItems;
     public List<CategoryInfo>                   categories;
     public List<ItemInfo>                       equipments;
-    public List<PlanetInfo>                     planets;
+    public List<PlanetInfo>                     planets = new ArrayList<>();
     public Map<String, WeatherModel>            weathers;
     public HashMap<Integer, String>             strings = new HashMap<>();
     public boolean                              needUIRefresh;
@@ -43,7 +43,6 @@ public class GameData {
         _loaders.add(new ConfigLoader());
         _loaders.add(new WeatherLoader());
         _loaders.add(new EquipmentLoader());
-        _loaders.add(new PlanetLoader());
         _loaders.add(new CategoryLoader());
         _loaders.add(new CharacterLoader());
     }
@@ -87,7 +86,7 @@ public class GameData {
                 }
             }
         }
-        return null;
+        throw new RuntimeException("Unable to find planet or region (" + planetName + ", " + regionName + ")");
     }
 
     public boolean hasString(int hash) {

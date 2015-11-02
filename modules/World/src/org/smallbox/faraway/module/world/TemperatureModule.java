@@ -25,7 +25,7 @@ public class TemperatureModule extends GameModule {
 
     @Override
     public void onLoaded() {
-        _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+//        _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
         _roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
     }
 
