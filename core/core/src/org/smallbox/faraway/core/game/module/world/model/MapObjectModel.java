@@ -13,8 +13,6 @@ import java.util.List;
 public abstract class MapObjectModel extends ObjectModel {
     private static int          _maxId;
     private int                 _id;
-    protected int               _x;
-    protected int               _y;
     private CharacterModel      _owner;
     private String              _name;
     private int                 _width;
@@ -82,11 +80,8 @@ public abstract class MapObjectModel extends ObjectModel {
 
     // Sets
     public void             setId(int id) { _id = id; }
-    public void                setPosition(int x, int y) { _x = x; _y = y; }
     public void             setMode(int mode) { _mode = mode; }
     public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
-    public void             setX(int x) { _x = x; }
-    public void             setY(int y) { _y = y; }
     public void             setSelected(boolean selected) { _selected = selected; }
     public void             setBlocked(int update) { _lastBlocked = update; }
     public void             setNeedRefresh() { _needRefresh = true; }
@@ -97,8 +92,6 @@ public abstract class MapObjectModel extends ObjectModel {
     public CharacterModel   getOwner() { return _owner; }
     public int                getWidth() { return _width; }
     public int                getHeight() { return _height; }
-    public int                getX() { return _x; }
-    public int                getY() { return _y; }
     public int                getId() { return _id; }
     public String            getName() { return _name; }
     public int                 getMode() { return _mode; }

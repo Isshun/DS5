@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.WeatherModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
+import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -57,4 +58,5 @@ public interface GameObserver {
     default void onWeatherChange(WeatherModel weather) {}
     default void onTemperatureChange(double temperature) {}
     default void onLightChange(double light, long color) {}
+    default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
 }

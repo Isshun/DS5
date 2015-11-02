@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.helper;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
@@ -46,11 +47,16 @@ public class ItemFinder extends GameModule {
             ItemModel bestItem = null;
             for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
                 if (item.matchFilter(filter)) {
-                    int distance = WorldHelper.getApproxDistance(item.getParcel(), character.getParcel());
-                    if (bestDistance > distance) {
-                        bestDistance = distance;
+                    PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), item.getParcel());
+                    if (path != null && path.getLength() < bestDistance) {
+                        bestDistance = path.getLength();
                         bestItem = item;
                     }
+//                    int distance = WorldHelper.getApproxDistance(item.getParcel(), character.getParcel());
+//                    if (bestDistance > distance) {
+//                        bestDistance = distance;
+//                        bestItem = item;
+//                    }
                 }
             }
             return bestItem;
@@ -61,11 +67,16 @@ public class ItemFinder extends GameModule {
             ConsumableModel bestConsumable = null;
             for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
                 if (consumable.getLock() == null && consumable.matchFilter(filter)) {
-                    int distance = WorldHelper.getApproxDistance(consumable.getParcel(), character.getParcel());
-                    if (bestDistance > distance) {
-                        bestDistance = distance;
+                    PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), consumable.getParcel());
+                    if (path != null && path.getLength() < bestDistance) {
+                        bestDistance = path.getLength();
                         bestConsumable = consumable;
                     }
+//                    int distance = WorldHelper.getApproxDistance(consumable.getParcel(), character.getParcel());
+//                    if (bestDistance > distance) {
+//                        bestDistance = distance;
+//                        bestConsumable = consumable;
+//                    }
                 }
             }
             return bestConsumable;
@@ -159,7 +170,7 @@ public class ItemFinder extends GameModule {
         Map<MapObjectModel, Integer> ObjectsMatchingFilter = new HashMap<>();
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
-            int distance = Math.abs(mapObject.getX() - fromParcel.x) + Math.abs(mapObject.getY() - fromParcel.y);
+            int distance = Math.abs(mapObject.getParcel().x - fromParcel.x) + Math.abs(mapObject.getParcel().y - fromParcel.y);
             if (mapObject.matchFilter(filter) && _pathManager.getPath(fromParcel, mapObject.getParcel()) != null) {
                 ObjectsMatchingFilter.put(mapObject, distance);
                 if (bestDistance > distance) {

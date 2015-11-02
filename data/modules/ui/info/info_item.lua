@@ -19,6 +19,8 @@ data:extend({
             { type = "label", id = "lb_health", text = "80/120", text_size = 16, padding = 7 },
         }},
         { type = "list", position = {0, 60}, views = {
+            { type = "label", id = "lb_slots", text_size = 18, padding = 10},
+            { type = "label", id = "lb_used_by", text_size = 18, padding = 10},
             --            { type = "label", id = "lb_position", text_size = 18, padding = 10},
             --            { type = "label", id = "lb_complete", text_size = 18, padding = 10},
             { type = "list", id = "frame_building", position = {0, 40}, views = {
@@ -85,6 +87,28 @@ data:extend({
         if item ~= nil then
             view:findById("lb_health"):setText(item:getHealth() .. "/" .. item:getMaxHealth())
             view:findById("progress_health"):setSize(item:getHealth() / item:getMaxHealth() * 80, 25)
+
+            if item:getNbFreeSlots() ~= -1 then
+                view:findById("lb_slots"):setText("Slots", ":", item:getNbFreeSlots() .. "/" .. item:getSlots():size())
+                view:findById("lb_slots"):setVisible(true)
+            else
+                view:findById("lb_slots"):setVisible(false)
+            end
+
+            if item:getNbFreeSlots() < item:getNbSlots() then
+                local str = ""
+                local iterator = item:getSlots():iterator()
+                while iterator:hasNext() do
+                    local slot = iterator:next()
+                    if slot:getJob() and slot:getJob():getCharacter() then
+                        str = str .. (string.len(str) ~= 0 and ", " or "") .. slot:getJob():getCharacter():getName()
+                    end
+                end
+                view:findById("lb_used_by"):setText("Used by", ": ", str)
+                view:findById("lb_used_by"):setVisible(true)
+            else
+                view:findById("lb_used_by"):setVisible(false)
+            end
 
             if item:isComplete() then
                 view:findById("frame_building"):setVisible(false)

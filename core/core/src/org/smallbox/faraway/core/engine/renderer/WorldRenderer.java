@@ -384,7 +384,7 @@ public class WorldRenderer extends BaseRenderer {
 //            }
 
             else {
-                layer.draw(SpriteManager.getInstance().getItem(structure), (structure.getX() % CACHE_SIZE) * Constant.TILE_WIDTH, (structure.getY() % CACHE_SIZE) * Constant.TILE_HEIGHT);
+                layer.draw(SpriteManager.getInstance().getItem(structure), (structure.getParcel().x % CACHE_SIZE) * Constant.TILE_WIDTH, (structure.getParcel().y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
         }
     }
@@ -394,7 +394,7 @@ public class WorldRenderer extends BaseRenderer {
 //    }
 
     void    refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
-        if (item != null && item.getX() == x && item.getY() == y) {
+        if (item != null && item.getParcel().x == x && item.getParcel().y == y) {
 
             // Display item
             layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
@@ -482,8 +482,8 @@ public class WorldRenderer extends BaseRenderer {
                 toY = (int)(rect.getY() + rect.getHeight()) - 8;
             }
 
-            int x = _itemSelected.getX() * Constant.TILE_WIDTH + viewport.getPosX();
-            int y = _itemSelected.getY() * Constant.TILE_HEIGHT + viewport.getPosY();
+            int x = _itemSelected.getParcel().x * Constant.TILE_WIDTH + viewport.getPosX();
+            int y = _itemSelected.getParcel().y * Constant.TILE_HEIGHT + viewport.getPosY();
             renderer.draw(_spriteManager.getSelectorCorner(0), x - offset + fromX, y - offset + fromY);
             renderer.draw(_spriteManager.getSelectorCorner(1), x + offset + toX, y - offset + fromY);
             renderer.draw(_spriteManager.getSelectorCorner(2), x - offset + fromX, y + offset + toY);
@@ -492,8 +492,8 @@ public class WorldRenderer extends BaseRenderer {
             if (_itemSelected.getInfo().slots != null) {
                 for (int[] slot: _itemSelected.getInfo().slots) {
                     renderer.draw(_spriteManager.getIcon("data/res/ic_slot.png"),
-                            (_itemSelected.getX() + slot[0])* Constant.TILE_WIDTH + viewport.getPosX(),
-                            (_itemSelected.getY() + slot[1])* Constant.TILE_HEIGHT + viewport.getPosY());
+                            (_itemSelected.getParcel().x + slot[0])* Constant.TILE_WIDTH + viewport.getPosX(),
+                            (_itemSelected.getParcel().y + slot[1])* Constant.TILE_HEIGHT + viewport.getPosY());
                 }
             }
         }
@@ -502,7 +502,7 @@ public class WorldRenderer extends BaseRenderer {
     @Override
     public void onAddStructure(StructureModel structure){
         if (_layers != null) {
-            _layers[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
+            _layers[structure.getParcel().x / CACHE_SIZE][structure.getParcel().y / CACHE_SIZE].planRefresh();
             _needRefresh = true;
         }
     }
@@ -510,7 +510,7 @@ public class WorldRenderer extends BaseRenderer {
     @Override
     public void onAddItem(ItemModel item){
         if (_layers != null) {
-            _layers[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
+            _layers[item.getParcel().x / CACHE_SIZE][item.getParcel().y / CACHE_SIZE].planRefresh();
             _needRefresh = true;
         }
     }
@@ -518,7 +518,7 @@ public class WorldRenderer extends BaseRenderer {
     @Override
     public void onAddConsumable(ConsumableModel consumable){
         if (_layers != null) {
-            _layers[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].planRefresh();
+            _layers[consumable.getParcel().x / CACHE_SIZE][consumable.getParcel().y / CACHE_SIZE].planRefresh();
             _needRefresh = true;
         }
     }
@@ -526,44 +526,44 @@ public class WorldRenderer extends BaseRenderer {
     @Override
     public void onAddResource(ResourceModel resource) {
         if (_layers != null) {
-            _layers[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].planRefresh();
+            _layers[resource.getParcel().x / CACHE_SIZE][resource.getParcel().y / CACHE_SIZE].planRefresh();
             _needRefresh = true;
         }
     }
 
     @Override
     public void onRemoveItem(ItemModel item){
-        _layers[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
+        _layers[item.getParcel().x / CACHE_SIZE][item.getParcel().y / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveConsumable(ConsumableModel consumable){
-        _layers[consumable.getX() / CACHE_SIZE][consumable.getY() / CACHE_SIZE].planRefresh();
+        _layers[consumable.getParcel().x / CACHE_SIZE][consumable.getParcel().y / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure){
-        _layers[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
+        _layers[structure.getParcel().x / CACHE_SIZE][structure.getParcel().y / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRemoveResource(ResourceModel resource){
-        _layers[resource.getX() / CACHE_SIZE][resource.getY() / CACHE_SIZE].planRefresh();
+        _layers[resource.getParcel().x / CACHE_SIZE][resource.getParcel().y / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRefreshItem(ItemModel item) {
-        _layers[item.getX() / CACHE_SIZE][item.getY() / CACHE_SIZE].planRefresh();
+        _layers[item.getParcel().x / CACHE_SIZE][item.getParcel().y / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 
     @Override
     public void onRefreshStructure(StructureModel structure) {
-        _layers[structure.getX() / CACHE_SIZE][structure.getY() / CACHE_SIZE].planRefresh();
+        _layers[structure.getParcel().x / CACHE_SIZE][structure.getParcel().y / CACHE_SIZE].planRefresh();
         _needRefresh = true;
     }
 

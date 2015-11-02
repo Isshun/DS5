@@ -9,7 +9,7 @@ import java.util.*;
  * Created by Alex on 13/06/2015.
  */
 public class AreaModel {
-    protected final Set<ParcelModel>    _parcels = new HashSet<>();
+    protected final List<ParcelModel>   _parcels = new ArrayList<>();
     private final int                   _typeIndex;
     protected Map<ItemInfo, Boolean>    _items;
     private final AreaType              _type;
@@ -38,6 +38,10 @@ public class AreaModel {
             }
         }
         return false;
+    }
+
+    public ParcelModel getBaseParcel() {
+        return !_parcels.isEmpty() ? _parcels.get(0) : null;
     }
 
     public void                     setAccept(ItemInfo itemInfo, boolean isAccepted) { _items.put(itemInfo, isAccepted); }

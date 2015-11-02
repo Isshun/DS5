@@ -65,7 +65,7 @@ public class CutJob extends JobModel {
         }
 
         // Item is no longer exists
-        if (_resource != WorldHelper.getResource(_resource.getX(), _resource.getY())) {
+        if (_resource != _resource.getParcel().getResource()) {
             _reason = JobAbortReason.INVALID;
             return false;
         }
@@ -90,8 +90,8 @@ public class CutJob extends JobModel {
     }
 
     private ParcelModel getFreeParcel() {
-        int x = _resource.getX();
-        int y = _resource.getY();
+        int x = _resource.getParcel().x;
+        int y = _resource.getParcel().y;
         ParcelModel parcel = null;
 
         // Corner
@@ -193,6 +193,6 @@ public class CutJob extends JobModel {
 
     @Override
     public void onDraw(onDrawCallback callback) {
-        callback.onDraw(_resource.getX(), _resource.getY());
+        callback.onDraw(_resource.getParcel().x, _resource.getParcel().y);
     }
 }

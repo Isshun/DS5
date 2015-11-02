@@ -44,7 +44,15 @@ public class BuildJob extends JobModel {
 
     @Override
     public boolean onCheck(CharacterModel character) {
-        return _buildItem.hasAllComponents();
+        if (!_buildItem.hasAllComponents()) {
+            return false;
+        }
+
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _buildItem.getParcel())) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

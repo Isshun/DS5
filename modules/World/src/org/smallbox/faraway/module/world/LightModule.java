@@ -35,7 +35,7 @@ public class LightModule extends GameModule {
 //        }
     }
 
-    private void update(int x, int y) {
+    private void update(ParcelModel parcel) {
 //        for (int i = x - 8; i <= x + 8; i++) {
 //            for (int j = y - 8; j <= y + 8; j++) {
 //                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(i, j);
@@ -45,7 +45,6 @@ public class LightModule extends GameModule {
 //            }
 //        }
 
-        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
         if (parcel.getItem() != null && parcel.getItem().isLight()) {
             update(parcel, parcel.getItem());
         }
@@ -69,8 +68,8 @@ public class LightModule extends GameModule {
     }
 
     private void update(ParcelModel parcel, MapObjectModel item) {
-        int itemX = item.getX();
-        int itemY = item.getY();
+        int itemX = item.getParcel().x;
+        int itemY = item.getParcel().y;
         int distance = item.getInfo().lightDistance;
         for (int x = itemX - distance; x <= itemX + distance; x++) {
             for (int y = itemY - distance; y <= itemY + distance; y++) {
@@ -84,12 +83,12 @@ public class LightModule extends GameModule {
         }
     }
 
-    public void onAddItem(ItemModel item) { if (item.isLight()) { _items.add(item); update(item.getX(), item.getY()); } }
-    public void onAddStructure(StructureModel structure) { if (structure.isLight()) { _items.add(structure); update(structure.getX(), structure.getY()); } }
-    public void onAddResource(ResourceModel resource) { if (resource.isLight()) { _items.add(resource); update(resource.getX(), resource.getY()); } }
-    public void onAddConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.add(consumable); update(consumable.getX(), consumable.getY()); } }
-    public void onRemoveItem(ItemModel item) { if (item.isLight()) { _items.remove(item); update(item.getX(), item.getY()); } }
-    public void onRemoveStructure(StructureModel structure) { if (structure.isLight()) { _items.remove(structure); update(structure.getX(), structure.getY()); } }
-    public void onRemoveResource(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); update(resource.getX(), resource.getY()); } }
-    public void onRemoveConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.remove(consumable); update(consumable.getX(), consumable.getY()); } }
+    public void onAddItem(ItemModel item) { if (item.isLight()) { _items.add(item); update(item.getParcel()); } }
+    public void onAddStructure(StructureModel structure) { if (structure.isLight()) { _items.add(structure); update(structure.getParcel()); } }
+    public void onAddResource(ResourceModel resource) { if (resource.isLight()) { _items.add(resource); update(resource.getParcel()); } }
+    public void onAddConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.add(consumable); update(consumable.getParcel()); } }
+    public void onRemoveItem(ItemModel item) { if (item.isLight()) { _items.remove(item); update(item.getParcel()); } }
+    public void onRemoveStructure(StructureModel structure) { if (structure.isLight()) { _items.remove(structure); update(structure.getParcel()); } }
+    public void onRemoveResource(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); update(resource.getParcel()); } }
+    public void onRemoveConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.remove(consumable); update(consumable.getParcel()); } }
 }

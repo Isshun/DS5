@@ -1,10 +1,12 @@
 package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
@@ -17,14 +19,14 @@ public class SleepJob extends JobModel {
     private long            _sleepTime;
 
     public SleepJob(ParcelModel parcel) {
-        _label = "Sleep";
+        _label = "Sleep on ground";
         _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
         _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
     }
 
     public SleepJob(ParcelModel parcel, ItemModel item) {
-        _label = "Sleep";
+        _label = "Sleep in " + item.getInfo().label;
         _sleepItem = item;
         _jobParcel = _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
@@ -50,11 +52,19 @@ public class SleepJob extends JobModel {
 
     @Override
     protected boolean onCheck(CharacterModel character) {
+        if (_item != null && !PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     protected void onStart(CharacterModel character) {
+        if (_sleepItem != null) {
+            _slot = _sleepItem.takeSlot(this);
+            _targetParcel = _slot != null ? _slot.getParcel() : _sleepItem.getParcel();
+        }
         character.moveTo(_targetParcel, null);
     }
 
@@ -68,15 +78,19 @@ public class SleepJob extends JobModel {
         }
 
         character.setSleeping(false);
-        character.getNeeds().isSleeping = false;
         return JobActionReturn.FINISH;
     }
 
     @Override
     protected void onFinish() {
-        if (_sleepItem != null) {
-            _sleepItem.freeSlot(this);
+        if (_sleepItem != null && _slot != null) {
+            _sleepItem.releaseSlot(_slot);
         }
+    }
+
+    @Override
+    protected void onQuit(CharacterModel character) {
+        character.getNeeds().isSleeping = false;
     }
 
     @Override

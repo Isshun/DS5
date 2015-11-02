@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
@@ -36,13 +37,6 @@ public class UseJob extends JobModel {
         ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
 
         UseJob job = new UseJob();
-        ItemSlot slot = item.takeSlot(job);
-        if (slot != null) {
-            job.setSlot(slot);
-            job.setTargetParcel(WorldHelper.getParcel(slot.getX(), slot.getY()));
-        } else {
-            job.setTargetParcel(item.getParcel());
-        }
         job.setActionInfo(infoAction);
         job.setItem(item);
         job.setCost(infoAction.cost);
@@ -83,9 +77,9 @@ public class UseJob extends JobModel {
             return JobActionReturn.QUIT;
         }
 
-        if (!check(character)) {
-            return JobActionReturn.ABORT;
-        }
+//        if (!check(character)) {
+//            return JobActionReturn.ABORT;
+//        }
 
         Log.debug("Character #" + character.getName() + ": actionUse");
 
@@ -115,8 +109,12 @@ public class UseJob extends JobModel {
         }
 
         // Item is no longer exists
-        if (_item != WorldHelper.getItem(_item.getX(), _item.getY())) {
+        if (_item != _item.getParcel().getItem()) {
             _reason = JobAbortReason.INVALID;
+            return false;
+        }
+
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
             return false;
         }
 
@@ -125,12 +123,20 @@ public class UseJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
+        _slot = _item.takeSlot(this);
+        _targetParcel = _slot != null ? _slot.getParcel() : _item.getParcel();
         character.moveTo(_targetParcel, null);
     }
 
     @Override
-    protected void onFinish() {
+    protected void onQuit(CharacterModel character) {
+        if (_item != null && _slot != null) {
+            _item.releaseSlot(_slot);
+        }
+    }
 
+    @Override
+    protected void onFinish() {
     }
 
     @Override

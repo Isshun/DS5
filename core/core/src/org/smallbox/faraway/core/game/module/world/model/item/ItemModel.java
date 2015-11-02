@@ -1,12 +1,16 @@
 package org.smallbox.faraway.core.game.module.world.model.item;
 
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +57,12 @@ public class ItemModel extends BuildableMapObject {
     public void                 setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
     public void                 setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
+    @Override
+    public void             setParcel(ParcelModel parcel) {
+        super.setParcel(parcel);
+        initSlots();
+    }
+
     private void init(ItemInfo info) {
         if (info.factory != null) {
             _factory = new ItemFactoryModel(this, info.factory);
@@ -63,31 +73,14 @@ public class ItemModel extends BuildableMapObject {
     }
 
     public void initSlots() {
-        _nbFreeSlot = -1;
-
-//        if (_info.actions != null) {
-//            _slots = new ArrayList<>();
-//
-//            // Get slot from ItemInfo
-//            if (_info.slots != null) {
-//                _slots.addAll(_info.slots.stream().map(slot -> new ItemSlot(this, slot[0], slot[1])).collect(Collectors.toList()));
-//            }
-//
-//            // Unique slot at 0x0
-//            else {
-//                _slots.add(new ItemSlot(this, 0, 0));
-//            }
-//
-//            _nbFreeSlot = _nbSlot = _slots.size();
-//        }
-
-        if (_info.slots != null) {
-            _slots = _info.slots.stream().map(slot -> new ItemSlot(this, slot[0], slot[1])).collect(Collectors.toList());
-        }
+        _slots = _info.slots != null
+                ? _info.slots.stream().map(slot -> new ItemSlot(this, WorldHelper.getParcel(_parcel.x + slot[0], _parcel.y + slot[1]))).filter(slot -> slot.getParcel() != null && slot.getParcel().isWalkable()).collect(Collectors.toList())
+                : Collections.singletonList(new ItemSlot(this, _parcel));
+        _nbSlot = _nbFreeSlot = _slots.size();
     }
 
     public ItemSlot takeSlot(JobModel job) {
-        if (_nbFreeSlot != -1) {
+        if (_slots != null) {
             for (ItemSlot slot : _slots) {
                 if (slot.isFree()) {
                     slot.take(job);
@@ -100,15 +93,8 @@ public class ItemModel extends BuildableMapObject {
     }
 
     public void releaseSlot(ItemSlot slot) {
-        if (slot.isFree() == false) {
-            slot.free();
-        }
-        _nbFreeSlot = 0;
-        for (ItemSlot s: _slots) {
-            if (s.isFree()) {
-                _nbFreeSlot++;
-            }
-        }
+        slot.free();
+        _nbFreeSlot = (int)_slots.stream().filter(ItemSlot::isFree).count();
     }
 
     @Override
@@ -127,9 +113,5 @@ public class ItemModel extends BuildableMapObject {
 
     public boolean isStorageParcel(ParcelModel parcel) {
         return _storageSlot != null && _parcel.x + _storageSlot[0] == parcel.x && _parcel.y + _storageSlot[1] == parcel.y;
-    }
-
-    public void freeSlot(JobModel job) {
-
     }
 }

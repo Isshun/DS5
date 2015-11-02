@@ -82,7 +82,7 @@ public class GatherJob extends JobModel {
         }
 
         // Item is no longer exists
-        if (_resource != WorldHelper.getResource(_resource.getX(), _resource.getY())) {
+        if (_resource != WorldHelper.getResource(_resource.getParcel().x, _resource.getParcel().y)) {
             _reason = JobAbortReason.INVALID;
             return false;
         }

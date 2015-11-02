@@ -31,7 +31,6 @@ public class AreaModule extends GameModule {
 
     @Override
     protected void onLoaded() {
-
     }
 
     @Override
@@ -44,6 +43,10 @@ public class AreaModule extends GameModule {
     }
 
     private void storeConsumable(ConsumableModel consumable) {
+        if (consumable.getStoreJob() != null) {
+            ModuleHelper.getJobModule().removeJob(consumable.getStoreJob());
+        }
+
         StorageAreaModel bestStorage = getBestStorage(consumable);
         if (bestStorage != null && consumable.getStorage() != bestStorage) {
             System.out.println("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
@@ -58,7 +61,9 @@ public class AreaModule extends GameModule {
     public StorageAreaModel getBestStorage(ConsumableModel consumable) {
         StorageAreaModel bestStorage = null;
         for (StorageAreaModel storage: _storageAreas) {
-            if (storage.accept(consumable.getInfo()) && storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())) {
+            if (storage.accept(consumable.getInfo())
+                    && storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())
+                    && PathManager.getInstance().hasPath(consumable.getParcel(), storage.getBaseParcel())) {
                 bestStorage = storage;
                 break;
             }
@@ -75,7 +80,7 @@ public class AreaModule extends GameModule {
 
     @Override
     public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {
-        // Search existing model for current position
+        // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
@@ -87,10 +92,15 @@ public class AreaModule extends GameModule {
             }
         }
 
-        // Create new model
+        // Create new area
         AreaModel area = createArea(type);
         addArea(area);
         addParcelToArea(area, fromX, fromY, toX, toY);
+
+        // Reset not running store job
+        ModuleHelper.getWorldModule().getConsumables().stream()
+                .filter(consumable -> consumable.getStoreJob() != null && consumable.getStoreJob().getCharacter() == null)
+                .forEach(this::storeConsumable);
     }
 
     @Override
@@ -110,6 +120,14 @@ public class AreaModule extends GameModule {
 
         // Delete empty areas
         _areas.removeAll(_areas.stream().filter(area -> area.getParcels().isEmpty()).collect(Collectors.toList()));
+    }
+
+    @Override
+    public void onStorageRulesChanged(StorageAreaModel storage) {
+        // Reset not running store job
+        ModuleHelper.getWorldModule().getConsumables().stream()
+                .filter(consumable -> consumable.getStoreJob() != null && consumable.getStoreJob().getCharacter() == null)
+                .forEach(this::storeConsumable);
     }
 
     public static AreaModel createArea(AreaType type) {

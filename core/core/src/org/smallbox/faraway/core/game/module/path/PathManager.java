@@ -221,11 +221,11 @@ public class PathManager extends GameModule {
         }
 
         // Find path to target parcel
-        GraphPath<ParcelModel> path = new DefaultGraphPath<>();
-        if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, path)) {
-            _cache.get(fromParcel).addPath(toParcel, path);
+        GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
+        if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
+            _cache.get(fromParcel).addPath(toParcel, nodes);
             printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
-            return path;
+            return nodes;
         }
 
         // No path found

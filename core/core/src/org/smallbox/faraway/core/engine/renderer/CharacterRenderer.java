@@ -153,7 +153,7 @@ public class CharacterRenderer extends BaseRenderer {
 
             // Is dead
             else {
-                renderer.draw(_spriteManager.getIcon("data/res/ic_dead.png"), posX, posY);
+                renderer.draw(_spriteManager.getIcon("[base]/res/ic_dead.png"), posX, posY);
             }
         }
     }

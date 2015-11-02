@@ -24,7 +24,7 @@ public class GDXRoomRenderer extends BaseRenderer {
     private final List<RoomModel> _roomList;
 
     public GDXRoomRenderer() {
-        _roomList = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList();
+        _roomList = ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList();
         _spriteManager = SpriteManager.getInstance();
         _regions = new TextureRegion[5];
         _regions[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);
@@ -45,11 +45,13 @@ public class GDXRoomRenderer extends BaseRenderer {
         synchronized (_roomList) {
             _roomList.stream().forEach(room -> {
                 if (!room.isExterior()) {
-                    for (ParcelModel parcel : room.getParcels()) {
-                        if (UserInterface.getInstance().getSelector().getSelectedArea() == parcel.getArea()) {
-                            renderer.drawOnMap(_regionsSelected[0], parcel.x, parcel.y);
-                        } else {
-                            renderer.drawOnMap(_regions[0], parcel.x, parcel.y);
+                    synchronized (room.getParcels()) {
+                        for (ParcelModel parcel : room.getParcels()) {
+                            if (UserInterface.getInstance().getSelector().getSelectedArea() == parcel.getArea()) {
+                                renderer.drawOnMap(_regionsSelected[0], parcel.x, parcel.y);
+                            } else {
+                                renderer.drawOnMap(_regions[0], parcel.x, parcel.y);
+                            }
                         }
                     }
                 }

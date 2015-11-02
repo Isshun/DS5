@@ -59,7 +59,7 @@ public class CharacterModuleSerializer implements SerializerInterface {
     private void writeCharacterNeeds(FileOutputStream fos, CharacterNeedsExtra needs) throws IOException {
         FileUtils.write(fos, "<needs>");
 
-        FileUtils.write(fos, "<isSleeping>" + needs.isSleeping() + "</isSleeping>");
+//        FileUtils.write(fos, "<isSleeping>" + needs.isSleeping() + "</isSleeping>");
         FileUtils.write(fos, "<water>" + needs.get("water") + "</water>");
         FileUtils.write(fos, "<socialize>" + needs.socialize + "</socialize>");
         FileUtils.write(fos, "<food>" + needs.get("food") + "</food>");
@@ -142,9 +142,9 @@ public class CharacterModuleSerializer implements SerializerInterface {
                 case "needs":
                     while (ap3.evalXPath() != -1) {
                         switch (vn.toString(vn.getCurrentIndex())) {
-                            case "isSleeping":
-                                character.getNeeds().setSleeping("true".equals(vn.toString(vn.getText())));
-                                break;
+//                            case "isSleeping":
+//                                character.getNeeds().setSleeping("true".equals(vn.toString(vn.getText())));
+//                                break;
                             case "water":
                                 character.getNeeds().setValue("water", vn.parseDouble(vn.getText()));
                                 break;

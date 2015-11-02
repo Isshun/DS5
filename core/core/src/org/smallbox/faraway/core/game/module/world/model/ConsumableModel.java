@@ -45,8 +45,6 @@ public class ConsumableModel extends MapObjectModel {
             ParcelModel parcel = WorldHelper.getNearestFreeParcel(_parcel.x, _parcel.y, true, false);
             if (parcel != null) {
                 _parcel = parcel;
-                _x = parcel.x;
-                _y = parcel.y;
             }
         }
     }

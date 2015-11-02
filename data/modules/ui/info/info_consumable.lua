@@ -49,7 +49,7 @@ data:extend({
     function(view)
         if consumable ~= nil then
             local info = consumable:getInfo()
-            view:findById("lb_position"):setText("Position: " .. consumable:getX() .. "x" .. consumable:getY())
+--            view:findById("lb_position"):setText("Position: " .. consumable:getX() .. "x" .. consumable:getY())
             view:findById("lb_quantity"):setText("Quantity: " .. consumable:getQuantity())
 
             local store_job = consumable:getStoreJob()

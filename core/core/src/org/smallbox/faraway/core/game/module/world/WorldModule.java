@@ -258,20 +258,15 @@ public class WorldModule extends GameModule {
     }
 
     public void removeResource(ResourceModel resource) {
-        if (resource == null) {
-            return;
+        if (resource != null) {
+            ParcelModel parcel = resource.getParcel();
+
+            if (parcel.getResource() == resource) {
+                _resources.remove(resource);
+                moveResourceToParcel(parcel, null);
+                _game.notify(observer -> observer.onRemoveResource(resource));
+            }
         }
-
-        int x = resource.getX();
-        int y = resource.getY();
-
-        if (_parcels[x][y][0].getResource() != resource) {
-            return;
-        }
-
-        _resources.remove(resource);
-        moveResourceToParcel(_parcels[resource.getX()][resource.getY()][0], null);
-        _game.notify(observer -> observer.onRemoveResource(resource));
     }
 
     private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
@@ -356,7 +351,6 @@ public class WorldModule extends GameModule {
         parcel.setItem(item);
         if (item != null) {
             item.setParcel(parcel);
-            item.setPosition(parcel.x, parcel.y);
             for (int i = 0; i < item.getWidth(); i++) {
                 for (int j = 0; j < item.getHeight(); j++) {
                     if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j)) {
@@ -371,7 +365,6 @@ public class WorldModule extends GameModule {
         parcel.setStructure(structure);
         if (structure != null) {
             structure.setParcel(parcel);
-            structure.setPosition(parcel.x, parcel.y);
         }
     }
 
@@ -382,7 +375,6 @@ public class WorldModule extends GameModule {
         }
         if (consumable != null) {
             consumable.setParcel(parcel);
-            consumable.setPosition(parcel.x, parcel.y);
 
             if (parcel.getConsumable() == null) {
                 parcel.setConsumable(consumable);
@@ -394,7 +386,6 @@ public class WorldModule extends GameModule {
         parcel.setResource(resource);
         if (resource != null) {
             resource.setParcel(parcel);
-            resource.setPosition(parcel.x, parcel.y);
         }
     }
 

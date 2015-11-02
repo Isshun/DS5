@@ -42,7 +42,7 @@ public class WorldModuleSerializer implements SerializerInterface {
                 writeResource(fos, parcel.getResource());
             }
 
-            if (parcel.getItem() != null && parcel.getItem().getX() == parcel.x && parcel.getItem().getY() == parcel.y) {
+            if (parcel.getItem() != null && parcel.getItem().getParcel() == parcel) {
                 writeItem(fos, parcel.getItem());
             }
 

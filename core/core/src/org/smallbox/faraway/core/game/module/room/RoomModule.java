@@ -301,13 +301,18 @@ public class RoomModule extends GameModule implements GameObserver {
 //            _roomList.add(room);
 //        }
 
+        // Reconstruct each room
         _roomList.forEach(room -> {
-            ParcelModel parcel = room.getBaseParcel();
-            room.getParcels().forEach(p -> p.setRoom(null));
-            room.getParcels().clear();
-            inspect(room, parcel);
+            synchronized (room.getParcels()) {
+                ParcelModel parcel = room.getBaseParcel();
+                room.getParcels().forEach(p -> p.setRoom(null));
+                room.getParcels().clear();
+                inspect(room, parcel);
+                checkRoof(ModuleHelper.getWorldModule().getParcels(), room);
+            }
         });
 
+        // Make new rooms on free parcels
         List<RoomModel> newRooms = new ArrayList<>();
         ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> {
             if (parcel.getRoom() == null && parcel.isRoomOpen()) {
@@ -318,6 +323,7 @@ public class RoomModule extends GameModule implements GameObserver {
             }
         });
 
+        // Add new rooms to rooms list and remove empty ones
         synchronized (_roomList) {
             _roomList.addAll(newRooms);
             _roomList.removeAll(_roomList.stream().filter(room -> room.getSize() == 0).collect(Collectors.toList()));

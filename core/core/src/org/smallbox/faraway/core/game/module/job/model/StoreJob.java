@@ -23,7 +23,7 @@ public class StoreJob extends JobModel implements GameObserver {
 
     private List<ConsumableModel>   _consumables = new ArrayList<>();
     private StorageAreaModel        _storage;
-    private Mode                     _mode;
+    private Mode                    _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
 
@@ -37,7 +37,7 @@ public class StoreJob extends JobModel implements GameObserver {
             return null;
         }
 
-         ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel().x, consumable.getParcel().y, true, true, 1, 1);
+        ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel(), 1, 1);
         if (targetParcel == null) {
             return null;
         }
@@ -65,10 +65,10 @@ public class StoreJob extends JobModel implements GameObserver {
     }
 
     public void foundConsumablesAround(ConsumableModel firstConsumable) {
-        int fromX = firstConsumable.getX() - 5;
-        int fromY = firstConsumable.getY() - 5;
-        int toX = firstConsumable.getX() + 5;
-        int toY = firstConsumable.getY() + 5;
+        int fromX = firstConsumable.getParcel().x - 5;
+        int fromY = firstConsumable.getParcel().y - 5;
+        int toX = firstConsumable.getParcel().x + 5;
+        int toY = firstConsumable.getParcel().y + 5;
 
         _consumables.clear();
         _consumables.add(firstConsumable);
@@ -94,7 +94,7 @@ public class StoreJob extends JobModel implements GameObserver {
     @Override
     public void onDraw(onDrawCallback callback) {
         for (ConsumableModel consumable: _consumables) {
-            callback.onDraw(consumable.getX(), consumable.getY());
+            callback.onDraw(consumable.getParcel().x, consumable.getParcel().y);
         }
     }
 
@@ -166,6 +166,18 @@ public class StoreJob extends JobModel implements GameObserver {
                 _message = "No storage model";
                 return false;
             }
+        }
+
+        // No path from consumable to storage
+        if (!PathManager.getInstance().hasPath(_targetParcel, _jobParcel)) {
+            _message = "No path to storage";
+            return false;
+        }
+
+        // No path from character to consumable
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _targetParcel)) {
+            _message = "No path to consumable";
+            return false;
         }
 
         return true;

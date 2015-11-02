@@ -93,7 +93,7 @@ public class MineJob extends JobModel {
 //        }
 
         // Item is no longer exists
-        if (_resource != WorldHelper.getResource(_resource.getX(), _resource.getY())) {
+        if (_resource != _resource.getParcel().getResource()) {
             _status = JobStatus.INVALID;
             _reason = JobAbortReason.INVALID;
             return false;
@@ -207,7 +207,7 @@ public class MineJob extends JobModel {
 
     @Override
     public void onDraw(onDrawCallback callback) {
-        callback.onDraw(_resource.getX(), _resource.getY());
+        callback.onDraw(_resource.getParcel().x, _resource.getParcel().y);
     }
 
 }

@@ -32,7 +32,11 @@ data:extend({
 
             local lb_job = game.ui:createLabel()
 --            lb_job:setText(job:getLabel())
+            lb_job:setSize(400, 20)
             lb_job:setDashedString(job:getLabel(), job:getStatus():toString(), 47)
+            lb_job:setOnClickListener(function()
+                print (job:getMessage())
+            end)
             frame_job:addView(lb_job)
 
 --            local lb_job_message = game.ui:createLabel()

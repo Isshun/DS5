@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <save>
 <params>
-<param name='viewportX' value='-56' />
-<param name='viewportY' value='240' />
+<param name='viewportX' value='-96' />
+<param name='viewportY' value='40' />
 </params>
 <parcels>
 <parcel x='0' y='0' z='0' type='1'>
@@ -1458,13 +1458,48 @@
 <progress>10</progress>
 </structure>
 </parcel>
-<parcel x='13' y='16' z='0' type='1' />
-<parcel x='13' y='17' z='0' type='1' />
-<parcel x='13' y='18' z='0' type='1' />
-<parcel x='13' y='19' z='0' type='1' />
-<parcel x='13' y='20' z='0' type='1' />
-<parcel x='13' y='21' z='0' type='1' />
-<parcel x='13' y='22' z='0' type='1' />
+<parcel x='13' y='16' z='0' type='1'>
+<structure id='660' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='13' y='17' z='0' type='1'>
+<structure id='659' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='13' y='18' z='0' type='1'>
+<structure id='658' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='13' y='19' z='0' type='1'>
+<structure id='657' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='13' y='20' z='0' type='1'>
+<structure id='656' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='13' y='21' z='0' type='1'>
+<structure id='655' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='13' y='22' z='0' type='1'>
+<structure id='654' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='13' y='23' z='0' type='1' />
 <parcel x='13' y='24' z='0' type='1' />
 <parcel x='13' y='25' z='0' type='1' />
@@ -1559,7 +1594,12 @@
 <parcel x='14' y='19' z='0' type='1' />
 <parcel x='14' y='20' z='0' type='1' />
 <parcel x='14' y='21' z='0' type='1' />
-<parcel x='14' y='22' z='0' type='1' />
+<parcel x='14' y='22' z='0' type='1'>
+<structure id='653' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='14' y='23' z='0' type='1' />
 <parcel x='14' y='24' z='0' type='1' />
 <parcel x='14' y='25' z='0' type='1' />
@@ -1696,7 +1736,12 @@
 <parcel x='15' y='19' z='0' type='1' />
 <parcel x='15' y='20' z='0' type='1' />
 <parcel x='15' y='21' z='0' type='1' />
-<parcel x='15' y='22' z='0' type='1' />
+<parcel x='15' y='22' z='0' type='1'>
+<structure id='652' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='15' y='23' z='0' type='1' />
 <parcel x='15' y='24' z='0' type='1' />
 <parcel x='15' y='25' z='0' type='1' />
@@ -1856,7 +1901,12 @@
 <parcel x='16' y='19' z='0' type='1' />
 <parcel x='16' y='20' z='0' type='1' />
 <parcel x='16' y='21' z='0' type='1' />
-<parcel x='16' y='22' z='0' type='1' />
+<parcel x='16' y='22' z='0' type='1'>
+<structure id='651' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='16' y='23' z='0' type='1' />
 <parcel x='16' y='24' z='0' type='1' />
 <parcel x='16' y='25' z='0' type='1' />
@@ -2019,7 +2069,12 @@
 </resource>
 </parcel>
 <parcel x='17' y='21' z='0' type='1' />
-<parcel x='17' y='22' z='0' type='1' />
+<parcel x='17' y='22' z='0' type='1'>
+<structure id='650' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='17' y='23' z='0' type='1' />
 <parcel x='17' y='24' z='0' type='1' />
 <parcel x='17' y='25' z='0' type='1' />
@@ -2190,7 +2245,12 @@
 <maturity>1.0</maturity>
 </resource>
 </parcel>
-<parcel x='18' y='22' z='0' type='1' />
+<parcel x='18' y='22' z='0' type='1'>
+<structure id='649' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='18' y='23' z='0' type='1' />
 <parcel x='18' y='24' z='0' type='1' />
 <parcel x='18' y='25' z='0' type='1' />
@@ -2297,7 +2357,7 @@
 <progress>10</progress>
 </structure>
 <consumable id='655' name='base.easy_meal'>
-<quantity>64</quantity>
+<quantity>63</quantity>
 </consumable>
 </parcel>
 <parcel x='19' y='11' z='0' type='1'>
@@ -2348,7 +2408,12 @@
 <parcel x='19' y='19' z='0' type='1' />
 <parcel x='19' y='20' z='0' type='1' />
 <parcel x='19' y='21' z='0' type='1' />
-<parcel x='19' y='22' z='0' type='1' />
+<parcel x='19' y='22' z='0' type='1'>
+<structure id='648' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='19' y='23' z='0' type='1' />
 <parcel x='19' y='24' z='0' type='1' />
 <parcel x='19' y='25' z='0' type='1' />
@@ -2476,7 +2541,12 @@
 <parcel x='20' y='19' z='0' type='1' />
 <parcel x='20' y='20' z='0' type='1' />
 <parcel x='20' y='21' z='0' type='1' />
-<parcel x='20' y='22' z='0' type='1' />
+<parcel x='20' y='22' z='0' type='1'>
+<structure id='647' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='20' y='23' z='0' type='1' />
 <parcel x='20' y='24' z='0' type='1' />
 <parcel x='20' y='25' z='0' type='1' />
@@ -2665,7 +2735,12 @@
 <parcel x='21' y='19' z='0' type='1' />
 <parcel x='21' y='20' z='0' type='1' />
 <parcel x='21' y='21' z='0' type='1' />
-<parcel x='21' y='22' z='0' type='1' />
+<parcel x='21' y='22' z='0' type='1'>
+<structure id='646' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='21' y='23' z='0' type='1' />
 <parcel x='21' y='24' z='0' type='1' />
 <parcel x='21' y='25' z='0' type='1' />
@@ -2856,13 +2931,48 @@
 <progress>10</progress>
 </structure>
 </parcel>
-<parcel x='22' y='16' z='0' type='1' />
-<parcel x='22' y='17' z='0' type='1' />
-<parcel x='22' y='18' z='0' type='1' />
-<parcel x='22' y='19' z='0' type='1' />
-<parcel x='22' y='20' z='0' type='1' />
-<parcel x='22' y='21' z='0' type='1' />
-<parcel x='22' y='22' z='0' type='1' />
+<parcel x='22' y='16' z='0' type='1'>
+<structure id='645' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='22' y='17' z='0' type='1'>
+<structure id='644' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='22' y='18' z='0' type='1'>
+<structure id='643' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='22' y='19' z='0' type='1'>
+<structure id='642' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='22' y='20' z='0' type='1'>
+<structure id='641' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='22' y='21' z='0' type='1'>
+<structure id='640' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
+<parcel x='22' y='22' z='0' type='1'>
+<structure id='639' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+</structure>
+</parcel>
 <parcel x='22' y='23' z='0' type='1' />
 <parcel x='22' y='24' z='0' type='1'>
 <resource id='2798' name='base.seaweed3'>
@@ -3038,7 +3148,16 @@
 <parcel x='23' y='19' z='0' type='1' />
 <parcel x='23' y='20' z='0' type='1' />
 <parcel x='23' y='21' z='0' type='1' />
-<parcel x='23' y='22' z='0' type='1' />
+<parcel x='23' y='22' z='0' type='1'>
+<structure id='667' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+<building currentBuilding='0'>
+<components>
+</components>
+</building>
+</structure>
+</parcel>
 <parcel x='23' y='23' z='0' type='1' />
 <parcel x='23' y='24' z='0' type='1' />
 <parcel x='23' y='25' z='0' type='1' />
@@ -3216,7 +3335,16 @@
 <parcel x='24' y='19' z='0' type='1' />
 <parcel x='24' y='20' z='0' type='1' />
 <parcel x='24' y='21' z='0' type='1' />
-<parcel x='24' y='22' z='0' type='1' />
+<parcel x='24' y='22' z='0' type='1'>
+<structure id='666' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+<building currentBuilding='0'>
+<components>
+</components>
+</building>
+</structure>
+</parcel>
 <parcel x='24' y='23' z='0' type='1' />
 <parcel x='24' y='24' z='0' type='1'>
 <resource id='225' name='base.raw_spice'>
@@ -3431,6 +3559,14 @@
 <parcel x='25' y='20' z='0' type='1' />
 <parcel x='25' y='21' z='0' type='1' />
 <parcel x='25' y='22' z='0' type='1'>
+<structure id='665' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+<building currentBuilding='0'>
+<components>
+</components>
+</building>
+</structure>
 <resource id='1081' name='base.seaweed1'>
 <health>0</health>
 <progress>0</progress>
@@ -3659,6 +3795,14 @@
 <parcel x='26' y='20' z='0' type='1' />
 <parcel x='26' y='21' z='0' type='1' />
 <parcel x='26' y='22' z='0' type='1'>
+<structure id='664' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+<building currentBuilding='0'>
+<components>
+</components>
+</building>
+</structure>
 <resource id='2977' name='base.seaweed3'>
 <health>0</health>
 <progress>0</progress>
@@ -3876,7 +4020,16 @@
 <maturity>1.0</maturity>
 </resource>
 </parcel>
-<parcel x='27' y='22' z='0' type='1' />
+<parcel x='27' y='22' z='0' type='1'>
+<structure id='663' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+<building currentBuilding='0'>
+<components>
+</components>
+</building>
+</structure>
+</parcel>
 <parcel x='27' y='23' z='0' type='1' />
 <parcel x='27' y='24' z='0' type='1' />
 <parcel x='27' y='25' z='0' type='1'>
@@ -4088,7 +4241,16 @@
 </resource>
 </parcel>
 <parcel x='28' y='21' z='0' type='1' />
-<parcel x='28' y='22' z='0' type='1' />
+<parcel x='28' y='22' z='0' type='1'>
+<structure id='662' name='base.wood_wall'>
+<health>100</health>
+<progress>0</progress>
+<building currentBuilding='0'>
+<components>
+</components>
+</building>
+</structure>
+</parcel>
 <parcel x='28' y='23' z='0' type='1' />
 <parcel x='28' y='24' z='0' type='1'>
 <resource id='319' name='base.raw_spice'>
@@ -6208,15 +6370,14 @@
 <y>3</y>
 <gender>MALE</gender>
 <needs>
-<isSleeping>true</isSleeping>
 <water>0.0</water>
 <socialize>0.0</socialize>
-<food>52.29999999999934</food>
+<food>0.0</food>
 <happiness>0.0</happiness>
-<relation>96.75</relation>
+<relation>0.0</relation>
 <security>0.0</security>
-<oxygen>80.0</oxygen>
-<energy>16.62000000000137</energy>
+<oxygen>1.0</oxygen>
+<energy>38.88000000000211</energy>
 <health>79.49120330810547</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -6253,19 +6414,18 @@
 <lastname>Wagner</lastname>
 <firstname>Olive</firstname>
 <old>Wagner</old>
-<x>21</x>
-<y>8</y>
+<x>20</x>
+<y>20</y>
 <gender>MALE</gender>
 <needs>
-<isSleeping>false</isSleeping>
 <water>0.0</water>
 <socialize>0.0</socialize>
-<food>65.79999999999951</food>
+<food>13.649999999998986</food>
 <happiness>0.0</happiness>
-<relation>96.5</relation>
+<relation>0.0</relation>
 <security>0.0</security>
-<oxygen>51.0</oxygen>
-<energy>78.00000000000125</energy>
+<oxygen>1.0</oxygen>
+<energy>36.160000000000025</energy>
 <health>78.74639129638672</health>
 <sickness>0.0</sickness>
 <injuries>0.0</injuries>
@@ -6304,84 +6464,84 @@
 <storage>
 <priority>1</priority>
 <accept>
+<item>base.oxygen_bottle</item>
 <item>base.seaweed</item>
-<item>base.sandstone</item>
 <item>base.seaweed2</item>
 <item>base.military_ration</item>
+<item>base.sandstone</item>
 <item>base.easy_meal</item>
-<item>base.glasses</item>
-<item>base.regular_shirt</item>
 <item>base.human_body</item>
-<item>base.oxygen_bottle</item>
-<item>base.vegetable</item>
 <item>base.seaweed1</item>
+<item>base.regular_shirt</item>
+<item>base.glasses</item>
+<item>base.vegetable</item>
 </accept>
 </storage>
 <parcels>
-<parcel x='17' y='12' />
-<parcel x='19' y='12' />
-<parcel x='19' y='10' />
-<parcel x='19' y='13' />
-<parcel x='15' y='11' />
-<parcel x='20' y='10' />
-<parcel x='17' y='13' />
-<parcel x='18' y='12' />
-<parcel x='15' y='10' />
-<parcel x='20' y='11' />
-<parcel x='16' y='13' />
-<parcel x='16' y='11' />
-<parcel x='17' y='10' />
 <parcel x='20' y='13' />
-<parcel x='15' y='13' />
-<parcel x='15' y='12' />
 <parcel x='18' y='11' />
+<parcel x='15' y='10' />
+<parcel x='15' y='12' />
+<parcel x='19' y='11' />
+<parcel x='19' y='10' />
+<parcel x='17' y='13' />
+<parcel x='20' y='10' />
+<parcel x='18' y='12' />
+<parcel x='17' y='10' />
 <parcel x='18' y='13' />
 <parcel x='20' y='12' />
+<parcel x='17' y='12' />
+<parcel x='15' y='11' />
+<parcel x='20' y='11' />
+<parcel x='15' y='13' />
+<parcel x='17' y='11' />
+<parcel x='16' y='13' />
+<parcel x='19' y='13' />
+<parcel x='16' y='10' />
+<parcel x='19' y='12' />
+<parcel x='16' y='11' />
 <parcel x='16' y='12' />
 <parcel x='18' y='10' />
-<parcel x='17' y='11' />
-<parcel x='16' y='10' />
-<parcel x='19' y='11' />
 </parcels>
 </model>
 <model id='0' name='Storage Area #2' type='STORAGE'>
 <storage>
 <priority>5</priority>
 <accept>
-<item>base.wood_log</item>
-<item>base.calcite_rubble</item>
-<item>base.raw_spice</item>
 <item>base.calcite_brick</item>
-<item>base.granite_rubble</item>
-<item>base.vegetable</item>
+<item>base.calcite_rubble</item>
 <item>base.sandstone_rubble</item>
+<item>base.granite_rubble</item>
+<item>base.wood_log</item>
+<item>base.raw_spice</item>
+<item>base.vegetable</item>
 </accept>
 </storage>
 <parcels>
-<parcel x='25' y='12' />
-<parcel x='24' y='15' />
-<parcel x='23' y='14' />
 <parcel x='25' y='13' />
-<parcel x='23' y='13' />
-<parcel x='26' y='16' />
-<parcel x='26' y='13' />
-<parcel x='24' y='12' />
-<parcel x='26' y='14' />
+<parcel x='23' y='16' />
 <parcel x='24' y='11' />
-<parcel x='26' y='11' />
-<parcel x='25' y='15' />
-<parcel x='25' y='14' />
-<parcel x='23' y='12' />
-<parcel x='25' y='11' />
 <parcel x='24' y='16' />
 <parcel x='23' y='11' />
+<parcel x='25' y='15' />
 <parcel x='25' y='16' />
-<parcel x='23' y='15' />
-<parcel x='24' y='13' />
+<parcel x='26' y='13' />
+<parcel x='25' y='14' />
+<parcel x='26' y='11' />
+<parcel x='26' y='14' />
+<parcel x='24' y='12' />
 <parcel x='26' y='15' />
-<parcel x='26' y='12' />
+<parcel x='23' y='15' />
+<parcel x='23' y='13' />
 <parcel x='24' y='14' />
-<parcel x='23' y='16' />
+<parcel x='24' y='15' />
+<parcel x='25' y='12' />
+<parcel x='23' y='14' />
+<parcel x='23' y='12' />
+<parcel x='26' y='12' />
+<parcel x='25' y='11' />
+<parcel x='26' y='16' />
+<parcel x='24' y='13' />
 </parcels>
 </model>
 </areas>

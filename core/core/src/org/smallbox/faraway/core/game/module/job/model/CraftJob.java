@@ -19,14 +19,11 @@ import org.smallbox.faraway.core.util.MoveListener;
 import java.util.Optional;
 
 public class CraftJob extends JobModel {
-    protected int                       _itemPosX;
-    protected int                       _itemPosY;
-    protected StorageAreaModel          _storage;
-    protected ItemModel _item;
-    protected ItemFactoryModel _factory;
+    protected ItemModel                 _item;
+    protected ItemFactoryModel          _factory;
     protected double                    _current;
     protected Status                    _status;
-    protected ItemFactoryReceiptModel _receipt;
+    protected ItemFactoryReceiptModel   _receipt;
 
     public enum Status {
         WAITING, MAIN_ACTION, MOVE_TO_INGREDIENT, MOVE_TO_FACTORY, MOVE_TO_STORAGE
@@ -88,17 +85,7 @@ public class CraftJob extends JobModel {
 
     @Override
     public void onDraw(onDrawCallback callback) {
-        callback.onDraw(_item.getX(), _item.getY());
-    }
-
-    @Override
-    public void                    setItem(ItemModel item) {
-        super.setItem(item);
-
-        if (item != null) {
-            _itemPosX = item.getX();
-            _itemPosY = item.getY();
-        }
+        callback.onDraw(_item.getParcel().x, _item.getParcel().y);
     }
 
     @Override
@@ -234,10 +221,8 @@ public class CraftJob extends JobModel {
         _status = Status.MOVE_TO_FACTORY;
 
         // Set target parcel
-        _targetParcel = _item.getParcel();
-        if (_item.getSlots() != null) {
-            _targetParcel = WorldHelper.getParcel(_item.getSlots().get(0).getX(), _item.getSlots().get(0).getY());
-        }
+        _slot = _item.takeSlot(this);
+        _targetParcel = _slot != null ? _slot.getParcel() : _item.getParcel();
 
         // Store component in factory
         _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {

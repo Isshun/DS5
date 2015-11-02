@@ -16,6 +16,12 @@ data:extend({
         {"Jobs", "Tâches"},
         {"Areas", "Zones"},
 
+        -- Plan panel
+        {"Mine", "Miner"},
+        {"Harverst", "Récolter"},
+        {"Cut down", "Couper"},
+        {"Dump", "Démonter"},
+
         -- Character info
         {"Current occupation", "Occupation"},
         {"Personal records", "Informations personnelles"},

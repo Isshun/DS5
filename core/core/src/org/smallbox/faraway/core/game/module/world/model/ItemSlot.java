@@ -4,22 +4,19 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 public class ItemSlot {
-    private JobModel _job;
-    private ItemModel       _item;
-    private int             _relX;
-    private int             _relY;
+    private final ParcelModel   _parcel;
+    private final ItemModel     _item;
+    private JobModel            _job;
 
-    public ItemSlot(ItemModel item, int x, int y) {
+    public ItemSlot(ItemModel item, ParcelModel parcel) {
         _item = item;
-        _relX = x;
-        _relY = y;
+        _parcel = parcel;
     }
 
     public boolean      isFree() { return _job == null; }
-    public int          getX() { return _item.getX() + _relX; }
-    public int          getY() { return _item.getY() + _relY; }
-    public JobModel getJob() { return _job; }
-    public ItemModel getItem() { return _item; }
+    public ParcelModel  getParcel() { return _parcel; }
+    public JobModel     getJob() { return _job; }
+    public ItemModel    getItem() { return _item; }
     public void         take(JobModel job) { _job = job; }
     public void         free() { _job = null; }
 }

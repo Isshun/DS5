@@ -2,6 +2,8 @@ package org.smallbox.faraway.core.game.helper;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
@@ -178,9 +180,14 @@ public class WorldHelper {
         return true;
     }
 
+    public static ParcelModel getNearestWalkable(ParcelModel parcel, int minDistance, int maxDistance) {
+        return getNearestWalkable(parcel.x, parcel.y, true, true, minDistance, maxDistance);
+    }
+
     public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior) {
         return getNearestWalkable(x, y, acceptInterior, acceptExterior, 0, 20);
     }
+
     public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior, int minDistance, int maxDistance) {
         for (int i = minDistance; i <= maxDistance; i++) {
             for (int j = 0; j < i; j++) {
@@ -278,7 +285,11 @@ public class WorldHelper {
     }
 
     public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+        PathModel path = PathManager.getInstance().getBestApprox(p1, p2);
+        if (path != null) {
+            return path.getLength();
+        }
+        return -1;
     }
 
     public static ParcelModel getNearest(int x, int y, boolean allowExterior, boolean allowInterior, boolean allowCharacter, boolean allowStructure, boolean allowItem, boolean allowConsumable, boolean allowResource) {
