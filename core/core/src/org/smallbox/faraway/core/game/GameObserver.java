@@ -55,4 +55,6 @@ public interface GameObserver {
     default void onCustomEvent(String tag, Object object) {}
     default void onKeyPress(GameEventListener.Key key) {}
     default void onWeatherChange(WeatherModel weather) {}
+    default void onTemperatureChange(double temperature) {}
+    default void onLightChange(double light, long color) {}
 }

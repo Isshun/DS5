@@ -1,14 +1,12 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.module.room.RoomModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +15,9 @@ import java.util.List;
  * Created by Alex on 13/06/2015.
  */
 public class TemperatureModule extends GameModule {
-    private RoomModule _roomModule;
+    private RoomModule          _roomModule;
     private List<ItemModel>     _items = new ArrayList<>();
     private double              _temperature;
-    private double              _temperatureTarget;
-    private double              _temperatureOffset;
 
     @Override
     public void onLoaded() {
@@ -33,15 +29,6 @@ public class TemperatureModule extends GameModule {
     protected boolean loadOnStart() {
         return GameData.config.manager.temperature;
     }
-
-    public void     setTemperature(double temperature) { _temperatureTarget = temperature; }
-    public void     setTemperatureOffset(int temperatureOffset) { _temperatureOffset = temperatureOffset; }
-    public void     increaseTemperature() { _temperatureTarget++; }
-    public void     decreaseTemperature() { _temperatureTarget--; }
-    public void     normalize() { _temperature = _temperatureTarget; }
-    public double   getTemperature() { return _temperature; }
-    public double   getTemperatureTarget() { return _temperatureTarget; }
-    public double   getTemperatureOffset() { return _temperatureOffset; }
 
     @Override
     public void onAddItem(ItemModel item) {
@@ -56,15 +43,6 @@ public class TemperatureModule extends GameModule {
     }
 
     public void onUpdate(int tick) {
-        double change = ((_temperatureTarget + _temperatureOffset) - _temperature) / 100;
-        if (change > -0.001 && change < 0.001) {
-            _temperature = _temperatureTarget + _temperatureOffset;
-        } else if (change > -0.01 && change < 0.01) {
-            _temperature += change < 0 ? -0.01 : 0.01;
-        } else {
-            _temperature += change;
-        }
-
         if (tick % 25 == 0) {
             printDebug("update temperature (" + _temperature + ")");
 
@@ -167,6 +145,11 @@ public class TemperatureModule extends GameModule {
                 }
             }
         }
+    }
+
+    @Override
+    public void onTemperatureChange(double temperature) {
+        _temperature = temperature;
     }
 
 //

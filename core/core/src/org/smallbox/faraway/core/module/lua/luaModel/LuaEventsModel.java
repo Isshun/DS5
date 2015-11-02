@@ -20,6 +20,8 @@ public class LuaEventsModel {
     public static final int on_parcel_over = 12;
     public static final int on_receipt_select = 13;
     public static final int on_weather_change = 14;
+    public static final int on_temperature_change = 15;
+    public static final int on_light_change = 16;
 
     public void send(String tag) {
         Game.getInstance().notify(observer -> observer.onCustomEvent(tag, null));

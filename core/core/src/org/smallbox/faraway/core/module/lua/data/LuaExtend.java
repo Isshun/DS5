@@ -21,6 +21,13 @@ public abstract class LuaExtend {
         return !value.get(key).isnil() ? value.get(key).toint() : defaultValue;
     }
 
+    protected static int[] getIntInterval(LuaValue value, String key, int[] defaultValue) {
+        if (!value.get(key).isnil() && value.get(key).length() == 2) {
+            return new int[] {value.get(key).get(1).toint(), value.get(key).get(2).toint()};
+        }
+        return defaultValue;
+    }
+
     protected static String getString(LuaValue value, String key, String defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toString() : defaultValue;
     }

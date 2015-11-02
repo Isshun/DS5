@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.module.lua;
 import org.json.JSONObject;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
@@ -207,7 +208,14 @@ public class LuaModuleManager implements GameObserver {
 
     private void broadcastToLuaModules(int eventId, Object data) {
         LuaValue value = CoerceJavaToLua.coerce(data);
-        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, value, LuaValue.NIL));
+        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
+    }
+
+    private void broadcastToLuaModules(int eventId, Object data1, Object data2) {
+        LuaValue value = new LuaTable();
+        value.set(1, CoerceJavaToLua.coerce(data1));
+        value.set(2, CoerceJavaToLua.coerce(data2));
+        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
     }
 
     //    default void onAddCharacter(CharacterModel model){}
@@ -240,6 +248,8 @@ public class LuaModuleManager implements GameObserver {
     public void onRefreshUI() { _luaRefreshListeners.forEach(LuaRefreshListener::onRefresh); }
     public void onKeyPress(GameEventListener.Key key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name());}
     public void onWeatherChange(WeatherModel weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
+    public void onTemperatureChange(double temperature) { broadcastToLuaModules(LuaEventsModel.on_temperature_change, temperature);}
+    public void onLightChange(double light, long color) { broadcastToLuaModules(LuaEventsModel.on_light_change, light, color);}
 
 //    default void onStartGame() {}
 //    default void onLog(String tag, String message) {}
@@ -250,7 +260,7 @@ public class LuaModuleManager implements GameObserver {
     public void onCustomEvent(String tag, Object object) {
         LuaValue luaTag = CoerceJavaToLua.coerce(tag);
         LuaValue luaValue = CoerceJavaToLua.coerce(object);
-        _luaEventListeners.forEach(listener -> listener.onEvent(LuaEventsModel.on_custom_event, luaValue, luaTag));
+        _luaEventListeners.forEach(listener -> listener.onEvent(LuaEventsModel.on_custom_event, luaTag, luaValue));
     }
 
     public Collection<LuaModule> getModules() {

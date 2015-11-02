@@ -33,6 +33,7 @@ data:extend({
             { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
         },
         weather = {
+            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
         },
@@ -59,6 +60,7 @@ data:extend({
             { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
         },
         weather = {
+            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
         },
@@ -84,6 +86,7 @@ data:extend({
             { type = "resource", name = "base.desert_laitue", pattern = "random_light", condition = "ground" },
         },
         weather = {
+            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.sandwhirl", frequency = {2, 10}, duration = {0.5, 2}},
             {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},

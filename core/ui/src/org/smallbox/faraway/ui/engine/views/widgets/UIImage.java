@@ -52,7 +52,6 @@ public class UIImage extends View {
 
     @Override
     public void addView(View view) {
-
     }
 
     @Override

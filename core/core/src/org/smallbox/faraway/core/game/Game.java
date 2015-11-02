@@ -32,7 +32,7 @@ public class Game extends BaseGame {
     private GameSerializer.GameSave         _save;
     private PlanetModel                     _planet;
     private RegionModel                     _region;
-    private int                             _hour = 6;
+    private int                             _hour = 5;
     private int                             _day;
     private int                             _year;
     private GameInfo                        _info = new GameInfo();

@@ -113,7 +113,7 @@ public class LuaPlanetExtend extends LuaExtend {
             for (int i = 1; i <= value.get("weather").length(); i++) {
                 LuaValue luaWeather = value.get("weather").get(i);
                 RegionInfo.RegionWeather weatherInfo = new RegionInfo.RegionWeather();
-                weatherInfo.name = getString(luaWeather, "type", "ground");
+                weatherInfo.name = getString(luaWeather, "name", null);
                 weatherInfo.frequency = new double[] {
                         luaWeather.get("frequency").get(1).todouble(),
                         luaWeather.get("frequency").get(2).todouble(),

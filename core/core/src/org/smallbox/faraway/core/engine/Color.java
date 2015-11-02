@@ -50,4 +50,8 @@ public class Color {
         this.g = (int) ((rgb >> 8) & 0xFF);
         this.b = (int) (rgb & 0xFF);
     }
+
+    public long toLong() {
+        return _rgb;
+    }
 }

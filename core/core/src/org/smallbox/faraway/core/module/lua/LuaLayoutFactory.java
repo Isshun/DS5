@@ -178,7 +178,7 @@ public class LuaLayoutFactory {
 
             LuaValue onEvent = value.get("on_event");
             if (!onEvent.isnil()) {
-                luaModuleManager.addLuaEventListener((event, luaData, luaTag) -> {
+                luaModuleManager.addLuaEventListener((event, luaTag, luaData) -> {
                     try {
                         onEvent.call(luaView, luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaData);
                     } catch (LuaError e) {

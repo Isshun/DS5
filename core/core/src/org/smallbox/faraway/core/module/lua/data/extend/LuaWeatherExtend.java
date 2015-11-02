@@ -40,28 +40,13 @@ public class LuaWeatherExtend extends LuaExtend {
         weatherModel.label = getString(value, "label", null);
         weatherModel.icon = getString(value, "icon", null);
         weatherModel.particle = getString(value, "particle", null);
-
-        if (!value.get("temperatureChange").isnil()) {
-            weatherModel.temperatureChange = new int[] {
-                    value.get("temperatureChange").get(1).toint(),
-                    value.get("temperatureChange").get(2).toint(),
-            };
-        }
-
-        if (!value.get("duration").isnil()) {
-            weatherModel.duration = new int[] {
-                    value.get("duration").get(1).toint(),
-                    value.get("duration").get(2).toint(),
-            };
-        }
+        weatherModel.duration = getIntInterval(value, "duration", null);
+        weatherModel.temperatureChange = getIntInterval(value, "temperatureChange", null);
 
         if (!value.get("conditions").isnil()) {
             weatherModel.condition = new WeatherModel.WeatherCondition();
             if (!value.get("conditions").get("temperature").isnil()) {
-                weatherModel.condition.temperature = new int[] {
-                        value.get("conditions").get("temperature").get(1).toint(),
-                        value.get("conditions").get("temperature").get(2).toint(),
-                };
+                weatherModel.condition.temperature = getIntInterval(value.get("conditions"), "temperature", null);
             }
         }
 
