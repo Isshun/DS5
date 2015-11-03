@@ -129,6 +129,7 @@ public abstract class BaseGame {
                 }
                 break;
         }
+        Game.getInstance().notify(observer -> observer.onSpeedChange(speed));
     }
 
 }

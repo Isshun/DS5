@@ -13,7 +13,10 @@ data:extend({
                 { type = "label", text = "Far Point", text_size = 16, padding = 10 },
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {220, 0}, padding = 10 },
             }},
-            { type = "image", src = "[base]/graphics/fake_map.png", size = {380, 240}},
+            { type = "view", size = {380, 240}, views = {
+                { type = "image", src = "[base]/graphics/fake_map.png", size = {380, 240}},
+                { type = "label", id = "lb_speed", text = "x1", text_size = 22, position = {348, 215}},
+            }},
             { type = "view", id = "view_resource", background = 0x203636, size = {380, 34}, views = {
                 { type = "grid", id = "grid_resource", columns = 8, column_width = 70, views = {
                     { type = "view", size = {70, 32}, position = {0, 0}, views = {
@@ -57,6 +60,10 @@ data:extend({
                     game.ui:findById("panel_main"):setVisible(false)
                     game.ui:findById("panel_areas"):setVisible(true)
                 end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Displays", text_size = 18, padding = 10, shortcut = "open_display_panel", on_click = function(view)
+                    game.ui:findById("panel_main"):setVisible(false)
+                    game.ui:findById("panel_displays"):setVisible(true)
+                end},
                 { type = "label", size = {180, 40}, background = 0x349394, text = "Debug", text_size = 18, padding = 10, shortcut = "open_debug_panel", on_click = function(view)
                     game.ui:findById("panel_main"):setVisible(false)
                     game.ui:findById("panel_debug"):setVisible(true)
@@ -80,6 +87,11 @@ data:extend({
     on_event = function(view, event , data)
         if event == game.events.on_deselect then
             view:setVisible(true)
+        end
+
+        if event == game.events.on_speed_change then
+            view:findById("lb_speed"):setText(data == 0 and "||" or ("x" .. data));
+
         end
 
         if event == game.events.on_resource_selected

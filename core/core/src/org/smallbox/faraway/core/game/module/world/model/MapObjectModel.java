@@ -94,7 +94,6 @@ public abstract class MapObjectModel extends ObjectModel {
     public int              getLastBlocked() { return _lastBlocked; }
     public ParcelModel      getParcel() { return _parcel; }
     public int              getProgress() { return (int)_progress; }
-    public double           getSealing() { return _info.sealing; }
     public int              getCurrentFrame() { return _currentFrame; }
     public int              getHealth() { return _health; }
     public int              getMaxHealth() { return _info.health; }
@@ -114,7 +113,6 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          isFactory() { return _info.isFactory; }
     public boolean          isUserItem() { return _info.isUserItem; }
     public boolean          isDestroy() { return _health <= 0; }
-    public boolean          isDump() { return _progress <= 0; }
     public boolean          isCloseRoom() { return _info.isCloseRoom; }
     public boolean          isLight() { return _info.light > 0; }
     public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.x == x && _parcel.y == y; }

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -37,13 +36,13 @@ public class OxygenModule extends GameModule {
                     room.setOxygen(_oxygen);
                 } else {
                     for (NeighborModel neighbor : room.getNeighbors()) {
-                        room.setOxygen(room.getOxygen() + (neighbor.room.getOxygen() - room.getOxygen()) * (1 - neighbor.sealing) * 0.05);
+                        room.setOxygen(room.getOxygen() + (neighbor._room.getOxygen() - room.getOxygen()) * (1 - neighbor._borderValue) * 0.05);
                     }
                 }
             }
 
             roomModule.getRoomList().forEach(room -> room.getParcels().forEach(parcel -> parcel.setOxygen(room.getOxygen())));
-            roomModule.getRoomlessParcels().forEach(parcel -> parcel.setOxygen(_oxygen));
+//            roomModule.getRoomlessParcels().forEach(parcel -> parcel.setOxygen(_oxygen));
         }
     }
 

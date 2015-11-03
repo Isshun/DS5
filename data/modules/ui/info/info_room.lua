@@ -12,6 +12,7 @@ data:extend({
             { type = "label", id = "lb_name", text = "name", text_size = 22, padding = 5, size = {100, 30}},
             { type = "label", id = "lb_id", text_size = 14, padding = 5},
             { type = "label", id = "lb_size", text_size = 14, padding = 5},
+            { type = "label", id = "lb_neighborhood", text_size = 14, padding = 5},
         }},
     },
 
@@ -29,6 +30,16 @@ data:extend({
             view:findById("lb_name"):setText(room:getName())
             view:findById("lb_id"):setText("Id", ": ", room:getId())
             view:findById("lb_size"):setText("Size", ": ", room:getSize())
+
+            if room:getNeighbors() then
+                local str = ""
+                local iterator = room:getNeighbors():iterator()
+                while iterator:hasNext() do
+                    local neighbor = iterator:next()
+                    str = str .. neighbor:getRoom():getName() .. "(" .. neighbor:getBorderValue() .. "," .. neighbor:getBorderSize() .. ")"
+                end
+                view:findById("lb_neighborhood"):setText("Neighborhood", ": ", str)
+            end
         else
             view:setVisible(false)
         end

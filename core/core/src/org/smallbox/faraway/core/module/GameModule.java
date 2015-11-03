@@ -82,22 +82,11 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         }
     }
 
-    protected void printNotice(String message) {
-        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
-    }
-    protected void printInfo(String message) {
-        System.out.println(message);
-//        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
-    }
-    protected void printError(String message) {
-        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
-    }
-    protected void printWarning(String message) {
-        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
-    }
-    protected void printDebug(String message) {
-        Game.getInstance().notify(observer -> observer.onLog(TAG, message));
-    }
+    protected void printNotice(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printInfo(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printError(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printWarning(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printDebug(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
 
     public SerializerInterface getSerializer() {
         return null;

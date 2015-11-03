@@ -30,14 +30,6 @@ public class Utils {
         return lastModified;
     }
 
-    public static int getDistance(ParcelModel parcel, int x, int y) {
-        return Math.abs(parcel.x - x) + Math.abs(parcel.y - y);
-    }
-
-    public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
-    }
-
     public static int getRandom(int[] interval) {
         if (interval[0] == interval[1]) {
             return interval[0];

@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
+import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -13,42 +14,35 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.MoveListener;
 
 public class DumpJob extends JobModel {
-    private MapObjectModel     _dumpObject;
+    private MapObjectModel  _item;
+    private int             _current;
 
     private DumpJob(ParcelModel jobParcel) {
         super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
     }
 
-    public static JobModel create(MapObjectModel objectModel) {
-        if (objectModel == null) {
-            return null;
-        }
+    public static JobModel create(MapObjectModel item) {
+        assert item != null;
 
-        DumpJob job = new DumpJob(objectModel.getParcel());
-        job.setDumpObject(objectModel);
-        job.setCost(objectModel.getInfo().cost);
-        job.setStrategy(j -> {
+        DumpJob job = new DumpJob(item.getParcel());
+
+        job.setLabel(GameData.getString("Dump") + " " + GameData.getString(item.getLabel()));
+        job._item = item;
+        job._cost = item.getInfo().cost;
+        job._strategy = j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
             }
-        });
-        return job;
-    }
+        };
 
-    public void setDumpObject(MapObjectModel dumpObject) {
-        _dumpObject = dumpObject;
+        return job;
     }
 
     @Override
     public boolean onCheck(CharacterModel character) {
-        // Item is null
-        if (_dumpObject == null) {
-            _reason = JobAbortReason.INVALID;
-            return false;
-        }
 
         // Item is no longer exists
-        if (_dumpObject != _jobParcel.getItem() && _dumpObject != _jobParcel.getStructure()) {
+        if (_item != _item.getParcel().getItem() && _item != _item.getParcel().getStructure()) {
             _reason = JobAbortReason.INVALID;
             return false;
         }
@@ -57,51 +51,36 @@ public class DumpJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
-        ModuleHelper.getWorldModule().remove(_dumpObject);
-    }
-
-    @Override
     protected void onStart(CharacterModel character) {
-        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        _targetParcel = character.moveApprox(_item.getParcel(), new MoveListener<CharacterModel>() {
+            @Override
+            public void onReach(CharacterModel character) {
+            }
 
-        if (path != null) {
-            _targetParcel = path.getLastParcel();
-
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
-            character.move(path, new MoveListener<CharacterModel>() {
-                @Override
-                public void onReach(CharacterModel character) {
-                }
-
-                @Override
-                public void onFail(CharacterModel character) {
-                    quit(character);
-                }
-            });
-        }
+            @Override
+            public void onFail(CharacterModel character) {
+                _reason = JobAbortReason.BLOCKED;
+                quit(character);
+            }
+        });
     }
 
     @Override
     public JobActionReturn onAction(CharacterModel character) {
-        _dumpObject.addProgress(-character.getTalents().get(CharacterTalentExtra.TalentType.BUILD).work());
-        _progress = _cost - _dumpObject.getProgress();
-        return _dumpObject.isDump() ? JobActionReturn.COMPLETE : JobActionReturn.CONTINUE;
+        if (_current++ < _cost) {
+            _progress = _current / _cost;
+            return JobActionReturn.CONTINUE;
+        }
+        return JobActionReturn.COMPLETE;
+    }
+
+    @Override
+    protected void onComplete() {
+        ModuleHelper.getWorldModule().remove(_item);
     }
 
     @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return CharacterTalentExtra.TalentType.BUILD;
     }
-
-    @Override
-    public String getLabel() {
-        return "Dump " + _dumpObject.getLabel();
-    }
-
-    @Override
-    public ParcelModel getTargetParcel() {
-        return _dumpObject.getParcel();
-    }
-
 }

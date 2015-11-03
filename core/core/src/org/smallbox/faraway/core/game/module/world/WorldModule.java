@@ -1,9 +1,11 @@
 package org.smallbox.faraway.core.game.module.world;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.WeatherModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -12,6 +14,7 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.*;
@@ -45,6 +48,8 @@ public class WorldModule extends GameModule {
 
     @Override
     public void onLoaded() {
+        WeatherModule weatherModule = (WeatherModule)ModuleManager.getInstance().getModule(WeatherModule.class);
+
         ModuleHelper.setWorldModule(this);
 
         _game = Game.getInstance();
@@ -58,7 +63,7 @@ public class WorldModule extends GameModule {
             for (int y = 0; y < _height; y++) {
                 _parcels[x][y] = new ParcelModel[NB_FLOOR];
                 for (int f = 0; f < NB_FLOOR; f++) {
-                    ParcelModel parcel = new ParcelModel(x, y, f);
+                    ParcelModel parcel = new ParcelModel(weatherModule, x, y, f);
                     _parcels[x][y][f] = parcel;
                     _parcels[x][y][f].setIndex(x * _width + y);
                     parcelList.add(_parcels[x][y][f]);

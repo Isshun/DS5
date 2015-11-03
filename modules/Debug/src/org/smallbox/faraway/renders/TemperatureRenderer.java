@@ -3,7 +3,7 @@ package org.smallbox.faraway.renders;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -15,7 +15,8 @@ import org.smallbox.faraway.core.util.Constant;
 /**
  * Created by Alex on 14/06/2015.
  */
-public class GDXTemperatureRenderer extends BaseRenderer {
+public class TemperatureRenderer extends GameDisplay {
+
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
@@ -39,7 +40,7 @@ public class GDXTemperatureRenderer extends BaseRenderer {
                     if (parcel.y < minY) minY = parcel.y;
                 }
 
-                String text = room.getTemperatureInfo().temperature + "°";
+                String text = room.getTemperatureInfo().temperature + "ï¿½";
                 BitmapFont.TextBounds bounds = renderer.getFont(24).getWrappedBounds(text, 0);
                 renderer.draw(text, 24,
                         (minX + (maxX - minX) / 2) * Constant.TILE_WIDTH + viewport.getPosX(),
@@ -56,5 +57,10 @@ public class GDXTemperatureRenderer extends BaseRenderer {
     @Override
     public boolean isActive(GameConfig config) {
         return config.render.temperature;
+    }
+
+    @Override
+    public String getName() {
+        return "temperature";
     }
 }

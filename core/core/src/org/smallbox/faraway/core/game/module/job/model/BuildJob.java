@@ -19,12 +19,12 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
  */
 public class BuildJob extends JobModel {
     private final BuildableMapObject _buildItem;
-    private JobActionReturn _return = JobActionReturn.CONTINUE;
 
     public BuildJob(BuildableMapObject item) {
         super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
         _buildItem = item;
         _buildItem.setBuildJob(this);
+        _label = "Build " + _buildItem.getInfo().label;
     }
 
     @Override
@@ -46,12 +46,7 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
-    }
-
-    @Override
     protected void onStart(CharacterModel character) {
-        _label = "Build " + _buildItem.getInfo().label;
         _message = "Building";
 
         PathModel path = PathManager.getInstance().getBestAround(character.getParcel(), _jobParcel);
@@ -67,15 +62,19 @@ public class BuildJob extends JobModel {
         if (WorldHelper.getApproxDistance(_character.getParcel(), _buildItem.getParcel()) <= 2) {
             if (_buildItem.build()) {
                 _buildItem.setBuildJob(null);
-                _return = JobActionReturn.COMPLETE;
                 if (_buildItem instanceof ItemModel) {
-                    Game.getInstance().notify(observer -> observer.onRefreshItem((ItemModel) _buildItem));
+                    Game.getInstance().notify(observer -> observer.onItemComplete((ItemModel) _buildItem));
                 } else if (_buildItem instanceof StructureModel) {
-                    Game.getInstance().notify(observer -> observer.onRefreshStructure((StructureModel)_buildItem));
+                    Game.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)_buildItem));
                 }
+                return JobActionReturn.COMPLETE;
             }
             _progress = (double)_buildItem.getCurrentBuild() / _buildItem.getTotalBuild();
         }
-        return _return;
+        return JobActionReturn.CONTINUE;
+    }
+
+    @Override
+    protected void onFinish() {
     }
 }

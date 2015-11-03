@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -54,8 +55,11 @@ public class LuaPlanetExtend extends LuaExtend {
             readStats(planetInfo, value.get("stats"));
         }
 
-        if (!value.get("hours").isnil()) {
-            readHours(planetInfo, value.get("hours"));
+        if (!value.get("day_times").isnil()) {
+            planetInfo.dayTimes = new ArrayList<>();
+            for (int i = 1; i <= value.get("day_times").length(); i++) {
+                readHour(planetInfo.dayTimes, value.get("day_times").get(i));
+            }
         }
 
         if (!value.get("regions").isnil()) {
@@ -144,12 +148,13 @@ public class LuaPlanetExtend extends LuaExtend {
         planetInfo.regions.add(regionInfo);
     }
 
-    private void readHours(PlanetInfo planetInfo, LuaValue value) {
-        planetInfo.hours = new PlanetInfo.PlanetHours();
-        planetInfo.hours.dawn = getInt(value, "dawn", 5);
-        planetInfo.hours.noon = getInt(value, "noon", 6);
-        planetInfo.hours.twilight = getInt(value, "twilight", 19);
-        planetInfo.hours.midnight = getInt(value, "midnight", 20);
+    private void readHour(List<PlanetInfo.DayTime> dayTimes, LuaValue value) {
+        PlanetInfo.DayTime hour = new PlanetInfo.DayTime();
+        hour.sun = getString(value, "sun", "noon");
+        hour.duration = getInt(value, "duration", 1);
+        hour.light = getDouble(value, "light", 1);
+        hour.hour = getInt(value, "hour", 0);
+        dayTimes.add(hour);
     }
 
     private void readStats(PlanetInfo planetInfo, LuaValue value) {

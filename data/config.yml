@@ -22,7 +22,7 @@ render:
     resource:       true
     item:           true
     consumable:     true
-    temperature:    false
+    temperature:    true
     job:            true
     area:           true
     debug:          false

@@ -14,11 +14,11 @@ data:extend({
         hostile_fauna = 2,
         hostile_humankind = 1,
     },
-    hours = {
-        dawn = 5,
-        noon = 6,
-        twilight = 19,
-        midnight = 20,
+    day_times = {
+        { hour = 5, sun = "dawn", duration = 1, light = 0.5 },
+        { hour = 6, sun = "noon", duration = 2, light = 1 },
+        { hour = 19, sun = "twilight", duration = 1, light = 0.5 },
+        { hour = 20, sun = "midnight", duration = 2, light = 0.2 },
     },
     regions = {{
         name = "mountain",

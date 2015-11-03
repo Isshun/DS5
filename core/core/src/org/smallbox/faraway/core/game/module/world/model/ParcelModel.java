@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 
@@ -59,6 +60,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public final int                y;
     public final int                z;
 
+    private final WeatherModule     _weatherModule;
     public ParcelModel[]            _neighbors;
     private ParcelContent           _content;
     private ParcelEnvironment       _environment;
@@ -74,7 +76,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private boolean                 _isExterior;
     private double                  _oxygen;
 
-    public ParcelModel(int x, int y, int z) {
+    public ParcelModel(WeatherModule weatherModule, int x, int y, int z) {
+        _weatherModule = weatherModule;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -111,7 +114,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public RoomModel        getRoom() { return _room; }
     public AreaModel        getArea() { return _area; }
     public int              getType() { return _type; }
-//    public double           getTemperature() { return _room != null ? _room.getTemperatureInfo().temperature : ((TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class)).getTemperature(); }
+    public double           getTemperature() { return _room != null ? _room.getTemperature() : _weatherModule.getTemperature(); }
 
     /**
      * @return ParcelEnvironment or null
@@ -137,12 +140,12 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return true;
     }
 
-    public double getSealing() {
+    public double getSealValue() {
         if (_content.structure != null) {
-            return _content.structure.getSealing();
+            return _content.structure.getInfo().sealing;
         }
         if (_content.resource != null) {
-            return _content.resource.getSealing();
+            return _content.resource.getInfo().sealing;
         }
         return 0;
     }

@@ -8,10 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Utils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RoomModel {
     int                                 _id;
@@ -48,7 +45,7 @@ public class RoomModel {
     }
 
     public void addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
-    public void addParcels(List<ParcelModel> parcels) { _parcels.addAll(parcels); }
+    public void addParcels(Collection<ParcelModel> parcels) { _parcels.addAll(parcels); }
     public void setAutoName(String autoName) { _autoName = autoName; }
     public List<ItemModel> getHeatItems() { return _heatItems; }
     public List<ItemModel> getColdItems() { return _coldItems; }
@@ -64,6 +61,10 @@ public class RoomModel {
 
     public void setBaseParcel(ParcelModel parcel) {
         _baseParcel = parcel;
+    }
+
+    public double getTemperature() {
+        return _temperatureInfo.temperature;
     }
 
     public enum RoomType {
@@ -99,7 +100,8 @@ public class RoomModel {
         _occupants = new HashSet<>();
         _neighborhood = new ArrayList<>();
 
-        _autoName = type.toString();
+//        _autoName = type.toString();
+        _autoName = "Room " + _id;
     }
 
     public int                      getId() { return _id; }
@@ -118,8 +120,9 @@ public class RoomModel {
     public RoomTemperatureModel     getTemperatureInfo() { return _temperatureInfo; }
     public List<NeighborModel>      getNeighbors() { return _neighborhood; }
     public Set<ParcelModel>         getParcels() { return _parcels; }
+    public String                   getName() { return _name != null ? _name : _autoName; }
 
-    public void addParcel(ParcelModel area) { _parcels.add(area); }
+    public void                     addParcel(ParcelModel area) { _parcels.add(area); }
     public void                     setMaxX(int x) { _maxX = x; }
     public void                     setMinX(int x) { _minX = x; }
     public void                     setCommon(boolean common) { _isCommon = common; }
@@ -132,6 +135,7 @@ public class RoomModel {
     public boolean                  isExterior() { return _isExterior; }
     public boolean                  isPrivate() { return _type == RoomType.QUARTER; }
     public boolean                  isStorage() { return _type == RoomType.STORAGE; }
+    public boolean                  isEmpty() { return _parcels.isEmpty(); }
 
 
     public boolean containsParcel(int x, int y) {
@@ -179,10 +183,6 @@ public class RoomModel {
         case 7: return RoomType.GARDEN;
         };
         return null;
-    }
-
-    public String getName() {
-        return _name != null ? _name : _autoName;
     }
 
     public void update() {

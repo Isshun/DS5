@@ -22,6 +22,10 @@ public class LuaEventsModel {
     public static final int on_weather_change = 14;
     public static final int on_temperature_change = 15;
     public static final int on_light_change = 16;
+    public static final int on_day_time_change = 17;
+    public static final int on_hour_change = 18;
+    public static final int on_day_change = 19;
+    public static final int on_speed_change = 20;
 
     public void send(String tag) {
         Game.getInstance().notify(observer -> observer.onCustomEvent(tag, null));

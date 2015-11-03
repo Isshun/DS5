@@ -20,15 +20,28 @@ data:extend({
         { type = "image", id = "img_temperature_offset", size = {12, 24}, position = {383, 7}},
     },
 
-    on_refresh =
-    function(view)
-        view:findById("img_time"):setImage(game.hour > 6 and game.hour < 20 and "[base]/graphics/icons/sun.png" or "[base]/graphics/icons/moon.png")
-        view:findById("lb_time"):setText(game.hour .. "h")
-        view:findById("lb_day"):setText("jour " .. (game.day+1))
-        --        view:findById("lb_light"):setText("light: " .. (game.world:getLight()))
-    end,
-
     on_event = function(view, event, data)
+        -- Hour change
+        if event == game.events.on_hour_change then
+            if data then
+                view:findById("lb_time"):setText(data .. "h")
+            end
+        end
+
+        -- Day change
+        if event == game.events.on_day_change then
+            if data then
+                view:findById("lb_day"):setText("jour " .. (data + 1))
+            end
+        end
+
+        -- Day time change
+        if event == game.events.on_day_time_change then
+            if data then
+                view:findById("img_time"):setImage("[base]/graphics/icons/daytimes/" .. data.sun .. ".png")
+            end
+        end
+
         -- Weather change
         if event == game.events.on_weather_change then
             if data then
@@ -51,7 +64,7 @@ data:extend({
                         or "[base]/graphics/icons/temperature_up_1.png"
 
                 view:findById("lb_temperature"):setVisible(true)
-                view:findById("lb_temperature"):setText((value < 0 and "" or " ") .. ((value <= -10 or value >= 10) and "" or " ") .. value .. (value == math.floor(value) and ".0" or "") .. "°")
+                view:findById("lb_temperature"):setText((value < 0 and "" or " ") .. ((value <= -10 or value >= 10) and "" or " ") .. value .. (value == math.floor(value) and ".0" or "") .. "ï¿½")
                 view:findById("img_temperature"):setImage("[base]/graphics/icons/temperature_medium.png")
                 view:findById("img_temperature_offset"):setImage(img_offset)
 

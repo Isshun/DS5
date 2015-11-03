@@ -5,37 +5,37 @@ data:extend({
         {"Door", "Porte"},
         {"Ground", "Sol"},
         {"Floor", "Sol"},
-        {"Light", "Lumière"},
+        {"Light", "LumiÃ¨re"},
         {"Hull", "Coque"},
         {"Wall", "Mur"},
-        {"Window", "Fenêtre"},
+        {"Window", "FenÃªtre"},
         {"Hubble", "Hublot"},
 
         -- Walls
         {"Wood wall", "Mur en bois"},
-        {"Sandstone wall", "Mur en grès"},
+        {"Sandstone wall", "Mur en grÃ¨s"},
         {"Granite wall", "Mur en granite"},
         {"Marble wall", "Mur en marbre"},
         {"Calcite wall", "Mur en calcite"},
-        {"Metal wall", "Mur en métal"},
+        {"Metal wall", "Mur en mÃ©tal"},
         {"Carbon fiber wall", "Mur en fibre de carbon"},
 
         -- Floors
         {"Wooden floor", "Sol en bois"},
-        {"Sandstone floor", "Sol en grès"},
+        {"Sandstone floor", "Sol en grÃ¨s"},
         {"Granite floor", "Sol en granite"},
         {"Marble floor", "Sol en marbre"},
         {"Calcite floor", "Sol en calcite"},
-        {"Metal floor", "Sol en métal"},
+        {"Metal floor", "Sol en mÃ©tal"},
         {"Carbon fiber floor", "Sol en fibre de carbon"},
 
         -- Doors
         {"Wood door", "Porte en bois"},
-        {"Sandstone door", "Porte en grès"},
+        {"Sandstone door", "Porte en grÃ¨s"},
         {"Granite door", "Porte en granite"},
         {"Marble door", "Porte en marbre"},
         {"Calcite door", "Porte en calcite"},
-        {"Metal door", "Porte en métal"},
+        {"Metal door", "Porte en mÃ©tal"},
         {"Carbon fiber door", "Porte en fibre de carbon"},
     }
 })

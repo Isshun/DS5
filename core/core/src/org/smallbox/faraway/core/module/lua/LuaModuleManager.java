@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -229,7 +230,6 @@ public class LuaModuleManager implements GameObserver {
 //    default void onRemoveResource(ResourceModel resource){}
 //    default void onRefreshItem(ItemModel item) {}
 //    default void onRefreshStructure(StructureModel structure) {}
-//    default void onHourChange(int hour){}
 //    default void onDayChange(int day) {}
 //    default void onYearChange(int year) {}
 //    //    default void onOpenQuest(QuestModel quest) {}
@@ -250,8 +250,12 @@ public class LuaModuleManager implements GameObserver {
     public void onWeatherChange(WeatherModel weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
     public void onTemperatureChange(double temperature) { broadcastToLuaModules(LuaEventsModel.on_temperature_change, temperature);}
     public void onLightChange(double light, long color) { broadcastToLuaModules(LuaEventsModel.on_light_change, light, color);}
+    public void onDayTimeChange(PlanetInfo.DayTime daytime) { broadcastToLuaModules(LuaEventsModel.on_day_time_change, daytime);}
+    public void onHourChange(int hour) { broadcastToLuaModules(LuaEventsModel.on_hour_change, hour);}
+    public void onDayChange(int day) { broadcastToLuaModules(LuaEventsModel.on_day_change, day);}
+    public void onSpeedChange(int speed) { broadcastToLuaModules(LuaEventsModel.on_speed_change, speed);}
 
-//    default void onStartGame() {}
+//    default void onGameStart() {}
 //    default void onLog(String tag, String message) {}
 //    default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
 //    default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {}

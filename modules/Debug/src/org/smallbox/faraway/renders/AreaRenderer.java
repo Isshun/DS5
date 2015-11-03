@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -16,7 +17,7 @@ import org.smallbox.faraway.core.util.Constant;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class AreaRenderer extends BaseRenderer {
+public class AreaRenderer extends GameDisplay {
     private final SpriteManager _spriteManager;
     private final TextureRegion[] _regions;
     private final TextureRegion[] _regionsSelected;
@@ -74,5 +75,10 @@ public class AreaRenderer extends BaseRenderer {
     @Override
     public boolean isActive(GameConfig config) {
         return config.render.area;
+    }
+
+    @Override
+    public String getName() {
+        return "areas";
     }
 }

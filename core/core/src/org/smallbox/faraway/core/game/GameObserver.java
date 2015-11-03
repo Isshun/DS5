@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
@@ -48,7 +49,7 @@ public interface GameObserver {
     default void onSelectReceipt(ReceiptGroupInfo receipt) {}
     default void onOverParcel(ParcelModel parcel) {}
     default void onDeselect() {}
-    default void onStartGame() {}
+    default void onGameStart() {}
     default void onLog(String tag, String message) {}
     default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
     default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
@@ -61,4 +62,6 @@ public interface GameObserver {
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
     default void onJobQuit(JobModel job, CharacterModel character) {}
     default void onJobFinish(JobModel job) {}
+    default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
+    default void onSpeedChange(int speed) {}
 }

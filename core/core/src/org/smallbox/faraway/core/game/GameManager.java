@@ -65,7 +65,10 @@ public class GameManager {
             _game.load();
         }
 
-        Game.getInstance().notify(GameObserver::onStartGame);
+        Game.getInstance().notify(GameObserver::onGameStart);
+        Game.getInstance().notify(observer -> observer.onHourChange(_game.getHour()));
+        Game.getInstance().notify(observer -> observer.onDayChange(_game.getDay()));
+        Game.getInstance().notify(observer -> observer.onYearChange(_game.getYear()));
     }
 
     public void create(String fileName, RegionInfo regionInfo) {

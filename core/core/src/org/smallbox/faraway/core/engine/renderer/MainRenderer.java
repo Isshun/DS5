@@ -38,7 +38,10 @@ public class MainRenderer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 
-        _renders.stream().filter(BaseRenderer::isLoaded).forEach(render -> render.draw(renderer, viewport, animProgress));
+        String display = Game.getInstance().getDisplay();
+        _renders.stream().filter(BaseRenderer::isLoaded)
+                .filter(render -> !(render instanceof GameDisplay) || (display != null && display.equals(((GameDisplay)render).getName())))
+                .forEach(render -> render.draw(renderer, viewport, animProgress));
 
         _frame++;
         _renderTime += System.currentTimeMillis() - time;

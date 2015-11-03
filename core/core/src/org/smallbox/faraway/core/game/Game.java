@@ -41,10 +41,12 @@ public class Game extends BaseGame {
     private static int                      _tick;
     private Viewport                         _viewport;
     private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
+    private String                          _display;
 
     public void                             toggleRunning() { _isRunning = !_isRunning; }
     public void                             addObserver(GameObserver observer) { _observers.add(observer); }
     public void                             setRunning(boolean running) { _isRunning = running; }
+    public void                             setDisplay(String display) { _display = display; }
 
     public boolean                          isRunning() { return _isRunning; }
     public Collection<GameModule>           getModules() { return _modulesBase; }
@@ -58,6 +60,7 @@ public class Game extends BaseGame {
     public String                           getFileName() { return _fileName; }
     public long                             getTick() { return _tick; }
     public RegionModel                      getRegion() { return _region; }
+    public String                           getDisplay() { return _display; }
 
     public Game(int width, int height, GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
         Log.debug("Game");

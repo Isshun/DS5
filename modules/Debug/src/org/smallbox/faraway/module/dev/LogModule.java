@@ -12,7 +12,7 @@ public class LogModule extends GameModule {
     private static List<String> TAGS = Arrays.asList(
             "System",
 //            "WeatherModule",
-//            "TemperatureModule",
+            "TemperatureModule",
 //            "RoomModule",
             "CharacterModule"
 //            "TestModule"

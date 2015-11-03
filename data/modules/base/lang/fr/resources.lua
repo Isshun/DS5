@@ -3,17 +3,17 @@ data:extend({
     lang = "fr",
     strings = {
         {"Green algae", "Algue verte"},
-        {"Golden algae", "Algue dorée"},
-        {"Eel grass", "Zostère"},
-        {"Euglena bloom", "Euglènes"},
+        {"Golden algae", "Algue dorÃ©e"},
+        {"Eel grass", "ZostÃ¨re"},
+        {"Euglena bloom", "EuglÃ¨nes"},
         {"Chlorella", "Chlorella"},
 
-        {"Raw spice", "Épice brute"},
+        {"Raw spice", "Ã‰pice brute"},
         {"Iron", "Fer"},
         {"Copper", "Cuivre"},
         {"Wood", "Bois"},
 
-        {"Sandstone", "Grès"},
+        {"Sandstone", "GrÃ¨s"},
         {"Granite", "Granite"},
         {"Marble", "Marbre"},
     }

@@ -28,14 +28,14 @@ public class PlanetInfo {
         public String                     site;
     }
 
-    public static class PlanetHours {
-        public int                         dawn;
-        public int                         noon;
-        public int                         twilight;
-        public int                         midnight;
+    public static class DayTime {
+        public int                      hour;
+        public int                      duration;
+        public double                   light;
+        public String                   sun;
     }
 
-    public PlanetHours                     hours;
+    public List<DayTime>                dayTimes;
     public String                        name;
     public String                        label;
     public String cls;

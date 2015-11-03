@@ -11,6 +11,7 @@ data:extend({
     {
         { type = "list", position = {10, 40}, views = {
             { type = "label", id = "lb_name", text = "name", text_size = 22, padding = 5, size = {100, 30}},
+            { type = "label", id = "lb_teperature", text_size = 14, padding = 5},
             { type = "label", id = "lb_position", text_size = 14, padding = 5},
             { type = "label", id = "lb_connections", text_size = 14, padding = 5},
             { type = "label", id = "lb_room", text_size = 14, padding = 5},
@@ -35,6 +36,7 @@ data:extend({
         if parcel ~= nil then
             local room = parcel:getRoom()
             view:findById("lb_name"):setText("Ground")
+            view:findById("lb_teperature"):setText("Teperature", ": ", parcel:getTemperature())
             view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y)
             view:findById("lb_room"):setText("Room", ": ", parcel:getRoom() and parcel:getRoom():getName() or "no")
             view:findById("lb_light"):setText("Light", ": ", parcel:getLight())

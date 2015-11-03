@@ -27,24 +27,26 @@ data:extend({
         local iterator = game.jobs:iterator()
         while iterator:hasNext() do
             local job = iterator:next()
-            local frame_job = game.ui:createView()
-            frame_job:setSize(400, 22)
+            if not job:isFinish() then
+                local frame_job = game.ui:createView()
+                frame_job:setSize(400, 22)
 
-            local lb_job = game.ui:createLabel()
---            lb_job:setText(job:getLabel())
-            lb_job:setSize(400, 20)
-            lb_job:setDashedString(job:getLabel(), job:getStatus():toString(), 47)
-            lb_job:setOnClickListener(function()
-                print (job:getMessage())
-            end)
-            frame_job:addView(lb_job)
+                local lb_job = game.ui:createLabel()
+                --            lb_job:setText(job:getLabel())
+                lb_job:setSize(400, 20)
+                lb_job:setDashedString(job:getLabel(), job:getStatus():toString(), 47)
+                lb_job:setOnClickListener(function()
+                    print (job:getMessage())
+                end)
+                frame_job:addView(lb_job)
 
---            local lb_job_message = game.ui:createLabel()
---            lb_job_message:setText(job:getMessage())
---            lb_job_message:setPosition(200, 0)
---            frame_job:addView(lb_job_message)
+                --            local lb_job_message = game.ui:createLabel()
+                --            lb_job_message:setText(job:getMessage())
+                --            lb_job_message:setPosition(200, 0)
+                --            frame_job:addView(lb_job_message)
 
-            list:addView(frame_job)
+                list:addView(frame_job)
+            end
         end
     end
 })

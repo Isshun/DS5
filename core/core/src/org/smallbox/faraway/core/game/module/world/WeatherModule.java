@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.world;
+package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
@@ -6,12 +6,10 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.WeatherModel;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -55,38 +53,24 @@ public class WeatherModule extends GameModule implements GameObserver {
     @Override
     public void onHourChange(int hour) {
         PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+        if (planetInfo.dayTimes != null) {
+            planetInfo.dayTimes.stream().filter(hourInfo -> hourInfo.hour == hour).forEach(this::setHour);
+        }
+    }
 
-        if (hour == planetInfo.hours.dawn) {
-            _lightChange = 1f / GameData.config.tickPerHour;
-            _lightProgress = 0;
-            _previousLight = _lightTarget;
-            _lightTarget = 0.5;
-            switchSunColor("dawn");
-        }
-        if (hour == planetInfo.hours.noon) {
-            _lightChange = 0.5f / GameData.config.tickPerHour;
-            _lightProgress = 0;
-            _previousLight = _lightTarget;
-            _lightTarget = 1;
-            _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
-            switchSunColor("noon");
-        }
-        if (hour == planetInfo.hours.twilight) {
-            _lightChange = 1f / GameData.config.tickPerHour;
-            _lightProgress = 0;
-            _previousLight = _lightTarget;
-            _lightTarget = 0.5;
-            switchSunColor("twilight");
-        }
-        if (hour == planetInfo.hours.midnight) {
-            _lightChange = 0.5f / GameData.config.tickPerHour;
-            _lightProgress = 0;
-            _previousLight = _lightTarget;
-            _lightTarget = 0.2;
-            _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[0];
-//            _temperatureChange = (Game.getInstance().getRegion().getInfo().temperature[0] - Game.getInstance().getRegion().getInfo().temperature[1]) / 120.0;
-            switchSunColor("midnight");
-        }
+    private void setHour(PlanetInfo.DayTime hourInfo) {
+        _lightChange = 1 / hourInfo.duration / GameData.config.tickPerHour;
+        _lightProgress = 0;
+        _previousLight = _lightTarget;
+        _lightTarget = hourInfo.light;
+        _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+        switchSunColor(hourInfo.sun);
+
+        Game.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
+    }
+
+    public double getTemperature() {
+        return _temperature;
     }
 
     @Override
@@ -184,11 +168,17 @@ public class WeatherModule extends GameModule implements GameObserver {
         }
     }
 
-    public WeatherModel getWeather() {
-        return _weather;
-    }
-
-    public void next() {
-        loadWeather(new ArrayList<>(GameData.getData().weathers.values()).get((int)(Math.random() * GameData.getData().weathers.size())));
+    @Override
+    public void onGameStart() {
+        int hour = Game.getInstance().getHour();
+        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+        if (planetInfo.dayTimes != null) {
+            for (PlanetInfo.DayTime hourInfo: planetInfo.dayTimes) {
+                if (hour < hourInfo.hour) {
+                    setHour(hourInfo);
+                    return;
+                }
+            }
+        }
     }
 }

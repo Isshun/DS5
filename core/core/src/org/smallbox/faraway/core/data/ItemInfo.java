@@ -195,7 +195,7 @@ public class ItemInfo {
     public ItemBuildInfo                build;
     public int                          health = 1;
     public int                          power;
-    public double                       sealing;
+    public double                       sealing = 1;
     public boolean                      isLive;
     public int                          stack;
     public ItemInfo                     parentInfo;

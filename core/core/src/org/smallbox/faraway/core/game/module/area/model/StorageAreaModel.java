@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -55,7 +56,7 @@ public class StorageAreaModel extends AreaModel {
 
             // Storage parcel is free
             if (parcel.getConsumable() == null && parcel.getItem() == null && parcel.getResource() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
-                int distance = Utils.getDistance(parcel, consumableParcel);
+                int distance = WorldHelper.getDistance(parcel, consumableParcel);
                 if (distance < bestDistance) {
                     bestDistance = distance;
                     bestParcel = parcel;

@@ -96,6 +96,11 @@ public class GameData {
         return _data.strings.get(hash);
     }
 
+    public static String getString(String str) {
+        int hash = str.hashCode();
+        return _data.strings.containsKey(hash) ? _data.strings.get(hash) : str;
+    }
+
     public void fix() {
         this.items.stream()
                 .forEach(item -> {

@@ -18,10 +18,11 @@ public class TemperatureModule extends GameModule {
     private RoomModule          _roomModule;
     private List<ItemModel>     _items = new ArrayList<>();
     private double              _temperature;
+    private boolean             _needUpdate;
 
     @Override
     public void onLoaded() {
-//        _temperature = _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+        _updateInterval = 10;
         _roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
     }
 
@@ -43,7 +44,7 @@ public class TemperatureModule extends GameModule {
     }
 
     public void onUpdate(int tick) {
-        if (tick % 25 == 0) {
+        if (_needUpdate) {
             printDebug("update temperature (" + _temperature + ")");
 
             // Check heat / cold effects and room heatPotency then apply to room
@@ -85,9 +86,9 @@ public class TemperatureModule extends GameModule {
 
                     // Diffuse temperature to room
                     for (NeighborModel neighbor : room.getNeighbors()) {
-                        RoomModel.RoomTemperatureModel t2 = neighbor.room.getTemperatureInfo();
-                        double neighborRatio = (double) neighbor.parcels.size() * 2 / room.getSize();
-                        t1.temperatureTotal += (t2.temperatureTotal / neighbor.room.getSize() - t1.temperatureTotal / roomSize) * neighborRatio;
+                        RoomModel.RoomTemperatureModel t2 = neighbor._room.getTemperatureInfo();
+                        double neighborRatio = (double) neighbor._parcels.size() * 2 / room.getSize();
+                        t1.temperatureTotal += (t2.temperatureTotal / neighbor._room.getSize() - t1.temperatureTotal / roomSize) * neighborRatio;
                     }
 
                     // Increase temperature of the room
@@ -149,6 +150,7 @@ public class TemperatureModule extends GameModule {
 
     @Override
     public void onTemperatureChange(double temperature) {
+        _needUpdate = true;
         _temperature = temperature;
     }
 

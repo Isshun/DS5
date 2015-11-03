@@ -3,25 +3,25 @@ data:extend({
     lang = "fr",
     strings = {
         {"Raw meat", "Viande crue"},
-        {"Insect meat", "Insècte crue"},
-        {"Vegetable", "Légume"},
+        {"Insect meat", "InsÃ¨cte crue"},
+        {"Vegetable", "LÃ©gume"},
         {"Seaweed", "Algue"},
         {"Seafood", "Fruit de mer"},
-        {"Wood log", "Bûche"},
+        {"Wood log", "BÃ»che"},
 
         {"Carrot", "Carotte"},
         {"Potato", "Pomme de terre"},
         {"Rice", "Riz"},
-        {"Wheat", "Blé"},
-        {"Corn", "Maïs"},
-        {"Spice", "Épice"},
+        {"Wheat", "BlÃ©"},
+        {"Corn", "MaÃ¯s"},
+        {"Spice", "Ã‰pice"},
 
         {"Calcite rubble", "Gravats de calcite"},
-        {"Sandstone rubble", "Gravats de grès"},
+        {"Sandstone rubble", "Gravats de grÃ¨s"},
         {"Granite rubble", "Gravats de granite"},
 
         {"Calcite brick", "Brique en calcite"},
-        {"Sandstone brick", "Brique en grès"},
+        {"Sandstone brick", "Brique en grÃ¨s"},
         {"Granite brick", "Brique en granite"},
 
         {"Carbon fiber plate", "Plaque de fibre de carbone"},
@@ -38,6 +38,6 @@ data:extend({
         {"Human body", "Corps humain"},
         {"Regular shirt", "T-Shirt standard"},
         {"Glasses", "Lunettes"},
-        {"Oxygen bottle", "Bouteille d'oxygène"},
+        {"Oxygen bottle", "Bouteille d'oxygÃ¨ne"},
     }
 })

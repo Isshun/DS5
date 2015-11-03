@@ -13,14 +13,15 @@ data:extend({
         {"Plan", "Planification"},
         {"Stats", "Statistiques"},
         {"Crew", "Colons"},
-        {"Jobs", "Tâches"},
+        {"Jobs", "TÃ¢ches"},
         {"Areas", "Zones"},
+        {"Displays", "Affichages"},
 
         -- Plan panel
         {"Mine", "Miner"},
-        {"Harverst", "Récolter"},
+        {"Harverst", "RÃ©colter"},
         {"Cut down", "Couper"},
-        {"Dump", "Démonter"},
+        {"Dump", "DÃ©monter"},
 
         -- Character info
         {"Current occupation", "Occupation"},
@@ -37,12 +38,12 @@ data:extend({
         {"Status", "Statut"},
         {"Inventory", "Inventaire"},
         {"Info", "Info"},
-        {"Health", "Santé"},
+        {"Health", "SantÃ©"},
 
         {"Energy", "Energie"},
         {"Food", "Nourriture"},
         {"Happiness", "Bonheur"},
-        {"Health", "Santé"},
+        {"Health", "SantÃ©"},
         {"Relation", "Relation"},
         {"Entertainment", "Divertissement"},
         {"Mood", "Morale"},
@@ -63,14 +64,14 @@ data:extend({
         {"Orders", "Commandes"},
 
         -- Parcel info
-        {"Light", "Lumière"},
+        {"Light", "LumiÃ¨re"},
         {"Oxygen", "Oxygen"},
 
         -- Resource info
-        {"Quantity", "Quantité"},
-        {"Maturity", "Maturité"},
+        {"Quantity", "QuantitÃ©"},
+        {"Maturity", "MaturitÃ©"},
         {"Grow state", "Croissance"},
-        {"depleted", "dépérie"},
+        {"depleted", "dÃ©pÃ©rie"},
         {"stasis", "stase"},
         {"partial", "lente"},
         {"regular", "normale"},
@@ -78,7 +79,7 @@ data:extend({
 
         {"Receipt", "Recette"},
         {"Crafter", "Artisan"},
-        {"Missing components", "Ingrédients manquants"},
+        {"Missing components", "IngrÃ©dients manquants"},
         {"Current", "En cours"},
         {"Waiting", "En attente"},
 
@@ -87,7 +88,7 @@ data:extend({
         {"yes", "oui"},
         {"no", "non"},
         {"none", "aucun"},
-        {"priority", "priorité"},
+        {"priority", "prioritÃ©"},
 
         {"storage_content", "Inventaire"},
     }

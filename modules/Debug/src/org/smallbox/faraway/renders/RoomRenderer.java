@@ -3,7 +3,7 @@ package org.smallbox.faraway.renders;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
@@ -17,13 +17,13 @@ import java.util.List;
 /**
  * Created by Alex on 17/06/2015.
  */
-public class GDXRoomRenderer extends BaseRenderer {
+public class RoomRenderer extends GameDisplay {
     private final SpriteManager _spriteManager;
     private final TextureRegion[] _regions;
     private final TextureRegion[] _regionsSelected;
     private final List<RoomModel> _roomList;
 
-    public GDXRoomRenderer() {
+    public RoomRenderer() {
         _roomList = ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList();
         _spriteManager = SpriteManager.getInstance();
         _regions = new TextureRegion[5];
@@ -46,12 +46,10 @@ public class GDXRoomRenderer extends BaseRenderer {
             _roomList.stream().forEach(room -> {
                 if (!room.isExterior()) {
                     synchronized (room.getParcels()) {
+                        TextureRegion texture = _regions[0];
+//                        TextureRegion texture = UserInterface.getInstance().getSelector().getSelectedRoom() == parcel.getRoom() ? _regionsSelected[0] : _regions[0];
                         for (ParcelModel parcel : room.getParcels()) {
-                            if (UserInterface.getInstance().getSelector().getSelectedArea() == parcel.getArea()) {
-                                renderer.drawOnMap(_regionsSelected[0], parcel.x, parcel.y);
-                            } else {
-                                renderer.drawOnMap(_regions[0], parcel.x, parcel.y);
-                            }
+                            renderer.drawOnMap(texture, parcel.x, parcel.y);
                         }
                     }
                 }
@@ -66,5 +64,10 @@ public class GDXRoomRenderer extends BaseRenderer {
     @Override
     public boolean isActive(GameConfig config) {
         return config.render.room;
+    }
+
+    @Override
+    public String getName() {
+        return "rooms";
     }
 }

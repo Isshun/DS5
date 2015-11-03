@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
@@ -165,6 +164,22 @@ public abstract class CharacterModel extends MovableModel {
             }
         }
         return false;
+    }
+
+    public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
+        PathModel path = PathManager.getInstance().getBestApprox(_parcel, targetParcel);
+
+        // No path to target parcel
+        if (path == null) {
+            if (listener != null) {
+                listener.onFail(this);
+            }
+            return null;
+        }
+
+        // Move character to target parcel
+        move(path, listener);
+        return path.getLastParcel();
     }
 
     public void move(PathModel path) {

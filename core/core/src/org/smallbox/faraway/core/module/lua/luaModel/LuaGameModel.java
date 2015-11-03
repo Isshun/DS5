@@ -58,6 +58,10 @@ public class LuaGameModel {
         return moduleOptional.isPresent() ? moduleOptional.get() : null;
     }
 
+    public void setDisplay(String display) {
+        Game.getInstance().setDisplay(display);
+    }
+
     public void setPlan(String plan) {
         UserInterface.getInstance().getInteraction().set(UserInteraction.Action.SET_PLAN, plan);
     }

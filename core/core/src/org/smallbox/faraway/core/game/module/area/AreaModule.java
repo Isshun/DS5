@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.area;
 
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.game.helper.JobHelper;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.job.model.StoreJob;
@@ -172,36 +173,6 @@ public class AreaModule extends GameModule {
             }
         }
         return null;
-    }
-
-    public StorageAreaModel getNearestFreeStorage(ConsumableModel consumable, ParcelModel fromParcel) {
-        int bestDistance = Integer.MAX_VALUE;
-        AreaModel bestArea = null;
-        for (AreaModel area: _areas) {
-            if (area.isStorage() && area.accept(consumable.getInfo()) && PathManager.getInstance().getPath(area, fromParcel) != null) {
-                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, fromParcel);
-                if (parcel != null && Utils.getDistance(parcel, fromParcel) < bestDistance) {
-                    bestArea = area;
-                    bestDistance = Utils.getDistance(parcel, fromParcel);
-                }
-            }
-        }
-        return (StorageAreaModel)bestArea;
-    }
-
-    public ParcelModel getNearestFreeStorageParcel(ConsumableModel consumable, ParcelModel fromParcel) {
-        int bestDistance = Integer.MAX_VALUE;
-        ParcelModel bestParcel = null;
-        for (AreaModel area: _areas) {
-            if (area.isStorage() && area.accept(consumable.getInfo()) && PathManager.getInstance().getPath(area, fromParcel) != null) {
-                ParcelModel parcel = ((StorageAreaModel)area).getNearestFreeParcel(consumable, fromParcel);
-                if (parcel != null && Utils.getDistance(parcel, fromParcel) < bestDistance) {
-                    bestParcel = parcel;
-                    bestDistance = Utils.getDistance(parcel, fromParcel);
-                }
-            }
-        }
-        return bestParcel;
     }
 
     public void addArea(AreaModel area) {

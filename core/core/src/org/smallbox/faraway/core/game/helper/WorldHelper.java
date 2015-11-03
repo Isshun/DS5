@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
  * Created by Alex on 09/07/2015.
  */
 public class WorldHelper {
-    public static int                  currentFloor;
+    public static int                   currentFloor;
     public static ParcelModel[][][]     _parcels;
     private static int                  _width;
     private static int                  _height;
@@ -27,12 +27,12 @@ public class WorldHelper {
     }
 
     public static ItemModel         getItem(int x, int y) { return getItem(x, y, 0); }
-    public static ItemModel getItem(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getItem() : null; }
+    public static ItemModel         getItem(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getItem() : null; }
     public static ConsumableModel   getConsumable(int x, int y) { return getConsumable(x, y, 0); }
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructure() : null; }
-    public static ResourceModel getResource(int x, int y) { return getResource(x, y, 0); }
+    public static ResourceModel     getResource(int x, int y) { return getResource(x, y, 0); }
     public static ResourceModel     getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getResource() : null; }
 
     public static boolean isSurroundedByRock(ParcelModel parcel) {
@@ -342,5 +342,4 @@ public class WorldHelper {
         }
         return true;
     }
-
 }
