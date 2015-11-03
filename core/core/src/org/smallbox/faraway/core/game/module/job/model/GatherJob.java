@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.game.module.job.model;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -62,6 +61,31 @@ public class GatherJob extends JobModel {
     }
 
     @Override
+    public boolean onCheck(CharacterModel character) {
+        // Item is null
+        if (_resource == null) {
+            _reason = JobAbortReason.INVALID;
+            return false;
+        }
+
+        // Item is no longer exists
+        if (_resource != _resource.getParcel().getResource()) {
+            _reason = JobAbortReason.INVALID;
+            return false;
+        }
+
+        if (_mode == Mode.NOURISH && _resource.getPlant().isMature()) {
+            return false;
+        }
+
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _resource.getParcel())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     protected void onStart(CharacterModel character) {
         PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
 
@@ -74,43 +98,30 @@ public class GatherJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        // Item is null
+    public JobActionReturn onAction(CharacterModel character) {
+        // Wrong call
         if (_resource == null) {
-            _reason = JobAbortReason.INVALID;
-            return false;
+            Log.error("Character: actionGather on null job or null job's item");
+            return JobActionReturn.ABORT;
         }
 
-        // Item is no longer exists
-        if (_resource != WorldHelper.getResource(_resource.getParcel().x, _resource.getParcel().y)) {
-            _reason = JobAbortReason.INVALID;
-            return false;
+        if (_resource.getInfo().actions.get(0) == null) {
+            Log.error("Character: actionGather on non gatherable item");
+            return JobActionReturn.ABORT;
         }
 
-        if (_mode == Mode.NOURISH && _resource.getPlant().isMature()) {
-            return false;
+        _current += character.getTalents().get(CharacterTalentExtra.TalentType.GATHER).work();
+        _progress = _current / _totalCost;
+        if (_current < _totalCost) {
+            return JobActionReturn.CONTINUE;
         }
 
-//        // Resource is depleted
-//        if (_resource.isDepleted()) {
-//            _reason = Abort.INVALID;
-//            return false;
-//        }
-
-//        // No space left in inventory
-//        if (characters.hasInventorySpaceLeft() == false) {
-//            _reason = JobAbortReason.NO_LEFT_CARRY;
-//            return false;
-//        }
-
-        return true;
+        return JobActionReturn.COMPLETE;
     }
 
     @Override
-    protected void onFinish() {
+    protected void onComplete() {
         Log.info("Gather complete");
-        _resource.removeJob(this);
-        _resource.setJob(null);
 
         if (_mode == Mode.PLANT_SEED) {
             _resource.getPlant().setSeed(true);
@@ -139,48 +150,10 @@ public class GatherJob extends JobModel {
     }
 
     @Override
-    public void onActionDo() {
-//        if (_current > 0) {
-//            _progress += 0.01;
-//        }
-    }
-
-    @Override
-    public JobActionReturn onAction(CharacterModel character) {
-        // Wrong call
-        if (_resource == null) {
-            Log.error("Character: actionGather on null job or null job's item");
-            ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
-            return JobActionReturn.ABORT;
+    protected void onFinish() {
+        if (_resource != null && _resource.getJob() == this) {
+            _resource.removeJob(this);
+            _resource.setJob(null);
         }
-
-        if (_resource.getInfo().actions.get(0) == null) {
-            Log.error("Character: actionGather on non gatherable item");
-            ModuleHelper.getJobModule().quitJob(this, JobAbortReason.INVALID);
-            return JobActionReturn.ABORT;
-        }
-
-        _current += character.getTalents().get(CharacterTalentExtra.TalentType.GATHER).work();
-        _progress = _current / _totalCost;
-        if (_current < _totalCost) {
-            return JobActionReturn.CONTINUE;
-        }
-
-        return JobActionReturn.FINISH;
-    }
-
-    @Override
-    public String getLabel() {
-        return _label;
-    }
-
-    @Override
-    public String getShortLabel() {
-        return "gather" + _resource.getLabel();
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
-        return _resource.getParcel();
     }
 }

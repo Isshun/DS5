@@ -158,7 +158,7 @@ public class ConsumeJob extends JobModel {
             _character.setInventory(null);
         }
 
-        return JobActionReturn.FINISH;
+        return JobActionReturn.COMPLETE;
     }
 
     @Override
@@ -184,18 +184,8 @@ public class ConsumeJob extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return "consume " + _consumable.getLabel();
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
+    public ParcelModel getTargetParcel() {
         return null;
-    }
-
-    @Override
-    public boolean canBeResume() {
-        return false;
     }
 
     @Override

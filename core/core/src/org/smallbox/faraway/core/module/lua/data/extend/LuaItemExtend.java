@@ -119,11 +119,7 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
 
-        if (!value.get("stack").isnil()) {
-            itemInfo.stack = value.get("stack").toint();
-        } else {
-            itemInfo.stack = GameData.config.storageMaxQuantity;
-        }
+        itemInfo.stack = getInt(value, "stack", GameData.config.storageMaxQuantity);
 
         if (!value.get("floor").isnil()) {
             itemInfo.isFloor = true;

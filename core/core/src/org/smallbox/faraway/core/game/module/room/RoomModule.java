@@ -180,11 +180,11 @@ public class RoomModule extends GameModule implements GameObserver {
 
         // Bedroom
         if (nbBed >= 1) {
-            if (nbBed == 1 && bed.getOwner() != null) {
-                bed.getOwner().setQuarter(room);
-                room.setOwner(bed.getOwner());
-                return bed.getOwner().getName() + "'s quarter";
-            }
+//            if (nbBed == 1 && bed.getOwner() != null) {
+//                bed.getOwner().setQuarter(room);
+//                room.setOwner(bed.getOwner());
+//                return bed.getOwner().getName() + "'s quarter";
+//            }
             return "Common bedroom";
         }
 

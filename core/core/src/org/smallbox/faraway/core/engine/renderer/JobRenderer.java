@@ -17,7 +17,7 @@ public class JobRenderer extends BaseRenderer {
         int offsetX = viewport.getPosX();
         int offsetY = viewport.getPosY();
         ModuleHelper.getJobModule().getJobs().stream().filter(job -> !job.isFinish()).forEach(job ->
-                job.onDraw((x, y) -> renderer.draw(job.getIconDrawable(), offsetX + x * Constant.TILE_WIDTH, offsetY + y * Constant.TILE_HEIGHT)));
+                job.draw((x, y) -> renderer.draw(job.getIconDrawable(), offsetX + x * Constant.TILE_WIDTH, offsetY + y * Constant.TILE_HEIGHT)));
     }
 
 

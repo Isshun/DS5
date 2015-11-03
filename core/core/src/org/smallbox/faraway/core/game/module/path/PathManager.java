@@ -285,19 +285,4 @@ public class PathManager extends GameModule {
 
     @Override
     public void onRemoveResource(ResourceModel resource) { _graph.resetAround(resource.getParcel()); }
-
-//    @Override
-//    public void onAddStructure(StructureModel structure) {
-//        if (_cache != null && structure != null) {
-//            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
-//        }
-//    }
-//
-//    @Override
-//    public void onRemoveStructure(StructureModel structure) {
-//        if (_cache != null && structure != null) {
-//            _cache.get(structure.getParcel()).getPathsBy().forEach(PathCacheModel::invalidate);
-//        }
-//    }
-
 }

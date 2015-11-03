@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -12,13 +11,9 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Log;
 
 public class UseJob extends JobModel {
-
-    private int _current;
-
-    @Override
-    public boolean canBeResume() {
-        return false;
-    }
+    private int         _current;
+    private ItemModel   _item;
+    private ItemSlot    _slot;
 
     @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
@@ -38,7 +33,7 @@ public class UseJob extends JobModel {
 
         UseJob job = new UseJob();
         job.setActionInfo(infoAction);
-        job.setItem(item);
+        job._item = item;
         job.setCost(infoAction.cost);
 
         return job;
@@ -55,49 +50,6 @@ public class UseJob extends JobModel {
         }
 
         return job;
-    }
-
-    // TODO: make objects stats table instead switch
-    @Override
-    public JobActionReturn onAction(CharacterModel character) {
-        // Wrong call
-        if (_item == null || character == null) {
-            Log.error("wrong call");
-            return JobActionReturn.ABORT;
-        }
-
-        // Item not reached
-        if (character.getParcel() != _targetParcel) {
-            return JobActionReturn.ABORT;
-        }
-
-        // Character is sleeping
-        if (character.isSleeping() && !_item.isSleepingItem()) {
-            Log.debug("use: sleeping . use canceled");
-            return JobActionReturn.QUIT;
-        }
-
-//        if (!check(character)) {
-//            return JobActionReturn.ABORT;
-//        }
-
-        Log.debug("Character #" + character.getName() + ": actionUse");
-
-        // Character using item
-        _current++;
-        _progress = (double)_current / _cost;
-        _item.use(_character, 0);
-        if (_current < _cost) {
-            return JobActionReturn.CONTINUE;
-        }
-
-//        // Set characters direction
-//        if (_item.getX() > _targetParcel.x) { character.setDirection(Direction.RIGHT); }
-//        if (_item.getX() < _targetParcel.x) { character.setDirection(Direction.LEFT); }
-//        if (_item.getY() > _targetParcel.y) { character.setDirection(Direction.TOP); }
-//        if (_item.getY() < _targetParcel.y) { character.setDirection(Direction.BOTTOM); }
-
-        return JobActionReturn.FINISH;
     }
 
     @Override
@@ -123,9 +75,40 @@ public class UseJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
+        assert _character != null;
+
         _slot = _item.takeSlot(this);
         _targetParcel = _slot != null ? _slot.getParcel() : _item.getParcel();
         character.moveTo(_targetParcel, null);
+    }
+
+    @Override
+    public JobActionReturn onAction(CharacterModel character) {
+        assert _item != null;
+        assert _character != null;
+
+        // Item not reached
+        if (character.getParcel() != _targetParcel) {
+            return JobActionReturn.ABORT;
+        }
+
+        Log.debug("Character #" + character.getName() + ": actionUse");
+
+        // Character using item
+        _current++;
+        _progress = (double)_current / _cost;
+        _item.use(_character, 0);
+        if (_current < _cost) {
+            return JobActionReturn.CONTINUE;
+        }
+
+//        // Set characters direction
+//        if (_item.getX() > _targetParcel.x) { character.setDirection(Direction.RIGHT); }
+//        if (_item.getX() < _targetParcel.x) { character.setDirection(Direction.LEFT); }
+//        if (_item.getY() > _targetParcel.y) { character.setDirection(Direction.TOP); }
+//        if (_item.getY() < _targetParcel.y) { character.setDirection(Direction.BOTTOM); }
+
+        return JobActionReturn.COMPLETE;
     }
 
     @Override
@@ -136,25 +119,10 @@ public class UseJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
-    }
-
-    @Override
     public String getLabel() {
         if (_actionInfo != null && _actionInfo.label != null) {
             return _actionInfo.label;
         }
         return "use " + _item.getLabel();
     }
-
-    @Override
-    public String getShortLabel() {
-        return "use " + _item.getLabel();
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
-        return _item.getParcel();
-    }
-
 }

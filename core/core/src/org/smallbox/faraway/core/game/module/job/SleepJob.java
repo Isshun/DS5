@@ -1,12 +1,12 @@
 package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
@@ -17,9 +17,11 @@ public class SleepJob extends JobModel {
     private long            _wakeTime;
     private ItemModel       _sleepItem;
     private long            _sleepTime;
+    private ItemSlot        _slot;
 
     public SleepJob(ParcelModel parcel) {
         _label = "Sleep on ground";
+        _message = "Sleep on ground";
         _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
         _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
@@ -27,6 +29,7 @@ public class SleepJob extends JobModel {
 
     public SleepJob(ParcelModel parcel, ItemModel item) {
         _label = "Sleep in " + item.getInfo().label;
+        _message = "Sleep in " + item.getInfo().label;
         _sleepItem = item;
         _jobParcel = _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
@@ -36,26 +39,10 @@ public class SleepJob extends JobModel {
     public ItemModel getItem() { return _sleepItem; }
 
     @Override
-    public String getShortLabel() {
-        return "Sleep";
-    }
-
-    @Override
-    public String getMessage() {
-        return _sleepItem == null ? "Sleep on the ground" : "Sleep in " + _sleepItem.getInfo().label;
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
-        return null;
-    }
-
-    @Override
     protected boolean onCheck(CharacterModel character) {
-        if (_item != null && !PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
+        if (_sleepItem != null && !PathManager.getInstance().hasPath(character.getParcel(), _sleepItem.getParcel())) {
             return false;
         }
-
         return true;
     }
 
@@ -78,7 +65,7 @@ public class SleepJob extends JobModel {
         }
 
         character.setSleeping(false);
-        return JobActionReturn.FINISH;
+        return JobActionReturn.COMPLETE;
     }
 
     @Override

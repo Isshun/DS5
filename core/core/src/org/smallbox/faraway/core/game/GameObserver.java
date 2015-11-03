@@ -59,4 +59,6 @@ public interface GameObserver {
     default void onTemperatureChange(double temperature) {}
     default void onLightChange(double light, long color) {}
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
+    default void onJobQuit(JobModel job, CharacterModel character) {}
+    default void onJobFinish(JobModel job) {}
 }

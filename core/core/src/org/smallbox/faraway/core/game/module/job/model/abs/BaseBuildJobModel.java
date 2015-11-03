@@ -47,7 +47,7 @@
 ////    }
 //
 //    @Override
-//    public ParcelModel getActionParcel() {
+//    public ParcelModel getTargetParcel() {
 //        return _mainItem.getParcel();
 //    }
 //

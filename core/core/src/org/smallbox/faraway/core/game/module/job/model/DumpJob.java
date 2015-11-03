@@ -76,10 +76,7 @@ public class DumpJob extends JobModel {
 
                 @Override
                 public void onFail(CharacterModel character) {
-                }
-
-                @Override
-                public void onSuccess(CharacterModel character) {
+                    quit(character);
                 }
             });
         }
@@ -89,12 +86,7 @@ public class DumpJob extends JobModel {
     public JobActionReturn onAction(CharacterModel character) {
         _dumpObject.addProgress(-character.getTalents().get(CharacterTalentExtra.TalentType.BUILD).work());
         _progress = _cost - _dumpObject.getProgress();
-        return _dumpObject.isDump() ? JobActionReturn.FINISH : JobActionReturn.CONTINUE;
-    }
-
-    @Override
-    public boolean canBeResume() {
-        return false;
+        return _dumpObject.isDump() ? JobActionReturn.COMPLETE : JobActionReturn.CONTINUE;
     }
 
     @Override
@@ -108,12 +100,7 @@ public class DumpJob extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return "Dump " + _dumpObject.getLabel();
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
+    public ParcelModel getTargetParcel() {
         return _dumpObject.getParcel();
     }
 

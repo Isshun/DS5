@@ -28,6 +28,21 @@ public class StorageAreaModel extends AreaModel {
         return getNearestFreeParcel(consumable, consumable.getParcel());
     }
 
+    public ParcelModel getFreeParcel(ConsumableModel consumable) {
+        ParcelModel bestParcel = null;
+        for (ParcelModel parcel: _parcels) {
+            if (parcel.getItem() == null && parcel.getResource() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
+                if (parcel.getConsumable() == null && bestParcel == null) {
+                    bestParcel = parcel;
+                }
+                if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < consumable.getInfo().stack) {
+                    return parcel;
+                }
+            }
+        }
+        return bestParcel;
+    }
+
     public ParcelModel getNearestFreeParcel(ConsumableModel consumable, ParcelModel consumableParcel) {
         int bestDistance = Integer.MAX_VALUE;
         ParcelModel bestParcel = null;

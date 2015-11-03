@@ -51,7 +51,7 @@ data:extend({
     function(view)
         if resource ~= nil then
             local info = resource:getInfo()
-            view:findById("lb_position"):setText("Position", ": ", resource:getX() .. "x" .. resource:getY())
+--            view:findById("lb_position"):setText("Position", ": ", resource:getX() .. "x" .. resource:getY())
             view:findById("lb_tile"):setText("Tile: " .. resource:getTile())
 
             if resource:getJob() then

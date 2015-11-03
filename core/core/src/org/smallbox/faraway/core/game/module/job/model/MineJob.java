@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.game.module.job.model;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -68,10 +67,6 @@ public class MineJob extends JobModel {
                 @Override
                 public void onFail(CharacterModel character) {
                 }
-
-                @Override
-                public void onSuccess(CharacterModel character) {
-                }
             });
         }
     }
@@ -87,11 +82,6 @@ public class MineJob extends JobModel {
             return false;
         }
 
-//        if ((_parcel == null || !_parcel.isWalkable()) && getFreeParcel() == null) {
-//            _reason = JobAbortReason.BLOCKED;
-//            return false;
-//        }
-
         // Item is no longer exists
         if (_resource != _resource.getParcel().getResource()) {
             _status = JobStatus.INVALID;
@@ -103,57 +93,7 @@ public class MineJob extends JobModel {
             _status = JobStatus.BLOCKED;
             return false;
         }
-
-//        // Resource is depleted
-//        if (_resource.getMatterSupply() <= 0) {
-//            _reason = JobAbortReason.INVALID;
-//            return false;
-//        }
-
-//        // No space left in inventory
-//        if (!characters.hasInventorySpaceLeft()) {
-//            _reason = JobAbortReason.NO_LEFT_CARRY;
-//            return false;
-//        }
-
         return true;
-    }
-
-//    private ParcelModel getFreeParcel() {
-//        int x = _resource.getX();
-//        int y = _resource.getY();
-//        ParcelModel parcel = null;
-//
-//        // Corner
-//        if (!WorldHelper.isBlocked(x - 1, y - 1)) parcel = WorldHelper.getParcel(x-1, y-1);
-//        if (!WorldHelper.isBlocked(x + 1, y - 1)) parcel = WorldHelper.getParcel(x+1, y-1);
-//        if (!WorldHelper.isBlocked(x-1, y+1)) parcel = WorldHelper.getParcel(x-1, y+1);
-//        if (!WorldHelper.isBlocked(x+1, y+1)) parcel = WorldHelper.getParcel(x+1, y+1);
-//
-//        // Cross
-//        if (!WorldHelper.isBlocked(x, y-1)) parcel = WorldHelper.getParcel(x, y-1);
-//        if (!WorldHelper.isBlocked(x, y+1)) parcel = WorldHelper.getParcel(x, y+1);
-//        if (!WorldHelper.isBlocked(x-1, y)) parcel = WorldHelper.getParcel(x-1, y);
-//        if (!WorldHelper.isBlocked(x+1, y)) parcel = WorldHelper.getParcel(x+1, y);
-//
-//        _parcel = parcel;
-//        if (parcel != null) {
-//            _targetParcel = parcel;
-//        }
-//
-//        return parcel;
-//    }
-
-    @Override
-    protected void onFinish() {
-        Log.info("Mine complete");
-        ModuleHelper.getWorldModule().removeResource(_resource);
-
-        if (_actionInfo.products != null) {
-            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
-                ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity));
-            });
-        }
     }
 
     @Override
@@ -182,7 +122,26 @@ public class MineJob extends JobModel {
             return JobActionReturn.CONTINUE;
         }
 
-        return JobActionReturn.FINISH;
+        return JobActionReturn.COMPLETE;
+    }
+    @Override
+    protected void onComplete() {
+        Log.info("Mine complete");
+        ModuleHelper.getWorldModule().removeResource(_resource);
+
+        if (_actionInfo.products != null) {
+            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
+                ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity));
+            });
+        }
+    }
+
+    @Override
+    protected void onFinish() {
+        if (_resource != null && _resource.getJob() == this) {
+            _resource.removeJob(this);
+            _resource.setJob(null);
+        }
     }
 
     @Override
@@ -191,22 +150,12 @@ public class MineJob extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return "Mine " + _resource.getLabel();
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
-        return _resource.getParcel();
-    }
-
-    @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return CharacterTalentExtra.TalentType.MINE;
     }
 
     @Override
-    public void onDraw(onDrawCallback callback) {
+    public void draw(onDrawCallback callback) {
         callback.onDraw(_resource.getParcel().x, _resource.getParcel().y);
     }
 

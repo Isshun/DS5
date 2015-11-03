@@ -28,16 +28,6 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return "Build " + _buildItem.getInfo().label;
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
-        return null;
-    }
-
-    @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return CharacterTalentExtra.TalentType.BUILD;
     }
@@ -77,7 +67,7 @@ public class BuildJob extends JobModel {
         if (WorldHelper.getApproxDistance(_character.getParcel(), _buildItem.getParcel()) <= 2) {
             if (_buildItem.build()) {
                 _buildItem.setBuildJob(null);
-                _return = JobActionReturn.FINISH;
+                _return = JobActionReturn.COMPLETE;
                 if (_buildItem instanceof ItemModel) {
                     Game.getInstance().notify(observer -> observer.onRefreshItem((ItemModel) _buildItem));
                 } else if (_buildItem instanceof StructureModel) {

@@ -16,7 +16,6 @@ public class LuaCharacterModel extends ObjectModel {
     public final CharacterNeedsExtra needs;
     public final CharacterStatsExtra stats;
     public final CharacterModel     character;
-    public final ItemInfo           item;
     public final ParcelModel        parcel;
     public final String             type;
     public final String             faction;
@@ -30,7 +29,6 @@ public class LuaCharacterModel extends ObjectModel {
         this.character = character;
         this.parcel = character.getParcel();
         this.type = character.getType().name;
-        this.item = character.getJob() != null && character.getJob().getItem() != null ? character.getJob().getItem().getInfo() : null;
     }
 
     public boolean isAlive() {

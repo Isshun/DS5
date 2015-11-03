@@ -49,12 +49,7 @@ public class HaulJob extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return "Get " + _component.info.label;
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
+    public ParcelModel getTargetParcel() {
         return null;
     }
 
@@ -139,12 +134,6 @@ public class HaulJob extends JobModel {
 
             @Override
             public void onFail(CharacterModel movable) {
-
-            }
-
-            @Override
-            public void onSuccess(CharacterModel movable) {
-
             }
         });
     }
@@ -171,17 +160,11 @@ public class HaulJob extends JobModel {
                     ModuleHelper.getJobModule().addJob(new BuildJob(_buildItem));
                 }
 
-                _return = _component.currentQuantity == _component.neededQuantity ? JobActionReturn.FINISH : JobActionReturn.QUIT;
+                _return = _component.currentQuantity == _component.neededQuantity ? JobActionReturn.COMPLETE : JobActionReturn.QUIT;
             }
 
             @Override
             public void onFail(CharacterModel movable) {
-
-            }
-
-            @Override
-            public void onSuccess(CharacterModel movable) {
-
             }
         });
     }

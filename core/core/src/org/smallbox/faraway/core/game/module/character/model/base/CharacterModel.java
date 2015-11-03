@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.character.model.*;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
-import org.smallbox.faraway.core.game.module.job.model.UseJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -211,16 +210,6 @@ public abstract class CharacterModel extends MovableModel {
         _needs.environment = _parcel.getEnvironmentScore();
         //TODO
 //        _needs.light = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
-
-        // TODO: create JobSleep class with auto-cancel capability
-        // Cancel model sleeping
-        int timetable = _timeTable.get(Game.getInstance().getHour());
-        if (timetable != 0 && timetable != 1 && _needs.isSleeping && _needs.get("energy") > 75) {
-            _needs.isSleeping = false;
-            if (_job != null && _job instanceof UseJob && _job.getItem() != null && _job.getItem().isSleepingItem()) {
-                ModuleHelper.getJobModule().quitJob(_job);
-            }
-        }
     }
 
     public void    setJob(JobModel job) {
@@ -251,14 +240,6 @@ public abstract class CharacterModel extends MovableModel {
 //        if (_quarter == null) {
 //            Game.getRoomManager().take(this, Room.Type.QUARTER);
 //        }
-
-        // TODO
-        // No energy + no job to sleepingItem -> sleep on the ground
-        if (_needs.get("energy") <= 0 && !_needs.isSleeping()) {
-            if (_job == null || _job.getItem() == null || !_job.getItem().isSleepingItem()) {
-                _needs.setSleeping(true);
-            }
-        }
     }
 
     public void        move() {
@@ -324,23 +305,17 @@ public abstract class CharacterModel extends MovableModel {
 
         // Check if job location is reached or instance of MoveJob
         if (_parcel == _job.getTargetParcel() || _job.getTargetParcel() == null || _job instanceof MoveJob) {
-            JobModel.JobActionReturn ret = _job.action(this);
-            if (_job != null) {
-                if (ret == JobModel.JobActionReturn.FINISH || ret == JobModel.JobActionReturn.ABORT) {
-                    ModuleHelper.getJobModule().closeJob(_job);
-                    ModuleHelper.getJobModule().assign(this);
-                }
-                if (ret == JobModel.JobActionReturn.QUIT) {
-                    ModuleHelper.getJobModule().quitJob(_job);
-                    ModuleHelper.getJobModule().assign(this);
-                }
-            }
+            _job.action(this);
         }
     }
 
     public void addInventory(ConsumableModel consumable, int quantity) {
         if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
             Log.error("Character inventory has non-compatible item");
+            return;
+        }
+
+        if (quantity == 0) {
             return;
         }
 

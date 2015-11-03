@@ -136,7 +136,7 @@ public class CharacterRenderer extends BaseRenderer {
                 if (!c.isSleeping() && c.getJob() != null && c.getJob().getActionDrawable() != null && c.getJob().getTargetParcel() == c.getParcel()) {
                     int x = posX;
                     int y = posY;
-                    ParcelModel actionParcel = c.getJob().getActionParcel();
+                    ParcelModel actionParcel = c.getJob().getTargetParcel();
                     if (actionParcel != null) {
                         if (actionParcel.y < parcel.y) y -= 16;
                         if (actionParcel.y > parcel.y) y += 16;

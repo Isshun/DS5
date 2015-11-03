@@ -71,11 +71,6 @@ public class JobModule extends GameModule {
     }
 
     @Override
-    public void onUpdateDo() {
-        _jobs.forEach(JobModel::onActionDo);
-    }
-
-    @Override
     protected void onUpdate(int tick) {
         cleanJobs();
 
@@ -184,16 +179,9 @@ public class JobModule extends GameModule {
             job.quit(job.getCharacter());
         }
 
-        if (job.getItem() != null) {
-            job.getItem().setOwner(null);
-            job.getItem().removeJob(job);
+        if (!job.isFinish()) {
+            job.finish();
         }
-
-        if (job.getSlot() != null) {
-            job.getSlot().getItem().releaseSlot(job.getSlot());
-        }
-
-        job.finish();
 
         _toRemove.add(job);
     }
@@ -333,9 +321,8 @@ public class JobModule extends GameModule {
     }
 
     public void closeJob(JobModel job) {
-        printDebug("Job close: " + job.getId());
+        printDebug("Close job: " + job.getId());
 
-        job.setStatus(JobStatus.COMPLETE);
         if (job.getCharacter() != null) {
             job.quit(job.getCharacter());
         }
@@ -343,57 +330,23 @@ public class JobModule extends GameModule {
         removeJob(job);
     }
 
-    public void quitJob(JobModel job) {
-        if (job != null) {
-            if (job.getCharacter() != null) {
-                job.quit(job.getCharacter());
-            }
-            if (!job.canBeResume()) {
-                closeJob(job);
-            }
-        }
-    }
-
     public void quitJob(JobModel job, JobAbortReason reason) {
         if (job != null) {
             printDebug("Job quit: " + job.getId());
 
-            job.setStatus(JobStatus.WAITING);
-
-            job.setFail(reason, MainRenderer.getFrame());
-
-            if (job.getCharacter() != null) {
-                job.quit(job.getCharacter());
-            }
-
-            // Remove characters lock from item
-            if (job.getItem() != null && job.getItem().getOwner() == job.getCharacter()) {
-                job.getItem().setOwner(null);
-            }
-
-            // Abort because path to item is blocked
-            if (reason == JobAbortReason.BLOCKED) {
-                return;
-            }
-
-            // Job is invalid, don't resume
-            if (reason == JobAbortReason.INVALID) {
-                job.setStatus(JobStatus.ABORTED);
-                removeJob(job);
-                return;
-            }
-
-            // Job is USE / USE_INVENTORY / MOVE / TAKE / STORE / REFILL onAction, don't resume
-            if (!job.canBeResume()) {
-                job.setStatus(JobStatus.ABORTED);
-                removeJob(job);
-                return;
-            }
-
-            // Regular job, reset
         } else {
             System.out.println("[ERROR] Quit null job");
         }
+    }
+
+    @Override
+    public void onJobQuit(JobModel job, CharacterModel character) {
+        assign(character);
+    }
+
+    @Override
+    public void onJobFinish(JobModel job) {
+        _toRemove.add(job);
     }
 
     @Override
@@ -415,7 +368,8 @@ public class JobModule extends GameModule {
     }
 
     public SerializerInterface getSerializer() {
-        return new JobModuleSerializer(this);
+        return null;
+//        return new JobModuleSerializer(this);
     }
 
     public int getModulePriority() {

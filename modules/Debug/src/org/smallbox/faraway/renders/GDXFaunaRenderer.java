@@ -18,7 +18,7 @@
 //    private FaunaModule _faunaModule;
 //
 //    @Override
-//    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+//    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
 //        if (_faunaModule == null) {
 //            _faunaModule = (FaunaModule) ModuleManager.getInstance().getModule(FaunaModule.class);
 //        }

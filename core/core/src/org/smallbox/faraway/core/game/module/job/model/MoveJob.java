@@ -36,21 +36,12 @@ public class MoveJob extends JobModel {
     @Override
     public JobActionReturn onAction(CharacterModel character) {
 
-//        if (_durationLeft > 0) {
-//            return false;
-//        }
-
         // Job is done
         if (character.getParcel() != _targetParcel) {
             return JobActionReturn.CONTINUE;
         }
 
-        return JobActionReturn.FINISH;
-    }
-
-    @Override
-    public boolean canBeResume() {
-        return false;
+        return JobActionReturn.COMPLETE;
     }
 
     @Override
@@ -64,12 +55,7 @@ public class MoveJob extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return "move";
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
+    public ParcelModel getTargetParcel() {
         return null;
     }
 

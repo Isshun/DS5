@@ -13,7 +13,6 @@ import java.util.List;
 public abstract class MapObjectModel extends ObjectModel {
     private static int          _maxId;
     private int                 _id;
-    private CharacterModel      _owner;
     private String              _name;
     private int                 _width;
     private int                 _height;
@@ -51,7 +50,6 @@ public abstract class MapObjectModel extends ObjectModel {
         // Init
         _health = info.health / 2;
         _lastBlocked = -1;
-        _owner = null;
         _id = id;
         _name = null;
         _info = info;
@@ -74,10 +72,6 @@ public abstract class MapObjectModel extends ObjectModel {
         }
     }
 
-    public void    setOwner(CharacterModel character) {
-        _owner = character;
-    }
-
     // Sets
     public void             setId(int id) { _id = id; }
     public void             setMode(int mode) { _mode = mode; }
@@ -86,28 +80,25 @@ public abstract class MapObjectModel extends ObjectModel {
     public void             setBlocked(int update) { _lastBlocked = update; }
     public void             setNeedRefresh() { _needRefresh = true; }
     public boolean          needRefresh() { return _needRefresh; }
-//    public void             setJobBuild(JobBuild job) { _jobBuild = job; }
 
     // Gets
-    public CharacterModel   getOwner() { return _owner; }
-    public int                getWidth() { return _width; }
-    public int                getHeight() { return _height; }
-    public int                getId() { return _id; }
-    public String            getName() { return _name; }
-    public int                 getMode() { return _mode; }
-    public int                 getLight() { return _light; }
-    public String             getLabel() { return _label; }
+    public int              getWidth() { return _width; }
+    public int              getHeight() { return _height; }
+    public int              getId() { return _id; }
+    public String           getName() { return _name; }
+    public int              getMode() { return _mode; }
+    public int              getLight() { return _light; }
+    public String           getLabel() { return _label; }
     public ItemInfo         getInfo() { return _info; }
-    public int                 getMatter() { return _matter; }
-    public int                 getLastBlocked() { return _lastBlocked; }
+    public int              getMatter() { return _matter; }
+    public int              getLastBlocked() { return _lastBlocked; }
     public ParcelModel      getParcel() { return _parcel; }
     public int              getProgress() { return (int)_progress; }
     public double           getSealing() { return _info.sealing; }
     public int              getCurrentFrame() { return _currentFrame; }
     public int              getHealth() { return _health; }
     public int              getMaxHealth() { return _info.health; }
-    public List<JobModel> getJobs() { return _jobs; }
-//    public JobBuild         getJobBuild() { return _jobBuild; }
+    public List<JobModel>   getJobs() { return _jobs; }
 
     // Boolean
     public boolean          isConsumable() { return _info.isConsumable; }

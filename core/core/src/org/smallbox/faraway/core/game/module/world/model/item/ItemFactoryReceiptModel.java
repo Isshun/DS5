@@ -36,7 +36,7 @@ public class ItemFactoryReceiptModel {
 
     private List<FactoryComponentModel>         _components;
     private List<FactoryShoppingItemModel>      _shoppingList;
-    private boolean                             _allComponentsPresent;
+    private boolean                             _isFull;
 
     public final ItemFactoryModel.OrderEntry    order;
     public final ReceiptGroupInfo.ReceiptInfo receiptInfo;
@@ -52,6 +52,7 @@ public class ItemFactoryReceiptModel {
 
     public List<FactoryComponentModel>      getComponents() { return _components; }
     public List<FactoryShoppingItemModel>   getShoppingList() { return _shoppingList; }
+    public boolean                          isFull() { return _isFull; }
 
     public void setPotentialComponents(List<PotentialConsumable> potentialComponents) {
         this.totalDistance = 0;
@@ -101,10 +102,10 @@ public class ItemFactoryReceiptModel {
             }
 
             // Check if all components is present
-            _allComponentsPresent = true;
+            _isFull = true;
             for (FactoryComponentModel component: _components) {
                 if (component.currentQuantity < component.totalQuantity) {
-                    _allComponentsPresent = false;
+                    _isFull = false;
                 }
             }
     }

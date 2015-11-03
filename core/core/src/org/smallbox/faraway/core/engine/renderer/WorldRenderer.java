@@ -279,7 +279,7 @@ public class WorldRenderer extends BaseRenderer {
 //                for (int j = _cacheCols - 1; j >= 0; j--) {
 //                    // Draw up to date layer
 //                    if (_layers[i][j].isVisible(viewport) && !_layers[i][j].needRefresh() && _layers[i][j].isDrawable()) {
-//                        _layers[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+//                        _layers[i][j].draw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
 //                    }
 //
 //                    // Refresh needed layer
@@ -297,7 +297,7 @@ public class WorldRenderer extends BaseRenderer {
 //
 ////                    // Draw up to date layer
 ////                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
-////                        _layersLight[i][j].onDraw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
+////                        _layersLight[i][j].draw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
 ////                    }
 ////
 ////                    // Refresh needed layer

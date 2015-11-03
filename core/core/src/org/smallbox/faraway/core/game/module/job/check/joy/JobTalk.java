@@ -46,12 +46,7 @@ public class JobTalk extends JobModel {
     }
 
     @Override
-    public String getShortLabel() {
-        return null;
-    }
-
-    @Override
-    public ParcelModel getActionParcel() {
+    public ParcelModel getTargetParcel() {
         return null;
     }
 
@@ -76,7 +71,6 @@ public class JobTalk extends JobModel {
 
     @Override
     protected void onFinish() {
-
     }
 
     @Override
@@ -84,6 +78,6 @@ public class JobTalk extends JobModel {
         if (_progress++ < _cost) {
             return JobActionReturn.CONTINUE;
         }
-        return JobActionReturn.FINISH;
+        return JobActionReturn.COMPLETE;
     }
 }
