@@ -9,17 +9,17 @@ data:extend({
     visible = false,
     views =
     {
-        { type = "list", position = {10, 40}, views = {
-            { type = "label", id = "lb_name", text = "name", text_size = 22, padding = 5, size = {100, 30}},
-            { type = "label", id = "lb_teperature", text_size = 14, padding = 5},
-            { type = "label", id = "lb_position", text_size = 14, padding = 5},
-            { type = "label", id = "lb_connections", text_size = 14, padding = 5},
-            { type = "label", id = "lb_room", text_size = 14, padding = 5},
-            { type = "label", id = "lb_walkable", text_size = 14, padding = 5},
-            { type = "label", id = "lb_light", text_size = 14, padding = 5},
-            { type = "label", id = "lb_oxygen", text_size = 14, padding = 5},
-            { type = "label", id = "lb_room", text_size = 14, padding = 5},
-            { type = "label", id = "lb_type", text_size = 14, padding = 5},
+        { type = "list", position = {10, 10}, views = {
+            { type = "label", id = "lb_name", text = "name", text_size = 22, size = {100, 30}},
+            { type = "label", id = "lb_teperature", text_size = 14},
+            { type = "label", id = "lb_position", text_size = 14},
+            { type = "label", id = "lb_connections", text_size = 14},
+            { type = "label", id = "lb_room", text_size = 14},
+            { type = "label", id = "lb_walkable", text_size = 14},
+            { type = "label", id = "lb_light", text_size = 14},
+            { type = "label", id = "lb_oxygen", text_size = 14},
+            { type = "label", id = "lb_room", text_size = 14},
+            { type = "label", id = "lb_type", text_size = 14},
         }},
     },
 

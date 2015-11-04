@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.AreaModuleSerializer;
 import org.smallbox.faraway.core.game.module.character.CharacterModuleSerializer;
 import org.smallbox.faraway.core.game.module.world.WorldModuleSerializer;
@@ -51,7 +51,7 @@ public class GameSerializer {
             AutoPilot ap = new AutoPilot(vn);
             ap.selectXPath("/save/width|/save/height");
 
-            Game.getInstance().setRegion(GameData.getData().getRegion("base.planet.arrakis", "desert"));
+            Game.getInstance().setRegion(Data.getData().getRegion("base.planet.arrakis", "desert"));
 
             new ParamSerializer().load(vn.duplicateNav());
             new WorldModuleSerializer().load(vn.duplicateNav());

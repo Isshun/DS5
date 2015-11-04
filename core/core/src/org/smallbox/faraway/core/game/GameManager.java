@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
@@ -28,7 +28,7 @@ public class GameManager {
     public void load(String fileName) {
         long time = System.currentTimeMillis();
 
-        _game = new Game(250, 250, GameData.getData(), GameData.config, fileName, null, null, null);
+        _game = new Game(250, 250, Data.getData(), Data.config, fileName, null, null, null);
 
         // TODO
         _game.preload();
@@ -40,7 +40,7 @@ public class GameManager {
 
     public void startGame(boolean load) {
         long time = System.currentTimeMillis();
-        MainRenderer.getInstance().init(GameData.config, _game);
+        MainRenderer.getInstance().init(Data.config, _game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
@@ -54,7 +54,7 @@ public class GameManager {
 //        }
 
         _game.init(null);
-        _game.setRegion(GameData.getData().getRegion("base.planet.arrakis", "desert"));
+        _game.setRegion(Data.getData().getRegion("base.planet.arrakis", "desert"));
         _game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
 
         time = System.currentTimeMillis();
@@ -76,7 +76,7 @@ public class GameManager {
 
         WorldFactory factory = new WorldFactory();
 
-        _game = new Game(50, 50, GameData.getData(), GameData.config, fileName, null, null, regionInfo);
+        _game = new Game(50, 50, Data.getData(), Data.config, fileName, null, null, regionInfo);
         _game.init(factory);
 
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);

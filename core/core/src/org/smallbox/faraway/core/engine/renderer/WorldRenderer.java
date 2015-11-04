@@ -5,12 +5,9 @@ import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
@@ -158,16 +155,16 @@ public class WorldRenderer extends BaseRenderer {
 //                }
                 ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
                 if (parcel != null) {
-                    if (GameData.config.render.floor) {
+                    if (Data.config.render.floor) {
                         refreshFloor(layer, parcel.getType(), x, y);
                     }
-                    if (GameData.config.render.structure) {
+                    if (Data.config.render.structure) {
                         refreshStructure(layer, parcel.getStructure(), x, y);
                     }
-                    if (GameData.config.render.resource) {
+                    if (Data.config.render.resource) {
                         refreshResource(layer, parcel, parcel.getResource(), x, y);
                     }
-                    if (GameData.config.render.item) {
+                    if (Data.config.render.item) {
                         refreshItems(layer, parcel.getItem(), x, y);
                     }
                 }
@@ -179,7 +176,7 @@ public class WorldRenderer extends BaseRenderer {
 //                }
                 ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
                 if (parcel != null) {
-                    if (GameData.config.render.consumable) {
+                    if (Data.config.render.consumable) {
                         refreshConsumable(layer, parcel.getConsumable(), x, y);
                     }
                 }
@@ -256,6 +253,11 @@ public class WorldRenderer extends BaseRenderer {
                     }
                     if (parcel.getStructure() != null) {
                         renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                    }
+                    if (parcel.getNetworkObjects() != null) {
+                        for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
+                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                        }
                     }
                     if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
                         renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);

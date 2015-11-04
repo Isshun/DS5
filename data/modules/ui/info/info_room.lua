@@ -8,11 +8,11 @@ data:extend({
     background = 0x121c1e,
     visible = false,
     views = {
-        { type = "list", position = {10, 40}, views = {
-            { type = "label", id = "lb_name", text = "name", text_size = 22, padding = 5, size = {100, 30}},
-            { type = "label", id = "lb_id", text_size = 14, padding = 5},
-            { type = "label", id = "lb_size", text_size = 14, padding = 5},
-            { type = "label", id = "lb_neighborhood", text_size = 14, padding = 5},
+        { type = "list", position = {10, 10}, views = {
+            { type = "label", id = "lb_name", text = "name", text_size = 22, size = {100, 30}},
+            { type = "label", id = "lb_id", text_size = 14},
+            { type = "label", id = "lb_size", text_size = 14},
+            { type = "label", id = "lb_neighborhood", text_size = 14},
         }},
     },
 

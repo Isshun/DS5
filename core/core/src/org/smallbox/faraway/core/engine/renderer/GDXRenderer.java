@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.SpriteModel;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
@@ -141,7 +141,7 @@ public class GDXRenderer {
     }
 
     public void draw(String string, int textSize, int x, int y, Color color) {
-        textSize *= GameData.config.uiScale;
+        textSize *= Data.config.uiScale;
 
         if (string != null) {
             _batch.begin();

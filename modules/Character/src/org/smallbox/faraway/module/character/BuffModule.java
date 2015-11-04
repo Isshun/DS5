@@ -2,10 +2,7 @@ package org.smallbox.faraway.module.character;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.engine.lua.LuaCharacterModel;
-import org.smallbox.faraway.core.engine.lua.LuaGameModel;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -39,7 +36,7 @@ public class BuffModule extends GameModule {
     public void onAddCharacter(CharacterModel character) {
         LuaValue luaCharacter = CoerceJavaToLua.coerce(character);
 
-        List<BuffCharacterModel> dataList = GameData.getData().buffs.stream().map(buff -> new BuffCharacterModel(buff, luaCharacter, character)).collect(Collectors.toList());
+        List<BuffCharacterModel> dataList = Data.getData().buffs.stream().map(buff -> new BuffCharacterModel(buff, luaCharacter, character)).collect(Collectors.toList());
         dataList.forEach(BuffCharacterModel::start);
 
         _characters.put(character, dataList);

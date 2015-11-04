@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -52,7 +52,7 @@ public class FaunaModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.fauna;
+        return Data.config.manager.fauna;
     }
 
     @Override

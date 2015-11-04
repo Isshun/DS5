@@ -34,9 +34,9 @@ data:extend({
 
     on_event =
     function(view, event, data)
-        if event == game.events.on_key_press and data == "F2" then
-            view:setVisible(not view:isVisible())
-        end
+--        if event == game.events.on_key_press and data == "F2" then
+--            view:setVisible(not view:isVisible())
+--        end
     end,
 
 })

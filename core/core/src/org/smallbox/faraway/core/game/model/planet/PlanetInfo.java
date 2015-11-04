@@ -1,8 +1,10 @@
 package org.smallbox.faraway.core.game.model.planet;
 
+import org.smallbox.faraway.core.game.model.ObjectInfo;
+
 import java.util.List;
 
-public class PlanetInfo {
+public class PlanetInfo extends ObjectInfo {
 
     public static class PlanetFarming {
         public int[]    growing;
@@ -36,7 +38,6 @@ public class PlanetInfo {
     }
 
     public List<DayTime>                dayTimes;
-    public String                        name;
     public String                        label;
     public String cls;
     public String                        desc;

@@ -36,7 +36,7 @@
 //    @Override
 //    public void load(VTDNav save) {
 ////        Map<String, ItemInfo.ItemInfoAction> actions = new HashMap<>();
-////        GameData.getData().items.stream().filter(info -> info.actions != null && !info.actions.isEmpty()).forEach(info -> {
+////        Data.getData().items.stream().filter(info -> info.actions != null && !info.actions.isEmpty()).forEach(info -> {
 ////            info.actions.stream().filter(action -> action.name != null).forEach(action -> {
 ////                actions.put(info.name + ":" + action.name, action);
 ////            });

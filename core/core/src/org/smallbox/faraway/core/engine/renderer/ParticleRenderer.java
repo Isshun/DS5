@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.WeatherInfo;
 
 /**
  * Created by Alex on 05/06/2015.
@@ -74,7 +74,7 @@ public class ParticleRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onWeatherChange(WeatherModel weather) {
+    public void onWeatherChange(WeatherInfo weather) {
         setParticle(weather.particle);
     }
 }

@@ -123,6 +123,19 @@ public class LuaLayoutFactory {
                 view.setVisible(true);
             }
 
+            LuaValue margin = value.get("margin");
+            if (!margin.isnil()) {
+                if (margin.length() == 4) {
+                    view.setMargin(margin.get(1).toint(), margin.get(2).toint(), margin.get(3).toint(), margin.get(4).toint());
+                }
+                if (margin.length() == 2) {
+                    view.setMargin(margin.get(1).toint(), margin.get(2).toint(), margin.get(1).toint(), margin.get(2).toint());
+                }
+                if (margin.length() == 1) {
+                    view.setMargin(margin.toint(), margin.toint(), margin.toint(), margin.toint());
+                }
+            }
+
             LuaValue position = value.get("position");
             if (!position.isnil()) {
                 view.setPosition(position.get(1).toint(), position.get(2).toint());

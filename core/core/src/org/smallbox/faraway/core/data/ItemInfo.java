@@ -1,13 +1,15 @@
 package org.smallbox.faraway.core.data;
 
 import org.smallbox.faraway.core.GraphicInfo;
+import org.smallbox.faraway.core.game.model.NetworkInfo;
+import org.smallbox.faraway.core.game.model.ObjectInfo;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemInfo {
+public class ItemInfo extends ObjectInfo {
 
     public boolean hasCraftAction() {
         if (actions != null) {
@@ -43,6 +45,8 @@ public class ItemInfo {
         public String                   name;
         public float                    dropRate;
         public List<ItemProductInfo>    products;
+        public List<NetworkInfo>        networks;
+        public List<String>             networkNames;
     }
 
     public static class ItemInfoPlant {
@@ -66,9 +70,18 @@ public class ItemInfo {
         public List<ItemProductInfo>    products;
     }
 
+    public static class FactoryGroupReceiptInfo {
+        public final String             receiptName;
+        public ReceiptGroupInfo         receipt;
+        public boolean                  auto;
+
+        public FactoryGroupReceiptInfo(String name) {
+            this.receiptName = name;
+        }
+    }
+
     public static class ItemInfoFactory {
-        public List<ReceiptGroupInfo>   receipts;
-        public List<String>             receiptNames;
+        public List<FactoryGroupReceiptInfo>   receipts;
         public int[]                    inputSlots;
         public int[]                    outputSlots;
     }
@@ -141,9 +154,8 @@ public class ItemInfo {
         public int                      happiness;
         public int                      health;
         public int                      relation;
-        public int                      joy;
+        public int                      entertainment;
         public double                   oxygen;
-        public int                      socialize;
         public int                      security;
         public int                      heat;
         public int                      heatPotency;
@@ -153,7 +165,6 @@ public class ItemInfo {
         public int                      temperaturePotency;
     }
 
-    public String                       name;
     public String                       desc;
     public String                       inherits;
     public String                       label;
@@ -215,7 +226,7 @@ public class ItemInfo {
 
     public boolean matchFilter(ItemInfoEffects effects, ItemFilter filter) {
         if (effects != null) {
-            if (filter.effectEntertainment && effects.joy > 0) { return true; }
+            if (filter.effectEntertainment && effects.entertainment > 0) { return true; }
             if (filter.effectDrink && effects.drink > 0) { return true; }
             if (filter.effectEnergy && effects.energy > 0) { return true; }
             if (filter.effectFood && effects.food > 0) { return true; }

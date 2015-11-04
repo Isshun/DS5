@@ -14,6 +14,7 @@ data:extend({
         {"Computer", "Ordinateur"},
         {"Laptop", "Ordinateur portable"},
         {"Cooker", "Cuisinière"},
+        {"Fountain", "Fontaine"},
         {"Fridge", "Frigo"},
         {"Pub", "Bar"},
         {"Serving table", "Buffet"},

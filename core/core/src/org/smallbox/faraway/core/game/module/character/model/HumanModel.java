@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.module.character.model;
 
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
@@ -26,7 +26,7 @@ public class HumanModel extends CharacterModel {
     };
 
     public HumanModel(int id, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, parcel, name, lastName, old, GameData.getData().characters.get("human"));
+        super(id, parcel, name, lastName, old, Data.getData().characters.get("human"));
         _personals.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE);
     }
 

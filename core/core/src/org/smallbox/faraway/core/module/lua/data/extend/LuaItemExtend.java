@@ -4,7 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -39,7 +39,7 @@ public class LuaItemExtend extends LuaExtend {
         _cache.put(name, value);
 
         ItemInfo itemInfo = null;
-        for (ItemInfo info: GameData.getData().items) {
+        for (ItemInfo info: Data.getData().items) {
             if (info.name != null && info.name.equals(name)) {
                 itemInfo = info;
             }
@@ -47,7 +47,7 @@ public class LuaItemExtend extends LuaExtend {
 
         if (itemInfo == null) {
             itemInfo = new ItemInfo();
-            GameData.getData().items.add(itemInfo);
+            Data.getData().items.add(itemInfo);
         }
 
         if (!value.get("parent").isnil()) {
@@ -108,7 +108,7 @@ public class LuaItemExtend extends LuaExtend {
             if (!value.get("build").get("cost").isnil()) {
                 itemInfo.build.cost = value.get("build").get("cost").toint();
             } else {
-                itemInfo.build.cost = GameData.config.defaultBuildCost;
+                itemInfo.build.cost = Data.config.defaultBuildCost;
             }
         }
 
@@ -119,7 +119,7 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
 
-        itemInfo.stack = getInt(value, "stack", GameData.config.storageMaxQuantity);
+        itemInfo.stack = getInt(value, "stack", Data.config.storageMaxQuantity);
 
         if (!value.get("floor").isnil()) {
             itemInfo.isFloor = true;
@@ -203,9 +203,12 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         if (!value.get("receipts").isnil()) {
-            itemInfo.factory.receiptNames = new ArrayList<>();
+            itemInfo.factory.receipts = new ArrayList<>();
             for (int i = 1; i <= value.get("receipts").length(); i++) {
-                itemInfo.factory.receiptNames.add(value.get("receipts").get(i).toString());
+                LuaValue luaReceipt = value.get("receipts").get(i);
+                ItemInfo.FactoryGroupReceiptInfo factoryGroupReceiptInfo = new ItemInfo.FactoryGroupReceiptInfo(luaReceipt.get("receipt").toString());
+                factoryGroupReceiptInfo.auto = getBoolean(value, "auto", false);
+                itemInfo.factory.receipts.add(factoryGroupReceiptInfo);
             }
         }
     }
@@ -273,6 +276,14 @@ public class LuaItemExtend extends LuaExtend {
         action.type = getString(value, "type", null);
         action.cost = getInt(value, "cost", 0);
 
+        LuaValue luaNetworks = value.get("network");
+        if (!luaNetworks.isnil()) {
+            action.networkNames = new ArrayList<>();
+            for (int i = 1; i <= luaNetworks.length(); i++) {
+                action.networkNames.add(luaNetworks.get(i).toString());
+            }
+        }
+
         LuaValue luaEffects = value.get("effects");
         if (!luaEffects.isnil()) {
             action.effects = new ItemInfo.ItemInfoEffects();
@@ -322,8 +333,8 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.isPlant = true;
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
         itemInfo.plant.minMaturity = getDouble(value, "gather", 1);
-        itemInfo.plant.growing = getDouble(value, "growing", 1) / GameData.config.tickPerHour;
-        itemInfo.plant.nourish = getDouble(value, "nourish", 1) / GameData.config.tickPerHour;
+        itemInfo.plant.growing = getDouble(value, "growing", 1) / Data.config.tickPerHour;
+        itemInfo.plant.nourish = getDouble(value, "nourish", 1) / Data.config.tickPerHour;
 
         if (!value.get("states").isnil()) {
             readPlantStatesValues(itemInfo, value.get("states"));

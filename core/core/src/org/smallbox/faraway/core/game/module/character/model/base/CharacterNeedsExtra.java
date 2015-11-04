@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.character.model.base;
 
 import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
@@ -12,13 +12,15 @@ import java.util.Map;
 
 public class CharacterNeedsExtra {
     public final static String TAG_ENERGY = "energy";
+    public final static String TAG_OXYGEN = "oxygen";
     public final static String TAG_FOOD = "food";
-    public final static String TAG_WATER = "water";
+    public final static String TAG_DRINK = "drink";
     public final static String TAG_RELATION = "relation";
     public final static String TAG_ENTERTAINMENT = "entertainment";
+    public final static String TAG_HAPPINESS = "happiness";
 
     private final CharacterModel     _character;
-    private final GameData          _data;
+    private final Data _data;
 
     // Actions
     public boolean isSleeping;
@@ -42,16 +44,16 @@ public class CharacterNeedsExtra {
     private boolean isFainting;
 
     public CharacterNeedsExtra(CharacterModel character, CharacterStatsExtra stats) {
-        _data = GameData.getData();
+        _data = Data.getData();
         _character = character;
         _stats = stats;
         _sleepItem = null;
-        _values.put("food", Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
-        _values.put("oxygen", Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 40 - 20);
-        _values.put("happiness", Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 40 - 20);
-        _values.put("energy", Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 40 - 20);
-        _values.put("entertainment", 0.0);
-        _values.put("relation", 0.0);
+        _values.put(TAG_FOOD, Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
+        _values.put(TAG_OXYGEN, Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 40 - 20);
+        _values.put(TAG_HAPPINESS, Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 40 - 20);
+        _values.put(TAG_ENERGY, Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 40 - 20);
+        _values.put(TAG_ENTERTAINMENT, 0.0);
+        _values.put(TAG_RELATION, 0.0);
         _values.put("security", 0.0);
         health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
         heat = character.getType().needs.heat.optimal;
@@ -66,12 +68,12 @@ public class CharacterNeedsExtra {
     public void    update() {
         CharacterTypeInfo.Needs needs = _character.getType().needs;
 
-        addValue("energy", isSleeping ? needs.energy.change.sleep : needs.energy.change.wake);
-        addValue("food", isSleeping ? needs.food.change.sleep : needs.food.change.wake);
-        addValue("water", 0);
-        addValue("entertainment", isSleeping ? needs.joy.change.sleep : needs.joy.change.wake);
-        addValue("relation", ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
-        addValue("happiness", happinessChange / 100);
+        addValue(TAG_ENERGY, isSleeping ? needs.energy.change.sleep : needs.energy.change.wake);
+        addValue(TAG_FOOD, isSleeping ? needs.food.change.sleep : needs.food.change.wake);
+        addValue(TAG_DRINK, isSleeping ? needs.water.change.sleep : needs.water.change.wake);
+        addValue(TAG_ENTERTAINMENT, isSleeping ? needs.joy.change.sleep : needs.joy.change.wake);
+        addValue(TAG_RELATION, ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
+        addValue(TAG_HAPPINESS, happinessChange / 100);
 
         // Oxygen
         double oxygen = _values.get("oxygen");
@@ -88,7 +90,7 @@ public class CharacterNeedsExtra {
                 }
             }
         }
-        _values.put("oxygen", oxygen);
+        _values.put(TAG_OXYGEN, oxygen);
 
         // Set needs bounds
         _values.entrySet().forEach(entry -> entry.setValue(Math.max(0, Math.min(100, entry.getValue()))));
@@ -150,7 +152,7 @@ public class CharacterNeedsExtra {
             addValue("energy", (double)action.effects.energy / action.cost);
             addValue("food", (double)action.effects.food / action.cost);
             addValue("drink", (double)action.effects.drink / action.cost);
-            addValue("entertainment", (double)action.effects.joy / action.cost);
+            addValue("entertainment", (double)action.effects.entertainment / action.cost);
             addValue("relation", (double)action.effects.relation / action.cost);
             addValue("happiness", (double)action.effects.happiness / action.cost);
             health = Math.min(health + (double)action.effects.health / action.cost, 100);

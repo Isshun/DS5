@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.model;
 /**
  * Created by Alex on 05/06/2015.
  */
-public class WeatherModel {
+public class WeatherInfo extends ObjectInfo {
     public static class WeatherSunModel {
         public int          dawn;
         public int          noon;
@@ -15,7 +15,6 @@ public class WeatherModel {
         public int[]        temperature;
     }
 
-    public String           name;
     public String           label;
     public String           particle;
     public String           icon;

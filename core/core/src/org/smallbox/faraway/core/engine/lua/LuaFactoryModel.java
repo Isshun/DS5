@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
@@ -25,6 +25,6 @@ public class LuaFactoryModel {
     }
 
     public LuaConsumableModel createConsumable(String itemName, int quantity) {
-        return new LuaConsumableModel(GameData.getData().getItemInfo(itemName), quantity);
+        return new LuaConsumableModel(Data.getData().getItemInfo(itemName), quantity);
     }
 }

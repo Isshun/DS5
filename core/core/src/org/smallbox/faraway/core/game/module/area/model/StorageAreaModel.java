@@ -3,10 +3,9 @@ package org.smallbox.faraway.core.game.module.area.model;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Utils;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -22,7 +21,7 @@ public class StorageAreaModel extends AreaModel {
 
         _nb = ++_count;
 
-        GameData.getData().consumables.forEach(itemInfo -> setAccept(itemInfo, false));
+        Data.getData().consumables.forEach(itemInfo -> setAccept(itemInfo, false));
     }
 
     public ParcelModel getNearestFreeParcel(ConsumableModel consumable) {
@@ -49,7 +48,7 @@ public class StorageAreaModel extends AreaModel {
         ParcelModel bestParcel = null;
         for (ParcelModel parcel: _parcels) {
             // Storage parcel have similar consumable
-            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(GameData.config.storageMaxQuantity, consumable.getInfo().stack)) {
+            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Data.config.storageMaxQuantity, consumable.getInfo().stack)) {
                 bestParcel = parcel;
                 break;
             }

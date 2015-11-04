@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -28,7 +28,7 @@ public class TemperatureModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.temperature;
+        return Data.config.manager.temperature;
     }
 
     @Override

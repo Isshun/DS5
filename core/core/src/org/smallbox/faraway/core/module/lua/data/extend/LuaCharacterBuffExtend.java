@@ -4,11 +4,11 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.BuffModel;
+import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
+import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -31,13 +31,13 @@ public class LuaCharacterBuffExtend extends LuaExtend {
             return;
         }
 
-        for (BuffModel buff: GameData.getData().buffs) {
+        for (BuffInfo buff: Data.getData().buffs) {
             if (name.equals(buff.getName())) {
                 return;
             }
         }
 
-        BuffModel buff = new BuffModel();
+        BuffInfo buff = new BuffInfo();
 
         buff.setName(name);
         buff.setVisible(value.get("visible").isnil() || value.get("visible").toboolean());
@@ -47,7 +47,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
         LuaValue onCheck = value.get("on_check");
         LuaValue onUpdate = value.get("on_update");
         LuaValue onUpdateHourly = value.get("on_update_hourly");
-        buff.setListener(new BuffModel.BuffListener() {
+        buff.setListener(new BuffInfo.BuffListener() {
             @Override
             public void onStart(BuffCharacterModel data) {
                 data.luaData.set("duration", new LuaTable());
@@ -81,7 +81,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
 
                     // Update duration
                     long duration = tick - data.startTick;
-                    long durationHour = duration / GameData.config.tickPerHour;
+                    long durationHour = duration / Data.config.tickPerHour;
                     long durationDay = durationHour / Game.getInstance().getPlanet().getInfo().dayDuration;
                     data.luaData.get("duration").set("tick", duration);
                     data.luaData.get("duration").set("hour", durationHour);
@@ -118,7 +118,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
                                         // Apply disease
                                         if ("disease".equals(luaEffect.get("type").toString())) {
                                             String diseaseName = luaEffect.get("disease").toString();
-                                            DiseaseModel disease = GameData.getData().getDisease(diseaseName);
+                                            DiseaseInfo disease = Data.getData().getDisease(diseaseName);
                                             if (disease != null) {
                                                 // Add new disease to character
                                                 if (!data.character.hasDisease(diseaseName)) {
@@ -162,6 +162,6 @@ public class LuaCharacterBuffExtend extends LuaExtend {
             }
         });
 
-        GameData.getData().buffs.add(buff);
+        Data.getData().buffs.add(buff);
     }
 }

@@ -7,20 +7,18 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.core.data.BindingInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.model.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.ModuleInfo;
@@ -52,6 +50,8 @@ public class LuaModuleManager implements GameObserver {
             new LuaItemExtend(),
             new LuaWeatherExtend(),
             new LuaPlanetExtend(),
+            new LuaBindingsExtend(),
+            new LuaNetworkExtend(),
             new LuaReceiptExtend(),
             new LuaCursorExtend(),
             new LuaCharacterBuffExtend(),
@@ -78,6 +78,10 @@ public class LuaModuleManager implements GameObserver {
     }
 
     private void loadUI() {
+        // TODO: wrong emplacement
+        Data.getData().bindings.clear();
+        _game.bindings = new LuaTable();
+
         UserInterface.getInstance()._views.clear();
         _luaEventListeners.clear();
         _luaLoadListeners.clear();
@@ -103,7 +107,7 @@ public class LuaModuleManager implements GameObserver {
 
         _modules.forEach(this::loadModule);
 
-        GameData.getData().fix();
+        Data.getData().fix();
 
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
 
@@ -241,19 +245,21 @@ public class LuaModuleManager implements GameObserver {
     public void onSelectResource(ResourceModel resource) { broadcastToLuaModules(LuaEventsModel.on_resource_selected, resource); }
     public void onSelectConsumable(ConsumableModel consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
     public void onSelectStructure(StructureModel structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
+    public void onSelectNetwork(NetworkObjectModel network) { broadcastToLuaModules(LuaEventsModel.on_network_selected, network); }
     public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
     public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
     public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
     public void onReloadUI() {loadUI();}
     public void onRefreshUI() { _luaRefreshListeners.forEach(LuaRefreshListener::onRefresh); }
     public void onKeyPress(GameEventListener.Key key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name());}
-    public void onWeatherChange(WeatherModel weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
+    public void onWeatherChange(WeatherInfo weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
     public void onTemperatureChange(double temperature) { broadcastToLuaModules(LuaEventsModel.on_temperature_change, temperature);}
     public void onLightChange(double light, long color) { broadcastToLuaModules(LuaEventsModel.on_light_change, light, color);}
     public void onDayTimeChange(PlanetInfo.DayTime daytime) { broadcastToLuaModules(LuaEventsModel.on_day_time_change, daytime);}
     public void onHourChange(int hour) { broadcastToLuaModules(LuaEventsModel.on_hour_change, hour);}
     public void onDayChange(int day) { broadcastToLuaModules(LuaEventsModel.on_day_change, day);}
     public void onSpeedChange(int speed) { broadcastToLuaModules(LuaEventsModel.on_speed_change, speed);}
+    public void onBindingPress(BindingInfo binding) { broadcastToLuaModules(LuaEventsModel.on_binding, binding);}
 
 //    default void onGameStart() {}
 //    default void onLog(String tag, String message) {}
@@ -269,5 +275,9 @@ public class LuaModuleManager implements GameObserver {
 
     public Collection<LuaModule> getModules() {
         return _modules;
+    }
+
+    public LuaGameModel getGame() {
+        return _game;
     }
 }

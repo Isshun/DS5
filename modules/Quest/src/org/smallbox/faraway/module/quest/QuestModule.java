@@ -6,7 +6,7 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaGameModel;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.module.GameModule;
 
 import java.io.File;
@@ -30,7 +30,7 @@ public class QuestModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.quest;
+        return Data.config.manager.quest;
     }
 
     @Override

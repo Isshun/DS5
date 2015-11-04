@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.area;
 import com.ximpleware.*;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -115,7 +115,7 @@ public class AreaModuleSerializer implements SerializerInterface {
                     AutoPilot ap4 = new AutoPilot(vn);
                     ap4.selectXPath("*");
                     while (ap4.evalXPath() != -1) {
-                        storage.setAccept(GameData.getData().getItemInfo(vn.toString(vn.getText())), true);
+                        storage.setAccept(Data.getData().getItemInfo(vn.toString(vn.getText())), true);
                     }
                     ap4.resetXPath();
                 break;

@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.job.model.MineJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -21,7 +21,7 @@ public class GardenAreaModel extends AreaModel {
         super(AreaType.GARDEN);
 
         ItemInfo defaultItem = null;
-        for (ItemInfo itemInfo: GameData.getData().items) {
+        for (ItemInfo itemInfo: Data.getData().items) {
             if (itemInfo.isPlant) {
                 setAccept(itemInfo, false);
                 defaultItem = itemInfo;

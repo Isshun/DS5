@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.GameModule;
 
@@ -28,7 +28,7 @@ public class PowerModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.power;
+        return Data.config.manager.power;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.GameModule;
 
@@ -34,7 +34,7 @@ public class ResourceModule extends GameModule {
     private List<ConsumableModel>           _foods = new ArrayList<>();
     private int                             _foodCount;
 
-    public int                      getConsumableCount(String name) { return getConsumableCount(GameData.getData().getItemInfo(name)); }
+    public int                      getConsumableCount(String name) { return getConsumableCount(Data.getData().getItemInfo(name)); }
     public int                      getConsumableCount(ItemInfo info) { return _consumablesCollection.containsKey(info) ? _consumablesCollection.get(info).count : 0; }
     public List<ConsumableModel>    getFoods() { return _foods; }
     public int                      getFoodCount() { return _foodCount; }

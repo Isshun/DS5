@@ -78,11 +78,11 @@ public abstract class CharacterModel extends MovableModel {
         _talents = new CharacterTalentExtra();
 
 //        _equipments = new ArrayList<>();
-//        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
-//        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_pants"));
-//        _equipments.add(GameData.getData().getEquipment("base.equipments.regular_shoes"));
-//        _equipments.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
-//        _equipments.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
+//        _equipments.add(Data.getData().getEquipment("base.equipments.regular_shirt"));
+//        _equipments.add(Data.getData().getEquipment("base.equipments.regular_pants"));
+//        _equipments.add(Data.getData().getEquipment("base.equipments.regular_shoes"));
+//        _equipments.add(Data.getData().getEquipment("base.equipments.oxygen_bottle"));
+//        _equipments.add(Data.getData().getEquipment("base.equipments.fremen_body"));
 
         _stats = new CharacterStatsExtra();
         _stats.speed = 1;
@@ -157,9 +157,9 @@ public abstract class CharacterModel extends MovableModel {
         return false;
     }
 
-    public boolean hasDisease(DiseaseModel diseaseModel) {
+    public boolean hasDisease(DiseaseInfo diseaseInfo) {
         for (DiseaseCharacterModel disease: _diseases) {
-            if (disease.disease == diseaseModel) {
+            if (disease.disease == diseaseInfo) {
                 return true;
             }
         }

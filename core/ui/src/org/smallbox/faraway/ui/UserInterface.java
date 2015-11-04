@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -76,7 +76,7 @@ public class UserInterface implements GameEventListener {
     public UserInteraction          getInteraction() { return _interaction; }
     public void                     clearCursor() { _cursor = null; }
     public void                     setCursor(UICursor cursor) { _cursor = cursor; }
-    public void                     setCursor(String cursorName) { _cursor = GameData.getData().getCursor(cursorName); }
+    public void                     setCursor(String cursorName) { _cursor = Data.getData().getCursor(cursorName); }
     public void                     setGame(Game game) { _game = game; _viewport = game.getViewport(); }
 
     // Used by lua modules
@@ -166,7 +166,7 @@ public class UserInterface implements GameEventListener {
 
     public void putDebug(ItemInfo itemInfo) {
         _interaction.set(UserInteraction.Action.PUT_ITEM_FREE, itemInfo);
-        setCursor(GameData.getData().getCursor("base.cursor.build"));
+        setCursor(Data.getData().getCursor("base.cursor.build"));
     }
 
     public void    onMouseMove(int x, int y, boolean rightPressed) {

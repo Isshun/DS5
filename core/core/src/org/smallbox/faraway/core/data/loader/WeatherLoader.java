@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.core.data.loader;
 //
-//import org.smallbox.faraway.core.game.model.GameData;
-//import org.smallbox.faraway.core.game.model.WeatherModel;
+//import org.smallbox.faraway.core.game.model.Data;
+//import org.smallbox.faraway.core.game.model.WeatherInfo;
 //import org.smallbox.faraway.core.util.FileUtils;
 //import org.smallbox.faraway.core.util.Log;
 //import org.yaml.snakeyaml.Yaml;
@@ -20,14 +20,14 @@
 //    private long    _lastConfigModified;
 //
 //    @Override
-//    public void load(GameData data) {
+//    public void load(Data data) {
 //        data.weathers = new HashMap<>();
 //
 //        FileUtils.listRecursively("data/weather/").stream().filter(file -> file.getName().endsWith(".yml")).forEach(file -> {
 //            try {
 //                InputStream input = new FileInputStream(file);
-//                Yaml yaml = new Yaml(new Constructor(WeatherModel.class));
-//                WeatherModel model = (WeatherModel) yaml.load(input);
+//                Yaml yaml = new Yaml(new Constructor(WeatherInfo.class));
+//                WeatherInfo model = (WeatherInfo) yaml.load(input);
 //                model.name = file.getName().replace(".yml", "");
 //                data.weathers.put(model.name, model);
 //            } catch (FileNotFoundException e) {
@@ -39,7 +39,7 @@
 //    }
 //
 //    @Override
-//    public void reloadIfNeeded(GameData data) {
+//    public void reloadIfNeeded(Data data) {
 //        for (File file: new File("data/weather/").listFiles()) {
 //            if (file.lastModified() > _lastConfigModified) {
 //                _lastConfigModified = file.lastModified();

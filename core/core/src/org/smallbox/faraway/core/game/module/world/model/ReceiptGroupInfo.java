@@ -1,13 +1,14 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.model.ObjectInfo;
 
 import java.util.List;
 
 /**
  * Created by Alex on 12/10/2015.
  */
-public class ReceiptGroupInfo {
+public class ReceiptGroupInfo extends ObjectInfo {
     public static class ReceiptInputInfo {
         public String       itemName;
         public ItemInfo     item;
@@ -29,7 +30,6 @@ public class ReceiptGroupInfo {
     }
 
     public int                      cost;
-    public String                   name;
     public String                   label;
     public List<ReceiptInfo>        receipts;
 }

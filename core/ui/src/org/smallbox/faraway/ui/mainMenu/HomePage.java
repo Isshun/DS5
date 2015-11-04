@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.ui.LayoutModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
@@ -22,9 +22,9 @@ public class HomePage extends MainMenuPage {
     }
 
     private DebugEntry[]    DEBUG_ENTRIES = {
-        new DebugEntry("Arrakis mountain", view -> Application.getInstance().newGame("8.sav", GameData.getData().getRegion("arrakis", "mountain"))),
-        new DebugEntry("Arrakis valley", view -> Application.getInstance().newGame("8.sav", GameData.getData().getRegion("arrakis", "valley"))),
-        new DebugEntry("Arrakis desert", view -> Application.getInstance().newGame("8.sav", GameData.getData().getRegion("arrakis", "desert"))),
+        new DebugEntry("Arrakis mountain", view -> Application.getInstance().newGame("8.sav", Data.getData().getRegion("arrakis", "mountain"))),
+        new DebugEntry("Arrakis valley", view -> Application.getInstance().newGame("8.sav", Data.getData().getRegion("arrakis", "valley"))),
+        new DebugEntry("Arrakis desert", view -> Application.getInstance().newGame("8.sav", Data.getData().getRegion("arrakis", "desert"))),
     };
 
     public HomePage(MainMenu mainMenu, GDXRenderer renderer, MainMenu.Scene scene) {

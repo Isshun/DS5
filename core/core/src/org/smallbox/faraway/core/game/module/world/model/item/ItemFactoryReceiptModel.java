@@ -39,7 +39,7 @@ public class ItemFactoryReceiptModel {
     private boolean                             _isFull;
 
     public final ItemFactoryModel.OrderEntry    order;
-    public final ReceiptGroupInfo.ReceiptInfo receiptInfo;
+    public final ReceiptGroupInfo.ReceiptInfo   receiptInfo;
     public final ReceiptGroupInfo               receiptGroupInfo;
     public int                                  totalDistance;
     public boolean                              enoughComponents;
@@ -111,27 +111,26 @@ public class ItemFactoryReceiptModel {
     }
 
     public void prepare(List<PotentialConsumable> componentsDistance) {
+        _isFull = true;
         _components = receiptInfo.inputs.stream()
                 .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
                 .collect(Collectors.toList());
 
         // Fill consumables shopping list
         _shoppingList = new ArrayList<>();
-        receiptInfo.inputs.forEach(receiptInputInfo -> {
-            int quantity = 0;
-            for (PotentialConsumable potential: componentsDistance) {
-                if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
-                    int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
-                    _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
-                    quantity += neededQuantity;
+        if (!_components.isEmpty()) {
+            _isFull = false;
+            receiptInfo.inputs.forEach(receiptInputInfo -> {
+                int quantity = 0;
+                for (PotentialConsumable potential: componentsDistance) {
+                    if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
+                        int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
+                        _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
+                        quantity += neededQuantity;
+                    }
                 }
-            }
-        });
-
-        System.out.println("shopping list");
-        _shoppingList.forEach(input -> {
-            System.out.println(input.consumable.getInfo().label + " x" + input.quantity + " (" + input.consumable.getParcel().x + "x" + input.consumable.getParcel().y + ")");
-        });
+            });
+        }
     }
 
     public FactoryShoppingItemModel getNextInput() {

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -24,7 +24,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.oxygen;
+        return Data.config.manager.oxygen;
     }
 
     @Override

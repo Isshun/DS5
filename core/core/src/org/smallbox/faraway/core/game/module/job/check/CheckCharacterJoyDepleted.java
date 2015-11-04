@@ -34,6 +34,6 @@
 //
 //    @Override
 //    public boolean need(CharacterModel model) {
-//        return model.getType().needs.joy != null && model.getNeeds().joy < model.getType().needs.joy.warning;
+//        return model.getType().needs.entertainment != null && model.getNeeds().entertainment < model.getType().needs.entertainment.warning;
 //    }
 //}

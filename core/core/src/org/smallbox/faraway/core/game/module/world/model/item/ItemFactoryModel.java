@@ -19,12 +19,14 @@ import java.util.stream.Collectors;
  */
 public class ItemFactoryModel {
     public static class OrderEntry {
-        public final ReceiptGroupInfo receiptGroupInfo;
+        public final ReceiptGroupInfo   receiptGroupInfo;
+        public final boolean            auto;
         public int                      mode;
         public boolean                  isActive;
 
-        public OrderEntry(ReceiptGroupInfo receiptGroupInfo) {
-            this.receiptGroupInfo = receiptGroupInfo;
+        public OrderEntry(ItemInfo.FactoryGroupReceiptInfo receiptGroupInfo) {
+            this.receiptGroupInfo = receiptGroupInfo.receipt;
+            this.auto = receiptGroupInfo.auto;
         }
     }
 

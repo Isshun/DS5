@@ -31,6 +31,11 @@ data:extend({
             end
         end
 
+        categories["network"] = {}
+        for i = 0, data.networks:size() - 1 do
+            table.insert(categories["network"], data.networks:get(i))
+        end
+
         local nb_categories = 0
         for key, value in pairs(categories) do
             local bt_category = game.ui:createLabel()

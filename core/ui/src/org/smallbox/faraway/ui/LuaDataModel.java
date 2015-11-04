@@ -3,7 +3,8 @@ package org.smallbox.faraway.ui;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.CategoryInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 
 import java.util.List;
@@ -18,15 +19,17 @@ public class LuaDataModel {
 
     private final OnExtendListener      _extendListener;
 
+    public final List<NetworkInfo>     networks;
     public final List<ItemInfo>        items;
     public final List<CategoryInfo>    categories;
     public final List<PlanetInfo>      planets;
 
     public LuaDataModel(OnExtendListener extendListener) {
         _extendListener = extendListener;
-        this.items = GameData.getData().items;
-        this.categories = GameData.getData().categories;
-        this.planets = GameData.getData().planets;
+        this.networks = Data.getData().networks;
+        this.items = Data.getData().items;
+        this.categories = Data.getData().categories;
+        this.planets = Data.getData().planets;
     }
 
     @SuppressWarnings("unused")

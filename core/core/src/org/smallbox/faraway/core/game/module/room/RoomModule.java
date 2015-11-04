@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.room;
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel.RoomType;
@@ -40,7 +40,7 @@ public class RoomModule extends GameModule implements GameObserver {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.room;
+        return Data.config.manager.room;
     }
 
     public List<RoomModel> getRoomList() { return _roomList; }

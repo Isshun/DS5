@@ -18,18 +18,22 @@ data:extend({
             { type = "view", id = "progress_health", size = {50, 25}, background = 0x89ab00 },
             { type = "label", id = "lb_health", text = "80/120", text_size = 16, padding = 7 },
         }},
+
+        -- Detailled informations
         { type = "list", position = {0, 60}, views = {
+
+            -- Slots
             { type = "label", id = "lb_slots", text_size = 18, padding = 10},
             { type = "label", id = "lb_used_by", text_size = 18, padding = 10},
-            --            { type = "label", id = "lb_position", text_size = 18, padding = 10},
-            --            { type = "label", id = "lb_complete", text_size = 18, padding = 10},
-            { type = "list", id = "frame_building", position = {0, 40}, views = {
-                { type = "label", id = "lb_building", text = "Building in progress", text_size = 22, padding = 10, size = {400, 26}},
-                { type = "image", id = "img_building_progress", position = {10, 12}, src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
-                { type = "label", id = "lb_building_progress", text_size = 14, padding = 10, position = {0, 10}},
-                { type = "label", id = "lb_building_job", text_size = 14, padding = 10, position = {0, 10}},
-                { type = "label", id = "lb_building_character", text_size = 14, padding = 10, position = {0, 10}},
-                { type = "label", text = "Components", text_size = 20, padding = 10, position = {0, 15}},
+
+            -- Building
+            { type = "list", id = "frame_building", margin = {10, 0, 0, 10}, views = {
+                { type = "label", id = "lb_building", text = "Building in progress", text_size = 22, size = {400, 26}},
+                { type = "image", id = "img_building_progress", src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
+                { type = "label", id = "lb_building_progress", text_size = 14, margin = {10, 0, 0, 0}},
+                { type = "label", id = "lb_building_job", text_size = 14},
+                { type = "label", id = "lb_building_character", text_size = 14},
+                { type = "label", text = "Components", text_size = 20, margin = {10, 0, 0, 0}},
                 { type = "list", id = "list_building_components", position = {0, 10}, adapter = {
                     view = { type = "label", text_size = 14, padding = 10 },
                     on_bind = function(view, data)
@@ -37,10 +41,18 @@ data:extend({
                     end
                 }},
             }},
-            { type = "list", id = "frame_factory_progress", position = {10, 10}, views = {
+
+            -- Actions
+            { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, size = {400, 100}, views = {
+                { type = "label", text = "Actions", text_size = 22, size = {400, 26}},
+                { type = "list", id = "list_actions"},
+            }},
+
+            -- Factory progress
+            { type = "list", id = "frame_factory_progress", margin = {10, 0, 0, 10}, views = {
                 { type = "label", text = "Work in progress", text_size = 22},
-                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", position = {0, 10}},
-                { type = "image", id = "img_factory_progress", position = {0, 10}, src = "[base]/graphics/needbar.png", size = {380, 16}},
+                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", margin = {10, 0, 0, 0}},
+                { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {380, 16}},
                 --                { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 10}},
                 --                { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
                 --                { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
@@ -48,7 +60,9 @@ data:extend({
                 --                { type = "label", id = "lb_factory_inputs", position = {0, 20}},
                 --                { type = "label", id = "lb_factory_products", position = {0, 20}},
             }},
-            { type = "list", id = "frame_factory_orders", position = {10, 15}, views = {
+
+            -- Factory orders
+            { type = "list", id = "frame_factory_orders", margin = {10, 0, 0, 10}, views = {
                 { type = "label", text = "Orders", text_size = 22},
                 { type = "list", id = "list_orders", position = {0, 8}},
             }},
@@ -71,6 +85,8 @@ data:extend({
             item = data;
             view:setVisible(true)
             view:findById("lb_name"):setText(item:getLabel())
+
+            display_actions_info(view, item)
 
             if item:getInfo().factory and item:getInfo().factory.receipts then
                 display_factory_info(view, item:getFactory(), item:getInfo().factory)
@@ -167,6 +183,69 @@ data:extend({
     end
 })
 
+function display_actions_info(view, item)
+    if item:getInfo().actions then
+        view:findById("frame_actions"):setVisible(true)
+
+        local list_actions = view:findById("list_actions")
+        list_actions:removeAllViews()
+
+        local iterator = item:getInfo().actions:iterator()
+        while iterator:hasNext() do
+            local action = iterator:next()
+
+            local view_action = game.ui:createView()
+            view_action:setSize(400, 42)
+            list_actions:addView(view_action)
+
+            local icon_action = game.ui:createLabel()
+            icon_action:setText("+")
+            icon_action:setTextSize(14)
+            icon_action:setPadding(0, 2)
+            icon_action:setSize(12, 12)
+            icon_action:setBackgroundColor(0x349394)
+            view_action:addView(icon_action)
+
+            local lb_action = game.ui:createLabel()
+            lb_action:setText(action.type)
+            lb_action:setTextSize(16)
+            lb_action:setPosition(20, 0)
+            lb_action:setSize(400, 24)
+            view_action:addView(lb_action)
+
+            local str = ""
+            local grid_effects = game.ui:createGrid()
+            grid_effects:setColumns(8)
+            grid_effects:setColumnWidth(80)
+            grid_effects:setRowHeight(24)
+            grid_effects:setPosition(0, 20)
+            add_effect_to_grid(grid_effects, "food", action.effects.food)
+            add_effect_to_grid(grid_effects, "drink", action.effects.drink)
+            add_effect_to_grid(grid_effects, "energy", action.effects.energy)
+            add_effect_to_grid(grid_effects, "happiness", action.effects.happiness)
+            add_effect_to_grid(grid_effects, "health", action.effects.health)
+            add_effect_to_grid(grid_effects, "relation", action.effects.relation)
+            add_effect_to_grid(grid_effects, "oxygen", action.effects.oxygen)
+            add_effect_to_grid(grid_effects, "entertainment", action.effects.entertainment)
+            view_action:addView(grid_effects)
+
+        end
+
+    else
+        view:findById("frame_actions"):setVisible(false)
+    end
+end
+
+function add_effect_to_grid(grid, label, value)
+    if value and value ~= 0 then
+        local lb_effects = game.ui:createLabel()
+        lb_effects:setText(label, ": ", (value > 0 and "+" or "-") .. value)
+        lb_effects:setTextSize(14)
+        lb_effects:setSize(400, 24)
+        grid:addView(lb_effects)
+    end
+end
+
 function display_factory_info(view, factory, factoryInfo)
     local list = view:findById("list_orders")
     list:removeAllViews()
@@ -184,18 +263,20 @@ function display_factory_info(view, factory, factoryInfo)
         while iterator_receipt:hasNext() do
             local receipt = iterator_receipt:next()
 
-            local str_inputs = ""
-            local iterator_inputs = receipt.inputs:iterator()
-            while iterator_inputs:hasNext() do
-                local input = iterator_inputs:next()
-                str_inputs = str_inputs .. (string.len(str_inputs) > 0 and " + " or "") .. input.quantity .. " " .. input.item.label
-            end
+            if receipt.inputs then
+                local str_inputs = ""
+                local iterator_inputs = receipt.inputs:iterator()
+                while iterator_inputs:hasNext() do
+                    local input = iterator_inputs:next()
+                    str_inputs = str_inputs .. (string.len(str_inputs) > 0 and " + " or "") .. input.quantity .. " " .. input.item.label
+                end
 
-            local lb_receipt = game.ui:createLabel()
-            lb_receipt:setSize(400, 22)
-            lb_receipt:setText(str_inputs)
-            lb_receipt:setTextSize(14)
-            frame_receipt_detail:addView(lb_receipt)
+                local lb_receipt = game.ui:createLabel()
+                lb_receipt:setSize(400, 22)
+                lb_receipt:setText(str_inputs)
+                lb_receipt:setTextSize(14)
+                frame_receipt_detail:addView(lb_receipt)
+            end
         end
 
         -- Create frame receipt

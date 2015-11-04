@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -27,7 +27,7 @@ public class FloraModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.flora;
+        return Data.config.manager.flora;
     }
 
     @Override

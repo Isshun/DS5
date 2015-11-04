@@ -5,7 +5,8 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -15,7 +16,6 @@ import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class UserInteraction {
-
     public boolean onKeyLeft(int x, int y, int fromX, int fromY, int toX, int toY) {
         // Set plan
         if (_action == Action.SET_PLAN) {
@@ -75,6 +75,7 @@ public class UserInteraction {
     private String                      _selectedPlan;
     private ItemInfo                    _selectedItemInfo;
     private AreaType                    _selectedAreaType;
+    private NetworkInfo                 _selectedNetworkInfo;
 
     UserInteraction() {
         _startPressX = 0;
@@ -88,11 +89,10 @@ public class UserInteraction {
     public Action  getAction() { return _action; }
 
     public void    planBuild(int startX, int startY, int toX, int toY) {
-        if (_selectedItemInfo == null) {
+        if (_selectedItemInfo == null && _selectedNetworkInfo == null) {
             return;
         }
 
-        ItemInfo itemInfo = _selectedItemInfo;
         for (int x = toX; x >= startX; x--) {
             for (int y = toY; y >= startY; y--) {
                 ParcelModel parcel = WorldHelper.getParcel(x, y);
@@ -107,7 +107,12 @@ public class UserInteraction {
                         }
                     }
 
-                    ModuleHelper.getWorldModule().putObject(parcel, itemInfo, 0);
+                    if (_selectedItemInfo != null) {
+                        ModuleHelper.getWorldModule().putObject(parcel, _selectedItemInfo, 0);
+                    }
+                    if (_selectedNetworkInfo != null) {
+                        ModuleHelper.getWorldModule().putNetwork(parcel, _selectedNetworkInfo, false);
+                    }
                 }
             }
         }
@@ -221,13 +226,13 @@ public class UserInteraction {
         }
 
         switch (_selectedPlan) {
-        case "destroy": planDestroy(startX, startY, toX, toY); break;
-        case "gather": planGather(startX, startY, toX, toY); break;
-        case "mine": planMining(startX, startY, toX, toY); break;
-        case "pick": planPick(startX, startY, toX, toY); break;
-        case "haul": planHaul(startX, startY, toX, toY); break;
-        case "cut": planCut(startX, startY, toX, toY); break;
-        default: break;
+            case "destroy": planDestroy(startX, startY, toX, toY); break;
+            case "gather": planGather(startX, startY, toX, toY); break;
+            case "mine": planMining(startX, startY, toX, toY); break;
+            case "pick": planPick(startX, startY, toX, toY); break;
+            case "haul": planHaul(startX, startY, toX, toY); break;
+            case "cut": planCut(startX, startY, toX, toY); break;
+            default: break;
         }
     }
 
@@ -272,6 +277,12 @@ public class UserInteraction {
         _selectedItemInfo = info;
     }
 
+    public void set(Action action, NetworkInfo networkInfo) {
+        UserInterface.getInstance().setCursor("base.cursor.build");
+        _action = action;
+        _selectedNetworkInfo = networkInfo;
+    }
+
     public void set(Action action, AreaType areaType) {
         _action = action;
         _selectedAreaType = areaType;
@@ -286,12 +297,12 @@ public class UserInteraction {
             case BUILD_ITEM:
                 break;
             case SET_AREA:
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.area"));
+                UserInterface.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
                 break;
             case PUT_ITEM_FREE:
                 break;
             case REMOVE_AREA:
-                UserInterface.getInstance().setCursor(GameData.getData().getCursor("base.cursor.area"));
+                UserInterface.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
                 break;
             case SET_PLAN:
                 break;

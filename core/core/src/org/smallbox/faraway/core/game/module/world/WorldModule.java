@@ -1,15 +1,11 @@
 package org.smallbox.faraway.core.game.module.world;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.WeatherModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.model.NetworkInfo;
+import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -28,6 +24,7 @@ public class WorldModule extends GameModule {
     private int                                 _width;
     private int                                 _height;
     private Game                                _game;
+    private Set<NetworkObjectModel>             _networks = new HashSet<>();
     private Set<ConsumableModel>                _consumables = new HashSet<>();
     private BlockingQueue<ResourceModel>        _resources = new LinkedBlockingQueue<>();
     private Set<ItemModel>                      _items = new HashSet<>();
@@ -92,12 +89,14 @@ public class WorldModule extends GameModule {
 
     // Used only by serializers
     public MapObjectModel putObject(String name, int x, int y, int z, int data, boolean complete) {
-        return putObject(WorldHelper.getParcel(x, y), GameData.getData().getItemInfo(name), data, complete);
+        return putObject(WorldHelper.getParcel(x, y), Data.getData().getItemInfo(name), data, complete);
     }
 
     public void removeItem(ItemModel item) {
         if (item != null && item.getParcel() != null) {
-            moveItemToParcel(item.getParcel(), item);
+            if (item.getParcel().getItem() == item) {
+                item.getParcel().setItem(null);
+            }
             _items.remove(item);
             _game.notify(observer -> observer.onRemoveItem(item));
         }
@@ -105,7 +104,9 @@ public class WorldModule extends GameModule {
 
     public void removeConsumable(ConsumableModel consumable) {
         if (consumable != null && consumable.getParcel() != null) {
-            moveConsumableToParcel(consumable.getParcel(), null);
+            if (consumable.getParcel().getConsumable() == consumable) {
+                consumable.getParcel().setConsumable(null);
+            }
             _consumables.remove(consumable);
             _game.notify(observer -> observer.onRemoveConsumable(consumable));
         }
@@ -118,7 +119,9 @@ public class WorldModule extends GameModule {
 
         StructureModel structure = _parcels[x][y][0].getStructure();
         if (structure != null) {
-            moveStructureToParcel(_parcels[x][y][0], null);
+            if (structure.getParcel().getStructure() == structure) {
+                structure.getParcel().setStructure(null);
+            }
             _structures.remove(structure);
             _game.notify(observer -> observer.onRemoveStructure(structure));
         }
@@ -251,15 +254,16 @@ public class WorldModule extends GameModule {
         return null;
     }
 
-    public void replaceItem(ParcelModel parcel, ItemInfo info, int matterSupply) {
-        if (info.isResource) {
-            moveResourceToParcel(parcel, null);
-        } else if (info.isStructure) {
-            moveStructureToParcel(parcel, null);
-        } else {
-            moveItemToParcel(parcel, null);
+    public NetworkObjectModel putNetwork(ParcelModel parcel, NetworkInfo networkInfo, boolean complete) {
+        if (!parcel.hasNetwork(networkInfo)) {
+            NetworkObjectModel networkObject = new NetworkObjectModel(networkInfo);
+            networkObject.setComplete(complete);
+            moveNetworkToParcel(parcel, networkObject);
+            _networks.add(networkObject);
+            _game.notify(observer -> observer.onAddNetworkObject(networkObject));
+            return networkObject;
         }
-        putObject(parcel, info, matterSupply, true);
+        return null;
     }
 
     public void removeResource(ResourceModel resource) {
@@ -267,8 +271,10 @@ public class WorldModule extends GameModule {
             ParcelModel parcel = resource.getParcel();
 
             if (parcel.getResource() == resource) {
+                if (resource.getParcel().getResource() == resource) {
+                    resource.getParcel().setResource(null);
+                }
                 _resources.remove(resource);
-                moveResourceToParcel(parcel, null);
                 _game.notify(observer -> observer.onRemoveResource(resource));
             }
         }
@@ -363,6 +369,16 @@ public class WorldModule extends GameModule {
                     }
                 }
             }
+        }
+    }
+
+    private void moveNetworkToParcel(ParcelModel parcel, NetworkObjectModel network) {
+        if (network != null) {
+            if (network.getParcel() != null) {
+                network.getParcel().removeNetwork(network);
+            }
+            network.setParcel(parcel);
+            parcel.addNetwork(network);
         }
     }
 

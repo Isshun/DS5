@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.helper;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -181,7 +181,7 @@ public class ItemFinder extends GameModule {
 
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + GameData.config.maxNearDistance) {
+            if (entry.getValue() <= bestDistance + Data.config.maxNearDistance) {
                 return entry.getKey();
             }
         }

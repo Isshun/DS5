@@ -1,9 +1,11 @@
 package org.smallbox.faraway.core.module.lua.luaModel;
 
+import org.luaj.vm2.LuaTable;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
@@ -29,6 +31,7 @@ public class LuaGameModel {
     public UserInterface            ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
+    public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<GameModule>   modules;
@@ -83,6 +86,11 @@ public class LuaGameModel {
     public void setBuild(ItemInfo itemInfo) {
         System.out.println("Set build from lua: " + itemInfo.name);
         UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, itemInfo);
+    }
+
+    public void setBuild(NetworkInfo networkInfo) {
+        System.out.println("Set build from lua: " + networkInfo.name);
+        UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, networkInfo);
     }
 
     public void clearAction() {

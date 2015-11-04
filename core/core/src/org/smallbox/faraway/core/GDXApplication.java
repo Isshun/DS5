@@ -11,7 +11,7 @@ import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
@@ -63,7 +63,7 @@ public class GDXApplication extends ApplicationAdapter {
             for (int i = 5; i < 50; i++) {
                 BitmapFont font = fontGen.createFont(exoFile, "font-" + i, i);
                 font.getData().flipped = true;
-//                font.setFixedWidthGlyphs("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+.,<>/?;:'\"[]{}|`~áéíóúàèìòùäëïöüâêîôî!@#$%^&*()_=");
+//                font.setFixedWidthGlyphs("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+.,<>/?;:'\"[]{}|`~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½!@#$%^&*()_=");
 //                int maxAdvance = 0;
 //                for (int a = 0; a < font.getData().glyphs.length; a++) {
 //                    if (font.getData().glyphs[a] != null) {
@@ -101,7 +101,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Load resources
         _queue.add(new LoadRunnable("Load resources", () -> {
-            GameData data = new GameData();
+            Data data = new Data();
             data.loadAll();
         }));
 
@@ -113,15 +113,15 @@ public class GDXApplication extends ApplicationAdapter {
         // Create app
         _queue.add(new LoadRunnable("Init app", () -> {
 //            GDXLightRenderer lightRenderer = null;
-//            if (GameData.config.render.light) {
+//            if (Data.config.render.light) {
 //                lightRenderer = new GDXLightRenderer();
 //            }
 
             ParticleRenderer particleRenderer = null;
-            if (GameData.config.render.particle) {
+            if (Data.config.render.particle) {
                 particleRenderer = new ParticleRenderer();
             }
-            _application.create(_renderer, null, particleRenderer, GameData.getData(), GameData.config);
+            _application.create(_renderer, null, particleRenderer, Data.getData(), Data.config);
 
             GDXInputProcessor inputProcessor = new GDXInputProcessor(_application);
             Gdx.input.setInputProcessor(inputProcessor);
@@ -133,8 +133,8 @@ public class GDXApplication extends ApplicationAdapter {
         }));
 
         _queue.add(new LoadRunnable("Resume game", () -> {
-            if (GameData.config.byPassMenu) {
-//                _application.newGame("12.sav", GameData.getData().getRegion("arrakis", "desert"));
+            if (Data.config.byPassMenu) {
+//                _application.newGame("12.sav", Data.getData().getRegion("arrakis", "desert"));
                 _application.loadGame("12.sav");
 //                _application.whiteRoom();
             }

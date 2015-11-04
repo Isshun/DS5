@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.data.loader;
 
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -19,11 +19,11 @@ import java.util.List;
 public class EquipmentLoader implements IDataLoader {
 
     @Override
-    public void reloadIfNeeded(GameData data) {
+    public void reloadIfNeeded(Data data) {
     }
 
     @Override
-    public void load(GameData data) {
+    public void load(Data data) {
         data.equipments = new ArrayList<>();
         try {
             loadDirectory(data.equipments, new File("data/items/equipments/"));

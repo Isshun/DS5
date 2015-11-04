@@ -36,38 +36,15 @@ data:extend({
                 end},
             }},
             { type = "grid", id = "main_grid", position = {0, 18}, columns = 2, column_width = 195, row_height = 60, views = {
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Build", text_size = 18, padding = 10, shortcut = "open_build_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_build"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Plan", text_size = 18, padding = 10, shortcut = "open_plan_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_plan"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Stats", text_size = 18, padding = 10, shortcut = "open_stats_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_stats"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Crew", text_size = 18, padding = 10, shortcut = "open_crew_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_crew"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Jobs", text_size = 18, padding = 10, shortcut = "open_jobs_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_jobs"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Areas", text_size = 18, padding = 10, shortcut = "open_areas_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_areas"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Displays", text_size = 18, padding = 10, shortcut = "open_display_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_displays"):setVisible(true)
-                end},
-                { type = "label", size = {180, 40}, background = 0x349394, text = "Debug", text_size = 18, padding = 10, shortcut = "open_debug_panel", on_click = function(view)
-                    game.ui:findById("panel_main"):setVisible(false)
-                    game.ui:findById("panel_debug"):setVisible(true)
-                end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Build", text_size = 18, padding = 10, on_click = function() open_panel("panel_build") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Plan", text_size = 18, padding = 10, on_click = function() open_panel("panel_plan") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Displays", text_size = 18, padding = 10, on_click = function() open_panel("panel_displays") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Areas", text_size = 18, padding = 10, on_click = function() open_panel("panel_areas") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Jobs", text_size = 18, padding = 10, on_click = function() open_panel("panel_jobs") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Crew", text_size = 18, padding = 10, on_click = function() open_panel("panel_crew") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Stats", text_size = 18, padding = 10, on_click = function() open_panel("panel_stats") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Networks", text_size = 18, padding = 10, on_click = function() open_panel("panel_networks") end},
+                { type = "label", size = {180, 40}, background = 0x349394, text = "Debug", text_size = 18, padding = 10, on_click = function() open_panel("panel_debug") end},
             }}
         },
     },
@@ -85,6 +62,19 @@ data:extend({
     end,
 
     on_event = function(view, event , data)
+
+        -- Check bindings
+        if event == game.events.on_binding then
+            if data == game.bindings.open_panel_build then open_panel("panel_build") end
+            if data == game.bindings.open_panel_plan then open_panel("panel_plan") end
+            if data == game.bindings.open_panel_tasks then open_panel("panel_jobs") end
+            if data == game.bindings.open_panel_crew then open_panel("panel_crew") end
+            if data == game.bindings.open_panel_displays then open_panel("panel_displays") end
+            if data == game.bindings.open_panel_stats then open_panel("panel_stats") end
+            if data == game.bindings.open_panel_areas then open_panel("panel_areas") end
+            if data == game.bindings.open_panel_debug then open_panel("panel_debug") end
+        end
+
         if event == game.events.on_deselect then
             view:setVisible(true)
         end
@@ -105,3 +95,8 @@ data:extend({
         end
     end,
 })
+
+function open_panel(panel_name)
+    game.ui:findById("panel_main"):setVisible(false)
+    game.ui:findById(panel_name):setVisible(true)
+end

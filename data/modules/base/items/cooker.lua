@@ -15,9 +15,9 @@ data:extend({
                 outputs = {2, 0},
             },
             receipts = {
-                "base.receipt_easy_meal",
-                "base.receipt_great_meal",
-                "base.receipt_lavish_meal"
+                {receipt = "base.receipt_easy_meal"},
+                {receipt = "base.receipt_great_meal"},
+                {receipt = "base.receipt_lavish_meal"},
             },
         },
         effects = {

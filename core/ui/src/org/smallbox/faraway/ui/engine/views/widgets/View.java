@@ -4,7 +4,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.ui.engine.OnClickListener;
@@ -29,8 +29,10 @@ public abstract class View {
     protected boolean   _isAlignTop = true;
     protected int       _finalX;
     protected int       _finalY;
-    private int         _marginTop;
-    private int         _marginLeft;
+    protected int         _marginTop;
+    protected int         _marginRight;
+    protected int         _marginBottom;
+    protected int         _marginLeft;
     private UIAdapter _adapter;
     private int         _objectId;
     private LuaModule   _module;
@@ -76,6 +78,13 @@ public abstract class View {
     public void setFixedSize(int width, int height) {
         _fixedWidth = width;
         _fixedHeight = height;
+    }
+
+    public void setMargin(int top, int right, int bottom, int left) {
+        _marginTop = top;
+        _marginRight = right;
+        _marginBottom = bottom;
+        _marginLeft = left;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
@@ -135,11 +144,11 @@ public abstract class View {
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
-            _finalX = _x + x;
-            _finalY = _y + y;
+            _finalX = _x + _marginTop + x;
+            _finalY = _y + _marginTop + y;
 
             if (_backgroundColor != null) {
-                renderer.draw(_backgroundColor, _x + x, _y + y, _width, _height);
+                renderer.draw(_backgroundColor, _x + _marginLeft + x, _y + _marginTop + y, _width, _height);
             }
 
             if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
@@ -260,25 +269,27 @@ public abstract class View {
     }
 
     public void setSize(int width, int height) {
-        _width = (int) (width * GameData.config.uiScale);
-        _height = (int) (height * GameData.config.uiScale);
+        _width = (int) (width * Data.config.uiScale);
+        _height = (int) (height * Data.config.uiScale);
         _invalid = true;
     }
 
     public void setPosition(int x, int y) {
-        _x = (int) (x * GameData.config.uiScale) + (_isAlignLeft ? 0 : GameData.config.screen.resolution[0]);
-        _y = (int) (y * GameData.config.uiScale) + (_isAlignTop ? 0 : GameData.config.screen.resolution[1]);
+        _x = (int) (x * Data.config.uiScale) + (_isAlignLeft ? 0 : Data.config.screen.resolution[0]);
+        _y = (int) (y * Data.config.uiScale) + (_isAlignTop ? 0 : Data.config.screen.resolution[1]);
 
         _invalid = true;
     }
 
-    private int getMarginLeft() {
-        return _marginLeft;
-    }
+    public int getMarginTop() { return _marginTop; }
+    public int getMarginRight() { return _marginRight; }
+    public int getMarginBottom() { return _marginBottom; }
+    public int getMarginLeft() { return _marginLeft; }
 
-    private int getMarginTop() {
-        return _marginTop;
-    }
+    public int getPaddingTop() { return _paddingTop; }
+    public int getPaddingRight() { return _paddingRight; }
+    public int getPaddingBottom() { return _paddingBottom; }
+    public int getPaddingLeft() { return _paddingLeft; }
 
     public void setMarginLeft(int marginLeft) {
         _marginLeft = marginLeft;
@@ -286,14 +297,6 @@ public abstract class View {
 
     public void setMarginTop(int marginTop) {
         _marginTop = marginTop;
-    }
-
-    private int getPaddingLeft() {
-        return _paddingLeft;
-    }
-
-    private int getPaddingTop() {
-        return _paddingTop;
     }
 
     private int getOffsetX() {

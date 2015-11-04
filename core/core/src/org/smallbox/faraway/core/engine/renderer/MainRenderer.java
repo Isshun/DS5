@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.engine.renderer;
 import org.smallbox.faraway.core.SpriteManager;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 
 import java.util.List;
@@ -77,7 +77,7 @@ public class MainRenderer {
 
     public static MainRenderer getInstance() {
         if (_self == null) {
-            _self = new MainRenderer(GDXRenderer.getInstance(), GameData.config);
+            _self = new MainRenderer(GDXRenderer.getInstance(), Data.config);
         }
         return _self; }
 

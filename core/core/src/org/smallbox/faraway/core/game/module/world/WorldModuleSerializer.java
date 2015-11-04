@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.world;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -323,7 +323,7 @@ public class WorldModuleSerializer implements SerializerInterface {
             switch (vn.toString(vn.getCurrentIndex())) {
                 case "component":
                     components.add(new BuildableMapObject.ComponentModel(
-                            GameData.getData().getItemInfo(vn.toString(vn.getText())),
+                            Data.getData().getItemInfo(vn.toString(vn.getText())),
                             vn.parseInt(vn.getAttrVal("neededQuantity")),
                             vn.parseInt(vn.getAttrVal("currentQuantity"))));
                     break;

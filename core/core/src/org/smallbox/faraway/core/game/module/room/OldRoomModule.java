@@ -4,7 +4,7 @@
 //import com.badlogic.gdx.ai.pfa.Connection;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.GameObserver;
-//import org.smallbox.faraway.core.game.model.GameData;
+//import org.smallbox.faraway.core.game.model.Data;
 //import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 //import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 //import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -57,7 +57,7 @@
 //
 //    @Override
 //    protected boolean loadOnStart() {
-//        return GameData.config.manager.room;
+//        return Data.config.manager.room;
 //    }
 //
 //    public RoomModel getRoom(int x, int y) {

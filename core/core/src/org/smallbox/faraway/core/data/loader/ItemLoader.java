@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.core.data.loader;
 //
 //import org.smallbox.faraway.core.data.ItemInfo;
-//import org.smallbox.faraway.core.game.model.GameData;
+//import org.smallbox.faraway.core.game.model.Data;
 //import org.smallbox.faraway.core.util.Log;
 //import org.yaml.snakeyaml.Yaml;
 //import org.yaml.snakeyaml.constructor.Constructor;
@@ -16,14 +16,14 @@
 //
 //    private boolean _hasErrors;
 //
-//    public void load(GameData data, String path, String packageName) {
+//    public void load(Data data, String path, String packageName) {
 //        Log.debug("load items...");
 ////        FileUtils.listRecursively(path).stream().filter(file -> file.getName().endsWith(".yml")).forEach(file ->
 ////                loadFile(data, packageName, file));
 //        Log.debug("load items: done");
 //    }
 //
-//    private void loadFile(GameData data, String packageName, File itemFile) {
+//    private void loadFile(Data data, String packageName, File itemFile) {
 //        ItemInfo info = null;
 //
 //        try {
@@ -66,11 +66,11 @@
 //    }
 //
 //    @Override
-//    public void reloadIfNeeded(GameData data) {
+//    public void reloadIfNeeded(Data data) {
 //    }
 //
 //    @Override
-//    public void load(final GameData data) {
+//    public void load(final Data data) {
 //        _hasErrors = false;
 //
 //        data.items = new ArrayList<>();
@@ -95,7 +95,7 @@
 //        Log.error(message + " (" + item.name + ")");
 //    }
 //
-//    private void pass1(GameData data) {
+//    private void pass1(Data data) {
 //        for (ItemInfo item: data.items) {
 //
 //            if (item.receipts != null) {
@@ -175,7 +175,7 @@
 //        }
 //    }
 //
-//    private void pass2(GameData data) {
+//    private void pass2(Data data) {
 //        for (ItemInfo item: data.items) {
 //            if (!item.isUserItem && !item.isStructure && item.cost > 0) {
 //                error(item, "Only UserItem and StructureItem can have cost attribute");
@@ -195,7 +195,7 @@
 //        }
 //    }
 ////
-////    private void pass3(GameData data) {
+////    private void pass3(Data data) {
 ////        for (ItemInfo item: data.items) {
 ////            if (item.parent != null) {
 ////                item.parentInfo = data.getItemInfo(item.parent);
@@ -204,7 +204,7 @@
 ////        }
 ////    }
 //
-//    private void pass4(GameData data) {
+//    private void pass4(Data data) {
 ////        for (ItemInfo item: data.items) {
 ////            TextureData textureData = ((SpriteModel) GDXSpriteManager.getInstance().getIcon(item)).getData().getTexture().getTextureData();
 ////            textureData.prepare();

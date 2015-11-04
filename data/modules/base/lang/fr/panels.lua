@@ -40,7 +40,10 @@ data:extend({
         {"Info", "Info"},
         {"Health", "Santé"},
 
+        -- Needs
         {"Energy", "Energie"},
+        {"Drink", "Boisson"},
+        {"Oxygen", "Oxygène"},
         {"Food", "Nourriture"},
         {"Happiness", "Bonheur"},
         {"Health", "Santé"},
@@ -65,7 +68,10 @@ data:extend({
 
         -- Parcel info
         {"Light", "Lumière"},
-        {"Oxygen", "Oxygen"},
+        {"Walkable", "Praticable"},
+        {"Room", "Pièce"},
+        {"Neighborhood", "Voisinage"},
+        {"Size", "Taille"},
 
         -- Resource info
         {"Quantity", "Quantité"},

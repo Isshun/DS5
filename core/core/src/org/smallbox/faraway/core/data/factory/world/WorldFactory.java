@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.data.factory.world;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -141,7 +141,7 @@ public class WorldFactory {
 
             // Add resource
             if (terrain.resource != null) {
-                ResourceModel resource = new ResourceModel(GameData.getData().getItemInfo(terrain.resource));
+                ResourceModel resource = new ResourceModel(Data.getData().getItemInfo(terrain.resource));
                 if (resource.isRock()) {
                     resource.getRock().setQuantity(terrain.quantity != null ? Utils.getRandom(terrain.quantity) : 10);
                 }

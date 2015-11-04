@@ -8,9 +8,10 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
@@ -153,6 +154,7 @@ public class SpriteManager {
 
     public SpriteModel getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
     public SpriteModel getItem(StructureModel structure) { return getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? 1 : 0, 0, 255, false); }
+    public SpriteModel getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 1, 1); }
     public SpriteModel getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
     public SpriteModel getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
@@ -168,10 +170,10 @@ public class SpriteManager {
     }
 
     private SpriteModel getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
-        return getSprite(itemInfo, graphicInfo, tile, state, alpha, isIcon, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+        return getSprite(graphicInfo, tile, state, alpha, isIcon, itemInfo.width, itemInfo.height);
     }
 
-    private SpriteModel getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
+    private SpriteModel getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
         if (graphicInfo == null) {
             return null;
         }
@@ -180,8 +182,8 @@ public class SpriteManager {
             graphicInfo.spriteId = ++_count;
         }
 
-        int offsetX = (state * width) + (graphicInfo.x);
-        int offsetY = (tile * height) + (graphicInfo.y);
+        int offsetX = (state * Constant.TILE_WIDTH) + (graphicInfo.x);
+        int offsetY = (tile * Constant.TILE_HEIGHT) + (graphicInfo.y);
 
         long sum = graphicInfo.type == GraphicInfo.Type.TERRAIN ?
                 getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
@@ -267,11 +269,11 @@ public class SpriteManager {
                     sprite = new SpriteModel(texture,
                             offsetX,
                             offsetY,
-                            itemInfo.width * width,
-                            itemInfo.height * height);
+                            width * Constant.TILE_WIDTH,
+                            height * Constant.TILE_HEIGHT);
                     sprite.getData().setColor(new Color(255, 255, 255, alpha));
                     if (isIcon) {
-                        switch (Math.max(itemInfo.width, itemInfo.height)) {
+                        switch (Math.max(width, height)) {
                             case 2: sprite.getData().setScale(0.85f, 0.85f); break;
                             case 3: sprite.getData().setScale(0.55f, 0.55f); break;
                             case 4: sprite.getData().setScale(0.35f, 0.35f); break;
@@ -431,7 +433,7 @@ public class SpriteManager {
 
     public SpriteModel getGround(int type) {
         if (_groundItemInfo == null) {
-            _groundItemInfo = GameData.getData().getItemInfo("base.ground");
+            _groundItemInfo = Data.getData().getItemInfo("base.ground");
         }
         int offsetX = (int) (Math.random() * 2);
         int offsetY = 1;

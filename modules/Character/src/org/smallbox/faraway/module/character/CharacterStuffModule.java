@@ -35,11 +35,11 @@ public class CharacterStuffModule extends GameModule {
     public void onAddCharacter(CharacterModel character) {
         // TODO
 //        StuffModel stuff = new StuffModel();
-//        stuff.add(GameData.getData().getEquipment("base.equipments.regular_shirt"));
-//        stuff.add(GameData.getData().getEquipment("base.equipments.regular_pants"));
-//        stuff.add(GameData.getData().getEquipment("base.equipments.regular_shoes"));
-//        stuff.add(GameData.getData().getEquipment("base.equipments.oxygen_bottle"));
-//        stuff.add(GameData.getData().getEquipment("base.equipments.fremen_body"));
+//        stuff.add(Data.getData().getEquipment("base.equipments.regular_shirt"));
+//        stuff.add(Data.getData().getEquipment("base.equipments.regular_pants"));
+//        stuff.add(Data.getData().getEquipment("base.equipments.regular_shoes"));
+//        stuff.add(Data.getData().getEquipment("base.equipments.oxygen_bottle"));
+//        stuff.add(Data.getData().getEquipment("base.equipments.fremen_body"));
 //
 //        for (ItemInfo item: stuff.getItemsInfo()) {
 //            if (item.equipment.effects != null) {

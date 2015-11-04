@@ -1,11 +1,13 @@
 package org.smallbox.faraway.core.game.module.character.model;
 
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.core.game.model.ObjectInfo;
+
+import java.util.UUID;
 
 /**
  * Created by Alex on 02/07/2015.
  */
-public class BuffModel extends ObjectModel {
+public class BuffInfo extends ObjectInfo {
     public interface BuffListener {
         void onStart(BuffCharacterModel data);
         void onCheck(BuffCharacterModel data, int tick);
@@ -13,6 +15,7 @@ public class BuffModel extends ObjectModel {
         void onUpdateHourly(BuffCharacterModel data, int update);
     }
 
+    final public int id = UUID.randomUUID().toString().hashCode();
     public String           _message;
     public int              _level;
     public int              _mood;

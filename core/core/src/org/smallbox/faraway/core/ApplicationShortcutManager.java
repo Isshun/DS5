@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.ui.UserInterface;
@@ -37,7 +38,7 @@ public class ApplicationShortcutManager {
                 ModuleManager.getInstance().loadModule(debugModule);
             }
         }),
-        new ApplicationShortcut(GameEventListener.Key.F5, null, () -> {
+        new ApplicationShortcut(GameEventListener.Key.F5, GameEventListener.Modifier.ALT, () -> {
             Game.getInstance().save(Game.getInstance().getFileName());
         }),
         new ApplicationShortcut(GameEventListener.Key.ENTER, GameEventListener.Modifier.ALT, () -> {
@@ -55,6 +56,10 @@ public class ApplicationShortcutManager {
                 shortcut.runnable.run();
             }
         }
+
+        Data.getData().bindings.stream()
+                .filter(binding -> binding.key == key && binding.modifier == modifier)
+                .forEach(binding -> Game.getInstance().notify(observer -> observer.onBindingPress(binding)));
     }
 
     public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {

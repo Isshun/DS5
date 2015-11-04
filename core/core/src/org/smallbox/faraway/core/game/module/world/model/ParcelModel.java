@@ -3,11 +3,15 @@ package org.smallbox.faraway.core.game.module.world.model;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
+import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean isRoomOpen() {
@@ -23,11 +27,28 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return true;
     }
 
+    public void addNetwork(NetworkObjectModel network) {
+        if (_content == null) { _content = new ParcelContent(); }
+        if (_content.networks == null) { _content.networks = new ArrayList<>(); }
+        _content.networks.add(network);
+    }
+
+    public void removeNetwork(NetworkObjectModel network) {
+        if (_content == null) { _content = new ParcelContent(); }
+        if (_content.networks == null) { _content.networks = new ArrayList<>(); }
+        _content.networks.remove(network);
+    }
+
+    public List<NetworkObjectModel> getNetworkObjects() {
+        return _content != null ? _content.networks : null;
+    }
+
     public static class ParcelContent {
-        public ConsumableModel      consumable;
-        public StructureModel       structure;
-        public ResourceModel        resource;
-        public ItemModel            item;
+        public ConsumableModel          consumable;
+        public StructureModel           structure;
+        public ResourceModel            resource;
+        public ItemModel                item;
+        public List<NetworkObjectModel> networks;
     }
 
     public static class ParcelEnvironment {
@@ -115,6 +136,20 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public AreaModel        getArea() { return _area; }
     public int              getType() { return _type; }
     public double           getTemperature() { return _room != null ? _room.getTemperature() : _weatherModule.getTemperature(); }
+
+    public boolean hasNetwork(NetworkInfo networkInfo) {
+        if (_content == null || _content.networks == null) {
+            return false;
+        }
+
+        for (NetworkObjectModel networkObject: _content.networks) {
+            if (networkObject.getInfo() == networkInfo) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * @return ParcelEnvironment or null

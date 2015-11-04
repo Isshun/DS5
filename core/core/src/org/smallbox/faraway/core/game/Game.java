@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.LightRenderer;
 import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionModel;
@@ -62,7 +62,7 @@ public class Game extends BaseGame {
     public RegionModel                      getRegion() { return _region; }
     public String                           getDisplay() { return _display; }
 
-    public Game(int width, int height, GameData data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
+    public Game(int width, int height, Data data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
         Log.debug("Game");
 
         _self = this;

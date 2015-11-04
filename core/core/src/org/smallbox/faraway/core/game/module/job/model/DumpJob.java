@@ -2,9 +2,8 @@ package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -26,7 +25,7 @@ public class DumpJob extends JobModel {
 
         DumpJob job = new DumpJob(item.getParcel());
 
-        job.setLabel(GameData.getString("Dump") + " " + GameData.getString(item.getLabel()));
+        job.setLabel(Data.getString("Dump") + " " + Data.getString(item.getLabel()));
         job._item = item;
         job._cost = item.getInfo().cost;
         job._strategy = j -> {
@@ -40,10 +39,14 @@ public class DumpJob extends JobModel {
 
     @Override
     public boolean onCheck(CharacterModel character) {
-
         // Item is no longer exists
         if (_item != _item.getParcel().getItem() && _item != _item.getParcel().getStructure()) {
             _reason = JobAbortReason.INVALID;
+            return false;
+        }
+
+        // No path to item
+        if (!PathManager.getInstance().hasPathApprox(character.getParcel(), _item.getParcel())) {
             return false;
         }
 

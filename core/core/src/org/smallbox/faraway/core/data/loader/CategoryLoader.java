@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.data.loader;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.CategoryInfo;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ public class CategoryLoader implements IDataLoader {
     private ArrayList<Character>             _usedShortcut;
 
     @Override
-    public void reloadIfNeeded(GameData data) {
+    public void reloadIfNeeded(Data data) {
     }
 
     @Override
-    public void load(GameData data) {
+    public void load(Data data) {
         data.categories =  new ArrayList<>();
 
         getOrCreateCategory(data, "structure");
@@ -43,7 +43,7 @@ public class CategoryLoader implements IDataLoader {
         _usedShortcut = new ArrayList<>();
     }
 
-    private CategoryInfo getOrCreateCategory(GameData data, String categoryName) {
+    private CategoryInfo getOrCreateCategory(Data data, String categoryName) {
         if (_categories.containsKey(categoryName)) {
             return _categories.get(categoryName);
         }
@@ -52,7 +52,7 @@ public class CategoryLoader implements IDataLoader {
     }
 
     // Create new category
-    private CategoryInfo createCategory(GameData data, String categoryName) {
+    private CategoryInfo createCategory(Data data, String categoryName) {
         CategoryInfo category = new CategoryInfo(categoryName, categoryName);
         category.shortcutPos = getShortcutPos(categoryName);
         if (category.shortcutPos != -1) {

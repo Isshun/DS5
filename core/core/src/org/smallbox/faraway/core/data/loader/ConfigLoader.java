@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.data.loader;
 
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -18,7 +18,7 @@ public class ConfigLoader implements IDataLoader {
     private long    _lastConfigModified;
 
     @Override
-    public void load(GameData data) {
+    public void load(Data data) {
         try {
             InputStream input = new FileInputStream(new File("data/config.yml"));
             Yaml yaml = new Yaml(new Constructor(GameConfig.class));
@@ -30,7 +30,7 @@ public class ConfigLoader implements IDataLoader {
     }
 
     @Override
-    public void reloadIfNeeded(GameData data) {
+    public void reloadIfNeeded(Data data) {
         long lastConfigModified = new File("data/config.yml").lastModified();
         if (lastConfigModified > _lastConfigModified) {
             load(data);

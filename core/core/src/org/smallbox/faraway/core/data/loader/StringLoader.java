@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.data.loader;
 
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 
 import java.io.*;
 
@@ -11,7 +11,7 @@ public class StringLoader implements IDataLoader {
     private long    _lastConfigModified;
 
     @Override
-    public void load(GameData data) {
+    public void load(Data data) {
         try {
             File file = new File("data/lang/" + data.config.lang + ".txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
@@ -37,7 +37,7 @@ public class StringLoader implements IDataLoader {
     }
 
     @Override
-    public void reloadIfNeeded(GameData data) {
+    public void reloadIfNeeded(Data data) {
         long lastConfigModified = new File("data/config.yml").lastModified();
         if (lastConfigModified > _lastConfigModified) {
             load(data);

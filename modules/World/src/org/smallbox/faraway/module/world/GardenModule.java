@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.world;
 
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.AreaModule;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
@@ -34,7 +34,7 @@ public class GardenModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.flora;
+        return Data.config.manager.flora;
     }
 
     @Override

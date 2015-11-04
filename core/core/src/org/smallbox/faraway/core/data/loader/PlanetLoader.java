@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.core.data.loader;
 //
-//import org.smallbox.faraway.core.game.model.GameData;
+//import org.smallbox.faraway.core.game.model.Data;
 //import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 //import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 //import org.smallbox.faraway.core.util.FileUtils;
@@ -18,11 +18,11 @@
 //public class PlanetLoader implements IDataLoader {
 //
 //    @Override
-//    public void reloadIfNeeded(GameData data) {
+//    public void reloadIfNeeded(Data data) {
 //    }
 //
 //    @Override
-//    public void load(GameData data) {
+//    public void load(Data data) {
 //        data.planets = new ArrayList<>();
 //        FileUtils.list("data/planets/").stream().filter(file -> file.getName().endsWith(".yml")).forEach(file -> {
 //            try {

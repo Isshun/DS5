@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.mainMenu;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.TeamModel;
 import org.smallbox.faraway.core.game.model.planet.LandingSiteModel;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
@@ -73,9 +73,9 @@ public class MainMenu {
     public void refresh(int frame) {
         _refresh = frame;
 
-        // Refresh UI if needed by GameData (strings)
-        if (GameData.getData().needUIRefresh) {
-            GameData.getData().needUIRefresh = false;
+        // Refresh UI if needed by Data (strings)
+        if (Data.getData().needUIRefresh) {
+            Data.getData().needUIRefresh = false;
             reload();
         }
 

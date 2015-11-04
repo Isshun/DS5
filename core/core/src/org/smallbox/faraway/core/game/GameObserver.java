@@ -1,17 +1,15 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.core.data.BindingInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 
@@ -46,6 +44,7 @@ public interface GameObserver {
     default void onSelectResource(ResourceModel resource) {}
     default void onSelectConsumable(ConsumableModel consumable) {}
     default void onSelectStructure(StructureModel structure) {}
+    default void onSelectNetwork(NetworkObjectModel network) {}
     default void onSelectReceipt(ReceiptGroupInfo receipt) {}
     default void onOverParcel(ParcelModel parcel) {}
     default void onDeselect() {}
@@ -56,7 +55,7 @@ public interface GameObserver {
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
     default void onKeyPress(GameEventListener.Key key) {}
-    default void onWeatherChange(WeatherModel weather) {}
+    default void onWeatherChange(WeatherInfo weather) {}
     default void onTemperatureChange(double temperature) {}
     default void onLightChange(double light, long color) {}
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
@@ -64,4 +63,7 @@ public interface GameObserver {
     default void onJobFinish(JobModel job) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
     default void onSpeedChange(int speed) {}
+    default void onBindingPress(BindingInfo binding) {}
+    default void onAddNetworkObject(NetworkObjectModel networkObject) {}
+    default void onRemoveNetworkObject(NetworkObjectModel networkObject) {}
 }

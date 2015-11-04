@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.character.model;
 
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 
@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
  * Created by Alex on 14/10/2015.
  */
 public class BuffCharacterModel extends ObjectModel {
-    public BuffModel        buff;
+    public BuffInfo buff;
     public CharacterModel   character;
     public LuaValue         luaCharacter;
     public LuaValue         luaData;
@@ -20,7 +20,7 @@ public class BuffCharacterModel extends ObjectModel {
     public long             startTick;
     public boolean          active;
 
-    public BuffCharacterModel(BuffModel buff, LuaValue luaCharacter, CharacterModel character) {
+    public BuffCharacterModel(BuffInfo buff, LuaValue luaCharacter, CharacterModel character) {
         this.buff = buff;
         this.luaData = new LuaTable();
         this.luaCharacter = luaCharacter;
@@ -37,7 +37,7 @@ public class BuffCharacterModel extends ObjectModel {
         if (this.character.isAlive()) {
             this.buff.update(this, tick);
         }
-        if (tick % GameData.config.tickPerHour == 0) {
+        if (tick % Data.config.tickPerHour == 0) {
             this.buff.updateHourly(this, tick);
         }
     }

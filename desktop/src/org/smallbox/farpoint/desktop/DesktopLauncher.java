@@ -4,12 +4,12 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.data.loader.ConfigLoader;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
 
 public class DesktopLauncher {
     public static void main (String[] arg) {
-        GameData data = new GameData();
+        Data data = new Data();
         new ConfigLoader().load(data);
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

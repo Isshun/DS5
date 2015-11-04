@@ -137,11 +137,11 @@ public class PathManager extends GameModule {
     }
 
     public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel) {
-        PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
-        if (pathCache != null && pathCache.isValid()) {
-            return true;
-        }
-        return findPath(fromParcel, toParcel) != null;
+        return getPath(fromParcel, toParcel) != null;
+    }
+
+    public boolean hasPathApprox(ParcelModel fromParcel, ParcelModel toParcel) {
+        return getBestApprox(fromParcel, toParcel) != null;
     }
 
     public PathModel getPath(AreaModel fromArea, ParcelModel toParcel) {

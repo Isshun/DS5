@@ -7,8 +7,8 @@ import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.GameData;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
@@ -44,7 +44,7 @@ public class Application implements GameEventListener {
     public GDXInputProcessor getInputProcessor() { return _inputProcessor; }
     public boolean isRunning() { return _isRunning; }
 
-    public void create(GDXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, GameData data, GameConfig config) {
+    public void create(GDXRenderer renderer, LightRenderer lightRenderer, ParticleRenderer particleRenderer, Data data, GameConfig config) {
         _mainMenu = new MainMenu(renderer);
         _mainMenu.open();
     }
@@ -122,8 +122,8 @@ public class Application implements GameEventListener {
             _nextDataUpdate = System.currentTimeMillis() + Constant.RELOAD_DATA_INTERVAL;
             Application.getInstance().addTask(() -> {
                 long lastResModified = Utils.getLastDataModified();
-                if (GameData.getData().needUIRefresh || lastResModified > _dataLastModified) {
-                    GameData.getData().needUIRefresh = false;
+                if (Data.getData().needUIRefresh || lastResModified > _dataLastModified) {
+                    Data.getData().needUIRefresh = false;
                     _dataLastModified = lastResModified;
                     UserInterface.getInstance().reload();
                     Game.getInstance().notify(GameObserver::onReloadUI);

@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.SpriteManager;
 //import org.smallbox.faraway.engine.renderer.MainRenderer;
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.model.GameData;
+//import org.smallbox.faraway.game.model.Data;
 //import org.smallbox.faraway.game.model.item.ItemInfo;
 //import org.smallbox.faraway.game.model.item.ParcelModel;
 //import org.smallbox.faraway.game.model.item.ResourceModel;
@@ -33,14 +33,14 @@
 //
 //    private void init() {
 //        _options = new RoomOptions();
-//        _cultures  = GameData.getData().gatherItems;
+//        _cultures  = Data.getData().gatherItems;
 //        for (ItemInfo c: _cultures) {
 //            final ItemInfo culture = c;
 //            _options.options.add(new RoomOption("Set " + culture.label,
 //                    SpriteManager.getInstance().getIconDrawable(culture),
 //                    view -> setCulture(culture)));
 //        }
-//        _currentCulture = GameData.getData().getRandomGatherItem();
+//        _currentCulture = Data.getData().getRandomGatherItem();
 //    }
 //
 //    public void setCulture(ItemInfo culture) {

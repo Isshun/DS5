@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -81,7 +81,7 @@ public class StoreJob extends JobModel implements GameObserver {
                         && consumable.getLock() == null
                         && consumable.getInfo() == firstConsumable.getInfo()
                         && consumable.getStoreJob() == null
-                        && consumable.getQuantity() + _quantity <= GameData.config.inventoryMaxQuantity
+                        && consumable.getQuantity() + _quantity <= Data.config.inventoryMaxQuantity
                         && PathManager.getInstance().getPath(consumable.getParcel(), firstConsumable.getParcel()) != null) {
                     _quantity += consumable.getQuantity();
                     _consumables.add(consumable);

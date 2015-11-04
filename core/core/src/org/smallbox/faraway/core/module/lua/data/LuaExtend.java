@@ -13,6 +13,10 @@ public abstract class LuaExtend {
     public abstract boolean accept(String type);
     public abstract void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException;
 
+    protected static boolean getBoolean(LuaValue value, String key, boolean defaultValue) {
+        return !value.get(key).isnil() ? value.get(key).toboolean() : defaultValue;
+    }
+
     protected static double getDouble(LuaValue value, String key, double defaultValue) {
         return !value.get(key).isnil() ? value.get(key).todouble() : defaultValue;
     }

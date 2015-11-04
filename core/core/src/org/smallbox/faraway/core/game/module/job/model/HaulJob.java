@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -125,7 +125,7 @@ public class HaulJob extends JobModel {
                 _currentConsumable = null;
 
                 // Get next component
-                if (!_potentialConsumables.isEmpty() && _character.getInventory().getQuantity() < missingQuantity && _character.getInventory().getQuantity() < GameData.config.inventoryMaxQuantity) {
+                if (!_potentialConsumables.isEmpty() && _character.getInventory().getQuantity() < missingQuantity && _character.getInventory().getQuantity() < Data.config.inventoryMaxQuantity) {
                     moveToComponent();
                 } else {
                     moveToMainItem();

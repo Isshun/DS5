@@ -5,9 +5,8 @@ import org.smallbox.faraway.core.data.ItemInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryInfo {
+public class CategoryInfo extends ObjectInfo {
     public List<ItemInfo>     items;
-    public String            name;
     public String            label;
     public int                 shortcutPos;
     public String             shortcut;

@@ -27,12 +27,13 @@ public class UserInterfaceSelector {
 
     private final UserInterface _userInterface;
     private CharacterModel      _selectedCharacter;
-    private ItemModel _selectedItem;
-    private ResourceModel _selectedResource;
+    private ItemModel           _selectedItem;
+    private ResourceModel       _selectedResource;
     private StructureModel      _selectedStructure;
     private ParcelModel         _selectedParcel;
     private AreaModel           _selectedArea;
-    private ConsumableModel _selectedConsumable;
+    private NetworkObjectModel  _selectedNetwork;
+    private ConsumableModel     _selectedConsumable;
     private ParcelModel         _lastSelectedParcel;
     private int                 _lastSelectedIndex;
 
@@ -94,6 +95,15 @@ public class UserInterfaceSelector {
             (character, parcel, area) -> {
                 if (parcel != null && parcel.getStructure() != null) {
                     select(parcel.getStructure());
+                    return true;
+                }
+                return false;
+            },
+
+            // Select network
+            (character, parcel, area) -> {
+                if (parcel != null && parcel.getNetworkObjects() != null && !parcel.getNetworkObjects().isEmpty()) {
+                    select(parcel.getNetworkObjects().get(0));
                     return true;
                 }
                 return false;
@@ -188,6 +198,7 @@ public class UserInterfaceSelector {
         _selectedCharacter = null;
         _selectedArea = null;
         _selectedStructure = null;
+        _selectedNetwork = null;
     }
 
     public void select(ItemInfo itemInfo) {
@@ -217,7 +228,6 @@ public class UserInterfaceSelector {
 
     public void select(CharacterModel character) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.CHARACTER);
         _selectedCharacter = character;
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(true);
@@ -227,14 +237,12 @@ public class UserInterfaceSelector {
 
     public void select(AreaModel area, ParcelModel parcel) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.INFO_AREA);
         _selectedArea = area;
         Game.getInstance().notify(observer -> observer.onSelectArea(area));
     }
 
     public void select(ResourceModel resource) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.INFO_RESOURCE);
         _selectedResource = resource;
         Game.getInstance().notify(observer -> observer.onSelectResource(resource));
         Game.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
@@ -242,8 +250,6 @@ public class UserInterfaceSelector {
 
     public void select(ItemModel item) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.INFO);
-//        _userInterface.setMode(UserInterface.Mode.INFO_ITEM);
         _selectedItem = item;
         Game.getInstance().notify(observer -> observer.onSelectItem(item));
         Game.getInstance().notify(observer -> observer.onSelectParcel(item.getParcel()));
@@ -251,16 +257,20 @@ public class UserInterfaceSelector {
 
     public void select(ConsumableModel consumable) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.INFO);
-//        _userInterface.setMode(UserInterface.Mode.INFO_CONSUMABLE);
         _selectedConsumable = consumable;
         Game.getInstance().notify(observer -> observer.onSelectConsumable(consumable));
         Game.getInstance().notify(observer -> observer.onSelectParcel(consumable.getParcel()));
     }
 
+    public void select(NetworkObjectModel network) {
+        clean();
+        _selectedNetwork = network;
+        Game.getInstance().notify(observer -> observer.onSelectNetwork(network));
+        Game.getInstance().notify(observer -> observer.onSelectParcel(network.getParcel()));
+    }
+
     public void select(StructureModel structure) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.INFO_STRUCTURE);
         _selectedStructure = structure;
         Game.getInstance().notify(observer -> observer.onSelectStructure(structure));
         Game.getInstance().notify(observer -> observer.onSelectParcel(structure.getParcel()));
@@ -268,7 +278,6 @@ public class UserInterfaceSelector {
 
     public void select(ParcelModel parcel) {
         clean();
-//        _userInterface.setMode(UserInterface.Mode.INFO_PARCEL);
         _selectedParcel = parcel;
         Game.getInstance().notify(observer -> observer.onSelectParcel(parcel));
     }

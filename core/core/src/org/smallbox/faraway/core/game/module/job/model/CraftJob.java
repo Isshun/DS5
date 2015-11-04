@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryModel;
@@ -27,6 +28,8 @@ public class CraftJob extends JobModel {
     public CraftJob(ItemModel item) {
         super(null, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
         _item = item;
+        _factory = item.getFactory();
+        _factory.setJob(this);
     }
 
     @Override
@@ -41,8 +44,6 @@ public class CraftJob extends JobModel {
 
     @Override
     protected void onCreate() {
-        _factory = _item.getFactory();
-        _factory.setJob(this);
         _factory.scan();
 
         setStrategy(j -> {
@@ -65,6 +66,10 @@ public class CraftJob extends JobModel {
 
         if (_factory.getActiveReceipt() == null) {
             _message = "Missing components";
+            return false;
+        }
+
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
             return false;
         }
 
@@ -92,7 +97,11 @@ public class CraftJob extends JobModel {
         _cost = _receipt.receiptInfo.cost;
 
         // Move character to first receipt component
-        moveToIngredient(character, _receipt.getNextInput());
+        if (_receipt.getNextInput() != null) {
+            moveToIngredient(character, _receipt.getNextInput());
+        } else {
+            moveToMainItem();
+        }
     }
 
     @Override
@@ -103,6 +112,7 @@ public class CraftJob extends JobModel {
         if (_receipt != null && _receipt.isFull()) {
             _current += character.getTalents().get(CharacterTalentExtra.TalentType.CRAFT).work();;
             _progress = _current / _cost;
+            _message = "Crafting";
             _factory.setMessage("Crafting");
 
             if (_current < _cost) {

@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
@@ -54,25 +54,25 @@ public class DebugModule extends GameModule {
 
     private Collection<CommandEntry> COMMANDS = Arrays.asList(
             new CommandEntry("Add item...",         view ->
-                    openFrame(GameData.getData().items.stream()
+                    openFrame(Data.getData().items.stream()
                             .filter(item -> item.isUserItem)
                             .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
                             .collect(Collectors.toList()))
             ),
             new CommandEntry("Add consumable...",   view ->
-                    openFrame(GameData.getData().items.stream()
+                    openFrame(Data.getData().items.stream()
                             .filter(item -> item.isConsumable)
                             .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
                             .collect(Collectors.toList()))
             ),
             new CommandEntry("Add resource...",     view ->
-                    openFrame(GameData.getData().items.stream()
+                    openFrame(Data.getData().items.stream()
                             .filter(item -> item.isResource)
                             .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
                             .collect(Collectors.toList()))
             ),
             new CommandEntry("List receipts...",     view ->
-                    openFrame(GameData.getData().receipts.stream()
+                    openFrame(Data.getData().receipts.stream()
                             .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().getSelector().select(info)))
                             .collect(Collectors.toList()))
             ),
@@ -86,7 +86,7 @@ public class DebugModule extends GameModule {
             new CommandEntry("Kill selected",       view -> _character.setIsDead()),
             new CommandEntry("Kill all",            view -> ModuleHelper.getCharacterModule().getCharacters().forEach(CharacterModel::setIsDead)),
             new CommandEntry("add components to item",   view -> {
-                _item.getComponents().add(new BuildableMapObject.ComponentModel(GameData.getData().getItemInfo("base.calcite_brick"), 10, 3));
+                _item.getComponents().add(new BuildableMapObject.ComponentModel(Data.getData().getItemInfo("base.calcite_brick"), 10, 3));
                 _item.setComplete(false);
             }),
             new CommandEntry("remove characters",   view -> ModuleHelper.getCharacterModule().getCharacters().clear()),
@@ -246,9 +246,9 @@ public class DebugModule extends GameModule {
         if (key == GameEventListener.Key.BACKSPACE) {
             openFrame(COMMANDS);
         }
-        if (key == GameEventListener.Key.TILDE) {
-            _view.setVisible(!_view.isVisible());
-        }
+//        if (key == GameEventListener.Key.TILDE) {
+//            _view.setVisible(!_view.isVisible());
+//        }
         if (key == GameEventListener.Key.ESCAPE) {
             _view.setVisible(false);
         }

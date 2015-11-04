@@ -204,7 +204,7 @@ public class JobModule extends GameModule {
     }
 
     /**
-     * Create joy job for list
+     * Create entertainment job for list
      *
      * @param character
      * @return

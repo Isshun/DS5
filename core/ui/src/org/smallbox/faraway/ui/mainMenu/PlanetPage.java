@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.mainMenu;
 
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.util.StringUtils;
 import org.smallbox.faraway.ui.LayoutModel;
@@ -29,7 +29,7 @@ public class PlanetPage extends MainMenuPage {
         framePlanetList.removeAllViews();
 
         int index = 0;
-        for (PlanetInfo planet: GameData.getData().planets) {
+        for (PlanetInfo planet: Data.getData().planets) {
             addPlanetListView(framePlanetList, planet, index++);
         }
 
@@ -39,7 +39,7 @@ public class PlanetPage extends MainMenuPage {
             }
         });
 
-        select(GameData.getData().planets.get(0));
+        select(Data.getData().planets.get(0));
     }
 
     private void addPlanetListView(UIFrame framePlanetList, PlanetInfo planet, int index) {

@@ -2,9 +2,9 @@ package org.smallbox.faraway.core.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseModel;
+import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.module.lua.DataExtendException;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -21,7 +21,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
 
     @Override
     public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
-        DiseaseModel disease = new DiseaseModel();
+        DiseaseInfo disease = new DiseaseInfo();
 
         disease.label = value.get("label").toString();
         disease.name = value.get("name").toString();
@@ -29,7 +29,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
 
         LuaValue onStart = value.get("on_start");
         LuaValue onUpdate = value.get("on_update");
-        disease.setListener(new DiseaseModel.DiseaseListener() {
+        disease.setListener(new DiseaseInfo.DiseaseListener() {
             @Override
             public void onStart(DiseaseCharacterModel data) {
                 if (!onStart.isnil()) {
@@ -69,6 +69,6 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
             }
         });
 
-        GameData.getData().diseases.add(disease);
+        Data.getData().diseases.add(disease);
     }
 }

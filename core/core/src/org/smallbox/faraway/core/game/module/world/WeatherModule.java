@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.game.module.world;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.GameData;
-import org.smallbox.faraway.core.game.model.WeatherModel;
+import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.model.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
  */
 public class WeatherModule extends GameModule implements GameObserver {
     private int                     _duration;
-    private WeatherModel            _weather;
-    private String                  _dayTime = GameData.config.time;
+    private WeatherInfo _weather;
+    private String                  _dayTime = Data.config.time;
 
     private long                    _lightColor;
     private Color                   _previousLightColor;
@@ -41,13 +41,13 @@ public class WeatherModule extends GameModule implements GameObserver {
     protected void onLoaded() {
         _lightTarget = 1;
         _lightProgress = 1;
-        _weather = GameData.getData().weathers.get("base.weather.regular");
+        _weather = Data.getData().weathers.get("base.weather.regular");
         ModuleHelper.getWorldModule().setLight(1);
     }
 
     @Override
     protected boolean loadOnStart() {
-        return GameData.config.manager.weather;
+        return Data.config.manager.weather;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     }
 
     private void setHour(PlanetInfo.DayTime hourInfo) {
-        _lightChange = 1 / hourInfo.duration / GameData.config.tickPerHour;
+        _lightChange = 1 / hourInfo.duration / Data.config.tickPerHour;
         _lightProgress = 0;
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;
@@ -119,17 +119,17 @@ public class WeatherModule extends GameModule implements GameObserver {
 
     private void loadRandomWeather() {
         List<String> allowedWeathers = Game.getInstance().getRegion().getInfo().weather.stream().map(weather -> weather.name).collect(Collectors.toList());
-        List<WeatherModel> allWeathers = GameData.getData().weathers.values().stream().collect(Collectors.toList());
+        List<WeatherInfo> allWeathers = Data.getData().weathers.values().stream().collect(Collectors.toList());
         Collections.shuffle(allWeathers);
-        Optional<WeatherModel> optionalWeather = allWeathers.stream().filter(weather -> allowedWeathers.contains(weather.name)).findFirst();
+        Optional<WeatherInfo> optionalWeather = allWeathers.stream().filter(weather -> allowedWeathers.contains(weather.name)).findFirst();
         if (optionalWeather.isPresent()) {
             loadWeather(optionalWeather.get());
         } else {
-            loadWeather(GameData.getData().weathers.get("base.weather.regular"));
+            loadWeather(Data.getData().weathers.get("base.weather.regular"));
         }
     }
 
-    private void loadWeather(WeatherModel weather) {
+    private void loadWeather(WeatherInfo weather) {
         _weather = weather;
 
         printInfo("Start weather: " + _weather.name);

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameData;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -24,16 +24,15 @@ public class SleepJob extends JobModel {
         _message = "Sleep on ground";
         _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
-        _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
+        _wakeTime = _sleepTime + (Data.config.tickPerHour * 6);
     }
 
     public SleepJob(ParcelModel parcel, ItemModel item) {
-        _label = "Sleep in " + item.getInfo().label;
-        _message = "Sleep in " + item.getInfo().label;
+        _label = _message = Data.getString("Sleep in") + " " + Data.getString(item.getInfo().label);
         _sleepItem = item;
         _jobParcel = _targetParcel = parcel;
         _sleepTime = Game.getInstance().getTick();
-        _wakeTime = _sleepTime + (GameData.config.tickPerHour * 6);
+        _wakeTime = _sleepTime + (Data.config.tickPerHour * 6);
     }
 
     public ItemModel getItem() { return _sleepItem; }
@@ -86,6 +85,6 @@ public class SleepJob extends JobModel {
     }
 
     public void setWakeTime(int time) {
-        _wakeTime = _sleepTime + (GameData.config.tickPerHour * time);
+        _wakeTime = _sleepTime + (Data.config.tickPerHour * time);
     }
 }
