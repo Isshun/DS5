@@ -24,24 +24,21 @@ public class MineJob extends JobModel {
         super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
     }
 
-    public static JobModel create(ResourceModel res) {
-        // Resource is not minable
-        if (res == null) {
-            return null;
-        }
+    public static JobModel create(ResourceModel resource) {
+        assert resource != null;
 
-        if (res.getInfo().actions != null) {
-            for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
+        if (resource.getInfo().actions != null) {
+            for (ItemInfo.ItemInfoAction action: resource.getInfo().actions) {
                 if ("mine".equals(action.type)) {
-                    MineJob job = new MineJob(action, res.getParcel());
+                    MineJob job = new MineJob(action, resource.getParcel());
                     job.setStrategy(j -> {
                         if (j.getCharacter().getType().needs.joy != null) {
                             j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
                         }
                     });
-                    job._resource = res;
+                    job._resource = resource;
                     job._totalCost = job._cost * job._resource.getRock().getQuantity();
-                    job._label = "Mine " + res.getInfo().label;
+                    job._label = "Mine " + resource.getInfo().label;
                     job._message = "Move to resource";
                     return job;
                 }
@@ -72,28 +69,22 @@ public class MineJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
+    public JobCheckReturn onCheck(CharacterModel character) {
         System.out.println("check job: " + this);
 
-        // Item is null
-        if (_resource == null) {
-            _status = JobStatus.INVALID;
-            _reason = JobAbortReason.INVALID;
-            return false;
-        }
-
-        // Item is no longer exists
+        // Resource no longer exists
         if (_resource != _resource.getParcel().getResource()) {
             _status = JobStatus.INVALID;
             _reason = JobAbortReason.INVALID;
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
-        if (PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel) == null) {
+        if (!PathManager.getInstance().hasPathApprox(character.getParcel(), _resource.getParcel())) {
             _status = JobStatus.BLOCKED;
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
-        return true;
+
+        return JobCheckReturn.OK;
     }
 
     @Override

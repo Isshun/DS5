@@ -7,28 +7,25 @@ data:extend({
     size = {400, 800},
     background = 0x121c1e,
     visible = false,
-    views =
-    {
+    views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
         { type = "label", text = "Resource", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
-        { type = "list", position = {0, 60}, views = {
-            { type = "label", id = "lb_position", text_size = 18, padding = 10},
-            { type = "label", id = "lb_job", text_size = 18, padding = 10},
-            { type = "label", id = "lb_quantity", text_size = 18, padding = 10},
-            { type = "label", id = "lb_maturity", text_size = 18, padding = 10},
-            { type = "label", id = "lb_grow_state", text_size = 18, padding = 10},
-            { type = "label", id = "lb_tile", text_size = 18, padding = 10},
-            { type = "label", id = "lb_seed", text_size = 18, padding = 10},
-            { type = "label", id = "lb_nourish", text_size = 18, padding = 10},
+        { type = "list", position = {10, 40}, views = {
+            { type = "label", id = "lb_job", text_size = 18},
+            { type = "label", id = "lb_quantity", text_size = 18},
+            { type = "label", id = "lb_maturity", text_size = 18},
+            { type = "label", id = "lb_grow_state", text_size = 18},
+            { type = "label", id = "lb_tile", text_size = 18},
+            { type = "label", id = "lb_seed", text_size = 18},
+            { type = "label", id = "lb_nourish", text_size = 18},
         }},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 30}, size = {90, 40}, on_click = function()
             game.events:send("encyclopedia.open_resource", resource)
         end},
     },
 
-    on_event =
-    function(view, event, data)
+    on_event = function(view, event, data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
             game.ui:clearSelection();
@@ -47,8 +44,7 @@ data:extend({
         end
     end,
 
-    on_refresh =
-    function(view)
+    on_refresh = function(view)
         if resource ~= nil then
             local info = resource:getInfo()
 --            view:findById("lb_position"):setText("Position", ": ", resource:getX() .. "x" .. resource:getY())

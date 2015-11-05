@@ -32,8 +32,11 @@ public class GatherJob extends JobModel {
     }
 
     public static JobModel create(ResourceModel resource, Mode mode) {
+        assert resource != null;
+        assert resource.isPlant();
+
         // Resource is not gatherable
-        if (resource == null || !resource.isPlant() || resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
+        if (resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
             return null;
         }
 
@@ -61,28 +64,22 @@ public class GatherJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        // Item is null
-        if (_resource == null) {
-            _reason = JobAbortReason.INVALID;
-            return false;
-        }
-
-        // Item is no longer exists
+    public JobCheckReturn onCheck(CharacterModel character) {
+        // Resource is no longer exists
         if (_resource != _resource.getParcel().getResource()) {
             _reason = JobAbortReason.INVALID;
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
         if (_mode == Mode.NOURISH && _resource.getPlant().isMature()) {
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
         if (!PathManager.getInstance().hasPath(character.getParcel(), _resource.getParcel())) {
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
-        return true;
+        return JobCheckReturn.OK;
     }
 
     @Override

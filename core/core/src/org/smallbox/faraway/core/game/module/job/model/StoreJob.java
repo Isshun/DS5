@@ -198,11 +198,10 @@ public class StoreJob extends JobModel implements GameObserver {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
+    public JobCheckReturn onCheck(CharacterModel character) {
         // No consumable  to haul
         if (_consumables.isEmpty()) {
-//            return JobCheckReturn.INVALID;
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
         // No free space in storage
@@ -210,27 +209,23 @@ public class StoreJob extends JobModel implements GameObserver {
             _jobParcel = _storage.getNearestFreeParcel(_consumables.get(0));
             if (_jobParcel == null) {
                 _message = "No storage model";
-//                return JobCheckReturn.INVALID;
-                return false;
+                return JobCheckReturn.ABORT;
             }
         }
 
         // No path from consumable to storage
         if (!PathManager.getInstance().hasPath(_targetParcel, _jobParcel)) {
             _message = "No path to storage";
-//            return JobCheckReturn.BLOCKED;
-            return false;
+            return JobCheckReturn.BLOCKED;
         }
 
         // No path from character to consumable
         if (!PathManager.getInstance().hasPath(character.getParcel(), _targetParcel)) {
             _message = "No path to consumable";
-//            return JobCheckReturn.WRONG_CHARACTER;
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
-//        return JobCheckReturn.OK;
-        return true;
+        return JobCheckReturn.OK;
     }
 
     @Override

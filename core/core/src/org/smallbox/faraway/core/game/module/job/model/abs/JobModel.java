@@ -21,7 +21,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public enum JobCheckReturn {
-        OK, WRONG_CHARACTER, INVALID, BLOCKED
+        OK, STAND_BY, ABORT, BLOCKED
     }
 
     public enum JobActionReturn {
@@ -169,7 +169,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     protected void onCreate() {}
-    protected abstract boolean onCheck(CharacterModel character);
+    protected abstract JobCheckReturn onCheck(CharacterModel character);
     protected void onStart(CharacterModel character) {}
     protected abstract JobActionReturn onAction(CharacterModel character);
     protected void onQuit(CharacterModel character) {}
@@ -217,11 +217,14 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public boolean check(CharacterModel character) {
-        boolean valid = onCheck(character);
-        if (!valid && _reason == JobAbortReason.BLOCKED) {
+        JobCheckReturn ret = onCheck(character);
+        if (ret == JobCheckReturn.BLOCKED) {
             _fail = MainRenderer.getFrame();
         }
-        return valid;
+        if (ret == JobCheckReturn.ABORT) {
+            finish();
+        }
+        return ret == JobCheckReturn.OK;
     }
 
     public JobActionReturn action(CharacterModel character) {

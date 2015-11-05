@@ -19,17 +19,23 @@ import org.smallbox.faraway.core.util.MoveListener;
 import java.util.Optional;
 
 public class CraftJob extends JobModel {
-    protected ItemModel                 _item;
-    protected ItemFactoryModel          _factory;
-    protected double                    _current;
-    protected ItemFactoryReceiptModel   _receipt;
-    protected ItemSlot                  _slot;
+    protected final ItemModel               _item;
+    protected final ItemFactoryModel        _factory;
+    protected final ItemFactoryReceiptModel _receipt;
+    protected ItemSlot                      _slot;
+    protected double                        _current;
 
     public CraftJob(ItemModel item) {
         super(null, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
+        assert item.getFactory() != null;
+        assert item.getFactory().getJob() == null;
+        assert item.getFactory().getActiveReceipt() != null;
+
         _item = item;
         _factory = item.getFactory();
         _factory.setJob(this);
+        _receipt = _factory.getActiveReceipt();
+        _label = _receipt.order.receiptGroupInfo.label;
     }
 
     @Override
@@ -44,8 +50,6 @@ public class CraftJob extends JobModel {
 
     @Override
     protected void onCreate() {
-        _factory.scan();
-
         setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
@@ -54,37 +58,27 @@ public class CraftJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        if (_factory.getActiveReceipt() == null) {
-            _factory.scan();
-        }
-
-        if (_factory != null && _factory.getStorageParcel().getConsumable() != null) {
+    public JobCheckReturn onCheck(CharacterModel character) {
+        if (_factory.getStorageParcel().getConsumable() != null) {
             _message = "Factory is full";
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
-        if (_factory.getActiveReceipt() == null) {
+        if (!_receipt.isComponentsAvailable(this)) {
             _message = "Missing components";
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
         if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
         _message = "Waiting";
-        return true;
+        return JobCheckReturn.OK;
     }
 
     @Override
     protected void onStart(CharacterModel character) {
-        _receipt = _factory.getActiveReceipt();
-
-        if (_receipt == null) {
-            throw new RuntimeException("Try to start CraftJob without active receipt");
-        }
-
         for (ItemFactoryReceiptModel.FactoryShoppingItemModel shoppingItem: _receipt.getShoppingList()) {
             if (shoppingItem.consumable.getLock() != null && shoppingItem.consumable.getLock() != this) {
                 throw new RuntimeException("Shopping item are already been locked");
@@ -218,10 +212,5 @@ public class CraftJob extends JobModel {
                 quit(character);
             }
         });
-    }
-
-    @Override
-    public String getLabel() {
-        return _factory != null && _factory.getMessage() != null ? _factory.getMessage() : "unk craft";
     }
 }

@@ -59,22 +59,22 @@ public class HaulJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
+    public JobCheckReturn onCheck(CharacterModel character) {
         // Check if parcel is walkable
         if (!_targetParcel.isWalkable()) {
             _status = JobStatus.BLOCKED;
-            return false;
+            return JobCheckReturn.BLOCKED;
         }
 
         // Check if consumable exists
         for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
             if (consumable.getInfo() == _component.info && (consumable.getLock() == null || consumable.getLock() == this)) {
-                return true;
+                return JobCheckReturn.OK;
             }
         }
         _status = JobStatus.MISSING_COMPONENT;
 
-        return false;
+        return JobCheckReturn.STAND_BY;
     }
 
     @Override

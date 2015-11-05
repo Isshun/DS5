@@ -33,16 +33,16 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
+    public JobCheckReturn onCheck(CharacterModel character) {
         if (!_buildItem.hasAllComponents()) {
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
         if (!PathManager.getInstance().hasPath(character.getParcel(), _buildItem.getParcel())) {
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
-        return true;
+        return JobCheckReturn.OK;
     }
 
     @Override

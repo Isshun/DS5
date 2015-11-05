@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.world.model.item;
 
 import org.smallbox.faraway.core.PotentialConsumable;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.module.job.model.CraftJob;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
@@ -131,6 +132,18 @@ public class ItemFactoryReceiptModel {
                 }
             });
         }
+    }
+
+    public boolean isComponentsAvailable(CraftJob job) {
+        for (FactoryShoppingItemModel shoppingItem: _shoppingList) {
+            if (shoppingItem.consumable.getLock() != null && shoppingItem.consumable.getLock() != job) {
+                return false;
+            }
+            if (shoppingItem.consumable.getQuantity() < shoppingItem.quantity) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public FactoryShoppingItemModel getNextInput() {

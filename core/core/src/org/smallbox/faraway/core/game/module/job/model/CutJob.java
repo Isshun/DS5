@@ -55,7 +55,7 @@
 //
 //        // Item is null
 //        if (_resource == null) {
-//            _reason = JobAbortReason.INVALID;
+//            _reason = JobAbortReason.ABORT;
 //            return false;
 //        }
 //
@@ -66,7 +66,7 @@
 //
 //        // Item is no longer exists
 //        if (_resource != _resource.getParcel().getResource()) {
-//            _reason = JobAbortReason.INVALID;
+//            _reason = JobAbortReason.ABORT;
 //            return false;
 //        }
 //
@@ -76,7 +76,7 @@
 //
 ////        // Resource is depleted
 ////        if (_resource.getMatterSupply() <= 0) {
-////            _reason = JobAbortReason.INVALID;
+////            _reason = JobAbortReason.ABORT;
 ////            return false;
 ////        }
 //

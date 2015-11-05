@@ -25,7 +25,9 @@ public class UseJob extends JobModel {
     }
 
     public static UseJob create(ItemModel item) {
-        if (item == null || !item.hasFreeSlot()) {
+        assert item != null;
+
+        if (!item.hasFreeSlot()) {
             return null;
         }
 
@@ -53,24 +55,18 @@ public class UseJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        // Item is null
-        if (_item == null) {
-            _reason = JobAbortReason.INVALID;
-            return false;
-        }
-
+    public JobCheckReturn onCheck(CharacterModel character) {
         // Item is no longer exists
         if (_item != _item.getParcel().getItem()) {
             _reason = JobAbortReason.INVALID;
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
         if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
-            return false;
+            return JobCheckReturn.STAND_BY;
         }
 
-        return true;
+        return JobCheckReturn.OK;
     }
 
     @Override

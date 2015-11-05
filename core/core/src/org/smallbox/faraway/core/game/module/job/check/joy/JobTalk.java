@@ -65,8 +65,8 @@ public class JobTalk extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        return false;
+    public JobCheckReturn onCheck(CharacterModel character) {
+        return JobCheckReturn.ABORT;
     }
 
     @Override

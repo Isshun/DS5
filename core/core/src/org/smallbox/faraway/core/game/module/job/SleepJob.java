@@ -38,11 +38,11 @@ public class SleepJob extends JobModel {
     public ItemModel getItem() { return _sleepItem; }
 
     @Override
-    protected boolean onCheck(CharacterModel character) {
+    protected JobCheckReturn onCheck(CharacterModel character) {
         if (_sleepItem != null && !PathManager.getInstance().hasPath(character.getParcel(), _sleepItem.getParcel())) {
-            return false;
+            return JobCheckReturn.ABORT;
         }
-        return true;
+        return JobCheckReturn.OK;
     }
 
     @Override

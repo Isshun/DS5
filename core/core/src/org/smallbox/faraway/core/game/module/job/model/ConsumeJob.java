@@ -29,22 +29,10 @@ public class ConsumeJob extends JobModel {
     }
 
     public static ConsumeJob create(CharacterModel character, ConsumableModel consumable) {
-        if (character == null) {
-            Log.error("Create ConsumeJob with null characters");
-            return null;
-        }
+        assert consumable != null;
+        assert character != null;
 
-        if (consumable == null) {
-            Log.error("Create ConsumeJob with null item");
-            return null;
-        }
-
-        ConsumeJob job = null;
-        if (character.getInventory() == consumable) {
-            job = new ConsumeJob(character.getParcel());
-        } else {
-            job = new ConsumeJob(consumable.getParcel());
-        }
+        ConsumeJob job = character.getInventory() == consumable ? new ConsumeJob(character.getParcel()) : new ConsumeJob(consumable.getParcel());
         job.setCharacterRequire(character);
         job.setActionInfo(consumable.getInfo().actions.get(0));
         job._consumable = consumable;
@@ -54,25 +42,30 @@ public class ConsumeJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        if (_character.getInventory() != null && _character.getInventory().getInfo() == _itemInfo) {
-            return true;
+    public JobCheckReturn onCheck(CharacterModel character) {
+        if (_character.getInventory() != null && _character.getInventory().getInfo() != _itemInfo) {
+            return JobCheckReturn.ABORT;
         }
 
         // Missing item
-        if (_consumable == null || _consumable.getQuantity() <= 0) {
+        if (_consumable.getQuantity() <= 0) {
             Log.error("ConsumeJob: item cannot be null, non consumable or empty");
             _reason = JobAbortReason.INVALID;
-            return false;
+            return JobCheckReturn.ABORT;
         }
 
-//        // Item is no longer exists
-//        if (_consumable != _targetParcel.getConsumable()) {
-//            _reason = JobAbortReason.INVALID;
-//            return false;
-//        }
+        // Item is no longer exists
+        if (_consumable != _character.getInventory() && _consumable.getParcel().getConsumable() != _consumable) {
+//            _reason = JobAbortReason.ABORT;
+            return JobCheckReturn.ABORT;
+        }
 
-        return true;
+        // Consumable has been locked by another job
+        if (_consumable.getLock() != null && _consumable.getLock() != this) {
+            return JobCheckReturn.ABORT;
+        }
+
+        return JobCheckReturn.OK;
     }
 
     @Override
@@ -181,11 +174,6 @@ public class ConsumeJob extends JobModel {
             return _actionInfo.label;
         }
         return "use " + _consumable.getLabel();
-    }
-
-    @Override
-    public ParcelModel getTargetParcel() {
-        return null;
     }
 
     @Override

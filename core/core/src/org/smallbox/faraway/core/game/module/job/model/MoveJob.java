@@ -24,8 +24,8 @@ public class MoveJob extends JobModel {
     }
 
     @Override
-    public boolean onCheck(CharacterModel character) {
-        return true;
+    public JobCheckReturn onCheck(CharacterModel character) {
+        return JobCheckReturn.OK;
     }
 
     @Override
