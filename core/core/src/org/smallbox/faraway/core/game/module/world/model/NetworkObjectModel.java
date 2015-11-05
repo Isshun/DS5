@@ -3,20 +3,28 @@ package org.smallbox.faraway.core.game.module.world.model;
 import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.model.NetworkModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**
  * Created by Alex on 04/11/2015.
  */
 public class NetworkObjectModel {
-    private NetworkInfo     _info;
-    private boolean         _isComplete;
-    private ParcelModel     _parcel;
-    private int             _health;
-    private NetworkModel    _network;
-    private double          _quantity;
+    private final ItemModel     _item;
+    private final NetworkInfo   _info;
+    private boolean             _isComplete;
+    private ParcelModel         _parcel;
+    private int                 _health;
+    private NetworkModel        _network;
+    private double              _quantity;
 
     public NetworkObjectModel(NetworkInfo info) {
         _info = info;
+        _item = null;
+    }
+
+    public NetworkObjectModel(NetworkInfo info, ItemModel item) {
+        _info = info;
+        _item = item;
     }
 
     public void         setComplete(boolean complete) { _isComplete = complete; }

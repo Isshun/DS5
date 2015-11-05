@@ -43,13 +43,13 @@ data:extend({
             }},
 
             -- Actions
-            { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, size = {400, 100}, views = {
+            { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, views = {
                 { type = "label", text = "Actions", text_size = 22, size = {400, 26}},
                 { type = "list", id = "list_actions"},
             }},
 
             -- Factory progress
-            { type = "list", id = "frame_factory_progress", margin = {10, 0, 0, 10}, views = {
+            { type = "list", id = "frame_factory_progress", margin = {40, 0, 0, 10}, views = {
                 { type = "label", text = "Work in progress", text_size = 22},
                 { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", margin = {10, 0, 0, 0}},
                 { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {380, 16}},
@@ -62,10 +62,17 @@ data:extend({
             }},
 
             -- Factory orders
-            { type = "list", id = "frame_factory_orders", margin = {10, 0, 0, 10}, views = {
+            { type = "list", id = "frame_factory_orders", margin = {40, 0, 0, 10}, views = {
                 { type = "label", text = "Orders", text_size = 22},
                 { type = "list", id = "list_orders", position = {0, 8}},
             }},
+
+            -- Networks
+            { type = "list", id = "frame_networks", margin = {60, 0, 0, 10}, views = {
+                { type = "label", text = "Networks", text_size = 22, size = {400, 26}},
+                { type = "list", id = "list_networks"},
+            }},
+
         }},
     },
 
@@ -136,6 +143,29 @@ data:extend({
                 view:findById("lb_building_job"):setText("Build job: " .. (item:getBuildJob() and "yes" or "no"))
                 view:findById("lb_building_character"):setText("Builder: " .. (item:getBuilder() and item:getBuilder():getName() or "no"))
                 view:findById("list_building_components"):getAdapter():setData(item:getComponents());
+            end
+
+            if item:getNetworkConnections() then
+                local list_networks = view:findById("list_networks")
+                list_networks:removeAllViews()
+
+                local isConnected = false
+                local iterator = item:getNetworkConnections():iterator()
+                while iterator:hasNext() do
+                    local networkConnection = iterator:next()
+                    if networkConnection:getNetwork() then
+                        local lb_network = game.ui:createLabel()
+                        lb_network:setDashedString(networkConnection:getNetwork():getInfo().label, math.floor(networkConnection:getNetwork():getQuantity()) .. "/" .. networkConnection:getNetwork():getMaxQuantity(), 48)
+                        lb_network:setTextSize(14)
+                        lb_network:setSize(400, 24)
+                        list_networks:addView(lb_network)
+                        isConnected = true
+                    end
+                end
+
+                view:findById("frame_networks"):setVisible(isConnected)
+            else
+                view:findById("frame_networks"):setVisible(false)
             end
 
             if item:getFactory() then

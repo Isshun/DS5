@@ -288,11 +288,15 @@ public class LuaItemExtend extends LuaExtend {
         action.type = getString(value, "type", null);
         action.cost = getInt(value, "cost", 0);
 
-        LuaValue luaNetworks = value.get("network");
-        if (!luaNetworks.isnil()) {
-            action.networkNames = new ArrayList<>();
-            for (int i = 1; i <= luaNetworks.length(); i++) {
-                action.networkNames.add(luaNetworks.get(i).toString());
+        if (!value.get("inputs").isnil()) {
+            action.inputs = new ArrayList<>();
+            for (int i = 1; i <= value.get("inputs").length(); i++) {
+                LuaValue luaInput = value.get("inputs").get(i);
+                ItemInfo.ActionInputInfo inputInfo = new ItemInfo.ActionInputInfo();
+                inputInfo.networkName = getString(luaInput, "network", null);
+                inputInfo.itemName = getString(luaInput, "item", null);
+                inputInfo.quantity = getInt(luaInput, "quantity", 1);
+                action.inputs.add(inputInfo);
             }
         }
 

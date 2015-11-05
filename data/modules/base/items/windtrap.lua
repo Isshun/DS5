@@ -14,7 +14,7 @@ data:extend({
     networks = {
         {network = "base.network.water", distance = 0}
     },
-    actions = {
-        { type = "use", cost = 20, effects = {{type = "drink", quantity = 80}}, network = {"base.network.water"}},
-    }
+--    actions = {
+--        { type = "use", cost = 20, effects = {{type = "drink", quantity = 80}}, network = {"base.network.water"}},
+--    }
 })

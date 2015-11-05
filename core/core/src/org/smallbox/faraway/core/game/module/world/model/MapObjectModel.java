@@ -131,25 +131,6 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     public boolean matchFilter(ItemFilter filter) {
-        // Filter looking for item
-        if (filter.lookingForItem) {
-
-            // Filter on item
-            if (filter.itemNeeded == _info) {
-                filter.itemMatched = _info;
-                return true;
-            }
-
-            if (_info.actions != null) {
-                for (ItemInfo.ItemInfoAction action: _info.actions) {
-                    if ("use".equals(action.type) && _info.matchFilter(action.effects, filter)) {
-                        filter.itemMatched = _info;
-                        return true;
-                    }
-                }
-            }
-        }
-
         return false;
     }
 

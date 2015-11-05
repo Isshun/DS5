@@ -6,8 +6,9 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.item.NetworkConnectionModel;
 import org.smallbox.faraway.core.util.Log;
 
 public class UseJob extends JobModel {
@@ -96,6 +97,26 @@ public class UseJob extends JobModel {
         _item.use(_character, 0);
         if (_current < _cost) {
             return JobActionReturn.CONTINUE;
+        }
+
+        // Use consumable if need by action
+        if (_actionInfo.inputs != null) {
+            for (ItemInfo.ActionInputInfo inputInfo: _actionInfo.inputs) {
+                // TODO
+                // Action need consumable
+                if (inputInfo.item != null) {
+                }
+
+                // Action need consumable through network
+                if (inputInfo.network != null && _item.getNetworkConnections() != null) {
+                    for (NetworkConnectionModel networkConnection: _item.getNetworkConnections()) {
+                        if (networkConnection.getNetwork() != null && networkConnection.getNetwork().getInfo() == inputInfo.network) {
+                            networkConnection.getNetwork().removeQuantity(inputInfo.quantity);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
 //        // Set characters direction

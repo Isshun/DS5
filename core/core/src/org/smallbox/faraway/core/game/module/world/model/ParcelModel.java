@@ -124,6 +124,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean          isStorage() { return _isStorage; }
     public boolean          isExterior() { return _room != null && _room.isExterior(); }
     public boolean          canSupportRoof() { return (getStructure() != null && getStructure().getInfo().canSupportRoof) || (getResource() != null && getResource().getInfo().canSupportRoof); }
+    public boolean          hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
 
     public ParcelContent    getContent() { return _content; }
     public ItemModel        getItem() { return _content != null ? _content.item : null; }
@@ -137,18 +138,16 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public int              getType() { return _type; }
     public double           getTemperature() { return _room != null ? _room.getTemperature() : _weatherModule.getTemperature(); }
 
-    public boolean hasNetwork(NetworkInfo networkInfo) {
+    public NetworkObjectModel getNetworkObject(NetworkInfo networkInfo) {
         if (_content == null || _content.networks == null) {
-            return false;
+            return null;
         }
-
         for (NetworkObjectModel networkObject: _content.networks) {
             if (networkObject.getInfo() == networkInfo) {
-                return true;
+                return networkObject;
             }
         }
-
-        return false;
+        return null;
     }
 
     /**

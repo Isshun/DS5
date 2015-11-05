@@ -50,11 +50,21 @@ data:extend({
     },
 
     on_refresh = function(view)
+        local network_module = game:getModule("NetworkModule")
+        if network_module then
+            local water = 0
+            local iterator = network_module:getNetworks():iterator()
+            while iterator:hasNext() do
+                local network = iterator:next()
+                if network:getInfo().name == "base.network.water" then water = water + network:getQuantity() end
+            end
+            view:findById("lb_resource_water"):setText(math.floor(water));
+        end
+
         local resource_module = game:getModule("ResourceModule")
         if resource_module then
             view:findById("lb_resource_food"):setText(resource_module:getFoodCount());
             view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.wood_log"));
-            view:findById("lb_resource_water"):setText(resource_module:getDrinkCount());
             view:findById("view_resource"):setVisible(true)
         else
             view:findById("view_resource"):setVisible(false)

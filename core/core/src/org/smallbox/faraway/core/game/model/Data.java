@@ -113,10 +113,13 @@ public class Data {
                         item.factory.receipts.forEach(receipt -> receipt.receipt = getReceipt(receipt.receiptName));
                     }
                     if (item.actions != null) {
-                        item.actions.stream().filter(action -> action.products != null)
+                        item.actions.stream()
                                 .forEach(action -> {
-                                    if (action.networkNames != null) {
-                                        action.networks = action.networkNames.stream().map(this::getNetwork).collect(Collectors.toList());
+                                    if (action.inputs != null) {
+                                        action.inputs.forEach(input -> {
+                                            if (input.itemName != null) input.item = getItemInfo(input.itemName);
+                                            if (input.networkName != null) input.network = getNetwork(input.networkName);
+                                        });
                                     }
                                     if (action.products != null) {
                                         action.products.forEach(product -> product.item = getItemInfo(product.itemName));

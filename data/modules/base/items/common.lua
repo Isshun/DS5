@@ -11,9 +11,7 @@ data:extend({
         },
         graphics = { path = "[base]/graphics/items/fountain.png" },
         actions = {
-            { type = "use", cost = 20, effects = {{type = "drink", quantity = 80}}, network = {"base.network.water"}},
-            { type = "use", cost = 20, effects = {{type = "food", quantity = 80}}, network = {"base.network.water"}},
-            { type = "use", cost = 20, effects = {{type = "energy", quantity = 80}}, network = {"base.network.water"}},
+            { type = "use", cost = 20, effects = {{type = "drink", quantity = 80}}, inputs = {{ network = "base.network.water", quantity = 1}}},
         }
     },
 })

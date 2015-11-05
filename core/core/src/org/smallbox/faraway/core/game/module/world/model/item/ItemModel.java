@@ -2,27 +2,25 @@ package org.smallbox.faraway.core.game.module.world.model.item;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemModel extends BuildableMapObject {
-    private int                         _targetTemperature = 21;
-    private boolean                     _isFunctional = true;
-    private boolean                     _isActive = true;
-    private int                         _potencyUse;
-    private List<ItemSlot>              _slots;
-    private int                         _nbFreeSlot = -1;
-    private int                         _nbSlot;
-    private ItemFactoryModel            _factory;
-    private int[]                       _storageSlot;
-    private List<NetworkObjectModel>    _networkObjects;
+    private int                             _targetTemperature = 21;
+    private boolean                         _isFunctional = true;
+    private boolean                         _isActive = true;
+    private int                             _potencyUse;
+    private List<ItemSlot>                  _slots;
+    private int                             _nbFreeSlot = -1;
+    private int                             _nbSlot;
+    private ItemFactoryModel                _factory;
+    private int[]                           _storageSlot;
+    private List<NetworkConnectionModel>    _networkConnections;
 
 
     public ItemModel(ItemInfo info, ParcelModel parcel, int id) {
@@ -39,28 +37,33 @@ public class ItemModel extends BuildableMapObject {
         init(info);
     }
 
-    public int                      getTargetTemperature() { return _targetTemperature; }
-    public int                      getValue() { return 15; }
-    public int                      getPotencyUse() { return _potencyUse; }
-    public List<ItemSlot>           getSlots() { return _slots; }
-    public int                      getNbFreeSlots() { return _nbFreeSlot; }
-    public int                      getNbSlots() { return _nbSlot; }
-    public ItemFactoryModel         getFactory() { return _factory; }
-    public List<NetworkObjectModel> getNetworkObjects() { return _networkObjects; }
+    public int                          getTargetTemperature() { return _targetTemperature; }
+    public int                          getValue() { return 15; }
+    public int                          getPotencyUse() { return _potencyUse; }
+    public List<ItemSlot>               getSlots() { return _slots; }
+    public int                          getNbFreeSlots() { return _nbFreeSlot; }
+    public int                          getNbSlots() { return _nbSlot; }
+    public ItemFactoryModel             getFactory() { return _factory; }
+    public List<NetworkConnectionModel> getNetworkConnections() { return _networkConnections; }
 
-    public boolean                  hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
-    public boolean                  isFunctional() { return _isFunctional; }
-    public boolean                  isActive() { return _isActive; }
-    public boolean                  isBed() { return _info.isBed; }
+    public boolean                      hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
+    public boolean                      isFunctional() { return _isFunctional; }
+    public boolean                      isActive() { return _isActive; }
+    public boolean                      isBed() { return _info.isBed; }
 
-    public void                     setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
-    public void                     setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
-    public void                     setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
+    public void                         setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
+    public void                         setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
+    public void                         setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
+    // TODO: this method must only be used by world serializer, create pack/unpack method for in-game use
     @Override
-    public void             setParcel(ParcelModel parcel) {
+    public void setParcel(ParcelModel parcel) {
         super.setParcel(parcel);
         initSlots();
+
+        if (_networkConnections != null) {
+            _networkConnections.forEach(networkConnection -> networkConnection.setParcel(parcel));
+        }
     }
 
     private void init(ItemInfo info) {
@@ -73,8 +76,8 @@ public class ItemModel extends BuildableMapObject {
         }
 
         // Initialize network extra objects
-        if (info.networks != null) {
-            _networkObjects = info.networks.stream().map(network -> new NetworkObjectModel(network.network)).collect(Collectors.toList());
+        if (_info.networks != null) {
+            _networkConnections = _info.networks.stream().map(networkItemInfo -> new NetworkConnectionModel(networkItemInfo.network, networkItemInfo.distance)).collect(Collectors.toList());
         }
     }
 
@@ -105,16 +108,65 @@ public class ItemModel extends BuildableMapObject {
 
     @Override
     public boolean matchFilter(ItemFilter filter) {
-        // Filter need free slots but item is busy
-        if (filter.needFreeSlot && !hasFreeSlot()) {
-            return false;
+        // Filter looking for item
+        if (filter.lookingForItem) {
+
+            // Filter need free slots but item is busy
+            if (filter.needFreeSlot && !hasFreeSlot()) {
+                return false;
+            }
+
+            if (!_isComplete) {
+                return false;
+            }
+
+            // Filter on item
+            if (filter.itemNeeded == _info) {
+                filter.itemMatched = _info;
+                return true;
+            }
+
+            if (_info.actions != null) {
+                for (ItemInfo.ItemInfoAction action: _info.actions) {
+                    if ("use".equals(action.type) && _info.matchFilter(action.effects, filter) && canLaunchAction(action)) {
+                        filter.itemMatched = _info;
+                        return true;
+                    }
+                }
+            }
         }
 
-        if (!_isComplete) {
-            return false;
-        }
+        return false;
+    }
 
-        return super.matchFilter(filter);
+    public boolean canLaunchAction(ItemInfo.ItemInfoAction action) {
+        if (action.inputs != null) {
+            for (ItemInfo.ActionInputInfo inputInfo: action.inputs) {
+                // TODO
+                // Item need consumable to be used
+                if (inputInfo.item != null) {
+                    return false;
+                }
+
+                // Item need consumable through network connection
+                if (inputInfo.network != null) {
+                    boolean haveRequirement = false;
+                    if (_networkConnections != null) {
+                        for (NetworkConnectionModel networkConnection: _networkConnections) {
+                            if (networkConnection.getNetwork() != null
+                                    && networkConnection.getNetwork().getInfo() == inputInfo.network
+                                    && networkConnection.getNetwork().getQuantity() >= inputInfo.quantity) {
+                                haveRequirement = true;
+                            }
+                        }
+                    }
+                    if (!haveRequirement) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public boolean isStorageParcel(ParcelModel parcel) {

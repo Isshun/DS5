@@ -147,8 +147,8 @@ public class CraftJob extends JobModel {
             // Put consumables on item network
             if (_order.output == ItemInfo.FactoryOutputMode.NETWORK) {
                 System.out.println("Factory: put crafted consumable in network");
-                if (_item.getNetworkObjects() != null) {
-                    _item.getNetworkObjects().stream()
+                if (_item.getNetworkConnections() != null) {
+                    _item.getNetworkConnections().stream()
                             .filter(networkObject -> networkObject.getNetwork() != null && networkObject.getNetwork().accept(productInfo.item))
                             .forEach(networkObject -> networkObject.getNetwork().addQuantity(Utils.getRandom(productInfo.quantity)));
                 }

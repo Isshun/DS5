@@ -31,13 +31,13 @@ data:extend({
             local lb_network = game.ui:createLabel()
             lb_network:setSize(400, 20)
             --                lb_network:setText(network:getInfo().label)
-            lb_network:setDashedString(network:getInfo().label, network:getSize(), 47)
+            lb_network:setDashedString(network:getInfo().label, math.floor(network:getQuantity()) .. "/" .. network:getMaxQuantity(), 48)
             list:addView(lb_network)
 
-            local lb_network_detail = game.ui:createLabel()
-            lb_network_detail:setSize(400, 20)
-            lb_network_detail:setText("Quantity", ": ", network:getQuantity() .. "/" .. network:getMaxQuantity())
-            list:addView(lb_network_detail)
+--            local lb_network_detail = game.ui:createLabel()
+--            lb_network_detail:setSize(400, 20)
+--            lb_network_detail:setText("Quantity", ": ", )
+--            list:addView(lb_network_detail)
         end
     end
 })

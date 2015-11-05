@@ -6,6 +6,6 @@ data:extend({
         data.duration = 0
     end,
     on_update = function (data, character)
-        return "Malnutrition (" .. data[2] .. ")"
+        return {message = "Malnutrition (" .. data[1] .. ")", level = data[1]}
     end
 })

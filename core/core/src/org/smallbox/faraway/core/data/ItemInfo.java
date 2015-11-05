@@ -34,18 +34,25 @@ public class ItemInfo extends ObjectInfo {
         public int[]                    crafts;
     }
 
+    public static class ActionInputInfo {
+        public ItemInfo                 item;
+        public String                   itemName;
+        public NetworkInfo              network;
+        public String                   networkName;
+        public int                      quantity;
+    }
+
     public static class ItemInfoAction {
         public int                      storage;
         public String                   type;
         public String                   label;
         public List<ItemInfoReceipt>    receipts;
         public ItemInfoEffects          effects;
+        public List<ActionInputInfo>    inputs;
         public int                      cost;
         public String                   name;
         public float                    dropRate;
         public List<ItemProductInfo>    products;
-        public List<NetworkInfo>        networks;
-        public List<String>             networkNames;
     }
 
     public static class ItemInfoPlant {
