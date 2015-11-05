@@ -28,6 +28,7 @@ public class WorldModule extends GameModule {
     private Set<ConsumableModel>                _consumables = new HashSet<>();
     private BlockingQueue<ResourceModel>        _resources = new LinkedBlockingQueue<>();
     private Set<ItemModel>                      _items = new HashSet<>();
+    private Set<ItemModel>                      _factories = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
     private List<ParcelModel>                   _parcelList;
     private double                              _light;
@@ -35,6 +36,7 @@ public class WorldModule extends GameModule {
     public ParcelModel[][][]                    getParcels() { return _parcels; }
     public List<ParcelModel>                    getParcelList() { return _parcelList; }
     public Collection<ItemModel>                getItems() { return _items; }
+    public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
     public Collection<ResourceModel>            getResources() { return _resources; }
@@ -98,6 +100,7 @@ public class WorldModule extends GameModule {
                 item.getParcel().setItem(null);
             }
             _items.remove(item);
+            _factories.remove(item);
             _game.notify(observer -> observer.onRemoveItem(item));
         }
     }
@@ -231,6 +234,11 @@ public class WorldModule extends GameModule {
             item.setReceipt(item.getInfo().receipts.get(0));
         }
         _items.add(item);
+
+        if (item.getFactory() != null) {
+            _factories.add(item);
+        }
+
         _game.notify(observer -> observer.onAddItem(item));
 
         return item;

@@ -203,14 +203,14 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void finish() {
-        if (_isFinish) {
-            _isFinish = true;
-            Log.error("Try to close already closed job");
-            return;
-        }
+        assert !_isFinish;
+
+        _isFinish = true;
+
         if (_character != null) {
             quit(_character);
         }
+
         onFinish();
 
         Game.getInstance().notify(observer -> observer.onJobFinish(this));

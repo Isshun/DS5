@@ -94,7 +94,7 @@ public class JobModule extends GameModule {
 //                addJob(JobHaul.create(consumable)));
 
         // Create craft jobs
-        ModuleHelper.getWorldModule().getItems().stream().filter(item -> item.getFactory() != null && item.getFactory().getJob() == null)
+        ModuleHelper.getWorldModule().getFactories().stream().filter(item -> item.getFactory().getJob() == null && item.getFactory().scan())
                 .forEach(item -> _jobs.add(new CraftJob(item)));
 
         // Remove invalid job

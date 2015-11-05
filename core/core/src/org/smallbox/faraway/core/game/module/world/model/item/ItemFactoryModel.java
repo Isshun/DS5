@@ -133,8 +133,8 @@ public class ItemFactoryModel {
         _job = null;
     }
 
-    // TODO: ne pas utiliser les consomables lock�
-    public void scan() {
+    // TODO: Do not use with locked consumables
+    public boolean scan() {
 //        System.out.println("scan");
 
         long time = System.currentTimeMillis();
@@ -142,7 +142,7 @@ public class ItemFactoryModel {
 
         if (_storageParcel != null && _storageParcel.getConsumable() != null) {
             _message = "Factory is full";
-            return;
+            return false;
         }
 
         // List itemInfo needed in all receipts
@@ -182,7 +182,7 @@ public class ItemFactoryModel {
         }
         if (bestOrder == null) {
             _message = "Missing components";
-            return;
+            return false;
         }
 
         // Get receipt based on components distance
@@ -202,6 +202,7 @@ public class ItemFactoryModel {
 
         _message = "Refilling";
 
+        return true;
 //        System.out.println("total time: " + (System.currentTimeMillis() - time) + "ms");
     }
 }
