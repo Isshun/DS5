@@ -53,6 +53,15 @@ public class Data {
         return _data;
     }
 
+    private boolean hasObject(List<NetworkInfo> objects, String name) {
+        for (ObjectInfo object: objects) {
+            if (object.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private ObjectInfo getObject(List<? extends ObjectInfo> objects, String name) {
         for (ObjectInfo object: objects) {
             if (object.name.equals(name)) {
@@ -71,6 +80,8 @@ public class Data {
     public ItemInfo         getEquipment(String receiptName) { return (ItemInfo) getObject(equipments, receiptName); }
     public String           getString(int hash) { return _data.strings.get(hash); }
     public static String    getString(String str) { return _data.strings.containsKey(str.hashCode()) ? _data.strings.get(str.hashCode()) : str; }
+
+    public boolean          hasNetwork(String name) { return hasObject(networks, name); }
     public boolean          hasString(int hash) { return _data.strings.containsKey(hash); }
 
     public void loadAll() {
@@ -94,6 +105,9 @@ public class Data {
                 .forEach(item -> {
                     if (item.parentName != null) {
                         item.parent = getItemInfo(item.parentName);
+                    }
+                    if (item.networks != null) {
+                        item.networks.forEach(network -> network.network = getNetwork(network.name));
                     }
                     if (item.factory != null && item.factory.receipts != null) {
                         item.factory.receipts.forEach(receipt -> receipt.receipt = getReceipt(receipt.receiptName));
@@ -124,6 +138,8 @@ public class Data {
                 productInfo.inputs.forEach(component -> component.item = getItemInfo(component.itemName));
             }
         }));
+
+        this.networks.forEach(network -> network.items = network.itemNames.stream().map(this::getItemInfo).collect(Collectors.toList()));
 
         this.consumables = this.items.stream().filter(item -> item.isConsumable).collect(Collectors.toList());
     }

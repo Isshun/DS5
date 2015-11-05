@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.module.job;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.CheckCharacterEnergyCritical;
@@ -20,7 +21,9 @@ import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
@@ -99,7 +102,12 @@ public class JobModule extends GameModule {
 
         // Remove invalid job
         _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
+
+        // Create new job
         _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
+
+        // Run auto job
+        _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
     }
 
     public Collection<JobModel> getJobs() { return _jobs; };
@@ -242,8 +250,6 @@ public class JobModule extends GameModule {
      */
     // TODO: one pass + onCheck profession
     private JobModel getBestRegular(CharacterModel character) {
-        int x = character.getParcel().x;
-        int y = character.getParcel().y;
         int bestDistance = Integer.MAX_VALUE;
         JobModel bestJob = null;
 
@@ -251,8 +257,9 @@ public class JobModule extends GameModule {
         for (CharacterTalentExtra.TalentEntry talent: character.getTalents().getAll()) {
             if (bestJob == null) {
                 for (JobModel job: _jobs) {
+                    ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
                     if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
-                        int distance = Math.abs(x - job.getJobParcel().x) + Math.abs(y - job.getJobParcel().y);
+                        int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
                         if (distance < bestDistance && job.check(character)) {
                             bestJob = job;
                             bestDistance = distance;

@@ -3,27 +3,29 @@ package org.smallbox.faraway.core.game.module.job.model;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
+import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
+import org.smallbox.faraway.core.util.Utils;
 
 import java.util.Optional;
 
 public class CraftJob extends JobModel {
-    protected final ItemModel               _item;
-    protected final ItemFactoryModel        _factory;
-    protected final ItemFactoryReceiptModel _receipt;
-    protected ItemSlot                      _slot;
-    protected double                        _current;
+    protected final ItemModel                   _item;
+    protected final ItemFactoryModel            _factory;
+    protected final ItemFactoryReceiptModel     _receipt;
+    protected final ItemFactoryModel.OrderEntry _order;
+    protected ItemSlot                          _slot;
+    protected double                            _current;
 
     public CraftJob(ItemModel item) {
         super(null, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
@@ -35,7 +37,10 @@ public class CraftJob extends JobModel {
         _factory = item.getFactory();
         _factory.setJob(this);
         _receipt = _factory.getActiveReceipt();
-        _label = _receipt.order.receiptGroupInfo.label;
+        _order = _receipt.order;
+        _cost = _order.cost != -1 ? _receipt.order.cost : _receipt.receiptInfo.cost;
+        _auto = _order.auto;
+        _label = _order.receiptGroupInfo.label;
     }
 
     @Override
@@ -51,7 +56,7 @@ public class CraftJob extends JobModel {
     @Override
     protected void onCreate() {
         setStrategy(j -> {
-            if (j.getCharacter().getType().needs.joy != null) {
+            if (j.getCharacter() != null && j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
             }
         });
@@ -69,7 +74,7 @@ public class CraftJob extends JobModel {
             return JobCheckReturn.ABORT;
         }
 
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
+        if (character != null && !PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 
@@ -88,8 +93,6 @@ public class CraftJob extends JobModel {
         // Lock items from current receipt shopping list
         _receipt.getShoppingList().forEach(shoppingItem -> {if (shoppingItem.consumable.getLock() == this) shoppingItem.consumable.lock(null);});
 
-        _cost = _receipt.receiptInfo.cost;
-
         // Move character to first receipt component
         if (_receipt.getNextInput() != null) {
             moveToIngredient(character, _receipt.getNextInput());
@@ -104,17 +107,15 @@ public class CraftJob extends JobModel {
 
         // Work on factory
         if (_receipt != null && _receipt.isFull()) {
-            _current += character.getTalents().get(CharacterTalentExtra.TalentType.CRAFT).work();;
+            _current += character != null ? character.getTalents().get(CharacterTalentExtra.TalentType.CRAFT).work() : 1;
             _progress = _current / _cost;
             _message = "Crafting";
             _factory.setMessage("Crafting");
 
             if (_current < _cost) {
-                Log.debug("Character #" + character.getPersonals().getName() + ": Crafting (" + _progress + ")");
+                Log.debug("Character #" + (character != null ? character.getPersonals().getName() : "auto") + ": Crafting (" + _progress + ")");
                 return JobActionReturn.CONTINUE;
             }
-
-            _factory.craft();
         }
 
         return JobActionReturn.COMPLETE;
@@ -124,6 +125,34 @@ public class CraftJob extends JobModel {
     public void onQuit(CharacterModel character) {
         if (_receipt != null) {
             _receipt.getShoppingList().forEach(shoppingItem -> {if (shoppingItem.consumable.getLock() == this) shoppingItem.consumable.lock(null);});
+        }
+    }
+
+    @Override
+    protected void onComplete() {
+        // Current item is done
+        for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _receipt.receiptInfo.outputs) {
+            // Put consumables on the ground
+            if (_order.output == ItemInfo.FactoryOutputMode.GROUND) {
+                ParcelModel parcel = _item.getParcel();
+                if (_item.getInfo().factory.outputSlots != null) {
+                    parcel = WorldHelper.getParcel(
+                            _item.getParcel().x + _item.getInfo().factory.outputSlots[0],
+                            _item.getParcel().y + _item.getInfo().factory.outputSlots[1]);
+                }
+                System.out.println("Factory: put crafted consumable on ground");
+                ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));
+            }
+
+            // Put consumables on item network
+            if (_order.output == ItemInfo.FactoryOutputMode.NETWORK) {
+                System.out.println("Factory: put crafted consumable in network");
+                if (_item.getNetworkObjects() != null) {
+                    _item.getNetworkObjects().stream()
+                            .filter(networkObject -> networkObject.getNetwork() != null && networkObject.getNetwork().accept(productInfo.item))
+                            .forEach(networkObject -> networkObject.getNetwork().addQuantity(Utils.getRandom(productInfo.quantity)));
+                }
+            }
         }
     }
 

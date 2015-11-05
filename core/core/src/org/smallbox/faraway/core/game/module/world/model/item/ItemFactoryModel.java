@@ -14,19 +14,26 @@ import org.smallbox.faraway.core.util.Utils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.smallbox.faraway.core.data.ItemInfo.*;
+
 /**
  * Created by Alex on 15/10/2015.
  */
 public class ItemFactoryModel {
     public static class OrderEntry {
         public final ReceiptGroupInfo   receiptGroupInfo;
+        public final FactoryOutputMode  output;
         public final boolean            auto;
+        public final int                cost;
         public int                      mode;
         public boolean                  isActive;
 
-        public OrderEntry(ItemInfo.FactoryGroupReceiptInfo receiptGroupInfo) {
+        // Rename this mess
+        public OrderEntry(FactoryGroupReceiptInfo receiptGroupInfo) {
             this.receiptGroupInfo = receiptGroupInfo.receipt;
             this.auto = receiptGroupInfo.auto;
+            this.cost = receiptGroupInfo.cost;
+            this.output = receiptGroupInfo.output;
         }
     }
 
@@ -37,11 +44,11 @@ public class ItemFactoryModel {
     private List<ItemFactoryReceiptModel>   _receiptEntries;
     // TODO: file d'attente de sortie
 //    private List<FactoryShoppingItemModel>  _shoppingList;
-    private final ItemInfo.ItemInfoFactory _info;
+    private final ItemInfoFactory _info;
     private ParcelModel _storageParcel;
     private String                          _message;
 
-    public ItemFactoryModel(ItemModel item, ItemInfo.ItemInfoFactory factoryInfo) {
+    public ItemFactoryModel(ItemModel item, ItemInfoFactory factoryInfo) {
         _item = item;
         _info = factoryInfo;
 
@@ -83,53 +90,15 @@ public class ItemFactoryModel {
         }
     }
 
-    public void craft() {
-        if (_activeReceipt != null) {
-            _message = "Crafting";
-
-            // Current item is done
-            for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _activeReceipt.receiptInfo.outputs) {
-//                ConsumableModel productConsumable = new ConsumableModel(productInfo.item);
-//                productConsumable.setQuantity(Utils.getRandom(productInfo.quantity));
-
-//                // Move to storage
-//                StorageAreaModel bestStorage = ((AreaModule)ModuleManager.getInstance().getModule(AreaModule.class)).getBestStorage(productConsumable);
-//                if (bestStorage != null && productConsumable.getStorage() != bestStorage) {
-//                    ModuleHelper.getJobModule().addJob(StoreJob.create(productConsumable, bestStorage));
-//
-////                _factory.addProduct(productInfo.item, productInfo.quantity);
-//
-//                _storageParcel = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getNearestFreeStorageParcel(productConsumable, character.getParcel());
-//                if (_storageParcel != null) {
-//                    _storage = (StorageAreaModel)_storageParcel.getArea();
-//                    character.setInventory(productConsumable);
-//                    moveToStorage(character, _storageParcel);
-//                    return JobActionReturn.CONTINUE;
-//                } else {
-//                }
-                ParcelModel parcel = _item.getParcel();
-                if (_item.getInfo().factory.outputSlots != null) {
-                    parcel = WorldHelper.getParcel(
-                            _item.getParcel().x + _item.getInfo().factory.outputSlots[0],
-                            _item.getParcel().y + _item.getInfo().factory.outputSlots[1]);
-                }
-                System.out.println("Factory: put crafted consumable on " + parcel.x + "x" + parcel.y);
-                ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));
-            }
-
-//            _activeReceipt.receiptInfo.outputs.forEach(productInfo -> _outputsList.add(new FactoryOutputModel(productInfo.item, productInfo.quantity)));
-
-            _message = "Stand-by";
-            _activeReceipt.clear();
-        }
-    }
-
     public void clear() {
+        _message = "Stand-by";
+
         if (_activeReceipt != null) {
             _activeReceipt.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_item.getParcel(), component.consumable));
             _activeReceipt.clear();
             _activeReceipt = null;
         }
+
         _job = null;
     }
 

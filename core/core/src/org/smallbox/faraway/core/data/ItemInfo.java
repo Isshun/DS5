@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInfo extends ObjectInfo {
-
     public boolean hasCraftAction() {
         if (actions != null) {
             for (ItemInfoAction action : actions) {
@@ -70,10 +69,14 @@ public class ItemInfo extends ObjectInfo {
         public List<ItemProductInfo>    products;
     }
 
+    public enum FactoryOutputMode {GROUND, NETWORK};
+
     public static class FactoryGroupReceiptInfo {
         public final String             receiptName;
         public ReceiptGroupInfo         receipt;
+        public FactoryOutputMode        output;
         public boolean                  auto;
+        public int                      cost;
 
         public FactoryGroupReceiptInfo(String name) {
             this.receiptName = name;
@@ -147,6 +150,12 @@ public class ItemInfo extends ObjectInfo {
         public int                      cost;
     }
 
+    public static class NetworkItemInfo {
+        public String                   name;
+        public NetworkInfo              network;
+        public int                      distance;
+    }
+
     public static class ItemInfoEffects {
         public int                      food;
         public int                      drink;
@@ -217,6 +226,7 @@ public class ItemInfo extends ObjectInfo {
     public ItemInfo                     parent;
     public String                       parentName;
     public boolean                      canSupportRoof;
+    public List<NetworkItemInfo>        networks;
 
     public ItemInfo() {
         width = 1;

@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.game.model;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -29,26 +31,48 @@ public class NetworkModel {
     public void addObject(NetworkObjectModel object) {
         object.setNetwork(this);
         _objects.add(object);
+        _quantity += object.getQuantity();
+        _maxQuantity += object.getMaxQuantity();
+        flush();
     }
 
     public void addObjects(Collection<NetworkObjectModel> objects) {
-        objects.forEach(object -> object.setNetwork(this));
+        objects.forEach(object -> {
+            object.setNetwork(this);
+            _quantity += object.getQuantity();
+            _maxQuantity += object.getMaxQuantity();
+        });
         _objects.addAll(objects);
+        flush();
     }
 
     public boolean isEmpty() {
         return _objects.isEmpty();
     }
 
-    public void flush() {
-        _quantity = 0;
-        _maxQuantity = 0;
-        for (NetworkObjectModel object: _objects) {
-            _quantity += object.getQuantity();
-            _maxQuantity += object.getMaxQuantity();
-        }
-
-        double ratio = _quantity / _maxQuantity;
+    private void flush() {
+        double ratio = _maxQuantity > 0 ? _quantity / _maxQuantity : 0;
         _objects.forEach(object -> object.setQuantity(object.getMaxQuantity() * ratio));
+    }
+
+    public void addQuantity(double quantity) {
+        _quantity = Math.min(_quantity + quantity, _maxQuantity);
+        flush();
+    }
+
+    public void removeQuantity(double quantity) {
+        _quantity = Math.max(_quantity - quantity, 0);
+        flush();
+    }
+
+    public boolean accept(ItemInfo item) {
+        if (_info.items != null) {
+            for (ItemInfo acceptedItem: _info.items) {
+                if (item.instanceOf(acceptedItem)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

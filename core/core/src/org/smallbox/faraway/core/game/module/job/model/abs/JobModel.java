@@ -66,6 +66,7 @@ public abstract class JobModel extends ObjectModel {
     protected JobStrategy       _strategy;
     protected ItemFinder        _finder;
     private boolean             _isCreate;
+    protected boolean           _auto;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
         init();
@@ -136,6 +137,7 @@ public abstract class JobModel extends ObjectModel {
     public boolean                  isCreate() { return _isCreate; }
     public boolean                  isVisible() { return true; }
     public boolean                  isRunning() { return _character != null; }
+    public boolean                  isAuto() { return _auto; }
 
     public void create() {
         _isCreate = true;
@@ -217,6 +219,10 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public boolean check(CharacterModel character) {
+        if (_auto && character != null) {
+            return false;
+        }
+
         JobCheckReturn ret = onCheck(character);
         if (ret == JobCheckReturn.BLOCKED) {
             _fail = MainRenderer.getFrame();

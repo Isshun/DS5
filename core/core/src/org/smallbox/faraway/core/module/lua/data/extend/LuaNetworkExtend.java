@@ -10,6 +10,8 @@ import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 
+import java.util.ArrayList;
+
 /**
  * Created by Alex on 04/11/2015.
  */
@@ -21,9 +23,12 @@ public class LuaNetworkExtend extends LuaExtend {
 
     @Override
     public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
-        NetworkInfo networkInfo = Data.getData().getNetwork(getString(value, "name", null));
+        String name = getString(value, "name", null);
 
-        if (networkInfo == null) {
+        NetworkInfo networkInfo;
+        if (Data.getData().hasNetwork(name)) {
+            networkInfo = Data.getData().getNetwork(name);
+        } else {
             networkInfo = new NetworkInfo();
             Data.getData().networks.add(networkInfo);
         }
@@ -34,6 +39,15 @@ public class LuaNetworkExtend extends LuaExtend {
         LuaValue luaGraphics = value.get("graphics");
         if (!luaGraphics.isnil()) {
             networkInfo.graphics = readGraphic(luaGraphics);
+        } else {
+            networkInfo.graphics = new GraphicInfo("base", "/graphics/missing.png");
+        }
+
+        if (!value.get("items").isnil()) {
+            networkInfo.itemNames = new ArrayList<>();
+            for (int i = 1; i <= value.get("items").length(); i++) {
+                networkInfo.itemNames.add(value.get("items").get(i).toString());
+            }
         } else {
             networkInfo.graphics = new GraphicInfo("base", "/graphics/missing.png");
         }

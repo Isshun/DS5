@@ -103,6 +103,16 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.isDoor = value.get("door").toboolean();
         }
 
+        if (!value.get("networks").isnil()) {
+            itemInfo.networks = new ArrayList<>();
+            for (int i = 1; i <= value.get("networks").length(); i++) {
+                ItemInfo.NetworkItemInfo networkItemInfo = new ItemInfo.NetworkItemInfo();
+                networkItemInfo.name = getString(value.get("networks").get(i), "network", null);
+                networkItemInfo.distance = getInt(value.get("networks").get(i), "distance", 0);
+                itemInfo.networks.add(networkItemInfo);
+            }
+        }
+
         if (!value.get("build").isnil()) {
             itemInfo.build = new ItemInfo.ItemBuildInfo();
             if (!value.get("build").get("cost").isnil()) {
@@ -207,7 +217,9 @@ public class LuaItemExtend extends LuaExtend {
             for (int i = 1; i <= value.get("receipts").length(); i++) {
                 LuaValue luaReceipt = value.get("receipts").get(i);
                 ItemInfo.FactoryGroupReceiptInfo factoryGroupReceiptInfo = new ItemInfo.FactoryGroupReceiptInfo(luaReceipt.get("receipt").toString());
-                factoryGroupReceiptInfo.auto = getBoolean(value, "auto", false);
+                factoryGroupReceiptInfo.auto = getBoolean(luaReceipt, "auto", false);
+                factoryGroupReceiptInfo.cost = getInt(luaReceipt, "cost", -1);
+                factoryGroupReceiptInfo.output = "network".equals(getString(luaReceipt, "output", null)) ? ItemInfo.FactoryOutputMode.NETWORK : ItemInfo.FactoryOutputMode.GROUND;
                 itemInfo.factory.receipts.add(factoryGroupReceiptInfo);
             }
         }

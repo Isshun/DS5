@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.GameModule;
 
 import java.util.*;
@@ -27,7 +28,6 @@ public class NetworkModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        _networks.forEach(NetworkModel::flush);
     }
 
     public Collection<NetworkModel> getNetworks() { return _networks; }
@@ -48,6 +48,26 @@ public class NetworkModule extends GameModule {
     }
 
     @Override
+    public void onAddItem(ItemModel item) {
+        if (item.getNetworkObjects() != null) {
+            _networkObjects.addAll(item.getNetworkObjects());
+
+            // Recreate network for orphan objects
+            collectOrphans();
+        }
+    }
+
+    @Override
+    public void onRemoveItem(ItemModel item) {
+        if (item.getNetworkObjects() != null) {
+            _networkObjects.removeAll(item.getNetworkObjects());
+
+            // Recreate network for orphan objects
+            collectOrphans();
+        }
+    }
+
+    @Override
     public void onAddNetworkObject(NetworkObjectModel networkObject) {
         _networkObjects.add(networkObject);
 
@@ -61,31 +81,11 @@ public class NetworkModule extends GameModule {
 
         // Recreate network for orphan objects
         collectOrphans();
-
-//        NetworkModel network = networkObject.getNetwork();
-//        if (network != null) {
-//            // Remove all object from network
-//            network.getObjects().forEach(object -> object.setNetwork(null));
-//
-//            // Remove network
-//            _networks.remove(network);
-//
-//            // Recreate network for orphan objects
-//            collectOrphans();
-//        }
     }
 
     private void collectOrphans() {
         _networks.clear();
-
-//        // Remove empty network
-//        _networks.removeIf(NetworkModel::isEmpty);
-//
-//        // Add orphans to existing networks
-//        for (NetworkModel network: _networks) {
-//            NetworkObjectModel object = network.getObjects().iterator().next();
-//            explore(network, object.getInfo(), object);
-//        }
+        _networkObjects.forEach(networkObject -> networkObject.setNetwork(null));
 
         // Create new networks for remaining orphans
         boolean networkHasBeenCreated;

@@ -2,11 +2,9 @@ package org.smallbox.faraway.core.game.module.world.model.item;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,15 +13,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ItemModel extends BuildableMapObject {
-    private int                     _targetTemperature = 21;
-    private boolean                 _isFunctional = true;
-    private boolean                 _isActive = true;
-    private int                     _potencyUse;
-    private List<ItemSlot>          _slots;
-    private int                     _nbFreeSlot = -1;
-    private int                     _nbSlot;
-    private ItemFactoryModel        _factory;
-    private int[]                   _storageSlot;
+    private int                         _targetTemperature = 21;
+    private boolean                     _isFunctional = true;
+    private boolean                     _isActive = true;
+    private int                         _potencyUse;
+    private List<ItemSlot>              _slots;
+    private int                         _nbFreeSlot = -1;
+    private int                         _nbSlot;
+    private ItemFactoryModel            _factory;
+    private int[]                       _storageSlot;
+    private List<NetworkObjectModel>    _networkObjects;
 
 
     public ItemModel(ItemInfo info, ParcelModel parcel, int id) {
@@ -40,22 +39,23 @@ public class ItemModel extends BuildableMapObject {
         init(info);
     }
 
-    public int                  getTargetTemperature() { return _targetTemperature; }
-    public int                  getValue() { return 15; }
-    public int                  getPotencyUse() { return _potencyUse; }
-    public List<ItemSlot>       getSlots() { return _slots; }
-    public int                  getNbFreeSlots() { return _nbFreeSlot; }
-    public int                  getNbSlots() { return _nbSlot; }
-    public ItemFactoryModel     getFactory() { return _factory; }
+    public int                      getTargetTemperature() { return _targetTemperature; }
+    public int                      getValue() { return 15; }
+    public int                      getPotencyUse() { return _potencyUse; }
+    public List<ItemSlot>           getSlots() { return _slots; }
+    public int                      getNbFreeSlots() { return _nbFreeSlot; }
+    public int                      getNbSlots() { return _nbSlot; }
+    public ItemFactoryModel         getFactory() { return _factory; }
+    public List<NetworkObjectModel> getNetworkObjects() { return _networkObjects; }
 
-    public boolean              hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
-    public boolean              isFunctional() { return _isFunctional; }
-    public boolean              isActive() { return _isActive; }
-    public boolean              isBed() { return _info.isBed; }
+    public boolean                  hasFreeSlot() { return _nbFreeSlot == -1 || _nbFreeSlot > 0; }
+    public boolean                  isFunctional() { return _isFunctional; }
+    public boolean                  isActive() { return _isActive; }
+    public boolean                  isBed() { return _info.isBed; }
 
-    public void                 setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
-    public void                 setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
-    public void                 setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
+    public void                     setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
+    public void                     setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
+    public void                     setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
     @Override
     public void             setParcel(ParcelModel parcel) {
@@ -64,11 +64,17 @@ public class ItemModel extends BuildableMapObject {
     }
 
     private void init(ItemInfo info) {
+        // Initialize factory extra object
         if (info.factory != null) {
             _factory = new ItemFactoryModel(this, info.factory);
             if (info.factory.outputSlots != null) {
                 _storageSlot = info.factory.outputSlots;
             }
+        }
+
+        // Initialize network extra objects
+        if (info.networks != null) {
+            _networkObjects = info.networks.stream().map(network -> new NetworkObjectModel(network.network)).collect(Collectors.toList());
         }
     }
 
