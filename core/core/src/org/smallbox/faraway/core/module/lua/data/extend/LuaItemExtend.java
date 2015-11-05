@@ -27,6 +27,7 @@ public class LuaItemExtend extends LuaExtend {
             case "resource":
             case "structure":
             case "consumable":
+            case "network_item":
                 return true;
         }
         return false;
@@ -91,13 +92,9 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.height = 1;
         }
 
-        if (!value.get("walkable").isnil()) {
-            itemInfo.isWalkable = value.get("walkable").toboolean();
-        }
-
-        if (!value.get("health").isnil()) {
-            itemInfo.health = value.get("health").toint();
-        }
+        itemInfo.isWalkable = getBoolean(value, "walkable", false);
+        itemInfo.health = getInt(value, "health", 1);
+        itemInfo.networkName = getString(value, "network", null);
 
         if (!value.get("door").isnil()) {
             itemInfo.isDoor = value.get("door").toboolean();
@@ -183,6 +180,8 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.canSupportRoof = !itemInfo.isWalkable || itemInfo.isDoor;
         } else if ("item".equals(itemInfo.type)) {
             itemInfo.isUserItem = true;
+        } else if ("network_item".equals(itemInfo.type)) {
+            itemInfo.isNetworkItem = true;
         } else if ("resource".equals(itemInfo.type)) {
             itemInfo.isResource = true;
             itemInfo.isRock = itemInfo.actions != null && "mine".equals(itemInfo.actions.get(0).type);

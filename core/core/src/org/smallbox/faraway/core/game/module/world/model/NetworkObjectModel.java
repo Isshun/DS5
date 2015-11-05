@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
 import org.smallbox.faraway.core.GraphicInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo.NetworkItemInfo;
 import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
@@ -8,22 +10,27 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 /**
  * Created by Alex on 04/11/2015.
  */
-public class NetworkObjectModel {
-    private final ItemModel     _item;
-    private final NetworkInfo   _info;
-    private boolean             _isComplete;
-    private ParcelModel         _parcel;
-    private int                 _health;
-    private NetworkModel        _network;
-    private double              _quantity;
+public class NetworkObjectModel extends MapObjectModel {
+    private final ItemModel         _item;
+    private final ItemInfo          _info;
+    private final NetworkInfo       _networkInfo;
+    private boolean                 _isComplete;
+    private ParcelModel             _parcel;
+    private int                     _health;
+    private NetworkModel            _network;
+    private double                  _quantity;
 
-    public NetworkObjectModel(NetworkInfo info) {
-        _info = info;
+    public NetworkObjectModel(ItemInfo itemInfo, NetworkInfo networkInfo) {
+        super(itemInfo);
+        _info = itemInfo;
+        _networkInfo = networkInfo;
         _item = null;
     }
 
-    public NetworkObjectModel(NetworkInfo info, ItemModel item) {
-        _info = info;
+    public NetworkObjectModel(ItemInfo itemInfo, NetworkInfo networkInfo, ItemModel item) {
+        super(itemInfo);
+        _info = itemInfo;
+        _networkInfo = networkInfo;
         _item = item;
     }
 
@@ -34,12 +41,13 @@ public class NetworkObjectModel {
 
     public NetworkModel getNetwork() { return _network; }
     public ParcelModel  getParcel() { return _parcel; }
-    public NetworkInfo  getInfo() { return _info; }
-    public GraphicInfo  getGraphic() { return _info.graphics; }
+    public NetworkInfo  getNetworkInfo() { return _networkInfo; }
+    public ItemInfo     getInfo() { return _info; }
+    public GraphicInfo  getGraphic() { return _info.graphics != null ? _info.graphics.get(0) : null; }
     public int          getHealth() { return _health; }
     public int          getMaxHealth() { return _info.health; }
     public double       getQuantity() { return _quantity; }
-    public int          getMaxQuantity() { return _info.quantity; }
+    public int          getMaxQuantity() { return 10; }
 
     public boolean      isComplete() { return _isComplete; }
 }

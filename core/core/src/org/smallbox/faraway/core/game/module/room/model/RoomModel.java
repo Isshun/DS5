@@ -45,7 +45,7 @@ public class RoomModel {
     }
 
     public void addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
-    public void addParcels(Collection<ParcelModel> parcels) { _parcels.addAll(parcels); }
+    public void addParcels(Collection<ParcelModel> parcels) { parcels.forEach(parcel -> parcel.setRoom(this)); _parcels.addAll(parcels); }
     public void setAutoName(String autoName) { _autoName = autoName; }
     public List<ItemModel> getHeatItems() { return _heatItems; }
     public List<ItemModel> getColdItems() { return _coldItems; }

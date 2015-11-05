@@ -88,11 +88,6 @@ public class LuaGameModel {
         UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, itemInfo);
     }
 
-    public void setBuild(NetworkInfo networkInfo) {
-        System.out.println("Set build from lua: " + networkInfo.name);
-        UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, networkInfo);
-    }
-
     public void clearAction() {
         UserInterface.getInstance().getInteraction().clean();
     }

@@ -219,6 +219,7 @@ public class ItemInfo extends ObjectInfo {
     public boolean                      isDrink;
     public boolean                      isCloseRoom;
     public boolean                      isFloor;
+    public boolean                      isNetworkItem;
     public ItemBuildInfo                build;
     public int                          health = 1;
     public int                          power;
@@ -234,6 +235,8 @@ public class ItemInfo extends ObjectInfo {
     public String                       parentName;
     public boolean                      canSupportRoof;
     public List<NetworkItemInfo>        networks;
+    public String                       networkName;
+    public NetworkInfo                  network;
 
     public ItemInfo() {
         width = 1;

@@ -109,6 +109,9 @@ public class Data {
                     if (item.networks != null) {
                         item.networks.forEach(network -> network.network = getNetwork(network.name));
                     }
+                    if (item.networkName != null) {
+                        item.network = getNetwork(item.networkName);
+                    }
                     if (item.factory != null && item.factory.receipts != null) {
                         item.factory.receipts.forEach(receipt -> receipt.receipt = getReceipt(receipt.receiptName));
                     }

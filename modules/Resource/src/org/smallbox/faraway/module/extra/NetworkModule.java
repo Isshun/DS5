@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.item.NetworkConnectionModel;
 import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.util.Utils;
 
 import java.util.*;
 
@@ -35,21 +34,6 @@ public class NetworkModule extends GameModule {
     }
 
     public Collection<NetworkModel> getNetworks() { return _networks; }
-
-    private void explore(NetworkModel network, NetworkInfo info, NetworkObjectModel object) {
-        if (object.getInfo() == info && !network.contains(object)) {
-            network.addObject(object);
-            if (object.getParcel() != null && object.getParcel().getConnections() != null) {
-                for (Connection<ParcelModel> connection: object.getParcel().getConnections()) {
-                    if (connection.getToNode().getNetworkObjects() != null) {
-                        for (NetworkObjectModel o: connection.getToNode().getNetworkObjects()) {
-                            explore(network, info, o);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     public void onAddItem(ItemModel item) {
@@ -101,13 +85,26 @@ public class NetworkModule extends GameModule {
             networkHasBeenCreated = false;
             for (NetworkObjectModel object : _networkObjects) {
                 if (object.getNetwork() == null) {
-                    NetworkModel network = new NetworkModel(object.getInfo());
-                    explore(network, object.getInfo(), object);
+                    NetworkModel network = new NetworkModel(object.getNetworkInfo());
+                    explore(network, object.getNetworkInfo(), object.getParcel());
                     _networks.add(network);
                     networkHasBeenCreated = true;
                 }
             }
         } while (networkHasBeenCreated);
+    }
+
+    private void explore(NetworkModel network, NetworkInfo networkInfo, ParcelModel parcel) {
+        NetworkObjectModel object = parcel.getNetworkObject(networkInfo);
+        if (object != null && !network.contains(object)) {
+            network.addObject(object);
+
+            ParcelModel targetParcel;
+            if ((targetParcel = WorldHelper.getParcel(parcel.x + 1, parcel.y)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x - 1, parcel.y)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y + 1)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y - 1)) != null) explore(network, networkInfo, targetParcel);
+        }
     }
 
     private void connectItems() {

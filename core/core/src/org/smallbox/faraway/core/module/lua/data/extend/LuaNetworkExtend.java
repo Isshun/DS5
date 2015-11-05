@@ -36,43 +36,11 @@ public class LuaNetworkExtend extends LuaExtend {
         networkInfo.name = getString(value, "name", null);
         networkInfo.label = getString(value, "label", null);
 
-        LuaValue luaGraphics = value.get("graphics");
-        if (!luaGraphics.isnil()) {
-            networkInfo.graphics = readGraphic(luaGraphics);
-        } else {
-            networkInfo.graphics = new GraphicInfo("base", "/graphics/missing.png");
-        }
-
         if (!value.get("items").isnil()) {
             networkInfo.itemNames = new ArrayList<>();
             for (int i = 1; i <= value.get("items").length(); i++) {
                 networkInfo.itemNames.add(value.get("items").get(i).toString());
             }
-        } else {
-            networkInfo.graphics = new GraphicInfo("base", "/graphics/missing.png");
         }
-    }
-
-    private GraphicInfo readGraphic(LuaValue luaGraphic) throws DataExtendException {
-        GraphicInfo graphicInfo;
-        if (!luaGraphic.get("path").isnil()) {
-            String path = luaGraphic.get("path").toString();
-            graphicInfo = new GraphicInfo(
-                    path.substring(1, path.indexOf(']')),
-                    path.substring(path.indexOf(']') + 1, path.length())
-            );
-        } else {
-            throw new DataExtendException(DataExtendException.Type.MANDATORY, "graphics.path");
-        }
-        if (!luaGraphic.get("type").isnil()) {
-            graphicInfo.type = GraphicInfo.Type.valueOf(luaGraphic.get("type").toString().toUpperCase());
-        }
-        if (!luaGraphic.get("x").isnil()) {
-            graphicInfo.x = luaGraphic.get("x").toint();
-        }
-        if (!luaGraphic.get("y").isnil()) {
-            graphicInfo.y = luaGraphic.get("y").toint();
-        }
-        return graphicInfo;
     }
 }

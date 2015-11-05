@@ -105,7 +105,7 @@ public class RoomModule extends GameModule implements GameObserver {
             _roomList.removeIf(RoomModel::isEmpty);
         }
 
-        _roomList.forEach(room -> makeNeighborhood(room));
+        _roomList.forEach(this::makeNeighborhood);
 
         printInfo("RoomModule: refresh done " + (System.currentTimeMillis() - time));
     }

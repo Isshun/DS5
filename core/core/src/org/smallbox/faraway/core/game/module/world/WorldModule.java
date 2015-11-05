@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo.NetworkItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
@@ -200,6 +201,10 @@ public class WorldModule extends GameModule {
             if (itemInfo.isResource) {
                 return putResource(parcel, itemInfo, data);
             }
+
+            if (itemInfo.isNetworkItem) {
+                return putNetworkItem(parcel, itemInfo, data, complete);
+            }
         }
         return null;
     }
@@ -262,9 +267,9 @@ public class WorldModule extends GameModule {
         return null;
     }
 
-    public NetworkObjectModel putNetwork(ParcelModel parcel, NetworkInfo networkInfo, boolean complete) {
-        if (!parcel.hasNetwork(networkInfo)) {
-            NetworkObjectModel networkObject = new NetworkObjectModel(networkInfo);
+    public NetworkObjectModel putNetworkItem(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+        if (!parcel.hasNetwork(itemInfo.network)) {
+            NetworkObjectModel networkObject = new NetworkObjectModel(itemInfo, itemInfo.network);
             networkObject.setComplete(complete);
             moveNetworkToParcel(parcel, networkObject);
             _networks.add(networkObject);

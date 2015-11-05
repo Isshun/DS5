@@ -143,7 +143,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
             return null;
         }
         for (NetworkObjectModel networkObject: _content.networks) {
-            if (networkObject.getInfo() == networkInfo) {
+            if (networkObject.getNetworkInfo() == networkInfo) {
                 return networkObject;
             }
         }

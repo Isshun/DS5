@@ -75,7 +75,6 @@ public class UserInteraction {
     private String                      _selectedPlan;
     private ItemInfo                    _selectedItemInfo;
     private AreaType                    _selectedAreaType;
-    private NetworkInfo                 _selectedNetworkInfo;
 
     UserInteraction() {
         _startPressX = 0;
@@ -89,7 +88,7 @@ public class UserInteraction {
     public Action  getAction() { return _action; }
 
     public void    planBuild(int startX, int startY, int toX, int toY) {
-        if (_selectedItemInfo == null && _selectedNetworkInfo == null) {
+        if (_selectedItemInfo == null) {
             return;
         }
 
@@ -109,9 +108,6 @@ public class UserInteraction {
 
                     if (_selectedItemInfo != null) {
                         ModuleHelper.getWorldModule().putObject(parcel, _selectedItemInfo, 0);
-                    }
-                    if (_selectedNetworkInfo != null) {
-                        ModuleHelper.getWorldModule().putNetwork(parcel, _selectedNetworkInfo, false);
                     }
                 }
             }
@@ -275,12 +271,6 @@ public class UserInteraction {
         UserInterface.getInstance().setCursor("base.cursor.build");
         _action = action;
         _selectedItemInfo = info;
-    }
-
-    public void set(Action action, NetworkInfo networkInfo) {
-        UserInterface.getInstance().setCursor("base.cursor.build");
-        _action = action;
-        _selectedNetworkInfo = networkInfo;
     }
 
     public void set(Action action, AreaType areaType) {

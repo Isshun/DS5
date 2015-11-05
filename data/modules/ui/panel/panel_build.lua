@@ -11,13 +11,37 @@ data:extend({
             game.ui:findById("panel_build"):setVisible(false)
         end},
         { type = "label", text = "Build", text_size = 28, padding = 10, position = {40, 0}},
-        { type = "grid", id="grid_categories", position = {10, 40}, columns = 4, column_width = 100, row_height = 40 },
-        { type = "grid", id="list_items", position = {10, 0}, columns = 5, column_width = 78, row_height = 95 },
+        { type = "list", position = {10, 50}, views = {
+            { type = "grid", id="grid_main_categories", columns = 4, column_width = 100, row_height = 40, margin = {0, 0, 20, 0}},
+            { type = "grid", id="grid_categories", columns = 4, column_width = 100, row_height = 40, margin = {0, 0, 20, 0}},
+            { type = "grid", id="list_items", columns = 5, column_width = 78, row_height = 95 },
+        }},
     },
 
     on_load = function(view)
-        local list = view:findById("grid_categories")
-        list:removeAllViews()
+        local strategy;
+
+        local grid_main_categories = view:findById("grid_main_categories")
+        local grid_categories = view:findById("grid_categories")
+        local grid_items = view:findById("list_items")
+
+        grid_main_categories:removeAllViews()
+        local main_categories = {
+            {"Structures", function(item) return item.isStructure end },
+            {"Items", function(item) return item.isUserItem end },
+            {"Networks", function(item) return item.isNetworkItem end },
+        }
+        for key, value in ipairs(main_categories) do
+            local bt_main_category = game.ui:createLabel()
+            bt_main_category:setSize(95, 36)
+            bt_main_category:setText(value[1])
+            bt_main_category:setTextSize(18)
+            bt_main_category:setBackgroundColor(0x778855)
+            bt_main_category:setOnClickListener(function()
+                open_main_category(grid_categories, grid_items, value[2])
+            end)
+            grid_main_categories:addView(bt_main_category)
+        end
 
         local categories = {}
         for i = 0, data.items:size() - 1 do
@@ -30,28 +54,6 @@ data:extend({
                 table.insert(categories[index], item)
             end
         end
-
-        categories["network"] = {}
-        for i = 0, data.networks:size() - 1 do
-            table.insert(categories["network"], data.networks:get(i))
-        end
-
-        local nb_categories = 0
-        for key, value in pairs(categories) do
-            local bt_category = game.ui:createLabel()
-            bt_category:setSize(95, 36)
-            bt_category:setText(key)
-            bt_category:setTextSize(18)
-            bt_category:setBackgroundColor(0x885577)
-            bt_category:setOnClickListener(function(v)
-                openCategory(view:findById("list_items"), key, value)
-            end)
-            list:addView(bt_category)
-            nb_categories = nb_categories + 1
-        end
-
-        view:findById("list_items"):setPosition(10, 40 + math.floor(42 * (nb_categories / 4)))
-        print(nb_categories)
     end,
 
     on_event = function(view, event , data)
@@ -69,10 +71,49 @@ data:extend({
     end
 })
 
-function openCategory(list, category, items)
-    list:removeAllViews()
-    list:setVisible(true)
+function open_main_category(grid_categories, grid_items, strategy)
+    -- Get categories for this main category
+    local categories = {}
+    local iterator = data.items:iterator()
+    while iterator:hasNext() do
+        local item = iterator:next()
+        local category = item.category and item.category or "default"
+        if strategy(item) and not table.contains(categories, category) then
+            table.insert(categories, category)
+        end
+    end
 
+    -- Create grid
+    grid_categories:removeAllViews()
+    grid_categories:setVisible(true)
+    for key, value in pairs(categories) do
+        local bt_category = game.ui:createLabel()
+        bt_category:setSize(95, 36)
+        bt_category:setText(value)
+        bt_category:setTextSize(18)
+        bt_category:setBackgroundColor(0x885577)
+        bt_category:setOnClickListener(function(v)
+            open_category(grid_items, strategy, value)
+        end)
+        grid_categories:addView(bt_category)
+    end
+
+end
+
+function open_category(grid_items, strategy, category)
+    -- Get items for this category
+    local items = {}
+    local iterator = data.items:iterator()
+    while iterator:hasNext() do
+        local item = iterator:next()
+        if strategy(item) and category == (item.category and item.category or "default") then
+            table.insert(items, item)
+        end
+    end
+
+    -- Create items grid
+    grid_items:removeAllViews()
+    grid_items:setVisible(true)
     for key, value in pairs(items) do
         local bt_item = game.ui:createView()
         bt_item:setSize(68, 90)
@@ -97,6 +138,15 @@ function openCategory(list, category, items)
         label:setPosition(0, 50)
         bt_item:addView(label)
 
-        list:addView(bt_item)
+        grid_items:addView(bt_item)
     end
+end
+
+function table.contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
+            return true
+        end
+    end
+    return false
 end
