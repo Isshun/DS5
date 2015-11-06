@@ -22,7 +22,6 @@ import java.util.List;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
-
     public List<View> _views = new ArrayList<>();
 
     protected boolean   _isAlignLeft = true;
@@ -33,12 +32,13 @@ public abstract class View {
     protected int         _marginRight;
     protected int         _marginBottom;
     protected int         _marginLeft;
-    private UIAdapter _adapter;
+    private UIAdapter   _adapter;
     private int         _objectId;
     private LuaModule   _module;
     protected int       _hash;
     protected int       _fixedWidth = -1;
     protected int       _fixedHeight = -1;
+    private String      _name;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -85,6 +85,10 @@ public abstract class View {
         _marginRight = right;
         _marginBottom = bottom;
         _marginLeft = left;
+    }
+
+    public void setName(String name) {
+        _name = name;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };

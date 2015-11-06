@@ -88,6 +88,10 @@ public class LuaGameModel {
         UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, itemInfo);
     }
 
+    public void quit() {
+        GameManager.getInstance().stopGame();
+    }
+
     public void clearAction() {
         UserInterface.getInstance().getInteraction().clean();
     }

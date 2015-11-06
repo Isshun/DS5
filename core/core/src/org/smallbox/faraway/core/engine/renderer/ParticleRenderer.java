@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.WeatherInfo;
 
@@ -17,8 +18,11 @@ public class ParticleRenderer extends BaseRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_effect != null) {
-            long time = System.currentTimeMillis();
-            _effect.update(Gdx.graphics.getDeltaTime());
+//            long time = System.currentTimeMillis();
+
+            if (!Game.getInstance().isPaused()) {
+                _effect.update(Gdx.graphics.getDeltaTime());
+            }
             renderer.getBatch().begin();
             _effect.draw(renderer.getBatch());
             renderer.getBatch().end();

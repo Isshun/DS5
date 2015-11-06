@@ -211,6 +211,10 @@ public class LuaModuleManager implements GameObserver {
         _luaLoadListeners.add(luaLoadListener);
     }
 
+    private void broadcastToLuaModules(int eventId) {
+        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, null));
+    }
+
     private void broadcastToLuaModules(int eventId, Object data) {
         LuaValue value = CoerceJavaToLua.coerce(data);
         _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
@@ -260,6 +264,8 @@ public class LuaModuleManager implements GameObserver {
     public void onDayChange(int day) { broadcastToLuaModules(LuaEventsModel.on_day_change, day);}
     public void onSpeedChange(int speed) { broadcastToLuaModules(LuaEventsModel.on_speed_change, speed);}
     public void onBindingPress(BindingInfo binding) { broadcastToLuaModules(LuaEventsModel.on_binding, binding);}
+    public void onGamePaused() { broadcastToLuaModules(LuaEventsModel.on_game_paused);}
+    public void onGameResume() {broadcastToLuaModules(LuaEventsModel.on_game_resume); }
 
 //    default void onGameStart() {}
 //    default void onLog(String tag, String message) {}

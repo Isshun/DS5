@@ -1,9 +1,8 @@
-mode = 1
 character = nil
 
 data:extend({
     type = "view",
-    name = "ui-test",
+    name = "base.ui.info_character",
     position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,
@@ -14,32 +13,21 @@ data:extend({
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 26}, padding = 10, size = {100, 40}},
 
         { type = "grid", position = {10, 72}, columns = 2, column_width = 190, row_height = 60, views = {
-            { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, background = 0x5588bb, size = {180, 50}, on_click = "mode = 1", on_refresh = function(view)
-                view:setBackgroundColor(mode == 1 and 0x4be7da or 0x689999)
-            end},
-            { type = "label", id = "bt_inventory", text = "Inventory", text_size = 20, padding = 18, background = 0x5588bb, size = {180, 50}, on_click = "mode = 2", on_refresh = function(view)
-                view:setBackgroundColor(mode == 2 and 0x4be7da or 0x689999)
-            end},
-            { type = "label", id = "bt_info", text = "Info", text_size = 20, padding = 18, background = 0x5588bb, size = {180, 50}, on_click = "mode = 3", on_refresh = function(view)
-                view:setBackgroundColor(mode == 3 and 0x4be7da or 0x689999)
-            end},
-            { type = "view", id = "bt_health", background = 0x5588bb, size = {180, 50}, on_click = "mode = 4", views = {
+            { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, size = {180, 50}, on_click = function() open_page("bt_status", "page_status") end},
+            { type = "label", id = "bt_inventory", text = "Inventory", text_size = 20, padding = 18, size = {180, 50}, on_click = function() open_page("bt_inventory", "page_inventory") end},
+            { type = "label", id = "bt_info", text = "Info", text_size = 20, padding = 18, size = {180, 50}, on_click = function() open_page("bt_info", "page_info") end},
+            { type = "view", id = "bt_health", background = 0x5588bb, size = {180, 50}, on_click = function() open_page("bt_health", "page_health") end, views = {
                 { type = "label", text = "Health", text_size = 20, padding = 18 },
                 { type = "label", text = "!", id = "bt_health_warning", text_size = 26, padding = 9, size = {32, 32}, position = {138, 9} },
-                --                { type = "image", id = "bt_health_image", position = {136, 8}, size = {32, 32}},
-            }, on_refresh = function(view)
-                view:setBackgroundColor(mode == 4 and 0x4be7da or 0x689999)
-            end},
+            }},
         }},
 
         -- Status page
         {
             type = "list",
+            id = "page_status",
             position = {10, 200},
             size = {400, 400},
-            on_refresh = function(view)
-                view:setVisible(mode == 1)
-            end,
             views = {
                 { type = "label", text = "Current occupation", text_size = 28, position = {0, 5}},
                 { type = "label", id = "lb_job", text_size = 18, position = {0, 15}, size = {-1, 28}},
@@ -96,11 +84,9 @@ data:extend({
         -- Inventory page
         {
             type = "view",
+            id = "page_inventory",
             position = {0, 200},
             size = {400, 400},
-            on_refresh = function(view)
-                view:setVisible(mode == 2)
-            end,
             views = {
                 { type = "label", id = "lb_inventory", position = {0, 10}, text_size = 14},
                 { type = "grid", position = {0, 24}, columns = 10, column_width = 32, row_height = 32, views = {
@@ -139,11 +125,9 @@ data:extend({
         -- Info page
         {
             type = "view",
+            id = "page_info",
             position = {0, 200},
             size = {400, 400},
-            on_refresh = function(view)
-                view:setVisible(mode == 3)
-            end,
             views = {
                 { type = "list", position = {10, 16}, views = {
                     { type = "label", text = "Talents", position = {0, 10}, text_size = 24},
@@ -156,25 +140,26 @@ data:extend({
             }
         },
 
-        -- Heal page
-        { type = "view", position = {0, 200}, size = {400, 400}, on_refresh = function(view)
-            view:setVisible(mode == 4)
-        end,
+        -- Health page
+        {
+            type = "view",
+            id = "page_health",
+            position = {0, 200},
+            size = {400, 400},
             views = {
                 { type = "list", position = {10, 16}, views = {
                     { type = "label", text = "Diseases", position = {0, 10}, text_size = 24},
                     { type = "list", id = "list_diseases", position = {0, 20}},
                 }},
-            }},
+            }
+        },
     },
 
-    on_load =
-    function(view)
-        mode = 3
+    on_load = function()
+        open_page("bt_status", "page_status")
     end,
 
-    on_event =
-    function(view, event, data)
+    on_event = function(view, event, data)
         if event == game.events.on_key_press and data == "ESCAPE" then
             game.ui:clearSelection();
             view:setVisible(false)
@@ -195,13 +180,10 @@ data:extend({
             character = data;
 
             display_talents(view)
-
-            mode = 1
         end
     end,
 
-    on_refresh =
-    function(view)
+    on_refresh = function(view)
         if character ~= nil then
             local job = character:getJob()
             if job then
@@ -210,12 +192,12 @@ data:extend({
                 view:findById("lb_job"):setText("No job")
             end
 
---            if job and job:getMessage() then
---                view:findById("lb_job_detail"):setText(job:getMessage())
---                view:findById("lb_job_detail"):setVisible(true)
---            else
---                view:findById("lb_job_detail"):setVisible(false)
---            end
+            --            if job and job:getMessage() then
+            --                view:findById("lb_job_detail"):setText(job:getMessage())
+            --                view:findById("lb_job_detail"):setVisible(true)
+            --            else
+            --                view:findById("lb_job_detail"):setVisible(false)
+            --            end
 
             display_buffs(view, character)
             display_diseases(view, character)
@@ -348,4 +330,18 @@ end
 function displayNeed(view, lb_res_id, gauge_res_id, label, value)
     view:findById(lb_res_id):setDashedString(label, math.floor(value), 22)
     view:findById(gauge_res_id):setTextureRect(0, 80, math.floor(value * 180 / 100 / 10) * 10, 16)
+end
+
+function open_page(bt_name, page_name)
+    local panel = game.ui:findById("base.ui.info_character")
+
+    for key, value in ipairs({"page_status", "page_inventory", "page_info", "page_health"}) do
+        panel:findById(value):setVisible(false)
+    end
+    panel:findById(page_name):setVisible(true)
+
+    for key, value in ipairs({"bt_status", "bt_inventory", "bt_info", "bt_health"}) do
+        panel:findById(value):setBackgroundColor(0x689999)
+    end
+    panel:findById(bt_name):setBackgroundColor(0x4be7da)
 end

@@ -66,4 +66,6 @@ public interface GameObserver {
     default void onBindingPress(BindingInfo binding) {}
     default void onAddNetworkObject(NetworkObjectModel networkObject) {}
     default void onRemoveNetworkObject(NetworkObjectModel networkObject) {}
+    default void onGamePaused() {}
+    default void onGameResume() {}
 }

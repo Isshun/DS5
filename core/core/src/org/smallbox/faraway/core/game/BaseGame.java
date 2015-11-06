@@ -27,7 +27,7 @@ public abstract class BaseGame {
     private int                     _frame;
     private int                     _renderTime;
     private double                  animationProgress;
-    private boolean                 _paused;
+    protected boolean                 _paused;
 
     public boolean isPaused() {
         return _paused;

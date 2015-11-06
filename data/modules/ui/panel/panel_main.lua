@@ -49,6 +49,10 @@ data:extend({
         },
     },
 
+    on_load = function(view)
+        view:findById("view_resource"):setVisible(game:getModule("ResourceModule"))
+    end,
+
     on_refresh = function(view)
         local network_module = game:getModule("NetworkModule")
         if network_module then
@@ -65,9 +69,6 @@ data:extend({
         if resource_module then
             view:findById("lb_resource_food"):setText(resource_module:getFoodCount());
             view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.wood_log"));
-            view:findById("view_resource"):setVisible(true)
-        else
-            view:findById("view_resource"):setVisible(false)
         end
     end,
 

@@ -48,6 +48,11 @@ public class ApplicationShortcutManager {
         new ApplicationShortcut(GameEventListener.Key.F4, GameEventListener.Modifier.ALT, () -> {
             Application.getInstance().setRunning(false);
         }),
+        new ApplicationShortcut(GameEventListener.Key.ESCAPE, GameEventListener.Modifier.NONE , () -> {
+            if (UserInterface.getInstance().findById("panel_main").isVisible() && UserInterface.getInstance().getSelector().isClear()) {
+                GameManager.getInstance().setPause(!Game.getInstance().isPaused());
+            }
+        }),
     };
 
     public static void onKeyPress(GameEventListener.Key key, GameEventListener.Modifier modifier) {

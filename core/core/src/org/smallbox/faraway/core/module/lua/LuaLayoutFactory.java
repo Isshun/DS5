@@ -114,6 +114,13 @@ public class LuaLayoutFactory {
             LuaValue id = value.get("id");
             if (!id.isnil()) {
                 view.setId(id.toString().hashCode());
+                view.setName(id.toString());
+            }
+
+            LuaValue name = value.get("name");
+            if (!name.isnil()) {
+                view.setId(name.toString().hashCode());
+                view.setName(name.toString());
             }
 
             LuaValue visible = value.get("visible");
@@ -213,11 +220,14 @@ public class LuaLayoutFactory {
 
             LuaValue onRefresh = value.get("on_refresh");
             if (!onRefresh.isnil()) {
+                final View finalView = view;
                 luaModuleManager.addLuaRefreshListener(() -> {
-                    try {
-                        onRefresh.call(luaView);
-                    } catch (LuaError e) {
-                        e.printStackTrace();
+                    if (finalView.isVisible()) {
+                        try {
+                            onRefresh.call(luaView);
+                        } catch (LuaError e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

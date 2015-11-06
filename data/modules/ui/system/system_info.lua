@@ -56,24 +56,17 @@ data:extend({
 
         -- Temperature change
         if event == game.events.on_temperature_change then
-            if data then
-                local value = (math.floor(data * 10) / 10)
+            local value = (math.floor(data * 10) / 10)
 
-                local img_offset = (value - last_temperature_value) < 0
-                        and "[base]/graphics/icons/temperature_down_1.png"
-                        or "[base]/graphics/icons/temperature_up_1.png"
+            local img_offset = (value - last_temperature_value) < 0
+                    and "[base]/graphics/icons/temperature_down_1.png"
+                    or "[base]/graphics/icons/temperature_up_1.png"
 
-                view:findById("lb_temperature"):setVisible(true)
-                view:findById("lb_temperature"):setText((value < 0 and "" or " ") .. ((value <= -10 or value >= 10) and "" or " ") .. value .. (value == math.floor(value) and ".0" or "") .. "�")
-                view:findById("img_temperature"):setImage("[base]/graphics/icons/temperature_medium.png")
-                view:findById("img_temperature_offset"):setImage(img_offset)
+            view:findById("lb_temperature"):setText((value < 0 and "" or " ") .. ((value <= -10 or value >= 10) and "" or " ") .. value .. (value == math.floor(value) and ".0" or "") .. "�")
+            view:findById("img_temperature"):setImage("[base]/graphics/icons/temperature_medium.png")
+            view:findById("img_temperature_offset"):setImage(img_offset)
 
-                last_temperature_value = value
-            else
-                view:findById("lb_temperature"):setVisible(false)
-                view:findById("img_temperature"):setVisible(false)
-                view:findById("img_temperature_offset"):setVisible(false)
-            end
+            last_temperature_value = value
         end
     end
 })

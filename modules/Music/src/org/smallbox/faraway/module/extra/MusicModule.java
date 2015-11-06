@@ -8,9 +8,11 @@ import org.smallbox.faraway.core.module.GameModule;
  * Created by Alex on 05/07/2015.
  */
 public class MusicModule extends GameModule {
+    private Music music;
+
     @Override
     protected void onLoaded() {
-        Music music = Gdx.audio.newMusic(Gdx.files.internal("data/musics/Clean Soul.mp3"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("data/musics/Clean Soul.mp3"));
         music.play();
         music.setOnCompletionListener(Music::dispose);
     }
@@ -22,5 +24,19 @@ public class MusicModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
+    }
+
+    @Override
+    public void onGamePaused() {
+        if (music != null) {
+            music.pause();
+        }
+    }
+
+    @Override
+    public void onGameResume() {
+        if (music != null) {
+            music.play();
+        }
     }
 }

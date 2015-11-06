@@ -28,6 +28,8 @@ public class LuaEventsModel {
     public static final int on_speed_change = 20;
     public static final int on_binding = 21;
     public static final int on_network_selected = 22;
+    public static final int on_game_paused = 23;
+    public static final int on_game_resume = 24;
 
     public void send(String tag) {
         Game.getInstance().notify(observer -> observer.onCustomEvent(tag, null));

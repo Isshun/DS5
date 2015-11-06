@@ -103,4 +103,12 @@ public class GameManager {
     public boolean isPaused() {
         return _game != null && _game.isPaused();
     }
+
+    public void setPause(boolean pause) {
+        _game.setPaused(pause);
+    }
+
+    public void stopGame() {
+        _game = null;
+    }
 }

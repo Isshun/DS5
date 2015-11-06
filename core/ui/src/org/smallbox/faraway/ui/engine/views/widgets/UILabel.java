@@ -172,18 +172,6 @@ public class UILabel extends View {
         return _string;
     }
 
-    public void setShortcut(int i) {
-        //TODO
-    }
-
-    public void setTextPadding(int i, int i1) {
-        //TODO
-    }
-
-    public void setIconPadding(int i, int i1) {
-        //TODO
-    }
-
     @Override
     public void init() {
     }

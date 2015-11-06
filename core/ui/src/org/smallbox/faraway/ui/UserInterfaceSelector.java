@@ -21,6 +21,16 @@ import org.smallbox.faraway.core.util.Constant;
 public class UserInterfaceSelector {
     private ParcelModel _lastMoveParcel;
 
+    public boolean isClear() {
+        return _selectedArea == null
+                && _selectedItem == null
+                && _selectedResource == null
+                && _selectedStructure == null
+                && _selectedParcel == null
+                && _selectedCharacter == null
+                && _selectedConsumable == null;
+    }
+
     public interface SelectStrategy {
         boolean onSelect(CharacterModel character, ParcelModel parcel, AreaModel area);
     }

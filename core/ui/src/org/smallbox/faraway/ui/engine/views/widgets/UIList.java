@@ -18,7 +18,7 @@ public class UIList extends View {
 
         int offset = 0;
         for (View subView : _views) {
-            offset += subView.getHeight() + subView.getPaddingTop() + subView.getPaddingBottom() + subView.getMarginTop() + subView.getMarginBottom();
+            offset += subView.getHeight() + subView.getMarginTop() + subView.getMarginBottom();
         }
 
         if (_fixedWidth == -1 || _fixedHeight == -1) {
@@ -35,7 +35,7 @@ public class UIList extends View {
             for (View view : _views) {
                 if (view.isVisible()) {
                     view.draw(renderer, _x + x + _marginLeft, offset + _y + y + _marginTop);
-                    offset += view.getHeight() + view.getPaddingTop()+ view.getPaddingBottom() + view.getMarginTop() + view.getMarginBottom();
+                    offset += view.getHeight() + view.getMarginTop() + view.getMarginBottom();
                 }
             }
         }

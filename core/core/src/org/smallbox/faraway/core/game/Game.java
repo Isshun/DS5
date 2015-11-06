@@ -203,4 +203,9 @@ public class Game extends BaseGame {
     public LuaModuleManager getLuaModuleManager() {
         return _luaModuleManager;
     }
+
+    public void setPaused(boolean pause) {
+        _paused = pause;
+        notify(pause ? GameObserver::onGamePaused : GameObserver::onGameResume);
+    }
 }
