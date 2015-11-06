@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.data.factory.world;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
@@ -55,18 +56,19 @@ public class WorldFactory {
             for (int y = 0; y < mapHeight; y++) {
                 final ParcelModel parcel = parcels[x][y][0];
                 if (parcel.getStructure() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
+                    Application.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
+                    worldModule.getStructures().add(parcel.getStructure());
                 }
                 if (parcel.getResource() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
+                    Application.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
                     worldModule.getResources().add(parcel.getResource());
                 }
                 if (parcel.getItem() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
+                    Application.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
                     worldModule.getItems().add(parcel.getItem());
                 }
                 if (parcel.getConsumable() != null) {
-                    Game.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
+                    Application.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
                     worldModule.getConsumables().add(parcel.getConsumable());
                 }
             }
@@ -96,6 +98,7 @@ public class WorldFactory {
                     if (b != null) resource = copyResource(b.getResource());
                     if (resource != null) {
                         parcel.setResource(resource);
+                        resource.setParcel(parcel);
                     }
                 }
             }
@@ -134,10 +137,10 @@ public class WorldFactory {
                 || ("rock".equals(terrain.condition) && parcel.getResource() != null && parcel.getResource().isRock())
                 || ("ground".equals(terrain.condition) && (parcel.getResource() == null || !parcel.getResource().isRock()))) {
 
-            // Set type
-            if (terrain.typeId != -1) {
-                parcel.setType(terrain.typeId);
-            }
+            // Set ground
+//            if (terrain.typeId != -1) {
+//                parcel.setType(terrain.typeId);
+//            }
 
             // Add resource
             if (terrain.resource != null) {

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.module.lua.luaModel;
 
 import org.luaj.vm2.LuaTable;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
@@ -13,6 +14,7 @@ import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModule;
+import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.UserInteraction;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -22,7 +24,7 @@ import java.util.Optional;
 /**
  * Created by Alex on 26/09/2015.
  */
-public class LuaGameModel {
+public class LuaApplicationModel {
     public final WorldModule        world;
     public long                     tick;
     public int                      day;
@@ -31,25 +33,26 @@ public class LuaGameModel {
     public UserInterface            ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
+    public Game                     game;
     public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<GameModule>   modules;
     public Collection<GameModule>   moduleThirds;
 
-    public LuaGameModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface) {
+    public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface) {
         ui = userInterface;
         crew = luaCrew;
         events = luaEvents;
         jobs = ModuleHelper.getJobModule().getJobs();
         world = ModuleHelper.getWorldModule();
-        luaModules = Game.getInstance().getLuaModuleManager().getModules();
-        modules = Game.getInstance().getModules();
+        luaModules = LuaModuleManager.getInstance().getModules();
+        modules = ModuleManager.getInstance().getModules();
         moduleThirds = ModuleManager.getInstance().getModulesThird();
     }
 
     public void update() {
-        Game game = Game.getInstance();
+        this.game = Game.getInstance();
         this.tick = game.getTick();
         this.hour = game.getHour();
         this.day = game.getDay();
@@ -88,11 +91,32 @@ public class LuaGameModel {
         UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, itemInfo);
     }
 
-    public void quit() {
+    public void stopGame() {
+        this.game = null;
         GameManager.getInstance().stopGame();
+    }
+
+    public void resumeGame() {
+        GameManager.getInstance().setPause(false);
+    }
+
+    public void startLastGame() {
+    }
+
+    public void exit() {
+        Application.getInstance().setRunning(false);
     }
 
     public void clearAction() {
         UserInterface.getInstance().getInteraction().clean();
     }
+
+    public void sendEvent(String tag) {
+        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, null));
+    }
+
+    public void sendEvent(String tag, Object object) {
+        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, object));
+    }
+
 }

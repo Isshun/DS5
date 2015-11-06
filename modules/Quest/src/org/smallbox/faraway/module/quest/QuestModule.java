@@ -82,7 +82,7 @@ public class QuestModule extends GameModule {
             }
             quest.isOpen = false;
             quest.message = luaQuest.get("closeMessage").isnil() ? null : String.valueOf(luaQuest.get("closeMessage"));
-//            Game.getInstance().notify(observer -> observer.onCloseQuest(quest));
+//            Application.getInstance().notify(observer -> observer.onCloseQuest(quest));
             if (_ui != null) {
                 _ui.onCloseQuest(quest);
             }
@@ -118,7 +118,7 @@ public class QuestModule extends GameModule {
                             quest.options[i] = String.valueOf(opts.get(i+1));
                         }
 
-//                        Game.getInstance().notify(observer -> observer.onOpenQuest(quest));
+//                        Application.getInstance().notify(observer -> observer.onOpenQuest(quest));
                         if (_ui != null) {
                             _ui.onOpenQuest(quest);
                         }

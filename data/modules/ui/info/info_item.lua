@@ -11,7 +11,7 @@ data:extend({
         { type = "label", text = "Item", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {60, 18}, on_click = function()
-            game.events:send("encyclopedia.open_item", item)
+            application.events:send("encyclopedia.open_item", item)
         end},
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
         { type = "view", position = {310, 30}, size = {80, 25}, background = 0x3e4b0b, views = {
@@ -77,18 +77,18 @@ data:extend({
     },
 
     on_event = function(view, event , data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
             item = nil
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(false)
             item = nil
         end
 
-        if event == game.events.on_item_selected then
+        if event == application.events.on_item_selected then
             item = data;
             view:setVisible(true)
             view:findById("lb_name"):setText(item:getLabel())
@@ -154,7 +154,7 @@ data:extend({
                 while iterator:hasNext() do
                     local networkConnection = iterator:next()
                     if networkConnection:getNetwork() then
-                        local lb_network = game.ui:createLabel()
+                        local lb_network = application.ui:createLabel()
                         lb_network:setDashedString(networkConnection:getNetwork():getInfo().label, math.floor(networkConnection:getNetwork():getQuantity()) .. "/" .. networkConnection:getNetwork():getMaxQuantity(), 48)
                         lb_network:setTextSize(14)
                         lb_network:setSize(400, 24)
@@ -224,11 +224,11 @@ function display_actions_info(view, item)
         while iterator:hasNext() do
             local action = iterator:next()
 
-            local view_action = game.ui:createView()
+            local view_action = application.ui:createView()
             view_action:setSize(400, 42)
             list_actions:addView(view_action)
 
-            local icon_action = game.ui:createLabel()
+            local icon_action = application.ui:createLabel()
             icon_action:setText("+")
             icon_action:setTextSize(14)
             icon_action:setPadding(0, 2)
@@ -236,7 +236,7 @@ function display_actions_info(view, item)
             icon_action:setBackgroundColor(0x349394)
             view_action:addView(icon_action)
 
-            local lb_action = game.ui:createLabel()
+            local lb_action = application.ui:createLabel()
             lb_action:setText(action.type)
             lb_action:setTextSize(16)
             lb_action:setPosition(20, 0)
@@ -244,7 +244,7 @@ function display_actions_info(view, item)
             view_action:addView(lb_action)
 
             local str = ""
-            local grid_effects = game.ui:createGrid()
+            local grid_effects = application.ui:createGrid()
             grid_effects:setColumns(8)
             grid_effects:setColumnWidth(80)
             grid_effects:setRowHeight(24)
@@ -268,7 +268,7 @@ end
 
 function add_effect_to_grid(grid, label, value)
     if value and value ~= 0 then
-        local lb_effects = game.ui:createLabel()
+        local lb_effects = application.ui:createLabel()
         lb_effects:setText(label, ": ", (value > 0 and "+" or "-") .. value)
         lb_effects:setTextSize(14)
         lb_effects:setSize(400, 24)
@@ -286,7 +286,7 @@ function display_factory_info(view, factory, factoryInfo)
         local receipt_group = order.receiptGroupInfo
 
         -- Create frame receipt detail
-        local frame_receipt_detail = game.ui:createList()
+        local frame_receipt_detail = application.ui:createList()
         frame_receipt_detail:setSize(400, 100)
         frame_receipt_detail:setVisible(false)
         local iterator_receipt = receipt_group.receipts:iterator()
@@ -301,7 +301,7 @@ function display_factory_info(view, factory, factoryInfo)
                     str_inputs = str_inputs .. (string.len(str_inputs) > 0 and " + " or "") .. input.quantity .. " " .. input.item.label
                 end
 
-                local lb_receipt = game.ui:createLabel()
+                local lb_receipt = application.ui:createLabel()
                 lb_receipt:setSize(400, 22)
                 lb_receipt:setText(str_inputs)
                 lb_receipt:setTextSize(14)
@@ -310,10 +310,10 @@ function display_factory_info(view, factory, factoryInfo)
         end
 
         -- Create frame receipt
-        local frame_receipt = game.ui:createView()
+        local frame_receipt = application.ui:createView()
         frame_receipt:setSize(400, 22)
 
-        local lb_receipt_expend = game.ui:createLabel()
+        local lb_receipt_expend = application.ui:createLabel()
         lb_receipt_expend:setSize(14, 14)
         lb_receipt_expend:setText("+")
         lb_receipt_expend:setTextSize(14)
@@ -325,14 +325,14 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_receipt_expend)
 
-        local lb_receipt_group = game.ui:createLabel()
+        local lb_receipt_group = application.ui:createLabel()
         lb_receipt_group:setSize(400, 32)
         lb_receipt_group:setPosition(20, 0)
         lb_receipt_group:setPadding(3)
         lb_receipt_group:setText(receipt_group.label)
         frame_receipt:addView(lb_receipt_group)
 
-        local lb_mode = game.ui:createLabel()
+        local lb_mode = application.ui:createLabel()
         lb_mode:setText("mode")
         lb_mode:setSize(50, 22)
         lb_mode:setPosition(300, 0)
@@ -342,7 +342,7 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_mode)
 
-        local lb_up = game.ui:createLabel()
+        local lb_up = application.ui:createLabel()
         lb_up:setText("up")
         lb_up:setSize(50, 22)
         lb_up:setPosition(200, 0)
@@ -353,7 +353,7 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_up)
 
-        local lb_down = game.ui:createLabel()
+        local lb_down = application.ui:createLabel()
         lb_down:setText("down")
         lb_down:setSize(50, 22)
         lb_down:setPosition(250, 0)
@@ -364,7 +364,7 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_down)
 
-        local lb_active = game.ui:createLabel()
+        local lb_active = application.ui:createLabel()
         lb_active:setText(order.isActive and "[x]" or "[ ]")
         lb_active:setSize(50, 22)
         lb_active:setPosition(358, 0)

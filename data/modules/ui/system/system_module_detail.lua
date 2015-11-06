@@ -31,7 +31,7 @@ data:extend(
                     view:findById("lb_desc"):setText(module:getInfo().description)
                 end
 
-                if event == game.events.on_key_press and data == "ESCAPE" then
+                if event == application.events.on_key_press and data == "ESCAPE" then
                     view:setVisible(false)
                 end
             end,

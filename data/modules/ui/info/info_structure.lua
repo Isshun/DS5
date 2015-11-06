@@ -43,18 +43,18 @@ data:extend({
 
     on_event =
     function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
             structure = nil
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(false)
             structure = nil
         end
 
-        if event == game.events.on_structure_selected then
+        if event == application.events.on_structure_selected then
             view:setVisible(true)
             structure = data;
 

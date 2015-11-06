@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -143,7 +144,7 @@ public class UserInterfaceSelector {
     public ConsumableModel      getSelectedConsumable() { return _selectedConsumable; }
 
     public boolean selectAt(int x, int y) {
-        Game.getInstance().notify(GameObserver::onDeselect);
+        Application.getInstance().notify(GameObserver::onDeselect);
 
         ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
         if (parcel != null) {
@@ -170,7 +171,7 @@ public class UserInterfaceSelector {
     }
 
     public boolean selectAt(int fromX, int fromY, int toX, int toY) {
-        Game.getInstance().notify(GameObserver::onDeselect);
+        Application.getInstance().notify(GameObserver::onDeselect);
 
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
@@ -189,12 +190,12 @@ public class UserInterfaceSelector {
         ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
         if (_lastMoveParcel != parcel) {
             _lastMoveParcel = parcel;
-            Game.getInstance().notify(observer -> observer.onOverParcel(parcel));
+            Application.getInstance().notify(observer -> observer.onOverParcel(parcel));
         }
     }
 
     public void clean() {
-        Game.getInstance().notify(GameObserver::onDeselect);
+        Application.getInstance().notify(GameObserver::onDeselect);
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(false);
         }
@@ -233,7 +234,7 @@ public class UserInterfaceSelector {
 
     public void select(ReceiptGroupInfo receipt) {
         clean();
-        Game.getInstance().notify(observer -> observer.onSelectReceipt(receipt));
+        Application.getInstance().notify(observer -> observer.onSelectReceipt(receipt));
     }
 
     public void select(CharacterModel character) {
@@ -242,54 +243,54 @@ public class UserInterfaceSelector {
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(true);
         }
-        Game.getInstance().notify(observer -> observer.onSelectCharacter(character));
+        Application.getInstance().notify(observer -> observer.onSelectCharacter(character));
     }
 
     public void select(AreaModel area, ParcelModel parcel) {
         clean();
         _selectedArea = area;
-        Game.getInstance().notify(observer -> observer.onSelectArea(area));
+        Application.getInstance().notify(observer -> observer.onSelectArea(area));
     }
 
     public void select(ResourceModel resource) {
         clean();
         _selectedResource = resource;
-        Game.getInstance().notify(observer -> observer.onSelectResource(resource));
-        Game.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
+        Application.getInstance().notify(observer -> observer.onSelectResource(resource));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
     }
 
     public void select(ItemModel item) {
         clean();
         _selectedItem = item;
-        Game.getInstance().notify(observer -> observer.onSelectItem(item));
-        Game.getInstance().notify(observer -> observer.onSelectParcel(item.getParcel()));
+        Application.getInstance().notify(observer -> observer.onSelectItem(item));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(item.getParcel()));
     }
 
     public void select(ConsumableModel consumable) {
         clean();
         _selectedConsumable = consumable;
-        Game.getInstance().notify(observer -> observer.onSelectConsumable(consumable));
-        Game.getInstance().notify(observer -> observer.onSelectParcel(consumable.getParcel()));
+        Application.getInstance().notify(observer -> observer.onSelectConsumable(consumable));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(consumable.getParcel()));
     }
 
     public void select(NetworkObjectModel network) {
         clean();
         _selectedNetwork = network;
-        Game.getInstance().notify(observer -> observer.onSelectNetwork(network));
-        Game.getInstance().notify(observer -> observer.onSelectParcel(network.getParcel()));
+        Application.getInstance().notify(observer -> observer.onSelectNetwork(network));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(network.getParcel()));
     }
 
     public void select(StructureModel structure) {
         clean();
         _selectedStructure = structure;
-        Game.getInstance().notify(observer -> observer.onSelectStructure(structure));
-        Game.getInstance().notify(observer -> observer.onSelectParcel(structure.getParcel()));
+        Application.getInstance().notify(observer -> observer.onSelectStructure(structure));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(structure.getParcel()));
     }
 
     public void select(ParcelModel parcel) {
         clean();
         _selectedParcel = parcel;
-        Game.getInstance().notify(observer -> observer.onSelectParcel(parcel));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(parcel));
     }
 
 }

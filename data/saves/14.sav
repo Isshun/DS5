@@ -1,0 +1,5616 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<save>
+<params>
+<param name='viewportX' value='400' />
+<param name='viewportY' value='300' />
+</params>
+<parcels>
+<parcel x='0' y='0' z='0' type='1' />
+<parcel x='0' y='1' z='0' type='1' />
+<parcel x='0' y='2' z='0' type='1' />
+<parcel x='0' y='3' z='0' type='1' />
+<parcel x='0' y='4' z='0' type='1' />
+<parcel x='0' y='5' z='0' type='1' />
+<parcel x='0' y='6' z='0' type='1' />
+<parcel x='0' y='7' z='0' type='1'>
+<resource id='2' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='0' y='8' z='0' type='1'>
+<resource id='3' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='0' y='9' z='0' type='1' />
+<parcel x='0' y='10' z='0' type='1' />
+<parcel x='0' y='11' z='0' type='1' />
+<parcel x='0' y='12' z='0' type='1' />
+<parcel x='0' y='13' z='0' type='1' />
+<parcel x='0' y='14' z='0' type='1' />
+<parcel x='0' y='15' z='0' type='1' />
+<parcel x='0' y='16' z='0' type='1' />
+<parcel x='0' y='17' z='0' type='1' />
+<parcel x='0' y='18' z='0' type='1' />
+<parcel x='0' y='19' z='0' type='1' />
+<parcel x='0' y='20' z='0' type='1' />
+<parcel x='0' y='21' z='0' type='1' />
+<parcel x='0' y='22' z='0' type='1' />
+<parcel x='0' y='23' z='0' type='1' />
+<parcel x='0' y='24' z='0' type='1' />
+<parcel x='0' y='25' z='0' type='1' />
+<parcel x='0' y='26' z='0' type='1' />
+<parcel x='0' y='27' z='0' type='1' />
+<parcel x='0' y='28' z='0' type='1' />
+<parcel x='0' y='29' z='0' type='1' />
+<parcel x='0' y='30' z='0' type='1' />
+<parcel x='0' y='31' z='0' type='1' />
+<parcel x='0' y='32' z='0' type='1' />
+<parcel x='0' y='33' z='0' type='1' />
+<parcel x='0' y='34' z='0' type='1' />
+<parcel x='0' y='35' z='0' type='1' />
+<parcel x='0' y='36' z='0' type='1' />
+<parcel x='0' y='37' z='0' type='1' />
+<parcel x='0' y='38' z='0' type='1' />
+<parcel x='0' y='39' z='0' type='1' />
+<parcel x='0' y='40' z='0' type='1' />
+<parcel x='0' y='41' z='0' type='1' />
+<parcel x='0' y='42' z='0' type='1' />
+<parcel x='0' y='43' z='0' type='1' />
+<parcel x='0' y='44' z='0' type='1' />
+<parcel x='0' y='45' z='0' type='1' />
+<parcel x='0' y='46' z='0' type='1' />
+<parcel x='0' y='47' z='0' type='1' />
+<parcel x='0' y='48' z='0' type='1' />
+<parcel x='0' y='49' z='0' type='1' />
+<parcel x='1' y='0' z='0' type='1' />
+<parcel x='1' y='1' z='0' type='1' />
+<parcel x='1' y='2' z='0' type='1' />
+<parcel x='1' y='3' z='0' type='1' />
+<parcel x='1' y='4' z='0' type='1' />
+<parcel x='1' y='5' z='0' type='1' />
+<parcel x='1' y='6' z='0' type='1' />
+<parcel x='1' y='7' z='0' type='1' />
+<parcel x='1' y='8' z='0' type='1'>
+<resource id='5' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='1' y='9' z='0' type='1' />
+<parcel x='1' y='10' z='0' type='1' />
+<parcel x='1' y='11' z='0' type='1' />
+<parcel x='1' y='12' z='0' type='1' />
+<parcel x='1' y='13' z='0' type='1' />
+<parcel x='1' y='14' z='0' type='1' />
+<parcel x='1' y='15' z='0' type='1' />
+<parcel x='1' y='16' z='0' type='1' />
+<parcel x='1' y='17' z='0' type='1' />
+<parcel x='1' y='18' z='0' type='1' />
+<parcel x='1' y='19' z='0' type='1' />
+<parcel x='1' y='20' z='0' type='1' />
+<parcel x='1' y='21' z='0' type='1' />
+<parcel x='1' y='22' z='0' type='1' />
+<parcel x='1' y='23' z='0' type='1' />
+<parcel x='1' y='24' z='0' type='1' />
+<parcel x='1' y='25' z='0' type='1' />
+<parcel x='1' y='26' z='0' type='1' />
+<parcel x='1' y='27' z='0' type='1' />
+<parcel x='1' y='28' z='0' type='1' />
+<parcel x='1' y='29' z='0' type='1' />
+<parcel x='1' y='30' z='0' type='1' />
+<parcel x='1' y='31' z='0' type='1' />
+<parcel x='1' y='32' z='0' type='1' />
+<parcel x='1' y='33' z='0' type='1' />
+<parcel x='1' y='34' z='0' type='1' />
+<parcel x='1' y='35' z='0' type='1' />
+<parcel x='1' y='36' z='0' type='1' />
+<parcel x='1' y='37' z='0' type='1' />
+<parcel x='1' y='38' z='0' type='1' />
+<parcel x='1' y='39' z='0' type='1' />
+<parcel x='1' y='40' z='0' type='1' />
+<parcel x='1' y='41' z='0' type='1' />
+<parcel x='1' y='42' z='0' type='1' />
+<parcel x='1' y='43' z='0' type='1' />
+<parcel x='1' y='44' z='0' type='1' />
+<parcel x='1' y='45' z='0' type='1' />
+<parcel x='1' y='46' z='0' type='1' />
+<parcel x='1' y='47' z='0' type='1' />
+<parcel x='1' y='48' z='0' type='1' />
+<parcel x='1' y='49' z='0' type='1' />
+<parcel x='2' y='0' z='0' type='1' />
+<parcel x='2' y='1' z='0' type='1' />
+<parcel x='2' y='2' z='0' type='1' />
+<parcel x='2' y='3' z='0' type='1' />
+<parcel x='2' y='4' z='0' type='1' />
+<parcel x='2' y='5' z='0' type='1' />
+<parcel x='2' y='6' z='0' type='1' />
+<parcel x='2' y='7' z='0' type='1' />
+<parcel x='2' y='8' z='0' type='1' />
+<parcel x='2' y='9' z='0' type='1' />
+<parcel x='2' y='10' z='0' type='1' />
+<parcel x='2' y='11' z='0' type='1' />
+<parcel x='2' y='12' z='0' type='1' />
+<parcel x='2' y='13' z='0' type='1' />
+<parcel x='2' y='14' z='0' type='1' />
+<parcel x='2' y='15' z='0' type='1' />
+<parcel x='2' y='16' z='0' type='1' />
+<parcel x='2' y='17' z='0' type='1' />
+<parcel x='2' y='18' z='0' type='1' />
+<parcel x='2' y='19' z='0' type='1' />
+<parcel x='2' y='20' z='0' type='1' />
+<parcel x='2' y='21' z='0' type='1' />
+<parcel x='2' y='22' z='0' type='1' />
+<parcel x='2' y='23' z='0' type='1' />
+<parcel x='2' y='24' z='0' type='1' />
+<parcel x='2' y='25' z='0' type='1' />
+<parcel x='2' y='26' z='0' type='1' />
+<parcel x='2' y='27' z='0' type='1' />
+<parcel x='2' y='28' z='0' type='1' />
+<parcel x='2' y='29' z='0' type='1' />
+<parcel x='2' y='30' z='0' type='1' />
+<parcel x='2' y='31' z='0' type='1' />
+<parcel x='2' y='32' z='0' type='1' />
+<parcel x='2' y='33' z='0' type='1' />
+<parcel x='2' y='34' z='0' type='1' />
+<parcel x='2' y='35' z='0' type='1' />
+<parcel x='2' y='36' z='0' type='1' />
+<parcel x='2' y='37' z='0' type='1' />
+<parcel x='2' y='38' z='0' type='1' />
+<parcel x='2' y='39' z='0' type='1' />
+<parcel x='2' y='40' z='0' type='1' />
+<parcel x='2' y='41' z='0' type='1' />
+<parcel x='2' y='42' z='0' type='1' />
+<parcel x='2' y='43' z='0' type='1' />
+<parcel x='2' y='44' z='0' type='1' />
+<parcel x='2' y='45' z='0' type='1' />
+<parcel x='2' y='46' z='0' type='1' />
+<parcel x='2' y='47' z='0' type='1' />
+<parcel x='2' y='48' z='0' type='1' />
+<parcel x='2' y='49' z='0' type='1' />
+<parcel x='3' y='0' z='0' type='1' />
+<parcel x='3' y='1' z='0' type='1' />
+<parcel x='3' y='2' z='0' type='1' />
+<parcel x='3' y='3' z='0' type='1' />
+<parcel x='3' y='4' z='0' type='1' />
+<parcel x='3' y='5' z='0' type='1' />
+<parcel x='3' y='6' z='0' type='1' />
+<parcel x='3' y='7' z='0' type='1' />
+<parcel x='3' y='8' z='0' type='1' />
+<parcel x='3' y='9' z='0' type='1' />
+<parcel x='3' y='10' z='0' type='1' />
+<parcel x='3' y='11' z='0' type='1' />
+<parcel x='3' y='12' z='0' type='1' />
+<parcel x='3' y='13' z='0' type='1' />
+<parcel x='3' y='14' z='0' type='1' />
+<parcel x='3' y='15' z='0' type='1' />
+<parcel x='3' y='16' z='0' type='1' />
+<parcel x='3' y='17' z='0' type='1' />
+<parcel x='3' y='18' z='0' type='1' />
+<parcel x='3' y='19' z='0' type='1' />
+<parcel x='3' y='20' z='0' type='1' />
+<parcel x='3' y='21' z='0' type='1' />
+<parcel x='3' y='22' z='0' type='1' />
+<parcel x='3' y='23' z='0' type='1' />
+<parcel x='3' y='24' z='0' type='1' />
+<parcel x='3' y='25' z='0' type='1' />
+<parcel x='3' y='26' z='0' type='1' />
+<parcel x='3' y='27' z='0' type='1' />
+<parcel x='3' y='28' z='0' type='1' />
+<parcel x='3' y='29' z='0' type='1' />
+<parcel x='3' y='30' z='0' type='1' />
+<parcel x='3' y='31' z='0' type='1' />
+<parcel x='3' y='32' z='0' type='1' />
+<parcel x='3' y='33' z='0' type='1' />
+<parcel x='3' y='34' z='0' type='1' />
+<parcel x='3' y='35' z='0' type='1' />
+<parcel x='3' y='36' z='0' type='1' />
+<parcel x='3' y='37' z='0' type='1' />
+<parcel x='3' y='38' z='0' type='1' />
+<parcel x='3' y='39' z='0' type='1' />
+<parcel x='3' y='40' z='0' type='1' />
+<parcel x='3' y='41' z='0' type='1' />
+<parcel x='3' y='42' z='0' type='1' />
+<parcel x='3' y='43' z='0' type='1' />
+<parcel x='3' y='44' z='0' type='1' />
+<parcel x='3' y='45' z='0' type='1' />
+<parcel x='3' y='46' z='0' type='1' />
+<parcel x='3' y='47' z='0' type='1' />
+<parcel x='3' y='48' z='0' type='1' />
+<parcel x='3' y='49' z='0' type='1' />
+<parcel x='4' y='0' z='0' type='1' />
+<parcel x='4' y='1' z='0' type='1' />
+<parcel x='4' y='2' z='0' type='1' />
+<parcel x='4' y='3' z='0' type='1' />
+<parcel x='4' y='4' z='0' type='1' />
+<parcel x='4' y='5' z='0' type='1' />
+<parcel x='4' y='6' z='0' type='1' />
+<parcel x='4' y='7' z='0' type='1' />
+<parcel x='4' y='8' z='0' type='1' />
+<parcel x='4' y='9' z='0' type='1' />
+<parcel x='4' y='10' z='0' type='1' />
+<parcel x='4' y='11' z='0' type='1' />
+<parcel x='4' y='12' z='0' type='1' />
+<parcel x='4' y='13' z='0' type='1' />
+<parcel x='4' y='14' z='0' type='1' />
+<parcel x='4' y='15' z='0' type='1' />
+<parcel x='4' y='16' z='0' type='1' />
+<parcel x='4' y='17' z='0' type='1' />
+<parcel x='4' y='18' z='0' type='1' />
+<parcel x='4' y='19' z='0' type='1' />
+<parcel x='4' y='20' z='0' type='1' />
+<parcel x='4' y='21' z='0' type='1' />
+<parcel x='4' y='22' z='0' type='1' />
+<parcel x='4' y='23' z='0' type='1' />
+<parcel x='4' y='24' z='0' type='1' />
+<parcel x='4' y='25' z='0' type='1' />
+<parcel x='4' y='26' z='0' type='1' />
+<parcel x='4' y='27' z='0' type='1' />
+<parcel x='4' y='28' z='0' type='1' />
+<parcel x='4' y='29' z='0' type='1' />
+<parcel x='4' y='30' z='0' type='1' />
+<parcel x='4' y='31' z='0' type='1' />
+<parcel x='4' y='32' z='0' type='1' />
+<parcel x='4' y='33' z='0' type='1' />
+<parcel x='4' y='34' z='0' type='1' />
+<parcel x='4' y='35' z='0' type='1' />
+<parcel x='4' y='36' z='0' type='1' />
+<parcel x='4' y='37' z='0' type='1' />
+<parcel x='4' y='38' z='0' type='1' />
+<parcel x='4' y='39' z='0' type='1' />
+<parcel x='4' y='40' z='0' type='1' />
+<parcel x='4' y='41' z='0' type='1' />
+<parcel x='4' y='42' z='0' type='1' />
+<parcel x='4' y='43' z='0' type='1' />
+<parcel x='4' y='44' z='0' type='1' />
+<parcel x='4' y='45' z='0' type='1' />
+<parcel x='4' y='46' z='0' type='1' />
+<parcel x='4' y='47' z='0' type='1' />
+<parcel x='4' y='48' z='0' type='1' />
+<parcel x='4' y='49' z='0' type='1' />
+<parcel x='5' y='0' z='0' type='1' />
+<parcel x='5' y='1' z='0' type='1' />
+<parcel x='5' y='2' z='0' type='1' />
+<parcel x='5' y='3' z='0' type='1' />
+<parcel x='5' y='4' z='0' type='1' />
+<parcel x='5' y='5' z='0' type='1' />
+<parcel x='5' y='6' z='0' type='1' />
+<parcel x='5' y='7' z='0' type='1' />
+<parcel x='5' y='8' z='0' type='1' />
+<parcel x='5' y='9' z='0' type='1' />
+<parcel x='5' y='10' z='0' type='1' />
+<parcel x='5' y='11' z='0' type='1' />
+<parcel x='5' y='12' z='0' type='1' />
+<parcel x='5' y='13' z='0' type='1' />
+<parcel x='5' y='14' z='0' type='1' />
+<parcel x='5' y='15' z='0' type='1' />
+<parcel x='5' y='16' z='0' type='1' />
+<parcel x='5' y='17' z='0' type='1' />
+<parcel x='5' y='18' z='0' type='1' />
+<parcel x='5' y='19' z='0' type='1' />
+<parcel x='5' y='20' z='0' type='1' />
+<parcel x='5' y='21' z='0' type='1' />
+<parcel x='5' y='22' z='0' type='1' />
+<parcel x='5' y='23' z='0' type='1' />
+<parcel x='5' y='24' z='0' type='1' />
+<parcel x='5' y='25' z='0' type='1' />
+<parcel x='5' y='26' z='0' type='1' />
+<parcel x='5' y='27' z='0' type='1' />
+<parcel x='5' y='28' z='0' type='1' />
+<parcel x='5' y='29' z='0' type='1' />
+<parcel x='5' y='30' z='0' type='1' />
+<parcel x='5' y='31' z='0' type='1' />
+<parcel x='5' y='32' z='0' type='1' />
+<parcel x='5' y='33' z='0' type='1' />
+<parcel x='5' y='34' z='0' type='1' />
+<parcel x='5' y='35' z='0' type='1' />
+<parcel x='5' y='36' z='0' type='1' />
+<parcel x='5' y='37' z='0' type='1' />
+<parcel x='5' y='38' z='0' type='1' />
+<parcel x='5' y='39' z='0' type='1' />
+<parcel x='5' y='40' z='0' type='1' />
+<parcel x='5' y='41' z='0' type='1' />
+<parcel x='5' y='42' z='0' type='1' />
+<parcel x='5' y='43' z='0' type='1' />
+<parcel x='5' y='44' z='0' type='1' />
+<parcel x='5' y='45' z='0' type='1' />
+<parcel x='5' y='46' z='0' type='1' />
+<parcel x='5' y='47' z='0' type='1' />
+<parcel x='5' y='48' z='0' type='1' />
+<parcel x='5' y='49' z='0' type='1' />
+<parcel x='6' y='0' z='0' type='1' />
+<parcel x='6' y='1' z='0' type='1' />
+<parcel x='6' y='2' z='0' type='1' />
+<parcel x='6' y='3' z='0' type='1' />
+<parcel x='6' y='4' z='0' type='1' />
+<parcel x='6' y='5' z='0' type='1' />
+<parcel x='6' y='6' z='0' type='1' />
+<parcel x='6' y='7' z='0' type='1' />
+<parcel x='6' y='8' z='0' type='1' />
+<parcel x='6' y='9' z='0' type='1' />
+<parcel x='6' y='10' z='0' type='1' />
+<parcel x='6' y='11' z='0' type='1' />
+<parcel x='6' y='12' z='0' type='1' />
+<parcel x='6' y='13' z='0' type='1' />
+<parcel x='6' y='14' z='0' type='1' />
+<parcel x='6' y='15' z='0' type='1' />
+<parcel x='6' y='16' z='0' type='1' />
+<parcel x='6' y='17' z='0' type='1' />
+<parcel x='6' y='18' z='0' type='1' />
+<parcel x='6' y='19' z='0' type='1' />
+<parcel x='6' y='20' z='0' type='1' />
+<parcel x='6' y='21' z='0' type='1'>
+<resource id='663' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='6' y='22' z='0' type='1' />
+<parcel x='6' y='23' z='0' type='1' />
+<parcel x='6' y='24' z='0' type='1' />
+<parcel x='6' y='25' z='0' type='1' />
+<parcel x='6' y='26' z='0' type='1' />
+<parcel x='6' y='27' z='0' type='1' />
+<parcel x='6' y='28' z='0' type='1' />
+<parcel x='6' y='29' z='0' type='1' />
+<parcel x='6' y='30' z='0' type='1' />
+<parcel x='6' y='31' z='0' type='1'>
+<resource id='103' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='6' y='32' z='0' type='1' />
+<parcel x='6' y='33' z='0' type='1' />
+<parcel x='6' y='34' z='0' type='1' />
+<parcel x='6' y='35' z='0' type='1' />
+<parcel x='6' y='36' z='0' type='1' />
+<parcel x='6' y='37' z='0' type='1' />
+<parcel x='6' y='38' z='0' type='1' />
+<parcel x='6' y='39' z='0' type='1' />
+<parcel x='6' y='40' z='0' type='1' />
+<parcel x='6' y='41' z='0' type='1' />
+<parcel x='6' y='42' z='0' type='1' />
+<parcel x='6' y='43' z='0' type='1' />
+<parcel x='6' y='44' z='0' type='1' />
+<parcel x='6' y='45' z='0' type='1' />
+<parcel x='6' y='46' z='0' type='1' />
+<parcel x='6' y='47' z='0' type='1' />
+<parcel x='6' y='48' z='0' type='1'>
+<resource id='104' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='6' y='49' z='0' type='1' />
+<parcel x='7' y='0' z='0' type='1' />
+<parcel x='7' y='1' z='0' type='1' />
+<parcel x='7' y='2' z='0' type='1' />
+<parcel x='7' y='3' z='0' type='1' />
+<parcel x='7' y='4' z='0' type='1' />
+<parcel x='7' y='5' z='0' type='1' />
+<parcel x='7' y='6' z='0' type='1' />
+<parcel x='7' y='7' z='0' type='1' />
+<parcel x='7' y='8' z='0' type='1' />
+<parcel x='7' y='9' z='0' type='1' />
+<parcel x='7' y='10' z='0' type='1' />
+<parcel x='7' y='11' z='0' type='1' />
+<parcel x='7' y='12' z='0' type='1' />
+<parcel x='7' y='13' z='0' type='1' />
+<parcel x='7' y='14' z='0' type='1' />
+<parcel x='7' y='15' z='0' type='1' />
+<parcel x='7' y='16' z='0' type='1' />
+<parcel x='7' y='17' z='0' type='1' />
+<parcel x='7' y='18' z='0' type='1' />
+<parcel x='7' y='19' z='0' type='1' />
+<parcel x='7' y='20' z='0' type='1' />
+<parcel x='7' y='21' z='0' type='1'>
+<resource id='688' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='7' y='22' z='0' type='1' />
+<parcel x='7' y='23' z='0' type='1'>
+<resource id='105' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='24' z='0' type='1' />
+<parcel x='7' y='25' z='0' type='1' />
+<parcel x='7' y='26' z='0' type='1' />
+<parcel x='7' y='27' z='0' type='1' />
+<parcel x='7' y='28' z='0' type='1'>
+<resource id='106' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='29' z='0' type='1'>
+<resource id='107' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='30' z='0' type='1'>
+<resource id='108' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='31' z='0' type='1'>
+<resource id='109' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='32' z='0' type='1'>
+<resource id='110' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='33' z='0' type='1'>
+<resource id='111' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='34' z='0' type='1' />
+<parcel x='7' y='35' z='0' type='1' />
+<parcel x='7' y='36' z='0' type='1' />
+<parcel x='7' y='37' z='0' type='1' />
+<parcel x='7' y='38' z='0' type='1' />
+<parcel x='7' y='39' z='0' type='1'>
+<resource id='94' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='7' y='40' z='0' type='1'>
+<resource id='7' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='7' y='41' z='0' type='1' />
+<parcel x='7' y='42' z='0' type='1'>
+<resource id='703' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='7' y='43' z='0' type='1' />
+<parcel x='7' y='44' z='0' type='1' />
+<parcel x='7' y='45' z='0' type='1' />
+<parcel x='7' y='46' z='0' type='1' />
+<parcel x='7' y='47' z='0' type='1' />
+<parcel x='7' y='48' z='0' type='1'>
+<resource id='112' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='7' y='49' z='0' type='1'>
+<resource id='113' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='0' z='0' type='1' />
+<parcel x='8' y='1' z='0' type='1' />
+<parcel x='8' y='2' z='0' type='1' />
+<parcel x='8' y='3' z='0' type='1' />
+<parcel x='8' y='4' z='0' type='1' />
+<parcel x='8' y='5' z='0' type='1' />
+<parcel x='8' y='6' z='0' type='1' />
+<parcel x='8' y='7' z='0' type='1' />
+<parcel x='8' y='8' z='0' type='1' />
+<parcel x='8' y='9' z='0' type='1' />
+<parcel x='8' y='10' z='0' type='1' />
+<parcel x='8' y='11' z='0' type='1' />
+<parcel x='8' y='12' z='0' type='1' />
+<parcel x='8' y='13' z='0' type='1' />
+<parcel x='8' y='14' z='0' type='1' />
+<parcel x='8' y='15' z='0' type='1' />
+<parcel x='8' y='16' z='0' type='1'>
+<resource id='114' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='17' z='0' type='1' />
+<parcel x='8' y='18' z='0' type='1' />
+<parcel x='8' y='19' z='0' type='1' />
+<parcel x='8' y='20' z='0' type='1' />
+<parcel x='8' y='21' z='0' type='1' />
+<parcel x='8' y='22' z='0' type='1'>
+<resource id='115' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='23' z='0' type='1'>
+<resource id='116' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='24' z='0' type='1'>
+<resource id='117' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='25' z='0' type='1'>
+<resource id='118' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='26' z='0' type='1' />
+<parcel x='8' y='27' z='0' type='1' />
+<parcel x='8' y='28' z='0' type='1'>
+<resource id='119' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='29' z='0' type='1'>
+<resource id='120' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='30' z='0' type='1'>
+<resource id='121' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='31' z='0' type='1'>
+<resource id='122' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='32' z='0' type='1'>
+<resource id='717' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='8' y='33' z='0' type='1'>
+<resource id='124' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='8' y='34' z='0' type='1' />
+<parcel x='8' y='35' z='0' type='1' />
+<parcel x='8' y='36' z='0' type='1' />
+<parcel x='8' y='37' z='0' type='1' />
+<parcel x='8' y='38' z='0' type='1' />
+<parcel x='8' y='39' z='0' type='1'>
+<resource id='8' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='40' z='0' type='1'>
+<resource id='9' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='41' z='0' type='1'>
+<resource id='10' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='42' z='0' type='1'>
+<resource id='11' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='43' z='0' type='1'>
+<resource id='12' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='44' z='0' type='1'>
+<resource id='95' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='45' z='0' type='1' />
+<parcel x='8' y='46' z='0' type='1'>
+<resource id='96' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='47' z='0' type='1'>
+<resource id='97' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='48' z='0' type='1'>
+<resource id='16' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='8' y='49' z='0' type='1' />
+<parcel x='9' y='0' z='0' type='1' />
+<parcel x='9' y='1' z='0' type='1' />
+<parcel x='9' y='2' z='0' type='1' />
+<parcel x='9' y='3' z='0' type='1' />
+<parcel x='9' y='4' z='0' type='1' />
+<parcel x='9' y='5' z='0' type='1' />
+<parcel x='9' y='6' z='0' type='1' />
+<parcel x='9' y='7' z='0' type='1' />
+<parcel x='9' y='8' z='0' type='1' />
+<parcel x='9' y='9' z='0' type='1' />
+<parcel x='9' y='10' z='0' type='1' />
+<parcel x='9' y='11' z='0' type='1' />
+<parcel x='9' y='12' z='0' type='1' />
+<parcel x='9' y='13' z='0' type='1' />
+<parcel x='9' y='14' z='0' type='1' />
+<parcel x='9' y='15' z='0' type='1'>
+<resource id='735' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='9' y='16' z='0' type='1'>
+<resource id='125' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='17' z='0' type='1' />
+<parcel x='9' y='18' z='0' type='1' />
+<parcel x='9' y='19' z='0' type='1' />
+<parcel x='9' y='20' z='0' type='1' />
+<parcel x='9' y='21' z='0' type='1'>
+<resource id='126' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='22' z='0' type='1'>
+<resource id='127' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='23' z='0' type='1'>
+<resource id='128' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='24' z='0' type='1'>
+<resource id='129' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='25' z='0' type='1'>
+<resource id='130' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='26' z='0' type='1' />
+<parcel x='9' y='27' z='0' type='1' />
+<parcel x='9' y='28' z='0' type='1' />
+<parcel x='9' y='29' z='0' type='1'>
+<resource id='743' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='9' y='30' z='0' type='1'>
+<resource id='132' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='31' z='0' type='1'>
+<resource id='133' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='32' z='0' type='1'>
+<resource id='134' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='33' z='0' type='1'>
+<resource id='135' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='9' y='34' z='0' type='1' />
+<parcel x='9' y='35' z='0' type='1' />
+<parcel x='9' y='36' z='0' type='1' />
+<parcel x='9' y='37' z='0' type='1' />
+<parcel x='9' y='38' z='0' type='1'>
+<resource id='17' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='39' z='0' type='1'>
+<resource id='18' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='40' z='0' type='1'>
+<resource id='19' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='41' z='0' type='1'>
+<resource id='20' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='42' z='0' type='1'>
+<resource id='21' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='43' z='0' type='1'>
+<resource id='98' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='44' z='0' type='1' />
+<parcel x='9' y='45' z='0' type='1' />
+<parcel x='9' y='46' z='0' type='1' />
+<parcel x='9' y='47' z='0' type='1'>
+<resource id='99' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='48' z='0' type='1'>
+<resource id='24' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='9' y='49' z='0' type='1'>
+<resource id='25' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='0' z='0' type='1' />
+<parcel x='10' y='1' z='0' type='1' />
+<parcel x='10' y='2' z='0' type='1' />
+<parcel x='10' y='3' z='0' type='1' />
+<parcel x='10' y='4' z='0' type='1' />
+<parcel x='10' y='5' z='0' type='1' />
+<parcel x='10' y='6' z='0' type='1' />
+<parcel x='10' y='7' z='0' type='1' />
+<parcel x='10' y='8' z='0' type='1' />
+<parcel x='10' y='9' z='0' type='1' />
+<parcel x='10' y='10' z='0' type='1' />
+<parcel x='10' y='11' z='0' type='1' />
+<parcel x='10' y='12' z='0' type='1' />
+<parcel x='10' y='13' z='0' type='1' />
+<parcel x='10' y='14' z='0' type='1' />
+<parcel x='10' y='15' z='0' type='1' />
+<parcel x='10' y='16' z='0' type='1' />
+<parcel x='10' y='17' z='0' type='1' />
+<parcel x='10' y='18' z='0' type='1' />
+<parcel x='10' y='19' z='0' type='1' />
+<parcel x='10' y='20' z='0' type='1' />
+<parcel x='10' y='21' z='0' type='1' />
+<parcel x='10' y='22' z='0' type='1' />
+<parcel x='10' y='23' z='0' type='1'>
+<resource id='136' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='10' y='24' z='0' type='1'>
+<resource id='137' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='10' y='25' z='0' type='1'>
+<resource id='138' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='10' y='26' z='0' type='1' />
+<parcel x='10' y='27' z='0' type='1' />
+<parcel x='10' y='28' z='0' type='1' />
+<parcel x='10' y='29' z='0' type='1'>
+<resource id='139' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='10' y='30' z='0' type='1'>
+<resource id='140' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='10' y='31' z='0' type='1' />
+<parcel x='10' y='32' z='0' type='1' />
+<parcel x='10' y='33' z='0' type='1' />
+<parcel x='10' y='34' z='0' type='1' />
+<parcel x='10' y='35' z='0' type='1' />
+<parcel x='10' y='36' z='0' type='1' />
+<parcel x='10' y='37' z='0' type='1'>
+<resource id='26' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='38' z='0' type='1'>
+<resource id='27' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='39' z='0' type='1'>
+<resource id='28' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='40' z='0' type='1'>
+<resource id='100' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='41' z='0' type='1'>
+<resource id='101' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='42' z='0' type='1'>
+<resource id='31' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='43' z='0' type='1'>
+<resource id='32' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='44' z='0' type='1'>
+<resource id='33' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='45' z='0' type='1' />
+<parcel x='10' y='46' z='0' type='1' />
+<parcel x='10' y='47' z='0' type='1'>
+<resource id='34' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='48' z='0' type='1'>
+<resource id='35' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='10' y='49' z='0' type='1'>
+<resource id='36' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='0' z='0' type='1' />
+<parcel x='11' y='1' z='0' type='1' />
+<parcel x='11' y='2' z='0' type='1' />
+<parcel x='11' y='3' z='0' type='1' />
+<parcel x='11' y='4' z='0' type='1' />
+<parcel x='11' y='5' z='0' type='1' />
+<parcel x='11' y='6' z='0' type='1' />
+<parcel x='11' y='7' z='0' type='1' />
+<parcel x='11' y='8' z='0' type='1' />
+<parcel x='11' y='9' z='0' type='1' />
+<parcel x='11' y='10' z='0' type='1' />
+<parcel x='11' y='11' z='0' type='1' />
+<parcel x='11' y='12' z='0' type='1' />
+<parcel x='11' y='13' z='0' type='1' />
+<parcel x='11' y='14' z='0' type='1' />
+<parcel x='11' y='15' z='0' type='1' />
+<parcel x='11' y='16' z='0' type='1' />
+<parcel x='11' y='17' z='0' type='1' />
+<parcel x='11' y='18' z='0' type='1' />
+<parcel x='11' y='19' z='0' type='1' />
+<parcel x='11' y='20' z='0' type='1' />
+<parcel x='11' y='21' z='0' type='1' />
+<parcel x='11' y='22' z='0' type='1' />
+<parcel x='11' y='23' z='0' type='1' />
+<parcel x='11' y='24' z='0' type='1' />
+<parcel x='11' y='25' z='0' type='1' />
+<parcel x='11' y='26' z='0' type='1'>
+<resource id='141' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='11' y='27' z='0' type='1'>
+<resource id='142' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='11' y='28' z='0' type='1'>
+<resource id='143' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='11' y='29' z='0' type='1' />
+<parcel x='11' y='30' z='0' type='1' />
+<parcel x='11' y='31' z='0' type='1' />
+<parcel x='11' y='32' z='0' type='1' />
+<parcel x='11' y='33' z='0' type='1' />
+<parcel x='11' y='34' z='0' type='1' />
+<parcel x='11' y='35' z='0' type='1' />
+<parcel x='11' y='36' z='0' type='1' />
+<parcel x='11' y='37' z='0' type='1'>
+<resource id='37' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='38' z='0' type='1'>
+<resource id='38' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='39' z='0' type='1'>
+<resource id='39' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='40' z='0' type='1'>
+<resource id='40' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='41' z='0' type='1'>
+<resource id='41' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='42' z='0' type='1'>
+<resource id='42' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='43' z='0' type='1'>
+<resource id='43' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='11' y='44' z='0' type='1' />
+<parcel x='11' y='45' z='0' type='1' />
+<parcel x='11' y='46' z='0' type='1' />
+<parcel x='11' y='47' z='0' type='1' />
+<parcel x='11' y='48' z='0' type='1' />
+<parcel x='11' y='49' z='0' type='1' />
+<parcel x='12' y='0' z='0' type='1' />
+<parcel x='12' y='1' z='0' type='1' />
+<parcel x='12' y='2' z='0' type='1' />
+<parcel x='12' y='3' z='0' type='1' />
+<parcel x='12' y='4' z='0' type='1' />
+<parcel x='12' y='5' z='0' type='1' />
+<parcel x='12' y='6' z='0' type='1' />
+<parcel x='12' y='7' z='0' type='1' />
+<parcel x='12' y='8' z='0' type='1' />
+<parcel x='12' y='9' z='0' type='1' />
+<parcel x='12' y='10' z='0' type='1' />
+<parcel x='12' y='11' z='0' type='1' />
+<parcel x='12' y='12' z='0' type='1' />
+<parcel x='12' y='13' z='0' type='1' />
+<parcel x='12' y='14' z='0' type='1' />
+<parcel x='12' y='15' z='0' type='1' />
+<parcel x='12' y='16' z='0' type='1' />
+<parcel x='12' y='17' z='0' type='1' />
+<parcel x='12' y='18' z='0' type='1' />
+<parcel x='12' y='19' z='0' type='1' />
+<parcel x='12' y='20' z='0' type='1' />
+<parcel x='12' y='21' z='0' type='1' />
+<parcel x='12' y='22' z='0' type='1' />
+<parcel x='12' y='23' z='0' type='1' />
+<parcel x='12' y='24' z='0' type='1' />
+<parcel x='12' y='25' z='0' type='1' />
+<parcel x='12' y='26' z='0' type='1' />
+<parcel x='12' y='27' z='0' type='1' />
+<parcel x='12' y='28' z='0' type='1'>
+<resource id='144' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='12' y='29' z='0' type='1' />
+<parcel x='12' y='30' z='0' type='1' />
+<parcel x='12' y='31' z='0' type='1' />
+<parcel x='12' y='32' z='0' type='1' />
+<parcel x='12' y='33' z='0' type='1' />
+<parcel x='12' y='34' z='0' type='1' />
+<parcel x='12' y='35' z='0' type='1' />
+<parcel x='12' y='36' z='0' type='1'>
+<resource id='44' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='12' y='37' z='0' type='1'>
+<resource id='45' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='12' y='38' z='0' type='1'>
+<resource id='46' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='12' y='39' z='0' type='1'>
+<resource id='47' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='12' y='40' z='0' type='1'>
+<resource id='48' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='12' y='41' z='0' type='1'>
+<resource id='49' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='12' y='42' z='0' type='1' />
+<parcel x='12' y='43' z='0' type='1' />
+<parcel x='12' y='44' z='0' type='1' />
+<parcel x='12' y='45' z='0' type='1' />
+<parcel x='12' y='46' z='0' type='1' />
+<parcel x='12' y='47' z='0' type='1' />
+<parcel x='12' y='48' z='0' type='1' />
+<parcel x='12' y='49' z='0' type='1' />
+<parcel x='13' y='0' z='0' type='1' />
+<parcel x='13' y='1' z='0' type='1' />
+<parcel x='13' y='2' z='0' type='1' />
+<parcel x='13' y='3' z='0' type='1' />
+<parcel x='13' y='4' z='0' type='1' />
+<parcel x='13' y='5' z='0' type='1' />
+<parcel x='13' y='6' z='0' type='1' />
+<parcel x='13' y='7' z='0' type='1' />
+<parcel x='13' y='8' z='0' type='1'>
+<resource id='818' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='13' y='9' z='0' type='1'>
+<resource id='819' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='13' y='10' z='0' type='1' />
+<parcel x='13' y='11' z='0' type='1' />
+<parcel x='13' y='12' z='0' type='1' />
+<parcel x='13' y='13' z='0' type='1' />
+<parcel x='13' y='14' z='0' type='1' />
+<parcel x='13' y='15' z='0' type='1' />
+<parcel x='13' y='16' z='0' type='1' />
+<parcel x='13' y='17' z='0' type='1' />
+<parcel x='13' y='18' z='0' type='1' />
+<parcel x='13' y='19' z='0' type='1' />
+<parcel x='13' y='20' z='0' type='1' />
+<parcel x='13' y='21' z='0' type='1' />
+<parcel x='13' y='22' z='0' type='1' />
+<parcel x='13' y='23' z='0' type='1' />
+<parcel x='13' y='24' z='0' type='1' />
+<parcel x='13' y='25' z='0' type='1' />
+<parcel x='13' y='26' z='0' type='1' />
+<parcel x='13' y='27' z='0' type='1' />
+<parcel x='13' y='28' z='0' type='1' />
+<parcel x='13' y='29' z='0' type='1' />
+<parcel x='13' y='30' z='0' type='1' />
+<parcel x='13' y='31' z='0' type='1' />
+<parcel x='13' y='32' z='0' type='1' />
+<parcel x='13' y='33' z='0' type='1' />
+<parcel x='13' y='34' z='0' type='1' />
+<parcel x='13' y='35' z='0' type='1' />
+<parcel x='13' y='36' z='0' type='1'>
+<resource id='145' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='13' y='37' z='0' type='1'>
+<resource id='50' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='13' y='38' z='0' type='1'>
+<resource id='51' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='13' y='39' z='0' type='1'>
+<resource id='52' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='13' y='40' z='0' type='1'>
+<resource id='53' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='13' y='41' z='0' type='1'>
+<resource id='54' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='13' y='42' z='0' type='1'>
+<resource id='55' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='13' y='43' z='0' type='1' />
+<parcel x='13' y='44' z='0' type='1' />
+<parcel x='13' y='45' z='0' type='1' />
+<parcel x='13' y='46' z='0' type='1' />
+<parcel x='13' y='47' z='0' type='1' />
+<parcel x='13' y='48' z='0' type='1' />
+<parcel x='13' y='49' z='0' type='1' />
+<parcel x='14' y='0' z='0' type='1' />
+<parcel x='14' y='1' z='0' type='1' />
+<parcel x='14' y='2' z='0' type='1' />
+<parcel x='14' y='3' z='0' type='1' />
+<parcel x='14' y='4' z='0' type='1' />
+<parcel x='14' y='5' z='0' type='1' />
+<parcel x='14' y='6' z='0' type='1' />
+<parcel x='14' y='7' z='0' type='1' />
+<parcel x='14' y='8' z='0' type='1' />
+<parcel x='14' y='9' z='0' type='1' />
+<parcel x='14' y='10' z='0' type='1' />
+<parcel x='14' y='11' z='0' type='1' />
+<parcel x='14' y='12' z='0' type='1' />
+<parcel x='14' y='13' z='0' type='1' />
+<parcel x='14' y='14' z='0' type='1' />
+<parcel x='14' y='15' z='0' type='1' />
+<parcel x='14' y='16' z='0' type='1' />
+<parcel x='14' y='17' z='0' type='1' />
+<parcel x='14' y='18' z='0' type='1' />
+<parcel x='14' y='19' z='0' type='1' />
+<parcel x='14' y='20' z='0' type='1' />
+<parcel x='14' y='21' z='0' type='1' />
+<parcel x='14' y='22' z='0' type='1' />
+<parcel x='14' y='23' z='0' type='1' />
+<parcel x='14' y='24' z='0' type='1' />
+<parcel x='14' y='25' z='0' type='1' />
+<parcel x='14' y='26' z='0' type='1' />
+<parcel x='14' y='27' z='0' type='1' />
+<parcel x='14' y='28' z='0' type='1' />
+<parcel x='14' y='29' z='0' type='1' />
+<parcel x='14' y='30' z='0' type='1' />
+<parcel x='14' y='31' z='0' type='1' />
+<parcel x='14' y='32' z='0' type='1' />
+<parcel x='14' y='33' z='0' type='1' />
+<parcel x='14' y='34' z='0' type='1' />
+<parcel x='14' y='35' z='0' type='1' />
+<parcel x='14' y='36' z='0' type='1' />
+<parcel x='14' y='37' z='0' type='1'>
+<resource id='56' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='38' z='0' type='1'>
+<resource id='57' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='39' z='0' type='1'>
+<resource id='58' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='40' z='0' type='1'>
+<resource id='59' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='41' z='0' type='1'>
+<resource id='60' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='42' z='0' type='1'>
+<resource id='61' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='43' z='0' type='1'>
+<resource id='62' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='14' y='44' z='0' type='1' />
+<parcel x='14' y='45' z='0' type='1'>
+<resource id='851' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='14' y='46' z='0' type='1' />
+<parcel x='14' y='47' z='0' type='1' />
+<parcel x='14' y='48' z='0' type='1' />
+<parcel x='14' y='49' z='0' type='1' />
+<parcel x='15' y='0' z='0' type='1' />
+<parcel x='15' y='1' z='0' type='1' />
+<parcel x='15' y='2' z='0' type='1' />
+<parcel x='15' y='3' z='0' type='1' />
+<parcel x='15' y='4' z='0' type='1' />
+<parcel x='15' y='5' z='0' type='1' />
+<parcel x='15' y='6' z='0' type='1' />
+<parcel x='15' y='7' z='0' type='1' />
+<parcel x='15' y='8' z='0' type='1' />
+<parcel x='15' y='9' z='0' type='1' />
+<parcel x='15' y='10' z='0' type='1' />
+<parcel x='15' y='11' z='0' type='1' />
+<parcel x='15' y='12' z='0' type='1' />
+<parcel x='15' y='13' z='0' type='1' />
+<parcel x='15' y='14' z='0' type='1' />
+<parcel x='15' y='15' z='0' type='1' />
+<parcel x='15' y='16' z='0' type='1' />
+<parcel x='15' y='17' z='0' type='1' />
+<parcel x='15' y='18' z='0' type='1' />
+<parcel x='15' y='19' z='0' type='1' />
+<parcel x='15' y='20' z='0' type='1' />
+<parcel x='15' y='21' z='0' type='1' />
+<parcel x='15' y='22' z='0' type='1' />
+<parcel x='15' y='23' z='0' type='1' />
+<parcel x='15' y='24' z='0' type='1' />
+<parcel x='15' y='25' z='0' type='1' />
+<parcel x='15' y='26' z='0' type='1' />
+<parcel x='15' y='27' z='0' type='1' />
+<parcel x='15' y='28' z='0' type='1' />
+<parcel x='15' y='29' z='0' type='1' />
+<parcel x='15' y='30' z='0' type='1' />
+<parcel x='15' y='31' z='0' type='1' />
+<parcel x='15' y='32' z='0' type='1' />
+<parcel x='15' y='33' z='0' type='1' />
+<parcel x='15' y='34' z='0' type='1' />
+<parcel x='15' y='35' z='0' type='1' />
+<parcel x='15' y='36' z='0' type='1' />
+<parcel x='15' y='37' z='0' type='1'>
+<resource id='146' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='15' y='38' z='0' type='1'>
+<resource id='63' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='15' y='39' z='0' type='1'>
+<resource id='64' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='15' y='40' z='0' type='1'>
+<resource id='65' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='15' y='41' z='0' type='1'>
+<resource id='66' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='15' y='42' z='0' type='1'>
+<resource id='67' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='15' y='43' z='0' type='1'>
+<resource id='68' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='15' y='44' z='0' type='1' />
+<parcel x='15' y='45' z='0' type='1'>
+<resource id='871' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='15' y='46' z='0' type='1' />
+<parcel x='15' y='47' z='0' type='1' />
+<parcel x='15' y='48' z='0' type='1' />
+<parcel x='15' y='49' z='0' type='1' />
+<parcel x='16' y='0' z='0' type='1'>
+<resource id='147' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='1' z='0' type='1'>
+<resource id='148' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='2' z='0' type='1'>
+<resource id='149' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='3' z='0' type='1' />
+<parcel x='16' y='4' z='0' type='1'>
+<resource id='150' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='5' z='0' type='1' />
+<parcel x='16' y='6' z='0' type='1' />
+<parcel x='16' y='7' z='0' type='1' />
+<parcel x='16' y='8' z='0' type='1' />
+<parcel x='16' y='9' z='0' type='1' />
+<parcel x='16' y='10' z='0' type='1' />
+<parcel x='16' y='11' z='0' type='1' />
+<parcel x='16' y='12' z='0' type='1' />
+<parcel x='16' y='13' z='0' type='1' />
+<parcel x='16' y='14' z='0' type='1' />
+<parcel x='16' y='15' z='0' type='1' />
+<parcel x='16' y='16' z='0' type='1' />
+<parcel x='16' y='17' z='0' type='1' />
+<parcel x='16' y='18' z='0' type='1' />
+<parcel x='16' y='19' z='0' type='1' />
+<parcel x='16' y='20' z='0' type='1' />
+<parcel x='16' y='21' z='0' type='1' />
+<parcel x='16' y='22' z='0' type='1' />
+<parcel x='16' y='23' z='0' type='1' />
+<parcel x='16' y='24' z='0' type='1' />
+<parcel x='16' y='25' z='0' type='1' />
+<parcel x='16' y='26' z='0' type='1' />
+<parcel x='16' y='27' z='0' type='1' />
+<parcel x='16' y='28' z='0' type='1' />
+<parcel x='16' y='29' z='0' type='1' />
+<parcel x='16' y='30' z='0' type='1' />
+<parcel x='16' y='31' z='0' type='1' />
+<parcel x='16' y='32' z='0' type='1' />
+<parcel x='16' y='33' z='0' type='1' />
+<parcel x='16' y='34' z='0' type='1' />
+<parcel x='16' y='35' z='0' type='1' />
+<parcel x='16' y='36' z='0' type='1'>
+<resource id='151' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='37' z='0' type='1'>
+<resource id='152' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='38' z='0' type='1'>
+<resource id='153' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='16' y='39' z='0' type='1'>
+<resource id='69' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='16' y='40' z='0' type='1'>
+<resource id='70' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='16' y='41' z='0' type='1'>
+<resource id='71' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='16' y='42' z='0' type='1'>
+<resource id='72' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='16' y='43' z='0' type='1' />
+<parcel x='16' y='44' z='0' type='1' />
+<parcel x='16' y='45' z='0' type='1' />
+<parcel x='16' y='46' z='0' type='1' />
+<parcel x='16' y='47' z='0' type='1' />
+<parcel x='16' y='48' z='0' type='1' />
+<parcel x='16' y='49' z='0' type='1' />
+<parcel x='17' y='0' z='0' type='1'>
+<resource id='154' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='1' z='0' type='1'>
+<resource id='155' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='2' z='0' type='1'>
+<resource id='156' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='3' z='0' type='1'>
+<resource id='157' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='4' z='0' type='1'>
+<resource id='158' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='5' z='0' type='1' />
+<parcel x='17' y='6' z='0' type='1' />
+<parcel x='17' y='7' z='0' type='1' />
+<parcel x='17' y='8' z='0' type='1' />
+<parcel x='17' y='9' z='0' type='1' />
+<parcel x='17' y='10' z='0' type='1' />
+<parcel x='17' y='11' z='0' type='1' />
+<parcel x='17' y='12' z='0' type='1' />
+<parcel x='17' y='13' z='0' type='1' />
+<parcel x='17' y='14' z='0' type='1' />
+<parcel x='17' y='15' z='0' type='1' />
+<parcel x='17' y='16' z='0' type='1' />
+<parcel x='17' y='17' z='0' type='1' />
+<parcel x='17' y='18' z='0' type='1' />
+<parcel x='17' y='19' z='0' type='1' />
+<parcel x='17' y='20' z='0' type='1' />
+<parcel x='17' y='21' z='0' type='1' />
+<parcel x='17' y='22' z='0' type='1' />
+<parcel x='17' y='23' z='0' type='1' />
+<parcel x='17' y='24' z='0' type='1' />
+<parcel x='17' y='25' z='0' type='1' />
+<parcel x='17' y='26' z='0' type='1' />
+<parcel x='17' y='27' z='0' type='1' />
+<parcel x='17' y='28' z='0' type='1' />
+<parcel x='17' y='29' z='0' type='1' />
+<parcel x='17' y='30' z='0' type='1' />
+<parcel x='17' y='31' z='0' type='1' />
+<parcel x='17' y='32' z='0' type='1' />
+<parcel x='17' y='33' z='0' type='1' />
+<parcel x='17' y='34' z='0' type='1' />
+<parcel x='17' y='35' z='0' type='1' />
+<parcel x='17' y='36' z='0' type='1'>
+<resource id='159' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='37' z='0' type='1'>
+<resource id='160' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='38' z='0' type='1'>
+<resource id='161' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='39' z='0' type='1'>
+<resource id='162' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='17' y='40' z='0' type='1'>
+<resource id='74' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='17' y='41' z='0' type='1'>
+<resource id='75' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='17' y='42' z='0' type='1' />
+<parcel x='17' y='43' z='0' type='1' />
+<parcel x='17' y='44' z='0' type='1' />
+<parcel x='17' y='45' z='0' type='1' />
+<parcel x='17' y='46' z='0' type='1' />
+<parcel x='17' y='47' z='0' type='1' />
+<parcel x='17' y='48' z='0' type='1' />
+<parcel x='17' y='49' z='0' type='1' />
+<parcel x='18' y='0' z='0' type='1'>
+<resource id='163' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='1' z='0' type='1'>
+<resource id='164' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='2' z='0' type='1'>
+<resource id='165' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='3' z='0' type='1'>
+<resource id='166' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='4' z='0' type='1'>
+<resource id='167' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='5' z='0' type='1' />
+<parcel x='18' y='6' z='0' type='1' />
+<parcel x='18' y='7' z='0' type='1' />
+<parcel x='18' y='8' z='0' type='1' />
+<parcel x='18' y='9' z='0' type='1' />
+<parcel x='18' y='10' z='0' type='1' />
+<parcel x='18' y='11' z='0' type='1' />
+<parcel x='18' y='12' z='0' type='1' />
+<parcel x='18' y='13' z='0' type='1' />
+<parcel x='18' y='14' z='0' type='1' />
+<parcel x='18' y='15' z='0' type='1' />
+<parcel x='18' y='16' z='0' type='1' />
+<parcel x='18' y='17' z='0' type='1' />
+<parcel x='18' y='18' z='0' type='1' />
+<parcel x='18' y='19' z='0' type='1' />
+<parcel x='18' y='20' z='0' type='1' />
+<parcel x='18' y='21' z='0' type='1' />
+<parcel x='18' y='22' z='0' type='1' />
+<parcel x='18' y='23' z='0' type='1' />
+<parcel x='18' y='24' z='0' type='1' />
+<parcel x='18' y='25' z='0' type='1' />
+<parcel x='18' y='26' z='0' type='1' />
+<parcel x='18' y='27' z='0' type='1' />
+<parcel x='18' y='28' z='0' type='1' />
+<parcel x='18' y='29' z='0' type='1' />
+<parcel x='18' y='30' z='0' type='1' />
+<parcel x='18' y='31' z='0' type='1' />
+<parcel x='18' y='32' z='0' type='1' />
+<parcel x='18' y='33' z='0' type='1' />
+<parcel x='18' y='34' z='0' type='1' />
+<parcel x='18' y='35' z='0' type='1' />
+<parcel x='18' y='36' z='0' type='1'>
+<resource id='168' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='37' z='0' type='1'>
+<resource id='936' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='18' y='38' z='0' type='1'>
+<resource id='170' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='39' z='0' type='1'>
+<resource id='171' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='40' z='0' type='1'>
+<resource id='172' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='41' z='0' type='1'>
+<resource id='173' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='18' y='42' z='0' type='1'>
+<resource id='937' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='18' y='43' z='0' type='1' />
+<parcel x='18' y='44' z='0' type='1' />
+<parcel x='18' y='45' z='0' type='1' />
+<parcel x='18' y='46' z='0' type='1' />
+<parcel x='18' y='47' z='0' type='1' />
+<parcel x='18' y='48' z='0' type='1' />
+<parcel x='18' y='49' z='0' type='1' />
+<parcel x='19' y='0' z='0' type='1'>
+<resource id='174' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='1' z='0' type='1'>
+<resource id='175' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='2' z='0' type='1'>
+<resource id='176' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='3' z='0' type='1'>
+<resource id='177' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='4' z='0' type='1' />
+<parcel x='19' y='5' z='0' type='1' />
+<parcel x='19' y='6' z='0' type='1' />
+<parcel x='19' y='7' z='0' type='1' />
+<parcel x='19' y='8' z='0' type='1' />
+<parcel x='19' y='9' z='0' type='1' />
+<parcel x='19' y='10' z='0' type='1' />
+<parcel x='19' y='11' z='0' type='1' />
+<parcel x='19' y='12' z='0' type='1' />
+<parcel x='19' y='13' z='0' type='1' />
+<parcel x='19' y='14' z='0' type='1' />
+<parcel x='19' y='15' z='0' type='1' />
+<parcel x='19' y='16' z='0' type='1' />
+<parcel x='19' y='17' z='0' type='1' />
+<parcel x='19' y='18' z='0' type='1' />
+<parcel x='19' y='19' z='0' type='1' />
+<parcel x='19' y='20' z='0' type='1' />
+<parcel x='19' y='21' z='0' type='1' />
+<parcel x='19' y='22' z='0' type='1' />
+<parcel x='19' y='23' z='0' type='1' />
+<parcel x='19' y='24' z='0' type='1' />
+<parcel x='19' y='25' z='0' type='1' />
+<parcel x='19' y='26' z='0' type='1' />
+<parcel x='19' y='27' z='0' type='1' />
+<parcel x='19' y='28' z='0' type='1' />
+<parcel x='19' y='29' z='0' type='1' />
+<parcel x='19' y='30' z='0' type='1' />
+<parcel x='19' y='31' z='0' type='1' />
+<parcel x='19' y='32' z='0' type='1' />
+<parcel x='19' y='33' z='0' type='1' />
+<parcel x='19' y='34' z='0' type='1'>
+<resource id='968' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='19' y='35' z='0' type='1'>
+<resource id='178' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='36' z='0' type='1'>
+<resource id='179' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='37' z='0' type='1'>
+<resource id='180' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='38' z='0' type='1'>
+<resource id='181' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='39' z='0' type='1'>
+<resource id='182' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='40' z='0' type='1'>
+<resource id='183' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='41' z='0' type='1'>
+<resource id='184' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='42' z='0' type='1'>
+<resource id='185' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='19' y='43' z='0' type='1' />
+<parcel x='19' y='44' z='0' type='1' />
+<parcel x='19' y='45' z='0' type='1' />
+<parcel x='19' y='46' z='0' type='1' />
+<parcel x='19' y='47' z='0' type='1' />
+<parcel x='19' y='48' z='0' type='1' />
+<parcel x='19' y='49' z='0' type='1' />
+<parcel x='20' y='0' z='0' type='1'>
+<resource id='186' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='1' z='0' type='1'>
+<resource id='187' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='2' z='0' type='1'>
+<resource id='188' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='3' z='0' type='1' />
+<parcel x='20' y='4' z='0' type='1' />
+<parcel x='20' y='5' z='0' type='1' />
+<parcel x='20' y='6' z='0' type='1' />
+<parcel x='20' y='7' z='0' type='1' />
+<parcel x='20' y='8' z='0' type='1' />
+<parcel x='20' y='9' z='0' type='1' />
+<parcel x='20' y='10' z='0' type='1' />
+<parcel x='20' y='11' z='0' type='1' />
+<parcel x='20' y='12' z='0' type='1' />
+<parcel x='20' y='13' z='0' type='1' />
+<parcel x='20' y='14' z='0' type='1' />
+<parcel x='20' y='15' z='0' type='1'>
+<resource id='189' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='16' z='0' type='1'>
+<resource id='190' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='17' z='0' type='1'>
+<resource id='191' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='18' z='0' type='1'>
+<resource id='192' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='19' z='0' type='1'>
+<resource id='193' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='20' z='0' type='1'>
+<resource id='194' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='21' z='0' type='1' />
+<parcel x='20' y='22' z='0' type='1' />
+<parcel x='20' y='23' z='0' type='1' />
+<parcel x='20' y='24' z='0' type='1' />
+<parcel x='20' y='25' z='0' type='1' />
+<parcel x='20' y='26' z='0' type='1' />
+<parcel x='20' y='27' z='0' type='1' />
+<parcel x='20' y='28' z='0' type='1' />
+<parcel x='20' y='29' z='0' type='1' />
+<parcel x='20' y='30' z='0' type='1' />
+<parcel x='20' y='31' z='0' type='1' />
+<parcel x='20' y='32' z='0' type='1' />
+<parcel x='20' y='33' z='0' type='1' />
+<parcel x='20' y='34' z='0' type='1'>
+<resource id='195' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='35' z='0' type='1'>
+<resource id='196' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='36' z='0' type='1'>
+<resource id='197' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='37' z='0' type='1'>
+<resource id='198' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='38' z='0' type='1'>
+<resource id='199' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='39' z='0' type='1'>
+<resource id='200' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='40' z='0' type='1'>
+<resource id='201' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='41' z='0' type='1'>
+<resource id='202' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='20' y='42' z='0' type='1' />
+<parcel x='20' y='43' z='0' type='1' />
+<parcel x='20' y='44' z='0' type='1' />
+<parcel x='20' y='45' z='0' type='1' />
+<parcel x='20' y='46' z='0' type='1' />
+<parcel x='20' y='47' z='0' type='1' />
+<parcel x='20' y='48' z='0' type='1' />
+<parcel x='20' y='49' z='0' type='1' />
+<parcel x='21' y='0' z='0' type='1'>
+<resource id='203' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='1' z='0' type='1'>
+<resource id='204' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='2' z='0' type='1'>
+<resource id='995' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='21' y='3' z='0' type='1' />
+<parcel x='21' y='4' z='0' type='1' />
+<parcel x='21' y='5' z='0' type='1'>
+<resource id='997' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='21' y='6' z='0' type='1' />
+<parcel x='21' y='7' z='0' type='1' />
+<parcel x='21' y='8' z='0' type='1' />
+<parcel x='21' y='9' z='0' type='1' />
+<parcel x='21' y='10' z='0' type='1' />
+<parcel x='21' y='11' z='0' type='1' />
+<parcel x='21' y='12' z='0' type='1' />
+<parcel x='21' y='13' z='0' type='1' />
+<parcel x='21' y='14' z='0' type='1' />
+<parcel x='21' y='15' z='0' type='1'>
+<resource id='206' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='16' z='0' type='1'>
+<resource id='207' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='17' z='0' type='1'>
+<resource id='208' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='18' z='0' type='1'>
+<resource id='209' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='19' z='0' type='1'>
+<resource id='1004' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='21' y='20' z='0' type='1'>
+<resource id='211' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='21' z='0' type='1' />
+<parcel x='21' y='22' z='0' type='1' />
+<parcel x='21' y='23' z='0' type='1' />
+<parcel x='21' y='24' z='0' type='1' />
+<parcel x='21' y='25' z='0' type='1'>
+<resource id='212' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='26' z='0' type='1'>
+<resource id='213' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='27' z='0' type='1'>
+<resource id='214' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='28' z='0' type='1'>
+<resource id='1011' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='21' y='29' z='0' type='1' />
+<parcel x='21' y='30' z='0' type='1' />
+<parcel x='21' y='31' z='0' type='1'>
+<resource id='1012' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='21' y='32' z='0' type='1' />
+<parcel x='21' y='33' z='0' type='1'>
+<resource id='215' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='34' z='0' type='1'>
+<resource id='216' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='35' z='0' type='1'>
+<resource id='217' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='36' z='0' type='1'>
+<resource id='218' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='37' z='0' type='1'>
+<resource id='219' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='38' z='0' type='1'>
+<resource id='220' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='39' z='0' type='1'>
+<resource id='221' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='40' z='0' type='1'>
+<resource id='222' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='41' z='0' type='1'>
+<resource id='223' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='42' z='0' type='1'>
+<resource id='224' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='21' y='43' z='0' type='1' />
+<parcel x='21' y='44' z='0' type='1' />
+<parcel x='21' y='45' z='0' type='1' />
+<parcel x='21' y='46' z='0' type='1' />
+<parcel x='21' y='47' z='0' type='1' />
+<parcel x='21' y='48' z='0' type='1' />
+<parcel x='21' y='49' z='0' type='1' />
+<parcel x='22' y='0' z='0' type='1'>
+<resource id='225' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='1' z='0' type='1'>
+<resource id='226' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='2' z='0' type='1'>
+<resource id='227' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='3' z='0' type='1' />
+<parcel x='22' y='4' z='0' type='1' />
+<parcel x='22' y='5' z='0' type='1'>
+<resource id='76' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='22' y='6' z='0' type='1'>
+<resource id='77' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='22' y='7' z='0' type='1'>
+<resource id='78' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='22' y='8' z='0' type='1' />
+<parcel x='22' y='9' z='0' type='1' />
+<parcel x='22' y='10' z='0' type='1' />
+<parcel x='22' y='11' z='0' type='1' />
+<parcel x='22' y='12' z='0' type='1' />
+<parcel x='22' y='13' z='0' type='1' />
+<parcel x='22' y='14' z='0' type='1'>
+<resource id='228' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='15' z='0' type='1'>
+<resource id='229' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='16' z='0' type='1'>
+<resource id='230' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='17' z='0' type='1'>
+<resource id='231' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='18' z='0' type='1'>
+<resource id='232' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='19' z='0' type='1'>
+<resource id='233' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='20' z='0' type='1'>
+<resource id='234' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='21' z='0' type='1'>
+<resource id='235' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='22' z='0' type='1'>
+<resource id='236' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='23' z='0' type='1'>
+<resource id='237' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='24' z='0' type='1' />
+<parcel x='22' y='25' z='0' type='1'>
+<resource id='238' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='26' z='0' type='1'>
+<resource id='239' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='27' z='0' type='1'>
+<resource id='240' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='28' z='0' type='1'>
+<resource id='241' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='29' z='0' type='1' />
+<parcel x='22' y='30' z='0' type='1' />
+<parcel x='22' y='31' z='0' type='1'>
+<resource id='242' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='32' z='0' type='1'>
+<resource id='243' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='33' z='0' type='1'>
+<resource id='244' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='34' z='0' type='1'>
+<resource id='245' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='35' z='0' type='1'>
+<resource id='246' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='36' z='0' type='1'>
+<resource id='247' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='37' z='0' type='1'>
+<resource id='248' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='38' z='0' type='1'>
+<resource id='249' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='39' z='0' type='1'>
+<resource id='250' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='40' z='0' type='1'>
+<resource id='251' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='41' z='0' type='1'>
+<resource id='252' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='22' y='42' z='0' type='1' />
+<parcel x='22' y='43' z='0' type='1' />
+<parcel x='22' y='44' z='0' type='1' />
+<parcel x='22' y='45' z='0' type='1' />
+<parcel x='22' y='46' z='0' type='1' />
+<parcel x='22' y='47' z='0' type='1' />
+<parcel x='22' y='48' z='0' type='1' />
+<parcel x='22' y='49' z='0' type='1' />
+<parcel x='23' y='0' z='0' type='1'>
+<resource id='253' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='1' z='0' type='1'>
+<resource id='254' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='2' z='0' type='1'>
+<resource id='255' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='3' z='0' type='1' />
+<parcel x='23' y='4' z='0' type='1'>
+<resource id='79' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='23' y='5' z='0' type='1'>
+<resource id='80' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='23' y='6' z='0' type='1'>
+<resource id='81' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='23' y='7' z='0' type='1'>
+<resource id='82' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='23' y='8' z='0' type='1'>
+<resource id='83' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='23' y='9' z='0' type='1'>
+<resource id='84' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='23' y='10' z='0' type='1' />
+<parcel x='23' y='11' z='0' type='1' />
+<parcel x='23' y='12' z='0' type='1' />
+<parcel x='23' y='13' z='0' type='1' />
+<parcel x='23' y='14' z='0' type='1' />
+<parcel x='23' y='15' z='0' type='1'>
+<resource id='256' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='16' z='0' type='1'>
+<resource id='257' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='17' z='0' type='1'>
+<resource id='258' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='18' z='0' type='1'>
+<resource id='259' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='19' z='0' type='1'>
+<resource id='260' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='20' z='0' type='1'>
+<resource id='261' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='21' z='0' type='1'>
+<resource id='262' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='22' z='0' type='1'>
+<resource id='263' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='23' z='0' type='1'>
+<resource id='264' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='24' z='0' type='1'>
+<resource id='265' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='25' z='0' type='1'>
+<resource id='266' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='26' z='0' type='1'>
+<resource id='267' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='27' z='0' type='1'>
+<resource id='268' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='28' z='0' type='1'>
+<resource id='269' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='29' z='0' type='1'>
+<resource id='270' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='30' z='0' type='1'>
+<resource id='271' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='31' z='0' type='1'>
+<resource id='272' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='32' z='0' type='1'>
+<resource id='273' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='33' z='0' type='1'>
+<resource id='274' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='34' z='0' type='1'>
+<resource id='275' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='35' z='0' type='1'>
+<resource id='276' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='36' z='0' type='1'>
+<resource id='277' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='37' z='0' type='1'>
+<resource id='278' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='38' z='0' type='1'>
+<resource id='279' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='39' z='0' type='1'>
+<resource id='280' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='40' z='0' type='1'>
+<resource id='281' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='41' z='0' type='1'>
+<resource id='282' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='42' z='0' type='1'>
+<resource id='283' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='23' y='43' z='0' type='1' />
+<parcel x='23' y='44' z='0' type='1' />
+<parcel x='23' y='45' z='0' type='1' />
+<parcel x='23' y='46' z='0' type='1' />
+<parcel x='23' y='47' z='0' type='1' />
+<parcel x='23' y='48' z='0' type='1' />
+<parcel x='23' y='49' z='0' type='1' />
+<parcel x='24' y='0' z='0' type='1'>
+<resource id='284' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='1' z='0' type='1'>
+<resource id='285' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='2' z='0' type='1'>
+<resource id='286' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='3' z='0' type='1'>
+<resource id='85' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='4' z='0' type='1'>
+<resource id='86' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='5' z='0' type='1'>
+<resource id='87' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='6' z='0' type='1'>
+<resource id='88' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='7' z='0' type='1'>
+<resource id='102' name='base.iron'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='8' z='0' type='1'>
+<resource id='90' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='9' z='0' type='1'>
+<resource id='91' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='10' z='0' type='1'>
+<resource id='92' name='base.granite'>
+<health>0</health>
+<progress>0</progress>
+<quantity>10</quantity>
+</resource>
+</parcel>
+<parcel x='24' y='11' z='0' type='1' />
+<parcel x='24' y='12' z='0' type='1' />
+<parcel x='24' y='13' z='0' type='1' />
+<parcel x='24' y='14' z='0' type='1' />
+<parcel x='24' y='15' z='0' type='1'>
+<resource id='1083' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='24' y='16' z='0' type='1'>
+<resource id='288' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='17' z='0' type='1'>
+<resource id='289' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='18' z='0' type='1'>
+<resource id='290' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='19' z='0' type='1'>
+<resource id='291' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='20' z='0' type='1'>
+<resource id='292' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='21' z='0' type='1'>
+<resource id='293' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='22' z='0' type='1'>
+<resource id='294' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='23' z='0' type='1'>
+<resource id='295' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='24' z='0' type='1'>
+<resource id='296' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='25' z='0' type='1'>
+<resource id='297' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='26' z='0' type='1'>
+<resource id='298' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='27' z='0' type='1'>
+<resource id='299' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='28' z='0' type='1'>
+<resource id='300' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='29' z='0' type='1'>
+<resource id='301' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='30' z='0' type='1'>
+<resource id='302' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='31' z='0' type='1'>
+<resource id='303' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='32' z='0' type='1'>
+<resource id='304' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='33' z='0' type='1'>
+<resource id='305' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='34' z='0' type='1'>
+<resource id='306' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='35' z='0' type='1'>
+<resource id='307' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='36' z='0' type='1'>
+<resource id='308' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='37' z='0' type='1'>
+<resource id='309' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='38' z='0' type='1'>
+<resource id='310' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='39' z='0' type='1'>
+<resource id='311' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='40' z='0' type='1'>
+<resource id='312' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='41' z='0' type='1'>
+<resource id='313' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='42' z='0' type='1'>
+<resource id='314' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='43' z='0' type='1'>
+<resource id='315' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='24' y='44' z='0' type='1' />
+<parcel x='24' y='45' z='0' type='1' />
+<parcel x='24' y='46' z='0' type='1' />
+<parcel x='24' y='47' z='0' type='1' />
+<parcel x='24' y='48' z='0' type='1' />
+<parcel x='24' y='49' z='0' type='1' />
+<parcel x='25' y='0' z='0' type='1'>
+<resource id='316' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='1' z='0' type='1'>
+<resource id='317' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='2' z='0' type='1'>
+<resource id='318' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='3' z='0' type='1' />
+<parcel x='25' y='4' z='0' type='1' />
+<parcel x='25' y='5' z='0' type='1' />
+<parcel x='25' y='6' z='0' type='1' />
+<parcel x='25' y='7' z='0' type='1' />
+<parcel x='25' y='8' z='0' type='1' />
+<parcel x='25' y='9' z='0' type='1' />
+<parcel x='25' y='10' z='0' type='1' />
+<parcel x='25' y='11' z='0' type='1' />
+<parcel x='25' y='12' z='0' type='1' />
+<parcel x='25' y='13' z='0' type='1' />
+<parcel x='25' y='14' z='0' type='1' />
+<parcel x='25' y='15' z='0' type='1'>
+<resource id='319' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='16' z='0' type='1'>
+<resource id='320' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='17' z='0' type='1'>
+<resource id='321' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='18' z='0' type='1'>
+<resource id='322' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='19' z='0' type='1'>
+<resource id='323' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='20' z='0' type='1'>
+<resource id='324' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='21' z='0' type='1'>
+<resource id='325' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='22' z='0' type='1'>
+<resource id='326' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='23' z='0' type='1'>
+<resource id='327' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='24' z='0' type='1'>
+<resource id='1110' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='25' y='25' z='0' type='1'>
+<resource id='329' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='26' z='0' type='1' />
+<parcel x='25' y='27' z='0' type='1'>
+<resource id='330' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='28' z='0' type='1'>
+<resource id='331' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='29' z='0' type='1'>
+<resource id='332' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='30' z='0' type='1'>
+<resource id='333' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='31' z='0' type='1'>
+<resource id='334' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='32' z='0' type='1'>
+<resource id='335' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='33' z='0' type='1'>
+<resource id='336' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='34' z='0' type='1'>
+<resource id='337' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='35' z='0' type='1'>
+<resource id='338' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='36' z='0' type='1'>
+<resource id='339' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='37' z='0' type='1'>
+<resource id='340' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='38' z='0' type='1'>
+<resource id='1118' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='25' y='39' z='0' type='1'>
+<resource id='342' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='40' z='0' type='1'>
+<resource id='343' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='41' z='0' type='1'>
+<resource id='344' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='42' z='0' type='1'>
+<resource id='345' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='25' y='43' z='0' type='1'>
+<resource id='1123' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='25' y='44' z='0' type='1' />
+<parcel x='25' y='45' z='0' type='1' />
+<parcel x='25' y='46' z='0' type='1' />
+<parcel x='25' y='47' z='0' type='1' />
+<parcel x='25' y='48' z='0' type='1' />
+<parcel x='25' y='49' z='0' type='1' />
+<parcel x='26' y='0' z='0' type='1'>
+<resource id='347' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='1' z='0' type='1'>
+<resource id='348' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='2' z='0' type='1'>
+<resource id='349' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='3' z='0' type='1'>
+<resource id='350' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='4' z='0' type='1'>
+<resource id='351' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='5' z='0' type='1' />
+<parcel x='26' y='6' z='0' type='1' />
+<parcel x='26' y='7' z='0' type='1' />
+<parcel x='26' y='8' z='0' type='1' />
+<parcel x='26' y='9' z='0' type='1' />
+<parcel x='26' y='10' z='0' type='1' />
+<parcel x='26' y='11' z='0' type='1' />
+<parcel x='26' y='12' z='0' type='1' />
+<parcel x='26' y='13' z='0' type='1' />
+<parcel x='26' y='14' z='0' type='1' />
+<parcel x='26' y='15' z='0' type='1' />
+<parcel x='26' y='16' z='0' type='1'>
+<resource id='352' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='17' z='0' type='1'>
+<resource id='353' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='18' z='0' type='1'>
+<resource id='354' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='19' z='0' type='1'>
+<resource id='355' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='20' z='0' type='1'>
+<resource id='356' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='21' z='0' type='1'>
+<resource id='357' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='22' z='0' type='1'>
+<resource id='358' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='23' z='0' type='1'>
+<resource id='359' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='24' z='0' type='1'>
+<resource id='360' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='25' z='0' type='1'>
+<resource id='361' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='26' z='0' type='1'>
+<resource id='362' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='27' z='0' type='1' />
+<parcel x='26' y='28' z='0' type='1'>
+<resource id='363' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='29' z='0' type='1'>
+<resource id='364' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='30' z='0' type='1'>
+<resource id='365' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='31' z='0' type='1'>
+<resource id='366' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='32' z='0' type='1'>
+<resource id='367' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='33' z='0' type='1'>
+<resource id='368' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='34' z='0' type='1'>
+<resource id='369' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='35' z='0' type='1'>
+<resource id='1142' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='26' y='36' z='0' type='1'>
+<resource id='371' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='37' z='0' type='1'>
+<resource id='372' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='38' z='0' type='1'>
+<resource id='373' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='39' z='0' type='1'>
+<resource id='374' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='40' z='0' type='1'>
+<resource id='375' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='41' z='0' type='1'>
+<resource id='376' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='42' z='0' type='1'>
+<resource id='377' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='43' z='0' type='1'>
+<resource id='378' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='44' z='0' type='1'>
+<resource id='379' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='26' y='45' z='0' type='1' />
+<parcel x='26' y='46' z='0' type='1' />
+<parcel x='26' y='47' z='0' type='1' />
+<parcel x='26' y='48' z='0' type='1' />
+<parcel x='26' y='49' z='0' type='1' />
+<parcel x='27' y='0' z='0' type='1' />
+<parcel x='27' y='1' z='0' type='1' />
+<parcel x='27' y='2' z='0' type='1' />
+<parcel x='27' y='3' z='0' type='1' />
+<parcel x='27' y='4' z='0' type='1' />
+<parcel x='27' y='5' z='0' type='1' />
+<parcel x='27' y='6' z='0' type='1' />
+<parcel x='27' y='7' z='0' type='1' />
+<parcel x='27' y='8' z='0' type='1' />
+<parcel x='27' y='9' z='0' type='1' />
+<parcel x='27' y='10' z='0' type='1' />
+<parcel x='27' y='11' z='0' type='1' />
+<parcel x='27' y='12' z='0' type='1' />
+<parcel x='27' y='13' z='0' type='1' />
+<parcel x='27' y='14' z='0' type='1' />
+<parcel x='27' y='15' z='0' type='1' />
+<parcel x='27' y='16' z='0' type='1' />
+<parcel x='27' y='17' z='0' type='1'>
+<resource id='380' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='18' z='0' type='1' />
+<parcel x='27' y='19' z='0' type='1'>
+<resource id='381' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='20' z='0' type='1'>
+<resource id='382' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='21' z='0' type='1'>
+<resource id='383' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='22' z='0' type='1'>
+<resource id='384' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='23' z='0' type='1' />
+<parcel x='27' y='24' z='0' type='1'>
+<resource id='1158' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='27' y='25' z='0' type='1' />
+<parcel x='27' y='26' z='0' type='1' />
+<parcel x='27' y='27' z='0' type='1' />
+<parcel x='27' y='28' z='0' type='1' />
+<parcel x='27' y='29' z='0' type='1'>
+<resource id='386' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='30' z='0' type='1'>
+<resource id='387' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='31' z='0' type='1'>
+<resource id='388' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='32' z='0' type='1'>
+<resource id='389' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='33' z='0' type='1'>
+<resource id='390' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='34' z='0' type='1'>
+<resource id='391' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='35' z='0' type='1'>
+<resource id='392' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='36' z='0' type='1'>
+<resource id='393' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='37' z='0' type='1'>
+<resource id='394' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='38' z='0' type='1'>
+<resource id='395' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='39' z='0' type='1'>
+<resource id='396' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='40' z='0' type='1'>
+<resource id='397' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='41' z='0' type='1'>
+<resource id='398' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='42' z='0' type='1'>
+<resource id='399' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='43' z='0' type='1'>
+<resource id='400' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='44' z='0' type='1'>
+<resource id='401' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='45' z='0' type='1'>
+<resource id='402' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='27' y='46' z='0' type='1' />
+<parcel x='27' y='47' z='0' type='1' />
+<parcel x='27' y='48' z='0' type='1' />
+<parcel x='27' y='49' z='0' type='1' />
+<parcel x='28' y='0' z='0' type='1' />
+<parcel x='28' y='1' z='0' type='1'>
+<resource id='1176' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='28' y='2' z='0' type='1' />
+<parcel x='28' y='3' z='0' type='1'>
+<resource id='1178' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='28' y='4' z='0' type='1'>
+<resource id='403' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='5' z='0' type='1' />
+<parcel x='28' y='6' z='0' type='1' />
+<parcel x='28' y='7' z='0' type='1' />
+<parcel x='28' y='8' z='0' type='1' />
+<parcel x='28' y='9' z='0' type='1' />
+<parcel x='28' y='10' z='0' type='1' />
+<parcel x='28' y='11' z='0' type='1' />
+<parcel x='28' y='12' z='0' type='1' />
+<parcel x='28' y='13' z='0' type='1' />
+<parcel x='28' y='14' z='0' type='1' />
+<parcel x='28' y='15' z='0' type='1' />
+<parcel x='28' y='16' z='0' type='1' />
+<parcel x='28' y='17' z='0' type='1' />
+<parcel x='28' y='18' z='0' type='1'>
+<resource id='1181' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='28' y='19' z='0' type='1' />
+<parcel x='28' y='20' z='0' type='1' />
+<parcel x='28' y='21' z='0' type='1'>
+<resource id='404' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='22' z='0' type='1' />
+<parcel x='28' y='23' z='0' type='1' />
+<parcel x='28' y='24' z='0' type='1' />
+<parcel x='28' y='25' z='0' type='1' />
+<parcel x='28' y='26' z='0' type='1' />
+<parcel x='28' y='27' z='0' type='1' />
+<parcel x='28' y='28' z='0' type='1' />
+<parcel x='28' y='29' z='0' type='1' />
+<parcel x='28' y='30' z='0' type='1'>
+<resource id='405' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='31' z='0' type='1'>
+<resource id='406' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='32' z='0' type='1'>
+<resource id='407' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='33' z='0' type='1'>
+<resource id='408' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='34' z='0' type='1'>
+<resource id='409' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='35' z='0' type='1'>
+<resource id='410' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='36' z='0' type='1'>
+<resource id='411' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='37' z='0' type='1'>
+<resource id='412' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='38' z='0' type='1'>
+<resource id='413' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='39' z='0' type='1'>
+<resource id='414' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='40' z='0' type='1'>
+<resource id='415' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='41' z='0' type='1'>
+<resource id='416' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='42' z='0' type='1'>
+<resource id='417' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='43' z='0' type='1'>
+<resource id='418' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='44' z='0' type='1'>
+<resource id='419' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='45' z='0' type='1'>
+<resource id='420' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='46' z='0' type='1'>
+<resource id='421' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='47' z='0' type='1'>
+<resource id='422' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='48' z='0' type='1'>
+<resource id='423' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='28' y='49' z='0' type='1' />
+<parcel x='29' y='0' z='0' type='1' />
+<parcel x='29' y='1' z='0' type='1'>
+<resource id='1195' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='29' y='2' z='0' type='1'>
+<resource id='1197' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='29' y='3' z='0' type='1' />
+<parcel x='29' y='4' z='0' type='1' />
+<parcel x='29' y='5' z='0' type='1' />
+<parcel x='29' y='6' z='0' type='1' />
+<parcel x='29' y='7' z='0' type='1' />
+<parcel x='29' y='8' z='0' type='1' />
+<parcel x='29' y='9' z='0' type='1' />
+<parcel x='29' y='10' z='0' type='1' />
+<parcel x='29' y='11' z='0' type='1' />
+<parcel x='29' y='12' z='0' type='1' />
+<parcel x='29' y='13' z='0' type='1' />
+<parcel x='29' y='14' z='0' type='1' />
+<parcel x='29' y='15' z='0' type='1' />
+<parcel x='29' y='16' z='0' type='1' />
+<parcel x='29' y='17' z='0' type='1' />
+<parcel x='29' y='18' z='0' type='1'>
+<resource id='1204' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='29' y='19' z='0' type='1' />
+<parcel x='29' y='20' z='0' type='1' />
+<parcel x='29' y='21' z='0' type='1' />
+<parcel x='29' y='22' z='0' type='1' />
+<parcel x='29' y='23' z='0' type='1' />
+<parcel x='29' y='24' z='0' type='1' />
+<parcel x='29' y='25' z='0' type='1' />
+<parcel x='29' y='26' z='0' type='1' />
+<parcel x='29' y='27' z='0' type='1' />
+<parcel x='29' y='28' z='0' type='1' />
+<parcel x='29' y='29' z='0' type='1' />
+<parcel x='29' y='30' z='0' type='1'>
+<resource id='424' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='31' z='0' type='1'>
+<resource id='425' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='32' z='0' type='1'>
+<resource id='426' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='33' z='0' type='1'>
+<resource id='427' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='34' z='0' type='1'>
+<resource id='428' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='35' z='0' type='1'>
+<resource id='429' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='36' z='0' type='1'>
+<resource id='430' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='37' z='0' type='1'>
+<resource id='431' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='38' z='0' type='1'>
+<resource id='432' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='39' z='0' type='1'>
+<resource id='433' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='40' z='0' type='1'>
+<resource id='434' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='41' z='0' type='1'>
+<resource id='435' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='42' z='0' type='1'>
+<resource id='436' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='43' z='0' type='1'>
+<resource id='437' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='44' z='0' type='1'>
+<resource id='438' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='45' z='0' type='1'>
+<resource id='439' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='46' z='0' type='1'>
+<resource id='440' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='47' z='0' type='1'>
+<resource id='441' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='48' z='0' type='1'>
+<resource id='442' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='29' y='49' z='0' type='1' />
+<parcel x='30' y='0' z='0' type='1' />
+<parcel x='30' y='1' z='0' type='1' />
+<parcel x='30' y='2' z='0' type='1' />
+<parcel x='30' y='3' z='0' type='1' />
+<parcel x='30' y='4' z='0' type='1' />
+<parcel x='30' y='5' z='0' type='1' />
+<parcel x='30' y='6' z='0' type='1' />
+<parcel x='30' y='7' z='0' type='1' />
+<parcel x='30' y='8' z='0' type='1' />
+<parcel x='30' y='9' z='0' type='1' />
+<parcel x='30' y='10' z='0' type='1' />
+<parcel x='30' y='11' z='0' type='1' />
+<parcel x='30' y='12' z='0' type='1' />
+<parcel x='30' y='13' z='0' type='1' />
+<parcel x='30' y='14' z='0' type='1' />
+<parcel x='30' y='15' z='0' type='1' />
+<parcel x='30' y='16' z='0' type='1' />
+<parcel x='30' y='17' z='0' type='1' />
+<parcel x='30' y='18' z='0' type='1' />
+<parcel x='30' y='19' z='0' type='1' />
+<parcel x='30' y='20' z='0' type='1' />
+<parcel x='30' y='21' z='0' type='1' />
+<parcel x='30' y='22' z='0' type='1' />
+<parcel x='30' y='23' z='0' type='1' />
+<parcel x='30' y='24' z='0' type='1' />
+<parcel x='30' y='25' z='0' type='1' />
+<parcel x='30' y='26' z='0' type='1' />
+<parcel x='30' y='27' z='0' type='1' />
+<parcel x='30' y='28' z='0' type='1' />
+<parcel x='30' y='29' z='0' type='1' />
+<parcel x='30' y='30' z='0' type='1' />
+<parcel x='30' y='31' z='0' type='1' />
+<parcel x='30' y='32' z='0' type='1' />
+<parcel x='30' y='33' z='0' type='1'>
+<resource id='443' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='34' z='0' type='1'>
+<resource id='444' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='35' z='0' type='1'>
+<resource id='445' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='36' z='0' type='1'>
+<resource id='446' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='37' z='0' type='1'>
+<resource id='447' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='38' z='0' type='1'>
+<resource id='448' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='39' z='0' type='1'>
+<resource id='449' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='40' z='0' type='1'>
+<resource id='450' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='41' z='0' type='1'>
+<resource id='451' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='42' z='0' type='1'>
+<resource id='452' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='43' z='0' type='1'>
+<resource id='453' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='44' z='0' type='1'>
+<resource id='454' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='45' z='0' type='1'>
+<resource id='1246' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='30' y='46' z='0' type='1'>
+<resource id='456' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='30' y='47' z='0' type='1' />
+<parcel x='30' y='48' z='0' type='1' />
+<parcel x='30' y='49' z='0' type='1' />
+<parcel x='31' y='0' z='0' type='1' />
+<parcel x='31' y='1' z='0' type='1' />
+<parcel x='31' y='2' z='0' type='1' />
+<parcel x='31' y='3' z='0' type='1' />
+<parcel x='31' y='4' z='0' type='1' />
+<parcel x='31' y='5' z='0' type='1' />
+<parcel x='31' y='6' z='0' type='1' />
+<parcel x='31' y='7' z='0' type='1' />
+<parcel x='31' y='8' z='0' type='1' />
+<parcel x='31' y='9' z='0' type='1' />
+<parcel x='31' y='10' z='0' type='1' />
+<parcel x='31' y='11' z='0' type='1' />
+<parcel x='31' y='12' z='0' type='1' />
+<parcel x='31' y='13' z='0' type='1' />
+<parcel x='31' y='14' z='0' type='1' />
+<parcel x='31' y='15' z='0' type='1' />
+<parcel x='31' y='16' z='0' type='1' />
+<parcel x='31' y='17' z='0' type='1' />
+<parcel x='31' y='18' z='0' type='1' />
+<parcel x='31' y='19' z='0' type='1' />
+<parcel x='31' y='20' z='0' type='1' />
+<parcel x='31' y='21' z='0' type='1' />
+<parcel x='31' y='22' z='0' type='1' />
+<parcel x='31' y='23' z='0' type='1' />
+<parcel x='31' y='24' z='0' type='1' />
+<parcel x='31' y='25' z='0' type='1' />
+<parcel x='31' y='26' z='0' type='1' />
+<parcel x='31' y='27' z='0' type='1' />
+<parcel x='31' y='28' z='0' type='1' />
+<parcel x='31' y='29' z='0' type='1' />
+<parcel x='31' y='30' z='0' type='1' />
+<parcel x='31' y='31' z='0' type='1' />
+<parcel x='31' y='32' z='0' type='1' />
+<parcel x='31' y='33' z='0' type='1' />
+<parcel x='31' y='34' z='0' type='1'>
+<resource id='457' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='35' z='0' type='1'>
+<resource id='458' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='36' z='0' type='1'>
+<resource id='459' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='37' z='0' type='1'>
+<resource id='460' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='38' z='0' type='1'>
+<resource id='461' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='39' z='0' type='1'>
+<resource id='462' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='40' z='0' type='1'>
+<resource id='463' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='41' z='0' type='1'>
+<resource id='464' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='42' z='0' type='1'>
+<resource id='465' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='43' z='0' type='1'>
+<resource id='466' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='44' z='0' type='1'>
+<resource id='467' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='45' z='0' type='1'>
+<resource id='468' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='46' z='0' type='1'>
+<resource id='469' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='47' z='0' type='1'>
+<resource id='470' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='48' z='0' type='1'>
+<resource id='471' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='31' y='49' z='0' type='1' />
+<parcel x='32' y='0' z='0' type='1' />
+<parcel x='32' y='1' z='0' type='1' />
+<parcel x='32' y='2' z='0' type='1' />
+<parcel x='32' y='3' z='0' type='1' />
+<parcel x='32' y='4' z='0' type='1' />
+<parcel x='32' y='5' z='0' type='1' />
+<parcel x='32' y='6' z='0' type='1' />
+<parcel x='32' y='7' z='0' type='1' />
+<parcel x='32' y='8' z='0' type='1' />
+<parcel x='32' y='9' z='0' type='1' />
+<parcel x='32' y='10' z='0' type='1' />
+<parcel x='32' y='11' z='0' type='1' />
+<parcel x='32' y='12' z='0' type='1' />
+<parcel x='32' y='13' z='0' type='1' />
+<parcel x='32' y='14' z='0' type='1' />
+<parcel x='32' y='15' z='0' type='1' />
+<parcel x='32' y='16' z='0' type='1' />
+<parcel x='32' y='17' z='0' type='1' />
+<parcel x='32' y='18' z='0' type='1' />
+<parcel x='32' y='19' z='0' type='1' />
+<parcel x='32' y='20' z='0' type='1' />
+<parcel x='32' y='21' z='0' type='1' />
+<parcel x='32' y='22' z='0' type='1' />
+<parcel x='32' y='23' z='0' type='1' />
+<parcel x='32' y='24' z='0' type='1' />
+<parcel x='32' y='25' z='0' type='1' />
+<parcel x='32' y='26' z='0' type='1' />
+<parcel x='32' y='27' z='0' type='1' />
+<parcel x='32' y='28' z='0' type='1' />
+<parcel x='32' y='29' z='0' type='1' />
+<parcel x='32' y='30' z='0' type='1' />
+<parcel x='32' y='31' z='0' type='1' />
+<parcel x='32' y='32' z='0' type='1' />
+<parcel x='32' y='33' z='0' type='1' />
+<parcel x='32' y='34' z='0' type='1' />
+<parcel x='32' y='35' z='0' type='1' />
+<parcel x='32' y='36' z='0' type='1'>
+<resource id='472' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='37' z='0' type='1'>
+<resource id='1289' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='32' y='38' z='0' type='1'>
+<resource id='474' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='39' z='0' type='1'>
+<resource id='475' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='40' z='0' type='1'>
+<resource id='476' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='41' z='0' type='1'>
+<resource id='477' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='42' z='0' type='1'>
+<resource id='478' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='43' z='0' type='1'>
+<resource id='479' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='44' z='0' type='1' />
+<parcel x='32' y='45' z='0' type='1'>
+<resource id='480' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='46' z='0' type='1' />
+<parcel x='32' y='47' z='0' type='1'>
+<resource id='481' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='32' y='48' z='0' type='1' />
+<parcel x='32' y='49' z='0' type='1' />
+<parcel x='33' y='0' z='0' type='1' />
+<parcel x='33' y='1' z='0' type='1' />
+<parcel x='33' y='2' z='0' type='1' />
+<parcel x='33' y='3' z='0' type='1' />
+<parcel x='33' y='4' z='0' type='1' />
+<parcel x='33' y='5' z='0' type='1' />
+<parcel x='33' y='6' z='0' type='1' />
+<parcel x='33' y='7' z='0' type='1' />
+<parcel x='33' y='8' z='0' type='1' />
+<parcel x='33' y='9' z='0' type='1' />
+<parcel x='33' y='10' z='0' type='1' />
+<parcel x='33' y='11' z='0' type='1' />
+<parcel x='33' y='12' z='0' type='1' />
+<parcel x='33' y='13' z='0' type='1' />
+<parcel x='33' y='14' z='0' type='1' />
+<parcel x='33' y='15' z='0' type='1' />
+<parcel x='33' y='16' z='0' type='1' />
+<parcel x='33' y='17' z='0' type='1' />
+<parcel x='33' y='18' z='0' type='1' />
+<parcel x='33' y='19' z='0' type='1' />
+<parcel x='33' y='20' z='0' type='1' />
+<parcel x='33' y='21' z='0' type='1' />
+<parcel x='33' y='22' z='0' type='1' />
+<parcel x='33' y='23' z='0' type='1' />
+<parcel x='33' y='24' z='0' type='1' />
+<parcel x='33' y='25' z='0' type='1' />
+<parcel x='33' y='26' z='0' type='1' />
+<parcel x='33' y='27' z='0' type='1' />
+<parcel x='33' y='28' z='0' type='1' />
+<parcel x='33' y='29' z='0' type='1' />
+<parcel x='33' y='30' z='0' type='1' />
+<parcel x='33' y='31' z='0' type='1' />
+<parcel x='33' y='32' z='0' type='1' />
+<parcel x='33' y='33' z='0' type='1' />
+<parcel x='33' y='34' z='0' type='1' />
+<parcel x='33' y='35' z='0' type='1' />
+<parcel x='33' y='36' z='0' type='1'>
+<resource id='1312' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='33' y='37' z='0' type='1'>
+<resource id='482' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='33' y='38' z='0' type='1'>
+<resource id='483' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='33' y='39' z='0' type='1'>
+<resource id='484' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='33' y='40' z='0' type='1'>
+<resource id='485' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='33' y='41' z='0' type='1'>
+<resource id='486' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='33' y='42' z='0' type='1'>
+<resource id='487' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='33' y='43' z='0' type='1' />
+<parcel x='33' y='44' z='0' type='1' />
+<parcel x='33' y='45' z='0' type='1' />
+<parcel x='33' y='46' z='0' type='1' />
+<parcel x='33' y='47' z='0' type='1' />
+<parcel x='33' y='48' z='0' type='1' />
+<parcel x='33' y='49' z='0' type='1' />
+<parcel x='34' y='0' z='0' type='1' />
+<parcel x='34' y='1' z='0' type='1' />
+<parcel x='34' y='2' z='0' type='1' />
+<parcel x='34' y='3' z='0' type='1' />
+<parcel x='34' y='4' z='0' type='1' />
+<parcel x='34' y='5' z='0' type='1' />
+<parcel x='34' y='6' z='0' type='1' />
+<parcel x='34' y='7' z='0' type='1' />
+<parcel x='34' y='8' z='0' type='1' />
+<parcel x='34' y='9' z='0' type='1' />
+<parcel x='34' y='10' z='0' type='1' />
+<parcel x='34' y='11' z='0' type='1' />
+<parcel x='34' y='12' z='0' type='1' />
+<parcel x='34' y='13' z='0' type='1' />
+<parcel x='34' y='14' z='0' type='1' />
+<parcel x='34' y='15' z='0' type='1' />
+<parcel x='34' y='16' z='0' type='1' />
+<parcel x='34' y='17' z='0' type='1' />
+<parcel x='34' y='18' z='0' type='1' />
+<parcel x='34' y='19' z='0' type='1' />
+<parcel x='34' y='20' z='0' type='1' />
+<parcel x='34' y='21' z='0' type='1' />
+<parcel x='34' y='22' z='0' type='1' />
+<parcel x='34' y='23' z='0' type='1' />
+<parcel x='34' y='24' z='0' type='1' />
+<parcel x='34' y='25' z='0' type='1' />
+<parcel x='34' y='26' z='0' type='1' />
+<parcel x='34' y='27' z='0' type='1' />
+<parcel x='34' y='28' z='0' type='1' />
+<parcel x='34' y='29' z='0' type='1' />
+<parcel x='34' y='30' z='0' type='1' />
+<parcel x='34' y='31' z='0' type='1' />
+<parcel x='34' y='32' z='0' type='1' />
+<parcel x='34' y='33' z='0' type='1' />
+<parcel x='34' y='34' z='0' type='1' />
+<parcel x='34' y='35' z='0' type='1' />
+<parcel x='34' y='36' z='0' type='1' />
+<parcel x='34' y='37' z='0' type='1'>
+<resource id='488' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='34' y='38' z='0' type='1'>
+<resource id='489' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='34' y='39' z='0' type='1'>
+<resource id='490' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='34' y='40' z='0' type='1' />
+<parcel x='34' y='41' z='0' type='1'>
+<resource id='491' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='34' y='42' z='0' type='1' />
+<parcel x='34' y='43' z='0' type='1' />
+<parcel x='34' y='44' z='0' type='1' />
+<parcel x='34' y='45' z='0' type='1' />
+<parcel x='34' y='46' z='0' type='1' />
+<parcel x='34' y='47' z='0' type='1' />
+<parcel x='34' y='48' z='0' type='1' />
+<parcel x='34' y='49' z='0' type='1' />
+<parcel x='35' y='0' z='0' type='1' />
+<parcel x='35' y='1' z='0' type='1' />
+<parcel x='35' y='2' z='0' type='1' />
+<parcel x='35' y='3' z='0' type='1' />
+<parcel x='35' y='4' z='0' type='1' />
+<parcel x='35' y='5' z='0' type='1' />
+<parcel x='35' y='6' z='0' type='1' />
+<parcel x='35' y='7' z='0' type='1' />
+<parcel x='35' y='8' z='0' type='1' />
+<parcel x='35' y='9' z='0' type='1' />
+<parcel x='35' y='10' z='0' type='1' />
+<parcel x='35' y='11' z='0' type='1' />
+<parcel x='35' y='12' z='0' type='1' />
+<parcel x='35' y='13' z='0' type='1' />
+<parcel x='35' y='14' z='0' type='1' />
+<parcel x='35' y='15' z='0' type='1' />
+<parcel x='35' y='16' z='0' type='1' />
+<parcel x='35' y='17' z='0' type='1' />
+<parcel x='35' y='18' z='0' type='1' />
+<parcel x='35' y='19' z='0' type='1' />
+<parcel x='35' y='20' z='0' type='1' />
+<parcel x='35' y='21' z='0' type='1' />
+<parcel x='35' y='22' z='0' type='1' />
+<parcel x='35' y='23' z='0' type='1' />
+<parcel x='35' y='24' z='0' type='1' />
+<parcel x='35' y='25' z='0' type='1' />
+<parcel x='35' y='26' z='0' type='1' />
+<parcel x='35' y='27' z='0' type='1' />
+<parcel x='35' y='28' z='0' type='1' />
+<parcel x='35' y='29' z='0' type='1' />
+<parcel x='35' y='30' z='0' type='1' />
+<parcel x='35' y='31' z='0' type='1' />
+<parcel x='35' y='32' z='0' type='1' />
+<parcel x='35' y='33' z='0' type='1' />
+<parcel x='35' y='34' z='0' type='1' />
+<parcel x='35' y='35' z='0' type='1' />
+<parcel x='35' y='36' z='0' type='1' />
+<parcel x='35' y='37' z='0' type='1' />
+<parcel x='35' y='38' z='0' type='1' />
+<parcel x='35' y='39' z='0' type='1'>
+<resource id='1365' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='35' y='40' z='0' type='1' />
+<parcel x='35' y='41' z='0' type='1' />
+<parcel x='35' y='42' z='0' type='1' />
+<parcel x='35' y='43' z='0' type='1' />
+<parcel x='35' y='44' z='0' type='1' />
+<parcel x='35' y='45' z='0' type='1' />
+<parcel x='35' y='46' z='0' type='1' />
+<parcel x='35' y='47' z='0' type='1' />
+<parcel x='35' y='48' z='0' type='1' />
+<parcel x='35' y='49' z='0' type='1' />
+<parcel x='36' y='0' z='0' type='1' />
+<parcel x='36' y='1' z='0' type='1' />
+<parcel x='36' y='2' z='0' type='1' />
+<parcel x='36' y='3' z='0' type='1' />
+<parcel x='36' y='4' z='0' type='1' />
+<parcel x='36' y='5' z='0' type='1' />
+<parcel x='36' y='6' z='0' type='1' />
+<parcel x='36' y='7' z='0' type='1' />
+<parcel x='36' y='8' z='0' type='1' />
+<parcel x='36' y='9' z='0' type='1' />
+<parcel x='36' y='10' z='0' type='1' />
+<parcel x='36' y='11' z='0' type='1' />
+<parcel x='36' y='12' z='0' type='1' />
+<parcel x='36' y='13' z='0' type='1' />
+<parcel x='36' y='14' z='0' type='1' />
+<parcel x='36' y='15' z='0' type='1' />
+<parcel x='36' y='16' z='0' type='1' />
+<parcel x='36' y='17' z='0' type='1' />
+<parcel x='36' y='18' z='0' type='1' />
+<parcel x='36' y='19' z='0' type='1' />
+<parcel x='36' y='20' z='0' type='1' />
+<parcel x='36' y='21' z='0' type='1' />
+<parcel x='36' y='22' z='0' type='1' />
+<parcel x='36' y='23' z='0' type='1' />
+<parcel x='36' y='24' z='0' type='1' />
+<parcel x='36' y='25' z='0' type='1' />
+<parcel x='36' y='26' z='0' type='1' />
+<parcel x='36' y='27' z='0' type='1' />
+<parcel x='36' y='28' z='0' type='1' />
+<parcel x='36' y='29' z='0' type='1' />
+<parcel x='36' y='30' z='0' type='1' />
+<parcel x='36' y='31' z='0' type='1' />
+<parcel x='36' y='32' z='0' type='1' />
+<parcel x='36' y='33' z='0' type='1' />
+<parcel x='36' y='34' z='0' type='1' />
+<parcel x='36' y='35' z='0' type='1' />
+<parcel x='36' y='36' z='0' type='1' />
+<parcel x='36' y='37' z='0' type='1' />
+<parcel x='36' y='38' z='0' type='1' />
+<parcel x='36' y='39' z='0' type='1' />
+<parcel x='36' y='40' z='0' type='1' />
+<parcel x='36' y='41' z='0' type='1' />
+<parcel x='36' y='42' z='0' type='1' />
+<parcel x='36' y='43' z='0' type='1' />
+<parcel x='36' y='44' z='0' type='1' />
+<parcel x='36' y='45' z='0' type='1' />
+<parcel x='36' y='46' z='0' type='1' />
+<parcel x='36' y='47' z='0' type='1' />
+<parcel x='36' y='48' z='0' type='1' />
+<parcel x='36' y='49' z='0' type='1' />
+<parcel x='37' y='0' z='0' type='1' />
+<parcel x='37' y='1' z='0' type='1' />
+<parcel x='37' y='2' z='0' type='1' />
+<parcel x='37' y='3' z='0' type='1' />
+<parcel x='37' y='4' z='0' type='1' />
+<parcel x='37' y='5' z='0' type='1' />
+<parcel x='37' y='6' z='0' type='1' />
+<parcel x='37' y='7' z='0' type='1' />
+<parcel x='37' y='8' z='0' type='1' />
+<parcel x='37' y='9' z='0' type='1' />
+<parcel x='37' y='10' z='0' type='1' />
+<parcel x='37' y='11' z='0' type='1' />
+<parcel x='37' y='12' z='0' type='1' />
+<parcel x='37' y='13' z='0' type='1' />
+<parcel x='37' y='14' z='0' type='1' />
+<parcel x='37' y='15' z='0' type='1' />
+<parcel x='37' y='16' z='0' type='1' />
+<parcel x='37' y='17' z='0' type='1' />
+<parcel x='37' y='18' z='0' type='1' />
+<parcel x='37' y='19' z='0' type='1' />
+<parcel x='37' y='20' z='0' type='1' />
+<parcel x='37' y='21' z='0' type='1' />
+<parcel x='37' y='22' z='0' type='1' />
+<parcel x='37' y='23' z='0' type='1' />
+<parcel x='37' y='24' z='0' type='1' />
+<parcel x='37' y='25' z='0' type='1' />
+<parcel x='37' y='26' z='0' type='1' />
+<parcel x='37' y='27' z='0' type='1' />
+<parcel x='37' y='28' z='0' type='1' />
+<parcel x='37' y='29' z='0' type='1' />
+<parcel x='37' y='30' z='0' type='1' />
+<parcel x='37' y='31' z='0' type='1' />
+<parcel x='37' y='32' z='0' type='1' />
+<parcel x='37' y='33' z='0' type='1' />
+<parcel x='37' y='34' z='0' type='1' />
+<parcel x='37' y='35' z='0' type='1' />
+<parcel x='37' y='36' z='0' type='1' />
+<parcel x='37' y='37' z='0' type='1' />
+<parcel x='37' y='38' z='0' type='1' />
+<parcel x='37' y='39' z='0' type='1' />
+<parcel x='37' y='40' z='0' type='1' />
+<parcel x='37' y='41' z='0' type='1' />
+<parcel x='37' y='42' z='0' type='1' />
+<parcel x='37' y='43' z='0' type='1' />
+<parcel x='37' y='44' z='0' type='1'>
+<resource id='1423' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='37' y='45' z='0' type='1'>
+<resource id='1424' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='37' y='46' z='0' type='1' />
+<parcel x='37' y='47' z='0' type='1' />
+<parcel x='37' y='48' z='0' type='1' />
+<parcel x='37' y='49' z='0' type='1' />
+<parcel x='38' y='0' z='0' type='1' />
+<parcel x='38' y='1' z='0' type='1' />
+<parcel x='38' y='2' z='0' type='1' />
+<parcel x='38' y='3' z='0' type='1' />
+<parcel x='38' y='4' z='0' type='1' />
+<parcel x='38' y='5' z='0' type='1' />
+<parcel x='38' y='6' z='0' type='1' />
+<parcel x='38' y='7' z='0' type='1' />
+<parcel x='38' y='8' z='0' type='1' />
+<parcel x='38' y='9' z='0' type='1' />
+<parcel x='38' y='10' z='0' type='1' />
+<parcel x='38' y='11' z='0' type='1' />
+<parcel x='38' y='12' z='0' type='1' />
+<parcel x='38' y='13' z='0' type='1' />
+<parcel x='38' y='14' z='0' type='1' />
+<parcel x='38' y='15' z='0' type='1' />
+<parcel x='38' y='16' z='0' type='1' />
+<parcel x='38' y='17' z='0' type='1' />
+<parcel x='38' y='18' z='0' type='1' />
+<parcel x='38' y='19' z='0' type='1' />
+<parcel x='38' y='20' z='0' type='1' />
+<parcel x='38' y='21' z='0' type='1' />
+<parcel x='38' y='22' z='0' type='1' />
+<parcel x='38' y='23' z='0' type='1' />
+<parcel x='38' y='24' z='0' type='1' />
+<parcel x='38' y='25' z='0' type='1' />
+<parcel x='38' y='26' z='0' type='1' />
+<parcel x='38' y='27' z='0' type='1' />
+<parcel x='38' y='28' z='0' type='1' />
+<parcel x='38' y='29' z='0' type='1' />
+<parcel x='38' y='30' z='0' type='1' />
+<parcel x='38' y='31' z='0' type='1' />
+<parcel x='38' y='32' z='0' type='1' />
+<parcel x='38' y='33' z='0' type='1' />
+<parcel x='38' y='34' z='0' type='1' />
+<parcel x='38' y='35' z='0' type='1' />
+<parcel x='38' y='36' z='0' type='1' />
+<parcel x='38' y='37' z='0' type='1' />
+<parcel x='38' y='38' z='0' type='1' />
+<parcel x='38' y='39' z='0' type='1' />
+<parcel x='38' y='40' z='0' type='1' />
+<parcel x='38' y='41' z='0' type='1' />
+<parcel x='38' y='42' z='0' type='1' />
+<parcel x='38' y='43' z='0' type='1' />
+<parcel x='38' y='44' z='0' type='1' />
+<parcel x='38' y='45' z='0' type='1' />
+<parcel x='38' y='46' z='0' type='1' />
+<parcel x='38' y='47' z='0' type='1' />
+<parcel x='38' y='48' z='0' type='1' />
+<parcel x='38' y='49' z='0' type='1' />
+<parcel x='39' y='0' z='0' type='1' />
+<parcel x='39' y='1' z='0' type='1' />
+<parcel x='39' y='2' z='0' type='1' />
+<parcel x='39' y='3' z='0' type='1' />
+<parcel x='39' y='4' z='0' type='1' />
+<parcel x='39' y='5' z='0' type='1' />
+<parcel x='39' y='6' z='0' type='1' />
+<parcel x='39' y='7' z='0' type='1' />
+<parcel x='39' y='8' z='0' type='1' />
+<parcel x='39' y='9' z='0' type='1' />
+<parcel x='39' y='10' z='0' type='1' />
+<parcel x='39' y='11' z='0' type='1' />
+<parcel x='39' y='12' z='0' type='1' />
+<parcel x='39' y='13' z='0' type='1' />
+<parcel x='39' y='14' z='0' type='1' />
+<parcel x='39' y='15' z='0' type='1' />
+<parcel x='39' y='16' z='0' type='1' />
+<parcel x='39' y='17' z='0' type='1' />
+<parcel x='39' y='18' z='0' type='1' />
+<parcel x='39' y='19' z='0' type='1' />
+<parcel x='39' y='20' z='0' type='1' />
+<parcel x='39' y='21' z='0' type='1' />
+<parcel x='39' y='22' z='0' type='1' />
+<parcel x='39' y='23' z='0' type='1' />
+<parcel x='39' y='24' z='0' type='1' />
+<parcel x='39' y='25' z='0' type='1' />
+<parcel x='39' y='26' z='0' type='1' />
+<parcel x='39' y='27' z='0' type='1' />
+<parcel x='39' y='28' z='0' type='1' />
+<parcel x='39' y='29' z='0' type='1' />
+<parcel x='39' y='30' z='0' type='1' />
+<parcel x='39' y='31' z='0' type='1' />
+<parcel x='39' y='32' z='0' type='1' />
+<parcel x='39' y='33' z='0' type='1' />
+<parcel x='39' y='34' z='0' type='1' />
+<parcel x='39' y='35' z='0' type='1' />
+<parcel x='39' y='36' z='0' type='1' />
+<parcel x='39' y='37' z='0' type='1' />
+<parcel x='39' y='38' z='0' type='1' />
+<parcel x='39' y='39' z='0' type='1' />
+<parcel x='39' y='40' z='0' type='1' />
+<parcel x='39' y='41' z='0' type='1' />
+<parcel x='39' y='42' z='0' type='1' />
+<parcel x='39' y='43' z='0' type='1' />
+<parcel x='39' y='44' z='0' type='1' />
+<parcel x='39' y='45' z='0' type='1' />
+<parcel x='39' y='46' z='0' type='1' />
+<parcel x='39' y='47' z='0' type='1' />
+<parcel x='39' y='48' z='0' type='1' />
+<parcel x='39' y='49' z='0' type='1' />
+<parcel x='40' y='0' z='0' type='1' />
+<parcel x='40' y='1' z='0' type='1' />
+<parcel x='40' y='2' z='0' type='1' />
+<parcel x='40' y='3' z='0' type='1' />
+<parcel x='40' y='4' z='0' type='1' />
+<parcel x='40' y='5' z='0' type='1' />
+<parcel x='40' y='6' z='0' type='1' />
+<parcel x='40' y='7' z='0' type='1' />
+<parcel x='40' y='8' z='0' type='1' />
+<parcel x='40' y='9' z='0' type='1' />
+<parcel x='40' y='10' z='0' type='1' />
+<parcel x='40' y='11' z='0' type='1' />
+<parcel x='40' y='12' z='0' type='1' />
+<parcel x='40' y='13' z='0' type='1' />
+<parcel x='40' y='14' z='0' type='1' />
+<parcel x='40' y='15' z='0' type='1' />
+<parcel x='40' y='16' z='0' type='1' />
+<parcel x='40' y='17' z='0' type='1' />
+<parcel x='40' y='18' z='0' type='1' />
+<parcel x='40' y='19' z='0' type='1' />
+<parcel x='40' y='20' z='0' type='1' />
+<parcel x='40' y='21' z='0' type='1' />
+<parcel x='40' y='22' z='0' type='1' />
+<parcel x='40' y='23' z='0' type='1' />
+<parcel x='40' y='24' z='0' type='1' />
+<parcel x='40' y='25' z='0' type='1' />
+<parcel x='40' y='26' z='0' type='1' />
+<parcel x='40' y='27' z='0' type='1' />
+<parcel x='40' y='28' z='0' type='1' />
+<parcel x='40' y='29' z='0' type='1' />
+<parcel x='40' y='30' z='0' type='1' />
+<parcel x='40' y='31' z='0' type='1' />
+<parcel x='40' y='32' z='0' type='1' />
+<parcel x='40' y='33' z='0' type='1' />
+<parcel x='40' y='34' z='0' type='1' />
+<parcel x='40' y='35' z='0' type='1' />
+<parcel x='40' y='36' z='0' type='1' />
+<parcel x='40' y='37' z='0' type='1' />
+<parcel x='40' y='38' z='0' type='1' />
+<parcel x='40' y='39' z='0' type='1' />
+<parcel x='40' y='40' z='0' type='1' />
+<parcel x='40' y='41' z='0' type='1' />
+<parcel x='40' y='42' z='0' type='1' />
+<parcel x='40' y='43' z='0' type='1' />
+<parcel x='40' y='44' z='0' type='1' />
+<parcel x='40' y='45' z='0' type='1' />
+<parcel x='40' y='46' z='0' type='1' />
+<parcel x='40' y='47' z='0' type='1' />
+<parcel x='40' y='48' z='0' type='1' />
+<parcel x='40' y='49' z='0' type='1'>
+<resource id='1494' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='41' y='0' z='0' type='1' />
+<parcel x='41' y='1' z='0' type='1' />
+<parcel x='41' y='2' z='0' type='1' />
+<parcel x='41' y='3' z='0' type='1' />
+<parcel x='41' y='4' z='0' type='1' />
+<parcel x='41' y='5' z='0' type='1' />
+<parcel x='41' y='6' z='0' type='1' />
+<parcel x='41' y='7' z='0' type='1' />
+<parcel x='41' y='8' z='0' type='1' />
+<parcel x='41' y='9' z='0' type='1' />
+<parcel x='41' y='10' z='0' type='1' />
+<parcel x='41' y='11' z='0' type='1' />
+<parcel x='41' y='12' z='0' type='1' />
+<parcel x='41' y='13' z='0' type='1' />
+<parcel x='41' y='14' z='0' type='1' />
+<parcel x='41' y='15' z='0' type='1' />
+<parcel x='41' y='16' z='0' type='1' />
+<parcel x='41' y='17' z='0' type='1' />
+<parcel x='41' y='18' z='0' type='1' />
+<parcel x='41' y='19' z='0' type='1' />
+<parcel x='41' y='20' z='0' type='1' />
+<parcel x='41' y='21' z='0' type='1' />
+<parcel x='41' y='22' z='0' type='1' />
+<parcel x='41' y='23' z='0' type='1' />
+<parcel x='41' y='24' z='0' type='1' />
+<parcel x='41' y='25' z='0' type='1' />
+<parcel x='41' y='26' z='0' type='1' />
+<parcel x='41' y='27' z='0' type='1' />
+<parcel x='41' y='28' z='0' type='1' />
+<parcel x='41' y='29' z='0' type='1' />
+<parcel x='41' y='30' z='0' type='1' />
+<parcel x='41' y='31' z='0' type='1'>
+<resource id='1511' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='41' y='32' z='0' type='1' />
+<parcel x='41' y='33' z='0' type='1' />
+<parcel x='41' y='34' z='0' type='1' />
+<parcel x='41' y='35' z='0' type='1' />
+<parcel x='41' y='36' z='0' type='1' />
+<parcel x='41' y='37' z='0' type='1' />
+<parcel x='41' y='38' z='0' type='1' />
+<parcel x='41' y='39' z='0' type='1' />
+<parcel x='41' y='40' z='0' type='1' />
+<parcel x='41' y='41' z='0' type='1' />
+<parcel x='41' y='42' z='0' type='1' />
+<parcel x='41' y='43' z='0' type='1' />
+<parcel x='41' y='44' z='0' type='1' />
+<parcel x='41' y='45' z='0' type='1' />
+<parcel x='41' y='46' z='0' type='1' />
+<parcel x='41' y='47' z='0' type='1' />
+<parcel x='41' y='48' z='0' type='1' />
+<parcel x='41' y='49' z='0' type='1'>
+<resource id='494' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='42' y='0' z='0' type='1' />
+<parcel x='42' y='1' z='0' type='1' />
+<parcel x='42' y='2' z='0' type='1' />
+<parcel x='42' y='3' z='0' type='1' />
+<parcel x='42' y='4' z='0' type='1' />
+<parcel x='42' y='5' z='0' type='1' />
+<parcel x='42' y='6' z='0' type='1' />
+<parcel x='42' y='7' z='0' type='1' />
+<parcel x='42' y='8' z='0' type='1' />
+<parcel x='42' y='9' z='0' type='1' />
+<parcel x='42' y='10' z='0' type='1' />
+<parcel x='42' y='11' z='0' type='1' />
+<parcel x='42' y='12' z='0' type='1' />
+<parcel x='42' y='13' z='0' type='1' />
+<parcel x='42' y='14' z='0' type='1' />
+<parcel x='42' y='15' z='0' type='1' />
+<parcel x='42' y='16' z='0' type='1' />
+<parcel x='42' y='17' z='0' type='1' />
+<parcel x='42' y='18' z='0' type='1' />
+<parcel x='42' y='19' z='0' type='1' />
+<parcel x='42' y='20' z='0' type='1' />
+<parcel x='42' y='21' z='0' type='1'>
+<resource id='1529' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='42' y='22' z='0' type='1' />
+<parcel x='42' y='23' z='0' type='1' />
+<parcel x='42' y='24' z='0' type='1'>
+<resource id='1532' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='42' y='25' z='0' type='1'>
+<resource id='1534' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='42' y='26' z='0' type='1' />
+<parcel x='42' y='27' z='0' type='1' />
+<parcel x='42' y='28' z='0' type='1' />
+<parcel x='42' y='29' z='0' type='1' />
+<parcel x='42' y='30' z='0' type='1' />
+<parcel x='42' y='31' z='0' type='1'>
+<resource id='1537' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='42' y='32' z='0' type='1' />
+<parcel x='42' y='33' z='0' type='1' />
+<parcel x='42' y='34' z='0' type='1' />
+<parcel x='42' y='35' z='0' type='1' />
+<parcel x='42' y='36' z='0' type='1' />
+<parcel x='42' y='37' z='0' type='1' />
+<parcel x='42' y='38' z='0' type='1' />
+<parcel x='42' y='39' z='0' type='1' />
+<parcel x='42' y='40' z='0' type='1' />
+<parcel x='42' y='41' z='0' type='1' />
+<parcel x='42' y='42' z='0' type='1' />
+<parcel x='42' y='43' z='0' type='1' />
+<parcel x='42' y='44' z='0' type='1' />
+<parcel x='42' y='45' z='0' type='1' />
+<parcel x='42' y='46' z='0' type='1' />
+<parcel x='42' y='47' z='0' type='1'>
+<resource id='495' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='42' y='48' z='0' type='1'>
+<resource id='496' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='42' y='49' z='0' type='1'>
+<resource id='497' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='43' y='0' z='0' type='1' />
+<parcel x='43' y='1' z='0' type='1' />
+<parcel x='43' y='2' z='0' type='1' />
+<parcel x='43' y='3' z='0' type='1' />
+<parcel x='43' y='4' z='0' type='1' />
+<parcel x='43' y='5' z='0' type='1' />
+<parcel x='43' y='6' z='0' type='1' />
+<parcel x='43' y='7' z='0' type='1' />
+<parcel x='43' y='8' z='0' type='1' />
+<parcel x='43' y='9' z='0' type='1' />
+<parcel x='43' y='10' z='0' type='1' />
+<parcel x='43' y='11' z='0' type='1' />
+<parcel x='43' y='12' z='0' type='1' />
+<parcel x='43' y='13' z='0' type='1' />
+<parcel x='43' y='14' z='0' type='1' />
+<parcel x='43' y='15' z='0' type='1' />
+<parcel x='43' y='16' z='0' type='1' />
+<parcel x='43' y='17' z='0' type='1' />
+<parcel x='43' y='18' z='0' type='1' />
+<parcel x='43' y='19' z='0' type='1' />
+<parcel x='43' y='20' z='0' type='1' />
+<parcel x='43' y='21' z='0' type='1'>
+<resource id='1564' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='43' y='22' z='0' type='1' />
+<parcel x='43' y='23' z='0' type='1' />
+<parcel x='43' y='24' z='0' type='1' />
+<parcel x='43' y='25' z='0' type='1' />
+<parcel x='43' y='26' z='0' type='1' />
+<parcel x='43' y='27' z='0' type='1' />
+<parcel x='43' y='28' z='0' type='1' />
+<parcel x='43' y='29' z='0' type='1' />
+<parcel x='43' y='30' z='0' type='1' />
+<parcel x='43' y='31' z='0' type='1' />
+<parcel x='43' y='32' z='0' type='1' />
+<parcel x='43' y='33' z='0' type='1' />
+<parcel x='43' y='34' z='0' type='1' />
+<parcel x='43' y='35' z='0' type='1' />
+<parcel x='43' y='36' z='0' type='1' />
+<parcel x='43' y='37' z='0' type='1' />
+<parcel x='43' y='38' z='0' type='1' />
+<parcel x='43' y='39' z='0' type='1' />
+<parcel x='43' y='40' z='0' type='1' />
+<parcel x='43' y='41' z='0' type='1' />
+<parcel x='43' y='42' z='0' type='1' />
+<parcel x='43' y='43' z='0' type='1' />
+<parcel x='43' y='44' z='0' type='1'>
+<resource id='498' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='43' y='45' z='0' type='1'>
+<resource id='499' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='43' y='46' z='0' type='1'>
+<resource id='500' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='43' y='47' z='0' type='1'>
+<resource id='501' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='43' y='48' z='0' type='1'>
+<resource id='502' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='43' y='49' z='0' type='1'>
+<resource id='503' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='44' y='0' z='0' type='1' />
+<parcel x='44' y='1' z='0' type='1' />
+<parcel x='44' y='2' z='0' type='1' />
+<parcel x='44' y='3' z='0' type='1' />
+<parcel x='44' y='4' z='0' type='1' />
+<parcel x='44' y='5' z='0' type='1' />
+<parcel x='44' y='6' z='0' type='1' />
+<parcel x='44' y='7' z='0' type='1' />
+<parcel x='44' y='8' z='0' type='1' />
+<parcel x='44' y='9' z='0' type='1' />
+<parcel x='44' y='10' z='0' type='1' />
+<parcel x='44' y='11' z='0' type='1' />
+<parcel x='44' y='12' z='0' type='1' />
+<parcel x='44' y='13' z='0' type='1' />
+<parcel x='44' y='14' z='0' type='1' />
+<parcel x='44' y='15' z='0' type='1' />
+<parcel x='44' y='16' z='0' type='1' />
+<parcel x='44' y='17' z='0' type='1' />
+<parcel x='44' y='18' z='0' type='1' />
+<parcel x='44' y='19' z='0' type='1' />
+<parcel x='44' y='20' z='0' type='1' />
+<parcel x='44' y='21' z='0' type='1' />
+<parcel x='44' y='22' z='0' type='1' />
+<parcel x='44' y='23' z='0' type='1' />
+<parcel x='44' y='24' z='0' type='1' />
+<parcel x='44' y='25' z='0' type='1' />
+<parcel x='44' y='26' z='0' type='1' />
+<parcel x='44' y='27' z='0' type='1' />
+<parcel x='44' y='28' z='0' type='1' />
+<parcel x='44' y='29' z='0' type='1' />
+<parcel x='44' y='30' z='0' type='1' />
+<parcel x='44' y='31' z='0' type='1' />
+<parcel x='44' y='32' z='0' type='1' />
+<parcel x='44' y='33' z='0' type='1' />
+<parcel x='44' y='34' z='0' type='1'>
+<resource id='1591' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='44' y='35' z='0' type='1' />
+<parcel x='44' y='36' z='0' type='1' />
+<parcel x='44' y='37' z='0' type='1' />
+<parcel x='44' y='38' z='0' type='1' />
+<parcel x='44' y='39' z='0' type='1' />
+<parcel x='44' y='40' z='0' type='1' />
+<parcel x='44' y='41' z='0' type='1' />
+<parcel x='44' y='42' z='0' type='1' />
+<parcel x='44' y='43' z='0' type='1' />
+<parcel x='44' y='44' z='0' type='1'>
+<resource id='504' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='44' y='45' z='0' type='1' />
+<parcel x='44' y='46' z='0' type='1'>
+<resource id='505' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='44' y='47' z='0' type='1' />
+<parcel x='44' y='48' z='0' type='1'>
+<resource id='506' name='base.raw_spice'>
+<health>0</health>
+<progress>0</progress>
+<maturity>0.0</maturity>
+</resource>
+</parcel>
+<parcel x='44' y='49' z='0' type='1' />
+<parcel x='45' y='0' z='0' type='1' />
+<parcel x='45' y='1' z='0' type='1' />
+<parcel x='45' y='2' z='0' type='1' />
+<parcel x='45' y='3' z='0' type='1' />
+<parcel x='45' y='4' z='0' type='1' />
+<parcel x='45' y='5' z='0' type='1' />
+<parcel x='45' y='6' z='0' type='1' />
+<parcel x='45' y='7' z='0' type='1' />
+<parcel x='45' y='8' z='0' type='1' />
+<parcel x='45' y='9' z='0' type='1' />
+<parcel x='45' y='10' z='0' type='1' />
+<parcel x='45' y='11' z='0' type='1' />
+<parcel x='45' y='12' z='0' type='1' />
+<parcel x='45' y='13' z='0' type='1' />
+<parcel x='45' y='14' z='0' type='1' />
+<parcel x='45' y='15' z='0' type='1' />
+<parcel x='45' y='16' z='0' type='1' />
+<parcel x='45' y='17' z='0' type='1' />
+<parcel x='45' y='18' z='0' type='1' />
+<parcel x='45' y='19' z='0' type='1' />
+<parcel x='45' y='20' z='0' type='1' />
+<parcel x='45' y='21' z='0' type='1' />
+<parcel x='45' y='22' z='0' type='1' />
+<parcel x='45' y='23' z='0' type='1' />
+<parcel x='45' y='24' z='0' type='1' />
+<parcel x='45' y='25' z='0' type='1' />
+<parcel x='45' y='26' z='0' type='1' />
+<parcel x='45' y='27' z='0' type='1' />
+<parcel x='45' y='28' z='0' type='1' />
+<parcel x='45' y='29' z='0' type='1' />
+<parcel x='45' y='30' z='0' type='1' />
+<parcel x='45' y='31' z='0' type='1' />
+<parcel x='45' y='32' z='0' type='1' />
+<parcel x='45' y='33' z='0' type='1' />
+<parcel x='45' y='34' z='0' type='1'>
+<resource id='1620' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='45' y='35' z='0' type='1' />
+<parcel x='45' y='36' z='0' type='1' />
+<parcel x='45' y='37' z='0' type='1' />
+<parcel x='45' y='38' z='0' type='1' />
+<parcel x='45' y='39' z='0' type='1' />
+<parcel x='45' y='40' z='0' type='1' />
+<parcel x='45' y='41' z='0' type='1' />
+<parcel x='45' y='42' z='0' type='1' />
+<parcel x='45' y='43' z='0' type='1' />
+<parcel x='45' y='44' z='0' type='1' />
+<parcel x='45' y='45' z='0' type='1' />
+<parcel x='45' y='46' z='0' type='1' />
+<parcel x='45' y='47' z='0' type='1' />
+<parcel x='45' y='48' z='0' type='1' />
+<parcel x='45' y='49' z='0' type='1' />
+<parcel x='46' y='0' z='0' type='1' />
+<parcel x='46' y='1' z='0' type='1' />
+<parcel x='46' y='2' z='0' type='1' />
+<parcel x='46' y='3' z='0' type='1' />
+<parcel x='46' y='4' z='0' type='1' />
+<parcel x='46' y='5' z='0' type='1' />
+<parcel x='46' y='6' z='0' type='1' />
+<parcel x='46' y='7' z='0' type='1' />
+<parcel x='46' y='8' z='0' type='1' />
+<parcel x='46' y='9' z='0' type='1' />
+<parcel x='46' y='10' z='0' type='1' />
+<parcel x='46' y='11' z='0' type='1' />
+<parcel x='46' y='12' z='0' type='1' />
+<parcel x='46' y='13' z='0' type='1' />
+<parcel x='46' y='14' z='0' type='1' />
+<parcel x='46' y='15' z='0' type='1' />
+<parcel x='46' y='16' z='0' type='1' />
+<parcel x='46' y='17' z='0' type='1' />
+<parcel x='46' y='18' z='0' type='1' />
+<parcel x='46' y='19' z='0' type='1' />
+<parcel x='46' y='20' z='0' type='1' />
+<parcel x='46' y='21' z='0' type='1' />
+<parcel x='46' y='22' z='0' type='1' />
+<parcel x='46' y='23' z='0' type='1' />
+<parcel x='46' y='24' z='0' type='1' />
+<parcel x='46' y='25' z='0' type='1' />
+<parcel x='46' y='26' z='0' type='1' />
+<parcel x='46' y='27' z='0' type='1' />
+<parcel x='46' y='28' z='0' type='1' />
+<parcel x='46' y='29' z='0' type='1' />
+<parcel x='46' y='30' z='0' type='1' />
+<parcel x='46' y='31' z='0' type='1' />
+<parcel x='46' y='32' z='0' type='1' />
+<parcel x='46' y='33' z='0' type='1' />
+<parcel x='46' y='34' z='0' type='1' />
+<parcel x='46' y='35' z='0' type='1' />
+<parcel x='46' y='36' z='0' type='1' />
+<parcel x='46' y='37' z='0' type='1' />
+<parcel x='46' y='38' z='0' type='1' />
+<parcel x='46' y='39' z='0' type='1' />
+<parcel x='46' y='40' z='0' type='1' />
+<parcel x='46' y='41' z='0' type='1' />
+<parcel x='46' y='42' z='0' type='1' />
+<parcel x='46' y='43' z='0' type='1' />
+<parcel x='46' y='44' z='0' type='1' />
+<parcel x='46' y='45' z='0' type='1' />
+<parcel x='46' y='46' z='0' type='1' />
+<parcel x='46' y='47' z='0' type='1' />
+<parcel x='46' y='48' z='0' type='1' />
+<parcel x='46' y='49' z='0' type='1' />
+<parcel x='47' y='0' z='0' type='1' />
+<parcel x='47' y='1' z='0' type='1' />
+<parcel x='47' y='2' z='0' type='1' />
+<parcel x='47' y='3' z='0' type='1' />
+<parcel x='47' y='4' z='0' type='1' />
+<parcel x='47' y='5' z='0' type='1' />
+<parcel x='47' y='6' z='0' type='1' />
+<parcel x='47' y='7' z='0' type='1' />
+<parcel x='47' y='8' z='0' type='1' />
+<parcel x='47' y='9' z='0' type='1' />
+<parcel x='47' y='10' z='0' type='1' />
+<parcel x='47' y='11' z='0' type='1' />
+<parcel x='47' y='12' z='0' type='1' />
+<parcel x='47' y='13' z='0' type='1' />
+<parcel x='47' y='14' z='0' type='1' />
+<parcel x='47' y='15' z='0' type='1' />
+<parcel x='47' y='16' z='0' type='1' />
+<parcel x='47' y='17' z='0' type='1' />
+<parcel x='47' y='18' z='0' type='1' />
+<parcel x='47' y='19' z='0' type='1' />
+<parcel x='47' y='20' z='0' type='1' />
+<parcel x='47' y='21' z='0' type='1' />
+<parcel x='47' y='22' z='0' type='1' />
+<parcel x='47' y='23' z='0' type='1' />
+<parcel x='47' y='24' z='0' type='1' />
+<parcel x='47' y='25' z='0' type='1' />
+<parcel x='47' y='26' z='0' type='1' />
+<parcel x='47' y='27' z='0' type='1' />
+<parcel x='47' y='28' z='0' type='1' />
+<parcel x='47' y='29' z='0' type='1' />
+<parcel x='47' y='30' z='0' type='1' />
+<parcel x='47' y='31' z='0' type='1' />
+<parcel x='47' y='32' z='0' type='1' />
+<parcel x='47' y='33' z='0' type='1' />
+<parcel x='47' y='34' z='0' type='1' />
+<parcel x='47' y='35' z='0' type='1' />
+<parcel x='47' y='36' z='0' type='1' />
+<parcel x='47' y='37' z='0' type='1' />
+<parcel x='47' y='38' z='0' type='1' />
+<parcel x='47' y='39' z='0' type='1' />
+<parcel x='47' y='40' z='0' type='1' />
+<parcel x='47' y='41' z='0' type='1' />
+<parcel x='47' y='42' z='0' type='1' />
+<parcel x='47' y='43' z='0' type='1' />
+<parcel x='47' y='44' z='0' type='1' />
+<parcel x='47' y='45' z='0' type='1' />
+<parcel x='47' y='46' z='0' type='1' />
+<parcel x='47' y='47' z='0' type='1' />
+<parcel x='47' y='48' z='0' type='1' />
+<parcel x='47' y='49' z='0' type='1' />
+<parcel x='48' y='0' z='0' type='1' />
+<parcel x='48' y='1' z='0' type='1' />
+<parcel x='48' y='2' z='0' type='1' />
+<parcel x='48' y='3' z='0' type='1' />
+<parcel x='48' y='4' z='0' type='1' />
+<parcel x='48' y='5' z='0' type='1' />
+<parcel x='48' y='6' z='0' type='1' />
+<parcel x='48' y='7' z='0' type='1' />
+<parcel x='48' y='8' z='0' type='1' />
+<parcel x='48' y='9' z='0' type='1' />
+<parcel x='48' y='10' z='0' type='1' />
+<parcel x='48' y='11' z='0' type='1' />
+<parcel x='48' y='12' z='0' type='1' />
+<parcel x='48' y='13' z='0' type='1' />
+<parcel x='48' y='14' z='0' type='1' />
+<parcel x='48' y='15' z='0' type='1' />
+<parcel x='48' y='16' z='0' type='1' />
+<parcel x='48' y='17' z='0' type='1' />
+<parcel x='48' y='18' z='0' type='1' />
+<parcel x='48' y='19' z='0' type='1' />
+<parcel x='48' y='20' z='0' type='1' />
+<parcel x='48' y='21' z='0' type='1' />
+<parcel x='48' y='22' z='0' type='1' />
+<parcel x='48' y='23' z='0' type='1' />
+<parcel x='48' y='24' z='0' type='1' />
+<parcel x='48' y='25' z='0' type='1' />
+<parcel x='48' y='26' z='0' type='1' />
+<parcel x='48' y='27' z='0' type='1' />
+<parcel x='48' y='28' z='0' type='1' />
+<parcel x='48' y='29' z='0' type='1' />
+<parcel x='48' y='30' z='0' type='1' />
+<parcel x='48' y='31' z='0' type='1' />
+<parcel x='48' y='32' z='0' type='1' />
+<parcel x='48' y='33' z='0' type='1' />
+<parcel x='48' y='34' z='0' type='1' />
+<parcel x='48' y='35' z='0' type='1' />
+<parcel x='48' y='36' z='0' type='1' />
+<parcel x='48' y='37' z='0' type='1' />
+<parcel x='48' y='38' z='0' type='1' />
+<parcel x='48' y='39' z='0' type='1' />
+<parcel x='48' y='40' z='0' type='1' />
+<parcel x='48' y='41' z='0' type='1' />
+<parcel x='48' y='42' z='0' type='1' />
+<parcel x='48' y='43' z='0' type='1' />
+<parcel x='48' y='44' z='0' type='1' />
+<parcel x='48' y='45' z='0' type='1' />
+<parcel x='48' y='46' z='0' type='1' />
+<parcel x='48' y='47' z='0' type='1' />
+<parcel x='48' y='48' z='0' type='1' />
+<parcel x='48' y='49' z='0' type='1'>
+<resource id='1708' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+<parcel x='49' y='0' z='0' type='1' />
+<parcel x='49' y='1' z='0' type='1' />
+<parcel x='49' y='2' z='0' type='1' />
+<parcel x='49' y='3' z='0' type='1' />
+<parcel x='49' y='4' z='0' type='1' />
+<parcel x='49' y='5' z='0' type='1' />
+<parcel x='49' y='6' z='0' type='1' />
+<parcel x='49' y='7' z='0' type='1' />
+<parcel x='49' y='8' z='0' type='1' />
+<parcel x='49' y='9' z='0' type='1' />
+<parcel x='49' y='10' z='0' type='1' />
+<parcel x='49' y='11' z='0' type='1' />
+<parcel x='49' y='12' z='0' type='1' />
+<parcel x='49' y='13' z='0' type='1' />
+<parcel x='49' y='14' z='0' type='1' />
+<parcel x='49' y='15' z='0' type='1' />
+<parcel x='49' y='16' z='0' type='1' />
+<parcel x='49' y='17' z='0' type='1' />
+<parcel x='49' y='18' z='0' type='1' />
+<parcel x='49' y='19' z='0' type='1' />
+<parcel x='49' y='20' z='0' type='1' />
+<parcel x='49' y='21' z='0' type='1' />
+<parcel x='49' y='22' z='0' type='1' />
+<parcel x='49' y='23' z='0' type='1' />
+<parcel x='49' y='24' z='0' type='1' />
+<parcel x='49' y='25' z='0' type='1' />
+<parcel x='49' y='26' z='0' type='1' />
+<parcel x='49' y='27' z='0' type='1' />
+<parcel x='49' y='28' z='0' type='1' />
+<parcel x='49' y='29' z='0' type='1' />
+<parcel x='49' y='30' z='0' type='1' />
+<parcel x='49' y='31' z='0' type='1' />
+<parcel x='49' y='32' z='0' type='1' />
+<parcel x='49' y='33' z='0' type='1' />
+<parcel x='49' y='34' z='0' type='1' />
+<parcel x='49' y='35' z='0' type='1' />
+<parcel x='49' y='36' z='0' type='1' />
+<parcel x='49' y='37' z='0' type='1' />
+<parcel x='49' y='38' z='0' type='1' />
+<parcel x='49' y='39' z='0' type='1' />
+<parcel x='49' y='40' z='0' type='1' />
+<parcel x='49' y='41' z='0' type='1' />
+<parcel x='49' y='42' z='0' type='1' />
+<parcel x='49' y='43' z='0' type='1' />
+<parcel x='49' y='44' z='0' type='1' />
+<parcel x='49' y='45' z='0' type='1' />
+<parcel x='49' y='46' z='0' type='1' />
+<parcel x='49' y='47' z='0' type='1' />
+<parcel x='49' y='48' z='0' type='1' />
+<parcel x='49' y='49' z='0' type='1'>
+<resource id='1737' name='base.desert_laitue'>
+<health>0</health>
+<progress>0</progress>
+</resource>
+</parcel>
+</parcels>
+<characters>
+</characters>
+<areas>
+</areas>
+</save>

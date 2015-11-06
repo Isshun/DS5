@@ -12,16 +12,16 @@ data:extend({
 
     on_event =
     function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(false)
         end
 
-        if event == game.events.on_receipt_selected then
+        if event == application.events.on_receipt_selected then
             view:setVisible(true)
             view:findById("lb_name"):setText(data.name)
             view:findById("lb_label"):setText(data.label)

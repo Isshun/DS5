@@ -21,23 +21,23 @@ data:extend({
             { type = "label", id = "lb_nourish", text_size = 18},
         }},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 30}, size = {90, 40}, on_click = function()
-            game.events:send("encyclopedia.open_resource", resource)
+            application.events:send("encyclopedia.open_resource", resource)
         end},
     },
 
     on_event = function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
             resource = nil
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(false)
             resource = nil
         end
 
-        if event == game.events.on_resource_selected then
+        if event == application.events.on_resource_selected then
             view:setVisible(true)
             view:findById("lb_name"):setText(data:getLabel())
             resource = data;

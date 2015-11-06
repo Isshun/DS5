@@ -7,8 +7,8 @@ data:extend({
     visible = false,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)
-            game.ui:findById("panel_main"):setVisible(true)
-            game.ui:findById("panel_build"):setVisible(false)
+            application.ui:findById("panel_main"):setVisible(true)
+            application.ui:findById("panel_build"):setVisible(false)
         end},
         { type = "label", text = "Build", text_size = 28, padding = 10, position = {40, 0}},
         { type = "list", position = {10, 50}, views = {
@@ -32,7 +32,7 @@ data:extend({
             {"Networks", function(item) return item.isNetworkItem end },
         }
         for key, value in ipairs(main_categories) do
-            local bt_main_category = game.ui:createLabel()
+            local bt_main_category = application.ui:createLabel()
             bt_main_category:setSize(95, 36)
             bt_main_category:setText(value[1])
             bt_main_category:setTextSize(18)
@@ -57,16 +57,16 @@ data:extend({
     end,
 
     on_event = function(view, event , data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:findById("panel_main"):setVisible(true)
-            game:clearAction()
-            game.ui:clearCursor()
+            application.ui:findById("panel_main"):setVisible(true)
+            application:clearAction()
+            application.ui:clearCursor()
         end
 
-        if (event == game.events.on_job_create) then
-            game:clearAction()
-            game.ui:clearCursor()
+        if (event == application.events.on_job_create) then
+            application:clearAction()
+            application.ui:clearCursor()
         end
     end
 })
@@ -87,7 +87,7 @@ function open_main_category(grid_categories, grid_items, strategy)
     grid_categories:removeAllViews()
     grid_categories:setVisible(true)
     for key, value in pairs(categories) do
-        local bt_category = game.ui:createLabel()
+        local bt_category = application.ui:createLabel()
         bt_category:setSize(95, 36)
         bt_category:setText(value)
         bt_category:setTextSize(18)
@@ -115,22 +115,22 @@ function open_category(grid_items, strategy, category)
     grid_items:removeAllViews()
     grid_items:setVisible(true)
     for key, value in pairs(items) do
-        local bt_item = game.ui:createView()
+        local bt_item = application.ui:createView()
         bt_item:setSize(68, 90)
         bt_item:setBackgroundColor(0x448866)
         bt_item:setOnClickListener(function()
-            game:setBuild(value)
+            application:setBuild(value)
         end)
 
         if value.fileName ~= nil then
-            local image = game.ui:createImage()
+            local image = application.ui:createImage()
             image:setImage("data/items/" .. value.fileName .. ".png")
             image:setSize(32, 32)
             image:setPosition(10, 10)
             bt_item:addView(image)
         end
 
-        local label = game.ui:createLabel()
+        local label = application.ui:createLabel()
         label:setMaxLength(10)
         label:setText(value.label)
         label:setTextSize(14)

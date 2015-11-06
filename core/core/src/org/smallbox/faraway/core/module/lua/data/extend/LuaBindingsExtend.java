@@ -38,7 +38,7 @@ public class LuaBindingsExtend extends LuaExtend {
             bindingInfo.command = getString(value, "command", null);
             Data.getData().bindings.add(bindingInfo);
 
-            // Put binding to LuaGameModel
+            // Put binding to LuaApplicationModel
             luaModuleManager.getGame().bindings.set(bindingInfo.command, CoerceJavaToLua.coerce(bindingInfo));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

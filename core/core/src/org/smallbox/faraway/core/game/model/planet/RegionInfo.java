@@ -12,8 +12,7 @@ public class RegionInfo {
     }
 
     public static class RegionTerrain {
-        public String               type;
-        public int                  typeId;
+        public String                 ground;
         public String                 resource;
         public String                 pattern;
         public String               condition;

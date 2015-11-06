@@ -22,28 +22,28 @@ data:extend({
 
     on_event = function(view, event, data)
         -- Hour change
-        if event == game.events.on_hour_change then
+        if event == application.events.on_hour_change then
             if data then
                 view:findById("lb_time"):setText(data .. "h")
             end
         end
 
         -- Day change
-        if event == game.events.on_day_change then
+        if event == application.events.on_day_change then
             if data then
                 view:findById("lb_day"):setText("jour " .. (data + 1))
             end
         end
 
         -- Day time change
-        if event == game.events.on_day_time_change then
+        if event == application.events.on_day_time_change then
             if data then
                 view:findById("img_time"):setImage("[base]/graphics/icons/daytimes/" .. data.sun .. ".png")
             end
         end
 
         -- Weather change
-        if event == game.events.on_weather_change then
+        if event == application.events.on_weather_change then
             if data then
                 view:findById("lb_weather"):setVisible(true)
                 view:findById("lb_weather"):setText(data.label)
@@ -55,7 +55,7 @@ data:extend({
         end
 
         -- Temperature change
-        if event == game.events.on_temperature_change then
+        if event == application.events.on_temperature_change then
             local value = (math.floor(data * 10) / 10)
 
             local img_offset = (value - last_temperature_value) < 0

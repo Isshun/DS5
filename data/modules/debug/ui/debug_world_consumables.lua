@@ -12,7 +12,7 @@ data:extend({
 
     on_refresh = function(view)
         local consumables = {}
-        local iterator = game.world:getConsumables():iterator()
+        local iterator = application.world:getConsumables():iterator()
         while iterator:hasNext() do
             local consumable = iterator:next()
             local info = consumable:getInfo()
@@ -25,7 +25,7 @@ data:extend({
         local list_consumables = view:findById("list_consumables")
         list_consumables:removeAllViews()
         for key, value in pairs(consumables) do
-            local lb_consumable = game.ui:createLabel()
+            local lb_consumable = application.ui:createLabel()
             lb_consumable:setDashedString(key.label, value, 22);
             lb_consumable:setSize(200, 24)
             list_consumables:addView(lb_consumable)
@@ -34,7 +34,7 @@ data:extend({
 
     on_event =
     function(view, event, data)
---        if event == game.events.on_key_press and data == "F2" then
+--        if event == application.events.on_key_press and data == "F2" then
 --            view:setVisible(not view:isVisible())
 --        end
     end,

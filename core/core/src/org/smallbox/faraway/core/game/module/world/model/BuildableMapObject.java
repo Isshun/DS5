@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
@@ -90,9 +91,9 @@ public class BuildableMapObject extends MapObjectModel {
         if (!_isComplete && _currentBuild >= _totalBuild) {
             _isComplete = true;
             if (this instanceof ItemModel) {
-                Game.getInstance().notify(observer -> observer.onItemComplete((ItemModel)this));
+                Application.getInstance().notify(observer -> observer.onItemComplete((ItemModel)this));
             } else if (this instanceof StructureModel) {
-                Game.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)this));
+                Application.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)this));
             }
         }
         return _isComplete;

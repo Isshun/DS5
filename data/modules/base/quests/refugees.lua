@@ -20,7 +20,7 @@ data:extend({
             return false
         end
 
-        g_visitor = game.friendly:add(game.factory:createCharacter("human"))
+        g_visitor = application.friendly:add(application.factory:createCharacter("human"))
         print("add " .. g_visitor.name)
     end,
 
@@ -30,15 +30,15 @@ data:extend({
 
     on_close = function (quest)
         if g_visitor and g_visitor:isAlive() then
-            game.friendly:remove(g_visitor)
+            application.friendly:remove(g_visitor)
 
             local reward = math.random(3)
             if reward == 1 then
                 quest.closeMessage = "Le groupe de chercheur est reparti sans encombre, pour vous remercier il vous\nlaisse leur robot de protocole: B5"
-                quest.rewards:addCrew(game.factory:createCharacter("droid"))
+                quest.rewards:addCrew(application.factory:createCharacter("droid"))
             elseif reward == 2 then
                 quest.closeMessage = "Le groupe de chercheur est parvenu à rentrer à leur base et il vous envoie en\nremerciment des fournitures medicales"
-                quest.rewards:addConsumable(game.factory:createConsumable("base.seaweed", 20))
+                quest.rewards:addConsumable(application.factory:createConsumable("base.seaweed", 20))
             else
                 quest.closeMessage = "Le groupe de chercheur est parvenu à rentrer à leur base, ils n'ont aucun biens\nà vous envoyer mais vous fournissent une copie de leur recherches"
                 quest.rewards:addResource("science", 100)

@@ -160,18 +160,18 @@ data:extend({
     end,
 
     on_event = function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
-            game.ui:clearSelection();
+        if event == application.events.on_key_press and data == "ESCAPE" then
+            application.ui:clearSelection();
             view:setVisible(false)
             character = nil
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(false)
             character = nil
         end
 
-        if event == game.events.on_character_selected then
+        if event == application.events.on_character_selected then
             view:setVisible(true)
             view:findById("lb_name"):setText(data:getName())
 
@@ -225,36 +225,38 @@ function display_buffs(view, character)
     local list = view:findById("list_buffs")
     list:removeAllViews()
 
-    local buff_module = game:getModule("BuffModule")
-    local iterator = buff_module:getActiveBuffs(character):iterator()
-    while iterator:hasNext() do
-        local buff = iterator:next()
-        if buff.level > 0 then
-            local is_warning = buff.mood < 0 and buff.level > 2
-            local view_buff = game.ui:createView()
-            view_buff:setSize(400, 22)
+    local buff_module = application:getModule("BuffModule")
+    if buff_module then
+        local iterator = buff_module:getActiveBuffs(character):iterator()
+        while iterator:hasNext() do
+            local buff = iterator:next()
+            if buff.level > 0 then
+                local is_warning = buff.mood < 0 and buff.level > 2
+                local view_buff = application.ui:createView()
+                view_buff:setSize(400, 22)
 
-            if is_warning then
-                local lb_buff_warning = game.ui:createLabel()
-                lb_buff_warning:setText("!")
-                lb_buff_warning:setSize(11, 13)
-                lb_buff_warning:setTextColor(0x121c1e)
-                lb_buff_warning:setPadding(2)
-                lb_buff_warning:setBackgroundColor(buff.mood > 0 and 0xb3d035 or 0xff5555)
-                view_buff:addView(lb_buff_warning)
+                if is_warning then
+                    local lb_buff_warning = application.ui:createLabel()
+                    lb_buff_warning:setText("!")
+                    lb_buff_warning:setSize(11, 13)
+                    lb_buff_warning:setTextColor(0x121c1e)
+                    lb_buff_warning:setPadding(2)
+                    lb_buff_warning:setBackgroundColor(buff.mood > 0 and 0xb3d035 or 0xff5555)
+                    view_buff:addView(lb_buff_warning)
+                end
+
+                local lb_buff = application.ui:createLabel()
+                lb_buff:setDashedString(buff.message, buff.mood, is_warning and 45 or 47)
+                lb_buff:setSize(400, 22)
+                lb_buff:setPosition(is_warning and 18 or 0, 3)
+                lb_buff:setTextColor(buff.mood > 0 and 0xb3d035 or 0xff5555)
+                lb_buff:setOnClickListener(function()
+                    application.events:send("debug.open_buff", data)
+                end)
+                view_buff:addView(lb_buff)
+
+                list:addView(view_buff)
             end
-
-            local lb_buff = game.ui:createLabel()
-            lb_buff:setDashedString(buff.message, buff.mood, is_warning and 45 or 47)
-            lb_buff:setSize(400, 22)
-            lb_buff:setPosition(is_warning and 18 or 0, 3)
-            lb_buff:setTextColor(buff.mood > 0 and 0xb3d035 or 0xff5555)
-            lb_buff:setOnClickListener(function()
-                game.events:send("debug.open_buff", data)
-            end)
-            view_buff:addView(lb_buff)
-
-            list:addView(view_buff)
         end
     end
 end
@@ -268,7 +270,7 @@ function display_diseases(view, character)
     while iterator:hasNext() do
         local disease = iterator:next()
 
-        local lb_disease = game.ui:createLabel()
+        local lb_disease = application.ui:createLabel()
         lb_disease:setText(disease.message)
         lb_disease:setSize(400, 22)
         list:addView(lb_disease)
@@ -295,14 +297,14 @@ function display_talents(view)
     local iterator = character:getTalents():getAll():iterator()
     while iterator:hasNext() do
         local talent = iterator:next()
-        local frame_talent = game.ui:createView()
+        local frame_talent = application.ui:createView()
         frame_talent:setSize(400, 24)
 
-        local lb_talent = game.ui:createLabel()
+        local lb_talent = application.ui:createLabel()
         lb_talent:setText(talent.name)
         frame_talent:addView(lb_talent)
 
-        local lb_up = game.ui:createLabel()
+        local lb_up = application.ui:createLabel()
         lb_up:setText("up")
         lb_up:setSize(50, 22)
         lb_up:setBackgroundColor(0xff0000)
@@ -313,7 +315,7 @@ function display_talents(view)
         end)
         frame_talent:addView(lb_up)
 
-        local lb_down = game.ui:createLabel()
+        local lb_down = application.ui:createLabel()
         lb_down:setText("down")
         lb_down:setSize(50, 22)
         lb_down:setPosition(250, 0)
@@ -333,7 +335,7 @@ function displayNeed(view, lb_res_id, gauge_res_id, label, value)
 end
 
 function open_page(bt_name, page_name)
-    local panel = game.ui:findById("base.ui.info_character")
+    local panel = application.ui:findById("base.ui.info_character")
 
     for key, value in ipairs({"page_status", "page_inventory", "page_info", "page_health"}) do
         panel:findById(value):setVisible(false)

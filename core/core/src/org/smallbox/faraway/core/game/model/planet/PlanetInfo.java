@@ -21,6 +21,15 @@ public class PlanetInfo extends ObjectInfo {
         public int hostile_mechanic;
     }
 
+    public static class PlanetGraphicInfo {
+        public String       path;
+    }
+
+    public static class PlanetGraphicsInfo {
+        public PlanetGraphicInfo    thumb;
+        public PlanetGraphicInfo    background;
+    }
+
     public static class PlanetImage {
         public String                     thumb;
     }
@@ -50,6 +59,7 @@ public class PlanetInfo extends ObjectInfo {
     public double                         pressure;
     public double                         greenhouse;
     public double                         incomingEnergy;
+    public PlanetGraphicsInfo           graphics = new PlanetGraphicsInfo();
 
     public int                             dayDuration = 24;
     public int                             yearDuration = 365;

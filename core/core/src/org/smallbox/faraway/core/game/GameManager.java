@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
+import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
@@ -28,23 +29,26 @@ public class GameManager {
     public void load(String fileName) {
         long time = System.currentTimeMillis();
 
-        _game = new Game(250, 250, Data.getData(), Data.config, fileName, null, null, null);
+        Game game = new Game(250, 250, Data.getData(), Data.config, fileName, null, null, null);
 
         // TODO
-        _game.preload();
+        game.preload();
+        game.init(null);
 
-        startGame(true);
+        startGame(game, true);
+
+        _game = game;
 
         Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
-    public void startGame(boolean load) {
+    public void startGame(Game game, boolean load) {
         long time = System.currentTimeMillis();
-        MainRenderer.getInstance().init(Data.config, _game);
+        MainRenderer.getInstance().init(Data.config, game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
         time = System.currentTimeMillis();
-        UserInterface.getInstance().setGame(_game);
+        UserInterface.getInstance().setGame(game);
         Log.notice("Create UI (" + (System.currentTimeMillis() - time) + "ms)");
 
 //        if (_lightRenderer != null) {
@@ -53,22 +57,21 @@ public class GameManager {
 //            Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
 //        }
 
-        _game.init(null);
-        _game.setRegion(Data.getData().getRegion("base.planet.arrakis", "desert"));
-        _game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
+        game.setRegion(Data.getData().getRegion("base.planet.arrakis", "desert"));
+        game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
 
         time = System.currentTimeMillis();
         PathManager.getInstance().init(Game.getInstance().getInfo().worldWidth, Game.getInstance().getInfo().worldHeight);
         Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
 
         if (load) {
-            _game.load();
+            game.load();
         }
 
-        Game.getInstance().notify(GameObserver::onGameStart);
-        Game.getInstance().notify(observer -> observer.onHourChange(_game.getHour()));
-        Game.getInstance().notify(observer -> observer.onDayChange(_game.getDay()));
-        Game.getInstance().notify(observer -> observer.onYearChange(_game.getYear()));
+        Application.getInstance().notify(GameObserver::onGameStart);
+        Application.getInstance().notify(observer -> observer.onHourChange(game.getHour()));
+        Application.getInstance().notify(observer -> observer.onDayChange(game.getDay()));
+        Application.getInstance().notify(observer -> observer.onYearChange(game.getYear()));
     }
 
     public void create(String fileName, RegionInfo regionInfo) {
@@ -76,17 +79,19 @@ public class GameManager {
 
         WorldFactory factory = new WorldFactory();
 
-        _game = new Game(50, 50, Data.getData(), Data.config, fileName, null, null, regionInfo);
-        _game.init(factory);
+        Game game = new Game(50, 50, Data.getData(), Data.config, fileName, null, null, regionInfo);
+        game.init(factory);
 
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
         world.create();
         factory.create(world, regionInfo);
-        _game.save(fileName);
+        game.save(fileName);
 
-        factory.createLandSite(_game);
+        factory.createLandSite(game);
 
-        startGame(false);
+        startGame(game, false);
+
+        _game = game;
 
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
@@ -105,7 +110,9 @@ public class GameManager {
     }
 
     public void setPause(boolean pause) {
-        _game.setPaused(pause);
+        if (_game != null) {
+            _game.setPaused(pause);
+        }
     }
 
     public void stopGame() {

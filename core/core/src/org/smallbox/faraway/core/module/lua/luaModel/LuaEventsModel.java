@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.module.lua.luaModel;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 
 /**
@@ -32,10 +33,10 @@ public class LuaEventsModel {
     public static final int on_game_resume = 24;
 
     public void send(String tag) {
-        Game.getInstance().notify(observer -> observer.onCustomEvent(tag, null));
+        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, null));
     }
 
     public void send(String tag, Object object) {
-        Game.getInstance().notify(observer -> observer.onCustomEvent(tag, object));
+        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, object));
     }
 }

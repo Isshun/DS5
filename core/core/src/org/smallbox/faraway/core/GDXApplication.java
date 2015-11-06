@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.IOException;
@@ -110,6 +111,11 @@ public class GDXApplication extends ApplicationAdapter {
             ModuleManager.getInstance().load();
         }));
 
+        // Load lua modules
+        _queue.add(new LoadRunnable("Load lua modules", () -> {
+            LuaModuleManager.getInstance().load();
+        }));
+
         // Create app
         _queue.add(new LoadRunnable("Init app", () -> {
 //            GDXLightRenderer lightRenderer = null;
@@ -134,8 +140,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Resume game", () -> {
             if (Data.config.byPassMenu) {
-//                _application.newGame("12.sav", Data.getData().getRegion("arrakis", "desert"));
-                _application.loadGame("12.sav");
+//                _application.newGame("14.sav", Data.getData().getRegion("arrakis", "desert"));
+//                _application.loadGame("12.sav");
 //                _application.whiteRoom();
             }
         }));
@@ -147,6 +153,7 @@ public class GDXApplication extends ApplicationAdapter {
                             _application.update();
                             Thread.sleep(16);
                         }
+                        System.out.println("Background thread terminated");
                     } catch (Exception e) {
                         e.printStackTrace();
                         _queue.add(new LoadRunnable("Application has encounter an error and will be closed\n" + e.getMessage(), () -> {

@@ -16,7 +16,7 @@ data:extend(
                     { type = "label", id = "lb_name", text = "name", text_size = 32, padding = 18},
                     { type = "label", id = "lb_content", text = "name", text_size = 16, position = {0, 40}, padding = 18},
                     { type = "label", id = "bt_close", text = "[close]", text_size = 22, position = {650, 10}, background = 0x885566, size = {80, 32}, padding = 10, on_click = function()
-                        game.events:send("encyclopedia.close")
+                        application.events:send("encyclopedia.close")
                     end},
 
                     { type = "view", id = "view_plant", visible = false, position = {10, 54}, views = {
@@ -27,7 +27,7 @@ data:extend(
             },
             on_event =
             function(view, event, data)
-                if event == game.events.on_key_press and data == "ESCAPE" then
+                if event == application.events.on_key_press and data == "ESCAPE" then
                     view:setVisible(false)
                 end
 
@@ -55,24 +55,24 @@ data:extend(
                         local iterator = info.plant.states:iterator()
                         while iterator:hasNext() do
                             local state = iterator:next()
-                            local viewState = game.ui:createView()
+                            local viewState = application.ui:createView()
                             viewState:setSize(600, 24)
 
-                            local labelState = game.ui:createLabel()
+                            local labelState = application.ui:createLabel()
                             labelState:setText(state.name)
                             labelState:setTextSize(16)
                             labelState:setSize(200, 24)
                             labelState:setPosition(0, 0)
                             viewState:addView(labelState)
 
-                            local labelState = game.ui:createLabel()
+                            local labelState = application.ui:createLabel()
                             labelState:setText("Light: " .. state.light[1] .. " to " .. state.light[2])
                             labelState:setTextSize(16)
                             labelState:setSize(200, 24)
                             labelState:setPosition(200, 0)
                             viewState:addView(labelState)
 
-                            local labelState = game.ui:createLabel()
+                            local labelState = application.ui:createLabel()
                             labelState:setText("Temperature: " .. state.temperature[1] .. " to " .. state.temperature[2])
                             labelState:setTextSize(16)
                             labelState:setSize(200, 24)

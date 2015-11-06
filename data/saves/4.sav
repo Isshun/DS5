@@ -21981,12 +21981,12 @@
   </characters>
   <jobs>
     <org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
-      <type>org.smallbox.faraway.game.model.job.JobCraft</type>
+      <type>org.smallbox.faraway.application.model.job.JobCraft</type>
       <actionPath>base.rock_workshop:action_craft</actionPath>
       <itemId>514</itemId>
     </org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
     <org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
-      <type>org.smallbox.faraway.game.model.job.JobHaul</type>
+      <type>org.smallbox.faraway.application.model.job.JobHaul</type>
       <itemId>-1</itemId>
     </org.smallbox.faraway.data.serializer.JobSerializer_-JobSave>
   </jobs>

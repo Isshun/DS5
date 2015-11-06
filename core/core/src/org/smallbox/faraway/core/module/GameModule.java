@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.module;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
@@ -82,11 +83,11 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         }
     }
 
-    protected void printNotice(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printInfo(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printError(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printWarning(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printDebug(String message) { Game.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printNotice(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printInfo(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printError(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printWarning(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printDebug(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
 
     public SerializerInterface getSerializer() {
         return null;

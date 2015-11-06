@@ -7,6 +7,7 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.BindingInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
@@ -25,7 +26,7 @@ import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.module.lua.data.extend.*;
 import org.smallbox.faraway.core.module.lua.luaModel.LuaEventsModel;
-import org.smallbox.faraway.core.module.lua.luaModel.LuaGameModel;
+import org.smallbox.faraway.core.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
@@ -58,29 +59,35 @@ public class LuaModuleManager implements GameObserver {
             new LuaCharacterDiseaseExtend(),
             new LuaLangExtend());
 
+    private static LuaModuleManager _self;
+
     private List<LuaEventListener>      _luaEventListeners = new ArrayList<>();
     private List<LuaRefreshListener>    _luaRefreshListeners = new ArrayList<>();
     private List<LuaLoadListener>       _luaLoadListeners = new ArrayList<>();
+    private List<LuaModule>             _modules = new ArrayList<>();
 
     private LuaCrewModel                _luaCrew;
     private LuaEventsModel              _luaEvents;
-    private LuaGameModel                _game;
-    private List<LuaModule>             _modules = new ArrayList<>();
-    private LuaValue                    _luaGame;
+    private LuaApplicationModel         _luaApplication;
+    private LuaValue                    _luaApplicationValue;
 
-    public void init() {
-        _luaCrew = new LuaCrewModel();
-        _luaEvents = new LuaEventsModel();
-        _game = new LuaGameModel(_luaCrew, _luaEvents, UserInterface.getInstance());
-        _luaGame = CoerceJavaToLua.coerce(_game);
-
-        loadUI();
+    public LuaModuleManager() {
+        Application.getInstance().addObserver(this);
     }
 
-    private void loadUI() {
+    public void load() {
+        _luaCrew = new LuaCrewModel();
+        _luaEvents = new LuaEventsModel();
+        _luaApplication = new LuaApplicationModel(_luaCrew, _luaEvents, UserInterface.getInstance());
+        _luaApplicationValue = CoerceJavaToLua.coerce(_luaApplication);
+
+        reload();
+    }
+
+    private void reload() {
         // TODO: wrong emplacement
         Data.getData().bindings.clear();
-        _game.bindings = new LuaTable();
+        _luaApplication.bindings = new LuaTable();
 
         UserInterface.getInstance()._views.clear();
         _luaEventListeners.clear();
@@ -112,19 +119,19 @@ public class LuaModuleManager implements GameObserver {
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
 
         if (UserInterface.getInstance().getSelector().getSelectedCharacter() != null) {
-            Game.getInstance().notify(o -> o.onSelectCharacter(UserInterface.getInstance().getSelector().getSelectedCharacter()));
+            Application.getInstance().notify(o -> o.onSelectCharacter(UserInterface.getInstance().getSelector().getSelectedCharacter()));
         }
         if (UserInterface.getInstance().getSelector().getSelectedConsumable() != null) {
-            Game.getInstance().notify(o -> o.onSelectConsumable(UserInterface.getInstance().getSelector().getSelectedConsumable()));
+            Application.getInstance().notify(o -> o.onSelectConsumable(UserInterface.getInstance().getSelector().getSelectedConsumable()));
         }
         if (UserInterface.getInstance().getSelector().getSelectedItem() != null) {
-            Game.getInstance().notify(o -> o.onSelectItem(UserInterface.getInstance().getSelector().getSelectedItem()));
+            Application.getInstance().notify(o -> o.onSelectItem(UserInterface.getInstance().getSelector().getSelectedItem()));
         }
         if (UserInterface.getInstance().getSelector().getSelectedResource() != null) {
-            Game.getInstance().notify(o -> o.onSelectResource(UserInterface.getInstance().getSelector().getSelectedResource()));
+            Application.getInstance().notify(o -> o.onSelectResource(UserInterface.getInstance().getSelector().getSelectedResource()));
         }
         if (UserInterface.getInstance().getSelector().getSelectedStructure() != null) {
-            Game.getInstance().notify(o -> o.onSelectStructure(UserInterface.getInstance().getSelector().getSelectedStructure()));
+            Application.getInstance().notify(o -> o.onSelectStructure(UserInterface.getInstance().getSelector().getSelectedStructure()));
         }
     }
 
@@ -139,8 +146,8 @@ public class LuaModuleManager implements GameObserver {
         System.out.println("Load lua module: " + info.id + " (" + info.name + ")");
 
         Globals globals = JsePlatform.standardGlobals();
-        globals.load("function main(g, d)\n game = g\ndata = d\n end", "main").call();
-        globals.get("main").call(_luaGame, CoerceJavaToLua.coerce(new LuaDataModel(values -> {
+        globals.load("function main(a, d)\n application = a\ndata = d\n end", "main").call();
+        globals.get("main").call(_luaApplicationValue, CoerceJavaToLua.coerce(new LuaDataModel(values -> {
             if (!values.get("type").isnil()) {
                 extendLuaValue(values, luaModule, globals);
             } else {
@@ -196,7 +203,7 @@ public class LuaModuleManager implements GameObserver {
     }
 
     public void update() {
-        _game.update();
+        _luaApplication.update();
     }
 
     public void addLuaRefreshListener(LuaRefreshListener luaRefreshListener) {
@@ -253,7 +260,7 @@ public class LuaModuleManager implements GameObserver {
     public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
     public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
     public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
-    public void onReloadUI() {loadUI();}
+    public void onReloadUI() { reload(); }
     public void onRefreshUI() { _luaRefreshListeners.forEach(LuaRefreshListener::onRefresh); }
     public void onKeyPress(GameEventListener.Key key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name());}
     public void onWeatherChange(WeatherInfo weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
@@ -283,7 +290,14 @@ public class LuaModuleManager implements GameObserver {
         return _modules;
     }
 
-    public LuaGameModel getGame() {
-        return _game;
+    public LuaApplicationModel getGame() {
+        return _luaApplication;
+    }
+
+    public static LuaModuleManager getInstance() {
+        if (_self == null) {
+            _self = new LuaModuleManager();
+        }
+        return _self;
     }
 }

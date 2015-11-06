@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model.abs;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
@@ -195,7 +196,7 @@ public abstract class JobModel extends ObjectModel {
             _character = null;
             _status = JobStatus.WAITING;
 
-            Game.getInstance().notify(observer -> observer.onJobQuit(this, character));
+            Application.getInstance().notify(observer -> observer.onJobQuit(this, character));
         }
     }
 
@@ -215,7 +216,7 @@ public abstract class JobModel extends ObjectModel {
 
         onFinish();
 
-        Game.getInstance().notify(observer -> observer.onJobFinish(this));
+        Application.getInstance().notify(observer -> observer.onJobFinish(this));
     }
 
     public boolean check(CharacterModel character) {

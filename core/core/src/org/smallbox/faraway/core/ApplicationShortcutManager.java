@@ -26,33 +26,45 @@ public class ApplicationShortcutManager {
     }
 
     private static ApplicationShortcut[] SHORTCUTS = new ApplicationShortcut[] {
-        new ApplicationShortcut(GameEventListener.Key.RIGHT, null, () -> {
-            Game.getInstance().getViewport().startMove(0, 0);
-            Game.getInstance().getViewport().update(100, 0);
-        }),
-        new ApplicationShortcut(GameEventListener.Key.F10, null, () -> {
-            GameModule debugModule = ModuleManager.getInstance().getModule("DebugModule");
-            if (debugModule != null && debugModule.isLoaded()) {
-                ModuleManager.getInstance().unloadModule(debugModule);
-            } else if (debugModule != null) {
-                ModuleManager.getInstance().loadModule(debugModule);
-            }
-        }),
-        new ApplicationShortcut(GameEventListener.Key.F5, GameEventListener.Modifier.ALT, () -> {
-            Game.getInstance().save(Game.getInstance().getFileName());
-        }),
-        new ApplicationShortcut(GameEventListener.Key.ENTER, GameEventListener.Modifier.ALT, () -> {
+            new ApplicationShortcut(GameEventListener.Key.RIGHT, null, () -> {
+                Game.getInstance().getViewport().startMove(0, 0);
+                Game.getInstance().getViewport().update(100, 0);
+            }),
+            new ApplicationShortcut(GameEventListener.Key.F10, null, () -> {
+                GameModule debugModule = ModuleManager.getInstance().getModule("DebugModule");
+                if (debugModule != null && debugModule.isLoaded()) {
+                    ModuleManager.getInstance().unloadModule(debugModule);
+                } else if (debugModule != null) {
+                    ModuleManager.getInstance().loadModule(debugModule);
+                }
+            }),
+            new ApplicationShortcut(GameEventListener.Key.F5, GameEventListener.Modifier.ALT, () -> {
+                Game.getInstance().save(Game.getInstance().getFileName());
+            }),
+            new ApplicationShortcut(GameEventListener.Key.ENTER, GameEventListener.Modifier.ALT, () -> {
 //            _isFullscreen = !_isFullscreen;
 //            _renderer.setFullScreen(_isFullscreen);
-        }),
-        new ApplicationShortcut(GameEventListener.Key.F4, GameEventListener.Modifier.ALT, () -> {
-            Application.getInstance().setRunning(false);
-        }),
-        new ApplicationShortcut(GameEventListener.Key.ESCAPE, GameEventListener.Modifier.NONE , () -> {
-            if (UserInterface.getInstance().findById("panel_main").isVisible() && UserInterface.getInstance().getSelector().isClear()) {
-                GameManager.getInstance().setPause(!Game.getInstance().isPaused());
-            }
-        }),
+            }),
+            new ApplicationShortcut(GameEventListener.Key.F1, GameEventListener.Modifier.ALT, () -> {
+                Application.getInstance().newGame("14.sav", Data.getData().getRegion("base.planet.arrakis", "desert"));
+            }),
+            new ApplicationShortcut(GameEventListener.Key.F4, GameEventListener.Modifier.ALT, () -> {
+                Application.getInstance().setRunning(false);
+            }),
+            new ApplicationShortcut(GameEventListener.Key.ESCAPE, GameEventListener.Modifier.NONE , () -> {
+                if (GameManager.getInstance().isRunning()) {
+                    if (GameManager.getInstance().isPaused() && UserInterface.getInstance().findById("base.ui.menu_pause").isVisible()) {
+                        GameManager.getInstance().setPause(false);
+                        return;
+                    }
+                    if (!GameManager.getInstance().isPaused()
+                            && UserInterface.getInstance().findById("panel_main").isVisible()
+                            && UserInterface.getInstance().getSelector().isClear()) {
+                        GameManager.getInstance().setPause(true);
+                        return;
+                    }
+                }
+            }),
     };
 
     public static void onKeyPress(GameEventListener.Key key, GameEventListener.Modifier modifier) {
@@ -64,7 +76,7 @@ public class ApplicationShortcutManager {
 
         Data.getData().bindings.stream()
                 .filter(binding -> binding.key == key && binding.modifier == modifier)
-                .forEach(binding -> Game.getInstance().notify(observer -> observer.onBindingPress(binding)));
+                .forEach(binding -> Application.getInstance().notify(observer -> observer.onBindingPress(binding)));
     }
 
     public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {

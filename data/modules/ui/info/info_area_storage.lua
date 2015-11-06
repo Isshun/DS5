@@ -32,23 +32,23 @@ data:extend({
         { type = "view", size = {400, 40}, views = {
             { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 45}, position = {0, 8}},
             { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {90, 32}, on_click = function()
-                game.events:send("encyclopedia.open_area", g_area)
+                application.events:send("encyclopedia.open_area", g_area)
             end},
         }},
         { type = "grid", position = {10, 18}, columns = 2, column_width = 195, row_height = 60, views = {
             { type = "label", id = "bt_inventory", text = "Content", text_size = 20, padding = 18, background = 0x4be7da, size = {180, 50},
                 on_click = function()
-                    game.ui:findById("info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
-                    game.ui:findById("info_area_storage"):findById("bt_rules"):setBackgroundColor(0x689999);
-                    game.ui:findById("info_area_storage"):findById("frame_inventory"):setVisible(true);
-                    game.ui:findById("info_area_storage"):findById("frame_rules"):setVisible(false);
+                    application.ui:findById("info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
+                    application.ui:findById("info_area_storage"):findById("bt_rules"):setBackgroundColor(0x689999);
+                    application.ui:findById("info_area_storage"):findById("frame_inventory"):setVisible(true);
+                    application.ui:findById("info_area_storage"):findById("frame_rules"):setVisible(false);
                 end},
             { type = "label", id = "bt_rules", text = "Rules", text_size = 20, padding = 18, background = 0x689999, size = {180, 50},
                 on_click = function()
-                    game.ui:findById("info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x689999);
-                    game.ui:findById("info_area_storage"):findById("bt_rules"):setBackgroundColor(0x4be7da);
-                    game.ui:findById("info_area_storage"):findById("frame_inventory"):setVisible(false);
-                    game.ui:findById("info_area_storage"):findById("frame_rules"):setVisible(true);
+                    application.ui:findById("info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x689999);
+                    application.ui:findById("info_area_storage"):findById("bt_rules"):setBackgroundColor(0x4be7da);
+                    application.ui:findById("info_area_storage"):findById("frame_inventory"):setVisible(false);
+                    application.ui:findById("info_area_storage"):findById("frame_rules"):setVisible(true);
                 end},
         }},
         { type = "list", id = "frame_inventory", position = {0, 18}, views = {
@@ -77,18 +77,18 @@ data:extend({
 
     on_event =
     function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             g_area = nil
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             g_area = nil
             view:setVisible(false)
         end
 
-        if event == game.events.on_area_selected and data:getTypeName() == "STORAGE" then
+        if event == application.events.on_area_selected and data:getTypeName() == "STORAGE" then
             g_area = data;
             g_need_refresh = true
             view:setVisible(true)
@@ -116,7 +116,7 @@ data:extend({
 
             for key in pairs(list_item) do
                 local entry = list_item[key]
-                local lb_entry = game.ui:createLabel()
+                local lb_entry = application.ui:createLabel()
                 lb_entry:setText((entry:getValue() and "[x] " or "[ ] "), entry:getKey().label)
                 lb_entry:setTextSize(14)
                 lb_entry:setSize(180, 20)
@@ -155,7 +155,7 @@ data:extend({
             local list_storage_content = view:findById("list_storage_content")
             list_storage_content:removeAllViews()
             for key, value in pairs(item_map) do
-                local lb_item = game.ui:createLabel()
+                local lb_item = application.ui:createLabel()
                 lb_item:setDashedString(key, value, 47)
                 lb_item:setTextSize(14)
                 lb_item:setSize(180, 20)

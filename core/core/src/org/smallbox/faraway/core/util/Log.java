@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.util;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 
 public class Log {
@@ -46,7 +47,7 @@ public class Log {
     private static void println(int level, String str) {
         if (str != null) {
             if (Game.getInstance() != null) {
-                Game.getInstance().notify(observer -> observer.onLog("System", str));
+                Application.getInstance().notify(observer -> observer.onLog("System", str));
             }
 
 //            System.out.println(getPrefix(level) + str);

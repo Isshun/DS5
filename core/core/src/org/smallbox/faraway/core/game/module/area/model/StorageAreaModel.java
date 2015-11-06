@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -68,7 +69,7 @@ public class StorageAreaModel extends AreaModel {
     @Override
     public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
         super.setAccept(itemInfo, isAccepted);
-        Game.getInstance().notify(observer -> observer.onStorageRulesChanged(this));
+        Application.getInstance().notify(observer -> observer.onStorageRulesChanged(this));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.world;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -66,7 +67,7 @@ public class WeatherModule extends GameModule implements GameObserver {
         _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
         switchSunColor(hourInfo.sun);
 
-        Game.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
+        Application.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
     }
 
     public double getTemperature() {
@@ -94,7 +95,7 @@ public class WeatherModule extends GameModule implements GameObserver {
                 _lightColor = (_lightColor << 8) + (int) ((_previousLightColor.b * (1 - _lightProgress)) + (_nextLightColor.b * _lightProgress));
             }
 
-            Game.getInstance().notify(observer -> observer.onLightChange(_light, _lightColor));
+            Application.getInstance().notify(observer -> observer.onLightChange(_light, _lightColor));
         }
 
         // Set temperature
@@ -112,7 +113,7 @@ public class WeatherModule extends GameModule implements GameObserver {
             boolean significantChange = (int)(_temperature * 10) != (int)(temperature * 10);
             _temperature = temperature;
             if (significantChange) {
-                Game.getInstance().notify(observer -> observer.onTemperatureChange(_temperature));
+                Application.getInstance().notify(observer -> observer.onTemperatureChange(_temperature));
             }
         }
     }
@@ -133,7 +134,7 @@ public class WeatherModule extends GameModule implements GameObserver {
         _weather = weather;
 
         printInfo("Start weather: " + _weather.name);
-        Game.getInstance().notify(observer -> observer.onWeatherChange(weather));
+        Application.getInstance().notify(observer -> observer.onWeatherChange(weather));
 
         // Sun color
         switchSunColor(_dayTime);

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.Game;
@@ -63,9 +64,9 @@ public class BuildJob extends JobModel {
             if (_buildItem.build()) {
                 _buildItem.setBuildJob(null);
                 if (_buildItem instanceof ItemModel) {
-                    Game.getInstance().notify(observer -> observer.onItemComplete((ItemModel) _buildItem));
+                    Application.getInstance().notify(observer -> observer.onItemComplete((ItemModel) _buildItem));
                 } else if (_buildItem instanceof StructureModel) {
-                    Game.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)_buildItem));
+                    Application.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)_buildItem));
                 }
                 return JobActionReturn.COMPLETE;
             }

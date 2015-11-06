@@ -175,10 +175,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     }
 
     public double getSealValue() {
-        if (_content.structure != null) {
+        if (_content != null && _content.structure != null) {
             return _content.structure.getInfo().sealing;
         }
-        if (_content.resource != null) {
+        if (_content != null && _content.resource != null) {
             return _content.resource.getInfo().sealing;
         }
         return 0;

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
@@ -24,11 +25,9 @@ import java.util.function.Consumer;
 public class Game extends BaseGame {
     private static Game                     _self;
     private final String                    _fileName;
-    private final LuaModuleManager          _luaModuleManager;
     private GameConfig                      _config;
     private final Collection<GameModule>    _modulesBase;
     private final List<GameModule>          _modulesThird;
-    private List<GameObserver>              _observers = new ArrayList<>();
     private GameSerializer.GameSave         _save;
     private PlanetModel                     _planet;
     private RegionModel                     _region;
@@ -36,15 +35,12 @@ public class Game extends BaseGame {
     private int                             _day;
     private int                             _year;
     private GameInfo                        _info = new GameInfo();
-    private boolean[]                       _directions = new boolean[4];
 
     private static int                      _tick;
-    private Viewport                         _viewport;
     private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
     private String                          _display;
 
     public void                             toggleRunning() { _isRunning = !_isRunning; }
-    public void                             addObserver(GameObserver observer) { _observers.add(observer); }
     public void                             setRunning(boolean running) { _isRunning = running; }
     public void                             setDisplay(String display) { _display = display; }
 
@@ -73,9 +69,6 @@ public class Game extends BaseGame {
         _modulesBase = ModuleManager.getInstance().getModulesBase();
         _modulesThird = ModuleManager.getInstance().getModulesThird();
 
-        _luaModuleManager = new LuaModuleManager();
-        _observers.add(_luaModuleManager);
-
         GDXRenderer.getInstance().setViewport(_viewport);
         _tick = 0;
 
@@ -94,16 +87,14 @@ public class Game extends BaseGame {
     }
 
     public void init(WorldFactory factory) {
+        System.out.println("Load base modules");
         _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(GameModule::create);
-        _observers.addAll(ModuleManager.getInstance().getModules());
-        _observers.addAll(ModuleManager.getInstance().getRenders());
-        _luaModuleManager.init();
         _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
 
         System.out.println("Load third party modules");
         _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
 
-        notify(GameObserver::onReloadUI);
+        Application.getInstance().notify(GameObserver::onReloadUI);
     }
 
     @Override
@@ -117,7 +108,7 @@ public class Game extends BaseGame {
             return;
         }
 
-        _luaModuleManager.update();
+        LuaModuleManager.getInstance().update();
 
         _modulesBase.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
         _modulesThird.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
@@ -128,22 +119,14 @@ public class Game extends BaseGame {
                 if (++_day >= _planet.getInfo().yearDuration) {
                     _day = 1;
                     _year++;
-                    notify(observer -> observer.onYearChange(_year));
+                    Application.getInstance().notify(observer -> observer.onYearChange(_year));
                 }
-                notify(observer -> observer.onDayChange(_day));
+                Application.getInstance().notify(observer -> observer.onDayChange(_day));
             }
-            notify(observer -> observer.onHourChange(_hour));
+            Application.getInstance().notify(observer -> observer.onHourChange(_hour));
         }
 
         _tick = tick;
-    }
-
-    @Override
-    protected void onRender(int frame) {
-        if (_directions[0]) { _viewport.move(20, 0); }
-        if (_directions[1]) { _viewport.move(0, 20); }
-        if (_directions[2]) { _viewport.move(-20, 0); }
-        if (_directions[3]) { _viewport.move(0, -20); }
     }
 
     public void    load() {
@@ -166,23 +149,11 @@ public class Game extends BaseGame {
         GameSerializer.save("data/saves/" + fileName, _modulesBase, _modulesThird);
     }
 
-    public void notify(Consumer<GameObserver> action) {
-        _observers.stream().forEach(action::accept);
-    }
-
     public void preload() {
         // TODO magic
     }
 
-    public void setInputDirection(boolean[] directions) {
-        _directions = directions;
-    }
-
     public GameInfo getInfo() { return _info; }
-
-    public void removeObserver(GameModule observer) {
-        _observers.remove(observer);
-    }
 
     public void addEventListener(GameModule.EventListener listener) {
         _eventListeners.add(listener);
@@ -192,20 +163,8 @@ public class Game extends BaseGame {
         _eventListeners.remove(listener);
     }
 
-    public void notify(String tag, Object data) {
-        _eventListeners.forEach(listener -> {
-//            listener.
-//            listener.onEvent(data);
-        });
-//        _observers.stream().forEach(action::accept);
-    }
-
-    public LuaModuleManager getLuaModuleManager() {
-        return _luaModuleManager;
-    }
-
     public void setPaused(boolean pause) {
         _paused = pause;
-        notify(pause ? GameObserver::onGamePaused : GameObserver::onGameResume);
+        Application.getInstance().notify(pause ? GameObserver::onGamePaused : GameObserver::onGameResume);
     }
 }

@@ -39,6 +39,7 @@ public abstract class View {
     protected int       _fixedWidth = -1;
     protected int       _fixedHeight = -1;
     private String      _name;
+    private boolean     _inGame;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -89,6 +90,14 @@ public abstract class View {
 
     public void setName(String name) {
         _name = name;
+    }
+
+    public void setInGame(boolean inGame) {
+        _inGame = inGame;
+    }
+
+    public boolean inGame() {
+        return _inGame;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };

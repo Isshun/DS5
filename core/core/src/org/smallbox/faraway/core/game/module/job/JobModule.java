@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.job;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
@@ -36,19 +37,20 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobModule extends GameModule {
+    private BlockingQueue<JobModel>     _jobs = new LinkedBlockingQueue<>();
     private List<CharacterCheck>        _joys;
     private List<CharacterCheck>        _priorities;
-    private BlockingQueue<JobModel>     _jobs;
     private List<JobModel>              _toRemove;
     private List<CharacterCheck>        _sleeps;
+
+    public JobModule() {
+        ModuleHelper.setJobModule(this);
+    }
 
     @Override
     public void onLoaded() {
         printDebug("JobModule");
 
-        ModuleHelper.setJobModule(this);
-
-        _jobs = new LinkedBlockingQueue<>();
         _toRemove = new ArrayList<>();
         _updateInterval = 10;
 
@@ -204,7 +206,7 @@ public class JobModule extends GameModule {
 
         _jobs.add(job);
 
-        Game.getInstance().notify(observer -> observer.onJobCreate(job));
+        Application.getInstance().notify(observer -> observer.onJobCreate(job));
     }
 
     public void clear() {

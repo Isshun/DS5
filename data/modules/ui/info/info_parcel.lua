@@ -25,7 +25,7 @@ data:extend({
 
     on_event =
     function(view, event, data)
-        if event == game.events.on_parcel_over then
+        if event == application.events.on_parcel_over then
             parcel = data;
             view:setVisible(true)
         end

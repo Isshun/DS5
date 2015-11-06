@@ -96,9 +96,6 @@ public class GDXRenderer {
     public void display() {
     }
 
-    public void finish() {
-    }
-
     public void close() {
     }
 
@@ -191,14 +188,6 @@ public class GDXRenderer {
 
     public static GDXRenderer getInstance() {
         return _self;
-    }
-
-    public void begin() {
-//        _batch.begin();
-    }
-
-    public void end() {
-//        _batch.end();
     }
 
     public void drawOnMap(TextureRegion region, int x, int y) {

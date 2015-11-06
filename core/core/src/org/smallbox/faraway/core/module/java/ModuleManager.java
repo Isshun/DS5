@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.module.java;
 
 import org.json.JSONObject;
 import org.reflections.Reflections;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.GameModule;
@@ -138,6 +139,10 @@ public class ModuleManager {
 
         _renders.addAll(_rendersBase);
         _renders.addAll(_rendersThird);
+
+        _modules.forEach(module -> Application.getInstance().addObserver(module));
+        _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
+
 //        _renders.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
     }
 
@@ -156,24 +161,24 @@ public class ModuleManager {
     public void unloadModule(GameModule module) {
         if (!module.isModuleMandatory()) {
             module.destroy();
-            Game.getInstance().removeObserver(module);
+            Application.getInstance().removeObserver(module);
         }
     }
 
     public void loadModule(GameModule module) {
         module.create();
-        Game.getInstance().addObserver(module);
+        Application.getInstance().addObserver(module);
     }
 
     public void toggleModule(GameModule module) {
         if (module.isLoaded()) {
             if (!module.isModuleMandatory()) {
                 module.destroy();
-                Game.getInstance().removeObserver(module);
+                Application.getInstance().removeObserver(module);
             }
         } else {
             module.create();
-            Game.getInstance().addObserver(module);
+            Application.getInstance().addObserver(module);
         }
     }
 }

@@ -1,12 +1,12 @@
 data:extend({
-    label = "Arrakis",
-    name = "base.planet.arrakis",
+    label = "Corrin",
+    name = "base.planet.corrin",
     type = "planet",
-    class = "desert",
-    description = "Arrakis is a hostile desertic planet, its sands contains rare resource carefully protected by strong local forces",
+    class = "minshara",
+    description = "Corrin description",
     graphics = {
-        thumb = {path = "[base]/graphics/planets/arrakis_thumb.png", credit = { author = "Adam Koebel", site = "http://nightvisions.ca/2012/08/planet-arrakis/" }},
-        background = {path = "[base]/graphics/planets/arrakis_bg.jpg"},
+        thumb = {path = "[base]/graphics/planets/corrin_thumb.png", credit = { author = "Adam Koebel", site = "http://nightvisions.ca/2012/08/planet-arrakis/" }},
+        background = {path = "[base]/graphics/planets/corrin_bg.jpg"},
     },
     stats = {
         water = -2,
@@ -30,10 +30,10 @@ data:extend({
         temperature = {20, 40},
         spots = {{latitude = {40, 90}, frequency = 1}},
         terrains = {
-            { ground = "base.sand" },
-            { resource = "base.granite", pattern = "mountain" },
-            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
-            { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
+            { type = "ground", name = "base.sand" },
+            { type = "resource", name = "base.rock", pattern = "mountain" },
+            { type = "resource", name = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
         },
         weather = {
             {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
@@ -57,10 +57,10 @@ data:extend({
             {latitude = {40, 90}, frequency = 0.5},
             {latitude = {-90, 40}, frequency = 0.2}},
         terrains = {
-            { ground = "base.sand" },
-            { resource = "base.granite", pattern = "valley" },
-            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
-            { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
+            { type = "ground", name = "base.sand" },
+            { type = "resource", name = "base.rock", pattern = "valley" },
+            { type = "resource", name = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
         },
         weather = {
             {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
@@ -82,11 +82,11 @@ data:extend({
         temperature = {30, 50},
         spots = {{latitude = {-90, 40}, frequency = 1}},
         terrains = {
-            { ground = "base.sand" },
-            { resource = "base.granite", pattern = "mineral_rare_large" },
-            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
-            { resource = "base.raw_spice", pattern = "mineral_rare_large", condition = "ground" },
-            { resource = "base.desert_laitue", pattern = "random_light", condition = "ground" },
+            { type = "ground", name = "base.sand" },
+            { type = "resource", name = "base.rock", pattern = "mineral_rare_large" },
+            { type = "resource", name = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { type = "resource", name = "base.raw_spice", pattern = "mineral_rare_large", condition = "ground" },
+            { type = "resource", name = "base.desert_laitue", pattern = "random_light", condition = "ground" },
         },
         weather = {
             {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},

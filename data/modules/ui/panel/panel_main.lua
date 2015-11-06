@@ -50,11 +50,11 @@ data:extend({
     },
 
     on_load = function(view)
-        view:findById("view_resource"):setVisible(game:getModule("ResourceModule"))
+        view:findById("view_resource"):setVisible(application:getModule("ResourceModule"))
     end,
 
     on_refresh = function(view)
-        local network_module = game:getModule("NetworkModule")
+        local network_module = application:getModule("NetworkModule")
         if network_module then
             local water = 0
             local iterator = network_module:getNetworks():iterator()
@@ -65,7 +65,7 @@ data:extend({
             view:findById("lb_resource_water"):setText(math.floor(water));
         end
 
-        local resource_module = game:getModule("ResourceModule")
+        local resource_module = application:getModule("ResourceModule")
         if resource_module then
             view:findById("lb_resource_food"):setText(resource_module:getFoodCount());
             view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.wood_log"));
@@ -75,39 +75,39 @@ data:extend({
     on_event = function(view, event , data)
 
         -- Check bindings
-        if event == game.events.on_binding then
-            if data == game.bindings.open_panel_build then open_panel("panel_build") end
-            if data == game.bindings.open_panel_plan then open_panel("panel_plan") end
-            if data == game.bindings.open_panel_tasks then open_panel("panel_jobs") end
-            if data == game.bindings.open_panel_crew then open_panel("panel_crew") end
-            if data == game.bindings.open_panel_displays then open_panel("panel_displays") end
-            if data == game.bindings.open_panel_stats then open_panel("panel_stats") end
-            if data == game.bindings.open_panel_areas then open_panel("panel_areas") end
-            if data == game.bindings.open_panel_debug then open_panel("panel_debug") end
+        if event == application.events.on_binding then
+            if data == application.bindings.open_panel_build then open_panel("panel_build") end
+            if data == application.bindings.open_panel_plan then open_panel("panel_plan") end
+            if data == application.bindings.open_panel_tasks then open_panel("panel_jobs") end
+            if data == application.bindings.open_panel_crew then open_panel("panel_crew") end
+            if data == application.bindings.open_panel_displays then open_panel("panel_displays") end
+            if data == application.bindings.open_panel_stats then open_panel("panel_stats") end
+            if data == application.bindings.open_panel_areas then open_panel("panel_areas") end
+            if data == application.bindings.open_panel_debug then open_panel("panel_debug") end
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(true)
         end
 
-        if event == game.events.on_speed_change then
+        if event == application.events.on_speed_change then
             view:findById("lb_speed"):setText(data == 0 and "||" or ("x" .. data));
 
         end
 
-        if event == game.events.on_resource_selected
-                or event == game.events.on_character_selected
-                --or event == game.events.on_parcel_selected
-                or event == game.events.on_area_selected
-                or event == game.events.on_structure_selected
-                or event == game.events.on_item_selected
-                or event == game.events.on_consumable_selected then
+        if event == application.events.on_resource_selected
+                or event == application.events.on_character_selected
+                --or event == application.events.on_parcel_selected
+                or event == application.events.on_area_selected
+                or event == application.events.on_structure_selected
+                or event == application.events.on_item_selected
+                or event == application.events.on_consumable_selected then
             view:setVisible(false)
         end
     end,
 })
 
 function open_panel(panel_name)
-    game.ui:findById("panel_main"):setVisible(false)
-    game.ui:findById(panel_name):setVisible(true)
+    application.ui:findById("panel_main"):setVisible(false)
+    application.ui:findById(panel_name):setVisible(true)
 end

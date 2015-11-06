@@ -38,18 +38,18 @@ data:extend({
     },
 
     on_event = function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
             network = nil
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             view:setVisible(false)
             network = nil
         end
 
-        if event == game.events.on_network_selected then
+        if event == application.events.on_network_selected then
             view:setVisible(true)
             network = data;
 

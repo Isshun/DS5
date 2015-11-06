@@ -12,7 +12,7 @@ data:extend({
         { type = "view", size = {400, 40}, views = {
             { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 45}, position = {0, 8}},
             { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {90, 32}, on_click = function()
-                game.events:send("encyclopedia.open_area", g_area)
+                application.events:send("encyclopedia.open_area", g_area)
             end},
         }},
         { type = "label", text = "Farming", text_size = 22, padding = 10, size = {100, 45}, position = {0, 8}},
@@ -21,18 +21,18 @@ data:extend({
 
     on_event =
     function(view, event, data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             g_garden = nil
             view:setVisible(false)
-            game.ui:clearSelection();
+            application.ui:clearSelection();
         end
 
-        if event == game.events.on_deselect then
+        if event == application.events.on_deselect then
             g_garden = nil
             view:setVisible(false)
         end
 
-        if event == game.events.on_area_selected and data:getTypeName() == "GARDEN" then
+        if event == application.events.on_area_selected and data:getTypeName() == "GARDEN" then
             g_garden = data;
             g_area_garden_refresh = true
             view:setVisible(true)
@@ -57,7 +57,7 @@ data:extend({
 
             for key in pairs(list_item) do
                 local entry = list_item[key]
-                local lb_entry = game.ui:createLabel()
+                local lb_entry = application.ui:createLabel()
                 lb_entry:setText((entry:getValue() and "[x] " or "[ ] "), entry:getKey().label)
                 lb_entry:setTextSize(14)
                 lb_entry:setSize(180, 20)

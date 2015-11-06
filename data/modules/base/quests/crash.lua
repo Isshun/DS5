@@ -19,14 +19,14 @@ data:extend({
     end,
 
     on_close = function (quest)
-        local location = game.map:getDropLocation()
+        local location = application.map:getDropLocation()
         local reward = RESOURCES[math.random(#RESOURCES)]
         for i = 1, reward[2] do
-            quest.rewards:addConsumable(game.factory:createConsumable(reward[1], reward[3]), location.x, location.y)
+            quest.rewards:addConsumable(application.factory:createConsumable(reward[1], reward[3]), location.x, location.y)
         end
 
         if quest.option == 2 then
-            game.camera:move(location.x, location.y)
+            application.camera:move(location.x, location.y)
         end
 
         return true

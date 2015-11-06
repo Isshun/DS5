@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
@@ -28,6 +29,8 @@ public abstract class BaseGame {
     private int                     _renderTime;
     private double                  animationProgress;
     protected boolean                 _paused;
+    protected boolean[]                       _directions = new boolean[4];
+    protected Viewport                         _viewport;
 
     public boolean isPaused() {
         return _paused;
@@ -61,15 +64,14 @@ public abstract class BaseGame {
         if (!GameManager.getInstance().isPaused()) {
             animationProgress = 1 - ((double) (_nextUpdate - System.currentTimeMillis()) / _tickInterval);
         }
-        renderer.clear(new Color(0, 0, 0));
-        renderer.begin();
+
         MainRenderer.getInstance().onDraw(renderer, viewport, animationProgress);
-        UserInterface.getInstance().onDraw(renderer);
-        renderer.end();
-        renderer.finish();
 
         if (_isRunning) {
-            onRender(_frame);
+            if (_directions[0]) { _viewport.move(20, 0); }
+            if (_directions[1]) { _viewport.move(0, 20); }
+            if (_directions[2]) { _viewport.move(-20, 0); }
+            if (_directions[3]) { _viewport.move(0, -20); }
         }
 
         MainRenderer.getInstance().onRefresh(_frame);
@@ -85,8 +87,6 @@ public abstract class BaseGame {
 
 //            Log.debug("Render finish: " + _renderTime);
     }
-
-    protected abstract void onRender(int frame);
 
     public void setSpeed(int speed) {
         switch (speed) {
@@ -129,7 +129,11 @@ public abstract class BaseGame {
                 }
                 break;
         }
-        Game.getInstance().notify(observer -> observer.onSpeedChange(speed));
+        Application.getInstance().notify(observer -> observer.onSpeedChange(speed));
+    }
+
+    public void setInputDirection(boolean[] directions) {
+        _directions = directions;
     }
 
 }

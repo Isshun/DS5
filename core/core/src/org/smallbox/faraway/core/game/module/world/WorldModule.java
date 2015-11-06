@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.world;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.data.ItemInfo.NetworkItemInfo;
 import org.smallbox.faraway.core.game.Game;
@@ -45,6 +46,10 @@ public class WorldModule extends GameModule {
     public ParcelModel                          getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
 
     public void                                 setLight(double light) { _light = light; }
+
+    public WorldModule() {
+        ModuleHelper.setWorldModule(this);
+    }
 
     @Override
     public void onLoaded() {
@@ -102,7 +107,7 @@ public class WorldModule extends GameModule {
             }
             _items.remove(item);
             _factories.remove(item);
-            _game.notify(observer -> observer.onRemoveItem(item));
+            Application.getInstance().notify(observer -> observer.onRemoveItem(item));
         }
     }
 
@@ -112,7 +117,7 @@ public class WorldModule extends GameModule {
                 consumable.getParcel().setConsumable(null);
             }
             _consumables.remove(consumable);
-            _game.notify(observer -> observer.onRemoveConsumable(consumable));
+            Application.getInstance().notify(observer -> observer.onRemoveConsumable(consumable));
         }
     }
 
@@ -127,14 +132,14 @@ public class WorldModule extends GameModule {
                 structure.getParcel().setStructure(null);
             }
             _structures.remove(structure);
-            _game.notify(observer -> observer.onRemoveStructure(structure));
+            Application.getInstance().notify(observer -> observer.onRemoveStructure(structure));
         }
     }
 
     public void removeStructure(StructureModel structure) {
         if (structure != null && structure.getParcel() != null) {
             moveStructureToParcel(structure.getParcel(), null);
-            _game.notify(observer -> observer.onRemoveStructure(structure));
+            Application.getInstance().notify(observer -> observer.onRemoveStructure(structure));
         }
     }
 
@@ -152,7 +157,7 @@ public class WorldModule extends GameModule {
                     moveConsumableToParcel(finalParcel, consumable);
                     _consumables.add(finalParcel.getConsumable());
                 }
-                _game.notify(observer -> observer.onAddConsumable(finalParcel.getConsumable()));
+                Application.getInstance().notify(observer -> observer.onAddConsumable(finalParcel.getConsumable()));
             }
         }
         return consumable;
@@ -173,7 +178,7 @@ public class WorldModule extends GameModule {
                 _consumables.add(finalParcel.getConsumable());
             }
 
-            _game.notify(observer -> observer.onAddConsumable(consumable));
+            Application.getInstance().notify(observer -> observer.onAddConsumable(consumable));
 
             return consumable;
         }
@@ -225,7 +230,7 @@ public class WorldModule extends GameModule {
             }
         }
         _resources.add(resource);
-        _game.notify(observer -> observer.onAddResource(resource));
+        Application.getInstance().notify(observer -> observer.onAddResource(resource));
 
         return resource;
     }
@@ -244,7 +249,7 @@ public class WorldModule extends GameModule {
             _factories.add(item);
         }
 
-        _game.notify(observer -> observer.onAddItem(item));
+        Application.getInstance().notify(observer -> observer.onAddItem(item));
 
         return item;
     }
@@ -260,7 +265,7 @@ public class WorldModule extends GameModule {
             }
             moveStructureToParcel(parcel, structure);
             _structures.add(structure);
-            _game.notify(observer -> observer.onAddStructure(structure));
+            Application.getInstance().notify(observer -> observer.onAddStructure(structure));
             return structure;
         }
 
@@ -273,7 +278,7 @@ public class WorldModule extends GameModule {
             networkObject.setComplete(complete);
             moveNetworkToParcel(parcel, networkObject);
             _networks.add(networkObject);
-            _game.notify(observer -> observer.onAddNetworkObject(networkObject));
+            Application.getInstance().notify(observer -> observer.onAddNetworkObject(networkObject));
             return networkObject;
         }
         return null;
@@ -288,7 +293,7 @@ public class WorldModule extends GameModule {
                     resource.getParcel().setResource(null);
                 }
                 _resources.remove(resource);
-                _game.notify(observer -> observer.onRemoveResource(resource));
+                Application.getInstance().notify(observer -> observer.onRemoveResource(resource));
             }
         }
     }
@@ -296,7 +301,7 @@ public class WorldModule extends GameModule {
     private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
         if (parcel != null && item != null) {
             moveItemToParcel(parcel, null);
-            Game.getInstance().notify(observer -> observer.onRefreshItem(item));
+            Application.getInstance().notify(observer -> observer.onRefreshItem(item));
             return item;
         }
         printError("Area or item is null");
@@ -352,7 +357,7 @@ public class WorldModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        _consumables.forEach(consumable -> consumable.fixPosition());
+        _consumables.forEach(ConsumableModel::fixPosition);
     }
 
     public int getEnvironmentValue(int startX, int startY, int distance) {

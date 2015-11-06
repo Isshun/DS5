@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.character;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
@@ -33,6 +34,10 @@ public class CharacterModule extends GameModule {
 
     public Collection<CharacterModel>     getCharacters() { return _characters; }
     public int                             getCount() { return _count; }
+
+    public CharacterModule() {
+        ModuleHelper.setCharacterModule(this);
+    }
 
     // TODO
     public CharacterModel getNext(CharacterModel character) {
@@ -132,8 +137,7 @@ public class CharacterModule extends GameModule {
         _count++;
         _addOnUpdate.add(character);
 
-        Game.getInstance().notify(observer -> observer.onAddCharacter(character));
-        Game.getInstance().notify("base.model.join", character);
+        Application.getInstance().notify(observer -> observer.onAddCharacter(character));
 
         return character;
     }

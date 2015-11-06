@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.Color;
@@ -224,11 +225,11 @@ public class UserInterface implements GameEventListener {
             }
         }
 
-        Game.getInstance().notify(GameObserver::onRefreshUI);
+        Application.getInstance().notify(GameObserver::onRefreshUI);
     }
 
-    public void onDraw(GDXRenderer renderer) {
-        _views.stream().filter(view -> view.isVisible() && (view.getModule() == null || view.getModule().isLoaded())).forEach(view -> view.draw(renderer, 0, 0));
+    public void draw(GDXRenderer renderer, boolean gameRunning) {
+        _views.stream().filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded())).forEach(view -> view.draw(renderer, 0, 0));
 
         if (_context.isVisible()) {
             _context.draw(renderer, 0, 0);
@@ -337,7 +338,7 @@ public class UserInterface implements GameEventListener {
         }
 
         // TODO: clean
-        Game.getInstance().notify(observer -> observer.onKeyPress(Key.ESCAPE));
+        Application.getInstance().notify(observer -> observer.onKeyPress(Key.ESCAPE));
     }
 
     private void openContextMenu(ContextEntry[] entries, int x, int y) {

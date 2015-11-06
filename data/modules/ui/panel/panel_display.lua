@@ -7,8 +7,8 @@ data:extend({
     visible = false,
     views = {
         { type = "label", text = " < ", text_size = 34, position = {0, 7}, size = {32, 400}, on_click = function()
-            game.ui:findById("panel_main"):setVisible(true)
-            game.ui:findById("panel_displays"):setVisible(false)
+            application.ui:findById("panel_main"):setVisible(true)
+            application.ui:findById("panel_displays"):setVisible(false)
         end},
         { type = "label", text = "Displays", text_size = 28, padding = 10, position = {46, 0}},
         { type = "list", id = "list_displays", position = {10, 40}, views = {
@@ -23,9 +23,9 @@ data:extend({
         }},
     },
     on_event = function(view, event , data)
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            game.ui:findById("panel_main"):setVisible(true)
+            application.ui:findById("panel_main"):setVisible(true)
         end
     end,
 })
@@ -36,5 +36,5 @@ function setDisplay(view, display)
         iterator:next():setBackgroundColor(0x121c1e)
     end
     view:setBackgroundColor(0xff0000)
-    game:setDisplay(display)
+    application:setDisplay(display)
 end

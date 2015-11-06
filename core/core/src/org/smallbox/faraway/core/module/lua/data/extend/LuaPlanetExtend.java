@@ -104,8 +104,8 @@ public class LuaPlanetExtend extends LuaExtend {
             for (int i = 1; i <= value.get("terrains").length(); i++) {
                 LuaValue luaTerrain = value.get("terrains").get(i);
                 RegionInfo.RegionTerrain terrainInfo = new RegionInfo.RegionTerrain();
-                terrainInfo.type = getString(luaTerrain, "type", "ground");
-                terrainInfo.resource = getString(luaTerrain, "name", null);
+                terrainInfo.ground = getString(luaTerrain, "ground", null);
+                terrainInfo.resource = getString(luaTerrain, "resource", null);
                 terrainInfo.pattern = getString(luaTerrain, "pattern", null);
                 terrainInfo.condition = getString(luaTerrain, "condition", null);
                 regionInfo.terrains.add(terrainInfo);
@@ -169,5 +169,13 @@ public class LuaPlanetExtend extends LuaExtend {
     }
 
     private void readGraphics(PlanetInfo planetInfo, LuaValue value) {
+        if (!value.get("thumb").isnil()) { planetInfo.graphics.thumb = readGraphic(value.get("thumb")); }
+        if (!value.get("background").isnil()) { planetInfo.graphics.background = readGraphic(value.get("background")); }
+    }
+
+    private PlanetInfo.PlanetGraphicInfo readGraphic(LuaValue value) {
+        PlanetInfo.PlanetGraphicInfo planetGraphicInfo = new PlanetInfo.PlanetGraphicInfo();
+        planetGraphicInfo.path = getString(value, "path", null);
+        return planetGraphicInfo;
     }
 }

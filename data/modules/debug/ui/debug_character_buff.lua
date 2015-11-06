@@ -21,7 +21,7 @@ data:extend({
             view:setVisible(view:isVisible())
             g_buff = data
         end
-        if event == game.events.on_key_press and data == "ESCAPE" then
+        if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
         end
     end,
