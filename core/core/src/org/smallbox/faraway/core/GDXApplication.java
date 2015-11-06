@@ -16,6 +16,7 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.ui.UserInterface;
 
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
@@ -143,6 +144,8 @@ public class GDXApplication extends ApplicationAdapter {
 //                _application.newGame("14.sav", Data.getData().getRegion("arrakis", "desert"));
 //                _application.loadGame("12.sav");
 //                _application.whiteRoom();
+
+                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
             }
         }));
 

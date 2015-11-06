@@ -40,6 +40,7 @@ public abstract class View {
     protected int       _fixedHeight = -1;
     private String      _name;
     private boolean     _inGame;
+    private Color       _backgroundFocusColor;
 
     public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
         _isAlignLeft = isAlignLeft;
@@ -210,6 +211,29 @@ public abstract class View {
         return _objectId;
     }
 
+    public void setBackgroundFocusColor(long color) {
+        if (_backgroundFocusColor == null) {
+            UIEventManager.getInstance().setOnFocusListener(this, new OnFocusListener() {
+                Color _oldColor;
+                @Override
+                public void onEnter(View view) {
+                    _oldColor = view.getBackgroundColor();
+                    view.setBackgroundColor(_backgroundFocusColor);
+                }
+
+                @Override
+                public void onExit(View view) {
+                    view.setBackgroundColor(_oldColor);
+                }
+            });
+        }
+        _backgroundFocusColor = new Color(color);
+    }
+
+    private Color getBackgroundColor() {
+        return _backgroundColor;
+    }
+
     public void setBackgroundColor(long color) {
         _backgroundColor = new Color(color);
     }
@@ -239,6 +263,22 @@ public abstract class View {
             }
         };
         UIEventManager.getInstance().setOnClickListener(this, _onClickListener);
+    }
+
+    // TODO: crash in lua throw on main thread
+    public void setOnFocusListener(LuaValue value) {
+        _onFocusListener = new OnFocusListener() {
+            @Override
+            public void onEnter(View view) {
+                value.call(CoerceJavaToLua.coerce(this), LuaValue.valueOf(true));
+            }
+
+            @Override
+            public void onExit(View view) {
+                value.call(CoerceJavaToLua.coerce(this), LuaValue.valueOf(false));
+            }
+        };
+        UIEventManager.getInstance().setOnFocusListener(this, _onFocusListener);
     }
 
     public void setOnRightClickListener(OnClickListener onClickListener) {

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserInterface implements GameEventListener {
+    private ArrayList<Integer> visibleViews;
+
     private static class ContextEntry {
         public String                   label;
         public OnClickListener          listener;
@@ -89,8 +91,22 @@ public class UserInterface implements GameEventListener {
     public void                     clearSelection() { _selector.clean(); }
 
     public void reload() {
+        visibleViews = new ArrayList<>();
+        _views.stream()
+                .filter(view -> view.getViews() != null)
+                .forEach(view -> view.getViews().stream()
+                        .filter(View::isVisible)
+                        .forEach(subview -> visibleViews.add(subview.getId())));
         _views.clear();
         UIEventManager.getInstance().clear();
+    }
+
+    public void restore() {
+        _views.stream()
+                .filter(view -> view.getViews() != null)
+                .forEach(view -> view.getViews().stream()
+                        .filter(subview -> visibleViews.contains(subview.getId()))
+                        .forEach(subview -> subview.setVisible(true)));
     }
 
     @Override
@@ -111,9 +127,9 @@ public class UserInterface implements GameEventListener {
         }
 
         if (action == Action.MOVE) {
-            onMouseMove(x, y, rightPressed);
+//            onMouseMove(x, y, rightPressed);
             UIEventManager.getInstance().onMouseMove(x, y);
-            _selector.moveAt(getRelativePosX(x), getRelativePosY(y));
+//            _selector.moveAt(getRelativePosX(x), getRelativePosY(y));
             return;
         }
 

@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
@@ -177,12 +178,50 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue background = value.get("background");
             if (!background.isnil()) {
-                view.setBackgroundColor(background.toint());
+                if (background.istable()) {
+                    int regularBackground = getInt(background, "regular", -1);
+                    int focusBackground = getInt(background, "focus", -1);
+                    if (regularBackground != -1) {
+                        view.setBackgroundColor(regularBackground);
+                    }
+                    if (focusBackground != -1) {
+                        view.setOnFocusListener(new OnFocusListener() {
+                            @Override
+                            public void onEnter(View view) {
+                                view.setBackgroundColor(focusBackground);
+                            }
+
+                            @Override
+                            public void onExit(View view) {
+                                view.setBackgroundColor(regularBackground);
+                            }
+                        });
+                    }
+                } else {
+                    view.setBackgroundColor(background.toint());
+                }
             }
 
             LuaValue padding = value.get("padding");
             if (!padding.isnil()) {
                 view.setPadding(padding.toint(), padding.toint());
+            }
+
+            LuaValue onFocus = value.get("on_focus");
+            if (!onFocus.isnil()) {
+                int regularBackground = value.get("background").toint();
+                int focusBackground = onFocus.get("background").toint();
+                view.setOnFocusListener(new OnFocusListener() {
+                    @Override
+                    public void onEnter(View view) {
+                        view.setBackgroundColor(focusBackground);
+                    }
+
+                    @Override
+                    public void onExit(View view) {
+                        view.setBackgroundColor(regularBackground);
+                    }
+                });
             }
 
             LuaValue adapter = value.get("adapter");

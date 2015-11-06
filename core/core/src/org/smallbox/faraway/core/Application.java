@@ -88,6 +88,8 @@ public class Application implements GameEventListener {
 
     @Override
     public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
+        UserInterface.getInstance().onMouseEvent(Action.MOVE, button, x, y, rightPressed);
+
         if (GameManager.getInstance().isRunning()) {
             ApplicationShortcutManager.onMouseEvent(action, button, x, y, rightPressed);
         } else {
@@ -144,6 +146,7 @@ public class Application implements GameEventListener {
                     UserInterface.getInstance().reload();
                     Application.getInstance().notify(GameObserver::onReloadUI);
                     Log.info("Data reloaded");
+                    UserInterface.getInstance().restore();
                 }
             });
         }

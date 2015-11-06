@@ -34,6 +34,7 @@ public class LuaApplicationModel {
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
+    public ApplicationInfo          info = new ApplicationInfo();
     public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;

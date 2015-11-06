@@ -7,12 +7,16 @@ data:extend({
     visible = false,
     views = {
         { type = "image", id = "img_background", size = {1920, 1200}},
-        { type = "label", text = "Regions", text_size = 22, position = {500, 350}},
-        { type = "list", id = "list_regions", position = {500, 400}},
-        { type = "label", text = "next", text_size = 22, background = 0x121c1e, size = {100, 40}, position = {1000, 800}, on_click = function()
-            application.ui:findById("base.ui.menu_new_planet_region"):setVisible(false)
-            application.ui:findById("base.ui.menu_new_crew"):setVisible(true)
-        end},
+        { type = "view", position = {application.info.screen_width / 2 - 300 / 2, application.info.screen_height / 2 - 200}, views = {
+            { type = "label", text = "Regions", text_size = 38},
+            { type = "list", id = "list_regions", position = {0, 40}},
+            { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 350}, text_size = 22, size = {100, 40},
+                on_click = function()
+                    application.ui:findById("base.ui.menu_new_planet_region"):setVisible(false)
+                    application.ui:findById("base.ui.menu_new_planet"):setVisible(true)
+                end},
+            { type = "label", id = "bt_next", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "next", text_size = 22, size = {100, 40}, position = {200, 350}},
+        }}
     },
 
     on_event = function(view, event, data)
@@ -33,19 +37,33 @@ data:extend({
                 local lb_region = application.ui:createLabel()
                 lb_region:setText(region.label)
                 lb_region:setTextSize(16)
-                lb_region:setSize(300, 32)
+                lb_region:setSize(300, 34)
+                lb_region:setPadding(10)
                 lb_region:setOnClickListener(function()
-                    select_region(data, region)
+                    select_region(lb_region, data, region)
                 end)
                 list_regions:addView(lb_region)
             end
 
-            select_region(data.regions:iterator():next())
+            select_region(list_regions:getViews():get(0), data.regions:iterator():next())
         end
     end,
 
 })
 
-function select_region(planet, region)
+function select_region(lb_region, region)
     application:sendEvent("new_game.region", region)
+
+    local iterator = lb_region:getParent():getViews():iterator()
+    while iterator:hasNext() do
+        iterator:next():setBackgroundColor(0x55ffffff)
+    end
+    lb_region:setBackgroundColor(0x8814dcb9)
+
+--    application.ui:findById("base.ui.menu_new_planet_region"):findById("bt_next"):setBackgroundColor(0x8814dcb9)
+    application.ui:findById("base.ui.menu_new_planet_region"):findById("bt_next"):setOnClickListener(function()
+        application.ui:findById("base.ui.menu_new_planet_region"):setVisible(false)
+        application.ui:findById("base.ui.menu_new_crew"):setVisible(true)
+    end)
+
 end
