@@ -168,7 +168,7 @@ public class CharacterRenderer extends BaseRenderer {
     }
 
     public int getLevel() {
-        return 100;
+        return MainRenderer.CHARACTER_RENDERER_LEVEL;
     }
 
     @Override

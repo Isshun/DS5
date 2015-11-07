@@ -54,27 +54,20 @@ public class GDXRenderer {
         _batch.end();
     }
 
+    public void draw(SpriteModel sprite, int x, int y, float alpha) {
+        if (sprite != null) {
+            _batch.begin();
+            sprite.getData().setPosition(x, y);
+            sprite.getData().draw(_batch, alpha);
+            _batch.end();
+        }
+    }
+
     public void draw(SpriteModel sprite, int x, int y) {
         if (sprite != null) {
             _batch.begin();
-            ((SpriteModel)sprite).getData().setPosition(x, y);
-            ((SpriteModel)sprite).getData().draw(_batch);
-//            if (effect != null) {
-//                if (effect.getViewport() != null) {
-//                    Sprite s = ((SpriteModel) sprite).getData();
-//                    s.setScale(effect.getViewport().getScale());
-//                    _batch.draw(s,
-//                            s.getX() + effect.getViewport().getPosX() * effect.getViewport().getScale(),
-//                            s.getY() + effect.getViewport().getPosY() * effect.getViewport().getScale(),
-//                            s.getWidth() * effect.getViewport().getScale(),
-//                            s.getHeight() * effect.getViewport().getScale());
-//                } else {
-//                    Sprite s = ((SpriteModel) sprite).getData();
-//                    _batch.draw(s, ((GDXRenderEffect) effect).getPosX(), ((GDXRenderEffect) effect).getPosY());
-//                }
-//            } else {
-//                ((SpriteModel) sprite).getData().draw(_batch);
-//            }
+            sprite.getData().setPosition(x, y);
+            sprite.getData().draw(_batch);
             _batch.end();
         }
     }

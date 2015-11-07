@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
-public class WorldRenderer extends BaseRenderer {
+public class InnerRenderer extends BaseRenderer {
     private static final int    CACHE_SIZE = 25;
 
     private int                 _cacheCols;
@@ -63,7 +63,7 @@ public class WorldRenderer extends BaseRenderer {
     }
 
     public int getLevel() {
-        return MainRenderer.WORLD_RENDERER_LEVEL;
+        return MainRenderer.INNER_RENDERER_LEVEL;
     }
 
     public void onRefresh(int frame) {
@@ -187,39 +187,6 @@ public class WorldRenderer extends BaseRenderer {
 
     @Override
     protected void onUpdate() {
-        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
-            if (resource.getInfo().graphics != null && resource.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
-                ParcelModel parcel = resource.getParcel();
-
-                boolean topLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y - 1).getInfo() != resource.getInfo());
-                boolean top = !(WorldHelper.getResource(parcel.x, parcel.y - 1) == null || WorldHelper.getResource(parcel.x, parcel.y - 1).getInfo() != resource.getInfo());
-                boolean topRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y - 1).getInfo() != resource.getInfo());
-
-                boolean left = !(WorldHelper.getResource(parcel.x - 1, parcel.y) == null || WorldHelper.getResource(parcel.x - 1, parcel.y).getInfo() != resource.getInfo());
-                boolean right = !(WorldHelper.getResource(parcel.x + 1, parcel.y) == null || WorldHelper.getResource(parcel.x + 1, parcel.y).getInfo() != resource.getInfo());
-
-                boolean bottomLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y + 1).getInfo() != resource.getInfo());
-                boolean bottom = !(WorldHelper.getResource(parcel.x, parcel.y + 1) == null || WorldHelper.getResource(parcel.x, parcel.y + 1).getInfo() != resource.getInfo());
-                boolean bottomRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y + 1).getInfo() != resource.getInfo());
-
-                int tile = 0;
-
-                if (topLeft)     { tile |= 0b10000000; }
-                if (top)         { tile |= 0b01000000; }
-                if (topRight)    { tile |= 0b00100000; }
-                if (left)        { tile |= 0b00010000; }
-                if (right)       { tile |= 0b00001000; }
-                if (bottomLeft)  { tile |= 0b00000100; }
-                if (bottom)      { tile |= 0b00000010; }
-                if (bottomRight) { tile |= 0b00000001; }
-
-                resource.setTile(tile);
-            }
-//            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource, tile, tile);
-//            if (sprite != null) {
-//                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH + offsetX, (y % CACHE_SIZE) * Constant.TILE_HEIGHT + offsetX);
-//            }
-        });
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
@@ -234,36 +201,34 @@ public class WorldRenderer extends BaseRenderer {
         for (int x = toX; x >= fromX; x--) {
             for (int y = toY; y >= fromY; y--) {
                 ParcelModel parcel = WorldHelper.getParcel(x, y);
-                if (parcel != null) {
-                    renderer.draw(_spriteManager.getGround(1), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                }
-            }
-        }
+                if (parcel != null && (parcel.getRoom() == null || !parcel.getRoom().isExterior())) {
+                    float alpha = 0.5f;
+//                    float alpha = parcel.getRoom() == null ? 0.5f : 1f;
 
-        for (int x = toX; x >= fromX; x--) {
-            for (int y = toY; y >= fromY; y--) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y);
-                if (parcel != null) {
+                    if (parcel.getStructure() == null) {
+                        renderer.draw(_spriteManager.getGround(1), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY, alpha);
+                    }
+
                     if (parcel.getResource() != null) {
                         if (parcel.getResource().getTile() == 42) {
-                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
+                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16, alpha);
                         } else {
-                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY, alpha);
                         }
                     }
                     if (parcel.getStructure() != null) {
-                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY, alpha);
                     }
                     if (parcel.getNetworkObjects() != null) {
                         for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
-                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY, alpha);
                         }
                     }
                     if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
-                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY, alpha);
                     }
                     if (parcel.getConsumable() != null) {
-                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY, alpha);
                     }
                 }
             }

@@ -15,6 +15,10 @@ public class ParticleRenderer extends BaseRenderer {
     private ParticleEffect          _effect;
     private String                  _name;
 
+    public int getLevel() {
+        return MainRenderer.PARTICLE_RENDERER_LEVEL;
+    }
+
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_effect != null) {

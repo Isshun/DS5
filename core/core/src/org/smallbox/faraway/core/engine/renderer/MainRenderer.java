@@ -10,6 +10,12 @@ import org.smallbox.faraway.core.module.java.ModuleManager;
 import java.util.List;
 
 public class MainRenderer {
+    public static final int             WORLD_RENDERER_LEVEL = -100;
+    public static final int             PARTICLE_RENDERER_LEVEL = -99;
+    public static final int             INNER_RENDERER_LEVEL = -98;
+    public static final int             CHARACTER_RENDERER_LEVEL = -97;
+    public static final int             JOB_RENDERER_LEVEL = -96;
+
     private static MainRenderer         _self;
     private static long                 _renderTime;
     private static int                  _frame;

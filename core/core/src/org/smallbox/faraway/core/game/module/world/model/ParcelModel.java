@@ -122,7 +122,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void             setStructure(StructureModel structure) { if (_content == null) _content = new ParcelContent(); _content.structure = structure; }
 
     public boolean          isStorage() { return _isStorage; }
-    public boolean          isExterior() { return _room != null && _room.isExterior(); }
+    public boolean          isExterior() { return _room == null || _room.isExterior(); }
     public boolean          canSupportRoof() { return (getStructure() != null && getStructure().getInfo().canSupportRoof) || (getResource() != null && getResource().getInfo().canSupportRoof); }
     public boolean          hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
 
