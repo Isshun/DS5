@@ -145,9 +145,6 @@ public class AreaModule extends GameModule {
             for (int y = fromY; y <= toY; y++) {
                 ParcelModel parcel = worldModule.getParcel(x, y);
 
-                // Add parcel to area
-                area.addParcel(parcel);
-
                 // Remove existing resource on parcel
                 if (parcel.getResource() != null) {
                     if (parcel.getResource().canBeMined()) {
@@ -156,6 +153,9 @@ public class AreaModule extends GameModule {
                         JobHelper.addGatherJob(x, y, true);
                     }
                 }
+
+                // Add parcel to area
+                area.addParcel(parcel);
             }
         }
     }

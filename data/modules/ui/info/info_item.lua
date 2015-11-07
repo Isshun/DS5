@@ -79,7 +79,7 @@ data:extend({
     on_event = function(view, event , data)
         if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            application.ui:clearSelection();
+            application.game:clearSelection();
             item = nil
         end
 

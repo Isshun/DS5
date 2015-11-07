@@ -1,0 +1,9 @@
+{
+    "name": "base_2",
+    "planet": "base.planet.arrakis",
+    "region": "desert",
+    "saves": [
+        {"type": "auto", "filename": "base_1/5.sav", "date": "2015-11-06-18-00-00"},
+        {"type": "auto", "filename": "base_1/4.sav", "date": "2015-11-06-17-00-00"}
+    ]
+}

@@ -40,7 +40,6 @@ public class GatherJob extends JobModel {
             return null;
         }
 
-
         GatherJob job = new GatherJob(resource.getInfo().actions.get(0), resource.getParcel());
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {

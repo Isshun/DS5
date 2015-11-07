@@ -62,7 +62,7 @@ data:extend({
                     and "[base]/graphics/icons/temperature_down_1.png"
                     or "[base]/graphics/icons/temperature_up_1.png"
 
-            view:findById("lb_temperature"):setText((value < 0 and "" or " ") .. ((value <= -10 or value >= 10) and "" or " ") .. value .. (value == math.floor(value) and ".0" or "") .. "�")
+            view:findById("lb_temperature"):setText((value < 0 and "" or " ") .. ((value <= -10 or value >= 10) and "" or " ") .. value .. (value == math.floor(value) and ".0" or "") .. "°")
             view:findById("img_temperature"):setImage("[base]/graphics/icons/temperature_medium.png")
             view:findById("img_temperature_offset"):setImage(img_offset)
 

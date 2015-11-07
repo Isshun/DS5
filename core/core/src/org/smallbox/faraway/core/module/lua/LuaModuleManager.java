@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.data.BindingInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.WeatherInfo;
@@ -118,20 +119,22 @@ public class LuaModuleManager implements GameObserver {
 
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
 
-        if (UserInterface.getInstance().getSelector().getSelectedCharacter() != null) {
-            Application.getInstance().notify(o -> o.onSelectCharacter(UserInterface.getInstance().getSelector().getSelectedCharacter()));
-        }
-        if (UserInterface.getInstance().getSelector().getSelectedConsumable() != null) {
-            Application.getInstance().notify(o -> o.onSelectConsumable(UserInterface.getInstance().getSelector().getSelectedConsumable()));
-        }
-        if (UserInterface.getInstance().getSelector().getSelectedItem() != null) {
-            Application.getInstance().notify(o -> o.onSelectItem(UserInterface.getInstance().getSelector().getSelectedItem()));
-        }
-        if (UserInterface.getInstance().getSelector().getSelectedResource() != null) {
-            Application.getInstance().notify(o -> o.onSelectResource(UserInterface.getInstance().getSelector().getSelectedResource()));
-        }
-        if (UserInterface.getInstance().getSelector().getSelectedStructure() != null) {
-            Application.getInstance().notify(o -> o.onSelectStructure(UserInterface.getInstance().getSelector().getSelectedStructure()));
+        if (GameManager.getInstance().isRunning()) {
+            if (Game.getInstance().getSelector().getSelectedCharacter() != null) {
+                Application.getInstance().notify(o -> o.onSelectCharacter(Game.getInstance().getSelector().getSelectedCharacter()));
+            }
+            if (Game.getInstance().getSelector().getSelectedConsumable() != null) {
+                Application.getInstance().notify(o -> o.onSelectConsumable(Game.getInstance().getSelector().getSelectedConsumable()));
+            }
+            if (Game.getInstance().getSelector().getSelectedItem() != null) {
+                Application.getInstance().notify(o -> o.onSelectItem(Game.getInstance().getSelector().getSelectedItem()));
+            }
+            if (Game.getInstance().getSelector().getSelectedResource() != null) {
+                Application.getInstance().notify(o -> o.onSelectResource(Game.getInstance().getSelector().getSelectedResource()));
+            }
+            if (Game.getInstance().getSelector().getSelectedStructure() != null) {
+                Application.getInstance().notify(o -> o.onSelectStructure(Game.getInstance().getSelector().getSelectedStructure()));
+            }
         }
     }
 

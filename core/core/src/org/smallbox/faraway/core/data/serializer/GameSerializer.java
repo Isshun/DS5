@@ -23,24 +23,11 @@ public class GameSerializer {
         public int                                      height;
     }
 
-    public static GameSave preLoad(String filePath, OnLoadListener loadListener) {
-        long time = System.currentTimeMillis();
-        System.gc();
-
-        if (loadListener != null) {
-            loadListener.onLoad("Load savegame [" + filePath + "]");
-        }
-        Log.info("Load savegame [" + filePath + "]");
-
-        return null;
-    }
-
-    public static void load(String filePath, GameSave save) {
+    public static void load(File file, GameSave save) {
         try {
             // open a file and read the content into a byte array
-            File f = new File(filePath);
-            FileInputStream fis =  new FileInputStream(f);
-            byte[] b = new byte[(int)f.length()];
+            FileInputStream fis =  new FileInputStream(file);
+            byte[] b = new byte[(int)file.length()];
             fis.read(b);
             fis.close();
 
@@ -50,8 +37,6 @@ public class GameSerializer {
             VTDNav vn = vg.getNav();
             AutoPilot ap = new AutoPilot(vn);
             ap.selectXPath("/save/width|/save/height");
-
-            Game.getInstance().setRegion(Data.getData().getRegion("base.planet.arrakis", "desert"));
 
             new ParamSerializer().load(vn.duplicateNav());
             new WorldModuleSerializer().load(vn.duplicateNav());
@@ -68,10 +53,10 @@ public class GameSerializer {
         }
     }
 
-    public static void save(String filePath, Collection<GameModule> modulesBase, Collection<GameModule> modulesThird) {
+    public static void save(File file, Collection<GameModule> modulesBase, Collection<GameModule> modulesThird) {
         try {
             long time = System.currentTimeMillis();
-            FileOutputStream fos = new FileOutputStream(new File(filePath));
+            FileOutputStream fos = new FileOutputStream(file);
 
             FileUtils.write(fos, "<?xml version='1.0' encoding='UTF-8'?>");
             FileUtils.write(fos, "<save>");
@@ -105,5 +90,4 @@ public class GameSerializer {
             e.printStackTrace();
         }
     }
-
 }

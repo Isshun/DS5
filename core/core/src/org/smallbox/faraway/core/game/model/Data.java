@@ -80,6 +80,7 @@ public class Data {
     public ItemInfo         getEquipment(String receiptName) { return (ItemInfo) getObject(equipments, receiptName); }
     public String           getString(int hash) { return _data.strings.get(hash); }
     public static String    getString(String str) { return _data.strings.containsKey(str.hashCode()) ? _data.strings.get(str.hashCode()) : str; }
+    public PlanetInfo       getPlanet(String planetName) { return (PlanetInfo) getObject(planets, planetName); }
 
     public boolean          hasNetwork(String name) { return hasObject(networks, name); }
     public boolean          hasString(int hash) { return _data.strings.containsKey(hash); }

@@ -6,7 +6,6 @@ import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
@@ -15,7 +14,7 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
-import org.smallbox.faraway.ui.UserInteraction;
+import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.Collection;
@@ -70,7 +69,7 @@ public class LuaApplicationModel {
     }
 
     public void setPlan(String plan) {
-        UserInterface.getInstance().getInteraction().set(UserInteraction.Action.SET_PLAN, plan);
+        Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
     }
 
     public void setSpeed(int speed) {
@@ -80,16 +79,16 @@ public class LuaApplicationModel {
     }
 
     public void setArea(String area) {
-        UserInterface.getInstance().getInteraction().set(UserInteraction.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
+        Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void removeArea(String area) {
-        UserInterface.getInstance().getInteraction().set(UserInteraction.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
+        Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void setBuild(ItemInfo itemInfo) {
         System.out.println("Set build from lua: " + itemInfo.name);
-        UserInterface.getInstance().getInteraction().set(UserInteraction.Action.BUILD_ITEM, itemInfo);
+        Game.getInstance().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
 
     public void stopGame() {
@@ -101,15 +100,12 @@ public class LuaApplicationModel {
         GameManager.getInstance().setPause(false);
     }
 
-    public void startLastGame() {
-    }
-
     public void exit() {
         Application.getInstance().setRunning(false);
     }
 
     public void clearAction() {
-        UserInterface.getInstance().getInteraction().clean();
+        Game.getInstance().getInteraction().clear();
     }
 
     public void sendEvent(String tag) {

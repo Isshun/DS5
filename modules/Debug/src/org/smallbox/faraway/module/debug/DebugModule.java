@@ -53,31 +53,31 @@ public class DebugModule extends GameModule {
     }
 
     private Collection<CommandEntry> COMMANDS = Arrays.asList(
-            new CommandEntry("Add item...",         view ->
-                    openFrame(Data.getData().items.stream()
-                            .filter(item -> item.isUserItem)
-                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
-                            .collect(Collectors.toList()))
-            ),
-            new CommandEntry("Add consumable...",   view ->
-                    openFrame(Data.getData().items.stream()
-                            .filter(item -> item.isConsumable)
-                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
-                            .collect(Collectors.toList()))
-            ),
-            new CommandEntry("Add resource...",     view ->
-                    openFrame(Data.getData().items.stream()
-                            .filter(item -> item.isResource)
-                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
-                            .collect(Collectors.toList()))
-            ),
-            new CommandEntry("List receipts...",     view ->
-                    openFrame(Data.getData().receipts.stream()
-                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().getSelector().select(info)))
-                            .collect(Collectors.toList()))
-            ),
+//            new CommandEntry("Add item...",         view ->
+//                    openFrame(Data.getData().items.stream()
+//                            .filter(item -> item.isUserItem)
+//                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
+//                            .collect(Collectors.toList()))
+//            ),
+//            new CommandEntry("Add consumable...",   view ->
+//                    openFrame(Data.getData().items.stream()
+//                            .filter(item -> item.isConsumable)
+//                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
+//                            .collect(Collectors.toList()))
+//            ),
+//            new CommandEntry("Add resource...",     view ->
+//                    openFrame(Data.getData().items.stream()
+//                            .filter(item -> item.isResource)
+//                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().putDebug(info)))
+//                            .collect(Collectors.toList()))
+//            ),
+//            new CommandEntry("List receipts...",     view ->
+//                    openFrame(Data.getData().receipts.stream()
+//                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().getSelector().select(info)))
+//                            .collect(Collectors.toList()))
+//            ),
             new CommandEntry("Re-gen",              view -> {
-                new WorldFactory().create(ModuleHelper.getWorldModule(), Game.getInstance().getRegion().getInfo());
+                new WorldFactory().create(ModuleHelper.getWorldModule(), Game.getInstance().getInfo().region);
                 MainRenderer.getInstance().getWorldRenderer().refreshAll();
             }),
             new CommandEntry("Add crew (human)",    view -> ModuleHelper.getCharacterModule().addRandom(HumanModel.class)),

@@ -11,6 +11,6 @@ data:extend({
         {"Pleasant environment", "Environement plésant"},
         {"Feeling hungry", "A faim"},
         {"Suffering from hunger", "Souffre de la faim"},
-        {"Is starving to death", "Entrain de mourir de faim"},
+        {"Is starving to death", "En train de mourir de faim"},
     }
 })

@@ -51,8 +51,8 @@ public class DebugRenderer extends BaseRenderer {
         lbDebug.setSize(32, 32);
         lbDebug.setTextAlign(View.Align.CENTER);
 
-        int relX = UserInterface.getInstance().getMouseX();
-        int relY = UserInterface.getInstance().getMouseY();
+//        int relX = UserInterface.getInstance().getMouseX();
+//        int relY = UserInterface.getInstance().getMouseY();
 
         for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
             if (parcel.z == 0) {

@@ -1,22 +1,75 @@
 package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class UserInteraction {
+public class GameActionExtra {
+    private final Viewport              _viewport;
+    private final GameSelectionExtra _selector;
+    private boolean                     _keyLeftPressed;
+    private boolean                     _keyRightPressed;
+    private int                         _keyPressPosX;
+    private int                         _keyPressPosY;
+    private int                         _keyMovePosX;
+    private int                         _keyMovePosY;
+    private boolean                     _mouseOnMap;
+    private UICursor                    _cursor;
+    private UISelection                 _selection;
+
+    public void setCursor(UICursor cursor) {
+        _cursor = cursor;
+    }
+
+    public boolean isClear() {
+        return _action == Action.NONE;
+    }
+
+    public enum Action {
+        NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
+    }
+
+    Action                              _action;
+    int                                 _startPressX;
+    int                                 _startPressY;
+    int                                 _mouseMoveX;
+    int                                 _mouseMoveY;
+    GameEventListener.MouseButton       _button;
+    private String                      _selectedPlan;
+    private ItemInfo                    _selectedItemInfo;
+    private AreaType                    _selectedAreaType;
+
+    public GameActionExtra(Viewport viewport, GameSelectionExtra selector) {
+        _viewport = viewport;
+        _selector = selector;
+        _startPressX = 0;
+        _startPressY = 0;
+        _mouseMoveX = 0;
+        _mouseMoveY = 0;
+        _button = null;
+        _action = Action.NONE;
+        _selection = new UISelection();
+    }
+
+    public int                      getMouseX() { return _keyMovePosX; }
+    public int                      getMouseY() { return _keyMovePosY; }
+    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+
     public boolean onKeyLeft(int x, int y, int fromX, int fromY, int toX, int toY) {
         // Set plan
         if (_action == Action.SET_PLAN) {
@@ -63,27 +116,101 @@ public class UserInteraction {
         return false;
     }
 
-    public enum Action {
-        NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
+    public void onMoveEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
+        _keyMovePosX = getRelativePosX(x);
+        _keyMovePosY = getRelativePosY(y);
+
+        // Left click
+        if (action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.LEFT) {
+            if (_keyLeftPressed) {
+                _keyLeftPressed = false;
+
+                if (onKeyLeft(_keyPressPosX, _keyPressPosY,
+                        Math.min(_keyPressPosX, _keyMovePosX),
+                        Math.min(_keyPressPosY, _keyMovePosY),
+                        Math.max(_keyPressPosX, _keyMovePosX),
+                        Math.max(_keyPressPosY, _keyMovePosY))) {
+                    return;
+                }
+
+                _selection.clear();
+
+                // Check selection
+                if (_selector.selectAt(
+                        getRelativePosX(_selection.getFromX()),
+                        getRelativePosY(_selection.getFromY()),
+                        getRelativePosX(_selection.getToX()),
+                        getRelativePosY(_selection.getToY()))) {
+                    _selection.clear();
+                    return;
+                }
+
+                // Select characters
+                if (_action == GameActionExtra.Action.NONE) {
+                    if (_selector.selectAt(getRelativePosX(x), getRelativePosY(y))) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (action == GameEventListener.Action.PRESSED && button == GameEventListener.MouseButton.LEFT) {
+            _keyLeftPressed = true;
+            _keyMovePosX = _keyPressPosX = getRelativePosX(x);
+            _keyMovePosY = _keyPressPosY = getRelativePosY(y);
+
+            _selection.setStart(x, y);
+        }
+
+        if (action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.RIGHT) {
+            _keyRightPressed = false;
+        }
+
+        if (action == GameEventListener.Action.PRESSED && button == GameEventListener.MouseButton.RIGHT) {
+            _keyRightPressed = true;
+        }
+
+        if (action == GameEventListener.Action.MOVE) {
+            if (_selector != null) {
+                _selector.moveAt(getRelativePosX(x), getRelativePosY(y));
+            }
+
+            // TODO
+            _mouseOnMap = x < 1500;
+
+            // right button pressed
+            if (_keyRightPressed || rightPressed) {
+                _viewport.update(x, y);
+                Log.debug("pos: " + _viewport.getPosX() + "x" + _viewport.getPosY());
+//            if (_menu != null && _menu.isVisible()) {
+//                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
+//                _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
+//            }
+            }
+
+            if (_keyLeftPressed) {
+                _selection.setPosition(x, y);
+            }
+        }
     }
 
-    Action                              _action;
-    int                                 _startPressX;
-    int                                 _startPressY;
-    int                                 _mouseMoveX;
-    int                                 _mouseMoveY;
-    GameEventListener.MouseButton       _button;
-    private String                      _selectedPlan;
-    private ItemInfo                    _selectedItemInfo;
-    private AreaType                    _selectedAreaType;
+    public void draw(GDXRenderer renderer) {
+        if (_mouseOnMap && _cursor != null) {
+            if (_keyLeftPressed) {
+                _cursor.draw(renderer, _viewport,
+                        Math.min(_keyPressPosX, _keyMovePosX),
+                        Math.min(_keyPressPosY, _keyMovePosY),
+                        Math.max(_keyPressPosX, _keyMovePosX),
+                        Math.max(_keyPressPosY, _keyMovePosY),
+                        true);
+            } else {
+                _cursor.draw(renderer, _viewport, _keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY, false);
+            }
+        }
 
-    UserInteraction() {
-        _startPressX = 0;
-        _startPressY = 0;
-        _mouseMoveX = 0;
-        _mouseMoveY = 0;
-        _button = null;
-        _action = Action.NONE;
+        if (_cursor == null) {
+            renderer.draw(_selection, 100, 100);
+        }
     }
 
     public Action  getAction() { return _action; }
@@ -237,10 +364,11 @@ public class UserInteraction {
         return _action.equals(action);
     }
 
-    public void clean() {
+    public void clear() {
         _action = Action.NONE;
         _selectedPlan = null;
         _selectedItemInfo = null;
+        Game.getInstance().clearCursor();
     }
 
     public void set(Action action, String plan) {
@@ -248,28 +376,28 @@ public class UserInteraction {
         _selectedPlan = plan;
         switch (plan) {
             case "build":
-                UserInterface.getInstance().setCursor("base.cursor.build");
+                Game.getInstance().setCursor("base.cursor.build");
                 break;
             case "gather":
-                UserInterface.getInstance().setCursor("base.cursor.gather");
+                Game.getInstance().setCursor("base.cursor.gather");
                 break;
             case "mine":
-                UserInterface.getInstance().setCursor("base.cursor.mine");
+                Game.getInstance().setCursor("base.cursor.mine");
                 break;
             case "cut":
-                UserInterface.getInstance().setCursor("base.cursor.cut");
+                Game.getInstance().setCursor("base.cursor.cut");
                 break;
             case "destroy":
-                UserInterface.getInstance().setCursor("base.cursor.destroy");
+                Game.getInstance().setCursor("base.cursor.destroy");
                 break;
             case "haul":
-                UserInterface.getInstance().setCursor("base.cursor.haul");
+                Game.getInstance().setCursor("base.cursor.haul");
                 break;
         }
     }
 
     public void set(Action action, ItemInfo info) {
-        UserInterface.getInstance().setCursor("base.cursor.build");
+        Game.getInstance().setCursor("base.cursor.build");
         _action = action;
         _selectedItemInfo = info;
     }
@@ -288,12 +416,12 @@ public class UserInteraction {
             case BUILD_ITEM:
                 break;
             case SET_AREA:
-                UserInterface.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
+                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
                 break;
             case PUT_ITEM_FREE:
                 break;
             case REMOVE_AREA:
-                UserInterface.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
+                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
                 break;
             case SET_PLAN:
                 break;

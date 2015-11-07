@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface;
@@ -28,6 +29,6 @@ public class LuaCrewModel {
     }
 
     public CharacterModel getSelected() {
-        return UserInterface.getInstance().getSelector().getSelectedCharacter();
+        return Game.getInstance().getSelector().getSelectedCharacter();
     }
 }

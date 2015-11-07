@@ -11,6 +11,7 @@ import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -63,33 +64,8 @@ public class GDXApplication extends ApplicationAdapter {
             FileHandle exoFile = Gdx.files.local("data/res/fonts/font.ttf");
             _fonts = new BitmapFont[50];
             for (int i = 5; i < 50; i++) {
-                BitmapFont font = fontGen.createFont(exoFile, "font-" + i, i);
-                font.getData().flipped = true;
-//                font.setFixedWidthGlyphs("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/*-+.,<>/?;:'\"[]{}|`~��������������������!@#$%^&*()_=");
-//                int maxAdvance = 0;
-//                for (int a = 0; a < font.getData().glyphs.length; a++) {
-//                    if (font.getData().glyphs[a] != null) {
-//                        for (int b = 0; b < font.getData().glyphs[a].length; b++) {
-//                            if (font.getData().glyphs[a][b] != null) {
-//                                if (font.getData().glyphs[a][b].xadvance > maxAdvance) {
-//                                    maxAdvance = font.getData().glyphs[a][b].xadvance;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                maxAdvance = maxAdvance * 2 / 3;
-//                for (int a = 0; a < font.getData().glyphs.length; a++) {
-//                    if (font.getData().glyphs[a] != null) {
-//                        for (int b = 0; b < font.getData().glyphs[a].length; b++) {
-//                            if (font.getData().glyphs[a][b] != null) {
-//                                font.getData().glyphs[a][b].xoffset = (maxAdvance - font.getData().glyphs[a][b].xadvance) / 2;
-//                                font.getData().glyphs[a][b].xadvance = maxAdvance;
-//                            }
-//                        }
-//                    }
-//                }
-                _fonts[i] = font;
+                _fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
+                _fonts[i].getData().flipped = true;
             }
         }));
 
@@ -128,7 +104,6 @@ public class GDXApplication extends ApplicationAdapter {
             if (Data.config.render.particle) {
                 particleRenderer = new ParticleRenderer();
             }
-            _application.create(_renderer, null, particleRenderer, Data.getData(), Data.config);
 
             GDXInputProcessor inputProcessor = new GDXInputProcessor(_application);
             Gdx.input.setInputProcessor(inputProcessor);
@@ -141,11 +116,12 @@ public class GDXApplication extends ApplicationAdapter {
 
         _queue.add(new LoadRunnable("Resume game", () -> {
             if (Data.config.byPassMenu) {
-//                _application.newGame("14.sav", Data.getData().getRegion("arrakis", "desert"));
+                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+//                GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
 //                _application.loadGame("12.sav");
 //                _application.whiteRoom();
 
-                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
+//                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
             }
         }));
 
@@ -236,5 +212,4 @@ public class GDXApplication extends ApplicationAdapter {
         _renderer.close();
         PathManager.getInstance().close();
     }
-
 }

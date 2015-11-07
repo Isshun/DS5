@@ -26,23 +26,23 @@ public class GameManager {
         return _self;
     }
 
-    public void load(String fileName) {
+    public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         long time = System.currentTimeMillis();
 
-        Game game = new Game(250, 250, Data.getData(), Data.config, fileName, null, null, null);
+        Game game = new Game(info, 250, 250, Data.getData(), Data.config);
 
         // TODO
         game.preload();
         game.init(null);
 
-        startGame(game, true);
+        startGame(game, saveInfo);
 
         _game = game;
 
         Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
-    public void startGame(Game game, boolean load) {
+    public void startGame(Game game, GameInfo.GameSaveInfo saveInfo) {
         long time = System.currentTimeMillis();
         MainRenderer.getInstance().init(Data.config, game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
@@ -57,15 +57,14 @@ public class GameManager {
 //            Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
 //        }
 
-        game.setRegion(Data.getData().getRegion("base.planet.arrakis", "desert"));
         game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
 
         time = System.currentTimeMillis();
         PathManager.getInstance().init(Game.getInstance().getInfo().worldWidth, Game.getInstance().getInfo().worldHeight);
         Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
 
-        if (load) {
-            game.load();
+        if (saveInfo != null) {
+            game.load(saveInfo);
         }
 
         Application.getInstance().notify(GameObserver::onGameStart);
@@ -79,21 +78,29 @@ public class GameManager {
 
         WorldFactory factory = new WorldFactory();
 
-        Game game = new Game(50, 50, Data.getData(), Data.config, fileName, null, null, regionInfo);
+        Game game = new Game(GameInfo.create(regionInfo), 50, 50, Data.getData(), Data.config);
         game.init(factory);
 
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
         world.create();
         factory.create(world, regionInfo);
-        game.save(fileName);
+//        game.save("base_1", fileName);
 
         factory.createLandSite(game);
 
-        startGame(game, false);
+        startGame(game, null);
 
         _game = game;
 
+        saveGame();
+
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+    }
+
+    public void saveGame() {
+        if (_game != null) {
+            _game.save("base_1", "14.sav");
+        }
     }
 
     public boolean isRunning() {

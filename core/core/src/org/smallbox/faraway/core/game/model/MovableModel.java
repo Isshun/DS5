@@ -36,7 +36,9 @@ public abstract class MovableModel extends ObjectModel {
     public Direction        getDirection() { return _direction; }
     public int              getFrameIndex() { return _frameIndex++; }
 
-    public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
+    public void             setParcel(ParcelModel parcel) {
+        _parcel = parcel;
+    }
     public void             setDirection(Direction direction) {
         _direction = direction;
     }

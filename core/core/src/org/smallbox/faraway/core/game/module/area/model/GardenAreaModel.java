@@ -52,9 +52,6 @@ public class GardenAreaModel extends AreaModel {
             ResourceModel resource = (ResourceModel) ModuleHelper.getWorldModule().putObject(parcel, _resourceInfo, 0);
             resource.getPlant().setGarden(this);
             resource.getPlant().setSeed(false);
-
-            // Launch new gather job
-            JobHelper.addGather(resource, GatherJob.Mode.PLANT_SEED);
         }
     }
 

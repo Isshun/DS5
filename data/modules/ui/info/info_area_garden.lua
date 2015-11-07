@@ -24,7 +24,7 @@ data:extend({
         if event == application.events.on_key_press and data == "ESCAPE" then
             g_garden = nil
             view:setVisible(false)
-            application.ui:clearSelection();
+            application.game:clearSelection();
         end
 
         if event == application.events.on_deselect then

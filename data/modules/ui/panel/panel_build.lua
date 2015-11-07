@@ -58,20 +58,6 @@ data:extend({
             end
         end
     end,
-
-    on_event = function(view, event , data)
-        if event == application.events.on_key_press and data == "ESCAPE" then
-            view:setVisible(false)
-            application.ui:findById("panel_main"):setVisible(true)
-            application:clearAction()
-            application.ui:clearCursor()
-        end
-
-        if (event == application.events.on_job_create) then
-            application:clearAction()
-            application.ui:clearCursor()
-        end
-    end
 })
 
 function open_main_category(grid_categories, grid_items, strategy)

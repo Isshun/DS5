@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.model.planet.RegionModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
 
@@ -25,11 +24,11 @@ public class FaunaModule extends GameModule {
     protected void onLoaded() {
         printInfo("[FaunaModule] loads");
 
-        RegionModel region = Game.getInstance().getRegion();
+        RegionInfo region = Game.getInstance().getInfo().region;
 
         double commonTotalFrequency = 0;
         double unusualTotalFrequency = 0;
-        for (RegionInfo.RegionFauna faunaInfo: region.getInfo().fauna) {
+        for (RegionInfo.RegionFauna faunaInfo: region.fauna) {
             if ("common".equals(faunaInfo.group)) {
                 commonTotalFrequency += faunaInfo.frequency;
             } else {
@@ -37,7 +36,7 @@ public class FaunaModule extends GameModule {
             }
         }
 
-        for (RegionInfo.RegionFauna faunaInfo: region.getInfo().fauna) {
+        for (RegionInfo.RegionFauna faunaInfo: region.fauna) {
             if ("common".equals(faunaInfo.group)) {
                 for (int i = 0; i < faunaInfo.frequency * 100 / commonTotalFrequency; i++) {
                     FAUNA_COMMON_POOL.add(faunaInfo);

@@ -2,10 +2,13 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.ui.GameActionExtra;
+import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.GameSelectionExtra;
 
 /**
  * Created by Alex on 21/10/2015.
@@ -17,6 +20,8 @@ public abstract class BaseGame {
     public static final int         SPEED_4_TICK_INTERVAL = 10;
 
     protected boolean               _isRunning;
+    protected GameActionExtra       _action;
+    protected GameSelectionExtra    _selector;
 
     // Update
     private int                     _tick;
@@ -35,6 +40,11 @@ public abstract class BaseGame {
     public boolean isPaused() {
         return _paused;
     }
+
+    public void                     clearCursor() { _action.setCursor(null); }
+    public void                     clearSelection() { _selector.clear(); }
+    public void                     setCursor(UICursor cursor) { _action.setCursor(cursor); }
+    public void                     setCursor(String cursorName) { _action.setCursor(Data.getData().getCursor(cursorName)); }
 
     public void update() {
         // Update
@@ -76,11 +86,14 @@ public abstract class BaseGame {
 
         MainRenderer.getInstance().onRefresh(_frame);
 
+        // TODO
         try {
             UserInterface.getInstance().onRefresh(_frame);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        _action.draw(renderer);
 
         _frame++;
         _renderTime = (int)(System.currentTimeMillis() - time);

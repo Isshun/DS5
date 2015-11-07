@@ -6,6 +6,7 @@ data:extend({
         --graphics = "[base]/graphics/items/resources/seaweed1.png",
         type = "resource",
         category = "algae",
+        walkable = true,
         plant = {
             gather = 0.25,
             growing = 0.005,
@@ -34,6 +35,7 @@ data:extend({
         graphics = { path = "[base]/graphics/items/resources/seaweed2.png" },
         type = "resource",
         category = "algae",
+        walkable = true,
         plant = {
             gather = 0.25,
             growing = 0.005,
@@ -65,6 +67,7 @@ data:extend({
 --        graphics = "[base]/graphics/items/resources/desert_green_plant.png",
         type = "resource",
         category = "algae",
+        walkable = true,
         size = {1, 1},
         light = { power = .5, radius = 5 },
         plant = {
@@ -96,6 +99,7 @@ data:extend({
         graphics = { path = "[base]/graphics/items/resources/seaweed4.png" },
 --        graphics = "[base]/graphics/items/resources/seaweed4.png",
         category = "algae",
+        walkable = true,
         size = {1, 1},
         plant = {
             gather = 0.25,
@@ -126,6 +130,7 @@ data:extend({
         name = "base.seaweed5",
         type = "resource",
         category = "algae",
+        walkable = true,
         size = {1, 1},
         plant = {
             gather = 0.25,

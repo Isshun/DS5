@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class WeatherModule extends GameModule implements GameObserver {
     private int                     _duration;
-    private WeatherInfo _weather;
+    private WeatherInfo             _weather;
     private String                  _dayTime = Data.config.time;
 
     private long                    _lightColor;
@@ -64,7 +64,7 @@ public class WeatherModule extends GameModule implements GameObserver {
         _lightProgress = 0;
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;
-        _temperatureTarget = Game.getInstance().getRegion().getInfo().temperature[1];
+        _temperatureTarget = Game.getInstance().getInfo().region.temperature[1];
         switchSunColor(hourInfo.sun);
 
         Application.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
@@ -119,7 +119,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     }
 
     private void loadRandomWeather() {
-        List<String> allowedWeathers = Game.getInstance().getRegion().getInfo().weather.stream().map(weather -> weather.name).collect(Collectors.toList());
+        List<String> allowedWeathers = Game.getInstance().getInfo().region.weather.stream().map(weather -> weather.name).collect(Collectors.toList());
         List<WeatherInfo> allWeathers = Data.getData().weathers.values().stream().collect(Collectors.toList());
         Collections.shuffle(allWeathers);
         Optional<WeatherInfo> optionalWeather = allWeathers.stream().filter(weather -> allowedWeathers.contains(weather.name)).findFirst();

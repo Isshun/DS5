@@ -127,6 +127,8 @@ public abstract class CharacterModel extends MovableModel {
         _stats.isAlive = false;
     }
     public void                         setParcel(ParcelModel parcel) {
+        assert parcel != null;
+
         _parcel = parcel;
         if (_inventory != null) {
             _inventory.setParcel(parcel);
@@ -217,7 +219,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            setParcel(WorldHelper.getNearestFreeParcel(_parcel, true, false));
+            setParcel(WorldHelper.getNearestFreeParcel(_parcel, true, true));
         }
     }
 

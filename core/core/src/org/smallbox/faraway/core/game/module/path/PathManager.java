@@ -161,7 +161,12 @@ public class PathManager extends GameModule {
             return PathModel.create(nodes);
         }
 
-        PathCacheModel pathCache = _cache.get(fromParcel).getPath(toParcel);
+        ParcelPathCache parcelPathCache = _cache.get(fromParcel);
+        if (parcelPathCache == null) {
+            parcelPathCache = _cache.put(fromParcel, new ParcelPathCache(fromParcel));
+        }
+
+        PathCacheModel pathCache = parcelPathCache.getPath(toParcel);
         if (pathCache != null && pathCache.isValid()) {
             return PathModel.create(pathCache.getPath());
         }

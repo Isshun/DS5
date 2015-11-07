@@ -5,36 +5,33 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.LightRenderer;
-import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.model.planet.RegionModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.ui.GameActionExtra;
+import org.smallbox.faraway.ui.GameSelectionExtra;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class Game extends BaseGame {
     private static Game                     _self;
-    private final String                    _fileName;
+    private final GameInfo                  _info;
     private GameConfig                      _config;
     private final Collection<GameModule>    _modulesBase;
     private final List<GameModule>          _modulesThird;
     private GameSerializer.GameSave         _save;
     private PlanetModel                     _planet;
-    private RegionModel                     _region;
+//    private RegionModel                     _region;
     private int                             _hour = 5;
     private int                             _day;
     private int                             _year;
-    private GameInfo                        _info = new GameInfo();
 
     private static int                      _tick;
     private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
@@ -53,37 +50,31 @@ public class Game extends BaseGame {
     public Viewport                         getViewport() { return _viewport; }
     public static int                       getUpdate() { return _tick; }
     public PlanetModel                      getPlanet() { return _planet; }
-    public String                           getFileName() { return _fileName; }
     public long                             getTick() { return _tick; }
-    public RegionModel                      getRegion() { return _region; }
     public String                           getDisplay() { return _display; }
+    public GameActionExtra                  getInteraction() { return _action; }
+    public GameSelectionExtra               getSelector() { return _selector; }
 
-    public Game(int width, int height, Data data, GameConfig config, String fileName, ParticleRenderer particleRenderer, LightRenderer lightRenderer, RegionInfo regionInfo) {
+    public Game(GameInfo info, int width, int height, Data data, GameConfig config) {
         Log.debug("Game");
 
         _self = this;
-        _config = config;
-        _fileName = fileName;
-        _isRunning = true;
         _viewport = new Viewport(400, 300);
+        _selector = new GameSelectionExtra();
+        _action = new GameActionExtra(_viewport, _selector);
+        _info = info;
+        _config = config;
+        _isRunning = true;
         _modulesBase = ModuleManager.getInstance().getModulesBase();
         _modulesThird = ModuleManager.getInstance().getModulesThird();
+        _planet = new PlanetModel(info.planet);
 
         GDXRenderer.getInstance().setViewport(_viewport);
         _tick = 0;
 
         Log.info("Game: onCreate");
 
-        setRegion(regionInfo);
-
         Log.info("Game:\tdone");
-    }
-
-    public void setRegion(RegionInfo regionInfo) {
-        if (regionInfo != null) {
-            _planet = new PlanetModel(regionInfo.planet);
-            _region = new RegionModel(_planet, regionInfo);
-        }
     }
 
     public void init(WorldFactory factory) {
@@ -129,13 +120,11 @@ public class Game extends BaseGame {
         _tick = tick;
     }
 
-    public void    load() {
-        String filePath = "data/saves/" + _fileName;
-
+    public void    load(GameInfo.GameSaveInfo saveInfo) {
         long time = System.currentTimeMillis();
 
 //        loadListener.onLoad("Load game");
-        GameSerializer.load(filePath, _save);
+        GameSerializer.load(new File("data/saves", saveInfo.filename), _save);
         _save = null;
         System.gc();
 
@@ -145,8 +134,13 @@ public class Game extends BaseGame {
 //        WorldFactory.cleanRock();
     }
 
-    public void    save(final String fileName) {
-        GameSerializer.save("data/saves/" + fileName, _modulesBase, _modulesThird);
+    public void    save(final String gameName, final String fileName) {
+        File gameDirectory = new File("data/saves", gameName);
+        if (!gameDirectory.exists() && !gameDirectory.mkdirs()) {
+            Log.error("Unable to create game save directory");
+            return;
+        }
+        GameSerializer.save(new File(gameDirectory, fileName), _modulesBase, _modulesThird);
     }
 
     public void preload() {
