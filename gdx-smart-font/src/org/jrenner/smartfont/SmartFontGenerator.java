@@ -84,7 +84,7 @@ public class SmartFontGenerator {
         PixmapPacker packer = new PixmapPacker(pageWidth, pageHeight, Pixmap.Format.RGBA8888, 2, false);
         FreeTypeFontGenerator.FreeTypeBitmapFontData fontData = generator.generateData(fontSize, FreeTypeFontGenerator.DEFAULT_CHARS, false, packer);
         Array<PixmapPacker.Page> pages = packer.getPages();
-        TextureRegion[] texRegions = new TextureRegion[pages.size];
+        Array<TextureRegion> texRegions = new Array<>(pages.size);
         for (int i=0; i<pages.size; i++) {
             PixmapPacker.Page p = pages.get(i);
             Texture tex = new Texture(new PixmapTextureData(p.getPixmap(), p.getPixmap().getFormat(), false, false, true)) {
@@ -95,7 +95,7 @@ public class SmartFontGenerator {
                 }
             };
             tex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-            texRegions[i] = new TextureRegion(tex);
+            texRegions.set(i, new TextureRegion(tex));
         }
         BitmapFont font = new BitmapFont(fontData, texRegions, false);
         saveFontToFile(font, fontSize, fontName, packer);

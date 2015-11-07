@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import org.jrenner.smartfont.SmartFontGenerator;
 
 public class ExampleMain extends ApplicationAdapter {
@@ -37,7 +36,7 @@ public class ExampleMain extends ApplicationAdapter {
 
         Table table = new Table();
         table.setFillParent(true);
-        table.align(Align.center);
+//        table.align(Align.center);
         stage.addActor(table);
 
         table.defaults().size(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 6);

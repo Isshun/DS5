@@ -166,8 +166,9 @@ public class GDXApplication extends ApplicationAdapter {
                 OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 _batch.setProjectionMatrix(camera.combined);
-                BitmapFont.TextBounds bounds = _systemFont.getBounds(loadRunnable.message);
-                _systemFont.drawMultiLine(_batch, loadRunnable.message, Gdx.graphics.getWidth() / 2 - bounds.width / 2, Gdx.graphics.getHeight() / 2 - bounds.height / 2);
+//                BitmapFont.TextBounds bounds = _systemFont.getBounds(loadRunnable.message);
+//                _systemFont.draw(_batch, loadRunnable.message, Gdx.graphics.getWidth() / 2 - bounds.width / 2, Gdx.graphics.getHeight() / 2 - bounds.height / 2);
+                _systemFont.draw(_batch, loadRunnable.message, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
                 _batch.end();
 
                 // Runnable
@@ -195,16 +196,16 @@ public class GDXApplication extends ApplicationAdapter {
         _application.render(_renderer, viewport, lastRenderInterval);
 
         _renderer.display();
-
-        // Sleep
-        long sleepTime = 16 - (System.currentTimeMillis() - time) - 1;
-        if (sleepTime > 0) {
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//
+//        // Sleep
+//        long sleepTime = 16 - (System.currentTimeMillis() - time) - 1;
+//        if (sleepTime > 0) {
+//            try {
+//                Thread.sleep(sleepTime);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override

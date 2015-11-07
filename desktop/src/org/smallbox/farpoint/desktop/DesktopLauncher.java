@@ -21,6 +21,11 @@ public class DesktopLauncher {
 //        config.width = 100;
 //        config.height = 80;
         config.fullscreen = false;
+        config.foregroundFPS = 60;
+        config.backgroundFPS = 30;
+        config.resizable = true;
+        config.vSyncEnabled = false;
+//        config.useGL30 = true;
         config.title = Constant.NAME + " " + Constant.VERSION;
         new LwjglApplication(new GDXApplication(), config);
 

@@ -78,7 +78,7 @@ public class DebugModule extends GameModule {
 //            ),
             new CommandEntry("Re-gen",              view -> {
                 new WorldFactory().create(ModuleHelper.getWorldModule(), Game.getInstance().getInfo().region);
-                MainRenderer.getInstance().getWorldRenderer().refreshAll();
+//                MainRenderer.getInstance().getWorldRenderer().refreshAll();
             }),
             new CommandEntry("Add crew (human)",    view -> ModuleHelper.getCharacterModule().addRandom(HumanModel.class)),
             new CommandEntry("Add crew (android)",  view -> ModuleHelper.getCharacterModule().addRandom(AndroidModel.class)),

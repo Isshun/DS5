@@ -18,48 +18,53 @@ import org.smallbox.faraway.core.util.Log;
 public class WorldRenderer extends BaseRenderer {
     private static final int    CACHE_SIZE = 25;
 
-    private int                 _cacheCols;
     private boolean             _needRefresh;
     private SpriteManager       _spriteManager;
-    private RenderLayer[][]     _layers;
-    //    private RenderLayer[][]     _layersLight;
-    private MapObjectModel _itemSelected;
-    private Viewport            _viewport;
+    private MapObjectModel      _itemSelected;
     private boolean             _firstRefresh;
+    private LayerGrid           _layerGrid;
 
     @Override
     public void init() {
         _spriteManager = SpriteManager.getInstance();
-        _viewport = Game.getInstance().getViewport();
-        _needRefresh = true;
         _firstRefresh = true;
-        _cacheCols = (250 / CACHE_SIZE);
-        {
-            _layers = new RenderLayer[_cacheCols][_cacheCols];
-            int index = 0;
-            for (int i = 0; i < _cacheCols; i++) {
-                for (int j = 0; j < _cacheCols; j++) {
-                    _layers[i][j] = new RenderLayer(index++,
-                            i * CACHE_SIZE * Constant.TILE_WIDTH,
-                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
-                            CACHE_SIZE * Constant.TILE_WIDTH,
-                            CACHE_SIZE * Constant.TILE_HEIGHT);
+        _layerGrid = new LayerGrid(10, 10);
+        _layerGrid.setOnRefreshLayer((layer, fromX, fromY, toX, toY) -> {
+            Log.info("Refresh layer: " + layer.getIndex());
+
+            layer.begin();
+            layer.setRefresh();
+            for (int x = toX - 1; x >= fromX; x--) {
+                for (int y = toY - 1; y >= fromY; y--) {
+                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+                    if (parcel != null) {
+                        if (Data.config.render.floor) {
+                            refreshFloor(layer, parcel.getType(), x, y);
+                        }
+                        if (Data.config.render.structure) {
+                            refreshStructure(layer, parcel.getStructure(), x, y);
+                        }
+                        if (Data.config.render.resource) {
+                            refreshResource(layer, parcel, parcel.getResource(), x, y);
+                        }
+                        if (Data.config.render.item) {
+                            refreshItems(layer, parcel.getItem(), x, y);
+                        }
+                    }
                 }
             }
-        }
-//        {
-//            _layersLight = new RenderLayer[_cacheCols][_cacheCols];
-//            int index = 0;
-//            for (int i = 0; i < _cacheCols; i++) {
-//                for (int j = 0; j < _cacheCols; j++) {
-//                    _layersLight[i][j] = new RenderLayer(index++,
-//                            i * CACHE_SIZE * Constant.TILE_WIDTH,
-//                            j * CACHE_SIZE * Constant.TILE_HEIGHT,
-//                            CACHE_SIZE * Constant.TILE_WIDTH,
-//                            CACHE_SIZE * Constant.TILE_HEIGHT);
-//                }
-//            }
-//        }
+            for (int x = toX - 1; x >= fromX; x--) {
+                for (int y = toY - 1; y >= fromY; y--) {
+                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+                    if (parcel != null) {
+                        if (Data.config.render.consumable) {
+                            refreshConsumable(layer, parcel.getConsumable(), x, y);
+                        }
+                    }
+                }
+            }
+            layer.end();
+        });
     }
 
     public int getLevel() {
@@ -80,109 +85,7 @@ public class WorldRenderer extends BaseRenderer {
 
     private void refreshLayers() {
         Log.info("Refresh layers");
-
-        for (int i = 0; i < _cacheCols; i++) {
-            for (int j = 0; j < _cacheCols; j++) {
-                if (_layers[i][j].isVisible(_viewport) && _layers[i][j].needRefresh()) {
-                    _layers[i][j].refresh();
-                    refreshLayer(_layers[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-//                    refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-                }
-            }
-        }
-    }
-
-    public void refreshAll() {
-        for (int i = 0; i < _cacheCols; i++) {
-            for (int j = 0; j < _cacheCols; j++) {
-                _layers[i][j].planRefresh();
-//                _layersLight[i][j].planRefresh();
-            }
-        }
-        _needRefresh = true;
-    }
-
-    private void refreshLayerLight(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
-        Log.info("Refresh layer: " + layer.getIndex());
-
-//        int mb = 1024 * 1024;
-//        Runtime runtime = Runtime.getRuntime();
-//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-//        int total = (int) (runtime.totalMemory() / mb);
-//        System.out.println("RefreshLayer: " + used + "/" + total);
-
-        Color[] colors = new Color[] {
-                new Color(0, 0, 0, .9f),
-                new Color(0, 0, 0, .8f),
-                new Color(0, 0, 0, .7f),
-                new Color(0, 0, 0, .6f),
-                new Color(0, 0, 0, .5f),
-                new Color(0, 0, 0, .4f),
-                new Color(0, 0, 0, .3f),
-                new Color(0, 0, 0, .2f),
-                new Color(0, 0, 0, .1f),
-                new Color(0, 0, 0, .0f),
-                new Color(0, 0, 0, .0f),
-        };
-
-        layer.begin();
-        layer.setRefresh();
-        for (int x = toX - 1; x >= fromX; x--) {
-            for (int y = toY - 1; y >= fromY; y--) {
-                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                if (parcel != null) {
-                    layer.draw(colors[Math.min(10, (int)(parcel.getLight() * 10))], (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                }
-            }
-        }
-        layer.end();
-    }
-
-    private void refreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY) {
-        Log.info("Refresh layer: " + layer.getIndex());
-
-//        int mb = 1024 * 1024;
-//        Runtime runtime = Runtime.getRuntime();
-//        int used = (int) ((runtime.totalMemory() - runtime.freeMemory()) / mb);
-//        int total = (int) (runtime.totalMemory() / mb);
-//        System.out.println("RefreshLayer: " + used + "/" + total);
-
-        layer.begin();
-        layer.setRefresh();
-        for (int x = toX - 1; x >= fromX; x--) {
-            for (int y = toY - 1; y >= fromY; y--) {
-//                if (cacheOnScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
-//                }
-                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                if (parcel != null) {
-                    if (Data.config.render.floor) {
-                        refreshFloor(layer, parcel.getType(), x, y);
-                    }
-                    if (Data.config.render.structure) {
-                        refreshStructure(layer, parcel.getStructure(), x, y);
-                    }
-                    if (Data.config.render.resource) {
-                        refreshResource(layer, parcel, parcel.getResource(), x, y);
-                    }
-                    if (Data.config.render.item) {
-                        refreshItems(layer, parcel.getItem(), x, y);
-                    }
-                }
-            }
-        }
-        for (int x = toX - 1; x >= fromX; x--) {
-            for (int y = toY - 1; y >= fromY; y--) {
-//                if (cacheOnScreen(x / CACHE_SIZE, y / CACHE_SIZE)) {
-//                }
-                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                if (parcel != null) {
-                    if (Data.config.render.consumable) {
-                        refreshConsumable(layer, parcel.getConsumable(), x, y);
-                    }
-                }
-            }
-        }
-        layer.end();
+        _layerGrid.refresh();
     }
 
     @Override
@@ -215,10 +118,6 @@ public class WorldRenderer extends BaseRenderer {
 
                 resource.setTile(tile);
             }
-//            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource, tile, tile);
-//            if (sprite != null) {
-//                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH + offsetX, (y % CACHE_SIZE) * Constant.TILE_HEIGHT + offsetX);
-//            }
         });
     }
 
@@ -227,47 +126,47 @@ public class WorldRenderer extends BaseRenderer {
         int fromY = (int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
         int toX = fromX + 50;
         int toY = fromY + 40;
-
-        int offsetX = viewport.getPosX();
-        int offsetY = viewport.getPosY();
-
-        for (int x = toX; x >= fromX; x--) {
-            for (int y = toY; y >= fromY; y--) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y);
-                if (parcel != null) {
-                    renderer.draw(_spriteManager.getGround(1), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                }
-            }
-        }
-
-        for (int x = toX; x >= fromX; x--) {
-            for (int y = toY; y >= fromY; y--) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y);
-                if (parcel != null) {
-                    if (parcel.getResource() != null) {
-                        if (parcel.getResource().getTile() == 42) {
-                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
-                        } else {
-                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                        }
-                    }
-                    if (parcel.getStructure() != null) {
-                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                    }
-                    if (parcel.getNetworkObjects() != null) {
-                        for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
-                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                        }
-                    }
-                    if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
-                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                    }
-                    if (parcel.getConsumable() != null) {
-                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-                    }
-                }
-            }
-        }
+//
+//        int offsetX = viewport.getPosX();
+//        int offsetY = viewport.getPosY();
+//
+//        for (int x = toX; x >= fromX; x--) {
+//            for (int y = toY; y >= fromY; y--) {
+//                ParcelModel parcel = WorldHelper.getParcel(x, y);
+//                if (parcel != null) {
+//                    renderer.draw(_spriteManager.getGround(1), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//                }
+//            }
+//        }
+//
+//        for (int x = toX; x >= fromX; x--) {
+//            for (int y = toY; y >= fromY; y--) {
+//                ParcelModel parcel = WorldHelper.getParcel(x, y);
+//                if (parcel != null) {
+//                    if (parcel.getResource() != null) {
+//                        if (parcel.getResource().getTile() == 42) {
+//                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
+//                        } else {
+//                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//                        }
+//                    }
+//                    if (parcel.getStructure() != null) {
+//                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//                    }
+//                    if (parcel.getNetworkObjects() != null) {
+//                        for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
+//                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//                        }
+//                    }
+//                    if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
+//                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//                    }
+//                    if (parcel.getConsumable() != null) {
+//                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//                    }
+//                }
+//            }
+//        }
 
 //        System.out.println("from " + fromX + "x" + fromY);
 //
@@ -276,78 +175,20 @@ public class WorldRenderer extends BaseRenderer {
 //            refreshLayers();
 //        }
 //
-//        if (_layers != null) {
-//            for (int i = _cacheCols - 1; i >= 0; i--) {
-//                for (int j = _cacheCols - 1; j >= 0; j--) {
-//                    // Draw up to date layer
-//                    if (_layers[i][j].isVisible(viewport) && !_layers[i][j].needRefresh() && _layers[i][j].isDrawable()) {
-//                        _layers[i][j].draw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
-//                    }
-//
-//                    // Refresh needed layer
-//                    if (_layers[i][j].isVisible(viewport) && _layers[i][j].needRefresh()) {
-//                        Log.info("refresh layer: " + _layers[i][j].getIndex());
-//                        _layers[i][j].refresh();
-//                        refreshLayer(_layers[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-//                    }
-//
-//                    // Clear out of screen layers
-//                    if (!_layers[i][j].isVisible(viewport) && _layers[i][j].isDrawable()) {
-//                        Log.info("clear layer: " + _layers[i][j].getIndex());
-//                        _layers[i][j].clear();
-//                    }
-//
-////                    // Draw up to date layer
-////                    if (_layersLight[i][j].isVisible(viewport) && !_layersLight[i][j].needRefresh() && _layersLight[i][j].isDrawable()) {
-////                        _layersLight[i][j].draw(renderer, viewport, i * CACHE_SIZE * Constant.TILE_WIDTH, j * CACHE_SIZE * Constant.TILE_HEIGHT);
-////                    }
-////
-////                    // Refresh needed layer
-////                    if (_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].needRefresh()) {
-////                        Log.info("refresh layer: " + _layersLight[i][j].getIndex());
-////                        _layersLight[i][j].refresh();
-////                        refreshLayerLight(_layersLight[i][j], i * CACHE_SIZE, j * CACHE_SIZE, (i + 1) * CACHE_SIZE, (j + 1) * CACHE_SIZE);
-////                    }
-////
-////                    // Clear out of screen layers
-////                    if (!_layersLight[i][j].isVisible(viewport) && _layersLight[i][j].isDrawable()) {
-////                        Log.info("clear layer: " + _layersLight[i][j].getIndex());
-////                        _layersLight[i][j].clear();
-////                    }
-//                }
-//            }
-//
-//            onDrawSelected(renderer, viewport, animProgress);
-//        }
+        if (_layerGrid != null) {
+            _layerGrid.draw(renderer);
+        }
     }
 
     private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-            boolean topLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y - 1).getInfo() != resource.getInfo());
-            boolean top = !(WorldHelper.getResource(parcel.x, parcel.y - 1) == null || WorldHelper.getResource(parcel.x, parcel.y - 1).getInfo() != resource.getInfo());
-            boolean topRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y - 1).getInfo() != resource.getInfo());
-
-            boolean left = !(WorldHelper.getResource(parcel.x - 1, parcel.y) == null || WorldHelper.getResource(parcel.x - 1, parcel.y).getInfo() != resource.getInfo());
-            boolean right = !(WorldHelper.getResource(parcel.x + 1, parcel.y) == null || WorldHelper.getResource(parcel.x + 1, parcel.y).getInfo() != resource.getInfo());
-
-            boolean bottomLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y + 1).getInfo() != resource.getInfo());
-            boolean bottom = !(WorldHelper.getResource(parcel.x, parcel.y + 1) == null || WorldHelper.getResource(parcel.x, parcel.y + 1).getInfo() != resource.getInfo());
-            boolean bottomRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y + 1).getInfo() != resource.getInfo());
-
-            int tile = 0;
-            int offsetX = 0;
-            int offsetY = 0;
-
-            if (!top && !bottom && !right && !left) {
-                tile = 42;
-                offsetX = -16;
-                offsetY = -16;
-            }
-
-            SpriteModel sprite = resource.isRock() && WorldHelper.isSurroundedByRock(parcel) ? _spriteManager.getGround(11) : _spriteManager.getItem(resource, tile, tile);
-            if (sprite != null) {
-                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH + offsetX, (y % CACHE_SIZE) * Constant.TILE_HEIGHT + offsetX);
-            }
+//            if (resource.getTile() == 42) {
+//                layer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
+//            } else {
+//                layer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
+//            }
+            SpriteModel sprite = _spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile());
+            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }
 
@@ -503,70 +344,72 @@ public class WorldRenderer extends BaseRenderer {
 
     @Override
     public void onAddStructure(StructureModel structure){
-        if (_layers != null) {
-            _layers[structure.getParcel().x / CACHE_SIZE][structure.getParcel().y / CACHE_SIZE].planRefresh();
-            _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(structure.getParcel().x / CACHE_SIZE, structure.getParcel().y / CACHE_SIZE);
         }
     }
 
     @Override
     public void onAddItem(ItemModel item){
-        if (_layers != null) {
-            _layers[item.getParcel().x / CACHE_SIZE][item.getParcel().y / CACHE_SIZE].planRefresh();
-            _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(item.getParcel().x / CACHE_SIZE, item.getParcel().y / CACHE_SIZE);
         }
     }
 
     @Override
     public void onAddConsumable(ConsumableModel consumable){
-        if (_layers != null) {
-            _layers[consumable.getParcel().x / CACHE_SIZE][consumable.getParcel().y / CACHE_SIZE].planRefresh();
-            _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(consumable.getParcel().x / CACHE_SIZE, consumable.getParcel().y / CACHE_SIZE);
         }
     }
 
     @Override
     public void onAddResource(ResourceModel resource) {
-        if (_layers != null) {
-            _layers[resource.getParcel().x / CACHE_SIZE][resource.getParcel().y / CACHE_SIZE].planRefresh();
-            _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(resource.getParcel().x / CACHE_SIZE, resource.getParcel().y / CACHE_SIZE);
         }
     }
 
     @Override
     public void onRemoveItem(ItemModel item){
-        _layers[item.getParcel().x / CACHE_SIZE][item.getParcel().y / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(item.getParcel().x / CACHE_SIZE, item.getParcel().y / CACHE_SIZE);
+        }
     }
 
     @Override
     public void onRemoveConsumable(ConsumableModel consumable){
-        _layers[consumable.getParcel().x / CACHE_SIZE][consumable.getParcel().y / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(consumable.getParcel().x / CACHE_SIZE, consumable.getParcel().y / CACHE_SIZE);
+        }
     }
 
     @Override
     public void onRemoveStructure(StructureModel structure){
-        _layers[structure.getParcel().x / CACHE_SIZE][structure.getParcel().y / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(structure.getParcel().x / CACHE_SIZE, structure.getParcel().y / CACHE_SIZE);
+        }
     }
 
     @Override
     public void onRemoveResource(ResourceModel resource){
-        _layers[resource.getParcel().x / CACHE_SIZE][resource.getParcel().y / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(resource.getParcel().x / CACHE_SIZE, resource.getParcel().y / CACHE_SIZE);
+        }
     }
 
     @Override
     public void onRefreshItem(ItemModel item) {
-        _layers[item.getParcel().x / CACHE_SIZE][item.getParcel().y / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(item.getParcel().x / CACHE_SIZE, item.getParcel().y / CACHE_SIZE);
+        }
     }
 
     @Override
     public void onRefreshStructure(StructureModel structure) {
-        _layers[structure.getParcel().x / CACHE_SIZE][structure.getParcel().y / CACHE_SIZE].planRefresh();
-        _needRefresh = true;
+        if (_layerGrid != null) {
+            _layerGrid.planRefresh(structure.getParcel().x / CACHE_SIZE, structure.getParcel().y / CACHE_SIZE);
+        }
     }
 
     @Override

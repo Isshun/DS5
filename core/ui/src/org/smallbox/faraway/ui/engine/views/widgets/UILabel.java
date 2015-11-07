@@ -212,7 +212,8 @@ public class UILabel extends View {
     @Override
     public int getContentWidth() {
         if (_string != null) {
-            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
+//            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
+            return 0;
         }
         return 0;
     }
@@ -220,7 +221,8 @@ public class UILabel extends View {
     @Override
     public int getContentHeight() {
         if (_string != null) {
-            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).height;
+//            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).height;
+            return (int) GDXRenderer.getInstance().getFont(_textSize).getLineHeight();
         }
         return 0;
     }
