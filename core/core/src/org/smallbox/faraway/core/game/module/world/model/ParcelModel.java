@@ -161,12 +161,12 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
             return false;
         }
 
-        // Check structure (wall, closed door)
+        // Check item
         if (_content != null && _content.item != null && !_content.item.getInfo().isWalkable && _content.item.isComplete()) {
             return false;
         }
 
-        // Check structure (wall, closed door)
+        // Check resource
         if (_content != null && _content.resource != null && !_content.resource.getInfo().isWalkable) {
             return false;
         }

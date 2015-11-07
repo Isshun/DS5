@@ -27,7 +27,7 @@ public class PathModel {
         _firstParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _lastParcel = nodes.getCount() > 0 ? nodes.get(nodes.getCount()-1) : null;
         _length = nodes.getCount();
-        _index = 0;
+        _index = 1;
     }
 
     public int          getLength() { return _length; }

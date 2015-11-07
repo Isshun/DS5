@@ -92,7 +92,7 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.height = 1;
         }
 
-        itemInfo.isWalkable = getBoolean(value, "walkable", false);
+        itemInfo.isWalkable = getBoolean(value, "walkable", true);
         itemInfo.health = getInt(value, "health", 1);
         itemInfo.networkName = getString(value, "network", null);
 
