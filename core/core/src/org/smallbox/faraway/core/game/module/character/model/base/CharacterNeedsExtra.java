@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.Data;
@@ -140,7 +141,7 @@ public class CharacterNeedsExtra {
 //        System.out.println("bodyHeat: " + this.heat);
     }
 
-    public void use(MapObjectModel item, ItemInfoAction action) {
+    public void use(MapObjectModel item, ItemInfo.ItemInfoEffects effects, int cost) {
         if (item.isSleepingItem()) {
             _sleepItem = item;
             isSleeping = true;
@@ -148,14 +149,14 @@ public class CharacterNeedsExtra {
             _sleepItem = null;
         }
 
-        if (action != null && action.effects != null) {
-            addValue("energy", (double)action.effects.energy / action.cost);
-            addValue("food", (double)action.effects.food / action.cost);
-            addValue("drink", (double)action.effects.drink / action.cost);
-            addValue("entertainment", (double)action.effects.entertainment / action.cost);
-            addValue("relation", (double)action.effects.relation / action.cost);
-            addValue("happiness", (double)action.effects.happiness / action.cost);
-            health = Math.min(health + (double)action.effects.health / action.cost, 100);
+        if (effects != null) {
+            addValue("energy", (double)effects.energy / cost);
+            addValue("food", (double)effects.food / cost);
+            addValue("drink", (double)effects.drink / cost);
+            addValue("entertainment", (double)effects.entertainment / cost);
+            addValue("relation", (double)effects.relation / cost);
+            addValue("happiness", (double)effects.happiness / cost);
+            health = Math.min(health + (double)effects.health / cost, 100);
         }
     }
 

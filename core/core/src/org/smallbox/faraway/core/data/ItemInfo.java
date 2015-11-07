@@ -34,6 +34,12 @@ public class ItemInfo extends ObjectInfo {
         public int[]                    crafts;
     }
 
+    public static class ItemConsumeInfo {
+        public int                      cost;
+        public int                      count;
+        public ItemInfoEffects          effects;
+    }
+
     public static class ActionInputInfo {
         public ItemInfo                 item;
         public String                   itemName;
@@ -237,6 +243,7 @@ public class ItemInfo extends ObjectInfo {
     public List<NetworkItemInfo>        networks;
     public String                       networkName;
     public NetworkInfo                  network;
+    public ItemConsumeInfo              consume;
 
     public ItemInfo() {
         width = 1;

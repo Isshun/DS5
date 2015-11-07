@@ -144,11 +144,14 @@ public class LuaItemExtend extends LuaExtend {
             readFactoryValue(itemInfo, value.get("factory"));
         }
 
-//        // Effects on consumable
-//        if (!value.get("effects").isnil()) {
-//            itemInfo.effects = new ItemInfo.ItemInfoEffects();
-//            readEffectValues(itemInfo.effects, value.get("effects"));
-//        }
+        // Effects on consumable
+        if (!value.get("consume").isnil()) {
+            itemInfo.consume = new ItemInfo.ItemConsumeInfo();
+            itemInfo.consume.cost = getInt(value.get("consume"), "cost", 10);
+            itemInfo.consume.count = getInt(value.get("consume"), "count", 1);
+            itemInfo.consume.effects = new ItemInfo.ItemInfoEffects();
+            readEffectValues(itemInfo.consume.effects, value.get("consume").get("effects"));
+        }
 
         if (!value.get("actions").isnil()) {
             itemInfo.actions = new ArrayList<>();

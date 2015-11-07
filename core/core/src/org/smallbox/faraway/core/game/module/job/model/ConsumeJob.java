@@ -34,7 +34,7 @@ public class ConsumeJob extends JobModel {
 
         ConsumeJob job = character.getInventory() == consumable ? new ConsumeJob(character.getParcel()) : new ConsumeJob(consumable.getParcel());
         job.setCharacterRequire(character);
-        job.setActionInfo(consumable.getInfo().actions.get(0));
+        job._cost = consumable.getInfo().consume.cost;
         job._consumable = consumable;
         job._itemInfo = consumable.getInfo();
 
@@ -142,7 +142,7 @@ public class ConsumeJob extends JobModel {
             // Character use item
             _current++;
             _progress = _current / _cost;
-            _character.getInventory().use(_character, 0);
+            _character.getInventory().consume(_character, 0);
             if (_current < _cost) {
                 return JobActionReturn.CONTINUE;
             }

@@ -120,7 +120,7 @@ public abstract class MapObjectModel extends ObjectModel {
 
     public ItemModel use(CharacterModel character, int durationLeft) {
         // Add buffEffect on characters
-        character.getNeeds().use(this, _info.actions.get(0));
+        _info.actions.stream().filter(action -> "use".equals(action.type)).forEach(action -> character.getNeeds().use(this, action.effects, action.cost));
 
         // Play animation
         if (_animFrame++ % _animFrameInterval == 0) {
