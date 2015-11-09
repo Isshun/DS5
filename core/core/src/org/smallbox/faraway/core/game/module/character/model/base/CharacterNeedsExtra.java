@@ -56,6 +56,14 @@ public class CharacterNeedsExtra {
         _values.put(TAG_ENTERTAINMENT, 0.0);
         _values.put(TAG_RELATION, 0.0);
         _values.put("security", 0.0);
+
+        _values.put(TAG_ENERGY, 100.0);
+        _values.put(TAG_DRINK, 100.0);
+        _values.put(TAG_FOOD, 100.0);
+        _values.put(TAG_OXYGEN, 100.0);
+        _values.put(TAG_RELATION, 100.0);
+        _values.put(TAG_ENTERTAINMENT, 100.0);
+
         health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
         heat = character.getType().needs.heat.optimal;
         injuries = 0;

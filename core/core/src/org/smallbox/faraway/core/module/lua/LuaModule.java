@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.module.lua;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.GameModule;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public class LuaModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
     }
 
     @Override

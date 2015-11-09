@@ -51,7 +51,7 @@ public class CharacterModule extends GameModule {
     }
 
     @Override
-    public void onLoaded() {
+    public void onLoaded(Game game) {
         ModuleHelper.setCharacterModule(this);
     }
 

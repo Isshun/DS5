@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.dev;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.GameModule;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class LogModule extends GameModule {
     );
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
 
     }
 

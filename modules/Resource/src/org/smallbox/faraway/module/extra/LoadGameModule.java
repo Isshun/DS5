@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.extra;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.module.GameModule;
@@ -29,7 +30,7 @@ public class LoadGameModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
     }
 
     @Override
@@ -75,8 +76,20 @@ public class LoadGameModule extends GameModule {
         if ("load_game.load".equals(tag) && _game != null && _save != null) {
             GameManager.getInstance().loadGame(_game, _save);
         }
-        if ("load_game.last_game".equals(tag) && !_games.isEmpty() && !_games.get(0).saveFiles.isEmpty()) {
-            GameManager.getInstance().loadGame(_games.get(0), _games.get(0).saveFiles.get(0));
+        if ("load_game.last_game".equals(tag)) {
+            GameInfo gameInfo = null;
+            GameInfo.GameSaveInfo saveInfo = null;
+            for (GameInfo game: _games) {
+                for (GameInfo.GameSaveInfo save: game.saveFiles) {
+                    if (saveInfo == null || save.date.after(saveInfo.date)) {
+                        saveInfo = save;
+                        gameInfo = game;
+                    }
+                }
+            }
+            if (saveInfo != null) {
+                GameManager.getInstance().loadGame(gameInfo, saveInfo);
+            }
         }
     }
 }

@@ -20,13 +20,9 @@ public class MainRenderer {
     private static long                 _renderTime;
     private static int                  _frame;
     private final List<BaseRenderer>    _renders;
-    private SpriteManager               _spriteManager;
-    private CharacterRenderer           _characterRenderer;
-    private WorldRenderer               _worldRenderer;
 
     public MainRenderer(GDXRenderer renderer, GameConfig config) {
         _self = this;
-        _spriteManager = SpriteManager.getInstance();
         _renders = ModuleManager.getInstance().getRenders();
 
     }
@@ -55,21 +51,8 @@ public class MainRenderer {
 
     public void init(GameConfig config, Game game) {
         _frame = 0;
-
-        _renders.forEach(render -> {
-            if (render.isActive(config)) {
-                render.load();
-            } else {
-                render.unload();
-            }
-        });
-
         _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
-
-        _worldRenderer = (WorldRenderer)getRender(WorldRenderer.class);
-        _characterRenderer = (CharacterRenderer)getRender(CharacterRenderer.class);
-
-        _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::init);
+        _renders.stream().filter(renderer -> renderer.isActive(config)).forEach(render -> render.load(game));
     }
 
     private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
@@ -95,15 +78,11 @@ public class MainRenderer {
         return _renders;
     }
 
-    public WorldRenderer getWorldRenderer() {
-        return _worldRenderer;
-    }
-
     public void toggleRender(BaseRenderer render) {
         if (render.isLoaded()) {
             render.unload();
         } else {
-            render.load();
+            render.load(Game.getInstance());
         }
     }
 }

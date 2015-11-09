@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
@@ -21,7 +22,7 @@ public class TemperatureModule extends GameModule {
     private boolean             _needUpdate;
 
     @Override
-    public void onLoaded() {
+    public void onLoaded(Game game) {
         _updateInterval = 10;
         _roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
     }

@@ -46,7 +46,7 @@ public class DumpJob extends JobModel {
         }
 
         // No path to item
-        if (!PathManager.getInstance().hasPathApprox(character.getParcel(), _item.getParcel())) {
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel(), true, false)) {
             return JobCheckReturn.STAND_BY;
         }
 

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.data.factory.world;
 
 import com.badlogic.gdx.math.MathUtils;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 public class MidpointDisplacement {
     public interface MapGenListener {
@@ -47,15 +47,16 @@ public class MidpointDisplacement {
         smoothness = config.smooth;
     }
 
-    public void create(MapGenListener listener) {
+    public void create(GameInfo info, ParcelModel[][][] parcels, MapGenListener listener) {
         int[][] map = getMap();
 
         for(int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[row].length; col++) {
-                if (map[row][col] == 2) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(row, col);
-                    if (parcel != null) {
-                        listener.onCreate(parcel);
+                for (int floor = 0; floor < info.worldFloors; floor++) {
+                    if (map[row][col] == 2 && row < info.worldHeight && col < info.worldWidth) {
+                        if (parcels[row][col][floor] != null) {
+                            listener.onCreate(parcels[row][col][floor]);
+                        }
                     }
                 }
             }

@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.dev;
 
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.ui.engine.views.UITitleWindow;
 import org.smallbox.faraway.ui.engine.views.UIWindow;
@@ -77,7 +78,7 @@ public class RenderDebugModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
     }
 
     @Override

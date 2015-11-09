@@ -7,6 +7,8 @@ import org.smallbox.faraway.core.game.module.area.AreaModuleSerializer;
 import org.smallbox.faraway.core.game.module.character.CharacterModuleSerializer;
 import org.smallbox.faraway.core.game.module.world.WorldModuleSerializer;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.OnLoadListener;
@@ -53,7 +55,7 @@ public class GameSerializer {
         }
     }
 
-    public static void save(File file, Collection<GameModule> modulesBase, Collection<GameModule> modulesThird) {
+    public static void save(File file) {
         try {
             long time = System.currentTimeMillis();
             FileOutputStream fos = new FileOutputStream(file);
@@ -67,7 +69,7 @@ public class GameSerializer {
             (new CharacterModuleSerializer()).save(fos);
 
             // Modules serializer
-            for (GameModule module: modulesBase) {
+            for (GameModule module: ModuleManager.getInstance().getModulesBase()) {
                 SerializerInterface serializer = module.getSerializer();
                 if (serializer != null) {
                     serializer.save(fos);
@@ -75,7 +77,7 @@ public class GameSerializer {
             }
 
             // Modules serializer
-            for (GameModule module: modulesThird) {
+            for (GameModule module: ModuleManager.getInstance().getModulesThird()) {
                 SerializerInterface serializer = module.getSerializer();
                 if (serializer != null) {
                     serializer.save(fos);

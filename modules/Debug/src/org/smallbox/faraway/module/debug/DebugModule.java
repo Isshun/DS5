@@ -77,7 +77,7 @@ public class DebugModule extends GameModule {
 //                            .collect(Collectors.toList()))
 //            ),
             new CommandEntry("Re-gen",              view -> {
-                new WorldFactory().create(ModuleHelper.getWorldModule(), Game.getInstance().getInfo().region);
+//                new WorldFactory().create(ModuleHelper.getWorldModule(), Game.getInstance().getInfo().region);
 //                MainRenderer.getInstance().getWorldRenderer().refreshAll();
             }),
             new CommandEntry("Add crew (human)",    view -> ModuleHelper.getCharacterModule().addRandom(HumanModel.class)),
@@ -91,7 +91,7 @@ public class DebugModule extends GameModule {
             }),
             new CommandEntry("remove characters",   view -> ModuleHelper.getCharacterModule().getCharacters().clear()),
             new CommandEntry("Launch quest",        view -> ((QuestModule) ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
-            new CommandEntry("Refresh rooms",       view -> ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).refreshRooms()),
+//            new CommandEntry("Refresh rooms",       view -> ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).refreshRooms()),
             new CommandEntry("Remove rubbles",      view -> {
                 for (ConsumableModel consumable : ModuleHelper.getWorldModule().getConsumables().stream().filter(res -> "base.calcite_rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
                     ModuleHelper.getWorldModule().removeConsumable(consumable);
@@ -187,7 +187,7 @@ public class DebugModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
 
         System.out.println("debug");
 

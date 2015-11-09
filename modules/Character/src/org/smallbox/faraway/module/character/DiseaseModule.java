@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.character;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
@@ -8,7 +9,7 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
  */
 public class DiseaseModule extends GameModule {
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         _updateInterval = 10;
     }
 

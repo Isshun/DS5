@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -20,7 +21,7 @@ public class PowerModule extends GameModule {
     private double              _maxStorage;
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         _stored = 1000;
         _maxStorage = 3500;
         _items = new ArrayList<>();

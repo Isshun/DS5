@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import com.badlogic.gdx.ai.pfa.Connection;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.model.NetworkModel;
@@ -21,7 +21,7 @@ public class NetworkModule extends GameModule {
     private Set<NetworkConnectionModel> _networkConnections= new HashSet<>();
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
     }
 
     @Override
@@ -100,10 +100,12 @@ public class NetworkModule extends GameModule {
             network.addObject(object);
 
             ParcelModel targetParcel;
-            if ((targetParcel = WorldHelper.getParcel(parcel.x + 1, parcel.y)) != null) explore(network, networkInfo, targetParcel);
-            if ((targetParcel = WorldHelper.getParcel(parcel.x - 1, parcel.y)) != null) explore(network, networkInfo, targetParcel);
-            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y + 1)) != null) explore(network, networkInfo, targetParcel);
-            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y - 1)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1)) != null) explore(network, networkInfo, targetParcel);
+            if ((targetParcel = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1)) != null) explore(network, networkInfo, targetParcel);
         }
     }
 
@@ -114,13 +116,15 @@ public class NetworkModule extends GameModule {
             int bestDistance = -1;
             for (int x = p1.x - distance; x < p1.x + 1 + distance; x++) {
                 for (int y = p1.y - distance; y < p1.y + 1 + distance; y++) {
-                    ParcelModel p2 = WorldHelper.getParcel(x, y);
-                    if (p2 != null && p2.hasNetwork(connection.getNetworkInfo()) && (bestDistance == -1 || WorldHelper.getApproxDistance(p1, p2) < bestDistance)) {
-                        NetworkObjectModel networkObject = p2.getNetworkObject(connection.getNetworkInfo());
-                        if (networkObject != null && networkObject.getNetwork() != null) {
-                            bestDistance = WorldHelper.getApproxDistance(p1, p2);
-                            connection.setNetwork(networkObject.getNetwork());
-                            connection.setNetworkObject(networkObject);
+                    for (int z = p1.z - distance; y < p1.z + 1 + distance; z++) {
+                        ParcelModel p2 = WorldHelper.getParcel(x, y, z);
+                        if (p2 != null && p2.hasNetwork(connection.getNetworkInfo()) && (bestDistance == -1 || WorldHelper.getApproxDistance(p1, p2) < bestDistance)) {
+                            NetworkObjectModel networkObject = p2.getNetworkObject(connection.getNetworkInfo());
+                            if (networkObject != null && networkObject.getNetwork() != null) {
+                                bestDistance = WorldHelper.getApproxDistance(p1, p2);
+                                connection.setNetwork(networkObject.getNetwork());
+                                connection.setNetworkObject(networkObject);
+                            }
                         }
                     }
                 }

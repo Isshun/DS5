@@ -169,7 +169,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
-        PathModel path = PathManager.getInstance().getBestApprox(_parcel, targetParcel);
+        PathModel path = PathManager.getInstance().getPath(_parcel, targetParcel, true, false);
 
         // No path to target parcel
         if (path == null) {

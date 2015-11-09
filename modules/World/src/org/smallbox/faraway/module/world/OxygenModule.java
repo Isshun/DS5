@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -18,7 +19,7 @@ public class OxygenModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
 //        _oxygen = (int)(Game.getInstance().getPlanet().getOxygen() * 100);
     }
 

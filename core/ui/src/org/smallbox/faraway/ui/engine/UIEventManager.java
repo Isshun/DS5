@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine;
 
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.HashMap;
@@ -49,8 +50,9 @@ public class UIEventManager {
     }
 
     public boolean click(int x, int y) {
+        boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onClickListeners.keySet()) {
-            if (hasVisibleHierarchy(view) && view.contains(x, y)) {
+            if ((gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onClickListeners.get(view).onClick(view);
                 return true;
             }
@@ -59,13 +61,27 @@ public class UIEventManager {
     }
 
     public boolean rightClick(int x, int y) {
+        boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onRightClickListeners.keySet()) {
-            if (hasVisibleHierarchy(view) && view.contains(x, y)) {
+            if ((gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onRightClickListeners.get(view).onClick(view);
                 return true;
             }
         }
         return false;
+    }
+
+    public void onMouseMove(int x, int y) {
+        boolean gameRunning = GameManager.getInstance().isRunning();
+        for (View view: _onFocusListeners.keySet()) {
+            if ((gameRunning || !view.inGame())) {
+                if (hasVisibleHierarchy(view) && view.contains(x, y)) {
+                    view.onEnter();
+                } else if (view.isFocus()) {
+                    view.onExit();
+                }
+            }
+        }
     }
 
     public boolean has(int x, int y) {
@@ -85,17 +101,6 @@ public class UIEventManager {
             view = view.getParent();
         }
         return true;
-    }
-
-    public void onMouseMove(int x, int y) {
-        for (View view: _onFocusListeners.keySet()) {
-            if (hasVisibleHierarchy(view) && view.contains(x, y)) {
-                view.onEnter();
-            }
-            else if (view.isFocus()) {
-                view.onExit();
-            }
-        }
     }
 
     public void removeOnClickListener(View view) {

@@ -50,8 +50,8 @@ public interface GameObserver {
     default void onDeselect() {}
     default void onGameStart() {}
     default void onLog(String tag, String message) {}
-    default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
-    default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {}
+    default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
+    default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
     default void onKeyPress(GameEventListener.Key key) {}
@@ -68,4 +68,7 @@ public interface GameObserver {
     default void onRemoveNetworkObject(NetworkObjectModel networkObject) {}
     default void onGamePaused() {}
     default void onGameResume() {}
+    default void onFloorUp() {}
+    default void onFloorDown() {}
+    default void onFloorChange(int floor) {}
 }

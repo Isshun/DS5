@@ -15,14 +15,9 @@ import java.util.List;
  * Created by Alex on 15/06/2015.
  */
 public abstract class GameModule extends ObjectModel implements GameObserver {
-    public abstract class EventListener<T> {
-        public abstract void onEvent(T data);
-    }
-
     protected final String      TAG = getClass().getSimpleName();
 
     protected ModuleInfo        _info;
-    private List<EventListener> _listeners;
     private int                 _nbUpdate;
     private long                _totalTime;
     protected int               _updateInterval = 1;
@@ -52,16 +47,15 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         }
     }
 
-    protected void addEventListener(String tag, EventListener<CharacterModel> listener) {
-        Game.getInstance().addEventListener(listener);
-        _listeners.add(listener);
+    public void create() {
+        System.out.println("Create java module: " + _info.name);
+        onCreate();
+        _isLoaded = true;
     }
 
-    public void create() {
+    public void load(Game game) {
         System.out.println("Load java module: " + _info.name);
-
-        _listeners = new ArrayList<>();
-        onLoaded();
+        onLoaded(game);
         _isLoaded = true;
     }
 
@@ -70,12 +64,10 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         _isLoaded = false;
     }
 
-    protected void onDestroy() {
-        _listeners.forEach(Game.getInstance()::removeEventListener);
-    }
-
-    protected abstract void onLoaded();
+    protected void onCreate() {}
+    protected abstract void onLoaded(Game game);
     protected abstract void onUpdate(int tick);
+    protected void onDestroy() {}
 
     public void dump() {
         if (_nbUpdate != 0) {
@@ -107,9 +99,6 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
 
     public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         return false;
-    }
-
-    public void refresh(int update) {
     }
 
     public long         getModuleUpdateTime() { return _updateTime; }

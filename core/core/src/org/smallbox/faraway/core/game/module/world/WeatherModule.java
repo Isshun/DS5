@@ -39,7 +39,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     private double                  _temperatureOffset;
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         _lightTarget = 1;
         _lightProgress = 1;
         _weather = Data.getData().weathers.get("base.weather.regular");

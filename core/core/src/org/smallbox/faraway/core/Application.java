@@ -23,7 +23,6 @@ import java.util.function.Consumer;
 public class Application implements GameEventListener {
     private static Application              _self;
     private boolean                         _isRunning = true;
-    private final BlockingQueue<Runnable>   _queue = new LinkedBlockingQueue<>();
     private GDXInputProcessor               _inputProcessor;
     private long                            _nextDataUpdate;
     private long                            _dataLastModified = Utils.getLastDataModified();
@@ -36,7 +35,7 @@ public class Application implements GameEventListener {
         return _self;
     }
 
-    public void                 addTask(Runnable runnable) { _queue.add(runnable); }
+    public void                 addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
     public void                 setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }
     public void                 setInputProcessor(GDXInputProcessor inputProcessor) { _inputProcessor = inputProcessor; }
     public GDXInputProcessor    getInputProcessor() { return _inputProcessor; }
@@ -76,28 +75,6 @@ public class Application implements GameEventListener {
         }
 
 //        UserInterface.getInstance().onMouseEvent(action, button, x, y, rightPressed);
-    }
-
-    public void newGame(String fileName, RegionInfo  regionInfo) {
-        GameManager.getInstance().create(fileName, regionInfo);
-    }
-
-    public void render(GDXRenderer renderer, Viewport viewport, long lastRenderInterval) {
-        renderer.clear(new Color(0, 0, 0));
-
-        if (GameManager.getInstance().isRunning()) {
-            GameManager.getInstance().getGame().render(renderer, viewport, lastRenderInterval);
-        }
-
-        UserInterface.getInstance().draw(renderer, GameManager.getInstance().isRunning());
-
-        try {
-            if (!_queue.isEmpty()) {
-                _queue.take().run();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void update() {

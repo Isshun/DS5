@@ -20,7 +20,7 @@ public abstract class BaseGame {
     public static final int         SPEED_4_TICK_INTERVAL = 10;
 
     protected boolean               _isRunning;
-    protected GameActionExtra       _action;
+    protected GameActionExtra _gameAction;
     protected GameSelectionExtra    _selector;
 
     // Update
@@ -41,10 +41,10 @@ public abstract class BaseGame {
         return _paused;
     }
 
-    public void                     clearCursor() { _action.setCursor(null); }
+    public void                     clearCursor() { _gameAction.setCursor(null); }
     public void                     clearSelection() { _selector.clear(); }
-    public void                     setCursor(UICursor cursor) { _action.setCursor(cursor); }
-    public void                     setCursor(String cursorName) { _action.setCursor(Data.getData().getCursor(cursorName)); }
+    public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
+    public void                     setCursor(String cursorName) { _gameAction.setCursor(Data.getData().getCursor(cursorName)); }
 
     public void update() {
         // Update
@@ -93,7 +93,7 @@ public abstract class BaseGame {
             e.printStackTrace();
         }
 
-        _action.draw(renderer);
+        _gameAction.draw(renderer);
 
         _frame++;
         _renderTime = (int)(System.currentTimeMillis() - time);

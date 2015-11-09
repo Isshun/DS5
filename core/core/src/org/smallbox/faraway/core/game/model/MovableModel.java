@@ -25,6 +25,8 @@ public abstract class MovableModel extends ObjectModel {
     protected ParcelModel               _parcel;
 
     public MovableModel(int id, ParcelModel parcel) {
+        assert parcel != null;
+
         Utils.useUUID(id);
         _id = id;
         _parcel = parcel;
@@ -37,6 +39,8 @@ public abstract class MovableModel extends ObjectModel {
     public int              getFrameIndex() { return _frameIndex++; }
 
     public void             setParcel(ParcelModel parcel) {
+        assert parcel != null;
+
         _parcel = parcel;
     }
     public void             setDirection(Direction direction) {

@@ -1,11 +1,22 @@
 package org.smallbox.farpoint.desktop;
 
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.tools.texturepacker.TexturePacker;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GDXApplication;
+import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.loader.ConfigLoader;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 
 public class DesktopLauncher {
     public static void main (String[] arg) {
@@ -14,7 +25,7 @@ public class DesktopLauncher {
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //        config.samples = 2;
-        config.x = 1920 + 40;
+        config.x = 0 + 40;
         config.y = 0 + 40;
         config.width = data.config.screen.resolution[0];
         config.height = data.config.screen.resolution[1];
@@ -23,11 +34,14 @@ public class DesktopLauncher {
         config.fullscreen = false;
         config.foregroundFPS = 60;
         config.backgroundFPS = 30;
+//        config.foregroundFPS = 0;
+//        config.backgroundFPS = 0;
         config.resizable = true;
         config.vSyncEnabled = false;
 //        config.useGL30 = true;
         config.title = Constant.NAME + " " + Constant.VERSION;
         new LwjglApplication(new GDXApplication(), config);
+//        new LwjglApplication(new TestApplication(), config);
 
         switch (data.config.screen.mode) {
             case "window":

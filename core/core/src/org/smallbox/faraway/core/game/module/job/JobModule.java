@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
@@ -22,7 +21,6 @@ import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -48,7 +46,7 @@ public class JobModule extends GameModule {
     }
 
     @Override
-    public void onLoaded() {
+    public void onLoaded(Game game) {
         printDebug("JobModule");
 
         _toRemove = new ArrayList<>();

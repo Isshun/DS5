@@ -70,8 +70,8 @@ public class RenderLayer {
         if (sprite != null) {
             if (_count < 5000) {
                 // TODO: BOF
-                ((SpriteModel)sprite).getData().setPosition(x, y);
-                _cache.add(((SpriteModel)sprite).getData());
+                sprite.getData().setPosition(x, y);
+                _cache.add(sprite.getData());
                 _count++;
             }
         }

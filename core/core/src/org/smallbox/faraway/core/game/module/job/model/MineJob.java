@@ -14,17 +14,19 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
 import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.ui.GameActionExtra;
 
 public class MineJob extends JobModel {
     private ResourceModel       _resource;
     private int                 _totalCost;
     private double              _current;
+    private ItemInfo            _itemProduct;
 
     private MineJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
         super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
     }
 
-    public static JobModel create(ResourceModel resource) {
+    public static JobModel create(ResourceModel resource, ItemInfo itemProduct) {
         assert resource != null;
 
         if (resource.getInfo().actions != null) {
@@ -37,6 +39,7 @@ public class MineJob extends JobModel {
                         }
                     });
                     job._resource = resource;
+                    job._itemProduct = itemProduct;
                     job._totalCost = job._cost * job._resource.getRock().getQuantity();
                     job._label = "Mine " + resource.getInfo().label;
                     job._message = "Move to resource";
@@ -50,7 +53,7 @@ public class MineJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, true);
 
         if (path != null) {
             _targetParcel = path.getLastParcel();
@@ -79,7 +82,7 @@ public class MineJob extends JobModel {
             return JobCheckReturn.ABORT;
         }
 
-        if (!PathManager.getInstance().hasPathApprox(character.getParcel(), _resource.getParcel())) {
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _resource.getParcel(), true, true)) {
             _status = JobStatus.BLOCKED;
             return JobCheckReturn.STAND_BY;
         }
@@ -124,6 +127,10 @@ public class MineJob extends JobModel {
             _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
                 ModuleHelper.getWorldModule().putObject(_resource.getParcel(), productInfo.item, Utils.getRandom(productInfo.quantity));
             });
+        }
+
+        if (_itemProduct != null) {
+            ModuleHelper.getWorldModule().putObject(_resource.getParcel(), _itemProduct, 10, true);
         }
     }
 

@@ -28,7 +28,7 @@ public class LuaWeatherExtend extends LuaExtend {
 
         readWeather(weatherInfo, value);
 
-        System.out.println("Extends weather from lua: " + weatherInfo.label);
+//        System.out.println("Extends weather from lua: " + weatherInfo.label);
     }
 
     private void readWeather(WeatherInfo weatherInfo, LuaValue value) throws DataExtendException {

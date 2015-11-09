@@ -59,9 +59,10 @@ public class LuaItemExtend extends LuaExtend {
                 throw new DataExtendException(DataExtendException.Type.MISSING_PARENT, itemInfo.parentName);
             }
         }
+
         readItem(itemInfo, value);
 
-        System.out.println("Extends item from lua: " + itemInfo.label);
+//        System.out.println("Extends item from lua: " + itemInfo.label);
     }
 
     private void readItem(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
@@ -130,6 +131,8 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("floor").isnil()) {
             itemInfo.isFloor = true;
+            itemInfo.isWalkable = true;
+            itemInfo.isRamp = getBoolean(value.get("floor"), "ramp", false);
         }
 
         if (!value.get("plant").isnil()) {

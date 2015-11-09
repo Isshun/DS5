@@ -21,7 +21,7 @@ public class FaunaModule extends GameModule {
 //    private List<AnimalModel>               _animals = new ArrayList<>();
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         printInfo("[FaunaModule] loads");
 
         RegionInfo region = Game.getInstance().getInfo().region;

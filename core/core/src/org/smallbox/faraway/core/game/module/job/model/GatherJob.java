@@ -83,7 +83,7 @@ public class GatherJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, false);
 
         if (path != null) {
             _targetParcel = path.getLastParcel();

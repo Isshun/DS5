@@ -2,11 +2,9 @@ package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.data.ItemInfo.NetworkItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
@@ -33,17 +31,21 @@ public class WorldModule extends GameModule {
     private Set<ItemModel>                      _factories = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
     private List<ParcelModel>                   _parcelList;
+    private Map<Integer, List<ParcelModel>>     _parcelListFloor;
     private double                              _light;
+    private int                                 _floor = 9;
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
     public List<ParcelModel>                    getParcelList() { return _parcelList; }
+    public List<ParcelModel>                    getParcelList(int floor) { return _parcelListFloor.get(floor); }
     public Collection<ItemModel>                getItems() { return _items; }
     public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
     public Collection<ResourceModel>            getResources() { return _resources; }
     public double                               getLight() { return _light; }
-    public ParcelModel                          getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][0]; }
+    public ParcelModel                          getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][_floor]; }
+    public ParcelModel                          getParcel(int x, int y, int z) { return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= NB_FLOOR) ? null : _parcels[x][y][z]; }
 
     public void                                 setLight(double light) { _light = light; }
 
@@ -52,7 +54,7 @@ public class WorldModule extends GameModule {
     }
 
     @Override
-    public void onLoaded() {
+    public void onLoaded(Game game) {
         WeatherModule weatherModule = (WeatherModule)ModuleManager.getInstance().getModule(WeatherModule.class);
 
         ModuleHelper.setWorldModule(this);
@@ -62,37 +64,49 @@ public class WorldModule extends GameModule {
         _height = _game.getInfo().worldHeight;
 
         List<ParcelModel> parcelList = new ArrayList<>();
+        Map<Integer, List<ParcelModel>> parcelListFloors = new HashMap<>();
         _parcels = new ParcelModel[_width][_height][NB_FLOOR];
+
+        for (int f = 0; f < NB_FLOOR; f++) {
+            parcelListFloors.put(f, new ArrayList<>());
+        }
+
         for (int x = 0; x < _width; x++) {
             _parcels[x] = new ParcelModel[_height][NB_FLOOR];
+
             for (int y = 0; y < _height; y++) {
                 _parcels[x][y] = new ParcelModel[NB_FLOOR];
+
                 for (int f = 0; f < NB_FLOOR; f++) {
                     ParcelModel parcel = new ParcelModel(weatherModule, x, y, f);
                     _parcels[x][y][f] = parcel;
                     _parcels[x][y][f].setIndex(x * _width + y);
                     parcelList.add(_parcels[x][y][f]);
+                    parcelListFloors.get(f).add(_parcels[x][y][f]);
                 }
             }
         }
 
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
-                _parcels[x][y][0]._neighbors = new ParcelModel[8];
-                _parcels[x][y][0]._neighbors[0] = getParcel(x + 1, y);
-                _parcels[x][y][0]._neighbors[1] = getParcel(x - 1, y);
-                _parcels[x][y][0]._neighbors[2] = getParcel(x, y + 1);
-                _parcels[x][y][0]._neighbors[3] = getParcel(x, y - 1);
-                _parcels[x][y][0]._neighbors[4] = getParcel(x + 1, y + 1);
-                _parcels[x][y][0]._neighbors[5] = getParcel(x + 1, y - 1);
-                _parcels[x][y][0]._neighbors[6] = getParcel(x - 1, y + 1);
-                _parcels[x][y][0]._neighbors[7] = getParcel(x - 1, y - 1);
+                for (int z = 0; z < NB_FLOOR; z++) {
+                    _parcels[x][y][z]._neighbors = new ParcelModel[8];
+                    _parcels[x][y][z]._neighbors[0] = getParcel(x + 1, y, z);
+                    _parcels[x][y][z]._neighbors[1] = getParcel(x - 1, y, z);
+                    _parcels[x][y][z]._neighbors[2] = getParcel(x, y + 1, z);
+                    _parcels[x][y][z]._neighbors[3] = getParcel(x, y - 1, z);
+                    _parcels[x][y][z]._neighbors[4] = getParcel(x + 1, y + 1, z);
+                    _parcels[x][y][z]._neighbors[5] = getParcel(x + 1, y - 1, z);
+                    _parcels[x][y][z]._neighbors[6] = getParcel(x - 1, y + 1, z);
+                    _parcels[x][y][z]._neighbors[7] = getParcel(x - 1, y - 1, z);
+                }
             }
         }
 
         WorldHelper.init(_parcels);
 
         _parcelList = parcelList;
+        _parcelListFloor = parcelListFloors;
     }
 
     // Used only by serializers
@@ -189,7 +203,7 @@ public class WorldModule extends GameModule {
         return putObject(parcel, itemInfo, quantity, false);
     }
 
-    private MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+    public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (parcel != null) {
             if (itemInfo.isConsumable) {
                 return putConsumable(parcel, itemInfo, data);
@@ -438,6 +452,26 @@ public class WorldModule extends GameModule {
         return true;
     }
 
-    public int getWidth() { return _width; }
-    public int getHeight() { return _height; }
+    @Override
+    public void onFloorUp() {
+        if (_floor < NB_FLOOR - 1) {
+            _floor++;
+            Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
+        }
+    }
+
+    @Override
+    public void onFloorDown() {
+        if (_floor > 0) {
+            _floor--;
+            Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
+        }
+    }
+
+    public int getFloor() {
+        return _floor;
+    }
+
+//    public int getWidth() { return _width; }
+//    public int getHeight() { return _height; }
 }

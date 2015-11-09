@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
@@ -9,8 +10,16 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Alex on 20/10/2015.
@@ -29,11 +38,11 @@ public class GameManager {
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         long time = System.currentTimeMillis();
 
-        Game game = new Game(info, 250, 250, Data.getData(), Data.config);
+        Game game = new Game(info, Data.config);
 
         // TODO
         game.preload();
-        game.init(null);
+        game.init();
 
         startGame(game, saveInfo);
 
@@ -47,21 +56,7 @@ public class GameManager {
         MainRenderer.getInstance().init(Data.config, game);
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
-        time = System.currentTimeMillis();
-        UserInterface.getInstance().setGame(game);
-        Log.notice("Create UI (" + (System.currentTimeMillis() - time) + "ms)");
-
-//        if (_lightRenderer != null) {
-//            time = System.currentTimeMillis();
-//            _lightRenderer.init();
-//            Log.notice("Init light (" + (System.currentTimeMillis() - time) + "ms)");
-//        }
-
         game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
-
-        time = System.currentTimeMillis();
-        PathManager.getInstance().init(Game.getInstance().getInfo().worldWidth, Game.getInstance().getInfo().worldHeight);
-        Log.notice("Init paths (" + (System.currentTimeMillis() - time) + "ms)");
 
         if (saveInfo != null) {
             game.load(saveInfo);
@@ -73,33 +68,54 @@ public class GameManager {
         Application.getInstance().notify(observer -> observer.onYearChange(game.getYear()));
     }
 
-    public void create(String fileName, RegionInfo regionInfo) {
+    public void create(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
 
-        WorldFactory factory = new WorldFactory();
+        GameInfo gameInfo = GameInfo.create(regionInfo, 250, 250);
+        if (!new File("data/saves/", gameInfo.name).mkdirs()) {
+            System.out.println("Unable to create game save directory");
+            return;
+        }
 
-        Game game = new Game(GameInfo.create(regionInfo), 50, 50, Data.getData(), Data.config);
-        game.init(factory);
+        Game game = new Game(gameInfo, Data.config);
+        game.init();
 
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
         world.create();
-        factory.create(world, regionInfo);
-//        game.save("base_1", fileName);
 
+        WorldFactory factory = new WorldFactory();
+        factory.create(game, world, regionInfo);
         factory.createLandSite(game);
 
         startGame(game, null);
 
         _game = game;
 
-        saveGame();
+        saveGame(gameInfo, GameInfo.Type.INIT);
+        writeGameInfo(gameInfo);
 
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
-    public void saveGame() {
+    private void writeGameInfo(GameInfo gameInfo) {
+        try {
+            FileOutputStream fos = new FileOutputStream(new File("data/saves/" + gameInfo.name, "game.json"));
+            FileUtils.write(fos, gameInfo.toJSON().toString(4));
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveGame(GameInfo gameInfo, GameInfo.Type type) {
         if (_game != null) {
-            _game.save("base_1", "14.sav");
+            GameInfo.GameSaveInfo saveInfo = new GameInfo.GameSaveInfo();
+            saveInfo.type = type;
+            saveInfo.date = new Date();
+            saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
+            saveInfo.filename = gameInfo.name + "/" + new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date) + ".sav";
+            gameInfo.saveFiles.add(saveInfo);
+            GameSerializer.save(new File("data/saves/", saveInfo.filename));
         }
     }
 

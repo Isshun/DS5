@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
@@ -10,12 +11,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Alex on 30/08/2015.
  */
 public class GameInfo {
-    public enum Type {AUTO, FAST, REGULAR}
+    public enum Type {INIT, AUTO, FAST, REGULAR}
 
     public static class GameSaveInfo {
         public Type             type;
@@ -28,8 +30,32 @@ public class GameInfo {
     public RegionInfo           region;
     public String               name;
     public List<GameSaveInfo>   saveFiles = new ArrayList<>();
-    public int                  worldWidth = 50;
-    public int                  worldHeight = 50;
+    public int                  worldWidth;
+    public int                  worldHeight;
+    public int                  worldFloors;
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", name);
+        json.put("planet", planet.name);
+        json.put("region", region.name);
+        json.put("width", worldWidth);
+        json.put("height", worldHeight);
+        json.put("floors", worldFloors);
+
+        JSONArray saveArray = new JSONArray();
+        for (GameSaveInfo saveInfo: saveFiles) {
+            JSONObject saveJson = new JSONObject();
+            saveJson.put("type", saveInfo.type.toString());
+            saveJson.put("filename", saveInfo.filename);
+            saveJson.put("date", new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").format(saveInfo.date));
+            saveArray.put(saveJson);
+        }
+        json.put("saves", saveArray);
+
+        return json;
+    }
 
     public static GameInfo fromJSON(JSONObject json) {
         GameInfo info = new GameInfo();
@@ -37,6 +63,9 @@ public class GameInfo {
         info.name = json.getString("name");
         info.planet = Data.getData().getPlanet(json.getString("planet"));
         info.region = info.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
+        info.worldWidth = json.getInt("width");
+        info.worldHeight = json.getInt("height");
+        info.worldFloors = json.getInt("floors");
 
         if (json.has("saves")) {
             for (int i = 0; i < json.getJSONArray("saves").length(); i++) {
@@ -57,11 +86,15 @@ public class GameInfo {
         return info;
     }
 
-    public static GameInfo create(RegionInfo regionInfo) {
+    public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight) {
         GameInfo info = new GameInfo();
 
+        info.worldWidth = worldWidth;
+        info.worldHeight = worldHeight;
+        info.worldFloors = 10;
         info.planet = regionInfo.planet;
         info.region = regionInfo;
+        info.name = UUID.randomUUID().toString();
 
         return info;
     }

@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 public class ResourceModel extends MapObjectModel {
     private PlantExtra          _plant;
     private RockExtra           _rock;
-    private double              _quantity;
     private int                 _tile;
     private JobModel            _job;
 
@@ -47,6 +46,5 @@ public class ResourceModel extends MapObjectModel {
     public boolean      isPlant() { return _info.isPlant; }
 
     public void         setTile(int tile) { _tile = tile; }
-    public void         setQuantity(double quantity) { _quantity = quantity; }
     public void         setJob(JobModel job) { _job = job; }
 }

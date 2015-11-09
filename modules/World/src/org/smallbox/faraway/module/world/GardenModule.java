@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.AreaModule;
@@ -23,7 +24,7 @@ public class GardenModule extends GameModule {
     private List<ResourceModel>     _plants = new ArrayList<>();
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
 //        _temperatureModule = (TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class);
         ModuleHelper.getWorldModule().getResources().forEach(resource -> {
             if (resource.getInfo().plant != null) {

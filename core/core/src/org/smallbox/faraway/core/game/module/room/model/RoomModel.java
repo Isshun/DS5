@@ -36,6 +36,7 @@ public class RoomModel {
     private String                      _name;
     private double                      _oxygen;
     private ParcelModel                 _baseParcel;
+    private int                         _floor;
 
     public double getOxygen() { return _oxygen; }
     public void setOxygen(double oxygen) {
@@ -67,6 +68,10 @@ public class RoomModel {
         return _temperatureInfo.temperature;
     }
 
+    public int getFloor() {
+        return _floor;
+    }
+
     public enum RoomType {
         NONE,
         QUARTER,
@@ -78,18 +83,15 @@ public class RoomModel {
         WORLD, GARDEN
     }
 
-    public RoomModel(int id, RoomType type) {
-        init(id, type);
+    public RoomModel(RoomType type, int floor) {
+        init(Utils.getUUID(), type, floor);
     }
 
-    public RoomModel(RoomType type) {
-        init(Utils.getUUID(), type);
-    }
-
-    private void init(int id, RoomType type) {
+    private void init(int id, RoomType type, int floor) {
         _color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
         _parcels = new HashSet<>();
         _id = id;
+        _floor = floor;
         _isCommon = true;
         _maxX = Integer.MIN_VALUE;
         _minX = Integer.MAX_VALUE;

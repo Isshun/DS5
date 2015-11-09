@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -17,7 +18,7 @@ public class FloraModule extends GameModule {
     private List<ResourceModel>     _plants = new ArrayList<>();
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         ModuleHelper.getWorldModule().getResources().forEach(resource -> {
             if (resource.getInfo().plant != null) {
                 _plants.add(resource);

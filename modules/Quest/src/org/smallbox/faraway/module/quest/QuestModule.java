@@ -34,7 +34,7 @@ public class QuestModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         //TODO
 //        _ui = new QuestModuleUI(content);
     }

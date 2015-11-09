@@ -53,7 +53,6 @@ public class ParticleRenderer extends BaseRenderer {
                 // Load new one
                 if (name != null) {
                     System.out.println("Load new particle effect: " + name);
-
                     _effect = new ParticleEffect();
                     _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
                     _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
@@ -69,10 +68,6 @@ public class ParticleRenderer extends BaseRenderer {
     }
 
     @Override
-    public void init() {
-    }
-
-    @Override
     public void onRefresh(int frame) {
     }
 
@@ -83,6 +78,6 @@ public class ParticleRenderer extends BaseRenderer {
 
     @Override
     public void onWeatherChange(WeatherInfo weather) {
-        setParticle(weather.particle);
+//        setParticle(weather.particle);
     }
 }

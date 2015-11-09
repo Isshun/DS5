@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.util.MoveListener;
 
 public class ConsumeJob extends JobModel {
 
@@ -75,15 +76,24 @@ public class ConsumeJob extends JobModel {
             return;
         }
 
-        PathModel path = PathManager.getInstance().getBestAround(character.getParcel(), _consumable.getParcel());
+        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _consumable.getParcel(), true, false);
         if (path == null) {
             _status = JobStatus.ABORTED;
             return;
         }
 
         _consumable.lock(this);
-        _jobParcel = _targetParcel = path.getLastParcel();
-        character.move(path);
+        _targetParcel = path.getLastParcel();
+        character.move(path, new MoveListener<CharacterModel>() {
+            @Override
+            public void onReach(CharacterModel movable) {
+            }
+
+            @Override
+            public void onFail(CharacterModel movable) {
+                finish();
+            }
+        });
     }
 
     // TODO: make objects stats table instead switch

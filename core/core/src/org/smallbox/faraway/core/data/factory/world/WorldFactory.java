@@ -18,17 +18,21 @@ import java.util.*;
  * Created by Alex on 06/07/2015.
  */
 public class WorldFactory {
-
-    public void create(WorldModule worldModule, RegionInfo regionInfo) {
-        int mapWidth = Game.getInstance().getInfo().worldWidth;
-        int mapHeight = Game.getInstance().getInfo().worldHeight;
-
-//        // Initialize game old
-//        worldModule.getParcelList().forEach(parcel -> {
-//            parcel.setType(0);
-//            parcel.setResource(null);
-//        });
+    public void create(Game game, WorldModule worldModule, RegionInfo regionInfo) {
         ParcelModel[][][] parcels = worldModule.getParcels();
+
+        for (int z = 0; z < game.getInfo().worldFloors - 1; z++) {
+            for (int y = 0; y < game.getInfo().worldHeight; y++) {
+                for (int x = 0; x < game.getInfo().worldWidth; x++) {
+                    ResourceModel resource = new ResourceModel(Data.getData().getItemInfo("base.granite"));
+                    if (resource.isRock()) {
+                        resource.getRock().setQuantity(10);
+                    }
+                    parcels[x][y][z].setResource(resource);
+                    resource.setParcel(parcels[x][y][z]);
+                }
+            }
+        }
 
         // Add region terrains
         for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {
@@ -40,9 +44,10 @@ public class WorldFactory {
             }
             else if (terrain.pattern != null) {
                 Log.notice("Create old with pattern: " + terrain.pattern);
-                new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(parcel ->
+                new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), parcels, parcel ->
                         applyToParcel(worldModule, terrain, parcel));
-            } else {
+            }
+            else {
                 worldModule.getParcelList().forEach(parcel ->
                         applyToParcel(worldModule, terrain, parcel));
             }
@@ -52,24 +57,26 @@ public class WorldFactory {
         cleanMap(worldModule);
 
         // Notify world observers'
-        for (int x = 0; x < mapWidth; x++) {
-            for (int y = 0; y < mapHeight; y++) {
-                final ParcelModel parcel = parcels[x][y][0];
-                if (parcel.getStructure() != null) {
-                    Application.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
-                    worldModule.getStructures().add(parcel.getStructure());
-                }
-                if (parcel.getResource() != null) {
-                    Application.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
-                    worldModule.getResources().add(parcel.getResource());
-                }
-                if (parcel.getItem() != null) {
-                    Application.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
-                    worldModule.getItems().add(parcel.getItem());
-                }
-                if (parcel.getConsumable() != null) {
-                    Application.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
-                    worldModule.getConsumables().add(parcel.getConsumable());
+        for (int z = 0; z < game.getInfo().worldFloors; z++) {
+            for (int y = 0; y < game.getInfo().worldHeight; y++) {
+                for (int x = 0; x < game.getInfo().worldWidth; x++) {
+                    final ParcelModel parcel = parcels[x][y][z];
+                    if (parcel.getStructure() != null) {
+                        Application.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
+                        worldModule.getStructures().add(parcel.getStructure());
+                    }
+                    if (parcel.getResource() != null) {
+                        Application.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
+                        worldModule.getResources().add(parcel.getResource());
+                    }
+                    if (parcel.getItem() != null) {
+                        Application.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
+                        worldModule.getItems().add(parcel.getItem());
+                    }
+                    if (parcel.getConsumable() != null) {
+                        Application.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
+                        worldModule.getConsumables().add(parcel.getConsumable());
+                    }
                 }
             }
         }
@@ -77,10 +84,10 @@ public class WorldFactory {
 
     private void cleanMap(WorldModule worldModule) {
         ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> {
-            ParcelModel r = ModuleHelper.getWorldModule().getParcel(parcel.x + 1, parcel.y);
-            ParcelModel l = ModuleHelper.getWorldModule().getParcel(parcel.x - 1, parcel.y);
-            ParcelModel t = ModuleHelper.getWorldModule().getParcel(parcel.x, parcel.y + 1);
-            ParcelModel b = ModuleHelper.getWorldModule().getParcel(parcel.x, parcel.y - 1);
+            ParcelModel r = ModuleHelper.getWorldModule().getParcel(parcel.x + 1, parcel.y, parcel.z);
+            ParcelModel l = ModuleHelper.getWorldModule().getParcel(parcel.x - 1, parcel.y, parcel.z);
+            ParcelModel t = ModuleHelper.getWorldModule().getParcel(parcel.x, parcel.y + 1, parcel.z);
+            ParcelModel b = ModuleHelper.getWorldModule().getParcel(parcel.x, parcel.y - 1, parcel.z);
 
             // Add resource on empty parcel surrounded by resources
             if (parcel.getResource() == null) {

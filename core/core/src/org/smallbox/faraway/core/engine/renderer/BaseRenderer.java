@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.engine.renderer;
 
 import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.util.Log;
@@ -30,6 +31,9 @@ public abstract class BaseRenderer implements GameObserver {
         onUpdate();
     }
 
+    protected void onLoad(Game game) {
+    }
+
     protected void onUpdate() {
     }
 
@@ -46,15 +50,13 @@ public abstract class BaseRenderer implements GameObserver {
         }
     }
 
-    public void init() {
-    }
-
     public boolean isLoaded() {
         return _isLoaded;
     }
 
-    public void load() {
+    public void load(Game game) {
         System.out.println("[BaseRender] load " + getClass().getSimpleName());
+        onLoad(game);
         _isLoaded = true;
     }
 

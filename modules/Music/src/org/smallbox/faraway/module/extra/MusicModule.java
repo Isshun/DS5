@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.extra;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.GameModule;
 
 /**
@@ -11,7 +12,7 @@ public class MusicModule extends GameModule {
     private Music music;
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         music = Gdx.audio.newMusic(Gdx.files.internal("data/musics/Clean Soul.mp3"));
         music.play();
         music.setOnCompletionListener(Music::dispose);

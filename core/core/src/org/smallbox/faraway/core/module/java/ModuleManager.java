@@ -5,6 +5,7 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.ModuleInfo;
 import org.smallbox.faraway.core.util.FileUtils;
@@ -142,6 +143,15 @@ public class ModuleManager {
 
         _modules.forEach(module -> Application.getInstance().addObserver(module));
         _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
+
+        System.out.println("Load base modules");
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(GameModule::create);
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
+
+        System.out.println("Load third party modules");
+        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
+
+        Application.getInstance().notify(GameObserver::onReloadUI);
 
 //        _renders.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
     }

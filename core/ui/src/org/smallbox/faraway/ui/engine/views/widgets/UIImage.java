@@ -30,6 +30,10 @@ public class UIImage extends View {
         }
     }
 
+    public void setImage(Sprite sprite) {
+        _sprite = sprite;
+    }
+
     public void setImage(String path) {
         if (!path.equals(_path)) {
             _spriteModel = null;

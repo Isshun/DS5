@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
@@ -13,7 +14,7 @@ public class NewGameModule extends GameModule {
     private RegionInfo      _region;
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
     }
 
     @Override
@@ -34,7 +35,7 @@ public class NewGameModule extends GameModule {
             _region = (RegionInfo)object;
         }
         if ("new_game.start".equals(tag)) {
-            GameManager.getInstance().create("14.sav", _region);
+            GameManager.getInstance().create(_region);
         }
     }
 }

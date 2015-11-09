@@ -2,10 +2,9 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.engine.renderer.ExteriorRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -14,9 +13,10 @@ import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
+import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.views.widgets.UIImage;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +34,6 @@ public class Game extends BaseGame {
     private int                             _year;
 
     private static int                      _tick;
-    private List<GameModule.EventListener>  _eventListeners = new ArrayList<>();
     private String                          _display;
 
     public void                             toggleRunning() { _isRunning = !_isRunning; }
@@ -42,7 +41,6 @@ public class Game extends BaseGame {
     public void                             setDisplay(String display) { _display = display; }
 
     public boolean                          isRunning() { return _isRunning; }
-    public Collection<GameModule>           getModules() { return _modulesBase; }
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
@@ -52,16 +50,16 @@ public class Game extends BaseGame {
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
     public String                           getDisplay() { return _display; }
-    public GameActionExtra                  getInteraction() { return _action; }
+    public GameActionExtra                  getInteraction() { return _gameAction; }
     public GameSelectionExtra               getSelector() { return _selector; }
 
-    public Game(GameInfo info, int width, int height, Data data, GameConfig config) {
+    public Game(GameInfo info, GameConfig config) {
         Log.debug("Game");
 
         _self = this;
         _viewport = new Viewport(400, 300);
         _selector = new GameSelectionExtra();
-        _action = new GameActionExtra(_viewport, _selector);
+        _gameAction = new GameActionExtra(_viewport, _selector);
         _info = info;
         _config = config;
         _isRunning = true;
@@ -73,19 +71,19 @@ public class Game extends BaseGame {
         _tick = 0;
 
         Log.info("Game: onCreate");
-
         Log.info("Game:\tdone");
     }
 
-    public void init(WorldFactory factory) {
+    public void init() {
         System.out.println("Load base modules");
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(GameModule::create);
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(module -> module.load(this));
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(this));
 
         System.out.println("Load third party modules");
-        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
+        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(this));
 
         Application.getInstance().notify(GameObserver::onReloadUI);
+        Application.getInstance().notify(observer -> observer.onFloorChange(9));
     }
 
     @Override
@@ -123,24 +121,11 @@ public class Game extends BaseGame {
     public void    load(GameInfo.GameSaveInfo saveInfo) {
         long time = System.currentTimeMillis();
 
-//        loadListener.onLoad("Load game");
         GameSerializer.load(new File("data/saves", saveInfo.filename), _save);
         _save = null;
         System.gc();
 
         Log.info("Game loaded (2): " + (System.currentTimeMillis() - time) + "ms");
-
-//        loadListener.onLoad("Init world old");
-//        WorldFactory.cleanRock();
-    }
-
-    public void    save(final String gameName, final String fileName) {
-        File gameDirectory = new File("data/saves", gameName);
-        if (!gameDirectory.exists() && !gameDirectory.mkdirs()) {
-            Log.error("Unable to create game save directory");
-            return;
-        }
-        GameSerializer.save(new File(gameDirectory, fileName), _modulesBase, _modulesThird);
     }
 
     public void preload() {
@@ -148,14 +133,6 @@ public class Game extends BaseGame {
     }
 
     public GameInfo getInfo() { return _info; }
-
-    public void addEventListener(GameModule.EventListener listener) {
-        _eventListeners.add(listener);
-    }
-
-    public void removeEventListener(GameModule.EventListener listener) {
-        _eventListeners.remove(listener);
-    }
 
     public void setPaused(boolean pause) {
         _paused = pause;

@@ -41,8 +41,6 @@ public class UserInterface {
     }
 
     private static UserInterface        _self;
-    private Viewport                    _viewport;
-    private Game                        _game;
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
@@ -59,8 +57,6 @@ public class UserInterface {
         _context = new UIFrame();
         _context.setVisible(false);
     }
-
-    public void                     setGame(Game game) { _game = game; _viewport = game.getViewport(); }
 
     // Used by lua modules
     public UILabel                  createLabel() { return new UILabel(); }
@@ -131,18 +127,12 @@ public class UserInterface {
     public void onWindowEvent(Action action) {
     }
 
-    public void    onMouseWheel(int delta, int x, int y) {
-        _viewport.setScale(delta, x, y);
-    }
+//    public void    onMouseWheel(int delta, int x, int y) {
+//        _viewport.setScale(delta, x, y);
+//    }
 
     public void onRefresh(int update) {
         _update = update;
-
-        for (GameModule module: _game.getModules()) {
-            if (module.isLoaded()) {
-                module.refresh(update);
-            }
-        }
 
         Application.getInstance().notify(GameObserver::onRefreshUI);
     }

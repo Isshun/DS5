@@ -3,7 +3,10 @@ package org.smallbox.faraway.core;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -38,12 +41,18 @@ public class ApplicationShortcutManager {
                     ModuleManager.getInstance().loadModule(debugModule);
                 }
             }),
-//            new ApplicationShortcut(GameEventListener.Key.F5, GameEventListener.Modifier.ALT, () -> {
-//                Game.getInstance().save("base_1", Game.getInstance().getFileName());
-//            }),
+            new ApplicationShortcut(GameEventListener.Key.F5, GameEventListener.Modifier.NONE, () -> {
+                GameManager.getInstance().saveGame(Game.getInstance().getInfo(), GameInfo.Type.FAST);
+            }),
             new ApplicationShortcut(GameEventListener.Key.ENTER, GameEventListener.Modifier.ALT, () -> {
 //            _isFullscreen = !_isFullscreen;
 //            _renderer.setFullScreen(_isFullscreen);
+            }),
+            new ApplicationShortcut(GameEventListener.Key.PAGEUP, GameEventListener.Modifier.NONE, () -> {
+                Application.getInstance().notify(GameObserver::onFloorUp);
+            }),
+            new ApplicationShortcut(GameEventListener.Key.PAGEDOWN, GameEventListener.Modifier.NONE, () -> {
+                Application.getInstance().notify(GameObserver::onFloorDown);
             }),
 //            new ApplicationShortcut(GameEventListener.Key.F1, GameEventListener.Modifier.ALT, () -> {
 //                Application.getInstance().newGame("14.sav", Data.getData().getRegion("base.planet.arrakis", "desert"));

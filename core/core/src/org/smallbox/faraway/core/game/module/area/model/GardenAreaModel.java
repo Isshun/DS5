@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.job.model.MineJob;
@@ -39,7 +38,7 @@ public class GardenAreaModel extends AreaModel {
 
             //  Plan to cut / remove resource
             if (resource.canBeMined()) {
-                ModuleHelper.getJobModule().addJob(MineJob.create(resource));
+                ModuleHelper.getJobModule().addJob(MineJob.create(resource, null));
             } else if (resource.canBeHarvested()) {
                 ModuleHelper.getJobModule().addJob(GatherJob.create(resource, GatherJob.Mode.CUT));
             }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -130,6 +131,14 @@ public class GDXRenderer {
         }
     }
 
+    public void drawChunk(Texture texture, int x, int y) {
+        if (texture != null) {
+            _batch.begin();
+            _batch.draw(texture, x, y, 800, 800, 0, 0, 800, 800, false, true);
+            _batch.end();
+        }
+    }
+
     public void draw(String string, int textSize, int x, int y, Color color) {
         textSize *= Data.config.uiScale;
 
@@ -161,7 +170,7 @@ public class GDXRenderer {
 
             Matrix4 matrix = new Matrix4();
             matrix.translate(x * Game.getInstance().getViewport().getScale(), y * Game.getInstance().getViewport().getScale(), 0);
-            matrix.scale(Game.getInstance().getViewport().getScale(), Game.getInstance().getViewport().getScale(), 1f);
+//            matrix.scale(Game.getInstance().getViewport().getScale(), Game.getInstance().getViewport().getScale(), 1f);
 
             cache.setProjectionMatrix(_cameraWorld.combined);
             cache.setTransformMatrix(matrix);

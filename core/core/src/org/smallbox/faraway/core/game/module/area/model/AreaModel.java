@@ -15,6 +15,7 @@ public class AreaModel {
     private final AreaType              _type;
     private int                         _x;
     private int                         _y;
+    private int                         _floor;
 
     public AreaModel(AreaType type) {
         _type = type;
@@ -45,6 +46,7 @@ public class AreaModel {
     }
 
     public void                     setAccept(ItemInfo itemInfo, boolean isAccepted) { _items.put(itemInfo, isAccepted); }
+    public void                     setFloor(int floor) { _floor = floor; }
 
     public Collection<ParcelModel>  getParcels() {
         return _parcels;
@@ -56,6 +58,7 @@ public class AreaModel {
     public int                      getTypeIndex() { return _typeIndex; }
     public int                      getX() { return _x; }
     public int                      getY() { return _y; }
+    public int                      getFloor() { return _floor; }
 
     public boolean                  isStorage() { return false; }
     public boolean                  isHome() { return false; }

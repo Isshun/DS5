@@ -14,7 +14,7 @@ data:extend({
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {220, 0}, padding = 10 },
             }},
             { type = "view", size = {380, 240}, views = {
-                { type = "image", src = "[base]/graphics/fake_map.png", size = {380, 240}},
+                { type = "image", id = "img_map", background = 0x000000, size = {380, 240}},
                 { type = "label", id = "lb_floor", text = "0", text_size = 22, position = {12, 215}},
                 { type = "label", id = "lb_speed", text = "x1", text_size = 22, position = {348, 215}},
             }},

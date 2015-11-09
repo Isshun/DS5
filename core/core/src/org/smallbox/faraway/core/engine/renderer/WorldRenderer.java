@@ -1,13 +1,15 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
@@ -15,56 +17,19 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
-public class WorldRenderer extends BaseRenderer {
-    private static final int    CACHE_SIZE = 25;
+public abstract class WorldRenderer extends BaseRenderer {
+    protected static final int    CACHE_SIZE = 25;
 
-    private boolean             _needRefresh;
-    private SpriteManager       _spriteManager;
-    private MapObjectModel      _itemSelected;
-    private boolean             _firstRefresh;
-    private LayerGrid           _layerGrid;
+    protected SpriteManager       _spriteManager;
+    protected MapObjectModel      _itemSelected;
+    protected boolean             _firstRefresh;
+    protected LayerGrid           _layerGrid;
 
     @Override
-    public void init() {
+    protected void onLoad(Game game) {
         _spriteManager = SpriteManager.getInstance();
         _firstRefresh = true;
-        _layerGrid = new LayerGrid(10, 10);
-        _layerGrid.setOnRefreshLayer((layer, fromX, fromY, toX, toY) -> {
-            Log.info("Refresh layer: " + layer.getIndex());
-
-            layer.begin();
-            layer.setRefresh();
-            for (int x = toX - 1; x >= fromX; x--) {
-                for (int y = toY - 1; y >= fromY; y--) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                    if (parcel != null) {
-                        if (Data.config.render.floor) {
-                            refreshFloor(layer, parcel.getType(), x, y);
-                        }
-                        if (Data.config.render.structure) {
-                            refreshStructure(layer, parcel.getStructure(), x, y);
-                        }
-                        if (Data.config.render.resource) {
-                            refreshResource(layer, parcel, parcel.getResource(), x, y);
-                        }
-                        if (Data.config.render.item) {
-                            refreshItems(layer, parcel.getItem(), x, y);
-                        }
-                    }
-                }
-            }
-            for (int x = toX - 1; x >= fromX; x--) {
-                for (int y = toY - 1; y >= fromY; y--) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                    if (parcel != null) {
-                        if (Data.config.render.consumable) {
-                            refreshConsumable(layer, parcel.getConsumable(), x, y);
-                        }
-                    }
-                }
-            }
-            layer.end();
-        });
+        _layerGrid = new LayerGrid(game.getInfo().worldWidth / CACHE_SIZE, game.getInfo().worldHeight / CACHE_SIZE);
     }
 
     public int getLevel() {
@@ -168,13 +133,6 @@ public class WorldRenderer extends BaseRenderer {
 //            }
 //        }
 
-//        System.out.println("from " + fromX + "x" + fromY);
-//
-//        if (_needRefresh) {
-//            _needRefresh = false;
-//            refreshLayers();
-//        }
-//
         if (_layerGrid != null) {
             _layerGrid.draw(renderer);
         }
@@ -182,11 +140,6 @@ public class WorldRenderer extends BaseRenderer {
 
     private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-//            if (resource.getTile() == 42) {
-//                layer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
-//            } else {
-//                layer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX, (y * Constant.TILE_HEIGHT) + offsetY);
-//            }
             SpriteModel sprite = _spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
@@ -194,11 +147,11 @@ public class WorldRenderer extends BaseRenderer {
 
     // TODO: random
     void    refreshFloor(RenderLayer layer, int type, int x, int y) {
-        // Draw ground
-        if (type != 0) {
-            SpriteModel sprite = _spriteManager.getGround(type);
-            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-        }
+//        // Draw ground
+//        if (type != 0) {
+//            SpriteModel sprite = _spriteManager.getGround(type);
+//            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
+//        }
     }
 
     //TODO: random
@@ -216,25 +169,11 @@ public class WorldRenderer extends BaseRenderer {
                 layer.draw(_spriteManager.getItem(structure), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
 
-//            // Wall
-//            else if (structure.isWall()) {
-//                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//            }
-//
-//            // Hull
-//            else if (structure.isHull()) {
-//                layer.draw(drawWall(structure, x, y, offsetWall), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//            }
-
             else {
                 layer.draw(SpriteManager.getInstance().getItem(structure), (structure.getParcel().x % CACHE_SIZE) * Constant.TILE_WIDTH, (structure.getParcel().y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }
         }
     }
-
-//    private SpriteModel drawWall(StructureModel structure, int x, int y, int offsetWall) {
-//        return _spriteManager.getItem(structure, structure.isComplete() ? 0 : 1);
-//    }
 
     void    refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
         if (item != null && item.getParcel().x == x && item.getParcel().y == y) {
@@ -257,27 +196,6 @@ public class WorldRenderer extends BaseRenderer {
                     }
                 }
             }
-
-//            // Display crafts
-//            if (item.getFactory() != null && item.getFactory().getOutputs() != null) {
-//                for (ItemFactoryModel.FactoryOutputModel product : item.getFactory().getOutputs()) {
-//                    SpriteModel sprite = _spriteManager.getItem(product.itemInfo);
-//                    if (sprite != null) {
-//                        if (item.getInfo().factory != null && item.getInfo().factory.outputSlots != null) {
-//                            layer.draw(sprite,
-//                                    (x + item.getInfo().factory.outputSlots[0]) * Constant.TILE_WIDTH,
-//                                    (y + item.getInfo().factory.outputSlots[1]) * Constant.TILE_HEIGHT);
-//                        } else {
-//                            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-//                        }
-//                    }
-//                }
-//            }
-
-//            // Display selection
-//            if (item.isSelected()) {
-//                _itemSelected = item;
-//            }
 
             // Display selection
             if (!item.isFunctional()) {
@@ -437,4 +355,10 @@ public class WorldRenderer extends BaseRenderer {
         _itemSelected = null;
     }
 
+    @Override
+    public void onFloorChange(int floor) {
+        if (_layerGrid != null) {
+            _layerGrid.refreshAll();
+        }
+    }
 }

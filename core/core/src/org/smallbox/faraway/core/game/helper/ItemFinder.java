@@ -30,7 +30,7 @@ public class ItemFinder extends GameModule {
     private List<ItemModel>         _items;
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
         _pathManager = (PathManager) ModuleManager.getInstance().getModule(PathManager.class);
@@ -47,7 +47,7 @@ public class ItemFinder extends GameModule {
             ItemModel bestItem = null;
             for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
                 if (item.matchFilter(filter)) {
-                    PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), item.getParcel());
+                    PathModel path = PathManager.getInstance().getPath(character.getParcel(), item.getParcel(), true, false);
                     if (path != null && path.getLength() < bestDistance) {
                         bestDistance = path.getLength();
                         bestItem = item;
@@ -67,7 +67,7 @@ public class ItemFinder extends GameModule {
             ConsumableModel bestConsumable = null;
             for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
                 if (consumable.getLock() == null && consumable.matchFilter(filter)) {
-                    PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), consumable.getParcel());
+                    PathModel path = PathManager.getInstance().getPath(character.getParcel(), consumable.getParcel(), true, false);
                     if (path != null && path.getLength() < bestDistance) {
                         bestDistance = path.getLength();
                         bestConsumable = consumable;

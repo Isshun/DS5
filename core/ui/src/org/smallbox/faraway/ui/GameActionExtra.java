@@ -20,7 +20,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GameActionExtra {
     private final Viewport              _viewport;
-    private final GameSelectionExtra _selector;
+    private final GameSelectionExtra    _selector;
     private boolean                     _keyLeftPressed;
     private boolean                     _keyRightPressed;
     private int                         _keyPressPosX;
@@ -41,6 +41,10 @@ public class GameActionExtra {
 
     public enum Action {
         NONE, REMOVE_ITEM, REMOVE_STRUCTURE, BUILD_ITEM, SET_AREA, PUT_ITEM_FREE, REMOVE_AREA, SET_PLAN
+    }
+
+    public enum DigMode {
+        FRONT, RAMP_UP, RAMP_DOWN, HOLE
     }
 
     Action                              _action;
@@ -70,50 +74,59 @@ public class GameActionExtra {
     public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
     public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 
-    public boolean onKeyLeft(int x, int y, int fromX, int fromY, int toX, int toY) {
-        // Set plan
-        if (_action == Action.SET_PLAN) {
-            plan(fromX, fromY, toX, toY);
-            return true;
-        }
+    public boolean onKeyLeft(int cursorX, int cursorY, int fromX, int fromY, int toX, int toY) {
+        int floor = ModuleHelper.getWorldModule().getFloor();
 
-        // Set model
+        // Add area
         if (_action == Action.SET_AREA) {
-            Application.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY));
+            Application.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
             return true;
         }
 
-        // Set model
+        // Remove area
         if (_action == Action.REMOVE_AREA) {
-            Application.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY));
+            Application.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
             return true;
         }
 
-        // Remove item
-        if (_action == Action.REMOVE_ITEM) {
-            removeItem(fromX, fromY, toX, toY);
-            return true;
+        boolean consume = false;
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = fromY; y <= toY; y++) {
+                ParcelModel parcel = WorldHelper.getParcel(x, y);
+
+                // Remove item
+                if (_action == Action.REMOVE_ITEM) {
+                    ModuleHelper.getWorldModule().takeItem(x, y);
+                    consume = true;
+                }
+
+                // Set plan
+                if (_action == Action.SET_PLAN) {
+                    actionPlan(x, y, floor);
+                    consume = true;
+                }
+
+                // Remove structure
+                if (_action == Action.REMOVE_STRUCTURE) {
+                    ModuleHelper.getWorldModule().removeStructure(x, y);
+                    consume = true;
+                }
+
+                // Build item
+                if (_action == Action.BUILD_ITEM) {
+                    actionBuild(parcel);
+                    consume = true;
+                }
+
+                // Build item free
+                if (_action == Action.PUT_ITEM_FREE) {
+                    // TODO
+                    consume = true;
+                }
+            }
         }
 
-        // Remove structure
-        if (_action == Action.REMOVE_STRUCTURE) {
-            removeStructure(fromX, fromY, toX, toY);
-            return true;
-        }
-
-        // Build item
-        if (_action == Action.BUILD_ITEM) {
-            planBuild(fromX, fromY, toX, toY);
-            return true;
-        }
-
-        // Build item free
-        if (_action == Action.PUT_ITEM_FREE) {
-            planPutForFree(fromX, fromY, toX, toY);
-            return true;
-        }
-
-        return false;
+        return consume;
     }
 
     public void onMoveEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
@@ -215,147 +228,80 @@ public class GameActionExtra {
 
     public Action  getAction() { return _action; }
 
-    public void    planBuild(int startX, int startY, int toX, int toY) {
+    public void     actionBuild(ParcelModel parcel) {
         if (_selectedItemInfo == null) {
             return;
         }
 
-        for (int x = toX; x >= startX; x--) {
-            for (int y = toY; y >= startY; y--) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y);
-                if (parcel != null) {
-
-                    // Check if resource is present on parcel
-                    if (parcel.getResource() != null) {
-                        if (parcel.getResource().canBeMined()) {
-                            JobHelper.addMineJob(x, y);
-                        } else if (parcel.getResource().canBeHarvested()) {
-                            JobHelper.addGatherJob(x, y, true);
-                        }
-                    }
-
-                    if (_selectedItemInfo != null) {
-                        ModuleHelper.getWorldModule().putObject(parcel, _selectedItemInfo, 0);
-                    }
+        if (parcel != null) {
+            // Check if resource is present on parcel
+            if (parcel.getResource() != null) {
+                if (parcel.getResource().canBeMined()) {
+                    JobHelper.addMineJob(parcel.x, parcel.y, parcel.z, false);
+                } else if (parcel.getResource().canBeHarvested()) {
+                    JobHelper.addGatherJob(parcel.x, parcel.y, parcel.z, true);
                 }
             }
-        }
-    }
 
-    public void    planPutForFree(int startX, int startY, int toX, int toY) {
-        if (_selectedItemInfo == null) {
-            return;
-        }
-
-        for (int x = toX; x >= startX; x--) {
-            for (int y = toY; y >= startY; y--) {
-                if (_selectedItemInfo != null) {
-                    Log.warning("3 " + _selectedItemInfo.name);
-                    ModuleHelper.getWorldModule().putObject(WorldHelper.getParcel(x, y), _selectedItemInfo, 10);
-                }
+            if (_selectedItemInfo != null) {
+                ModuleHelper.getWorldModule().putObject(parcel, _selectedItemInfo, 0);
             }
         }
     }
 
-    public void removeItem(int startX, int startY, int toX, int toY) {
-        for (int x = startX; x <= toX; x++) {
-            for (int y = startY; y <= toY; y++) {
-                ModuleHelper.getWorldModule().takeItem(x, y);
-            }
+    public void planGather(int x, int y, int z) {
+        JobModel job = JobHelper.createGatherJob(x, y, z);
+        if (job != null) {
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
-    public void removeStructure(int startX, int startY, int toX, int toY) {
-        for (int x = startX; x <= toX; x++) {
-            for (int y = startY; y <= toY; y++) {
-                ModuleHelper.getWorldModule().removeStructure(x, y);
-            }
+    private void planCut(int x, int y, int z) {
+        JobModel job = JobHelper.createCutJob(x, y);
+        if (job != null) {
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
-    public void planGather(int startX, int startY, int toX, int toY) {
-        for (int x = startX; x <= toX; x++) {
-            for (int y = startY; y <= toY; y++) {
-                JobModel job = JobHelper.createGatherJob(x, y);
-                if (job != null) {
-                    ModuleHelper.getJobModule().addJob(job);
-                }
-            }
+    public void planMining(int x, int y, int z, DigMode mode) {
+        JobModel job = JobHelper.createMiningJob(x, y, mode == DigMode.RAMP_DOWN || mode == DigMode.HOLE ? z - 1 : z, mode == GameActionExtra.DigMode.RAMP_UP || mode == GameActionExtra.DigMode.RAMP_DOWN);
+        if (job != null) {
+            ModuleHelper.getJobModule().addJob(job);
         }
     }
 
-    private void planCut(int startX, int startY, int toX, int toY) {
-        for (int x = startX; x <= toX; x++) {
-            for (int y = startY; y <= toY; y++) {
-                JobModel job = JobHelper.createCutJob(x, y);
-                if (job != null) {
-                    ModuleHelper.getJobModule().addJob(job);
-                }
-            }
-        }
-    }
-
-    public void planMining(int startX, int startY, int toX, int toY) {
-        for (int x = startX; x <= toX; x++) {
-            for (int y = startY; y <= toY; y++) {
-                JobModel job = JobHelper.createMiningJob(x, y);
-                if (job != null) {
-                    ModuleHelper.getJobModule().addJob(job);
-                }
-            }
-        }
-    }
-
-    public void planPick(int startX, int startY, int toX, int toY) {
-//        for (int x = startX; x <= toX; x++) {
-//            for (int y = startY; y <= toY; y++) {
-//                ItemModel item = ModuleHelper.getWorldModule().getItem(x, y);
-//                if (item != null) {
-//                    JobModel job = JobTake.onCreate(item);
-//                    if (job != null) {
-//                        ModuleHelper.getJobModule().addJob(job);
-//                    }
-//                }
-//            }
-//        }
+    public void planPick(int x, int y, int z) {
         throw new NotImplementedException();
     }
 
-    public void planDestroy(int startX, int startY, int toX, int toY) {
-        for (int x = startX; x <= toX; x++) {
-            for (int y = startY; y <= toY; y++) {
-                if (WorldHelper.getItem(x, y) != null) {
-                    ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getItem(x, y)));
-                }
-                if (WorldHelper.getStructure(x, y) != null) {
-                    ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getStructure(x, y)));
-                }
-            }
+    public void planDestroy(int x, int y, int z) {
+        if (WorldHelper.getItem(x, y) != null) {
+            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getItem(x, y)));
+        }
+        if (WorldHelper.getStructure(x, y) != null) {
+            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getStructure(x, y)));
         }
     }
 
-    public void planHaul(int startX, int startY, int toX, int toY) {
-//        for (int x = startX; x <= toX; x++) {
-//            for (int y = startY; y <= toY; y++) {
-//                if (WorldHelper.getConsumable(x, y) != null && WorldHelper.getConsumable(x, y).getHaul() == null) {
-//                    ModuleHelper.getJobModule().addJob(JobHaul.create(WorldHelper.getConsumable(x, y)));
-//                }
-//            }
-//        }
+    public void planHaul(int x, int y, int z) {
+        throw new NotImplementedException();
     }
 
-    public void plan(int startX, int startY, int toX, int toY) {
+    public void actionPlan(int x, int y, int z) {
         if (_selectedPlan == null) {
             return;
         }
 
         switch (_selectedPlan) {
-            case "destroy": planDestroy(startX, startY, toX, toY); break;
-            case "gather": planGather(startX, startY, toX, toY); break;
-            case "mine": planMining(startX, startY, toX, toY); break;
-            case "pick": planPick(startX, startY, toX, toY); break;
-            case "haul": planHaul(startX, startY, toX, toY); break;
-            case "cut": planCut(startX, startY, toX, toY); break;
+            case "destroy": planDestroy(x, y, z); break;
+            case "gather": planGather(x, y, z); break;
+            case "dig": planMining(x, y, z, DigMode.FRONT); break;
+            case "dig_hole": planMining(x, y, z, DigMode.HOLE); break;
+            case "dig_ramp_up": planMining(x, y, z, DigMode.RAMP_UP); break;
+            case "dig_ramp_down": planMining(x, y, z, DigMode.RAMP_DOWN); break;
+            case "pick": planPick(x, y, z); break;
+            case "haul": planHaul(x, y, z); break;
+            case "cut": planCut(x, y, z); break;
             default: break;
         }
     }
@@ -381,8 +327,11 @@ public class GameActionExtra {
             case "gather":
                 Game.getInstance().setCursor("base.cursor.gather");
                 break;
-            case "mine":
-                Game.getInstance().setCursor("base.cursor.mine");
+            case "dig":
+            case "dig_hole":
+            case "dig_ramp_up":
+            case "dig_ramp_down":
+                Game.getInstance().setCursor("base.cursor.dig");
                 break;
             case "cut":
                 Game.getInstance().setCursor("base.cursor.cut");

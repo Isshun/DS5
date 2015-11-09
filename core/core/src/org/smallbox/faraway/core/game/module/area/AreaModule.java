@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.module.area;
 
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.model.*;
@@ -29,7 +30,7 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    protected void onLoaded() {
+    protected void onLoaded(Game game) {
     }
 
     @Override
@@ -78,12 +79,12 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY) {
+    public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
-                    if (area.getType() == type && area.contains(x, y)) {
+                    if (area.getType() == type && area.getFloor() == floor && area.contains(x, y)) {
                         addParcelToArea(area, fromX, fromY, toX, toY);
                         return;
                     }
@@ -93,6 +94,7 @@ public class AreaModule extends GameModule {
 
         // Create new area
         AreaModel area = createArea(type);
+        area.setFloor(floor);
         addArea(area);
         addParcelToArea(area, fromX, fromY, toX, toY);
 
@@ -103,12 +105,12 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    public void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY) {
+    public void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {
         // Search existing model for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
-                    if (area.getType() == type && area.contains(x, y)) {
+                    if (area.getType() == type && area.getFloor() == floor && area.contains(x, y)) {
                         ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
                         parcel.setArea(null);
                         area.removeParcel(parcel);
@@ -141,6 +143,7 @@ public class AreaModule extends GameModule {
     private void addParcelToArea(AreaModel area, int fromX, int fromY, int toX, int toY) {
         WorldModule worldModule = ModuleHelper.getWorldModule();
 
+        int z = worldModule.getFloor();
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 ParcelModel parcel = worldModule.getParcel(x, y);
@@ -148,9 +151,9 @@ public class AreaModule extends GameModule {
                 // Remove existing resource on parcel
                 if (parcel.getResource() != null) {
                     if (parcel.getResource().canBeMined()) {
-                        JobHelper.addMineJob(x, y);
+                        JobHelper.addMineJob(x, y, z, false);
                     } else if (parcel.getResource().canBeHarvested()) {
-                        JobHelper.addGatherJob(x, y, true);
+                        JobHelper.addGatherJob(x, y, z, true);
                     }
                 }
 

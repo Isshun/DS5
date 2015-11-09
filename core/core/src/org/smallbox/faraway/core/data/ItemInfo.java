@@ -244,6 +244,7 @@ public class ItemInfo extends ObjectInfo {
     public String                       networkName;
     public NetworkInfo                  network;
     public ItemConsumeInfo              consume;
+    public boolean                      isRamp;
 
     public ItemInfo() {
         width = 1;
