@@ -1,0 +1,15 @@
+name: bed
+label: Bed
+width: 1
+height: 2
+type: item
+isBed: true
+category: quarter
+actions:
+    -   type: use
+        label: Sleep in bed
+        cost: 200
+        effects:
+            energy: 80
+            happiness: 10
+            relation: 10

@@ -1,0 +1,544 @@
+
+items.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ground
+  rotate: false
+  xy: 0, 0
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+items2.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+radiator
+  rotate: false
+  xy: 0, 0
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+items3.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+air_conditioner
+  rotate: false
+  xy: 224, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+bed
+  rotate: false
+  xy: 0, 0
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+biobed
+  rotate: false
+  xy: 96, 0
+  size: 64, 128
+  orig: 64, 128
+  offset: 0, 0
+  index: -1
+chair
+  rotate: false
+  xy: 160, 64
+  size: 128, 64
+  orig: 128, 64
+  offset: 0, 0
+  index: -1
+chest
+  rotate: false
+  xy: 288, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+empty
+  rotate: false
+  xy: 256, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+fountain
+  rotate: false
+  xy: 288, 64
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+windtrap
+  rotate: false
+  xy: 160, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+
+items4.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+consumables/brick_rock
+  rotate: false
+  xy: 192, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/copper_ore
+  rotate: false
+  xy: 192, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/copper_plate
+  rotate: false
+  xy: 256, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/easy_meal
+  rotate: false
+  xy: 384, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/great_meal
+  rotate: false
+  xy: 224, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/lavish_meal
+  rotate: false
+  xy: 224, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/lavish_seafood_meal
+  rotate: false
+  xy: 224, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/military_meal
+  rotate: false
+  xy: 224, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/military_ration
+  rotate: false
+  xy: 224, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/iron
+  rotate: false
+  xy: 224, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/iron_filings
+  rotate: false
+  xy: 288, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/iron_ore
+  rotate: false
+  xy: 416, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/iron_plate
+  rotate: false
+  xy: 256, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/mineral_calcite_rubble
+  rotate: false
+  xy: 128, 96
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+consumables/mineral_granite_rubble
+  rotate: false
+  xy: 128, 64
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+consumables/mineral_sandstone_rubble
+  rotate: false
+  xy: 256, 96
+  size: 128, 32
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+consumables/organic_vegetable
+  rotate: false
+  xy: 128, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+consumables/rubble
+  rotate: false
+  xy: 256, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/seafood
+  rotate: false
+  xy: 320, 64
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/seaweed
+  rotate: false
+  xy: 448, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/spice
+  rotate: false
+  xy: 480, 96
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/vegetable
+  rotate: false
+  xy: 288, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/wood
+  rotate: false
+  xy: 288, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/wood_log
+  rotate: false
+  xy: 0, 0
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+
+items5.png
+size: 32,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+consumables/components/calcite_brick
+  rotate: false
+  xy: 0, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/components/granite_brick
+  rotate: false
+  xy: 0, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+consumables/components/sandstone_brick
+  rotate: false
+  xy: 0, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+
+items6.png
+size: 128,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+kitchen/cooker
+  rotate: false
+  xy: 0, 0
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+
+items7.png
+size: 32,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+oxygen/o2_recycler
+  rotate: false
+  xy: 0, 0
+  size: 32, 128
+  orig: 32, 128
+  offset: 0, 0
+  index: -1
+
+items8.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+resources/calcite
+  rotate: false
+  xy: 192, 448
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/carbon
+  rotate: false
+  xy: 192, 384
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/granite
+  rotate: false
+  xy: 192, 384
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/desert_berry
+  rotate: false
+  xy: 160, 128
+  size: 32, 128
+  orig: 32, 128
+  offset: 0, 0
+  index: -1
+resources/desert_green_plant
+  rotate: false
+  xy: 160, 0
+  size: 32, 128
+  orig: 32, 128
+  offset: 0, 0
+  index: -1
+resources/desert_laitue
+  rotate: false
+  xy: 64, 256
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/desert_laitue - Copie
+  rotate: false
+  xy: 64, 0
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/ground
+  rotate: false
+  xy: 0, 0
+  size: 64, 512
+  orig: 64, 512
+  offset: 0, 0
+  index: -1
+resources/raw_copper
+  rotate: false
+  xy: 288, 448
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/raw_iron
+  rotate: false
+  xy: 288, 448
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/raw_spice
+  rotate: false
+  xy: 192, 320
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/raw_spice
+  rotate: false
+  xy: 288, 384
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: 2
+resources/sandstone
+  rotate: false
+  xy: 384, 448
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+resources/seaweed1
+  rotate: false
+  xy: 96, 256
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/seaweed2
+  rotate: false
+  xy: 96, 0
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/seaweed3
+  rotate: false
+  xy: 128, 256
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/seaweed4
+  rotate: false
+  xy: 128, 0
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/seaweed5
+  rotate: false
+  xy: 160, 256
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+resources/wood
+  rotate: false
+  xy: 480, 448
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+
+items9.png
+size: 512,64
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+structures/door
+  rotate: false
+  xy: 0, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/door_wood
+  rotate: false
+  xy: 32, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/floor
+  rotate: false
+  xy: 64, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/floor_concrete
+  rotate: false
+  xy: 96, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/floor_metal
+  rotate: false
+  xy: 128, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/floor_wood
+  rotate: false
+  xy: 160, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/ramp
+  rotate: false
+  xy: 192, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/wall
+  rotate: false
+  xy: 224, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/wall_brick
+  rotate: false
+  xy: 256, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/wall_hull
+  rotate: false
+  xy: 352, 32
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+structures/wall_steel
+  rotate: false
+  xy: 288, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1
+structures/wall_wood
+  rotate: false
+  xy: 320, 0
+  size: 32, 64
+  orig: 32, 64
+  offset: 0, 0
+  index: -1

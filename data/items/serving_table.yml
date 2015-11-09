@@ -1,0 +1,10 @@
+label: Serving table
+width: 3
+height: 1
+category: kitchen
+cost: 8
+type: item
+slots:
+    - [0, 1]
+    - [1, 1]
+    - [2, 1]

@@ -1,0 +1,18 @@
+label: Chess table
+width: 1
+height: 1
+frames: 7
+framesInterval: 18
+type: item
+category: recreation
+isToy: true
+cost: 42
+slots:
+    - [-1, 0]
+    - [1, 0]
+actions:
+    -   type: use
+        cost: 10
+        effects:
+            happiness: 10
+            relation: 10

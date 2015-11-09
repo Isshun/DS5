@@ -36,13 +36,11 @@ data:extend({
         }},
     },
 
-    on_load =
-    function(view)
+    on_load = function(view)
         mode = 3
     end,
 
-    on_event =
-    function(view, event, data)
+    on_event = function(view, event, data)
         if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
             application.game:clearSelection();
@@ -62,8 +60,7 @@ data:extend({
         end
     end,
 
-    on_refresh =
-    function(view)
+    on_refresh = function(view)
         if structure ~= nil then
             view:findById("lb_durability"):setText(structure:getHealth() .. "/" .. structure:getMaxHealth())
             view:findById("lb_walkable"):setText("Walkable: " .. (structure:getInfo().isWalkable and "yes" or "no"))

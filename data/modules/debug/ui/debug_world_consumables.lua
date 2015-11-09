@@ -1,6 +1,6 @@
 data:extend({
     type = "view",
-    name = "info_parcel",
+    name = "base.ui.debug_world_consumables",
     position = {200, 20},
     size = {200, 600},
     background = 0x121c1e,

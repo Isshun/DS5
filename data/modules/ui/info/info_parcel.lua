@@ -36,8 +36,8 @@ data:extend({
         if parcel ~= nil then
             local room = parcel:getRoom()
             view:findById("lb_name"):setText("Ground")
-            view:findById("lb_teperature"):setText("Teperature", ": ", parcel:getTemperature())
-            view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y)
+            view:findById("lb_teperature"):setText("Temperature", ": ", parcel:getTemperature())
+            view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y .. "x" .. parcel.z)
             view:findById("lb_room"):setText("Room", ": ", parcel:getRoom() and parcel:getRoom():getName() or "no")
             view:findById("lb_light"):setText("Light", ": ", parcel:getLight())
             view:findById("lb_oxygen"):setText("Oxygen", ": ", parcel:getOxygen())
@@ -46,11 +46,11 @@ data:extend({
             view:findById("lb_walkable"):setText("Walkable", ": ", (parcel:isWalkable() and "yes" or "no"))
 
             if parcel:getConnections() then
-                local str = "Connections: "
+                local str = "C: "
                 local iterator = parcel:getConnections():iterator()
                 while iterator:hasNext() do
                     local to_node = iterator:next():getToNode()
-                    str = str .. to_node.x .. "x" .. to_node.y .. " "
+                    str = str .. to_node.x .. "x" .. to_node.y .. "x" .. to_node.z .. " "
                 end
                 view:findById("lb_connections"):setText(str)
             else

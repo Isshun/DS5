@@ -15,6 +15,7 @@ data:extend({
             }},
             { type = "view", size = {380, 240}, views = {
                 { type = "image", src = "[base]/graphics/fake_map.png", size = {380, 240}},
+                { type = "label", id = "lb_floor", text = "0", text_size = 22, position = {12, 215}},
                 { type = "label", id = "lb_speed", text = "x1", text_size = 22, position = {348, 215}},
             }},
             { type = "view", id = "view_resource", background = 0x203636, size = {380, 34}, views = {
@@ -90,9 +91,12 @@ data:extend({
             view:setVisible(true)
         end
 
+        if event == application.events.on_floor_change then
+            view:findById("lb_floor"):setText(data);
+        end
+
         if event == application.events.on_speed_change then
             view:findById("lb_speed"):setText(data == 0 and "||" or ("x" .. data));
-
         end
 
         if event == application.events.on_resource_selected
