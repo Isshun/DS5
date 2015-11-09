@@ -140,12 +140,6 @@ public class LuaModuleManager implements GameObserver {
                 Application.getInstance().notify(o -> o.onSelectStructure(Game.getInstance().getSelector().getSelectedStructure()));
             }
         }
-
-        // TODO: wrong emplacement
-        UIImage imgMap = (UIImage) UserInterface.getInstance().findById("panel_main").findById("img_map");
-        if (imgMap != null) {
-            imgMap.setImage(((ExteriorRenderer) ModuleManager.getInstance().getRender(ExteriorRenderer.class)).getMap());
-        }
     }
 
     private void loadModule(LuaModule luaModule) {

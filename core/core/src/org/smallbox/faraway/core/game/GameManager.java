@@ -71,7 +71,7 @@ public class GameManager {
     public void create(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
 
-        GameInfo gameInfo = GameInfo.create(regionInfo, 250, 250);
+        GameInfo gameInfo = GameInfo.create(regionInfo, 300, 200);
         if (!new File("data/saves/", gameInfo.name).mkdirs()) {
             System.out.println("Unable to create game save directory");
             return;

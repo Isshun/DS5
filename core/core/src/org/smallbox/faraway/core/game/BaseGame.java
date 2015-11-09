@@ -67,7 +67,7 @@ public abstract class BaseGame {
 
     protected abstract void onUpdate(int tick);
 
-    public void render(GDXRenderer renderer, Viewport viewport, long lastRenderInterval) {
+    public void render(GDXRenderer renderer, Viewport viewport) {
         long time = System.currentTimeMillis();
 
         // Draw

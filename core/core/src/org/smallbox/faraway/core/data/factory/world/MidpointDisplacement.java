@@ -50,12 +50,12 @@ public class MidpointDisplacement {
     public void create(GameInfo info, ParcelModel[][][] parcels, MapGenListener listener) {
         int[][] map = getMap();
 
-        for(int row = 0; row < map.length; row++) {
-            for (int col = 0; col < map[row].length; col++) {
+        for (int col = 0; col < map.length; col++) {
+            for(int row = 0; row < map[col].length; row++) {
                 for (int floor = 0; floor < info.worldFloors; floor++) {
-                    if (map[row][col] == 2 && row < info.worldHeight && col < info.worldWidth) {
-                        if (parcels[row][col][floor] != null) {
-                            listener.onCreate(parcels[row][col][floor]);
+                    if (map[col][row] == 2 && row < info.worldHeight && col < info.worldWidth) {
+                        if (parcels[col][row][floor] != null) {
+                            listener.onCreate(parcels[col][row][floor]);
                         }
                     }
                 }
@@ -143,20 +143,20 @@ public class MidpointDisplacement {
         }
 
         // Use the thresholds to fill in the return old
-        for(int row = 0; row < map.length; row++){
-            for(int col = 0; col < map[row].length; col++){
-                map[row][col] = (map[row][col]-min)/(max-min);
-                if (map[row][col] > mountainsThreshold) returnMap[row][col] = 2;
-                else returnMap[row][col] = 1;
-//                if (old[row][col] < deepWaterThreshold) returnMap[row][col] = 0;
-//                else if (old[row][col] < shallowWaterThreshold) returnMap[row][col] = 1;
-//                else if (old[row][col] < desertThreshold) returnMap[row][col] = 2;
-//                else if (old[row][col] < plainsThreshold) returnMap[row][col] = 3;
-//                else if (old[row][col] < grasslandThreshold) returnMap[row][col] = 4;
-//                else if (old[row][col] < forestThreshold) returnMap[row][col] = 5;
-//                else if (old[row][col] < hillsThreshold) returnMap[row][col] = 6;
-//                else if (old[row][col] < mountainsThreshold) returnMap[row][col] = 7;
-//                else returnMap[row][col] = 8;
+        for(int col = 0; col < map.length; col++){
+            for(int row = 0; row < map[col].length; row++){
+                map[col][row] = (map[col][row]-min)/(max-min);
+                if (map[col][row] > mountainsThreshold) returnMap[col][row] = 2;
+                else returnMap[col][row] = 1;
+//                if (old[col][row] < deepWaterThreshold) returnMap[col][row] = 0;
+//                else if (old[col][row] < shallowWaterThreshold) returnMap[col][row] = 1;
+//                else if (old[col][row] < desertThreshold) returnMap[col][row] = 2;
+//                else if (old[col][row] < plainsThreshold) returnMap[col][row] = 3;
+//                else if (old[col][row] < grasslandThreshold) returnMap[col][row] = 4;
+//                else if (old[col][row] < forestThreshold) returnMap[col][row] = 5;
+//                else if (old[col][row] < hillsThreshold) returnMap[col][row] = 6;
+//                else if (old[col][row] < mountainsThreshold) returnMap[col][row] = 7;
+//                else returnMap[col][row] = 8;
             }
         }
 

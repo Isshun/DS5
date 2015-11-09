@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.core.engine.renderer.MinimapRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.module.GameModule;
@@ -36,6 +37,7 @@ public class ModuleManager {
     private List<BaseRenderer>      _renders = new ArrayList<>();
     private List<BaseRenderer>      _rendersBase = new ArrayList<>();
     private List<BaseRenderer>      _rendersThird = new ArrayList<>();
+    private BaseRenderer            _minimapRenderer;
 
     public static ModuleManager getInstance() {
         if (_self == null) {
@@ -67,7 +69,11 @@ public class ModuleManager {
             try {
                 Log.info("Load render: " + cls.getSimpleName());
                 BaseRenderer render = cls.getConstructor().newInstance();
-                _rendersBase.add(render);
+                if (render instanceof  MinimapRenderer) {
+                    _minimapRenderer = render;
+                } else {
+                    _rendersBase.add(render);
+                }
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -143,6 +149,7 @@ public class ModuleManager {
 
         _modules.forEach(module -> Application.getInstance().addObserver(module));
         _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
+        Application.getInstance().addObserver(_minimapRenderer);
 
         System.out.println("Load base modules");
         _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(GameModule::create);
@@ -190,5 +197,9 @@ public class ModuleManager {
             module.create();
             Application.getInstance().addObserver(module);
         }
+    }
+
+    public BaseRenderer getMinimapRender() {
+        return _minimapRenderer;
     }
 }

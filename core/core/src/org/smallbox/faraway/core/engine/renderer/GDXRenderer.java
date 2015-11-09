@@ -87,12 +87,6 @@ public class GDXRenderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
-    public void display() {
-    }
-
-    public void close() {
-    }
-
     public void refresh() {
         _camera.update();
         _batch.setProjectionMatrix(_camera.combined);

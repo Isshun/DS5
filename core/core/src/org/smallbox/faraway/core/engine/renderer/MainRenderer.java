@@ -20,11 +20,12 @@ public class MainRenderer {
     private static long                 _renderTime;
     private static int                  _frame;
     private final List<BaseRenderer>    _renders;
+    private final BaseRenderer          _minimapRender;
 
     public MainRenderer(GDXRenderer renderer, GameConfig config) {
         _self = this;
         _renders = ModuleManager.getInstance().getRenders();
-
+        _minimapRender = ModuleManager.getInstance().getMinimapRender();
     }
 
     public void onRefresh(int frame) {
@@ -53,6 +54,7 @@ public class MainRenderer {
         _frame = 0;
         _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
         _renders.stream().filter(renderer -> renderer.isActive(config)).forEach(render -> render.load(game));
+        _minimapRender.load(game);
     }
 
     private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
@@ -84,5 +86,9 @@ public class MainRenderer {
         } else {
             render.load(Game.getInstance());
         }
+    }
+
+    public BaseRenderer getMinimapRender() {
+        return _minimapRender;
     }
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
@@ -161,20 +162,22 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Render game
         if (GameManager.getInstance().isRunning()) {
-            GameManager.getInstance().getGame().render(_renderer, viewport, lastRenderInterval);
+            GameManager.getInstance().getGame().render(_renderer, viewport);
         }
 
         // Render interface
         UserInterface.getInstance().draw(_renderer, GameManager.getInstance().isRunning());
 
-        _renderer.display();
+        // Render mini map
+        if (GameManager.getInstance().isRunning()) {
+            MainRenderer.getInstance().getMinimapRender().draw(_renderer, viewport, 0);
+        }
 
         logger.log();
     }
 
     @Override
     public void dispose () {
-        _renderer.close();
         PathManager.getInstance().close();
     }
 }

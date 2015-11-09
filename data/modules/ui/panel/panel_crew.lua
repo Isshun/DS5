@@ -23,6 +23,7 @@ data:extend({
         if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
             application.ui:findById("panel_main"):setVisible(true)
+            application:sendEvent("mini_map.display", true)
         end
     end
 })

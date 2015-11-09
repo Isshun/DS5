@@ -66,6 +66,11 @@ public class ConsumeJob extends JobModel {
             return JobCheckReturn.ABORT;
         }
 
+        // Path exists
+        if (PathManager.getInstance().hasPath(character.getParcel(), _consumable.getParcel(), true, false)) {
+            return JobCheckReturn.ABORT;
+        }
+
         return JobCheckReturn.OK;
     }
 
