@@ -156,6 +156,8 @@ public class WorldModuleSerializer implements SerializerInterface {
             WeatherModule weatherModule = (WeatherModule) ModuleManager.getInstance().getModule(WeatherModule.class);
             ParcelModel[][][] parcels = new ParcelModel[gameInfo.worldWidth][gameInfo.worldHeight][gameInfo.worldFloors];
             List<ParcelModel> parcelsList = new ArrayList<>();
+            int width = gameInfo.worldWidth;
+            int height = gameInfo.worldHeight;
 
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure FROM WorldModule");
@@ -165,7 +167,7 @@ public class WorldModuleSerializer implements SerializerInterface {
                         int y = st.columnInt(1);
                         int z = st.columnInt(2);
 
-                        ParcelModel parcel = new ParcelModel(x * y * z, weatherModule, x, y, z);
+                        ParcelModel parcel = new ParcelModel(x + (y * width) + (z * width * height), weatherModule, x, y, z);
                         parcelsList.add(parcel);
                         parcels[x][y][z] = parcel;
 

@@ -42,7 +42,7 @@ public class WorldFactory {
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 for (int f = 0; f < _floors; f++) {
-                    ParcelModel parcel = new ParcelModel(x * y * f, weatherModule, x, y, f);
+                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), weatherModule, x, y, f);
                     parcel.setTile((int) (Math.random() * 2));
                     parcelList.add(parcel);
                     parcelListFloors.get(f).add(parcel);

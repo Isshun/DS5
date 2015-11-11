@@ -146,9 +146,8 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void start(CharacterModel character) {
-        if (_character == character) {
-            return;
-        }
+        assert character != null;
+        assert character.getJob() == null;
 
         // Remove job from old characters
         if (_character != null) {
@@ -157,12 +156,10 @@ public abstract class JobModel extends ObjectModel {
 
         // Set job to new characters
         _character = character;
-        if (character != null) {
-            character.setJob(this);
+        character.setJob(this);
 
-            // Start job
-            onStart(character);
-        }
+        // Start job
+        onStart(character);
     }
 
     public void draw(onDrawCallback callback) {

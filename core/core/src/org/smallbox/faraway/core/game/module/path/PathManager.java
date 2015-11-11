@@ -75,7 +75,7 @@ public class PathManager extends GameModule {
         PathModel bestPath = null;
 
         // Exact parcel
-        if (toParcel.isWalkable() || ModuleHelper.getCharacterModule().hasCharacterOnParcel(toParcel)) {
+        if (toParcel.isWalkable()) {
             PathModel path = getPath(fromParcel, toParcel);
             if (path != null) {
                 bestPath = path;
@@ -121,7 +121,7 @@ public class PathManager extends GameModule {
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
         // Non walkable target parcel
-        if (!toParcel.isWalkable() || ModuleHelper.getCharacterModule().hasCharacterOnParcel(toParcel)) {
+        if (!toParcel.isWalkable()) {
             return null;
         }
 

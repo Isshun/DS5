@@ -53,7 +53,7 @@ public class MinimapRenderer extends BaseRenderer {
     protected void onLoad(Game game) {
         _lbFloor = new UILabel();
         _lbFloor.setTextSize(16);
-        _lbFloor.setTextColor(0xffffff);
+        _lbFloor.setTextColor(0x000000);
         _lbFloor.setText(String.valueOf(_floor));
         _characters = ModuleHelper.getCharacterModule().getCharacters();
         _width = Game.getInstance().getInfo().worldWidth;

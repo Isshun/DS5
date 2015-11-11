@@ -228,12 +228,11 @@ public class WorldModule extends GameModule {
     public void onLoaded(Game game) {
         WeatherModule weatherModule = (WeatherModule)ModuleManager.getInstance().getModule(WeatherModule.class);
 
-        ModuleHelper.setWorldModule(this);
-
         _game = Game.getInstance();
         _width = _game.getInfo().worldWidth;
         _height = _game.getInfo().worldHeight;
         _floors = _game.getInfo().worldFloors;
+        _floor = _floors - 1;
 
 //        List<ParcelModel> parcelList = new ArrayList<>();
 //        _parcels = new ParcelModel[_width][_height][_floors];
