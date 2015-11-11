@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import com.almworks.sqlite4java.SQLiteConnection;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
@@ -8,6 +9,8 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
+import org.smallbox.faraway.core.game.module.world.DBRunnable;
+import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -119,18 +122,15 @@ public class Game extends BaseGame {
         _tick = tick;
     }
 
-    public void    load(GameInfo.GameSaveInfo saveInfo) {
+    public void    load(GameInfo gameInfo, GameInfo.GameSaveInfo saveInfo, Runnable runnable) {
         long time = System.currentTimeMillis();
 
-        GameSerializer.load(new File("data/saves", saveInfo.filename), _save);
+        GameSerializer.load(gameInfo, new File("data/saves", gameInfo.name), saveInfo.filename);
+        SQLHelper.getInstance().post(db -> runnable.run());
         _save = null;
         System.gc();
 
         Log.info("Game loaded (2): " + (System.currentTimeMillis() - time) + "ms");
-    }
-
-    public void preload() {
-        // TODO magic
     }
 
     public GameInfo getInfo() { return _info; }

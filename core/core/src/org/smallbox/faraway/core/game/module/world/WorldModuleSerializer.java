@@ -1,7 +1,12 @@
 package org.smallbox.faraway.core.game.module.world;
 
+import com.almworks.sqlite4java.SQLiteException;
+import com.almworks.sqlite4java.SQLiteStatement;
 import com.ximpleware.*;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameInfo;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -10,6 +15,7 @@ import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.FileUtils;
 
 import java.io.FileOutputStream;
@@ -20,7 +26,52 @@ import java.util.List;
 public class WorldModuleSerializer implements SerializerInterface {
 
     @Override
-    public void save(FileOutputStream fos) throws IOException {
+    public void save(FileOutputStream fos) {
+        SQLHelper.getInstance().post(db -> {
+            int width = Game.getInstance().getInfo().worldWidth;
+            int height = Game.getInstance().getInfo().worldHeight;
+            int floors = Game.getInstance().getInfo().worldFloors;
+            ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
+
+            try {
+                db.exec("CREATE TABLE WorldModule (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");
+                SQLiteStatement st = db.prepare("INSERT INTO WorldModule (x, y, z, ground, rock, plant, item, structure) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                try {
+                    db.exec("begin transaction");
+                    for (int x = 0; x < width; x++) {
+                        for (int y = 0; y < height; y++) {
+                            for (int z = 0; z < floors; z++) {
+                                ParcelModel parcel = parcels[x][y][z];
+                                st.bind(1, x);
+                                st.bind(2, y);
+                                st.bind(3, z);
+                                st.bind(4, 1);
+
+                                // Rock
+                                st.bind(5, parcel.hasRock() ? parcel.getRockInfo().name : null);
+
+                                // Plant
+                                st.bind(6, parcel.hasPlant() ? parcel.getPlant().getInfo().name : null);
+
+                                // Item
+                                st.bind(7, parcel.hasItem() ? parcel.getItem().getInfo().name : null);
+
+                                // Structure
+                                st.bind(8, parcel.hasStructure() ? parcel.getStructure().getInfo().name : null);
+
+                                st.step();
+                                st.reset(false);
+                            }
+                        }
+                    }
+                    db.exec("end transaction");
+                } finally {
+                    st.dispose();
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        });
 //        FileUtils.write(fos, "<parcels>");
 //        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
 //            if (parcel.z == 0) {
@@ -100,45 +151,92 @@ public class WorldModuleSerializer implements SerializerInterface {
         FileUtils.write(fos, "</consumable>");
     }
 
-    public void load(VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
-        AutoPilot ap = new AutoPilot(vn);
-        ap.selectXPath("/save/parcels/*");
+    public void load(GameInfo gameInfo, VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+        SQLHelper.getInstance().post(db -> {
+            WeatherModule weatherModule = (WeatherModule) ModuleManager.getInstance().getModule(WeatherModule.class);
+            ParcelModel[][][] parcels = new ParcelModel[gameInfo.worldWidth][gameInfo.worldHeight][gameInfo.worldFloors];
+            List<ParcelModel> parcelsList = new ArrayList<>();
 
-        AutoPilot apItem = new AutoPilot(vn);
-        apItem.selectXPath("item|resource|structure|consumable");
+            try {
+                SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure FROM WorldModule");
+                try {
+                    while (st.step()) {
+                        int x = st.columnInt(0);
+                        int y = st.columnInt(1);
+                        int z = st.columnInt(2);
 
-        AutoPilot apElement = new AutoPilot(vn);
-        apElement.selectXPath("*");
+                        ParcelModel parcel = new ParcelModel(x * y * z, weatherModule, x, y, z);
+                        parcelsList.add(parcel);
+                        parcels[x][y][z] = parcel;
 
-        WorldModule manager = ModuleHelper.getWorldModule();
+                        // Rock
+                        if (!st.columnNull(4)) {
+                            parcel.setRockInfo(Data.getData().getItemInfo(st.columnString(4)));
+                        }
 
-        while (ap.evalXPath() != -1) {
-            vn.push();
+                        // Plant
+                        if (!st.columnNull(5)) {
+                            parcel.setPlant(new PlantModel(Data.getData().getItemInfo(st.columnString(5))));
+                        }
 
-            int x = vn.parseInt(vn.getAttrVal("x"));
-            int y = vn.parseInt(vn.getAttrVal("y"));
-            int z = vn.parseInt(vn.getAttrVal("z"));
-            int type = vn.parseInt(vn.getAttrVal("type"));
+                        // Item
+                        if (!st.columnNull(6)) {
+                            parcel.setItem(new ItemModel(Data.getData().getItemInfo(st.columnString(6)), parcel));
+                        }
 
-            while (apItem.evalXPath() != -1) {
-                switch (vn.toString(vn.getCurrentIndex())) {
-                    case "item":
-                        readItem(apElement, vn, manager, x, y, z);
-                        break;
-                    case "resource":
-                        readResource(apElement, vn, manager, x, y, z);
-                        break;
-                    case "structure":
-                        readStructure(apElement, vn, manager, x, y, z);
-                        break;
-                    case "consumable":
-                        readConsumable(apElement, vn, manager, x, y, z);
-                        break;
+                        // Structure
+                        if (!st.columnNull(7)) {
+                            parcel.setStructure(new StructureModel(Data.getData().getItemInfo(st.columnString(7))));
+                        }
+                    }
+                } finally {
+                    st.dispose();
                 }
+
+                WorldHelper.init(parcels, gameInfo.worldFloors - 1);
+                ModuleHelper.getWorldModule().setParcels(parcels, parcelsList);
+            } catch (SQLiteException e) {
+                e.printStackTrace();
             }
-            apItem.resetXPath();
-            vn.pop();
-        }
+        });
+//        AutoPilot ap = new AutoPilot(vn);
+//        ap.selectXPath("/save/parcels/*");
+//
+//        AutoPilot apItem = new AutoPilot(vn);
+//        apItem.selectXPath("item|resource|structure|consumable");
+//
+//        AutoPilot apElement = new AutoPilot(vn);
+//        apElement.selectXPath("*");
+//
+//        WorldModule manager = ModuleHelper.getWorldModule();
+//
+//        while (ap.evalXPath() != -1) {
+//            vn.push();
+//
+//            int x = vn.parseInt(vn.getAttrVal("x"));
+//            int y = vn.parseInt(vn.getAttrVal("y"));
+//            int z = vn.parseInt(vn.getAttrVal("z"));
+//            int type = vn.parseInt(vn.getAttrVal("type"));
+//
+//            while (apItem.evalXPath() != -1) {
+//                switch (vn.toString(vn.getCurrentIndex())) {
+//                    case "item":
+//                        readItem(apElement, vn, manager, x, y, z);
+//                        break;
+//                    case "resource":
+//                        readResource(apElement, vn, manager, x, y, z);
+//                        break;
+//                    case "structure":
+//                        readStructure(apElement, vn, manager, x, y, z);
+//                        break;
+//                    case "consumable":
+//                        readConsumable(apElement, vn, manager, x, y, z);
+//                        break;
+//                }
+//            }
+//            apItem.resetXPath();
+//            vn.pop();
+//        }
     }
 
     private void readConsumable(AutoPilot apElement, VTDNav vn, WorldModule manager, int x, int y, int z) throws NavException, XPathEvalException {

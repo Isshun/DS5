@@ -28,15 +28,23 @@ public class SQLHelper {
 
     public void update() {
         if (!_queue.isEmpty()) {
-            System.out.println("Exec DB runnable");
             _queue.poll().run(_db);
         }
     }
 
-    public void setDB(final File file) {
+    public void openDB(final File file) {
         _queue.add(db -> {
+            assert _db == null;
             _db = new SQLiteConnection(file);
             try { _db.open(true); } catch (SQLiteException e) { e.printStackTrace(); }
+        });
+    }
+
+    public void closeDB() {
+        _queue.add(db -> {
+            assert _db != null;
+            _db.dispose();
+            _db = null;
         });
     }
 }

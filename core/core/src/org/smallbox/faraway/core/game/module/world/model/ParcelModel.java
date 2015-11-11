@@ -73,8 +73,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  isExterior() { return _room == null || _room.isExterior(); }
     public boolean                  canSupportRoof() { return (getStructure() != null && getStructure().getInfo().canSupportRoof) || (hasPlant() && getPlant().getInfo().canSupportRoof); }
     public boolean                  hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
-    public boolean                  hasStructure() { return _structure != null; }
     public boolean                  hasPlant() { return _plant != null; }
+    public boolean                  hasItem() { return _item != null; }
+    public boolean                  hasStructure() { return _structure != null; }
     public boolean                  hasRock() { return _rockInfo != null; }
     public boolean                  hasDigJob() { return _digJob != null; }
 

@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
  * Created by Alex on 09/07/2015.
  */
 public class WorldHelper {
-    public static int                   _currentFloor = 9;
+    public static int                   _currentFloor;
     public static ParcelModel[][][]     _parcels;
     private static int                  _width;
     private static int                  _height;

@@ -7,11 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.Collection;
@@ -35,6 +37,8 @@ public class MinimapRenderer extends BaseRenderer {
     private Collection<CharacterModel>  _characters;
     private int                         _width;
     private int                         _height;
+    private UILabel                     _lbFloor;
+    private boolean                     _dirty;
 
     public int getLevel() {
         return MainRenderer.WORLD_RENDERER_LEVEL;
@@ -47,6 +51,10 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     protected void onLoad(Game game) {
+        _lbFloor = new UILabel();
+        _lbFloor.setTextSize(16);
+        _lbFloor.setTextColor(0xffffff);
+        _lbFloor.setText(String.valueOf(_floor));
         _characters = ModuleHelper.getCharacterModule().getCharacters();
         _width = Game.getInstance().getInfo().worldWidth;
         _height = Game.getInstance().getInfo().worldHeight;
@@ -58,7 +66,11 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     public void onFloorChange(int floor) {
+        if (_lbFloor != null) {
+            _lbFloor.setText(String.valueOf(floor));
+        }
         _floor = floor;
+        _dirty = true;
     }
 
     @Override
@@ -72,7 +84,7 @@ public class MinimapRenderer extends BaseRenderer {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_panelMain != null && _panelMain.isVisible()) {
-            if (_spriteMap == null) {
+            if (_spriteMap == null || _dirty) {
                 createMap();
             }
 
@@ -92,12 +104,16 @@ public class MinimapRenderer extends BaseRenderer {
             for (CharacterModel character: _characters) {
                 renderer.draw(COLOR_CHARACTER, (int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 2, 2);
             }
+
+            if (_lbFloor != null) {
+                renderer.draw(_lbFloor, POS_X + 10, POS_Y + 220);
+            }
         }
     }
 
     private void createMap() {
         if (GameManager.getInstance().isRunning()) {
-            _floor = 9;
+            _floor = WorldHelper.getCurrentFloor();
 
             ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
             Pixmap pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);

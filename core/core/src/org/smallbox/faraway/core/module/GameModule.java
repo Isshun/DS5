@@ -24,12 +24,25 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
     private boolean             _isLoaded;
     private List<Long>          _updateTimeHistory = new ArrayList<>();
     private long                _updateTime;
+    private boolean             _needCreate;
+    private boolean             _needLoad;
+    private boolean             _needUpdate;
+    private int                 _needUpdateTick;
 
     public GameModule() {
         _isLoaded = loadOnStart();
     }
 
     public void update(int tick) {
+        if (hasOwnThread()) {
+            _needUpdate = true;
+            _needUpdateTick = tick;
+        } else {
+            innerUpdate(tick);
+        }
+    }
+
+    private void innerUpdate(int tick) {
         if (tick % _updateInterval == 0) {
             long time = System.currentTimeMillis();
             onUpdate(tick);
@@ -49,13 +62,38 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
 
     public void create() {
         System.out.println("Create java module: " + _info.name);
-        onCreate();
+        if (hasOwnThread()) {
+            _needCreate = true;
+            new Thread(() -> {
+                while (Application.getInstance().isRunning()) {
+                    if (_needCreate) {
+                        _needCreate = false;
+                        onCreate();
+                    }
+                    if (_needLoad) {
+                        _needLoad = false;
+                        onLoaded(Game.getInstance());
+                    }
+                    if (_needUpdate) {
+                        _needUpdate = false;
+                        onUpdate(_needUpdateTick);
+                    }
+                    try { Thread.sleep(16); } catch (InterruptedException e) { e.printStackTrace(); }
+                }
+            }).start();
+        } else {
+            onCreate();
+        }
         _isLoaded = true;
     }
 
     public void load(Game game) {
         System.out.println("Load java module: " + _info.name);
-        onLoaded(game);
+        if (hasOwnThread()) {
+            _needLoad = true;
+        } else {
+            onLoaded(game);
+        }
         _isLoaded = true;
     }
 
@@ -113,6 +151,7 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         return false;
     }
     public boolean      isLoaded() { return _isLoaded; }
+    public boolean      hasOwnThread() { return false; }
 
     public void         onUpdateDo() {}
 }

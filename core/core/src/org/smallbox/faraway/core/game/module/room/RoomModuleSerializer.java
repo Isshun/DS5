@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.room;
 
 import com.ximpleware.VTDNav;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.GameInfo;
 
 import java.io.FileOutputStream;
 
@@ -14,6 +15,6 @@ public class RoomModuleSerializer implements SerializerInterface {
     }
 
     @Override
-    public void load(VTDNav save) {
+    public void load(GameInfo gameInfo, VTDNav vn) {
     }
 }

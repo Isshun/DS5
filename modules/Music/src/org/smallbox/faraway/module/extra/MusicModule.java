@@ -28,6 +28,9 @@ public class MusicModule extends GameModule {
     }
 
     @Override
+    public boolean hasOwnThread() { return true; }
+
+    @Override
     public void onGamePaused() {
         if (music != null) {
             music.pause();

@@ -35,7 +35,7 @@ public class WorldModule extends GameModule {
     private List<ParcelModel>                   _parcelList;
     private Map<Integer, List<ParcelModel>>     _parcelListFloor;
     private double                              _light;
-    private int                                 _floor = 9;
+    private int                                 _floor = WorldHelper.getCurrentFloor();
 
     private Map<Integer, ParcelModel>           _parcelCache = new HashMap<>();
     private List<ParcelModel>                   _parcelCacheQueue = new ArrayList<>(CACHE_SIZE);

@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.data.serializer;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.util.FileUtils;
 
 import java.io.FileOutputStream;
@@ -13,7 +14,7 @@ import java.io.IOException;
 public class ParamSerializer implements SerializerInterface {
 
     @Override
-    public void load(VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+    public void load(GameInfo gameInfo, VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
         AutoPilot ap = new AutoPilot(vn);
         ap.selectXPath("/save/params/*");
 

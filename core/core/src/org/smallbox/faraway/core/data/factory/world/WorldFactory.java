@@ -108,34 +108,34 @@ public class WorldFactory {
             }
         }
 
-        SQLHelper.getInstance().post(db -> {
-            try {
-//                    db.open(true);
-                db.exec("CREATE TABLE parcel (x INTEGER, y INTEGER, z INTEGER, ground INTEGER)");
-                SQLiteStatement st = db.prepare("INSERT INTO parcel (x, y, z, ground) VALUES (?, ?, ?, ?)");
-                try {
-                    db.exec("begin transaction");
-                    for (int z = 0; z < game.getInfo().worldFloors; z++) {
-                        for (int y = 0; y < game.getInfo().worldHeight; y++) {
-                            for (int x = 0; x < game.getInfo().worldWidth; x++) {
-                                st.bind(1, x);
-                                st.bind(2, y);
-                                st.bind(3, z);
-                                st.bind(4, _parcels[x][y][z].hasRock() ? 1 : 0);
-                                st.step();
-                                st.reset(false);
-                            }
-                        }
-                    }
-                    db.exec("end transaction");
-                } finally {
-                    st.dispose();
-                }
-//                    db.dispose();
-            } catch (SQLiteException e) {
-                e.printStackTrace();
-            }
-        });
+//        SQLHelper.getInstance().post(db -> {
+//            try {
+////                    db.open(true);
+//                db.exec("CREATE TABLE parcel (x INTEGER, y INTEGER, z INTEGER, ground INTEGER)");
+//                SQLiteStatement st = db.prepare("INSERT INTO parcel (x, y, z, ground) VALUES (?, ?, ?, ?)");
+//                try {
+//                    db.exec("begin transaction");
+//                    for (int z = 0; z < game.getInfo().worldFloors; z++) {
+//                        for (int y = 0; y < game.getInfo().worldHeight; y++) {
+//                            for (int x = 0; x < game.getInfo().worldWidth; x++) {
+//                                st.bind(1, x);
+//                                st.bind(2, y);
+//                                st.bind(3, z);
+//                                st.bind(4, _parcels[x][y][z].hasRock() ? 1 : 0);
+//                                st.step();
+//                                st.reset(false);
+//                            }
+//                        }
+//                    }
+//                    db.exec("end transaction");
+//                } finally {
+//                    st.dispose();
+//                }
+////                    db.dispose();
+//            } catch (SQLiteException e) {
+//                e.printStackTrace();
+//            }
+//        });
 
         ModuleHelper.getWorldModule().setParcels(_parcels, parcelList);
     }

@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.character;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
 import org.smallbox.faraway.core.game.module.character.model.DroidModel;
@@ -77,7 +78,7 @@ public class CharacterModuleSerializer implements SerializerInterface {
     }
 
     @Override
-    public void load(VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+    public void load(GameInfo gameInfo, VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
         AutoPilot ap = new AutoPilot(vn);
         ap.selectXPath("/save/characters/*");
 

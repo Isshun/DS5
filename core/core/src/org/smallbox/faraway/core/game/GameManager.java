@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game;
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
@@ -44,16 +45,13 @@ public class GameManager {
         long time = System.currentTimeMillis();
 
         Game game = new Game(info, Data.config);
-
-        // TODO
-        game.preload();
-        game.init();
-
-        startGame(game, saveInfo);
-
-        _game = game;
-
-        Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
+        game.load(game.getInfo(), saveInfo, () ->
+                Gdx.app.postRunnable(() -> {
+                    game.init();
+                    startGame(game, saveInfo);
+                    _game = game;
+                    Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
+                }));
     }
 
     public void startGame(Game game, GameInfo.GameSaveInfo saveInfo) {
@@ -62,10 +60,6 @@ public class GameManager {
         Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
 
         game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
-
-        if (saveInfo != null) {
-            game.load(saveInfo);
-        }
 
         Application.getInstance().notify(GameObserver::onGameStart);
         Application.getInstance().notify(observer -> observer.onHourChange(game.getHour()));
@@ -83,8 +77,6 @@ public class GameManager {
             System.out.println("Unable to create game save directory");
             return;
         }
-
-        SQLHelper.getInstance().setDB(new File(gameDirectory, "game.db"));
 
         Game game = new Game(gameInfo, Data.config);
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
@@ -121,13 +113,18 @@ public class GameManager {
 
     public void saveGame(GameInfo gameInfo, GameInfo.Type type) {
         if (_game != null) {
+            Date date = new Date();
+            String filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(date);
+            File gameDirectory = new File("data/saves/", gameInfo.name);
+
             GameInfo.GameSaveInfo saveInfo = new GameInfo.GameSaveInfo();
             saveInfo.type = type;
-            saveInfo.date = new Date();
+            saveInfo.date = date;
             saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
-            saveInfo.filename = gameInfo.name + "/" + new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date) + ".sav";
+            saveInfo.filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date);
             gameInfo.saveFiles.add(saveInfo);
-            GameSerializer.save(new File("data/saves/", saveInfo.filename));
+
+            GameSerializer.save(gameDirectory, filename);
         }
     }
 

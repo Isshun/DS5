@@ -116,8 +116,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _loadTasks.add(new LoadTask("Resume game", () -> {
             if (Data.config.byPassMenu) {
-//                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-                GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
+                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+//                GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
 //                GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
 
 //                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);

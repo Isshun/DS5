@@ -13,6 +13,7 @@ dependencies {
 
     compile project(":gdx-smart-font")
     compile project(":PathFinding")
+    compile 'org.apache.commons:commons-compress:1.10'
     compile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
     compile 'com.almworks.sqlite4java:sqlite4java-win32-x64:1.0.392'
     compile 'com.ximpleware:vtd-xml:2.11'
