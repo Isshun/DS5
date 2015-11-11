@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.renderer.ExteriorRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.module.GameModule;
@@ -83,7 +84,7 @@ public class Game extends BaseGame {
         _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(this));
 
         Application.getInstance().notify(GameObserver::onReloadUI);
-        Application.getInstance().notify(observer -> observer.onFloorChange(9));
+        Application.getInstance().notify(observer -> observer.onFloorChange(WorldHelper.getCurrentFloor()));
     }
 
     @Override

@@ -76,7 +76,7 @@ public class GameManager {
     public void create(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
 
-        GameInfo gameInfo = GameInfo.create(regionInfo, 256, 200, 10);
+        GameInfo gameInfo = GameInfo.create(regionInfo, 256, 256, 32);
         File gameDirectory = new File("data/saves/", gameInfo.name);
 
         if (!gameDirectory.mkdirs()) {
@@ -92,7 +92,7 @@ public class GameManager {
         WorldFactory factory = new WorldFactory();
         factory.create(game, world, regionInfo);
 
-        WorldHelper.init(factory.getParcels());
+        WorldHelper.init(factory.getParcels(), game.getInfo().worldFloors - 1);
         game.init();
 
         factory.createLandSite(game);

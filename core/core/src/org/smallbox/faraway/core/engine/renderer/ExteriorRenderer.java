@@ -51,7 +51,7 @@ public class ExteriorRenderer extends WorldRenderer {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
 
-        _floor = 9;
+        _floor = WorldHelper.getCurrentFloor();
         _grounds = new Texture[_cols][_rows];
         _groundsUpToDate = new boolean[_cols][_rows];
 

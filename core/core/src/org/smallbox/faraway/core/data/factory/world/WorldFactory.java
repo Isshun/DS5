@@ -227,12 +227,17 @@ public class WorldFactory {
 
     public void createLandSite(Game game) {
         // Get free parcels
-        ParcelModel startParcel;
-        Queue<ParcelModel> freeParcels;
-        do {
+        ParcelModel startParcel = null;
+        Queue<ParcelModel> freeParcels = null;
+        for (int i = 0; i < 50; i++) {
             startParcel = WorldHelper.getRandomFreeSpace(false, true);
             freeParcels = getFreeParcels(startParcel);
-        } while (freeParcels.size() < 15);
+            if (freeParcels.size() > 15) {
+                break;
+            }
+        }
+        assert freeParcels != null;
+        assert startParcel != null;
 
         // Put characters
         ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());

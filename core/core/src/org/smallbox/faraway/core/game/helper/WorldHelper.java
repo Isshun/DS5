@@ -21,7 +21,8 @@ public class WorldHelper {
     private static int                  _height;
     private static int                  _floors;
 
-    public static void init(ParcelModel[][][] parcels) {
+    public static void init(ParcelModel[][][] parcels, int currentFloor) {
+        _currentFloor = currentFloor;
         _parcels = parcels;
         _width = _parcels.length;
         _height = _parcels[_currentFloor].length;
@@ -331,5 +332,9 @@ public class WorldHelper {
             return false;
         }
         return true;
+    }
+
+    public static int getCurrentFloor() {
+        return _currentFloor;
     }
 }
