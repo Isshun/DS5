@@ -14,7 +14,7 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
@@ -158,7 +158,7 @@ public class SpriteManager {
     public SpriteModel getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
     public SpriteModel getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
-    public SpriteModel getItem(ResourceModel resource, int offsetX, int offsetY) {
+    public SpriteModel getItem(PlantModel resource, int offsetX, int offsetY) {
         return getSprite(resource.getInfo(), resource.getGraphic(), offsetX, offsetY, 255, false);
     }
 

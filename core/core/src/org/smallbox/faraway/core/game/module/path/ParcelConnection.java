@@ -20,7 +20,7 @@ public class ParcelConnection implements Connection<ParcelModel> {
         if (_toParcel.getItem() != null) {
             return 10;
         }
-        if (_toParcel.getResource() != null) {
+        if (_toParcel.hasPlant()) {
             return 5;
         }
 

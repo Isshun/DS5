@@ -78,7 +78,7 @@ public class LayerGrid {
 
                 // Refresh needed layer
                 if (_layers[column][row].isVisible(viewport) && _layers[column][row].needRefresh()) {
-                    System.out.println("refresh layer: " + _layers[column][row].getIndex());
+//                    System.out.println("refresh layer: " + _layers[column][row].getIndex());
                     _layers[column][row].refresh();
                     if (_onRefreshLayer != null) {
                         _onRefreshLayer.onRefreshLayer(_layers[column][row], column * CACHE_SIZE, row * CACHE_SIZE, (column + 1) * CACHE_SIZE, (row + 1) * CACHE_SIZE);

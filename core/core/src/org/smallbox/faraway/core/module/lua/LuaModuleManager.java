@@ -9,9 +9,9 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.BindingInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
-import org.smallbox.faraway.core.engine.renderer.ExteriorRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -23,9 +23,8 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.ModuleInfo;
-import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.module.lua.data.extend.*;
 import org.smallbox.faraway.core.module.lua.luaModel.LuaEventsModel;
@@ -33,7 +32,6 @@ import org.smallbox.faraway.core.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.views.widgets.UIImage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -134,7 +132,7 @@ public class LuaModuleManager implements GameObserver {
                 Application.getInstance().notify(o -> o.onSelectItem(Game.getInstance().getSelector().getSelectedItem()));
             }
             if (Game.getInstance().getSelector().getSelectedResource() != null) {
-                Application.getInstance().notify(o -> o.onSelectResource(Game.getInstance().getSelector().getSelectedResource()));
+                Application.getInstance().notify(o -> o.onSelectPlant(Game.getInstance().getSelector().getSelectedResource()));
             }
             if (Game.getInstance().getSelector().getSelectedStructure() != null) {
                 Application.getInstance().notify(o -> o.onSelectStructure(Game.getInstance().getSelector().getSelectedStructure()));
@@ -273,7 +271,8 @@ public class LuaModuleManager implements GameObserver {
     public void onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); }
     public void onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); }
     public void onSelectItem(ItemModel item) { broadcastToLuaModules(LuaEventsModel.on_item_selected, item); }
-    public void onSelectResource(ResourceModel resource) { broadcastToLuaModules(LuaEventsModel.on_resource_selected, resource); }
+    public void onSelectRock(ItemInfo rockInfo) { broadcastToLuaModules(LuaEventsModel.on_rock_selected, rockInfo); }
+    public void onSelectPlant(PlantModel plant) { broadcastToLuaModules(LuaEventsModel.on_plant_selected, plant); }
     public void onSelectConsumable(ConsumableModel consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
     public void onSelectStructure(StructureModel structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
     public void onSelectNetwork(NetworkObjectModel network) { broadcastToLuaModules(LuaEventsModel.on_network_selected, network); }

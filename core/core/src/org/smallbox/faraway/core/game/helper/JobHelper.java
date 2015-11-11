@@ -4,13 +4,13 @@ import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
-import org.smallbox.faraway.core.game.module.job.model.MineJob;
+import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.GameActionExtra;
 
 /**
  * Created by Alex on 06/07/2015.
@@ -18,7 +18,7 @@ import org.smallbox.faraway.ui.GameActionExtra;
 public class JobHelper {
 
     public static JobModel createCutJob(int x, int y) {
-        ResourceModel res = WorldHelper.getResource(x, y);
+        PlantModel res = WorldHelper.getResource(x, y);
         if (res == null) {
             return null;
         }
@@ -26,7 +26,7 @@ public class JobHelper {
     }
 
     public static JobModel createGatherJob(int x, int y, int z) {
-        ResourceModel res = WorldHelper.getResource(x, y, z);
+        PlantModel res = WorldHelper.getResource(x, y, z);
         if (res == null) {
             return null;
         }
@@ -34,17 +34,26 @@ public class JobHelper {
     }
 
     public static JobModel createMiningJob(int x, int y, int z, boolean ramp) {
-        ResourceModel res = WorldHelper.getResource(x, y, z);
-        if (res == null) {
+        ParcelModel parcel = WorldHelper.getParcel(x, y, z);
+        if (parcel == null) {
             return null;
         }
+
+        if (parcel.getRockInfo() == null) {
+            return null;
+        }
+
+//        ResourceModel res = WorldHelper.getResource(x, y, z);
+//        if (res == null) {
+//            return null;
+//        }
 
         ItemInfo itemProduct = null;
         if (ramp) {
             itemProduct = Data.getData().getItemInfo("base.structure.ramp");
         }
 
-        return MineJob.create(res, itemProduct);
+        return DigJob.create(parcel, parcel.getRockInfo(), itemProduct);
     }
 
     public static void addGatherJob(int x, int y, int z, boolean removeOnComplete) {
@@ -61,7 +70,7 @@ public class JobHelper {
         }
     }
 
-    public static JobModel addGather(ResourceModel resource, GatherJob.Mode mode) {
+    public static JobModel addGather(PlantModel resource, GatherJob.Mode mode) {
         if (resource == null) {
             Log.error("JobModule: gather on null model");
             return null;

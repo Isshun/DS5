@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
@@ -24,7 +24,7 @@ public class GameSelectionExtra {
     public boolean isClear() {
         return _selectedArea == null
                 && _selectedItem == null
-                && _selectedResource == null
+                && _selectedPlant == null
                 && _selectedStructure == null
                 && _selectedParcel == null
                 && _selectedCharacter == null
@@ -37,7 +37,8 @@ public class GameSelectionExtra {
 
     private CharacterModel      _selectedCharacter;
     private ItemModel           _selectedItem;
-    private ResourceModel       _selectedResource;
+    private ItemInfo            _selectedRock;
+    private PlantModel          _selectedPlant;
     private StructureModel      _selectedStructure;
     private ParcelModel         _selectedParcel;
     private AreaModel           _selectedArea;
@@ -82,10 +83,22 @@ public class GameSelectionExtra {
                 return false;
             },
 
-            // Select resource
+            // Select plant
             (character, parcel, area) -> {
-                if (parcel != null && parcel.getResource() != null) {
-                    select(parcel.getResource());
+                if (parcel != null && parcel.hasPlant()) {
+                    select(parcel.getPlant());
+                    return true;
+                }
+                return false;
+            },
+
+            // Select rock
+            (character, parcel, area) -> {
+                if (parcel != null && parcel.hasRock()) {
+                    clear();
+                    _selectedRock = parcel.getRockInfo();
+                    Application.getInstance().notify(observer -> observer.onSelectRock(_selectedRock));
+                    Application.getInstance().notify(observer -> observer.onSelectParcel(parcel));
                     return true;
                 }
                 return false;
@@ -130,7 +143,7 @@ public class GameSelectionExtra {
     };
 
     public CharacterModel       getSelectedCharacter() { return _selectedCharacter; }
-    public ResourceModel        getSelectedResource() { return _selectedResource; }
+    public PlantModel getSelectedResource() { return _selectedPlant; }
     public ItemModel            getSelectedItem() { return _selectedItem; }
     public StructureModel       getSelectedStructure() { return _selectedStructure; }
     public ParcelModel          getSelectedParcel() { return _selectedParcel; }
@@ -198,7 +211,7 @@ public class GameSelectionExtra {
             _selectedItem.setSelected(false);
         }
         _selectedItem = null;
-        _selectedResource = null;
+        _selectedPlant = null;
         _selectedParcel = null;
         _selectedCharacter = null;
         _selectedArea = null;
@@ -246,10 +259,10 @@ public class GameSelectionExtra {
         Application.getInstance().notify(observer -> observer.onSelectArea(area));
     }
 
-    public void select(ResourceModel resource) {
+    public void select(PlantModel resource) {
         clear();
-        _selectedResource = resource;
-        Application.getInstance().notify(observer -> observer.onSelectResource(resource));
+        _selectedPlant = resource;
+        Application.getInstance().notify(observer -> observer.onSelectPlant(resource));
         Application.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
     }
 

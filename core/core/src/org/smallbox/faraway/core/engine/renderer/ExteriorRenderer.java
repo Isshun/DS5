@@ -1,27 +1,36 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.*;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
+import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 public class ExteriorRenderer extends WorldRenderer {
-    private static final int CHUNK_SIZE = 25;
+    private static final int    CHUNK_SIZE = 16;
+
+    private ExecutorService     _executor = Executors.newSingleThreadExecutor();
     private MapObjectModel      _itemSelected;
     private boolean             _firstRefresh;
     private Texture[][]         _rocks;
     private Texture[][]         _grounds;
+    private boolean[][]         _groundsUpToDate;
     private int                 _rows;
     private int                 _cols;
     private Texture             _textureIn;
@@ -29,7 +38,6 @@ public class ExteriorRenderer extends WorldRenderer {
     private int                 _width;
     private int                 _height;
     private int                 _floor;
-    private Sprite              _spriteMap = new Sprite();
 
     @Override
     protected void onLoad(Game game) {
@@ -38,31 +46,14 @@ public class ExteriorRenderer extends WorldRenderer {
         _textureIn = new Texture("data/graphics/items/ground.png");
         _textureRock = new Texture("data/graphics/items/resources/granite.png");
 
-        _rows = game.getInfo().worldWidth / CHUNK_SIZE;
-        _cols = game.getInfo().worldHeight / CHUNK_SIZE;
+        _cols = game.getInfo().worldWidth / CHUNK_SIZE;
+        _rows = game.getInfo().worldHeight / CHUNK_SIZE;
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
 
         _floor = 9;
         _grounds = new Texture[_cols][_rows];
-
-        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
-        Pixmap pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                if (parcels[x][y][_floor].getStructure() != null) {
-                    pixmap.drawPixel(x, y, 0x1acb51);
-                } else if (parcels[x][y][_floor].getResource() != null) {
-                    pixmap.drawPixel(x, y, 0x2a71c8);
-                } else {
-                    pixmap.drawPixel(x, y, 0x0e272f);
-                }
-            }
-        }
-        _spriteMap.setSize(_width, _height);
-        _spriteMap.setTexture(new Texture(pixmap));
-        _spriteMap.setRegion(0, 0, _width, _height);
-        _spriteMap.flip(false, true);
+        _groundsUpToDate = new boolean[_cols][_rows];
 
 //        long time = System.currentTimeMillis();
 //        {
@@ -138,40 +129,79 @@ public class ExteriorRenderer extends WorldRenderer {
         _layerGrid.setOnRefreshLayer((layer, fromX, fromY, toX, toY) -> {
             Log.info("Refresh layer: " + layer.getIndex());
 
-            layer.begin();
-            layer.setRefresh();
-            for (int x = toX - 1; x >= fromX; x--) {
-                for (int y = toY - 1; y >= fromY; y--) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                    if (parcel != null) {
-                        if (Data.config.render.floor) {
-                            refreshFloor(layer, parcel.getType(), x, y);
-                        }
-                        if (Data.config.render.structure) {
-                            refreshStructure(layer, parcel.getStructure(), x, y);
-                        }
-                        if (Data.config.render.resource) {
-                            refreshResource(layer, parcel, parcel.getResource(), x, y);
-                        }
-                        if (Data.config.render.item) {
-                            refreshItems(layer, parcel.getItem(), x, y);
-                        }
-                    }
-                }
-            }
+            ModuleHelper.getWorldModule().getParcels(fromX, toX, fromY, toY, _floor, _floor, new GetParcelListener() {
+                @Override
+                public void onGetParcel(Collection<ParcelModel> parcelsDo) {
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            layer.begin();
+                            layer.setRefresh();
+                            for (ParcelModel parcel: parcelsDo) {
+                                if (Data.config.render.floor) {
+                                    refreshFloor(layer, parcel.getType(), parcel.x, parcel.y);
+                                }
+                                if (Data.config.render.structure) {
+                                    refreshStructure(layer, parcel.getStructure(), parcel.x, parcel.y);
+                                }
+                                if (Data.config.render.resource) {
+                                    refreshPlant(layer, parcel, parcel.getPlant(), parcel.x, parcel.y);
+                                }
+                                if (Data.config.render.item) {
+                                    refreshItems(layer, parcel.getItem(), parcel.x, parcel.y);
+                                }
+                            }
 
-            for (int x = toX - 1; x >= fromX; x--) {
-                for (int y = toY - 1; y >= fromY; y--) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                    if (parcel != null) {
-                        if (Data.config.render.consumable) {
-                            refreshConsumable(layer, parcel.getConsumable(), x, y);
+                            for (ParcelModel parcel: parcelsDo) {
+                                if (Data.config.render.consumable) {
+                                    refreshConsumable(layer, parcel.getConsumable(), parcel.x, parcel.y);
+                                }
+                            }
+//            for (int x = toX - 1; x >= fromX; x--) {
+//                for (int y = toY - 1; y >= fromY; y--) {
+//                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+//                    if (parcel != null) {
+//                        if (Data.config.render.floor) {
+//                            refreshFloor(layer, parcel.getType(), x, y);
+//                        }
+//                        if (Data.config.render.structure) {
+//                            refreshStructure(layer, parcel.getStructure(), x, y);
+//                        }
+//                        if (Data.config.render.resource) {
+//                            refreshPlant(layer, parcel, parcel.getResource(), x, y);
+//                        }
+//                        if (Data.config.render.item) {
+//                            refreshItems(layer, parcel.getItem(), x, y);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            for (int x = toX - 1; x >= fromX; x--) {
+//                for (int y = toY - 1; y >= fromY; y--) {
+//                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+//                    if (parcel != null) {
+//                        if (Data.config.render.consumable) {
+//                            refreshConsumable(layer, parcel.getConsumable(), x, y);
+//                        }
+//                    }
+//                }
+//            }
+                            layer.end();
                         }
-                    }
+                    });
                 }
-            }
-            layer.end();
+            });
         });
+
+//        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
+//            if (resource.getInfo().graphics != null && resource.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
+//                ParcelModel parcel = resource.getParcel();
+//                ItemInfo resourceInfo = resource.getInfo();
+//
+//            }
+//        });
+
     }
 
     public int getLevel() {
@@ -190,7 +220,7 @@ public class ExteriorRenderer extends WorldRenderer {
         if (_layerGrid != null) {
             _layerGrid.refreshAll();
         }
-        _grounds = new Texture[_cols][_rows];
+        _groundsUpToDate = new boolean[_cols][_rows];
         _floor = floor;
     }
 
@@ -201,35 +231,12 @@ public class ExteriorRenderer extends WorldRenderer {
 
     @Override
     protected void onUpdate() {
-        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
-            if (resource.getInfo().graphics != null && resource.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
-                ParcelModel parcel = resource.getParcel();
+    }
 
-                boolean topLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y - 1).getInfo() != resource.getInfo());
-                boolean top = !(WorldHelper.getResource(parcel.x, parcel.y - 1) == null || WorldHelper.getResource(parcel.x, parcel.y - 1).getInfo() != resource.getInfo());
-                boolean topRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y - 1).getInfo() != resource.getInfo());
-
-                boolean left = !(WorldHelper.getResource(parcel.x - 1, parcel.y) == null || WorldHelper.getResource(parcel.x - 1, parcel.y).getInfo() != resource.getInfo());
-                boolean right = !(WorldHelper.getResource(parcel.x + 1, parcel.y) == null || WorldHelper.getResource(parcel.x + 1, parcel.y).getInfo() != resource.getInfo());
-
-                boolean bottomLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y + 1).getInfo() != resource.getInfo());
-                boolean bottom = !(WorldHelper.getResource(parcel.x, parcel.y + 1) == null || WorldHelper.getResource(parcel.x, parcel.y + 1).getInfo() != resource.getInfo());
-                boolean bottomRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y + 1).getInfo() != resource.getInfo());
-
-                int tile = 0;
-
-                if (topLeft)     { tile |= 0b10000000; }
-                if (top)         { tile |= 0b01000000; }
-                if (topRight)    { tile |= 0b00100000; }
-                if (left)        { tile |= 0b00010000; }
-                if (right)       { tile |= 0b00001000; }
-                if (bottomLeft)  { tile |= 0b00000100; }
-                if (bottom)      { tile |= 0b00000010; }
-                if (bottomRight) { tile |= 0b00000001; }
-
-                resource.setTile(tile);
-            }
-        });
+    @Override
+    public void onRemoveRock(ParcelModel parcel) {
+//        _grounds[parcel.x / CHUNK_SIZE][parcel.y / CHUNK_SIZE] = null;
+        _groundsUpToDate[parcel.x / CHUNK_SIZE][parcel.y / CHUNK_SIZE] = false;
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
@@ -249,8 +256,10 @@ public class ExteriorRenderer extends WorldRenderer {
         // Draw chunks
         for (int col = fromCol; col < toCol; col++) {
             for (int row = fromRow; row < toRow; row++) {
-                if (_grounds[col][row] == null) {
-                    _grounds[col][row] = createGround(col, row);
+                if (!_groundsUpToDate[col][row]) {
+                    _groundsUpToDate[col][row] = true;
+//                if (_grounds[col][row] == null) {
+                    createGround(col, row);
                 }
                 renderer.drawChunk(_grounds[col][row], viewportX + (col * CHUNK_SIZE * Constant.TILE_WIDTH), viewportY + (row * CHUNK_SIZE * Constant.TILE_HEIGHT));
             }
@@ -260,7 +269,7 @@ public class ExteriorRenderer extends WorldRenderer {
 //            for (int y = toY; y >= fromY; y--) {
 //                ParcelModel parcel = WorldHelper.getParcel(x, y);
 //                if (parcel != null) {
-//                    if (parcel.getResource() != null) {
+//                    if (parcel.hasResource()) {
 //                        renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
 //                    }
 //                    if (parcel.getStructure() != null) {
@@ -294,42 +303,59 @@ public class ExteriorRenderer extends WorldRenderer {
         }
     }
 
-    private Texture createGround(int col, int row) {
-        Texture textureOut;
+    private void createGround(int col, int row) {
+        _executor.submit((Runnable) () -> {
+            final int fromX = Math.max(col * CHUNK_SIZE, 0);
+            final int fromY = Math.max(row * CHUNK_SIZE, 0);
+            final int toX = Math.min(col * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldWidth);
+            final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldHeight);
 
-        _textureIn.getTextureData().prepare();
-        Pixmap pixmapIn = _textureIn.getTextureData().consumePixmap();
+            ModuleHelper.getWorldModule().getParcels(fromX, fromX + CHUNK_SIZE, fromY, fromY + CHUNK_SIZE, _floor, _floor, parcels -> {
+                _textureIn.getTextureData().prepare();
+                Pixmap pixmapIn = _textureIn.getTextureData().consumePixmap();
 
-        _textureRock.getTextureData().prepare();
-        Pixmap pixmapRock = _textureRock.getTextureData().consumePixmap();
+                _textureRock.getTextureData().prepare();
+                Pixmap pixmapRock = _textureRock.getTextureData().consumePixmap();
+                Pixmap pixmapOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGB888);
 
-        Pixmap pixmapOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGB888);
+                for (ParcelModel parcel: parcels) {
+                    // Draw ground
+                    pixmapOut.drawPixmap(pixmapIn, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, parcel.getTile() * 32, 32, 32, 32);
 
-        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
+                    // Draw resource
+                    if (parcel.hasRock()) {
+                        pixmapOut.drawPixmap(pixmapRock, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
+                    }
 
-        int fromX = col * CHUNK_SIZE;
-        int fromY = row * CHUNK_SIZE;
-        for (int x = fromX; x < fromX + CHUNK_SIZE; x++) {
-            for (int y = fromY; y < fromY + CHUNK_SIZE; y++) {
-                // Draw ground
-                pixmapOut.drawPixmap(pixmapIn, (x - fromX) * 32, (y - fromY) * 32, 0, 32, 32, 32);
-
-                // Draw resource
-                if (parcels[x][y][_floor].getResource() != null && parcels[x][y][_floor].getResource().isRock()) {
-                    pixmapOut.drawPixmap(pixmapRock, (x - fromX) * 32, (y - fromY) * 32, 0, 0, 32, 32);
+                    ItemInfo resourceInfo = parcel.getRockInfo();
+                    int tile = 0;
+                    if (resourceInfo != null) {
+                        if (WorldHelper.getResourceInfo(parcel.x - 1, parcel.y - 1, parcel.z) == resourceInfo) { tile |= 0b10000000; }
+                        if (WorldHelper.getResourceInfo(parcel.x,     parcel.y - 1, parcel.z) == resourceInfo) { tile |= 0b01000000; }
+                        if (WorldHelper.getResourceInfo(parcel.x + 1, parcel.y - 1, parcel.z) == resourceInfo) { tile |= 0b00100000; }
+                        if (WorldHelper.getResourceInfo(parcel.x - 1, parcel.y,     parcel.z) == resourceInfo) { tile |= 0b00010000; }
+                        if (WorldHelper.getResourceInfo(parcel.x + 1, parcel.y,     parcel.z) == resourceInfo) { tile |= 0b00001000; }
+                        if (WorldHelper.getResourceInfo(parcel.x - 1, parcel.y + 1, parcel.z) == resourceInfo) { tile |= 0b00000100; }
+                        if (WorldHelper.getResourceInfo(parcel.x,     parcel.y + 1, parcel.z) == resourceInfo) { tile |= 0b00000010; }
+                        if (WorldHelper.getResourceInfo(parcel.x + 1, parcel.y + 1, parcel.z) == resourceInfo) { tile |= 0b00000001; }
+                    }
+                    parcel.setTile(tile);
                 }
-            }
-        }
-        textureOut = new Texture(pixmapOut);
-        pixmapIn.dispose();
-        pixmapRock.dispose();
 
-        return textureOut;
+                pixmapIn.dispose();
+                pixmapRock.dispose();
+
+                Gdx.app.postRunnable(() -> {
+                    _grounds[col][row] = new Texture(pixmapOut);
+                    pixmapOut.dispose();
+                });
+            });
+        });
     }
 
-    private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
-        if (parcel != null && resource != null && !resource.isRock()) {
-            SpriteModel sprite = _spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile());
+    private void refreshPlant(RenderLayer layer, ParcelModel parcel, PlantModel plant, int x, int y) {
+        if (parcel != null && plant != null) {
+            SpriteModel sprite = _spriteManager.getItem(plant, parcel.getTile(), plant.getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }
@@ -372,9 +398,5 @@ public class ExteriorRenderer extends WorldRenderer {
                 }
             }
         }
-    }
-
-    public Sprite getMap() {
-        return _spriteMap;
     }
 }

@@ -6,8 +6,7 @@ import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.AreaModule;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
-import org.smallbox.faraway.core.game.module.world.model.resource.PlantExtra;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -21,7 +20,7 @@ import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
  * Created by Alex on 05/07/2015.
  */
 public class GardenModule extends GameModule {
-    private List<ResourceModel>     _plants = new ArrayList<>();
+    private List<PlantModel>     _plants = new ArrayList<>();
 
     @Override
     protected void onLoaded(Game game) {
@@ -49,41 +48,40 @@ public class GardenModule extends GameModule {
                 GardenAreaModel garden = (GardenAreaModel)area;
                 if (garden.getAccepted() != null) {
                     garden.getParcels().forEach(parcel -> {
-                        ResourceModel resource = parcel.getResource();
+                        PlantModel plant = parcel.getPlant();
 
                         // Reset field if resource is missing
-                        if (resource == null) {
+                        if (plant == null) {
                             garden.resetField(parcel);
                         }
 
                         //  Plan to cut / remove resource if distinct from garden accepted resource
-                        if (resource != null && resource.getInfo() != garden.getAccepted() && resource.getJob() == null) {
+                        if (plant != null && plant.getInfo() != garden.getAccepted() && plant.getJob() == null) {
                             garden.cleanField(parcel);
                         }
 
                         // Gather plant
-                        if (resource != null && resource.isPlant()) {
-                            PlantExtra plant = resource.getPlant();
+                        if (plant != null) {
 
                             // Decrease nourish value
-                            plant.setNourish(Math.max(0, plant.getNourish() - resource.getInfo().plant.nourish));
+                            plant.setNourish(Math.max(0, plant.getNourish() - plant.getInfo().plant.nourish));
 
                             // Launch gather job if non-exists
-                            if (resource.getJob() == null) {
+                            if (plant.getJob() == null) {
 
                                 // Plan to harvest
                                 if (plant.isMature()) {
-                                    JobHelper.addGather(resource, GatherJob.Mode.HARVEST);
+                                    JobHelper.addGather(plant, GatherJob.Mode.HARVEST);
                                 }
 
                                 // Plan to plant seed
                                 else if (!plant.hasSeed()) {
-                                    JobHelper.addGather(resource, GatherJob.Mode.PLANT_SEED);
+                                    JobHelper.addGather(plant, GatherJob.Mode.PLANT_SEED);
                                 }
 
                                 // Plan to nourish
                                 else if (plant.getNourish() < 0.75) {
-                                    JobHelper.addGather(resource, GatherJob.Mode.NOURISH);
+                                    JobHelper.addGather(plant, GatherJob.Mode.NOURISH);
                                 }
                             }
                         }
@@ -94,43 +92,42 @@ public class GardenModule extends GameModule {
 //        double temperature = _temperatureModule.getTemperature();
         // Growing
 // Plan to gather
-        _plants.stream().filter(ResourceModel::isPlant).filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
-            PlantExtra plant = resource.getPlant();
+        _plants.stream().filter(resource -> resource.getParcel().isExterior()).forEach(plant -> {
 
             // Launch jobs on garden
-            if (resource.getJob() == null && resource.getParcel().getArea() != null && resource.getParcel().getArea() instanceof GardenAreaModel) {
-                GardenAreaModel garden = (GardenAreaModel)resource.getParcel().getArea();
+            if (plant.getJob() == null && plant.getParcel().getArea() != null && plant.getParcel().getArea() instanceof GardenAreaModel) {
+                GardenAreaModel garden = (GardenAreaModel)plant.getParcel().getArea();
 
                 // Decrease nourish value
-                plant.setNourish(Math.max(0, plant.getNourish() - resource.getInfo().plant.nourish));
+                plant.setNourish(Math.max(0, plant.getNourish() - plant.getInfo().plant.nourish));
 
                 // Launch additional grow if the plant has been nourished
-                if (plant.getGrowState() != null && resource.getPlant().getNourish() > 0.25) {
-                    resource.getPlant().grow(plant.getGrowState());
+                if (plant.getGrowState() != null && plant.getNourish() > 0.25) {
+                    plant.grow(plant.getGrowState());
                 }
-                if (plant.getGrowState() != null && resource.getPlant().getNourish() > 0.5) {
-                    resource.getPlant().grow(plant.getGrowState());
+                if (plant.getGrowState() != null && plant.getNourish() > 0.5) {
+                    plant.grow(plant.getGrowState());
                 }
 
                 // Plan to harvest
                 if (plant.isMature()) {
-                    JobHelper.addGather(resource, GatherJob.Mode.HARVEST);
+                    JobHelper.addGather(plant, GatherJob.Mode.HARVEST);
                 }
 
                 // Plan to plant seed
                 else if (!plant.hasSeed()) {
-                    JobHelper.addGather(resource, GatherJob.Mode.PLANT_SEED);
+                    JobHelper.addGather(plant, GatherJob.Mode.PLANT_SEED);
                 }
 
                 // Plan to nourish
                 if (plant.getNourish() < 0.75) {
-                    JobHelper.addGather(resource, GatherJob.Mode.NOURISH);
+                    JobHelper.addGather(plant, GatherJob.Mode.NOURISH);
                 }
             }
         });
     }
 
-    public void grow(ResourceModel resource, double light, double temperature) {
+    public void grow(PlantModel resource, double light, double temperature) {
         GrowingInfo bestState = null;
         double bestValue = -1;
         for (GrowingInfo state: resource.getInfo().plant.states) {
@@ -141,12 +138,12 @@ public class GardenModule extends GameModule {
         }
 
         if (bestState != null) {
-            resource.getPlant().grow(bestState);
+            resource.grow(bestState);
 
             // Plant in garden grow 3x faster
-            if (resource.getPlant().getNourish() > 0.25) {
-                resource.getPlant().grow(bestState);
-                resource.getPlant().grow(bestState);
+            if (resource.getNourish() > 0.25) {
+                resource.grow(bestState);
+                resource.grow(bestState);
             }
         }
     }
@@ -157,14 +154,14 @@ public class GardenModule extends GameModule {
     }
 
     @Override
-    public void onAddResource(ResourceModel resource) {
+    public void onAddPlant(PlantModel resource) {
         if (resource.getInfo().plant != null) {
             _plants.add(resource);
         }
     }
 
     @Override
-    public void onRemoveResource(ResourceModel resource) {
+    public void onRemoveResource(PlantModel resource) {
         if (resource.getInfo().plant != null) {
             _plants.remove(resource);
         }

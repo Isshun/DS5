@@ -1,19 +1,15 @@
 package org.smallbox.faraway.core.game.module.path;
 
-import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
@@ -31,7 +27,7 @@ public class PathManager extends GameModule {
     final private ExecutorService               _threadPool;
     private IndexedAStarPathFinder<ParcelModel> _finder;
     private Heuristic<ParcelModel>              _heuristic;
-    private Map<ParcelModel, ParcelPathCache>   _cache;
+    private Map<Long, PathModel>                _cache;
     private IndexedGraph                        _graph;
 
     public PathManager() {
@@ -48,9 +44,6 @@ public class PathManager extends GameModule {
 
         // Create cache
         _cache = new HashMap<>();
-        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
-            _cache.put(parcel, new ParcelPathCache(parcel));
-        }
     }
 
     @Override
@@ -127,23 +120,25 @@ public class PathManager extends GameModule {
     public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
+        // Empty path
         if (fromParcel == toParcel) {
             DefaultGraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
             nodes.add(toParcel);
             return PathModel.create(nodes);
         }
 
-        ParcelPathCache parcelPathCache = _cache.get(fromParcel);
-        if (parcelPathCache == null) {
-            parcelPathCache = _cache.put(fromParcel, new ParcelPathCache(fromParcel));
+        // Get path from cache
+        long cacheId = getSum(fromParcel, toParcel);
+        PathModel path = _cache.get(cacheId);
+        if (path != null && path.isValid()) {
+            return path;
         }
 
-        PathCacheModel pathCache = parcelPathCache.getPath(toParcel);
-        if (pathCache != null && pathCache.isValid()) {
-            return PathModel.create(pathCache.getPath());
-        }
+        // Looking for new path
+        path = PathModel.create(findPath(fromParcel, toParcel));
+        _cache.put(cacheId, path);
 
-        return PathModel.create(findPath(fromParcel, toParcel));
+        return path;
     }
 
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
@@ -151,7 +146,6 @@ public class PathManager extends GameModule {
 
         // Check if target parcel is not surrounded by non-walkable model
         if (WorldHelper.isSurroundedByBlocked(toParcel)) {
-            _cache.get(fromParcel).addPath(toParcel, null);
             printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
             return null;
         }
@@ -159,7 +153,6 @@ public class PathManager extends GameModule {
         // Find path to target parcel
         GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
         if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
-            _cache.get(fromParcel).addPath(toParcel, nodes);
             printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
             return nodes;
         }
@@ -188,6 +181,25 @@ public class PathManager extends GameModule {
         return bestPath;
     }
 
+    private long getSum(ParcelModel fromParcel, ParcelModel toParcel) {
+        assert fromParcel.x < 256;
+        assert fromParcel.y < 256;
+        assert fromParcel.z < 64;
+        assert toParcel.x < 256;
+        assert toParcel.y < 256;
+        assert toParcel.z < 64;
+
+        long sum = 0;
+        sum = (sum << 8) + fromParcel.x;
+        sum = (sum << 8) + fromParcel.y;
+        sum = (sum << 6) + fromParcel.z;
+        sum = (sum << 8) + toParcel.x;
+        sum = (sum << 8) + toParcel.y;
+        sum = (sum << 6) + toParcel.z;
+
+        return sum;
+    }
+
     @Override
     public void onStructureComplete(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
@@ -195,11 +207,14 @@ public class PathManager extends GameModule {
     public void onAddStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
     @Override
-    public void onAddResource(ResourceModel resource) { _graph.resetAround(resource.getParcel()); }
+    public void onAddPlant(PlantModel resource) { _graph.resetAround(resource.getParcel()); }
 
     @Override
     public void onRemoveStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
     @Override
-    public void onRemoveResource(ResourceModel resource) { _graph.resetAround(resource.getParcel()); }
+    public void onRemoveResource(PlantModel resource) { _graph.resetAround(resource.getParcel()); }
+
+    @Override
+    public void onRemoveRock(ParcelModel parcel) { _graph.resetAround(parcel); }
 }

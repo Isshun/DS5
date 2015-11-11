@@ -103,7 +103,7 @@
 ////                        if (parcel.getStructure() != null && (parcel.getStructure().isSolid() || parcel.getStructure().isDoor())) {
 ////                            continue;
 ////                        }
-////                        if (parcel.getResource() != null && parcel.getResource().isSolid()) {
+////                        if (parcel.hasResource() && parcel.getResource().isSolid()) {
 ////                            continue;
 ////                        }
 ////
@@ -259,7 +259,7 @@
 //            return false;
 //        }
 //
-//        if (parcels[x][y][0].getResource() != null && parcels[x][y][0].getResource().isCloseRoom()) {
+//        if (parcels[x][y][0].hasResource() && parcels[x][y][0].getResource().isCloseRoom()) {
 //            return false;
 //        }
 //
@@ -454,7 +454,7 @@
 //
 //    private void checkAndAddNeighbor(WorldModule manager, Map<RoomModel, NeighborModel> neighborhood, RoomModel room, ParcelModel parcel, int offsetX, int offsetY) {
 //        ParcelModel p1 = manager.getParcel(parcel.x + offsetX, parcel.y + offsetY);
-//        if (p1 != null && (p1.getStructure() != null && !p1.getStructure().isFloor() || p1.getResource() != null && p1.getResource().isRock())) {
+//        if (p1 != null && (p1.getStructure() != null && !p1.getStructure().isFloor() || p1.hasResource() && p1.getResource().isRock())) {
 //            ParcelModel p2 = manager.getParcel(p1.x + offsetX, p1.y + offsetY);
 //            if (p2 != null && p2.getRoom() != null && p2.getRoom() != room) {
 //                neighborhood.get(p2.getRoom()).parcels.add(p1);

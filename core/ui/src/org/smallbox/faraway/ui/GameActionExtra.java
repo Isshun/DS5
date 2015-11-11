@@ -234,13 +234,14 @@ public class GameActionExtra {
         }
 
         if (parcel != null) {
-            // Check if resource is present on parcel
-            if (parcel.getResource() != null) {
-                if (parcel.getResource().canBeMined()) {
-                    JobHelper.addMineJob(parcel.x, parcel.y, parcel.z, false);
-                } else if (parcel.getResource().canBeHarvested()) {
-                    JobHelper.addGatherJob(parcel.x, parcel.y, parcel.z, true);
-                }
+            // Check if rock is present on parcel
+            if (parcel.hasRock()) {
+                JobHelper.addMineJob(parcel.x, parcel.y, parcel.z, false);
+            }
+
+            // Check if plant is present on parcel
+            if (parcel.hasPlant()) {
+                JobHelper.addGatherJob(parcel.x, parcel.y, parcel.z, true);
             }
 
             if (_selectedItemInfo != null) {

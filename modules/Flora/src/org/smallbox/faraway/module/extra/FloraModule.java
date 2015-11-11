@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
@@ -15,7 +15,7 @@ import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
  * Created by Alex on 05/07/2015.
  */
 public class FloraModule extends GameModule {
-    private List<ResourceModel>     _plants = new ArrayList<>();
+    private List<PlantModel>     _plants = new ArrayList<>();
 
     @Override
     protected void onLoaded(Game game) {
@@ -37,17 +37,17 @@ public class FloraModule extends GameModule {
         double temperature = 35;
 
         // Growing
-        _plants.stream().filter(ResourceModel::isPlant).filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
-            if (resource.getPlant().hasSeed()) {
+        _plants.stream().filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
+            if (resource.hasSeed()) {
                 GrowingInfo growingInfo = getGrowingInfo(resource, light, temperature);
                 if (growingInfo != null) {
-                    resource.getPlant().grow(growingInfo);
+                    resource.grow(growingInfo);
                 }
             }
         });
     }
 
-    private GrowingInfo getGrowingInfo(ResourceModel resource, double light, double temperature) {
+    private GrowingInfo getGrowingInfo(PlantModel resource, double light, double temperature) {
         GrowingInfo bestState = null;
         double bestValue = -1;
         for (GrowingInfo state: resource.getInfo().plant.states) {
@@ -65,14 +65,14 @@ public class FloraModule extends GameModule {
     }
 
     @Override
-    public void onAddResource(ResourceModel resource) {
+    public void onAddPlant(PlantModel resource) {
         if (resource.getInfo().plant != null) {
             _plants.add(resource);
         }
     }
 
     @Override
-    public void onRemoveResource(ResourceModel resource) {
+    public void onRemoveResource(PlantModel resource) {
         if (resource.getInfo().plant != null) {
             _plants.remove(resource);
         }

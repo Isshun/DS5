@@ -42,4 +42,13 @@ public class PathModel {
         }
         return false;
     }
+
+    public boolean isValid() {
+        for (ParcelModel parcel: _nodes) {
+            if (!parcel.isWalkable()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

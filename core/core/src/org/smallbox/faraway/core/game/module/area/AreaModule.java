@@ -149,10 +149,10 @@ public class AreaModule extends GameModule {
                 ParcelModel parcel = worldModule.getParcel(x, y);
 
                 // Remove existing resource on parcel
-                if (parcel.getResource() != null) {
-                    if (parcel.getResource().canBeMined()) {
+                if (parcel.hasPlant()) {
+                    if (parcel.hasRock()) {
                         JobHelper.addMineJob(x, y, z, false);
-                    } else if (parcel.getResource().canBeHarvested()) {
+                    } else if (parcel.hasPlant()) {
                         JobHelper.addGatherJob(x, y, z, true);
                     }
                 }

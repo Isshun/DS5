@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
@@ -12,7 +11,7 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
@@ -108,7 +107,7 @@ public abstract class WorldRenderer extends BaseRenderer {
 //            for (int y = toY; y >= fromY; y--) {
 //                ParcelModel parcel = WorldHelper.getParcel(x, y);
 //                if (parcel != null) {
-//                    if (parcel.getResource() != null) {
+//                    if (parcel.hasResource()) {
 //                        if (parcel.getResource().getTile() == 42) {
 //                            renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + offsetX - 16, (y * Constant.TILE_HEIGHT) + offsetY - 16);
 //                        } else {
@@ -138,9 +137,9 @@ public abstract class WorldRenderer extends BaseRenderer {
         }
     }
 
-    private void refreshResource(RenderLayer layer, ParcelModel parcel, ResourceModel resource, int x, int y) {
+    private void refreshResource(RenderLayer layer, ParcelModel parcel, PlantModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-            SpriteModel sprite = _spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile());
+            SpriteModel sprite = _spriteManager.getItem(parcel.getPlant(), parcel.getPlant().getTile(), parcel.getPlant().getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }
@@ -282,7 +281,7 @@ public abstract class WorldRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onAddResource(ResourceModel resource) {
+    public void onAddPlant(PlantModel resource) {
         if (_layerGrid != null) {
             _layerGrid.planRefresh(resource.getParcel().x / CACHE_SIZE, resource.getParcel().y / CACHE_SIZE);
         }
@@ -310,7 +309,7 @@ public abstract class WorldRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onRemoveResource(ResourceModel resource){
+    public void onRemoveResource(PlantModel resource){
         if (_layerGrid != null) {
             _layerGrid.planRefresh(resource.getParcel().x / CACHE_SIZE, resource.getParcel().y / CACHE_SIZE);
         }
@@ -336,7 +335,7 @@ public abstract class WorldRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onSelectResource(ResourceModel resource) {
+    public void onSelectPlant(PlantModel resource) {
         _itemSelected = resource;
     }
 

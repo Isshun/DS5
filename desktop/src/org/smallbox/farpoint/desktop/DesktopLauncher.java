@@ -1,5 +1,9 @@
 package org.smallbox.farpoint.desktop;
 
+import com.almworks.sqlite4java.SQLite;
+import com.almworks.sqlite4java.SQLiteConnection;
+import com.almworks.sqlite4java.SQLiteException;
+import com.almworks.sqlite4java.SQLiteStatement;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
@@ -18,10 +22,28 @@ import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
+import java.io.File;
+
 public class DesktopLauncher {
     public static void main (String[] arg) {
         Data data = new Data();
         new ConfigLoader().load(data);
+
+        System.loadLibrary("sqlite4java-win32-x64-1.0.392");
+
+//        System.out.println(new File("sqlite4java-win32-x64-1.0.392.dll").getAbsolutePath());
+//        SQLite.setLibraryPath(new File("sqlite4java-win32-x86-1.0.392.dll").getAbsolutePath());
+//
+//        try {
+//            SQLiteConnection db = new SQLiteConnection(new File("test.db"));
+//            db.open(true);
+//            db.exec("CREATE TABLE parcel (x INTEGER, y INTEGER, z INTEGER, ground INTEGER)");
+//            db.dispose();
+//        } catch (SQLiteException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.exit(0);
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //        config.samples = 2;

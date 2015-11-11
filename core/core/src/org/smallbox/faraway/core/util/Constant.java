@@ -5,6 +5,9 @@ public class Constant {
     public static final int         PLANET_WIDTH = 100;
     public static final int         PLANET_HEIGHT = 90;
     public static final long        RELOAD_DATA_INTERVAL = 2000;
+    public static final int         MAX_WORLD_WIDTH = 256;
+    public static final int         MAX_WORLD_HEIGHT = 256;
+    public static final int         MAX_WORLD_FLOORS = 64;
     public static String            NAME    = "FarPoint";
     public static String            VERSION    = "0.1";
 

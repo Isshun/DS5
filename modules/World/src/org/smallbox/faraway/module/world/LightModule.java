@@ -49,7 +49,7 @@
 //        if (parcel.getItem() != null && parcel.getItem().isLight()) {
 //            update(parcel, parcel.getItem());
 //        }
-//        if (parcel.getResource() != null && parcel.getResource().isLight()) {
+//        if (parcel.hasResource() && parcel.getResource().isLight()) {
 //            update(parcel, parcel.getResource());
 //        }
 //
@@ -60,7 +60,7 @@
 ////                    if (parcel.getItem() != null && parcel.getItem().isLight()) {
 ////                        update(parcel, parcel.getItem(), x-8, x+8, y-8, y+8);
 ////                    }
-////                    if (parcel.getResource() != null && parcel.getResource().isLight()) {
+////                    if (parcel.hasResource() && parcel.getResource().isLight()) {
 ////                        update(parcel, parcel.getResource(), x-8, x+8, y-8, y+8);
 ////                    }
 ////                }

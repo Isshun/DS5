@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.data.BindingInfo;
+import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
@@ -11,7 +12,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -23,13 +24,14 @@ public interface GameObserver {
     default void onAddStructure(StructureModel structure){}
     default void onAddItem(ItemModel item){}
     default void onAddConsumable(ConsumableModel consumable){}
-    default void onAddResource(ResourceModel resource) {}
+    default void onAddPlant(PlantModel resource) {}
     default void onStructureComplete(StructureModel structure){}
     default void onItemComplete(ItemModel item){}
     default void onRemoveItem(ItemModel item){}
     default void onRemoveConsumable(ConsumableModel consumable){}
     default void onRemoveStructure(StructureModel structure){}
-    default void onRemoveResource(ResourceModel resource){}
+    default void onRemoveResource(PlantModel resource){}
+    default void onRemoveRock(ParcelModel parcel){}
     default void onRefreshItem(ItemModel item) {}
     default void onRefreshStructure(StructureModel structure) {}
     default void onHourChange(int hour){}
@@ -40,8 +42,9 @@ public interface GameObserver {
     default void onSelectArea(AreaModel area) {}
     default void onSelectCharacter(CharacterModel character) {}
     default void onSelectParcel(ParcelModel parcel) {}
+    default void onSelectRock(ItemInfo rockInfo) {}
     default void onSelectItem(ItemModel item) {}
-    default void onSelectResource(ResourceModel resource) {}
+    default void onSelectPlant(PlantModel resource) {}
     default void onSelectConsumable(ConsumableModel consumable) {}
     default void onSelectStructure(StructureModel structure) {}
     default void onSelectNetwork(NetworkObjectModel network) {}

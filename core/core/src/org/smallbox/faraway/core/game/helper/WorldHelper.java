@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 /**
@@ -34,22 +34,10 @@ public class WorldHelper {
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructure() : null; }
-    public static ResourceModel     getResource(int x, int y) { return getResource(x, y, 0); }
-    public static ResourceModel     getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getResource() : null; }
-
-    public static boolean isSurroundedByRock(ParcelModel parcel) {
-        if (parcel._neighbors[_currentFloor] != null && (parcel._neighbors[_currentFloor].getResource() == null || !parcel._neighbors[_currentFloor].getResource().isRock())) return false;
-        if (parcel._neighbors[1] != null && (parcel._neighbors[1].getResource() == null || !parcel._neighbors[1].getResource().isRock())) return false;
-        if (parcel._neighbors[2] != null && (parcel._neighbors[2].getResource() == null || !parcel._neighbors[2].getResource().isRock())) return false;
-        if (parcel._neighbors[3] != null && (parcel._neighbors[3].getResource() == null || !parcel._neighbors[3].getResource().isRock())) return false;
-
-        if (parcel._neighbors[4] != null && (parcel._neighbors[4].getResource() == null || !parcel._neighbors[4].getResource().isRock())) return false;
-        if (parcel._neighbors[5] != null && (parcel._neighbors[5].getResource() == null || !parcel._neighbors[5].getResource().isRock())) return false;
-        if (parcel._neighbors[6] != null && (parcel._neighbors[6].getResource() == null || !parcel._neighbors[6].getResource().isRock())) return false;
-        if (parcel._neighbors[7] != null && (parcel._neighbors[7].getResource() == null || !parcel._neighbors[7].getResource().isRock())) return false;
-
-        return true;
-    }
+    public static PlantModel getResource(int x, int y) { return getResource(x, y, 0); }
+    public static PlantModel getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getPlant() : null; }
+    public static ItemInfo          getResourceInfo(int x, int y, int z) { return inMapBounds(x, y) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
+    public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getRockInfo() : null; }
 
     /**
      * Search for model free to receive a ConsumableItem
@@ -97,7 +85,7 @@ public class WorldHelper {
             return false;
         }
 
-        if (parcel.getResource() != null && parcel.getResource().isSolid()) {
+        if (parcel.hasPlant() && parcel.getPlant().isSolid()) {
             return false;
         }
 
@@ -170,7 +158,7 @@ public class WorldHelper {
         if (_parcels[x][y][_currentFloor].getStructure() != null && _parcels[x][y][_currentFloor].getStructure().isSolid()) {
             return false;
         }
-        if (_parcels[x][y][_currentFloor].getResource() != null) {
+        if (_parcels[x][y][_currentFloor].hasPlant()) {
             return false;
         }
         if (_parcels[x][y][_currentFloor].getItem() != null) {
@@ -226,7 +214,7 @@ public class WorldHelper {
         if (_parcels[x][y][_currentFloor].getStructure() != null && !_parcels[x][y][_currentFloor].getStructure().isWalkable()) {
             return false;
         }
-        if (_parcels[x][y][_currentFloor].getResource() != null && !_parcels[x][y][_currentFloor].getResource().isWalkable()) {
+        if (_parcels[x][y][_currentFloor].hasPlant() && !_parcels[x][y][_currentFloor].getPlant().isWalkable()) {
             return false;
         }
 //        if (_parcels[x][y][_currentFloor].getItem() != null) {
@@ -330,7 +318,7 @@ public class WorldHelper {
         if (!allowStructure && _parcels[x][y][_currentFloor].getStructure() != null && _parcels[x][y][_currentFloor].getStructure().isSolid()) {
             return false;
         }
-        if (!allowResource && _parcels[x][y][_currentFloor].getResource() != null) {
+        if (!allowResource && _parcels[x][y][_currentFloor].hasPlant()) {
             return false;
         }
         if (!allowItem && _parcels[x][y][_currentFloor].getItem() != null) {

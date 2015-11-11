@@ -3,32 +3,35 @@ package org.smallbox.faraway.core.engine.renderer;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.core.GraphicInfo;
-import org.smallbox.faraway.core.RenderLayer;
-import org.smallbox.faraway.core.SpriteModel;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
+import java.util.Collection;
+
 public class MinimapRenderer extends BaseRenderer {
+    private static final Color COLOR_BACKGROUND = new Color(0x000000);
+    private static final Color COLOR_ROCK = new Color(0x14dcb9);
+    private static final Color COLOR_PLANT = new Color(0x14fcb9);
+    private static final Color COLOR_STRUCTURE = new Color(0x1acb51);
+    private static final Color COLOR_CHARACTER = new Color(0xff5c89);
+    private static final Color COLOR_VIEW = new Color(0x14dcb9);
+
+    private static final int POS_X = 1210;
+    private static final int POS_Y = 84;
+
     private int                 _floor;
     private Sprite              _spriteMap;
-    private Color               _color = new Color(0x14dcb9);
     private boolean             _isVisible;
     private View                _panelMain;
+    private Collection<CharacterModel> _characters;
 
     public int getLevel() {
         return MainRenderer.WORLD_RENDERER_LEVEL;
@@ -39,6 +42,12 @@ public class MinimapRenderer extends BaseRenderer {
         _panelMain = UserInterface.getInstance().findById("panel_main");
     }
 
+    @Override
+    protected void onLoad(Game game) {
+        _characters = ModuleHelper.getCharacterModule().getCharacters();
+    }
+
+    @Override
     public void onRefresh(int frame) {
     }
 
@@ -70,15 +79,19 @@ public class MinimapRenderer extends BaseRenderer {
             }
 
             if (_spriteMap != null) {
-                renderer.draw(_spriteMap, 1210, 84);
+                renderer.draw(_spriteMap, POS_X, POS_Y);
             }
 
-            int x = 1210 - (viewport.getPosX() / 32);
-            int y = 84 - (viewport.getPosY() / 32);
-            renderer.draw(_color, x, y, 32, 1);
-            renderer.draw(_color, x, y, 1, 32);
-            renderer.draw(_color, x, y + 32, 32, 1);
-            renderer.draw(_color, x + 32, y, 1, 32);
+            int x = POS_X - (viewport.getPosX() / 32);
+            int y = POS_Y - (viewport.getPosY() / 32);
+            renderer.draw(COLOR_VIEW, x, y, 32, 1);
+            renderer.draw(COLOR_VIEW, x, y, 1, 32);
+            renderer.draw(COLOR_VIEW, x, y + 32, 32, 1);
+            renderer.draw(COLOR_VIEW, x + 32, y, 1, 32);
+
+            for (CharacterModel character: _characters) {
+                renderer.draw(COLOR_CHARACTER, POS_X + character.getParcel().x, POS_Y + character.getParcel().y, 2, 2);
+            }
         }
     }
 
@@ -93,12 +106,14 @@ public class MinimapRenderer extends BaseRenderer {
             Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    if (parcels[x][y][_floor].getStructure() != null) {
-                        pixmap.drawPixel(x, y, 0x1acb51);
-                    } else if (parcels[x][y][_floor].getResource() != null) {
-                        pixmap.drawPixel(x, y, 0x14dcb9);
+                    if (parcels[x][y][_floor].hasStructure()) {
+                        pixmap.drawPixel(x, y, (int) COLOR_STRUCTURE.toLong());
+                    } else if (parcels[x][y][_floor].hasPlant()) {
+                        pixmap.drawPixel(x, y, (int) COLOR_PLANT.toLong());
+                    } else if (parcels[x][y][_floor].hasRock()) {
+                        pixmap.drawPixel(x, y, (int) COLOR_ROCK.toLong());
                     } else {
-                        pixmap.drawPixel(x, y, 0x0e272f);
+                        pixmap.drawPixel(x, y, (int) COLOR_BACKGROUND.toLong());
                     }
                 }
             }

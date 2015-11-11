@@ -1,10 +1,12 @@
 package org.smallbox.faraway.core.game;
 
+import com.almworks.sqlite4java.SQLiteConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.util.Constant;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -86,12 +88,16 @@ public class GameInfo {
         return info;
     }
 
-    public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight) {
+    public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight, int worldFloors) {
+        assert worldWidth <= Constant.MAX_WORLD_WIDTH;
+        assert worldHeight <= Constant.MAX_WORLD_HEIGHT;
+        assert worldFloors <= Constant.MAX_WORLD_FLOORS;
+
         GameInfo info = new GameInfo();
 
         info.worldWidth = worldWidth;
         info.worldHeight = worldHeight;
-        info.worldFloors = 10;
+        info.worldFloors = worldFloors;
         info.planet = regionInfo.planet;
         info.region = regionInfo;
         info.name = UUID.randomUUID().toString();

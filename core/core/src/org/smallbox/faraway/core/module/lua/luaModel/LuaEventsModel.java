@@ -12,7 +12,7 @@ public class LuaEventsModel {
     public static final int on_area_selected = 3;
     public static final int on_structure_selected = 4;
     public static final int on_item_selected = 5;
-    public static final int on_resource_selected = 6;
+    public static final int on_plant_selected = 6;
     public static final int on_consumable_selected = 7;
     public static final int on_deselect = 8;
     public static final int on_job_create = 9;
@@ -32,6 +32,7 @@ public class LuaEventsModel {
     public static final int on_game_paused = 23;
     public static final int on_game_resume = 24;
     public static final int on_floor_change = 25;
+    public static final int on_rock_selected = 26;
 
     public void send(String tag) {
         Application.getInstance().notify(observer -> observer.onCustomEvent(tag, null));

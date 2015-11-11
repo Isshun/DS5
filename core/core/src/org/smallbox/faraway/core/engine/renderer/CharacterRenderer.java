@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -133,15 +134,16 @@ public class CharacterRenderer extends BaseRenderer {
                     }
 
                     // Draw action icon
-                    if (!c.isSleeping() && c.getJob() != null && c.getJob().getActionDrawable() != null && c.getJob().getTargetParcel() == c.getParcel()) {
+                    JobModel job = c.getJob();
+                    if (!c.isSleeping() && job != null && job.getActionDrawable() != null && job.getTargetParcel() == c.getParcel()) {
                         int x = posX;
                         int y = posY;
-                        ParcelModel actionParcel = c.getJob().getTargetParcel();
-                        if (actionParcel != null) {
-                            if (actionParcel.y < parcel.y) y -= 16;
-                            if (actionParcel.y > parcel.y) y += 16;
-                            if (actionParcel.x < parcel.x) x -= 16;
-                            if (actionParcel.x > parcel.x) x += 16;
+                        ParcelModel targetParcel = job.getTargetParcel();
+                        if (targetParcel != null) {
+                            if (targetParcel.y < parcel.y) y -= 16;
+                            if (targetParcel.y > parcel.y) y += 16;
+                            if (targetParcel.x < parcel.x) x -= 16;
+                            if (targetParcel.x > parcel.x) x += 16;
                         }
                         renderer.draw(c.getJob().getActionDrawable(), x, y);
                     }

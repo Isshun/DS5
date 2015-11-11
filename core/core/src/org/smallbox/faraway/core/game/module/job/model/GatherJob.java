@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
@@ -18,7 +18,7 @@ public class GatherJob extends JobModel {
     public enum Mode {PLANT_SEED, NOURISH, HARVEST, CUT}
 
     private Mode                _mode;
-    private ResourceModel       _resource;
+    private PlantModel          _plant;
     private int                 _totalCost;
     private double              _current;
 
@@ -31,24 +31,36 @@ public class GatherJob extends JobModel {
         super(actionInfo, jobParcel, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
     }
 
-    public static JobModel create(ResourceModel resource, Mode mode) {
-        assert resource != null;
-        assert resource.isPlant();
+    public static JobModel create(PlantModel plant, Mode mode) {
+        assert plant != null;
 
-        // Resource is not gatherable
-        if (resource.getInfo().actions == null || resource.getInfo().actions.isEmpty() || !"gather".equals(resource.getInfo().actions.get(0).type)) {
+        ItemInfo info = plant.getInfo();
+
+        // Resource has no actions
+        if (info.actions == null || info.actions.isEmpty()) {
             return null;
         }
 
-        GatherJob job = new GatherJob(resource.getInfo().actions.get(0), resource.getParcel());
+        // Resource is not gatherable
+        boolean hasGatherAction = false;
+        for (ItemInfo.ItemInfoAction action: info.actions) {
+            if ("gather".equals(action.type)) {
+                hasGatherAction = true;
+            }
+        }
+        if (!hasGatherAction) {
+            return null;
+        }
+
+        GatherJob job = new GatherJob(info.actions.get(0), plant.getParcel());
         job.setStrategy(j -> {
             if (j.getCharacter().getType().needs.joy != null) {
                 j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
             }
         });
-        job._resource = resource;
-        job._resource.addJob(job);
-        job._resource.setJob(job);
+        job._plant = plant;
+        job._plant.addJob(job);
+        job._plant.setJob(job);
         job._totalCost = job._cost;
         job._mode = mode;
 
@@ -65,16 +77,16 @@ public class GatherJob extends JobModel {
     @Override
     public JobCheckReturn onCheck(CharacterModel character) {
         // Resource is no longer exists
-        if (_resource != _resource.getParcel().getResource()) {
+        if (_plant != _plant.getParcel().getPlant()) {
             _reason = JobAbortReason.INVALID;
             return JobCheckReturn.ABORT;
         }
 
-        if (_mode == Mode.NOURISH && _resource.getPlant().isMature()) {
+        if (_mode == Mode.NOURISH && _plant.isMature()) {
             return JobCheckReturn.ABORT;
         }
 
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _resource.getParcel())) {
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _plant.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 
@@ -96,12 +108,12 @@ public class GatherJob extends JobModel {
     @Override
     public JobActionReturn onAction(CharacterModel character) {
         // Wrong call
-        if (_resource == null) {
+        if (_plant == null) {
             Log.error("Character: actionGather on null job or null job's item");
             return JobActionReturn.ABORT;
         }
 
-        if (_resource.getInfo().actions.get(0) == null) {
+        if (_plant.getInfo().actions.get(0) == null) {
             Log.error("Character: actionGather on non gatherable item");
             return JobActionReturn.ABORT;
         }
@@ -120,36 +132,36 @@ public class GatherJob extends JobModel {
         Log.info("Gather complete");
 
         if (_mode == Mode.PLANT_SEED) {
-            _resource.getPlant().setSeed(true);
-            _resource.getPlant().setNourish(1);
+            _plant.setSeed(true);
+            _plant.setNourish(1);
         }
 
         if (_mode == Mode.NOURISH) {
-            _resource.getPlant().setNourish(Math.min(1, _resource.getPlant().getNourish() + 0.5));
+            _plant.setNourish(Math.min(1, _plant.getNourish() + 0.5));
         }
 
         if (_mode == Mode.HARVEST || _mode == Mode.CUT) {
-            double maturity = _resource.getPlant().getMaturity();
+            double maturity = _plant.getMaturity();
 
             // Create consumable from resource
             if (_actionInfo.products != null) {
                 _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
-                    ModuleHelper.getWorldModule().putConsumable(_resource.getParcel(), productInfo.item, (int) Math.round(Utils.getRandom(productInfo.quantity) * maturity));
+                    ModuleHelper.getWorldModule().putConsumable(_plant.getParcel(), productInfo.item, (int) Math.round(Utils.getRandom(productInfo.quantity) * maturity));
                 });
             }
 
             // Remove resource from parcel function of mode or resource info
-            if (_mode == Mode.CUT || _resource.getInfo().plant.cutOnGathering) {
-                ModuleHelper.getWorldModule().removeResource(_resource);
+            if (_mode == Mode.CUT || _plant.getInfo().plant.cutOnGathering) {
+                ModuleHelper.getWorldModule().removeResource(_plant);
             }
         }
     }
 
     @Override
     protected void onFinish() {
-        if (_resource != null && _resource.getJob() == this) {
-            _resource.removeJob(this);
-            _resource.setJob(null);
+        if (_plant != null && _plant.getJob() == this) {
+            _plant.removeJob(this);
+            _plant.setJob(null);
         }
     }
 }

@@ -16,6 +16,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.UserInterface;
@@ -78,6 +79,20 @@ public class GDXApplication extends ApplicationAdapter {
             _application = Application.getInstance();
         }));
 
+        _loadTasks.add(new LoadTask("DB tasks", () -> {
+            new Thread(() -> {
+                while (_application.isRunning()) {
+                    SQLHelper.getInstance().update();
+                    try {
+                        Thread.sleep(16);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println("Background DB thread terminated");
+            }).start();
+        }));
+
         // Load resources
         _loadTasks.add(new LoadTask("Load resources", () -> {
             Data data = new Data();
@@ -104,11 +119,12 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask("Resume game", () -> {
             if (Data.config.byPassMenu) {
 //                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+                GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
 //                GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
 //                _application.loadGame("12.sav");
 //                _application.whiteRoom();
 
-                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
+//                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
             }
         }));
 

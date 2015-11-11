@@ -2,12 +2,13 @@ package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -18,15 +19,16 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule {
-    private static final int                    NB_FLOOR = 10;
-
+    private static final int CACHE_SIZE = 50000;
     private ParcelModel[][][]                   _parcels;
+    private Map<Integer, ParcelModel>           _parcelsDo;
     private int                                 _width;
     private int                                 _height;
+    private int                                 _floors;
     private Game                                _game;
     private Set<NetworkObjectModel>             _networks = new HashSet<>();
     private Set<ConsumableModel>                _consumables = new HashSet<>();
-    private BlockingQueue<ResourceModel>        _resources = new LinkedBlockingQueue<>();
+    private BlockingQueue<PlantModel>        _resources = new LinkedBlockingQueue<>();
     private Set<ItemModel>                      _items = new HashSet<>();
     private Set<ItemModel>                      _factories = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
@@ -35,17 +37,186 @@ public class WorldModule extends GameModule {
     private double                              _light;
     private int                                 _floor = 9;
 
+    private Map<Integer, ParcelModel>           _parcelCache = new HashMap<>();
+    private List<ParcelModel>                   _parcelCacheQueue = new ArrayList<>(CACHE_SIZE);
+    private List<ChunkCacheModel>               _parcelChunkCacheQueue = new ArrayList<>(50);
+    private Map<Integer, ChunkCacheModel>       _parcelChunkCache = new HashMap<>();
+
     public ParcelModel[][][]                    getParcels() { return _parcels; }
-    public List<ParcelModel>                    getParcelList() { return _parcelList; }
-    public List<ParcelModel>                    getParcelList(int floor) { return _parcelListFloor.get(floor); }
+
+    public void getParcels(int fromX, int toX, int fromY, int toY, int fromZ, int toZ, GetParcelListener getParcelListener) {
+        assert getParcelListener != null;
+
+        List<ParcelModel> parcels = new ArrayList<>();
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = fromY; y <= toY; y++) {
+                for (int z = fromZ; z <= toZ; z++) {
+                    if (x >= 0 && x < _width && y >= 0 && y < _height && z >= 0 && z < _floors) {
+                        parcels.add(_parcels[x][y][z]);
+                    }
+                }
+            }
+        }
+        getParcelListener.onGetParcel(parcels);
+    }
+
+//    public void                                 getParcelsDo(int fromX, int toX, int fromY, int toY, int fromZ, int toZ, GetParcelListener getParcelListener) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                List<ParcelModel> parcels = new ArrayList<>();
+//                ItemInfo resourceInfo = Data.getData().getItemInfo("base.granite");
+//
+//                int index = fromX * _width * _height + fromY * _height + fromZ;
+//                if (_parcelChunkCache.containsKey(index)) {
+//                    for (int x = fromX; x <= toX; x++) {
+//                        for (int y = fromY; y <= toY; y++) {
+//                            for (int z = fromZ; z <= toZ; z++) {
+//                                int i = x * _width * _height + y * _height + z;
+//
+//                                ParcelModel parcel = _parcelCache.get(i);
+//                                if (parcel != null) {
+//                                    parcels.add(parcel);
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                    getParcelListener.onGetParcel(parcels);
+//                }
+//
+//                else {
+//                    SQLHelper.getInstance().post((db) -> {
+//                        if (_parcelChunkCacheQueue.size() == 50) {
+//                            ChunkCacheModel chunkCache = _parcelChunkCacheQueue.remove(0);
+//                            for (int x2 = chunkCache.fromX; x2 <= chunkCache.toX; x2++) {
+//                                for (int y2 = chunkCache.fromY; y2 <= chunkCache.toY; y2++) {
+//                                    for (int z2 = chunkCache.fromZ; z2 <= chunkCache.toZ; z2++) {
+//                                        int i2 = x2 * _width * _height + y2 * _height + z2;
+//                                        ParcelModel p2 = _parcelCache.get(i2);
+//                                        _parcelCache.remove(i2);
+//                                        _parcelCacheQueue.remove(p2);
+//                                    }
+//                                }
+//                            }
+//                            _parcelChunkCache.remove(chunkCache._index);
+//                        }
+//
+//                        ChunkCacheModel chunkCache = new ChunkCacheModel(index, fromX, toX, fromY, toY, fromZ, toZ);
+//                        _parcelChunkCacheQueue.add(chunkCache);
+//                        _parcelChunkCache.put(index, chunkCache);
+//
+//                        try {
+//                            SQLiteStatement st = db.prepare("SELECT x, y, z, ground FROM parcel WHERE x >= ? AND x <= ? AND y >= ? AND y <= ? AND z >= ? AND z <= ?");
+////            SQLiteStatement st = db.prepare("SELECT x, y, z, ground FROM parcel WHERE x = ? AND y = ? AND z = ?");
+//
+//                            try {
+////                                st.bind(1, x).bind(2, y).bind(3, z);
+//
+//                                st.bind(1, fromX);
+//                                st.bind(2, toX);
+//                                st.bind(3, fromY);
+//                                st.bind(4, toY);
+//                                st.bind(5, fromZ);
+//                                st.bind(6, toZ);
+//
+//                                while (st.step()) {
+//                                    int x = st.columnInt(0);
+//                                    int y = st.columnInt(1);
+//                                    int z = st.columnInt(2);
+//                                    int ground = st.columnInt(3);
+//                                    ParcelModel parcel = new ParcelModel(x * _width * _height + y * _height + z, null, x, y, z);
+//                                    if (ground == 1) {
+//                                        ResourceModel resource = new ResourceModel(resourceInfo);
+//                                        resource.setParcel(parcel);
+//                                        parcel.setResource(resource);
+//                                    }
+//                                    parcels.add(parcel);
+//
+//                                    _parcelCache.put(parcel.getIndex(), parcel);
+//                                }
+//
+//                                st.reset(false);
+//                            } finally {
+//                                st.dispose();
+//                            }
+//
+//                        } catch (SQLiteException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        getParcelListener.onGetParcel(parcels);
+//                    });
+//                }
+//            }
+//        }).start();
+//
+////        System.out.println("get parcels time: " + (System.currentTimeMillis() - time));
+////
+////        return parcels;
+//    }
+
+    public void setParcels(ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
+        _parcels = parcels;
+        _parcelList = parcelList;
+        _parcelListFloor = new HashMap<>();
+
+    }
+
+    //    public List<ParcelModel>                    getParcelList() { return _parcelList; }
+//    public List<ParcelModel>                    getParcelList(int floor) { return _parcelListFloor.get(floor); }
     public Collection<ItemModel>                getItems() { return _items; }
     public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
-    public Collection<ResourceModel>            getResources() { return _resources; }
+    public Collection<PlantModel>            getResources() { return _resources; }
     public double                               getLight() { return _light; }
-    public ParcelModel                          getParcel(int x, int y) { return (x < 0 || x >= _width || y < 0 || y >= _height) ? null : _parcels[x][y][_floor]; }
-    public ParcelModel                          getParcel(int x, int y, int z) { return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= NB_FLOOR) ? null : _parcels[x][y][z]; }
+    public ParcelModel                          getParcel(int x, int y) { return getParcel(x, y, _floor); }
+    public ParcelModel                          getParcel(int x, int y, int z) {
+//        int index = x * _width * _height + y * _height + z;
+//
+//        ParcelModel parcel = _parcelCache.get(index);
+//        if (parcel != null) {
+//            return parcel;
+//        }
+//
+//        System.out.println("Get parcel in DB: " + x + "x" + y + "x" + z);
+//
+//        SQLHelper.getInstance().post(new DBRunnable() {
+//            @Override
+//            public void run(SQLiteConnection db) {
+//                try {
+//                    SQLiteStatement st = db.prepare("SELECT x, y, z, ground FROM parcel WHERE x = ? AND y = ? AND z = ?");
+//                    try {
+//                        st.bind(1, x).bind(2, y).bind(3, z);
+//                        ItemInfo resourceInfo = Data.getData().getItemInfo("base.granite");
+//                        while (st.step()) {
+//                            int ground = st.columnInt(3);
+//                            parcel = new ParcelModel(index, null, x, y, z);
+//                            if (ground == 1) {
+//                                ResourceModel resource = new ResourceModel(resourceInfo);
+//                                resource.setParcel(parcel);
+//                                parcel.setResource(resource);
+//                            }
+//
+//                            if (_parcelCacheQueue.size() == CACHE_SIZE) {
+//                                _parcelCache.remove(_parcelCacheQueue.remove(0).getIndex());
+//                            }
+//                            _parcelCacheQueue.add(parcel);
+//                            _parcelCache.put(index, parcel);
+//                        }
+//                    } finally {
+//                        st.dispose();
+//                    }
+//                } catch (SQLiteException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        return parcel;
+        return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : _parcels[x][y][z];
+    }
 
     public void                                 setLight(double light) { _light = light; }
 
@@ -62,51 +233,20 @@ public class WorldModule extends GameModule {
         _game = Game.getInstance();
         _width = _game.getInfo().worldWidth;
         _height = _game.getInfo().worldHeight;
+        _floors = _game.getInfo().worldFloors;
 
-        List<ParcelModel> parcelList = new ArrayList<>();
-        Map<Integer, List<ParcelModel>> parcelListFloors = new HashMap<>();
-        _parcels = new ParcelModel[_width][_height][NB_FLOOR];
+//        List<ParcelModel> parcelList = new ArrayList<>();
+//        _parcels = new ParcelModel[_width][_height][_floors];
 
-        for (int f = 0; f < NB_FLOOR; f++) {
-            parcelListFloors.put(f, new ArrayList<>());
-        }
+//        _parcelsDo = new ParcelModel[(int)Math.pow(2, 30)];
+//        parcelList.forEach(parcel -> {
+//            _parcelsDo[(parcel.x << 16) + (parcel.y << 8) + parcel.z] = parcel;
+//        });
 
-        for (int x = 0; x < _width; x++) {
-            _parcels[x] = new ParcelModel[_height][NB_FLOOR];
+//        WorldHelper.init(_parcels);
 
-            for (int y = 0; y < _height; y++) {
-                _parcels[x][y] = new ParcelModel[NB_FLOOR];
-
-                for (int f = 0; f < NB_FLOOR; f++) {
-                    ParcelModel parcel = new ParcelModel(weatherModule, x, y, f);
-                    _parcels[x][y][f] = parcel;
-                    _parcels[x][y][f].setIndex(x * _width + y);
-                    parcelList.add(_parcels[x][y][f]);
-                    parcelListFloors.get(f).add(_parcels[x][y][f]);
-                }
-            }
-        }
-
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                for (int z = 0; z < NB_FLOOR; z++) {
-                    _parcels[x][y][z]._neighbors = new ParcelModel[8];
-                    _parcels[x][y][z]._neighbors[0] = getParcel(x + 1, y, z);
-                    _parcels[x][y][z]._neighbors[1] = getParcel(x - 1, y, z);
-                    _parcels[x][y][z]._neighbors[2] = getParcel(x, y + 1, z);
-                    _parcels[x][y][z]._neighbors[3] = getParcel(x, y - 1, z);
-                    _parcels[x][y][z]._neighbors[4] = getParcel(x + 1, y + 1, z);
-                    _parcels[x][y][z]._neighbors[5] = getParcel(x + 1, y - 1, z);
-                    _parcels[x][y][z]._neighbors[6] = getParcel(x - 1, y + 1, z);
-                    _parcels[x][y][z]._neighbors[7] = getParcel(x - 1, y - 1, z);
-                }
-            }
-        }
-
-        WorldHelper.init(_parcels);
-
-        _parcelList = parcelList;
-        _parcelListFloor = parcelListFloors;
+//        _parcelList = parcelList;
+//        _parcelListFloor = parcelListFloors;
     }
 
     // Used only by serializers
@@ -217,8 +357,13 @@ public class WorldModule extends GameModule {
                 return putItem(parcel, itemInfo, data);
             }
 
-            if (itemInfo.isResource) {
-                return putResource(parcel, itemInfo, data);
+            if (itemInfo.isPlant) {
+                return putPlant(parcel, itemInfo, data);
+            }
+
+            if (itemInfo.isRock) {
+                parcel.setRockInfo(itemInfo);
+                return null;
             }
 
             if (itemInfo.isNetworkItem) {
@@ -232,21 +377,18 @@ public class WorldModule extends GameModule {
         return putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);
     }
 
-    private ResourceModel putResource(ParcelModel parcel, ItemInfo itemInfo, int matterSupply) {
+    private PlantModel putPlant(ParcelModel parcel, ItemInfo itemInfo, int matterSupply) {
         // Put item on floor
-        ResourceModel resource = new ResourceModel(itemInfo);
-        if (resource.isRock()) {
-            resource.getRock().setQuantity(matterSupply);
-        }
-        for (int i = 0; i < resource.getWidth(); i++) {
-            for (int j = 0; j < resource.getHeight(); j++) {
-                moveResourceToParcel(parcel, resource);
+        PlantModel plant = new PlantModel(itemInfo);
+        for (int i = 0; i < plant.getWidth(); i++) {
+            for (int j = 0; j < plant.getHeight(); j++) {
+                movePlantToParcel(parcel, plant);
             }
         }
-        _resources.add(resource);
-        Application.getInstance().notify(observer -> observer.onAddResource(resource));
+        _resources.add(plant);
+        Application.getInstance().notify(observer -> observer.onAddPlant(plant));
 
-        return resource;
+        return plant;
     }
 
     private ItemModel putItem(ParcelModel parcel, ItemInfo itemInfo, int progress) {
@@ -298,17 +440,14 @@ public class WorldModule extends GameModule {
         return null;
     }
 
-    public void removeResource(ResourceModel resource) {
+    public void removeResource(PlantModel resource) {
         if (resource != null) {
-            ParcelModel parcel = resource.getParcel();
-
-            if (parcel.getResource() == resource) {
-                if (resource.getParcel().getResource() == resource) {
-                    resource.getParcel().setResource(null);
-                }
-                _resources.remove(resource);
-                Application.getInstance().notify(observer -> observer.onRemoveResource(resource));
+            if (resource.getParcel().getPlant() == resource) {
+                resource.getParcel().setPlant(null);
             }
+
+            _resources.remove(resource);
+            Application.getInstance().notify(observer -> observer.onRemoveResource(resource));
         }
     }
 
@@ -342,7 +481,7 @@ public class WorldModule extends GameModule {
         }
 
         if (object.isResource()) {
-            removeResource((ResourceModel) object);
+            removeResource((PlantModel) object);
             return;
         }
 
@@ -435,8 +574,8 @@ public class WorldModule extends GameModule {
         }
     }
 
-    private void moveResourceToParcel(ParcelModel parcel, ResourceModel resource) {
-        parcel.setResource(resource);
+    private void movePlantToParcel(ParcelModel parcel, PlantModel resource) {
+        parcel.setPlant(resource);
         if (resource != null) {
             resource.setParcel(parcel);
         }
@@ -454,7 +593,7 @@ public class WorldModule extends GameModule {
 
     @Override
     public void onFloorUp() {
-        if (_floor < NB_FLOOR - 1) {
+        if (_floor < _floors - 1) {
             _floor++;
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }

@@ -1,0 +1,57 @@
+package org.smallbox.faraway.core.game.module.world.model.resource;
+
+import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant;
+import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+
+import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.*;
+
+public class PlantModel extends MapObjectModel {
+    private ItemInfo.ItemInfoPlant  _plantInfo;
+    private double                  _growRate;
+    private GrowingInfo             _growState;
+    private double                  _maturity;
+    private GardenAreaModel         _garden;
+    private boolean                 _hasSeed = true;
+    private double                  _nourish;
+    private int                     _tile;
+    private JobModel                _job;
+
+    public PlantModel(ItemInfo info) {
+        super(info);
+    }
+
+    public PlantModel(ItemInfo info, int id) {
+        super(info, id);
+    }
+
+    public void         setGrowRate(double growRate) { _growRate = growRate; }
+    public void         setGrowState(GrowingInfo growState) { _growState = growState; }
+    public void         setMaturity(double maturity) { _maturity = maturity; }
+    public void         setGarden(GardenAreaModel garden) { _garden = garden; }
+    public void         setSeed(boolean hasSeed) { _hasSeed = hasSeed; }
+    public void         setNourish(double nourish) { _nourish = nourish; }
+    public void         setTile(int tile) { _tile = tile; }
+    public void         setJob(JobModel job) { _job = job; }
+
+    public double       getMaturity() { return _maturity; }
+    public double       getNourish() { return _nourish; }
+    public double       getGrowRate() { return _growRate; }
+    public GrowingInfo  getGrowState() { return _growState; }
+    public int          getTile() { return _tile; }
+    public JobModel     getJob() { return _job; }
+
+    public boolean      isMature() { return _maturity >= 1; }
+    public boolean      isHarvestable() { return _maturity >= _plantInfo.minMaturity; }
+    public boolean      inGarden() { return _garden != null; }
+    public boolean      hasSeed() { return _hasSeed; }
+
+
+    public void grow(GrowingInfo growState) {
+        _growState = growState;
+        _growRate = growState.value;
+        _maturity = Math.min(1, _maturity + (_plantInfo.growing * growState.value));
+    }
+}

@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.FileUtils;
 
@@ -21,25 +21,25 @@ public class WorldModuleSerializer implements SerializerInterface {
 
     @Override
     public void save(FileOutputStream fos) throws IOException {
-        FileUtils.write(fos, "<parcels>");
-        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
-            if (parcel.z == 0) {
-                writeParcel(fos, parcel);
-            }
-        }
-        FileUtils.write(fos, "</parcels>");
+//        FileUtils.write(fos, "<parcels>");
+//        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
+//            if (parcel.z == 0) {
+//                writeParcel(fos, parcel);
+//            }
+//        }
+//        FileUtils.write(fos, "</parcels>");
     }
 
     private void writeParcel(FileOutputStream fos, ParcelModel parcel) throws IOException {
-        if (parcel.getItem() != null || parcel.getResource() != null || parcel.getStructure() != null || parcel.getConsumable() != null) {
+        if (parcel.getItem() != null || parcel.hasPlant() || parcel.getStructure() != null || parcel.getConsumable() != null) {
             FileUtils.write(fos, "<parcel x='" + parcel.x + "' y='" + parcel.y + "' z='" + parcel.z + "' type='" + parcel.getType() + "'>");
 
             if (parcel.getStructure() != null) {
                 writeStructure(fos, parcel.getStructure());
             }
 
-            if (parcel.getResource() != null) {
-                writeResource(fos, parcel.getResource());
+            if (parcel.hasPlant()) {
+                writePlant(fos, parcel.getPlant());
             }
 
             if (parcel.getItem() != null && parcel.getItem().getParcel() == parcel) {
@@ -86,16 +86,11 @@ public class WorldModuleSerializer implements SerializerInterface {
         FileUtils.write(fos, "</structure>");
     }
 
-    private void writeResource(FileOutputStream fos, ResourceModel resource) throws IOException {
+    private void writePlant(FileOutputStream fos, PlantModel resource) throws IOException {
         FileUtils.write(fos, "<resource id='" + resource.getId() + "' name='" + resource.getInfo().name + "'>");
         FileUtils.write(fos, "<health>" + resource.getHealth() + "</health>");
         FileUtils.write(fos, "<progress>" + resource.getProgress() + "</progress>");
-        if (resource.isRock()) {
-            FileUtils.write(fos, "<quantity>" + resource.getRock().getQuantity() + "</quantity>");
-        }
-        if (resource.isPlant()) {
-            FileUtils.write(fos, "<maturity>" + resource.getPlant().getMaturity() + "</maturity>");
-        }
+        FileUtils.write(fos, "<maturity>" + resource.getMaturity() + "</maturity>");
         FileUtils.write(fos, "</resource>");
     }
 
@@ -236,19 +231,10 @@ public class WorldModuleSerializer implements SerializerInterface {
         }
         apElement.resetXPath();
 
-        ResourceModel resource = (ResourceModel)manager.putObject(name, x, y, z, quantity, true);
+        PlantModel resource = (PlantModel)manager.putObject(name, x, y, z, quantity, true);
         if (resource != null) {
-//            resource.setTile(tile);
-//            resource.setValue(value);
             resource.setId(id);
-
-            if (resource.isPlant()) {
-                resource.getPlant().setMaturity(maturity);
-            }
-
-            if (resource.isRock()) {
-                resource.getRock().setQuantity(quantity);
-            }
+            resource.setMaturity(maturity);
         }
     }
 

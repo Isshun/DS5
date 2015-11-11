@@ -48,14 +48,17 @@ public class LoadGameModule extends GameModule {
     private void load() {
         _games.clear();
         FileUtils.list(new File("data/saves/")).stream().filter(File::isDirectory).forEach(gameDirectory -> {
-            try {
-                System.out.println("Load game directory: " + gameDirectory.getName());
-                GameInfo info = GameInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(new File(gameDirectory, "game.json").toPath()), StandardCharsets.UTF_8)));
-                if (info != null) {
-                    _games.add(info);
+            File file = new File(gameDirectory, "game.json");
+            if (file.exists()) {
+                try {
+                    System.out.println("Load game directory: " + gameDirectory.getName());
+                    GameInfo info = GameInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8)));
+                    if (info != null) {
+                        _games.add(info);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         });
 

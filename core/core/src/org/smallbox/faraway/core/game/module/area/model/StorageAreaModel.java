@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -32,7 +31,7 @@ public class StorageAreaModel extends AreaModel {
     public ParcelModel getFreeParcel(ConsumableModel consumable) {
         ParcelModel bestParcel = null;
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getItem() == null && parcel.getResource() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
+            if (parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
                 if (parcel.getConsumable() == null && bestParcel == null) {
                     bestParcel = parcel;
                 }
@@ -55,7 +54,7 @@ public class StorageAreaModel extends AreaModel {
             }
 
             // Storage parcel is free
-            if (parcel.getConsumable() == null && parcel.getItem() == null && parcel.getResource() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
+            if (parcel.getConsumable() == null && parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
                 int distance = WorldHelper.getDistance(parcel, consumableParcel);
                 if (distance < bestDistance) {
                     bestDistance = distance;

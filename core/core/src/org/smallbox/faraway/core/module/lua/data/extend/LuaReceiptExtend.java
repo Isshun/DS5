@@ -87,6 +87,6 @@ public class LuaReceiptExtend extends LuaExtend {
             }
         }
 
-        System.out.println("Extends receipt from lua: " + receiptGroupInfo.label);
+//        System.out.println("Extends receipt from lua: " + receiptGroupInfo.label);
     }
 }

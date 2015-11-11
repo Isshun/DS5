@@ -1,12 +1,17 @@
 package org.smallbox.faraway.core.game;
 
+import com.almworks.sqlite4java.SQLiteConnection;
+import com.almworks.sqlite4java.SQLiteException;
+import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -71,21 +76,28 @@ public class GameManager {
     public void create(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
 
-        GameInfo gameInfo = GameInfo.create(regionInfo, 300, 200);
-        if (!new File("data/saves/", gameInfo.name).mkdirs()) {
+        GameInfo gameInfo = GameInfo.create(regionInfo, 256, 200, 10);
+        File gameDirectory = new File("data/saves/", gameInfo.name);
+
+        if (!gameDirectory.mkdirs()) {
             System.out.println("Unable to create game save directory");
             return;
         }
 
-        Game game = new Game(gameInfo, Data.config);
-        game.init();
+        SQLHelper.getInstance().setDB(new File(gameDirectory, "game.db"));
 
+        Game game = new Game(gameInfo, Data.config);
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
-        world.create();
 
         WorldFactory factory = new WorldFactory();
         factory.create(game, world, regionInfo);
+
+        WorldHelper.init(factory.getParcels());
+        game.init();
+
         factory.createLandSite(game);
+
+//        world.create();
 
         startGame(game, null);
 

@@ -3,9 +3,9 @@ package org.smallbox.faraway.core.game.module.area.model;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
-import org.smallbox.faraway.core.game.module.job.model.MineJob;
+import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
+import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 import java.util.Map;
@@ -29,28 +29,29 @@ public class GardenAreaModel extends AreaModel {
     }
 
     public void cleanField(ParcelModel parcel) {
-        ResourceModel resource = parcel.getResource();
-        if (resource != null) {
-            // Remove previous job
-            if (resource.getJob() != null) {
-                ModuleHelper.getJobModule().removeJob(resource.getJob());
+        //  Plan to remove plant
+        if (parcel.hasPlant()) {
+            if (parcel.getPlant().getJob() != null) {
+                ModuleHelper.getJobModule().removeJob(parcel.getPlant().getJob());
             }
+            ModuleHelper.getJobModule().addJob(GatherJob.create(parcel.getPlant(), GatherJob.Mode.CUT));
+        }
 
-            //  Plan to cut / remove resource
-            if (resource.canBeMined()) {
-                ModuleHelper.getJobModule().addJob(MineJob.create(resource, null));
-            } else if (resource.canBeHarvested()) {
-                ModuleHelper.getJobModule().addJob(GatherJob.create(resource, GatherJob.Mode.CUT));
+        //  Plan to remove rock
+        if (parcel.getRockInfo() != null) {
+            if (parcel.hasDigJob()) {
+                ModuleHelper.getJobModule().removeJob(parcel.getDigJob());
             }
+            ModuleHelper.getJobModule().addJob(DigJob.create(parcel, parcel.getRockInfo(), null));
         }
     }
 
     public void resetField(ParcelModel parcel) {
-        if (parcel.getResource() == null) {
+        if (parcel.getPlant() == null) {
             // Put new resource on parcel
-            ResourceModel resource = (ResourceModel) ModuleHelper.getWorldModule().putObject(parcel, _resourceInfo, 0);
-            resource.getPlant().setGarden(this);
-            resource.getPlant().setSeed(false);
+            PlantModel resource = (PlantModel) ModuleHelper.getWorldModule().putObject(parcel, _resourceInfo, 0);
+            resource.setGarden(this);
+            resource.setSeed(false);
         }
     }
 
