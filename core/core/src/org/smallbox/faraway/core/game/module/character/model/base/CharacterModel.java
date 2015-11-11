@@ -213,7 +213,7 @@ public abstract class CharacterModel extends MovableModel {
             return;
         }
 
-        _path = PathManager.getInstance().getPath(_parcel, parcel);
+        _path = PathManager.getInstance().getPath(_parcel, parcel, false, false);
         _moveListener = listener;
     }
 

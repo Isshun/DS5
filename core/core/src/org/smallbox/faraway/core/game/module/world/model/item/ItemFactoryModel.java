@@ -128,7 +128,7 @@ public class ItemFactoryModel {
                         .filter(consumable -> consumable.getParcel().isWalkable())
                         .filter(consumable -> consumable.getLock() == null)
                         .forEach(consumable -> {
-                            PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel());
+                            PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel(), false, false);
                             if (path != null) {
                                 componentsDistance.add(new PotentialConsumable(consumable, path.getLength()));
                             }

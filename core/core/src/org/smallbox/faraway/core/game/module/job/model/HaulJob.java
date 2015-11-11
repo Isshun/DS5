@@ -89,7 +89,7 @@ public class HaulJob extends JobModel {
                 .filter(consumable -> consumable.getInfo() == _component.info)
                 .filter(consumable -> consumable.getParcel().isWalkable())
                 .forEach(consumable -> {
-                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel());
+                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
                     if (path != null) {
                         _potentialConsumables.add(new PotentialConsumable(consumable, path.getLength()));
                     }

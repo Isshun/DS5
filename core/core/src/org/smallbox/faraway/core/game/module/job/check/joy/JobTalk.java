@@ -20,7 +20,7 @@ public class JobTalk extends JobModel {
             ModuleHelper.getJobModule().closeJob(friend.getJob());
         }
 
-        PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());
+        PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel(), true, false);
         if (path == null) {
             return null;
         }

@@ -125,6 +125,14 @@ public class GDXRenderer {
         }
     }
 
+    public void draw(Sprite sprite) {
+        if (sprite != null) {
+            _batch.begin();
+            sprite.draw(_batch);
+            _batch.end();
+        }
+    }
+
     public void drawChunk(Texture texture, int x, int y) {
         if (texture != null) {
             _batch.begin();

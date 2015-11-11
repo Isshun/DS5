@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.GameConfig;
@@ -17,21 +17,24 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 import java.util.Collection;
 
 public class MinimapRenderer extends BaseRenderer {
-    private static final Color COLOR_BACKGROUND = new Color(0x000000);
-    private static final Color COLOR_ROCK = new Color(0x14dcb9);
-    private static final Color COLOR_PLANT = new Color(0x14fcb9);
-    private static final Color COLOR_STRUCTURE = new Color(0x1acb51);
-    private static final Color COLOR_CHARACTER = new Color(0xff5c89);
-    private static final Color COLOR_VIEW = new Color(0x14dcb9);
+    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
+    private static final int    COLOR_ROCK = 0x986a50ff;
+    private static final int    COLOR_PLANT = 0x9bcd4dff;
+    private static final int    COLOR_STRUCTURE = 0x1acb51ff;
+    private static final Color  COLOR_CHARACTER = new Color(0xff3c59ff);
+    private static final Color  COLOR_VIEW = new Color(0x349394ff);
 
+    private static final float FRAME_WIDTH = 380f;
+    private static final float FRAME_HEIGHT = 240f;
     private static final int POS_X = 1210;
     private static final int POS_Y = 84;
 
-    private int                 _floor;
-    private Sprite              _spriteMap;
-    private boolean             _isVisible;
-    private View                _panelMain;
-    private Collection<CharacterModel> _characters;
+    private int                         _floor;
+    private Sprite                      _spriteMap;
+    private View                        _panelMain;
+    private Collection<CharacterModel>  _characters;
+    private int                         _width;
+    private int                         _height;
 
     public int getLevel() {
         return MainRenderer.WORLD_RENDERER_LEVEL;
@@ -45,6 +48,8 @@ public class MinimapRenderer extends BaseRenderer {
     @Override
     protected void onLoad(Game game) {
         _characters = ModuleHelper.getCharacterModule().getCharacters();
+        _width = Game.getInstance().getInfo().worldWidth;
+        _height = Game.getInstance().getInfo().worldHeight;
     }
 
     @Override
@@ -54,13 +59,6 @@ public class MinimapRenderer extends BaseRenderer {
     @Override
     public void onFloorChange(int floor) {
         _floor = floor;
-    }
-
-    @Override
-    public void onCustomEvent(String tag, Object object) {
-        if ("mini_map.display".equals(tag)) {
-            _isVisible = (boolean) object;
-        }
     }
 
     @Override
@@ -79,49 +77,51 @@ public class MinimapRenderer extends BaseRenderer {
             }
 
             if (_spriteMap != null) {
-                renderer.draw(_spriteMap, POS_X, POS_Y);
+                renderer.draw(_spriteMap);
             }
 
-            int x = POS_X - (viewport.getPosX() / 32);
-            int y = POS_Y - (viewport.getPosY() / 32);
-            renderer.draw(COLOR_VIEW, x, y, 32, 1);
-            renderer.draw(COLOR_VIEW, x, y, 1, 32);
-            renderer.draw(COLOR_VIEW, x, y + 32, 32, 1);
-            renderer.draw(COLOR_VIEW, x + 32, y, 1, 32);
+            float ratioX = (FRAME_WIDTH / _width);
+            float ratioY = (FRAME_HEIGHT / _height);
+            int x = POS_X + (int)((Math.min(_width-32, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
+            int y = POS_Y + (int)((Math.min(_height-32, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
+            renderer.draw(COLOR_VIEW, x, y, (int) (32 * ratioX), 1);
+            renderer.draw(COLOR_VIEW, x, y, 1, (int) (32 * ratioY));
+            renderer.draw(COLOR_VIEW, x, (int) (y + 32 * ratioY), (int)(32 * ratioX), 1);
+            renderer.draw(COLOR_VIEW, (int) (x + 32 * ratioX), y, 1, (int)(32 * ratioY));
 
             for (CharacterModel character: _characters) {
-                renderer.draw(COLOR_CHARACTER, POS_X + character.getParcel().x, POS_Y + character.getParcel().y, 2, 2);
+                renderer.draw(COLOR_CHARACTER, (int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 2, 2);
             }
         }
     }
 
     private void createMap() {
         if (GameManager.getInstance().isRunning()) {
-            int width = Game.getInstance().getInfo().worldWidth;
-            int height = Game.getInstance().getInfo().worldHeight;
-
             _floor = 9;
 
             ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
-            Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB888);
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
+            Pixmap pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);
+            for (int x = 0; x < _width; x++) {
+                for (int y = 0; y < _height; y++) {
                     if (parcels[x][y][_floor].hasStructure()) {
-                        pixmap.drawPixel(x, y, (int) COLOR_STRUCTURE.toLong());
+                        pixmap.drawPixel(x, y, COLOR_STRUCTURE);
                     } else if (parcels[x][y][_floor].hasPlant()) {
-                        pixmap.drawPixel(x, y, (int) COLOR_PLANT.toLong());
+                        pixmap.drawPixel(x, y, COLOR_PLANT);
                     } else if (parcels[x][y][_floor].hasRock()) {
-                        pixmap.drawPixel(x, y, (int) COLOR_ROCK.toLong());
+                        pixmap.drawPixel(x, y, COLOR_ROCK);
                     } else {
-                        pixmap.drawPixel(x, y, (int) COLOR_BACKGROUND.toLong());
+                        pixmap.drawPixel(x, y, COLOR_BACKGROUND);
                     }
                 }
             }
 
-            _spriteMap = new Sprite(new Texture(pixmap));
-            _spriteMap.setSize(width, height);
-            _spriteMap.setRegion(0, 0, width, height);
+            _spriteMap = new Sprite(new Texture(pixmap, Pixmap.Format.RGB888, false));
+            _spriteMap.setSize(_width, _height);
+            _spriteMap.setRegion(0, 0, _width, _height);
             _spriteMap.flip(false, true);
+            _spriteMap.setScale(FRAME_WIDTH / _width, FRAME_HEIGHT / _height);
+            _spriteMap.setPosition(POS_X, POS_Y);
+            _spriteMap.setOrigin(0, 0);
         }
     }
 }

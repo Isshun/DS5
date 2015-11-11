@@ -145,7 +145,7 @@ public class CharacterRenderer extends BaseRenderer {
                             if (targetParcel.x < parcel.x) x -= 16;
                             if (targetParcel.x > parcel.x) x += 16;
                         }
-                        renderer.draw(c.getJob().getActionDrawable(), x, y);
+                        renderer.draw(job.getActionDrawable(), x, y);
                     }
 
                     if (c.isSleeping()) {

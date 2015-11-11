@@ -110,18 +110,13 @@ public class ConsumeJob extends JobModel {
             return JobActionReturn.ABORT;
         }
 
-        if (!check(character)) {
-            return JobActionReturn.ABORT;
-        }
+//        if (!check(character)) {
+//            return JobActionReturn.ABORT;
+//        }
 
         // Part 1 - Move to consumable
         if (_state == State.MOVE_TO_CONSUMABLE) {
             _state = State.MOVE_TO_FREE_SPACE;
-
-            if (_consumable == null) {
-                Log.error("wrong call");
-                return JobActionReturn.ABORT;
-            }
 
             if (_consumable.getLock() != this) {
                 Log.error("consumable is not locked for current job");

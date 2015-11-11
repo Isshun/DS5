@@ -170,11 +170,13 @@ public class ItemFinder extends GameModule {
         Map<MapObjectModel, Integer> ObjectsMatchingFilter = new HashMap<>();
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
-            int distance = Math.abs(mapObject.getParcel().x - fromParcel.x) + Math.abs(mapObject.getParcel().y - fromParcel.y);
-            if (mapObject.matchFilter(filter) && _pathManager.getPath(fromParcel, mapObject.getParcel()) != null) {
-                ObjectsMatchingFilter.put(mapObject, distance);
-                if (bestDistance > distance) {
-                    bestDistance = distance;
+            if (mapObject.matchFilter(filter)) {
+                PathModel path = _pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
+                if (path != null) {
+                    ObjectsMatchingFilter.put(mapObject, path.getLength());
+                    if (bestDistance > path.getLength()) {
+                        bestDistance = path.getLength();
+                    }
                 }
             }
         }

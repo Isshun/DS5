@@ -26,7 +26,7 @@ public class CheckJoyTalk extends CharacterCheck {
         CharacterModel bestCharacter = null;
         for (CharacterModel friend: ModuleHelper.getCharacterModule().getCharacters()) {
             if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isEntertainment())) {
-                PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel());
+                PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel(), true, false);
                 if (path != null && path.getLength() < bestDistance) {
                     bestDistance = path.getLength();
                     bestCharacter = friend;

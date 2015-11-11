@@ -82,7 +82,7 @@ public class StoreJob extends JobModel implements GameObserver {
                         && consumable.getInfo() == firstConsumable.getInfo()
                         && consumable.getStoreJob() == null
                         && consumable.getQuantity() + _quantity <= Data.config.inventoryMaxQuantity
-                        && PathManager.getInstance().getPath(consumable.getParcel(), firstConsumable.getParcel()) != null) {
+                        && PathManager.getInstance().hasPath(consumable.getParcel(), firstConsumable.getParcel())) {
                     _quantity += consumable.getQuantity();
                     _consumables.add(consumable);
                     consumable.addJob(this);

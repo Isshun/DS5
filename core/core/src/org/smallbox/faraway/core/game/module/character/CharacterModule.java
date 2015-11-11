@@ -202,4 +202,12 @@ public class CharacterModule extends GameModule {
         return Constant.MODULE_CHARACTER_PRIORITY;
     }
 
+    public boolean hasCharacterOnParcel(ParcelModel parcel) {
+        for (CharacterModel character: _characters) {
+            if (character.getParcel() == parcel) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
