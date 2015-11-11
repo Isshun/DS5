@@ -71,32 +71,30 @@ public class GDXApplication extends ApplicationAdapter {
             }
         }));
 
-        _loadTasks.add(new LoadTask("Create renderer", () -> {
-            _renderer = new GDXRenderer(_batch, _fonts);
-        }));
+        _loadTasks.add(new LoadTask("Create renderer", () ->
+                _renderer = new GDXRenderer(_batch, _fonts)));
 
-        _loadTasks.add(new LoadTask("Create app", () -> {
-            _application = Application.getInstance();
-        }));
+        _loadTasks.add(new LoadTask("Create app", () ->
+                _application = Application.getInstance()));
 
-        _loadTasks.add(new LoadTask("DB tasks", () -> {
-            new Thread(() -> {
-                while (_application.isRunning()) {
-                    SQLHelper.getInstance().update();
+        _loadTasks.add(new LoadTask("Launch DB thread", () ->
+                new Thread(() -> {
                     try {
-                        Thread.sleep(16);
-                    } catch (InterruptedException e) {
+                        while (_application.isRunning()) {
+                            SQLHelper.getInstance().update();
+                            try { Thread.sleep(16); } catch (InterruptedException e) { e.printStackTrace(); }
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
+                        displayError(e.getMessage());
+                        Application.getInstance().setRunning(false);
                     }
-                }
-                System.out.println("Background DB thread terminated");
-            }).start();
-        }));
+                    System.out.println("Background DB thread terminated");
+                }).start()));
 
         // Load resources
         _loadTasks.add(new LoadTask("Load resources", () -> {
-            Data data = new Data();
-            data.loadAll();
+            new Data().loadAll();
         }));
 
         // Load modules
@@ -121,29 +119,32 @@ public class GDXApplication extends ApplicationAdapter {
 //                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
                 GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
 //                GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
-//                _application.loadGame("12.sav");
-//                _application.whiteRoom();
 
 //                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
             }
         }));
 
-        _loadTasks.add(new LoadTask("Launch background thread", () ->
+        _loadTasks.add(new LoadTask("Launch world thread", () ->
                 new Thread(() -> {
                     try {
                         while (_application.isRunning()) {
                             _application.update();
                             Thread.sleep(16);
                         }
-                        System.out.println("Background thread terminated");
+                        System.out.println("Background world thread terminated");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        _loadTasks.add(new LoadTask("Application has encounter an error and will be closed\n" + e.getMessage(), () -> {
-                            try { Thread.sleep(4000); } catch (InterruptedException e1) { e1.printStackTrace(); }
-                            System.exit(1);
-                        }));
+                        displayError(e.getMessage());
+                        Application.getInstance().setRunning(false);
                     }
                 }).start()));
+    }
+
+    private void displayError(String message) {
+        _loadTasks.add(new LoadTask("Application has encounter an error and will be closed\n" + message, () -> {
+            try { Thread.sleep(4000); } catch (InterruptedException e1) { e1.printStackTrace(); }
+            System.exit(1);
+        }));
     }
 
     @Override

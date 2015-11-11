@@ -14,7 +14,7 @@ public class LayerGrid {
         void onRefreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY);
     }
 
-    private static final int    CACHE_SIZE = 25;
+    private static final int    CACHE_SIZE = 16;
     private final int           _columns;
     private final int           _rows;
     private RenderLayer[][]     _layers;

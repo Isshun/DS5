@@ -2,7 +2,7 @@ plant = nil
 
 data:extend({
     type = "view",
-    name = "base.ui.info_resource",
+    name = "base.ui.info_plant",
     position = {1200, 38},
     size = {400, 800},
     background = 0x121c1e,

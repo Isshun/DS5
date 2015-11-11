@@ -136,7 +136,7 @@ public class GDXRenderer {
     public void drawChunk(Texture texture, int x, int y) {
         if (texture != null) {
             _batch.begin();
-            _batch.draw(texture, x, y, 800, 800, 0, 0, 800, 800, false, true);
+            _batch.draw(texture, x, y, 512, 512, 0, 0, 512, 512, false, true);
             _batch.end();
         }
     }

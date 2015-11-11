@@ -6,6 +6,6 @@ data:extend({
     eden = { color = 0x33555588 },
     pointer = { type = "label", text = "OK", text_size = 34, position = {16, 7}, size = {32, 32}},
     on_parcel = function(parcel)
-        return parcel:getResource() and parcel:getResource():canBeHarvested()
+        return parcel:hasPlant()
     end
 })

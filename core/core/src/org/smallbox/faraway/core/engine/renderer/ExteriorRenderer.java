@@ -127,9 +127,9 @@ public class ExteriorRenderer extends WorldRenderer {
 //        }
 
         _layerGrid.setOnRefreshLayer((layer, fromX, fromY, toX, toY) -> {
-            Log.info("Refresh layer: " + layer.getIndex());
+//            Log.info("Refresh layer: " + layer.getIndex());
 
-            ModuleHelper.getWorldModule().getParcels(fromX, toX, fromY, toY, _floor, _floor, new GetParcelListener() {
+            ModuleHelper.getWorldModule().getParcels(fromX, toX-1, fromY, toY-1, _floor, _floor, new GetParcelListener() {
                 @Override
                 public void onGetParcel(Collection<ParcelModel> parcelsDo) {
                     Gdx.app.postRunnable(new Runnable() {
@@ -258,7 +258,6 @@ public class ExteriorRenderer extends WorldRenderer {
             for (int row = fromRow; row < toRow; row++) {
                 if (!_groundsUpToDate[col][row]) {
                     _groundsUpToDate[col][row] = true;
-//                if (_grounds[col][row] == null) {
                     createGround(col, row);
                 }
                 renderer.drawChunk(_grounds[col][row], viewportX + (col * CHUNK_SIZE * Constant.TILE_WIDTH), viewportY + (row * CHUNK_SIZE * Constant.TILE_HEIGHT));

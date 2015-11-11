@@ -17,7 +17,7 @@ import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
 public abstract class WorldRenderer extends BaseRenderer {
-    protected static final int    CACHE_SIZE = 25;
+    protected static final int    CACHE_SIZE = 16;
 
     protected SpriteManager       _spriteManager;
     protected MapObjectModel      _itemSelected;

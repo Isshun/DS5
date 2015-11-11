@@ -259,11 +259,11 @@ public class GameSelectionExtra {
         Application.getInstance().notify(observer -> observer.onSelectArea(area));
     }
 
-    public void select(PlantModel resource) {
+    public void select(PlantModel plant) {
         clear();
-        _selectedPlant = resource;
-        Application.getInstance().notify(observer -> observer.onSelectPlant(resource));
-        Application.getInstance().notify(observer -> observer.onSelectParcel(resource.getParcel()));
+        _selectedPlant = plant;
+        Application.getInstance().notify(observer -> observer.onSelectPlant(plant));
+        Application.getInstance().notify(observer -> observer.onSelectParcel(plant.getParcel()));
     }
 
     public void select(ItemModel item) {
