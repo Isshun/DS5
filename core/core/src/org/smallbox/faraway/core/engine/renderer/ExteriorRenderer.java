@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -264,30 +265,30 @@ public class ExteriorRenderer extends WorldRenderer {
             }
         }
 
-//        for (int x = toX; x >= fromX; x--) {
-//            for (int y = toY; y >= fromY; y--) {
-//                ParcelModel parcel = WorldHelper.getParcel(x, y);
-//                if (parcel != null) {
-//                    if (parcel.hasResource()) {
-//                        renderer.draw(_spriteManager.getItem(parcel.getResource(), parcel.getResource().getTile(), parcel.getResource().getTile()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
-//                    }
-//                    if (parcel.getStructure() != null) {
-//                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
-//                    }
-//                    if (parcel.getNetworkObjects() != null) {
-//                        for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
-//                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
-//                        }
-//                    }
-//                    if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
-//                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
-//                    }
-//                    if (parcel.getConsumable() != null) {
-//                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
-//                    }
-//                }
-//            }
-//        }
+        for (int x = toX; x >= fromX; x--) {
+            for (int y = toY; y >= fromY; y--) {
+                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                if (parcel != null) {
+                    if (parcel.hasPlant()) {
+                        renderer.draw(_spriteManager.getItem(parcel.getPlant(), parcel.getPlant().getTile(), parcel.getPlant().getTile()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                    }
+                    if (parcel.getStructure() != null) {
+                        renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                    }
+                    if (parcel.getNetworkObjects() != null) {
+                        for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
+                            renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                        }
+                    }
+                    if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
+                        renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                    }
+                    if (parcel.getConsumable() != null) {
+                        renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                    }
+                }
+            }
+        }
 
 //        System.out.println("from " + fromX + "x" + fromY);
 //
@@ -297,9 +298,9 @@ public class ExteriorRenderer extends WorldRenderer {
 //        }
 //
 
-        if (_layerGrid != null) {
-            _layerGrid.draw(renderer);
-        }
+//        if (_layerGrid != null) {
+//            _layerGrid.draw(renderer);
+//        }
     }
 
     private void createGround(int col, int row) {

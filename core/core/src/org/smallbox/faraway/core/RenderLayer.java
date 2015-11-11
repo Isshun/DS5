@@ -15,7 +15,7 @@ public class RenderLayer {
     private final int   _y;
     private final int   _width;
     private final int   _height;
-    private Texture _texture;
+    private Texture     _texture;
     SpriteCache         _cache;
     int                 _cacheId = -1;
     private int         _count;
