@@ -37,7 +37,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveResource(ResourceModel resource) {
+//    public void onRemovePlant(ResourceModel resource) {
 //    }
 //
 //    @Override

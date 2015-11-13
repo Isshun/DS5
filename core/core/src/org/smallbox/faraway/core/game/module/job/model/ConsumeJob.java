@@ -32,6 +32,7 @@ public class ConsumeJob extends JobModel {
     public static ConsumeJob create(CharacterModel character, ConsumableModel consumable) {
         assert consumable != null;
         assert character != null;
+        assert character.getInventory() == null;
 
         ConsumeJob job = character.getInventory() == consumable ? new ConsumeJob(character.getParcel()) : new ConsumeJob(consumable.getParcel());
         job.setCharacterRequire(character);

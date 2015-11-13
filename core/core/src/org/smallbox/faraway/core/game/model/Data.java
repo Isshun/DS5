@@ -27,14 +27,14 @@ public class Data {
     public List<CategoryInfo>                   categories;
     public List<ItemInfo>                       equipments;
     public List<PlanetInfo>                     planets = new ArrayList<>();
-    public Map<String, WeatherInfo>            weathers = new HashMap<>();
+    public Map<String, WeatherInfo>             weathers = new HashMap<>();
     public HashMap<Integer, String>             strings = new HashMap<>();
     public boolean                              needUIRefresh;
     public List<IDataLoader>                    _loaders;
     public HashMap<String, CharacterTypeInfo>   characters;
     public Map<String, UICursor>                cursors = new HashMap<>();
-    public List<BuffInfo>                      buffs = new ArrayList<>();
-    public List<DiseaseInfo>                   diseases = new ArrayList<>();
+    public List<BuffInfo>                       buffs = new ArrayList<>();
+    public List<DiseaseInfo>                    diseases = new ArrayList<>();
     public List<ItemInfo>                       consumables;
     public List<BindingInfo>                    bindings = new ArrayList<>();
 

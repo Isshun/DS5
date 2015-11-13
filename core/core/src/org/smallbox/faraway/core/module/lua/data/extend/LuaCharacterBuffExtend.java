@@ -140,7 +140,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
 
                                         // Apply death
                                         if ("death".equals(luaEffect.get("type").toString()) && data.character.isAlive()) {
-                                            data.character.getStats().isAlive = false;
+//                                            data.character.getStats().isAlive = false;
                                         }
                                     }
                                 }

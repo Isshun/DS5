@@ -135,9 +135,9 @@ public class PathManager extends GameModule {
         // Get path from cache
         long cacheId = getSum(fromParcel, toParcel);
         PathModel path = _cache.get(cacheId);
-        if (path != null && path.isValid()) {
-            return path;
-        }
+//        if (path != null && path.isValid()) {
+//            return path;
+//        }
 
         // Looking for new path
         path = PathModel.create(findPath(fromParcel, toParcel));
@@ -218,7 +218,7 @@ public class PathManager extends GameModule {
     public void onRemoveStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
     @Override
-    public void onRemoveResource(PlantModel resource) { _graph.resetAround(resource.getParcel()); }
+    public void onRemovePlant(PlantModel plant) { _graph.resetAround(plant.getParcel()); }
 
     @Override
     public void onRemoveRock(ParcelModel parcel) { _graph.resetAround(parcel); }

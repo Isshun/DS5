@@ -32,7 +32,7 @@ public class OxygenModule extends GameModule {
     protected void onUpdate(int tick) {
         RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
         if (roomModule != null) {
-            for (RoomModel room : roomModule.getRoomList()) {
+            for (RoomModel room : roomModule.getRooms()) {
                 if (room.isExterior()) {
                     room.setOxygen(_oxygen);
                 } else {
@@ -42,7 +42,7 @@ public class OxygenModule extends GameModule {
                 }
             }
 
-            roomModule.getRoomList().forEach(room -> room.getParcels().forEach(parcel -> parcel.setOxygen(room.getOxygen())));
+//            roomModule.getRooms().forEach(room -> room.getParcels().forEach(parcel -> parcel.setOxygen(room.getOxygen())));
 //            roomModule.getRoomlessParcels().forEach(parcel -> parcel.setOxygen(_oxygen));
         }
     }

@@ -287,7 +287,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveResource(ResourceModel resource) {
+//    public void onRemovePlant(ResourceModel resource) {
 //        if (resource.isLight()) {
 //            _needRefresh = true;
 //        }

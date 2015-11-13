@@ -139,9 +139,9 @@ public class ExteriorRenderer extends WorldRenderer {
                             layer.begin();
                             layer.setRefresh();
                             for (ParcelModel parcel: parcelsDo) {
-                                if (Data.config.render.floor) {
-                                    refreshFloor(layer, parcel.getType(), parcel.x, parcel.y);
-                                }
+//                                if (Data.config.render.floor) {
+//                                    refreshFloor(layer, 1, parcel.x, parcel.y);
+//                                }
                                 if (Data.config.render.structure) {
                                     refreshStructure(layer, parcel.getStructure(), parcel.x, parcel.y);
                                 }
@@ -195,7 +195,7 @@ public class ExteriorRenderer extends WorldRenderer {
             });
         });
 
-//        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
+//        ModuleHelper.getWorldModule().getPlant().forEach(resource -> {
 //            if (resource.getInfo().graphics != null && resource.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
 //                ParcelModel parcel = resource.getParcel();
 //                ItemInfo resourceInfo = resource.getInfo();

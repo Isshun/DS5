@@ -45,27 +45,27 @@ public class TemperatureModule extends GameModule {
     }
 
     public void onUpdate(int tick) {
-        if (_needUpdate) {
-            printDebug("update temperature (" + _temperature + ")");
-
-            // Check heat / cold effects and room heatPotency then apply to room
-            pass1();
-
-            // Diffuse temperature to neighborhood
-            pass2();
-
-            // Set potency use on each items
-            pass3();
-
-            // Set final room temperature
-            for (RoomModel room : _roomModule.getRoomList()) {
-                room.getTemperatureInfo().temperature = Math.round(room.getTemperatureInfo().temperatureTotal / room.getSize());
-            }
-        }
+//        if (_needUpdate) {
+//            printDebug("update temperature (" + _temperature + ")");
+//
+//            // Check heat / cold effects and room heatPotency then apply to room
+//            pass1();
+//
+//            // Diffuse temperature to neighborhood
+//            pass2();
+//
+//            // Set potency use on each items
+//            pass3();
+//
+//            // Set final room temperature
+//            for (RoomModel room : _roomModule.getRooms()) {
+//                room.getTemperatureInfo().temperature = Math.round(room.getTemperatureInfo().temperatureTotal / room.getSize());
+//            }
+//        }
     }
 
     private void pass3() {
-        for (RoomModel room : _roomModule.getRoomList()) {
+        for (RoomModel room : _roomModule.getRooms()) {
             if (!room.getHeatItems().isEmpty()) {
                 int heatPotencyUsePerItem = (room.getTemperatureInfo().heatPotency - room.getTemperatureInfo().heatPotencyLeft) / room.getHeatItems().size();
                 room.getHeatItems().forEach(item -> item.setPotencyUse(heatPotencyUsePerItem));
@@ -80,7 +80,7 @@ public class TemperatureModule extends GameModule {
 
     private void pass2() {
         for (int i = 0; i < 16; i++) {
-            for (RoomModel room : _roomModule.getRoomList()) {
+            for (RoomModel room : _roomModule.getRooms()) {
                 int roomSize = room.getSize();
                 if (!room.isExterior()) {
                     RoomModel.RoomTemperatureModel t1 = room.getTemperatureInfo();
@@ -108,7 +108,7 @@ public class TemperatureModule extends GameModule {
     }
 
     private void pass1() {
-        for (RoomModel room : _roomModule.getRoomList()) {
+        for (RoomModel room : _roomModule.getRooms()) {
             RoomModel.RoomTemperatureModel temperatureInfo = room.getTemperatureInfo();
             temperatureInfo.temperature = _temperature;
             temperatureInfo.temperatureTotal = _temperature * room.getSize();

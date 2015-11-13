@@ -102,7 +102,6 @@ public abstract class MapObjectModel extends ObjectModel {
     // Boolean
     public boolean          isConsumable() { return _info.isConsumable; }
     public boolean          isSelected() { return _selected; }
-    public boolean          isSolid() { return _progress >= _info.cost && !_info.isWalkable; }
     public boolean          isWalkable() { return _info.isWalkable; }
     public boolean          isSleepingItem() { return _info.isBed; }
     public boolean          isStructure() { return _info.isStructure; }

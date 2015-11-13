@@ -38,6 +38,10 @@ public class WeatherModule extends GameModule implements GameObserver {
     private double                  _temperatureTarget;
     private double                  _temperatureOffset;
 
+    public WeatherModule() {
+        ModuleHelper.getWeatherModule(this);
+    }
+
     @Override
     protected void onLoaded(Game game) {
         _lightTarget = 1;
@@ -70,9 +74,9 @@ public class WeatherModule extends GameModule implements GameObserver {
         Application.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
     }
 
-    public double getTemperature() {
-        return _temperature;
-    }
+    public double getTemperature() { return _temperature; }
+    public double getOxygen() { return 1; }
+    public double getLight() { return 1; }
 
     @Override
     protected void onUpdate(int tick) {

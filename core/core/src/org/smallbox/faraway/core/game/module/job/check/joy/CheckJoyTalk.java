@@ -13,12 +13,14 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 public class CheckJoyTalk extends CharacterCheck {
     @Override
     public JobModel create(CharacterModel character) {
-        return JobTalk.create(character, getBestCharacter(character));
+//        return JobTalk.create(character, getBestCharacter(character));
+        return null;
     }
 
     @Override
     public boolean check(CharacterModel character) {
-        return getBestCharacter(character) != null;
+//        return getBestCharacter(character) != null;
+        return false;
     }
 
     private CharacterModel getBestCharacter(CharacterModel character) {

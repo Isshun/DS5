@@ -36,7 +36,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
     @Override
     public boolean check(CharacterModel character) {
         if (character.getNeeds().get("oxygen") < 20) {
-            Optional<RoomModel> roomOpt = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList().stream().filter(room -> room.getOxygen() >= 0.75).findAny();
+            Optional<RoomModel> roomOpt = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getRooms().stream().filter(room -> room.getOxygen() >= 0.75).findAny();
             if (roomOpt.isPresent()) {
                 Optional<ParcelModel> parcelOpt = roomOpt.get().getParcels().stream().filter(ParcelModel::isWalkable).findAny();
                 if (parcelOpt.isPresent()) {

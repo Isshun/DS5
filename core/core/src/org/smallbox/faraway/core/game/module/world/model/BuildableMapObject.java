@@ -117,7 +117,6 @@ public class BuildableMapObject extends MapObjectModel {
     public boolean          isComplete() { return _isComplete; }
 
     public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
-
         // Drop all existing components on the floor
         _components.stream().filter(component -> component.currentQuantity > 0)
                 .forEach(component -> ModuleHelper.getWorldModule().putConsumable(_parcel, component.info, component.currentQuantity));

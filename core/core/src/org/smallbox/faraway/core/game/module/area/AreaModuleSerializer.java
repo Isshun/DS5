@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.area;
 
 import com.ximpleware.*;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.model.Data;
@@ -53,7 +54,7 @@ public class AreaModuleSerializer implements SerializerInterface {
     }
 
     @Override
-    public void load(GameInfo gameInfo, VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+    public void load(GameInfo gameInfo, VTDNav vn, GameSerializer.GameSerializerInterface gameSerializerInterface) throws XPathParseException, NavException, XPathEvalException {
         AutoPilot ap = new AutoPilot(vn);
         ap.selectXPath("/save/areas/*");
 

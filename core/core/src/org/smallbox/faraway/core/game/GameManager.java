@@ -4,9 +4,11 @@ import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import com.badlogic.gdx.Gdx;
+import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.data.serializer.GameSerializer.GameSerializerInterface;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
@@ -24,6 +26,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,13 +49,13 @@ public class GameManager {
         long time = System.currentTimeMillis();
 
         Game game = new Game(info, Data.config);
-        game.load(game.getInfo(), saveInfo, () ->
-                Gdx.app.postRunnable(() -> {
-                    game.init();
-                    startGame(game, saveInfo);
-                    _game = game;
-                    Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
-                }));
+        game.load(game.getInfo(), saveInfo, () -> Gdx.app.postRunnable(() -> {
+            System.gc();
+            game.init();
+            startGame(game, saveInfo);
+            _game = game;
+            Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
+        }));
     }
 
     public void startGame(Game game, GameInfo.GameSaveInfo saveInfo) {
@@ -123,6 +127,13 @@ public class GameManager {
             saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
             saveInfo.filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date);
             gameInfo.saveFiles.add(saveInfo);
+            try {
+                FileOutputStream fos = new FileOutputStream(new File(gameDirectory, "game.json"));
+                FileUtils.write(fos, gameInfo.toJSON().toString(4));
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             GameSerializer.save(gameDirectory, filename);
         }

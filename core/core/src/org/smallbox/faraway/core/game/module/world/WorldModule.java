@@ -169,7 +169,7 @@ public class WorldModule extends GameModule {
     public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
-    public Collection<PlantModel>            getResources() { return _resources; }
+    public Collection<PlantModel>               getPlant() { return _resources; }
     public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y) { return getParcel(x, y, _floor); }
     public ParcelModel                          getParcel(int x, int y, int z) {
@@ -446,7 +446,7 @@ public class WorldModule extends GameModule {
             }
 
             _resources.remove(resource);
-            Application.getInstance().notify(observer -> observer.onRemoveResource(resource));
+            Application.getInstance().notify(observer -> observer.onRemovePlant(resource));
         }
     }
 
@@ -589,6 +589,21 @@ public class WorldModule extends GameModule {
     public boolean isModuleMandatory() {
         return true;
     }
+
+    @Override
+    public void onStructureComplete(StructureModel structure) {
+        if (!structure.isWalkable() && structure.getParcel().hasConsumable()) {
+            moveConsumableToParcel(WorldHelper.getNearestFreeParcel(structure.getParcel(), true, true), structure.getParcel().getConsumable());
+        }
+    }
+
+    @Override
+    public void onItemComplete(ItemModel item) {
+        if (item.getParcel().hasConsumable()) {
+            moveConsumableToParcel(WorldHelper.getNearestFreeParcel(item.getParcel(), true, true), item.getParcel().getConsumable());
+        }
+    }
+
 
     @Override
     public void onFloorUp() {

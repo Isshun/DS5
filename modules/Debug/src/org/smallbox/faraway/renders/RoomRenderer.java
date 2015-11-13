@@ -10,21 +10,21 @@ import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.ui.UserInterface;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by Alex on 17/06/2015.
  */
 public class RoomRenderer extends GameDisplay {
-    private final SpriteManager _spriteManager;
-    private final TextureRegion[] _regions;
-    private final TextureRegion[] _regionsSelected;
-    private final List<RoomModel> _roomList;
+    private final SpriteManager             _spriteManager;
+    private final TextureRegion[]           _regions;
+    private final TextureRegion[]           _regionsSelected;
+    private final Collection<RoomModel>     _roomList;
 
     public RoomRenderer() {
-        _roomList = ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).getRoomList();
+        _roomList = ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).getRooms();
         _spriteManager = SpriteManager.getInstance();
         _regions = new TextureRegion[5];
         _regions[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);

@@ -1,19 +1,15 @@
 package org.smallbox.faraway.core.data.factory.world;
 
-import com.almworks.sqlite4java.SQLiteException;
-import com.almworks.sqlite4java.SQLiteStatement;
+import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.*;
@@ -28,7 +24,8 @@ public class WorldFactory {
     private int                 _height;
 
     public void create(Game game, WorldModule worldModule, RegionInfo regionInfo) {
-        WeatherModule weatherModule = (WeatherModule) ModuleManager.getInstance().getModule(WeatherModule.class);
+        MathUtils.random.setSeed(42);
+
         _floors = game.getInfo().worldFloors;
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
@@ -42,8 +39,8 @@ public class WorldFactory {
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 for (int f = 0; f < _floors; f++) {
-                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), weatherModule, x, y, f);
-                    parcel.setTile((int) (Math.random() * 2));
+                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
+                    parcel.setTile(MathUtils.random(0, 1));
                     parcelList.add(parcel);
                     parcelListFloors.get(f).add(parcel);
                     _parcels[x][y][f] = parcel;
@@ -66,7 +63,7 @@ public class WorldFactory {
             if ("random_light".equals(terrain.pattern) || "random_large".equals(terrain.pattern)) {
                 Log.notice("Create old with random pattern: " + terrain.pattern);
                 parcelList.stream()
-                        .filter(parcel -> Math.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
+                        .filter(parcel -> MathUtils.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
                         .forEach(parcel -> applyToParcel(terrain, parcel));
             }
             else if (terrain.pattern != null) {
@@ -94,7 +91,7 @@ public class WorldFactory {
                     }
                     if (parcel.hasPlant()) {
 //                        Application.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
-                        worldModule.getResources().add(parcel.getPlant());
+                        worldModule.getPlant().add(parcel.getPlant());
                     }
                     if (parcel.getItem() != null) {
 //                        Application.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
@@ -245,16 +242,18 @@ public class WorldFactory {
         ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
 
         // Put resources
-        ModuleHelper.getWorldModule().putObject("base.wood", freeParcels.poll(), 50);
-        ModuleHelper.getWorldModule().putObject("base.wood", freeParcels.poll(), 50);
-        ModuleHelper.getWorldModule().putObject("base.wood", freeParcels.poll(), 50);
+        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
 
         ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
         ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
         ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
 
-        ModuleHelper.getWorldModule().putObject("base.iron", freeParcels.poll(), 25);
-        ModuleHelper.getWorldModule().putObject("base.iron", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.iron_plate", freeParcels.poll(), 25);
+        ModuleHelper.getWorldModule().putObject("base.iron_plate", freeParcels.poll(), 25);
 
         game.getViewport().moveTo(startParcel.x, startParcel.y);
     }

@@ -21,13 +21,17 @@ import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
     private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
     private UILabel _label;
     private PathModel _path;
+    private PathModel _lastPath;
 
     public UILabel getLabelDrawable() {
         if (_label == null) {
@@ -55,8 +59,8 @@ public abstract class CharacterModel extends MovableModel {
     protected MoveListener                      _moveListener;
     protected boolean                           _isFaint;
     private double                              _moveStep;
-    private List<BuffCharacterModel>            _buffs;
-    public List<DiseaseCharacterModel>          _diseases;
+    private Collection<BuffCharacterModel>      _buffs;
+    public Collection<DiseaseCharacterModel>    _diseases;
     protected CharacterTypeInfo                 _type;
     private boolean                             _isSleeping;
 
@@ -66,7 +70,7 @@ public abstract class CharacterModel extends MovableModel {
         Log.info("Character #" + id);
 
         _type = type;
-        _buffs = new ArrayList<>();
+        _buffs = new ConcurrentLinkedQueue<>();
         _diseases = new ArrayList<>();
         _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
         _lag = (int)(Math.random() * 10);
@@ -111,8 +115,8 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String              getName();
     public double                       getMoveStep() { return _moveStep; }
     public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
-    public List<BuffCharacterModel>     getBuffs() { return _buffs; }
-    public List<DiseaseCharacterModel>  getDiseases() { return _diseases; }
+    public Collection<BuffCharacterModel>     getBuffs() { return _buffs; }
+    public Collection<DiseaseCharacterModel>  getDiseases() { return _diseases; }
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);
     public void                         addDisease(DiseaseCharacterModel disease) { _diseases.add(disease); }
@@ -220,11 +224,19 @@ public abstract class CharacterModel extends MovableModel {
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
             Log.error("Character is stuck !");
-            setParcel(WorldHelper.getNearestFreeParcel(_parcel, true, true));
+            setParcel(WorldHelper.getNearestWalkable(_parcel, 1, 20));
+            if (_path != null) {
+                _path = null;
+                _moveListener = null;
+            }
             if (_job != null) {
                 _job.quit(this);
                 _job = null;
             }
+        }
+
+        if (_job != null && _job.getTargetParcel() != _parcel && _path == null) {
+            _job.quit(this);
         }
     }
 
@@ -300,6 +312,7 @@ public abstract class CharacterModel extends MovableModel {
 
                 // Move complete, set path to null and call listener
                 else {
+                    _lastPath = _path;
                     _path = null;
 
                     if (_moveListener != null) {

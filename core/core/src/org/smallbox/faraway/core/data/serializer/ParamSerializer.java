@@ -14,7 +14,7 @@ import java.io.IOException;
 public class ParamSerializer implements SerializerInterface {
 
     @Override
-    public void load(GameInfo gameInfo, VTDNav vn) throws XPathParseException, NavException, XPathEvalException {
+    public void load(GameInfo gameInfo, VTDNav vn, GameSerializer.GameSerializerInterface gameSerializerInterface) throws XPathParseException, NavException, XPathEvalException {
         AutoPilot ap = new AutoPilot(vn);
         ap.selectXPath("/save/params/*");
 

@@ -90,6 +90,6 @@
 //    public void onAddConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.add(consumable); update(consumable.getParcel()); } }
 //    public void onRemoveItem(ItemModel item) { if (item.isLight()) { _items.remove(item); update(item.getParcel()); } }
 //    public void onRemoveStructure(StructureModel structure) { if (structure.isLight()) { _items.remove(structure); update(structure.getParcel()); } }
-//    public void onRemoveResource(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); update(resource.getParcel()); } }
+//    public void onRemovePlant(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); update(resource.getParcel()); } }
 //    public void onRemoveConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.remove(consumable); update(consumable.getParcel()); } }
 //}

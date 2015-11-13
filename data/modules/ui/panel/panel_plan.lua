@@ -1,6 +1,6 @@
 data:extend({
     type = "view",
-    position = {1200, 38},
+    position = {application.info.screen_width - 400, 38},
     size = {400, 800},
     background = 0x121c1e,
     id = "panel_plan",

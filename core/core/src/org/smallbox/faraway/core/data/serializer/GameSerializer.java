@@ -21,11 +21,17 @@ public class GameSerializer {
         public int                                      height;
     }
 
-    public static void load(GameInfo gameInfo, File gameDirectory, String filename) {
+    public interface GameSerializerInterface {
+        void onSerializerComplete();
+    }
+
+    public static void load(GameInfo gameInfo, File gameDirectory, String filename, GameSerializerInterface listener) {
         SQLHelper.getInstance().openDB(new File(gameDirectory, filename + ".db"));
 
         try {
-            new WorldModuleSerializer().load(gameInfo, null);
+            new WorldModuleSerializer().load(gameInfo, null, () -> {
+                listener.onSerializerComplete();
+            });
         } catch (XPathParseException | XPathEvalException | NavException e) {
             e.printStackTrace();
         }

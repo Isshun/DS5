@@ -1,6 +1,6 @@
 data:extend({
     type = "view",
-    position = {1200, 38},
+    position = {application.info.screen_width - 400, 38},
     size = {400, 800},
     background = 0x121c1e,
     id = "panel_build",
@@ -34,8 +34,9 @@ data:extend({
         for key, value in ipairs(main_categories) do
             local bt_main_category = application.ui:createLabel()
             bt_main_category:setSize(95, 36)
+            bt_main_category:setPadding(12, 10)
             bt_main_category:setText(value[1])
-            bt_main_category:setTextSize(18)
+            bt_main_category:setTextSize(16)
             bt_main_category:setBackgroundColor(0x778855)
             bt_main_category:setOnFocusListener(function(v, is_active)
                 bt_main_category:setBackgroundColor(is_active and 0x25c9cb or 0x349394)
@@ -88,7 +89,8 @@ function open_main_category(grid_categories, grid_items, strategy)
         local bt_category = application.ui:createLabel()
         bt_category:setSize(95, 36)
         bt_category:setText(value)
-        bt_category:setTextSize(18)
+        bt_category:setPadding(12, 10)
+        bt_category:setTextSize(16)
         bt_category:setBackgroundColor(0x349394)
         bt_category:setOnFocusListener(function(v, is_active)
             bt_category:setBackgroundColor(is_active and 0x25c9cb or 0x349394)

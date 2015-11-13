@@ -65,20 +65,29 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
         if (hasOwnThread()) {
             _needCreate = true;
             new Thread(() -> {
-                while (Application.getInstance().isRunning()) {
-                    if (_needCreate) {
-                        _needCreate = false;
-                        onCreate();
+                try {
+                    while (Application.getInstance().isRunning()) {
+                        if (_needCreate) {
+                            _needCreate = false;
+                            onCreate();
+                        }
+                        if (_needLoad) {
+                            _needLoad = false;
+                            onLoaded(Game.getInstance());
+                        }
+                        if (_needUpdate) {
+                            _needUpdate = false;
+                            onUpdate(_needUpdateTick);
+                        }
+                        try {
+                            Thread.sleep(16);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    if (_needLoad) {
-                        _needLoad = false;
-                        onLoaded(Game.getInstance());
-                    }
-                    if (_needUpdate) {
-                        _needUpdate = false;
-                        onUpdate(_needUpdateTick);
-                    }
-                    try { Thread.sleep(16); } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Application.getInstance().setRunning(false);
                 }
             }).start();
         } else {

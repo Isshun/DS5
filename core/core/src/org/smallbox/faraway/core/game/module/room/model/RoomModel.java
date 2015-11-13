@@ -25,7 +25,7 @@ public class RoomModel {
     private Set<CharacterModel>         _occupants;
     protected Set<ParcelModel>          _parcels;
     private boolean                     _isExterior;
-    private int                         _lightValue;
+    private double                      _lightValue;
     private double                      _permeability;
     private List<NeighborModel>         _neighborhood;
     private List<ItemModel>             _heatItems = new ArrayList<>();
@@ -35,7 +35,7 @@ public class RoomModel {
     private String                      _autoName;
     private String                      _name;
     private double                      _oxygen;
-    private ParcelModel                 _baseParcel;
+    private final ParcelModel           _baseParcel;
     private int                         _floor;
 
     public double getOxygen() { return _oxygen; }
@@ -60,10 +60,6 @@ public class RoomModel {
         return _baseParcel;
     }
 
-    public void setBaseParcel(ParcelModel parcel) {
-        _baseParcel = parcel;
-    }
-
     public double getTemperature() {
         return _temperatureInfo.temperature;
     }
@@ -71,6 +67,8 @@ public class RoomModel {
     public int getFloor() {
         return _floor;
     }
+
+    public void setTemperature(double temperature) { _temperatureInfo.temperature = temperature; }
 
     public enum RoomType {
         NONE,
@@ -83,7 +81,8 @@ public class RoomModel {
         WORLD, GARDEN
     }
 
-    public RoomModel(RoomType type, int floor) {
+    public RoomModel(RoomType type, int floor, ParcelModel baseParcel) {
+        _baseParcel = baseParcel;
         init(Utils.getUUID(), type, floor);
     }
 
@@ -117,7 +116,7 @@ public class RoomModel {
     public int                      getWidth() { return _maxX - _minX + 1; }
     public RoomType                 getType() { return _type; }
     public int                      getSize() { return _parcels.size(); }
-    public int                      getLight() { return _lightValue; }
+    public double                   getLight() { return _lightValue; }
     public Set<CharacterModel>      getOccupants() { return _occupants; }
     public RoomTemperatureModel     getTemperatureInfo() { return _temperatureInfo; }
     public List<NeighborModel>      getNeighbors() { return _neighborhood; }
@@ -129,7 +128,7 @@ public class RoomModel {
     public void                     setMinX(int x) { _minX = x; }
     public void                     setCommon(boolean common) { _isCommon = common; }
     public void                     setExterior(boolean isExterior) { _isExterior = isExterior; }
-    public void                     setLight(int lightValue) { _lightValue = lightValue; }
+    public void                     setLight(double lightValue) { _lightValue = lightValue; }
     public void                     setNeighborhoods(List<NeighborModel> neighborhood) { _neighborhood = neighborhood; }
 
     public boolean                  isCommon() { return _isCommon; }

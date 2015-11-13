@@ -19,6 +19,7 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.loader.ConfigLoader;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
@@ -44,6 +45,8 @@ public class DesktopLauncher {
 //        }
 //
 //        System.exit(0);
+
+        ParcelModel parcelModel = null;
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //        config.samples = 2;

@@ -25,7 +25,7 @@ public class GardenModule extends GameModule {
     @Override
     protected void onLoaded(Game game) {
 //        _temperatureModule = (TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class);
-        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
+        ModuleHelper.getWorldModule().getPlant().forEach(resource -> {
             if (resource.getInfo().plant != null) {
                 _plants.add(resource);
             }
@@ -161,9 +161,9 @@ public class GardenModule extends GameModule {
     }
 
     @Override
-    public void onRemoveResource(PlantModel resource) {
-        if (resource.getInfo().plant != null) {
-            _plants.remove(resource);
+    public void onRemovePlant(PlantModel plant) {
+        if (plant.getInfo().plant != null) {
+            _plants.remove(plant);
         }
     }
 }

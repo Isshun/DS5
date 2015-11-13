@@ -122,13 +122,11 @@ public class Game extends BaseGame {
         _tick = tick;
     }
 
-    public void    load(GameInfo gameInfo, GameInfo.GameSaveInfo saveInfo, Runnable runnable) {
+    public void    load(GameInfo gameInfo, GameInfo.GameSaveInfo saveInfo, GameSerializer.GameSerializerInterface listener) {
         long time = System.currentTimeMillis();
 
-        GameSerializer.load(gameInfo, new File("data/saves", gameInfo.name), saveInfo.filename);
-        SQLHelper.getInstance().post(db -> runnable.run());
+        GameSerializer.load(gameInfo, new File("data/saves", gameInfo.name), saveInfo.filename, listener);
         _save = null;
-        System.gc();
 
         Log.info("Game loaded (2): " + (System.currentTimeMillis() - time) + "ms");
     }

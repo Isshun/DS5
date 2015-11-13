@@ -8,9 +8,12 @@ import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
@@ -26,10 +29,10 @@ public class MinimapRenderer extends BaseRenderer {
     private static final Color  COLOR_CHARACTER = new Color(0xff3c59ff);
     private static final Color  COLOR_VIEW = new Color(0x349394ff);
 
-    private static final float FRAME_WIDTH = 380f;
-    private static final float FRAME_HEIGHT = 240f;
-    private static final int POS_X = 1210;
-    private static final int POS_Y = 84;
+    private static final float  FRAME_WIDTH = 380f;
+    private static final float  FRAME_HEIGHT = 240f;
+    private static int          POS_X = 1210;
+    private static final int    POS_Y = 84;
 
     private int                         _floor;
     private Sprite                      _spriteMap;
@@ -39,6 +42,7 @@ public class MinimapRenderer extends BaseRenderer {
     private int                         _height;
     private UILabel                     _lbFloor;
     private boolean                     _dirty;
+    private Pixmap                      _pixmap;
 
     public int getLevel() {
         return MainRenderer.WORLD_RENDERER_LEVEL;
@@ -51,6 +55,7 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     protected void onLoad(Game game) {
+        POS_X = Data.config.screen.resolution[0] - 390;
         _lbFloor = new UILabel();
         _lbFloor.setTextSize(16);
         _lbFloor.setTextColor(0x000000);
@@ -58,6 +63,9 @@ public class MinimapRenderer extends BaseRenderer {
         _characters = ModuleHelper.getCharacterModule().getCharacters();
         _width = Game.getInstance().getInfo().worldWidth;
         _height = Game.getInstance().getInfo().worldHeight;
+
+        _pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);
+        _floor = WorldHelper.getCurrentFloor();
     }
 
     @Override
@@ -74,6 +82,16 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
+    public void onStructureComplete(StructureModel structure) {
+        _dirty = true;
+    }
+
+    @Override
+    public void onItemComplete(ItemModel item) {
+        _dirty = true;
+    }
+
+    @Override
     public boolean isActive(GameConfig config) {
         return true;
     }
@@ -84,7 +102,8 @@ public class MinimapRenderer extends BaseRenderer {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_panelMain != null && _panelMain.isVisible()) {
-            if (_spriteMap == null || _dirty) {
+            if (_dirty || _spriteMap == null) {
+                _dirty = false;
                 createMap();
             }
 
@@ -113,25 +132,21 @@ public class MinimapRenderer extends BaseRenderer {
 
     private void createMap() {
         if (GameManager.getInstance().isRunning()) {
-            _floor = WorldHelper.getCurrentFloor();
-
             ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
-            Pixmap pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);
             for (int x = 0; x < _width; x++) {
                 for (int y = 0; y < _height; y++) {
                     if (parcels[x][y][_floor].hasStructure()) {
-                        pixmap.drawPixel(x, y, COLOR_STRUCTURE);
+                        _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
                     } else if (parcels[x][y][_floor].hasPlant()) {
-                        pixmap.drawPixel(x, y, COLOR_PLANT);
+                        _pixmap.drawPixel(x, y, COLOR_PLANT);
                     } else if (parcels[x][y][_floor].hasRock()) {
-                        pixmap.drawPixel(x, y, COLOR_ROCK);
+                        _pixmap.drawPixel(x, y, COLOR_ROCK);
                     } else {
-                        pixmap.drawPixel(x, y, COLOR_BACKGROUND);
+                        _pixmap.drawPixel(x, y, COLOR_BACKGROUND);
                     }
                 }
             }
-
-            _spriteMap = new Sprite(new Texture(pixmap, Pixmap.Format.RGB888, false));
+            _spriteMap = new Sprite(new Texture(_pixmap, Pixmap.Format.RGB888, false));
             _spriteMap.setSize(_width, _height);
             _spriteMap.setRegion(0, 0, _width, _height);
             _spriteMap.flip(false, true);

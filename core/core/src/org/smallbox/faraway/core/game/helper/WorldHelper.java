@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.helper;
 
+import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -86,7 +86,7 @@ public class WorldHelper {
             return false;
         }
 
-        if (parcel.hasPlant() && parcel.getPlant().isSolid()) {
+        if (parcel.hasPlant()) {
             return false;
         }
 
@@ -124,112 +124,93 @@ public class WorldHelper {
     public static ParcelModel getNearestFreeParcel(ParcelModel parcel, boolean acceptInterior, boolean acceptExterior) {
         int x = parcel.x;
         int y = parcel.y;
+        int z = parcel.z;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < i; j++) {
                 // Top
-                if (isFreeSpace(x + j, y + i, acceptInterior, acceptExterior)) return _parcels[x + j][y + i][_currentFloor];
-                if (isFreeSpace(x - j, y + i, acceptInterior, acceptExterior)) return _parcels[x - j][y + i][_currentFloor];
+                if (isFreeSpace(x + j, y + i, z, acceptInterior, acceptExterior)) return _parcels[x + j][y + i][z];
+                if (isFreeSpace(x - j, y + i, z, acceptInterior, acceptExterior)) return _parcels[x - j][y + i][z];
 
                 // Bottom
-                if (isFreeSpace(x + j, y - i, acceptInterior, acceptExterior)) return _parcels[x + j][y - i][_currentFloor];
-                if (isFreeSpace(x - j, y - i, acceptInterior, acceptExterior)) return _parcels[x - j][y - i][_currentFloor];
+                if (isFreeSpace(x + j, y - i, z, acceptInterior, acceptExterior)) return _parcels[x + j][y - i][z];
+                if (isFreeSpace(x - j, y - i, z, acceptInterior, acceptExterior)) return _parcels[x - j][y - i][z];
 
                 // Right
-                if (isFreeSpace(x + i, y + j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][_currentFloor];
-                if (isFreeSpace(x + i, y - j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][_currentFloor];
+                if (isFreeSpace(x + i, y + j, z, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][z];
+                if (isFreeSpace(x + i, y - j, z, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][z];
 
                 // Left
-                if (isFreeSpace(x - i, y + j, acceptInterior, acceptExterior)) return _parcels[x - i][y + j][_currentFloor];
-                if (isFreeSpace(x - i, y - j, acceptInterior, acceptExterior)) return _parcels[x - i][y - j][_currentFloor];
+                if (isFreeSpace(x - i, y + j, z, acceptInterior, acceptExterior)) return _parcels[x - i][y + j][z];
+                if (isFreeSpace(x - i, y - j, z, acceptInterior, acceptExterior)) return _parcels[x - i][y - j][z];
             }
         }
         return null;
     }
 
-    private static boolean isFreeSpace(int x, int y, boolean acceptInterior, boolean acceptExterior) {
+    private static boolean isFreeSpace(int x, int y, int z, boolean acceptInterior, boolean acceptExterior) {
         if (!WorldHelper.inMapBounds(x, y)) {
             return false;
         }
-        if (!acceptInterior && _parcels[x][y][_currentFloor].getRoom() != null && !_parcels[x][y][_currentFloor].getRoom().isExterior()) {
+        if (!acceptInterior && _parcels[x][y][z].getRoom() != null && !_parcels[x][y][z].getRoom().isExterior()) {
             return false;
         }
-        if (!acceptExterior && (_parcels[x][y][_currentFloor].getRoom() == null || _parcels[x][y][_currentFloor].getRoom().isExterior())) {
+        if (!acceptExterior && (_parcels[x][y][z].getRoom() == null || _parcels[x][y][z].getRoom().isExterior())) {
             return false;
         }
-        if (_parcels[x][y][_currentFloor].getStructure() != null && _parcels[x][y][_currentFloor].getStructure().isSolid()) {
+        if (_parcels[x][y][z].hasRock()) {
             return false;
         }
-        if (_parcels[x][y][_currentFloor].hasPlant()) {
+        if (_parcels[x][y][z].hasStructure() && !_parcels[x][y][z].getStructure().isWalkable()) {
             return false;
         }
-        if (_parcels[x][y][_currentFloor].getItem() != null) {
+        if (_parcels[x][y][z].hasPlant()) {
             return false;
         }
-        if (_parcels[x][y][_currentFloor].getConsumable() != null) {
+        if (_parcels[x][y][z].hasItem()) {
+            return false;
+        }
+        if (_parcels[x][y][z].hasConsumable()) {
             return false;
         }
         return true;
     }
 
     public static ParcelModel getNearestWalkable(ParcelModel parcel, int minDistance, int maxDistance) {
-        return getNearestWalkable(parcel.x, parcel.y, true, true, minDistance, maxDistance);
-    }
-
-    public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior) {
-        return getNearestWalkable(x, y, acceptInterior, acceptExterior, 0, 20);
-    }
-
-    public static ParcelModel getNearestWalkable(int x, int y, boolean acceptInterior, boolean acceptExterior, int minDistance, int maxDistance) {
+        int x = parcel.x;
+        int y = parcel.y;
+        int z = parcel.z;
         for (int i = minDistance; i <= maxDistance; i++) {
             for (int j = 0; j < i; j++) {
                 // Top
-                if (isWalkableParcel(x + j, y + i, acceptInterior, acceptExterior)) return _parcels[x + j][y + i][_currentFloor];
-                if (isWalkableParcel(x - j, y + i, acceptInterior, acceptExterior)) return _parcels[x - j][y + i][_currentFloor];
+                if (isWalkableParcel(x + j, y + i, z)) return _parcels[x + j][y + i][z];
+                if (isWalkableParcel(x - j, y + i, z)) return _parcels[x - j][y + i][z];
 
                 // Bottom
-                if (isWalkableParcel(x + j, y - i, acceptInterior, acceptExterior)) return _parcels[x + j][y - i][_currentFloor];
-                if (isWalkableParcel(x - j, y - i, acceptInterior, acceptExterior)) return _parcels[x - j][y - i][_currentFloor];
+                if (isWalkableParcel(x + j, y - i, z)) return _parcels[x + j][y - i][z];
+                if (isWalkableParcel(x - j, y - i, z)) return _parcels[x - j][y - i][z];
 
                 // Right
-                if (isWalkableParcel(x + i, y + j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][_currentFloor];
-                if (isWalkableParcel(x + i, y - j, acceptInterior, acceptExterior)) return _parcels[x + i][y + j][_currentFloor];
+                if (isWalkableParcel(x + i, y + j, z)) return _parcels[x + i][y + j][z];
+                if (isWalkableParcel(x + i, y - j, z)) return _parcels[x + i][y + j][z];
 
                 // Left
-                if (isWalkableParcel(x - i, y + j, acceptInterior, acceptExterior)) return _parcels[x - i][y + j][_currentFloor];
-                if (isWalkableParcel(x - i, y - j, acceptInterior, acceptExterior)) return _parcels[x - i][y - j][_currentFloor];
+                if (isWalkableParcel(x - i, y + j, z)) return _parcels[x - i][y + j][z];
+                if (isWalkableParcel(x - i, y - j, z)) return _parcels[x - i][y - j][z];
             }
         }
         return null;
     }
 
-    private static boolean isWalkableParcel(int x, int y, boolean acceptInterior, boolean acceptExterior) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return false;
-        }
-        if (!acceptInterior && _parcels[x][y][_currentFloor].getRoom() != null && !_parcels[x][y][_currentFloor].getRoom().isExterior()) {
-            return false;
-        }
-        if (!acceptExterior && (_parcels[x][y][_currentFloor].getRoom() == null || _parcels[x][y][_currentFloor].getRoom().isExterior())) {
-            return false;
-        }
-        if (_parcels[x][y][_currentFloor].getStructure() != null && !_parcels[x][y][_currentFloor].getStructure().isWalkable()) {
-            return false;
-        }
-        if (_parcels[x][y][_currentFloor].hasPlant() && !_parcels[x][y][_currentFloor].getPlant().isWalkable()) {
-            return false;
-        }
-//        if (_parcels[x][y][_currentFloor].getItem() != null) {
-//            return false;
-//        }
-        return true;
+    private static boolean isWalkableParcel(int x, int y, int z) {
+        return WorldHelper.inMapBounds(x, y) && _parcels[x][y][z].isWalkable();
     }
 
     public static ParcelModel getRandomFreeSpace(boolean acceptInterior, boolean acceptExterior) {
-        int startX = (int) (Math.random() * _width);
-        int startY = (int) (Math.random() * _height);
+        int startX = MathUtils.random(0, _width - 1);
+        int startY = MathUtils.random(0, _height - 1);
         for (int i = 0; i < _width; i++) {
             for (int j = 0; j < _height; j++) {
-                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, acceptInterior, acceptExterior)) {
+                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, _currentFloor, acceptInterior, acceptExterior)) {
                     return _parcels[(startX + i) % _width][(startY + j) % _height][_currentFloor];
                 }
             }
@@ -281,57 +262,6 @@ public class WorldHelper {
             return path.getLength();
         }
         return -1;
-    }
-
-    public static ParcelModel getNearest(int x, int y, boolean allowExterior, boolean allowInterior, boolean allowCharacter, boolean allowStructure, boolean allowItem, boolean allowConsumable, boolean allowResource) {
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < i; j++) {
-                // Top
-                if (checkParcel(x + j, y + i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + j][y + i][_currentFloor];
-                if (checkParcel(x - j, y + i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - j][y + i][_currentFloor];
-
-                // Bottom
-                if (checkParcel(x + j, y - i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + j][y - i][_currentFloor];
-                if (checkParcel(x - j, y - i, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - j][y - i][_currentFloor];
-
-                // Right
-                if (checkParcel(x + i, y + j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + i][y + j][_currentFloor];
-                if (checkParcel(x + i, y - j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x + i][y + j][_currentFloor];
-
-                // Left
-                if (checkParcel(x - i, y + j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - i][y + j][_currentFloor];
-                if (checkParcel(x - i, y - j, allowExterior, allowInterior, allowCharacter, allowStructure, allowItem, allowConsumable, allowResource)) return _parcels[x - i][y - j][_currentFloor];
-            }
-        }
-        return null;
-    }
-
-    private static boolean checkParcel(int x, int y, boolean allowExterior, boolean allowInterior, boolean allowCharacter, boolean allowStructure, boolean allowItem, boolean allowConsumable, boolean allowResource) {
-        if (!WorldHelper.inMapBounds(x, y)) {
-            return false;
-        }
-        if (!allowInterior && _parcels[x][y][_currentFloor].getRoom() != null && !_parcels[x][y][_currentFloor].getRoom().isExterior()) {
-            return false;
-        }
-        if (!allowExterior && (_parcels[x][y][_currentFloor].getRoom() == null || _parcels[x][y][_currentFloor].getRoom().isExterior())) {
-            return false;
-        }
-        if (!allowStructure && _parcels[x][y][_currentFloor].getStructure() != null && _parcels[x][y][_currentFloor].getStructure().isSolid()) {
-            return false;
-        }
-        if (!allowResource && _parcels[x][y][_currentFloor].hasPlant()) {
-            return false;
-        }
-        if (!allowItem && _parcels[x][y][_currentFloor].getItem() != null) {
-            return false;
-        }
-        if (!allowConsumable && _parcels[x][y][_currentFloor].getConsumable() != null) {
-            return false;
-        }
-        if (!allowCharacter && ModuleHelper.getCharacterModule().countCharacterAtPos(x, y) > 0) {
-            return false;
-        }
-        return true;
     }
 
     public static int getCurrentFloor() {

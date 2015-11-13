@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,46 +21,30 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public final int                        y;
     public final int                        z;
 
-    private final WeatherModule             _weatherModule;
     private ParcelEnvironment               _environment;
-    private double                          _light;
     private RoomModel                       _room;
-    private boolean                         _isStorage;
     private AreaModel                       _area;
-    private int                             _type = 1;
     private Array<Connection<ParcelModel>>  _connections;
-    public int                              tmpData;
-    public double                           light;
-    private boolean                         _isExterior;
-    private double                          _oxygen;
     private final int                       _index;
-    private ItemInfo                        _rockInfo;
     private int                             _tile;
     private DigJob                          _digJob;
+    private ItemInfo                        _rockInfo;
     public ConsumableModel                  _consumable;
     public StructureModel                   _structure;
     public PlantModel                       _plant;
     public ItemModel                        _item;
     public List<NetworkObjectModel>         _networks;
 
-    public ParcelModel(int index, WeatherModule weatherModule, int x, int y, int z) {
-        _weatherModule = weatherModule;
+    public ParcelModel(int index, int x, int y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
         _index = index;
-        _light = 0;
-        _isStorage = false;
     }
 
-    public void                     setLight(double light) { _light = light; this.light = light; }
     public void                     setRoom(RoomModel room) { _room = room; }
-    public void                     setStorage(boolean isStorage) { _isStorage = isStorage; }
     public void                     setArea(AreaModel area) { _area = area; }
     public void                     setConnections(Array<Connection<ParcelModel>> connections) { _connections = connections; }
-    public void                     setExterior(boolean isExterior) { _isExterior = isExterior; }
-    public void                     setOxygen(double oxygen) { _oxygen = oxygen; }
-    public void                     setType(int type) { _type = type; }
 
     public void                     setItem(ItemModel item) { _item = item; }
     public void                     setConsumable(ConsumableModel consumable) { _consumable = consumable; }
@@ -69,10 +54,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void                     setTile(int tile) { _tile = tile; }
     public void                     setDigJob(DigJob digJob) { _digJob = digJob; }
 
-    public boolean                  isStorage() { return _isStorage; }
     public boolean                  isExterior() { return _room == null || _room.isExterior(); }
-    public boolean                  canSupportRoof() { return (getStructure() != null && getStructure().getInfo().canSupportRoof) || (hasPlant() && getPlant().getInfo().canSupportRoof); }
+    public boolean                  canSupportRoof() { return (_structure != null && _structure.getInfo().canSupportRoof) || _rockInfo != null; }
     public boolean                  hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
+    public boolean                  hasConsumable() { return _consumable != null; }
     public boolean                  hasPlant() { return _plant != null; }
     public boolean                  hasItem() { return _item != null; }
     public boolean                  hasStructure() { return _structure != null; }
@@ -86,15 +71,18 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public StructureModel           getStructure() { return _structure; }
     public PlantModel               getPlant() { return _plant; }
     public ConsumableModel          getConsumable() { return _consumable; }
-    public double                   getOxygen() { return _oxygen; }
-    public double                   getLight() { return _light; }
     public RoomModel                getRoom() { return _room; }
     public AreaModel                getArea() { return _area; }
-    public int                      getType() { return _type; }
     public int                      getTile() { return _tile; }
     public ParcelEnvironment        getEnvironment() { return _environment; }
-    public double                   getTemperature() { return _room != null ? _room.getTemperature() : 10; }
-//    public double                 getTemperature() { return _room != null ? _room.getTemperature() : _weatherModule.getTemperature(); }
+    public double                   getLight() { return _room != null ? _room.getLight() : ModuleHelper.getWeatherModule().getLight(); }
+    public double                   getTemperature() { return _room != null ? _room.getTemperature() : ModuleHelper.getWeatherModule().getTemperature(); }
+    public double                   getOxygen() { return _room != null ? _room.getOxygen() : ModuleHelper.getWeatherModule().getOxygen(); }
+
+    @Override
+    public String toString() {
+        return x + "x" + y + "x" + z;
+    }
 
     public boolean isRoomOpen() {
         if (!isWalkable()) {

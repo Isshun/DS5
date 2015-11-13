@@ -276,11 +276,11 @@ public class GameActionExtra {
     }
 
     public void planDestroy(int x, int y, int z) {
-        if (WorldHelper.getItem(x, y) != null) {
-            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getItem(x, y)));
+        if (WorldHelper.getItem(x, y, z) != null) {
+            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getItem(x, y, z)));
         }
-        if (WorldHelper.getStructure(x, y) != null) {
-            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getStructure(x, y)));
+        if (WorldHelper.getStructure(x, y, z) != null) {
+            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getStructure(x, y, z)));
         }
     }
 

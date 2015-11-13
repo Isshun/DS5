@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.module.lua.data.LuaExtend;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -169,7 +170,7 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("receipts").isnil()) {
             itemInfo.receipts = new ArrayList<>();
-            if (!value.get("receipts").get("components").isnil()) {
+            if (value.get("receipts").length() == 0) {
                 readReceiptValue(itemInfo, value.get("receipts"));
             } else {
                 for (int i = 1; i <= value.get("receipts").length(); i++) {
@@ -232,32 +233,39 @@ public class LuaItemExtend extends LuaExtend {
 
     private void readReceiptValue(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         ItemInfo.ItemInfoReceipt receipt = new ItemInfo.ItemInfoReceipt();
-        receipt.components = new ArrayList<>();
 
+        receipt.components = new ArrayList<>();
         LuaValue luaComponents = value.get("components");
         if (!luaComponents.isnil()) {
-            receipt.products = new ArrayList<>();
-            for (int i = 1; i <= luaComponents.length(); i++) {
-                ItemInfo.ItemComponentInfo component = new ItemInfo.ItemComponentInfo();
-
-                // Get component item name
-                if (!luaComponents.get(i).get("item").isnil()) {
-                    component.itemName = getString(luaComponents.get(i), "item", null);
-                } else {
-                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.item");
+            if (luaComponents.length() == 0) {
+                readReceiptComponentValue(receipt.components, luaComponents);
+            } else {
+                for (int i = 1; i <= luaComponents.length(); i++) {
+                    readReceiptComponentValue(receipt.components, luaComponents.get(i));
                 }
-
-                // Get component quantity
-                if (!luaComponents.get(i).get("quantity").isnil()) {
-                    component.quantity = luaComponents.get(i).get("quantity").toint();
-                } else {
-                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.quantity");
-                }
-                receipt.components.add(component);
             }
         }
 
         itemInfo.receipts.add(receipt);
+    }
+
+    private void readReceiptComponentValue(List<ItemInfo.ItemComponentInfo> components, LuaValue luaComponent) throws DataExtendException {
+        ItemInfo.ItemComponentInfo component = new ItemInfo.ItemComponentInfo();
+
+        // Get component item name
+        if (!luaComponent.get("item").isnil()) {
+            component.itemName = getString(luaComponent, "item", null);
+        } else {
+            throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.item");
+        }
+
+        // Get component quantity
+        if (!luaComponent.get("quantity").isnil()) {
+            component.quantity = luaComponent.get("quantity").toint();
+        } else {
+            throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.quantity");
+        }
+        components.add(component);
     }
 
     private GraphicInfo readGraphic(LuaValue luaGraphic) throws DataExtendException {

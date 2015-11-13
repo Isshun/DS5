@@ -46,11 +46,39 @@ public class HaulJob extends JobModel {
         _buildItem = item;
         _component = component;
         _component.job = this;
+
+        // Create potentials consumables
+        _potentialConsumables = new ArrayList<>();
+        ModuleHelper.getWorldModule().getConsumables().stream()
+                .filter(consumable -> consumable.getInfo() == _component.info)
+                .forEach(consumable -> {
+                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
+                    _potentialConsumables.add(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
+                });
+        Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
     }
 
-    @Override
-    public ParcelModel getTargetParcel() {
-        return null;
+    public void addPotentialConsumable(ConsumableModel consumable) {
+        if (consumable.getInfo() == _component.info) {
+            PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
+            _potentialConsumables.add(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
+            Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
+        }
+    }
+
+    public void removePotentialConsumable(ConsumableModel consumable) {
+        if (consumable.getInfo() == _component.info) {
+            // If current consumable exists (then job is running), move character to next component (or quit if empty)
+            if (_currentConsumable == consumable) {
+                _currentConsumable = null;
+                if (!_potentialConsumables.isEmpty()) {
+                    moveToComponent();
+                } else {
+                    quit(_character);
+                }
+            }
+            _potentialConsumables.removeIf(potentialConsumable -> potentialConsumable.consumable == consumable);
+        }
     }
 
     @Override
@@ -66,39 +94,58 @@ public class HaulJob extends JobModel {
             return JobCheckReturn.BLOCKED;
         }
 
-        // Check if consumable exists
-        for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
-            if (consumable.getInfo() == _component.info && (consumable.getLock() == null || consumable.getLock() == this)) {
+        // Check if path exist
+        if (!PathManager.getInstance().hasPath(character.getParcel(), _buildItem.getParcel(), true, true)) {
+            return JobCheckReturn.STAND_BY;
+        }
+
+        // Check potential consumable
+        if (_potentialConsumables.isEmpty()) {
+            _status = JobStatus.MISSING_COMPONENT;
+            return JobCheckReturn.STAND_BY;
+        }
+
+        for (PotentialConsumable potentialConsumable: _potentialConsumables) {
+            if (potentialConsumable.consumable.getLock() == null && PathManager.getInstance().hasPath(character.getParcel(), potentialConsumable.consumable.getParcel())) {
                 return JobCheckReturn.OK;
             }
         }
-        _status = JobStatus.MISSING_COMPONENT;
 
         return JobCheckReturn.STAND_BY;
     }
 
     @Override
-    protected void onFinish() {
-    }
-
-    @Override
     protected void onStart(CharacterModel character) {
         _character = character;
-        _potentialConsumables = new ArrayList<>();
-        ModuleHelper.getWorldModule().getConsumables().stream()
-                .filter(consumable -> consumable.getInfo() == _component.info)
-                .filter(consumable -> consumable.getParcel().isWalkable())
-                .forEach(consumable -> {
-                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
-                    if (path != null) {
-                        _potentialConsumables.add(new PotentialConsumable(consumable, path.getLength()));
-                    }
-                });
-        Collections.sort(_potentialConsumables, (c1, c2) -> c2.distance - c1.distance);
 
         if (!_potentialConsumables.isEmpty()) {
             moveToComponent();
+        } else {
+            quit(character);
         }
+    }
+
+    @Override
+    public JobActionReturn onAction(CharacterModel character) {
+        return _return;
+    }
+
+    @Override
+    public void onQuit(CharacterModel character) {
+        if (character.getInventory() != null) {
+            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
+            character.setInventory(null);
+        }
+        _currentConsumable = null;
+        _potentialConsumables.forEach(potentialConsumable -> {
+            if (potentialConsumable.consumable.getLock() == this) {
+                potentialConsumable.consumable.lock(null);
+            }
+        });
+    }
+
+    @Override
+    protected void onFinish() {
     }
 
     private void moveToComponent() {
@@ -106,34 +153,37 @@ public class HaulJob extends JobModel {
         _currentConsumable.lock(this);
         _message = "Move to " + _currentConsumable.getInfo().label;
 
-        // TODO: reliquat
         _targetParcel = _currentConsumable.getParcel();
-
-        _character.moveTo(_currentConsumable.getParcel(), new MoveListener<CharacterModel>() {
+        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
             @Override
-            public void onReach(CharacterModel movable) {
-                int missingQuantity = _component.neededQuantity - _component.currentQuantity;
-                if (_currentConsumable.getQuantity() <= missingQuantity) {
-                    _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), _currentConsumable.getQuantity());
-                    ModuleHelper.getWorldModule().removeConsumable(_currentConsumable);
-                } else {
-                    _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), missingQuantity);
-                    _currentConsumable.setQuantity(_currentConsumable.getQuantity() - missingQuantity);
-                }
-                _potentialConsumables.remove(0);
-                _currentConsumable.lock(null);
-                _currentConsumable = null;
+            public void onReach(CharacterModel character) {
+                if (!_potentialConsumables.isEmpty() && _potentialConsumables.get(0).consumable == _currentConsumable) {
+                    int missingQuantity = _component.neededQuantity - _component.currentQuantity;
+                    if (_currentConsumable.getQuantity() <= missingQuantity) {
+                        _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), _currentConsumable.getQuantity());
+                        ModuleHelper.getWorldModule().removeConsumable(_currentConsumable);
+                    } else {
+                        _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), missingQuantity);
+                        _currentConsumable.setQuantity(_currentConsumable.getQuantity() - missingQuantity);
+                    }
+                    // TODO: java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+                    _potentialConsumables.remove(0);
+                    _currentConsumable.lock(null);
+                    _currentConsumable = null;
 
-                // Get next component
-                if (!_potentialConsumables.isEmpty() && _character.getInventory().getQuantity() < missingQuantity && _character.getInventory().getQuantity() < Data.config.inventoryMaxQuantity) {
-                    moveToComponent();
-                } else {
-                    moveToMainItem();
+                    // Get next component
+                    if (!_potentialConsumables.isEmpty() && _character.getInventory().getQuantity() < missingQuantity && _character.getInventory().getQuantity() < Data.config.inventoryMaxQuantity) {
+                        moveToComponent();
+                    } else {
+                        moveToMainItem();
+                    }
                 }
             }
 
             @Override
             public void onFail(CharacterModel movable) {
+                System.out.println("HaulJob: character cannot reach component");
+                quit(_character);
             }
         });
     }
@@ -147,7 +197,7 @@ public class HaulJob extends JobModel {
         // Store component in factory
         _character.moveTo(_buildItem.getParcel(), new MoveListener<CharacterModel>() {
             @Override
-            public void onReach(CharacterModel movable) {
+            public void onReach(CharacterModel character) {
                 _buildItem.addComponent(_character.getInventory());
 
                 // Clear inventory if consumable has been depleted
@@ -165,12 +215,8 @@ public class HaulJob extends JobModel {
 
             @Override
             public void onFail(CharacterModel movable) {
+                quit(_character);
             }
         });
-    }
-
-    @Override
-    public JobActionReturn onAction(CharacterModel character) {
-        return _return;
     }
 }

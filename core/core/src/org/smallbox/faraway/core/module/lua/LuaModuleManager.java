@@ -260,7 +260,7 @@ public class LuaModuleManager implements GameObserver {
 //    default void onRemoveItem(ItemModel item){}
 //    default void onRemoveConsumable(ConsumableModel consumable){}
 //    default void onRemoveStructure(StructureModel structure){}
-//    default void onRemoveResource(ResourceModel resource){}
+//    default void onRemovePlant(ResourceModel resource){}
 //    default void onRefreshItem(ItemModel item) {}
 //    default void onRefreshStructure(StructureModel structure) {}
 //    default void onDayChange(int day) {}

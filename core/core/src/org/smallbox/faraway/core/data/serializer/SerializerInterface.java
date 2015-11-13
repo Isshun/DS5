@@ -11,5 +11,5 @@ import java.io.IOException;
 
 public interface SerializerInterface {
     void save(FileOutputStream save) throws IOException;
-    void load(GameInfo gameInfo, VTDNav vn) throws XPathParseException, NavException, XPathEvalException;
+    void load(GameInfo gameInfo, VTDNav vn, GameSerializer.GameSerializerInterface gameSerializerInterface) throws XPathParseException, NavException, XPathEvalException;
 }

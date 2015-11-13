@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.module.lua.luaModel;
 
 import org.luaj.vm2.LuaTable;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.Config;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.game.Game;
@@ -33,6 +34,7 @@ public class LuaApplicationModel {
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
+    public Config                   config;
     public ApplicationInfo          info = new ApplicationInfo();
     public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;

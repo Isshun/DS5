@@ -80,14 +80,6 @@ public class CharacterModule extends GameModule {
             }
 
             else {
-                // Move stuck model
-                if (!c.getParcel().isWalkable()) {
-                    ParcelModel parcel = WorldHelper.getNearestWalkable(c.getParcel().x, c.getParcel().y, true, true);
-                    if (parcel != null) {
-                        c.setParcel(parcel);
-                    }
-                }
-
                 if (tick % 10 == c.getLag()) {
                     // Assign job
                     if (c.getJob() == null && !c.isSleeping()) {

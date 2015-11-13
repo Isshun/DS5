@@ -347,31 +347,26 @@ public class JobModule extends GameModule {
     }
 
     @Override
-    public void onJobQuit(JobModel job, CharacterModel character) {
-        assign(character);
-    }
-
-    @Override
     public void onJobFinish(JobModel job) {
         _toRemove.add(job);
     }
 
     @Override
     public void onAddConsumable(ConsumableModel consumable) {
-//        for (JobModel job: _jobs) {
-//            if (job instanceof BaseBuildJobModel) {
-//                ((BaseBuildJobModel)job).addConsumable(consumable);
-//            }
-//        }
+        for (JobModel job: _jobs) {
+            if (job instanceof HaulJob) {
+                ((HaulJob)job).addPotentialConsumable(consumable);
+            }
+        }
     }
 
     @Override
     public void onRemoveConsumable(ConsumableModel consumable){
-//        for (JobModel job: _jobs) {
-//            if (job instanceof BaseBuildJobModel) {
-//                ((BaseBuildJobModel)job).removeConsumable(consumable);
-//            }
-//        }
+        for (JobModel job: _jobs) {
+            if (job instanceof HaulJob) {
+                ((HaulJob)job).removePotentialConsumable(consumable);
+            }
+        }
     }
 
     public SerializerInterface getSerializer() {

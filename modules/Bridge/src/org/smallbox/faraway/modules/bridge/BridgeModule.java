@@ -143,7 +143,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveResource(ResourceModel resource) {
+//    public void onRemovePlant(ResourceModel resource) {
 //        sendEvent("RemoveResource", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("resource");
 //            rootElement.appendChild(characterElement);

@@ -54,7 +54,7 @@ public abstract class WorldRenderer extends BaseRenderer {
 
     @Override
     protected void onUpdate() {
-        ModuleHelper.getWorldModule().getResources().forEach(resource -> {
+        ModuleHelper.getWorldModule().getPlant().forEach(resource -> {
             if (resource.getInfo().graphics != null && resource.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
                 ParcelModel parcel = resource.getParcel();
 
@@ -309,9 +309,9 @@ public abstract class WorldRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onRemoveResource(PlantModel resource){
+    public void onRemovePlant(PlantModel plant){
         if (_layerGrid != null) {
-            _layerGrid.planRefresh(resource.getParcel().x / CACHE_SIZE, resource.getParcel().y / CACHE_SIZE);
+            _layerGrid.planRefresh(plant.getParcel().x / CACHE_SIZE, plant.getParcel().y / CACHE_SIZE);
         }
     }
 
