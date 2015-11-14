@@ -74,15 +74,23 @@ public class RoomModule extends GameModule implements GameObserver {
         System.out.println("RoomModule: refresh floor " + floor);
         long time = System.currentTimeMillis();
 
+        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
+        int width = Game.getInstance().getInfo().worldWidth;
+        int height = Game.getInstance().getInfo().worldHeight;
+
+        // Clean floor parcel
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                parcels[x][y][floor].setRoom(null);
+            }
+        }
+
         // Remove all room for this floor
         _rooms.removeIf(room -> room.getFloor() == floor);
 
         // Make new rooms on free parcels
         _closeList.clear();
         List<RoomModel> newRooms = new ArrayList<>();
-        int width = Game.getInstance().getInfo().worldWidth;
-        int height = Game.getInstance().getInfo().worldHeight;
-        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 ParcelModel parcel = parcels[x][y][floor];

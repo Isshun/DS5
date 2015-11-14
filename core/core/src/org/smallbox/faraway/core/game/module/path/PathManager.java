@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -36,14 +37,17 @@ public class PathManager extends GameModule {
         _runnable = new ArrayList<>();
     }
 
-    @Override
-    protected void onLoaded(Game game) {
-        _graph = new IndexedGraph(ModuleHelper.getWorldModule().getParcels(), game.getInfo());
+    public void init(GameInfo gameInfo) {
+        _graph = new IndexedGraph(ModuleHelper.getWorldModule().getParcels(), gameInfo);
         _finder = new IndexedAStarPathFinder<>(_graph);
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
         // Create cache
         _cache = new HashMap<>();
+    }
+
+    @Override
+    protected void onLoaded(Game game) {
     }
 
     @Override

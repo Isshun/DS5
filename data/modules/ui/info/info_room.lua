@@ -40,6 +40,12 @@ data:extend({
                 end
                 view:findById("lb_neighborhood"):setText("Neighborhood", ": ", str)
             end
+        else
+            view:findById("lb_name"):setText("None")
+            view:findById("lb_id"):setText(" ")
+            view:findById("lb_size"):setText(" ")
+            view:findById("lb_exterior"):setText(" ")
+            view:findById("lb_neighborhood"):setText(" ")
         end
     end
 })

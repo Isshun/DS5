@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.engine.renderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.data.ItemInfo;
@@ -355,7 +356,7 @@ public class ExteriorRenderer extends WorldRenderer {
 
     private void refreshPlant(RenderLayer layer, ParcelModel parcel, PlantModel plant, int x, int y) {
         if (parcel != null && plant != null) {
-            SpriteModel sprite = _spriteManager.getItem(plant, parcel.getTile(), plant.getTile());
+            Sprite sprite = _spriteManager.getItem(plant, parcel.getTile(), plant.getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }

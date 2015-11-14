@@ -165,6 +165,16 @@ public class LuaUIExtend extends LuaExtend {
                 view.setVisible(true);
             }
 
+            LuaValue effect = value.get("effects");
+            if (!effect.isnil()) {
+                view.setEffect(new FadeEffect(getInt(effect, "duration", 0)));
+            }
+
+            LuaValue animation = value.get("animations");
+            if (!animation.isnil()) {
+                view.setAnimation(new RotateAnimation(getInt(animation, "duration", 0)));
+            }
+
             LuaValue margin = value.get("margin");
             if (!margin.isnil()) {
                 if (margin.length() == 4) {

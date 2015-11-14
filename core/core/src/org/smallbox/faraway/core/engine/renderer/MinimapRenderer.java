@@ -92,6 +92,11 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
+    public void onRemoveRock(ParcelModel parcel) {
+        _dirty = true;
+    }
+
+    @Override
     public boolean isActive(GameConfig config) {
         return true;
     }

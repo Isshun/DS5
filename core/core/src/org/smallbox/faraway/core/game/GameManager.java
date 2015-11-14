@@ -49,9 +49,9 @@ public class GameManager {
         long time = System.currentTimeMillis();
 
         Game game = new Game(info, Data.config);
+        game.init();
         game.load(game.getInfo(), saveInfo, () -> Gdx.app.postRunnable(() -> {
             System.gc();
-            game.init();
             startGame(game, saveInfo);
             _game = game;
             Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");

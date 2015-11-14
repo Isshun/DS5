@@ -158,10 +158,11 @@ public class HaulJob extends JobModel {
             @Override
             public void onReach(CharacterModel character) {
                 if (!_potentialConsumables.isEmpty() && _potentialConsumables.get(0).consumable == _currentConsumable) {
+                    ConsumableModel currentConsumable = _currentConsumable;
                     int missingQuantity = _component.neededQuantity - _component.currentQuantity;
                     if (_currentConsumable.getQuantity() <= missingQuantity) {
                         _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), _currentConsumable.getQuantity());
-                        ModuleHelper.getWorldModule().removeConsumable(_currentConsumable);
+                        _currentConsumable.setQuantity(0);
                     } else {
                         _character.addInventory(new ConsumableModel(_currentConsumable.getInfo()), missingQuantity);
                         _currentConsumable.setQuantity(_currentConsumable.getQuantity() - missingQuantity);
@@ -170,6 +171,10 @@ public class HaulJob extends JobModel {
                     _potentialConsumables.remove(0);
                     _currentConsumable.lock(null);
                     _currentConsumable = null;
+
+                    if (currentConsumable.getQuantity() == 0) {
+                        ModuleHelper.getWorldModule().removeConsumable(currentConsumable);
+                    }
 
                     // Get next component
                     if (!_potentialConsumables.isEmpty() && _character.getInventory().getQuantity() < missingQuantity && _character.getInventory().getQuantity() < Data.config.inventoryMaxQuantity) {

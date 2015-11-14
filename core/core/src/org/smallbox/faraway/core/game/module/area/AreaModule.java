@@ -196,11 +196,6 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    public SerializerInterface getSerializer() {
-        return new AreaModuleSerializer();
-    }
-
-    @Override
     protected boolean loadOnStart() {
         return Data.config.manager.area;
     }

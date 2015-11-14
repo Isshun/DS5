@@ -223,7 +223,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            Log.error("Character is stuck !");
+            Log.error(getName() + " is stuck !");
             setParcel(WorldHelper.getNearestWalkable(_parcel, 1, 20));
             if (_path != null) {
                 _path = null;
@@ -312,10 +312,12 @@ public abstract class CharacterModel extends MovableModel {
 
                 // Move complete, set path to null and call listener
                 else {
+                    System.out.println(getName() + " Move complete");
                     _lastPath = _path;
                     _path = null;
 
                     if (_moveListener != null) {
+                        System.out.println(getName() + " Move complete: call onReach");
                         MoveListener listener = _moveListener;
                         _moveListener = null;
                         listener.onReach(this);

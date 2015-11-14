@@ -5,7 +5,7 @@ data:extend({
     in_game = false,
     visible = false,
     views = {
-        { type = "image", id = "img_background", size = {1920, 1200}},
+        { type = "image", id = "img_background", size = {1920, 1200}, effects = { type = "fade", duration = 250 }},
         { type = "view", position = {application.info.screen_width / 2 - 300 / 2, application.info.screen_height / 2 - 200}, views = {
             { type = "label", text = "Planets", text_size = 38},
             { type = "list", id = "list_planets", position = {0, 40}},

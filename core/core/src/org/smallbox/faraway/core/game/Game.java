@@ -1,35 +1,28 @@
 package org.smallbox.faraway.core.game;
 
-import com.almworks.sqlite4java.SQLiteConnection;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
-import org.smallbox.faraway.core.engine.renderer.ExteriorRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
-import org.smallbox.faraway.core.game.module.world.DBRunnable;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
-import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.views.widgets.UIImage;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 
 public class Game extends BaseGame {
     private static Game                     _self;
     private final GameInfo                  _info;
     private GameConfig                      _config;
     private final Collection<GameModule>    _modulesBase;
-    private final List<GameModule>          _modulesThird;
+    private final Collection<GameModule>    _modulesThird;
     private GameSerializer.GameSave         _save;
     private PlanetModel                     _planet;
 //    private RegionModel                     _region;

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.faraway.core.SpriteManager;
-import org.smallbox.faraway.core.SpriteModel;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 
 public class UIImage extends View {
@@ -14,31 +13,25 @@ public class UIImage extends View {
     protected int _textureHeight;
 
     private Sprite          _sprite;
-    private SpriteModel     _spriteModel;
     protected String        _path;
     protected double        _scaleX = 1;
     protected double        _scaleY = 1;
+    private boolean         _dirty;
 
     public UIImage(int width, int height) {
         super(width, height);
     }
 
-    public void setImage(SpriteModel spriteModel) {
-        if (spriteModel != null) {
-            setSize(spriteModel.getWidth(), spriteModel.getHeight());
-            _spriteModel = spriteModel;
-        }
-    }
-
     public void setImage(Sprite sprite) {
         _sprite = sprite;
+        _dirty = true;
     }
 
     public void setImage(String path) {
         if (!path.equals(_path)) {
-            _spriteModel = null;
             _sprite = null;
             _path = path;
+            _dirty = true;
         }
     }
 
@@ -63,17 +56,23 @@ public class UIImage extends View {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
-            if (_sprite == null && _spriteModel != null) {
-                _sprite = _spriteModel.getData();
-            }
 
-            if (_sprite == null && _path != null) {
-                try {
-                    _spriteModel = SpriteManager.getInstance().getIcon(_path);
-                    _spriteModel.getData().setRegion(0, 0, _width, _height);
-                    _spriteModel.getData().flip(false, true);
-                } catch (GdxRuntimeException e) {
+            if (_dirty) {
+                _dirty = false;
+
+                if (_path != null) {
+                    try {
+                        _sprite = SpriteManager.getInstance().getIcon(_path);
+                        _sprite.setRegion(0, 0, _width, _height);
+                        _sprite.setSize(_width, _height);
+                        _sprite.flip(false, true);
+                    } catch (GdxRuntimeException e) {
 //                e.printStackTrace();
+                    }
+                }
+
+                if (_effect != null) {
+                    _effect.reset(_sprite);
                 }
             }
 
@@ -83,7 +82,14 @@ public class UIImage extends View {
                     _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                     _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
                 }
-                renderer.draw(_sprite, _x + x, _y + y);
+
+                if (_effect != null && _effect._durationLeft > 0) {
+                    _effect.draw(renderer, _x + x, _y + y);
+                } else if (_animation != null) {
+                    _animation.draw(renderer, _sprite, _x + x, _y + y);
+                } else {
+                    renderer.draw(_sprite, _x + x, _y + y);
+                }
             }
         }
     }

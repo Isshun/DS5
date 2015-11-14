@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.game.Game;
@@ -139,7 +140,7 @@ public abstract class WorldRenderer extends BaseRenderer {
 
     private void refreshResource(RenderLayer layer, ParcelModel parcel, PlantModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-            SpriteModel sprite = _spriteManager.getItem(parcel.getPlant(), parcel.getPlant().getTile(), parcel.getPlant().getTile());
+            Sprite sprite = _spriteManager.getItem(parcel.getPlant(), parcel.getPlant().getTile(), parcel.getPlant().getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }
@@ -183,7 +184,7 @@ public abstract class WorldRenderer extends BaseRenderer {
             // Display components
             if (item.getFactory() != null && item.getFactory().getActiveReceipt() != null && item.getFactory().getActiveReceipt().getShoppingList() != null) {
                 for (ItemFactoryReceiptModel.FactoryShoppingItemModel component : item.getFactory().getActiveReceipt().getShoppingList()) {
-                    SpriteModel sprite = _spriteManager.getItem(component.consumable.getInfo());
+                    Sprite sprite = _spriteManager.getItem(component.consumable.getInfo());
                     if (sprite != null) {
                         if (item.getInfo().factory != null && item.getInfo().factory.inputSlots != null) {
                             layer.draw(sprite,
@@ -207,7 +208,7 @@ public abstract class WorldRenderer extends BaseRenderer {
         if (consumable != null) {
 
             // Regular item
-            SpriteModel sprite = _spriteManager.getItem(consumable, consumable.getCurrentFrame());
+            Sprite sprite = _spriteManager.getItem(consumable, consumable.getCurrentFrame());
             if (sprite != null) {
                 layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
             }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.core.SpriteModel;
 import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
@@ -55,20 +54,11 @@ public class GDXRenderer {
         _batch.end();
     }
 
-    public void draw(SpriteModel sprite, int x, int y, float alpha) {
+    public void draw(Sprite sprite, int x, int y, float alpha) {
         if (sprite != null) {
             _batch.begin();
-            sprite.getData().setPosition(x, y);
-            sprite.getData().draw(_batch, alpha);
-            _batch.end();
-        }
-    }
-
-    public void draw(SpriteModel sprite, int x, int y) {
-        if (sprite != null) {
-            _batch.begin();
-            sprite.getData().setPosition(x, y);
-            sprite.getData().draw(_batch);
+            sprite.setPosition(x, y);
+            sprite.draw(_batch, alpha);
             _batch.end();
         }
     }
@@ -120,7 +110,9 @@ public class GDXRenderer {
     public void draw(Sprite sprite, int x, int y) {
         if (sprite != null) {
             _batch.begin();
-            _batch.draw(sprite, x, y);
+            sprite.setPosition(x, y);
+            sprite.draw(_batch);
+//            _batch.draw(sprite, x, y);
             _batch.end();
         }
     }

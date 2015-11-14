@@ -7,20 +7,21 @@ import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 
+import java.util.Collection;
 import java.util.List;
 
 public class MainRenderer {
-    public static final int             WORLD_RENDERER_LEVEL = -100;
-    public static final int             PARTICLE_RENDERER_LEVEL = -99;
-    public static final int             INNER_RENDERER_LEVEL = -98;
-    public static final int             CHARACTER_RENDERER_LEVEL = -97;
-    public static final int             JOB_RENDERER_LEVEL = -96;
+    public static final int                 WORLD_RENDERER_LEVEL = -100;
+    public static final int                 PARTICLE_RENDERER_LEVEL = -99;
+    public static final int                 INNER_RENDERER_LEVEL = -98;
+    public static final int                 CHARACTER_RENDERER_LEVEL = -97;
+    public static final int                 JOB_RENDERER_LEVEL = -96;
 
-    private static MainRenderer         _self;
-    private static long                 _renderTime;
-    private static int                  _frame;
-    private final List<BaseRenderer>    _renders;
-    private final BaseRenderer          _minimapRender;
+    private static MainRenderer             _self;
+    private static long                     _renderTime;
+    private static int                      _frame;
+    private final Collection<BaseRenderer>  _renders;
+    private final BaseRenderer              _minimapRender;
 
     public MainRenderer(GDXRenderer renderer, GameConfig config) {
         _self = this;
@@ -52,7 +53,6 @@ public class MainRenderer {
 
     public void init(GameConfig config, Game game) {
         _frame = 0;
-        _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
         _renders.stream().filter(renderer -> renderer.isActive(config)).forEach(render -> render.load(game));
         _minimapRender.load(game);
     }
@@ -76,7 +76,7 @@ public class MainRenderer {
 
     public static long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
 
-    public List<BaseRenderer> getRenders() {
+    public Collection<BaseRenderer> getRenders() {
         return _renders;
     }
 

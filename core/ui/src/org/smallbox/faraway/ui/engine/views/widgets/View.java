@@ -7,6 +7,8 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.lua.LuaModule;
+import org.smallbox.faraway.core.module.lua.data.extend.FadeEffect;
+import org.smallbox.faraway.core.module.lua.data.extend.RotateAnimation;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -22,6 +24,12 @@ import java.util.List;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
+    protected RotateAnimation _animation;
+
+    public void setAnimation(RotateAnimation animation) {
+        _animation = animation;
+    }
+
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
     protected List<View>        _views = new ArrayList<>();
@@ -64,6 +72,7 @@ public abstract class View {
     protected int               _offsetX;
     protected int               _offsetY;
     protected Color             _backgroundColor;
+    protected FadeEffect        _effect;
 
     public View(int width, int height) {
         _width = width;
@@ -95,6 +104,7 @@ public abstract class View {
     public void         setBackgroundColor(Color color) { _backgroundColor = color; }
     public void         setVisible(boolean visible) { _isVisible = visible; }
     public void         setFixedSize(int width, int height) { _fixedWidth = width; _fixedHeight = height; }
+    public void         setEffect(FadeEffect effect) { _effect = effect; }
 
     private Color       getBackgroundColor() { return _backgroundColor; }
     public View         getParent() { return _parent; }
@@ -110,6 +120,7 @@ public abstract class View {
     public int          getMarginRight() { return _marginRight; }
     public int          getMarginBottom() { return _marginBottom; }
     public int          getMarginLeft() { return _marginLeft; }
+    public FadeEffect   getEffect() { return _effect; }
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {

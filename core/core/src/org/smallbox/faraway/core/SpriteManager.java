@@ -41,11 +41,11 @@ public class SpriteManager {
 
     private static int                      _count;
     private static SpriteManager            _self;
-    private Map<Integer, SpriteModel>       _spritesCharacters;
-    private Map<Long, SpriteModel>          _sprites;
+    private Map<Integer, Sprite>            _spritesCharacters;
+    private Map<Long, Sprite>               _sprites;
     private Texture[]                       _textureCharacters;
-    private SpriteModel[]                   _selectors;
-    private Map<String, SpriteModel>        _icons;
+    private Sprite[]                        _selectors;
+    private Map<String, Sprite>             _icons;
     private ItemInfo                        _groundItemInfo;
     private Map<String, Texture>            _textureCache = new HashMap<>();
 
@@ -89,31 +89,35 @@ public class SpriteManager {
         _textureCharacters[3] = new Texture("data/res/Characters/NuChara01.png");
 
         Texture itemSelector = new Texture("data/res/item_selector.png");
-        _selectors = new SpriteModel[NB_SELECTOR_TILE];
-        _selectors[0] = new SpriteModel(itemSelector, 0, 0, 8, 8);
-        _selectors[1] = new SpriteModel(itemSelector, 8, 0, 8, 8);
-        _selectors[2] = new SpriteModel(itemSelector, 0, 8, 8, 8);
-        _selectors[3] = new SpriteModel(itemSelector, 8, 8, 8, 8);
+        _selectors = new Sprite[NB_SELECTOR_TILE];
+        _selectors[0] = new Sprite(itemSelector, 0, 0, 8, 8);
+        _selectors[0].flip(false, true);
+        _selectors[1] = new Sprite(itemSelector, 8, 0, 8, 8);
+        _selectors[1].flip(false, true);
+        _selectors[2] = new Sprite(itemSelector, 0, 8, 8, 8);
+        _selectors[2].flip(false, true);
+        _selectors[3] = new Sprite(itemSelector, 8, 8, 8, 8);
+        _selectors[3].flip(false, true);
 
 //        _textureItemSelector = new Texture("data/res/Tilesets/item_selector.png");
-//        _itemSelectors = new SpriteModel[NB_ITEM_SELECTOR_TILE];
+//        _itemSelectors = new Sprite[NB_ITEM_SELECTOR_TILE];
 //        for (int i = 0; i < NB_ITEM_SELECTOR_TILE; i++) {
-//            _itemSelectors[i] = new SpriteModel(_textureItemSelector, i * 32, 0, 32, 32);
+//            _itemSelectors[i] = new Sprite(_textureItemSelector, i * 32, 0, 32, 32);
 //        }
     }
 
-    public SpriteModel getIcon(String path) {
+    public Sprite getIcon(String path) {
         if (!_icons.containsKey(path)) {
             File file = getFile(path);
             Texture texture = new Texture(new FileHandle(file));
-            SpriteModel sprite = new SpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
+            Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
             _icons.put(path, sprite);
         }
         return _icons.get(path);
     }
 
 //    // TODO
-//    public SpriteModel getItem(MapObjectModel item, int tile) {
+//    public Sprite getItem(MapObjectModel item, int tile) {
 //        if (item == null) {
 //            return null;
 //        }
@@ -132,7 +136,7 @@ public class SpriteManager {
 //        return getSprite(item.getInfo(), item.getGraphic(), tile, 0, 255, false);
 //    }
 
-//    public SpriteModel getItem(ItemInfo info, int tile) {
+//    public Sprite getItem(ItemInfo info, int tile) {
 //        if (info == null) {
 //            return null;
 //        }
@@ -152,28 +156,28 @@ public class SpriteManager {
 //        return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false);
 //    }
 
-    public SpriteModel getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
-    public SpriteModel getItem(StructureModel structure) { return getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? 1 : 0, 0, 255, false); }
-    public SpriteModel getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 1, 1); }
-    public SpriteModel getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
-    public SpriteModel getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
+    public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
+    public Sprite getItem(StructureModel structure) { return getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? 1 : 0, 0, 255, false); }
+    public Sprite getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 1, 1); }
+    public Sprite getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
+    public Sprite getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
-    public SpriteModel getItem(PlantModel resource, int offsetX, int offsetY) {
+    public Sprite getItem(PlantModel resource, int offsetX, int offsetY) {
         return getSprite(resource.getInfo(), resource.getGraphic(), offsetX, offsetY, 255, false);
     }
 
-    public SpriteModel getItem(ConsumableModel consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
-    public SpriteModel getItem(ConsumableModel consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+    public Sprite getItem(ConsumableModel consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+    public Sprite getItem(ConsumableModel consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
 
-    public SpriteModel getIcon(ItemInfo info) {
+    public Sprite getIcon(ItemInfo info) {
         return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;
     }
 
-    private SpriteModel getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
+    private Sprite getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
         return getSprite(graphicInfo, tile, state, alpha, isIcon, itemInfo.width, itemInfo.height);
     }
 
-    private SpriteModel getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
+    private Sprite getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
         if (graphicInfo == null) {
             return null;
         }
@@ -189,7 +193,7 @@ public class SpriteManager {
                 getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
                 getSum(graphicInfo.spriteId, offsetX, offsetY, isIcon ? 1 : 0);
 
-        SpriteModel sprite = _sprites.get(sum);
+        Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
             File imgFile = getFile(graphicInfo);
             if (imgFile.exists()) {
@@ -256,31 +260,33 @@ public class SpriteManager {
 
                     texture.getTextureData().disposePixmap();
 
-                    sprite = new SpriteModel(new Texture(pixmap), 0, 0, 64, 64);
-                    sprite.getData().setColor(new Color(255, 255, 255, alpha));
+                    sprite = new Sprite(new Texture(pixmap), 0, 0, 64, 64);
+                    sprite.setColor(new Color(255, 255, 255, alpha));
+                    sprite.setFlip(false, true);
                     _sprites.put(sum, sprite);
 
-//                    sprite = new SpriteModel(texture, (tile % 3) * 32, (tile / 3) * 32, 32, 32);
-//                    sprite.getData().setColor(new Color(255, 255, 255, alpha));
+//                    sprite = new Sprite(texture, (tile % 3) * 32, (tile / 3) * 32, 32, 32);
+//                    sprite.setColor(new Color(255, 255, 255, alpha));
 //                    _sprites.put(sum, sprite);
                 }
 
                 else {
-                    sprite = new SpriteModel(texture,
+                    sprite = new Sprite(texture,
                             offsetX,
                             offsetY,
                             width * Constant.TILE_WIDTH,
                             height * Constant.TILE_HEIGHT);
-                    sprite.getData().setColor(new Color(255, 255, 255, alpha));
+                    sprite.setFlip(false, true);
+                    sprite.setColor(new Color(255, 255, 255, alpha));
                     if (isIcon) {
                         switch (Math.max(width, height)) {
-                            case 2: sprite.getData().setScale(0.85f, 0.85f); break;
-                            case 3: sprite.getData().setScale(0.55f, 0.55f); break;
-                            case 4: sprite.getData().setScale(0.35f, 0.35f); break;
-                            case 5: sprite.getData().setScale(0.32f, 0.32f); break;
-                            case 6: sprite.getData().setScale(0.3f, 0.3f); break;
-                            case 7: sprite.getData().setScale(0.25f, 0.25f); break;
-                            case 8: sprite.getData().setScale(0.2f, 0.2f); break;
+                            case 2: sprite.setScale(0.85f, 0.85f); break;
+                            case 3: sprite.setScale(0.55f, 0.55f); break;
+                            case 4: sprite.setScale(0.35f, 0.35f); break;
+                            case 5: sprite.setScale(0.32f, 0.32f); break;
+                            case 6: sprite.setScale(0.3f, 0.3f); break;
+                            case 7: sprite.setScale(0.25f, 0.25f); break;
+                            case 8: sprite.setScale(0.2f, 0.2f); break;
                         }
 
                     }
@@ -290,7 +296,7 @@ public class SpriteManager {
         }
 
         if (sprite != null && graphicInfo.textureRect == null) {
-            getTextureRect(graphicInfo, sprite.getData());
+            getTextureRect(graphicInfo, sprite);
         }
 
         return sprite;
@@ -412,7 +418,7 @@ public class SpriteManager {
         return sum;
     }
 
-//    public SpriteModel getResource(ResourceModel resource) {
+//    public Sprite getResource(ResourceModel resource) {
 //        ItemInfo info = resource.getInfo();
 //
 //        if ("base.rock".equals(info.name)) {
@@ -431,7 +437,7 @@ public class SpriteManager {
 //        return getSprite(info, resource.getGraphic(), 0, 1, 255, false);
 //    }
 
-    public SpriteModel getGround(int type) {
+    public Sprite getGround(int type) {
         if (_groundItemInfo == null) {
             _groundItemInfo = Data.getData().getItemInfo("base.ground");
         }
@@ -441,18 +447,18 @@ public class SpriteManager {
         GraphicInfo graphicInfo = _groundItemInfo.graphics != null ? _groundItemInfo.graphics.get(0) : null;
         long sum = getSum(graphicInfo.spriteId, offsetX, offsetY, 0);
 
-        SpriteModel sprite = _sprites.get(sum);
+        Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
             File imgFile = getFile(graphicInfo);
             if (imgFile.exists()) {
                 Texture texture = new Texture(new FileHandle(imgFile));
 
-                sprite = new SpriteModel(texture,
+                sprite = new Sprite(texture,
                         0,
                         32,
                         32,
                         32);
-                sprite.getData().setColor(new Color(255, 255, 255, 255));
+                sprite.setColor(new Color(255, 255, 255, 255));
                 _sprites.put(sum, sprite);
             }
         }
@@ -461,16 +467,16 @@ public class SpriteManager {
 //        return getSprite(_groundItemInfo, _groundItemInfo.graphics != null ? _groundItemInfo.graphics.get(0) : null, type, (int) (Math.random() * 2), 255, false, 32, 32);
     }
 
-    public SpriteModel getAnimal(String path) {
+    public Sprite getAnimal(String path) {
         if (!_icons.containsKey(path)) {
             Texture texture = new Texture(path);
-            SpriteModel sprite = new SpriteModel(texture, 0, 0, texture.getWidth(), texture.getHeight());
+            Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
             _icons.put(path, sprite);
         }
         return _icons.get(path);
     }
 
-    public SpriteModel getCharacter(CharacterModel c, int direction, int frame) {
+    public Sprite getCharacter(CharacterModel c, int direction, int frame) {
         int extra = c.getType().index;
         int sum = 0;
         sum = sum << 8;
@@ -480,17 +486,18 @@ public class SpriteManager {
         sum = sum << 8;
         sum += extra;
 
-        SpriteModel sprite = _spritesCharacters.get(sum);
+        Sprite sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
             Texture texture = new Texture("data/characters/" + c.getType().name + ".png");
 
-            sprite = new SpriteModel(texture,
+            sprite = new Sprite(texture,
                     0,
                     0,
                     Constant.CHAR_WIDTH,
                     Constant.CHAR_HEIGHT);
+            sprite.setFlip(false, true);
 
-//            sprite = new SpriteModel(texture,
+//            sprite = new Sprite(texture,
 //                    Constant.CHAR_WIDTH * frame + (extra * 128),
 //                    Constant.CHAR_HEIGHT * direction,
 //                    Constant.CHAR_WIDTH,
@@ -502,11 +509,11 @@ public class SpriteManager {
         return sprite;
     }
 
-    public SpriteModel getSelector(int tile) {
+    public Sprite getSelector(int tile) {
         return _selectors[tile % NB_SELECTOR_TILE];
     }
 
-    public SpriteModel getSelectorCorner(int corner) {
+    public Sprite getSelectorCorner(int corner) {
         return _selectors[corner];
     }
 

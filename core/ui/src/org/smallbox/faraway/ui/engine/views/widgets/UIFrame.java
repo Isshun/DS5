@@ -22,12 +22,6 @@ public class UIFrame extends View {
     }
 
     @Override
-    public void setPosition(int x, int y) {
-        super.setPosition(x, y);
-//        _needResetPos = true;
-    }
-
-    @Override
     public void draw(GDXRenderer renderer, int x, int y) {
         super.draw(renderer, x, y);
 

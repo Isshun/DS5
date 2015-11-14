@@ -3,6 +3,7 @@ package org.smallbox.faraway.core;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
@@ -66,12 +67,12 @@ public class RenderLayer {
         }
     }
 
-    public void draw(SpriteModel sprite, int x, int y) {
+    public void draw(Sprite sprite, int x, int y) {
         if (sprite != null) {
             if (_count < 5000) {
                 // TODO: BOF
-                sprite.getData().setPosition(x, y);
-                _cache.add(sprite.getData());
+                sprite.setPosition(x, y);
+                _cache.add(sprite);
                 _count++;
             }
         }

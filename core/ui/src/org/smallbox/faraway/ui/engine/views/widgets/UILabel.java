@@ -213,7 +213,7 @@ public class UILabel extends View {
     public int getContentWidth() {
         if (_string != null) {
 //            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
-            return 0;
+            return (int) (_string.length() * GDXRenderer.getInstance().getFont(_textSize).getSpaceWidth());
         }
         return 0;
     }
