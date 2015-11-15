@@ -25,9 +25,14 @@ import java.util.List;
  */
 public abstract class View {
     protected RotateAnimation _animation;
+    protected boolean _focusable;
 
     public void setAnimation(RotateAnimation animation) {
         _animation = animation;
+    }
+
+    public void setFocusable(boolean focusable) {
+        _focusable = focusable;
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };

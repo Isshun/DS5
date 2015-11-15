@@ -157,7 +157,7 @@ public class SpriteManager {
 //    }
 
     public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
-    public Sprite getItem(StructureModel structure) { return getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? 1 : 0, 0, 255, false); }
+    public Sprite getItem(StructureModel structure) { return getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false); }
     public Sprite getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 1, 1); }
     public Sprite getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
     public Sprite getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
@@ -189,7 +189,7 @@ public class SpriteManager {
         int offsetX = (state * Constant.TILE_WIDTH) + (graphicInfo.x);
         int offsetY = (tile * Constant.TILE_HEIGHT) + (graphicInfo.y);
 
-        long sum = graphicInfo.type == GraphicInfo.Type.TERRAIN ?
+        long sum = graphicInfo.type != GraphicInfo.Type.NONE ?
                 getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
                 getSum(graphicInfo.spriteId, offsetX, offsetY, isIcon ? 1 : 0);
 
@@ -261,6 +261,77 @@ public class SpriteManager {
                     texture.getTextureData().disposePixmap();
 
                     sprite = new Sprite(new Texture(pixmap), 0, 0, 64, 64);
+                    sprite.setColor(new Color(255, 255, 255, alpha));
+                    sprite.setFlip(false, true);
+                    _sprites.put(sum, sprite);
+
+//                    sprite = new Sprite(texture, (tile % 3) * 32, (tile / 3) * 32, 32, 32);
+//                    sprite.setColor(new Color(255, 255, 255, alpha));
+//                    _sprites.put(sum, sprite);
+                }
+
+                else if (graphicInfo.type == GraphicInfo.Type.STRUCTURE) {
+                    Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+                    Pixmap.setBlending(Pixmap.Blending.None);
+
+                    texture.getTextureData().prepare();
+                    Pixmap texturePixmap = texture.getTextureData().consumePixmap();
+
+                    // Top left
+                    if ((tile & TOP_LEFT) > 0 && (tile & TOP) > 0 && (tile & LEFT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 0, 16, 16);
+                    } else if ((tile & TOP) > 0 && (tile & LEFT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 64, 16, 16);
+                    } else if ((tile & LEFT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 0, 16, 16);
+                    } else if ((tile & TOP) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 48, 16, 16);
+                    } else {
+                        pixmap.drawPixmap(texturePixmap, 0, 0, 0, 0, 16, 16);
+                    }
+
+                    // Top right
+                    if ((tile & TOP_RIGHT) > 0 && (tile & TOP) > 0 && (tile & RIGHT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 0, 80, 0, 16, 16);
+                    } else if ((tile & TOP) > 0 && (tile & RIGHT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 0, 16, 64, 16, 16);
+                    } else if ((tile & RIGHT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 0, 16, 0, 16, 16);
+                    } else if ((tile & TOP) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 0, 80, 64, 16, 16);
+                    } else {
+                        pixmap.drawPixmap(texturePixmap, 16, 0, 80, 0, 16, 16);
+                    }
+
+                    // Bottom left
+                    if ((tile & BOTTOM_LEFT) > 0 && (tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 16, 16, 16);
+                    } else if ((tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 16, 16, 16);
+                    } else if ((tile & LEFT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 80, 16, 16);
+                    } else if ((tile & BOTTOM) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 32, 16, 16);
+                    } else {
+                        pixmap.drawPixmap(texturePixmap, 0, 16, 0, 80, 16, 16);
+                    }
+
+                    // Bottom right
+                    if ((tile & BOTTOM_RIGHT) > 0 && (tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 16, 80, 16, 16, 16);
+                    } else if ((tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 16, 16, 16, 16, 16);
+                    } else if ((tile & RIGHT) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 16, 16, 80, 16, 16);
+                    } else if ((tile & BOTTOM) > 0) {
+                        pixmap.drawPixmap(texturePixmap, 16, 16, 80, 16, 16, 16);
+                    } else {
+                        pixmap.drawPixmap(texturePixmap, 16, 16, 80, 80, 16, 16);
+                    }
+
+                    texture.getTextureData().disposePixmap();
+
+                    sprite = new Sprite(new Texture(pixmap), 0, 0, 32, 32);
                     sprite.setColor(new Color(255, 255, 255, alpha));
                     sprite.setFlip(false, true);
                     _sprites.put(sum, sprite);

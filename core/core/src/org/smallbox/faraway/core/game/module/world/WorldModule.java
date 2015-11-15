@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.*;
@@ -28,7 +27,7 @@ public class WorldModule extends GameModule {
     private Game                                _game;
     private Set<NetworkObjectModel>             _networks = new HashSet<>();
     private Set<ConsumableModel>                _consumables = new HashSet<>();
-    private BlockingQueue<PlantModel>        _resources = new LinkedBlockingQueue<>();
+    private BlockingQueue<PlantModel>           _plants = new LinkedBlockingQueue<>();
     private Set<ItemModel>                      _items = new HashSet<>();
     private Set<ItemModel>                      _factories = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
@@ -64,14 +63,13 @@ public class WorldModule extends GameModule {
         _parcels = parcels;
         _parcelList = parcelList;
         _parcelListFloor = new HashMap<>();
-
     }
 
     public Collection<ItemModel>                getItems() { return _items; }
     public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
-    public Collection<PlantModel>               getPlant() { return _resources; }
+    public Collection<PlantModel> getPlants() { return _plants; }
     public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y) { return getParcel(x, y, _floor); }
     public ParcelModel                          getParcel(int x, int y, int z) {
@@ -229,7 +227,7 @@ public class WorldModule extends GameModule {
                 movePlantToParcel(parcel, plant);
             }
         }
-        _resources.add(plant);
+        _plants.add(plant);
         Application.getInstance().notify(observer -> observer.onAddPlant(plant));
 
         return plant;
@@ -290,7 +288,7 @@ public class WorldModule extends GameModule {
                 resource.getParcel().setPlant(null);
             }
 
-            _resources.remove(resource);
+            _plants.remove(resource);
             Application.getInstance().notify(observer -> observer.onRemovePlant(resource));
         }
     }

@@ -25,7 +25,7 @@ public class GardenModule extends GameModule {
     @Override
     protected void onLoaded(Game game) {
 //        _temperatureModule = (TemperatureModule) ModuleManager.getInstance().getModule(TemperatureModule.class);
-        ModuleHelper.getWorldModule().getPlant().forEach(resource -> {
+        ModuleHelper.getWorldModule().getPlants().forEach(resource -> {
             if (resource.getInfo().plant != null) {
                 _plants.add(resource);
             }

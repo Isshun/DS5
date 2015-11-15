@@ -19,6 +19,7 @@ data:extend({
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "Harverst", text_size = 18, padding = 10, on_click = "application:setPlan('gather')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "Cut down", text_size = 18, padding = 10, on_click = "application:setPlan('cut')"},
             { type = "label", size = {180, 40}, background = 0x8b9076, text = "Dump", text_size = 18, padding = 10, on_click = "application:setPlan('destroy')"},
+            { type = "label", size = {180, 40}, background = 0x8b9076, text = "Cancel", text_size = 18, padding = 10, on_click = "application:setPlan('cancel')"},
         }},
     },
     on_event = function(view, event , data)

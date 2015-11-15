@@ -258,10 +258,16 @@ public class GameActionExtra {
     }
 
     private void planCut(int x, int y, int z) {
-        JobModel job = JobHelper.createCutJob(x, y);
+        JobModel job = JobHelper.createCutJob(x, y, z);
         if (job != null) {
             ModuleHelper.getJobModule().addJob(job);
         }
+    }
+
+    private void planCancel(int x, int y, int z) {
+        ModuleHelper.getJobModule().getJobs().stream()
+                .filter(job -> job.getJobParcel() == WorldHelper.getParcel(x, y, z))
+                .forEach(job -> ModuleHelper.getJobModule().removeJob(job));
     }
 
     public void planMining(int x, int y, int z, DigMode mode) {
@@ -275,12 +281,12 @@ public class GameActionExtra {
         throw new NotImplementedException();
     }
 
-    public void planDestroy(int x, int y, int z) {
-        if (WorldHelper.getItem(x, y, z) != null) {
-            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getItem(x, y, z)));
+    public void planDestroy(ParcelModel parcel) {
+        if (parcel.hasItem() && parcel.getItem().isComplete()) {
+            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getItem()));
         }
-        if (WorldHelper.getStructure(x, y, z) != null) {
-            ModuleHelper.getJobModule().addJob(DumpJob.create(WorldHelper.getStructure(x, y, z)));
+        if (parcel.hasStructure() && parcel.getStructure().isComplete()) {
+            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getStructure()));
         }
     }
 
@@ -294,7 +300,7 @@ public class GameActionExtra {
         }
 
         switch (_selectedPlan) {
-            case "destroy": planDestroy(x, y, z); break;
+            case "destroy": planDestroy(WorldHelper.getParcel(x, y, z)); break;
             case "gather": planGather(x, y, z); break;
             case "dig": planMining(x, y, z, DigMode.FRONT); break;
             case "dig_hole": planMining(x, y, z, DigMode.HOLE); break;
@@ -303,6 +309,7 @@ public class GameActionExtra {
             case "pick": planPick(x, y, z); break;
             case "haul": planHaul(x, y, z); break;
             case "cut": planCut(x, y, z); break;
+            case "cancel": planCancel(x, y, z); break;
             default: break;
         }
     }

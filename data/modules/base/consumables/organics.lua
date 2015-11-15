@@ -32,5 +32,4 @@ data:extend({
     { type = "consumable", label = "Wheat", name = "base.vegetable_wheat", parent = "base.vegetable" },
     { type = "consumable", label = "Corn", name = "base.vegetable_corn", parent = "base.vegetable" },
     { type = "consumable", label = "Potato", name = "base.vegetable_potato", parent = "base.vegetable" },
-
 })

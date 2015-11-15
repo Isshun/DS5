@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.helper;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -21,12 +22,12 @@ public class WorldHelper {
     private static int                  _height;
     private static int                  _floors;
 
-    public static void init(ParcelModel[][][] parcels, int currentFloor) {
-        _currentFloor = currentFloor;
+    public static void init(GameInfo gameInfo, ParcelModel[][][]parcels) {
+        _currentFloor = gameInfo.worldFloors - 1;
         _parcels = parcels;
-        _width = _parcels.length;
-        _height = _parcels[_currentFloor].length;
-        _floors = _parcels[_currentFloor][_currentFloor].length;
+        _width = gameInfo.worldWidth;
+        _height = gameInfo.worldHeight;
+        _floors = gameInfo.worldFloors;
     }
 
     public static ItemModel         getItem(int x, int y) { return getItem(x, y, 0); }
@@ -34,7 +35,7 @@ public class WorldHelper {
     public static ConsumableModel   getConsumable(int x, int y) { return getConsumable(x, y, 0); }
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
-    public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructure() : null; }
+    public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructure() : null; }
     public static PlantModel getResource(int x, int y) { return getResource(x, y, 0); }
     public static PlantModel getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getPlant() : null; }
     public static ItemInfo          getResourceInfo(int x, int y, int z) { return inMapBounds(x, y) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }

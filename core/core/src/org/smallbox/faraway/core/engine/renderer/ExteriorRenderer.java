@@ -233,6 +233,7 @@ public class ExteriorRenderer extends WorldRenderer {
 
     @Override
     protected void onUpdate() {
+        super.onUpdate();
     }
 
     @Override

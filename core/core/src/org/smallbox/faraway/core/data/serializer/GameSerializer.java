@@ -42,6 +42,8 @@ public class GameSerializer {
     public static void save(File gameDirectory, String filename) {
         long time = System.currentTimeMillis();
 
+        Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.begin", null));
+
         SQLHelper.getInstance().openDB(new File(gameDirectory, filename + ".db"));
         ModuleManager.getInstance().getSerializers().forEach(SerializerInterface::save);
         SQLHelper.getInstance().closeDB();
@@ -71,6 +73,8 @@ public class GameSerializer {
             } catch (IOException | ArchiveException e) {
                 e.printStackTrace();
             }
+
+            Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.complete", null));
 
             Log.notice("Save game (" + (System.currentTimeMillis() - time) + "ms)");
         });

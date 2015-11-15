@@ -1,21 +1,25 @@
 package org.smallbox.faraway.ui.engine;
 
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UIEventManager {
-    private static UIEventManager         _self;
-    private Map<View, OnClickListener>     _onClickListeners;
-    private Map<View, OnClickListener>     _onRightClickListeners;
-    private Map<View, OnFocusListener>     _onFocusListeners;
+    private static UIEventManager           _self;
+    private Map<View, OnClickListener>      _onClickListeners;
+    private Map<View, OnClickListener>      _onRightClickListeners;
+    private Map<View, OnFocusListener>      _onFocusListeners;
+    private Map<View, OnKeyListener>        _onKeysListeners;
 
     private UIEventManager() {
         _onClickListeners = new HashMap<>();
         _onRightClickListeners = new HashMap<>();
         _onFocusListeners = new HashMap<>();
+        _onKeysListeners = new HashMap<>();
     }
 
     public static UIEventManager getInstance() {
@@ -71,6 +75,21 @@ public class UIEventManager {
         return false;
     }
 
+    public boolean keyRelease(GameEventListener.Key key) {
+        boolean gameRunning = GameManager.getInstance().isRunning();
+        for (View view: _onKeysListeners.keySet()) {
+            if ((gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && hasFocus(view)) {
+                _onKeysListeners.get(view).onKeyRelease(view, key);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasFocus(View view) {
+        return true;
+    }
+
     public void onMouseMove(int x, int y) {
         boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onFocusListeners.keySet()) {
@@ -103,6 +122,10 @@ public class UIEventManager {
         return true;
     }
 
+    public void removeOnKeyListener(View view) {
+        _onKeysListeners.remove(view);
+    }
+
     public void removeOnClickListener(View view) {
         _onClickListeners.remove(view);
     }
@@ -115,11 +138,17 @@ public class UIEventManager {
         _onClickListeners.clear();
         _onRightClickListeners.clear();
         _onFocusListeners.clear();
+        _onKeysListeners.clear();
     }
 
     public void removeListeners(View view) {
         _onRightClickListeners.remove(view);
         _onClickListeners.remove(view);
         _onFocusListeners.remove(view);
+        _onKeysListeners.remove(view);
+    }
+
+    public void setOnKeyListener(View view, OnKeyListener onKeyListener) {
+        _onKeysListeners.put(view, onKeyListener);
     }
 }

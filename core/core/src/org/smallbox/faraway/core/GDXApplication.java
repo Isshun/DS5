@@ -43,7 +43,6 @@ public class GDXApplication extends ApplicationAdapter {
     private SpriteBatch                         _batch;
     private GDXRenderer                         _renderer;
     private Application                         _application;
-    private long                                _lastRender;
     private BitmapFont[]                        _fonts;
     private BitmapFont                          _systemFont;
 
@@ -93,19 +92,16 @@ public class GDXApplication extends ApplicationAdapter {
                 }).start()));
 
         // Load resources
-        _loadTasks.add(new LoadTask("Load resources", () -> {
-            new Data().loadAll();
-        }));
+        _loadTasks.add(new LoadTask("Load resources", () ->
+                new Data().loadAll()));
 
         // Load modules
-        _loadTasks.add(new LoadTask("Load modules", () -> {
-            ModuleManager.getInstance().load();
-        }));
+        _loadTasks.add(new LoadTask("Load modules", () ->
+                ModuleManager.getInstance().load()));
 
         // Load lua modules
-        _loadTasks.add(new LoadTask("Load lua modules", () -> {
-            LuaModuleManager.getInstance().load();
-        }));
+        _loadTasks.add(new LoadTask("Load lua modules", () ->
+                LuaModuleManager.getInstance().load()));
 
         // Create app
         _loadTasks.add(new LoadTask("Init app", () -> {
@@ -115,12 +111,10 @@ public class GDXApplication extends ApplicationAdapter {
         }));
 
         _loadTasks.add(new LoadTask("Resume game", () -> {
-            if (Data.config.byPassMenu) {
-//                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-                GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
-//                GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
-//                UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
-            }
+            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+//            GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
+//            GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
+//            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
         }));
 
         _loadTasks.add(new LoadTask("Launch world thread", () ->
@@ -167,9 +161,6 @@ public class GDXApplication extends ApplicationAdapter {
             _currentMessage = null;
             return;
         }
-
-        long lastRenderInterval = System.currentTimeMillis() - _lastRender;
-        _lastRender = System.currentTimeMillis();
 
         _renderer.clear();
         _renderer.refresh();

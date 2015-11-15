@@ -221,4 +221,13 @@ public class ModuleManager {
     public BaseRenderer getMinimapRender() {
         return _minimapRenderer;
     }
+
+    public void startGame(Game game) {
+        System.out.println("Load base modules");
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(module -> module.load(game));
+        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(game));
+
+        System.out.println("Load third party modules");
+        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(game));
+    }
 }

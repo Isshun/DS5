@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.module.lua.data.extend;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 
@@ -17,6 +18,7 @@ public class RotateAnimation {
 
     public void draw(GDXRenderer renderer, Sprite sprite, int x, int y) {
         _rotation += (360f * 1000 * (Gdx.graphics.getDeltaTime() / _duration));
+        sprite.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         sprite.setRotation(_rotation);
         renderer.draw(sprite, x, y);
     }

@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.*;
 
 public class PlantModel extends MapObjectModel {
-    private ItemInfo.ItemInfoPlant  _plantInfo;
     private double                  _growRate;
     private GrowingInfo             _growState;
     private double                  _maturity;
@@ -44,7 +43,7 @@ public class PlantModel extends MapObjectModel {
     public JobModel     getJob() { return _job; }
 
     public boolean      isMature() { return _maturity >= 1; }
-    public boolean      isHarvestable() { return _maturity >= _plantInfo.minMaturity; }
+    public boolean      isHarvestable() { return _maturity >= _info.plant.minMaturity; }
     public boolean      inGarden() { return _garden != null; }
     public boolean      hasSeed() { return _hasSeed; }
 
@@ -52,6 +51,6 @@ public class PlantModel extends MapObjectModel {
     public void grow(GrowingInfo growState) {
         _growState = growState;
         _growRate = growState.value;
-        _maturity = Math.min(1, _maturity + (_plantInfo.growing * growState.value));
+        _maturity = Math.min(1, _maturity + (_info.plant.growing * growState.value));
     }
 }

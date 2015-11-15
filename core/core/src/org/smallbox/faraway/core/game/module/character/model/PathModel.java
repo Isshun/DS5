@@ -32,6 +32,7 @@ public class PathModel {
 
     public int          getLength() { return _length; }
     public ParcelModel  getLastParcel() { return _lastParcel; }
+    public ParcelModel  getFirstParcel() { return _firstParcel; }
     public ParcelModel  getCurrentParcel() { return _currentParcel; }
     public GraphPath<ParcelModel> getNodes() { return _nodes; }
 

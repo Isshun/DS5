@@ -117,6 +117,16 @@ public class GDXRenderer {
         }
     }
 
+    public void drawRegion(Sprite sprite, int x, int y) {
+        if (sprite != null) {
+            _batch.begin();
+//            sprite.setPosition(x, y);
+//            sprite.draw(_batch);
+            _batch.draw(sprite, x, y);
+            _batch.end();
+        }
+    }
+
     public void draw(Sprite sprite) {
         if (sprite != null) {
             _batch.begin();

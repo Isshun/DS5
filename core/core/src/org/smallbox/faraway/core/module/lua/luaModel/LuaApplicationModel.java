@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -72,6 +73,10 @@ public class LuaApplicationModel {
 
     public void setPlan(String plan) {
         Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
+    }
+
+    public void destroy(MapObjectModel object) {
+        Game.getInstance().getInteraction().planDestroy(object.getParcel());
     }
 
     public void setSpeed(int speed) {

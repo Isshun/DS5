@@ -35,18 +35,18 @@ public class DesktopLauncher {
         new LwjglApplication(new GDXApplication(), config);
 //        new LwjglApplication(new TestApplication(), config);
 
-        switch (data.config.screen.mode) {
-            case "window":
-                config.fullscreen = false;
-                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-                break;
-            case "borderless":
-                config.fullscreen = false;
-                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-                break;
-            case "fullscreen":
-                config.fullscreen = true;
-                break;
-        }
+//        switch (data.config.screen.mode) {
+//            case "window":
+//                config.fullscreen = false;
+//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+//                break;
+//            case "borderless":
+//                config.fullscreen = false;
+//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+//                break;
+//            case "fullscreen":
+//                config.fullscreen = true;
+//                break;
+//        }
     }
 }

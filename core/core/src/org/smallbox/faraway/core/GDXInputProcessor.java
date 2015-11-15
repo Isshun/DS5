@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
@@ -60,22 +61,22 @@ public class GDXInputProcessor implements InputProcessor {
     public boolean keyUp(int keycode) {
         if (keycode == Keys.A || keycode == Keys.LEFT) {
             _keyDirection[0] = false;
-            return true;
+//            return true;
         }
 
         if (keycode == Keys.W || keycode == Keys.UP) {
             _keyDirection[1] = false;
-            return true;
+//            return true;
         }
 
         if (keycode == Keys.D || keycode == Keys.RIGHT) {
             _keyDirection[2] = false;
-            return true;
+//            return true;
         }
 
         if (keycode == Keys.S || keycode == Keys.DOWN) {
             _keyDirection[3] = false;
-            return true;
+//            return true;
         }
 
         if (keycode == Keys.CONTROL_LEFT) {
@@ -198,6 +199,8 @@ public class GDXInputProcessor implements InputProcessor {
 //            case Input.Keys.PAUSE: key = GameEventListener.Key.UNKNOWN; break;
         }
         _application.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
+
+        UIEventManager.getInstance().keyRelease(key);
 
         return false;
     }

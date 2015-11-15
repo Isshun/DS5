@@ -145,6 +145,7 @@ public class LuaUIExtend extends LuaExtend {
             LuaValue luaView = CoerceJavaToLua.coerce(view);
 
             view.setInGame(inGame);
+            view.setFocusable(getBoolean(value, "focusable", false));
 
             LuaValue id = value.get("id");
             if (!id.isnil()) {

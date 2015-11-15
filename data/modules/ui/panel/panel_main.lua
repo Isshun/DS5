@@ -36,7 +36,7 @@ data:extend({
                 { type = "image", src = "[base]/graphics/icons/setting.png", position = {356, 8}, size = {32, 32}, on_click = function()
                 end},
             }},
-            { type = "grid", id = "main_grid", position = {0, 18}, columns = 2, column_width = 195, row_height = 60, views = {
+            { type = "grid", id = "main_grid", position = {0, 18}, columns = 2, column_width = 195, row_height = 60, focusable = true, views = {
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Build", text_size = 18, padding = 10, on_click = function() open_panel("panel_build") end},
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Plan", text_size = 18, padding = 10, on_click = function() open_panel("panel_plan") end},
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Displays", text_size = 18, padding = 10, on_click = function() open_panel("panel_displays") end},

@@ -48,11 +48,13 @@ public class GameManager {
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         long time = System.currentTimeMillis();
 
+        Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info, Data.config);
-        game.init();
+        ModuleManager.getInstance().startGame(game);
         game.load(game.getInfo(), saveInfo, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             startGame(game, saveInfo);
+            game.init();
             _game = game;
             Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
         }));
@@ -74,7 +76,9 @@ public class GameManager {
     public void create(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
 
-        GameInfo gameInfo = GameInfo.create(regionInfo, 256, 256, 32);
+        Application.getInstance().notify(GameObserver::onReloadUI);
+
+        GameInfo gameInfo = GameInfo.create(regionInfo, 128, 128, 8);
         File gameDirectory = new File("data/saves/", gameInfo.name);
 
         if (!gameDirectory.mkdirs()) {
@@ -88,10 +92,10 @@ public class GameManager {
         WorldFactory factory = new WorldFactory();
         factory.create(game, world, regionInfo);
 
-        WorldHelper.init(factory.getParcels(), game.getInfo().worldFloors - 1);
-        game.init();
-
+        WorldHelper.init(game.getInfo(), factory.getParcels());
+        ModuleManager.getInstance().startGame(game);
         factory.createLandSite(game);
+        game.init();
 
 //        world.create();
 

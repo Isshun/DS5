@@ -193,8 +193,13 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void move(PathModel path, MoveListener<CharacterModel> listener) {
-        if (path != null) {
+        if (_moveListener != null) {
+            Log.debug("[" + getName() + "] Cancel previous move listener");
+            _moveListener.onFail(this);
+            _moveListener = null;
+        }
 
+        if (path != null) {
             // Already on position
             if (path.getLength() == 0) {
                 if (listener != null) {
@@ -209,6 +214,12 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void moveTo(ParcelModel parcel, MoveListener<CharacterModel> listener) {
+        if (_moveListener != null) {
+            Log.debug("[" + getName() + "] Cancel previous move listener");
+            _moveListener.onFail(this);
+            _moveListener = null;
+        }
+
         // Already on position
         if (parcel == _parcel) {
             if (listener != null) {
@@ -218,7 +229,11 @@ public abstract class CharacterModel extends MovableModel {
         }
 
         _path = PathManager.getInstance().getPath(_parcel, parcel, false, false);
-        _moveListener = listener;
+        if (_path != null) {
+            _moveListener = listener;
+        } else if (listener != null) {
+            listener.onFail(this);
+        }
     }
 
     public void fixPosition() {
@@ -247,19 +262,9 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void    setJob(JobModel job) {
-        // This characters already working on this job
-        if (_job == job) {
-            Log.warning("This job already exists on characters");
-            return;
-        }
+        assert _job == null;
+        assert job != null;
 
-        // Character has already a job
-        if (_job != null && job != null) {
-            Log.error("Character already working on other job");
-            return;
-        }
-
-        // Set new job
         _job = job;
     }
 
@@ -312,7 +317,7 @@ public abstract class CharacterModel extends MovableModel {
 
                 // Move complete, set path to null and call listener
                 else {
-                    System.out.println(getName() + " Move complete");
+                    System.out.println(getName() + " Move complete (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
                     _lastPath = _path;
                     _path = null;
 
@@ -369,5 +374,16 @@ public abstract class CharacterModel extends MovableModel {
 
     public void setSleeping(boolean isSleeping) {
         _isSleeping = isSleeping;
+    }
+
+    public void clearJob(JobModel job) {
+        assert _job == job;
+        _job = null;
+        _moveListener = null;
+        _path = null;
+    }
+
+    public void cancelMove() {
+        _moveListener = null;
     }
 }

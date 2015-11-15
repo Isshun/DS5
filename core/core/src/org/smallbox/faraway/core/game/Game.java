@@ -72,14 +72,6 @@ public class Game extends BaseGame {
     }
 
     public void init() {
-        System.out.println("Load base modules");
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(module -> module.load(this));
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(this));
-
-        System.out.println("Load third party modules");
-        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(this));
-
-        Application.getInstance().notify(GameObserver::onReloadUI);
         Application.getInstance().notify(observer -> observer.onFloorChange(WorldHelper.getCurrentFloor()));
     }
 

@@ -17,8 +17,8 @@ import org.smallbox.faraway.core.util.Log;
  */
 public class JobHelper {
 
-    public static JobModel createCutJob(int x, int y) {
-        PlantModel res = WorldHelper.getResource(x, y);
+    public static JobModel createCutJob(int x, int y, int z) {
+        PlantModel res = WorldHelper.getResource(x, y, z);
         if (res == null) {
             return null;
         }
@@ -85,12 +85,5 @@ public class JobHelper {
         ModuleHelper.getJobModule().addJob(job);
 
         return job;
-    }
-
-    public static void addDumpJob(MapObjectModel item) {
-        JobModel job = DumpJob.create(item);
-        if (job != null) {
-            ModuleHelper.getJobModule().addJob(job);
-        }
     }
 }

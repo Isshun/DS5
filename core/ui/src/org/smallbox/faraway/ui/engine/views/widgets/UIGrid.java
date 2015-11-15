@@ -1,6 +1,9 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.ui.engine.OnKeyListener;
+import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.util.Collections;
 
@@ -12,10 +15,45 @@ public class UIGrid extends View {
     private int         _rowHeight;
     private int         _columnWidth;
     private int         _count;
+    private int         _index;
     private boolean     _keepSorted;
 
     public UIGrid(int width, int height) {
         super(width, height);
+    }
+
+    @Override
+    public void setFocusable(boolean focusable) {
+        _focusable = focusable;
+
+        if (_focusable) {
+            UIEventManager.getInstance().setOnKeyListener(this, new OnKeyListener() {
+                @Override
+                public void onKeyPress(View view, GameEventListener.Key key) {
+                }
+
+                @Override
+                public void onKeyRelease(View view, GameEventListener.Key key) {
+                    _views.get(_index).onExit();
+                    if (key == GameEventListener.Key.DOWN) {
+                        _index = Math.min(_count - 1, _index + _columns);
+                    }
+                    if (key == GameEventListener.Key.UP) {
+                        _index = Math.max(0, _index - _columns);
+                    }
+                    if (key == GameEventListener.Key.RIGHT) {
+                        _index = Math.min(_count - 1, _index + 1);
+                    }
+                    if (key == GameEventListener.Key.LEFT) {
+                        _index = Math.max(0, _index - 1);
+                    }
+//                    _views.get(_index).onClick();
+                    _views.get(_index).onEnter();
+                }
+            });
+        } else {
+            UIEventManager.getInstance().removeOnKeyListener(this);
+        }
     }
 
     @Override

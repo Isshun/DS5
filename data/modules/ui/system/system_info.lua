@@ -3,21 +3,23 @@ last_temperature_value = 0
 data:extend({
     type = "view",
     name = "ui-test",
-    position = {1200, 0},
-    size = {400, 38},
+    size = {application.info.screen_width, 38},
     background = 0x2b3036,
     visible = true,
     views = {
-        { type = "image", id = "img_time", src = "[base]/graphics/icons/sun.png", size = {32, 32}, position = {2, 2}},
-        { type = "label", id = "lb_time", text_size = 16, position = {28, 3}, padding = 10 },
-        { type = "label", id = "lb_day", text_size = 16, position = {63, 3}, padding = 10 },
-        --        { type = "label", id = "lb_light", text_size = 18, position = {200, 3}, padding = 10 },
-        { type = "image", id = "img_weather", size = {32, 32}, position = {160, 3}},
-        { type = "label", id = "lb_weather", text_size = 16, position = {188, 3}, padding = 10 },
-        --        { type = "image", src = "[base]/graphics/icons/menu.png", size = {32, 32}, position = {363, 3}},
-        { type = "label", id = "lb_temperature", text_size = 16, position = {300, 3}, padding = 10 },
-        { type = "image", id = "img_temperature", size = {24, 24}, position = {368, 7}},
-        { type = "image", id = "img_temperature_offset", size = {12, 24}, position = {383, 7}},
+
+        { type = "view", position = {application.info.screen_width - 400, 0}, background = 0x203636, size = {400, 38}, views = {
+            { type = "image", id = "img_time", src = "[base]/graphics/icons/sun.png", size = {32, 32}, position = {2, 2}},
+            { type = "label", id = "lb_time", text_size = 16, position = {28, 3}, padding = 10 },
+            { type = "label", id = "lb_day", text_size = 16, position = {63, 3}, padding = 10 },
+            --        { type = "label", id = "lb_light", text_size = 18, position = {200, 3}, padding = 10 },
+            { type = "image", id = "img_weather", size = {32, 32}, position = {160, 3}},
+            { type = "label", id = "lb_weather", text_size = 16, position = {188, 3}, padding = 10 },
+            --        { type = "image", src = "[base]/graphics/icons/menu.png", size = {32, 32}, position = {363, 3}},
+            { type = "label", id = "lb_temperature", text_size = 16, position = {300, 3}, padding = 10 },
+            { type = "image", id = "img_temperature", size = {24, 24}, position = {368, 7}},
+            { type = "image", id = "img_temperature_offset", size = {12, 24}, position = {383, 7}},
+        }}
     },
 
     on_event = function(view, event, data)

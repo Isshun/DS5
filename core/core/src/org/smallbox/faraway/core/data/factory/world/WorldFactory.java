@@ -6,10 +6,12 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.*;
@@ -91,7 +93,7 @@ public class WorldFactory {
                     }
                     if (parcel.hasPlant()) {
 //                        Application.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
-                        worldModule.getPlant().add(parcel.getPlant());
+                        worldModule.getPlants().add(parcel.getPlant());
                     }
                     if (parcel.getItem() != null) {
 //                        Application.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
@@ -105,36 +107,9 @@ public class WorldFactory {
             }
         }
 
-//        SQLHelper.getInstance().post(db -> {
-//            try {
-////                    db.open(true);
-//                db.exec("CREATE TABLE parcel (x INTEGER, y INTEGER, z INTEGER, ground INTEGER)");
-//                SQLiteStatement st = db.prepare("INSERT INTO parcel (x, y, z, ground) VALUES (?, ?, ?, ?)");
-//                try {
-//                    db.exec("begin transaction");
-//                    for (int z = 0; z < game.getInfo().worldFloors; z++) {
-//                        for (int y = 0; y < game.getInfo().worldHeight; y++) {
-//                            for (int x = 0; x < game.getInfo().worldWidth; x++) {
-//                                st.bind(1, x);
-//                                st.bind(2, y);
-//                                st.bind(3, z);
-//                                st.bind(4, _parcels[x][y][z].hasRock() ? 1 : 0);
-//                                st.step();
-//                                st.reset(false);
-//                            }
-//                        }
-//                    }
-//                    db.exec("end transaction");
-//                } finally {
-//                    st.dispose();
-//                }
-////                    db.dispose();
-//            } catch (SQLiteException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
+        WorldHelper.init(game.getInfo(), _parcels);
         ModuleHelper.getWorldModule().setParcels(_parcels, parcelList);
+        ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(game.getInfo());
     }
 
     private void cleanMap(List<ParcelModel> parcelList, ParcelModel[][][] parcels) {

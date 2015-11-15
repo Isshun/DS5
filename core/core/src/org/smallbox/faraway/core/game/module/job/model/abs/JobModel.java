@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model.abs;
 
+import org.omg.CORBA.BAD_QOS;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
@@ -89,7 +90,6 @@ public abstract class JobModel extends ObjectModel {
     private void init() {
         _id = ++_countInstance;
         _filter = null;
-        _character = null;
         _status = JobStatus.WAITING;
         _limit = -1;
         _label = "none";
@@ -151,7 +151,8 @@ public abstract class JobModel extends ObjectModel {
 
         // Remove job from old characters
         if (_character != null) {
-            _character.setJob(null);
+            quit(_character);
+            _character.clearJob(this);
         }
 
         // Set job to new characters
@@ -159,6 +160,7 @@ public abstract class JobModel extends ObjectModel {
         character.setJob(this);
 
         // Start job
+        Log.debug("Start job " + this + " by " + character.getName());
         onStart(character);
     }
 
@@ -183,18 +185,17 @@ public abstract class JobModel extends ObjectModel {
      * @param character
      */
     public void quit(CharacterModel character) {
-        assert _character == character;
+        assert character == _character;
+        onQuit(character);
 
-        if (_character != null) {
-            onQuit(character);
-            if (character.getJob() == this) {
-                character.setJob(null);
-            }
-            _character = null;
-            _status = JobStatus.WAITING;
+        assert character.getJob() == this;
+        character.clearJob(this);
 
-            Application.getInstance().notify(observer -> observer.onJobQuit(this, character));
-        }
+        _character = null;
+        _status = JobStatus.WAITING;
+
+        Log.debug("Quit job " + this + " by " + character.getName());
+        Application.getInstance().notify(observer -> observer.onJobQuit(this, character));
     }
 
     public void complete() {
@@ -208,6 +209,7 @@ public abstract class JobModel extends ObjectModel {
         _isFinish = true;
 
         if (_character != null) {
+            Log.debug("Complete job " + this + " by " + _character.getName());
             quit(_character);
         }
 

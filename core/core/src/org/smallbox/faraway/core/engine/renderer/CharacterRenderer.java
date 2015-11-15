@@ -20,9 +20,9 @@ public class CharacterRenderer extends BaseRenderer {
     private int                     _frame;
     private int                     _floor;
 
-    private static Color  COLOR_CRITICAL = new Color(0xbb0000);
-    private static Color  COLOR_WARNING = new Color(0xbbbb00);
-    private static Color COLOR_OK = new Color(0x448800);
+    private static Color    COLOR_CRITICAL = new Color(0xbb0000);
+    private static Color    COLOR_WARNING = new Color(0xbbbb00);
+    private static Color    COLOR_OK = new Color(0x448800);
 
     public CharacterRenderer() {
         _characters = new ArrayList<>();

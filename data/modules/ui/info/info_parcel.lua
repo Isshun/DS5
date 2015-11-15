@@ -11,6 +11,7 @@ data:extend({
     {
         { type = "list", position = {10, 10}, views = {
             { type = "label", id = "lb_name", text = "name", text_size = 22, size = {100, 30}},
+            { type = "label", id = "lb_tile", text_size = 14},
             { type = "label", id = "lb_teperature", text_size = 14},
             { type = "label", id = "lb_position", text_size = 14},
             { type = "label", id = "lb_connections", text_size = 14},
@@ -43,6 +44,7 @@ data:extend({
             view:findById("lb_oxygen"):setText("Oxygen", ": ", parcel:getOxygen())
             view:findById("lb_room"):setText("Room", ": ", (room and (room:isExterior() and "exterior" or room:getType():name()) or "no"))
             view:findById("lb_walkable"):setText("Walkable", ": ", (parcel:isWalkable() and "yes" or "no"))
+            view:findById("lb_tile"):setText("Tile", ": ", parcel:getTile())
 
             if parcel:getConnections() then
                 local str = "C: "

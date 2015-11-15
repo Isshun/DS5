@@ -6,8 +6,7 @@ import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
 
@@ -15,15 +14,11 @@ import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
  * Created by Alex on 05/07/2015.
  */
 public class FloraModule extends GameModule {
-    private List<PlantModel>     _plants = new ArrayList<>();
+    private Collection<PlantModel> _plants;
 
     @Override
     protected void onLoaded(Game game) {
-        ModuleHelper.getWorldModule().getPlant().forEach(resource -> {
-            if (resource.getInfo().plant != null) {
-                _plants.add(resource);
-            }
-        });
+        _plants = ModuleHelper.getWorldModule().getPlants();
     }
 
     @Override

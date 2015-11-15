@@ -2,15 +2,12 @@ package org.smallbox.faraway.core.game.module.world;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import com.ximpleware.*;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
@@ -19,10 +16,7 @@ import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.FileUtils;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +96,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 // Consumable
                                 if (parcel.hasConsumable()) {
                                     ConsumableModel consumable = parcel.getConsumable();
-                                    st.bind(8, consumable.getId());
+                                    st.bind(9, consumable.getId());
                                     stConsumable.bind(1, consumable.getId()).bind(2, consumable.getInfo().name).bind(3, consumable.getQuantity());
                                     stConsumable.step();
                                     stConsumable.reset(false);
@@ -159,8 +153,9 @@ public class WorldModuleSerializer extends SerializerInterface {
                             stPlant.bind(1, plantId);
                             if (stPlant.step()) {
                                 PlantModel plant = new PlantModel(Data.getData().getItemInfo(stPlant.columnString(1)), plantId);
+                                plant.setParcel(parcel);
                                 parcel.setPlant(plant);
-                                ModuleHelper.getWorldModule().getPlant().add(plant);
+                                ModuleHelper.getWorldModule().getPlants().add(plant);
                             }
                             stPlant.reset(false);
                         }
@@ -172,6 +167,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                             if (stItem.step()) {
                                 ItemModel item = new ItemModel(Data.getData().getItemInfo(stPlant.columnString(1)), parcel, itemId);
                                 item.setComplete(stItem.columnInt(2) > 0);
+                                item.setParcel(parcel);
                                 parcel.setItem(item);
                                 ModuleHelper.getWorldModule().getItems().add(item);
                             }
@@ -185,6 +181,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                             if (stStructure.step()) {
                                 StructureModel structure = new StructureModel(Data.getData().getItemInfo(stStructure.columnString(1)), structureId);
                                 structure.setComplete(stStructure.columnInt(2) > 0);
+                                structure.setParcel(parcel);
                                 parcel.setStructure(structure);
                                 ModuleHelper.getWorldModule().getStructures().add(structure);
                             }
@@ -196,9 +193,11 @@ public class WorldModuleSerializer extends SerializerInterface {
                             int consumableId = st.columnInt(8);
                             stConsumable.bind(1, consumableId);
                             if (stConsumable.step()) {
-                                ConsumableModel consumable = new ConsumableModel(Data.getData().getItemInfo(stStructure.columnString(1)));
+                                ConsumableModel consumable = new ConsumableModel(Data.getData().getItemInfo(stConsumable.columnString(1)));
                                 consumable.setId(consumableId);
-                                consumable.setQuantity(stStructure.columnInt(2));
+//                                consumable.setQuantity(stConsumable.columnInt(2));
+                                consumable.setQuantity(100);
+                                consumable.setParcel(parcel);
                                 parcel.setConsumable(consumable);
                                 ModuleHelper.getWorldModule().getConsumables().add(consumable);
                             }
@@ -209,7 +208,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                     st.dispose();
                 }
 
-                WorldHelper.init(parcels, gameInfo.worldFloors - 1);
+                WorldHelper.init(gameInfo, parcels);
                 ModuleHelper.getWorldModule().setParcels(parcels, parcelsList);
                 ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(gameInfo);
             } catch (SQLiteException e) {

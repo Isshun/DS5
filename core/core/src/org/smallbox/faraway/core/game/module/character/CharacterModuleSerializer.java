@@ -65,7 +65,7 @@ public class CharacterModuleSerializer extends SerializerInterface {
                         int y = st.columnInt(2);
                         int z = st.columnInt(3);
                         String firstname = st.columnString(4);
-                        String lastname = st.columnString(5);
+                        String lastname =  st.columnString(5);
 
                         CharacterModel character = new HumanModel(id, WorldHelper.getParcel(x, y, z), firstname, lastname, 10);
                         ModuleHelper.getCharacterModule().add(character);

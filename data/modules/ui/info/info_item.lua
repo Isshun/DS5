@@ -73,6 +73,9 @@ data:extend({
                 { type = "list", id = "list_networks"},
             }},
 
+            { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {380, 32}, on_click = function()
+                application:destroy(structure)
+            end},
         }},
     },
 
