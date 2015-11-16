@@ -72,20 +72,6 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.category = getString(value, "category", null);
         itemInfo.type = getString(value, "type", null);
 
-        LuaValue luaGraphics = value.get("graphics");
-        if (!luaGraphics.isnil()) {
-            if (!luaGraphics.get("path").isnil()) {
-                itemInfo.graphics.add(readGraphic(luaGraphics));
-            } else if (luaGraphics.length() >= 1 && !luaGraphics.get(1).get("path").isnil()) {
-                for (int i = 1; i <= luaGraphics.length(); i++) {
-                    itemInfo.graphics.add(readGraphic(luaGraphics.get(i)));
-                }
-            }
-        }
-        if (itemInfo.graphics.isEmpty()) {
-            itemInfo.graphics.add(new GraphicInfo("base", "/graphics/missing.png"));
-        }
-
         if (!value.get("size").isnil()) {
             itemInfo.width = value.get("size").get(1).toint();
             itemInfo.height = value.get("size").get(2).toint();
@@ -94,9 +80,26 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.height = 1;
         }
 
+        LuaValue luaGraphics = value.get("graphics");
+        if (!luaGraphics.isnil()) {
+            if (!luaGraphics.get("path").isnil()) {
+                itemInfo.graphics.add(readGraphic(luaGraphics, itemInfo));
+            } else if (luaGraphics.length() >= 1 && !luaGraphics.get(1).get("path").isnil()) {
+                for (int i = 1; i <= luaGraphics.length(); i++) {
+                    itemInfo.graphics.add(readGraphic(luaGraphics.get(i), itemInfo));
+                }
+            }
+        }
+        if (itemInfo.graphics.isEmpty()) {
+            itemInfo.graphics.add(new GraphicInfo("base", "/graphics/missing.png"));
+        }
+
         itemInfo.isWalkable = getBoolean(value, "walkable", true);
         itemInfo.health = getInt(value, "health", 1);
         itemInfo.networkName = getString(value, "network", null);
+        itemInfo.isGround = getBoolean(value, "is_ground", false);
+        itemInfo.isLinkDown = getBoolean(value, "is_link_down", false);
+        itemInfo.isWall= getBoolean(value, "is_wall", false);
 
         if (!value.get("door").isnil()) {
             itemInfo.isDoor = value.get("door").toboolean();
@@ -268,7 +271,7 @@ public class LuaItemExtend extends LuaExtend {
         components.add(component);
     }
 
-    private GraphicInfo readGraphic(LuaValue luaGraphic) throws DataExtendException {
+    private GraphicInfo readGraphic(LuaValue luaGraphic, ItemInfo itemInfo) throws DataExtendException {
         GraphicInfo graphicInfo;
         if (!luaGraphic.get("path").isnil()) {
             String path = luaGraphic.get("path").toString();
@@ -288,6 +291,10 @@ public class LuaItemExtend extends LuaExtend {
         if (!luaGraphic.get("y").isnil()) {
             graphicInfo.y = luaGraphic.get("y").toint();
         }
+
+        graphicInfo.width = itemInfo.width * 32;
+        graphicInfo.height = itemInfo.height * 32;
+
         return graphicInfo;
     }
 

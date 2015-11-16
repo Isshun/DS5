@@ -3,9 +3,7 @@ item = nil
 data:extend({
     type = "view",
     name = "ui-test",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    style = "base.style.right_panel",
     visible = false,
     views = {
         { type = "label", text = "Item", text_size = 12, position = {10, 8}},

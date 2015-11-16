@@ -27,6 +27,7 @@ public interface GameObserver {
     default void onAddPlant(PlantModel resource) {}
     default void onStructureComplete(StructureModel structure){}
     default void onItemComplete(ItemModel item){}
+    default void onChangeGround(ParcelModel parcel){}
     default void onRemoveItem(ItemModel item){}
     default void onRemoveConsumable(ConsumableModel consumable){}
     default void onRemoveStructure(StructureModel structure){}

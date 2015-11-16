@@ -4,9 +4,11 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.module.character.CharacterModule;
 import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.module.java.ModuleManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,6 +25,17 @@ public class BuffModule extends GameModule {
         _characters = new HashMap<>();
         _charactersData = new ArrayList<>();
         _updateInterval = 10;
+        ((CharacterModule) ModuleManager.getInstance().getModule(CharacterModule.class)).getCharacters().forEach(this::addCharacter);
+    }
+
+    private void addCharacter(CharacterModel character) {
+        LuaValue luaCharacter = CoerceJavaToLua.coerce(character);
+
+        List<BuffCharacterModel> dataList = Data.getData().buffs.stream().map(buff -> new BuffCharacterModel(buff, luaCharacter, character)).collect(Collectors.toList());
+        dataList.forEach(BuffCharacterModel::start);
+
+        _characters.put(character, dataList);
+        _charactersData.addAll(dataList);
     }
 
     @Override
@@ -35,13 +48,7 @@ public class BuffModule extends GameModule {
 
     @Override
     public void onAddCharacter(CharacterModel character) {
-        LuaValue luaCharacter = CoerceJavaToLua.coerce(character);
-
-        List<BuffCharacterModel> dataList = Data.getData().buffs.stream().map(buff -> new BuffCharacterModel(buff, luaCharacter, character)).collect(Collectors.toList());
-        dataList.forEach(BuffCharacterModel::start);
-
-        _characters.put(character, dataList);
-        _charactersData.addAll(dataList);
+        addCharacter(character);
     }
 
     public List<BuffCharacterModel> getActiveBuffs(CharacterModel character) {

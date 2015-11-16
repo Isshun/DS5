@@ -3,8 +3,8 @@ room = nil
 data:extend({
     type = "view",
     name = "info_room",
-    position = {800, 820},
-    size = {400, 800},
+    position = {application.info.screen_width - 372 * 2, 820},
+    size = {372, 800},
     background = 0x121c1e,
     visible = true,
     views = {

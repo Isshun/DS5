@@ -29,6 +29,10 @@ public class ItemInfo extends ObjectInfo {
         return this == inputInfo || this.parent == inputInfo;
     }
 
+    public boolean hasGraphics() {
+        return this.graphics != null && !this.graphics.isEmpty();
+    }
+
     public static class ItemInfoStorage {
         public int[]                    components;
         public int[]                    crafts;
@@ -246,6 +250,9 @@ public class ItemInfo extends ObjectInfo {
     public NetworkInfo                  network;
     public ItemConsumeInfo              consume;
     public boolean                      isRamp;
+    public boolean                      isGround;
+    public boolean                      isLinkDown;
+    public boolean                      isWall;
 
     public ItemInfo() {
         width = 1;

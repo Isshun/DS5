@@ -5,6 +5,7 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
@@ -149,6 +150,11 @@ public class LuaUIExtend extends LuaExtend {
             if (!id.isnil()) {
                 view.setId(id.toString().hashCode());
                 view.setName(id.toString());
+            }
+
+            LuaValue style = value.get("style");
+            if (!style.isnil()) {
+                applyStyle(view, style.toString());
             }
 
             LuaValue name = value.get("name");
@@ -327,5 +333,11 @@ public class LuaUIExtend extends LuaExtend {
         }
 
         return view;
+    }
+
+    private void applyStyle(View view, String styleName) {
+        view.setPosition(Data.config.screen.resolution[0] - 372, 38);
+        view.setSize(372, 800);
+        view.setBackgroundColor(0x121c1e);
     }
 }

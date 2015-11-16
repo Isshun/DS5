@@ -12,7 +12,7 @@ data:extend({
         local bt_test = application.ui:createLabel()
         bt_test:setText("Test")
         bt_test:setTextSize(18)
-        bt_test:setSize(180, 40)
+        bt_test:setSize(170, 40)
         bt_test:setBackgroundColor(0x349394)
         bt_test:setPadding(10)
         bt_test:setOnClickListener(function()

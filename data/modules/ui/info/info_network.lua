@@ -2,10 +2,8 @@ network = nil
 
 data:extend({
     type = "view",
-    name = "ui-test",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    name = "base.ui.info_network",
+    style = "base.style.right_panel",
     visible = false,
     views =
     {

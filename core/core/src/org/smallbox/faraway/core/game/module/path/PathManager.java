@@ -226,4 +226,7 @@ public class PathManager extends GameModule {
 
     @Override
     public void onRemoveRock(ParcelModel parcel) { _graph.resetAround(parcel); }
+
+    @Override
+    public void onChangeGround(ParcelModel parcel) { _graph.resetAround(parcel); }
 }

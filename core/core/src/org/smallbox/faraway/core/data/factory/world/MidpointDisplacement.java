@@ -47,16 +47,14 @@ public class MidpointDisplacement {
         smoothness = config.smooth;
     }
 
-    public void create(GameInfo info, ParcelModel[][][] parcels, MapGenListener listener) {
+    public void create(GameInfo info, ParcelModel[][][] parcels, int floor, MapGenListener listener) {
         int[][] map = getMap();
 
         for (int col = 0; col < map.length; col++) {
             for(int row = 0; row < map[col].length; row++) {
-                for (int floor = 0; floor < info.worldFloors; floor++) {
-                    if (map[col][row] == 2 && row < info.worldHeight && col < info.worldWidth) {
-                        if (parcels[col][row][floor] != null) {
-                            listener.onCreate(parcels[col][row][floor]);
-                        }
+                if (map[col][row] == 2 && row < info.worldHeight && col < info.worldWidth) {
+                    if (parcels[col][row][floor] != null) {
+                        listener.onCreate(parcels[col][row][floor]);
                     }
                 }
             }

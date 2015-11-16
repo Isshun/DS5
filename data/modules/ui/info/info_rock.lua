@@ -3,9 +3,7 @@ rock = nil
 data:extend({
     type = "view",
     name = "base.ui.info_rock",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    style = "base.style.right_panel",
     visible = false,
     views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},

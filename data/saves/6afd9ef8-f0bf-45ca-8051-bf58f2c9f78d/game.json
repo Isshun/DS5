@@ -1,0 +1,25 @@
+{
+    "floors": 8,
+    "saves": [
+        {
+            "date": "2015-11-16-11-57-37",
+            "filename": "2015-11-16-11-11-57-37",
+            "type": "INIT"
+        },
+        {
+            "date": "2015-11-16-12-50-24",
+            "filename": "2015-11-16-12-12-50-24",
+            "type": "FAST"
+        },
+        {
+            "date": "2015-11-16-13-00-51",
+            "filename": "2015-11-16-01-01-00-51",
+            "type": "FAST"
+        }
+    ],
+    "planet": "base.planet.arrakis",
+    "name": "6afd9ef8-f0bf-45ca-8051-bf58f2c9f78d",
+    "width": 256,
+    "region": "desert",
+    "height": 160
+}

@@ -7,7 +7,8 @@ import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
 public class JobRenderer extends BaseRenderer {
-    private int[][]                         _areas;
+    private int[][]         _areas;
+    private int             _floor;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_areas == null) {
@@ -16,7 +17,7 @@ public class JobRenderer extends BaseRenderer {
 
         int offsetX = viewport.getPosX();
         int offsetY = viewport.getPosY();
-        ModuleHelper.getJobModule().getJobs().stream().filter(job -> !job.isFinish()).forEach(job ->
+        ModuleHelper.getJobModule().getJobs().stream().filter(job -> job.getJobParcel().z == _floor).filter(job -> !job.isFinish()).forEach(job ->
                 job.draw((x, y) -> renderer.draw(job.getIconDrawable(), offsetX + x * Constant.TILE_WIDTH, offsetY + y * Constant.TILE_HEIGHT)));
     }
 
@@ -30,4 +31,9 @@ public class JobRenderer extends BaseRenderer {
         return config.render.job;
     }
 
+
+    @Override
+    public void onFloorChange(int floor) {
+        _floor = floor;
+    }
 }

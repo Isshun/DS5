@@ -3,20 +3,18 @@ character = nil
 data:extend({
     type = "view",
     name = "base.ui.info_character",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    style = "base.style.right_panel",
     visible = false,
     views = {
-        { type = "label", text = "Character", text_size = 12, position = {10, 8}},
-        { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
-        { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 26}, padding = 10, size = {100, 40}},
+        { type = "label", text = "Character", text_size = 12, position = {12, 8}},
+        { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {12, 22}},
+        { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}},
 
-        { type = "grid", position = {10, 72}, columns = 2, column_width = 190, row_height = 60, views = {
-            { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, size = {180, 50}, on_click = function() open_page("bt_status", "page_status") end},
-            { type = "label", id = "bt_inventory", text = "Inventory", text_size = 20, padding = 18, size = {180, 50}, on_click = function() open_page("bt_inventory", "page_inventory") end},
-            { type = "label", id = "bt_info", text = "Info", text_size = 20, padding = 18, size = {180, 50}, on_click = function() open_page("bt_info", "page_info") end},
-            { type = "view", id = "bt_health", background = 0x5588bb, size = {180, 50}, on_click = function() open_page("bt_health", "page_health") end, views = {
+        { type = "grid", position = {12, 72}, columns = 2, column_width = 180, row_height = 60, views = {
+            { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, size = {170, 50}, on_click = function() open_page("bt_status", "page_status") end},
+            { type = "label", id = "bt_inventory", text = "Inventory", text_size = 20, padding = 18, size = {170, 50}, on_click = function() open_page("bt_inventory", "page_inventory") end},
+            { type = "label", id = "bt_info", text = "Info", text_size = 20, padding = 18, size = {170, 50}, on_click = function() open_page("bt_info", "page_info") end},
+            { type = "view", id = "bt_health", background = 0x5588bb, size = {170, 50}, on_click = function() open_page("bt_health", "page_health") end, views = {
                 { type = "label", text = "Health", text_size = 20, padding = 18 },
                 { type = "label", text = "!", id = "bt_health_warning", text_size = 26, padding = 9, size = {32, 32}, position = {138, 9} },
             }},
@@ -26,7 +24,7 @@ data:extend({
         {
             type = "list",
             id = "page_status",
-            position = {10, 200},
+            position = {12, 200},
             size = {400, 400},
             views = {
                 { type = "label", text = "Current occupation", text_size = 28, position = {0, 5}},
@@ -34,43 +32,43 @@ data:extend({
                 { type = "label", id = "lb_job_detail", visible = false, text_size = 14, position = {0, 12}, size = {-1, 40}},
 
                 { type = "label", position = {0, 20}, text = "Needs", text_size = 28},
-                { type = "grid", position = {0, 33}, columns = 2, column_width = 200, row_height = 44, views = {
-                    { type = "view", size = {190, 44}, views = {
+                { type = "grid", position = {0, 33}, columns = 2, column_width = 182, row_height = 44, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_food", position = {0, 0}, text = "food", text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_food", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                         --                        { type = "label", id = "lb_need_food_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_drink", position = {0, 0}, text = "drink", text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_drink", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                         --                        { type = "label", id = "lb_need_drink_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_energy", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_energy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                         --                        { type = "label", id = "lb_need_energy_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_happiness", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_happiness", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_health", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_health", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_joy", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_joy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_relation", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "lb_need_oxygen", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
-                    { type = "view", size = {190, 44}, views = {
+                    { type = "view", size = {170, 44}, views = {
                         { type = "label", id = "", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
                         { type = "image", id = "", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
                     }},
@@ -246,7 +244,7 @@ function display_buffs(view, character)
                 end
 
                 local lb_buff = application.ui:createLabel()
-                lb_buff:setDashedString(buff.message, buff.mood, is_warning and 45 or 47)
+                lb_buff:setDashedString(buff.message, buff.mood, is_warning and 42 or 44)
                 lb_buff:setSize(400, 22)
                 lb_buff:setPosition(is_warning and 18 or 0, 3)
                 lb_buff:setTextColor(buff.mood > 0 and 0xb3d035 or 0xff5555)
@@ -330,8 +328,8 @@ function display_talents(view)
 end
 
 function displayNeed(view, lb_res_id, gauge_res_id, label, value)
-    view:findById(lb_res_id):setDashedString(label, math.floor(value), 22)
-    view:findById(gauge_res_id):setTextureRect(0, 80, math.floor(value * 180 / 100 / 10) * 10, 16)
+    view:findById(lb_res_id):setDashedString(label, math.floor(value), 21)
+    view:findById(gauge_res_id):setTextureRect(0, 80, math.floor(value * 170 / 100 / 10) * 10, 16)
 end
 
 function open_page(bt_name, page_name)

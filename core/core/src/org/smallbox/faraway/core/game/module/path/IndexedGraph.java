@@ -28,8 +28,8 @@ public class IndexedGraph implements com.badlogic.gdx.ai.pfa.indexed.IndexedGrap
         if (toParcel != null) {
             if (parcel.isWalkable() && toParcel.isWalkable()) {
                 if (parcel.z == toParcel.z
-                        || (parcel.z == toParcel.z - 1 && parcel.getStructure() != null && parcel.getStructure().getInfo().isRamp)
-                        || (parcel.z == toParcel.z + 1 && toParcel.getStructure() != null && toParcel.getStructure().getInfo().isRamp)) {
+                        || (toParcel.z == parcel.z - 1 && (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown) && toParcel.getStructure() != null && toParcel.getStructure().getInfo().isRamp)
+                        || (toParcel.z == parcel.z + 1 && (!toParcel.hasGround() || toParcel.getGroundInfo().isLinkDown) && parcel.getStructure() != null && parcel.getStructure().getInfo().isRamp)) {
                     array.add(new ParcelConnection(parcel, toParcel));
                 }
             }

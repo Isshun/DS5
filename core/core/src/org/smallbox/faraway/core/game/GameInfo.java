@@ -10,10 +10,7 @@ import org.smallbox.faraway.core.util.Constant;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Alex on 30/08/2015.
@@ -51,7 +48,7 @@ public class GameInfo {
             JSONObject saveJson = new JSONObject();
             saveJson.put("type", saveInfo.type.toString());
             saveJson.put("filename", saveInfo.filename);
-            saveJson.put("date", new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").format(saveInfo.date));
+            saveJson.put("date", new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.ENGLISH).format(saveInfo.date));
             saveArray.put(saveJson);
         }
         json.put("saves", saveArray);
@@ -76,8 +73,8 @@ public class GameInfo {
                 saveInfo.type = Type.valueOf(jsonSave.getString("type").toUpperCase());
                 saveInfo.filename = jsonSave.getString("filename");
                 try {
-                    saveInfo.date = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss").parse(jsonSave.getString("date"));
-                    saveInfo.label = new SimpleDateFormat("dd/MM/YYYY - hh:mm:ss").format(saveInfo.date);
+                    saveInfo.date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.ENGLISH).parse(jsonSave.getString("date"));
+                    saveInfo.label = new SimpleDateFormat("dd/MM/YYYY - HH:mm:ss", Locale.ENGLISH).format(saveInfo.date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -15,13 +14,11 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -183,12 +180,15 @@ public class SpriteManager {
         return sprite;
     }
 
-    public Sprite getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 1, 1); }
+    public Sprite getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
     public Sprite getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
     public Sprite getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
-    public Sprite getItem(PlantModel resource, int offsetX, int offsetY) {
-        return getSprite(resource.getInfo(), resource.getGraphic(), offsetX, offsetY, 255, false);
+    public Sprite getItem(GraphicInfo graphicInfo, int parcelTile, int itemTile) {
+        if (graphicInfo.type == GraphicInfo.Type.TERRAIN) {
+            return getRock(graphicInfo, parcelTile);
+        }
+        return getSprite(graphicInfo, parcelTile, itemTile, 255, false);
     }
 
     public Sprite getItem(ConsumableModel consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
@@ -199,106 +199,108 @@ public class SpriteManager {
     }
 
     private Sprite getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
-        return getSprite(graphicInfo, tile, state, alpha, isIcon, itemInfo.width, itemInfo.height);
+        return getSprite(graphicInfo, tile, state, alpha, isIcon, graphicInfo.width, graphicInfo.height);
     }
 
-    public Texture getRock(GraphicInfo graphicInfo, int tile) {
-        long sum = getSum(graphicInfo.spriteId, tile, 0, 0);
-
-        Texture texture = _rocktextures.get(sum);
-        if (texture == null) {
-            Texture txTerrain = _textures.get(graphicInfo.packageName + graphicInfo.path);
-            if (txTerrain != null) {
-                if (graphicInfo.type == GraphicInfo.Type.TERRAIN) {
-                    Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
-
-                    txTerrain.getTextureData().prepare();
-                    Pixmap texturePixmap = txTerrain.getTextureData().consumePixmap();
-
-                    // Top left
-                    if ((tile & TOP_LEFT) > 0 && (tile & TOP) > 0 && (tile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 16, 16, 16, 16);
-                    } else if ((tile & TOP) > 0 && (tile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 32, 16, 16);
-                    } else if ((tile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 32, 0, 16, 16);
-                    } else if ((tile & TOP) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 0, 32, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 0, 0, 16, 16);
-                    }
-
-                    // Top right
-                    if ((tile & TOP_RIGHT) > 0 && (tile & TOP) > 0 && (tile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 16, 16, 16, 16);
-                    } else if ((tile & TOP) > 0 && (tile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 80, 32, 16, 16);
-                    } else if ((tile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 16, 0, 16, 16);
-                    } else if ((tile & TOP) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 48, 32, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 48, 0, 16, 16);
-                    }
-
-                    // Bottom left
-                    if ((tile & BOTTOM_LEFT) > 0 && (tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 16, 16, 16, 16);
-                    } else if ((tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 48, 16, 16);
-                    } else if ((tile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 32, 48, 16, 16);
-                    } else if ((tile & BOTTOM) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 0, 16, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 0, 48, 16, 16);
-                    }
-
-                    // Bottom right
-                    if ((tile & BOTTOM_RIGHT) > 0 && (tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 16, 16, 16, 16);
-                    } else if ((tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 80, 48, 16, 16);
-                    } else if ((tile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 16, 48, 16, 16);
-                    } else if ((tile & BOTTOM) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 48, 16, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 48, 48, 16, 16);
-                    }
-
-                    txTerrain.getTextureData().disposePixmap();
-
-                    texture = new Texture(pixmap);
-                    _rocktextures.put(sum, texture);
-                }
-            }
-        }
-
-        return texture;
+    private Sprite getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
+        return getSprite(graphicInfo, tile, state, alpha, isIcon, graphicInfo.width, graphicInfo.height);
     }
 
-    private Sprite getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
-        if (graphicInfo == null) {
-            return null;
-        }
+    public Sprite getRock(GraphicInfo graphicInfo, int tile) {
+        assert graphicInfo != null && graphicInfo.type == GraphicInfo.Type.TERRAIN;
 
         if (graphicInfo.spriteId == -1) {
             graphicInfo.spriteId = ++_spriteCount;
         }
 
-        int offsetX = (state * Constant.TILE_WIDTH) + (graphicInfo.x);
-        int offsetY = (tile * Constant.TILE_HEIGHT) + (graphicInfo.y);
+        Sprite sprite = _sprites.get(getSum(graphicInfo.spriteId, tile, 0, 0));
+        if (sprite == null) {
+            Texture txTerrain = _textures.get(graphicInfo.packageName + graphicInfo.path);
+            if (txTerrain != null) {
+                Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
 
-        long sum = graphicInfo.type != GraphicInfo.Type.NONE ?
+                txTerrain.getTextureData().prepare();
+                Pixmap texturePixmap = txTerrain.getTextureData().consumePixmap();
+
+                // Top left
+                if ((tile & TOP_LEFT) > 0 && (tile & TOP) > 0 && (tile & LEFT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 0, 16, 16, 16, 16);
+                } else if ((tile & TOP) > 0 && (tile & LEFT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 0, 64, 32, 16, 16);
+                } else if ((tile & LEFT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 0, 32, 0, 16, 16);
+                } else if ((tile & TOP) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 0, 0, 32, 16, 16);
+                } else {
+                    pixmap.drawPixmap(texturePixmap, 0, 0, 0, 0, 16, 16);
+                }
+
+                // Top right
+                if ((tile & TOP_RIGHT) > 0 && (tile & TOP) > 0 && (tile & RIGHT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 0, 16, 16, 16, 16);
+                } else if ((tile & TOP) > 0 && (tile & RIGHT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 0, 80, 32, 16, 16);
+                } else if ((tile & RIGHT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 0, 16, 0, 16, 16);
+                } else if ((tile & TOP) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 0, 48, 32, 16, 16);
+                } else {
+                    pixmap.drawPixmap(texturePixmap, 16, 0, 48, 0, 16, 16);
+                }
+
+                // Bottom left
+                if ((tile & BOTTOM_LEFT) > 0 && (tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 16, 16, 16, 16, 16);
+                } else if ((tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 16, 64, 48, 16, 16);
+                } else if ((tile & LEFT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 16, 32, 48, 16, 16);
+                } else if ((tile & BOTTOM) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 0, 16, 0, 16, 16, 16);
+                } else {
+                    pixmap.drawPixmap(texturePixmap, 0, 16, 0, 48, 16, 16);
+                }
+
+                // Bottom right
+                if ((tile & BOTTOM_RIGHT) > 0 && (tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 16, 16, 16, 16, 16);
+                } else if ((tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 16, 80, 48, 16, 16);
+                } else if ((tile & RIGHT) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 16, 16, 48, 16, 16);
+                } else if ((tile & BOTTOM) > 0) {
+                    pixmap.drawPixmap(texturePixmap, 16, 16, 48, 16, 16, 16);
+                } else {
+                    pixmap.drawPixmap(texturePixmap, 16, 16, 48, 48, 16, 16);
+                }
+
+                txTerrain.getTextureData().disposePixmap();
+
+                sprite = new Sprite(new Texture(pixmap));
+                sprite.setFlip(false, true);
+                _sprites.put(getSum(graphicInfo.spriteId, tile, 0, 0), sprite);
+            }
+        }
+
+        return sprite;
+    }
+
+    private Sprite getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
+        assert graphicInfo != null;
+
+        if (graphicInfo.spriteId == -1) {
+            graphicInfo.spriteId = ++_spriteCount;
+        }
+
+        long sum = graphicInfo.type == GraphicInfo.Type.WALL ?
                 getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
-                getSum(graphicInfo.spriteId, offsetX, offsetY, isIcon ? 1 : 0);
+                getSum(graphicInfo.spriteId, 0, 0, isIcon ? 1 : 0);
 
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
             Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
             if (texture != null) {
-                if (graphicInfo.type == GraphicInfo.Type.STRUCTURE) {
+                if (graphicInfo.type == GraphicInfo.Type.WALL) {
                     Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
 
                     texture.getTextureData().prepare();
@@ -369,15 +371,11 @@ public class SpriteManager {
                 }
 
                 else {
-                    sprite = new Sprite(texture,
-                            offsetX,
-                            offsetY,
-                            width * Constant.TILE_WIDTH,
-                            height * Constant.TILE_HEIGHT);
+                    sprite = new Sprite(texture, 0, 0, width, height);
                     sprite.setFlip(false, true);
                     sprite.setColor(new Color(255, 255, 255, alpha));
                     if (isIcon) {
-                        switch (Math.max(width, height)) {
+                        switch (Math.max(width/32, height/32)) {
                             case 2: sprite.setScale(0.85f, 0.85f); break;
                             case 3: sprite.setScale(0.55f, 0.55f); break;
                             case 4: sprite.setScale(0.35f, 0.35f); break;
@@ -400,7 +398,7 @@ public class SpriteManager {
         return sprite;
     }
 
-    private File getFile(GraphicInfo graphicInfo) {
+    public static File getFile(GraphicInfo graphicInfo) {
         if ("base".equals(graphicInfo.packageName)) {
             return new File("data", graphicInfo.path);
         } else {
@@ -495,68 +493,6 @@ public class SpriteManager {
         return sum;
     }
 
-    private long getSum(int texture, int x, int y, int extra1, int extra2, int alpha) {
-        if (texture > 64 || x > 4096 || y > 4096 || extra1 > 1024 || extra2 > 1024 || alpha > 255) {
-            //throw new Exception("SpriteManager.getSum -> out of bounds values");
-            Log.error("SpriteManager.getSum -> out of bounds values");
-        }
-
-        long sum = texture;
-        sum = sum << 6;        // 6
-        sum += x;
-        sum = sum << 12;    // 6 + 12 = 18
-        sum += y;
-        sum = sum << 12;    // 18 + 12 = 30
-        sum += extra1;
-        sum = sum << 10;    // 30 + 10 = 40
-        sum += extra2;
-        sum = sum << 10;    // 40 + 10 = 50
-        sum += alpha;
-        sum = sum << 8;        // 50 + 8 = 58
-        return sum;
-    }
-
-//    public Sprite getResource(ResourceModel resource) {
-//        ItemInfo info = resource.getInfo();
-//
-//        if ("base.rock".equals(info.name)) {
-//            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
-//        }
-//
-//        else if ("base.grass".equals(info.name)) {
-//            return getSprite(info, resource.getGraphic(), resource.getTile(), 0, 255, false);
-//        }
-//
-//        else if (info.actions != null && !info.actions.isEmpty() && "gather".equals(info.actions.get(0).type)) {
-//            int state = (int)(Math.min(resource.getQuantity(), info.plant.mature) + 1);
-//            return getSprite(info, resource.getGraphic(), state, 0, 255, false);
-//        }
-//
-//        return getSprite(info, resource.getGraphic(), 0, 1, 255, false);
-//    }
-
-    public Sprite getGround(int type) {
-        if (_groundItemInfo == null) {
-            _groundItemInfo = Data.getData().getItemInfo("base.ground");
-        }
-        int offsetX = (int) (Math.random() * 2);
-        int offsetY = 1;
-
-        GraphicInfo graphicInfo = _groundItemInfo.graphics != null ? _groundItemInfo.graphics.get(0) : null;
-        long sum = getSum(graphicInfo.spriteId, offsetX, offsetY, 0);
-
-        Sprite sprite = _sprites.get(sum);
-        if (sprite == null) {
-            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
-            if (texture != null) {
-                sprite = new Sprite(texture, 0, 32, 32, 32);
-                _sprites.put(sum, sprite);
-            }
-        }
-
-        return sprite;
-    }
-
     public Sprite getAnimal(String path) {
         if (!_icons.containsKey(path)) {
             Texture texture = new Texture(path);
@@ -569,22 +505,15 @@ public class SpriteManager {
     public Sprite getCharacter(CharacterModel c, int direction, int frame) {
         int extra = c.getType().index;
         int sum = 0;
-        sum = sum << 8;
-        sum += direction;
-        sum = sum << 8;
-        sum += frame;
-        sum = sum << 8;
-        sum += extra;
+        sum = (sum << 8) + direction;
+        sum = (sum << 8) + frame;
+        sum = (sum << 8) + extra;
 
         Sprite sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
             Texture texture = new Texture("data/characters/" + c.getType().name + ".png");
 
-            sprite = new Sprite(texture,
-                    0,
-                    0,
-                    Constant.CHAR_WIDTH,
-                    Constant.CHAR_HEIGHT);
+            sprite = new Sprite(texture, 0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT);
             sprite.setFlip(false, true);
 
 //            sprite = new Sprite(texture,

@@ -3,14 +3,15 @@ parcel = nil
 data:extend({
     type = "view",
     name = "info_parcel",
-    position = {1200, 820},
-    size = {400, 800},
+    position = {application.info.screen_width - 372, 820},
+    size = {372, 800},
     background = 0x121c1e,
     visible = false,
     views = {
         { type = "list", position = {10, 10}, views = {
             { type = "label", id = "lb_name", text = "name", text_size = 22, size = {100, 30}},
             { type = "label", id = "lb_tile", text_size = 14},
+            { type = "label", id = "lb_ground", text_size = 14},
             { type = "label", id = "lb_position", text_size = 14},
             { type = "label", id = "lb_connections", text_size = 14},
             { type = "label", id = "lb_type", text_size = 14},
@@ -62,12 +63,13 @@ data:extend({
             local room = parcel:getRoom()
             view:findById("lb_name"):setText("Ground")
             view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y .. "x" .. parcel.z)
+            view:findById("lb_ground"):setText("Ground", ": ", parcel:getGroundInfo() and parcel:getGroundInfo().name or "no")
             --            view:findById("lb_room"):setText("Room", ": ", parcel:getRoom() and parcel:getRoom():getName() or "no")
             --            view:findById("lb_oxygen"):setText("Oxygen", ": ", parcel:getOxygen())
 
             view:findById("lb_light"):setText(parcel:getLight())
 
-            local oxygen = math.floor(parcel:getOxygen() * 100)
+            local oxygen = math.round(parcel:getOxygen() * 100)
             view:findById("lb_oxygen"):setPadding(0, 0, 0, oxygen < 100 and 8 or 0)
             view:findById("lb_oxygen"):setText(oxygen < 0 and "NA" or (oxygen .. "%"))
             view:findById("lb_oxygen"):setTextColor(oxygen < 50 and 0xfe5555 or 0xb3d035)

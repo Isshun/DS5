@@ -54,7 +54,9 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 st.bind(1, x);
                                 st.bind(2, y);
                                 st.bind(3, z);
-                                st.bind(4, 1);
+
+                                // Ground
+                                st.bind(4, parcel.hasGround() ? parcel.getGroundInfo().name : null);
 
                                 // Rock
                                 st.bind(5, parcel.hasRock() ? parcel.getRockInfo().name : null);
@@ -143,6 +145,11 @@ public class WorldModuleSerializer extends SerializerInterface {
                         parcelsList.add(parcel);
                         parcels[x][y][z] = parcel;
 
+                        // Ground
+                        if (!st.columnNull(3)) {
+                            parcel.setGroundInfo(Data.getData().getItemInfo(st.columnString(3)));
+                        }
+
                         // Rock
                         if (!st.columnNull(4)) {
                             parcel.setRockInfo(Data.getData().getItemInfo(st.columnString(4)));
@@ -156,7 +163,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 PlantModel plant = new PlantModel(Data.getData().getItemInfo(stPlant.columnString(1)), plantId);
                                 plant.setParcel(parcel);
                                 parcel.setPlant(plant);
-                                ModuleHelper.getWorldModule().getPlants().add(plant);
                             }
                             stPlant.reset(false);
                         }
@@ -170,7 +176,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 item.setComplete(stItem.columnInt(2) > 0);
                                 item.setParcel(parcel);
                                 parcel.setItem(item);
-                                ModuleHelper.getWorldModule().getItems().add(item);
                             }
                             stItem.reset(false);
                         }
@@ -184,7 +189,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 structure.setComplete(stStructure.columnInt(2) > 0);
                                 structure.setParcel(parcel);
                                 parcel.setStructure(structure);
-                                ModuleHelper.getWorldModule().getStructures().add(structure);
                             }
                             stStructure.reset(false);
                         }
@@ -200,7 +204,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 consumable.setQuantity(100);
                                 consumable.setParcel(parcel);
                                 parcel.setConsumable(consumable);
-                                ModuleHelper.getWorldModule().getConsumables().add(consumable);
                             }
                             stConsumable.reset(false);
                         }

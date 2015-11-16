@@ -43,7 +43,7 @@ public class WorldModule extends GameModule {
 
     @Override
     protected void onLoaded(Game game) {
-        assert game != null && game == _game;
+        assert _game != null;
     }
 
     public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
@@ -120,6 +120,16 @@ public class WorldModule extends GameModule {
     // Used only by serializers
     public MapObjectModel putObject(String name, int x, int y, int z, int data, boolean complete) {
         return putObject(WorldHelper.getParcel(x, y), Data.getData().getItemInfo(name), data, complete);
+    }
+
+    public void replaceGround(ParcelModel parcel, ItemInfo groundInfo) {
+        if (parcel != null && !parcel.hasRock() && parcel.hasGround()) {
+            ParcelModel parcelBottom = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
+            if (parcelBottom != null && !parcelBottom.hasRock()) {
+                parcel.setGroundInfo(groundInfo);
+                Application.getInstance().notify(observer -> observer.onChangeGround(parcel));
+            }
+        }
     }
 
     public void removeItem(ItemModel item) {
@@ -478,6 +488,7 @@ public class WorldModule extends GameModule {
     public void onFloorUp() {
         if (_floor < _floors - 1) {
             _floor++;
+            WorldHelper._currentFloor = _floor;
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }
     }
@@ -486,6 +497,7 @@ public class WorldModule extends GameModule {
     public void onFloorDown() {
         if (_floor > 0) {
             _floor--;
+            WorldHelper._currentFloor = _floor;
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }
     }

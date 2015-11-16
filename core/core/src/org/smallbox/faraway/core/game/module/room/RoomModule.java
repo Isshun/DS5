@@ -78,13 +78,6 @@ public class RoomModule extends GameModule implements GameObserver {
         int width = Game.getInstance().getInfo().worldWidth;
         int height = Game.getInstance().getInfo().worldHeight;
 
-        // Clean floor parcel
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                parcels[x][y][floor].setRoom(null);
-            }
-        }
-
         // Remove all room for this floor
         _rooms.removeIf(room -> room.getFloor() == floor);
 
@@ -100,6 +93,15 @@ public class RoomModule extends GameModule implements GameObserver {
                     explore(room, parcel, _closeList);
                     checkRoof(ModuleHelper.getWorldModule().getParcels(), room);
                     newRooms.add(room);
+                }
+            }
+        }
+
+        // Clean floor parcel
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (parcels[x][y][floor].getRoom() != null && !newRooms.contains(parcels[x][y][floor].getRoom())) {
+                    parcels[x][y][floor].setRoom(null);
                 }
             }
         }
@@ -123,7 +125,6 @@ public class RoomModule extends GameModule implements GameObserver {
         Queue<ParcelModel> openList = new ArrayDeque<>(Collections.singleton(parcel));
         while ((parcel = openList.poll()) != null) {
             if (parcel.getConnections() != null && parcel.isRoomOpen()) {
-
                 // Keep old room info
                 if (parcel.getRoom() != null) {
                     temperature += parcel.getRoom().getTemperature();
@@ -136,7 +137,7 @@ public class RoomModule extends GameModule implements GameObserver {
                 room.getParcels().add(parcel);
                 for (Connection<ParcelModel> connection: parcel.getConnections()) {
                     ParcelModel toParcel = connection.getToNode();
-                    if (!closeList.contains(toParcel)) {
+                    if (parcel.z == toParcel.z && !closeList.contains(toParcel)) {
                         closeList.add(connection.getToNode());
                         if (toParcel.isRoomOpen()) {
                             openList.add(connection.getToNode());
@@ -209,9 +210,9 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     private void checkAndAddNeighbor(WorldModule manager, Map<RoomModel, NeighborModel> neighborhood, RoomModel room, ParcelModel parcel, int offsetX, int offsetY) {
-        ParcelModel p1 = manager.getParcel(parcel.x + offsetX, parcel.y + offsetY);
+        ParcelModel p1 = manager.getParcel(parcel.x + offsetX, parcel.y + offsetY, parcel.z);
         if (p1 != null && p1.getRoom() == null) {
-            ParcelModel p2 = manager.getParcel(p1.x + offsetX, p1.y + offsetY);
+            ParcelModel p2 = manager.getParcel(p1.x + offsetX, p1.y + offsetY, p1.z);
             if (p2 != null && p2.getRoom() != null && p2.getRoom() != room) {
                 neighborhood.get(p2.getRoom())._parcels.add(p1);
             }

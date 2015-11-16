@@ -77,6 +77,24 @@ public abstract class WorldRenderer extends BaseRenderer {
                 parcel.setTile(tile);
             }
         });
+
+        ModuleHelper.getWorldModule().getPlants().forEach(plant -> {
+            if (plant.getInfo().graphics != null) {
+                ParcelModel parcel = plant.getParcel();
+                ItemInfo plantInfo = plant.getInfo();
+
+                int tile = 0;
+                if (WorldHelper.getPlantInfo(parcel.x - 1, parcel.y - 1, parcel.z) == plantInfo) { tile |= 0b10000000; }
+                if (WorldHelper.getPlantInfo(parcel.x,     parcel.y - 1, parcel.z) == plantInfo) { tile |= 0b01000000; }
+                if (WorldHelper.getPlantInfo(parcel.x + 1, parcel.y - 1, parcel.z) == plantInfo) { tile |= 0b00100000; }
+                if (WorldHelper.getPlantInfo(parcel.x - 1, parcel.y,     parcel.z) == plantInfo) { tile |= 0b00010000; }
+                if (WorldHelper.getPlantInfo(parcel.x + 1, parcel.y,     parcel.z) == plantInfo) { tile |= 0b00001000; }
+                if (WorldHelper.getPlantInfo(parcel.x - 1, parcel.y + 1, parcel.z) == plantInfo) { tile |= 0b00000100; }
+                if (WorldHelper.getPlantInfo(parcel.x,     parcel.y + 1, parcel.z) == plantInfo) { tile |= 0b00000010; }
+                if (WorldHelper.getPlantInfo(parcel.x + 1, parcel.y + 1, parcel.z) == plantInfo) { tile |= 0b00000001; }
+                parcel.setTile(tile);
+            }
+        });
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
@@ -133,7 +151,7 @@ public abstract class WorldRenderer extends BaseRenderer {
 
     private void refreshResource(RenderLayer layer, ParcelModel parcel, PlantModel resource, int x, int y) {
         if (parcel != null && resource != null) {
-            Sprite sprite = _spriteManager.getItem(parcel.getPlant(), parcel.getPlant().getTile(), parcel.getPlant().getTile());
+            Sprite sprite = _spriteManager.getItem(parcel.getPlant().getGraphic(), parcel.getPlant().getTile(), parcel.getPlant().getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }

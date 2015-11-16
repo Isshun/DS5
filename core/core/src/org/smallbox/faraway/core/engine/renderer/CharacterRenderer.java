@@ -9,13 +9,13 @@ import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CharacterRenderer extends BaseRenderer {
-    private List<CharacterModel>    _characters;
     private SpriteManager           _spriteManager;
     private int                     _frame;
     private int                     _floor;
@@ -25,7 +25,6 @@ public class CharacterRenderer extends BaseRenderer {
     private static Color    COLOR_OK = new Color(0x448800);
 
     public CharacterRenderer() {
-        _characters = new ArrayList<>();
         _spriteManager = SpriteManager.getInstance();
     }
 
@@ -34,7 +33,7 @@ public class CharacterRenderer extends BaseRenderer {
         int viewPortY = viewport.getPosY();
         double viewPortScale = viewport.getScale();
 
-        for (CharacterModel c : _characters) {
+        for (CharacterModel c : ModuleHelper.getCharacterModule().getCharacters()) {
             ParcelModel parcel = c.getParcel();
             if (parcel.z == _floor) {
                 int posX = parcel.x * Constant.TILE_WIDTH + viewPortX;
@@ -172,11 +171,6 @@ public class CharacterRenderer extends BaseRenderer {
 
     public int getLevel() {
         return MainRenderer.CHARACTER_RENDERER_LEVEL;
-    }
-
-    @Override
-    public void onAddCharacter(CharacterModel character) {
-        _characters.add(character);
     }
 
     @Override

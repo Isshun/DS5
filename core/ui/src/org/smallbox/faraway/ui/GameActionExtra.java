@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
+import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -271,9 +272,35 @@ public class GameActionExtra {
     }
 
     public void planMining(int x, int y, int z, DigMode mode) {
-        JobModel job = JobHelper.createMiningJob(x, y, mode == DigMode.RAMP_DOWN || mode == DigMode.HOLE ? z - 1 : z, mode == GameActionExtra.DigMode.RAMP_UP || mode == GameActionExtra.DigMode.RAMP_DOWN);
-        if (job != null) {
-            ModuleHelper.getJobModule().addJob(job);
+        if (mode == DigMode.RAMP_DOWN) {
+            if (WorldHelper.hasRock(x, y, z - 1)) {
+                DigJob job = JobHelper.createMiningJob(x, y, z - 1, true, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link"));
+                ModuleHelper.getJobModule().addJob(job);
+            }
+            if (WorldHelper.hasRock(x, y, z)) {
+                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link")));
+            }
+        }
+        if (mode == DigMode.RAMP_UP) {
+            if (WorldHelper.hasRock(x, y, z + 1)) {
+                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z + 1, false, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
+            }
+            if (WorldHelper.hasRock(x, y, z)) {
+                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, true, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
+            }
+        }
+        if (mode == DigMode.HOLE) {
+            if (WorldHelper.hasRock(x, y, z - 1)) {
+                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z - 1, false, WorldHelper.getParcel(x, y, z), null));
+            }
+            if (WorldHelper.hasRock(x, y, z)) {
+                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), null));
+            }
+        }
+        if (mode == DigMode.FRONT) {
+            if (WorldHelper.hasRock(x, y, z)) {
+                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, null, null));
+            }
         }
     }
 

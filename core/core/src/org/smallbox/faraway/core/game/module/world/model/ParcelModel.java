@@ -29,6 +29,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private int                             _tile;
     private DigJob                          _digJob;
     private ItemInfo                        _rockInfo;
+    private ItemInfo                        _groundInfo;
     public ConsumableModel                  _consumable;
     public StructureModel                   _structure;
     public PlantModel                       _plant;
@@ -50,6 +51,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void                     setConsumable(ConsumableModel consumable) { _consumable = consumable; }
     public void                     setPlant(PlantModel plant) { _plant = plant; }
     public void                     setStructure(StructureModel structure) { _structure = structure; }
+    public void                     setGroundInfo(ItemInfo groundInfo) { _groundInfo = groundInfo; }
     public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; }
     public void                     setTile(int tile) { _tile = tile; }
     public void                     setDigJob(DigJob digJob) { _digJob = digJob; }
@@ -61,12 +63,14 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  hasPlant() { return _plant != null; }
     public boolean                  hasItem() { return _item != null; }
     public boolean                  hasStructure() { return _structure != null; }
+    public boolean                  hasGround() { return _groundInfo != null; }
     public boolean                  hasRock() { return _rockInfo != null; }
     public boolean                  hasDigJob() { return _digJob != null; }
     public boolean                  hasRoom() { return _room != null; }
 
     public List<NetworkObjectModel> getNetworkObjects() { return _networks; }
     public ItemInfo                 getRockInfo() { return _rockInfo; }
+    public ItemInfo                 getGroundInfo() { return _groundInfo; }
     public DigJob                   getDigJob() { return _digJob; }
     public ItemModel                getItem() { return _item; }
     public StructureModel           getStructure() { return _structure; }
@@ -122,6 +126,11 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     }
 
     public boolean          isWalkable() {
+        // Check ground
+        if (_groundInfo == null) {
+            return false;
+        }
+
         // Check rock
         if (_rockInfo != null) {
             return false;

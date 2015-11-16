@@ -39,9 +39,13 @@ public class WorldHelper {
     public static PlantModel        getResource(int x, int y) { return getResource(x, y, 0); }
     public static PlantModel        getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getPlant() : null; }
     public static ItemInfo          getPlantInfo(int x, int y, int z) { return inMapBounds(x, y) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
+    public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getGroundInfo() : null; }
     public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getRockInfo() : null; }
     public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructureInfo() : null; }
+    public static boolean           hasGround(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null; }
     public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
+    public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].getStructure().getInfo().isWall; }
+    public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null; }
     public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null; }
 
     /**

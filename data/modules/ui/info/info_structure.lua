@@ -2,13 +2,10 @@ structure = nil
 
 data:extend({
     type = "view",
-    name = "ui-test",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    name = "base.ui.info_structure",
+    style = "base.style.right_panel",
     visible = false,
-    views =
-    {
+    views = {
         { type = "label", text = "Structure", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
@@ -38,10 +35,6 @@ data:extend({
             end},
         }},
     },
-
-    on_load = function(view)
-        mode = 3
-    end,
 
     on_event = function(view, event, data)
         if event == application.events.on_key_press and data == "ESCAPE" then

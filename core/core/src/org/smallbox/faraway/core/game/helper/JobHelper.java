@@ -33,7 +33,7 @@ public class JobHelper {
         return GatherJob.create(res, GatherJob.Mode.HARVEST);
     }
 
-    public static JobModel createMiningJob(int x, int y, int z, boolean ramp) {
+    public static DigJob createMiningJob(int x, int y, int z, boolean ramp, ParcelModel parcelToRemoveGround, ItemInfo groundInfo) {
         ParcelModel parcel = WorldHelper.getParcel(x, y, z);
         if (parcel == null) {
             return null;
@@ -53,7 +53,7 @@ public class JobHelper {
             itemProduct = Data.getData().getItemInfo("base.structure.ramp");
         }
 
-        return DigJob.create(parcel, parcel.getRockInfo(), itemProduct);
+        return DigJob.create(parcel, parcel.getRockInfo(), itemProduct, parcelToRemoveGround, groundInfo);
     }
 
     public static void addGatherJob(int x, int y, int z, boolean removeOnComplete) {
@@ -64,7 +64,7 @@ public class JobHelper {
     }
 
     public static void addMineJob(int x, int y, int z, boolean ramp) {
-        JobModel job = createMiningJob(x, y, z, ramp);
+        JobModel job = createMiningJob(x, y, z, ramp, null, null);
         if (job != null) {
             ModuleHelper.getJobModule().addJob(job);
         }

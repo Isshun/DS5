@@ -50,9 +50,9 @@ public class GameManager {
 
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info, Data.config);
-        ModuleManager.getInstance().startGame(game);
         game.load(game, saveInfo, () -> Gdx.app.postRunnable(() -> {
             System.gc();
+            ModuleManager.getInstance().startGame(game);
             startGame(game, saveInfo);
             game.init();
             _game = game;

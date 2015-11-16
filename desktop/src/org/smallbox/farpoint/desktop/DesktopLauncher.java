@@ -22,7 +22,7 @@ public class DesktopLauncher {
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //        config.samples = 2;
-        config.x = 0 + 40;
+        config.x = 2000 + 40;
         config.y = 0 + 40;
         config.width = data.config.screen.resolution[0];
         config.height = data.config.screen.resolution[1];

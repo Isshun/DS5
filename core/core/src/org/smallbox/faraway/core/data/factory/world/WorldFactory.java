@@ -38,11 +38,13 @@ public class WorldFactory {
             parcelListFloors.put(f, new ArrayList<>());
         }
 
+        // Create parcels
+        ItemInfo groundInfo = Data.getData().getItemInfo("base.ground.sand");
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 for (int f = 0; f < _floors; f++) {
                     ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
-                    parcel.setTile(MathUtils.random(0, 1));
+                    parcel.setGroundInfo(groundInfo);
                     parcelList.add(parcel);
                     parcelListFloors.get(f).add(parcel);
                     _parcels[x][y][f] = parcel;
@@ -69,13 +71,15 @@ public class WorldFactory {
                         .forEach(parcel -> applyToParcel(terrain, parcel));
             }
             else if (terrain.pattern != null) {
-                Log.notice("Create old with pattern: " + terrain.pattern);
-                new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, parcel ->
-                        applyToParcel(terrain, parcel));
+                Log.notice("Create resources with pattern: " + terrain.pattern);
+                for (int z = 0; z < _floors; z++) {
+                    if (z == _floors - 1 || "rock".equals(terrain.condition)) {
+                        new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
+                    }
+                }
             }
             else {
-                parcelList.forEach(parcel ->
-                        applyToParcel(terrain, parcel));
+                parcelList.forEach(parcel -> applyToParcel(terrain, parcel));
             }
         }
 

@@ -38,7 +38,7 @@ public class GardenAreaModel extends AreaModel {
         }
 
         //  Plan to remove rock
-        if (parcel.getRockInfo() != null) {
+        if (parcel.hasRock()) {
             if (parcel.hasDigJob()) {
                 ModuleHelper.getJobModule().removeJob(parcel.getDigJob());
             }

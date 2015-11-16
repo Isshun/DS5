@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.engine.renderer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
@@ -39,15 +40,19 @@ public class ExteriorRenderer extends WorldRenderer {
     private int                     _height;
     private int                     _floor;
     private Map<ItemInfo, Pixmap>   _pxRocks;
-    private Pixmap                  _pxGround;
+    private Map<ItemInfo, Pixmap>   _pxGrounds;
 
     @Override
     protected void onLoad(Game game) {
         super.onLoad(game);
 
-        Texture textureIn = new Texture("data/graphics/items/ground.png");
-        textureIn.getTextureData().prepare();
-        _pxGround = textureIn.getTextureData().consumePixmap();
+        _pxGrounds = new HashMap<>();
+
+        Data.getData().items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
+            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(0))));
+            textureIn.getTextureData().prepare();
+            _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
+        });
 
         _pxRocks = new HashMap<>();
 
@@ -62,7 +67,6 @@ public class ExteriorRenderer extends WorldRenderer {
         _rockLayersUpToDate = new boolean[_cols][_rows];
 
         _layerGrid.setOnRefreshLayer((layer, fromX, fromY, toX, toY) -> {
-
             ModuleHelper.getWorldModule().getParcels(fromX, toX-1, fromY, toY-1, _floor, _floor, parcelsDo ->
                     Gdx.app.postRunnable(() -> {
                         layer.begin();
@@ -156,7 +160,7 @@ public class ExteriorRenderer extends WorldRenderer {
             for (int y = toY-1; y >= fromY; y--) {
                 ParcelModel parcel = parcels[x][y][_floor];
                 if (parcel.hasPlant()) {
-                    renderer.draw(_spriteManager.getItem(parcel.getPlant(), parcel.getPlant().getTile(), parcel.getPlant().getTile()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                    renderer.draw(_spriteManager.getItem(parcel.getPlant().getGraphic(), parcel.getTile(), parcel.getPlant().getTile()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                 }
                 if (parcel.getStructure() != null) {
                     renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
@@ -177,7 +181,7 @@ public class ExteriorRenderer extends WorldRenderer {
     }
 
     private boolean repeatTile(int x, int y, int z) {
-        return WorldHelper.getParcel(x, y, z) == null || WorldHelper.hasRock(x, y, z) || WorldHelper.hasStructure(x, y, z);
+        return WorldHelper.getParcel(x, y, z) == null || WorldHelper.hasRock(x, y, z) || WorldHelper.hasWall(x, y, z);
     }
 
     private void createGround(int col, int row) {
@@ -195,12 +199,18 @@ public class ExteriorRenderer extends WorldRenderer {
 
                 for (ParcelModel parcel: parcels) {
                     // Draw ground
-                    pxGroundOut.drawPixmap(_pxGround, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 32, 32, 32);
-                }
+                    if (parcel.hasGround()) {
+                        pxGroundOut.drawPixmap(_pxGrounds.get(parcel.getGroundInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 32, 32, 32);
+                    } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 1)) {
+                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 1)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 32, 32, 32, 32);
+                    } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 2)) {
+                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 2)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 64, 32, 32, 32);
+                    } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 3)) {
+                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 3)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 96, 32, 32, 32);
+                    }
 
-                for (ParcelModel parcel: parcels) {
                     // Draw rock
-                    if (parcel.hasRock()) {
+                    if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
                         int tile = 0;
                         if (repeatTile(parcel.x - 1, parcel.y - 1, parcel.z)) { tile |= 0b10000000; }
                         if (repeatTile(parcel.x,     parcel.y - 1, parcel.z)) { tile |= 0b01000000; }
@@ -217,16 +227,18 @@ public class ExteriorRenderer extends WorldRenderer {
 //                            pxOut.drawPixmap(pxRock, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
 //                        } else {
                         Gdx.app.postRunnable(() -> {
-                            Texture texture = spriteManager.getRock(parcel.getRockInfo().graphics.get(0), parcel.getTile());
-                            if (texture != null) {
-                                TextureData textureData = texture.getTextureData();
-                                if (!textureData.isPrepared()) {
-                                    textureData.prepare();
+                            if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
+                                Sprite sprite = spriteManager.getRock(parcel.getRockInfo().graphics.get(0), parcel.getTile());
+                                if (sprite != null) {
+                                    TextureData textureData = sprite.getTexture().getTextureData();
+                                    if (!textureData.isPrepared()) {
+                                        textureData.prepare();
+                                    }
+                                    Pixmap pxRockDo = textureData.consumePixmap();
+                                    _pxRocks.put(parcel.getRockInfo(), pxRockDo);
+                                    textureData.disposePixmap();
+                                    pxOut.drawPixmap(pxRockDo, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
                                 }
-                                Pixmap pxRockDo = textureData.consumePixmap();
-                                _pxRocks.put(parcel.getRockInfo(), pxRockDo);
-                                textureData.disposePixmap();
-                                pxOut.drawPixmap(pxRockDo, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
                             }
                         });
 //                        }
@@ -249,7 +261,7 @@ public class ExteriorRenderer extends WorldRenderer {
 
     private void refreshPlant(RenderLayer layer, ParcelModel parcel, PlantModel plant, int x, int y) {
         if (parcel != null && plant != null) {
-            Sprite sprite = _spriteManager.getItem(plant, parcel.getTile(), plant.getTile());
+            Sprite sprite = _spriteManager.getItem(plant.getGraphic(), parcel.getTile(), plant.getTile());
             layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
         }
     }

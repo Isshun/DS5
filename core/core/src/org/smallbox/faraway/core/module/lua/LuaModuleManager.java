@@ -152,7 +152,7 @@ public class LuaModuleManager implements GameObserver {
         System.out.println("Load lua module: " + info.id + " (" + info.name + ")");
 
         Globals globals = JsePlatform.standardGlobals();
-        globals.load("function main(a, d)\n application = a\ndata = d\n end", "main").call();
+        globals.load("function main(a, d)\n application = a\ndata = d\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
         globals.get("main").call(_luaApplicationValue, CoerceJavaToLua.coerce(new LuaDataModel(values -> {
             if (!values.get("type").isnil()) {
                 extendLuaValue(values, luaModule, globals);
