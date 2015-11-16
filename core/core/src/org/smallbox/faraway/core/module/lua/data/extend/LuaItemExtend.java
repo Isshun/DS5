@@ -362,8 +362,9 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.isPlant = true;
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
         itemInfo.plant.minMaturity = getDouble(value, "gather", 1);
-        itemInfo.plant.growing = getDouble(value, "growing", 1) / Data.config.tickPerHour;
-        itemInfo.plant.nourish = getDouble(value, "nourish", 1) / Data.config.tickPerHour;
+        itemInfo.plant.growing = 1 / getDouble(value, "growing", 2000);
+        itemInfo.plant.nourish = 1 / getDouble(value, "nourish", 500);
+        itemInfo.plant.oxygen = getDouble(value, "oxygen", 0);
 
         if (!value.get("states").isnil()) {
             readPlantStatesValues(itemInfo, value.get("states"));

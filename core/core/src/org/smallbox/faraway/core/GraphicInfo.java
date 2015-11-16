@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class GraphicInfo {
     public enum Type { NONE, TERRAIN, STRUCTURE, PLANT }
 
-    public int              spriteId;
+    public int              spriteId = -1;
     public final String     packageName;
     public final String     path;
     public int              x;

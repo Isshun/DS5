@@ -39,9 +39,6 @@ public class GardenModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        double light = ModuleHelper.getWorldModule().getLight() * 100;
-        double temperature = 35;
-
         AreaModule areaModule = (AreaModule)ModuleManager.getInstance().getModule(AreaModule.class);
         if (areaModule != null) {
             areaModule.getAreas().stream().filter(area -> area instanceof GardenAreaModel).forEach(area -> {
@@ -102,11 +99,11 @@ public class GardenModule extends GameModule {
                 plant.setNourish(Math.max(0, plant.getNourish() - plant.getInfo().plant.nourish));
 
                 // Launch additional grow if the plant has been nourished
-                if (plant.getGrowState() != null && plant.getNourish() > 0.25) {
-                    plant.grow(plant.getGrowState());
+                if (plant.hasGrowingInfo() && plant.getNourish() > 0.25) {
+                    plant.grow();
                 }
-                if (plant.getGrowState() != null && plant.getNourish() > 0.5) {
-                    plant.grow(plant.getGrowState());
+                if (plant.hasGrowingInfo() && plant.getNourish() > 0.5) {
+                    plant.grow();
                 }
 
                 // Plan to harvest
@@ -125,27 +122,6 @@ public class GardenModule extends GameModule {
                 }
             }
         });
-    }
-
-    public void grow(PlantModel resource, double light, double temperature) {
-        GrowingInfo bestState = null;
-        double bestValue = -1;
-        for (GrowingInfo state: resource.getInfo().plant.states) {
-            if (state.value > bestValue && canGrow(state, light, temperature)) {
-                bestState = state;
-                bestValue = state.value;
-            }
-        }
-
-        if (bestState != null) {
-            resource.grow(bestState);
-
-            // Plant in garden grow 3x faster
-            if (resource.getNourish() > 0.25) {
-                resource.grow(bestState);
-                resource.grow(bestState);
-            }
-        }
     }
 
     private boolean canGrow(GrowingInfo infoEntry, double light, double temperature) {

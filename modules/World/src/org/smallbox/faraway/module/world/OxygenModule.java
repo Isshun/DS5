@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.game.module.room.RoomModule;
  * Created by Alex on 18/06/2015.
  */
 public class OxygenModule extends GameModule {
-    private int _oxygen;
+    private double _oxygen;
 
     public OxygenModule() {
         _updateInterval = 10;
@@ -20,7 +20,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected void onLoaded(Game game) {
-//        _oxygen = (int)(Game.getInstance().getPlanet().getOxygen() * 100);
+        _oxygen = game.getPlanet().getOxygen();
     }
 
     @Override
@@ -36,30 +36,30 @@ public class OxygenModule extends GameModule {
                 if (room.isExterior()) {
                     room.setOxygen(_oxygen);
                 } else {
+                    // Mix oxygen with neighbors
                     for (NeighborModel neighbor : room.getNeighbors()) {
-                        room.setOxygen(room.getOxygen() + (neighbor._room.getOxygen() - room.getOxygen()) * (1 - neighbor._borderValue) * 0.05);
+                        double totalOxygen = (room.getOxygen() * room.getSize()) + (neighbor.getRoom().getOxygen() * neighbor.getRoom().getSize());
+                        int totalSize = room.getSize() + neighbor.getRoom().getSize();
+                        double ratio = neighbor.getBorderSize() / room.getSize();
+                        double targetOxygen = totalOxygen / totalSize;
+                        changeOxygenSmooth(room, targetOxygen, ratio);
                     }
+                    // Get oxygen from objects
+                    room.getParcels().forEach(parcel -> {
+                    });
                 }
             }
-
-//            roomModule.getRooms().forEach(room -> room.getParcels().forEach(parcel -> parcel.setOxygen(room.getOxygen())));
-//            roomModule.getRoomlessParcels().forEach(parcel -> parcel.setOxygen(_oxygen));
         }
     }
 
-    public void setOxygen(double oxygen) {
-        _oxygen = (int)(oxygen * 100);
-    }
-
-    public double getOxygen() {
-        return _oxygen / 100.0;
-    }
-
-    public void increaseOxygen() {
-        _oxygen += 10;
-    }
-
-    public void decreaseOxygen() {
-        _oxygen += 10;
+    private void changeOxygenSmooth(RoomModel room, double targetOxygen, double ratio) {
+        double diff = targetOxygen - room.getOxygen();
+        if (diff > 0.5 || diff < -0.5) {
+            room.setOxygen(room.getOxygen() + (diff * ratio * 0.75));
+        } else if (diff > 0.25 || diff < -0.25) {
+            room.setOxygen(room.getOxygen() + (diff * ratio * 0.5));
+        } else if (diff > 0.001 || diff < -0.001) {
+            room.setOxygen(room.getOxygen() + (diff * ratio * 0.25));
+        }
     }
 }

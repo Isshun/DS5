@@ -73,6 +73,7 @@ public class ItemInfo extends ObjectInfo {
         public double                   minMaturity;
         public boolean                  cutOnGathering = true;
         public double                   nourish;
+        public double                   oxygen;
     }
 
     public static class ItemInfoReceipt {

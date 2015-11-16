@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model.resource;
 
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
@@ -9,8 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.*;
 
 public class PlantModel extends MapObjectModel {
-    private double                  _growRate;
-    private GrowingInfo             _growState;
+    private GrowingInfo             _growingInfo;
     private double                  _maturity;
     private GardenAreaModel         _garden;
     private boolean                 _hasSeed = true;
@@ -26,8 +24,7 @@ public class PlantModel extends MapObjectModel {
         super(info, id);
     }
 
-    public void         setGrowRate(double growRate) { _growRate = growRate; }
-    public void         setGrowState(GrowingInfo growState) { _growState = growState; }
+    public void         setGrowingInfo(GrowingInfo growState) { _growingInfo = growState; }
     public void         setMaturity(double maturity) { _maturity = maturity; }
     public void         setGarden(GardenAreaModel garden) { _garden = garden; }
     public void         setSeed(boolean hasSeed) { _hasSeed = hasSeed; }
@@ -37,8 +34,7 @@ public class PlantModel extends MapObjectModel {
 
     public double       getMaturity() { return _maturity; }
     public double       getNourish() { return _nourish; }
-    public double       getGrowRate() { return _growRate; }
-    public GrowingInfo  getGrowState() { return _growState; }
+    public GrowingInfo  getGrowingInfo() { return _growingInfo; }
     public int          getTile() { return _tile; }
     public JobModel     getJob() { return _job; }
 
@@ -46,11 +42,11 @@ public class PlantModel extends MapObjectModel {
     public boolean      isHarvestable() { return _maturity >= _info.plant.minMaturity; }
     public boolean      inGarden() { return _garden != null; }
     public boolean      hasSeed() { return _hasSeed; }
+    public boolean      hasGrowingInfo() { return _growingInfo != null; }
 
-
-    public void grow(GrowingInfo growState) {
-        _growState = growState;
-        _growRate = growState.value;
-        _maturity = Math.min(1, _maturity + (_info.plant.growing * growState.value));
+    public void grow() {
+        if (_growingInfo != null) {
+            _maturity = Math.min(1, _maturity + (_info.plant.growing * _growingInfo.value));
+        }
     }
 }

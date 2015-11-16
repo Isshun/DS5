@@ -37,7 +37,7 @@ public class QuestModuleUI {
                 final UILabel lbOption = (UILabel) _panel.findById("lb_opt_" + (i + 1));
                 lbOption.setText(" [" + (i + 1) + "] " + options[i]);
                 lbOption.setVisible(true);
-                lbOption.setOnClickListener(view -> selectOption(quest, optionIndex));
+                lbOption.setOnClickListener(() -> selectOption(quest, optionIndex));
             }
 
             _nbOptions = options.length;
@@ -54,7 +54,7 @@ public class QuestModuleUI {
             final UILabel lbOption = (UILabel) _panel.findById("lb_opt_1");
             lbOption.setText(" [1] OK");
             lbOption.setVisible(true);
-            lbOption.setOnClickListener(view -> _panel.findById("frame_message").setVisible(false));
+            lbOption.setOnClickListener(() -> _panel.findById("frame_message").setVisible(false));
 
             _nbOptions = 1;
         }

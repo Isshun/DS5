@@ -1,7 +1,7 @@
 data:extend({
     type = "view",
     id = "panel_main",
-    position = {application.info.screen_width - 400, 38},
+    position = {application.info.screen_width - 372, 38},
     size = {400, 800},
     background = 0x121c1e,
     visible = true,
@@ -9,17 +9,17 @@ data:extend({
         type = "list",
         position = {10, 0},
         views = {
-            { type = "view", position = {0, 12}, size = {380, 44}, background = 0x203636, views = {
+            { type = "view", position = {0, 12}, size = {352, 34}, background = 0x203636, views = {
                 { type = "label", text = "Far Point", text_size = 16, padding = 10 },
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {220, 0}, padding = 10 },
             }},
-            { type = "view", size = {380, 240}, views = {
+            { type = "view", size = {352, 230}, views = {
 --                { type = "image", id = "img_map", background = 0x000000, size = {380, 240}},
-                { type = "label", id = "lb_floor", text = "0", text_size = 22, position = {12, 215}},
-                { type = "label", id = "lb_speed", text = "x1", text_size = 22, position = {348, 215}},
+                { type = "label", id = "lb_floor", text = "0", text_size = 22, position = {12, 205}},
+                { type = "label", id = "lb_speed", text = "x1", text_size = 22, position = {348, 205}},
             }},
-            { type = "view", id = "view_resource", background = 0x203636, size = {380, 34}, views = {
-                { type = "grid", id = "grid_resource", columns = 8, column_width = 70, views = {
+            { type = "view", id = "view_resource", background = 0x203636, size = {352, 34}, views = {
+                { type = "grid", id = "grid_resource", columns = 8, column_width = 70, position = {0, 2}, views = {
                     { type = "view", size = {70, 32}, position = {0, 0}, views = {
                         { type = "image", src = "[base]/graphics/icons/food.png", size = {32, 32}},
                         { type = "label", id = "lb_resource_food", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
@@ -38,7 +38,7 @@ data:extend({
             }},
             { type = "grid", id = "main_grid", position = {0, 18}, columns = 2, column_width = 195, row_height = 60, focusable = true, views = {
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Build", text_size = 18, padding = 10, on_click = function() open_panel("panel_build") end},
-                { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Plan", text_size = 18, padding = 10, on_click = function() open_panel("panel_plan") end},
+                { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Plan", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_plan") end},
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Displays", text_size = 18, padding = 10, on_click = function() open_panel("panel_displays") end},
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Areas", text_size = 18, padding = 10, on_click = function() open_panel("panel_areas") end},
                 { type = "label", size = {180, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Jobs", text_size = 18, padding = 10, on_click = function() open_panel("panel_jobs") end},

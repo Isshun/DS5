@@ -35,6 +35,7 @@ data:extend({
         if event == application.events.on_rock_selected then
             view:setVisible(true)
             view:findById("lb_name"):setText(data.label)
+            application.ui:findById("panel_main"):setVisible(false)
             rock = data;
         end
     end,

@@ -35,7 +35,7 @@ public class MenuLoad extends MenuBase {
             lbFile.setText(file.getName());
             lbFile.setTextColor(Color.WHITE);
             lbFile.setPosition(200, 32 * _nbFiles);
-            lbFile.setOnClickListener(view -> {
+            lbFile.setOnClickListener(() -> {
                 onLoadListener.onLoad(file.getAbsolutePath());
                 setVisible(false);
             });

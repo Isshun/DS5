@@ -32,6 +32,7 @@ import org.smallbox.faraway.core.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;

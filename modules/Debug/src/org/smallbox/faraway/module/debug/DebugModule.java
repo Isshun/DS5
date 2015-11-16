@@ -76,48 +76,48 @@ public class DebugModule extends GameModule {
 //                            .map(info -> new CommandEntry(info.label, v -> UserInterface.getInstance().getSelector().select(info)))
 //                            .collect(Collectors.toList()))
 //            ),
-            new CommandEntry("Re-gen",              view -> {
+            new CommandEntry("Re-gen",              () -> {
 //                new WorldFactory().create(ModuleHelper.getWorldModule(), Game.getInstance().getInfo().region);
 //                MainRenderer.getInstance().getWorldRenderer().refreshAll();
             }),
-            new CommandEntry("Add crew (human)",    view -> ModuleHelper.getCharacterModule().addRandom(HumanModel.class)),
-            new CommandEntry("Add crew (android)",  view -> ModuleHelper.getCharacterModule().addRandom(AndroidModel.class)),
-            new CommandEntry("Add crew (droid)",    view -> ModuleHelper.getCharacterModule().addRandom(DroidModel.class)),
-            new CommandEntry("Kill selected",       view -> _character.setIsDead()),
-            new CommandEntry("Kill all",            view -> ModuleHelper.getCharacterModule().getCharacters().forEach(CharacterModel::setIsDead)),
-            new CommandEntry("add components to item",   view -> {
+            new CommandEntry("Add crew (human)",    () -> ModuleHelper.getCharacterModule().addRandom(HumanModel.class)),
+            new CommandEntry("Add crew (android)",  () -> ModuleHelper.getCharacterModule().addRandom(AndroidModel.class)),
+            new CommandEntry("Add crew (droid)",    () -> ModuleHelper.getCharacterModule().addRandom(DroidModel.class)),
+            new CommandEntry("Kill selected",       () -> _character.setIsDead()),
+            new CommandEntry("Kill all",            () -> ModuleHelper.getCharacterModule().getCharacters().forEach(CharacterModel::setIsDead)),
+            new CommandEntry("add components to item",   () -> {
                 _item.getComponents().add(new BuildableMapObject.ComponentModel(Data.getData().getItemInfo("base.calcite_brick"), 10, 3));
                 _item.setComplete(false);
             }),
-            new CommandEntry("remove characters",   view -> ModuleHelper.getCharacterModule().getCharacters().clear()),
-            new CommandEntry("Launch quest",        view -> ((QuestModule) ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
+            new CommandEntry("remove characters",   () -> ModuleHelper.getCharacterModule().getCharacters().clear()),
+            new CommandEntry("Launch quest",        () -> ((QuestModule) ModuleManager.getInstance().getModule(QuestModule.class)).launchRandomQuest()),
 //            new CommandEntry("Refresh rooms",       view -> ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).refreshRooms()),
-            new CommandEntry("Remove rubbles",      view -> {
+            new CommandEntry("Remove rubbles",      () -> {
                 for (ConsumableModel consumable : ModuleHelper.getWorldModule().getConsumables().stream().filter(res -> "base.calcite_rubble".equals(res.getInfo().name)).collect(Collectors.toList())) {
                     ModuleHelper.getWorldModule().removeConsumable(consumable);
                 }
             }
             ),
-            new CommandEntry("Set need...",         view ->
+            new CommandEntry("Set need...",         () ->
                     openFrame(Arrays.asList(
-                            new CommandEntry("Energy (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, 100)),
-                            new CommandEntry("Energy (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, _character.getType().needs.energy.warning)),
-                            new CommandEntry("Energy (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, _character.getType().needs.energy.critical)),
-                            new CommandEntry("Food (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, 100)),
-                            new CommandEntry("Food (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, _character.getType().needs.food.warning)),
-                            new CommandEntry("Food (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, _character.getType().needs.food.critical)),
-                            new CommandEntry("Relation (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, 100)),
-                            new CommandEntry("Relation (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, _character.getType().needs.relation.warning)),
-                            new CommandEntry("Relation (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, _character.getType().needs.relation.critical)),
-                            new CommandEntry("Entertainment (f)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, 100)),
-                            new CommandEntry("Entertainment (w)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, _character.getType().needs.joy.warning)),
-                            new CommandEntry("Entertainment (c)", v -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, _character.getType().needs.joy.critical))))
+                            new CommandEntry("Energy (f)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, 100)),
+                            new CommandEntry("Energy (w)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, _character.getType().needs.energy.warning)),
+                            new CommandEntry("Energy (c)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENERGY, _character.getType().needs.energy.critical)),
+                            new CommandEntry("Food (f)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, 100)),
+                            new CommandEntry("Food (w)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, _character.getType().needs.food.warning)),
+                            new CommandEntry("Food (c)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_FOOD, _character.getType().needs.food.critical)),
+                            new CommandEntry("Relation (f)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, 100)),
+                            new CommandEntry("Relation (w)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, _character.getType().needs.relation.warning)),
+                            new CommandEntry("Relation (c)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_RELATION, _character.getType().needs.relation.critical)),
+                            new CommandEntry("Entertainment (f)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, 100)),
+                            new CommandEntry("Entertainment (w)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, _character.getType().needs.joy.warning)),
+                            new CommandEntry("Entertainment (c)", () -> _character.getNeeds().setValue(CharacterNeedsExtra.TAG_ENTERTAINMENT, _character.getType().needs.joy.critical))))
             ),
-            new CommandEntry("Dump managers",       view -> {
+            new CommandEntry("Dump managers",       () -> {
                 Log.notice("\n----------- dump -----------");
                 ModuleManager.getInstance().getModules().forEach(GameModule::dump);
             }),
-            new CommandEntry("Dump renders",       view -> {
+            new CommandEntry("Dump renders",       () -> {
                 Log.notice("\n----------- dump -----------");
                 MainRenderer.getInstance().getRenders().forEach(BaseRenderer::dump);
             })
@@ -167,9 +167,7 @@ public class DebugModule extends GameModule {
         btBack.setSize(100, 32);
         btBack.setPosition(140, 0);
         btBack.setPadding(5);
-        btBack.setOnClickListener(v -> {
-            openFrame(COMMANDS);
-        });
+        btBack.setOnClickListener(() -> openFrame(COMMANDS));
         _view.addView(btBack);
 
         _listCommands = new UIList(-1, -1);

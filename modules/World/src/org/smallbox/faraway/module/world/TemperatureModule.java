@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleManager;
@@ -45,6 +46,28 @@ public class TemperatureModule extends GameModule {
     }
 
     public void onUpdate(int tick) {
+        WeatherModule weatherModule = (WeatherModule) ModuleManager.getInstance().getModule(WeatherModule.class);
+        RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
+        if (roomModule != null) {
+            for (RoomModel room : roomModule.getRooms()) {
+                if (room.isExterior()) {
+                    room.setTemperature(weatherModule.getTemperature());
+                } else {
+                    // Mix temperature with neighbors
+                    for (NeighborModel neighbor : room.getNeighbors()) {
+                        double totalTemperature = (room.getTemperature() * room.getSize()) + (neighbor.getRoom().getTemperature() * neighbor.getRoom().getSize());
+                        int totalSize = room.getSize() + neighbor.getRoom().getSize();
+                        double ratio = neighbor.getBorderSize() / room.getSize();
+                        double targetTemperature = totalTemperature / totalSize;
+                        changeTemperatureSmooth(room, targetTemperature, ratio);
+                    }
+                    // Get temperature from objects
+                    room.getParcels().forEach(parcel -> {
+                    });
+                }
+            }
+        }
+
 //        if (_needUpdate) {
 //            printDebug("update temperature (" + _temperature + ")");
 //
@@ -62,6 +85,19 @@ public class TemperatureModule extends GameModule {
 //                room.getTemperatureInfo().temperature = Math.round(room.getTemperatureInfo().temperatureTotal / room.getSize());
 //            }
 //        }
+    }
+
+    private void changeTemperatureSmooth(RoomModel room, double targetTemperature, double ratio) {
+        double diff = targetTemperature - room.getTemperature();
+        if (diff > 10 || diff < -10) {
+            room.setTemperature(room.getTemperature() + (diff * ratio * 0.75));
+        } else if (diff > 5 || diff < -5) {
+            room.setTemperature(room.getTemperature() + (diff * ratio * 0.5));
+        } else if (diff > 0.5 || diff < -0.5) {
+            room.setTemperature(room.getTemperature() + (diff * ratio * 0.25));
+        } else {
+            room.setTemperature(targetTemperature);
+        }
     }
 
     private void pass3() {

@@ -10,10 +10,7 @@ import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.ui.UICursor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Data {
@@ -81,6 +78,7 @@ public class Data {
     public String           getString(int hash) { return _data.strings.get(hash); }
     public static String    getString(String str) { return _data.strings.containsKey(str.hashCode()) ? _data.strings.get(str.hashCode()) : str; }
     public PlanetInfo       getPlanet(String planetName) { return (PlanetInfo) getObject(planets, planetName); }
+    public Collection<ItemInfo> getItems() { return _data.items; }
 
     public boolean          hasNetwork(String name) { return hasObject(networks, name); }
     public boolean          hasString(int hash) { return _data.strings.containsKey(hash); }

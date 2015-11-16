@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,7 @@ public class Application implements GameEventListener {
                     Data.getData().needUIRefresh = false;
                     _dataLastModified = lastResModified;
                     UserInterface.getInstance().reload();
+                    SpriteManager.getInstance().reload();
                     Application.getInstance().notify(GameObserver::onReloadUI);
                     Log.info("Data reloaded");
                     UserInterface.getInstance().restore();

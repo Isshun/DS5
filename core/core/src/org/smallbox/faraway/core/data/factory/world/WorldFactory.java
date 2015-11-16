@@ -82,33 +82,8 @@ public class WorldFactory {
         // Clean old
         cleanMap(parcelList, _parcels);
 
-        // Notify world observers'
-        for (int z = 0; z < _floors - 1; z++) {
-            for (int y = 0; y < _height; y++) {
-                for (int x = 0; x < _width; x++) {
-                    final ParcelModel parcel = _parcels[x][y][z];
-                    if (parcel.getStructure() != null) {
-//                        Application.getInstance().notify(observer -> observer.onAddStructure(parcel.getStructure()));
-                        worldModule.getStructures().add(parcel.getStructure());
-                    }
-                    if (parcel.hasPlant()) {
-//                        Application.getInstance().notify(observer -> observer.onAddResource(parcel.getResource()));
-                        worldModule.getPlants().add(parcel.getPlant());
-                    }
-                    if (parcel.getItem() != null) {
-//                        Application.getInstance().notify(observer -> observer.onAddItem(parcel.getItem()));
-                        worldModule.getItems().add(parcel.getItem());
-                    }
-                    if (parcel.getConsumable() != null) {
-//                        Application.getInstance().notify(observer -> observer.onAddConsumable(parcel.getConsumable()));
-                        worldModule.getConsumables().add(parcel.getConsumable());
-                    }
-                }
-            }
-        }
-
         WorldHelper.init(game.getInfo(), _parcels);
-        ModuleHelper.getWorldModule().setParcels(_parcels, parcelList);
+        ModuleHelper.getWorldModule().init(game, _parcels, parcelList);
         ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(game.getInfo());
     }
 

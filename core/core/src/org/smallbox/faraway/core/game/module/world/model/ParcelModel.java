@@ -63,21 +63,23 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  hasStructure() { return _structure != null; }
     public boolean                  hasRock() { return _rockInfo != null; }
     public boolean                  hasDigJob() { return _digJob != null; }
+    public boolean                  hasRoom() { return _room != null; }
 
     public List<NetworkObjectModel> getNetworkObjects() { return _networks; }
     public ItemInfo                 getRockInfo() { return _rockInfo; }
     public DigJob                   getDigJob() { return _digJob; }
     public ItemModel                getItem() { return _item; }
     public StructureModel           getStructure() { return _structure; }
+    public ItemInfo                 getStructureInfo() { return _structure != null ? _structure.getInfo() : null; }
     public PlantModel               getPlant() { return _plant; }
     public ConsumableModel          getConsumable() { return _consumable; }
     public RoomModel                getRoom() { return _room; }
     public AreaModel                getArea() { return _area; }
     public int                      getTile() { return _tile; }
     public ParcelEnvironment        getEnvironment() { return _environment; }
-    public double                   getLight() { return _room != null ? _room.getLight() : ModuleHelper.getWeatherModule().getLight(); }
-    public double                   getTemperature() { return _room != null ? _room.getTemperature() : ModuleHelper.getWeatherModule().getTemperature(); }
-    public double                   getOxygen() { return _room != null ? _room.getOxygen() : ModuleHelper.getWeatherModule().getOxygen(); }
+    public double                   getLight() { return _room != null ? _room.getLight() : -1; }
+    public double                   getTemperature() { return _room != null ? _room.getTemperature() : -1; }
+    public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
 
     @Override
     public String toString() {

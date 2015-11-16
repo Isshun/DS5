@@ -25,9 +25,9 @@ public class WorldModule extends GameModule {
     private int                                 _height;
     private int                                 _floors;
     private Game                                _game;
-    private Set<NetworkObjectModel>             _networks = new HashSet<>();
-    private Set<ConsumableModel>                _consumables = new HashSet<>();
-    private BlockingQueue<PlantModel>           _plants = new LinkedBlockingQueue<>();
+    private Set<NetworkObjectModel>             _networks;
+    private Set<ConsumableModel>                _consumables;
+    private BlockingQueue<PlantModel>           _plants;
     private Set<ItemModel>                      _items = new HashSet<>();
     private Set<ItemModel>                      _factories = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
@@ -40,6 +40,47 @@ public class WorldModule extends GameModule {
     private List<ParcelModel>                   _parcelCacheQueue = new ArrayList<>(CACHE_SIZE);
     private List<ChunkCacheModel>               _parcelChunkCacheQueue = new ArrayList<>(50);
     private Map<Integer, ChunkCacheModel>       _parcelChunkCache = new HashMap<>();
+
+    @Override
+    protected void onLoaded(Game game) {
+        assert game != null && game == _game;
+    }
+
+    public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
+        _game = game;
+        _width = _game.getInfo().worldWidth;
+        _height = _game.getInfo().worldHeight;
+        _floors = _game.getInfo().worldFloors;
+        _floor = _floors - 1;
+
+        _parcels = parcels;
+        _parcelList = parcelList;
+        _parcelListFloor = new HashMap<>();
+        _plants = new LinkedBlockingQueue<>();
+        _networks = new HashSet<>();
+        _consumables = new HashSet<>();
+
+        // Notify world observers'
+        for (int z = 0; z < _floors; z++) {
+            for (int y = 0; y < _height; y++) {
+                for (int x = 0; x < _width; x++) {
+                    final ParcelModel parcel = _parcels[x][y][z];
+                    if (parcel.getStructure() != null) {
+                        _structures.add(parcel.getStructure());
+                    }
+                    if (parcel.hasPlant()) {
+                        _plants.add(parcel.getPlant());
+                    }
+                    if (parcel.getItem() != null) {
+                        _items.add(parcel.getItem());
+                    }
+                    if (parcel.getConsumable() != null) {
+                        _consumables.add(parcel.getConsumable());
+                    }
+                }
+            }
+        }
+    }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
 
@@ -59,17 +100,11 @@ public class WorldModule extends GameModule {
         getParcelListener.onGetParcel(parcels);
     }
 
-    public void setParcels(ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
-        _parcels = parcels;
-        _parcelList = parcelList;
-        _parcelListFloor = new HashMap<>();
-    }
-
     public Collection<ItemModel>                getItems() { return _items; }
     public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
-    public Collection<PlantModel> getPlants() { return _plants; }
+    public Collection<PlantModel>               getPlants() { return _plants; }
     public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y) { return getParcel(x, y, _floor); }
     public ParcelModel                          getParcel(int x, int y, int z) {
@@ -80,15 +115,6 @@ public class WorldModule extends GameModule {
 
     public WorldModule() {
         ModuleHelper.setWorldModule(this);
-    }
-
-    @Override
-    public void onLoaded(Game game) {
-        _game = Game.getInstance();
-        _width = _game.getInfo().worldWidth;
-        _height = _game.getInfo().worldHeight;
-        _floors = _game.getInfo().worldFloors;
-        _floor = _floors - 1;
     }
 
     // Used only by serializers

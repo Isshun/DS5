@@ -63,7 +63,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 if (parcel.hasPlant()) {
                                     PlantModel plant = parcel.getPlant();
                                     st.bind(6, plant.getId());
-                                    stPlant.bind(1, plant.getId()).bind(2, plant.getInfo().name).bind(3, plant.getGrowState() != null ? plant.getGrowState().value : 0);
+                                    stPlant.bind(1, plant.getId()).bind(2, plant.getInfo().name).bind(3, plant.getGrowingInfo() != null ? plant.getGrowingInfo().value : 0);
                                     stPlant.step();
                                     stPlant.reset(false);
                                 } else {
@@ -119,12 +119,13 @@ public class WorldModuleSerializer extends SerializerInterface {
         });
     }
 
-    public void load(GameInfo gameInfo) {
+    public void load(Game game) {
         SQLHelper.getInstance().post(db -> {
-            ParcelModel[][][] parcels = new ParcelModel[gameInfo.worldWidth][gameInfo.worldHeight][gameInfo.worldFloors];
+            int width = game.getInfo().worldWidth;
+            int height = game.getInfo().worldHeight;
+            int floors = game.getInfo().worldFloors;
+            ParcelModel[][][] parcels = new ParcelModel[width][height][floors];
             List<ParcelModel> parcelsList = new ArrayList<>();
-            int width = gameInfo.worldWidth;
-            int height = gameInfo.worldHeight;
 
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable FROM WorldModule_parcel");
@@ -208,9 +209,9 @@ public class WorldModuleSerializer extends SerializerInterface {
                     st.dispose();
                 }
 
-                WorldHelper.init(gameInfo, parcels);
-                ModuleHelper.getWorldModule().setParcels(parcels, parcelsList);
-                ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(gameInfo);
+                WorldHelper.init(game.getInfo(), parcels);
+                ModuleHelper.getWorldModule().init(game, parcels, parcelsList);
+                ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(game.getInfo());
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }

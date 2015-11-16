@@ -51,8 +51,6 @@ public class MenuSave extends MenuBase {
             lbFile.setText(file.getName());
             lbFile.setTextColor(Color.WHITE);
             lbFile.setPosition(200, 32 * i);
-            lbFile.setOnClickListener(view -> {
-            });
             _lbFiles.add(lbFile);
             _menu.addView(lbFile);
             i++;

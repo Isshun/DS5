@@ -36,10 +36,13 @@ public class WorldHelper {
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructure() : null; }
-    public static PlantModel getResource(int x, int y) { return getResource(x, y, 0); }
-    public static PlantModel getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getPlant() : null; }
-    public static ItemInfo          getResourceInfo(int x, int y, int z) { return inMapBounds(x, y) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
+    public static PlantModel        getResource(int x, int y) { return getResource(x, y, 0); }
+    public static PlantModel        getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getPlant() : null; }
+    public static ItemInfo          getPlantInfo(int x, int y, int z) { return inMapBounds(x, y) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
     public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getRockInfo() : null; }
+    public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructureInfo() : null; }
+    public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
+    public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null; }
 
     /**
      * Search for model free to receive a ConsumableItem
@@ -88,6 +91,10 @@ public class WorldHelper {
         }
 
         if (parcel.hasPlant()) {
+            return false;
+        }
+
+        if (parcel.hasRock()) {
             return false;
         }
 

@@ -52,13 +52,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         _systemFont = new BitmapFont(Gdx.files.internal("data/font-42.fnt"), Gdx.files.internal("data/font-42.png"), false);
 
-        _loadTasks.add(new LoadTask("Load sprites", () -> {
-            try {
-                new SpriteManager();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
+        _loadTasks.add(new LoadTask("Load sprites", SpriteManager::new));
 
         _loadTasks.add(new LoadTask("Generate fonts", () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
@@ -103,6 +97,10 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask("Load lua modules", () ->
                 LuaModuleManager.getInstance().load()));
 
+        // Load sprites
+        _loadTasks.add(new LoadTask("Load sprites", () ->
+                SpriteManager.getInstance().init()));
+
         // Create app
         _loadTasks.add(new LoadTask("Init app", () -> {
             GDXInputProcessor inputProcessor = new GDXInputProcessor(_application);
@@ -111,8 +109,8 @@ public class GDXApplication extends ApplicationAdapter {
         }));
 
         _loadTasks.add(new LoadTask("Resume game", () -> {
-            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
+//            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+            GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
 //            GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
 //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
         }));

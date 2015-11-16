@@ -54,7 +54,7 @@ public class CharacterModuleSerializer extends SerializerInterface {
         });
     }
 
-    public void load(GameInfo gameInfo) {
+    public void load(Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement st = db.prepare("SELECT id, x, y, z, firstname, lastname FROM characters");

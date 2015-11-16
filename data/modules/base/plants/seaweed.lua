@@ -7,6 +7,7 @@ data:extend({
         type = "resource",
         category = "algae",
         plant = {
+            oxygen = 100,
             gather = 0.25,
             growing = 0.005,
             nourish = -0.005,
@@ -35,6 +36,7 @@ data:extend({
         type = "resource",
         category = "algae",
         plant = {
+            oxygen = 100,
             gather = 0.25,
             growing = 0.005,
             nourish = -0.005,
@@ -98,9 +100,10 @@ data:extend({
         category = "algae",
         size = {1, 1},
         plant = {
+            oxygen = 100,
             gather = 0.25,
-            growing = 0.005,
-            nourish = -0.005,
+            growing = 2000,
+            nourish = 500,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -128,6 +131,7 @@ data:extend({
         category = "algae",
         size = {1, 1},
         plant = {
+            oxygen = 100,
             gather = 0.25,
             growing = 0.005,
             nourish = -0.005,

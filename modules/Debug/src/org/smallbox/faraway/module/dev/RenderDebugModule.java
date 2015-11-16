@@ -27,7 +27,7 @@ public class RenderDebugModule extends GameModule {
                 lbModule.setData(render.getClass().getSimpleName());
                 lbModule.setText((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
                 lbModule.setTextSize(14);
-                lbModule.setOnClickListener(view1 -> {
+                lbModule.setOnClickListener(() -> {
                     MainRenderer.getInstance().toggleRender(render);
                     lbModule.setText((render.isLoaded() ? "[x] " : "[ ] ") + render.getClass().getSimpleName());
                 });

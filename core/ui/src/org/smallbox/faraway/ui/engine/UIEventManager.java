@@ -5,8 +5,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class UIEventManager {
     private static UIEventManager           _self;
@@ -16,10 +15,10 @@ public class UIEventManager {
     private Map<View, OnKeyListener>        _onKeysListeners;
 
     private UIEventManager() {
-        _onClickListeners = new HashMap<>();
-        _onRightClickListeners = new HashMap<>();
-        _onFocusListeners = new HashMap<>();
-        _onKeysListeners = new HashMap<>();
+        _onClickListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
+        _onRightClickListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
+        _onFocusListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
+        _onKeysListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
     }
 
     public static UIEventManager getInstance() {
@@ -56,8 +55,8 @@ public class UIEventManager {
     public boolean click(int x, int y) {
         boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onClickListeners.keySet()) {
-            if ((gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onClickListeners.get(view).onClick(view);
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+                _onClickListeners.get(view).onClick();
                 return true;
             }
         }
@@ -67,8 +66,8 @@ public class UIEventManager {
     public boolean rightClick(int x, int y) {
         boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onRightClickListeners.keySet()) {
-            if ((gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onRightClickListeners.get(view).onClick(view);
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+                _onRightClickListeners.get(view).onClick();
                 return true;
             }
         }
@@ -78,7 +77,7 @@ public class UIEventManager {
     public boolean keyRelease(GameEventListener.Key key) {
         boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onKeysListeners.keySet()) {
-            if ((gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && hasFocus(view)) {
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && hasFocus(view)) {
                 _onKeysListeners.get(view).onKeyRelease(view, key);
                 return true;
             }
@@ -93,7 +92,7 @@ public class UIEventManager {
     public void onMouseMove(int x, int y) {
         boolean gameRunning = GameManager.getInstance().isRunning();
         for (View view: _onFocusListeners.keySet()) {
-            if ((gameRunning || !view.inGame())) {
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view)) {
                 if (hasVisibleHierarchy(view) && view.contains(x, y)) {
                     view.onEnter();
                 } else if (view.isFocus()) {
@@ -115,6 +114,9 @@ public class UIEventManager {
     private boolean hasVisibleHierarchy(View view) {
         while (view != null) {
             if (!view.isVisible()) {
+                return false;
+            }
+            if (!view.isActive()) {
                 return false;
             }
             view = view.getParent();

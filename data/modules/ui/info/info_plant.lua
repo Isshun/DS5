@@ -11,9 +11,8 @@ data:extend({
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
         { type = "label", text = "Plant", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
-        { type = "list", position = {10, 40}, views = {
+        { type = "list", position = {10, 80}, views = {
             { type = "label", id = "lb_job", text_size = 18},
-            { type = "label", id = "lb_quantity", text_size = 18},
             { type = "label", id = "lb_maturity", text_size = 18},
             { type = "label", id = "lb_grow_state", text_size = 18},
             { type = "label", id = "lb_tile", text_size = 18},
@@ -57,9 +56,9 @@ data:extend({
                 view:findById("lb_job"):setText("Job: " .. plant:getJob():getLabel())
             end
 
-            local growState = plant:getGrowState()
-            if growState then
-                view:findById("lb_grow_state"):setText("Grow state", ": ", growState.name, " (" .. (growState.value * 100) .. "%)")
+            local growingInfo = plant:getGrowingInfo()
+            if growingInfo then
+                view:findById("lb_grow_state"):setText("Growing info", ": ", growingInfo.name, " (" .. (growingInfo.value * 100) .. "%)")
                 view:findById("lb_grow_state"):setVisible(true)
             end
         end

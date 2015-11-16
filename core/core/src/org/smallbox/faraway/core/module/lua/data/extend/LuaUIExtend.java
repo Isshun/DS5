@@ -5,11 +5,7 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
-import org.smallbox.faraway.core.engine.renderer.ExteriorRenderer;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.module.java.ModuleManager;
 import org.smallbox.faraway.core.module.lua.LuaModule;
 import org.smallbox.faraway.core.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.module.lua.data.LuaExtend;
@@ -44,12 +40,12 @@ public class LuaUIExtend extends LuaExtend {
         boolean inGame = getBoolean(value, "in_game", true);
         UIFrame frame = new UIFrame(-1, -1);
         frame.setInGame(inGame);
-        frame.addView(createView(luaModuleManager, globals, value, inGame));
+        frame.addView(createView(luaModuleManager, globals, value, inGame, 0));
         frame.setModule(module);
         UserInterface.getInstance()._views.add(frame);
     }
 
-    public View createView(LuaModuleManager luaModuleManager, Globals globals, LuaValue value, boolean inGame) {
+    public View createView(LuaModuleManager luaModuleManager, Globals globals, LuaValue value, boolean inGame, int level) {
         View view = null;
 
         int width = -1, height = -1;
@@ -144,8 +140,10 @@ public class LuaUIExtend extends LuaExtend {
         if (view != null) {
             LuaValue luaView = CoerceJavaToLua.coerce(view);
 
+            view.setLevel(level);
             view.setInGame(inGame);
             view.setFocusable(getBoolean(value, "focusable", false));
+            view.setActive(getBoolean(value, "active", true));
 
             LuaValue id = value.get("id");
             if (!id.isnil()) {
@@ -197,21 +195,21 @@ public class LuaUIExtend extends LuaExtend {
             LuaValue background = value.get("background");
             if (!background.isnil()) {
                 if (background.istable()) {
-                    int regularBackground = getInt(background, "regular", -1);
-                    int focusBackground = getInt(background, "focus", -1);
-                    if (regularBackground != -1) {
-                        view.setBackgroundColor(regularBackground);
+                    view.setRegularBackgroundColor(getInt(background, "regular", -1));
+                    view.setFocusBackgroundColor(getInt(background, "focus", -1));
+                    if (view.getRegularBackground() != -1) {
+                        view.setBackgroundColor(view.getRegularBackground());
                     }
-                    if (focusBackground != -1) {
+                    if (view.getFocusBackground() != -1) {
                         view.setOnFocusListener(new OnFocusListener() {
                             @Override
                             public void onEnter(View view) {
-                                view.setBackgroundColor(focusBackground);
+                                view.setBackgroundColor(view.getFocusBackground());
                             }
 
                             @Override
                             public void onExit(View view) {
-                                view.setBackgroundColor(regularBackground);
+                                view.setBackgroundColor(view.getRegularBackground());
                             }
                         });
                     }
@@ -250,7 +248,7 @@ public class LuaUIExtend extends LuaExtend {
                 view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
                     @Override
                     public View onCreateView() {
-                        return createView(luaModuleManager, globals, subview, inGame);
+                        return createView(luaModuleManager, globals, subview, inGame, level + 1);
                     }
 
                     @Override
@@ -267,7 +265,7 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue onClick = value.get("on_click");
             if (!onClick.isnil()) {
-                UIEventManager.getInstance().setOnClickListener(view, v -> {
+                UIEventManager.getInstance().setOnClickListener(view, () -> {
                     try {
                         if (onClick.isfunction()) {
                             onClick.call(luaView);
@@ -320,10 +318,10 @@ public class LuaUIExtend extends LuaExtend {
             if (!subViews.isnil()) {
                 if (subViews.get("type").isnil()) {
                     for (int i = 1; i <= subViews.length(); i++) {
-                        view.addView(createView(luaModuleManager, globals, subViews.get(i), inGame));
+                        view.addView(createView(luaModuleManager, globals, subViews.get(i), inGame, level + 1));
                     }
                 } else {
-                    view.addView(createView(luaModuleManager, globals, subViews, inGame));
+                    view.addView(createView(luaModuleManager, globals, subViews, inGame, level + 1));
                 }
             }
         }

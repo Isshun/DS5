@@ -8,6 +8,7 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.module.world.DBRunnable;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
@@ -28,10 +29,10 @@ public class GameSerializer {
         void onSerializerComplete();
     }
 
-    public static void load(GameInfo gameInfo, File gameDirectory, String filename, GameSerializerInterface listener) {
+    public static void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
         Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.begin", null));
         SQLHelper.getInstance().openDB(new File(gameDirectory, filename + ".db"));
-        ModuleManager.getInstance().getSerializers().forEach(serializer -> serializer.load(gameInfo));
+        ModuleManager.getInstance().getSerializers().forEach(serializer -> serializer.load(game));
         SQLHelper.getInstance().closeDB();
         SQLHelper.getInstance().post(db -> {
             listener.onSerializerComplete();

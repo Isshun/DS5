@@ -58,61 +58,22 @@ public abstract class WorldRenderer extends BaseRenderer {
     protected void onUpdate() {
         ModuleHelper.getWorldModule().getPlants().forEach(plant -> {
             if (plant.getInfo().graphics != null && plant.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
-                ParcelModel parcel = plant.getParcel();
-
-                boolean topLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y - 1).getInfo() != plant.getInfo());
-                boolean top = !(WorldHelper.getResource(parcel.x, parcel.y - 1) == null || WorldHelper.getResource(parcel.x, parcel.y - 1).getInfo() != plant.getInfo());
-                boolean topRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y - 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y - 1).getInfo() != plant.getInfo());
-
-                boolean left = !(WorldHelper.getResource(parcel.x - 1, parcel.y) == null || WorldHelper.getResource(parcel.x - 1, parcel.y).getInfo() != plant.getInfo());
-                boolean right = !(WorldHelper.getResource(parcel.x + 1, parcel.y) == null || WorldHelper.getResource(parcel.x + 1, parcel.y).getInfo() != plant.getInfo());
-
-                boolean bottomLeft = !(WorldHelper.getResource(parcel.x - 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x - 1, parcel.y + 1).getInfo() != plant.getInfo());
-                boolean bottom = !(WorldHelper.getResource(parcel.x, parcel.y + 1) == null || WorldHelper.getResource(parcel.x, parcel.y + 1).getInfo() != plant.getInfo());
-                boolean bottomRight = !(WorldHelper.getResource(parcel.x + 1, parcel.y + 1) == null || WorldHelper.getResource(parcel.x + 1, parcel.y + 1).getInfo() != plant.getInfo());
-
-                int tile = 0;
-
-                if (topLeft)     { tile |= 0b10000000; }
-                if (top)         { tile |= 0b01000000; }
-                if (topRight)    { tile |= 0b00100000; }
-                if (left)        { tile |= 0b00010000; }
-                if (right)       { tile |= 0b00001000; }
-                if (bottomLeft)  { tile |= 0b00000100; }
-                if (bottom)      { tile |= 0b00000010; }
-                if (bottomRight) { tile |= 0b00000001; }
-
-                plant.setTile(tile);
             }
         });
 
         ModuleHelper.getWorldModule().getStructures().forEach(structure -> {
             if (structure.getInfo().graphics != null) {
                 ParcelModel parcel = structure.getParcel();
-                ItemInfo info = structure.getInfo();
-
-                boolean topLeft = !(WorldHelper.getStructure(parcel.x - 1, parcel.y - 1, parcel.z) == null || WorldHelper.getStructure(parcel.x - 1, parcel.y - 1, parcel.z).getInfo() != info);
-                boolean top = !(WorldHelper.getStructure(parcel.x, parcel.y - 1, parcel.z) == null || WorldHelper.getStructure(parcel.x, parcel.y - 1, parcel.z).getInfo() != info);
-                boolean topRight = !(WorldHelper.getStructure(parcel.x + 1, parcel.y - 1, parcel.z) == null || WorldHelper.getStructure(parcel.x + 1, parcel.y - 1, parcel.z).getInfo() != info);
-
-                boolean left = !(WorldHelper.getStructure(parcel.x - 1, parcel.y, parcel.z) == null || WorldHelper.getStructure(parcel.x - 1, parcel.y, parcel.z).getInfo() != info);
-                boolean right = !(WorldHelper.getStructure(parcel.x + 1, parcel.y, parcel.z) == null || WorldHelper.getStructure(parcel.x + 1, parcel.y, parcel.z).getInfo() != info);
-
-                boolean bottomLeft = !(WorldHelper.getStructure(parcel.x - 1, parcel.y + 1, parcel.z) == null || WorldHelper.getStructure(parcel.x - 1, parcel.y + 1, parcel.z).getInfo() != info);
-                boolean bottom = !(WorldHelper.getStructure(parcel.x, parcel.y + 1, parcel.z) == null || WorldHelper.getStructure(parcel.x, parcel.y + 1, parcel.z).getInfo() != info);
-                boolean bottomRight = !(WorldHelper.getStructure(parcel.x + 1, parcel.y + 1, parcel.z) == null || WorldHelper.getStructure(parcel.x + 1, parcel.y + 1, parcel.z).getInfo() != info);
 
                 int tile = 0;
-
-                if (topLeft)     { tile |= 0b10000000; }
-                if (top)         { tile |= 0b01000000; }
-                if (topRight)    { tile |= 0b00100000; }
-                if (left)        { tile |= 0b00010000; }
-                if (right)       { tile |= 0b00001000; }
-                if (bottomLeft)  { tile |= 0b00000100; }
-                if (bottom)      { tile |= 0b00000010; }
-                if (bottomRight) { tile |= 0b00000001; }
-
+                if (WorldHelper.hasRock(parcel.x - 1, parcel.y - 1, parcel.z) || WorldHelper.hasStructure(parcel.x - 1, parcel.y - 1, parcel.z)) { tile |= 0b10000000; }
+                if (WorldHelper.hasRock(parcel.x,     parcel.y - 1, parcel.z) || WorldHelper.hasStructure(parcel.x,     parcel.y - 1, parcel.z)) { tile |= 0b01000000; }
+                if (WorldHelper.hasRock(parcel.x + 1, parcel.y - 1, parcel.z) || WorldHelper.hasStructure(parcel.x + 1, parcel.y - 1, parcel.z)) { tile |= 0b00100000; }
+                if (WorldHelper.hasRock(parcel.x - 1, parcel.y,     parcel.z) || WorldHelper.hasStructure(parcel.x - 1, parcel.y,     parcel.z)) { tile |= 0b00010000; }
+                if (WorldHelper.hasRock(parcel.x + 1, parcel.y,     parcel.z) || WorldHelper.hasStructure(parcel.x + 1, parcel.y,     parcel.z)) { tile |= 0b00001000; }
+                if (WorldHelper.hasRock(parcel.x - 1, parcel.y + 1, parcel.z) || WorldHelper.hasStructure(parcel.x - 1, parcel.y + 1, parcel.z)) { tile |= 0b00000100; }
+                if (WorldHelper.hasRock(parcel.x,     parcel.y + 1, parcel.z) || WorldHelper.hasStructure(parcel.x,     parcel.y + 1, parcel.z)) { tile |= 0b00000010; }
+                if (WorldHelper.hasRock(parcel.x + 1, parcel.y + 1, parcel.z) || WorldHelper.hasStructure(parcel.x + 1, parcel.y + 1, parcel.z)) { tile |= 0b00000001; }
                 parcel.setTile(tile);
             }
         });

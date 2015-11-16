@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 import org.smallbox.faraway.core.module.GameModule;
 import org.smallbox.faraway.core.module.java.ModuleHelper;
@@ -28,30 +29,31 @@ public class FloraModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        double light = ModuleHelper.getWorldModule().getLight() * 100;
-        double temperature = 35;
+        _plants.forEach(plant -> {
+            ParcelModel parcel = plant.getParcel();
 
-        // Growing
-        _plants.stream().filter(resource -> resource.getParcel().isExterior()).forEach(resource -> {
-            if (resource.hasSeed()) {
-                GrowingInfo growingInfo = getGrowingInfo(resource, light, temperature);
-                if (growingInfo != null) {
-                    resource.grow(growingInfo);
-                }
+            // Growing
+            if (plant.hasSeed() && computeGrowingInfo(plant, parcel)) {
+                plant.grow();
+            }
+
+            // Add oxygen to room
+            if (parcel.hasRoom()) {
+                parcel.getRoom().setOxygen(parcel.getRoom().getOxygen() + plant.getInfo().plant.oxygen);
             }
         });
     }
 
-    private GrowingInfo getGrowingInfo(PlantModel resource, double light, double temperature) {
-        GrowingInfo bestState = null;
+    private boolean computeGrowingInfo(PlantModel plant, ParcelModel parcel) {
+        plant.setGrowingInfo(null);
         double bestValue = -1;
-        for (GrowingInfo state: resource.getInfo().plant.states) {
-            if (state.value > bestValue && canGrow(state, light, temperature)) {
-                bestState = state;
-                bestValue = state.value;
+        for (GrowingInfo growingInfo: plant.getInfo().plant.states) {
+            if (growingInfo.value > bestValue && canGrow(growingInfo, parcel.getLight(), parcel.getTemperature())) {
+                plant.setGrowingInfo(growingInfo);
+                bestValue = growingInfo.value;
             }
         }
-        return bestState;
+        return plant.getGrowingInfo() != null;
     }
 
     private boolean canGrow(GrowingInfo infoEntry, double light, double temperature) {

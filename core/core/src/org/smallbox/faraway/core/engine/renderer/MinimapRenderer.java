@@ -25,13 +25,13 @@ public class MinimapRenderer extends BaseRenderer {
     private static final int    COLOR_BACKGROUND = 0xfff9bdff;
     private static final int    COLOR_ROCK = 0x986a50ff;
     private static final int    COLOR_PLANT = 0x9bcd4dff;
-    private static final int    COLOR_STRUCTURE = 0x1acb51ff;
+    private static final int    COLOR_STRUCTURE = 0x333333ff;
     private static final Color  COLOR_CHARACTER = new Color(0xff3c59ff);
     private static final Color  COLOR_VIEW = new Color(0x349394ff);
 
-    private static final float  FRAME_WIDTH = 380f;
-    private static final float  FRAME_HEIGHT = 240f;
-    private static int          POS_X = 1210;
+    private static final int    FRAME_WIDTH = 352;
+    private static final int    FRAME_HEIGHT = 220;
+    private static int          POS_X;
     private static final int    POS_Y = 84;
 
     private int                         _floor;
@@ -54,8 +54,13 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
+    public void onReloadUI() {
+        _panelMain = UserInterface.getInstance().findById("panel_main");
+    }
+
+    @Override
     protected void onLoad(Game game) {
-        POS_X = Data.config.screen.resolution[0] - 390;
+        POS_X = Data.config.screen.resolution[0] - FRAME_WIDTH - 10;
         _lbFloor = new UILabel();
         _lbFloor.setTextSize(16);
         _lbFloor.setTextColor(0x000000);
@@ -116,21 +121,21 @@ public class MinimapRenderer extends BaseRenderer {
                 renderer.draw(_spriteMap);
             }
 
-            float ratioX = (FRAME_WIDTH / _width);
-            float ratioY = (FRAME_HEIGHT / _height);
-            int x = POS_X + (int)((Math.min(_width-32, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
-            int y = POS_Y + (int)((Math.min(_height-32, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
-            renderer.draw(COLOR_VIEW, x, y, (int) (32 * ratioX), 1);
+            float ratioX = ((float)FRAME_WIDTH / _width);
+            float ratioY = ((float)FRAME_HEIGHT / _height);
+            int x = POS_X + (int)((Math.min(_width-38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX + 1);
+            int y = POS_Y + (int)((Math.min(_height-32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY + 1);
+            renderer.draw(COLOR_VIEW, x, y, (int) (38 * ratioX), 1);
             renderer.draw(COLOR_VIEW, x, y, 1, (int) (32 * ratioY));
-            renderer.draw(COLOR_VIEW, x, (int) (y + 32 * ratioY), (int)(32 * ratioX), 1);
-            renderer.draw(COLOR_VIEW, (int) (x + 32 * ratioX), y, 1, (int)(32 * ratioY));
+            renderer.draw(COLOR_VIEW, x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1);
+            renderer.draw(COLOR_VIEW, (int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1);
 
             for (CharacterModel character: _characters) {
                 renderer.draw(COLOR_CHARACTER, (int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 2, 2);
             }
 
             if (_lbFloor != null) {
-                renderer.draw(_lbFloor, POS_X + 10, POS_Y + 220);
+                renderer.draw(_lbFloor, POS_X + 10, POS_Y + 200);
             }
         }
     }
@@ -155,7 +160,7 @@ public class MinimapRenderer extends BaseRenderer {
             _spriteMap.setSize(_width, _height);
             _spriteMap.setRegion(0, 0, _width, _height);
             _spriteMap.flip(false, true);
-            _spriteMap.setScale(FRAME_WIDTH / _width, FRAME_HEIGHT / _height);
+            _spriteMap.setScale((float)FRAME_WIDTH / _width, (float)FRAME_HEIGHT / _height);
             _spriteMap.setPosition(POS_X, POS_Y);
             _spriteMap.setOrigin(0, 0);
         }

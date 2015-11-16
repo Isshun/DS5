@@ -26,6 +26,8 @@ import java.util.List;
 public abstract class View {
     protected RotateAnimation _animation;
     protected boolean _focusable;
+    private int _regularBackground;
+    private int _focusBackground;
 
     public void setAnimation(RotateAnimation animation) {
         _animation = animation;
@@ -54,6 +56,7 @@ public abstract class View {
     protected int               _fixedHeight = -1;
     protected String            _name;
     protected boolean           _inGame;
+    protected int               _level;
     protected Color             _backgroundFocusColor;
     protected int               _width = -1;
     protected int               _height = -1;
@@ -69,6 +72,7 @@ public abstract class View {
     protected OnClickListener   _onRightClickListener;
     protected OnFocusListener   _onFocusListener;
     protected boolean           _isFocus;
+    protected boolean           _isActive = true;
     protected int               _id;
     protected int               _borderSize;
     protected boolean           _invalid;
@@ -90,12 +94,14 @@ public abstract class View {
 
     public boolean      isFocus() { return _isFocus; }
     public boolean      isVisible() { return _isVisible; }
+    public boolean      isActive() { return _isActive; }
     public boolean      inGame() { return _inGame; }
 
     public void         setId(int id) { _id = id; }
     public void         setId(String id) { _id = id.hashCode(); }
     public void         setTextAlign(Align align) { _align = align; }
     public void         setFocus(boolean focus) { _isFocus = focus; }
+    public void         setActive(boolean active) { _isActive = active; }
     public void         setParent(View parent) {
         _parent = parent;
     }
@@ -104,18 +110,24 @@ public abstract class View {
     }
     public void         setName(String name) { _name = name; }
     public void         setInGame(boolean inGame) { _inGame = inGame; }
+    public void         setLevel(int level) { _level = level; }
     public void         setModule(LuaModule module) { _module = module; }
     public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
     public void         setBackgroundColor(Color color) { _backgroundColor = color; }
     public void         setVisible(boolean visible) { _isVisible = visible; }
     public void         setFixedSize(int width, int height) { _fixedWidth = width; _fixedHeight = height; }
     public void         setEffect(FadeEffect effect) { _effect = effect; }
+    public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
+    public void         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; }
 
     private Color       getBackgroundColor() { return _backgroundColor; }
     public View         getParent() { return _parent; }
     public int          getId() { return _id; }
     public int          getPosX() { return _x; }
     public int          getPosY() { return _y; }
+    public int          getLevel() { return _level; }
+    public int          getRegularBackground() { return _regularBackground; }
+    public int          getFocusBackground() { return _focusBackground; }
     public String       getName() { return _name; }
     public List<View>   getViews() { return _views; }
     public LuaModule    getModule() { return _module; }
@@ -126,6 +138,8 @@ public abstract class View {
     public int          getMarginBottom() { return _marginBottom; }
     public int          getMarginLeft() { return _marginLeft; }
     public FadeEffect   getEffect() { return _effect; }
+
+    public int          compareLevel(View view) { return _level != view.getLevel() ? _level - view.getLevel() : hashCode() - view.hashCode(); }
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
@@ -217,18 +231,14 @@ public abstract class View {
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
+        assert onClickListener != null;
         _onClickListener = onClickListener;
         UIEventManager.getInstance().setOnClickListener(this, onClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
-        _onClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                value.call(CoerceJavaToLua.coerce(this));
-            }
-        };
+        _onClickListener = () -> value.call(CoerceJavaToLua.coerce(this));
         UIEventManager.getInstance().setOnClickListener(this, _onClickListener);
     }
 
@@ -249,18 +259,20 @@ public abstract class View {
     }
 
     public void setOnRightClickListener(OnClickListener onClickListener) {
+        assert onClickListener != null;
         _onRightClickListener = onClickListener;
         UIEventManager.getInstance().setOnRightClickListener(this, onClickListener);
     }
 
     public void setOnFocusListener(OnFocusListener onFocusListener) {
+        assert onFocusListener != null;
         _onFocusListener = onFocusListener;
         UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
     }
 
     public void onClick() {
         if (_onClickListener != null) {
-            _onClickListener.onClick(this);
+            _onClickListener.onClick();
         }
     }
 

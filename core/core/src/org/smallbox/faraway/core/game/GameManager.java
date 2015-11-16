@@ -51,7 +51,7 @@ public class GameManager {
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info, Data.config);
         ModuleManager.getInstance().startGame(game);
-        game.load(game.getInfo(), saveInfo, () -> Gdx.app.postRunnable(() -> {
+        game.load(game, saveInfo, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             startGame(game, saveInfo);
             game.init();
@@ -78,7 +78,7 @@ public class GameManager {
 
         Application.getInstance().notify(GameObserver::onReloadUI);
 
-        GameInfo gameInfo = GameInfo.create(regionInfo, 128, 128, 8);
+        GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
         File gameDirectory = new File("data/saves/", gameInfo.name);
 
         if (!gameDirectory.mkdirs()) {

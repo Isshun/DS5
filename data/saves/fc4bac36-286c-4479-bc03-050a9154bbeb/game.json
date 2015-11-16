@@ -1,0 +1,13 @@
+{
+    "floors": 8,
+    "saves": [{
+        "date": "2015-11-16-05-18-38",
+        "filename": "2015-11-16-05-05-18-38",
+        "type": "INIT"
+    }],
+    "planet": "base.planet.arrakis",
+    "name": "fc4bac36-286c-4479-bc03-050a9154bbeb",
+    "width": 256,
+    "region": "desert",
+    "height": 160
+}
