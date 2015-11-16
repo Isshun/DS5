@@ -1,13 +1,13 @@
 package org.smallbox.faraway.renders;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.Viewport;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.util.Constant;
 

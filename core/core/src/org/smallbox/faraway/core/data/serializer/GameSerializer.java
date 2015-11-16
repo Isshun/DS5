@@ -1,83 +1,92 @@
 package org.smallbox.faraway.core.data.serializer;
 
-import com.almworks.sqlite4java.SQLiteConnection;
-import com.ximpleware.*;
-import org.apache.commons.compress.archivers.ArchiveException;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.core.game.module.world.DBRunnable;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.game.module.world.WorldModuleSerializer;
-import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.core.util.FileUtils;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.*;
 
 public class GameSerializer {
-    public static class GameSave {
-        public int                                      width;
-        public int                                      height;
-    }
-
     public interface GameSerializerInterface {
         void onSerializerComplete();
     }
 
     public static void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
         Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.begin", null));
-        SQLHelper.getInstance().openDB(new File(gameDirectory, filename + ".db"));
-        ModuleManager.getInstance().getSerializers().forEach(serializer -> serializer.load(game));
-        SQLHelper.getInstance().closeDB();
-        SQLHelper.getInstance().post(db -> {
-            listener.onSerializerComplete();
-            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
-        });
+        long time = System.currentTimeMillis();
+
+        try {
+            File archiveFile = new File(gameDirectory, filename + ".zip");
+
+            InputStream archiveStream = new FileInputStream(archiveFile);
+            ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, archiveStream);
+
+            ArchiveEntry entry;
+            while ((entry = archive.getNextEntry()) != null) {
+                FileOutputStream fos = new FileOutputStream(new File(gameDirectory, entry.getName()));
+                IOUtils.copy(archive, fos);
+                fos.close();
+            }
+            archive.close();
+            archiveStream.close();
+
+            System.out.println("Extract zip: " + (System.currentTimeMillis() - time));
+            File dbFile = new File(gameDirectory, filename + ".db");
+            SQLHelper.getInstance().openDB(dbFile);
+            ModuleManager.getInstance().getSerializers().forEach(serializer -> serializer.load(game));
+            SQLHelper.getInstance().closeDB();
+
+            SQLHelper.getInstance().post(db -> {
+                listener.onSerializerComplete();
+                dbFile.delete();
+                System.out.println("Load save game: " + (System.currentTimeMillis() - time));
+                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
+            });
+        } catch (IOException | ArchiveException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void save(File gameDirectory, String filename) {
+        Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.begin", null));
         long time = System.currentTimeMillis();
 
-        Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.begin", null));
-
-        SQLHelper.getInstance().openDB(new File(gameDirectory, filename + ".db"));
+        // Create DB file
+        File dbFile = new  File(gameDirectory, filename + ".db");
+        SQLHelper.getInstance().openDB(dbFile);
         ModuleManager.getInstance().getSerializers().forEach(SerializerInterface::save);
         SQLHelper.getInstance().closeDB();
+        Log.notice("Create save game (" + (System.currentTimeMillis() - time) + "ms)");
 
         SQLHelper.getInstance().post(db -> {
-            File source = new  File(gameDirectory, filename + ".db");
-            File destination = new File(gameDirectory, filename + ".zip");
-
-            Log.notice("Save game (" + (System.currentTimeMillis() - time) + "ms)");
-
             try {
-                OutputStream archiveStream = new FileOutputStream(destination);
+                // Create zip file
+                File archiveFile = new File(gameDirectory, filename + ".zip");
+                OutputStream archiveStream = new FileOutputStream(archiveFile);
                 ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, archiveStream);
+                archive.putArchiveEntry(new ZipArchiveEntry(filename + ".db"));
 
-                String entryName = filename + ".db";
-                ZipArchiveEntry entry = new ZipArchiveEntry(entryName);
-                archive.putArchiveEntry(entry);
-
-                BufferedInputStream input = new BufferedInputStream(new FileInputStream(source));
-
+                BufferedInputStream input = new BufferedInputStream(new FileInputStream(dbFile));
                 IOUtils.copy(input, archive);
                 input.close();
                 archive.closeArchiveEntry();
 
                 archive.finish();
                 archiveStream.close();
+
+                // Delete DB file
+                dbFile.delete();
+
+                Log.notice("Zip save game (" + (System.currentTimeMillis() - time) + "ms)");
+                Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
                 e.printStackTrace();
             }
-
-            Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.complete", null));
-
-            Log.notice("Save game (" + (System.currentTimeMillis() - time) + "ms)");
         });
     }
 }

@@ -12,9 +12,9 @@ import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

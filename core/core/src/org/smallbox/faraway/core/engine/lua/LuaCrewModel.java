@@ -2,8 +2,7 @@ package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
-import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 
 import java.util.List;
 import java.util.stream.Collectors;

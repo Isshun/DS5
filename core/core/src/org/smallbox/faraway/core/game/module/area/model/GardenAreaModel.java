@@ -2,11 +2,11 @@ package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
+import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.game.module.world.model.PlantModel;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 
 import java.util.Map;
 

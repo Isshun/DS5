@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 //import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 //import org.smallbox.faraway.core.data.ItemInfo;
-//import org.smallbox.faraway.core.module.GameModule;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //
 //import java.util.HashMap;
 //import java.util.Map;

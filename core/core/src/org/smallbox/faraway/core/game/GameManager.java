@@ -1,33 +1,20 @@
 package org.smallbox.faraway.core.game;
 
-import com.almworks.sqlite4java.SQLiteConnection;
-import com.almworks.sqlite4java.SQLiteException;
-import com.almworks.sqlite4java.SQLiteStatement;
 import com.badlogic.gdx.Gdx;
-import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
-import org.smallbox.faraway.core.data.serializer.GameSerializer.GameSerializerInterface;
-import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
-import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.UserInterface;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -46,31 +33,14 @@ public class GameManager {
     }
 
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
-        long time = System.currentTimeMillis();
-
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info, Data.config);
-        game.load(game, saveInfo, () -> Gdx.app.postRunnable(() -> {
+        GameSerializer.load(game, new File("data/saves", game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             ModuleManager.getInstance().startGame(game);
-            startGame(game, saveInfo);
             game.init();
             _game = game;
-            Log.notice("Load save (" + (System.currentTimeMillis() - time) + "ms)");
         }));
-    }
-
-    public void startGame(Game game, GameInfo.GameSaveInfo saveInfo) {
-        long time = System.currentTimeMillis();
-        MainRenderer.getInstance().init(Data.config, game);
-        Log.notice("Init renderers (" + (System.currentTimeMillis() - time) + "ms)");
-
-        game.setInputDirection(Application.getInstance().getInputProcessor().getDirection());
-
-        Application.getInstance().notify(GameObserver::onGameStart);
-        Application.getInstance().notify(observer -> observer.onHourChange(game.getHour()));
-        Application.getInstance().notify(observer -> observer.onDayChange(game.getDay()));
-        Application.getInstance().notify(observer -> observer.onYearChange(game.getYear()));
     }
 
     public void create(RegionInfo regionInfo) {
@@ -96,11 +66,6 @@ public class GameManager {
         ModuleManager.getInstance().startGame(game);
         factory.createLandSite(game);
         game.init();
-
-//        world.create();
-
-        startGame(game, null);
-
         _game = game;
 
         saveGame(gameInfo, GameInfo.Type.INIT);
@@ -126,6 +91,7 @@ public class GameManager {
             File gameDirectory = new File("data/saves/", gameInfo.name);
 
             GameInfo.GameSaveInfo saveInfo = new GameInfo.GameSaveInfo();
+            saveInfo.game = gameInfo;
             saveInfo.type = type;
             saveInfo.date = date;
             saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
@@ -143,8 +109,8 @@ public class GameManager {
         }
     }
 
-    public boolean isRunning() {
-//        return _game != null && !_game.isRunning();
+    public boolean isLoaded() {
+//        return _game != null && !_game.isLoaded();
         return _game != null;
     }
 
@@ -152,13 +118,13 @@ public class GameManager {
         return _game;
     }
 
-    public boolean isPaused() {
-        return _game != null && _game.isPaused();
+    public boolean isRunning() {
+        return _game != null && _game.isRunning();
     }
 
-    public void setPause(boolean pause) {
+    public void setRunning(boolean pause) {
         if (_game != null) {
-            _game.setPaused(pause);
+            _game.setRunning(pause);
         }
     }
 

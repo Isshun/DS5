@@ -1,10 +1,7 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.RenderLayer;
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 07/11/2015.

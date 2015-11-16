@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.data.loader;
 
-import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.util.Log;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;

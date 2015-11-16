@@ -6,10 +6,9 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.ui.UserInterface;
 
 /**
@@ -61,7 +60,7 @@ public class ApplicationShortcutManager {
                 Application.getInstance().setRunning(false);
             }),
             new ApplicationShortcut(GameEventListener.Key.ESCAPE, GameEventListener.Modifier.NONE , () -> {
-                if (GameManager.getInstance().isRunning()) {
+                if (GameManager.getInstance().isLoaded()) {
                     if (!Game.getInstance().getInteraction().isClear()) {
                         Game.getInstance().getInteraction().clear();
                         return;
@@ -72,13 +71,13 @@ public class ApplicationShortcutManager {
                         return;
                     }
 
-                    if (GameManager.getInstance().isPaused() && UserInterface.getInstance().findById("base.ui.menu_pause").isVisible()) {
-                        GameManager.getInstance().setPause(false);
+                    if (!GameManager.getInstance().isRunning() && UserInterface.getInstance().findById("base.ui.menu_pause").isVisible()) {
+                        GameManager.getInstance().setRunning(true);
                         return;
                     }
 
-                    if (!GameManager.getInstance().isPaused() && UserInterface.getInstance().findById("panel_main").isVisible()) {
-                        GameManager.getInstance().setPause(true);
+                    if (GameManager.getInstance().isRunning() && UserInterface.getInstance().findById("panel_main").isVisible()) {
+                        GameManager.getInstance().setRunning(false);
                         return;
                     }
                 }
@@ -99,7 +98,7 @@ public class ApplicationShortcutManager {
 
     public static boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         if (button == GameEventListener.MouseButton.RIGHT && action == GameEventListener.Action.PRESSED) {
-            if (GameManager.getInstance().isRunning()) {
+            if (GameManager.getInstance().isLoaded()) {
                 GameManager.getInstance().getGame().getViewport().startMove(x, y);
             }
             return true;

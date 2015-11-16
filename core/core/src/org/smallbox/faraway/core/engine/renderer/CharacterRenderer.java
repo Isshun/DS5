@@ -1,19 +1,13 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.SpriteManager;
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CharacterRenderer extends BaseRenderer {
     private SpriteManager           _spriteManager;

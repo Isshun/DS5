@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game;
 
-import com.almworks.sqlite4java.SQLiteConnection;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.game.model.Data;
@@ -19,6 +18,7 @@ public class GameInfo {
     public enum Type {INIT, AUTO, FAST, REGULAR}
 
     public static class GameSaveInfo {
+        public GameInfo         game;
         public Type             type;
         public String           filename;
         public String           label;
@@ -57,19 +57,20 @@ public class GameInfo {
     }
 
     public static GameInfo fromJSON(JSONObject json) {
-        GameInfo info = new GameInfo();
+        GameInfo gameInfo = new GameInfo();
 
-        info.name = json.getString("name");
-        info.planet = Data.getData().getPlanet(json.getString("planet"));
-        info.region = info.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
-        info.worldWidth = json.getInt("width");
-        info.worldHeight = json.getInt("height");
-        info.worldFloors = json.getInt("floors");
+        gameInfo.name = json.getString("name");
+        gameInfo.planet = Data.getData().getPlanet(json.getString("planet"));
+        gameInfo.region = gameInfo.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
+        gameInfo.worldWidth = json.getInt("width");
+        gameInfo.worldHeight = json.getInt("height");
+        gameInfo.worldFloors = json.getInt("floors");
 
         if (json.has("saves")) {
             for (int i = 0; i < json.getJSONArray("saves").length(); i++) {
                 JSONObject jsonSave = json.getJSONArray("saves").getJSONObject(i);
                 GameSaveInfo saveInfo = new GameSaveInfo();
+                saveInfo.game = gameInfo;
                 saveInfo.type = Type.valueOf(jsonSave.getString("type").toUpperCase());
                 saveInfo.filename = jsonSave.getString("filename");
                 try {
@@ -78,11 +79,11 @@ public class GameInfo {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                info.saveFiles.add(saveInfo);
+                gameInfo.saveFiles.add(saveInfo);
             }
         }
 
-        return info;
+        return gameInfo;
     }
 
     public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight, int worldFloors) {

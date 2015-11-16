@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.game.GameInfo;
 //import org.smallbox.faraway.core.game.GameManager;
-//import org.smallbox.faraway.core.module.GameModule;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.util.FileUtils;
 //
 //import java.io.File;

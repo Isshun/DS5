@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 //import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 //import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.module.GameModule;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //
 ///**
 // * Created by Alex on 05/07/2015.

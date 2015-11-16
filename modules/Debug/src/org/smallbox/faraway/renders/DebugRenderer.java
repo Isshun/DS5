@@ -1,12 +1,12 @@
 //package org.smallbox.faraway.renders;
 //
-//import org.smallbox.faraway.core.Viewport;
+//import org.smallbox.faraway.core.engine.renderer.Viewport;
 //import org.smallbox.faraway.core.engine.Color;
 //import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 //import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 //import org.smallbox.faraway.core.game.model.GameConfig;
 //import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-//import org.smallbox.faraway.core.module.java.ModuleHelper;
+//import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.smallbox.faraway.core.util.Constant;
 //import org.smallbox.faraway.ui.UserInterface;
 //import org.smallbox.faraway.ui.engine.views.widgets.UILabel;

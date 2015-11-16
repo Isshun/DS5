@@ -257,7 +257,7 @@ public class GDXInputProcessor implements InputProcessor {
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
         if (_lastMouseButton == Buttons.RIGHT) {
-            if (GameManager.getInstance().isRunning()) {
+            if (GameManager.getInstance().isLoaded()) {
                 GameManager.getInstance().getGame().getViewport().update(x, y);
                 return true;
             }

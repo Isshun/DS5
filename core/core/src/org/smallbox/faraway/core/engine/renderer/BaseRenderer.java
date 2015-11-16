@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.GameConfig;

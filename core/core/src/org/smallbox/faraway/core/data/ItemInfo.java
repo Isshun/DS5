@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.data;
 
-import org.smallbox.faraway.core.GraphicInfo;
 import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.model.ObjectInfo;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;

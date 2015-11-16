@@ -13,7 +13,7 @@
 //import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 //import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 //import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
-//import org.smallbox.faraway.core.module.java.ModuleHelper;
+//import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.smallbox.faraway.core.util.FileUtils;
 //
 //import java.io.FileOutputStream;

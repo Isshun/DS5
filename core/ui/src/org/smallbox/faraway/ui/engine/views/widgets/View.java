@@ -6,15 +6,14 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.core.module.lua.LuaModule;
-import org.smallbox.faraway.core.module.lua.data.extend.FadeEffect;
-import org.smallbox.faraway.core.module.lua.data.extend.RotateAnimation;
+import org.smallbox.faraway.core.engine.module.lua.LuaModule;
+import org.smallbox.faraway.core.engine.module.lua.data.extend.FadeEffect;
+import org.smallbox.faraway.core.engine.module.lua.data.extend.RotateAnimation;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;

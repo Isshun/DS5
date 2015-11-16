@@ -1,42 +1,52 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.Viewport;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
-import org.smallbox.faraway.core.module.GameModule;
-import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.core.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
+import org.smallbox.faraway.ui.UICursor;
+import org.smallbox.faraway.ui.UserInterface;
 
-import java.io.File;
 import java.util.Collection;
 
-public class Game extends BaseGame {
+public class Game {
+    public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
+
+    // Update
+    private long                            _nextUpdate;
+    private int                             _tickInterval = TICK_INTERVALS[1];
+
+    // Render
+    private int                             _frame;
+    private double                          _animationProgress;
+    private boolean[]                       _directions = new boolean[4];
+    private Viewport                        _viewport;
+
+    private boolean                         _isRunning;
+    private GameActionExtra                 _gameAction;
+    private GameSelectionExtra              _selector;
     private static Game                     _self;
     private final GameInfo                  _info;
     private GameConfig                      _config;
     private final Collection<GameModule>    _modulesBase;
     private final Collection<GameModule>    _modulesThird;
-    private GameSerializer.GameSave         _save;
     private PlanetModel                     _planet;
-//    private RegionModel                     _region;
     private int                             _hour = 5;
     private int                             _day;
     private int                             _year;
-
     private static int                      _tick;
     private String                          _display;
 
-    public void                             toggleRunning() { _isRunning = !_isRunning; }
-    public void                             setRunning(boolean running) { _isRunning = running; }
     public void                             setDisplay(String display) { _display = display; }
-
     public boolean                          isRunning() { return _isRunning; }
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
@@ -51,8 +61,6 @@ public class Game extends BaseGame {
     public GameSelectionExtra               getSelector() { return _selector; }
 
     public Game(GameInfo info, GameConfig config) {
-        Log.debug("Game");
-
         _self = this;
         _viewport = new Viewport(400, 300);
         _selector = new GameSelectionExtra();
@@ -63,24 +71,36 @@ public class Game extends BaseGame {
         _modulesBase = ModuleManager.getInstance().getModulesBase();
         _modulesThird = ModuleManager.getInstance().getModulesThird();
         _planet = new PlanetModel(info.planet);
-
-        GDXRenderer.getInstance().setViewport(_viewport);
+        _directions = Application.getInstance().getInputProcessor().getDirection();
         _tick = 0;
 
-        Log.info("Game: onCreate");
-        Log.info("Game:\tdone");
+        GDXRenderer.getInstance().setViewport(_viewport);
     }
 
     public void init() {
+        MainRenderer.getInstance().init(Data.config, this);
+        Application.getInstance().notify(GameObserver::onGameStart);
+        Application.getInstance().notify(observer -> observer.onHourChange(_hour));
+        Application.getInstance().notify(observer -> observer.onDayChange(_day));
+        Application.getInstance().notify(observer -> observer.onYearChange(_year));
         Application.getInstance().notify(observer -> observer.onFloorChange(WorldHelper.getCurrentFloor()));
     }
 
-    @Override
-    public void onUpdateDo() {
-        _modulesBase.stream().filter(GameModule::isLoaded).forEach(GameModule::onUpdateDo);
+    public void                     clearCursor() { _gameAction.setCursor(null); }
+    public void                     clearSelection() { _selector.clear(); }
+    public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
+    public void                     setCursor(String cursorName) { _gameAction.setCursor(Data.getData().getCursor(cursorName)); }
+
+    public void update() {
+        // Update
+        if (_nextUpdate < System.currentTimeMillis() && _isRunning) {
+            _nextUpdate = System.currentTimeMillis() + _tickInterval;
+            _tick += 1;
+            MainRenderer.getInstance().onUpdate();
+            onUpdate(_tick);
+        }
     }
 
-    @Override
     protected void onUpdate(int tick) {
         if (!_isRunning) {
             return;
@@ -107,19 +127,44 @@ public class Game extends BaseGame {
         _tick = tick;
     }
 
-    public void    load(Game game, GameInfo.GameSaveInfo saveInfo, GameSerializer.GameSerializerInterface listener) {
-        long time = System.currentTimeMillis();
-
-        GameSerializer.load(game, new File("data/saves", game.getInfo().name), saveInfo.filename, listener);
-        _save = null;
-
-        Log.info("Game loaded (2): " + (System.currentTimeMillis() - time) + "ms");
-    }
-
     public GameInfo getInfo() { return _info; }
 
-    public void setPaused(boolean pause) {
-        _paused = pause;
-        Application.getInstance().notify(pause ? GameObserver::onGamePaused : GameObserver::onGameResume);
+    public void setRunning(boolean isRunning) {
+        _isRunning = isRunning;
+        Application.getInstance().notify(isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
+    }
+
+    public void render(GDXRenderer renderer, Viewport viewport) {
+        // Draw
+        if (!GameManager.getInstance().isRunning()) {
+            _animationProgress = 1 - ((double) (_nextUpdate - System.currentTimeMillis()) / _tickInterval);
+        }
+
+        MainRenderer.getInstance().onDraw(renderer, viewport, _animationProgress);
+
+        if (_isRunning) {
+            if (_directions[0]) { _viewport.move(20, 0); }
+            if (_directions[1]) { _viewport.move(0, 20); }
+            if (_directions[2]) { _viewport.move(-20, 0); }
+            if (_directions[3]) { _viewport.move(0, -20); }
+        }
+
+        MainRenderer.getInstance().onRefresh(_frame);
+
+        // TODO
+        try {
+            UserInterface.getInstance().onRefresh(_frame);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        _gameAction.draw(renderer);
+        _frame++;
+    }
+
+    public void setSpeed(int speed) {
+        _tickInterval = TICK_INTERVALS[Math.max(0, Math.min(4, speed))];
+        _isRunning = _tickInterval > 0;
+        Application.getInstance().notify(observer -> observer.onSpeedChange(speed));
     }
 }

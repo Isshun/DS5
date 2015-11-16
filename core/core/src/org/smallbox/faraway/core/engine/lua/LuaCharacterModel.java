@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterNeedsExtra;

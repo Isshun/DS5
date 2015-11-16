@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
 
 /**
  * Created by Alex on 05/07/2015.

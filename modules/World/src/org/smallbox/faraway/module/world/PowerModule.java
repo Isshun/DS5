@@ -3,7 +3,7 @@ package org.smallbox.faraway.module.world;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -3,7 +3,7 @@ package org.smallbox.faraway.module.dev;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.ui.engine.views.UITitleWindow;
 import org.smallbox.faraway.ui.engine.views.UIWindow;
 import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;

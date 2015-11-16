@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.item.NetworkConnectionModel;
-import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
 
 import java.util.*;
 

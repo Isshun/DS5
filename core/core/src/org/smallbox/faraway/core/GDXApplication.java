@@ -9,19 +9,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.engine.renderer.ParticleRenderer;
+import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.module.java.ModuleManager;
-import org.smallbox.faraway.core.module.lua.LuaModuleManager;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.UserInterface;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,15 +166,15 @@ public class GDXApplication extends ApplicationAdapter {
         Viewport viewport = Game.getInstance() != null ? Game.getInstance().getViewport() : null;
 
         // Render game
-        if (GameManager.getInstance().isRunning()) {
+        if (GameManager.getInstance().isLoaded()) {
             GameManager.getInstance().getGame().render(_renderer, viewport);
         }
 
         // Render interface
-        UserInterface.getInstance().draw(_renderer, GameManager.getInstance().isRunning());
+        UserInterface.getInstance().draw(_renderer, GameManager.getInstance().isLoaded());
 
         // Render mini map
-        if (GameManager.getInstance().isRunning()) {
+        if (GameManager.getInstance().isLoaded()) {
             MainRenderer.getInstance().getMinimapRender().draw(_renderer, viewport, 0);
         }
 

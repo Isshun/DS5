@@ -1,24 +1,19 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.UserInterface;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application implements GameEventListener {
@@ -52,7 +47,7 @@ public class Application implements GameEventListener {
 
         UserInterface.getInstance().onKeyEvent(action, key, modifier);
 
-        if (GameManager.getInstance().isRunning()) {
+        if (GameManager.getInstance().isLoaded()) {
             notify(observer -> observer.onKeyPress(key));
         }
     }
@@ -68,7 +63,7 @@ public class Application implements GameEventListener {
             return;
         }
 
-        if (GameManager.getInstance().isRunning()) {
+        if (GameManager.getInstance().isLoaded()) {
             GameManager.getInstance().getGame().getInteraction().onMoveEvent(action, button, x, y, rightPressed);
             if (ApplicationShortcutManager.onMouseEvent(action, button, x, y, rightPressed)) {
                 return;
@@ -79,7 +74,7 @@ public class Application implements GameEventListener {
     }
 
     public void update() {
-        if (GameManager.getInstance().isRunning()) {
+        if (GameManager.getInstance().isLoaded()) {
             GameManager.getInstance().getGame().update();
         }
 

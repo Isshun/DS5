@@ -3,7 +3,7 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.smallbox.faraway.core.SpriteManager;
+import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 
 public class UIImage extends View {

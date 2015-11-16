@@ -1,14 +1,11 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.SpriteManager;
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 
 import java.util.Collection;
-import java.util.List;
 
 public class MainRenderer {
     public static final int                 WORLD_RENDERER_LEVEL = -100;

@@ -8,9 +8,9 @@ import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.resource.PlantModel;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -59,17 +59,18 @@ public class WorldHelper {
         if (parcel != null && itemInfo.isConsumable) {
             int x = parcel.x;
             int y = parcel.y;
+            int z = parcel.z;
             for (int d = 0; d < 8; d++) {
                 for (int i = 0; i <= d; i++) {
-                    if (areaFreeForConsumable(x + i, y + d, itemInfo, quantity)) return _parcels[x + i][y + d][_currentFloor];
-                    if (areaFreeForConsumable(x + i, y - d, itemInfo, quantity)) return _parcels[x + i][y - d][_currentFloor];
-                    if (areaFreeForConsumable(x + d, y + i, itemInfo, quantity)) return _parcels[x + d][y + i][_currentFloor];
-                    if (areaFreeForConsumable(x - d, y + i, itemInfo, quantity)) return _parcels[x - d][y + i][_currentFloor];
+                    if (areaFreeForConsumable(x + i, y + d, z, itemInfo, quantity)) return _parcels[x + i][y + d][z];
+                    if (areaFreeForConsumable(x + i, y - d, z, itemInfo, quantity)) return _parcels[x + i][y - d][z];
+                    if (areaFreeForConsumable(x + d, y + i, z, itemInfo, quantity)) return _parcels[x + d][y + i][z];
+                    if (areaFreeForConsumable(x - d, y + i, z, itemInfo, quantity)) return _parcels[x - d][y + i][z];
 
-                    if (areaFreeForConsumable(x - i, y + d, itemInfo, quantity)) return _parcels[x - i][y + d][_currentFloor];
-                    if (areaFreeForConsumable(x - i, y - d, itemInfo, quantity)) return _parcels[x - i][y - d][_currentFloor];
-                    if (areaFreeForConsumable(x + d, y - i, itemInfo, quantity)) return _parcels[x + d][y - i][_currentFloor];
-                    if (areaFreeForConsumable(x - d, y - i, itemInfo, quantity)) return _parcels[x - d][y - i][_currentFloor];
+                    if (areaFreeForConsumable(x - i, y + d, z, itemInfo, quantity)) return _parcels[x - i][y + d][z];
+                    if (areaFreeForConsumable(x - i, y - d, z, itemInfo, quantity)) return _parcels[x - i][y - d][z];
+                    if (areaFreeForConsumable(x + d, y - i, z, itemInfo, quantity)) return _parcels[x + d][y - i][z];
+                    if (areaFreeForConsumable(x - d, y - i, z, itemInfo, quantity)) return _parcels[x - d][y - i][z];
                 }
             }
         }
@@ -84,12 +85,12 @@ public class WorldHelper {
      * @param info
      * @return
      */
-    public static boolean areaFreeForConsumable(int x, int y, ItemInfo info, int quantity) {
-        if (!inMapBounds(x, y)) {
+    public static boolean areaFreeForConsumable(int x, int y, int z, ItemInfo info, int quantity) {
+        if (!inMapBounds(x, y, z)) {
             return false;
         }
 
-        ParcelModel parcel = _parcels[x][y][_currentFloor];
+        ParcelModel parcel = _parcels[x][y][z];
         if (parcel.getStructure() != null && !parcel.getStructure().isWalkable()) {
             return false;
         }

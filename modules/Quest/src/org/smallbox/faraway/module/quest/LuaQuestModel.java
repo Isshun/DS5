@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.engine.lua.LuaCharacterModel;
 import org.smallbox.faraway.core.engine.lua.LuaConsumableModel;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 
 /**
  * Created by Alex on 20/06/2015.

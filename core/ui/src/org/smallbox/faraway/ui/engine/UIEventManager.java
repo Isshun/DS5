@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.*;
@@ -53,7 +52,7 @@ public class UIEventManager {
     }
 
     public boolean click(int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isRunning();
+        boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onClickListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onClickListeners.get(view).onClick();
@@ -64,7 +63,7 @@ public class UIEventManager {
     }
 
     public boolean rightClick(int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isRunning();
+        boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onRightClickListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onRightClickListeners.get(view).onClick();
@@ -75,7 +74,7 @@ public class UIEventManager {
     }
 
     public boolean keyRelease(GameEventListener.Key key) {
-        boolean gameRunning = GameManager.getInstance().isRunning();
+        boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onKeysListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && hasFocus(view)) {
                 _onKeysListeners.get(view).onKeyRelease(view, key);
@@ -90,7 +89,7 @@ public class UIEventManager {
     }
 
     public void onMouseMove(int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isRunning();
+        boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onFocusListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view)) {
                 if (hasVisibleHierarchy(view) && view.contains(x, y)) {

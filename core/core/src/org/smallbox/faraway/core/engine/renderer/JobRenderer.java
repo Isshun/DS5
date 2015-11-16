@@ -1,9 +1,8 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
 public class JobRenderer extends BaseRenderer {

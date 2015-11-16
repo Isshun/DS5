@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.util.FileUtils;
 
 import java.io.File;
@@ -21,8 +21,8 @@ import java.util.List;
 public class LoadGameModule extends GameModule {
     private List<GameInfo>          _games = new ArrayList<>();
 
-    private GameInfo                _game;
-    private GameInfo.GameSaveInfo   _save;
+    private GameInfo                _currentGame;
+    private GameInfo.GameSaveInfo   _currentSave;
 
     @Override
     protected boolean loadOnStart() {
@@ -71,13 +71,13 @@ public class LoadGameModule extends GameModule {
             load();
         }
         if ("load_game.game".equals(tag) && object instanceof GameInfo) {
-            _game = (GameInfo) object;
+            _currentGame = (GameInfo) object;
         }
         if ("load_game.save".equals(tag) && object instanceof GameInfo.GameSaveInfo) {
-            _save = (GameInfo.GameSaveInfo) object;
+            _currentSave = (GameInfo.GameSaveInfo) object;
         }
-        if ("load_game.load".equals(tag) && _game != null && _save != null) {
-            GameManager.getInstance().loadGame(_game, _save);
+        if ("load_game.load".equals(tag) && _currentGame != null && _currentSave != null) {
+            GameManager.getInstance().loadGame(_currentGame, _currentSave);
         }
         if ("load_game.last_game".equals(tag)) {
             GameInfo gameInfo = null;
