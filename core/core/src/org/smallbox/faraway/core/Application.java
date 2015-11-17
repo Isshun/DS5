@@ -2,11 +2,11 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;

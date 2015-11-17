@@ -4,6 +4,8 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -11,8 +13,6 @@ import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,25 +172,6 @@ public class PathManager extends GameModule {
         // No path found
         printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
         return null;
-    }
-
-    // TODO: return cross positions in priority
-    public PathModel getBestAround(ParcelModel fromParcel, ParcelModel toParcel) {
-        PathModel bestPath = null;
-        for (int x = toParcel.x -1; x <= toParcel.x + 1; x++) {
-            for (int y = toParcel.y -1; y <= toParcel.y + 1; y++) {
-                if (x != toParcel.x || y != toParcel.y) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
-                    if (parcel != null && parcel.isWalkable()) {
-                        PathModel path = getPath(fromParcel, parcel);
-                        if (path != null && (bestPath == null || path.getLength() < bestPath.getLength())) {
-                            bestPath = path;
-                        }
-                    }
-                }
-            }
-        }
-        return bestPath;
     }
 
     private long getSum(ParcelModel fromParcel, ParcelModel toParcel) {

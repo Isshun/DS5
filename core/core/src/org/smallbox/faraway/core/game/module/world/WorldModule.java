@@ -2,14 +2,14 @@ package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.*;
@@ -17,9 +17,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule {
-    private static final int CACHE_SIZE = 50000;
     private ParcelModel[][][]                   _parcels;
-    private Map<Integer, ParcelModel>           _parcelsDo;
     private int                                 _width;
     private int                                 _height;
     private int                                 _floors;
@@ -30,15 +28,8 @@ public class WorldModule extends GameModule {
     private Set<ItemModel>                      _items = new HashSet<>();
     private Set<ItemModel>                      _factories = new HashSet<>();
     private Set<StructureModel>                 _structures = new HashSet<>();
-    private List<ParcelModel>                   _parcelList;
-    private Map<Integer, List<ParcelModel>>     _parcelListFloor;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
-
-    private Map<Integer, ParcelModel>           _parcelCache = new HashMap<>();
-    private List<ParcelModel>                   _parcelCacheQueue = new ArrayList<>(CACHE_SIZE);
-    private List<ChunkCacheModel>               _parcelChunkCacheQueue = new ArrayList<>(50);
-    private Map<Integer, ChunkCacheModel>       _parcelChunkCache = new HashMap<>();
 
     @Override
     protected void onLoaded(Game game) {
@@ -53,8 +44,6 @@ public class WorldModule extends GameModule {
         _floor = _floors - 1;
 
         _parcels = parcels;
-        _parcelList = parcelList;
-        _parcelListFloor = new HashMap<>();
         _plants = new LinkedBlockingQueue<>();
         _networks = new HashSet<>();
         _consumables = new HashSet<>();
@@ -105,7 +94,6 @@ public class WorldModule extends GameModule {
     public Collection<StructureModel>           getStructures() { return _structures; }
     public Collection<PlantModel>               getPlants() { return _plants; }
     public double                               getLight() { return _light; }
-    public ParcelModel                          getParcel(int x, int y) { return getParcel(x, y, _floor); }
     public ParcelModel                          getParcel(int x, int y, int z) {
         return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : _parcels[x][y][z];
     }

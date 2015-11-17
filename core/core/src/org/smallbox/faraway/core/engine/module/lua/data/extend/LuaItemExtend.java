@@ -4,11 +4,11 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.data.GraphicInfo;
 import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.engine.module.lua.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.model.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;

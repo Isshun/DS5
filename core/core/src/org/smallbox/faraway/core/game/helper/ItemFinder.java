@@ -1,20 +1,17 @@
 package org.smallbox.faraway.core.game.helper;
 
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,10 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemFinder extends GameModule {
-    private int                     _width;
-    private int                     _height;
-    private WorldModule             _worldModule;
-    private PathManager             _pathManager;
     private List<ConsumableModel>   _consumables;
     private List<ItemModel>         _items;
 
@@ -33,10 +26,6 @@ public class ItemFinder extends GameModule {
     protected void onLoaded(Game game) {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
-        _pathManager = (PathManager) ModuleManager.getInstance().getModule(PathManager.class);
-        _worldModule = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
-        _width = Game.getInstance().getInfo().worldWidth;
-        _height = Game.getInstance().getInfo().worldHeight;
     }
 
     // TODO: lock item
@@ -52,11 +41,6 @@ public class ItemFinder extends GameModule {
                         bestDistance = path.getLength();
                         bestItem = item;
                     }
-//                    int distance = WorldHelper.getApproxDistance(item.getParcel(), character.getParcel());
-//                    if (bestDistance > distance) {
-//                        bestDistance = distance;
-//                        bestItem = item;
-//                    }
                 }
             }
             return bestItem;
@@ -72,86 +56,9 @@ public class ItemFinder extends GameModule {
                         bestDistance = path.getLength();
                         bestConsumable = consumable;
                     }
-//                    int distance = WorldHelper.getApproxDistance(consumable.getParcel(), character.getParcel());
-//                    if (bestDistance > distance) {
-//                        bestDistance = distance;
-//                        bestConsumable = consumable;
-//                    }
                 }
             }
             return bestConsumable;
-        }
-//
-//        int startX = model.getX();
-//        int startY = model.getY();
-//        int maxX = Math.max(startX, _width - startX);
-//        int maxY = Math.max(startY, _height - startY);
-//        for (int offsetX = 0; offsetX < maxX; offsetX++) {
-//            for (int offsetY = 0; offsetY < maxY; offsetY++) {
-//                ParcelModel model = _worldModule.getParcel(startX + offsetX, startY + offsetY);
-//
-//                // Check on non-existing model
-//                if (model == null) {
-//                    continue;
-//                }
-//
-////                // Private room exists and characters is not allowed
-////                if (model.getRoom() != null && model.getRoom().isPrivate() && model.getRoom().getOccupants().contains(characters) == false) {
-////                    continue;
-////                }
-//
-//                if (filter.isConsomable) {
-//                    ConsumableModel consumable = WorldHelper.getConsumable(startX + offsetX, startY + offsetY);
-//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-//
-//                    consumable = WorldHelper.getConsumable(startX - offsetX, startY - offsetY);
-//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-//
-//                    consumable = WorldHelper.getConsumable(startX + offsetX, startY - offsetY);
-//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-//
-//                    consumable = WorldHelper.getConsumable(startX - offsetX, startY + offsetY);
-//                    if (getNearestItemCheck(consumable, filter)) { return consumable; }
-//                } else {
-//                    ItemModel item = WorldHelper.getItem(startX + offsetX, startY + offsetY);
-//                    if (getNearestItemCheck(item, filter)) { return item; }
-//
-//                    item = WorldHelper.getItem(startX - offsetX, startY - offsetY);
-//                    if (getNearestItemCheck(item, filter)) { return item; }
-//
-//                    item = WorldHelper.getItem(startX + offsetX, startY - offsetY);
-//                    if (getNearestItemCheck(item, filter)) { return item; }
-//
-//                    item = WorldHelper.getItem(startX - offsetX, startY + offsetY);
-//                    if (getNearestItemCheck(item, filter)) { return item; }
-//                }
-//            }
-//        }
-        return null;
-    }
-
-    public ConsumableModel getNearest(ItemInfo info, int startX, int startY) {
-        int maxX = Math.max(startX, _width - startX);
-        int maxY = Math.max(startY, _height - startY);
-        for (int offsetX = 0; offsetX < maxX; offsetX++) {
-            for (int offsetY = 0; offsetY < maxY; offsetY++) {
-                ParcelModel area = _worldModule.getParcel(startX + offsetX, startY + offsetY);
-                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-                    return area.getConsumable();
-                }
-                area = _worldModule.getParcel(startX - offsetX, startY + offsetY);
-                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-                    return area.getConsumable();
-                }
-                area = _worldModule.getParcel(startX + offsetX, startY - offsetY);
-                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-                    return area.getConsumable();
-                }
-                area = _worldModule.getParcel(startX - offsetX, startY - offsetY);
-                if (area != null && area.getConsumable() != null && area.getConsumable().getInfo() == info && area.getConsumable().getLock() == null) {
-                    return area.getConsumable();
-                }
-            }
         }
         return null;
     }
@@ -171,7 +78,7 @@ public class ItemFinder extends GameModule {
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = _pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
+                PathModel path = PathManager.getInstance().getPath(fromParcel, mapObject.getParcel(), false, false);
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {

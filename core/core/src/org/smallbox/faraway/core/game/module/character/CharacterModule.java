@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.game.module.character;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
@@ -8,8 +10,6 @@ import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
 import org.smallbox.faraway.core.util.Utils;

@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 

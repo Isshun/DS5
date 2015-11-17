@@ -2,6 +2,8 @@ package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
@@ -23,8 +25,6 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReas
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;

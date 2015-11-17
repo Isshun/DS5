@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -43,7 +44,7 @@ public class RoomRenderer extends GameDisplay {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         synchronized (_roomList) {
             _roomList.stream().forEach(room -> {
-                if (!room.isExterior()) {
+                if (!room.isExterior() && room.getFloor() == WorldHelper.getCurrentFloor()) {
                     synchronized (room.getParcels()) {
                         TextureRegion texture = _regions[0];
 //                        TextureRegion texture = UserInterface.getInstance().getSelector().getSelectedRoom() == parcel.getRoom() ? _regionsSelected[0] : _regions[0];

@@ -48,7 +48,7 @@ public class BuildJob extends JobModel {
     protected void onStart(CharacterModel character) {
         _message = "Building";
 
-        PathModel path = PathManager.getInstance().getBestAround(character.getParcel(), _jobParcel);
+        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, false);
         if (path != null) {
             _targetParcel = path.getLastParcel();
             System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");

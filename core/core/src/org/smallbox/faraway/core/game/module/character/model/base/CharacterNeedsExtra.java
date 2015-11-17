@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.HashMap;

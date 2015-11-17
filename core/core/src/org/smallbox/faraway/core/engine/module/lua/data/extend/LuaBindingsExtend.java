@@ -5,11 +5,11 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.data.BindingInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.engine.module.lua.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.model.Data;
 
 /**
  * Created by Alex on 04/11/2015.

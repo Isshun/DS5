@@ -5,17 +5,17 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Config;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModule;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -68,7 +68,11 @@ public class LuaApplicationModel {
     }
 
     public void setDisplay(String display) {
-        Game.getInstance().setDisplay(display);
+        Game.getInstance().setDisplay(display, true);
+    }
+
+    public boolean toggleDisplay(String display) {
+        return Game.getInstance().toggleDisplay(display);
     }
 
     public void setPlan(String plan) {

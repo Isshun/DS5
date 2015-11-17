@@ -1,11 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.module.character.model.AndroidModel;
-import org.smallbox.faraway.core.game.module.character.model.DroidModel;
-import org.smallbox.faraway.core.game.module.character.model.HumanModel;
-import org.smallbox.faraway.core.util.Utils;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**

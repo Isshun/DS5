@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 
 import java.util.Collection;
 
@@ -39,9 +39,9 @@ public class MainRenderer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 
-        String display = Game.getInstance().getDisplay();
+        Game game = Game.getInstance();
         _renders.stream().filter(BaseRenderer::isLoaded)
-                .filter(render -> !(render instanceof GameDisplay) || (display != null && display.equals(((GameDisplay)render).getName())))
+                .filter(render -> !(render instanceof GameDisplay) || (game.hasDisplay(((GameDisplay)render).getName())))
                 .forEach(render -> render.draw(renderer, viewport, animProgress));
 
         _frame++;

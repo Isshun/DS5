@@ -12,6 +12,11 @@ import org.smallbox.faraway.core.data.BindingInfo;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
+import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.engine.module.lua.data.extend.*;
+import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
+import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -23,14 +28,10 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.engine.module.lua.data.extend.*;
-import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
-import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -91,6 +92,7 @@ public class LuaModuleManager implements GameObserver {
         Data.getData().bindings.clear();
         _luaApplication.bindings = new LuaTable();
 
+        UIEventManager.getInstance().clear();
         UserInterface.getInstance()._views.clear();
         _luaEventListeners.clear();
         _luaLoadListeners.clear();

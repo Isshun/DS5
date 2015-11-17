@@ -2,13 +2,13 @@ package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.util.Utils;
 
 import java.util.Collections;

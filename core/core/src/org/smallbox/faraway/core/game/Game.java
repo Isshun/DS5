@@ -1,22 +1,24 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.renderer.Viewport;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
@@ -44,10 +46,14 @@ public class Game {
     private int                             _day;
     private int                             _year;
     private static int                      _tick;
-    private String                          _display;
+    private Map<String, Boolean>            _displays;
 
-    public void                             setDisplay(String display) { _display = display; }
+    public void                             setDisplay(String displayName, boolean isActive) { _displays.put(displayName, isActive); }
+    public boolean                          toggleDisplay(String displayName) { _displays.put(displayName, !_displays.containsKey(displayName) || !_displays.get(displayName)); return _displays.get(displayName); }
+
     public boolean                          isRunning() { return _isRunning; }
+    public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }
+
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
@@ -56,7 +62,6 @@ public class Game {
     public static int                       getUpdate() { return _tick; }
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
-    public String                           getDisplay() { return _display; }
     public GameActionExtra                  getInteraction() { return _gameAction; }
     public GameSelectionExtra               getSelector() { return _selector; }
 
@@ -72,6 +77,7 @@ public class Game {
         _modulesThird = ModuleManager.getInstance().getModulesThird();
         _planet = new PlanetModel(info.planet);
         _directions = Application.getInstance().getInputProcessor().getDirection();
+        _displays = new HashMap<>();
         _tick = 0;
 
         GDXRenderer.getInstance().setViewport(_viewport);

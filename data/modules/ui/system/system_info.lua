@@ -1,5 +1,12 @@
 last_temperature_value = 0
 
+function toggle_display(view, display_name)
+    local is_active = application:toggleDisplay(display_name)
+    view:setFocusBackgroundColor(is_active and 0x25c8ca or 0x2c343e)
+    view:setRegularBackgroundColor(is_active and 0x349394 or 0x2c3429)
+    view:setBackgroundColor(is_active and 0x25c8ca or 0x2c343e)
+end
+
 data:extend({
     type = "view",
     name = "ui-test",
@@ -7,6 +14,14 @@ data:extend({
     background = 0x2b3036,
     visible = true,
     views = {
+        { type = "grid", columns = 20, column_width = 80, row_height = 38, views = {
+            { type = "label", text = "Areas", text_size = 16, padding = 10, size = {80, 32}, background = {regular = 0x2c3429, focus = 0x2c343e}, on_click = function(v) toggle_display(v, "areas") end},
+            { type = "label", text = "Room", text_size = 16, padding = 10, size = {80, 32}, background = {regular = 0x2c3429, focus = 0x2c343e}, on_click = function(v) toggle_display(v, "rooms") end},
+            { type = "label", text = "Heat", text_size = 16, padding = 10, size = {80, 32}, background = {regular = 0x2c3429, focus = 0x2c343e}, on_click = function(v) toggle_display(v, "temperature") end},
+            { type = "label", text = "Oxygen", text_size = 16, padding = 10, size = {80, 32}, background = {regular = 0x2c3429, focus = 0x2c343e}, on_click = function(v) toggle_display(v, "oxygen") end},
+            { type = "label", text = "Water", text_size = 16, padding = 10, size = {80, 32}, background = {regular = 0x2c3429, focus = 0x2c343e}, on_click = function(v) toggle_display(v, "water") end},
+            { type = "label", text = "Security", text_size = 16, padding = 10, size = {80, 32}, background = {regular = 0x2c3429, focus = 0x2c343e}, on_click = function(v) toggle_display(v, "security") end},
+        }},
 
         { type = "view", position = {application.info.screen_width - 400, 0}, background = 0x203636, size = {400, 38}, views = {
             { type = "image", id = "img_time", src = "[base]/graphics/icons/sun.png", size = {32, 32}, position = {2, 2}},

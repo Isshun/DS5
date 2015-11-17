@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -55,7 +56,7 @@ public class AreaRenderer extends GameDisplay {
         WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
-                ParcelModel parcel = world.getParcel(x, y);
+                ParcelModel parcel = world.getParcel(x, y, WorldHelper.getCurrentFloor());
                 if (parcel != null && parcel.getArea() != null) {
                     if (Game.getInstance().getSelector().getSelectedArea() == parcel.getArea()) {
                         renderer.drawOnMap(_regionsSelected[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);

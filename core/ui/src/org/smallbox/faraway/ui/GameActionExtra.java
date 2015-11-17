@@ -193,7 +193,7 @@ public class GameActionExtra {
 
         if (action == GameEventListener.Action.MOVE) {
             if (_selector != null) {
-                _selector.moveAt(getRelativePosX(x), getRelativePosY(y));
+                _selector.moveAt(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor());
             }
 
             // TODO

@@ -152,7 +152,7 @@ public class GameSelectionExtra {
     public boolean selectAt(int x, int y, int z) {
         Application.getInstance().notify(GameObserver::onDeselect);
 
-        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
         if (parcel != null) {
             CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
             AreaModel area = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getArea(x, y, z);
@@ -194,8 +194,8 @@ public class GameSelectionExtra {
         return false;
     }
 
-    public void moveAt(int x, int y) {
-        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+    public void moveAt(int x, int y, int z) {
+        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
         if (_lastMoveParcel != parcel) {
             _lastMoveParcel = parcel;
             Application.getInstance().notify(observer -> observer.onOverParcel(parcel));

@@ -2,11 +2,11 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.engine.module.lua.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.model.Data;
 
 /**
  * Created by Alex on 15/10/2015.
