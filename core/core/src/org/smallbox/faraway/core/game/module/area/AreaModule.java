@@ -78,24 +78,25 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {
+    public void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int z) {
         // Search existing area for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
-                    if (area.getType() == type && area.getFloor() == floor && area.contains(x, y)) {
-                        addParcelToArea(area, fromX, fromY, toX, toY);
-                        return;
-                    }
+                    if (area.getType() == type && area.contains(x, y, z)) { addParcelToArea(area, fromX, fromY, toX, toY, z); return; }
+                    if (area.getType() == type && area.contains(x+1, y, z)) { addParcelToArea(area, fromX, fromY, toX, toY, z); return; }
+                    if (area.getType() == type && area.contains(x-1, y, z)) { addParcelToArea(area, fromX, fromY, toX, toY, z); return; }
+                    if (area.getType() == type && area.contains(x, y+1, z)) { addParcelToArea(area, fromX, fromY, toX, toY, z); return; }
+                    if (area.getType() == type && area.contains(x, y-1, z)) { addParcelToArea(area, fromX, fromY, toX, toY, z); return; }
                 }
             }
         }
 
         // Create new area
         AreaModel area = createArea(type);
-        area.setFloor(floor);
+        area.setFloor(z);
         addArea(area);
-        addParcelToArea(area, fromX, fromY, toX, toY);
+        addParcelToArea(area, fromX, fromY, toX, toY, z);
 
         // Reset not running store job
         ModuleHelper.getWorldModule().getConsumables().stream()
@@ -104,13 +105,13 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    public void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {
+    public void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int z) {
         // Search existing model for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
-                    if (area.getType() == type && area.getFloor() == floor && area.contains(x, y)) {
-                        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
+                    if (area.getType() == type && area.getFloor() == z && area.contains(x, y, z)) {
+                        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
                         parcel.setArea(null);
                         area.removeParcel(parcel);
                     }
@@ -139,13 +140,12 @@ public class AreaModule extends GameModule {
         }
     }
 
-    private void addParcelToArea(AreaModel area, int fromX, int fromY, int toX, int toY) {
+    private void addParcelToArea(AreaModel area, int fromX, int fromY, int toX, int toY, int z) {
         WorldModule worldModule = ModuleHelper.getWorldModule();
 
-        int z = worldModule.getFloor();
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ParcelModel parcel = worldModule.getParcel(x, y);
+                ParcelModel parcel = worldModule.getParcel(x, y, z);
 
                 // Remove existing resource on parcel
                 if (parcel.hasPlant()) {
@@ -166,9 +166,9 @@ public class AreaModule extends GameModule {
         return _areas;
     }
 
-    public AreaModel getArea(int x, int y) {
+    public AreaModel getArea(int x, int y, int z) {
         for (AreaModel area: _areas) {
-            if (area.contains(x, y)) {
+            if (area.contains(x, y, z)) {
                 return area;
             }
         }

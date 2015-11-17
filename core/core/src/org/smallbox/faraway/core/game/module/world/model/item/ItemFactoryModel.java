@@ -52,7 +52,7 @@ public class ItemFactoryModel {
 
         _storageParcel = _item.getParcel();
         if (_info.outputSlots != null) {
-            _storageParcel = WorldHelper.getParcel(_item.getParcel().x + _info.outputSlots[0], _item.getParcel().y + _info.outputSlots[1]);
+            _storageParcel = WorldHelper.getParcel(_item.getParcel().x + _info.outputSlots[0], _item.getParcel().y + _info.outputSlots[1], _item.getParcel().z);
         }
 
         if (_info.receipts != null) {

@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core.engine.lua;
 
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 
@@ -11,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public class LuaVisitorModel {
     public LuaCharacterModel add() {
-        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5);
+        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5, Game.getInstance().getInfo().worldFloors - 1);
         return new LuaCharacterModel(character);
     }
 

@@ -33,10 +33,7 @@ public class StoreJob extends JobModel implements GameObserver {
     }
 
     public static StoreJob create(ConsumableModel consumable, StorageAreaModel storage) {
-        if (consumable == null) {
-            Log.error("onCreate JobHaul: consumable cannot be null");
-            return null;
-        }
+        assert consumable != null;
 
         ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel(), 1, 1);
         if (targetParcel == null) {
@@ -70,13 +67,14 @@ public class StoreJob extends JobModel implements GameObserver {
         int fromY = firstConsumable.getParcel().y - 5;
         int toX = firstConsumable.getParcel().x + 5;
         int toY = firstConsumable.getParcel().y + 5;
+        int z = firstConsumable.getParcel().z;
 
         _consumables.clear();
         _consumables.add(firstConsumable);
         _quantity += firstConsumable.getQuantity();
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ConsumableModel consumable = WorldHelper.getConsumable(x, y);
+                ConsumableModel consumable = WorldHelper.getConsumable(x, y, z);
                 if (consumable != null && consumable != firstConsumable
                         && consumable.getLock() == null
                         && consumable.getInfo() == firstConsumable.getInfo()
@@ -95,7 +93,7 @@ public class StoreJob extends JobModel implements GameObserver {
     @Override
     public void draw(onDrawCallback callback) {
         for (ConsumableModel consumable: _consumables) {
-            callback.onDraw(consumable.getParcel().x, consumable.getParcel().y);
+            callback.onDraw(consumable.getParcel().x, consumable.getParcel().y, consumable.getParcel().z);
         }
     }
 
@@ -110,8 +108,10 @@ public class StoreJob extends JobModel implements GameObserver {
         // Go to storage
         else if (_character.getInventory() != null) {
             ParcelModel parcel = _storage.getFreeParcel(_character.getInventory());
-            moveToStorage(parcel);
-            return;
+            if (parcel != null) {
+                moveToStorage(parcel);
+                return;
+            }
         }
 
         quit(_character);
@@ -204,6 +204,10 @@ public class StoreJob extends JobModel implements GameObserver {
             return JobCheckReturn.ABORT;
         }
 
+        if (!_storage.hasFreeSpace(_itemInfo, _quantity)) {
+            return JobCheckReturn.ABORT;
+        }
+
         // No free space in storage
         if (_jobParcel == null || (_jobParcel.getConsumable() != null && _jobParcel.getConsumable().getInfo() != _itemInfo)) {
             _jobParcel = _storage.getNearestFreeParcel(_consumables.get(0));
@@ -216,7 +220,7 @@ public class StoreJob extends JobModel implements GameObserver {
         // No path from consumable to storage
         if (!PathManager.getInstance().hasPath(_targetParcel, _jobParcel)) {
             _message = "No path to storage";
-            return JobCheckReturn.BLOCKED;
+            return JobCheckReturn.ABORT;
         }
 
         // No path from character to consumable

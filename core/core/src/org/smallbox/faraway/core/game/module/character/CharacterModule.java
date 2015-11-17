@@ -112,11 +112,11 @@ public class CharacterModule extends GameModule {
     }
 
     // TODO: heavy
-    public CharacterModel getCharacterAtPos(int x, int y) {
+    public CharacterModel getCharacterAtPos(int x, int y, int z) {
         printDebug("getCharacterAtPos: " + x + "x" + y);
 
         for (CharacterModel c: _characters) {
-            if (c.getParcel().x == x && c.getParcel().y == y) {
+            if (c.getParcel().equals(x, y, z)) {
                 printDebug("getCharacterAtPos: found");
                 return c;
             }
@@ -148,8 +148,8 @@ public class CharacterModule extends GameModule {
         return null;
     }
 
-    public CharacterModel addRandom(int x, int y) {
-        CharacterModel character = new HumanModel(Utils.getUUID(), WorldHelper.getParcel(x, y), null, null, 16);
+    public CharacterModel addRandom(int x, int y, int z) {
+        CharacterModel character = new HumanModel(Utils.getUUID(), WorldHelper.getParcel(x, y, z), null, null, 16);
         add(character);
         return character;
     }

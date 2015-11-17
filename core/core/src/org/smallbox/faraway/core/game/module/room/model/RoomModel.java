@@ -37,6 +37,9 @@ public class RoomModel {
     private double                      _oxygen;
     private final ParcelModel           _baseParcel;
     private int                         _floor;
+    private double                      _targetOxygen;
+    private double                      _targetOxygenPression;
+    private int                         _pressure;
 
     public double getOxygen() { return _oxygen; }
     public void setOxygen(double oxygen) {
@@ -52,23 +55,20 @@ public class RoomModel {
     public List<ItemModel> getColdItems() { return _coldItems; }
     public List<ItemModel> getOxygenItems() { return _oxygenItems; }
 
-    public boolean hasNeighbors() {
-        return !_neighborhood.isEmpty();
-    }
-
-    public ParcelModel getBaseParcel() {
-        return _baseParcel;
-    }
-
-    public double getTemperature() {
-        return _temperatureInfo.temperature;
-    }
-
-    public int getFloor() {
-        return _floor;
-    }
+    public boolean hasNeighbors() { return !_neighborhood.isEmpty(); }
+    public ParcelModel getBaseParcel() { return _baseParcel; }
+    public double getTemperature() { return _temperatureInfo.temperature; }
+    public int getFloor() { return _floor; }
+    public double getTargetOxygen() { return _targetOxygen; }
+    public double getTargetOxygenPressure() { return _targetOxygenPression; }
 
     public void setTemperature(double temperature) { _temperatureInfo.temperature = temperature; }
+    public void setTargetOxygen(double targetOxygen) { _targetOxygen = targetOxygen; }
+    public void setTargetOxygenPression(double pression) { _targetOxygenPression = pression; }
+
+    public void setPressure(int pressure) {
+        _pressure = pressure;
+    }
 
     public enum RoomType {
         NONE,
@@ -117,6 +117,7 @@ public class RoomModel {
     public RoomType                 getType() { return _type; }
     public int                      getSize() { return _parcels.size(); }
     public double                   getLight() { return _lightValue; }
+    public int                      getPressure() { return _pressure; }
     public Set<CharacterModel>      getOccupants() { return _occupants; }
     public RoomTemperatureModel     getTemperatureInfo() { return _temperatureInfo; }
     public List<NeighborModel>      getNeighbors() { return _neighborhood; }

@@ -14,6 +14,7 @@ data:extend({
             { type = "label", id = "lb_size", text_size = 14},
             { type = "label", id = "lb_exterior", text_size = 14},
             { type = "label", id = "lb_neighborhood", text_size = 14},
+            { type = "label", id = "lb_target_oxygen", text_size = 14},
         }},
     },
 
@@ -30,6 +31,7 @@ data:extend({
             view:findById("lb_id"):setText("Id", ": ", room:getId())
             view:findById("lb_size"):setText("Size", ": ", room:getSize())
             view:findById("lb_exterior"):setText("Exterior", ": ", room:isExterior() and "yes" or "no")
+            view:findById("lb_target_oxygen"):setText("Target O2", ": ", room:getTargetOxygen() .. " (pressure: " .. room:getTargetOxygenPressure() .. ")")
 
             if room:getNeighbors() then
                 local str = ""

@@ -118,7 +118,7 @@ public class WorldModule extends GameModule {
 
     // Used only by serializers
     public MapObjectModel putObject(String name, int x, int y, int z, int data, boolean complete) {
-        return putObject(WorldHelper.getParcel(x, y), Data.getData().getItemInfo(name), data, complete);
+        return putObject(WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo(name), data, complete);
     }
 
     public void replaceGround(ParcelModel parcel, ItemInfo groundInfo) {
@@ -152,12 +152,12 @@ public class WorldModule extends GameModule {
         }
     }
 
-    public void removeStructure(int x, int y) {
-        if (!WorldHelper.inMapBounds(x, y)) {
+    public void removeStructure(int x, int y, int z) {
+        if (!WorldHelper.inMapBounds(x, y, z)) {
             return;
         }
 
-        StructureModel structure = _parcels[x][y][0].getStructure();
+        StructureModel structure = _parcels[x][y][z].getStructure();
         if (structure != null) {
             if (structure.getParcel().getStructure() == structure) {
                 structure.getParcel().setStructure(null);
@@ -338,8 +338,8 @@ public class WorldModule extends GameModule {
         return null;
     }
 
-    public ItemModel takeItem(int x, int y) {
-        ParcelModel area = getParcel(x, y);
+    public ItemModel takeItem(int x, int y, int z) {
+        ParcelModel area = getParcel(x, y, z);
         if (area != null) {
             return takeItem(area.getItem(), area);
         }
@@ -390,7 +390,7 @@ public class WorldModule extends GameModule {
         _consumables.forEach(ConsumableModel::fixPosition);
     }
 
-    public int getEnvironmentValue(int startX, int startY, int distance) {
+    public int getEnvironmentValue(int startX, int startY, int z, int distance) {
         int fromX = startX - distance;
         int fromY = startY - distance;
         int toX = startX + distance;
@@ -398,8 +398,8 @@ public class WorldModule extends GameModule {
         int value = 0;
         for (int x = fromX; x < toX; x++) {
             for (int y = fromY; y < toY; y++) {
-                if (WorldHelper.inMapBounds(x, y)) {
-                    value += _parcels[x][y][0].getEnvironmentScore();
+                if (WorldHelper.inMapBounds(x, y, z)) {
+                    value += _parcels[x][y][z].getEnvironmentScore();
                 }
             }
         }
@@ -412,8 +412,8 @@ public class WorldModule extends GameModule {
             item.setParcel(parcel);
             for (int i = 0; i < item.getWidth(); i++) {
                 for (int j = 0; j < item.getHeight(); j++) {
-                    if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j)) {
-                        _parcels[parcel.x + i][parcel.y + j][0].setItem(item);
+                    if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j, parcel.z)) {
+                        _parcels[parcel.x + i][parcel.y + j][parcel.z].setItem(item);
                     }
                 }
             }
@@ -487,7 +487,7 @@ public class WorldModule extends GameModule {
     public void onFloorUp() {
         if (_floor < _floors - 1) {
             _floor++;
-            WorldHelper._currentFloor = _floor;
+            WorldHelper.setCurrentFloor(_floor);
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }
     }
@@ -496,15 +496,8 @@ public class WorldModule extends GameModule {
     public void onFloorDown() {
         if (_floor > 0) {
             _floor--;
-            WorldHelper._currentFloor = _floor;
+            WorldHelper.setCurrentFloor(_floor);
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }
     }
-
-    public int getFloor() {
-        return _floor;
-    }
-
-//    public int getWidth() { return _width; }
-//    public int getHeight() { return _height; }
 }

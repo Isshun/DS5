@@ -13,14 +13,12 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 public class StorageAreaModel extends AreaModel {
     private static int  _count;
 
-    private int         _nb;
+    private int         _index;
     private int         _priority = 1;
 
     public StorageAreaModel() {
         super(AreaType.STORAGE);
-
-        _nb = ++_count;
-
+        _index = ++_count;
         Data.getData().consumables.forEach(itemInfo -> setAccept(itemInfo, false));
     }
 
@@ -84,13 +82,18 @@ public class StorageAreaModel extends AreaModel {
 
     @Override
     public String getName() {
-        return "Storage Area #" + _nb;
+        return "Storage Area #" + _index;
     }
 
     public int getPriority() { return _priority; }
     public void setPriority(int priority) { _priority = priority; }
 
     public boolean hasFreeSpace(ItemInfo info, int quantity) {
-        return true;
+        for (ParcelModel parcel: _parcels) {
+            if (!parcel.hasConsumable() || info.stack - parcel.getConsumable().getQuantity() >= quantity) {
+                return true;
+            }
+        }
+        return false;
     }
 }

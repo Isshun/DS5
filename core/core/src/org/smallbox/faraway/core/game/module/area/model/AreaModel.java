@@ -32,10 +32,12 @@ public class AreaModel {
         }
     }
 
-    public boolean contains(int x, int y) {
-        for (ParcelModel parcel: _parcels) {
-            if (parcel.x == x && parcel.y == y) {
-                return true;
+    public boolean contains(int x, int y, int z) {
+        if (_floor == z) {
+            for (ParcelModel parcel : _parcels) {
+                if (parcel.x == x && parcel.y == y) {
+                    return true;
+                }
             }
         }
         return false;

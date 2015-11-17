@@ -182,6 +182,7 @@ public class ItemInfo extends ObjectInfo {
         public int                      relation;
         public int                      entertainment;
         public double                   oxygen;
+        public int                      pressure;
         public int                      security;
         public int                      heat;
         public int                      heatPotency;

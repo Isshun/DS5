@@ -165,7 +165,7 @@ public class WorldFactory {
         List<ParcelModel> freeParcels = new ArrayList<>();
         for (int x = startParcel.x - 5; x < startParcel.x + 5; x++) {
             for (int y = startParcel.y - 5; y < startParcel.y + 5; y++) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                ParcelModel parcel = WorldHelper.getParcel(x, y, startParcel.z);
                 if (parcel != null && parcel.isWalkable() && !parcel.hasPlant()) {
                     freeParcels.add(parcel);
                 }
@@ -181,7 +181,7 @@ public class WorldFactory {
         ParcelModel startParcel = null;
         Queue<ParcelModel> freeParcels = null;
         for (int i = 0; i < 50; i++) {
-            startParcel = WorldHelper.getRandomFreeSpace(false, true);
+            startParcel = WorldHelper.getRandomFreeSpace(game.getInfo().worldFloors - 1, false, true);
             freeParcels = getFreeParcels(startParcel);
             if (freeParcels.size() > 15) {
                 break;

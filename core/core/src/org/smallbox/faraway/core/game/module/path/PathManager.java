@@ -151,6 +151,9 @@ public class PathManager extends GameModule {
     }
 
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
+        assert fromParcel != null;
+        assert toParcel != null;
+
         long time = System.currentTimeMillis();
 
         // Check if target parcel is not surrounded by non-walkable model

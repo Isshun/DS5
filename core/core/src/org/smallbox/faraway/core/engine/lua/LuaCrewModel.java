@@ -14,7 +14,7 @@ public class LuaCrewModel {
     public int count = 42;
 
     public LuaCharacterModel add() {
-        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5);
+        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5, Game.getInstance().getInfo().worldFloors - 1);
         return new LuaCharacterModel(character);
     }
 

@@ -85,7 +85,7 @@ public class ItemModel extends BuildableMapObject {
 
     public void initSlots() {
         _slots = _info.slots != null
-                ? _info.slots.stream().map(slot -> new ItemSlot(this, WorldHelper.getParcel(_parcel.x + slot[0], _parcel.y + slot[1]))).filter(slot -> slot.getParcel() != null && slot.getParcel().isWalkable()).collect(Collectors.toList())
+                ? _info.slots.stream().map(slot -> new ItemSlot(this, WorldHelper.getParcel(_parcel.x + slot[0], _parcel.y + slot[1], _parcel.z))).filter(slot -> slot.getParcel() != null && slot.getParcel().isWalkable()).collect(Collectors.toList())
                 : Collections.singletonList(new ItemSlot(this, _parcel));
         _nbSlot = _nbFreeSlot = _slots.size();
     }

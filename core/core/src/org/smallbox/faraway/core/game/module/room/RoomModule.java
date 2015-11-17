@@ -1,11 +1,14 @@
 package org.smallbox.faraway.core.game.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.OxygenModule;
+import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
@@ -26,11 +29,15 @@ public class RoomModule extends GameModule implements GameObserver {
     private AsyncTask<List<RoomModel>>      _task;
     private boolean[]                       _refresh;
     private HashSet<ParcelModel>            _closeList = new HashSet<>();
+    private WeatherModule                   _weatherModule;
+    private OxygenModule                    _oxygenModule;
 
     public boolean      hasOwnThread() { return true; }
 
     @Override
     protected void onLoaded(Game game) {
+        _weatherModule = (WeatherModule)ModuleManager.getInstance().getModule(WeatherModule.class);
+        _oxygenModule = (OxygenModule)ModuleManager.getInstance().getModule(OxygenModule.class);
         _updateInterval = 10;
         _needRefresh = true;
         _refresh = new boolean[game.getInfo().worldFloors];
@@ -58,9 +65,17 @@ public class RoomModule extends GameModule implements GameObserver {
             _needRefresh = false;
             for (int floor = 0; floor < _refresh.length; floor++) {
                 if (_refresh[floor]) {
-                    _refresh[floor] = false;
                     refreshRooms(floor);
                 }
+            }
+            for (int floor = 0; floor < _refresh.length; floor++) {
+                if (_refresh[floor]) {
+                    final int f = floor;
+                    _rooms.stream().filter(room -> room.getFloor() >= f - 1 && room.getFloor() <= f + 1).forEach(room -> makeNeighborhood(_rooms, room));
+                }
+            }
+            for (int floor = 0; floor < _refresh.length; floor++) {
+                _refresh[floor] = false;
             }
         }
 
@@ -106,9 +121,6 @@ public class RoomModule extends GameModule implements GameObserver {
             }
         }
 
-        // Make neighborhood for new rooms
-        newRooms.forEach(room -> makeNeighborhood(newRooms, room));
-
         // Add new rooms to list
         _rooms.addAll(newRooms);
 
@@ -120,18 +132,16 @@ public class RoomModule extends GameModule implements GameObserver {
         double temperature = 0;
         double light = 0;
         double oxygen = 0;
-        int nbParcelInRoom = 0;
+        int nbParcel = 0;
 
         Queue<ParcelModel> openList = new ArrayDeque<>(Collections.singleton(parcel));
         while ((parcel = openList.poll()) != null) {
             if (parcel.getConnections() != null && parcel.isRoomOpen()) {
                 // Keep old room info
-                if (parcel.getRoom() != null) {
-                    temperature += parcel.getRoom().getTemperature();
-                    oxygen += parcel.getRoom().getOxygen();
-                    light += parcel.getRoom().getLight();
-                    nbParcelInRoom++;
-                }
+                temperature += parcel.getRoom() != null ? parcel.getRoom().getTemperature() : _weatherModule.getTemperature();
+                oxygen += parcel.getRoom() != null ? parcel.getRoom().getOxygen() : _oxygenModule.getOxygen();
+                light += parcel.getRoom() != null ? parcel.getRoom().getLight() : _weatherModule.getLight();
+                nbParcel++;
 
                 parcel.setRoom(room);
                 room.getParcels().add(parcel);
@@ -147,9 +157,9 @@ public class RoomModule extends GameModule implements GameObserver {
             }
         }
 
-        room.setTemperature(temperature / nbParcelInRoom);
-        room.setLight(light / nbParcelInRoom);
-        room.setOxygen(oxygen / nbParcelInRoom);
+        room.setTemperature(temperature / nbParcel);
+        room.setLight(light / nbParcel);
+        room.setOxygen(oxygen / nbParcel);
     }
 
     private void checkRoof(ParcelModel[][][] parcels, RoomModel room) {
@@ -179,12 +189,12 @@ public class RoomModule extends GameModule implements GameObserver {
         return false;
     }
 
-    private void makeNeighborhood(List<RoomModel> roomList, RoomModel room) {
+    private void makeNeighborhood(Collection<RoomModel> roomList, RoomModel room) {
         WorldModule manager = ModuleHelper.getWorldModule();
 
         // Create neighborhood model form each room
         Map<RoomModel, NeighborModel> neighborhood = roomList.stream()
-                .filter(r -> r != room && r.getFloor() == room.getFloor())
+                .filter(r -> r != room && r.getFloor() >= room.getFloor() - 1 && r.getFloor() <= room.getFloor() + 1)
                 .map(NeighborModel::new)
                 .collect(Collectors.toMap(n -> n._room, n -> n));
 
@@ -194,6 +204,7 @@ public class RoomModule extends GameModule implements GameObserver {
             checkAndAddNeighbor(manager, neighborhood, room, parcel, +1, 0);
             checkAndAddNeighbor(manager, neighborhood, room, parcel, 0, -1);
             checkAndAddNeighbor(manager, neighborhood, room, parcel, 0, +1);
+            checkAndAddNeighborFloor(manager, neighborhood, room, parcel);
         }
 
         // Add neighbors to room
@@ -219,34 +230,21 @@ public class RoomModule extends GameModule implements GameObserver {
         }
     }
 
+    private void checkAndAddNeighborFloor(WorldModule manager, Map<RoomModel, NeighborModel> neighborhood, RoomModel room, ParcelModel parcel) {
+        ParcelModel parcelUp = manager.getParcel(parcel.x, parcel.y, parcel.z + 1);
+        if (parcelUp != null && parcelUp.hasRoom() && (!parcelUp.hasGround() || parcelUp.getGroundInfo().isLinkDown)) {
+            neighborhood.get(parcelUp.getRoom())._parcels.add(parcel);
+        }
+        ParcelModel parcelDown = manager.getParcel(parcel.x, parcel.y, parcel.z - 1);
+        if (parcelDown != null && parcelDown.hasRoom() && (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown)) {
+            neighborhood.get(parcelDown.getRoom())._parcels.add(parcel);
+        }
+    }
+
     private void plantRefresh(int floor) {
         _refresh[floor] = true;
         _needRefresh = true;
     }
-
-//    private void refreshParcel(ParcelModel parcel) {
-//        System.out.println("Create new room for parcel " + parcel);
-//        RoomModel room = new RoomModel(RoomModel.RoomType.NONE, parcel.z, parcel);
-//        explore(room, parcel);
-//        checkRoof(ModuleHelper.getWorldModule().getParcels(), room);
-//        _rooms.add(room);
-//
-//        // Remove empty rooms
-//        _rooms.removeIf(RoomModel::isEmpty);
-//    }
-//
-//    private void refreshAround(ParcelModel parcel) {
-//        ParcelModel t = WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z);
-//        ParcelModel r = WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z);
-//        ParcelModel b = WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z);
-//        ParcelModel l = WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z);
-//
-//        RoomModel lastRoom = null;
-//        if (t != null && t.isRoomOpen()) { refreshParcel(t); lastRoom = t.getRoom(); }
-//        if (r != null && r.isRoomOpen() && r.getRoom() != lastRoom) { refreshParcel(r); lastRoom = r.getRoom(); }
-//        if (b != null && b.isRoomOpen() && b.getRoom() != lastRoom) { refreshParcel(b); lastRoom = b.getRoom(); }
-//        if (l != null && l.isRoomOpen() && l.getRoom() != lastRoom) { refreshParcel(l); }
-//    }
 
     @Override
     public void onAddItem(ItemModel item){

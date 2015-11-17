@@ -2,6 +2,8 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.ToolTips;
@@ -10,9 +12,6 @@ import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.util.Constant;
 
 /**
@@ -64,7 +63,7 @@ public class GameSelectionExtra {
                 int y = parcel.y;
                 for (int x2 = 0; x2 < Constant.ITEM_MAX_WIDTH; x2++) {
                     for (int y2 = 0; y2 < Constant.ITEM_MAX_HEIGHT; y2++) {
-                        ItemModel item = WorldHelper.getItem(x - x2, y - y2);
+                        ItemModel item = WorldHelper.getItem(x - x2, y - y2, WorldHelper.getCurrentFloor());
                         if (item != null && item.getWidth() > x2 && item.getHeight() > y2) {
                             select(item);
                             return true;
@@ -150,13 +149,13 @@ public class GameSelectionExtra {
     public AreaModel            getSelectedArea() { return _selectedArea; }
     public ConsumableModel      getSelectedConsumable() { return _selectedConsumable; }
 
-    public boolean selectAt(int x, int y) {
+    public boolean selectAt(int x, int y, int z) {
         Application.getInstance().notify(GameObserver::onDeselect);
 
         ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y);
         if (parcel != null) {
-            CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y);
-            AreaModel area = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getArea(x, y);
+            CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
+            AreaModel area = ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getArea(x, y, z);
 
             _lastSelectedIndex = _lastSelectedParcel == parcel ? _lastSelectedIndex + 1 : 0;
             _lastSelectedParcel = parcel;
@@ -177,15 +176,17 @@ public class GameSelectionExtra {
         return false;
     }
 
-    public boolean selectAt(int fromX, int fromY, int toX, int toY) {
+    public boolean selectAt(int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
         Application.getInstance().notify(GameObserver::onDeselect);
 
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y);
-                if (character != null) {
-                    select(character);
-                    return true;
+                for (int z = fromZ; z <= toZ; z++) {
+                    CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
+                    if (character != null) {
+                        select(character);
+                        return true;
+                    }
                 }
             }
         }

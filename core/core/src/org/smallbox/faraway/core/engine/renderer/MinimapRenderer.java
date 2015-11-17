@@ -122,8 +122,8 @@ public class MinimapRenderer extends BaseRenderer {
 
             float ratioX = ((float)FRAME_WIDTH / _width);
             float ratioY = ((float)FRAME_HEIGHT / _height);
-            int x = POS_X + (int)((Math.min(_width-38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX + 1);
-            int y = POS_Y + (int)((Math.min(_height-32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY + 1);
+            int x = POS_X + (int)((Math.min(_width-38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
+            int y = POS_Y + (int)((Math.min(_height-32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
             renderer.draw(COLOR_VIEW, x, y, (int) (38 * ratioX), 1);
             renderer.draw(COLOR_VIEW, x, y, 1, (int) (32 * ratioY));
             renderer.draw(COLOR_VIEW, x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1);

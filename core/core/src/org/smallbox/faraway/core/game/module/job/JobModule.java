@@ -77,7 +77,7 @@ public class JobModule extends GameModule {
     protected void onUpdate(int tick) {
         cleanJobs();
 
-        // Create Get Components jobs
+        // Create hualing jobs
         ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete())
                 .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
                         .forEach(component -> _jobs.add(new HaulJob(item, component))));

@@ -45,14 +45,12 @@ public class DigJob extends JobModel {
                         }
                     });
                     job._jobParcel = parcel;
-//                    job._resource = resource;
                     job._jobParcel.setDigJob(job);
                     job._rockInfo = rockInfo;
                     job._itemProduct = itemProduct;
                     job._parcelToRemoveGround = parcelToRemoveGround;
                     job._groundInfo = groundInfo;
                     job._totalCost = job._cost * 10;
-//                    job._totalCost = job._cost * job._resource.getRock().getQuantity();
                     job._label = "Mine " + rockInfo.label;
                     job._message = "Move to resource";
                     return job;
@@ -158,7 +156,7 @@ public class DigJob extends JobModel {
 
     @Override
     public void draw(onDrawCallback callback) {
-        callback.onDraw(_jobParcel.x, _jobParcel.y);
+        callback.onDraw(_jobParcel.x, _jobParcel.y, _jobParcel.z);
     }
 
 }

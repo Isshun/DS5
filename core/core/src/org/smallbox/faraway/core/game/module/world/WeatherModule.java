@@ -75,7 +75,6 @@ public class WeatherModule extends GameModule implements GameObserver {
     }
 
     public double getTemperature() { return _temperature; }
-    public double getOxygen() { return 1; }
     public double getLight() { return 1; }
 
     @Override

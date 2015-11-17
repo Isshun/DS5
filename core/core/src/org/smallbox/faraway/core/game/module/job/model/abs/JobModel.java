@@ -16,7 +16,7 @@ import org.smallbox.faraway.core.util.Log;
 
 public abstract class JobModel extends ObjectModel {
     public interface onDrawCallback {
-        void onDraw(int x, int y);
+        void onDraw(int x, int y, int z);
     }
 
     public enum JobCheckReturn {
@@ -127,6 +127,8 @@ public abstract class JobModel extends ObjectModel {
     public void                     setItemFilter(ItemFilter filter) { _filter = filter; }
     public void                     setStatus(JobStatus status) { _status = status; }
 
+    public boolean                  hasTargetParcel() { return _targetParcel != null; }
+    public boolean                  hasJobParcel() { return _jobParcel != null; }
     public boolean                  hasCharacter(CharacterModel character) { return _character != null && _character == character; }
     public boolean                  hasCharacter() { return _character != null; }
     public boolean                  isVisibleInUI() { return true; }
@@ -163,7 +165,7 @@ public abstract class JobModel extends ObjectModel {
 
     public void draw(onDrawCallback callback) {
         if (_jobParcel != null) {
-            callback.onDraw(_jobParcel.x, _jobParcel.y);
+            callback.onDraw(_jobParcel.x, _jobParcel.y, _jobParcel.z);
         }
     }
 

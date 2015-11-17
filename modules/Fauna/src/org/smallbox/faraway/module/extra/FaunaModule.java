@@ -85,12 +85,12 @@ public class FaunaModule extends GameModule {
     }
 
     private void addFauna(RegionInfo.RegionFauna faunaInfo, int count) {
-        ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
-        if (parcel != null) {
-//            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
-        } else {
-            printError("[FaunaModule] No space to proc fauna");
-        }
+//        ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
+//        if (parcel != null) {
+////            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
+//        } else {
+//            printError("[FaunaModule] No space to proc fauna");
+//        }
     }
 
 //    public List<AnimalModel> getAnimals() {

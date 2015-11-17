@@ -4,6 +4,7 @@ data:extend({
         type = "structure",
         category = "door",
         health = 200,
+        sealing = 0.7,
         walkable = true,
         door = true,
         graphics = { path = "[base]/graphics/items/structures/door_wood.png", type = "structure" },

@@ -17,12 +17,12 @@ public class LuaQuestModel {
         }
 
         public void addConsumable(LuaConsumableModel luaConsumable) {
-            ModuleHelper.getWorldModule().putConsumable(WorldHelper.getParcel(5, 5), luaConsumable.itemInfo, luaConsumable.quantity);
+            ModuleHelper.getWorldModule().putConsumable(WorldHelper.getParcel(5, 5, 5), luaConsumable.itemInfo, luaConsumable.quantity);
             throw new RuntimeException("not allowed");
         }
 
-        public void addConsumable(LuaConsumableModel luaConsumable, int x, int y) {
-            ParcelModel parcel = WorldHelper.getNearestFreeParcel(x + (int) (Math.random() * 6) - 3, y + (int) (Math.random() * 6) - 3, false, true);
+        public void addConsumable(LuaConsumableModel luaConsumable, int x, int y, int z) {
+            ParcelModel parcel = WorldHelper.getNearestFreeParcel(x + (int) (Math.random() * 6) - 3, y + (int) (Math.random() * 6) - 3, z, false, true);
             if (parcel != null) {
                 ModuleHelper.getWorldModule().putConsumable(parcel, luaConsumable.itemInfo, luaConsumable.quantity);
             }

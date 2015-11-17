@@ -155,8 +155,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         if (_structure != null) {
             return _structure.getInfo().sealing;
         }
-        if (_plant != null) {
-            return _plant.getInfo().sealing;
+        if (_rockInfo != null) {
+            return _rockInfo.sealing;
         }
         return 0;
     }
@@ -184,4 +184,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return score;
     }
 
+    public boolean equals(int x, int y, int z) {
+        return this.x == x && this.y == y && this.z == z;
+    }
 }

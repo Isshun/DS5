@@ -141,7 +141,8 @@ public class CraftJob extends JobModel {
                 if (_item.getInfo().factory.outputSlots != null) {
                     parcel = WorldHelper.getParcel(
                             _item.getParcel().x + _item.getInfo().factory.outputSlots[0],
-                            _item.getParcel().y + _item.getInfo().factory.outputSlots[1]);
+                            _item.getParcel().y + _item.getInfo().factory.outputSlots[1],
+                            _item.getParcel().z);
                 }
                 System.out.println("Factory: put crafted consumable on ground");
                 ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));

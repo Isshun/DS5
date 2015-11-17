@@ -171,7 +171,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                             int itemId = st.columnInt(6);
                             stItem.bind(1, itemId);
                             if (stItem.step()) {
-                                ItemModel item = new ItemModel(Data.getData().getItemInfo(stPlant.columnString(1)), parcel, itemId);
+                                ItemModel item = new ItemModel(Data.getData().getItemInfo(stItem.columnString(1)), parcel, itemId);
                                 item.setComplete(stItem.columnInt(2) > 0);
                                 item.setParcel(parcel);
                                 parcel.setItem(item);

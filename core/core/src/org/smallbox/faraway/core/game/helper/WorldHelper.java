@@ -16,8 +16,8 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
  * Created by Alex on 09/07/2015.
  */
 public class WorldHelper {
-    public static int                   _currentFloor;
-    public static ParcelModel[][][]     _parcels;
+    private static ParcelModel[][][]    _parcels;
+    private static int                  _currentFloor;
     private static int                  _width;
     private static int                  _height;
     private static int                  _floors;
@@ -30,18 +30,17 @@ public class WorldHelper {
         _floors = gameInfo.worldFloors;
     }
 
-    public static ItemModel         getItem(int x, int y) { return getItem(x, y, 0); }
-    public static ItemModel         getItem(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getItem() : null; }
-    public static ConsumableModel   getConsumable(int x, int y) { return getConsumable(x, y, 0); }
-    public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getConsumable() : null; }
-    public static StructureModel    getStructure(int x, int y) { return getStructure(x, y, 0); }
+    public static ItemModel         getItem(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem() : null; }
+    public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructure() : null; }
-    public static PlantModel        getResource(int x, int y) { return getResource(x, y, 0); }
-    public static PlantModel        getResource(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getPlant() : null; }
-    public static ItemInfo          getPlantInfo(int x, int y, int z) { return inMapBounds(x, y) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
-    public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getGroundInfo() : null; }
-    public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getRockInfo() : null; }
-    public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y) ? _parcels[x][y][z].getStructureInfo() : null; }
+    public static PlantModel        getResource(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getPlant() : null; }
+    public static ItemInfo          getPlantInfo(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
+    public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getGroundInfo() : null; }
+    public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getRockInfo() : null; }
+    public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructureInfo() : null; }
+    public static int               getCurrentFloor() { return _currentFloor; }
+    public static void              setCurrentFloor(int currentFloor) { _currentFloor = currentFloor; }
+
     public static boolean           hasGround(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null; }
     public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
     public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].getStructure().getInfo().isWall; }
@@ -115,22 +114,19 @@ public class WorldHelper {
     }
 
     /**
-     * Check if position is in old bounds
+     * Check if position is in world bounds
      *
      * @param x
      * @param y
+     * @param z
      * @return true if position in bounds
      */
-    public static boolean inMapBounds(int x, int y) {
-        return !(x < 0 || y < 0 || x >= _width || y >= _height);
-    }
-
     public static boolean inMapBounds(int x, int y, int z) {
         return !(x < 0 || y < 0 || z < 0 || x >= _width || y >= _height || z >= _floors);
     }
 
-    public static ParcelModel getNearestFreeParcel(int x, int y, boolean acceptInterior, boolean acceptExterior) {
-        return getNearestFreeParcel(WorldHelper.getParcel(x, y), acceptInterior, acceptExterior);
+    public static ParcelModel getNearestFreeParcel(int x, int y, int z, boolean acceptInterior, boolean acceptExterior) {
+        return getNearestFreeParcel(WorldHelper.getParcel(x, y, z), acceptInterior, acceptExterior);
     }
 
     // TODO: Use spiral pattern
@@ -161,7 +157,7 @@ public class WorldHelper {
     }
 
     private static boolean isFreeSpace(int x, int y, int z, boolean acceptInterior, boolean acceptExterior) {
-        if (!WorldHelper.inMapBounds(x, y)) {
+        if (!WorldHelper.inMapBounds(x, y, z)) {
             return false;
         }
         if (!acceptInterior && _parcels[x][y][z].getRoom() != null && !_parcels[x][y][z].getRoom().isExterior()) {
@@ -215,47 +211,40 @@ public class WorldHelper {
     }
 
     private static boolean isWalkableParcel(int x, int y, int z) {
-        return WorldHelper.inMapBounds(x, y) && _parcels[x][y][z].isWalkable();
+        return WorldHelper.inMapBounds(x, y, z) && _parcels[x][y][z].isWalkable();
     }
 
-    public static ParcelModel getRandomFreeSpace(boolean acceptInterior, boolean acceptExterior) {
+    public static ParcelModel getRandomFreeSpace(int floor, boolean acceptInterior, boolean acceptExterior) {
         int startX = MathUtils.random(0, _width - 1);
         int startY = MathUtils.random(0, _height - 1);
         for (int i = 0; i < _width; i++) {
             for (int j = 0; j < _height; j++) {
-                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, _currentFloor, acceptInterior, acceptExterior)) {
-                    return _parcels[(startX + i) % _width][(startY + j) % _height][_currentFloor];
+                if (isFreeSpace((startX + i) % _width, (startY + j) % _height, floor, acceptInterior, acceptExterior)) {
+                    return _parcels[(startX + i) % _width][(startY + j) % _height][floor];
                 }
             }
         }
         return null;
     }
 
-    public static boolean isBlocked(int x, int y) {
-        if (inMapBounds(x, y)) {
-            return _parcels[x][y][_currentFloor] != null && !_parcels[x][y][_currentFloor].isWalkable();
+    public static boolean isBlocked(int x, int y, int z) {
+        if (inMapBounds(x, y, z)) {
+            return _parcels[x][y][z] != null && !_parcels[x][y][z].isWalkable();
         }
         return true;
     }
 
 
     public static boolean isSurroundedByBlocked(ParcelModel toParcel) {
-        return isSurroundedByBlocked(toParcel.x, toParcel.y);
+        return isSurroundedByBlocked(toParcel.x, toParcel.y, toParcel.z);
     }
 
-    public static boolean isSurroundedByBlocked(int x, int y) {
-        if (!isBlocked(x + 1, y)) return false;
-        if (!isBlocked(x - 1, y)) return false;
-        if (!isBlocked(x, y + 1)) return false;
-        if (!isBlocked(x, y - 1)) return false;
+    public static boolean isSurroundedByBlocked(int x, int y, int z) {
+        if (!isBlocked(x + 1, y, z)) return false;
+        if (!isBlocked(x - 1, y, z)) return false;
+        if (!isBlocked(x, y + 1, z)) return false;
+        if (!isBlocked(x, y - 1, z)) return false;
         return true;
-    }
-
-    public static ParcelModel getParcel(int x, int y) {
-        if (inMapBounds(x, y)) {
-            return _parcels[x][y][_currentFloor];
-        }
-        return null;
     }
 
     public static ParcelModel getParcel(int x, int y, int z) {
@@ -275,9 +264,5 @@ public class WorldHelper {
             return path.getLength();
         }
         return -1;
-    }
-
-    public static int getCurrentFloor() {
-        return _currentFloor;
     }
 }

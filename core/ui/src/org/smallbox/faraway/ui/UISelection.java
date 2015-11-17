@@ -14,8 +14,10 @@ public class UISelection extends GDXDrawable {
     private ShapeRenderer       _shapeRenderer;
     private int                 _startX;
     private int                 _startY;
+    private int                 _startZ;
     private int                 _endX;
     private int                 _endY;
+    private int                 _endZ;
 
     public UISelection() {
         _shapeRenderer = new ShapeRenderer();
@@ -56,21 +58,26 @@ public class UISelection extends GDXDrawable {
 
     public int getFromX() { return Math.min(_startX, _endX); }
     public int getFromY() { return Math.min(_startY, _endY); }
+    public int getFromZ() { return Math.max(_startZ, _endZ); }
     public int getToX() { return Math.max(_startX, _endX); }
     public int getToY() { return Math.max(_startY, _endY); }
+    public int getToZ() { return Math.max(_startZ, _endZ); }
 
-    public void setPosition(int x, int y) {
+    public void setPosition(int x, int y, int z) {
         _endX = x;
         _endY = y;
+        _endZ = z;
     }
 
-    public void setStart(int x, int y) {
+    public void setStart(int x, int y, int z) {
         _startX = _endX = x;
         _startY = _endY = y;
+        _startZ = _endZ = z;
     }
 
     public void clear() {
         _startX = _endX = -1;
         _startY = _endY = -1;
+        _startZ = _endZ = -1;
     }
 }

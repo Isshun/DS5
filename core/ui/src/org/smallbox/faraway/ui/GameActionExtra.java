@@ -24,10 +24,14 @@ public class GameActionExtra {
     private final GameSelectionExtra    _selector;
     private boolean                     _keyLeftPressed;
     private boolean                     _keyRightPressed;
+
+    // TODO: replace by UISelection
     private int                         _keyPressPosX;
     private int                         _keyPressPosY;
+    private int                         _keyPressPosZ;
     private int                         _keyMovePosX;
     private int                         _keyMovePosY;
+
     private boolean                     _mouseOnMap;
     private UICursor                    _cursor;
     private UISelection                 _selection;
@@ -76,7 +80,7 @@ public class GameActionExtra {
     public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 
     public boolean onKeyLeft(int cursorX, int cursorY, int fromX, int fromY, int toX, int toY) {
-        int floor = ModuleHelper.getWorldModule().getFloor();
+        int floor = WorldHelper.getCurrentFloor();
 
         // Add area
         if (_action == Action.SET_AREA) {
@@ -93,11 +97,11 @@ public class GameActionExtra {
         boolean consume = false;
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y);
+                ParcelModel parcel = WorldHelper.getParcel(x, y, WorldHelper.getCurrentFloor());
 
                 // Remove item
                 if (_action == Action.REMOVE_ITEM) {
-                    ModuleHelper.getWorldModule().takeItem(x, y);
+                    ModuleHelper.getWorldModule().takeItem(x, y, WorldHelper.getCurrentFloor());
                     consume = true;
                 }
 
@@ -109,7 +113,7 @@ public class GameActionExtra {
 
                 // Remove structure
                 if (_action == Action.REMOVE_STRUCTURE) {
-                    ModuleHelper.getWorldModule().removeStructure(x, y);
+                    ModuleHelper.getWorldModule().removeStructure(x, y, WorldHelper.getCurrentFloor());
                     consume = true;
                 }
 
@@ -153,15 +157,17 @@ public class GameActionExtra {
                 if (_selector.selectAt(
                         getRelativePosX(_selection.getFromX()),
                         getRelativePosY(_selection.getFromY()),
+                        getRelativePosY(_selection.getFromZ()),
                         getRelativePosX(_selection.getToX()),
-                        getRelativePosY(_selection.getToY()))) {
+                        getRelativePosY(_selection.getToY()),
+                        getRelativePosY(_selection.getToZ()))) {
                     _selection.clear();
                     return;
                 }
 
                 // Select characters
                 if (_action == GameActionExtra.Action.NONE) {
-                    if (_selector.selectAt(getRelativePosX(x), getRelativePosY(y))) {
+                    if (_selector.selectAt(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor())) {
                         return;
                     }
                 }
@@ -172,8 +178,9 @@ public class GameActionExtra {
             _keyLeftPressed = true;
             _keyMovePosX = _keyPressPosX = getRelativePosX(x);
             _keyMovePosY = _keyPressPosY = getRelativePosY(y);
+            _keyPressPosZ = WorldHelper.getCurrentFloor();
 
-            _selection.setStart(x, y);
+            _selection.setStart(x, y, WorldHelper.getCurrentFloor());
         }
 
         if (action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.RIGHT) {
@@ -203,7 +210,7 @@ public class GameActionExtra {
             }
 
             if (_keyLeftPressed) {
-                _selection.setPosition(x, y);
+                _selection.setPosition(x, y, WorldHelper.getCurrentFloor());
             }
         }
     }
