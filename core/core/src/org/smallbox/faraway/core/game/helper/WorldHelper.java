@@ -44,8 +44,10 @@ public class WorldHelper {
     public static boolean           hasGround(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null; }
     public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
     public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].getStructure().getInfo().isWall; }
+    public static boolean           hasDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].getStructure().getInfo().isDoor; }
     public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null; }
     public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null; }
+    public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].hasWallOrDoor(); }
 
     /**
      * Search for model free to receive a ConsumableItem

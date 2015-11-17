@@ -20,6 +20,9 @@ data:extend({
         -- Detailled informations
         { type = "list", position = {0, 60}, views = {
 
+            -- Effects
+            { type = "label", id = "lb_effect_oxygen", text_size = 18, padding = 10},
+
             -- Slots
             { type = "label", id = "lb_slots", text_size = 18, padding = 10},
             { type = "label", id = "lb_used_by", text_size = 18, padding = 10},
@@ -71,7 +74,8 @@ data:extend({
                 { type = "list", id = "list_networks"},
             }},
 
-            { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {380, 32}, on_click = function()
+            -- Action buttons
+            { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
                 application:destroy(structure)
             end},
         }},
@@ -111,6 +115,10 @@ data:extend({
         if item ~= nil then
             view:findById("lb_health"):setText(item:getHealth() .. "/" .. item:getMaxHealth())
             view:findById("progress_health"):setSize(item:getHealth() / item:getMaxHealth() * 80, 25)
+
+            if item:getInfo().effects and item:getInfo().effects.oxygen > 0 then
+                view:findById("lb_effect_oxygen"):setText("Oxygen", ": ", item:getInfo().effects.oxygen .. "(" .. item:getInfo().effects.pressure .. ")")
+            end
 
             if item:getNbFreeSlots() ~= -1 then
                 view:findById("lb_slots"):setText("Slots", ":", item:getNbFreeSlots() .. "/" .. item:getSlots():size())

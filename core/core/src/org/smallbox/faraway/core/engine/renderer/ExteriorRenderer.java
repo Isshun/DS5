@@ -181,7 +181,8 @@ public class ExteriorRenderer extends WorldRenderer {
     }
 
     private boolean repeatTile(int x, int y, int z) {
-        return WorldHelper.getParcel(x, y, z) == null || WorldHelper.hasRock(x, y, z) || WorldHelper.hasWall(x, y, z);
+        ParcelModel parcel = WorldHelper.getParcel(x, y, z);
+        return parcel == null || parcel.hasRock() || parcel.hasWall() || parcel.hasDoor();
     }
 
     private void createGround(int col, int row) {

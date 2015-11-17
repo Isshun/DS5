@@ -7,7 +7,7 @@ data:extend({
         sealing = 0.7,
         walkable = true,
         door = true,
-        graphics = { path = "[base]/graphics/items/structures/door_wood.png", type = "structure" },
+        graphics = { path = "[base]/graphics/items/structures/door_wood.png", type = "door" },
         receipts = {{components = { item = "base.wood_log", quantity = 10}}}},
     { label = "Sandstone door",
         name = "base.sandstone_door",

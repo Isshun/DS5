@@ -60,8 +60,12 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  hasPlant() { return _plant != null; }
     public boolean                  hasItem() { return _item != null; }
     public boolean                  hasStructure() { return _structure != null; }
+    public boolean                  hasNonFloorStructure() { return _structure != null && !_structure.isFloor(); }
     public boolean                  hasGround() { return _groundInfo != null; }
     public boolean                  hasRock() { return _rockInfo != null; }
+    public boolean                  hasWallOrDoor() { return _structure != null && (_structure.getInfo().isWall || _structure.getInfo().isDoor); }
+    public boolean                  hasWall() { return _structure != null && _structure.getInfo().isWall; }
+    public boolean                  hasDoor() { return _structure != null && _structure.getInfo().isDoor; }
     public boolean                  hasDigJob() { return _digJob != null; }
     public boolean                  hasRoom() { return _room != null; }
 

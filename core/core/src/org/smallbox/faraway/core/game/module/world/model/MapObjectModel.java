@@ -106,8 +106,8 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          isSleepingItem() { return _info.isBed; }
     public boolean          isStructure() { return _info.isStructure; }
     public boolean          isResource() { return _info.isResource; }
-    public boolean          isDoor() { return getName().equals("base.door"); }
-    public boolean          isWall() { return getName().equals("base.wall") || getName().equals("base.window"); }
+    public boolean          isDoor() { return _info.isDoor; }
+    public boolean          isWall() { return _info.isWall; }
     public boolean          isFood() { return _info.isFood; }
     public boolean          isFactory() { return _info.isFactory; }
     public boolean          isUserItem() { return _info.isUserItem; }

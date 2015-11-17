@@ -58,18 +58,18 @@ public abstract class WorldRenderer extends BaseRenderer {
         });
 
         ModuleHelper.getWorldModule().getStructures().forEach(structure -> {
-            if (structure.getInfo().graphics != null) {
-                ParcelModel parcel = structure.getParcel();
+            ParcelModel parcel = structure.getParcel();
 
+            if ((structure.isWall() || structure.isDoor()) && structure.getInfo().graphics != null) {
                 int tile = 0;
-                if (WorldHelper.hasRock(parcel.x - 1, parcel.y - 1, parcel.z) || WorldHelper.hasStructure(parcel.x - 1, parcel.y - 1, parcel.z)) { tile |= 0b10000000; }
-                if (WorldHelper.hasRock(parcel.x,     parcel.y - 1, parcel.z) || WorldHelper.hasStructure(parcel.x,     parcel.y - 1, parcel.z)) { tile |= 0b01000000; }
-                if (WorldHelper.hasRock(parcel.x + 1, parcel.y - 1, parcel.z) || WorldHelper.hasStructure(parcel.x + 1, parcel.y - 1, parcel.z)) { tile |= 0b00100000; }
-                if (WorldHelper.hasRock(parcel.x - 1, parcel.y,     parcel.z) || WorldHelper.hasStructure(parcel.x - 1, parcel.y,     parcel.z)) { tile |= 0b00010000; }
-                if (WorldHelper.hasRock(parcel.x + 1, parcel.y,     parcel.z) || WorldHelper.hasStructure(parcel.x + 1, parcel.y,     parcel.z)) { tile |= 0b00001000; }
-                if (WorldHelper.hasRock(parcel.x - 1, parcel.y + 1, parcel.z) || WorldHelper.hasStructure(parcel.x - 1, parcel.y + 1, parcel.z)) { tile |= 0b00000100; }
-                if (WorldHelper.hasRock(parcel.x,     parcel.y + 1, parcel.z) || WorldHelper.hasStructure(parcel.x,     parcel.y + 1, parcel.z)) { tile |= 0b00000010; }
-                if (WorldHelper.hasRock(parcel.x + 1, parcel.y + 1, parcel.z) || WorldHelper.hasStructure(parcel.x + 1, parcel.y + 1, parcel.z)) { tile |= 0b00000001; }
+                if (WorldHelper.hasRock(parcel.x - 1, parcel.y - 1, parcel.z) || WorldHelper.hasWallOrDoor(parcel.x - 1, parcel.y - 1, parcel.z)) { tile |= 0b10000000; }
+                if (WorldHelper.hasRock(parcel.x,     parcel.y - 1, parcel.z) || WorldHelper.hasWallOrDoor(parcel.x,     parcel.y - 1, parcel.z)) { tile |= 0b01000000; }
+                if (WorldHelper.hasRock(parcel.x + 1, parcel.y - 1, parcel.z) || WorldHelper.hasWallOrDoor(parcel.x + 1, parcel.y - 1, parcel.z)) { tile |= 0b00100000; }
+                if (WorldHelper.hasRock(parcel.x - 1, parcel.y,     parcel.z) || WorldHelper.hasWallOrDoor(parcel.x - 1, parcel.y,     parcel.z)) { tile |= 0b00010000; }
+                if (WorldHelper.hasRock(parcel.x + 1, parcel.y,     parcel.z) || WorldHelper.hasWallOrDoor(parcel.x + 1, parcel.y,     parcel.z)) { tile |= 0b00001000; }
+                if (WorldHelper.hasRock(parcel.x - 1, parcel.y + 1, parcel.z) || WorldHelper.hasWallOrDoor(parcel.x - 1, parcel.y + 1, parcel.z)) { tile |= 0b00000100; }
+                if (WorldHelper.hasRock(parcel.x,     parcel.y + 1, parcel.z) || WorldHelper.hasWallOrDoor(parcel.x,     parcel.y + 1, parcel.z)) { tile |= 0b00000010; }
+                if (WorldHelper.hasRock(parcel.x + 1, parcel.y + 1, parcel.z) || WorldHelper.hasWallOrDoor(parcel.x + 1, parcel.y + 1, parcel.z)) { tile |= 0b00000001; }
                 parcel.setTile(tile);
             }
         });

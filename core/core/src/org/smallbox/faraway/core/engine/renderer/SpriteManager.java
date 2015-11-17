@@ -293,7 +293,7 @@ public class SpriteManager {
             graphicInfo.spriteId = ++_spriteCount;
         }
 
-        long sum = graphicInfo.type == GraphicInfo.Type.WALL ?
+        long sum = graphicInfo.type == GraphicInfo.Type.WALL || graphicInfo.type == GraphicInfo.Type.DOOR ?
                 getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
                 getSum(graphicInfo.spriteId, 0, 0, isIcon ? 1 : 0);
 
@@ -301,7 +301,28 @@ public class SpriteManager {
         if (sprite == null) {
             Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
             if (texture != null) {
-                if (graphicInfo.type == GraphicInfo.Type.WALL) {
+                if (graphicInfo.type == GraphicInfo.Type.DOOR) {
+
+                    if ((tile & RIGHT) > 0 && (tile & LEFT) > 0) {
+                        sprite = new Sprite(texture, 0, 32, width, height);
+                        sprite.setFlip(false, true);
+                        _sprites.put(sum, sprite);
+                    }
+
+                    else if ((tile & TOP) > 0 && (tile & BOTTOM) > 0) {
+                        sprite = new Sprite(texture, 32, 32, width, height);
+                        sprite.setFlip(false, true);
+                        _sprites.put(sum, sprite);
+                    }
+
+                    else {
+                        sprite = new Sprite(texture, 0, 32, width, height);
+                        sprite.setFlip(false, true);
+                        _sprites.put(sum, sprite);
+                    }
+                }
+
+                else if (graphicInfo.type == GraphicInfo.Type.WALL) {
                     Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
 
                     texture.getTextureData().prepare();

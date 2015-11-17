@@ -162,6 +162,13 @@ public class LuaItemExtend extends LuaExtend {
             readEffectValues(itemInfo.consume.effects, value.get("consume").get("effects"));
         }
 
+        // Read passive effects
+        LuaValue luaEffects = value.get("effects");
+        if (!luaEffects.isnil()) {
+            itemInfo.effects = new ItemInfo.ItemInfoEffects();
+            readPassiveEffectValues(itemInfo.effects, luaEffects);
+        }
+
         if (!value.get("actions").isnil()) {
             itemInfo.actions = new ArrayList<>();
             if (!value.get("actions").get("type").isnil()) {
@@ -364,6 +371,17 @@ public class LuaItemExtend extends LuaExtend {
             if ("energy".equals(type)) effects.energy = quantity;
             if ("food".equals(type)) effects.food = quantity;
             if ("drink".equals(type)) effects.drink = quantity;
+        }
+    }
+
+    private void readPassiveEffectValues(ItemInfo.ItemInfoEffects effects, LuaValue luaEffects) {
+        for (int i = 1; i <= luaEffects.length(); i++) {
+            LuaValue effect = luaEffects.get(i);
+            String type = effect.get("type").toString();
+            if ("oxygen".equals(type)) {
+                effects.oxygen = effect.get("value").todouble();
+                effects.pressure = effect.get("pressure").toint();
+            }
         }
     }
 

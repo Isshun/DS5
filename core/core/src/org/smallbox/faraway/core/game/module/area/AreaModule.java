@@ -147,19 +147,30 @@ public class AreaModule extends GameModule {
             for (int y = fromY; y <= toY; y++) {
                 ParcelModel parcel = worldModule.getParcel(x, y, z);
 
-                // Remove existing resource on parcel
+                // Remove existing plant on parcel
                 if (parcel.hasPlant()) {
-                    if (parcel.hasRock()) {
-                        JobHelper.addMineJob(x, y, z, false);
-                    } else if (parcel.hasPlant()) {
-                        JobHelper.addGatherJob(x, y, z, true);
-                    }
+                    JobHelper.addGatherJob(x, y, z, true);
                 }
 
                 // Add parcel to area
-                area.addParcel(parcel);
+                if (parcelFreeForArea(parcel)) {
+                    area.addParcel(parcel);
+                }
             }
         }
+    }
+
+    private boolean parcelFreeForArea(ParcelModel parcel) {
+        if (parcel.hasRock()) {
+            return false;
+        }
+        if (parcel.hasStructure() && !parcel.getStructure().isFloor()) {
+            return false;
+        }
+        if (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown) {
+            return false;
+        }
+        return true;
     }
 
     public List<AreaModel> getAreas() {
