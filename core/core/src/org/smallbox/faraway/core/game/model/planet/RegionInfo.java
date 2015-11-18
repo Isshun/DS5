@@ -19,6 +19,12 @@ public class RegionInfo {
         public int[]                quantity;
     }
 
+    public static class RegionTemperature {
+        public int                  fromFloor;
+        public int                  toFloor;
+        public double[]             temperature;
+    }
+
     public static class RegionWeather {
         public String               name;
         public double[]             frequency;
@@ -40,5 +46,5 @@ public class RegionInfo {
     public List<RegionTerrain>      terrains;
     public List<RegionWeather>      weather;
     public List<RegionFauna>        fauna;
-    public int[]                    temperature;
+    public List<RegionTemperature>  temperatures;
 }

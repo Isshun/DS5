@@ -74,4 +74,5 @@ public interface GameObserver {
     default void onFloorUp() {}
     default void onFloorDown() {}
     default void onFloorChange(int floor) {}
+    default void onDisplayChange(String displayName, boolean isVisible) {}
 }

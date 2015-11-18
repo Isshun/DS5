@@ -11,6 +11,9 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.ui.UserInterface;
 
+import static org.smallbox.faraway.core.engine.GameEventListener.Key.*;
+import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.*;
+
 /**
  * Created by Alex on 20/10/2015.
  */
@@ -22,17 +25,17 @@ public class ApplicationShortcutManager {
 
         public ApplicationShortcut(GameEventListener.Key key, GameEventListener.Modifier modifier, Runnable runnable) {
             this.key = key;
-            this.modifier = modifier != null ? modifier : GameEventListener.Modifier.NONE;
+            this.modifier = modifier != null ? modifier : NONE;
             this.runnable = runnable;
         }
     }
 
     private static ApplicationShortcut[] SHORTCUTS = new ApplicationShortcut[] {
-            new ApplicationShortcut(GameEventListener.Key.RIGHT, null, () -> {
+            new ApplicationShortcut(RIGHT, null, () -> {
                 Game.getInstance().getViewport().startMove(0, 0);
                 Game.getInstance().getViewport().update(100, 0);
             }),
-            new ApplicationShortcut(GameEventListener.Key.F10, null, () -> {
+            new ApplicationShortcut(F10, null, () -> {
                 GameModule debugModule = ModuleManager.getInstance().getModule("DebugModule");
                 if (debugModule != null && debugModule.isLoaded()) {
                     ModuleManager.getInstance().unloadModule(debugModule);
@@ -40,26 +43,41 @@ public class ApplicationShortcutManager {
                     ModuleManager.getInstance().loadModule(debugModule);
                 }
             }),
-            new ApplicationShortcut(GameEventListener.Key.F5, GameEventListener.Modifier.NONE, () -> {
+            new ApplicationShortcut(F5, NONE, () -> {
                 GameManager.getInstance().saveGame(Game.getInstance().getInfo(), GameInfo.Type.FAST);
             }),
-            new ApplicationShortcut(GameEventListener.Key.ENTER, GameEventListener.Modifier.ALT, () -> {
+            new ApplicationShortcut(ENTER, ALT, () -> {
 //            _isFullscreen = !_isFullscreen;
 //            _renderer.setFullScreen(_isFullscreen);
             }),
-            new ApplicationShortcut(GameEventListener.Key.PAGEUP, GameEventListener.Modifier.NONE, () -> {
+            new ApplicationShortcut(PAGEUP, NONE, () -> {
                 Application.getInstance().notify(GameObserver::onFloorUp);
             }),
-            new ApplicationShortcut(GameEventListener.Key.PAGEDOWN, GameEventListener.Modifier.NONE, () -> {
+            new ApplicationShortcut(PAGEDOWN, NONE, () -> {
                 Application.getInstance().notify(GameObserver::onFloorDown);
             }),
 //            new ApplicationShortcut(GameEventListener.Key.F1, GameEventListener.Modifier.ALT, () -> {
 //                Application.getInstance().newGame("14.sav", Data.getData().getRegion("base.planet.arrakis", "desert"));
 //            }),
-            new ApplicationShortcut(GameEventListener.Key.F4, GameEventListener.Modifier.ALT, () -> {
+            new ApplicationShortcut(F4, ALT, () -> {
                 Application.getInstance().setRunning(false);
             }),
-            new ApplicationShortcut(GameEventListener.Key.ESCAPE, GameEventListener.Modifier.NONE , () -> {
+
+            new ApplicationShortcut(ESCAPE, NONE, () -> Data.getData().getBinding("base.binding.open_panel_main").action()),
+            new ApplicationShortcut(B, NONE, () -> Data.getData().getBinding("base.binding.open_panel_build").action()),
+            new ApplicationShortcut(P, NONE, () -> Data.getData().getBinding("base.binding.open_panel_plan").action()),
+            new ApplicationShortcut(T, NONE, () -> Data.getData().getBinding("base.binding.open_panel_jobs").action()),
+            new ApplicationShortcut(C, NONE, () -> Data.getData().getBinding("base.binding.open_panel_crew").action()),
+
+            new ApplicationShortcut(F1, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_areas").action()),
+            new ApplicationShortcut(F2, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_rooms").action()),
+            new ApplicationShortcut(F3, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_temperature").action()),
+            new ApplicationShortcut(F4, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_oxygen").action()),
+            new ApplicationShortcut(F5, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_water").action()),
+            new ApplicationShortcut(F6, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_security").action()),
+            new ApplicationShortcut(F12, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_debug").action()),
+
+            new ApplicationShortcut(ESCAPE, NONE , () -> {
                 if (GameManager.getInstance().isLoaded()) {
                     if (!Game.getInstance().getInteraction().isClear()) {
                         Game.getInstance().getInteraction().clear();
@@ -76,7 +94,7 @@ public class ApplicationShortcutManager {
                         return;
                     }
 
-                    if (GameManager.getInstance().isRunning() && UserInterface.getInstance().findById("panel_main").isVisible()) {
+                    if (GameManager.getInstance().isRunning() && UserInterface.getInstance().findById("base.ui.panel_main").isVisible()) {
                         GameManager.getInstance().setRunning(false);
                         return;
                     }

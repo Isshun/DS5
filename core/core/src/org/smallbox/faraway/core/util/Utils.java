@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.util;
 import java.io.File;
 
 public class Utils {
-
     private static int _uuid;
 
     public static int getUUID() {

@@ -5,7 +5,7 @@ data:extend({
         category = "wall",
         health = 200,
         is_wall = true,
-        sealing = 0.8,
+        permeability = 0.2,
         walkable = false,
         graphics = { path = "[base]/graphics/items/structures/wall_wood.png", type = "wall" },
         receipts = {components = { item = "base.wood_log", quantity = 10}}},

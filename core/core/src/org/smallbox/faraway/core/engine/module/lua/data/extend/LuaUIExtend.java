@@ -17,6 +17,8 @@ import org.smallbox.faraway.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -43,10 +45,12 @@ public class LuaUIExtend extends LuaExtend {
         frame.setInGame(inGame);
         frame.addView(createView(luaModuleManager, globals, value, inGame, 0));
         frame.setModule(module);
+        frame.setLevel(getInt(value, "level", 0));
         UserInterface.getInstance()._views.add(frame);
+        Collections.sort(UserInterface.getInstance()._views, (v1, v2) -> v1.getLevel() - v2.getLevel());
     }
 
-    public View createView(LuaModuleManager luaModuleManager, Globals globals, LuaValue value, boolean inGame, int level) {
+    public View createView(LuaModuleManager luaModuleManager, Globals globals, LuaValue value, boolean inGame, int deep) {
         View view = null;
 
         int width = -1, height = -1;
@@ -113,10 +117,6 @@ public class LuaUIExtend extends LuaExtend {
                 break;
 
             case "label":
-                if (height == -1) {
-                    height = 20;
-                }
-
                 UILabel label = new UILabel(width, height);
 
                 LuaValue text = value.get("text");
@@ -141,7 +141,7 @@ public class LuaUIExtend extends LuaExtend {
         if (view != null) {
             LuaValue luaView = CoerceJavaToLua.coerce(view);
 
-            view.setLevel(level);
+            view.setDeep(deep);
             view.setInGame(inGame);
             view.setFocusable(getBoolean(value, "focusable", false));
             view.setActive(getBoolean(value, "active", true));
@@ -254,7 +254,7 @@ public class LuaUIExtend extends LuaExtend {
                 view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
                     @Override
                     public View onCreateView() {
-                        return createView(luaModuleManager, globals, subview, inGame, level + 1);
+                        return createView(luaModuleManager, globals, subview, inGame, deep + 1);
                     }
 
                     @Override
@@ -324,10 +324,10 @@ public class LuaUIExtend extends LuaExtend {
             if (!subViews.isnil()) {
                 if (subViews.get("type").isnil()) {
                     for (int i = 1; i <= subViews.length(); i++) {
-                        view.addView(createView(luaModuleManager, globals, subViews.get(i), inGame, level + 1));
+                        view.addView(createView(luaModuleManager, globals, subViews.get(i), inGame, deep + 1));
                     }
                 } else {
-                    view.addView(createView(luaModuleManager, globals, subViews, inGame, level + 1));
+                    view.addView(createView(luaModuleManager, globals, subViews, inGame, deep + 1));
                 }
             }
         }

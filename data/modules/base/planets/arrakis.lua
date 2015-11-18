@@ -27,7 +27,10 @@ data:extend({
         name = "mountain",
         label = "mountain",
         color = 0x804f15,
-        temperature = {20, 40},
+        temperatures = {
+            {floors = {-99, -1}, value = {20, 20}},
+            {floors = {0, 0}, value = {30, 40}},
+        },
         spots = {{latitude = {40, 90}, frequency = 1}},
         terrains = {
             { ground = "base.sand" },
@@ -52,7 +55,10 @@ data:extend({
         name = "valley",
         label = "Valley",
         color = 0xa06f35,
-        temperature = {25, 45},
+        temperatures = {
+            {floors = {-99, -1}, value = {20, 20}},
+            {floors = {0, 0}, value = {30, 40}},
+        },
         spots = {
             {latitude = {40, 90}, frequency = 0.5},
             {latitude = {-90, 40}, frequency = 0.2}},
@@ -79,7 +85,10 @@ data:extend({
         name = "desert",
         label = "Desert",
         color = 0xffda3b,
-        temperature = {30, 50},
+        temperatures = {
+            {floors = {-99, -1}, value = {20, 30}},
+            {floors = {0, 0}, value = {30, 50}},
+        },
         spots = {{latitude = {-90, 40}, frequency = 1}},
         terrains = {
             { ground = "base.sand" },

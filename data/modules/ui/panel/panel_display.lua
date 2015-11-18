@@ -1,14 +1,12 @@
 data:extend({
     type = "view",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
-    id = "panel_displays",
+    style = "base.style.right_panel",
+    id = "base.ui.panel_displays",
     visible = false,
     views = {
         { type = "label", text = " < ", text_size = 34, position = {0, 7}, size = {32, 400}, on_click = function()
-            application.ui:findById("panel_main"):setVisible(true)
-            application.ui:findById("panel_displays"):setVisible(false)
+            application.ui:findById("base.ui.panel_main"):setVisible(true)
+            application.ui:findById("base.ui.panel_displays"):setVisible(false)
         end},
         { type = "label", text = "Displays", text_size = 28, padding = 10, position = {46, 0}},
         { type = "list", id = "list_displays", position = {10, 40}, views = {
@@ -25,7 +23,7 @@ data:extend({
     on_event = function(view, event , data)
         if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            application.ui:findById("panel_main"):setVisible(true)
+            application.ui:findById("base.ui.panel_main"):setVisible(true)
             application:sendEvent("mini_map.display", true)
         end
     end,

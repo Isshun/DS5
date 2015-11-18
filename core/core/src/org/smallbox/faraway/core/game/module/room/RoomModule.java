@@ -6,8 +6,9 @@ import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
+import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.OxygenModule;
 import org.smallbox.faraway.core.game.module.world.WeatherModule;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class RoomModule extends GameModule implements GameObserver {
     private static final int                ROOF_MAX_DISTANCE = 6;
 
+    private final List<RoomModel> _exteriorRooms = new ArrayList<>();
     private final Collection<RoomModel>     _rooms = new ConcurrentLinkedQueue<>();
     private boolean                         _needRefresh;
     private AsyncTask<List<RoomModel>>      _task;
@@ -39,17 +41,16 @@ public class RoomModule extends GameModule implements GameObserver {
         _weatherModule = (WeatherModule)ModuleManager.getInstance().getModule(WeatherModule.class);
         _oxygenModule = (OxygenModule)ModuleManager.getInstance().getModule(OxygenModule.class);
         _updateInterval = 10;
+
         _needRefresh = true;
         _refresh = new boolean[game.getInfo().worldFloors];
-        for (int floor = 0; floor < _refresh.length; floor++) {
+        for (int floor = 0; floor < game.getInfo().worldFloors; floor++) {
             _refresh[floor] = true;
         }
 
-        int width = Game.getInstance().getInfo().worldWidth;
-        int height = Game.getInstance().getInfo().worldHeight;
-
-        if (width == 0 || height == 0) {
-            throw new RuntimeException("Cannot onCreate RoomModule with 0 sized world old");
+        _exteriorRooms.clear();
+        for (int floor = 0; floor < game.getInfo().worldFloors; floor++) {
+            _exteriorRooms.add(new RoomModel(RoomModel.RoomType.NONE, floor, null));
         }
     }
 
@@ -99,24 +100,23 @@ public class RoomModule extends GameModule implements GameObserver {
         // Make new rooms on free parcels
         _closeList.clear();
         List<RoomModel> newRooms = new ArrayList<>();
+        RoomModel exteriorRoom = _exteriorRooms.get(floor);
+        exteriorRoom.setExterior(true);
+        newRooms.add(exteriorRoom);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 ParcelModel parcel = parcels[x][y][floor];
-                if (!_closeList.contains(parcel) && parcel.isRoomOpen()) {
-                    System.out.println("Create new room for parcel " + x + "x" + y);
-                    RoomModel room = new RoomModel(RoomModel.RoomType.NONE, floor, parcel);
-                    explore(room, parcel, _closeList);
-                    checkRoof(ModuleHelper.getWorldModule().getParcels(), room);
-                    newRooms.add(room);
-                }
-            }
-        }
-
-        // Clean floor parcel
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (parcels[x][y][floor].getRoom() != null && !newRooms.contains(parcels[x][y][floor].getRoom())) {
-                    parcels[x][y][floor].setRoom(null);
+                if (!_closeList.contains(parcel)) {
+                    if (parcel.isRoomOpen()) {
+                        System.out.println("Create new room for parcel " + x + "x" + y);
+                        RoomModel room = new RoomModel(RoomModel.RoomType.NONE, floor, parcel);
+                        explore(room, exteriorRoom, parcel, _closeList);
+                        checkRoof(room);
+                        newRooms.add(room);
+                    } else {
+                        parcel.setRoom(exteriorRoom);
+                        exteriorRoom.getParcels().add(parcel);
+                    }
                 }
             }
         }
@@ -128,7 +128,7 @@ public class RoomModule extends GameModule implements GameObserver {
         System.out.println("RoomModule: refresh done " + (System.currentTimeMillis() - time));
     }
 
-    private void explore(RoomModel room, ParcelModel parcel, Set<ParcelModel> closeList) {
+    private void explore(RoomModel room, RoomModel exteriorRoom, ParcelModel parcel, Set<ParcelModel> closeList) {
         double temperature = 0;
         double light = 0;
         double oxygen = 0;
@@ -138,7 +138,7 @@ public class RoomModule extends GameModule implements GameObserver {
         while ((parcel = openList.poll()) != null) {
             if (parcel.getConnections() != null && parcel.isRoomOpen()) {
                 // Keep old room info
-                temperature += parcel.getRoom() != null ? parcel.getRoom().getTemperature() : _weatherModule.getTemperature();
+                temperature += parcel.getRoom() != null ? parcel.getRoom().getTemperature() : _weatherModule.getTemperature(parcel.z);
                 oxygen += parcel.getRoom() != null ? parcel.getRoom().getOxygen() : _oxygenModule.getOxygen();
                 light += parcel.getRoom() != null ? parcel.getRoom().getLight() : _weatherModule.getLight();
                 nbParcel++;
@@ -151,6 +151,9 @@ public class RoomModule extends GameModule implements GameObserver {
                         closeList.add(connection.getToNode());
                         if (toParcel.isRoomOpen()) {
                             openList.add(connection.getToNode());
+                        } else {
+                            connection.getToNode().setRoom(exteriorRoom);
+                            exteriorRoom.getParcels().add(connection.getToNode());
                         }
                     }
                 }
@@ -162,17 +165,19 @@ public class RoomModule extends GameModule implements GameObserver {
         room.setOxygen(oxygen / nbParcel);
     }
 
-    private void checkRoof(ParcelModel[][][] parcels, RoomModel room) {
+    private void checkRoof(RoomModel room) {
         printInfo("[RoomModule] Check roof: " + room.getName());
         for (ParcelModel parcel: room.getParcels()) {
-            boolean isUnsupported = true;
-            for (int i = 0; i < ROOF_MAX_DISTANCE; i++) {
-                if (checkAreaCanSupportRoof(parcels, parcel.x + i, parcel.y, parcel.z)) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcels, parcel.x - i, parcel.y, parcel.z)) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcels, parcel.x, parcel.y + i, parcel.z)) isUnsupported = false;
-                if (checkAreaCanSupportRoof(parcels, parcel.x, parcel.y - i, parcel.z)) isUnsupported = false;
+            boolean isRoofSupported = false;
+            for (int x = parcel.x - ROOF_MAX_DISTANCE; x <= parcel.x + ROOF_MAX_DISTANCE; x++) {
+                for (int y = parcel.y - ROOF_MAX_DISTANCE; y <= parcel.y + ROOF_MAX_DISTANCE; y++) {
+                    ParcelModel targetParcel = WorldHelper.getParcel(parcel.x + x, parcel.y + y, parcel.z);
+                    if (targetParcel == null || targetParcel.canSupportRoof()) {
+                        isRoofSupported = true;
+                    }
+                }
             }
-            if (isUnsupported) {
+            if (!isRoofSupported) {
                 printInfo("[RoomModule] roof collapse");
                 room.setExterior(true);
                 return;
@@ -182,62 +187,69 @@ public class RoomModule extends GameModule implements GameObserver {
         room.setExterior(false);
     }
 
-    private boolean checkAreaCanSupportRoof(ParcelModel[][][] parcels, int x, int y, int z) {
-        if (x >= 0 && x < parcels.length && y >= 0 && y < parcels[0].length && parcels[x][y][z] != null) {
-            return parcels[x][y][z].canSupportRoof();
-        }
-        return false;
-    }
-
     private void makeNeighborhood(Collection<RoomModel> roomList, RoomModel room) {
         WorldModule manager = ModuleHelper.getWorldModule();
 
         // Create neighborhood model form each room
-        Map<RoomModel, NeighborModel> neighborhood = roomList.stream()
+        Map<RoomModel, RoomConnectionModel> neighborhood = roomList.stream()
                 .filter(r -> r != room && r.getFloor() >= room.getFloor() - 1 && r.getFloor() <= room.getFloor() + 1)
-                .map(NeighborModel::new)
+                .map(RoomConnectionModel::new)
                 .collect(Collectors.toMap(n -> n._room, n -> n));
+        RoomModel exteriorRoom = _exteriorRooms.get(room.getFloor());
+        RoomConnectionModel exteriorConnection = new RoomConnectionModel(exteriorRoom);
 
         // Get all neighbor parcels
         for (ParcelModel parcel: room.getParcels()) {
-            checkAndAddNeighbor(manager, neighborhood, room, parcel, -1, 0);
-            checkAndAddNeighbor(manager, neighborhood, room, parcel, +1, 0);
-            checkAndAddNeighbor(manager, neighborhood, room, parcel, 0, -1);
-            checkAndAddNeighbor(manager, neighborhood, room, parcel, 0, +1);
+            checkAndAddNeighbor(manager, neighborhood, room, exteriorRoom, exteriorConnection, parcel, -1, 0);
+            checkAndAddNeighbor(manager, neighborhood, room, exteriorRoom, exteriorConnection, parcel, +1, 0);
+            checkAndAddNeighbor(manager, neighborhood, room, exteriorRoom, exteriorConnection, parcel, 0, -1);
+            checkAndAddNeighbor(manager, neighborhood, room, exteriorRoom, exteriorConnection, parcel, 0, +1);
             checkAndAddNeighborFloor(manager, neighborhood, room, parcel);
         }
+        neighborhood.put(null, exteriorConnection);
 
         // Add neighbors to room
-        room.setNeighborhoods(neighborhood.values().stream().filter(n -> !n.isEmpty()).collect(Collectors.toList()));
+        room.setConnections(neighborhood.values().stream().filter(connection -> !connection.isEmpty()).collect(Collectors.toList()));
 
-        // Compute sealing
-        for (NeighborModel neighbor: room.getNeighbors()) {
-            neighbor._borderValue = 0;
-            for (ParcelModel parcel : neighbor._parcels) {
-                neighbor._borderValue += parcel.getSealValue();
+        // Compute permeability
+        for (RoomConnectionModel roomConnection: room.getConnections()) {
+            int roomFloor = room.getFloor();
+            roomConnection._permeability = 0;
+            for (ParcelModel parcel : roomConnection._parcels) {
+                if (parcel.z == roomFloor + 1) {
+                    roomConnection._permeability += parcel.getFloorPermeability();
+                } else if (parcel.z == roomFloor - 1) {
+                    roomConnection._permeability += parcel.getCeilPermeability();
+                } else {
+                    roomConnection._permeability += parcel.getPermeability();
+                }
             }
-            neighbor._borderValue = neighbor._borderValue / neighbor._parcels.size();
+            roomConnection._permeability = roomConnection._permeability / roomConnection._parcels.size();
         }
     }
 
-    private void checkAndAddNeighbor(WorldModule manager, Map<RoomModel, NeighborModel> neighborhood, RoomModel room, ParcelModel parcel, int offsetX, int offsetY) {
+    private void checkAndAddNeighbor(WorldModule manager, Map<RoomModel, RoomConnectionModel> neighborhood, RoomModel room, RoomModel exteriorRoom, RoomConnectionModel exteriorConnection, ParcelModel parcel, int offsetX, int offsetY) {
         ParcelModel p1 = manager.getParcel(parcel.x + offsetX, parcel.y + offsetY, parcel.z);
-        if (p1 != null && p1.getRoom() == null) {
+        if (p1 != null && (p1.getRoom() == null || p1.getRoom() == exteriorRoom)) {
             ParcelModel p2 = manager.getParcel(p1.x + offsetX, p1.y + offsetY, p1.z);
-            if (p2 != null && p2.getRoom() != null && p2.getRoom() != room) {
-                neighborhood.get(p2.getRoom())._parcels.add(p1);
+            if (p2 != null) {
+                if (p2.getRoom() == exteriorRoom) {
+                    exteriorConnection.addParcel(parcel);
+                } else if (p2.getRoom() != null && p2.getRoom() != room) {
+                    neighborhood.get(p2.getRoom()).addParcel(p1);
+                }
             }
         }
     }
 
-    private void checkAndAddNeighborFloor(WorldModule manager, Map<RoomModel, NeighborModel> neighborhood, RoomModel room, ParcelModel parcel) {
+    private void checkAndAddNeighborFloor(WorldModule manager, Map<RoomModel, RoomConnectionModel> neighborhood, RoomModel room, ParcelModel parcel) {
         ParcelModel parcelUp = manager.getParcel(parcel.x, parcel.y, parcel.z + 1);
-        if (parcelUp != null && parcelUp.hasRoom() && (!parcelUp.hasGround() || parcelUp.getGroundInfo().isLinkDown)) {
-            neighborhood.get(parcelUp.getRoom())._parcels.add(parcel);
+        if (parcelUp != null && parcelUp.hasRoom()) {
+            neighborhood.get(parcelUp.getRoom())._parcels.add(parcelUp);
         }
         ParcelModel parcelDown = manager.getParcel(parcel.x, parcel.y, parcel.z - 1);
-        if (parcelDown != null && parcelDown.hasRoom() && (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown)) {
-            neighborhood.get(parcelDown.getRoom())._parcels.add(parcel);
+        if (parcelDown != null && parcelDown.hasRoom()) {
+            neighborhood.get(parcelDown.getRoom())._parcels.add(parcelDown);
         }
     }
 

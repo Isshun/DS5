@@ -78,11 +78,16 @@ public class LuaPlanetExtend extends LuaExtend {
         regionInfo.label = getString(value, "label", regionInfo.name);
         regionInfo.color = getInt(value, "color", 0x000000);
 
-        if (!value.get("temperature").isnil()) {
-            regionInfo.temperature = new int[] {
-                    value.get("temperature").get(1).toint(),
-                    value.get("temperature").get(2).toint()
-            };
+        if (!value.get("temperatures").isnil()) {
+            regionInfo.temperatures = new ArrayList<>();
+            for (int i = 1; i <= value.get("temperatures").length(); i++) {
+                LuaValue luaTemperature = value.get("temperatures").get(i);
+                RegionInfo.RegionTemperature regionTemperature = new RegionInfo.RegionTemperature();
+                regionTemperature.temperature = getDoubleInterval(luaTemperature, "value", null);
+                regionTemperature.fromFloor = Math.min(luaTemperature.get("floors").get(1).toint(), luaTemperature.get("floors").get(2).toint());
+                regionTemperature.toFloor = Math.max(luaTemperature.get("floors").get(1).toint(), luaTemperature.get("floors").get(2).toint());
+                regionInfo.temperatures.add(regionTemperature);
+            }
         }
 
         if (!value.get("spots").isnil()) {

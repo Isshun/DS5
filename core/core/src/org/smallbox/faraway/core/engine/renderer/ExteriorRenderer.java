@@ -13,6 +13,8 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.GameConfig;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -121,6 +123,18 @@ public class ExteriorRenderer extends WorldRenderer {
     @Override
     protected void onUpdate() {
         super.onUpdate();
+
+        ModuleHelper.getWorldModule().getStructures().forEach(structure -> {
+            if (structure.isDoor()) {
+                boolean isOpen = false;
+                for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
+                    if (Math.abs(character.getParcel().x - structure.getParcel().x) <= 1 && Math.abs(character.getParcel().y - structure.getParcel().y) <= 1) {
+                        isOpen = true;
+                    }
+                }
+                structure.setTile(isOpen ? 1 : 0);
+            }
+        });
     }
 
     @Override

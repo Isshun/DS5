@@ -55,6 +55,7 @@ public abstract class View {
     protected int               _fixedHeight = -1;
     protected String            _name;
     protected boolean           _inGame;
+    protected int               _deep;
     protected int               _level;
     protected Color             _backgroundFocusColor;
     protected int               _width = -1;
@@ -109,6 +110,7 @@ public abstract class View {
     }
     public void         setName(String name) { _name = name; }
     public void         setInGame(boolean inGame) { _inGame = inGame; }
+    public void         setDeep(int deep) { _deep = deep; }
     public void         setLevel(int level) { _level = level; }
     public void         setModule(LuaModule module) { _module = module; }
     public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
@@ -124,6 +126,7 @@ public abstract class View {
     public int          getId() { return _id; }
     public int          getPosX() { return _x; }
     public int          getPosY() { return _y; }
+    public int          getDeep() { return _deep; }
     public int          getLevel() { return _level; }
     public int          getRegularBackground() { return _regularBackground; }
     public int          getFocusBackground() { return _focusBackground; }
@@ -138,7 +141,7 @@ public abstract class View {
     public int          getMarginLeft() { return _marginLeft; }
     public FadeEffect   getEffect() { return _effect; }
 
-    public int          compareLevel(View view) { return _level != view.getLevel() ? _level - view.getLevel() : hashCode() - view.hashCode(); }
+    public int          compareLevel(View view) { return _deep != view.getDeep() ? _deep - view.getDeep() : hashCode() - view.hashCode(); }
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {

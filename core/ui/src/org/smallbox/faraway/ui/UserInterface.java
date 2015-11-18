@@ -172,4 +172,9 @@ public class UserInterface {
         }
         return null;
     }
+
+    public boolean isVisible(String id) {
+        View view = findById(id);
+        return view != null && view.isVisible();
+    }
 }

@@ -101,7 +101,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.isLinkDown = getBoolean(value, "is_link_down", false);
         itemInfo.isWall= getBoolean(value, "is_wall", false);
 
-        itemInfo.sealing = getDouble(value, "sealing", 0);
+        itemInfo.permeability = getDouble(value, "permeability", 1);
 
         if (!value.get("door").isnil()) {
             itemInfo.isDoor = value.get("door").toboolean();

@@ -294,6 +294,7 @@ public class LuaModuleManager implements GameObserver {
     public void onGamePaused() { broadcastToLuaModules(LuaEventsModel.on_game_paused);}
     public void onGameResume() {broadcastToLuaModules(LuaEventsModel.on_game_resume); }
     public void onFloorChange(int floor) {broadcastToLuaModules(LuaEventsModel.on_floor_change, floor); }
+    public void onDisplayChange(String displayName, boolean isVisible) {broadcastToLuaModules(LuaEventsModel.on_display_change, displayName, isVisible); }
 
 //    default void onGameStart() {}
 //    default void onLog(String tag, String message) {}

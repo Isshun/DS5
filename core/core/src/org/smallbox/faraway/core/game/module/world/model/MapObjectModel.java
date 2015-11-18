@@ -34,6 +34,7 @@ public abstract class MapObjectModel extends ObjectModel {
     private double              _progress;
 //    private JobBuild            _jobBuild;
     private GraphicInfo         _graphic;
+    private int                 _tile;
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -79,6 +80,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public void             setSelected(boolean selected) { _selected = selected; }
     public void             setBlocked(int update) { _lastBlocked = update; }
     public void             setNeedRefresh() { _needRefresh = true; }
+    public void             setTile(int tile) { _tile = tile; }
     public boolean          needRefresh() { return _needRefresh; }
 
     // Gets

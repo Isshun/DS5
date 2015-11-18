@@ -234,7 +234,7 @@ public class ItemInfo extends ObjectInfo {
     public ItemBuildInfo                build;
     public int                          health = 1;
     public int                          power;
-    public double                       sealing = 1;
+    public double                       permeability;
     public boolean                      isLive;
     public int                          stack;
     public ItemInfo                     parentInfo;

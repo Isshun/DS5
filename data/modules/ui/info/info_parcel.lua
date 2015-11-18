@@ -6,6 +6,7 @@ data:extend({
     position = {application.info.screen_width - 372, 820},
     size = {372, 800},
     background = 0x121c1e,
+    level = 100,
     visible = false,
     views = {
         { type = "list", position = {10, 10}, views = {

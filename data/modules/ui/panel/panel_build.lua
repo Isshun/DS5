@@ -1,14 +1,12 @@
 data:extend({
     type = "view",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
-    id = "panel_build",
+    style = "base.style.right_panel",
+    id = "base.ui.panel_build",
     visible = false,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)
-            application.ui:findById("panel_main"):setVisible(true)
-            application.ui:findById("panel_build"):setVisible(false)
+            application.ui:findById("base.ui.panel_main"):setVisible(true)
+            application.ui:findById("base.ui.panel_build"):setVisible(false)
         end},
         { type = "label", text = "Build", text_size = 28, padding = 10, position = {40, 0}},
         { type = "list", position = {10, 50}, views = {
@@ -59,15 +57,6 @@ data:extend({
             end
         end
     end,
-
-    on_event = function(view, event , data)
-        if event == application.events.on_key_press and data == "ESCAPE" then
-            view:setVisible(false)
-            application.ui:findById("panel_main"):setVisible(true)
-            application:sendEvent("mini_map.display", true)
-        end
-    end
-
 })
 
 function open_main_category(grid_categories, grid_items, strategy)

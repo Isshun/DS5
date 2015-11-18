@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
@@ -155,14 +156,23 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return true;
     }
 
-    public double getSealValue() {
+    public double getPermeability() {
         if (_structure != null) {
-            return _structure.getInfo().sealing;
+            return _structure.getInfo().permeability;
         }
         if (_rockInfo != null) {
-            return _rockInfo.sealing;
+            return _rockInfo.permeability;
         }
-        return 0;
+        return 1;
+    }
+
+    public double getFloorPermeability() {
+        return _groundInfo != null ? _groundInfo.permeability : 1;
+    }
+
+    public double getCeilPermeability() {
+        ItemInfo groundInfo = WorldHelper.getGroundInfo(x, y, z);
+        return groundInfo != null ? groundInfo.permeability : 1;
     }
 
     @Override

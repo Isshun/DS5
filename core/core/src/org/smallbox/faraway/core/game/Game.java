@@ -48,8 +48,15 @@ public class Game {
     private static int                      _tick;
     private Map<String, Boolean>            _displays;
 
-    public void                             setDisplay(String displayName, boolean isActive) { _displays.put(displayName, isActive); }
-    public boolean                          toggleDisplay(String displayName) { _displays.put(displayName, !_displays.containsKey(displayName) || !_displays.get(displayName)); return _displays.get(displayName); }
+    public void setDisplay(String displayName, boolean isActive) {
+        _displays.put(displayName, isActive);
+        Application.getInstance().notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
+    }
+
+    public void toggleDisplay(String displayName) {
+        _displays.put(displayName, !_displays.containsKey(displayName) || !_displays.get(displayName));
+        Application.getInstance().notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
+    }
 
     public boolean                          isRunning() { return _isRunning; }
     public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }

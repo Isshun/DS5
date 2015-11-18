@@ -286,7 +286,7 @@ public class SpriteManager {
         return sprite;
     }
 
-    private Sprite getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon, int width, int height) {
+    private Sprite getSprite(GraphicInfo graphicInfo, int parcelTile, int itemTile, int alpha, boolean isIcon, int width, int height) {
         assert graphicInfo != null;
 
         if (graphicInfo.spriteId == -1) {
@@ -294,7 +294,7 @@ public class SpriteManager {
         }
 
         long sum = graphicInfo.type == GraphicInfo.Type.WALL || graphicInfo.type == GraphicInfo.Type.DOOR ?
-                getSum(graphicInfo.spriteId, tile, 0, isIcon ? 1 : 0) :
+                getSum(graphicInfo.spriteId, parcelTile, 0, isIcon ? 1 : 0) :
                 getSum(graphicInfo.spriteId, 0, 0, isIcon ? 1 : 0);
 
         Sprite sprite = _sprites.get(sum);
@@ -303,13 +303,13 @@ public class SpriteManager {
             if (texture != null) {
                 if (graphicInfo.type == GraphicInfo.Type.DOOR) {
 
-                    if ((tile & RIGHT) > 0 && (tile & LEFT) > 0) {
+                    if ((parcelTile & RIGHT) > 0 && (parcelTile & LEFT) > 0) {
                         sprite = new Sprite(texture, 0, 32, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
                     }
 
-                    else if ((tile & TOP) > 0 && (tile & BOTTOM) > 0) {
+                    else if ((parcelTile & TOP) > 0 && (parcelTile & BOTTOM) > 0) {
                         sprite = new Sprite(texture, 32, 32, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
@@ -329,52 +329,52 @@ public class SpriteManager {
                     Pixmap texturePixmap = texture.getTextureData().consumePixmap();
 
                     // Top left
-                    if ((tile & TOP_LEFT) > 0 && (tile & TOP) > 0 && (tile & LEFT) > 0) {
+                    if ((parcelTile & TOP_LEFT) > 0 && (parcelTile & TOP) > 0 && (parcelTile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 0, 32, 32, 16, 16);
-                    } else if ((tile & TOP) > 0 && (tile & LEFT) > 0) {
+                    } else if ((parcelTile & TOP) > 0 && (parcelTile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 0, 64, 64, 16, 16);
-                    } else if ((tile & LEFT) > 0) {
+                    } else if ((parcelTile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 0, 64, 0, 16, 16);
-                    } else if ((tile & TOP) > 0) {
+                    } else if ((parcelTile & TOP) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 0, 64, 48, 16, 16);
                     } else {
                         pixmap.drawPixmap(texturePixmap, 0, 0, 0, 0, 16, 16);
                     }
 
                     // Top right
-                    if ((tile & TOP_RIGHT) > 0 && (tile & TOP) > 0 && (tile & RIGHT) > 0) {
+                    if ((parcelTile & TOP_RIGHT) > 0 && (parcelTile & TOP) > 0 && (parcelTile & RIGHT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 0, 32, 32, 16, 16);
-                    } else if ((tile & TOP) > 0 && (tile & RIGHT) > 0) {
+                    } else if ((parcelTile & TOP) > 0 && (parcelTile & RIGHT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 0, 16, 64, 16, 16);
-                    } else if ((tile & RIGHT) > 0) {
+                    } else if ((parcelTile & RIGHT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 0, 16, 0, 16, 16);
-                    } else if ((tile & TOP) > 0) {
+                    } else if ((parcelTile & TOP) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 0, 80, 64, 16, 16);
                     } else {
                         pixmap.drawPixmap(texturePixmap, 16, 0, 80, 0, 16, 16);
                     }
 
                     // Bottom left
-                    if ((tile & BOTTOM_LEFT) > 0 && (tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
+                    if ((parcelTile & BOTTOM_LEFT) > 0 && (parcelTile & BOTTOM) > 0 && (parcelTile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 16, 32, 32, 16, 16);
-                    } else if ((tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
+                    } else if ((parcelTile & BOTTOM) > 0 && (parcelTile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 16, 64, 16, 16, 16);
-                    } else if ((tile & LEFT) > 0) {
+                    } else if ((parcelTile & LEFT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 16, 64, 80, 16, 16);
-                    } else if ((tile & BOTTOM) > 0) {
+                    } else if ((parcelTile & BOTTOM) > 0) {
                         pixmap.drawPixmap(texturePixmap, 0, 16, 64, 32, 16, 16);
                     } else {
                         pixmap.drawPixmap(texturePixmap, 0, 16, 0, 80, 16, 16);
                     }
 
                     // Bottom right
-                    if ((tile & BOTTOM_RIGHT) > 0 && (tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
+                    if ((parcelTile & BOTTOM_RIGHT) > 0 && (parcelTile & BOTTOM) > 0 && (parcelTile & RIGHT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 16, 32, 32, 16, 16);
-                    } else if ((tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
+                    } else if ((parcelTile & BOTTOM) > 0 && (parcelTile & RIGHT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 16, 16, 16, 16, 16);
-                    } else if ((tile & RIGHT) > 0) {
+                    } else if ((parcelTile & RIGHT) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 16, 16, 80, 16, 16);
-                    } else if ((tile & BOTTOM) > 0) {
+                    } else if ((parcelTile & BOTTOM) > 0) {
                         pixmap.drawPixmap(texturePixmap, 16, 16, 80, 16, 16, 16);
                     } else {
                         pixmap.drawPixmap(texturePixmap, 16, 16, 80, 80, 16, 16);

@@ -153,6 +153,9 @@ public class UILabel extends View {
 
     public void setTextSize(int size) {
         _textSize = size;
+        if (_height == -1) {
+            _height = (int)(GDXRenderer.getInstance().getFont(_textSize).getLineHeight() * 1.2);
+        }
     }
 
     public void setStyle(int style) {

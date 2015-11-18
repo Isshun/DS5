@@ -1,22 +1,93 @@
 package org.smallbox.farpoint.desktop;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.data.loader.ConfigLoader;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class DesktopLauncher {
+    public static class RoomDo {
+        public int      id;
+        public int      size;
+        public double   pressure;
+        public List<RoomConnectionDo>   connections = new ArrayList<>();
+
+        public RoomDo(int id, int size, double pressure) {
+            this.id = id;
+            this.size = size;
+            this.pressure = pressure;
+        }
+    }
+
+    public static class RoomConnectionDo {
+        public RoomDo   room1;
+        public RoomDo   room2;
+        public double   value;
+
+        public RoomConnectionDo(RoomDo r1, RoomDo r2, double v) {
+            this.room1 = r1;
+            this.room2 = r2;
+            this.value = v;
+        }
+    }
+
+    private static void updateRoomPressure(RoomDo room, double pressure, double connectionValue) {
+        room.pressure += (pressure - room.pressure) * connectionValue * 0.1;
+    }
+
+    private static void mixPressure(List<RoomDo> rooms) {
+        rooms.forEach(room -> {
+            for (RoomConnectionDo roomConnectionDo: room.connections) {
+                int totalSize = room.size + roomConnectionDo.room2.size;
+                double totalPressure = (room.pressure * room.size) + (roomConnectionDo.room2.pressure * roomConnectionDo.room2.size);
+                updateRoomPressure(roomConnectionDo.room1, totalPressure / totalSize, roomConnectionDo.value);
+                updateRoomPressure(roomConnectionDo.room2, totalPressure / totalSize, roomConnectionDo.value);
+            }
+        });
+
+        rooms.forEach(room -> System.out.println("r" + room.id + ": " + room.pressure));
+
+        double pressure = 0;
+        for (RoomDo room: rooms) {
+            pressure += (room.pressure * room.size);
+        }
+        System.out.println("Total: " + Math.round(pressure));
+    }
+
     public static void main (String[] arg) {
         Data data = new Data();
         new ConfigLoader().load(data);
+//
+//        RoomDo r1 = new RoomDo(1, 100, 0.2);
+//        RoomDo r2 = new RoomDo(2, 500, 0.8);
+//        RoomDo r3 = new RoomDo(3, 100, 0.2);
+//
+//        r1.connections.add(new RoomConnectionDo(r1, r2, 0.5));
+//        r2.connections.add(new RoomConnectionDo(r2, r1, 0.5));
+//
+//        r3.connections.add(new RoomConnectionDo(r3, r2, 1));
+//        r2.connections.add(new RoomConnectionDo(r2, r3, 1));
+//
+//        List<RoomDo> rooms = Arrays.asList(r1, r2, r3);
+//
+//        rooms.forEach(room -> System.out.println("r" + room.id + ": " + room.pressure));
+//        double pressure = 0;
+//        for (RoomDo room: rooms) {
+//            pressure += (room.pressure * room.size);
+//        }
+//        System.out.println("Total: " + Math.round(pressure));
+//
+//        for (int i = 0; i < 100; i++) {
+//            mixPressure(rooms);
+//        }
+//
+//        System.exit(1);
 
         System.loadLibrary("sqlite4java-win32-x64-1.0.392");
 
@@ -88,4 +159,5 @@ public class DesktopLauncher {
 //                break;
 //        }
     }
+
 }

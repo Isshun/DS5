@@ -35,11 +35,17 @@ public class LuaBindingsExtend extends LuaExtend {
             }
 
             bindingInfo.label = getString(value, "label", null);
-            bindingInfo.command = getString(value, "command", null);
+            bindingInfo.name = getString(value, "name", null);
+            bindingInfo.check = () -> {
+                LuaValue ret = value.get("on_check").call();
+                return !ret.isnil() && ret.toboolean();
+            };
+            bindingInfo.action = () -> value.get("on_action").call();
+
             Data.getData().bindings.add(bindingInfo);
 
             // Put binding to LuaApplicationModel
-            luaModuleManager.getGame().bindings.set(bindingInfo.command, CoerceJavaToLua.coerce(bindingInfo));
+            luaModuleManager.getGame().bindings.set(bindingInfo.name, CoerceJavaToLua.coerce(bindingInfo));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

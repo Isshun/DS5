@@ -71,8 +71,8 @@ public class LuaApplicationModel {
         Game.getInstance().setDisplay(display, true);
     }
 
-    public boolean toggleDisplay(String display) {
-        return Game.getInstance().toggleDisplay(display);
+    public void toggleDisplay(String display) {
+        Game.getInstance().toggleDisplay(display);
     }
 
     public void setPlan(String plan) {

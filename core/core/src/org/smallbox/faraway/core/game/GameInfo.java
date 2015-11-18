@@ -32,6 +32,7 @@ public class GameInfo {
     public int                  worldWidth;
     public int                  worldHeight;
     public int                  worldFloors;
+    public int                  groundFloor;
 
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
@@ -65,6 +66,7 @@ public class GameInfo {
         gameInfo.worldWidth = json.getInt("width");
         gameInfo.worldHeight = json.getInt("height");
         gameInfo.worldFloors = json.getInt("floors");
+        gameInfo.groundFloor = json.getInt("floors") - 1;
 
         if (json.has("saves")) {
             for (int i = 0; i < json.getJSONArray("saves").length(); i++) {

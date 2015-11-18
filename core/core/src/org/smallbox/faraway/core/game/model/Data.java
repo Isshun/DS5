@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.ui.UICursor;
 
@@ -71,10 +72,12 @@ public class Data {
 
     public UICursor         getCursor(String name) { return this.cursors.get(name); }
     public ReceiptGroupInfo getReceipt(String receiptName) { return (ReceiptGroupInfo) getObject(receipts, receiptName); }
+    public WeatherInfo      getWeather(String receiptName) { return weathers.get(receiptName); }
     public DiseaseInfo      getDisease(String receiptName) { return (DiseaseInfo) getObject(diseases, receiptName); }
     public NetworkInfo      getNetwork(String receiptName) { return (NetworkInfo) getObject(networks, receiptName); }
     public ItemInfo         getItemInfo(String receiptName) { return (ItemInfo) getObject(items, receiptName); }
     public ItemInfo         getEquipment(String receiptName) { return (ItemInfo) getObject(equipments, receiptName); }
+    public BindingInfo      getBinding(String bindingId) { return (BindingInfo) getObject(bindings, bindingId); }
     public String           getString(int hash) { return _data.strings.get(hash); }
     public static String    getString(String str) { return _data.strings.containsKey(str.hashCode()) ? _data.strings.get(str.hashCode()) : str; }
     public PlanetInfo       getPlanet(String planetName) { return (PlanetInfo) getObject(planets, planetName); }

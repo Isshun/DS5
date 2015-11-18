@@ -3,7 +3,7 @@ data:extend({
         label = "Iron",
         name = "base.iron",
         type = "resource",
-        sealing = 0.9,
+        permeability = 0.1,
         walkable = false,
         graphics = { path = "[base]/graphics/items/resources/raw_iron.png", type = "terrain"},
         actions = { type = "mine", cost = 1, products = {{item = "base.iron_ore", quantity = {5, 10}}} }
@@ -12,7 +12,7 @@ data:extend({
         label = "Copper",
         name = "base.copper",
         type = "resource",
-        sealing = 0.9,
+        permeability = 0.1,
         walkable = false,
         graphics = { path = "[base]/graphics/items/resources/raw_copper.png", type = "terrain"},
         actions = { type = "mine", cost = 1, products = {{item = "base.copper_ore", quantity = {5, 10}}} }

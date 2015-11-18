@@ -27,7 +27,7 @@ public class RoomModel {
     private boolean                     _isExterior;
     private double                      _lightValue;
     private double                      _permeability;
-    private List<NeighborModel>         _neighborhood;
+    private List<RoomConnectionModel>   _connections;
     private List<ItemModel>             _heatItems = new ArrayList<>();
     private List<ItemModel>             _coldItems = new ArrayList<>();
     private List<ItemModel>             _oxygenItems = new ArrayList<>();
@@ -38,37 +38,7 @@ public class RoomModel {
     private final ParcelModel           _baseParcel;
     private int                         _floor;
     private double                      _targetOxygen;
-    private double                      _targetOxygenPression;
-    private int                         _pressure;
-
-    public double getOxygen() { return _oxygen; }
-    public void setOxygen(double oxygen) {
-        if (_oxygen != oxygen) {
-            _oxygen = oxygen;
-        }
-    }
-
-    public void addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
-    public void addParcels(Collection<ParcelModel> parcels) { parcels.forEach(parcel -> parcel.setRoom(this)); _parcels.addAll(parcels); }
-    public void setAutoName(String autoName) { _autoName = autoName; }
-    public List<ItemModel> getHeatItems() { return _heatItems; }
-    public List<ItemModel> getColdItems() { return _coldItems; }
-    public List<ItemModel> getOxygenItems() { return _oxygenItems; }
-
-    public boolean hasNeighbors() { return !_neighborhood.isEmpty(); }
-    public ParcelModel getBaseParcel() { return _baseParcel; }
-    public double getTemperature() { return _temperatureInfo.temperature; }
-    public int getFloor() { return _floor; }
-    public double getTargetOxygen() { return _targetOxygen; }
-    public double getTargetOxygenPressure() { return _targetOxygenPression; }
-
-    public void setTemperature(double temperature) { _temperatureInfo.temperature = temperature; }
-    public void setTargetOxygen(double targetOxygen) { _targetOxygen = targetOxygen; }
-    public void setTargetOxygenPression(double pression) { _targetOxygenPression = pression; }
-
-    public void setPressure(int pressure) {
-        _pressure = pressure;
-    }
+    private double                      _pressure;
 
     public enum RoomType {
         NONE,
@@ -78,7 +48,8 @@ public class RoomModel {
         METTING,
         HOLODECK,
         STORAGE,
-        WORLD, GARDEN
+        WORLD,
+        GARDEN
     }
 
     public RoomModel(RoomType type, int floor, ParcelModel baseParcel) {
@@ -99,46 +70,67 @@ public class RoomModel {
         _type = type;
         _doors = new ArrayList<>();
         _occupants = new HashSet<>();
-        _neighborhood = new ArrayList<>();
+        _connections = new ArrayList<>();
 
 //        _autoName = type.toString();
         _autoName = "Room " + _id;
     }
 
-    public int                      getId() { return _id; }
-    public int                      getZoneId() { return _zoneId; }
-    public CharacterModel           getOwner() { return _owner; }
-    public int                      getX() { return _x; }
-    public int                      getY() { return _y; }
-    public Color                    getColor() { return _color; }
-    public int                      getMinX() { return _minX; }
-    public int                      getMaxX() { return _maxX; }
-    public int                      getWidth() { return _maxX - _minX + 1; }
-    public RoomType                 getType() { return _type; }
-    public int                      getSize() { return _parcels.size(); }
-    public double                   getLight() { return _lightValue; }
-    public int                      getPressure() { return _pressure; }
-    public Set<CharacterModel>      getOccupants() { return _occupants; }
-    public RoomTemperatureModel     getTemperatureInfo() { return _temperatureInfo; }
-    public List<NeighborModel>      getNeighbors() { return _neighborhood; }
-    public Set<ParcelModel>         getParcels() { return _parcels; }
-    public String                   getName() { return _name != null ? _name : _autoName; }
+    public void setOxygen(double oxygen) {
+        if (_oxygen != oxygen) {
+            _oxygen = oxygen;
+        }
+    }
 
-    public void                     addParcel(ParcelModel area) { _parcels.add(area); }
-    public void                     setMaxX(int x) { _maxX = x; }
-    public void                     setMinX(int x) { _minX = x; }
-    public void                     setCommon(boolean common) { _isCommon = common; }
-    public void                     setExterior(boolean isExterior) { _isExterior = isExterior; }
-    public void                     setLight(double lightValue) { _lightValue = lightValue; }
-    public void                     setNeighborhoods(List<NeighborModel> neighborhood) { _neighborhood = neighborhood; }
+    public double                       getOxygen() { return _oxygen; }
+    public ParcelModel                  getBaseParcel() { return _baseParcel; }
+    public double                       getTemperature() { return _temperatureInfo.temperature; }
+    public int                          getFloor() { return _floor; }
+    public double                       getTargetOxygen() { return _targetOxygen; }
+    public double                       getTargetOxygenPressure() { return 0; }
+    public int                          getId() { return _id; }
+    public int                          getZoneId() { return _zoneId; }
+    public CharacterModel               getOwner() { return _owner; }
+    public int                          getX() { return _x; }
+    public int                          getY() { return _y; }
+    public Color                        getColor() { return _color; }
+    public int                          getMinX() { return _minX; }
+    public int                          getMaxX() { return _maxX; }
+    public int                          getWidth() { return _maxX - _minX + 1; }
+    public RoomType                     getType() { return _type; }
+    public int                          getSize() { return _parcels.size(); }
+    public double                       getLight() { return _lightValue; }
+    public double                       getPressure() { return _pressure; }
+    public Set<CharacterModel>          getOccupants() { return _occupants; }
+    public RoomTemperatureModel         getTemperatureInfo() { return _temperatureInfo; }
+    public List<RoomConnectionModel>    getConnections() { return _connections; }
+    public Set<ParcelModel>             getParcels() { return _parcels; }
+    public String                       getName() { return _name != null ? _name : _autoName; }
+    public List<ItemModel>              getHeatItems() { return _heatItems; }
+    public List<ItemModel>              getColdItems() { return _coldItems; }
+    public List<ItemModel>              getOxygenItems() { return _oxygenItems; }
 
-    public boolean                  isCommon() { return _isCommon; }
-    public boolean                  isType(RoomType type) { return _type == type; }
-    public boolean                  isExterior() { return _isExterior; }
-    public boolean                  isPrivate() { return _type == RoomType.QUARTER; }
-    public boolean                  isStorage() { return _type == RoomType.STORAGE; }
-    public boolean                  isEmpty() { return _parcels.isEmpty(); }
+    public void                         addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
+    public void                         addParcels(Collection<ParcelModel> parcels) { parcels.forEach(parcel -> parcel.setRoom(this)); _parcels.addAll(parcels); }
+    public void                         addParcel(ParcelModel area) { _parcels.add(area); }
+    public void                         setAutoName(String autoName) { _autoName = autoName; }
+    public void                         setMaxX(int x) { _maxX = x; }
+    public void                         setMinX(int x) { _minX = x; }
+    public void                         setCommon(boolean common) { _isCommon = common; }
+    public void                         setExterior(boolean isExterior) { _isExterior = isExterior; }
+    public void                         setLight(double lightValue) { _lightValue = lightValue; }
+    public void                         setConnections(List<RoomConnectionModel> connections) { _connections = connections; }
+    public void                         setTemperature(double temperature) { _temperatureInfo.temperature = temperature; }
+    public void                         setTargetOxygen(double targetOxygen) { _targetOxygen = targetOxygen; }
+    public void                         setPressure(double pressure) { _pressure = pressure; }
 
+    public boolean                      isCommon() { return _isCommon; }
+    public boolean                      isType(RoomType type) { return _type == type; }
+    public boolean                      isExterior() { return _isExterior; }
+    public boolean                      isPrivate() { return _type == RoomType.QUARTER; }
+    public boolean                      isStorage() { return _type == RoomType.STORAGE; }
+    public boolean                      isEmpty() { return _parcels.isEmpty(); }
+    public boolean                      hasNeighbors() { return !_connections.isEmpty(); }
 
     public boolean containsParcel(int x, int y) {
         for (ParcelModel parcel: _parcels) {

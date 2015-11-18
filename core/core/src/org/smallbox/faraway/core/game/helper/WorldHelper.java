@@ -18,11 +18,13 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 public class WorldHelper {
     private static ParcelModel[][][]    _parcels;
     private static int                  _currentFloor;
+    private static int                  _groundFloor;
     private static int                  _width;
     private static int                  _height;
     private static int                  _floors;
 
     public static void init(GameInfo gameInfo, ParcelModel[][][]parcels) {
+        _groundFloor = gameInfo.groundFloor;
         _currentFloor = gameInfo.worldFloors - 1;
         _parcels = parcels;
         _width = gameInfo.worldWidth;
@@ -39,6 +41,8 @@ public class WorldHelper {
     public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getRockInfo() : null; }
     public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructureInfo() : null; }
     public static int               getCurrentFloor() { return _currentFloor; }
+    public static int               getGroundFloor() { return _groundFloor; }
+
     public static void              setCurrentFloor(int currentFloor) { _currentFloor = currentFloor; }
 
     public static boolean           hasGround(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null; }

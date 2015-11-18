@@ -32,6 +32,13 @@ public abstract class LuaExtend {
         return defaultValue;
     }
 
+    protected static double[] getDoubleInterval(LuaValue value, String key, double[] defaultValue) {
+        if (!value.get(key).isnil() && value.get(key).length() == 2) {
+            return new double[] {value.get(key).get(1).todouble(), value.get(key).get(2).todouble()};
+        }
+        return defaultValue;
+    }
+
     protected static String getString(LuaValue value, String key, String defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toString() : defaultValue;
     }

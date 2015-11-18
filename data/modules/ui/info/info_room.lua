@@ -3,25 +3,31 @@ room = nil
 data:extend({
     type = "view",
     name = "info_room",
-    position = {application.info.screen_width - 372 * 2, 820},
+    position = {0, 620},
     size = {372, 800},
     background = 0x121c1e,
     visible = true,
     views = {
         { type = "list", position = {10, 10}, views = {
-            { type = "label", id = "lb_name", text = "name", text_size = 22, size = {100, 30}},
-            { type = "label", id = "lb_id", text_size = 14},
-            { type = "label", id = "lb_size", text_size = 14},
-            { type = "label", id = "lb_exterior", text_size = 14},
-            { type = "label", id = "lb_neighborhood", text_size = 14},
-            { type = "label", id = "lb_target_oxygen", text_size = 14},
+            { type = "label", id = "lb_name", text = "name", text_size = 16, size = {100, 30}},
+            { type = "label", id = "lb_id", text_size = 12},
+            { type = "label", id = "lb_size", text_size = 12},
+            { type = "label", id = "lb_exterior", text_size = 12},
+            { type = "label", id = "lb_temperature", text_size = 12},
+            { type = "label", id = "lb_oxygen", text_size = 12},
+            { type = "label", id = "lb_target_oxygen", text_size = 12},
+            { type = "label", id = "lb_neighborhood", text_size = 12, text = "Connections:"},
+            { type = "grid", id = "grid_neighborhood", columns = 3, column_width = 132, row_height = 16},
         }},
     },
 
     on_event = function(view, event, data)
         if event == application.events.on_parcel_over then
             room = data and data:getRoom() or nil;
-            view:setVisible(true)
+        end
+
+        if event == application.events.on_display_change and data[1] == "debug" then
+            view:setVisible(data[2])
         end
     end,
 
@@ -31,23 +37,27 @@ data:extend({
             view:findById("lb_id"):setText("Id", ": ", room:getId())
             view:findById("lb_size"):setText("Size", ": ", room:getSize())
             view:findById("lb_exterior"):setText("Exterior", ": ", room:isExterior() and "yes" or "no")
+            view:findById("lb_temperature"):setText("Temp", ": ", room:getTemperature() .. "")
+            view:findById("lb_oxygen"):setText("O2", ": ", room:getOxygen() .. "")
             view:findById("lb_target_oxygen"):setText("Target O2", ": ", room:getTargetOxygen() .. " (pressure: " .. room:getTargetOxygenPressure() .. ")")
 
-            if room:getNeighbors() then
-                local str = ""
-                local iterator = room:getNeighbors():iterator()
+            view:findById("grid_neighborhood"):removeAllViews();
+            if room:getConnections() then
+                local iterator = room:getConnections():iterator()
                 while iterator:hasNext() do
                     local neighbor = iterator:next()
-                    str = str .. neighbor:getRoom():getName() .. "(" .. neighbor:getBorderValue() .. "," .. neighbor:getBorderSize() .. ")"
+                    local lb_connection = application.ui:createLabel()
+                    lb_connection:setTextSize(12)
+                    lb_connection:setText(neighbor:getRoom():getName() .. " (" .. neighbor:getPermeability() .. "/" .. neighbor:getBorderSize() .. ")")
+                    view:findById("grid_neighborhood"):addView(lb_connection)
                 end
-                view:findById("lb_neighborhood"):setText("Neighborhood", ": ", str)
             end
         else
             view:findById("lb_name"):setText("None")
             view:findById("lb_id"):setText(" ")
             view:findById("lb_size"):setText(" ")
             view:findById("lb_exterior"):setText(" ")
-            view:findById("lb_neighborhood"):setText(" ")
+            view:findById("grid_neighborhood"):removeAllViews();
         end
     end
 })

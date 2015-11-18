@@ -6,11 +6,10 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
-import org.smallbox.faraway.core.game.module.room.model.NeighborModel;
+import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +18,6 @@ import java.util.stream.Collectors;
  */
 public class OxygenModule extends GameModule {
     private double                  _oxygen;
-    private List<NeighborModel>     _openList = new ArrayList<>();
-    private List<NeighborModel>     _closeList = new ArrayList<>();
     private List<ItemModel>         _items;
 
     public OxygenModule() {
@@ -45,72 +42,50 @@ public class OxygenModule extends GameModule {
         RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
         if (roomModule != null) {
 
-            // Reset rooms pressure
-            roomModule.getRooms().forEach(room -> room.setPressure(room.getSize()));
-
-            _items.forEach(item -> {
-                if (item.getParcel().getRoom() != null) {
-                    item.getParcel().getRoom().setPressure(item.getParcel().getRoom().getPressure() + item.getInfo().effects.pressure);
-                }
-            });
-
-            _items.forEach(item -> {
-                if (item.getParcel().getRoom() != null) {
-                    RoomModel room = item.getParcel().getRoom();
-                    room.setOxygen((room.getOxygen() * room.getSize()) + (item.getInfo().effects.oxygen * item.getInfo().effects.pressure));
-                }
-            });
-
-//            for (RoomModel room : roomModule.getRooms()) {
-//                if (room.isExterior()) {
-//                    room.setOxygen(_oxygen);
-//                } else {
-//                    // Mix oxygen with neighbors
-//                    exploreRoom(room);
+//            // Reset rooms pressure
+//            roomModule.getRooms().forEach(room -> room.setPressure(room.getSize()));
 //
-//                    // Get oxygen from objects
-//                    room.getParcels().forEach(parcel -> {
-////                        effects
-//                    });
+//            _items.forEach(item -> {
+//                if (item.getParcel().getRoom() != null) {
+//                    item.getParcel().getRoom().setPressure(item.getParcel().getRoom().getPressure() + (item.getInfo().effects.oxygen * item.getInfo().effects.pressure));
 //                }
-//            }
+//            });
+//
+//            _items.forEach(item -> {
+//                if (item.getParcel().getRoom() != null) {
+//                    RoomModel room = item.getParcel().getRoom();
+//                    changeOxygenSmooth(room, room.getPressure() / room.getSize(), 1);
+//                }
+//            });
+
+            roomModule.getRooms().forEach(room -> {
+                        if (room.isExterior()) {
+                            room.setOxygen(_oxygen);
+                        } else {
+                            // Mix oxygen with neighbors
+                            for (RoomConnectionModel roomConnection: room.getConnections()) {
+                                int totalSize = room.getSize() + roomConnection.getRoom().getSize();
+                                double totalOxygen = (room.getOxygen() * room.getSize()) + (roomConnection.getRoom().getOxygen() * roomConnection.getRoom().getSize());
+                                updateRoomPressure(room, totalOxygen / totalSize, roomConnection.getPermeability());
+                                updateRoomPressure(roomConnection.getRoom(), totalOxygen / totalSize, roomConnection.getPermeability());
+                            }
+
+                            // Get oxygen from objects
+                            room.getParcels().forEach(parcel -> {
+//                        effects
+                            });
+                        }
+                    }
+            );
         }
     }
 
-    private void exploreRoom(RoomModel room) {
-        double totalOxygen = room.getOxygen() * room.getSize();
-        int totalSize = room.getSize();
-
-        _openList.clear();
-        _openList.addAll(room.getNeighbors());
-        _closeList.clear();
-        while (!_openList.isEmpty()) {
-            NeighborModel neighbor = _openList.remove(0);
-            totalOxygen += neighbor.getRoom().getOxygen() * Math.min(1000, neighbor.getRoom().getSize()) * (1 - neighbor.getBorderValue());
-            totalSize += Math.min(1000, neighbor.getRoom().getSize()) * (1 - neighbor.getBorderValue());
-            _closeList.add(neighbor);
-
-            for (NeighborModel n : neighbor.getRoom().getNeighbors()) {
-                if (!_closeList.contains(n)) {
-                    _openList.add(n);
-                }
-            }
-        }
-
-        room.setTargetOxygen(totalOxygen / totalSize);
-        room.setTargetOxygenPression(totalSize);
-        changeOxygenSmooth(room, totalOxygen / totalSize, 1);
-    }
-
-    private void changeOxygenSmooth(RoomModel room, double targetOxygen, double ratio) {
-        double diff = targetOxygen - room.getOxygen();
-        if (diff > 0.5 || diff < -0.5) {
-            room.setOxygen(room.getOxygen() + (diff * ratio * 0.75));
-        } else if (diff > 0.25 || diff < -0.25) {
-            room.setOxygen(room.getOxygen() + (diff * ratio * 0.5));
-        } else if (diff > 0.001 || diff < -0.001) {
-            room.setOxygen(room.getOxygen() + (diff * ratio * 0.25));
-        }
+    private void updateRoomPressure(RoomModel room, double oxygen, double connectionValue) {
+        double diff = oxygen - room.getOxygen();
+        double ratio = 1;
+        if (Math.abs(diff) > 0.25) ratio = 0.5;
+        if (Math.abs(diff) > 0.5) ratio = 0.1;
+        room.setOxygen(room.getOxygen() + (diff * connectionValue * ratio));
     }
 
     @Override

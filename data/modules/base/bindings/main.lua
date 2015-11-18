@@ -1,10 +1,71 @@
 data:extend({
-    {type = "binding", key = "F1", command = "open_panel_build", label = "Open build panel"},
-    {type = "binding", key = "F2", command = "open_panel_plan", label = "Open plan panel"},
-    {type = "binding", key = "F3", command = "open_panel_displays", label = "Open displays panel"},
-    {type = "binding", key = "F4", command = "open_panel_areas", label = "Open areas panel"},
-    {type = "binding", key = "F5", command = "open_panel_tasks", label = "Open tasks panel"},
-    {type = "binding", key = "F6", command = "open_panel_crew", label = "Open crew panel"},
-    {type = "binding", key = "F7", command = "open_panel_stats", label = "Open stats panel"},
-    {type = "binding", key = "TILDE", command = "open_panel_debug", label = "Open debug panel"},
+    {type = "binding", name = "base.binding.open_panel_main", label = "Open main panel",
+        on_check = function()
+            if application.ui:isVisible("base.ui.panel_build") then return true end
+            return false
+        end,
+        on_action = function()
+            application.ui:findById("base.ui.panel_main"):setVisible(true)
+            application.ui:findById("base.ui.panel_build"):setVisible(false)
+            application.ui:findById("base.ui.panel_areas"):setVisible(false)
+            application.ui:findById("base.ui.panel_tasks"):setVisible(false)
+            application.ui:findById("base.ui.panel_crew"):setVisible(false)
+            application.ui:findById("base.ui.panel_jobs"):setVisible(false)
+        end},
+
+    {type = "binding", name = "base.binding.open_panel_build", label = "Open build panel",
+        on_check = function() return application.ui:isVisible("base.ui.panel_main") end,
+        on_action = function()
+            application.ui:findById("base.ui.panel_main"):setVisible(false)
+            application.ui:findById("base.ui.panel_build"):setVisible(true)
+        end},
+
+    {type = "binding", name = "base.binding.open_panel_plan", label = "Open plan panel",
+        on_check = function() return application.ui:isVisible("base.ui.panel_main") end,
+        on_action = function()
+            application.ui:findById("base.ui.panel_main"):setVisible(false)
+            application.ui:findById("base.ui.panel_plan"):setVisible(true)
+        end},
+
+    {type = "binding", name = "base.binding.open_panel_jobs", label = "Open jobs panel",
+        on_check = function() return application.ui:isVisible("base.ui.panel_main") end,
+        on_action = function()
+            application.ui:findById("base.ui.panel_main"):setVisible(false)
+            application.ui:findById("base.ui.panel_jobs"):setVisible(true)
+        end},
+
+    {type = "binding", name = "base.binding.open_panel_crew", label = "Open crew panel",
+        on_check = function() return application.ui:isVisible("base.ui.panel_main") end,
+        on_action = function()
+            application.ui:findById("base.ui.panel_main"):setVisible(false)
+            application.ui:findById("base.ui.panel_crew"):setVisible(true)
+        end},
+
+    {type = "binding", name = "base.binding.toggle_display_areas", label = "toggle areas display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("areas") end},
+
+    {type = "binding", name = "base.binding.toggle_display_rooms", label = "toggle rooms display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("rooms") end},
+
+    {type = "binding", name = "base.binding.toggle_display_temperature", label = "toggle temperature display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("temperature") end},
+
+    {type = "binding", name = "base.binding.toggle_display_oxygen", label = "toggle oxygen display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("oxygen") end},
+
+    {type = "binding", name = "base.binding.toggle_display_water", label = "toggle water display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("water") end},
+
+    {type = "binding", name = "base.binding.toggle_display_security", label = "toggle security display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("security") end},
+
+    {type = "binding", name = "base.binding.toggle_display_debug", label = "toggle debug display",
+        on_check = function() return true end,
+        on_action = function() application:toggleDisplay("debug") end},
 })
