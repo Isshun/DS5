@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
+import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
@@ -33,6 +34,7 @@ public class LuaUIExtend extends LuaExtend {
             case "label":
             case "map":
             case "image":
+            case "dropdown":
                 return true;
         }
         return false;
@@ -63,6 +65,11 @@ public class LuaUIExtend extends LuaExtend {
         switch (value.get("type").toString()) {
             case "view":
                 view = new UIFrame(width, height);
+                break;
+
+            case "dropdown":
+                view = new UIDropDown(width, height);
+                UserInterface.getInstance()._dropsDowns.add((UIDropDown)view);
                 break;
 
             case "list":
@@ -271,7 +278,7 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue onClick = value.get("on_click");
             if (!onClick.isnil()) {
-                UIEventManager.getInstance().setOnClickListener(view, () -> {
+                view.setOnClickListener(() -> {
                     try {
                         if (onClick.isfunction()) {
                             onClick.call(luaView);
@@ -309,10 +316,10 @@ public class LuaUIExtend extends LuaExtend {
             LuaValue onRefresh = value.get("on_refresh");
             if (!onRefresh.isnil()) {
                 final View finalView = view;
-                luaModuleManager.addLuaRefreshListener(() -> {
+                luaModuleManager.addLuaRefreshListener((frame) -> {
                     if (finalView.isVisible()) {
                         try {
-                            onRefresh.call(luaView);
+                            onRefresh.call(luaView, LuaInteger.valueOf(frame));
                         } catch (LuaError e) {
                             e.printStackTrace();
                         }
@@ -337,7 +344,10 @@ public class LuaUIExtend extends LuaExtend {
 
     private void applyStyle(View view, String styleName) {
         view.setPosition(Data.config.screen.resolution[0] - 372, 38);
-        view.setSize(372, 800);
+        view.setSize(372, Data.config.screen.resolution[1]);
+//        if (width != -1 && height != -1) {
+            view.setFixedSize(372, Data.config.screen.resolution[1]);
+//        }
         view.setBackgroundColor(0x121c1e);
     }
 }

@@ -119,7 +119,6 @@ public class DigJob extends JobModel {
         Log.info("Mine complete");
 
         _jobParcel.setRockInfo(null);
-        _jobParcel.setGroundInfo(Data.getData().getItemInfo("base.ground.dirt"));
         Application.getInstance().notify(observer -> observer.onRemoveRock(_jobParcel));
 
         if (_actionInfo.products != null) {

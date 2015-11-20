@@ -23,6 +23,7 @@ public class Application implements GameEventListener {
     private long                            _nextDataUpdate;
     private long                            _dataLastModified = Utils.getLastDataModified();
     private List<GameObserver>              _observers = new ArrayList<>();
+    public ConfigChangeListener             _configChangeListener;
 
     public static Application getInstance() {
         if (_self == null) {

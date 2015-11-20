@@ -10,7 +10,7 @@ maxNearDistance: 32
 uiScale: 1
 
 screen:
-    resolution: [1600, 1000]
+    resolution: [1920, 1200]
     mode: borderless
 
 mods:

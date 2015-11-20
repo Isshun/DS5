@@ -35,7 +35,7 @@ public class LuaApplicationModel {
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
-    public Config                   config;
+    public Config                   config = new Config();
     public ApplicationInfo          info = new ApplicationInfo();
     public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;

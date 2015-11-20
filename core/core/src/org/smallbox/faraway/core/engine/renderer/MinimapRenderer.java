@@ -21,8 +21,8 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 import java.util.Collection;
 
 public class MinimapRenderer extends BaseRenderer {
-    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
-    private static final int    COLOR_ROCK = 0x986a50ff;
+//    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
+    private static final int    COLOR_ROCK = 0x60442dff;
     private static final int    COLOR_PLANT = 0x9bcd4dff;
     private static final int    COLOR_STRUCTURE = 0x333333ff;
     private static final Color  COLOR_CHARACTER = new Color(0xff3c59ff);
@@ -130,7 +130,9 @@ public class MinimapRenderer extends BaseRenderer {
             renderer.draw(COLOR_VIEW, (int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1);
 
             for (CharacterModel character: _characters) {
-                renderer.draw(COLOR_CHARACTER, (int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 2, 2);
+                if (character.getParcel().z == WorldHelper.getCurrentFloor()) {
+                    renderer.draw(COLOR_CHARACTER, (int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 3, 3);
+                }
             }
 
             if (_lbFloor != null) {
@@ -151,7 +153,7 @@ public class MinimapRenderer extends BaseRenderer {
                     } else if (parcels[x][y][_floor].hasRock()) {
                         _pixmap.drawPixel(x, y, COLOR_ROCK);
                     } else {
-                        _pixmap.drawPixel(x, y, COLOR_BACKGROUND);
+                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].hasGround() ? parcels[x][y][_floor].getGroundInfo().color : 0x000000);
                     }
                 }
             }

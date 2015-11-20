@@ -121,26 +121,15 @@ public class WeatherModule extends GameModule implements GameObserver {
         }
 
         // Set temperature
-        boolean significantChange = false;
         for (int floor = 0; floor < _floors; floor++) {
             double change = ((_temperatureTargetByFloor[floor] + _temperatureOffset) - _temperatureByFloor[floor]) / 100;
             if (change != 0) {
-                double temperature = _temperatureByFloor[floor];
-
-                if (change > -0.001 && change < 0.001) temperature = _temperatureTargetByFloor[floor] + _temperatureOffset;
-                else if (change > -0.01 && change < 0.01) temperature += change < 0 ? -0.01 : 0.01;
-                else temperature += change;
-
-                if ((int) (_temperatureByFloor[floor] * 10) != (int) (temperature * 10)) {
-                    significantChange = true;
-                }
-
-                _temperatureByFloor[floor] = temperature;
-            }
-            if (significantChange) {
-                Application.getInstance().notify(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));
+                if (change > -0.001 && change < 0.001) _temperatureByFloor[floor] += _temperatureOffset;
+                else if (change > -0.01 && change < 0.01) _temperatureByFloor[floor] += change < 0 ? -0.01 : 0.01;
+                else _temperatureByFloor[floor] += change;
             }
         }
+        Application.getInstance().notify(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));
     }
 
     private void loadRandomWeather() {

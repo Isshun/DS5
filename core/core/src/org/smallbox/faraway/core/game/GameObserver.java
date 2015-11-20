@@ -18,7 +18,7 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
  */
 public interface GameObserver {
     default void onReloadUI(){}
-    default void onRefreshUI(){}
+    default void onRefreshUI(int frame){}
     default void onAddCharacter(CharacterModel character){}
     default void onAddStructure(StructureModel structure){}
     default void onAddItem(ItemModel item){}

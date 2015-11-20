@@ -1,92 +1,100 @@
 package org.smallbox.faraway.core.data.serializer;
 
-import org.apache.commons.compress.archivers.*;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.utils.IOUtils;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import com.almworks.sqlite4java.SQLiteException;
+import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.util.Log;
 
-import java.io.*;
+/**
+ * Created by Alex on 19/11/2015.
+ */
+public class GameSerializer extends SerializerInterface {
 
-public class GameSerializer {
-    public interface GameSerializerInterface {
-        void onSerializerComplete();
-    }
-
-    public static void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.begin", null));
-        long time = System.currentTimeMillis();
-
-        try {
-            File archiveFile = new File(gameDirectory, filename + ".zip");
-
-            InputStream archiveStream = new FileInputStream(archiveFile);
-            ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, archiveStream);
-
-            ArchiveEntry entry;
-            while ((entry = archive.getNextEntry()) != null) {
-                FileOutputStream fos = new FileOutputStream(new File(gameDirectory, entry.getName()));
-                IOUtils.copy(archive, fos);
-                fos.close();
-            }
-            archive.close();
-            archiveStream.close();
-
-            System.out.println("Extract zip: " + (System.currentTimeMillis() - time));
-            File dbFile = new File(gameDirectory, filename + ".db");
-            SQLHelper.getInstance().openDB(dbFile);
-            ModuleManager.getInstance().getSerializers().forEach(serializer -> serializer.load(game));
-            SQLHelper.getInstance().closeDB();
-
-            SQLHelper.getInstance().post(db -> {
-                listener.onSerializerComplete();
-                dbFile.delete();
-                System.out.println("Load save game: " + (System.currentTimeMillis() - time));
-                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
-            });
-        } catch (IOException | ArchiveException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void save(File gameDirectory, String filename) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.begin", null));
-        long time = System.currentTimeMillis();
-
-        // Create DB file
-        File dbFile = new  File(gameDirectory, filename + ".db");
-        SQLHelper.getInstance().openDB(dbFile);
-        ModuleManager.getInstance().getSerializers().forEach(SerializerInterface::save);
-        SQLHelper.getInstance().closeDB();
-        Log.notice("Create save game (" + (System.currentTimeMillis() - time) + "ms)");
-
+    @Override
+    public void save() {
         SQLHelper.getInstance().post(db -> {
             try {
-                // Create zip file
-                File archiveFile = new File(gameDirectory, filename + ".zip");
-                OutputStream archiveStream = new FileOutputStream(archiveFile);
-                ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, archiveStream);
-                archive.putArchiveEntry(new ZipArchiveEntry(filename + ".db"));
-
-                BufferedInputStream input = new BufferedInputStream(new FileInputStream(dbFile));
-                IOUtils.copy(input, archive);
-                input.close();
-                archive.closeArchiveEntry();
-
-                archive.finish();
-                archiveStream.close();
-
-                // Delete DB file
-                dbFile.delete();
-
-                Log.notice("Zip save game (" + (System.currentTimeMillis() - time) + "ms)");
-                Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.complete", null));
-            } catch (IOException | ArchiveException e) {
+                db.exec("CREATE TABLE game (key TEXT, i INTEGER, r REAL, t TEXT)");
+                SQLiteStatement stInt = db.prepare("INSERT INTO game (key, i) VALUES (?, ?)");
+                SQLiteStatement stReal = db.prepare("INSERT INTO game (key, r) VALUES (?, ?)");
+                SQLiteStatement stText = db.prepare("INSERT INTO game (key, t) VALUES (?, ?)");
+                try {
+                    db.exec("begin transaction");
+                    saveInt(stInt, "viewport_x", Game.getInstance().getViewport().getPosX());
+                    saveInt(stInt, "viewport_y", Game.getInstance().getViewport().getPosY());
+                    db.exec("end transaction");
+                } finally {
+                    stInt.dispose();
+                    stReal.dispose();
+                    stText.dispose();
+                }
+            } catch (SQLiteException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void saveInt(SQLiteStatement stInt, String key, int value) throws SQLiteException {
+        stInt.bind(1, key).bind(2, value);
+        stInt.step();
+        stInt.reset(false);
+    }
+
+    private void saveReal(SQLiteStatement stReal, String key, double value) throws SQLiteException {
+        stReal.bind(1, key).bind(2, value);
+        stReal.step();
+        stReal.reset(false);
+    }
+
+    private void saveText(SQLiteStatement stText, String key, String value) throws SQLiteException {
+        stText.bind(1, key).bind(2, value);
+        stText.step();
+        stText.reset(false);
+    }
+
+    public void load(Game game) {
+        SQLHelper.getInstance().post(db -> {
+            try {
+                SQLiteStatement stInt = db.prepare("SELECT i FROM game WHERE key = ?");
+                SQLiteStatement stReal = db.prepare("SELECT r FROM game WHERE key = ?");
+                SQLiteStatement stText = db.prepare("SELECT t FROM game WHERE key = ?");
+                try {
+                    game.getViewport().setPosition(getInt(stInt, "viewport_x", 0), getInt(stInt, "viewport_y", 0));
+                } finally {
+                    stInt.dispose();
+                    stReal.dispose();
+                    stText.dispose();
+                }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private int getInt(SQLiteStatement stInt, String key, int value) throws SQLiteException {
+        stInt.bind(1, key);
+        if (stInt.step()) {
+            value = stInt.columnInt(0);
+        }
+        stInt.reset(false);
+        return value;
+    }
+
+    private double getReal(SQLiteStatement stRealt, String key, double value) throws SQLiteException {
+        stRealt.bind(1, key);
+        if (stRealt.step()) {
+            value = stRealt.columnDouble(0);
+        }
+        stRealt.reset(false);
+        return value;
+    }
+
+    private String getText(SQLiteStatement stText, String key, String value) throws SQLiteException {
+        stText.bind(1, key);
+        if (stText.step()) {
+            value = stText.columnString(0);
+        }
+        stText.reset(false);
+        return value;
     }
 }

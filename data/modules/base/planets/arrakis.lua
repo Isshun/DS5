@@ -33,7 +33,7 @@ data:extend({
         },
         spots = {{latitude = {40, 90}, frequency = 1}},
         terrains = {
-            { ground = "base.sand" },
+            { ground = "base.ground.sand" },
             { resource = "base.granite", pattern = "mountain" },
             { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
             { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
@@ -63,7 +63,7 @@ data:extend({
             {latitude = {40, 90}, frequency = 0.5},
             {latitude = {-90, 40}, frequency = 0.2}},
         terrains = {
-            { ground = "base.sand" },
+            { ground = "base.ground.sand" },
             { resource = "base.granite", pattern = "valley" },
             { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
             { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
@@ -91,7 +91,7 @@ data:extend({
         },
         spots = {{latitude = {-90, 40}, frequency = 1}},
         terrains = {
-            { ground = "base.sand" },
+            { ground = "base.ground.sand" },
             { resource = "base.granite", pattern = "mineral_rare_large" },
             { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
             { resource = "base.raw_spice", pattern = "mineral_rare_large", condition = "ground" },

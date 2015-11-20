@@ -88,34 +88,32 @@ public class PathManager extends GameModule {
 
         // Top / bottom / right / left parcel
         if (bestPath == null && horizontalApprox) {
-            for (int x = toParcel.x - 1; x <= toParcel.x + 1; x++) {
-                for (int y = toParcel.y - 1; y <= toParcel.y + 1; y++) {
-                    if (x != toParcel.x || y != toParcel.y) {
-                        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, toParcel.z);
-                        if (parcel != null && parcel.isWalkable()) {
-                            PathModel path = getPath(fromParcel, parcel);
-                            if (path != null && (bestPath == null || path.getLength() < bestPath.getLength())) {
-                                bestPath = path;
-                            }
-                        }
-                    }
-                }
-            }
+            ParcelModel parcel = null;
+            PathModel path = null;
+            if ((parcel = WorldHelper.getParcel(toParcel.x - 1, toParcel.y, toParcel.z)) != null && parcel.isWalkable())
+                if ((path = getPath(fromParcel, parcel)) != null)
+                    bestPath = path;
+            if ((parcel = WorldHelper.getParcel(toParcel.x + 1, toParcel.y, toParcel.z)) != null && parcel.isWalkable())
+                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+                    bestPath = path;
+            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y - 1, toParcel.z)) != null && parcel.isWalkable())
+                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+                    bestPath = path;
+            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y + 1, toParcel.z)) != null && parcel.isWalkable())
+                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+                    bestPath = path;
         }
 
         // Upper / lower parcel
         if (bestPath == null && verticalApprox) {
-            for (int z = toParcel.z - 1; z <= toParcel.z + 1; z++) {
-                if (z != toParcel.z) {
-                    ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(toParcel.x, toParcel.y, z);
-                    if (parcel != null && parcel.isWalkable()) {
-                        PathModel path = getPath(fromParcel, parcel);
-                        if (path != null && (bestPath == null || path.getLength() < bestPath.getLength())) {
-                            bestPath = path;
-                        }
-                    }
-                }
-            }
+            ParcelModel parcel = null;
+            PathModel path = null;
+            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y, toParcel.z - 1)) != null && parcel.isWalkable())
+                if ((path = getPath(fromParcel, parcel)) != null)
+                    bestPath = path;
+            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y, toParcel.z + 1)) != null && parcel.isWalkable())
+                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+                    bestPath = path;
         }
 
         return bestPath;
@@ -153,6 +151,8 @@ public class PathManager extends GameModule {
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
         assert fromParcel != null;
         assert toParcel != null;
+
+        printDebug("Find path from " + fromParcel + " to " + toParcel);
 
         long time = System.currentTimeMillis();
 

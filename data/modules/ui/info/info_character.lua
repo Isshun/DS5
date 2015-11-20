@@ -185,7 +185,7 @@ data:extend({
         if character ~= nil then
             local job = character:getJob()
             if job then
-                view:findById("lb_job"):setDashedString(job:getLabel(), math.floor(job:getProgress() * 100), 38)
+                view:findById("lb_job"):setDashedString(job:getLabel(), math.floor(job:getProgress() * 100), 35)
             else
                 view:findById("lb_job"):setText("No job")
             end
@@ -308,7 +308,7 @@ function display_talents(view)
         lb_up:setBackgroundColor(0xff0000)
         lb_up:setPosition(200, 0)
         lb_up:setOnClickListener(function(v)
-            character:moveTalent(talent, -1)
+            character:getTalents():moveTalent(talent, -1)
             display_talents(view)
         end)
         frame_talent:addView(lb_up)

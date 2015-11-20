@@ -39,7 +39,7 @@ public class TemperatureRenderer extends GameDisplay {
                     if (parcel.y < minY) minY = parcel.y;
                 }
 
-                String text = room.getTemperatureInfo().temperature + "°";
+                String text = (int)Math.round(room.getTemperatureInfo().temperature) + "°";
 //                BitmapFont.TextBounds bounds = renderer.getFont(24).getWrappedBounds(text, 0);
                 renderer.draw(text, 24,
                         (minX + (maxX - minX) / 2) * Constant.TILE_WIDTH + viewport.getPosX(),

@@ -123,7 +123,7 @@
 //        FileUtils.write(fos, "</consumable>");
 //    }
 //
-//    public void load(GameInfo gameInfo, VTDNav vn, GameSerializer.GameSerializerInterface listener) throws XPathParseException, NavException, XPathEvalException {
+//    public void load(GameInfo gameInfo, VTDNav vn, GameSaveManager.GameSerializerInterface listener) throws XPathParseException, NavException, XPathEvalException {
 //        ParcelModel[][][] parcels = new ParcelModel[gameInfo.worldWidth][gameInfo.worldHeight][gameInfo.worldFloors];
 //        List<ParcelModel> parcelsList = new ArrayList<>();
 //        int width = gameInfo.worldWidth;

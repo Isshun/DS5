@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
@@ -43,17 +44,25 @@ public class ExteriorRenderer extends WorldRenderer {
     private int                     _floor;
     private Map<ItemInfo, Pixmap>   _pxRocks;
     private Map<ItemInfo, Pixmap>   _pxGrounds;
+    private Map<ItemInfo, Pixmap>   _pxGroundDecorations;
 
     @Override
     protected void onLoad(Game game) {
         super.onLoad(game);
 
         _pxGrounds = new HashMap<>();
+        _pxGroundDecorations = new HashMap<>();
 
         Data.getData().items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
             Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(0))));
             textureIn.getTextureData().prepare();
             _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
+
+            if (itemInfo.graphics.size() == 2) {
+                Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(1))));
+                textureDecoration.getTextureData().prepare();
+                _pxGroundDecorations.put(itemInfo, textureDecoration.getTextureData().consumePixmap());
+            }
         });
 
         _pxRocks = new HashMap<>();
@@ -207,7 +216,6 @@ public class ExteriorRenderer extends WorldRenderer {
             final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldHeight);
 
             ModuleHelper.getWorldModule().getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, _floor, _floor, parcels -> {
-                Pixmap.setBlending(Pixmap.Blending.None);
                 SpriteManager spriteManager = SpriteManager.getInstance();
                 Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
                 Pixmap pxOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
@@ -215,7 +223,42 @@ public class ExteriorRenderer extends WorldRenderer {
                 for (ParcelModel parcel: parcels) {
                     // Draw ground
                     if (parcel.hasGround()) {
-                        pxGroundOut.drawPixmap(_pxGrounds.get(parcel.getGroundInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 32, 32, 32);
+                        boolean test = false;
+                        ParcelModel topParcel = WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z);
+                        if (topParcel != null && topParcel.hasGround() && topParcel.getGroundInfo() != parcel.getGroundInfo()) {
+                            pxGroundOut.drawPixmap(_pxGrounds.get(topParcel.getGroundInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
+                            test = true;
+                        }
+
+                        int offsetX = (parcel.x % parcel.getGroundInfo().width) * 32;
+                        int offsetY = (parcel.y % parcel.getGroundInfo().height) * 32;
+
+                        if (!test) {
+                            pxGroundOut.drawPixmap(_pxGrounds.get(parcel.getGroundInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 32);
+                        } else {
+                            Pixmap pixmap = _pxGrounds.get(parcel.getGroundInfo());
+                            pixmap.setColor(1, 1, 1, 0.25f);
+                            for (int i = 0; i < 32; i++) {
+                                pxGroundOut.drawPixel(pixmap.getPixels()., (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 1);
+                            }
+                            pixmap.setColor(1, 1, 1, 0.5f);
+                            pxGroundOut.drawPixmap(pixmap, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32 + 1, offsetX, offsetY, 32, 1);
+                            pixmap.setColor(1, 1, 1, 0.75f);
+                            pxGroundOut.drawPixmap(pixmap, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32 + 2, offsetX, offsetY, 32, 1);
+                            pxGroundOut.setColor(1, 0, 0, 1);
+//                            pxGroundOut.drawPixmap(pixmap, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32 + 3, offsetX, offsetY, 32, 29);
+                        }
+
+                        if (MathUtils.randomBoolean(0.1f) && _pxGroundDecorations.containsKey(parcel.getGroundInfo())) {
+                            Pixmap.setBlending(Pixmap.Blending.SourceOver);
+                            pxGroundOut.drawPixmap(_pxGroundDecorations.get(parcel.getGroundInfo()),
+                                    (parcel.x - fromX) * 32,
+                                    (parcel.y - fromY) * 32,
+                                    MathUtils.random(0, 3) * 32,
+                                    MathUtils.random(0, 5) * 32,
+                                    32,
+                                    32);
+                        }
                     } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 1)) {
                         pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 1)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 32, 32, 32, 32);
                     } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 2)) {
@@ -258,6 +301,8 @@ public class ExteriorRenderer extends WorldRenderer {
                         });
 //                        }
                     }
+
+                    Pixmap.setBlending(Pixmap.Blending.None);
                 }
 
                 Gdx.app.postRunnable(() -> {

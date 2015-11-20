@@ -1,14 +1,17 @@
 package org.smallbox.farpoint.desktop;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ConfigChangeListener;
 import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.data.loader.ConfigLoader;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DesktopLauncher {
@@ -63,6 +66,7 @@ public class DesktopLauncher {
     public static void main (String[] arg) {
         Data data = new Data();
         new ConfigLoader().load(data);
+
 //
 //        RoomDo r1 = new RoomDo(1, 100, 0.2);
 //        RoomDo r2 = new RoomDo(2, 500, 0.8);
@@ -89,26 +93,57 @@ public class DesktopLauncher {
 //
 //        System.exit(1);
 
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        double ratio = (double)width / height;
+        System.out.println("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
+
         System.loadLibrary("sqlite4java-win32-x64-1.0.392");
 
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 //        config.samples = 2;
-        config.x = 2000 + 40;
-        config.y = 0 + 40;
-        config.width = data.config.screen.resolution[0];
-        config.height = data.config.screen.resolution[1];
-//        config.width = 100;
-//        config.height = 80;
+        config.x = 1920 + 0;
+        config.y = 0 + 0;
+//        config.width = data.config.screen.resolution[0];
+//        config.height = data.config.screen.resolution[1];
+        config.width = width;
+        config.height = height;
         config.fullscreen = false;
         config.foregroundFPS = 60;
         config.backgroundFPS = 30;
 //        config.foregroundFPS = 0;
 //        config.backgroundFPS = 0;
-        config.resizable = true;
+        config.resizable = false;
         config.vSyncEnabled = false;
 //        config.useGL30 = true;
         config.title = Constant.NAME + " " + Constant.VERSION;
+        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+
+        Application.getInstance()._configChangeListener = new ConfigChangeListener() {
+            @Override
+            public void onScreeMode(String mode) {
+                switch (mode) {
+                    case "window":
+                        config.fullscreen = false;
+                        System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+                        Gdx.graphics.setDisplayMode(1280, 720, false);
+                        break;
+                    case "borderless":
+                        config.fullscreen = false;
+                        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+                        Gdx.graphics.setDisplayMode(width, height, true);
+                        break;
+                    case "fullscreen":
+                        config.fullscreen = true;
+                        Gdx.graphics.setDisplayMode(width, height, true);
+                        break;
+                }
+            }
+        };
+
         new LwjglApplication(new GDXApplication(), config);
+        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 //        new LwjglApplication(new TestApplication(), config);
 //        new LwjglApplication(new ApplicationAdapter() {
 //            public Texture _textureGround;
@@ -144,20 +179,6 @@ public class DesktopLauncher {
 //                _batch.end();
 //            }
 //        }, config);
-
-//        switch (data.config.screen.mode) {
-//            case "window":
-//                config.fullscreen = false;
-//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-//                break;
-//            case "borderless":
-//                config.fullscreen = false;
-//                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-//                break;
-//            case "fullscreen":
-//                config.fullscreen = true;
-//                break;
-//        }
     }
 
 }

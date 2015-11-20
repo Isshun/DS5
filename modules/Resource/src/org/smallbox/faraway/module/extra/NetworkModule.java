@@ -114,9 +114,9 @@ public class NetworkModule extends GameModule {
             ParcelModel p1 = connection.getParcel();
             int distance = connection.getDistance();
             int bestDistance = -1;
-            for (int x = p1.x - distance; x < p1.x + 1 + distance; x++) {
-                for (int y = p1.y - distance; y < p1.y + 1 + distance; y++) {
-                    for (int z = p1.z - distance; y < p1.z + 1 + distance; z++) {
+            for (int x = p1.x - distance; x <= p1.x + distance; x++) {
+                for (int y = p1.y - distance; y <= p1.y + distance; y++) {
+                    for (int z = p1.z - 1; z <= p1.z + 1; z++) {
                         ParcelModel p2 = WorldHelper.getParcel(x, y, z);
                         if (p2 != null && p2.hasNetwork(connection.getNetworkInfo()) && (bestDistance == -1 || WorldHelper.getApproxDistance(p1, p2) < bestDistance)) {
                             NetworkObjectModel networkObject = p2.getNetworkObject(connection.getNetworkInfo());

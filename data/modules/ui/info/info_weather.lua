@@ -1,8 +1,8 @@
 data:extend({
     type = "view",
     name = "base.ui.info_weather",
-    position = {0, 820},
-    size = {372, 800},
+    position = {0, 920},
+    size = {372, 200},
     background = 0x121c1e,
     visible = true,
     views = {

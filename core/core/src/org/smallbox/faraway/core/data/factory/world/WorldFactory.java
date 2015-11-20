@@ -25,7 +25,7 @@ public class WorldFactory {
     private int                 _width;
     private int                 _height;
 
-    public void create(Game game, WorldModule worldModule, RegionInfo regionInfo) {
+    public void create(Game game, RegionInfo regionInfo) {
         MathUtils.random.setSeed(42);
 
         _floors = game.getInfo().worldFloors;
@@ -39,12 +39,10 @@ public class WorldFactory {
         }
 
         // Create parcels
-        ItemInfo groundInfo = Data.getData().getItemInfo("base.ground.sand");
         for (int x = 0; x < _width; x++) {
             for (int y = 0; y < _height; y++) {
                 for (int f = 0; f < _floors; f++) {
                     ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
-                    parcel.setGroundInfo(groundInfo);
                     parcelList.add(parcel);
                     parcelListFloors.get(f).add(parcel);
                     _parcels[x][y][f] = parcel;
@@ -70,7 +68,7 @@ public class WorldFactory {
                         .filter(parcel -> MathUtils.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
                         .forEach(parcel -> applyToParcel(terrain, parcel));
             }
-            else if (terrain.pattern != null) {
+            else if (WorldFactoryConfig.has(terrain.pattern)) {
                 Log.notice("Create resources with pattern: " + terrain.pattern);
                 for (int z = 0; z < _floors; z++) {
                     if (z == _floors - 1 || "rock".equals(terrain.condition)) {
@@ -124,6 +122,10 @@ public class WorldFactory {
 
                 if (isAlone) {
                     parcel.setRockInfo(null);
+                    if (l != null) parcel.setGroundInfo(l.getGroundInfo());
+                    if (r != null) parcel.setGroundInfo(r.getGroundInfo());
+                    if (t != null) parcel.setGroundInfo(t.getGroundInfo());
+                    if (b != null) parcel.setGroundInfo(b.getGroundInfo());
                 }
             }
         });
@@ -139,9 +141,9 @@ public class WorldFactory {
                 || ("ground".equals(terrain.condition) && !parcel.hasRock())) {
 
             // Set ground
-//            if (terrain.typeId != -1) {
-//                parcel.setType(terrain.typeId);
-//            }
+            if (terrain.ground != null) {
+                parcel.setGroundInfo(Data.getData().getItemInfo(terrain.ground));
+            }
 
             // Add resource
             if (terrain.resource != null) {
@@ -196,11 +198,11 @@ public class WorldFactory {
         ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
 
         // Put resources
-        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
 
         ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
         ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);

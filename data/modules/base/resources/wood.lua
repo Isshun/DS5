@@ -1,10 +1,10 @@
 data:extend({
     {
-        label = "Wood",
-        name = "base.wood",
+        label = "Tree",
+        name = "base.tree",
         type = "resource",
         size = {1, 2},
-        graphics = { path = "[base]/graphics/items/resources/wood.png"},
-        actions = {{ type = "cut", cost = 1, products = {{item = "base.wood_log", quantity = {5, 15}}}}}
+        graphics = { path = "[base]/graphics/plants/tree.png"},
+        actions = {{ type = "cut", cost = 1, products = {{item = "base.consumable.wood_log", quantity = {5, 15}}}}}
     },
 })

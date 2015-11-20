@@ -103,7 +103,7 @@ data:extend({
             oxygen = 100,
             gather = 0.25,
             growing = 2000,
-            nourish = 500,
+            nourish = 2400,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -118,6 +118,7 @@ data:extend({
                 cost = 20,
                 products = {
                     { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
+                    { item = "base.consumable.wood_log", quantity = {10, 50}, rate = 1 },
                 },
             },
         },

@@ -250,6 +250,8 @@ public class WorldHelper {
         if (!isBlocked(x - 1, y, z)) return false;
         if (!isBlocked(x, y + 1, z)) return false;
         if (!isBlocked(x, y - 1, z)) return false;
+        if (!isBlocked(x, y, z + 1)) return false;
+        if (!isBlocked(x, y, z - 1)) return false;
         return true;
     }
 

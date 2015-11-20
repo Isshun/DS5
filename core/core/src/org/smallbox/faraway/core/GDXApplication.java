@@ -109,10 +109,9 @@ public class GDXApplication extends ApplicationAdapter {
         }));
 
         _loadTasks.add(new LoadTask("Resume game", () -> {
-            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            GameManager.getInstance().create(Data.getData().getRegion("base.planet.arrakis", "desert"));
-//            GameManager.getInstance().loadGame(, Data.getData().getRegion("base.planet.arrakis", "desert"));
 //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
+//            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+            GameManager.getInstance().create(Data.getData().getRegion("base.planet.corrin", "mountain"));
         }));
 
         _loadTasks.add(new LoadTask("Launch world thread", () ->
@@ -154,7 +153,7 @@ public class GDXApplication extends ApplicationAdapter {
             OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             _batch.setProjectionMatrix(camera.combined);
-            _systemFont.draw(_batch, _currentMessage, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+            _systemFont.draw(_batch, _currentMessage, 20, Gdx.graphics.getHeight() - 20);
             _batch.end();
             _currentMessage = null;
             return;

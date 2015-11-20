@@ -25,6 +25,7 @@ public class LuaItemExtend extends LuaExtend {
     public boolean accept(String type) {
         switch (type) {
             case "item":
+            case "ground":
             case "resource":
             case "structure":
             case "consumable":
@@ -72,6 +73,12 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.category = getString(value, "category", null);
         itemInfo.type = getString(value, "type", null);
 
+        if (!value.get("material").isnil()) {
+            itemInfo.material = new ItemInfo.ItemMaterialInfo();
+            itemInfo.material.label = getString(value.get("material"), "label", null);
+            itemInfo.material.iconPath = getString(value.get("material"), "icon", null);
+        }
+
         if (!value.get("size").isnil()) {
             itemInfo.width = value.get("size").get(1).toint();
             itemInfo.height = value.get("size").get(2).toint();
@@ -82,6 +89,7 @@ public class LuaItemExtend extends LuaExtend {
 
         LuaValue luaGraphics = value.get("graphics");
         if (!luaGraphics.isnil()) {
+            itemInfo.graphics.clear();
             if (!luaGraphics.get("path").isnil()) {
                 itemInfo.graphics.add(readGraphic(luaGraphics, itemInfo));
             } else if (luaGraphics.length() >= 1 && !luaGraphics.get(1).get("path").isnil()) {
@@ -97,9 +105,10 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.isWalkable = getBoolean(value, "walkable", true);
         itemInfo.health = getInt(value, "health", 1);
         itemInfo.networkName = getString(value, "network", null);
-        itemInfo.isGround = getBoolean(value, "is_ground", false);
+        itemInfo.isGround = "ground".equals(getString(value, "type", null));
         itemInfo.isLinkDown = getBoolean(value, "is_link_down", false);
         itemInfo.isWall= getBoolean(value, "is_wall", false);
+        itemInfo.color = getInt(value, "color", 0x000000);
 
         itemInfo.permeability = getDouble(value, "permeability", 1);
 

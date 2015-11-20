@@ -8,7 +8,6 @@ data:extend({
             application.ui:findById("base.ui.panel_main"):setVisible(true)
             application.ui:findById("base.ui.panel_build"):setVisible(false)
             application.ui:findById("base.ui.panel_areas"):setVisible(false)
-            application.ui:findById("base.ui.panel_tasks"):setVisible(false)
             application.ui:findById("base.ui.panel_crew"):setVisible(false)
             application.ui:findById("base.ui.panel_jobs"):setVisible(false)
         end},

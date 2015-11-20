@@ -1,8 +1,6 @@
 data:extend({
     type = "view",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    style = "base.style.right_panel",
     id = "base.ui.panel_areas",
     visible = false,
     views = {

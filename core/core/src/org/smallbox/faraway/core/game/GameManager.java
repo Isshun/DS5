@@ -3,12 +3,11 @@ package org.smallbox.faraway.core.game;
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.factory.world.WorldFactory;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.data.serializer.GameSaveManager;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 
@@ -35,7 +34,7 @@ public class GameManager {
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info, Data.config);
-        GameSerializer.load(game, new File("data/saves", game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
+        GameSaveManager.load(game, new File("data/saves", game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             ModuleManager.getInstance().startGame(game);
             game.init();
@@ -57,10 +56,8 @@ public class GameManager {
         }
 
         Game game = new Game(gameInfo, Data.config);
-        WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
-
         WorldFactory factory = new WorldFactory();
-        factory.create(game, world, regionInfo);
+        factory.create(game, regionInfo);
 
         WorldHelper.init(game.getInfo(), factory.getParcels());
         ModuleManager.getInstance().startGame(game);
@@ -105,7 +102,7 @@ public class GameManager {
                 e.printStackTrace();
             }
 
-            GameSerializer.save(gameDirectory, filename);
+            GameSaveManager.save(gameDirectory, filename);
         }
     }
 

@@ -9,6 +9,10 @@ data:extend({
         { type = "label", text = "Structure", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
+        { type = "view", position = {286, 30}, size = {80, 25}, background = 0x3e4b0b, views = {
+            { type = "view", id = "progress_health", size = {50, 25}, background = 0x89ab00 },
+            { type = "label", id = "lb_health", text = "80/120", text_size = 16, padding = 7 },
+        }},
         { type = "list", position = {0, 60}, views = {
             { type = "label", id = "lb_durability", text = "lb_durability", text_size = 16, position = {10, 10}, size = {-1, 32}},
             { type = "label", id = "lb_walkable", text = "lb_walkable", text_size = 16, position = {10, 10}, size = {-1, 32}},
@@ -63,6 +67,8 @@ data:extend({
             view:findById("lb_walkable"):setText("Walkable: " .. (structure:getInfo().isWalkable and "yes" or "no"))
             view:findById("lb_complete"):setText("Complete: " .. (structure:isComplete() and "yes" or "no"))
             view:findById("lb_permeability"):setText("Permeability: " .. structure:getInfo().permeability)
+            view:findById("lb_health"):setText(structure:getHealth() .. "/" .. structure:getMaxHealth())
+            view:findById("progress_health"):setSize(structure:getHealth() / structure:getMaxHealth() * 80, 25)
 
             view:findById("frame_building"):setVisible(not structure:isComplete())
             if not structure:isComplete() then

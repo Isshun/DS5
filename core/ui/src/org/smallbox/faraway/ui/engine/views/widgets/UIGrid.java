@@ -58,6 +58,8 @@ public class UIGrid extends View {
 
     @Override
     public void addView(View view) {
+        view.setDeep(_deep + 1);
+
         _views.add(view);
         view.setParent(this);
         _count = _views.size();

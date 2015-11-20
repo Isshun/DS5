@@ -1,0 +1,30 @@
+{
+    "floors": 8,
+    "saves": [
+        {
+            "date": "2015-11-19-15-50-50",
+            "filename": "2015-11-19-03-03-50-50",
+            "type": "INIT"
+        },
+        {
+            "date": "2015-11-19-18-37-04",
+            "filename": "2015-11-19-06-06-37-04",
+            "type": "FAST"
+        },
+        {
+            "date": "2015-11-19-18-48-10",
+            "filename": "2015-11-19-06-06-48-10",
+            "type": "FAST"
+        },
+        {
+            "date": "2015-11-19-19-21-46",
+            "filename": "2015-11-19-07-07-21-46",
+            "type": "FAST"
+        }
+    ],
+    "planet": "base.planet.corrin",
+    "name": "9db32e8d-440c-40e2-b1e0-02bab27953f3",
+    "width": 256,
+    "region": "mountain",
+    "height": 160
+}

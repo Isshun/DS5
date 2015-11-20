@@ -7,6 +7,7 @@ public class WorldFactoryConfig {
     public static WorldFactoryConfig[] CONFIGS = new WorldFactoryConfig[] {
             new WorldFactoryConfig("valley", 5, 8, 8, 2f, 0.65f),
             new WorldFactoryConfig("mountain", 5, 8, 8, 2f, 0.55f),
+            new WorldFactoryConfig("ground_large", 4, 64, 64, 2f, 0.6f),
             new WorldFactoryConfig("mineral_common_light", 2, 128, 128, 2f, 0.65f),
             new WorldFactoryConfig("mineral_common_large", 4, 64, 64, 2f, 0.6f),
             new WorldFactoryConfig("mineral_rare_light", 2, 128, 128, 2f, 0.75f),
@@ -36,5 +37,14 @@ public class WorldFactoryConfig {
             }
         }
         return null;
+    }
+
+    public static boolean has(String name) {
+        for (WorldFactoryConfig config: CONFIGS) {
+            if (config.name.equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

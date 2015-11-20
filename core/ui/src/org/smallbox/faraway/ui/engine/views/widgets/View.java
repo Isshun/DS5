@@ -36,6 +36,15 @@ public abstract class View {
         _focusable = focusable;
     }
 
+    public void click() {
+        assert _onClickListener != null;
+        _onClickListener.onClick();
+
+        if (_parent != null && _parent instanceof UIDropDown) {
+            ((UIDropDown)_parent).setCurrent(this);
+        }
+    }
+
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
     protected List<View>        _views = new ArrayList<>();
@@ -70,12 +79,13 @@ public abstract class View {
     protected View              _parent;
     protected OnClickListener   _onClickListener;
     protected OnClickListener   _onRightClickListener;
+    protected OnClickListener   _onMouseWheelUpListener;
+    protected OnClickListener   _onMouseWheelDownListener;
     protected OnFocusListener   _onFocusListener;
     protected boolean           _isFocus;
     protected boolean           _isActive = true;
     protected int               _id;
     protected int               _borderSize;
-    protected boolean           _invalid;
     protected Object            _data;
     protected Align             _align = Align.LEFT;
     protected int               _offsetX;
@@ -110,7 +120,7 @@ public abstract class View {
     }
     public void         setName(String name) { _name = name; }
     public void         setInGame(boolean inGame) { _inGame = inGame; }
-    public void         setDeep(int deep) { _deep = deep; }
+    public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
     public void         setLevel(int level) { _level = level; }
     public void         setModule(LuaModule module) { _module = module; }
     public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
@@ -126,6 +136,8 @@ public abstract class View {
     public int          getId() { return _id; }
     public int          getPosX() { return _x; }
     public int          getPosY() { return _y; }
+    public int          getFinalX() { return _finalX; }
+    public int          getFinalY() { return _finalY; }
     public int          getDeep() { return _deep; }
     public int          getLevel() { return _level; }
     public int          getRegularBackground() { return _regularBackground; }
@@ -135,6 +147,7 @@ public abstract class View {
     public LuaModule    getModule() { return _module; }
     protected String    getString() { return null; }
     public int          getHeight() { return _height; }
+    public int          getWidth() { return _width; }
     public int          getMarginTop() { return _marginTop; }
     public int          getMarginRight() { return _marginRight; }
     public int          getMarginBottom() { return _marginBottom; }
@@ -245,6 +258,24 @@ public abstract class View {
     }
 
     // TODO: crash in lua throw on main thread
+    public void setOnRightClickListener(LuaValue value) {
+        _onRightClickListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        UIEventManager.getInstance().setOnRightClickListener(this, _onRightClickListener);
+    }
+
+    // TODO: crash in lua throw on main thread
+    public void setOnMouseWheelUpListener(LuaValue value) {
+        _onMouseWheelUpListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        UIEventManager.getInstance().setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
+    }
+
+    // TODO: crash in lua throw on main thread
+    public void setOnMouseWheelDownListener(LuaValue value) {
+        _onMouseWheelDownListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        UIEventManager.getInstance().setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
+    }
+
+    // TODO: crash in lua throw on main thread
     public void setOnFocusListener(LuaValue value) {
         _onFocusListener = new OnFocusListener() {
             @Override
@@ -283,31 +314,25 @@ public abstract class View {
         _paddingRight = r;
         _paddingBottom = b;
         _paddingLeft = l;
-        _invalid = true;
     }
 
     public void setPadding(int t, int r) {
         _paddingTop = _paddingBottom = t;
         _paddingRight = _paddingLeft = r;
-        _invalid = true;
     }
 
     public void setPadding(int padding) {
         _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = padding;
-        _invalid = true;
     }
 
     public void setSize(int width, int height) {
         _width = (int) (width * Data.config.uiScale);
         _height = (int) (height * Data.config.uiScale);
-        _invalid = true;
     }
 
     public void setPosition(int x, int y) {
         _x = (int) (x * Data.config.uiScale) + (_isAlignLeft ? 0 : Data.config.screen.resolution[0]);
         _y = (int) (y * Data.config.uiScale) + (_isAlignTop ? 0 : Data.config.screen.resolution[1]);
-
-        _invalid = true;
     }
 
     public void onEnter() {

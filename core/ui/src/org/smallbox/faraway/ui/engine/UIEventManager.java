@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.*;
@@ -10,14 +11,19 @@ public class UIEventManager {
     private static UIEventManager           _self;
     private Map<View, OnClickListener>      _onClickListeners;
     private Map<View, OnClickListener>      _onRightClickListeners;
+    private Map<View, OnClickListener>      _onMouseWheelUpListeners;
+    private Map<View, OnClickListener>      _onMouseWheelDownListeners;
     private Map<View, OnFocusListener>      _onFocusListeners;
     private Map<View, OnKeyListener>        _onKeysListeners;
+    private UIDropDown                      _currentDropDown;
 
     private UIEventManager() {
-        _onClickListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
-        _onRightClickListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
-        _onFocusListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
-        _onKeysListeners = new TreeMap<>((Comparator<View>) (v1, v2) -> v2.compareLevel(v1));
+        _onClickListeners = new HashMap<>();
+        _onRightClickListeners = new HashMap<>();
+        _onFocusListeners = new HashMap<>();
+        _onKeysListeners = new HashMap<>();
+        _onMouseWheelUpListeners = new HashMap<>();
+        _onMouseWheelDownListeners = new HashMap<>();
     }
 
     public static UIEventManager getInstance() {
@@ -43,6 +49,22 @@ public class UIEventManager {
         }
     }
 
+    public void setOnMouseWheelUpListener(View view, OnClickListener onClickListener) {
+        if (onClickListener == null) {
+            _onMouseWheelUpListeners.remove(view);
+        } else {
+            _onMouseWheelUpListeners.put(view, onClickListener);
+        }
+    }
+
+    public void setOnMouseWheelDownListener(View view, OnClickListener onClickListener) {
+        if (onClickListener == null) {
+            _onMouseWheelDownListeners.remove(view);
+        } else {
+            _onMouseWheelDownListeners.put(view, onClickListener);
+        }
+    }
+
     public void setOnRightClickListener(View view, OnClickListener onClickListener) {
         if (onClickListener == null) {
             _onRightClickListeners.remove(view);
@@ -52,13 +74,27 @@ public class UIEventManager {
     }
 
     public boolean click(int x, int y) {
+        View bestView = null;
+        int bestDepth = -1;
         boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onClickListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onClickListeners.get(view).onClick();
-                return true;
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
+                bestDepth = view.getDeep();
+                bestView = view;
             }
         }
+
+        if (_currentDropDown != null) {
+            _currentDropDown.setOpen(false);
+            _currentDropDown = null;
+        }
+
+        if (bestView != null) {
+            bestView.click();
+//            _onClickListeners.get(bestView).onClick();
+            return true;
+        }
+
         return false;
     }
 
@@ -67,6 +103,28 @@ public class UIEventManager {
         for (View view: _onRightClickListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onRightClickListeners.get(view).onClick();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean mouseWheelUp(int x, int y) {
+        boolean gameRunning = GameManager.getInstance().isLoaded();
+        for (View view: _onMouseWheelUpListeners.keySet()) {
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+                _onMouseWheelUpListeners.get(view).onClick();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean mouseWheelDown(int x, int y) {
+        boolean gameRunning = GameManager.getInstance().isLoaded();
+        for (View view: _onMouseWheelDownListeners.keySet()) {
+            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+                _onMouseWheelDownListeners.get(view).onClick();
                 return true;
             }
         }
@@ -140,6 +198,8 @@ public class UIEventManager {
         _onRightClickListeners.clear();
         _onFocusListeners.clear();
         _onKeysListeners.clear();
+        _onMouseWheelDownListeners.clear();
+        _onMouseWheelUpListeners.clear();
     }
 
     public void removeListeners(View view) {
@@ -147,9 +207,15 @@ public class UIEventManager {
         _onClickListeners.remove(view);
         _onFocusListeners.remove(view);
         _onKeysListeners.remove(view);
+        _onMouseWheelDownListeners.remove(view);
+        _onMouseWheelUpListeners.remove(view);
     }
 
     public void setOnKeyListener(View view, OnKeyListener onKeyListener) {
         _onKeysListeners.put(view, onKeyListener);
+    }
+
+    public void setCurrentDropDown(UIDropDown dropDown) {
+        _currentDropDown = dropDown;
     }
 }

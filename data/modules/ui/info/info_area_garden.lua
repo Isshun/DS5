@@ -4,9 +4,7 @@ g_area_garden_refresh = nil
 data:extend({
     type = "list",
     id = "info_area_garden",
-    position = {application.info.screen_width - 400, 38},
-    size = {400, 800},
-    background = 0x121c1e,
+    style = "base.style.right_panel",
     visible = false,
     views = {
         { type = "view", size = {400, 40}, views = {

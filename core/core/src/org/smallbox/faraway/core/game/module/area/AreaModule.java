@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  */
 public class AreaModule extends GameModule {
     private List<AreaModel> _areas = new ArrayList<>();
+    private List<GardenAreaModel> _gardens = new ArrayList<>();
     private List<StorageAreaModel> _storageAreas = new ArrayList<>();
 
     public AreaModule() {
@@ -39,6 +40,14 @@ public class AreaModule extends GameModule {
         // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
         ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getStoreJob() == null).forEach(this::storeConsumable);
+    }
+
+    public void init(List<StorageAreaModel> storageAreas, List<GardenAreaModel> gardenAreas) {
+        _areas.clear();
+        _areas.addAll(storageAreas);
+        _areas.addAll(gardenAreas);
+        _gardens = gardenAreas;
+        _storageAreas = storageAreas;
     }
 
     private void storeConsumable(ConsumableModel consumable) {
@@ -120,7 +129,9 @@ public class AreaModule extends GameModule {
         }
 
         // Delete empty areas
-        _areas.removeAll(_areas.stream().filter(area -> area.getParcels().isEmpty()).collect(Collectors.toList()));
+        _areas.removeIf(AreaModel::isEmpty);
+        _gardens.removeIf(AreaModel::isEmpty);
+        _storageAreas.removeIf(AreaModel::isEmpty);
     }
 
     @Override
@@ -173,9 +184,9 @@ public class AreaModule extends GameModule {
         return true;
     }
 
-    public List<AreaModel> getAreas() {
-        return _areas;
-    }
+    public List<AreaModel> getAreas() { return _areas; }
+    public List<GardenAreaModel> getGardens() { return _gardens; }
+    public List<StorageAreaModel> getStorages() { return _storageAreas; }
 
     public AreaModel getArea(int x, int y, int z) {
         for (AreaModel area: _areas) {
@@ -192,6 +203,9 @@ public class AreaModule extends GameModule {
         if (area instanceof StorageAreaModel) {
             _storageAreas.add((StorageAreaModel)area);
         }
+        if (area instanceof GardenAreaModel) {
+            _gardens.add((GardenAreaModel)area);
+        }
     }
 
     public void remove(AreaModel area) {
@@ -202,6 +216,9 @@ public class AreaModule extends GameModule {
             if (area instanceof StorageAreaModel) {
                 _storageAreas.remove(area);
             }
+            if (area instanceof GardenAreaModel) {
+                _gardens.remove(area);
+            }
         }
     }
 
@@ -209,5 +226,4 @@ public class AreaModule extends GameModule {
     protected boolean loadOnStart() {
         return Data.config.manager.area;
     }
-
 }

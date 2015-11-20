@@ -17,6 +17,8 @@ public class GDXInputProcessor implements InputProcessor {
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
     private boolean[]           _keyDirection;
+    private int                 _lastPosX;
+    private int                 _lastPosY;
 
     public GDXInputProcessor(Application application) {
         _application = application;
@@ -230,6 +232,7 @@ public class GDXInputProcessor implements InputProcessor {
 
             _application.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
         }
+
         return false;
     }
 
@@ -270,6 +273,8 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int x, int y) {
+        _lastPosX = x;
+        _lastPosY = y;
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             _application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
         }
@@ -278,12 +283,12 @@ public class GDXInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        if (amount > 0) {
-            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, 0, 0, false);
+        if (amount < 0) {
+            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, _lastPosX, _lastPosY, false);
             return true;
         }
-        if (amount < 0) {
-            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, 0, 0, false);
+        if (amount > 0) {
+            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, _lastPosX, _lastPosY, false);
             return true;
         }
         return false;

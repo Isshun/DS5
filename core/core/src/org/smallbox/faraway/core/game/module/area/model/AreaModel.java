@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.data.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.util.Utils;
 
 import java.util.*;
 
@@ -11,6 +12,7 @@ import java.util.*;
 public class AreaModel {
     protected final List<ParcelModel>   _parcels = new ArrayList<>();
     private final int                   _typeIndex;
+    private final int                   _id;
     protected Map<ItemInfo, Boolean>    _items;
     private final AreaType              _type;
     private int                         _x;
@@ -18,6 +20,7 @@ public class AreaModel {
     private int                         _floor;
 
     public AreaModel(AreaType type) {
+        _id = Utils.getUUID();
         _type = type;
         _typeIndex = type.ordinal();
         _items = new HashMap<>();
@@ -50,9 +53,7 @@ public class AreaModel {
     public void                     setAccept(ItemInfo itemInfo, boolean isAccepted) { _items.put(itemInfo, isAccepted); }
     public void                     setFloor(int floor) { _floor = floor; }
 
-    public Collection<ParcelModel>  getParcels() {
-        return _parcels;
-    }
+    public Collection<ParcelModel>  getParcels() { return _parcels; }
     public Map<ItemInfo, Boolean>   getItemsAccepts() { return _items; }
     public String                   getName() { return "Area #n"; }
     public AreaType                 getType() { return _type; }
@@ -61,9 +62,11 @@ public class AreaModel {
     public int                      getX() { return _x; }
     public int                      getY() { return _y; }
     public int                      getFloor() { return _floor; }
+    public int                      getId() { return _id; }
 
     public boolean                  isStorage() { return false; }
     public boolean                  isHome() { return false; }
+    public boolean                  isEmpty() { return _parcels.isEmpty(); }
 
     public void removeParcel(ParcelModel parcel) {
         _parcels.remove(parcel);

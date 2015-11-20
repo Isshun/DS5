@@ -51,7 +51,10 @@ data:extend({
             view:findById("lb_maturity"):setVisible(true)
 
             if plant:getJob() then
+                view:findById("lb_job"):setVisible(true)
                 view:findById("lb_job"):setText("Job: " .. plant:getJob():getLabel())
+            else
+                view:findById("lb_job"):setVisible(false)
             end
 
             local growingInfo = plant:getGrowingInfo()

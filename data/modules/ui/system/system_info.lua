@@ -23,8 +23,6 @@ data:extend({
                     { type = "label", id = "lb_resource_wood", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                 }},
             }},
-            { type = "image", src = "[base]/graphics/icons/setting.png", position = {application.info.screen_width - 35, 275}, size = {32, 32}, on_click = function()
-            end},
         }},
 
         { type = "view", position = {application.info.screen_width - 372, 0}, background = 0x203636, size = {400, 38}, views = {
@@ -56,7 +54,7 @@ data:extend({
         local resource_module = application:getModule("ResourceModule")
         if resource_module then
             view:findById("lb_resource_food"):setText(resource_module:getFoodCount());
-            view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.wood_log"));
+            view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.consumable.wood_log"));
         end
     end,
 

@@ -2,18 +2,20 @@ data:extend({
     { label = "Wooden floor",
         name = "base.wood_floor",
         type = "structure",
-        category = "floor",
+        category = "Floor",
+        material = {label = "Wood", icon = "[base]/graphics/icons/material/wood.png"},
         floor = {
             speed = 1
         },
         health = 200,
         walkable = true,
         graphics = { path = "[base]/graphics/items/structures/floor_wood.png", type = "structure" },
-        receipts = {{components = {{ item = "base.wood_log", quantity = 5}}}}},
+        receipts = {{components = {{ item = "base.consumable.wood_log", quantity = 5}}}}},
     { label = "Concrete floor",
         name = "base.concrete_floor",
         type = "structure",
-        category = "floor",
+        category = "Floor",
+        material = {label = "Concrete", icon = "[base]/graphics/icons/material/concrete.png"},
         floor = {
             speed = 1
         },
@@ -28,7 +30,8 @@ data:extend({
     { label = "Metal floor",
         name = "base.metal_floor",
         type = "structure",
-        category = "floor",
+        category = "Floor",
+        material = {label = "Iron", icon = "[base]/graphics/icons/material/iron.png"},
         floor = {
             speed = 1
         },

@@ -33,6 +33,7 @@ public class UserInterface {
     private int                         _update;
     private UIFrame                     _context;
     public List<View>                   _views = new ArrayList<>();
+    public List<UIDropDown>             _dropsDowns = new ArrayList<>();
 
     public static UserInterface getInstance() {
         if (_self == null) {
@@ -61,6 +62,7 @@ public class UserInterface {
                         .filter(View::isVisible)
                         .forEach(subview -> visibleViews.add(subview.getId())));
         _views.clear();
+        _dropsDowns.clear();
         UIEventManager.getInstance().clear();
     }
 
@@ -100,14 +102,26 @@ public class UserInterface {
             return true;
         }
 
-        if (action == Action.RELEASED && button == MouseButton.LEFT) {
-            if (UIEventManager.getInstance().rightClick(x, y)) {
-                return true;
-            } else {
-                Application.getInstance().notify(observer -> observer.onKeyPress(Key.ESCAPE));
-                return false;
-            }
+        if (action == Action.RELEASED && button == MouseButton.RIGHT && UIEventManager.getInstance().rightClick(x, y)) {
+            return true;
         }
+
+        if (action == Action.RELEASED && button == MouseButton.WHEEL_UP && UIEventManager.getInstance().mouseWheelUp(x, y)) {
+            return true;
+        }
+
+        if (action == Action.RELEASED && button == MouseButton.WHEEL_DOWN && UIEventManager.getInstance().mouseWheelDown(x, y)) {
+            return true;
+        }
+
+//        if (action == Action.RELEASED && button == MouseButton.LEFT) {
+//            if (UIEventManager.getInstance().rightClick(x, y)) {
+//                return true;
+//            } else {
+//                Application.getInstance().notify(observer -> observer.onKeyPress(Key.ESCAPE));
+//                return false;
+//            }
+//        }
 
         return false;
     }
@@ -119,14 +133,15 @@ public class UserInterface {
 //        _viewport.setScale(delta, x, y);
 //    }
 
-    public void onRefresh(int update) {
-        _update = update;
+    public void onRefresh(int frame) {
+        _update = frame;
 
-        Application.getInstance().notify(GameObserver::onRefreshUI);
+        Application.getInstance().notify(observer -> observer.onRefreshUI(frame));
     }
 
     public void draw(GDXRenderer renderer, boolean gameRunning) {
         _views.stream().filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded())).forEach(view -> view.draw(renderer, 0, 0));
+        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }
 
     public boolean checkKeyboard(Key key) {
@@ -157,6 +172,10 @@ public class UserInterface {
         }
 
         _context.setSize(100, index * 20);
+    }
+
+    public View find(String id) {
+        return findById(id);
     }
 
     public View findById(String id) {

@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.module.character.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Alex on 31/10/2015.
@@ -68,13 +69,13 @@ public class CharacterTalentExtra {
     public List<TalentEntry>            getAll() { return _talents; }
     public TalentEntry                  get(TalentType type) { return _talentsMap.get(type); }
 
-    //    public void moveTalent(TalentEntry talent, int offset) {
-//        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
-//        if (optionalEntry.isPresent()) {
-//            int position = _talents.indexOf(optionalEntry.get()) + offset;
-//            _talents.remove(optionalEntry.get());
-//            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
-//        }
-//    }
+    public void moveTalent(TalentEntry talent, int offset) {
+        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
+        if (optionalEntry.isPresent()) {
+            int position = _talents.indexOf(optionalEntry.get()) + offset;
+            _talents.remove(optionalEntry.get());
+            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
+        }
+    }
 
 }

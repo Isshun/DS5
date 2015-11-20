@@ -81,9 +81,6 @@ public class GDXRenderer {
         _batch.setProjectionMatrix(_camera.combined);
     }
 
-    public void setFullScreen(boolean isFullscreen) {
-    }
-
     public int getWidth() {
         return Constant.WINDOW_WIDTH;
     }
