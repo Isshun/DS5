@@ -1,7 +1,0 @@
-label: Ground
-width: 1
-height: 1
-tiles: [1, 1]
-type: structure
-isWalkable: true
-cost: 1

@@ -1,17 +1,18 @@
-g_visitor = nil
+local g_visitor
 
 data:extend({
     label = "Refugee",
     name = "base.quest_refugee",
     type = "quest",
 
+    open_message = "Un groupe de chercheurs s'est perdu lors d'une expédition et vous demande de\nles heberger pour la nuit, l'un d'eux semble être bléssé.\n\nIls n'ont helas aucuns biens de valeur à vous proposer en échange",
+    open_options = {
+        "Les loger et leur fournir du matériel / vivre",
+        "Les loger uniquement",
+        "Leur refuser l'entrée"
+    },
+
     on_check = function (quest)
-        quest.openMessage = "Un groupe de chercheurs s'est perdu lors d'une expédition et vous demande de\nles heberger pour la nuit, l'un d'eux semble être bléssé.\n\nIls n'ont helas aucuns biens de valeur à vous proposer en échange"
-        quest.openOptions = {
-            "Les loger et leur fournir du matériel / vivre",
-            "Les loger uniquement",
-            "Leur refuser l'entrée"
-        }
         return true
     end,
 
@@ -20,8 +21,11 @@ data:extend({
             return false
         end
 
-        g_visitor = application.friendly:add(application.factory:createCharacter("human"))
-        print("add " .. g_visitor.name)
+        local character_module = application:getModule("CharacterModule")
+        if character_module then
+            g_visitor = character_module:addVisitor()
+--            print("add " .. g_visitor.name)
+        end
     end,
 
     on_update = function (quest)

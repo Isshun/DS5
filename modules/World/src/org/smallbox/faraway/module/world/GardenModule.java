@@ -1,20 +1,12 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.AreaModule;
-import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 /**
  * Created by Alex on 05/07/2015.
@@ -26,7 +18,7 @@ public class GardenModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.flora;
+        return true;
     }
 
     @Override

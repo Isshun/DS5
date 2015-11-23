@@ -40,7 +40,6 @@ public abstract class MovableModel extends ObjectModel {
 
     public void             setParcel(ParcelModel parcel) {
         assert parcel != null;
-
         _parcel = parcel;
     }
     public void             setDirection(Direction direction) {

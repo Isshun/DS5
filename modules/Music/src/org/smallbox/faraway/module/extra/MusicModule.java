@@ -2,8 +2,8 @@ package org.smallbox.faraway.module.extra;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 05/07/2015.

@@ -5,7 +5,8 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UIEventManager {
     private static UIEventManager           _self;

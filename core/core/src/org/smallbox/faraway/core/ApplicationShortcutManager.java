@@ -8,11 +8,12 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.ui.UserInterface;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.Key.*;
-import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.*;
+import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.ALT;
+import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.NONE;
 
 /**
  * Created by Alex on 20/10/2015.

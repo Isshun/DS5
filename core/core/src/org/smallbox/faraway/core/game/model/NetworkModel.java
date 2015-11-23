@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.model;
 
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ import java.util.Set;
  * Created by Alex on 04/11/2015.
  */
 public class NetworkModel {
-    private final NetworkInfo       _info;
+    private final NetworkInfo _info;
     private Set<NetworkObjectModel> _objects = new HashSet<>();
     private double                  _quantity;
     private double                  _maxQuantity;

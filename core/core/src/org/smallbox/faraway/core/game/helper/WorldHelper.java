@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.helper;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -112,7 +112,7 @@ public class WorldHelper {
             return false;
         }
 
-        if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(Data.config.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
+        if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
             return false;
         }
 

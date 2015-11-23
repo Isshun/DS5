@@ -1,0 +1,13 @@
+{
+    "floors": 8,
+    "saves": [{
+        "date": "2015-11-22-11-02-06",
+        "filename": "2015-11-22-11-11-02-06",
+        "type": "INIT"
+    }],
+    "planet": "base.planet.corrin",
+    "name": "b5466435-ecac-43f3-be8e-37629bc51965",
+    "width": 256,
+    "region": "mountain",
+    "height": 160
+}

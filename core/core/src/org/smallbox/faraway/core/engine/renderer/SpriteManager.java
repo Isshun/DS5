@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.core.data.GraphicInfo;
-import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
@@ -533,7 +533,7 @@ public class SpriteManager {
 
         Sprite sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
-            Texture texture = new Texture("data/characters/" + c.getType().name + ".png");
+            Texture texture = new Texture(c.getType().path);
 
             sprite = new Sprite(texture, 0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT);
             sprite.setFlip(false, true);

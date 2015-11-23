@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.model.planet;
 
-import org.smallbox.faraway.core.game.model.ObjectInfo;
+import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
 
 import java.util.List;
 

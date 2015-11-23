@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.character.model;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.game.model.ObjectInfo;
+import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
 
 /**
  * Created by Alex on 02/07/2015.

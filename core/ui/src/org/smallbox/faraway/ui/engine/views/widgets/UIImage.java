@@ -3,8 +3,9 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.smallbox.faraway.core.engine.renderer.SpriteManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 
 public class UIImage extends View {
     protected int _textureX;
@@ -63,8 +64,11 @@ public class UIImage extends View {
                 if (_path != null) {
                     try {
                         _sprite = SpriteManager.getInstance().getIcon(_path);
-                        _sprite.setRegion(0, 0, _width, _height);
-                        _sprite.setSize(_width, _height);
+                        _sprite.setRegion(0, 0, _originWidth, _originHeight);
+                        _sprite.setSize(_originWidth, _originHeight);
+                        _sprite.setScale(
+                                (float)Application.getInstance().getConfig().uiScale,
+                                (float)Application.getInstance().getConfig().uiScale);
                         _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();

@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.engine.renderer;
 
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.util.Log;
 
 public abstract class BaseRenderer implements GameObserver {
@@ -21,7 +20,6 @@ public abstract class BaseRenderer implements GameObserver {
 
     public abstract void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress);
     public abstract void onRefresh(int frame);
-    public abstract boolean isActive(GameConfig config);
     public int getLevel() {
         return 0;
     }

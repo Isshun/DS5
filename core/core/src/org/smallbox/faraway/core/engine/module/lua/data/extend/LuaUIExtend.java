@@ -6,20 +6,18 @@ import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -159,15 +157,25 @@ public class LuaUIExtend extends LuaExtend {
                 view.setName(id.toString());
             }
 
-            LuaValue style = value.get("style");
-            if (!style.isnil()) {
-                applyStyle(view, style.toString());
-            }
-
             LuaValue name = value.get("name");
             if (!name.isnil()) {
                 view.setId(name.toString().hashCode());
                 view.setName(name.toString());
+            }
+
+            LuaValue align = value.get("align");
+            if (!align.isnil()) {
+                view.setAlign(
+                        View.VerticalAlign.valueOf(align.get(1).toString().toUpperCase()),
+                        View.HorizontalAlign.valueOf(align.get(2).toString().toUpperCase()));
+                view.setName(name.toString());
+            } else {
+                view.setAlign(View.VerticalAlign.TOP, View.HorizontalAlign.LEFT);
+            }
+
+            LuaValue style = value.get("style");
+            if (!style.isnil()) {
+                applyStyle(view, style.toString());
             }
 
             LuaValue visible = value.get("visible");
@@ -343,10 +351,11 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     private void applyStyle(View view, String styleName) {
-        view.setPosition(Data.config.screen.resolution[0] - 372, 38);
-        view.setSize(372, Data.config.screen.resolution[1]);
+        view.setAlign(View.VerticalAlign.TOP, View.HorizontalAlign.RIGHT);
+        view.setPosition(372, 38);
+        view.setSize(372, Application.getInstance().getConfig().screen.resolution[1]);
 //        if (width != -1 && height != -1) {
-            view.setFixedSize(372, Data.config.screen.resolution[1]);
+            view.setFixedSize(372, Application.getInstance().getConfig().screen.resolution[1]);
 //        }
         view.setBackgroundColor(0x121c1e);
     }

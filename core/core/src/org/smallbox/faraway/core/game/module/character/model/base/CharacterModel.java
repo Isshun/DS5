@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.module.character.model.*;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
@@ -59,10 +59,10 @@ public abstract class CharacterModel extends MovableModel {
     private double                              _moveStep;
     private Collection<BuffCharacterModel>      _buffs;
     public Collection<DiseaseCharacterModel>    _diseases;
-    protected CharacterTypeInfo                 _type;
+    protected CharacterInfo _type;
     private boolean                             _isSleeping;
 
-    public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterTypeInfo type) {
+    public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterInfo type) {
         super(id, parcel);
 
         Log.info("Character #" + id);
@@ -107,7 +107,7 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String[][]          getEquipmentViewIds();
     public abstract String              getEquipmentViewPath();
     public abstract String              getNeedViewPath();
-    public CharacterTypeInfo            getType() { return _type; }
+    public CharacterInfo getType() { return _type; }
     public String                       getTypeName() { return _type.name; }
     public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();

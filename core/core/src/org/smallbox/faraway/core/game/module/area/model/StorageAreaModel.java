@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
@@ -46,7 +46,7 @@ public class StorageAreaModel extends AreaModel {
         ParcelModel bestParcel = null;
         for (ParcelModel parcel: _parcels) {
             // Storage parcel have similar consumable
-            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Data.config.storageMaxQuantity, consumable.getInfo().stack)) {
+            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, consumable.getInfo().stack)) {
                 bestParcel = parcel;
                 break;
             }

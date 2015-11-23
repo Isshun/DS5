@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
@@ -24,6 +24,7 @@ public class GDXRenderer {
     private final SpriteBatch           _batch;
     private final BitmapFont[]          _fonts;
     private final OrthographicCamera    _camera;
+    private final OrthographicCamera    _cameraUI;
     private final OrthographicCamera    _cameraWorld;
     private ShapeRenderer               _shapeRenderer;
     private int                         _zoom = Viewport.ZOOM_LEVELS.length - 1;
@@ -37,6 +38,9 @@ public class GDXRenderer {
         _shapeRenderer.setProjectionMatrix(_batch.getProjectionMatrix());
         _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _cameraUI.zoom = 1.2f;
         _cameraWorld = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraWorld.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -140,10 +144,12 @@ public class GDXRenderer {
     }
 
     public void draw(String string, int textSize, int x, int y, Color color) {
-        textSize *= Data.config.uiScale;
+        textSize *= Application.getInstance().getConfig().uiScale;
 
         if (string != null) {
             _batch.begin();
+//            _cameraUI.update();
+//            _batch.setProjectionMatrix(_cameraUI.projection);
             _fonts[textSize].setColor(color != null ? color : TEXT_COLOR);
             _fonts[textSize].draw(_batch, string, x, y);
 //            _fonts[textSize].drawMultiLine(_batch, string, x, y);

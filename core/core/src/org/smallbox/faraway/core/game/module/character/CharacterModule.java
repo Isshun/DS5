@@ -26,6 +26,7 @@ public class CharacterModule extends GameModule {
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private int                                 _count;
+    private List<CharacterModel>                _visitors = new ArrayList<>();
 
     @Override
     public boolean isModuleMandatory() {
@@ -33,6 +34,7 @@ public class CharacterModule extends GameModule {
     }
 
     public Collection<CharacterModel>     getCharacters() { return _characters; }
+    public Collection<CharacterModel>     getVisitors() { return _visitors; }
     public int                             getCount() { return _count; }
 
     public CharacterModule() {
@@ -50,6 +52,10 @@ public class CharacterModule extends GameModule {
         return null;
     }
 
+    public void addVisitor() {
+        _visitors.add(new HumanModel(Utils.getUUID(), WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true), "plop", "plop", 0));
+    }
+
     @Override
     public void onLoaded(Game game) {
         ModuleHelper.setCharacterModule(this);
@@ -60,8 +66,6 @@ public class CharacterModule extends GameModule {
         // Add new born
         _characters.addAll(_addOnUpdate);
         _addOnUpdate.clear();
-
-        CharacterModel characterToRemove = null;
 
         for (CharacterModel c: _characters) {
             // Check if characters is dead
@@ -98,10 +102,6 @@ public class CharacterModule extends GameModule {
                 c.move();
                 c.fixPosition();
             }
-        }
-
-        if (characterToRemove != null) {
-            _characters.remove(characterToRemove);
         }
 
         if (tick % 10 == 0) {

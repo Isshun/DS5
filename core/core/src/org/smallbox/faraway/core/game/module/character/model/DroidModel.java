@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.character.model;
 
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;

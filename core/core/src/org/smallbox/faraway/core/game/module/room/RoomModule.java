@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.OxygenModule;
@@ -56,7 +55,7 @@ public class RoomModule extends GameModule implements GameObserver {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.room;
+        return true;
     }
 
     public Collection<RoomModel> getRooms() { return _rooms; }

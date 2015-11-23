@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.util;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 
 public class StringUtils {
 

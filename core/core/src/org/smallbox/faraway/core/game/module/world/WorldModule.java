@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;

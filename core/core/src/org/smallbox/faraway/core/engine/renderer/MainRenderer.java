@@ -2,8 +2,6 @@ package org.smallbox.faraway.core.engine.renderer;
 
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.GameConfig;
 
 import java.util.Collection;
 
@@ -20,7 +18,7 @@ public class MainRenderer {
     private final Collection<BaseRenderer>  _renders;
     private final BaseRenderer              _minimapRender;
 
-    public MainRenderer(GDXRenderer renderer, GameConfig config) {
+    public MainRenderer(GDXRenderer renderer) {
         _self = this;
         _renders = ModuleManager.getInstance().getRenders();
         _minimapRender = ModuleManager.getInstance().getMinimapRender();
@@ -48,9 +46,9 @@ public class MainRenderer {
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public void init(GameConfig config, Game game) {
+    public void init(Game game) {
         _frame = 0;
-        _renders.stream().filter(renderer -> renderer.isActive(config)).forEach(render -> render.load(game));
+        _renders.stream().forEach(render -> render.load(game));
         _minimapRender.load(game);
     }
 
@@ -65,7 +63,7 @@ public class MainRenderer {
 
     public static MainRenderer getInstance() {
         if (_self == null) {
-            _self = new MainRenderer(GDXRenderer.getInstance(), Data.config);
+            _self = new MainRenderer(GDXRenderer.getInstance());
         }
         return _self; }
 

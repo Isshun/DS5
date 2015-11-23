@@ -2,13 +2,14 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.data.GraphicInfo;
-import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.engine.module.lua.DataExtendException;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,11 +129,7 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("build").isnil()) {
             itemInfo.build = new ItemInfo.ItemBuildInfo();
-            if (!value.get("build").get("cost").isnil()) {
-                itemInfo.build.cost = value.get("build").get("cost").toint();
-            } else {
-                itemInfo.build.cost = Data.config.defaultBuildCost;
-            }
+            itemInfo.build.cost = getInt(value.get("build"), "cost", 0);
         }
 
         if (!value.get("slots").isnil()) {
@@ -142,7 +139,7 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
 
-        itemInfo.stack = getInt(value, "stack", Data.config.storageMaxQuantity);
+        itemInfo.stack = getInt(value, "stack", Application.getInstance().getConfig().game.storageMaxQuantity);
 
         if (!value.get("floor").isnil()) {
             itemInfo.isFloor = true;

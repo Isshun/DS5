@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.GameConfig;
-import org.smallbox.faraway.core.game.model.WeatherInfo;
+import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 
 /**
  * Created by Alex on 05/06/2015.
  */
-public class ParticleRenderer extends BaseRenderer {
+public class ParticleRenderer extends ExtraRenderer {
     private ParticleEffect          _effect;
     private String                  _name;
 
@@ -65,11 +64,6 @@ public class ParticleRenderer extends BaseRenderer {
 
     @Override
     public void onRefresh(int frame) {
-    }
-
-    @Override
-    public boolean isActive(GameConfig config) {
-        return config.render.particle;
     }
 
     @Override

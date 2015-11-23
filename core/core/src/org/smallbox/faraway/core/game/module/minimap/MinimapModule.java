@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.minimap;
 
+import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 public class MinimapModule extends GameModule {
     private static final int    FRAME_WIDTH = 352;
     private static final int    FRAME_HEIGHT = 220;
-    private static final int    POS_X = Data.config.screen.resolution[0] - FRAME_WIDTH - 10;
+    private static final int    POS_X = Gdx.graphics.getWidth() - FRAME_WIDTH - 10;
     private static final int    POS_Y = 84;
 
     private View _panelMain;

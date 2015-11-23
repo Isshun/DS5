@@ -2,7 +2,7 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.util.StringUtils;
 
 public class UILabel extends View {

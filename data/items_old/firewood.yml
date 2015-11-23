@@ -1,9 +1,0 @@
-label: Firewood
-width: 1
-height: 1
-type: item
-category: temperature
-cost: 42
-effects:
-    heat: 50
-    heatPotency: 40

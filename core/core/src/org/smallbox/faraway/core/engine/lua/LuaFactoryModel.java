@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**

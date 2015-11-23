@@ -32,6 +32,7 @@ data:extend({
         graphics = {
             { path = "[base]/graphics/grounds/dirt.png" },
             { path = "[base]/graphics/grounds/dirt_decoration.png" },
+            { path = "[base]/graphics/grounds/dirt_borders.png" },
         }
     },
     {

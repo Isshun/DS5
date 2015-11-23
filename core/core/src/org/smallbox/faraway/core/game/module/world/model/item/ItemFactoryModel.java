@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model.item;
 
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.smallbox.faraway.core.data.ItemInfo.*;
+import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
 
 /**
  * Created by Alex on 15/10/2015.

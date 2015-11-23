@@ -3,12 +3,13 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.engine.module.lua.DataExtendException;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
@@ -81,7 +82,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
 
                     // Update duration
                     long duration = tick - data.startTick;
-                    long durationHour = duration / Data.config.tickPerHour;
+                    long durationHour = duration / Application.getInstance().getConfig().game.tickPerHour;
                     long durationDay = durationHour / Game.getInstance().getPlanet().getInfo().dayDuration;
                     data.luaData.get("duration").set("tick", duration);
                     data.luaData.get("duration").set("hour", durationHour);

@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.game.model.CharacterTypeInfo;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.util.Constant;
 
@@ -74,7 +74,7 @@ public class CharacterNeedsExtra {
     public boolean    isSleeping() { return isSleeping; }
 
     public void    update() {
-        CharacterTypeInfo.Needs needs = _character.getType().needs;
+        CharacterInfo.Needs needs = _character.getType().needs;
 
         addValue(TAG_ENERGY, isSleeping ? needs.energy.change.sleep : needs.energy.change.wake);
         addValue(TAG_FOOD, isSleeping ? needs.food.change.sleep : needs.food.change.wake);
@@ -112,7 +112,7 @@ public class CharacterNeedsExtra {
         _values.put(name, Math.max(0, Math.min(100, value)));
     }
 
-    public void updateNeeds(CharacterTypeInfo.Needs needs) {
+    public void updateNeeds(CharacterInfo.Needs needs) {
 //
 //        // Body heat
 //        // TODO

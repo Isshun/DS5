@@ -2,10 +2,10 @@ package org.smallbox.faraway.module.extra;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.util.FileUtils;
 
 import java.io.File;
@@ -47,7 +47,7 @@ public class LoadGameModule extends GameModule {
 
     private void load() {
         _games.clear();
-        FileUtils.list(new File("data/saves/")).stream().filter(File::isDirectory).forEach(gameDirectory -> {
+        FileUtils.list(new File("saves/")).stream().filter(File::isDirectory).forEach(gameDirectory -> {
             File file = new File(gameDirectory, "game.json");
             if (file.exists()) {
                 try {

@@ -1,9 +1,0 @@
-label: Regular shoes
-equipment:
-    location: feet
-    effects:
-        -   resist:
-                cold: 5
-            buff:
-                speed: 5
-                heat: 5

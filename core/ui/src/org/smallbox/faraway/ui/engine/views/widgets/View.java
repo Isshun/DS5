@@ -2,13 +2,13 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.FadeEffect;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.RotateAnimation;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -23,6 +23,17 @@ import java.util.List;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View {
+    protected int _originWidth;
+    protected int _originHeight;
+
+    public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
+        _verticalAlign = verticalAlign;
+        _horizontalAlign = horizontalAlign;
+    }
+
+    public enum HorizontalAlign {LEFT, RIGHT}
+    public enum VerticalAlign {TOP, BOTTOM}
+
     protected RotateAnimation _animation;
     protected boolean _focusable;
     private int _regularBackground;
@@ -92,10 +103,14 @@ public abstract class View {
     protected int               _offsetY;
     protected Color             _backgroundColor;
     protected FadeEffect        _effect;
+    protected HorizontalAlign   _horizontalAlign;
+    protected VerticalAlign     _verticalAlign;
 
     public View(int width, int height) {
-        _width = width;
-        _height = height;
+        _originWidth = width;
+        _originHeight = height;
+        _width = width != -1 ? (int) (width * Application.getInstance().getConfig().uiScale) : -1;
+        _height = height != -1 ? (int) (height * Application.getInstance().getConfig().uiScale) : -1;
         _isVisible = true;
         _borderSize = 2;
         _x = 0;
@@ -126,7 +141,6 @@ public abstract class View {
     public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
     public void         setBackgroundColor(Color color) { _backgroundColor = color; }
     public void         setVisible(boolean visible) { _isVisible = visible; }
-    public void         setFixedSize(int width, int height) { _fixedWidth = width; _fixedHeight = height; }
     public void         setEffect(FadeEffect effect) { _effect = effect; }
     public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
     public void         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; }
@@ -204,10 +218,10 @@ public abstract class View {
     }
 
     public void setMargin(int top, int right, int bottom, int left) {
-        _marginTop = top;
-        _marginRight = right;
-        _marginBottom = bottom;
-        _marginLeft = left;
+        _marginTop = (int) (top * Application.getInstance().getConfig().uiScale);
+        _marginRight = (int) (right * Application.getInstance().getConfig().uiScale);
+        _marginBottom = (int) (bottom * Application.getInstance().getConfig().uiScale);
+        _marginLeft = (int) (left * Application.getInstance().getConfig().uiScale);
     }
 
     public UIAdapter getAdapter() {
@@ -310,29 +324,38 @@ public abstract class View {
     }
 
     public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = t;
-        _paddingRight = r;
-        _paddingBottom = b;
-        _paddingLeft = l;
+        _paddingTop = (int) (t * Application.getInstance().getConfig().uiScale);
+        _paddingRight = (int) (r * Application.getInstance().getConfig().uiScale);
+        _paddingBottom = (int) (b * Application.getInstance().getConfig().uiScale);
+        _paddingLeft = (int) (l * Application.getInstance().getConfig().uiScale);
     }
 
     public void setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = t;
-        _paddingRight = _paddingLeft = r;
+        _paddingTop = _paddingBottom = (int) (t * Application.getInstance().getConfig().uiScale);
+        _paddingRight = _paddingLeft = (int) (r * Application.getInstance().getConfig().uiScale);
     }
 
     public void setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = padding;
+        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.getInstance().getConfig().uiScale);
+    }
+
+    public void setFixedSize(int width, int height) {
+        _fixedWidth = (int) (width * Application.getInstance().getConfig().uiScale);
+        _fixedHeight = (int) (height * Application.getInstance().getConfig().uiScale);
     }
 
     public void setSize(int width, int height) {
-        _width = (int) (width * Data.config.uiScale);
-        _height = (int) (height * Data.config.uiScale);
+        _width = (int) (width * Application.getInstance().getConfig().uiScale);
+        _height = (int) (height * Application.getInstance().getConfig().uiScale);
+        _originWidth = width;
+        _originHeight = height;
     }
 
     public void setPosition(int x, int y) {
-        _x = (int) (x * Data.config.uiScale) + (_isAlignLeft ? 0 : Data.config.screen.resolution[0]);
-        _y = (int) (y * Data.config.uiScale) + (_isAlignTop ? 0 : Data.config.screen.resolution[1]);
+        x = (int) (x * Application.getInstance().getConfig().uiScale);
+        y = (int) (y * Application.getInstance().getConfig().uiScale);
+        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.getInstance().getConfig().screen.resolution[0] - x;
+        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.getInstance().getConfig().screen.resolution[1] - y;
     }
 
     public void onEnter() {

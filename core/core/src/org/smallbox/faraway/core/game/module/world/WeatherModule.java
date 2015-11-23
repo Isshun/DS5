@@ -7,8 +7,8 @@ import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.WeatherInfo;
+import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.util.Utils;
@@ -25,7 +25,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     private int                                 _duration;
     private int                                 _floors;
     private WeatherInfo                         _weather;
-    private String                              _dayTime = Data.config.time;
+    private String                              _dayTime = "noon";
 
     private long                                _lightColor;
     private Color                               _previousLightColor;
@@ -60,7 +60,7 @@ public class WeatherModule extends GameModule implements GameObserver {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.weather;
+        return true;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     }
 
     private void setHour(PlanetInfo.DayTime hourInfo) {
-        _lightChange = 1 / hourInfo.duration / Data.config.tickPerHour;
+        _lightChange = 1 / hourInfo.duration / Application.getInstance().getConfig().game.tickPerHour;
         _lightProgress = 0;
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;

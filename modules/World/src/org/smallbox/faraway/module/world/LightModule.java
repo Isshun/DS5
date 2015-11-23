@@ -24,7 +24,7 @@
 //
 //    @Override
 //    protected boolean loadOnStart() {
-//        return Data.config.manager.light;
+//        return Application.getInstance().getConfig().manager.light;
 //    }
 //
 //    @Override

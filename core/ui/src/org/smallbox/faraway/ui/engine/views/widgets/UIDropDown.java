@@ -1,7 +1,6 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 
 /**

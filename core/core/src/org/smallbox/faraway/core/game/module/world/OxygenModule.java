@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
@@ -34,7 +33,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.oxygen;
+        return true;
     }
 
     @Override

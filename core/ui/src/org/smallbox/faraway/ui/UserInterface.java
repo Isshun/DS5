@@ -1,11 +1,12 @@
 package org.smallbox.faraway.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
@@ -140,6 +141,9 @@ public class UserInterface {
     }
 
     public void draw(GDXRenderer renderer, boolean gameRunning) {
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.zoom = 0.5f;
+
         _views.stream().filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded())).forEach(view -> view.draw(renderer, 0, 0));
         _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }

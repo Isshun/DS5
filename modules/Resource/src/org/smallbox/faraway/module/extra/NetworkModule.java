@@ -1,16 +1,18 @@
 package org.smallbox.faraway.module.extra;
 
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.NetworkInfo;
+import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.game.module.world.model.item.NetworkConnectionModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Alex on 05/07/2015.

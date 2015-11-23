@@ -1,9 +1,8 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +28,7 @@ public class PowerModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.power;
+        return true;
     }
 
     @Override

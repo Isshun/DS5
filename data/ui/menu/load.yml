@@ -1,7 +1,0 @@
-entries:
-
-    -   type: frame
-        id: frame_saves
-        position: [0, 0]
-        size: [800, 600]
-        background: 0xff889955

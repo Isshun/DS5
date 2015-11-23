@@ -1,14 +1,13 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.WeatherModule;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class TemperatureModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.temperature;
+        return true;
     }
 
     @Override

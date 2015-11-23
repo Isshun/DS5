@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job.model.abs;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.ItemInfo;
-import org.smallbox.faraway.core.data.ItemInfo.ItemInfoAction;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;

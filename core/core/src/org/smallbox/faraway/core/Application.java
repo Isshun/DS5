@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
+import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
@@ -24,6 +25,7 @@ public class Application implements GameEventListener {
     private long                            _dataLastModified = Utils.getLastDataModified();
     private List<GameObserver>              _observers = new ArrayList<>();
     public ConfigChangeListener             _configChangeListener;
+    private ApplicationConfig               _config;
 
     public static Application getInstance() {
         if (_self == null) {
@@ -41,6 +43,8 @@ public class Application implements GameEventListener {
     public void                 removeObserver(GameModule observer) {
         _observers.remove(observer);
     }
+    public ApplicationConfig    getConfig() { return _config; }
+    public void                 setConfig(ApplicationConfig config) { _config = config; }
 
     @Override
     public void onKeyEvent(Action action, Key key, Modifier modifier) {

@@ -1,15 +1,14 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 
 import java.util.Collection;
 
-import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
+import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 /**
  * Created by Alex on 05/07/2015.
@@ -24,7 +23,7 @@ public class FloraModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.flora;
+        return true;
     }
 
     @Override

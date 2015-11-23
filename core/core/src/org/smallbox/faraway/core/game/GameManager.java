@@ -2,17 +2,15 @@ package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.factory.world.WorldFactory;
+import org.smallbox.faraway.core.game.module.world.factory.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSaveManager;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,8 +31,8 @@ public class GameManager {
 
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         Application.getInstance().notify(GameObserver::onReloadUI);
-        Game game = new Game(info, Data.config);
-        GameSaveManager.load(game, new File("data/saves", game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
+        Game game = new Game(info);
+        GameSaveManager.load(game, new File("saves", game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             ModuleManager.getInstance().startGame(game);
             game.init();
@@ -48,14 +46,14 @@ public class GameManager {
         Application.getInstance().notify(GameObserver::onReloadUI);
 
         GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
-        File gameDirectory = new File("data/saves/", gameInfo.name);
+        File gameDirectory = new File("saves/", gameInfo.name);
 
         if (!gameDirectory.mkdirs()) {
             System.out.println("Unable to create game save directory");
             return;
         }
 
-        Game game = new Game(gameInfo, Data.config);
+        Game game = new Game(gameInfo);
         WorldFactory factory = new WorldFactory();
         factory.create(game, regionInfo);
 
@@ -66,6 +64,7 @@ public class GameManager {
         _game = game;
 
         saveGame(gameInfo, GameInfo.Type.INIT);
+
         writeGameInfo(gameInfo);
 
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
@@ -73,9 +72,7 @@ public class GameManager {
 
     private void writeGameInfo(GameInfo gameInfo) {
         try {
-            FileOutputStream fos = new FileOutputStream(new File("data/saves/" + gameInfo.name, "game.json"));
-            FileUtils.write(fos, gameInfo.toJSON().toString(4));
-            fos.close();
+            FileUtils.write(new File("saves/" + gameInfo.name, "game.json"), gameInfo.toJSON().toString(4));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,7 +82,7 @@ public class GameManager {
         if (_game != null) {
             Date date = new Date();
             String filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(date);
-            File gameDirectory = new File("data/saves/", gameInfo.name);
+            File gameDirectory = new File("saves/", gameInfo.name);
 
             GameInfo.GameSaveInfo saveInfo = new GameInfo.GameSaveInfo();
             saveInfo.game = gameInfo;
@@ -94,13 +91,7 @@ public class GameManager {
             saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
             saveInfo.filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date);
             gameInfo.saveFiles.add(saveInfo);
-            try {
-                FileOutputStream fos = new FileOutputStream(new File(gameDirectory, "game.json"));
-                FileUtils.write(fos, gameInfo.toJSON().toString(4));
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writeGameInfo(gameInfo);
 
             GameSaveManager.save(gameDirectory, filename);
         }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.OnKeyListener;
@@ -127,11 +128,11 @@ public class UIGrid extends View {
     }
 
     public void setRowHeight(int rowHeight) {
-        _rowHeight = rowHeight;
+        _rowHeight = (int) (rowHeight * Application.getInstance().getConfig().uiScale);
     }
 
     public void setColumnWidth(int columnWidth) {
-        _columnWidth = columnWidth;
+        _columnWidth = (int) (columnWidth * Application.getInstance().getConfig().uiScale);
     }
 
     public int getColumnWidth() {

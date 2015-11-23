@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.character;
 
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 16/06/2015.

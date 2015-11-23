@@ -17,7 +17,7 @@ import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.ui.UserInterface;
@@ -84,10 +84,6 @@ public class GDXApplication extends ApplicationAdapter {
                     }
                     System.out.println("Background DB thread terminated");
                 }).start()));
-
-        // Load resources
-        _loadTasks.add(new LoadTask("Load resources", () ->
-                new Data().loadAll()));
 
         // Load modules
         _loadTasks.add(new LoadTask("Load modules", () ->

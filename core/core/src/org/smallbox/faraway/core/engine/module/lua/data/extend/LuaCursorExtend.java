@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.model.Data;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;

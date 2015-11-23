@@ -4,7 +4,7 @@ data:extend({
         name = "base.buff_health",
         type = "buff",
         on_start = function (data, character)
-            return character.type == "human" and character.faction == "fremen"
+            return character.type == "base.character.human" and character.faction == "base.character.fremen"
         end,
         on_update = function (data, character)
             -- model.stats.buff.oxygen = model.stats.buff.oxygen + 20;

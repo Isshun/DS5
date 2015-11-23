@@ -1,15 +1,15 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
@@ -31,7 +31,7 @@ public class MinimapRenderer extends BaseRenderer {
     private static final int    FRAME_WIDTH = 352;
     private static final int    FRAME_HEIGHT = 220;
     private static int          POS_X;
-    private static final int    POS_Y = 84;
+    private static int          POS_Y;
 
     private int                         _floor;
     private Sprite                      _spriteMap;
@@ -59,7 +59,8 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     protected void onLoad(Game game) {
-        POS_X = Data.config.screen.resolution[0] - FRAME_WIDTH - 10;
+        POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.getInstance().getConfig().uiScale - 10 * Application.getInstance().getConfig().uiScale);
+        POS_Y = (int) (84 * Application.getInstance().getConfig().uiScale);
         _lbFloor = new UILabel();
         _lbFloor.setTextSize(16);
         _lbFloor.setTextColor(0x000000);
@@ -101,27 +102,25 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
-    public boolean isActive(GameConfig config) {
-        return true;
-    }
-
-    @Override
     protected void onUpdate() {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_panelMain != null && _panelMain.isVisible()) {
+            int width = (int) (FRAME_WIDTH * Application.getInstance().getConfig().uiScale);
+            int height = (int) (FRAME_HEIGHT * Application.getInstance().getConfig().uiScale);
+
             if (_dirty || _spriteMap == null) {
                 _dirty = false;
-                createMap();
+                createMap(width, height);
             }
 
             if (_spriteMap != null) {
                 renderer.draw(_spriteMap);
             }
 
-            float ratioX = ((float)FRAME_WIDTH / _width);
-            float ratioY = ((float)FRAME_HEIGHT / _height);
+            float ratioX = ((float)width / _width);
+            float ratioY = ((float)height / _height);
             int x = POS_X + (int)((Math.min(_width-38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
             int y = POS_Y + (int)((Math.min(_height-32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
             renderer.draw(COLOR_VIEW, x, y, (int) (38 * ratioX), 1);
@@ -141,7 +140,7 @@ public class MinimapRenderer extends BaseRenderer {
         }
     }
 
-    private void createMap() {
+    private void createMap(int width, int height) {
         if (GameManager.getInstance().isLoaded()) {
             ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
             for (int x = 0; x < _width; x++) {
@@ -161,7 +160,7 @@ public class MinimapRenderer extends BaseRenderer {
             _spriteMap.setSize(_width, _height);
             _spriteMap.setRegion(0, 0, _width, _height);
             _spriteMap.flip(false, true);
-            _spriteMap.setScale((float)FRAME_WIDTH / _width, (float)FRAME_HEIGHT / _height);
+            _spriteMap.setScale((float)width / _width, (float)height / _height);
             _spriteMap.setPosition(POS_X, POS_Y);
             _spriteMap.setOrigin(0, 0);
         }

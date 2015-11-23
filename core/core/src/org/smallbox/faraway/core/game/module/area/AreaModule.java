@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -15,7 +14,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -224,6 +222,6 @@ public class AreaModule extends GameModule {
 
     @Override
     protected boolean loadOnStart() {
-        return Data.config.manager.area;
+        return true;
     }
 }

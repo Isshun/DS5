@@ -6,15 +6,16 @@ RESOURCES = {
 
 data:extend({
     label = "Crash",
-    name = "base.quest_crash",
+    name = "base.quest.crash",
     type = "quest",
 
+    open_message = "Un cargo de marchandise s'est écrasé à proximité de votre base",
+    open_options = {
+        "OK",
+        "Move to location"
+    },
+
     on_check = function (quest)
-        quest.openMessage = "Un cargo de marchandise s'est écrasé à proximité de votre base"
-        quest.openOptions = {
-            "OK",
-            "Move to location"
-        }
         return true
     end,
 

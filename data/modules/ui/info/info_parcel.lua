@@ -3,15 +3,16 @@ local parcel
 data:extend({
     type = "view",
     name = "info_parcel",
-    position = {application.info.screen_width - 372, application.info.screen_height - 180},
-    size = {372, 270},
+    position = {372, 80},
+    align = {"bottom", "right"},
+    size = {372, 100},
     background = 0x121c1e,
     level = 100,
     visible = false,
     views = {
         { type = "label", id = "lb_ground", text_size = 14},
 
-        { type = "grid", columns = 10, column_width = 58, row_height = 100, position = {10, 106}, views = {
+        { type = "grid", columns = 10, column_width = 58, row_height = 100, position = {10, 6}, views = {
             { type = "view", size = {50, 66}, background = 0x424c4e, views = {
                 { type = "image", id = "thumb_o2", src = "[base]/graphics/icons/thumb_o2.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
                 { type = "label", id = "lb_oxygen", text_size = 14, position = {10, 46}, text_color = 0xb3d035},

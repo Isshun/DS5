@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.smallbox.faraway.core.game.model.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.util.Constant;

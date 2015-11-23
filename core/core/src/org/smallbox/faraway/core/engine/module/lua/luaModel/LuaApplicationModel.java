@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.engine.module.lua.luaModel;
 import org.luaj.vm2.LuaTable;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Config;
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;

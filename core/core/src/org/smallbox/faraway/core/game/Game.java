@@ -8,8 +8,6 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
@@ -38,7 +36,6 @@ public class Game {
     private GameSelectionExtra              _selector;
     private static Game                     _self;
     private final GameInfo                  _info;
-    private GameConfig                      _config;
     private final Collection<GameModule>    _modulesBase;
     private final Collection<GameModule>    _modulesThird;
     private PlanetModel                     _planet;
@@ -72,13 +69,12 @@ public class Game {
     public GameActionExtra                  getInteraction() { return _gameAction; }
     public GameSelectionExtra               getSelector() { return _selector; }
 
-    public Game(GameInfo info, GameConfig config) {
+    public Game(GameInfo info) {
         _self = this;
         _viewport = new Viewport(400, 300);
         _selector = new GameSelectionExtra();
         _gameAction = new GameActionExtra(_viewport, _selector);
         _info = info;
-        _config = config;
         _isRunning = true;
         _modulesBase = ModuleManager.getInstance().getModulesBase();
         _modulesThird = ModuleManager.getInstance().getModulesThird();
@@ -91,7 +87,7 @@ public class Game {
     }
 
     public void init() {
-        MainRenderer.getInstance().init(Data.config, this);
+        MainRenderer.getInstance().init(this);
         Application.getInstance().notify(GameObserver::onGameStart);
         Application.getInstance().notify(observer -> observer.onHourChange(_hour));
         Application.getInstance().notify(observer -> observer.onDayChange(_day));
@@ -124,7 +120,7 @@ public class Game {
         _modulesBase.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
         _modulesThird.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
 
-        if (tick % _config.tickPerHour == 0) {
+        if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {

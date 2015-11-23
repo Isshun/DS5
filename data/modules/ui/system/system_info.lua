@@ -25,7 +25,7 @@ data:extend({
             }},
         }},
 
-        { type = "view", position = {application.info.screen_width - 372, 0}, background = 0x203636, size = {400, 38}, views = {
+        { type = "view", align = {"top", "right"}, position = {372, 0}, background = 0x203636, size = {400, 38}, views = {
             { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2, 2}},
             { type = "label", id = "lb_time", text = "hr", text_size = 16, position = {28, 3}, padding = 10 },
             { type = "label", id = "lb_day", text = "day", text_size = 16, position = {63, 3}, padding = 10 },

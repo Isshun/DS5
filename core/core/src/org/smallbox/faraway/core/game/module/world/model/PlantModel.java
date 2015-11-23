@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 
-import static org.smallbox.faraway.core.data.ItemInfo.ItemInfoPlant.GrowingInfo;
+import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 public class PlantModel extends MapObjectModel {
     private GrowingInfo             _growingInfo;

@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.engine.renderer;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.GameConfig;
 import org.smallbox.faraway.core.util.Constant;
 
 public class JobRenderer extends BaseRenderer {
@@ -29,12 +28,6 @@ public class JobRenderer extends BaseRenderer {
     @Override
     public void onRefresh(int frame) {
     }
-
-    @Override
-    public boolean isActive(GameConfig config) {
-        return config.render.job;
-    }
-
 
     @Override
     public void onFloorChange(int floor) {

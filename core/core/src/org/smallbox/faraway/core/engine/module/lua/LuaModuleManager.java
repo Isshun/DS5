@@ -8,11 +8,12 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.BindingInfo;
-import org.smallbox.faraway.core.data.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.*;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
@@ -20,12 +21,13 @@ import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.Data;
-import org.smallbox.faraway.core.game.model.WeatherInfo;
+import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.quest.QuestModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.FileUtils;
@@ -56,6 +58,8 @@ public class LuaModuleManager implements GameObserver {
             new LuaBindingsExtend(),
             new LuaNetworkExtend(),
             new LuaReceiptExtend(),
+            new LuaQuestExtend(),
+            new LuaCharacterExtend(),
             new LuaCursorExtend(),
             new LuaCharacterBuffExtend(),
             new LuaCharacterDiseaseExtend(),
@@ -295,6 +299,7 @@ public class LuaModuleManager implements GameObserver {
     public void onGameResume() {broadcastToLuaModules(LuaEventsModel.on_game_resume); }
     public void onFloorChange(int floor) {broadcastToLuaModules(LuaEventsModel.on_floor_change, floor); }
     public void onDisplayChange(String displayName, boolean isVisible) {broadcastToLuaModules(LuaEventsModel.on_display_change, displayName, isVisible); }
+    public void onOpenQuest(QuestModel quest) {broadcastToLuaModules(LuaEventsModel.on_open_quest, quest); }
 
 //    default void onGameStart() {}
 //    default void onLog(String tag, String message) {}
