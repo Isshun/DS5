@@ -28,15 +28,11 @@ public class ItemModel extends BuildableMapObject {
     public ItemModel(ItemInfo info, ParcelModel parcel, int id) {
         super(info, id);
         _parcel = parcel;
-        initSlots();
-        init(info);
     }
 
     public ItemModel(ItemInfo info, ParcelModel parcel) {
         super(info);
         _parcel = parcel;
-        initSlots();
-        init(info);
     }
 
     public int                          getTargetTemperature() { return _targetTemperature; }
@@ -52,6 +48,7 @@ public class ItemModel extends BuildableMapObject {
     public boolean                      isFunctional() { return _isFunctional; }
     public boolean                      isActive() { return _isActive; }
     public boolean                      isBed() { return _info.isBed; }
+    public boolean                      isFactory() { return _factory != null; }
 
     public void                         setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
     public void                         setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
@@ -68,12 +65,14 @@ public class ItemModel extends BuildableMapObject {
         }
     }
 
-    private void init(ItemInfo info) {
+    public void init() {
+        initSlots();
+
         // Initialize factory extra object
-        if (info.factory != null) {
-            _factory = new ItemFactoryModel(this, info.factory);
-            if (info.factory.outputSlots != null) {
-                _storageSlot = info.factory.outputSlots;
+        if (_info.factory != null) {
+            _factory = new ItemFactoryModel(this, _info.factory);
+            if (_info.factory.outputSlots != null) {
+                _storageSlot = _info.factory.outputSlots;
             }
         }
 

@@ -4,7 +4,7 @@ data:extend({
         name = "base.cooker",
         type = "item",
         category = "kitchen",
-        graphics = { path = "[base]/graphics/items/kitchen/cooker.png" },
+        graphics = { path = "[base]/graphics/items/workshop/cooker.png" },
         size = {3, 1},
         health = 100,
         slots = {{1, 1}},

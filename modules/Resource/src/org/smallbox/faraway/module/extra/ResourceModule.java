@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 
 import java.util.ArrayList;
@@ -37,7 +38,17 @@ public class ResourceModule extends ModuleBase {
     private int                             _foodCount;
 
     public int                      getConsumableCount(String name) { return getConsumableCount(Data.getData().getItemInfo(name)); }
-    public int                      getConsumableCount(ItemInfo info) { return _consumablesCollection.containsKey(info) ? _consumablesCollection.get(info).count : 0; }
+
+    public int                      getConsumableCount(ItemInfo info) {
+        int quantity = _consumablesCollection.containsKey(info) ? _consumablesCollection.get(info).count : 0;
+        for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
+            if (character.getInventory() != null && character.getInventory().getInfo() == info) {
+                quantity += character.getInventoryQuantity();
+            }
+        }
+        return quantity;
+    }
+
     public List<ConsumableModel>    getFoods() { return _foods; }
     public int                      getFoodCount() { return _foodCount; }
     public List<ConsumableModel>    getDrinks() { return _drinks; }

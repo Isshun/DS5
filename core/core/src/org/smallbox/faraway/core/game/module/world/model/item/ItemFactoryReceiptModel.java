@@ -111,7 +111,7 @@ public class ItemFactoryReceiptModel {
             }
     }
 
-    public void prepare(List<PotentialConsumable> componentsDistance) {
+    public void prepare(List<PotentialConsumable> potentials) {
         _isFull = true;
         _components = receiptInfo.inputs.stream()
                 .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
@@ -123,7 +123,7 @@ public class ItemFactoryReceiptModel {
             _isFull = false;
             receiptInfo.inputs.forEach(receiptInputInfo -> {
                 int quantity = 0;
-                for (PotentialConsumable potential: componentsDistance) {
+                for (PotentialConsumable potential: potentials) {
                     if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
                         int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
                         _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));

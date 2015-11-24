@@ -93,7 +93,7 @@ public class JobModule extends ModuleBase {
                     .forEach(item -> _jobs.add(new BuildJob(item)));
 
             // Create craft jobs
-            ModuleHelper.getWorldModule().getFactories().stream().filter(item -> item.getFactory().getJob() == null && item.getFactory().scan())
+            ModuleHelper.getWorldModule().getItems().stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan())
                     .forEach(item -> _jobs.add(new CraftJob(item)));
 
             // Create new job

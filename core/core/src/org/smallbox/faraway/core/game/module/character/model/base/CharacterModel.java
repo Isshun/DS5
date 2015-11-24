@@ -113,6 +113,7 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String              getName();
     public double                       getMoveStep() { return _moveStep; }
     public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
+    public int                          getInventoryQuantity() { return _inventory != null ? _inventory.getQuantity() : 0; }
     public Collection<BuffCharacterModel>     getBuffs() { return _buffs; }
     public Collection<DiseaseCharacterModel>  getDiseases() { return _diseases; }
 

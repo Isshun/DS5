@@ -42,26 +42,35 @@ public class StorageAreaModel extends AreaModel {
     }
 
     public ParcelModel getNearestFreeParcel(ConsumableModel consumable, ParcelModel consumableParcel) {
-        int bestDistance = Integer.MAX_VALUE;
-        ParcelModel bestParcel = null;
         for (ParcelModel parcel: _parcels) {
-            // Storage parcel have similar consumable
-            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, consumable.getInfo().stack)) {
-                bestParcel = parcel;
-                break;
-            }
-
-            // Storage parcel is free
-            if (parcel.getConsumable() == null && parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
-                int distance = WorldHelper.getDistance(parcel, consumableParcel);
-                if (distance < bestDistance) {
-                    bestDistance = distance;
-                    bestParcel = parcel;
-                }
+            if (parcel.accept(consumable.getInfo(), 1)) {
+                return parcel;
             }
         }
-        return bestParcel;
+        return null;
     }
+
+//    public ParcelModel getNearestFreeParcel(ConsumableModel consumable, ParcelModel consumableParcel) {
+//        int bestDistance = Integer.MAX_VALUE;
+//        ParcelModel bestParcel = null;
+//        for (ParcelModel parcel: _parcels) {
+//            // Storage parcel have similar consumable
+//            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, consumable.getInfo().stack)) {
+//                bestParcel = parcel;
+//                break;
+//            }
+//
+//            // Storage parcel is free
+//            if (parcel.getConsumable() == null && parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
+//                int distance = WorldHelper.getDistance(parcel, consumableParcel);
+//                if (distance < bestDistance) {
+//                    bestDistance = distance;
+//                    bestParcel = parcel;
+//                }
+//            }
+//        }
+//        return bestParcel;
+//    }
 
     @Override
     public void setAccept(ItemInfo itemInfo, boolean isAccepted) {

@@ -163,10 +163,14 @@ public class PathManager extends ModuleBase {
         }
 
         // Find path to target parcel
-        GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
-        if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
-            printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
-            return nodes;
+        try {
+            GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
+            if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
+                printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
+                return nodes;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         // No path found

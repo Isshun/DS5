@@ -50,9 +50,13 @@ public class ItemFactoryModel {
         _item = item;
         _info = factoryInfo;
 
+        ParcelModel itemParcel = _item.getParcel();
         _storageParcel = _item.getParcel();
         if (_info.outputSlots != null) {
-            _storageParcel = WorldHelper.getParcel(_item.getParcel().x + _info.outputSlots[0], _item.getParcel().y + _info.outputSlots[1], _item.getParcel().z);
+            _storageParcel = WorldHelper.getParcel(
+                    itemParcel.x + _info.outputSlots[0],
+                    itemParcel.y + _info.outputSlots[1],
+                    itemParcel.z);
         }
 
         if (_info.receipts != null) {
@@ -119,7 +123,7 @@ public class ItemFactoryModel {
                 .forEach(receipt -> allInputs.addAll(receipt.receiptInfo.inputs.stream().map(inputInfo -> inputInfo.item).collect(Collectors.toList())));
 
         // Get distance for all of them
-        List<PotentialConsumable> componentsDistance = new ArrayList<>();
+        List<PotentialConsumable> potentials = new ArrayList<>();
         allInputs.forEach(inputInfo ->
                 ModuleHelper.getWorldModule().getConsumables().stream()
                         .filter(consumable -> consumable.getInfo().instanceOf(inputInfo))
@@ -128,13 +132,13 @@ public class ItemFactoryModel {
                         .forEach(consumable -> {
                             PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel(), false, false);
                             if (path != null) {
-                                componentsDistance.add(new PotentialConsumable(consumable, path.getLength()));
+                                potentials.add(new PotentialConsumable(consumable, path.getLength()));
                             }
                         }));
-        Collections.sort(componentsDistance, (c1, c2) -> c2.distance - c1.distance);
+        Collections.sort(potentials, (c1, c2) -> c1.distance - c2.distance);
 
         // For each receipt, find total distance between factory and components
-        _receiptEntries.stream().filter(receipt -> receipt.order.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(componentsDistance));
+        _receiptEntries.stream().filter(receipt -> receipt.order.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(potentials));
 
         // Get receipt group based on components availability
         OrderEntry bestOrder = null;
@@ -165,7 +169,7 @@ public class ItemFactoryModel {
         }
 
         // Fill components list
-        _activeReceipt.prepare(componentsDistance);
+        _activeReceipt.prepare(potentials);
 
         _message = "Refilling";
 

@@ -11,12 +11,12 @@ data:extend({
         views = {
             { type = "view", position = {0, 12}, size = {352, 34}, background = 0x203636, views = {
                 { type = "label", text = "Far Point", text_size = 16, padding = 10 },
-                { type = "label", text = "Arrakis / Desert", text_size = 16, position = {190, 0}, padding = 10 },
+                { type = "label", text = "Arrakis / Desert", text_size = 16, position = {160, 0}, padding = 10 },
+                { type = "label", id = "lb_floor", text = "[0]", text_color = 0xffffff, text_size = 16, position = {312, 0}, padding = 10 },
             }},
             { type = "view", size = {352, 230}, views = {
                 { type = "minimap"},
-                { type = "label", id = "lb_floor", text = "0", text_color = 0x000000, text_size = 22, position = {12, 205}},
-                { type = "image", id = "img_speed", position = {200, 205}, size = {32, 32}},
+                { type = "image", id = "img_speed", position = {316, 205}, size = {32, 32}},
             }},
             { type = "grid", columns = 20, column_width = 30, row_height = 38, background = 0x203636, size = {352, 34}, views = {
                 { type = "label", text = "A", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_areas", on_click = function(v) application:toggleDisplay("areas") end},
@@ -106,7 +106,7 @@ data:extend({
         end
 
         if event == application.events.on_floor_change then
-            view:findById("lb_floor"):setText(data);
+            view:findById("lb_floor"):setText("[" .. data .. "]");
         end
 
         if event == application.events.on_speed_change then

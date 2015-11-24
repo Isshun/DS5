@@ -190,7 +190,7 @@ public class CraftJob extends JobModel {
 
                 // Move to next input (if same ingredient), or get back to factory
                 Optional<ItemFactoryReceiptModel.FactoryShoppingItemModel> optionalNextInput = _receipt.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
-                if (optionalNextInput.isPresent() && optionalNextInput.get().quantity + character.getInventory().getQuantity() <= info.stack) {
+                if (optionalNextInput.isPresent() && optionalNextInput.get().quantity + character.getInventoryQuantity() <= info.stack) {
                     moveToIngredient(character, optionalNextInput.get());
                 } else {
                     moveToMainItem();

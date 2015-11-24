@@ -11,6 +11,8 @@ import org.smallbox.faraway.core.util.Log;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Properties;
+import java.util.Set;
 
 public class DesktopLauncher {
     public static void main (String[] arg) {
@@ -31,28 +33,5 @@ public class DesktopLauncher {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//        Application.getInstance()._configChangeListener = new ConfigChangeListener() {
-//            @Override
-//            public void onScreeMode(String mode) {
-//                switch (mode) {
-//                    case "window":
-//                        config.fullscreen = false;
-//                        System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-//                        Gdx.graphics.setDisplayMode(1280, 720, false);
-//                        break;
-//                    case "borderless":
-//                        config.fullscreen = false;
-//                        System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-//                        Gdx.graphics.setDisplayMode(width, height, true);
-//                        break;
-//                    case "fullscreen":
-//                        config.fullscreen = true;
-//                        Gdx.graphics.setDisplayMode(width, height, true);
-//                        break;
-//                }
-//            }
-//        };
     }
-
 }

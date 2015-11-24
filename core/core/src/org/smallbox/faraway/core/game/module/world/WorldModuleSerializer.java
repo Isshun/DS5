@@ -76,7 +76,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 }
 
                                 // Item
-                                if (parcel.hasItem()) {
+                                if (parcel.hasItem() && parcel.getItem().getParcel() == parcel) {
                                     ItemModel item = parcel.getItem();
                                     st.bind(7, item.getId());
                                     stItem.bind(1, item.getId()).bind(2, item.getInfo().name).bind(3, item.isComplete() ? 1 : 0);

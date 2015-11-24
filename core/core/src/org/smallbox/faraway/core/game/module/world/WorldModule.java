@@ -22,12 +22,11 @@ public class WorldModule extends ModuleBase {
     private int                                 _height;
     private int                                 _floors;
     private Game                                _game;
-    private Set<NetworkObjectModel>             _networks;
-    private Set<ConsumableModel>                _consumables;
-    private BlockingQueue<PlantModel>           _plants;
-    private Set<ItemModel>                      _items = new HashSet<>();
-    private Set<ItemModel>                      _factories = new HashSet<>();
-    private Set<StructureModel>                 _structures = new HashSet<>();
+    private Collection<NetworkObjectModel>      _networks;
+    private Collection<ConsumableModel>         _consumables;
+    private Collection<PlantModel>              _plants;
+    private Collection<ItemModel>               _items;
+    private Collection<StructureModel>          _structures;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
 
@@ -44,9 +43,11 @@ public class WorldModule extends ModuleBase {
         _floor = _floors - 1;
 
         _parcels = parcels;
+        _items = new LinkedBlockingQueue<>();
         _plants = new LinkedBlockingQueue<>();
-        _networks = new HashSet<>();
-        _consumables = new HashSet<>();
+        _networks = new LinkedBlockingQueue<>();
+        _structures = new LinkedBlockingQueue<>();
+        _consumables = new LinkedBlockingQueue<>();
 
         // Notify world observers'
         for (int z = 0; z < _floors; z++) {
@@ -61,6 +62,7 @@ public class WorldModule extends ModuleBase {
                     }
                     if (parcel.getItem() != null) {
                         _items.add(parcel.getItem());
+                        parcel.getItem().init();
                     }
                     if (parcel.getConsumable() != null) {
                         _consumables.add(parcel.getConsumable());
@@ -89,7 +91,6 @@ public class WorldModule extends ModuleBase {
     }
 
     public Collection<ItemModel>                getItems() { return _items; }
-    public Collection<ItemModel>                getFactories() { return _factories; }
     public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<StructureModel>           getStructures() { return _structures; }
     public Collection<PlantModel>               getPlants() { return _plants; }
@@ -126,7 +127,6 @@ public class WorldModule extends ModuleBase {
                 parcel.setItem(null);
             }
             _items.remove(item);
-            _factories.remove(item);
             Application.getInstance().notify(observer -> observer.onRemoveItem(parcel, item));
         }
     }
@@ -267,10 +267,6 @@ public class WorldModule extends ModuleBase {
             item.setReceipt(item.getInfo().receipts.get(0));
         }
         _items.add(item);
-
-        if (item.getFactory() != null) {
-            _factories.add(item);
-        }
 
         Application.getInstance().notify(observer -> observer.onAddItem(item));
 

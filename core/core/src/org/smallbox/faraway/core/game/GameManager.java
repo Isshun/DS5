@@ -81,7 +81,7 @@ public class GameManager {
         if (_game != null) {
             Date date = new Date();
             String filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(date);
-            File gameDirectory = new File("saves/", gameInfo.name);
+            File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
 
             GameInfo.GameSaveInfo saveInfo = new GameInfo.GameSaveInfo();
             saveInfo.game = gameInfo;

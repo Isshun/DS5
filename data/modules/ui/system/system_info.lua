@@ -22,6 +22,10 @@ data:extend({
                     { type = "image", src = "[base]/graphics/icons/wood.png", size = {32, 32}},
                     { type = "label", id = "lb_resource_wood", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
                 }},
+                { type = "view", size = {70, 32}, views = {
+                    { type = "image", src = "[base]/graphics/icons/wood.png", size = {32, 32}},
+                    { type = "label", id = "lb_resource_granite", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
+                }},
             }},
         }},
 
@@ -55,6 +59,7 @@ data:extend({
         if resource_module then
             view:findById("lb_resource_food"):setText(resource_module:getFoodCount());
             view:findById("lb_resource_wood"):setText(resource_module:getConsumableCount("base.consumable.wood_log"));
+            view:findById("lb_resource_granite"):setText(resource_module:getConsumableCount("base.granite_brick"));
         end
     end,
 
