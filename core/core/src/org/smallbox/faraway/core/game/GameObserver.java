@@ -28,9 +28,9 @@ public interface GameObserver {
     default void onStructureComplete(StructureModel structure){}
     default void onItemComplete(ItemModel item){}
     default void onChangeGround(ParcelModel parcel){}
-    default void onRemoveItem(ItemModel item){}
+    default void onRemoveItem(ParcelModel parcel, ItemModel item){}
     default void onRemoveConsumable(ConsumableModel consumable){}
-    default void onRemoveStructure(StructureModel structure){}
+    default void onRemoveStructure(ParcelModel parcel, StructureModel structure){}
     default void onRemovePlant(PlantModel plant){}
     default void onRemoveRock(ParcelModel parcel){}
     default void onRefreshItem(ItemModel item) {}
@@ -63,8 +63,6 @@ public interface GameObserver {
     default void onTemperatureChange(double temperature) {}
     default void onLightChange(double light, long color) {}
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
-    default void onJobQuit(JobModel job, CharacterModel character) {}
-    default void onJobFinish(JobModel job) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
     default void onSpeedChange(int speed) {}
     default void onBindingPress(BindingInfo binding) {}
@@ -77,4 +75,5 @@ public interface GameObserver {
     default void onFloorChange(int floor) {}
     default void onDisplayChange(String displayName, boolean isVisible) {}
     default void onOpenQuest(QuestModel quest) {}
+    default void onCancelJobs(ParcelModel parcel, Object object) {}
 }

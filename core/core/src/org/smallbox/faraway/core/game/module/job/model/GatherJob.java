@@ -100,7 +100,7 @@ public class GatherJob extends JobModel {
         if (path != null) {
             _targetParcel = path.getLastParcel();
 
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
+            Log.info("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
             character.move(path);
         }
     }

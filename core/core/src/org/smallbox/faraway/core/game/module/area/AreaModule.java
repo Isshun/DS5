@@ -1,15 +1,17 @@
 package org.smallbox.faraway.core.game.module.area;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +20,7 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class AreaModule extends GameModule {
+public class AreaModule extends ModuleBase {
     private List<AreaModel> _areas = new ArrayList<>();
     private List<GardenAreaModel> _gardens = new ArrayList<>();
     private List<StorageAreaModel> _storageAreas = new ArrayList<>();
@@ -37,7 +39,9 @@ public class AreaModule extends GameModule {
 
         // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
-        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getStoreJob() == null).forEach(this::storeConsumable);
+        ModuleHelper.getWorldModule().getConsumables().stream()
+                .filter(consumable -> consumable.getStoreJob() == null)
+                .forEach(this::storeConsumable);
     }
 
     public void init(List<StorageAreaModel> storageAreas, List<GardenAreaModel> gardenAreas) {
@@ -49,18 +53,26 @@ public class AreaModule extends GameModule {
     }
 
     private void storeConsumable(ConsumableModel consumable) {
-        if (consumable.getStoreJob() != null) {
-            ModuleHelper.getJobModule().removeJob(consumable.getStoreJob());
-        }
+        assert consumable.getStoreJob() == null;
 
         StorageAreaModel bestStorage = getBestStorage(consumable);
         if (bestStorage != null && consumable.getStorage() != bestStorage) {
-            System.out.println("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+            Log.info("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
             ModuleHelper.getJobModule().addJob(StoreJob.create(consumable, bestStorage));
-        } else if (bestStorage != null) {
-//            System.out.println("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
-        } else {
-//            System.out.println("No best storage for " + consumable.getInfo().label);
+            return;
+        }
+
+        if (bestStorage != null && consumable.getStorage() == bestStorage) {
+            Log.debug("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+            return;
+        }
+
+        if (bestStorage == null && consumable.getStorage() != null) {
+            Log.debug("Consumable in wrong storage (" + consumable.getInfo().label + ")");
+            ParcelModel parcel = WorldHelper.getNearestFreeParcel(consumable.getParcel(), consumable.getInfo(), consumable.getQuantity());
+            if (parcel != null) {
+                ModuleHelper.getJobModule().addJob(StoreJob.create(consumable, parcel));
+            }
         }
     }
 

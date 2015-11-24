@@ -38,7 +38,6 @@ public class PlantModel extends MapObjectModel {
     public JobModel     getJob() { return _job; }
 
     public boolean      isMature() { return _maturity >= 1; }
-    public boolean      isHarvestable() { return _maturity >= _info.plant.minMaturity; }
     public boolean      inGarden() { return _garden != null; }
     public boolean      hasSeed() { return _hasSeed; }
     public boolean      hasGrowingInfo() { return _growingInfo != null; }

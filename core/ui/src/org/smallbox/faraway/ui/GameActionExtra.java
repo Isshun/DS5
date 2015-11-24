@@ -14,7 +14,11 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.PlantModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -273,9 +277,7 @@ public class GameActionExtra {
     }
 
     private void planCancel(int x, int y, int z) {
-        ModuleHelper.getJobModule().getJobs().stream()
-                .filter(job -> job.getJobParcel() == WorldHelper.getParcel(x, y, z))
-                .forEach(job -> ModuleHelper.getJobModule().removeJob(job));
+        Application.getInstance().notify(obs -> obs.onCancelJobs(WorldHelper.getParcel(x, y, z), null));
     }
 
     public void planMining(int x, int y, int z, DigMode mode) {
@@ -383,6 +385,9 @@ public class GameActionExtra {
                 break;
             case "haul":
                 Game.getInstance().setCursor("base.cursor.haul");
+                break;
+            case "cancel":
+                Game.getInstance().setCursor("base.cursor.cancel");
                 break;
         }
     }

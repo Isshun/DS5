@@ -52,7 +52,7 @@ public class LuaQuestExtend extends LuaExtend {
 
         if (!value.get("on_start").isnil()) {
             LuaValue onStartValue = value.get("on_start");
-            questInfo.onQuestStartListener = quest -> onStartValue.call(CoerceJavaToLua.coerce(quest));
+            questInfo.onQuestStartListener = (quest, optionIndex) -> quest.isOpen = onStartValue.call(CoerceJavaToLua.coerce(quest), LuaValue.valueOf(optionIndex)).toboolean();
         }
 
         if (!value.get("on_close").isnil()) {

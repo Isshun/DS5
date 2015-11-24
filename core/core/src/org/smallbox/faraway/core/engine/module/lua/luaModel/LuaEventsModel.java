@@ -34,6 +34,7 @@ public class LuaEventsModel {
     public static final int on_rock_selected = 26;
     public static final int on_display_change = 27;
     public static final int on_open_quest = 28;
+    public static final int on_log = 29;
 
     public void send(String tag) {
         Application.getInstance().notify(observer -> observer.onCustomEvent(tag, null));

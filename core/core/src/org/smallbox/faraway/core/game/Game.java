@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
@@ -36,14 +36,16 @@ public class Game {
     private GameSelectionExtra              _selector;
     private static Game                     _self;
     private final GameInfo                  _info;
-    private final Collection<GameModule>    _modulesBase;
-    private final Collection<GameModule>    _modulesThird;
+    private final Collection<ModuleBase>    _modulesBase;
+    private final Collection<ModuleBase>    _modulesThird;
     private PlanetModel                     _planet;
     private int                             _hour = 5;
     private int                             _day;
     private int                             _year;
     private static int                      _tick;
     private Map<String, Boolean>            _displays;
+    private int                             _speed = 1;
+    private int                             _lastSpeed = 1;
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
@@ -57,6 +59,8 @@ public class Game {
 
     public boolean                          isRunning() { return _isRunning; }
     public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }
+    public void                             toggleRunning() { setRunning(!_isRunning); }
+    public void                             toggleSpeed0() { setSpeed(_speed == 0 ? _lastSpeed : 0); }
 
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
@@ -68,6 +72,8 @@ public class Game {
     public long                             getTick() { return _tick; }
     public GameActionExtra                  getInteraction() { return _gameAction; }
     public GameSelectionExtra               getSelector() { return _selector; }
+    public int                              getSpeed() { return _speed; }
+    public int                              getLastSpeed() { return _lastSpeed; }
 
     public Game(GameInfo info) {
         _self = this;
@@ -117,8 +123,8 @@ public class Game {
 
         LuaModuleManager.getInstance().update();
 
-        _modulesBase.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
-        _modulesThird.stream().filter(GameModule::isLoaded).forEach(module -> module.update(tick));
+        _modulesBase.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
+        _modulesThird.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
 
         if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
@@ -172,6 +178,10 @@ public class Game {
     }
 
     public void setSpeed(int speed) {
+        if (speed != 0) {
+            _lastSpeed = speed;
+        }
+        _speed = speed;
         _tickInterval = TICK_INTERVALS[Math.max(0, Math.min(4, speed))];
         _isRunning = _tickInterval > 0;
         Application.getInstance().notify(observer -> observer.onSpeedChange(speed));

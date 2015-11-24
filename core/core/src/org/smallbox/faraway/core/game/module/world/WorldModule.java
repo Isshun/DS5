@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.game.Game;
@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class WorldModule extends GameModule {
+public class WorldModule extends ModuleBase {
     private ParcelModel[][][]                   _parcels;
     private int                                 _width;
     private int                                 _height;
@@ -121,12 +121,13 @@ public class WorldModule extends GameModule {
 
     public void removeItem(ItemModel item) {
         if (item != null && item.getParcel() != null) {
-            if (item.getParcel().getItem() == item) {
-                item.getParcel().setItem(null);
+            ParcelModel parcel = item.getParcel();
+            if (parcel.getItem() == item) {
+                parcel.setItem(null);
             }
             _items.remove(item);
             _factories.remove(item);
-            Application.getInstance().notify(observer -> observer.onRemoveItem(item));
+            Application.getInstance().notify(observer -> observer.onRemoveItem(parcel, item));
         }
     }
 
@@ -151,14 +152,15 @@ public class WorldModule extends GameModule {
                 structure.getParcel().setStructure(null);
             }
             _structures.remove(structure);
-            Application.getInstance().notify(observer -> observer.onRemoveStructure(structure));
+            Application.getInstance().notify(observer -> observer.onRemoveStructure(_parcels[x][y][z], structure));
         }
     }
 
     public void removeStructure(StructureModel structure) {
         if (structure != null && structure.getParcel() != null) {
-            moveStructureToParcel(structure.getParcel(), null);
-            Application.getInstance().notify(observer -> observer.onRemoveStructure(structure));
+            ParcelModel parcel = structure.getParcel();
+            moveStructureToParcel(parcel, null);
+            Application.getInstance().notify(observer -> observer.onRemoveStructure(parcel, structure));
         }
     }
 
@@ -486,6 +488,20 @@ public class WorldModule extends GameModule {
             _floor--;
             WorldHelper.setCurrentFloor(_floor);
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
+        }
+    }
+
+    @Override
+    public void onCancelJobs(ParcelModel parcel, Object object) {
+        if (parcel.hasItem() && !parcel.getItem().isComplete() && (object == null || object instanceof ItemModel)) {
+            ItemModel item = parcel.getItem();
+            parcel.setItem(null);
+            Application.getInstance().notify(observer -> observer.onRemoveItem(parcel, item));
+        }
+        if (parcel.hasStructure() && !parcel.getStructure().isComplete() && (object == null || object instanceof StructureModel)) {
+            StructureModel structure = parcel.getStructure();
+            parcel.setStructure(null);
+            Application.getInstance().notify(observer -> observer.onRemoveStructure(parcel, structure));
         }
     }
 }

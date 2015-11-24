@@ -102,7 +102,7 @@ public class ItemFactoryModel {
 
     // TODO: Do not use with locked consumables
     public boolean scan() {
-//        System.out.println("scan");
+//        Log.info("scan");
 
         long time = System.currentTimeMillis();
         _activeReceipt = null;
@@ -170,6 +170,6 @@ public class ItemFactoryModel {
         _message = "Refilling";
 
         return true;
-//        System.out.println("total time: " + (System.currentTimeMillis() - time) + "ms");
+//        Log.info("total time: " + (System.currentTimeMillis() - time) + "ms");
     }
 }

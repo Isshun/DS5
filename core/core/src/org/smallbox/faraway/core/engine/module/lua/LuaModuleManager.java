@@ -31,6 +31,7 @@ import org.smallbox.faraway.core.game.module.quest.QuestModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.FileUtils;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -45,6 +46,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Alex on 26/09/2015.
@@ -67,11 +72,11 @@ public class LuaModuleManager implements GameObserver {
 
     private static LuaModuleManager _self;
 
-    private List<LuaEventListener>      _luaEventListeners = new ArrayList<>();
-    private List<LuaEventListener>      _luaEventInGameListeners = new ArrayList<>();
-    private List<LuaRefreshListener>    _luaRefreshListeners = new ArrayList<>();
-    private List<LuaLoadListener>       _luaLoadListeners = new ArrayList<>();
-    private List<LuaModule>             _modules = new ArrayList<>();
+    private Collection<LuaEventListener>      _luaEventListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaEventListener>      _luaEventInGameListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaRefreshListener>    _luaRefreshListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaLoadListener>       _luaLoadListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaModule>             _modules = new LinkedBlockingQueue<>();
 
     private LuaCrewModel                _luaCrew;
     private LuaEventsModel              _luaEvents;
@@ -99,6 +104,7 @@ public class LuaModuleManager implements GameObserver {
         UIEventManager.getInstance().clear();
         UserInterface.getInstance()._views.clear();
         _luaEventListeners.clear();
+        _luaEventInGameListeners.clear();
         _luaLoadListeners.clear();
         _luaRefreshListeners.clear();
 
@@ -149,11 +155,11 @@ public class LuaModuleManager implements GameObserver {
         ModuleInfo info = luaModule.getInfo();
 
         if (!hasRequiredModules(info)) {
-            System.out.println("Unable to load lua module: " + info.id + " (" + info.name + ")");
+            Log.info("Unable to load lua module: " + info.id + " (" + info.name + ")");
             return;
         }
 
-        System.out.println("Load lua module: " + info.id + " (" + info.name + ")");
+        Log.info("Load lua module: " + info.id + " (" + info.name + ")");
 
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(a, d)\n application = a\ndata = d\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
@@ -187,7 +193,7 @@ public class LuaModuleManager implements GameObserver {
                     luaExtend.extend(this, luaModule, globals, value);
                 } catch (DataExtendException e) {
                     if (!value.get("name").isnil()) {
-                        System.out.println("Error during extend " + value.get("name").toString());
+                        Log.info("Error during extend " + value.get("name").toString());
                     }
                     e.printStackTrace();
                 }
@@ -205,7 +211,7 @@ public class LuaModuleManager implements GameObserver {
                 }
             }
             if (!requiredOk) {
-                System.out.println("Missing required (" + required.id + " >= " + required.minVersion + ")");
+                Log.info("Missing required (" + required.id + " >= " + required.minVersion + ")");
                 return false;
             }
         }
@@ -300,6 +306,7 @@ public class LuaModuleManager implements GameObserver {
     public void onFloorChange(int floor) {broadcastToLuaModules(LuaEventsModel.on_floor_change, floor); }
     public void onDisplayChange(String displayName, boolean isVisible) {broadcastToLuaModules(LuaEventsModel.on_display_change, displayName, isVisible); }
     public void onOpenQuest(QuestModel quest) {broadcastToLuaModules(LuaEventsModel.on_open_quest, quest); }
+    public void onLog(String tag, String message) { broadcastToLuaModules(LuaEventsModel.on_log, message); }
 
 //    default void onGameStart() {}
 //    default void onLog(String tag, String message) {}

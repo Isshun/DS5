@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Config;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
@@ -16,6 +16,7 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.UserInterface;
 
@@ -40,8 +41,8 @@ public class LuaApplicationModel {
     public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;
-    public Collection<GameModule>   modules;
-    public Collection<GameModule>   moduleThirds;
+    public Collection<ModuleBase>   modules;
+    public Collection<ModuleBase>   moduleThirds;
 
     public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface) {
         ui = userInterface;
@@ -62,8 +63,8 @@ public class LuaApplicationModel {
         this.year = game.getYear();
     }
 
-    public GameModule   getModule(String name) {
-        Optional<GameModule> moduleOptional = this.modules.stream().filter(module -> module.getInfo().name.equals(name)).findFirst();
+    public ModuleBase getModule(String name) {
+        Optional<ModuleBase> moduleOptional = this.modules.stream().filter(module -> module.getInfo().name.equals(name)).findFirst();
         return moduleOptional.isPresent() ? moduleOptional.get() : null;
     }
 
@@ -83,6 +84,10 @@ public class LuaApplicationModel {
         Game.getInstance().getInteraction().planDestroy(object.getParcel());
     }
 
+    public void cancel(MapObjectModel object) {
+        Application.getInstance().notify(observer -> observer.onCancelJobs(object.getParcel(), object));
+    }
+
     public void setSpeed(int speed) {
         if (GameManager.getInstance().isLoaded()) {
             GameManager.getInstance().getGame().setSpeed(speed);
@@ -98,7 +103,7 @@ public class LuaApplicationModel {
     }
 
     public void setBuild(ItemInfo itemInfo) {
-        System.out.println("Set build from lua: " + itemInfo.name);
+        Log.info("Set build from lua: " + itemInfo.name);
         Game.getInstance().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
 

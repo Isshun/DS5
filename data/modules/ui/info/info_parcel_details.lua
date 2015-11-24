@@ -7,7 +7,7 @@ data:extend({
     size = {372, 320},
     background = 0x121c1e,
     level = 100,
-    visible = false,
+    visible = true,
     views = {
         { type = "list", position = {10, 10}, views = {
             { type = "label", id = "lb_name", text = "name", text_size = 22},
@@ -34,7 +34,10 @@ data:extend({
     on_event = function(view, event, data)
         if event == application.events.on_parcel_over then
             parcel = data;
-            view:setVisible(true)
+        end
+
+        if event == application.events.on_display_change and data[1] == "debug" then
+            view:setVisible(data[2])
         end
     end,
 

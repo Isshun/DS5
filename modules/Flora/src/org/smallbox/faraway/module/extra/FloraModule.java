@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -13,7 +13,7 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.Gr
 /**
  * Created by Alex on 05/07/2015.
  */
-public class FloraModule extends GameModule {
+public class FloraModule extends ModuleBase {
     private Collection<PlantModel> _plants;
 
     @Override

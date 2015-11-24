@@ -67,7 +67,7 @@ public class DigJob extends JobModel {
         if (path != null) {
             _targetParcel = path.getLastParcel();
 
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
+            Log.info("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
             character.move(path, new MoveListener<CharacterModel>() {
                 @Override
                 public void onReach(CharacterModel character) {
@@ -82,7 +82,7 @@ public class DigJob extends JobModel {
 
     @Override
     public JobCheckReturn onCheck(CharacterModel character) {
-        System.out.println("check job: " + this);
+        Log.info("check job: " + this);
 
         // Resource no longer exists
         if (_rockInfo != _jobParcel.getRockInfo()) {

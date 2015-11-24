@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
+import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 05/06/2015.
@@ -47,7 +48,7 @@ public class ParticleRenderer extends ExtraRenderer {
                 }
                 // Load new one
                 if (name != null) {
-                    System.out.println("Load new particle effect: " + name);
+                    Log.info("Load new particle effect: " + name);
                     _effect = new ParticleEffect();
                     _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
                     _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);

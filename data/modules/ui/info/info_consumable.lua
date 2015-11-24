@@ -4,6 +4,7 @@ data:extend({
     type = "view",
     name = "ui-test",
     style = "base.style.right_panel",
+    level = 10,
     visible = false,
     views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},

@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class WeatherModule extends GameModule implements GameObserver {
+public class WeatherModule extends ModuleBase implements GameObserver {
     private int                                 _duration;
     private int                                 _floors;
     private WeatherInfo                         _weather;

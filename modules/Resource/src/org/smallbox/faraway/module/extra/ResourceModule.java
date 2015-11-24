@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.extra;
 
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.Data;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class ResourceModule extends GameModule {
+public class ResourceModule extends ModuleBase {
     private static class ConsumableCollection {
         public ItemInfo                 info;
         public List<ConsumableModel>    consumables = new ArrayList<>();

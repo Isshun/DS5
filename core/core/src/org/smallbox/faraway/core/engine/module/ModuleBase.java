@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Alex on 15/06/2015.
  */
-public abstract class GameModule extends ObjectModel implements GameObserver {
+public abstract class ModuleBase extends ObjectModel implements GameObserver {
     protected final String      TAG = getClass().getSimpleName();
 
     protected ModuleInfo        _info;
@@ -28,7 +29,7 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
     private boolean             _needUpdate;
     private int                 _needUpdateTick;
 
-    public GameModule() {
+    public ModuleBase() {
         _isLoaded = loadOnStart();
     }
 
@@ -60,7 +61,7 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
     }
 
     public void create() {
-        System.out.println("Create java module: " + _info.name);
+        Log.info("Create java module: " + _info.name);
         if (hasOwnThread()) {
             _needCreate = true;
             new Thread(() -> {
@@ -96,7 +97,7 @@ public abstract class GameModule extends ObjectModel implements GameObserver {
     }
 
     public void load(Game game) {
-        System.out.println("Load java module: " + _info.name);
+        Log.info("Load java module: " + _info.name);
         if (hasOwnThread()) {
             _needLoad = true;
         } else {

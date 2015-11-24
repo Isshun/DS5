@@ -27,6 +27,7 @@ public class MinimapRenderer extends BaseRenderer {
     private static final int    COLOR_STRUCTURE = 0x333333ff;
     private static final Color  COLOR_CHARACTER = new Color(0xff3c59ff);
     private static final Color  COLOR_VIEW = new Color(0x349394ff);
+    private static final Color  COLOR_WATER = new Color(0x006d7c1d);
 
     private static final int    FRAME_WIDTH = 352;
     private static final int    FRAME_HEIGHT = 220;
@@ -39,12 +40,11 @@ public class MinimapRenderer extends BaseRenderer {
     private Collection<CharacterModel>  _characters;
     private int                         _width;
     private int                         _height;
-    private UILabel                     _lbFloor;
     private boolean                     _dirty;
     private Pixmap                      _pixmap;
 
     public int getLevel() {
-        return MainRenderer.WORLD_RENDERER_LEVEL;
+        return MainRenderer.WORLD_GROUND_RENDERER_LEVEL;
     }
 
     @Override
@@ -61,10 +61,6 @@ public class MinimapRenderer extends BaseRenderer {
     protected void onLoad(Game game) {
         POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.getInstance().getConfig().uiScale - 10 * Application.getInstance().getConfig().uiScale);
         POS_Y = (int) (84 * Application.getInstance().getConfig().uiScale);
-        _lbFloor = new UILabel();
-        _lbFloor.setTextSize(16);
-        _lbFloor.setTextColor(0x000000);
-        _lbFloor.setText(String.valueOf(_floor));
         _characters = ModuleHelper.getCharacterModule().getCharacters();
         _width = Game.getInstance().getInfo().worldWidth;
         _height = Game.getInstance().getInfo().worldHeight;
@@ -79,9 +75,6 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     public void onFloorChange(int floor) {
-        if (_lbFloor != null) {
-            _lbFloor.setText(String.valueOf(floor));
-        }
         _floor = floor;
         _dirty = true;
     }
@@ -133,10 +126,6 @@ public class MinimapRenderer extends BaseRenderer {
                     renderer.draw(COLOR_CHARACTER, (int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 3, 3);
                 }
             }
-
-            if (_lbFloor != null) {
-                renderer.draw(_lbFloor, POS_X + 10, POS_Y + 200);
-            }
         }
     }
 
@@ -151,8 +140,12 @@ public class MinimapRenderer extends BaseRenderer {
                         _pixmap.drawPixel(x, y, COLOR_PLANT);
                     } else if (parcels[x][y][_floor].hasRock()) {
                         _pixmap.drawPixel(x, y, COLOR_ROCK);
+                    } else if (parcels[x][y][_floor].hasGround()) {
+                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getGroundInfo().color);
+                    } else if (parcels[x][y][_floor].hasLiquid()) {
+                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getLiquidInfo().color);
                     } else {
-                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].hasGround() ? parcels[x][y][_floor].getGroundInfo().color : 0x000000);
+                        _pixmap.drawPixel(x, y, 0x000000);
                     }
                 }
             }

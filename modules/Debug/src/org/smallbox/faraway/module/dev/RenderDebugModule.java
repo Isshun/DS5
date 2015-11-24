@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.module.dev;
 //
-//import org.smallbox.faraway.core.engine.module.GameModule;
+//import org.smallbox.faraway.core.engine.module.ModuleBase;
 //import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 //import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 //import org.smallbox.faraway.core.game.Game;
@@ -14,7 +14,7 @@
 ///**
 // * Created by Alex on 30/08/2015.
 // */
-//public class RenderDebugModule extends GameModule {
+//public class RenderDebugModule extends ModuleBase {
 //    public class RenderDebugModuleWindow extends UITitleWindow {
 //        @Override
 //        protected void onCreate(UIWindow window, UIFrame content) {

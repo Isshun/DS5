@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.module.job.model;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
+import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -12,6 +13,8 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.util.Utils;
 
 /**
  * Created by Alex on 09/10/2015.
@@ -24,6 +27,16 @@ public class BuildJob extends JobModel {
         _buildItem = item;
         _buildItem.setBuildJob(this);
         _label = "Build " + _buildItem.getInfo().label;
+    }
+
+    public BuildableMapObject getBuildItem() {
+        return _buildItem;
+    }
+
+    @Override
+    public void onCancel() {
+        _buildItem.getComponents().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_jobParcel, component.info, component.currentQuantity));
+        _buildItem.getComponents().clear();
     }
 
     @Override
@@ -51,7 +64,7 @@ public class BuildJob extends JobModel {
         PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, false);
         if (path != null) {
             _targetParcel = path.getLastParcel();
-            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
+            Log.info("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
             character.move(path);
         }
     }

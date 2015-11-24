@@ -2,7 +2,7 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameManager;
@@ -40,7 +40,7 @@ public class Application implements GameEventListener {
     public GDXInputProcessor    getInputProcessor() { return _inputProcessor; }
     public boolean              isRunning() { return _isRunning; }
     public void                 addObserver(GameObserver observer) { _observers.add(observer); }
-    public void                 removeObserver(GameModule observer) {
+    public void                 removeObserver(ModuleBase observer) {
         _observers.remove(observer);
     }
     public ApplicationConfig    getConfig() { return _config; }
@@ -102,6 +102,11 @@ public class Application implements GameEventListener {
     }
 
     public void notify(Consumer<GameObserver> action) {
-        _observers.stream().forEach(action::accept);
+        try {
+            _observers.stream().forEach(action::accept);
+        } catch (Error | RuntimeException e) {
+            Application.getInstance().setRunning(false);
+            e.printStackTrace();
+        }
     }
 }

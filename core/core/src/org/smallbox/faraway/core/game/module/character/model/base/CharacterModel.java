@@ -315,12 +315,12 @@ public abstract class CharacterModel extends MovableModel {
 
                 // Move complete, set path to null and call listener
                 else {
-                    System.out.println(getName() + " Move complete (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
+                    Log.info(getName() + " Move complete (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
                     _lastPath = _path;
                     _path = null;
 
                     if (_moveListener != null) {
-                        System.out.println(getName() + " Move complete: call onReach");
+                        Log.info(getName() + " Move complete: call onReach");
                         MoveListener listener = _moveListener;
                         _moveListener = null;
                         listener.onReach(this);

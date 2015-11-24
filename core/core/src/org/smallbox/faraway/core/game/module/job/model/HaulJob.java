@@ -58,6 +58,10 @@ public class HaulJob extends JobModel {
         Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
     }
 
+    public BuildableMapObject getBuildItem() {
+        return _buildItem;
+    }
+
     public void addPotentialConsumable(ConsumableModel consumable) {
         if (consumable.getInfo() == _component.info) {
             PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
@@ -195,7 +199,7 @@ public class HaulJob extends JobModel {
 
             @Override
             public void onFail(CharacterModel movable) {
-                System.out.println("HaulJob: character cannot reach component");
+                Log.info("HaulJob: character cannot reach component");
                 quit(_character);
             }
         });

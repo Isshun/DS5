@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.util.FileUtils;
+import org.smallbox.faraway.core.util.Log;
 
 import java.awt.*;
 import java.io.File;
@@ -13,17 +14,17 @@ import java.io.IOException;
 
 public class DesktopLauncher {
     public static void main (String[] arg) {
-        System.loadLibrary("sqlite4java-win32-x64-1.0.392");
+        FileUtils.createRoamingDirectory();
 
         // Get native screen resolution
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
         double ratio = (double)width / height;
-        System.out.println("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
+        Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
         try {
-            System.out.println("Load application config");
+            Log.info("Load application config");
             ApplicationConfig config = ApplicationConfig.fromJSON(new JSONObject(FileUtils.read(new File("data/config.json"))));
             Application.getInstance().setConfig(config);
             new LwjglApplication(new GDXApplication(), LwjglConfig.from(config));
@@ -31,7 +32,6 @@ public class DesktopLauncher {
             e.printStackTrace();
         }
 
-//
 //        Application.getInstance()._configChangeListener = new ConfigChangeListener() {
 //            @Override
 //            public void onScreeMode(String mode) {

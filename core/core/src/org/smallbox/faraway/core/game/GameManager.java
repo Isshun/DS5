@@ -32,7 +32,7 @@ public class GameManager {
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info);
-        GameSaveManager.load(game, new File("saves", game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
+        GameSaveManager.load(game, FileUtils.getSaveDirectory(game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             ModuleManager.getInstance().startGame(game);
             game.init();
@@ -46,10 +46,9 @@ public class GameManager {
         Application.getInstance().notify(GameObserver::onReloadUI);
 
         GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
-        File gameDirectory = new File("saves/", gameInfo.name);
-
+        File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
         if (!gameDirectory.mkdirs()) {
-            System.out.println("Unable to create game save directory");
+            Log.info("Unable to create game save directory");
             return;
         }
 
@@ -63,7 +62,7 @@ public class GameManager {
         game.init();
         _game = game;
 
-        saveGame(gameInfo, GameInfo.Type.INIT);
+//        saveGame(gameInfo, GameInfo.Type.INIT);
 
         writeGameInfo(gameInfo);
 
@@ -72,7 +71,7 @@ public class GameManager {
 
     private void writeGameInfo(GameInfo gameInfo) {
         try {
-            FileUtils.write(new File("saves/" + gameInfo.name, "game.json"), gameInfo.toJSON().toString(4));
+            FileUtils.write(new File(FileUtils.getSaveDirectory(gameInfo.name), "game.json"), gameInfo.toJSON().toString(4));
         } catch (IOException e) {
             e.printStackTrace();
         }

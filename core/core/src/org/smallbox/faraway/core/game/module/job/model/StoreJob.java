@@ -17,13 +17,17 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class StoreJob extends JobModel implements GameObserver {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
-    private List<ConsumableModel>   _consumables = new ArrayList<>();
-    private StorageAreaModel        _storage;
+    private Queue<ConsumableModel>  _consumables = new LinkedBlockingQueue<>();
+    private StorageAreaModel        _storageArea;
+    private ParcelModel             _storageParcel;
     private Mode                    _mode;
     private int                     _quantity;
     private ItemInfo                _itemInfo;
@@ -32,7 +36,15 @@ public class StoreJob extends JobModel implements GameObserver {
         super(null, jobParcel, new IconDrawable("data/res/ic_haul.png", 0, 0, 32, 32), null);
     }
 
+    public static StoreJob create(ConsumableModel consumable, ParcelModel parcel) {
+        return create(consumable, null, parcel);
+    }
+
     public static StoreJob create(ConsumableModel consumable, StorageAreaModel storage) {
+        return create(consumable, storage, null);
+    }
+
+    public static StoreJob create(ConsumableModel consumable, StorageAreaModel storage, ParcelModel parcel) {
         assert consumable != null;
 
         ParcelModel targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel(), 1, 1);
@@ -42,8 +54,9 @@ public class StoreJob extends JobModel implements GameObserver {
 
         StoreJob job = new StoreJob(targetParcel);
         consumable.setStoreJob(job);
-        job._storage = storage;
-        job._jobParcel = storage.getNearestFreeParcel(consumable);
+        job._storageArea = storage;
+        job._storageParcel = parcel;
+        job._jobParcel = storage != null ? storage.getNearestFreeParcel(consumable) : parcel;
         job._targetParcel = targetParcel;
         job._mode = Mode.MOVE_TO_CONSUMABLE;
         job._itemInfo = consumable.getInfo();
@@ -101,16 +114,27 @@ public class StoreJob extends JobModel implements GameObserver {
         // Go to next consumable
         if (!_consumables.isEmpty()) {
             _mode = Mode.MOVE_TO_CONSUMABLE;
-            moveToConsumable(_consumables.get(0));
+            moveToConsumable(_consumables.peek());
             return;
         }
 
         // Go to storage
         else if (_character.getInventory() != null) {
-            ParcelModel parcel = _storage.getFreeParcel(_character.getInventory());
-            if (parcel != null) {
-                moveToStorage(parcel);
-                return;
+            if (_storageArea != null) {
+                ParcelModel parcel = _storageArea.getFreeParcel(_character.getInventory());
+                if (parcel != null) {
+                    moveToStorage(parcel);
+                    return;
+                }
+            }
+            if (_storageParcel != null) {
+                ParcelModel parcel = _storageParcel.accept(_itemInfo, 1)
+                        ? _storageParcel
+                        : WorldHelper.getNearestFreeParcel(_storageParcel, _itemInfo, 1);
+                if (parcel != null) {
+                    moveToStorage(parcel);
+                    return;
+                }
             }
         }
 
@@ -204,13 +228,24 @@ public class StoreJob extends JobModel implements GameObserver {
             return JobCheckReturn.ABORT;
         }
 
-        if (!_storage.hasFreeSpace(_itemInfo, _quantity)) {
+        if (_storageArea == null && _storageParcel == null) {
             return JobCheckReturn.ABORT;
         }
 
+        if (_storageArea != null && !_storageArea.hasFreeSpace(_itemInfo, 1)) {
+            return JobCheckReturn.ABORT;
+        }
+
+        if (_storageParcel != null && !_storageParcel.accept(_itemInfo, 1)) {
+            _storageParcel = WorldHelper.getNearestFreeParcel(_storageParcel, _itemInfo, 1);
+            if (_storageParcel == null) {
+                return JobCheckReturn.ABORT;
+            }
+        }
+
         // No free space in storage
-        if (_jobParcel == null || (_jobParcel.getConsumable() != null && _jobParcel.getConsumable().getInfo() != _itemInfo)) {
-            _jobParcel = _storage.getNearestFreeParcel(_consumables.get(0));
+        if (_storageArea != null && (_jobParcel == null || _jobParcel.accept(_itemInfo, 1))) {
+            _jobParcel = _storageArea.getNearestFreeParcel(_consumables.peek());
             if (_jobParcel == null) {
                 _message = "No storage model";
                 return JobCheckReturn.ABORT;
@@ -235,9 +270,7 @@ public class StoreJob extends JobModel implements GameObserver {
     @Override
     protected void onStart(CharacterModel character) {
         // Lock items
-        _consumables.forEach(c -> {
-            c.lock(this);
-        });
+        _consumables.forEach(c -> c.lock(this));
         refreshJob();
     }
 

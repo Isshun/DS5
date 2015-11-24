@@ -15,7 +15,7 @@ public class QuestInfo extends ObjectInfo {
     }
 
     public interface OnQuestStartListener {
-        void onQuestStart(QuestModel quest);
+        void onQuestStart(QuestModel quest, int optionIndex);
     }
 
     public interface OnQuestCloseListener {

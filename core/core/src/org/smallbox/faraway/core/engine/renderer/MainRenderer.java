@@ -6,9 +6,9 @@ import org.smallbox.faraway.core.game.Game;
 import java.util.Collection;
 
 public class MainRenderer {
-    public static final int                 WORLD_RENDERER_LEVEL = -100;
+    public static final int                 WORLD_GROUND_RENDERER_LEVEL = -100;
     public static final int                 PARTICLE_RENDERER_LEVEL = -99;
-    public static final int                 INNER_RENDERER_LEVEL = -98;
+    public static final int                 WORLD_TOP_RENDERER_LEVEL = -98;
     public static final int                 CHARACTER_RENDERER_LEVEL = -97;
     public static final int                 JOB_RENDERER_LEVEL = -96;
 
@@ -48,7 +48,7 @@ public class MainRenderer {
 
     public void init(Game game) {
         _frame = 0;
-        _renders.stream().forEach(render -> render.load(game));
+        _renders.forEach(render -> render.load(game));
         _minimapRender.load(game);
     }
 

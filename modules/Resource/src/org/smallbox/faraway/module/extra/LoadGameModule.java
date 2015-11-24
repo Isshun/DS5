@@ -2,11 +2,12 @@ package org.smallbox.faraway.module.extra;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.util.FileUtils;
+import org.smallbox.faraway.core.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class LoadGameModule extends GameModule {
+public class LoadGameModule extends ModuleBase {
     private List<GameInfo>          _games = new ArrayList<>();
 
     private GameInfo                _currentGame;
@@ -47,11 +48,11 @@ public class LoadGameModule extends GameModule {
 
     private void load() {
         _games.clear();
-        FileUtils.list(new File("saves/")).stream().filter(File::isDirectory).forEach(gameDirectory -> {
+        FileUtils.list(FileUtils.getSaveDirectory()).stream().filter(File::isDirectory).forEach(gameDirectory -> {
             File file = new File(gameDirectory, "game.json");
             if (file.exists()) {
                 try {
-                    System.out.println("Load game directory: " + gameDirectory.getName());
+                    Log.info("Load game directory: " + gameDirectory.getName());
                     GameInfo info = GameInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8)));
                     if (info != null) {
                         _games.add(info);

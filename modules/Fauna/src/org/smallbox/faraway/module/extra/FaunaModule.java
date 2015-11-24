@@ -1,17 +1,16 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Alex on 26/06/2015.
  */
-public class FaunaModule extends GameModule {
+public class FaunaModule extends ModuleBase {
     private List<RegionInfo.RegionFauna>    FAUNA_COMMON_POOL = new ArrayList<>();
     private List<RegionInfo.RegionFauna>    FAUNA_UNUSUAL_POOL = new ArrayList<>();
 

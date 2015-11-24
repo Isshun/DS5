@@ -35,7 +35,7 @@ public class GameSaveManager {
             archive.close();
             archiveStream.close();
 
-            System.out.println("Extract zip: " + (System.currentTimeMillis() - time));
+            Log.info("Extract zip: " + (System.currentTimeMillis() - time));
             File dbFile = new File(gameDirectory, filename + ".db");
             SQLHelper.getInstance().openDB(dbFile);
             new GameSerializer().load(game);
@@ -45,7 +45,7 @@ public class GameSaveManager {
             SQLHelper.getInstance().post(db -> {
                 listener.onSerializerComplete();
                 dbFile.delete();
-                System.out.println("Load save game: " + (System.currentTimeMillis() - time));
+                Log.info("Load save game: " + (System.currentTimeMillis() - time));
                 Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
             });
         } catch (IOException | ArchiveException e) {

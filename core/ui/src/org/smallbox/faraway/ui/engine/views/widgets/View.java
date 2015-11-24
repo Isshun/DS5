@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import com.badlogic.gdx.Gdx;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Application;
@@ -31,8 +32,8 @@ public abstract class View {
         _horizontalAlign = horizontalAlign;
     }
 
-    public enum HorizontalAlign {LEFT, RIGHT}
-    public enum VerticalAlign {TOP, BOTTOM}
+    public enum HorizontalAlign {LEFT, RIGHT, CENTER}
+    public enum VerticalAlign {TOP, BOTTOM, CENTER}
 
     protected RotateAnimation _animation;
     protected boolean _focusable;
@@ -172,11 +173,11 @@ public abstract class View {
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
-            _finalX = _x + _marginTop + x;
-            _finalY = _y + _marginTop + y;
+            _finalX = getAlignedX() + _marginLeft + x;
+            _finalY = getAlignedY() + _marginTop + y;
 
             if (_backgroundColor != null) {
-                renderer.draw(_backgroundColor, _x + _marginLeft + x, _y + _marginTop + y, _width, _height);
+                renderer.draw(_backgroundColor, _finalX, _finalY, _width, _height);
             }
 
             if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
@@ -352,10 +353,12 @@ public abstract class View {
     }
 
     public void setPosition(int x, int y) {
-        x = (int) (x * Application.getInstance().getConfig().uiScale);
-        y = (int) (y * Application.getInstance().getConfig().uiScale);
-        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.getInstance().getConfig().screen.resolution[0] - x;
-        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.getInstance().getConfig().screen.resolution[1] - y;
+//        x = (int) (x * Application.getInstance().getConfig().uiScale);
+//        y = (int) (y * Application.getInstance().getConfig().uiScale);
+//        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.getInstance().getConfig().screen.resolution[0] - x;
+//        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.getInstance().getConfig().screen.resolution[1] - y;
+        _x = (int) (x * Application.getInstance().getConfig().uiScale);
+        _y = (int) (y * Application.getInstance().getConfig().uiScale);
     }
 
     public void onEnter() {
@@ -406,5 +409,25 @@ public abstract class View {
             }
         }
         return null;
+    }
+
+    protected int getAlignedX() {
+        if (_horizontalAlign == HorizontalAlign.CENTER) {
+            return (_parent.getWidth() / 2) - (_width / 2) + _x;
+        }
+        if (_horizontalAlign == HorizontalAlign.RIGHT) {
+            return _parent.getWidth() - _x;
+        }
+        return _x;
+    }
+
+    protected int getAlignedY() {
+        if (_verticalAlign == VerticalAlign.CENTER) {
+            return (_parent.getHeight() / 2) - (_height / 2) + _y;
+        }
+        if (_verticalAlign == VerticalAlign.BOTTOM) {
+            return _parent.getHeight() - _y;
+        }
+        return _y;
     }
 }

@@ -47,7 +47,7 @@ public abstract class Server {
                     // Register the ServerSocketChannel, so we can
                     // listen for incoming connections
                     ssc.register( selector, SelectionKey.OP_ACCEPT );
-//                    System.out.println( "Listening on mPort "+ mPort);
+//                    Log.info( "Listening on mPort "+ mPort);
 
                     while (_run) {
                         // See if we've had any activity -- either
@@ -74,7 +74,7 @@ public abstract class Server {
                             // Accept
                             if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
 //                                if (Settings.DEBUG) {
-                                    System.out.println("accept");
+                                    Log.info("accept");
 //                                }
                                 // It's an incoming connection.
                                 // Register this socket with the Selector
@@ -82,7 +82,7 @@ public abstract class Server {
 
                                 Socket s = ss.accept();
 //                                if (Settings.DEBUG) {
-                                    System.out.println("Got connection from " + s);
+                                    Log.info("Got connection from " + s);
 //                                }
 
                                 // Make sure to make it non-blocking, so we can
@@ -123,9 +123,9 @@ public abstract class Server {
                                 } catch( IOException ie ) {
                                     // Remove this channel from the selector
                                     key.cancel();
-                                    try { sc.close(); } catch( IOException ie2 ) { System.out.println( ie2 ); }
+                                    try { sc.close(); } catch( IOException ie2 ) { Log.info( ie2 ); }
 //                                    if (Settings.DEBUG) {
-                                        System.out.println("Closed " + sc);
+                                        Log.info("Closed " + sc);
 //                                    }
 
                                     onSocketChannelClosed(sc);
@@ -171,7 +171,7 @@ public abstract class Server {
      * @return true if the message was write on the socketChannel
      */
     protected boolean sendMessage(SocketChannel sc, String message) {
-        System.out.println("Send message: " + message);
+        Log.info("Send message: " + message);
 
         try {
             mWriteBuffer.clear();

@@ -32,7 +32,7 @@ public class GardenAreaModel extends AreaModel {
         //  Plan to remove plant
         if (parcel.hasPlant()) {
             if (parcel.getPlant().getJob() != null) {
-                ModuleHelper.getJobModule().removeJob(parcel.getPlant().getJob());
+                parcel.getPlant().getJob().cancel();
             }
             ModuleHelper.getJobModule().addJob(GatherJob.create(parcel.getPlant(), GatherJob.Mode.CUT));
         }
@@ -40,7 +40,7 @@ public class GardenAreaModel extends AreaModel {
         //  Plan to remove rock
         if (parcel.hasRock()) {
             if (parcel.hasDigJob()) {
-                ModuleHelper.getJobModule().removeJob(parcel.getDigJob());
+                parcel.getDigJob().cancel();
             }
             ModuleHelper.getJobModule().addJob(DigJob.create(parcel, parcel.getRockInfo(), null));
         }

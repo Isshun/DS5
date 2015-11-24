@@ -144,13 +144,13 @@ public class CraftJob extends JobModel {
                             _item.getParcel().y + _item.getInfo().factory.outputSlots[1],
                             _item.getParcel().z);
                 }
-                System.out.println("Factory: put crafted consumable on ground");
+                Log.info("Factory: put crafted consumable on ground");
                 ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));
             }
 
             // Put consumables on item network
             if (_order.output == ItemInfo.FactoryOutputMode.NETWORK) {
-                System.out.println("Factory: put crafted consumable in network");
+                Log.info("Factory: put crafted consumable in network");
                 if (_item.getNetworkConnections() != null) {
                     _item.getNetworkConnections().stream()
                             .filter(networkObject -> networkObject.getNetwork() != null && networkObject.getNetwork().accept(productInfo.item))
@@ -201,7 +201,7 @@ public class CraftJob extends JobModel {
 
             @Override
             public void onFail(CharacterModel character) {
-                System.out.println("CraftJob: character cannot reach factory");
+                Log.info("CraftJob: character cannot reach factory");
                 quit(character);
             }
         });
@@ -241,7 +241,7 @@ public class CraftJob extends JobModel {
 
             @Override
             public void onFail(CharacterModel character) {
-                System.out.println("CraftJob: character cannot reach factory");
+                Log.info("CraftJob: character cannot reach factory");
                 quit(character);
             }
         });

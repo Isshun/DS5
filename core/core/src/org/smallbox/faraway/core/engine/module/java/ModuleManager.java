@@ -4,7 +4,7 @@ import org.json.JSONObject;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.MinimapRenderer;
@@ -33,9 +33,9 @@ import java.util.jar.JarFile;
  */
 public class ModuleManager {
     private static ModuleManager        _self;
-    private List<GameModule>            _modules = new ArrayList<>();
-    private List<GameModule>            _modulesBase = new ArrayList<>();
-    private List<GameModule>            _modulesThird = new ArrayList<>();
+    private List<ModuleBase>            _modules = new ArrayList<>();
+    private List<ModuleBase>            _modulesBase = new ArrayList<>();
+    private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<BaseRenderer>          _renders = new ArrayList<>();
     private List<BaseRenderer>          _rendersBase = new ArrayList<>();
     private List<BaseRenderer>          _rendersThird = new ArrayList<>();
@@ -52,10 +52,10 @@ public class ModuleManager {
     public void load() {
         // Load game modules
         _modulesBase.clear();
-        new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
+        new Reflections("org.smallbox.faraway").getSubTypesOf(ModuleBase.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
             try {
-                System.out.println("Find module: " + cls.getSimpleName());
-                GameModule module = cls.getConstructor().newInstance();
+                Log.info("Find module: " + cls.getSimpleName());
+                ModuleBase module = cls.getConstructor().newInstance();
                 ModuleInfo info = new ModuleInfo();
                 info.name = module.getClass().getSimpleName();
                 module.setInfo(info);
@@ -112,7 +112,7 @@ public class ModuleManager {
         _modulesThird.clear();
         thirdPartyModules.forEach(thirdPartyModule -> {
             FileUtils.list(thirdPartyModule.getDirectory()).stream().filter(file -> file.getName().endsWith(".jar")).forEach(file -> {
-                System.out.println("Load jar module: " + file.getAbsolutePath());
+                Log.info("Load jar module: " + file.getAbsolutePath());
 
                 try {
                     JarFile jarFile = new JarFile(file);
@@ -130,10 +130,10 @@ public class ModuleManager {
                         String className = je.getName().substring(0, je.getName().length()-6);
                         className = className.replace('/', '.');
                         Class<?> cls = cl.loadClass(className);
-                        if (GameModule.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
-                            System.out.println("Discover third party module: " + cls.getSimpleName());
+                        if (ModuleBase.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
+                            Log.info("Discover third party module: " + cls.getSimpleName());
                             try {
-                                GameModule module = cls.asSubclass(GameModule.class).getConstructor().newInstance();
+                                ModuleBase module = cls.asSubclass(ModuleBase.class).getConstructor().newInstance();
                                 module.setInfo(thirdPartyModule.getInfo());
                                 _modulesThird.add(module);
                             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -141,7 +141,7 @@ public class ModuleManager {
                             }
                         }
                         if (BaseRenderer.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
-                            System.out.println("Discover third party render: " + cls.getSimpleName());
+                            Log.info("Discover third party render: " + cls.getSimpleName());
                             try {
                                 _rendersThird.add(cls.asSubclass(BaseRenderer.class).getConstructor().newInstance());
                             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
@@ -168,12 +168,12 @@ public class ModuleManager {
         _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
         Application.getInstance().addObserver(_minimapRenderer);
 
-        System.out.println("Load base modules");
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(GameModule::create);
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
+        Log.info("Load base modules");
+        _modulesBase.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(ModuleBase::create);
+        _modulesBase.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(ModuleBase::create);
 
-        System.out.println("Load third party modules");
-        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(GameModule::create);
+        Log.info("Load third party modules");
+        _modulesThird.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(ModuleBase::create);
 
         Application.getInstance().notify(GameObserver::onReloadUI);
 
@@ -181,31 +181,31 @@ public class ModuleManager {
     }
 
     public BaseRenderer                     getRender(Class<? extends BaseRenderer> cls) { return _renders.stream().filter(cls::isInstance).findFirst().get(); }
-    public GameModule                       getModule(Class<? extends GameModule> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
-    public GameModule                       getModule(String className) { return _modules.stream().filter(module -> module.getClass().getSimpleName().equals(className)).findFirst().get(); }
+    public ModuleBase getModule(Class<? extends ModuleBase> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
+    public ModuleBase getModule(String className) { return _modules.stream().filter(module -> module.getClass().getSimpleName().equals(className)).findFirst().get(); }
     public Collection<BaseRenderer>         getRenders() { return _renders; }
-    public Collection<GameModule>           getModules() { return _modules; }
-    public Collection<GameModule>           getModulesBase() { return _modulesBase; }
-    public Collection<GameModule>           getModulesThird() { return _modulesThird; }
+    public Collection<ModuleBase>           getModules() { return _modules; }
+    public Collection<ModuleBase>           getModulesBase() { return _modulesBase; }
+    public Collection<ModuleBase>           getModulesThird() { return _modulesThird; }
     public Collection<SerializerInterface>  getSerializers() { return _serializers; }
 
-    public void unloadModule(Class<? extends GameModule> cls) { unloadModule(getModule(cls)); }
-    public void loadModule(Class<? extends GameModule> cls) { loadModule(getModule(cls)); }
-    public void toggleModule(Class<? extends GameModule> cls) { toggleModule(getModule(cls)); }
+    public void unloadModule(Class<? extends ModuleBase> cls) { unloadModule(getModule(cls)); }
+    public void loadModule(Class<? extends ModuleBase> cls) { loadModule(getModule(cls)); }
+    public void toggleModule(Class<? extends ModuleBase> cls) { toggleModule(getModule(cls)); }
 
-    public void unloadModule(GameModule module) {
+    public void unloadModule(ModuleBase module) {
         if (!module.isModuleMandatory()) {
             module.destroy();
             Application.getInstance().removeObserver(module);
         }
     }
 
-    public void loadModule(GameModule module) {
+    public void loadModule(ModuleBase module) {
         module.create();
         Application.getInstance().addObserver(module);
     }
 
-    public void toggleModule(GameModule module) {
+    public void toggleModule(ModuleBase module) {
         if (module.isLoaded()) {
             if (!module.isModuleMandatory()) {
                 module.destroy();
@@ -222,11 +222,11 @@ public class ModuleManager {
     }
 
     public void startGame(Game game) {
-        System.out.println("Load base modules");
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(module -> module.load(game));
-        _modulesBase.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(game));
+        Log.info("Load base modules");
+        _modulesBase.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() > 0).forEach(module -> module.load(game));
+        _modulesBase.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(game));
 
-        System.out.println("Load third party modules");
-        _modulesThird.stream().filter(GameModule::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(game));
+        Log.info("Load third party modules");
+        _modulesThird.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(module -> module.load(game));
     }
 }

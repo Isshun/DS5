@@ -97,7 +97,7 @@
 //
 //    @Override
 //    protected void onMessage(SocketChannel sc, String message) {
-//        System.out.println("Receive: " + message);
+//        Log.info("Receive: " + message);
 //
 //        switch (message) {
 //            case "hello":

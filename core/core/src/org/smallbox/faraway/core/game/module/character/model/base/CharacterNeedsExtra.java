@@ -119,7 +119,7 @@ public class CharacterNeedsExtra {
 ////        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
 //        double heatDifference = 0;
 //        double heatDifferenceReal = 0;
-////        System.out.println("heatDifference: " + heatDifference);
+////        Log.info("heatDifference: " + heatDifference);
 //
 //        if (heatDifference < 0) {
 //            heatDifferenceReal = Math.min(0, heatDifference + _stats.buff.heat);
@@ -129,7 +129,7 @@ public class CharacterNeedsExtra {
 //
 //        this.heatDifferenceReal = heatDifferenceReal;
 //
-////        System.out.println("heatDifferenceReal: " + heatDifferenceReal);
+////        Log.info("heatDifferenceReal: " + heatDifferenceReal);
 //
 //        if (heatDifferenceReal < 0) {
 //            this.heat += heatDifferenceReal * (1 - _stats.resist.cold / 100f) / 100f;
@@ -145,7 +145,7 @@ public class CharacterNeedsExtra {
 //            }
 //        }
 
-//        System.out.println("bodyHeat: " + this.heat);
+//        Log.info("bodyHeat: " + this.heat);
     }
 
     public void use(MapObjectModel item, ItemInfo.ItemInfoEffects effects, int cost) {

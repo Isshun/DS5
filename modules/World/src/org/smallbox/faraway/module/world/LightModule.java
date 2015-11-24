@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.core.game.module.world.model.*;
 //import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 //import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.engine.module.GameModule;
+//import org.smallbox.faraway.core.engine.module.ModuleBase;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //
 //import java.util.ArrayList;
@@ -14,7 +14,7 @@
 ///**
 // * Created by Alex on 03/07/2015.
 // */
-//public class LightModule extends GameModule {
+//public class LightModule extends ModuleBase {
 //    private List<MapObjectModel> _items = new ArrayList<>();
 //
 //    @Override

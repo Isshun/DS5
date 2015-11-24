@@ -25,7 +25,7 @@ data:extend({
         label = "Dirt",
         name = "base.ground.dirt",
         type = "ground",
-        color = 0xfff9bd,
+        color = 0x6d7c1dff,
         size = {16, 16},
         fertility = 0.5,
         permeability = 0.5,

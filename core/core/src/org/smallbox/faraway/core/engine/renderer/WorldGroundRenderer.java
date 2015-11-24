@@ -40,6 +40,7 @@ public class WorldGroundRenderer extends BaseRenderer {
     private int                     _cols;
     private int                     _floor;
     private Map<ItemInfo, Pixmap>   _pxRocks;
+    private Map<ItemInfo, Pixmap>   _pxLiquids;
     private Map<ItemInfo, Pixmap>   _pxGrounds;
     private Map<ItemInfo, Pixmap>   _pxGroundBorders;
     private Map<ItemInfo, Pixmap>   _pxGroundDecorations;
@@ -47,6 +48,8 @@ public class WorldGroundRenderer extends BaseRenderer {
     @Override
     protected void onLoad(Game game) {
         super.onLoad(game);
+
+        _pxLiquids = new HashMap<>();
 
         _pxGrounds = new HashMap<>();
         _pxGroundBorders = new HashMap<>();
@@ -70,6 +73,12 @@ public class WorldGroundRenderer extends BaseRenderer {
             }
         });
 
+        Data.getData().items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
+            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(0))));
+            textureIn.getTextureData().prepare();
+            _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
+        });
+
         _pxRocks = new HashMap<>();
 
         _cols = game.getInfo().worldWidth / CHUNK_SIZE;
@@ -82,7 +91,7 @@ public class WorldGroundRenderer extends BaseRenderer {
     }
 
     public int getLevel() {
-        return MainRenderer.WORLD_RENDERER_LEVEL;
+        return MainRenderer.WORLD_GROUND_RENDERER_LEVEL;
     }
 
     @Override
@@ -211,6 +220,13 @@ public class WorldGroundRenderer extends BaseRenderer {
                         pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 2)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 64, 32, 32, 32);
                     } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 3)) {
                         pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 3)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 96, 32, 32, 32);
+                    }
+
+                    // Draw liquid
+                    if (parcel.hasLiquid()) {
+                        int offsetX = (parcel.x % parcel.getLiquidInfo().width) * 32;
+                        int offsetY = (parcel.y % parcel.getLiquidInfo().height) * 32;
+                        pxGroundOut.drawPixmap(_pxLiquids.get(parcel.getLiquidInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 32);
                     }
 
                     // Draw rock

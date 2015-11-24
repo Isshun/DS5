@@ -51,7 +51,7 @@
 //
 //    @Override
 //    public boolean onCheck(CharacterModel character) {
-//        System.out.println("check job: " + this);
+//        Log.info("check job: " + this);
 //
 //        // Item is null
 //        if (_resource == null) {
@@ -120,7 +120,7 @@
 //
 //        if (path != null) {
 //            _targetParcel = path.getLastParcel();
-//            System.out.println("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
+//            Log.info("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
 //            character.move(path);
 //        }
 //    }

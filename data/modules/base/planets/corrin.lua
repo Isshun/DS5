@@ -35,6 +35,7 @@ data:extend({
         terrains = {
             { ground = "base.ground.grass" },
             { ground = "base.ground.dirt", pattern = "ground_large" },
+            { liquid = "base.liquid.water", pattern = "ground_large", condition = "ground" },
             { resource = "base.granite", ground = "base.ground.granite", pattern = "mountain" },
             { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
         },

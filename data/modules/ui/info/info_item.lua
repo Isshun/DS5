@@ -1,4 +1,4 @@
-item = nil
+local item
 
 data:extend({
     type = "view",
@@ -76,7 +76,10 @@ data:extend({
 
             -- Action buttons
             { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
-                application:destroy(structure)
+                application:destroy(item)
+            end},
+            { type = "label", id = "bt_cancel", text = "Cancel", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
+                application:cancel(item)
             end},
         }},
     },
@@ -234,7 +237,7 @@ function display_actions_info(view, item)
             local action = iterator:next()
 
             local view_action = application.ui:createView()
-            view_action:setSize(400, 42)
+            view_action:setSize(372, 42)
             list_actions:addView(view_action)
 
             local icon_action = application.ui:createLabel()
@@ -249,7 +252,7 @@ function display_actions_info(view, item)
             lb_action:setText(action.type)
             lb_action:setTextSize(16)
             lb_action:setPosition(20, 0)
-            lb_action:setSize(400, 24)
+            lb_action:setSize(372, 24)
             view_action:addView(lb_action)
 
             local str = ""
@@ -296,7 +299,7 @@ function display_factory_info(view, factory, factoryInfo)
 
         -- Create frame receipt detail
         local frame_receipt_detail = application.ui:createList()
-        frame_receipt_detail:setSize(400, 100)
+        frame_receipt_detail:setSize(372, 100)
         frame_receipt_detail:setVisible(false)
         local iterator_receipt = receipt_group.receipts:iterator()
         while iterator_receipt:hasNext() do
@@ -311,7 +314,7 @@ function display_factory_info(view, factory, factoryInfo)
                 end
 
                 local lb_receipt = application.ui:createLabel()
-                lb_receipt:setSize(400, 22)
+                lb_receipt:setSize(372, 22)
                 lb_receipt:setText(str_inputs)
                 lb_receipt:setTextSize(14)
                 frame_receipt_detail:addView(lb_receipt)
@@ -320,7 +323,7 @@ function display_factory_info(view, factory, factoryInfo)
 
         -- Create frame receipt
         local frame_receipt = application.ui:createView()
-        frame_receipt:setSize(400, 22)
+        frame_receipt:setSize(372, 22)
 
         local lb_receipt_expend = application.ui:createLabel()
         lb_receipt_expend:setSize(14, 14)
@@ -335,7 +338,7 @@ function display_factory_info(view, factory, factoryInfo)
         frame_receipt:addView(lb_receipt_expend)
 
         local lb_receipt_group = application.ui:createLabel()
-        lb_receipt_group:setSize(400, 32)
+        lb_receipt_group:setSize(372, 32)
         lb_receipt_group:setPosition(20, 0)
         lb_receipt_group:setPadding(3)
         lb_receipt_group:setText(receipt_group.label)
@@ -344,7 +347,7 @@ function display_factory_info(view, factory, factoryInfo)
         local lb_mode = application.ui:createLabel()
         lb_mode:setText("mode")
         lb_mode:setSize(50, 22)
-        lb_mode:setPosition(300, 0)
+        lb_mode:setPosition(280, 0)
         lb_mode:setPadding(3)
         lb_mode:setOnClickListener(function(v)
             lb_mode:setText("gg")
@@ -352,9 +355,9 @@ function display_factory_info(view, factory, factoryInfo)
         frame_receipt:addView(lb_mode)
 
         local lb_up = application.ui:createLabel()
-        lb_up:setText("up")
+        lb_up:setText("U")
         lb_up:setSize(50, 22)
-        lb_up:setPosition(200, 0)
+        lb_up:setPosition(240, 0)
         lb_up:setPadding(3)
         lb_up:setOnClickListener(function(v)
             factory:moveReceipt(receipt_group, -1)
@@ -363,9 +366,9 @@ function display_factory_info(view, factory, factoryInfo)
         frame_receipt:addView(lb_up)
 
         local lb_down = application.ui:createLabel()
-        lb_down:setText("down")
+        lb_down:setText("D")
         lb_down:setSize(50, 22)
-        lb_down:setPosition(250, 0)
+        lb_down:setPosition(260, 0)
         lb_down:setPadding(3)
         lb_down:setOnClickListener(function(v)
             factory:moveReceipt(receipt_group, 1)
@@ -376,7 +379,7 @@ function display_factory_info(view, factory, factoryInfo)
         local lb_active = application.ui:createLabel()
         lb_active:setText(order.isActive and "[x]" or "[ ]")
         lb_active:setSize(50, 22)
-        lb_active:setPosition(358, 0)
+        lb_active:setPosition(326, 0)
         lb_active:setPadding(3)
         lb_active:setOnClickListener(function(v)
             order.isActive = not order.isActive

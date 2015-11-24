@@ -1,12 +1,13 @@
 package org.smallbox.faraway.core.game.module.world;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 18/06/2015.
  */
-public class OxygenModule extends GameModule {
+public class OxygenModule extends ModuleBase {
     private double                  _oxygen;
     private List<ItemModel>         _items;
 
@@ -93,7 +94,7 @@ public class OxygenModule extends GameModule {
     }
 
     @Override
-    public void onRemoveItem(ItemModel item) {
+    public void onRemoveItem(ParcelModel parcel, ItemModel item) {
         if (item.getInfo().effects != null && item.getInfo().effects.oxygen > 0) {
             _items.add(item);
         }

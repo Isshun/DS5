@@ -144,6 +144,12 @@ public class WorldFactory {
                 parcel.setGroundInfo(Data.getData().getItemInfo(terrain.ground));
             }
 
+            // Set liquid
+            if (terrain.liquid != null) {
+                parcel.setGroundInfo(null);
+                parcel.setLiquidInfo(Data.getData().getItemInfo(terrain.liquid), 0.5);
+            }
+
             // Add resource
             if (terrain.resource != null) {
                 ItemInfo resourceInfo = Data.getData().getItemInfo(terrain.resource);

@@ -27,6 +27,7 @@ public class LuaItemExtend extends LuaExtend {
         switch (type) {
             case "item":
             case "ground":
+            case "liquid":
             case "resource":
             case "structure":
             case "consumable":
@@ -65,7 +66,7 @@ public class LuaItemExtend extends LuaExtend {
 
         readItem(itemInfo, value);
 
-//        System.out.println("Extends item from lua: " + itemInfo.label);
+//        Log.info("Extends item from lua: " + itemInfo.label);
     }
 
     private void readItem(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
@@ -107,6 +108,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.health = getInt(value, "health", 1);
         itemInfo.networkName = getString(value, "network", null);
         itemInfo.isGround = "ground".equals(getString(value, "type", null));
+        itemInfo.isLiquid = "liquid".equals(getString(value, "type", null));
         itemInfo.isLinkDown = getBoolean(value, "is_link_down", false);
         itemInfo.isWall= getBoolean(value, "is_wall", false);
         itemInfo.color = getInt(value, "color", 0x000000);
@@ -394,7 +396,6 @@ public class LuaItemExtend extends LuaExtend {
     private void readPlantValues(ItemInfo itemInfo, LuaValue value) {
         itemInfo.isPlant = true;
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
-        itemInfo.plant.minMaturity = getDouble(value, "gather", 1);
         itemInfo.plant.growing = 1 / getDouble(value, "growing", 2000);
         itemInfo.plant.nourish = 1 / getDouble(value, "nourish", 500);
         itemInfo.plant.oxygen = getDouble(value, "oxygen", 0);

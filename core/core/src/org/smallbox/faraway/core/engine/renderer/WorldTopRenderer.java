@@ -1,48 +1,36 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
 
-public abstract class WorldTopRenderer extends BaseRenderer {
-    protected static final int  CACHE_SIZE = 16;
-
+public class WorldTopRenderer extends BaseRenderer {
     protected SpriteManager     _spriteManager;
     protected MapObjectModel    _itemSelected;
-    protected boolean           _firstRefresh;
     private int                 _floor;
+    private int                 _width;
+    private int                 _height;
 
     @Override
     protected void onLoad(Game game) {
+        _width = game.getInfo().worldWidth;
+        _height = game.getInfo().worldHeight;
         _spriteManager = SpriteManager.getInstance();
-        _firstRefresh = true;
     }
 
+    @Override
     public int getLevel() {
-        return MainRenderer.WORLD_RENDERER_LEVEL;
-    }
-
-    public void onRefresh(int frame) {
-        if (_firstRefresh) {
-            _firstRefresh = false;
-        }
+        return MainRenderer.WORLD_TOP_RENDERER_LEVEL;
     }
 
     @Override
     protected void onUpdate() {
-        ModuleHelper.getWorldModule().getPlants().forEach(plant -> {
-            if (plant.getInfo().graphics != null && plant.getInfo().graphics.get(0).type == GraphicInfo.Type.TERRAIN) {
-            }
-        });
-
         ModuleHelper.getWorldModule().getStructures().forEach(structure -> {
             ParcelModel parcel = structure.getParcel();
 
@@ -80,10 +68,10 @@ public abstract class WorldTopRenderer extends BaseRenderer {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        int fromX = (int) ((-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
-        int fromY = (int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
-        int toX = fromX + 50;
-        int toY = fromY + 40;
+        int fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
+        int fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
+        int toX = Math.min(_width, fromX + 50);
+        int toY = Math.min(_height, fromY + 40);
 
         int viewportX = viewport.getPosX();
         int viewportY = viewport.getPosY();
@@ -113,77 +101,8 @@ public abstract class WorldTopRenderer extends BaseRenderer {
         }
     }
 
-    private void refreshPlant(RenderLayer layer, ParcelModel parcel, PlantModel plant, int x, int y) {
-        if (parcel != null && plant != null) {
-            Sprite sprite = _spriteManager.getItem(plant.getGraphic(), parcel.getTile(), plant.getTile());
-            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-        }
-    }
-
-    //TODO: random
-    void    refreshStructure(RenderLayer layer, StructureModel structure, int x, int y) {
-        int offsetWall = (Constant.TILE_WIDTH / 2 * 3) - Constant.TILE_HEIGHT;
-
-        if (structure != null) {
-            // Door
-            if (structure.isDoor()) {
-                layer.draw(_spriteManager.getItem(structure), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT - offsetWall);
-            }
-
-            // Floor
-            else if (structure.isFloor()) {
-                layer.draw(_spriteManager.getItem(structure), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            }
-
-            else {
-                layer.draw(SpriteManager.getInstance().getItem(structure), (structure.getParcel().x % CACHE_SIZE) * Constant.TILE_WIDTH, (structure.getParcel().y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            }
-        }
-    }
-
-    void    refreshItems(RenderLayer layer, ItemModel item, int x, int y) {
-        if (item != null && item.getParcel().x == x && item.getParcel().y == y) {
-
-            // Display item
-            layer.draw(_spriteManager.getItem(item, item.getCurrentFrame()), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-
-            // Display components
-            if (item.getFactory() != null && item.getFactory().getActiveReceipt() != null && item.getFactory().getActiveReceipt().getShoppingList() != null) {
-                for (ItemFactoryReceiptModel.FactoryShoppingItemModel component : item.getFactory().getActiveReceipt().getShoppingList()) {
-                    Sprite sprite = _spriteManager.getItem(component.consumable.getInfo());
-                    if (sprite != null) {
-                        if (item.getInfo().factory != null && item.getInfo().factory.inputSlots != null) {
-                            layer.draw(sprite,
-                                    (x + item.getInfo().factory.inputSlots[0]) * Constant.TILE_WIDTH,
-                                    (y + item.getInfo().factory.inputSlots[1]) * Constant.TILE_HEIGHT);
-                        } else {
-                            layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-                        }
-                    }
-                }
-            }
-
-            // Display selection
-            if (!item.isFunctional()) {
-                layer.draw(_spriteManager.getIcon("data/res/ic_power.png"), (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            }
-        }
-    }
-
-    void    refreshConsumable(RenderLayer layer, ConsumableModel consumable, int x, int y) {
-        if (consumable != null) {
-
-            // Regular item
-            Sprite sprite = _spriteManager.getItem(consumable, consumable.getCurrentFrame());
-            if (sprite != null) {
-                layer.draw(sprite, (x % CACHE_SIZE) * Constant.TILE_WIDTH, (y % CACHE_SIZE) * Constant.TILE_HEIGHT);
-            }
-
-            // Selection
-            if (consumable.isSelected()) {
-                _itemSelected = consumable;
-            }
-        }
+    @Override
+    public void onRefresh(int frame) {
     }
 
     public void onDrawSelected(GDXRenderer renderer, Viewport viewport, double animProgress) {
@@ -255,5 +174,4 @@ public abstract class WorldTopRenderer extends BaseRenderer {
     public void onDeselect() {
         _itemSelected = null;
     }
-
 }

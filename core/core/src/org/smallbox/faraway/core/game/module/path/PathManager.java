@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PathManager extends GameModule {
+public class PathManager extends ModuleBase {
     private static final int                    THREAD_POOL_SIZE = 1;
 
     private static PathManager                  _self;
@@ -203,7 +203,7 @@ public class PathManager extends GameModule {
     public void onAddPlant(PlantModel resource) { _graph.resetAround(resource.getParcel()); }
 
     @Override
-    public void onRemoveStructure(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
+    public void onRemoveStructure(ParcelModel parcel, StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
     @Override
     public void onRemovePlant(PlantModel plant) { _graph.resetAround(plant.getParcel()); }

@@ -28,7 +28,7 @@ public class UIFrame extends View {
         if (_isVisible) {
             if (_views != null) {
                 for (View view : _views) {
-                    view.draw(renderer, _x + x, _y + y);
+                    view.draw(renderer, getAlignedX() + x, getAlignedY() + y);
                 }
             }
         }

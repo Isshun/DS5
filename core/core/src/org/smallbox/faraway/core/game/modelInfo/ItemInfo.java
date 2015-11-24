@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInfo extends ObjectInfo {
+    public boolean isLiquid;
+
     public boolean hasCraftAction() {
         if (actions != null) {
             for (ItemInfoAction action : actions) {
@@ -76,7 +78,6 @@ public class ItemInfo extends ObjectInfo {
         }
         public List<GrowingInfo>        states;
         public double                   growing;
-        public double                   minMaturity;
         public boolean                  cutOnGathering = true;
         public double                   nourish;
         public double                   oxygen;

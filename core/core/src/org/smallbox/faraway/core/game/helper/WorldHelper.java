@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.util.Utils;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -135,6 +136,32 @@ public class WorldHelper {
         return getNearestFreeParcel(WorldHelper.getParcel(x, y, z), acceptInterior, acceptExterior);
     }
 
+    public static ParcelModel getNearestFreeParcel(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+        int x = parcel.x;
+        int y = parcel.y;
+        int z = parcel.z;
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < i; j++) {
+                // Top
+                if (parcelAcceptConsumable(x + j, y + i, z, itemInfo, quantity)) return _parcels[x + j][y + i][z];
+                if (parcelAcceptConsumable(x - j, y + i, z, itemInfo, quantity)) return _parcels[x - j][y + i][z];
+
+                // Bottom
+                if (parcelAcceptConsumable(x + j, y - i, z, itemInfo, quantity)) return _parcels[x + j][y - i][z];
+                if (parcelAcceptConsumable(x - j, y - i, z, itemInfo, quantity)) return _parcels[x - j][y - i][z];
+
+                // Right
+                if (parcelAcceptConsumable(x + i, y + j, z, itemInfo, quantity)) return _parcels[x + i][y + j][z];
+                if (parcelAcceptConsumable(x + i, y - j, z, itemInfo, quantity)) return _parcels[x + i][y + j][z];
+
+                // Left
+                if (parcelAcceptConsumable(x - i, y + j, z, itemInfo, quantity)) return _parcels[x - i][y + j][z];
+                if (parcelAcceptConsumable(x - i, y - j, z, itemInfo, quantity)) return _parcels[x - i][y - j][z];
+            }
+        }
+        return null;
+    }
+
     // TODO: Use spiral pattern
     public static ParcelModel getNearestFreeParcel(ParcelModel parcel, boolean acceptInterior, boolean acceptExterior) {
         int x = parcel.x;
@@ -160,6 +187,14 @@ public class WorldHelper {
             }
         }
         return null;
+    }
+
+    private static boolean parcelAcceptConsumable(int x, int y, int z, ItemInfo itemInfo, int quantity) {
+        if (!WorldHelper.inMapBounds(x, y, z)) {
+            return false;
+        }
+
+        return _parcels[x][y][z].accept(itemInfo, quantity);
     }
 
     private static boolean isFreeSpace(int x, int y, int z, boolean acceptInterior, boolean acceptExterior) {

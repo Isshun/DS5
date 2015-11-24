@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
@@ -16,12 +16,13 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.AsyncTask;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
-public class RoomModule extends GameModule implements GameObserver {
+public class RoomModule extends ModuleBase implements GameObserver {
     private static final int                ROOF_MAX_DISTANCE = 6;
 
     private final List<RoomModel> _exteriorRooms = new ArrayList<>();
@@ -86,7 +87,7 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     public void refreshRooms(int floor) {
-        System.out.println("RoomModule: refresh floor " + floor);
+        Log.info("RoomModule: refresh floor " + floor);
         long time = System.currentTimeMillis();
 
         ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
@@ -107,7 +108,7 @@ public class RoomModule extends GameModule implements GameObserver {
                 ParcelModel parcel = parcels[x][y][floor];
                 if (!_closeList.contains(parcel)) {
                     if (parcel.isRoomOpen()) {
-                        System.out.println("Create new room for parcel " + x + "x" + y);
+                        Log.info("Create new room for parcel " + x + "x" + y);
                         RoomModel room = new RoomModel(RoomModel.RoomType.NONE, floor, parcel);
                         explore(room, exteriorRoom, parcel, _closeList);
                         checkRoof(room);
@@ -123,8 +124,8 @@ public class RoomModule extends GameModule implements GameObserver {
         // Add new rooms to list
         _rooms.addAll(newRooms);
 
-        System.out.println("Room list: " + _rooms.size());
-        System.out.println("RoomModule: refresh done " + (System.currentTimeMillis() - time));
+        Log.info("Room list: " + _rooms.size());
+        Log.info("RoomModule: refresh done " + (System.currentTimeMillis() - time));
     }
 
     private void explore(RoomModel room, RoomModel exteriorRoom, ParcelModel parcel, Set<ParcelModel> closeList) {
@@ -262,7 +263,7 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     @Override
-    public void onRemoveItem(ItemModel item){
+    public void onRemoveItem(ParcelModel parcel, ItemModel item){
     }
 
     @Override
@@ -278,7 +279,7 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     @Override
-    public void onRemoveStructure(StructureModel structure) {
+    public void onRemoveStructure(ParcelModel parcel, StructureModel structure) {
         if (structure.isComplete()) {
             plantRefresh(structure.getParcel().z);
         }

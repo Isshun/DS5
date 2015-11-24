@@ -175,6 +175,10 @@ public class UILabel extends View {
         return _string;
     }
 
+    public String getText() {
+        return _string;
+    }
+
     @Override
     public void init() {
     }
@@ -189,15 +193,6 @@ public class UILabel extends View {
 
         if (_isVisible) {
             if (true) {
-//                _finalX = x;
-//                _finalY = y;
-//                View view = this;
-//                while (view != null) {
-//                    _finalX += view.getPosX();
-//                    _finalY += view.getPosY();
-//                    view = view.getParent();
-//                }
-
                 if (_align == Align.CENTER) {
                     _offsetX = (_width - getContentWidth()) / 2;
                     _offsetY = (_height - getContentHeight()) / 2;
@@ -208,7 +203,10 @@ public class UILabel extends View {
                 }
             }
 
-            renderer.draw(_string, _textSize, _x + x + _offsetX + _paddingLeft + _marginLeft, _y + y + _offsetY + _paddingTop + _marginTop, _gdxTextColor);
+            renderer.draw(_string, _textSize,
+                    getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft,
+                    getAlignedY() + y + _offsetY + _paddingTop + _marginTop,
+                    _gdxTextColor);
         }
     }
 

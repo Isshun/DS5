@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class NetworkModule extends GameModule {
+public class NetworkModule extends ModuleBase {
     private Set<NetworkModel>           _networks = new HashSet<>();
     private Set<NetworkObjectModel>     _networkObjects = new HashSet<>();
     private Set<NetworkConnectionModel> _networkConnections= new HashSet<>();
@@ -49,7 +49,7 @@ public class NetworkModule extends GameModule {
     }
 
     @Override
-    public void onRemoveItem(ItemModel item) {
+    public void onRemoveItem(ParcelModel parcel, ItemModel item) {
         if (item.getNetworkConnections() != null) {
             _networkConnections.removeAll(item.getNetworkConnections());
 

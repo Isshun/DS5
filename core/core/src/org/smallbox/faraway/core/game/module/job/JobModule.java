@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -25,7 +25,10 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReas
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,11 +37,10 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JobModule extends GameModule {
+public class JobModule extends ModuleBase {
     private BlockingQueue<JobModel>     _jobs = new LinkedBlockingQueue<>();
     private List<CharacterCheck>        _joys;
     private List<CharacterCheck>        _priorities;
-    private List<JobModel>              _toRemove;
     private List<CharacterCheck>        _sleeps;
 
     public JobModule() {
@@ -48,9 +50,6 @@ public class JobModule extends GameModule {
     @Override
     public void onLoaded(Game game) {
         printDebug("JobModule");
-
-        _toRemove = new ArrayList<>();
-        _updateInterval = 10;
 
         _priorities = new ArrayList<>();
         _priorities.add(new CheckCharacterOxygen());
@@ -75,39 +74,34 @@ public class JobModule extends GameModule {
 
     @Override
     protected void onUpdate(int tick) {
-        cleanJobs();
+        _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
+        _jobs.removeIf(JobModel::isFinish);
 
-        // Create hualing jobs
-        ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete())
-                .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-                        .forEach(component -> _jobs.add(new HaulJob(item, component))));
-        ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete())
-                .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-                        .forEach(component -> _jobs.add(new HaulJob(item, component))));
+        if (tick % 10 == 0) {
+            // Create hauling jobs
+            ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete())
+                    .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
+                            .forEach(component -> _jobs.add(new HaulJob(item, component))));
+            ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete())
+                    .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
+                            .forEach(component -> _jobs.add(new HaulJob(item, component))));
 
-        // Create Build jobs
-        ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                .forEach(item -> _jobs.add(new BuildJob(item)));
-        ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                .forEach(item -> _jobs.add(new BuildJob(item)));
+            // Create Build jobs
+            ModuleHelper.getWorldModule().getItems().stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
+                    .forEach(item -> _jobs.add(new BuildJob(item)));
+            ModuleHelper.getWorldModule().getStructures().stream().filter(structure -> !structure.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
+                    .forEach(item -> _jobs.add(new BuildJob(item)));
 
-//        // Create haul jobs
-//        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
-//        ModuleHelper.getWorldModule().getConsumables().stream().filter(consumable -> consumable.getHaul() == null && !consumable.inValidStorage()).forEach(consumable ->
-//                addJob(JobHaul.create(consumable)));
+            // Create craft jobs
+            ModuleHelper.getWorldModule().getFactories().stream().filter(item -> item.getFactory().getJob() == null && item.getFactory().scan())
+                    .forEach(item -> _jobs.add(new CraftJob(item)));
 
-        // Create craft jobs
-        ModuleHelper.getWorldModule().getFactories().stream().filter(item -> item.getFactory().getJob() == null && item.getFactory().scan())
-                .forEach(item -> _jobs.add(new CraftJob(item)));
+            // Create new job
+            _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
 
-        // Remove invalid job
-        _jobs.stream().filter(job -> job.getReason() == JobAbortReason.INVALID).forEach(this::removeJob);
-
-        // Create new job
-        _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
-
-        // Run auto job
-        _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
+            // Run auto job
+            _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
+        }
     }
 
     public Collection<JobModel> getJobs() { return _jobs; };
@@ -180,20 +174,6 @@ public class JobModule extends GameModule {
         return true;
     }
 
-    public void removeJob(JobModel job) {
-        printDebug("remove job: " + job.getLabel() + " (" + job.getReasonString() + ")");
-
-        if (job.getCharacter() != null) {
-            job.quit(job.getCharacter());
-        }
-
-        if (!job.isFinish()) {
-            job.finish();
-        }
-
-        _toRemove.add(job);
-    }
-
     public void    addJob(JobModel job) {
         if (job == null || _jobs.contains(job)) {
             printError("Trying to add null or already existing job to JobModule");
@@ -205,10 +185,6 @@ public class JobModule extends GameModule {
         _jobs.add(job);
 
         Application.getInstance().notify(observer -> observer.onJobCreate(job));
-    }
-
-    public void clear() {
-        _jobs.clear();
     }
 
     /**
@@ -319,36 +295,13 @@ public class JobModule extends GameModule {
         }
     }
 
-    // Remove finished jobs
-    public void cleanJobs() {
-        if (!_toRemove.isEmpty()) {
-            _jobs.removeAll(_toRemove);
-            _toRemove.clear();
-        }
-    }
-
-    public void closeJob(JobModel job) {
-        printDebug("Close job: " + job.getId());
-
-        if (job.getCharacter() != null) {
-            job.quit(job.getCharacter());
-        }
-
-        removeJob(job);
-    }
-
     public void quitJob(JobModel job, JobAbortReason reason) {
         if (job != null) {
             printDebug("Job quit: " + job.getId());
 
         } else {
-            System.out.println("[ERROR] Quit null job");
+            Log.info("[ERROR] Quit null job");
         }
-    }
-
-    @Override
-    public void onJobFinish(JobModel job) {
-        _toRemove.add(job);
     }
 
     @Override
@@ -369,6 +322,33 @@ public class JobModule extends GameModule {
         }
     }
 
+    @Override
+    public void onRemoveStructure(ParcelModel parcel, StructureModel structure) {
+        onCancelJobs(parcel, structure);
+    }
+
+    @Override
+    public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+        onCancelJobs(parcel, item);
+    }
+
+    @Override
+    public void onCancelJobs(ParcelModel parcel, Object object) {
+        for (JobModel job : _jobs) {
+            if (job.isOpen()) {
+                if (object == null && job.getJobParcel() == parcel) {
+                    job.cancel();
+                }
+                if (object != null && job instanceof HaulJob && ((HaulJob) job).getBuildItem() == object) {
+                    job.cancel();
+                }
+                if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
+                    job.cancel();
+                }
+            }
+        }
+    }
+
     public SerializerInterface getSerializer() {
         return null;
 //        return new JobModuleSerializer(this);
@@ -377,5 +357,4 @@ public class JobModule extends GameModule {
     public int getModulePriority() {
         return Constant.MODULE_JOB_PRIORITY;
     }
-
 }

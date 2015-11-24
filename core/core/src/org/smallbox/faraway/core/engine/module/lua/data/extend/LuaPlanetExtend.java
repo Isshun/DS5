@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,7 @@ public class LuaPlanetExtend extends LuaExtend {
 
         readPlanet(planetInfo, value);
 
-        System.out.println("Extends planet from lua: " + planetInfo.label);
+        Log.info("Extends planet from lua: " + planetInfo.label);
     }
 
     private void readPlanet(PlanetInfo planetInfo, LuaValue value) throws DataExtendException {
@@ -110,6 +111,7 @@ public class LuaPlanetExtend extends LuaExtend {
                 LuaValue luaTerrain = value.get("terrains").get(i);
                 RegionInfo.RegionTerrain terrainInfo = new RegionInfo.RegionTerrain();
                 terrainInfo.ground = getString(luaTerrain, "ground", null);
+                terrainInfo.liquid = getString(luaTerrain, "liquid", null);
                 terrainInfo.resource = getString(luaTerrain, "resource", null);
                 terrainInfo.pattern = getString(luaTerrain, "pattern", null);
                 terrainInfo.condition = getString(luaTerrain, "condition", null);

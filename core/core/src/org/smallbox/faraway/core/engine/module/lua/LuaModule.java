@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 
 import java.io.File;
@@ -8,7 +8,7 @@ import java.io.File;
 /**
  * Created by Alex on 09/10/2015.
  */
-public class LuaModule extends GameModule {
+public class LuaModule extends ModuleBase {
     private final File          _directory;
     private boolean             _isLoaded;
 

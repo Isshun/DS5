@@ -12,6 +12,7 @@ public class RegionInfo {
     }
 
     public static class RegionTerrain {
+        public String               liquid;
         public String               ground;
         public String               resource;
         public String               pattern;

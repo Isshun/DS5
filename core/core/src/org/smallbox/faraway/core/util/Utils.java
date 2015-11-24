@@ -1,5 +1,8 @@
 package org.smallbox.faraway.core.util;
 
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+
 import java.io.File;
 
 public class Utils {
@@ -32,5 +35,9 @@ public class Utils {
             return interval[0];
         }
         return (int)(Math.random() * (interval[1] - interval[0]) + interval[0]);
+    }
+
+    public static int getStorageMaxQuantity(ItemInfo itemInfo) {
+        return Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, itemInfo.stack);
     }
 }

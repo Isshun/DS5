@@ -16,7 +16,7 @@ data:extend({
         return true
     end,
 
-    on_start = function (quest)
+    on_start = function (quest, option_index)
         if quest.option == 3 then
             return false
         end

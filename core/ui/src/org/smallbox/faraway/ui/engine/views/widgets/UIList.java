@@ -36,7 +36,7 @@ public class UIList extends View {
             int offset = 0;
             for (View view : _views) {
                 if (view.isVisible()) {
-                    view.draw(renderer, _x + x + _marginLeft, offset + _y + y + _marginTop);
+                    view.draw(renderer, getAlignedX() + x + _marginLeft, offset + getAlignedY() + y + _marginTop);
                     offset += view.getHeight() + view.getMarginTop() + view.getMarginBottom();
                 }
             }

@@ -56,9 +56,9 @@ public class CharacterRenderer extends BaseRenderer {
 //                            offset += Constant.TILE_WIDTH;
 //                        }
 //                        if ("paige".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
-////                            System.out.println("offset: " + c.getMoveProgress());
-////                            System.out.println("offset: " + offset + ", animProgress: " + animProgress);
-//                            System.out.println("animProgress: " + animProgress);
+////                            Log.info("offset: " + c.getMoveProgress());
+////                            Log.info("offset: " + offset + ", animProgress: " + animProgress);
+//                            Log.info("animProgress: " + animProgress);
 //                        }
 //                        offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
                         frame = c.getFrameIndex() / 20 % 4;

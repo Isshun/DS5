@@ -15,6 +15,13 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 
 public abstract class JobModel extends ObjectModel {
+    public void cancel() {
+        onCancel();
+        finish();
+    }
+
+    protected void onCancel() {}
+
     public interface onDrawCallback {
         void onDraw(int x, int y, int z);
     }
@@ -133,6 +140,7 @@ public abstract class JobModel extends ObjectModel {
     public boolean                  hasCharacter() { return _character != null; }
     public boolean                  isVisibleInUI() { return true; }
     public boolean                  isFinish() { return _isFinish; }
+    public boolean                  isOpen() { return !_isFinish; }
     public boolean                  isEntertainment() { return _isEntertainment; }
     public boolean                  isCreate() { return _isCreate; }
     public boolean                  isVisible() { return true; }
@@ -194,7 +202,6 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.WAITING;
 
         Log.debug("Quit job " + this + " by " + character.getName());
-        Application.getInstance().notify(observer -> observer.onJobQuit(this, character));
     }
 
     public void complete() {
@@ -213,8 +220,6 @@ public abstract class JobModel extends ObjectModel {
         }
 
         onFinish();
-
-        Application.getInstance().notify(observer -> observer.onJobFinish(this));
     }
 
     public boolean check(CharacterModel character) {

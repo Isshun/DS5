@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.OnClickListener;
@@ -84,7 +84,7 @@ public class UserInterface {
     }
 
     public boolean onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
-        for (GameModule module: ModuleManager.getInstance().getModules()) {
+        for (ModuleBase module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
                 return true;
             }
@@ -149,7 +149,7 @@ public class UserInterface {
     }
 
     public boolean checkKeyboard(Key key) {
-        for (GameModule module: ModuleManager.getInstance().getModules()) {
+        for (ModuleBase module: ModuleManager.getInstance().getModules()) {
             if (module.isLoaded() && module.onKey(key)) {
                 return true;
             }

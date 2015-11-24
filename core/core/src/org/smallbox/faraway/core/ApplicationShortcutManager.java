@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
@@ -37,7 +37,7 @@ public class ApplicationShortcutManager {
                 Game.getInstance().getViewport().update(100, 0);
             }),
             new ApplicationShortcut(F10, null, () -> {
-                GameModule debugModule = ModuleManager.getInstance().getModule("DebugModule");
+                ModuleBase debugModule = ModuleManager.getInstance().getModule("DebugModule");
                 if (debugModule != null && debugModule.isLoaded()) {
                     ModuleManager.getInstance().unloadModule(debugModule);
                 } else if (debugModule != null) {
@@ -62,6 +62,26 @@ public class ApplicationShortcutManager {
 //            }),
             new ApplicationShortcut(F4, ALT, () -> {
                 Application.getInstance().setRunning(false);
+            }),
+
+            new ApplicationShortcut(SPACE, NONE, () -> {
+                Data.getData().getBinding("base.binding.toggle_speed_0").action();
+            }),
+
+            new ApplicationShortcut(D_1, NONE, () -> {
+                Data.getData().getBinding("base.binding.set_speed_1").action();
+            }),
+
+            new ApplicationShortcut(D_2, NONE, () -> {
+                Data.getData().getBinding("base.binding.set_speed_2").action();
+            }),
+
+            new ApplicationShortcut(D_3, NONE, () -> {
+                Data.getData().getBinding("base.binding.set_speed_3").action();
+            }),
+
+            new ApplicationShortcut(D_4, NONE, () -> {
+                Data.getData().getBinding("base.binding.set_speed_4").action();
             }),
 
             new ApplicationShortcut(ESCAPE, NONE, () -> Data.getData().getBinding("base.binding.open_panel_main").action()),

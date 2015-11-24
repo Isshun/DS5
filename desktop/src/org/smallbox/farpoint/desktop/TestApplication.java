@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 09/11/2015.
@@ -103,7 +104,7 @@ public class TestApplication extends ApplicationAdapter {
             for (int y = 0; y < 40; y++) {
                 i++;
 //                        cache.add(texture);
-                System.out.println("cache " + i);
+                Log.info("cache " + i);
 //                        cache.add(sprite, x * 32, y * 32);
 //                        cache.add(textureRegion[i % 20], x * 32, y * 32);
 //                        batch.draw(textureRegion[x*y % 10], x * 32, y * 32);
@@ -147,10 +148,10 @@ public class TestApplication extends ApplicationAdapter {
 
         logger.log();
 
-//                System.out.println("bindings: " + GLProfiler.textureBindings);
-//                System.out.println("draw calls: " + GLProfiler.drawCalls);
-//                System.out.println("calls: " + GLProfiler.calls);
-//                System.out.println("shader switches: " + GLProfiler.shaderSwitches);
-//                System.out.println("vertices: " + GLProfiler.vertexCount.average);
+//                Log.info("bindings: " + GLProfiler.textureBindings);
+//                Log.info("draw calls: " + GLProfiler.drawCalls);
+//                Log.info("calls: " + GLProfiler.calls);
+//                Log.info("shader switches: " + GLProfiler.shaderSwitches);
+//                Log.info("vertices: " + GLProfiler.vertexCount.average);
     }
 }

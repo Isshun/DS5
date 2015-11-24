@@ -75,7 +75,7 @@ public class LayerGrid {
 
                 // Refresh needed layer
                 if (_layers[column][row].isVisible(viewport) && _layers[column][row].needRefresh()) {
-//                    System.out.println("refresh layer: " + _layers[column][row].getIndex());
+//                    Log.info("refresh layer: " + _layers[column][row].getIndex());
                     _layers[column][row].refresh();
                     if (_onRefreshLayer != null) {
                         _onRefreshLayer.onRefreshLayer(_layers[column][row], column * CACHE_SIZE, row * CACHE_SIZE, (column + 1) * CACHE_SIZE, (row + 1) * CACHE_SIZE);
@@ -84,7 +84,7 @@ public class LayerGrid {
 
 //                // Clear out of screen layers
 //                if (!_layers[column][row].isVisible(viewport) && _layers[column][row].isDrawable()) {
-//                    System.out.println("clear layer: " + _layers[column][row].getIndex());
+//                    Log.info("clear layer: " + _layers[column][row].getIndex());
 //                    _layers[column][row].clear();
 //                }
             }

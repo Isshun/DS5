@@ -1,12 +1,13 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.WeatherModule;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class TemperatureModule extends GameModule {
+public class TemperatureModule extends ModuleBase {
     private List<ItemModel>     _items = new ArrayList<>();
 
     @Override
@@ -36,7 +37,7 @@ public class TemperatureModule extends GameModule {
     }
 
     @Override
-    public void onRemoveItem(ItemModel item) {
+    public void onRemoveItem(ParcelModel parcel, ItemModel item) {
         _items.remove(item);
     }
 
@@ -44,7 +45,7 @@ public class TemperatureModule extends GameModule {
         WeatherModule weatherModule = (WeatherModule) ModuleManager.getInstance().getModule(WeatherModule.class);
         RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
         if (roomModule != null) {
-            for (RoomModel room : roomModule.getRooms()) {
+            roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {
                     room.setTemperature(weatherModule.getTemperature(room.getFloor()));
                 } else {
@@ -60,7 +61,7 @@ public class TemperatureModule extends GameModule {
                     room.getParcels().forEach(parcel -> {
                     });
                 }
-            }
+            });
         }
     }
 

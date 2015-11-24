@@ -20,6 +20,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class GDXApplication extends ApplicationAdapter {
                         displayError(e.getMessage());
                         Application.getInstance().setRunning(false);
                     }
-                    System.out.println("Background DB thread terminated");
+                    Log.info("Background DB thread terminated");
                 }).start()));
 
         // Load modules
@@ -106,8 +107,8 @@ public class GDXApplication extends ApplicationAdapter {
 
         _loadTasks.add(new LoadTask("Resume game", () -> {
 //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
-//            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-            GameManager.getInstance().create(Data.getData().getRegion("base.planet.corrin", "mountain"));
+            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+//            GameManager.getInstance().create(Data.getData().getRegion("base.planet.corrin", "mountain"));
         }));
 
         _loadTasks.add(new LoadTask("Launch world thread", () ->
@@ -117,7 +118,7 @@ public class GDXApplication extends ApplicationAdapter {
                             _application.update();
                             Thread.sleep(16);
                         }
-                        System.out.println("Background world thread terminated");
+                        Log.info("Background world thread terminated");
                     } catch (Exception e) {
                         e.printStackTrace();
                         displayError(e.getMessage());
@@ -167,11 +168,6 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Render interface
         UserInterface.getInstance().draw(_renderer, GameManager.getInstance().isLoaded());
-
-        // Render mini map
-        if (GameManager.getInstance().isLoaded()) {
-            MainRenderer.getInstance().getMinimapRender().draw(_renderer, viewport, 0);
-        }
 
         logger.log();
     }

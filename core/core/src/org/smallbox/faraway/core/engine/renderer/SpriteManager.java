@@ -474,7 +474,7 @@ public class SpriteManager {
             }
         }
 
-//        System.out.println("Item: " + item.name + ", " + startX + ", " + startY + ", " + endX + ", " + endY);
+//        Log.info("Item: " + item.name + ", " + startX + ", " + startY + ", " + endX + ", " + endY);
 
         item.textureRect = new Rectangle(startX, startY, endX, endY);
 

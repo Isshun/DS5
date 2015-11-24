@@ -62,9 +62,9 @@ data:extend({
         label = "Eel grass",
         sciLabel = "Zostera marina",
         name = "base.seaweed3",
---        graphics = "[base]/graphics/items/resources/seaweed3.png",
+        --        graphics = "[base]/graphics/items/resources/seaweed3.png",
         graphics = { path = "[base]/graphics/items/resources/desert_green_plant.png" },
---        graphics = "[base]/graphics/items/resources/desert_green_plant.png",
+        --        graphics = "[base]/graphics/items/resources/desert_green_plant.png",
         type = "resource",
         category = "algae",
         size = {1, 1},
@@ -96,13 +96,11 @@ data:extend({
         name = "base.seaweed4",
         type = "resource",
         graphics = { path = "[base]/graphics/items/resources/seaweed4.png" },
---        graphics = "[base]/graphics/items/resources/seaweed4.png",
         category = "algae",
         size = {1, 1},
         plant = {
             oxygen = 100,
-            gather = 0.25,
-            growing = 2000,
+            growing = 10000,
             nourish = 2400,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
@@ -112,16 +110,13 @@ data:extend({
                 { name = "exceptional", value = 1.25,   temperature = {25, 50},     light = {0, 100} },
             },
         },
-        actions = {
-            {
-                type = "gather",
-                cost = 20,
-                products = {
-                    { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
-                    { item = "base.consumable.wood_log", quantity = {10, 50}, rate = 1 },
-                },
+        actions = {{
+            type = "gather",
+            cost = 20,
+            products = {
+                { item = "base.seaweed", quantity = {5, 10}, rate = 1 },
             },
-        },
+        }},
     },
     {
         label = "Golden brown algae",

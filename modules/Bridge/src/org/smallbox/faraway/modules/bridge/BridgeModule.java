@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.game.module.world.item.*;
 //import org.smallbox.faraway.core.game.module.model.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.*;
-//import org.smallbox.faraway.core.engine.module.GameModule;
+//import org.smallbox.faraway.core.engine.module.ModuleBase;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;
 //
@@ -14,7 +14,7 @@
 ///**
 // * Created by Alex on 22/08/2015.
 // */
-//public class BridgeModule extends GameModule {
+//public class BridgeModule extends ModuleBase {
 //    private MerlinServer mServer;
 //
 //    @Override
