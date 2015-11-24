@@ -239,17 +239,21 @@ public class LuaModuleManager implements GameObserver {
     }
 
     private void broadcastToLuaModules(int eventId) {
-        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, null));
+        if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, null)) {
+            return;
+        }
         if (GameManager.getInstance().isLoaded()) {
-            _luaEventInGameListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, null));
+            broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, null);
         }
     }
 
     private void broadcastToLuaModules(int eventId, Object data) {
         LuaValue value = CoerceJavaToLua.coerce(data);
-        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
+        if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, value)) {
+            return;
+        }
         if (GameManager.getInstance().isLoaded()) {
-            _luaEventInGameListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
+            broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, value);
         }
     }
 
@@ -257,10 +261,21 @@ public class LuaModuleManager implements GameObserver {
         LuaValue value = new LuaTable();
         value.set(1, CoerceJavaToLua.coerce(data1));
         value.set(2, CoerceJavaToLua.coerce(data2));
-        _luaEventListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
-        if (GameManager.getInstance().isLoaded()) {
-            _luaEventInGameListeners.forEach(listener -> listener.onEvent(eventId, LuaValue.NIL, value));
+        if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, value)) {
+            return;
         }
+        if (GameManager.getInstance().isLoaded()) {
+            broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, value);
+        }
+    }
+
+    private boolean broadcast(Collection<LuaEventListener> listeners, int eventId, LuaValue tag, LuaValue value) {
+        for (LuaEventListener listener: listeners) {
+            if (listener.onEvent(eventId, tag, value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //    default void onAddCharacter(CharacterModel model){}

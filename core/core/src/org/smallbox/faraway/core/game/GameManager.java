@@ -97,7 +97,6 @@ public class GameManager {
     }
 
     public boolean isLoaded() {
-//        return _game != null && !_game.isLoaded();
         return _game != null;
     }
 

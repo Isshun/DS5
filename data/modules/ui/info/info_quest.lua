@@ -38,13 +38,16 @@ data:extend({
 
         if quest and event == application.events.on_key_press then
             local quest_module = application:getModule("QuestModule")
-            if data == "D_1" then quest_module:setChoice(quest, 1) end
-            if data == "D_2" then quest_module:setChoice(quest, 2) end
-            if data == "D_3" then quest_module:setChoice(quest, 3) end
-            if data == "D_4" then quest_module:setChoice(quest, 4) end
-            if data == "D_5" then quest_module:setChoice(quest, 5) end
-            quest = null
-            view:setVisible(false)
+            if data == "D_1" or data == "D_2" or data == "D_3" or data == "D_4" or data == "D_5" then
+                if data == "D_1" then quest_module:setChoice(quest, 1) end
+                if data == "D_2" then quest_module:setChoice(quest, 2) end
+                if data == "D_3" then quest_module:setChoice(quest, 3) end
+                if data == "D_4" then quest_module:setChoice(quest, 4) end
+                if data == "D_5" then quest_module:setChoice(quest, 5) end
+                quest = null
+                view:setVisible(false)
+            end
+            return true
         end
     end,
 })

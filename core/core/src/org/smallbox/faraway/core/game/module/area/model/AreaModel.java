@@ -17,7 +17,7 @@ public class AreaModel {
     private final AreaType              _type;
     private int                         _x;
     private int                         _y;
-    private int                         _floor;
+    private int                         _z;
 
     public AreaModel(AreaType type) {
         _id = Utils.getUUID();
@@ -30,13 +30,14 @@ public class AreaModel {
         if (!_parcels.contains(parcel)) {
             _parcels.add(parcel);
             parcel.setArea(this);
+            _z = parcel.z;
             _x = parcel.x;
             _y = parcel.y;
         }
     }
 
     public boolean contains(int x, int y, int z) {
-        if (_floor == z) {
+        if (_z == z) {
             for (ParcelModel parcel : _parcels) {
                 if (parcel.x == x && parcel.y == y) {
                     return true;
@@ -51,7 +52,7 @@ public class AreaModel {
     }
 
     public void                     setAccept(ItemInfo itemInfo, boolean isAccepted) { _items.put(itemInfo, isAccepted); }
-    public void                     setFloor(int floor) { _floor = floor; }
+    public void                     setFloor(int floor) { _z = floor; }
 
     public Collection<ParcelModel>  getParcels() { return _parcels; }
     public Map<ItemInfo, Boolean>   getItemsAccepts() { return _items; }
@@ -61,7 +62,7 @@ public class AreaModel {
     public int                      getTypeIndex() { return _typeIndex; }
     public int                      getX() { return _x; }
     public int                      getY() { return _y; }
-    public int                      getFloor() { return _floor; }
+    public int                      getFloor() { return _z; }
     public int                      getId() { return _id; }
 
     public boolean                  isStorage() { return false; }

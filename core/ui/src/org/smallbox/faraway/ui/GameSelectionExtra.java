@@ -130,7 +130,7 @@ public class GameSelectionExtra {
                 return false;
             },
 
-            // Select home
+            // Select area
             (character, parcel, area) -> {
                 if (area != null && area.isHome()) {
                     select(area, parcel);

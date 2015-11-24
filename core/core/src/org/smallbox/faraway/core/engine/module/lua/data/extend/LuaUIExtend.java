@@ -344,10 +344,12 @@ public class LuaUIExtend extends LuaExtend {
             if (!onEvent.isnil()) {
                 luaModuleManager.addLuaEventListener((event, luaTag, luaData) -> {
                     try {
-                        onEvent.call(luaView, luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaData);
+                        LuaValue ret = onEvent.call(luaView, luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaData);
+                        return !ret.isnil() && ret.toboolean();
                     } catch (LuaError e) {
                         e.printStackTrace();
                     }
+                    return false;
                 }, view.inGame());
             }
 

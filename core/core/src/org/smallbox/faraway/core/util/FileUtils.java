@@ -19,11 +19,6 @@ public class FileUtils {
         fos.close();
     }
 
-    public static void write(FileOutputStream fos, String str) throws IOException {
-        fos.write(str.getBytes("UTF-8"));
-        fos.write('\n');
-    }
-
     public static List<File> listRecursively(String filePath) {
         List<File> list = new ArrayList<>();
         listDirectory(list, new File(filePath), true);

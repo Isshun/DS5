@@ -53,7 +53,9 @@ public class AreaModule extends ModuleBase {
     }
 
     private void storeConsumable(ConsumableModel consumable) {
-        assert consumable.getStoreJob() == null;
+        if (consumable.getStoreJob() != null) {
+            consumable.getStoreJob().cancel();
+        }
 
         StorageAreaModel bestStorage = getBestStorage(consumable);
         if (bestStorage != null && consumable.getStorage() != bestStorage) {
@@ -77,16 +79,17 @@ public class AreaModule extends ModuleBase {
     }
 
     public StorageAreaModel getBestStorage(ConsumableModel consumable) {
-        StorageAreaModel bestStorage = null;
         for (StorageAreaModel storage: _storageAreas) {
+            if (storage.accept(consumable.getInfo()) && consumable.getStorage() == storage) {
+                return storage;
+            }
             if (storage.accept(consumable.getInfo())
                     && storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())
                     && PathManager.getInstance().hasPath(consumable.getParcel(), storage.getBaseParcel())) {
-                bestStorage = storage;
-                break;
+                return storage;
             }
         }
-        return bestStorage;
+        return null;
     }
 
     @Override

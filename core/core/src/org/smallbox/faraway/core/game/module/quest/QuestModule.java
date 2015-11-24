@@ -55,7 +55,7 @@ public class QuestModule extends ModuleBase {
         }
 
         // Launch random quest if no one running
-        if (tick % 100 == 0) {
+        if (tick % 5000 == 0) {
             if (_quests.isEmpty()) {
                 launchRandomQuest();
             }
