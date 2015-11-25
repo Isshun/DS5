@@ -26,7 +26,7 @@ public class GardenModule extends ModuleBase {
         AreaModule areaModule = (AreaModule)ModuleManager.getInstance().getModule(AreaModule.class);
         if (areaModule != null && areaModule.getGardens() != null) {
             areaModule.getGardens().forEach(garden -> {
-                if (garden.getAccepted() != null) {
+                if (garden.getCurrent() != null) {
                     garden.getParcels().forEach(parcel -> {
                         PlantModel plant = parcel.getPlant();
 
@@ -37,7 +37,7 @@ public class GardenModule extends ModuleBase {
                         }
 
                         //  Plan to cut / remove resource if distinct from garden accepted resource
-                        if (plant.getInfo() != garden.getAccepted() && plant.getJob() == null) {
+                        if (plant.getInfo() != garden.getCurrent() && plant.getJob() == null) {
                             garden.cleanField(parcel);
                             return;
                         }

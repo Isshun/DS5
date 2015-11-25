@@ -8,24 +8,22 @@ import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 03/07/2015.
  */
 public class GardenAreaModel extends AreaModel {
-    private ItemInfo    _resourceInfo;
+    private Collection<ItemInfo>    _potentialItem;
+    private ItemInfo                _currentItem;
 
     public GardenAreaModel() {
         super(AreaType.GARDEN);
 
-        ItemInfo defaultItem = null;
-        for (ItemInfo itemInfo: Data.getData().items) {
-            if (itemInfo.isPlant) {
-                setAccept(itemInfo, false);
-                defaultItem = itemInfo;
-            }
-        }
+        _potentialItem = new LinkedBlockingQueue<>();
+        _potentialItem.addAll(Data.getData().items.stream().filter(item -> item.isPlant).collect(Collectors.toList()));
     }
 
     public void cleanField(ParcelModel parcel) {
@@ -47,11 +45,11 @@ public class GardenAreaModel extends AreaModel {
     }
 
     public void resetField(ParcelModel parcel) {
-        if (parcel.getPlant() == null) {
-            // Put new resource on parcel
-            PlantModel resource = (PlantModel) ModuleHelper.getWorldModule().putObject(parcel, _resourceInfo, 0);
-            resource.setGarden(this);
-            resource.setSeed(false);
+        // Put new resource on parcel
+        if (parcel.getPlant() == null && _currentItem != null) {
+            PlantModel plant = (PlantModel) ModuleHelper.getWorldModule().putObject(parcel, _currentItem, 0);
+            plant.setGarden(this);
+            plant.setSeed(false);
         }
     }
 
@@ -62,28 +60,30 @@ public class GardenAreaModel extends AreaModel {
     }
 
     @Override
-    public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
-        // Reset current state
-        _resourceInfo = null;
-        for (Map.Entry<ItemInfo, Boolean> entry: _items.entrySet()) {
-            _items.put(entry.getKey(), false);
-        }
+    public void setAccept(ItemInfo plantInfo, boolean isAccepted) {
+        assert isAccepted;
 
         // If user set new item
-        if (itemInfo != null) {
-            _items.put(itemInfo, true);
-            _resourceInfo = itemInfo;
+        if (plantInfo != _currentItem) {
+            _currentItem = plantInfo;
             _parcels.forEach(this::cleanField);
             _parcels.forEach(this::resetField);
         }
+
+        _currentItem = plantInfo;
+    }
+
+    public boolean accept(ItemInfo plantInfo) {
+        return _currentItem == plantInfo;
     }
 
     @Override
     public String getName() {
-        return _resourceInfo != null ? _resourceInfo.label + " garden" : "Garden";
+        return _currentItem != null ? _currentItem.label + " garden" : "Garden";
     }
 
-    public ItemInfo getAccepted() {
-        return _resourceInfo;
+    public ItemInfo getCurrent() {
+        return _currentItem;
     }
+    public Collection<ItemInfo> getPotentials() { return _potentialItem; }
 }

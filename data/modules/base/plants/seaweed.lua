@@ -8,9 +8,8 @@ data:extend({
         category = "algae",
         plant = {
             oxygen = 100,
-            gather = 0.25,
-            growing = 0.005,
-            nourish = -0.005,
+            growing = 10000,
+            nourish = 2400,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -19,15 +18,13 @@ data:extend({
                 { name = "exceptional", value = 1.25,   temperature = {25, 50},     light = {0, 100} },
             },
         },
-        actions = {
-            {
-                type = "gather",
-                cost = 20,
-                products = {
-                    { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
-                },
+        actions = {{
+            type = "gather",
+            cost = 20,
+            products = {
+                { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
             },
-        },
+        }},
     },
     {
         label = "Chlorella",
@@ -37,9 +34,8 @@ data:extend({
         category = "algae",
         plant = {
             oxygen = 100,
-            gather = 0.25,
-            growing = 0.005,
-            nourish = -0.005,
+            growing = 10000,
+            nourish = 2400,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -48,15 +44,13 @@ data:extend({
                 { name = "exceptional", value = 1.25,   temperature = {25, 50},     light = {0, 100} },
             },
         },
-        actions = {
-            {
-                type = "gather",
-                cost = 20,
-                products = {
-                    { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
-                },
+        actions = {{
+            type = "gather",
+            cost = 20,
+            products = {
+                { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
             },
-        },
+        }},
     },
     {
         label = "Eel grass",
@@ -70,9 +64,9 @@ data:extend({
         size = {1, 1},
         light = { power = .5, radius = 5 },
         plant = {
-            gather = 0.25,
-            growing = 0.005,
-            nourish = -0.005,
+            oxygen = 100,
+            growing = 10000,
+            nourish = 2400,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -81,15 +75,13 @@ data:extend({
                 { name = "exceptional", value = 1.25,   temperature = {25, 50},     light = {0, 100} },
             },
         },
-        actions = {
-            {
-                type = "gather",
-                cost = 20,
-                products = {
-                    { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
-                },
+        actions = {{
+            type = "gather",
+            cost = 20,
+            products = {
+                { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
             },
-        },
+        }},
     },
     {
         label = "Green algae",
@@ -128,9 +120,8 @@ data:extend({
         size = {1, 1},
         plant = {
             oxygen = 100,
-            gather = 0.25,
-            growing = 0.005,
-            nourish = -0.005,
+            growing = 10000,
+            nourish = 2400,
             states = {
                 { name = "depleted",    value = -0.1,   temperature = {-999, 999},  light = {-999, 999} },
                 { name = "stasis",      value = 0,      temperature = {0, 50},      light = {0, 100} },
@@ -139,14 +130,12 @@ data:extend({
                 { name = "exceptional", value = 1.25,   temperature = {25, 50},     light = {0, 100} },
             },
         },
-        actions = {
-            {
-                type = "gather",
-                cost = 20,
-                products = {
-                    { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
-                },
+        actions = {{
+            type = "gather",
+            cost = 20,
+            products = {
+                { item = "base.seaweed", quantity = {1, 1}, rate = 1 },
             },
-        },
+        }},
     },
 })

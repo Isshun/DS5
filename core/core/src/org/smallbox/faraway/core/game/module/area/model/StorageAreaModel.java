@@ -7,19 +7,42 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
+
 /**
  * Created by Alex on 13/06/2015.
  */
 public class StorageAreaModel extends AreaModel {
-    private static int  _count;
-
-    private int         _index;
-    private int         _priority = 1;
+    private static int                  _count;
+    private int                         _index;
+    private int                         _priority = 1;
+    protected Map<ItemInfo, Boolean>    _items;
 
     public StorageAreaModel() {
         super(AreaType.STORAGE);
         _index = ++_count;
-        Data.getData().consumables.forEach(itemInfo -> setAccept(itemInfo, false));
+        _items = Data.getData().consumables.stream().collect(Collectors.toMap(item -> item, b -> false));
+    }
+
+    @Override
+    public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
+        _items.put(itemInfo, isAccepted);
+        Application.getInstance().notify(observer -> observer.onStorageRulesChanged(this));
+    }
+
+    public Map<ItemInfo, Boolean>   getItemsAccepts() { return _items; }
+
+    public boolean accept(ItemInfo itemInfo) {
+        for (Map.Entry<ItemInfo, Boolean> entry: _items.entrySet()) {
+            if (itemInfo.instanceOf(entry.getKey()) && entry.getValue()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public ParcelModel getNearestFreeParcel(ConsumableModel consumable) {
@@ -71,12 +94,6 @@ public class StorageAreaModel extends AreaModel {
 //        }
 //        return bestParcel;
 //    }
-
-    @Override
-    public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
-        super.setAccept(itemInfo, isAccepted);
-        Application.getInstance().notify(observer -> observer.onStorageRulesChanged(this));
-    }
 
     @Override
     public void addParcel(ParcelModel parcel) {

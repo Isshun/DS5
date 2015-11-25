@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.game.module.world.SQLHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AreaSerializer extends SerializerInterface {
 
@@ -25,6 +26,10 @@ public class AreaSerializer extends SerializerInterface {
                 // Save areas
                 db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
                 SQLiteStatement stParcel = db.prepare("INSERT INTO area_parcel (x, y, z, area_id) VALUES (?, ?, ?, ?)");
+
+                db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER)");
+                SQLiteStatement stItem = db.prepare("INSERT INTO area_storage_item (item, area_id) VALUES (?, ?)");
+
                 try {
                     // Save garden areas
                     db.exec("CREATE TABLE area_garden (id INTEGER, plant TEXT)");
@@ -34,8 +39,8 @@ public class AreaSerializer extends SerializerInterface {
                         areaModule.getGardens().forEach(garden -> {
                             try {
                                 stGarden.bind(1, garden.getId());
-                                if (garden.getAccepted() != null) {
-                                    stGarden.bind(2, garden.getAccepted().name);
+                                if (garden.getCurrent() != null) {
+                                    stGarden.bind(2, garden.getCurrent().name);
                                 } else {
                                     stGarden.bindNull(2);
                                 }
@@ -62,6 +67,7 @@ public class AreaSerializer extends SerializerInterface {
                                 stStorage.step();
                                 stStorage.reset(false);
                                 insertAreaParcels(storage, stParcel);
+                                insertStorageAreaItems(storage, stItem);
                             } catch (SQLiteException e) {
                                 e.printStackTrace();
                             }
@@ -73,6 +79,18 @@ public class AreaSerializer extends SerializerInterface {
                 } finally {
                     stParcel.dispose();
                 }
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void insertStorageAreaItems(StorageAreaModel storage, SQLiteStatement stItem) {
+        storage.getItemsAccepts().entrySet().stream().filter(Map.Entry::getValue).forEach(itemEntry -> {
+            try {
+                stItem.bind(1, itemEntry.getKey().name).bind(2, storage.getId());
+                stItem.step();
+                stItem.reset(false);
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
@@ -111,10 +129,12 @@ public class AreaSerializer extends SerializerInterface {
 
                 List<StorageAreaModel> storageAreas = new ArrayList<>();
                 SQLiteStatement stStorage = db.prepare("SELECT id FROM area_storage");
+                SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id FROM area_storage_item where area_id = ?");
                 try {
                     while (stStorage.step()) {
                         StorageAreaModel storage = new StorageAreaModel();
                         getAreaParcels(storage, stParcel, stStorage.columnInt(0));
+                        getAreaStorageItems(storage, stStorageItem, stStorage.columnInt(0));
                         storageAreas.add(storage);
                     }
                 } finally {
@@ -127,6 +147,14 @@ public class AreaSerializer extends SerializerInterface {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void getAreaStorageItems(AreaModel area, SQLiteStatement stItem, int areaId) throws SQLiteException {
+        stItem.bind(1, areaId);
+        while (stItem.step()) {
+            area.setAccept(Data.getData().getItemInfo(stItem.columnString(0)), true);
+        }
+        stItem.reset(false);
     }
 
     private void getAreaParcels(AreaModel area, SQLiteStatement stParcel, int areaId) throws SQLiteException {

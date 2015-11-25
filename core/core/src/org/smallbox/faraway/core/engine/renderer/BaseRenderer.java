@@ -61,4 +61,8 @@ public abstract class BaseRenderer implements GameObserver {
         Log.info("[BaseRender] unload " + getClass().getSimpleName());
         _isLoaded = false;
     }
+
+    public boolean isMandatory() {
+        return false;
+    }
 }

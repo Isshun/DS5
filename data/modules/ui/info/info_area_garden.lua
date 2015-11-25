@@ -1,5 +1,22 @@
-g_garden = nil
-g_area_garden_refresh = nil
+local function display_accepted_items(view, garden)
+    local list = view:findById("list_accepted_plant")
+    list:removeAllViews()
+
+    local iterator = garden:getPotentials():iterator()
+    while iterator:hasNext() do
+        local plant = iterator:next()
+        local lb_plant = application.ui:createLabel()
+        lb_plant:setText((garden:getCurrent() == plant and "[x] " or "[ ] "), plant.label)
+        lb_plant:setTextSize(14)
+        lb_plant:setSize(180, 20)
+        lb_plant:setPadding(5)
+        lb_plant:setOnClickListener(function()
+            garden:setAccept(plant, true)
+            display_accepted_items(view, garden)
+        end)
+        list:addView(lb_plant)
+    end
+end
 
 data:extend({
     type = "list",
@@ -17,56 +34,20 @@ data:extend({
         { type = "list", id = "list_accepted_plant", position = {5, 3}},
     },
 
-    on_event =
-    function(view, event, data)
+    on_event = function(view, event, data)
         if event == application.events.on_key_press and data == "ESCAPE" then
-            g_garden = nil
             view:setVisible(false)
             application.game:clearSelection();
         end
 
         if event == application.events.on_deselect then
-            g_garden = nil
             view:setVisible(false)
         end
 
         if event == application.events.on_area_selected and data:getTypeName() == "GARDEN" then
-            g_garden = data;
-            g_area_garden_refresh = true
+            display_accepted_items(view, data)
             view:setVisible(true)
             view:findById("lb_name"):setText(data:getName())
         end
     end,
-
-    on_refresh =
-    function(view)
-        if g_garden and g_area_garden_refresh then
-            g_area_garden_refresh = false
-
-            local list = view:findById("list_accepted_plant")
-            list:removeAllViews()
---            list:keepSorted(true)
-
-            local list_item = {}
-            local iterator = g_garden:getItemsAccepts():entrySet():iterator()
-            while iterator:hasNext() do
-                table.insert(list_item, iterator:next())
-            end
-
-            for key in pairs(list_item) do
-                local entry = list_item[key]
-                local lb_entry = application.ui:createLabel()
-                lb_entry:setText((entry:getValue() and "[x] " or "[ ] "), entry:getKey().label)
-                lb_entry:setTextSize(14)
-                lb_entry:setSize(180, 20)
-                lb_entry:setPadding(5)
-                lb_entry:setOnClickListener(function(subview)
-                    g_garden:setAccept(entry:getKey(), not entry:getValue())
-                    g_area_garden_refresh = true
-                end)
-                list:addView(lb_entry)
-            end
-        end
-
-    end
 })

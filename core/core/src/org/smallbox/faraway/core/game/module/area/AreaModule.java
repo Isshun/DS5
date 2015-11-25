@@ -13,17 +13,16 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Alex on 13/06/2015.
  */
 public class AreaModule extends ModuleBase {
-    private List<AreaModel> _areas = new ArrayList<>();
-    private List<GardenAreaModel> _gardens = new ArrayList<>();
-    private List<StorageAreaModel> _storageAreas = new ArrayList<>();
+    private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
+    private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
+    private Stack<StorageAreaModel> _storageAreas = new Stack<>();
 
     public AreaModule() {
         _updateInterval = 10;
@@ -49,7 +48,8 @@ public class AreaModule extends ModuleBase {
         _areas.addAll(storageAreas);
         _areas.addAll(gardenAreas);
         _gardens = gardenAreas;
-        _storageAreas = storageAreas;
+        _storageAreas.clear();
+        _storageAreas.addAll(storageAreas);
     }
 
     private void storeConsumable(ConsumableModel consumable) {
@@ -65,7 +65,7 @@ public class AreaModule extends ModuleBase {
         }
 
         if (bestStorage != null && consumable.getStorage() == bestStorage) {
-            Log.debug("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+//            Log.debug("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
             return;
         }
 
@@ -160,7 +160,7 @@ public class AreaModule extends ModuleBase {
             case STORAGE: return new StorageAreaModel();
             case GARDEN: return new GardenAreaModel();
             case HOME: return new HomeAreaModel();
-            default: return new AreaModel(type);
+            default: return null;
         }
     }
 
@@ -197,9 +197,9 @@ public class AreaModule extends ModuleBase {
         return true;
     }
 
-    public List<AreaModel> getAreas() { return _areas; }
-    public List<GardenAreaModel> getGardens() { return _gardens; }
-    public List<StorageAreaModel> getStorages() { return _storageAreas; }
+    public Collection<AreaModel> getAreas() { return _areas; }
+    public Collection<GardenAreaModel> getGardens() { return _gardens; }
+    public Collection<StorageAreaModel> getStorages() { return _storageAreas; }
 
     public AreaModel getArea(int x, int y, int z) {
         for (AreaModel area: _areas) {

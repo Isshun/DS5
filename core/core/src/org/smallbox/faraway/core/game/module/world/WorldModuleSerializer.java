@@ -36,13 +36,13 @@ public class WorldModuleSerializer extends SerializerInterface {
                 db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER)");
                 db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, complete INTEGER)");
                 db.exec("CREATE TABLE WorldModule_item (id INTEGER, name TEXT, complete INTEGER)");
-                db.exec("CREATE TABLE WorldModule_plant (id INTEGER, name TEXT, grow REAL, nourish REAL, seed INTEGER)");
+                db.exec("CREATE TABLE WorldModule_plant (id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
                 db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, name TEXT, quantity INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_network (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");
                 SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, name, complete) VALUES (?, ?, ?)");
                 SQLiteStatement stStructure = db.prepare("INSERT INTO WorldModule_structure (id, name, complete) VALUES (?, ?, ?)");
-                SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (id, name, grow, nourish, seed) VALUES (?, ?, ?, ?, ?)");
+                SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (id, name, maturity, nourish, seed) VALUES (?, ?, ?, ?, ?)");
                 SQLiteStatement stConsumable = db.prepare("INSERT INTO WorldModule_consumable (id, name, quantity) VALUES (?, ?, ?)");
                 try {
                     db.exec("begin transaction");
@@ -66,7 +66,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                                     st.bind(6, plant.getId());
                                     stPlant.bind(1, plant.getId());
                                     stPlant.bind(2, plant.getInfo().name);
-                                    stPlant.bind(3, plant.getGrowingInfo() != null ? plant.getGrowingInfo().value : 0);
+                                    stPlant.bind(3, plant.getMaturity());
                                     stPlant.bind(4, plant.getNourish());
                                     stPlant.bind(5, plant.hasSeed() ? 1 : 0);
                                     stPlant.step();
@@ -134,7 +134,7 @@ public class WorldModuleSerializer extends SerializerInterface {
 
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable FROM WorldModule_parcel");
-                SQLiteStatement stPlant = db.prepare("SELECT id, name, grow, nourish, seed FROM WorldModule_plant WHERE id = ?");
+                SQLiteStatement stPlant = db.prepare("SELECT id, name, maturity, nourish, seed FROM WorldModule_plant WHERE id = ?");
                 SQLiteStatement stItem = db.prepare("SELECT id, name, complete FROM WorldModule_item WHERE id = ?");
                 SQLiteStatement stStructure = db.prepare("SELECT id, name, complete FROM WorldModule_structure WHERE id = ?");
                 SQLiteStatement stConsumable = db.prepare("SELECT id, name, quantity FROM WorldModule_consumable WHERE id = ?");
@@ -164,7 +164,8 @@ public class WorldModuleSerializer extends SerializerInterface {
                             stPlant.bind(1, plantId);
                             if (stPlant.step()) {
                                 PlantModel plant = new PlantModel(Data.getData().getItemInfo(stPlant.columnString(1)), plantId);
-                                plant.setSeed(stPlant.columnInt(4) > 1);
+                                plant.setSeed(stPlant.columnInt(4) > 0);
+                                plant.setMaturity(stPlant.columnDouble(2));
                                 plant.setNourish(stPlant.columnDouble(3));
                                 plant.setParcel(parcel);
                                 parcel.setPlant(plant);

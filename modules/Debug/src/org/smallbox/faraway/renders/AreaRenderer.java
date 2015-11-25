@@ -75,4 +75,8 @@ public class AreaRenderer extends GameDisplay {
     public String getName() {
         return "areas";
     }
+
+    public boolean isMandatory() {
+        return true;
+    }
 }

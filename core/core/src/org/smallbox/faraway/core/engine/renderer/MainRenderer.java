@@ -39,7 +39,7 @@ public class MainRenderer {
 
         Game game = Game.getInstance();
         _renders.stream().filter(BaseRenderer::isLoaded)
-                .filter(render -> !(render instanceof GameDisplay) || (game.hasDisplay(((GameDisplay)render).getName())))
+                .filter(render -> !(render instanceof GameDisplay) || render.isMandatory() || (game.hasDisplay(((GameDisplay)render).getName())))
                 .forEach(render -> render.draw(renderer, viewport, animProgress));
 
         _frame++;
