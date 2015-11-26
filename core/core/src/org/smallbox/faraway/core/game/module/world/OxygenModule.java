@@ -41,51 +41,41 @@ public class OxygenModule extends ModuleBase {
     protected void onUpdate(int tick) {
         RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
         if (roomModule != null) {
-
-//            // Reset rooms pressure
-//            roomModule.getRooms().forEach(room -> room.setPressure(room.getSize()));
-//
-//            _items.forEach(item -> {
-//                if (item.getParcel().getRoom() != null) {
-//                    item.getParcel().getRoom().setPressure(item.getParcel().getRoom().getPressure() + (item.getInfo().effects.oxygen * item.getInfo().effects.pressure));
-//                }
-//            });
-//
-//            _items.forEach(item -> {
-//                if (item.getParcel().getRoom() != null) {
-//                    RoomModel room = item.getParcel().getRoom();
-//                    changeOxygenSmooth(room, room.getPressure() / room.getSize(), 1);
-//                }
-//            });
-
-            roomModule.getRooms().forEach(room -> {
-                        if (room.isExterior()) {
-                            room.setOxygen(_oxygen);
-                        } else {
-                            // Mix oxygen with neighbors
-                            for (RoomConnectionModel roomConnection: room.getConnections()) {
-                                int totalSize = room.getSize() + roomConnection.getRoom().getSize();
-                                double totalOxygen = (room.getOxygen() * room.getSize()) + (roomConnection.getRoom().getOxygen() * roomConnection.getRoom().getSize());
-                                updateRoomPressure(room, totalOxygen / totalSize, roomConnection.getPermeability());
-                                updateRoomPressure(roomConnection.getRoom(), totalOxygen / totalSize, roomConnection.getPermeability());
-                            }
-
-                            // Get oxygen from objects
-                            room.getParcels().forEach(parcel -> {
-//                        effects
-                            });
+            roomModule.getRooms().forEach(r1 -> {
+                        // Mix oxygen with neighbors
+                        for (RoomConnectionModel roomConnection: r1.getConnections()) {
+                            RoomModel r2 = roomConnection.getRoom();
+                            int totalSize = r1.getSize() + r2.getSize();
+                            double totalOxygen = (r1.getOxygen() * r1.getSize()) + (r2.getOxygen() * r2.getSize());
+                            updateRoomPressure(r1, totalOxygen / totalSize, roomConnection.getPermeability());
+                            updateRoomPressure(r2, totalOxygen / totalSize, roomConnection.getPermeability());
                         }
+
+                        // Get oxygen from objects
+                        r1.getParcels().forEach(parcel -> {
+                            if (parcel.hasPlant()) {
+                                addItemEffect(parcel.getRoom(), parcel.getPlant().getInfo().plant.oxygen);
+                            }
+                        });
                     }
             );
         }
     }
 
-    private void updateRoomPressure(RoomModel room, double oxygen, double connectionValue) {
-        double diff = oxygen - room.getOxygen();
-        double ratio = 1;
-        if (Math.abs(diff) > 0.25) ratio = 0.5;
-        if (Math.abs(diff) > 0.5) ratio = 0.1;
-        room.setOxygen(room.getOxygen() + (diff * connectionValue * ratio));
+    private void addItemEffect(RoomModel room, double oxygen) {
+        room.setOxygen(((room.getOxygen() * room.getSize()) + oxygen) / room.getSize());
+    }
+
+    private void updateRoomPressure(RoomModel room, double oxygen, double permeability) {
+        if (!room.isExterior()) {
+            double diff = oxygen - room.getOxygen();
+            double ratio = 1;
+            if (Math.abs(diff) > 0.25) ratio = 0.5;
+            if (Math.abs(diff) > 0.5) ratio = 0.1;
+            room.setOxygen(room.getOxygen() + (diff * permeability * ratio));
+        } else {
+            room.setOxygen(ModuleHelper.getWeatherModule().getOxygen());
+        }
     }
 
     @Override

@@ -95,6 +95,7 @@ public class WeatherModule extends ModuleBase implements GameObserver {
     public WeatherInfo getWeather() { return _weather; }
     public double getTemperature(int floor) { return _temperatureByFloor[floor]; }
     public double getLight() { return 1; }
+    public double getOxygen() { return 0.5; }
 
     @Override
     protected void onUpdate(int tick) {

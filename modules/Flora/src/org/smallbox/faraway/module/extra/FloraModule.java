@@ -2,7 +2,9 @@ package org.smallbox.faraway.module.extra;
 
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.module.world.OxygenModule;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 
@@ -28,22 +30,16 @@ public class FloraModule extends ModuleBase {
 
     @Override
     protected void onUpdate(int tick) {
+        // Growing
         _plants.forEach(plant -> {
-            ParcelModel parcel = plant.getParcel();
-
-            // Growing
-            if (plant.hasSeed() && computeGrowingInfo(plant, parcel)) {
+            if (plant.hasSeed() && computeGrowingInfo(plant)) {
                 plant.grow();
-            }
-
-            // Add oxygen to room
-            if (parcel.hasRoom()) {
-                parcel.getRoom().setOxygen(parcel.getRoom().getOxygen() + plant.getInfo().plant.oxygen);
             }
         });
     }
 
-    private boolean computeGrowingInfo(PlantModel plant, ParcelModel parcel) {
+    private boolean computeGrowingInfo(PlantModel plant) {
+        ParcelModel parcel = plant.getParcel();
         plant.setGrowingInfo(null);
         double bestValue = -1;
         for (GrowingInfo growingInfo: plant.getInfo().plant.states) {
