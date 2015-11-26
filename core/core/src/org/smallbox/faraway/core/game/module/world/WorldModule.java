@@ -374,6 +374,7 @@ public class WorldModule extends ModuleBase {
     @Override
     protected void onUpdate(int tick) {
         _consumables.forEach(ConsumableModel::fixPosition);
+        _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
     }
 
     public int getEnvironmentValue(int startX, int startY, int z, int distance) {

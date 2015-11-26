@@ -40,4 +40,8 @@ public class Utils {
     public static int getStorageMaxQuantity(ItemInfo itemInfo) {
         return Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, itemInfo.stack);
     }
+
+    public static int getInventoryMaxQuantity(ItemInfo itemInfo) {
+        return Math.max(Application.getInstance().getConfig().game.inventoryMaxQuantity, itemInfo.stack);
+    }
 }

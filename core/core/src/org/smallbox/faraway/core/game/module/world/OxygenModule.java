@@ -63,7 +63,7 @@ public class OxygenModule extends ModuleBase {
     }
 
     private void addItemEffect(RoomModel room, double oxygen) {
-        room.setOxygen(((room.getOxygen() * room.getSize()) + oxygen) / room.getSize());
+        room.setOxygen(Math.min(1, (((room.getOxygen() * room.getSize()) + oxygen) / room.getSize())));
     }
 
     private void updateRoomPressure(RoomModel room, double oxygen, double permeability) {
