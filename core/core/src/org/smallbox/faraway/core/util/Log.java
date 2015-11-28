@@ -46,9 +46,9 @@ public class Log {
 
     private static void println(int level, String str) {
         if (str != null) {
-            if (Game.getInstance() != null) {
-                Application.getInstance().notify(observer -> observer.onLog("System", str));
-            }
+//            if (Game.getInstance() != null) {
+//                Application.getInstance().notify(observer -> observer.onLog("System", str));
+//            }
 
             System.out.println(getPrefix(level) + str);
 //

@@ -153,7 +153,7 @@ data:extend({
         },
     },
 
-    on_load = function()
+    on_game_start = function()
         open_page("bt_status", "page_status")
     end,
 

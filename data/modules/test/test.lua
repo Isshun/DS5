@@ -8,7 +8,7 @@ data:extend({
     views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 40}},
     },
-    on_load = function()
+    on_game_start = function()
         local bt_test = application.ui:createLabel()
         bt_test:setText("Test")
         bt_test:setTextSize(18)

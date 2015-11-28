@@ -1,8 +1,7 @@
 package org.smallbox.faraway.module.dev;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.util.Log;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +9,7 @@ import java.util.List;
 /**
  * Created by Alex on 30/08/2015.
  */
-public class LogModule extends ModuleBase {
+public class LogModule extends GameModule {
     private String      _lastMessage;
 
     private static List<String> TAGS = Arrays.asList(
@@ -24,7 +23,7 @@ public class LogModule extends ModuleBase {
     );
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
 
     }
 

@@ -4,9 +4,9 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
@@ -27,8 +27,8 @@ public class AreaSerializer extends SerializerInterface {
                 db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
                 SQLiteStatement stParcel = db.prepare("INSERT INTO area_parcel (x, y, z, area_id) VALUES (?, ?, ?, ?)");
 
-                db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER)");
-                SQLiteStatement stItem = db.prepare("INSERT INTO area_storage_item (item, area_id) VALUES (?, ?)");
+                db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER, priority INTEGER)");
+                SQLiteStatement stItem = db.prepare("INSERT INTO area_storage_item (item, area_id, priority) VALUES (?, ?, ?)");
 
                 try {
                     // Save garden areas
@@ -88,7 +88,7 @@ public class AreaSerializer extends SerializerInterface {
     private void insertStorageAreaItems(StorageAreaModel storage, SQLiteStatement stItem) {
         storage.getItemsAccepts().entrySet().stream().filter(Map.Entry::getValue).forEach(itemEntry -> {
             try {
-                stItem.bind(1, itemEntry.getKey().name).bind(2, storage.getId());
+                stItem.bind(1, itemEntry.getKey().name).bind(2, storage.getId()).bind(3, storage.getPriority());
                 stItem.step();
                 stItem.reset(false);
             } catch (SQLiteException e) {
@@ -129,7 +129,7 @@ public class AreaSerializer extends SerializerInterface {
 
                 List<StorageAreaModel> storageAreas = new ArrayList<>();
                 SQLiteStatement stStorage = db.prepare("SELECT id FROM area_storage");
-                SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id FROM area_storage_item where area_id = ?");
+                SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id, priority FROM area_storage_item where area_id = ?");
                 try {
                     while (stStorage.step()) {
                         StorageAreaModel storage = new StorageAreaModel();
@@ -149,10 +149,11 @@ public class AreaSerializer extends SerializerInterface {
         });
     }
 
-    private void getAreaStorageItems(AreaModel area, SQLiteStatement stItem, int areaId) throws SQLiteException {
+    private void getAreaStorageItems(StorageAreaModel storage, SQLiteStatement stItem, int areaId) throws SQLiteException {
         stItem.bind(1, areaId);
         while (stItem.step()) {
-            area.setAccept(Data.getData().getItemInfo(stItem.columnString(0)), true);
+            storage.setAccept(Data.getData().getItemInfo(stItem.columnString(0)), true);
+            storage.setPriority(stItem.columnInt(2));
         }
         stItem.reset(false);
     }

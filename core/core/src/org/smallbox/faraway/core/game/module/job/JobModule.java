@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class JobModule extends ModuleBase {
+public class JobModule extends GameModule {
     private BlockingQueue<JobModel>     _jobs = new LinkedBlockingQueue<>();
     private List<CharacterCheck>        _joys;
     private List<CharacterCheck>        _priorities;
@@ -48,7 +48,7 @@ public class JobModule extends ModuleBase {
     }
 
     @Override
-    public void onLoaded(Game game) {
+    public void onGameStart(Game game) {
         printDebug("JobModule");
 
         _priorities = new ArrayList<>();

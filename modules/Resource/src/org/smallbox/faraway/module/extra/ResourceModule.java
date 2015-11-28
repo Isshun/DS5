@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class ResourceModule extends ModuleBase {
+public class ResourceModule extends GameModule {
     private static class ConsumableCollection {
         public ItemInfo                 info;
         public List<ConsumableModel>    consumables = new ArrayList<>();
@@ -55,14 +55,9 @@ public class ResourceModule extends ModuleBase {
     public int                      getDrinkCount() { return _drinkCount + _waterNetwork; }
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         _consumablesCollection.clear();
         ModuleHelper.getWorldModule().getConsumables().forEach(this::onAddConsumable);
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
     }
 
     @Override

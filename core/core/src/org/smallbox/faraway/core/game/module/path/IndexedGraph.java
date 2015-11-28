@@ -6,21 +6,17 @@ import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
+import java.util.Collection;
+
 /**
  * Created by Alex on 07/11/2015.
  */
 public class IndexedGraph implements com.badlogic.gdx.ai.pfa.indexed.IndexedGraph<ParcelModel> {
     private final int _nodeCount;
 
-    public IndexedGraph(ParcelModel[][][] parcels, GameInfo info) {
-        _nodeCount = info.worldWidth * info.worldHeight * info.worldFloors;
-        for (int x = 0; x < info.worldWidth; x++) {
-            for (int y = 0; y < info.worldHeight; y++) {
-                for (int z = 0; z < info.worldFloors; z++) {
-                    resetConnection(parcels[x][y][z]);
-                }
-            }
-        }
+    public IndexedGraph(Collection<ParcelModel> parcels) {
+        _nodeCount = parcels.size();
+        parcels.forEach(this::resetConnection);
     }
 
     public void addParcelToConnections(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y, int z) {
@@ -45,12 +41,6 @@ public class IndexedGraph implements com.badlogic.gdx.ai.pfa.indexed.IndexedGrap
             addParcelToConnections(connections, parcel, parcel.x, parcel.y - 1, parcel.z);
             addParcelToConnections(connections, parcel, parcel.x, parcel.y, parcel.z + 1);
             addParcelToConnections(connections, parcel, parcel.x, parcel.y, parcel.z - 1);
-
-//        // Corners
-//        addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y + 1);
-//        addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y - 1);
-//        addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y + 1);
-//        addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y - 1);
             parcel.setConnections(connections);
         }
     }

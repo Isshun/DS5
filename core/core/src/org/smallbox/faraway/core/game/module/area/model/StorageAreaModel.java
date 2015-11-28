@@ -1,16 +1,12 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 
 /**
@@ -45,26 +41,27 @@ public class StorageAreaModel extends AreaModel {
         return false;
     }
 
-    public ParcelModel getNearestFreeParcel(ConsumableModel consumable) {
-        return getNearestFreeParcel(consumable, consumable.getParcel());
-    }
+//    public ParcelModel getFreeParcel(ConsumableModel consumable) {
+//        ParcelModel bestParcel = null;
+//        for (ParcelModel parcel: _parcels) {
+//            if (parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
+//                if (parcel.getConsumable() == null && bestParcel == null) {
+//                    bestParcel = parcel;
+//                }
+//                if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < consumable.getInfo().stack) {
+//                    return parcel;
+//                }
+//            }
+//        }
+//        return bestParcel;
+//    }
 
-    public ParcelModel getFreeParcel(ConsumableModel consumable) {
-        ParcelModel bestParcel = null;
+    public ParcelModel getNearestFreeParcel(ConsumableModel consumable) {
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
-                if (parcel.getConsumable() == null && bestParcel == null) {
-                    bestParcel = parcel;
-                }
-                if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < consumable.getInfo().stack) {
-                    return parcel;
-                }
+            if (parcel.getConsumable() != null && parcel.accept(consumable.getInfo(), 1)) {
+                return parcel;
             }
         }
-        return bestParcel;
-    }
-
-    public ParcelModel getNearestFreeParcel(ConsumableModel consumable, ParcelModel consumableParcel) {
         for (ParcelModel parcel: _parcels) {
             if (parcel.accept(consumable.getInfo(), 1)) {
                 return parcel;

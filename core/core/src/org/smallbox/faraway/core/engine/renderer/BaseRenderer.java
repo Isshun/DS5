@@ -34,6 +34,9 @@ public abstract class BaseRenderer implements GameObserver {
     protected void onUpdate() {
     }
 
+    public void destroy() {
+    }
+
     public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
         onDraw(renderer, viewport, animProgress);

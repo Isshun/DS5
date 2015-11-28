@@ -22,7 +22,7 @@ data:extend({
         }},
     },
 
-    on_load = function()
+    on_game_start = function()
         application:sendEvent("on_load_menu_create")
     end,
 

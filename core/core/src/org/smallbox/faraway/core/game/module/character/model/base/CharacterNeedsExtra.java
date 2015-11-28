@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.util.Constant;
 

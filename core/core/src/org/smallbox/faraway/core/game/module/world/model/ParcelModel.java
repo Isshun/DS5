@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.game.module.world.model;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
@@ -135,7 +135,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public boolean          isWalkable() {
         // Check ground
-        if (_groundInfo == null) {
+        if (_groundInfo == null || !_groundInfo.isWalkable) {
             return false;
         }
 
@@ -208,6 +208,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return this.x == x && this.y == y && this.z == z;
     }
 
+    public boolean accept(ConsumableModel consumable) {
+        return accept(consumable.getInfo(), consumable.getQuantity());
+    }
+
     public boolean accept(ItemInfo itemInfo, int quantity) {
         if (_groundInfo == null || _groundInfo.isLinkDown) {
             return false;
@@ -230,5 +234,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         }
 
         return true;
+    }
+
+    public double getLiquidValue() {
+        return _liquidValue;
     }
 }

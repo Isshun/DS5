@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;

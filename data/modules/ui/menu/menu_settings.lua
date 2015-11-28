@@ -158,7 +158,7 @@ data:extend({
         }},
     },
 
-    on_load = function(view)
+    on_game_start = function(view)
         set_ratio( application.config.screen.ratio)
         set_resolution({1600, 1200})
         set_screen_mode( application.config.screen.mode)

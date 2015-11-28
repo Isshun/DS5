@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;

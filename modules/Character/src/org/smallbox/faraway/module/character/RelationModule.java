@@ -6,17 +6,17 @@
 //import org.smallbox.faraway.game.model.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.model.base.CharacterRelation;
 //import org.smallbox.faraway.game.model.model.base.CharacterRelation.Relation;
-//import org.smallbox.faraway.game.module.ModuleBase;
+//import org.smallbox.faraway.game.module.GameModule;
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.util.Utils;
 //
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//public class RelationModule extends ModuleBase {
+//public class RelationModule extends GameModule {
 //
 //    @Override
-//    protected void onLoaded() {
+//    protected void onGameStart() {
 //
 //    }
 //

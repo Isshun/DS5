@@ -1,22 +1,23 @@
 package org.smallbox.faraway.core.game.module.world;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
 
-import java.util.*;
-import java.util.concurrent.BlockingQueue;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class WorldModule extends ModuleBase {
+public class WorldModule extends GameModule {
     private ParcelModel[][][]                   _parcels;
     private int                                 _width;
     private int                                 _height;
@@ -31,7 +32,7 @@ public class WorldModule extends ModuleBase {
     private int                                 _floor = WorldHelper.getCurrentFloor();
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         assert _game != null;
     }
 
@@ -49,27 +50,22 @@ public class WorldModule extends ModuleBase {
         _structures = new LinkedBlockingQueue<>();
         _consumables = new LinkedBlockingQueue<>();
 
-        // Notify world observers'
-        for (int z = 0; z < _floors; z++) {
-            for (int y = 0; y < _height; y++) {
-                for (int x = 0; x < _width; x++) {
-                    final ParcelModel parcel = _parcels[x][y][z];
-                    if (parcel.getStructure() != null) {
-                        _structures.add(parcel.getStructure());
-                    }
-                    if (parcel.hasPlant()) {
-                        _plants.add(parcel.getPlant());
-                    }
-                    if (parcel.getItem() != null) {
-                        _items.add(parcel.getItem());
-                        parcel.getItem().init();
-                    }
-                    if (parcel.getConsumable() != null) {
-                        _consumables.add(parcel.getConsumable());
-                    }
-                }
+        // Notify world observers
+        parcelList.forEach(parcel -> {
+            if (parcel.hasStructure()) {
+                _structures.add(parcel.getStructure());
             }
-        }
+            if (parcel.hasPlant()) {
+                _plants.add(parcel.getPlant());
+            }
+            if (parcel.hasItem()) {
+                _items.add(parcel.getItem());
+                parcel.getItem().init();
+            }
+            if (parcel.hasConsumable()) {
+                _consumables.add(parcel.getConsumable());
+            }
+        });
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
@@ -266,6 +262,7 @@ public class WorldModule extends ModuleBase {
         if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
             item.setReceipt(item.getInfo().receipts.get(0));
         }
+        item.init();
         _items.add(item);
 
         Application.getInstance().notify(observer -> observer.onAddItem(item));
@@ -374,6 +371,9 @@ public class WorldModule extends ModuleBase {
     @Override
     protected void onUpdate(int tick) {
         _consumables.forEach(ConsumableModel::fixPosition);
+        _consumables.stream()
+                .filter(consumable -> consumable.getQuantity() == 0 && consumable.getParcel() != null)
+                .forEach(consumable -> consumable.getParcel().setConsumable(null));
         _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
     }
 

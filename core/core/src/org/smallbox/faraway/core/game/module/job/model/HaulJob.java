@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;

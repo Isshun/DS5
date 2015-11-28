@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
@@ -9,17 +9,12 @@ import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class NewGameModule extends ModuleBase {
+public class NewGameModule extends GameModule {
     private PlanetInfo      _planet;
     private RegionInfo      _region;
 
     @Override
-    protected void onLoaded(Game game) {
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
+    protected void onGameStart(Game game) {
     }
 
     @Override

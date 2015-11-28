@@ -2,11 +2,11 @@ package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.module.world.factory.WorldFactory;
 import org.smallbox.faraway.core.data.serializer.GameSaveManager;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.game.module.world.factory.WorldFactory;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 
@@ -32,10 +32,12 @@ public class GameManager {
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info);
+        ModuleManager.getInstance().initGame(game);
         GameSaveManager.load(game, FileUtils.getSaveDirectory(game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             ModuleManager.getInstance().startGame(game);
-            game.init();
+            LuaModuleManager.getInstance().startGame(game);
+            game.start();
             _game = game;
         }));
     }
@@ -53,13 +55,14 @@ public class GameManager {
         }
 
         Game game = new Game(gameInfo);
+        ModuleManager.getInstance().initGame(game);
+
         WorldFactory factory = new WorldFactory();
         factory.create(game, regionInfo);
-
-        WorldHelper.init(game.getInfo(), factory.getParcels());
-        ModuleManager.getInstance().startGame(game);
         factory.createLandSite(game);
-        game.init();
+
+        ModuleManager.getInstance().startGame(game);
+        game.start();
         _game = game;
 
 //        saveGame(gameInfo, GameInfo.Type.INIT);

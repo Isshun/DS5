@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.core.util.Utils;
 
 /**
  * Created by Alex on 09/10/2015.

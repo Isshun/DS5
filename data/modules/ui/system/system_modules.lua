@@ -50,7 +50,7 @@ data:extend(
                 },
             },
 
-            on_load =
+            on_game_start =
             function(view)
                 speed = 1
             end,

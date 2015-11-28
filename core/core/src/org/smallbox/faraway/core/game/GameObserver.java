@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;

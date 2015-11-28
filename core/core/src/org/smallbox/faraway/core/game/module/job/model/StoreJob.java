@@ -1,11 +1,11 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -16,9 +16,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -121,7 +118,7 @@ public class StoreJob extends JobModel implements GameObserver {
         // Go to storage
         else if (_character.getInventory() != null) {
             if (_storageArea != null) {
-                ParcelModel parcel = _storageArea.getFreeParcel(_character.getInventory());
+                ParcelModel parcel = _storageArea.getNearestFreeParcel(_character.getInventory());
                 if (parcel != null) {
                     moveToStorage(parcel);
                     return;

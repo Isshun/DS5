@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.game.GameInfo;
 //import org.smallbox.faraway.core.game.GameManager;
-//import org.smallbox.faraway.core.engine.module.ModuleBase;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.util.FileUtils;
 //
 //import java.io.File;
@@ -17,14 +17,14 @@
 ///**
 // * Created by Alex on 05/07/2015.
 // */
-//public class WorldBuildModule extends ModuleBase {
+//public class WorldBuildModule extends GameModule {
 //    @Override
 //    protected boolean loadOnStart() {
 //        return true;
 //    }
 //
 //    @Override
-//    protected void onLoaded() {
+//    protected void onGameStart() {
 //    }
 //
 //    @Override
@@ -37,7 +37,7 @@
 //
 //    @Override
 //    public void onCustomEvent(String tag, Object object) {
-//        if ("on_load_menu_create".equals(tag)) {
+//        if ("on_game_start_menu_create".equals(tag)) {
 //            load();
 //        }
 //        if ("load_game.game".equals(tag) && object instanceof GameInfo) {

@@ -2,21 +2,16 @@ package org.smallbox.faraway.module.extra;
 
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 05/07/2015.
  */
-public class SettingsGameModule extends ModuleBase {
+public class SettingsGameModule extends GameModule {
     @Override
-    protected boolean loadOnStart() {
-        return true;
-    }
-
-    @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
     }
 
     @Override

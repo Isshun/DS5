@@ -5,19 +5,18 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.lua.LuaGameModel;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.Game;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 19/06/2015.
  */
-public class QuestModule extends ModuleBase {
+public class QuestModule extends GameModule {
     private List<QuestModel>    _quests;
 
     public QuestModule() {
@@ -25,12 +24,7 @@ public class QuestModule extends ModuleBase {
     }
 
     @Override
-    protected boolean loadOnStart() {
-        return true;
-    }
-
-    @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
     }
 
 //    @Override

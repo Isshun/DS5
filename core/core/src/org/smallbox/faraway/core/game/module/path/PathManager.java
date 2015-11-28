@@ -4,7 +4,7 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
@@ -15,12 +15,13 @@ import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PathManager extends ModuleBase {
+public class PathManager extends GameModule {
     private static final int                    THREAD_POOL_SIZE = 1;
 
     private static PathManager                  _self;
@@ -37,8 +38,8 @@ public class PathManager extends ModuleBase {
         _runnable = new ArrayList<>();
     }
 
-    public void init(GameInfo gameInfo) {
-        _graph = new IndexedGraph(ModuleHelper.getWorldModule().getParcels(), gameInfo);
+    public void init(Collection<ParcelModel> parcels) {
+        _graph = new IndexedGraph(parcels);
         _finder = new IndexedAStarPathFinder<>(_graph);
         _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
 
@@ -47,7 +48,7 @@ public class PathManager extends ModuleBase {
     }
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
     }
 
     @Override
@@ -122,8 +123,8 @@ public class PathManager extends ModuleBase {
     private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
-        // Non walkable target parcel
-        if (!toParcel.isWalkable()) {
+        // Non walkable origin / target parcel
+        if (!fromParcel.isWalkable() || !toParcel.isWalkable()) {
             return null;
         }
 

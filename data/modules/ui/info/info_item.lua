@@ -52,8 +52,8 @@ data:extend({
             -- Factory progress
             { type = "list", id = "frame_factory_progress", margin = {40, 0, 0, 10}, views = {
                 { type = "label", text = "Work in progress", text_size = 22},
-                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", margin = {10, 0, 0, 0}},
-                { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {380, 16}},
+                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", size = {100, 20}},
+                { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {352, 16}},
                 --                { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 10}},
                 --                { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
                 --                { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
@@ -185,11 +185,11 @@ data:extend({
                 local progress = factory:getJob() and factory:getJob():getProgress() or 0
 
                 --                view:findById("lb_factory_progress"):setText("Status", ": ", factory:getMessage())
-                view:findById("img_factory_progress"):setTextureRect(0, 80, math.floor(progress * 380 / 10) * 10, 16)
+                view:findById("img_factory_progress"):setTextureRect(0, 80, math.floor(progress * 352 / 10) * 10, 16)
 
                 if factory:getActiveReceipt() then
                     view:findById("lb_factory_status"):setDashedString(
-                        factory:getActiveReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 48)
+                        factory:getActiveReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 44)
                 else
                     view:findById("lb_factory_status"):setText("None", " (", factory:getMessage():lower(), ")");
                 end

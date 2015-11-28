@@ -1,63 +1,54 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 /**
- * Created by Alex on 15/06/2015.
+ * Created by Alex on 26/11/2015.
  */
-public abstract class ModuleBase extends ObjectModel implements GameObserver {
+public abstract class ModuleBase implements GameObserver {
     protected final String      TAG = getClass().getSimpleName();
 
+    protected final int         _id = UUID.randomUUID().toString().hashCode();
     protected ModuleInfo        _info;
-    private int                 _nbUpdate;
-    private long                _totalTime;
-    protected int               _updateInterval = 1;
-    private boolean             _isLoaded;
-    private List<Long>          _updateTimeHistory = new ArrayList<>();
-    private long                _updateTime;
-    private boolean             _needCreate;
-    private boolean             _needLoad;
-    private boolean             _needUpdate;
-    private int                 _needUpdateTick;
+    protected boolean           _isLoaded;
+    protected boolean           _isStarted;
+    protected boolean           _needCreate;
+    protected boolean           _needGameStart;
+    protected boolean           _needUpdate;
+    protected int               _needUpdateTick;
 
     public ModuleBase() {
         _isLoaded = loadOnStart();
     }
 
-    public void update(int tick) {
-        if (hasOwnThread()) {
-            _needUpdate = true;
-            _needUpdateTick = tick;
-        } else {
-            innerUpdate(tick);
-        }
+    protected void onCreate() {}
+    protected abstract void onGameStart(Game game);
+    protected abstract void onUpdate(int tick);
+    protected void onDestroy() {}
+
+    public abstract boolean loadOnStart();
+
+    public boolean      hasOwnThread() { return true; }
+    public boolean      isThirdParty() { return false; }
+    public boolean      isLoaded() { return true; }
+
+    public int          getModulePriority() { return 0; }
+    public ModuleInfo   getInfo() { return _info; }
+
+    public void         setInfo(ModuleInfo info) { _info = info; }
+
+    public boolean onKey(GameEventListener.Key key) {
+        return false;
     }
 
-    private void innerUpdate(int tick) {
-        if (tick % _updateInterval == 0) {
-            long time = System.currentTimeMillis();
-            onUpdate(tick);
-            _updateTimeHistory.add((System.currentTimeMillis() - time));
-            if (_updateTimeHistory.size() > 10) {
-                _updateTimeHistory.remove(0);
-            }
-            _updateTime = 0;
-            for (long t: _updateTimeHistory) {
-                _updateTime += t;
-            }
-            _updateTime = _updateTime / _updateTimeHistory.size();
-            _totalTime += (System.currentTimeMillis() - time);
-            _nbUpdate++;
-        }
+    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
+        return false;
     }
 
     public void create() {
@@ -71,21 +62,18 @@ public abstract class ModuleBase extends ObjectModel implements GameObserver {
                             _needCreate = false;
                             onCreate();
                         }
-                        if (_needLoad) {
-                            _needLoad = false;
-                            onLoaded(Game.getInstance());
+                        if (_needGameStart) {
+                            _needGameStart = false;
+                            onGameStart(Game.getInstance());
+                            _isStarted = true;
                         }
                         if (_needUpdate) {
                             _needUpdate = false;
                             onUpdate(_needUpdateTick);
                         }
-                        try {
-                            Thread.sleep(16);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        Thread.sleep(16);
                     }
-                } catch (Exception e) {
+                } catch (Error | Exception e) {
                     e.printStackTrace();
                     Application.getInstance().setRunning(false);
                 }
@@ -96,14 +84,17 @@ public abstract class ModuleBase extends ObjectModel implements GameObserver {
         _isLoaded = true;
     }
 
-    public void load(Game game) {
+    public void startGame(Game game) {
         Log.info("Load java module: " + _info.name);
         if (hasOwnThread()) {
-            _needLoad = true;
+            _needGameStart = true;
         } else {
-            onLoaded(game);
+            onGameStart(game);
+            _isStarted = true;
         }
-        _isLoaded = true;
+    }
+
+    public void update(int tick) {
     }
 
     public void destroy() {
@@ -111,15 +102,8 @@ public abstract class ModuleBase extends ObjectModel implements GameObserver {
         _isLoaded = false;
     }
 
-    protected void onCreate() {}
-    protected abstract void onLoaded(Game game);
-    protected abstract void onUpdate(int tick);
-    protected void onDestroy() {}
-
-    public void dump() {
-        if (_nbUpdate != 0) {
-            printNotice("Manager: " + this.getClass().getSimpleName() + ",\tupdate: " + _nbUpdate + ",\tavg time: " + _totalTime / _nbUpdate);
-        }
+    public boolean isModuleMandatory() {
+        return false;
     }
 
     protected void printNotice(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
@@ -127,40 +111,4 @@ public abstract class ModuleBase extends ObjectModel implements GameObserver {
     protected void printError(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
     protected void printWarning(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
     protected void printDebug(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-
-    public SerializerInterface getSerializer() {
-        return null;
-    }
-
-    protected boolean loadOnStart() {
-        return true;
-    }
-
-    public boolean isModuleMandatory() {
-        return false;
-    }
-
-    public boolean onKey(GameEventListener.Key key) {
-        return false;
-    }
-
-    public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
-        return false;
-    }
-
-    public long         getModuleUpdateTime() { return _updateTime; }
-    public int          getModulePriority() {
-        return 0;
-    }
-    public ModuleInfo   getInfo() { return _info; }
-
-    public void         setInfo(ModuleInfo info) { _info = info; }
-
-    public boolean      isThirdParty() {
-        return false;
-    }
-    public boolean      isLoaded() { return _isLoaded; }
-    public boolean      hasOwnThread() { return false; }
-
-    public void         onUpdateDo() {}
 }

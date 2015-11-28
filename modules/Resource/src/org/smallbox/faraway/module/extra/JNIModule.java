@@ -4,12 +4,12 @@
 //import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 //import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 //import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.engine.module.ModuleBase;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //
 ///**
 // * Created by Alex on 05/07/2015.
 // */
-//public class JNIModule extends ModuleBase {
+//public class JNIModule extends GameModule {
 //    private JNIBridge _jniBridge;
 //
 //    @Override
@@ -19,7 +19,7 @@
 //    }
 //
 //    @Override
-//    protected void onLoaded(Game game) {
+//    protected void onGameStart(Game game) {
 //    }
 //
 //    @Override

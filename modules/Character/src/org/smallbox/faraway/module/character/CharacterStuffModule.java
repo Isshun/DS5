@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 //import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 //import org.smallbox.faraway.core.data.ItemInfo;
-//import org.smallbox.faraway.core.engine.module.ModuleBase;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //
 //import java.util.HashMap;
 //import java.util.Map;
@@ -12,11 +12,11 @@
 ///**
 // * Created by Alex on 24/06/2015.
 // */
-//public class CharacterStuffModule extends ModuleBase {
+//public class CharacterStuffModule extends GameModule {
 //    protected Map<CharacterModel, StuffModel> _data;
 //
 //    @Override
-//    protected void onLoaded(Game game) {
+//    protected void onGameStart(Game game) {
 //        _data = new HashMap<>();
 //
 //        addEventListener("base.model.join", new EventListener<CharacterModel>() {

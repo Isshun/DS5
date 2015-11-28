@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.module.area;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
@@ -14,28 +14,27 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Alex on 13/06/2015.
  */
-public class AreaModule extends ModuleBase {
+public class AreaModule extends GameModule {
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
     private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
-    private Stack<StorageAreaModel> _storageAreas = new Stack<>();
+    private SortedSet<StorageAreaModel> _storageAreas = new ConcurrentSkipListSet<>((o1, o2) -> o2.getPriority() - o1.getPriority());
 
     public AreaModule() {
         _updateInterval = 10;
     }
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
     }
 
     @Override
     protected void onUpdate(int tick) {
-        Collections.sort(_storageAreas, (o1, o2) -> o2.getPriority() - o1.getPriority());
-
         // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
         ModuleHelper.getWorldModule().getConsumables().stream()
@@ -233,10 +232,5 @@ public class AreaModule extends ModuleBase {
                 _gardens.remove(area);
             }
         }
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
     }
 }

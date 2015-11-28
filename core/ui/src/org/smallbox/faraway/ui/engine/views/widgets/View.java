@@ -1,6 +1,5 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
-import com.badlogic.gdx.Gdx;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Application;

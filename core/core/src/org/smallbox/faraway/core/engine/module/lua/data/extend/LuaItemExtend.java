@@ -3,13 +3,13 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +117,10 @@ public class LuaItemExtend extends LuaExtend {
 
         if (!value.get("door").isnil()) {
             itemInfo.isDoor = value.get("door").toboolean();
+        }
+
+        if (!value.get("liquid").isnil()) {
+            itemInfo.surfaceName = value.get("liquid").get("surface").toString();
         }
 
         if (!value.get("networks").isnil()) {

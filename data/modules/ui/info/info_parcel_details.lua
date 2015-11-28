@@ -54,7 +54,7 @@ data:extend({
             local oxygen = math.round(parcel:getOxygen() * 100)
             view:findById("lb_oxygen"):setText("Oxygen", ": ", oxygen < 0 and "NA" or (oxygen .. "%"))
 
-            view:findById("lb_water"):setText("Water", ": ", "free")
+            view:findById("lb_water"):setText("Water", ": ", (parcel:getLiquidInfo() and (parcel:getLiquidInfo().label .. " (" .. parcel:getLiquidValue() .. ")") or "free"))
             view:findById("lb_temperature"):setText("Temperature", ": ", math.floor(parcel:getTemperature()) .. "°")
 
             view:findById("lb_walkable"):setText("Walkable", ": ", (parcel:isWalkable() and "yes" or "no"))

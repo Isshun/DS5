@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 
@@ -21,11 +22,16 @@ public class LuaModule extends ModuleBase {
     }
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
     }
 
     @Override
     protected void onUpdate(int tick) {
+    }
+
+    @Override
+    public boolean loadOnStart() {
+        return false;
     }
 
     public void setActivate(boolean isActivate) { _isLoaded = isActivate; }

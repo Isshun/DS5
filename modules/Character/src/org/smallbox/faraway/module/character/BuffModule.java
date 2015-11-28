@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.character;
 
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.Data;
@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 16/06/2015.
  */
-public class BuffModule extends ModuleBase {
+public class BuffModule extends GameModule {
     private Map<CharacterModel, List<BuffCharacterModel>>   _characters;
     private List<BuffCharacterModel>                        _charactersData;
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         _characters = new HashMap<>();
         _charactersData = new ArrayList<>();
         _updateInterval = 10;

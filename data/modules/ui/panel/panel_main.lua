@@ -77,7 +77,7 @@ data:extend({
             }}
     },
 
-    on_load = function(view)
+    on_game_start = function(view)
         if application.game then
             view:findById("img_speed"):setImage("[base]/graphics/ic_speed_" .. application.game:getSpeed() .. ".png");
         end

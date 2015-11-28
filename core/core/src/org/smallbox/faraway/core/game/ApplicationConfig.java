@@ -24,6 +24,7 @@ public class ApplicationConfig {
         config.game = new ConfigGameInfo();
         config.game.environmentDistance = jsonGame.getInt("environmentDistance");
         config.game.inventoryMaxQuantity = jsonGame.getInt("inventoryMaxQuantity");
+        config.game.storageMaxQuantity = jsonGame.getInt("storageMaxQuantity");
         config.game.maxNearDistance = jsonGame.getInt("maxNearDistance");
         config.game.tickPerHour = jsonGame.getInt("tickPerHour");
 

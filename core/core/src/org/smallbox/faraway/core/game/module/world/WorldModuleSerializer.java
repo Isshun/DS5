@@ -5,9 +5,9 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -33,13 +33,13 @@ public class WorldModuleSerializer extends SerializerInterface {
             ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
 
             try {
-                db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER)");
+                db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL)");
                 db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, complete INTEGER)");
                 db.exec("CREATE TABLE WorldModule_item (id INTEGER, name TEXT, complete INTEGER)");
                 db.exec("CREATE TABLE WorldModule_plant (id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
                 db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, name TEXT, quantity INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_network (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");
-                SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, name, complete) VALUES (?, ?, ?)");
                 SQLiteStatement stStructure = db.prepare("INSERT INTO WorldModule_structure (id, name, complete) VALUES (?, ?, ?)");
                 SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (id, name, maturity, nourish, seed) VALUES (?, ?, ?, ?, ?)");
@@ -85,7 +85,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                                 } else {
                                     st.bindNull(7);
                                 }
-                                st.bind(7, parcel.hasItem() ? parcel.getItem().getId() : 0);
 
                                 // Structure
                                 if (parcel.hasStructure()) {
@@ -107,6 +106,15 @@ public class WorldModuleSerializer extends SerializerInterface {
                                     stConsumable.reset(false);
                                 } else {
                                     st.bindNull(9);
+                                }
+
+
+                                // Liquid
+                                if (parcel.hasLiquid()) {
+                                    st.bind(10, parcel.getLiquidInfo().name);
+                                    st.bind(11, parcel.getLiquidValue());
+                                } else {
+                                    st.bindNull(10);
                                 }
 
                                 st.step();
@@ -133,7 +141,7 @@ public class WorldModuleSerializer extends SerializerInterface {
             List<ParcelModel> parcelsList = new ArrayList<>();
 
             try {
-                SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable FROM WorldModule_parcel");
+                SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value FROM WorldModule_parcel");
                 SQLiteStatement stPlant = db.prepare("SELECT id, name, maturity, nourish, seed FROM WorldModule_plant WHERE id = ?");
                 SQLiteStatement stItem = db.prepare("SELECT id, name, complete FROM WorldModule_item WHERE id = ?");
                 SQLiteStatement stStructure = db.prepare("SELECT id, name, complete FROM WorldModule_structure WHERE id = ?");
@@ -206,12 +214,16 @@ public class WorldModuleSerializer extends SerializerInterface {
                             if (stConsumable.step()) {
                                 ConsumableModel consumable = new ConsumableModel(Data.getData().getItemInfo(stConsumable.columnString(1)));
                                 consumable.setId(consumableId);
-//                                consumable.setQuantity(stConsumable.columnInt(2));
-                                consumable.setQuantity(100);
+                                consumable.setQuantity(stConsumable.columnInt(2));
                                 consumable.setParcel(parcel);
                                 parcel.setConsumable(consumable);
                             }
                             stConsumable.reset(false);
+                        }
+
+                        // Liquid
+                        if (!st.columnNull(9)) {
+                            parcel.setLiquidInfo(Data.getData().getItemInfo(st.columnString(9)), st.columnDouble(10));
                         }
                     }
                 } finally {
@@ -224,7 +236,7 @@ public class WorldModuleSerializer extends SerializerInterface {
 
                 WorldHelper.init(game.getInfo(), parcels);
                 ModuleHelper.getWorldModule().init(game, parcels, parcelsList);
-                ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(game.getInfo());
+                PathManager.getInstance().init(parcelsList);
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }

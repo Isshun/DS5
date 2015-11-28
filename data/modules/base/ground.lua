@@ -54,4 +54,14 @@ data:extend({
         is_link_down = true,
         graphics = { path = "[base]/graphics/grounds/link_down.png" }
     },
+    {
+        label = "Water surface",
+        name = "base.ground.water_surface",
+        type = "ground",
+        color = 0x8794bcff,
+        fertility = 0,
+        permeability = 1,
+        walkable = false,
+        graphics = { path = "[base]/graphics/liquids/water.png" }
+    },
 })

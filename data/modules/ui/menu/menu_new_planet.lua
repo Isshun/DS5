@@ -18,7 +18,7 @@ data:extend({
         }},
     },
 
-    on_load = function(view)
+    on_game_start = function(view)
         local list_planets = view:findById("list_planets")
         list_planets:removeAllViews();
 

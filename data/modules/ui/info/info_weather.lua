@@ -21,7 +21,7 @@ data:extend({
     on_refresh = function(view)
         local weather_module = application:getModule("WeatherModule")
         if weather_module then
-            view:findById("lb_name"):setText(weather_module:getWeather().label)
+            view:findById("lb_name"):setText(weather_module:getWeather() and weather_module:getWeather().label or "")
 
             local str_temp = ""
             for i = application.game:getInfo().worldFloors - 1, 0, -1 do

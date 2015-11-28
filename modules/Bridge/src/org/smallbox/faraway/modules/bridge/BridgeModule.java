@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.game.module.world.item.*;
 //import org.smallbox.faraway.core.game.module.model.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.*;
-//import org.smallbox.faraway.core.engine.module.ModuleBase;
+//import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;
 //
@@ -14,11 +14,11 @@
 ///**
 // * Created by Alex on 22/08/2015.
 // */
-//public class BridgeModule extends ModuleBase {
+//public class BridgeModule extends GameModule {
 //    private MerlinServer mServer;
 //
 //    @Override
-//    protected void onLoaded() {
+//    protected void onGameStart() {
 //        mServer = new MerlinServer(4242);
 //    }
 //

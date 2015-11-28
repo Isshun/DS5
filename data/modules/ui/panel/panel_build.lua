@@ -209,7 +209,7 @@ data:extend({
         }},
     },
 
-    on_load = function(view)
+    on_game_start = function(view)
         local strategy;
 
         local grid_main_categories = view:findById("grid_main_categories")

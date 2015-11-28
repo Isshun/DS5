@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
@@ -92,6 +92,9 @@ public class Data {
                 .forEach(item -> {
                     if (item.parentName != null) {
                         item.parent = getItemInfo(item.parentName);
+                    }
+                    if (item.surfaceName != null) {
+                        item.surface = getItemInfo(item.surfaceName);
                     }
                     if (item.networks != null) {
                         item.networks.forEach(network -> network.network = getNetwork(network.name));

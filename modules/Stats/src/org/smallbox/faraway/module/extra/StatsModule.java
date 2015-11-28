@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatsModule extends ModuleBase {
+public class StatsModule extends GameModule {
     public static class StatsData {
         public List<Integer>     values;
         public String             label;
@@ -32,7 +32,7 @@ public class StatsModule extends ModuleBase {
     public StatsData             nbStudent;
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         nbCharacter = new StatsData("Character");
         nbSingle = new StatsData("Single");
         nbCouple = new StatsData("Couple");

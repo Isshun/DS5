@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
-public class RoomModule extends ModuleBase implements GameObserver {
+public class RoomModule extends GameModule implements GameObserver {
     private static final int                ROOF_MAX_DISTANCE = 6;
 
     private final List<RoomModel> _exteriorRooms = new ArrayList<>();
@@ -37,7 +37,7 @@ public class RoomModule extends ModuleBase implements GameObserver {
     public boolean      hasOwnThread() { return true; }
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         _weatherModule = (WeatherModule)ModuleManager.getInstance().getModule(WeatherModule.class);
         _oxygenModule = (OxygenModule)ModuleManager.getInstance().getModule(OxygenModule.class);
         _updateInterval = 10;
@@ -52,11 +52,6 @@ public class RoomModule extends ModuleBase implements GameObserver {
         for (int floor = 0; floor < game.getInfo().worldFloors; floor++) {
             _exteriorRooms.add(new RoomModel(RoomModel.RoomType.NONE, floor, null));
         }
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
     }
 
     public Collection<RoomModel> getRooms() { return _rooms; }
@@ -108,7 +103,7 @@ public class RoomModule extends ModuleBase implements GameObserver {
                 ParcelModel parcel = parcels[x][y][floor];
                 if (!_closeList.contains(parcel)) {
                     if (parcel.isRoomOpen()) {
-                        Log.info("Create new room for parcel " + x + "x" + y);
+//                        Log.info("Create new room for parcel " + x + "x" + y);
                         RoomModel room = new RoomModel(RoomModel.RoomType.NONE, floor, parcel);
                         explore(room, exteriorRoom, parcel, _closeList);
                         checkRoof(room);

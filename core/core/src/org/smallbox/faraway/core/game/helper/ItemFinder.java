@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.helper;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -18,12 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemFinder extends ModuleBase {
+public class ItemFinder extends GameModule {
     private List<ConsumableModel>   _consumables;
     private List<ItemModel>         _items;
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         _items = new ArrayList<>();
         _consumables = new ArrayList<>();
     }

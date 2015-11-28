@@ -35,9 +35,9 @@ data:extend({
         terrains = {
             { ground = "base.ground.grass" },
             { ground = "base.ground.dirt", pattern = "ground_large" },
-            { liquid = "base.liquid.water", pattern = "ground_large", condition = "ground" },
-            { resource = "base.granite", ground = "base.ground.granite", pattern = "mountain" },
+            { resource = "base.granite", ground = "base.ground.granite", pattern = "mountain", condition = "ground" },
             { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { ground = "base.ground.sand", liquid = "base.liquid.water", pattern = "ground_large", condition = "ground" },
         },
         weather = {
             {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
@@ -16,6 +17,7 @@ import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Game {
@@ -36,8 +38,7 @@ public class Game {
     private GameSelectionExtra              _selector;
     private static Game                     _self;
     private final GameInfo                  _info;
-    private final Collection<ModuleBase>    _modulesBase;
-    private final Collection<ModuleBase>    _modulesThird;
+    private List<GameModule>                _modules;
     private PlanetModel                     _planet;
     private int                             _hour = 5;
     private int                             _day;
@@ -61,6 +62,7 @@ public class Game {
     public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }
     public void                             toggleRunning() { setRunning(!_isRunning); }
     public void                             toggleSpeed0() { setSpeed(_speed == 0 ? _lastSpeed : 0); }
+    public void                             setModules(List<GameModule> modules) { _modules = modules; }
 
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
@@ -82,8 +84,6 @@ public class Game {
         _gameAction = new GameActionExtra(_viewport, _selector);
         _info = info;
         _isRunning = true;
-        _modulesBase = ModuleManager.getInstance().getModulesBase();
-        _modulesThird = ModuleManager.getInstance().getModulesThird();
         _planet = new PlanetModel(info.planet);
         _directions = Application.getInstance().getInputProcessor().getDirection();
         _displays = new HashMap<>();
@@ -92,7 +92,7 @@ public class Game {
         GDXRenderer.getInstance().setViewport(_viewport);
     }
 
-    public void init() {
+    public void start() {
         MainRenderer.getInstance().init(this);
         Application.getInstance().notify(GameObserver::onGameStart);
         Application.getInstance().notify(observer -> observer.onHourChange(_hour));
@@ -123,8 +123,7 @@ public class Game {
 
         LuaModuleManager.getInstance().update();
 
-        _modulesBase.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
-        _modulesThird.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
+        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
 
         if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {

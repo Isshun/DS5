@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Alex on 18/06/2015.
  */
-public class PowerModule extends ModuleBase {
+public class PowerModule extends GameModule {
     private static final int    UPDATE_INTERVAL = 40;
 
     private List<ItemModel>     _items;
@@ -21,15 +21,10 @@ public class PowerModule extends ModuleBase {
     private double              _maxStorage;
 
     @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
         _stored = 1000;
         _maxStorage = 3500;
         _items = new ArrayList<>();
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
     }
 
     @Override

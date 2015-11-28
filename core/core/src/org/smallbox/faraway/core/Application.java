@@ -2,19 +2,22 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.ApplicationConfig;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application implements GameEventListener {
@@ -23,7 +26,7 @@ public class Application implements GameEventListener {
     private GDXInputProcessor               _inputProcessor;
     private long                            _nextDataUpdate;
     private long                            _dataLastModified = Utils.getLastDataModified();
-    private List<GameObserver>              _observers = new ArrayList<>();
+    private Collection<GameObserver>        _observers = new LinkedBlockingQueue<>();
     public ConfigChangeListener             _configChangeListener;
     private ApplicationConfig               _config;
 
@@ -39,10 +42,8 @@ public class Application implements GameEventListener {
     public void                 setInputProcessor(GDXInputProcessor inputProcessor) { _inputProcessor = inputProcessor; }
     public GDXInputProcessor    getInputProcessor() { return _inputProcessor; }
     public boolean              isRunning() { return _isRunning; }
-    public void                 addObserver(GameObserver observer) { _observers.add(observer); }
-    public void                 removeObserver(ModuleBase observer) {
-        _observers.remove(observer);
-    }
+    public void                 addObserver(GameObserver observer) { assert observer != null; _observers.add(observer); }
+    public void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
     public ApplicationConfig    getConfig() { return _config; }
     public void                 setConfig(ApplicationConfig config) { _config = config; }
 

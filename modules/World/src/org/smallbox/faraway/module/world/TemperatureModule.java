@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
@@ -16,17 +16,12 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
-public class TemperatureModule extends ModuleBase {
+public class TemperatureModule extends GameModule {
     private List<ItemModel>     _items = new ArrayList<>();
 
     @Override
-    public void onLoaded(Game game) {
+    public void onGameStart(Game game) {
         _updateInterval = 10;
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
     }
 
     @Override

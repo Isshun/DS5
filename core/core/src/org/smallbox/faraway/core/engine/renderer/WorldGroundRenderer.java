@@ -7,11 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
@@ -149,7 +149,7 @@ public class WorldGroundRenderer extends BaseRenderer {
 
     private boolean repeatTile(int x, int y, int z) {
         ParcelModel parcel = WorldHelper.getParcel(x, y, z);
-        return parcel == null || parcel.hasRock() || parcel.hasWall() || parcel.hasDoor();
+        return parcel == null || parcel.hasRock() || parcel.hasLiquid() || parcel.hasWall() || parcel.hasDoor();
     }
 
     private void createGround(int col, int row) {
@@ -227,6 +227,11 @@ public class WorldGroundRenderer extends BaseRenderer {
                         int offsetX = (parcel.x % parcel.getLiquidInfo().width) * 32;
                         int offsetY = (parcel.y % parcel.getLiquidInfo().height) * 32;
                         pxGroundOut.drawPixmap(_pxLiquids.get(parcel.getLiquidInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 32);
+                    } else if (WorldHelper.hasLiquid(parcel.x, parcel.y, parcel.z - 1)) {
+//                        int offsetX = (parcel.x % parcel.getLiquidInfo().width) * 32;
+//                        int offsetY = (parcel.y % parcel.getLiquidInfo().height) * 32;
+//                        pxGroundOut.drawPixmap(_pxLiquids.get(parcel.getLiquidInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 32);
+//                        pxGroundOut.drawPixmap(_pxLiquids.get(WorldHelper.getLiquidInfo(parcel.x, parcel.y, parcel.z - 1)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
                     }
 
                     // Draw rock

@@ -1,11 +1,11 @@
 package org.smallbox.faraway.ui;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.CategoryInfo;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.core.game.modelInfo.CategoryInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 
 import java.util.List;
 

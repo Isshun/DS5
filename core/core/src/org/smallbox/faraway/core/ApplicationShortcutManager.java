@@ -1,14 +1,11 @@
 package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.*;
 import org.smallbox.faraway.ui.UserInterface;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.Key.*;

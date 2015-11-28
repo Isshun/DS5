@@ -8,6 +8,8 @@ import java.util.List;
 
 public class ItemInfo extends ObjectInfo {
     public boolean isLiquid;
+    public String surfaceName;
+    public ItemInfo surface;
 
     public boolean hasCraftAction() {
         if (actions != null) {

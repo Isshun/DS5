@@ -116,7 +116,7 @@ data:extend({
         }}
     },
 
-    on_load = function(view)
+    on_game_start = function(view)
         local items_by_category = {}
         local iterator = data.items:iterator()
         while iterator:hasNext() do

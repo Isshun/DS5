@@ -2,8 +2,8 @@ package org.smallbox.faraway.core.game.helper;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.GameInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.util.Utils;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -41,6 +40,7 @@ public class WorldHelper {
     public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getGroundInfo() : null; }
     public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getRockInfo() : null; }
     public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructureInfo() : null; }
+    public static ItemInfo          getLiquidInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getLiquidInfo() : null; }
     public static int               getCurrentFloor() { return _currentFloor; }
     public static int               getGroundFloor() { return _groundFloor; }
 
@@ -53,6 +53,7 @@ public class WorldHelper {
     public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null; }
     public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null; }
     public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].hasWallOrDoor(); }
+    public static boolean           hasLiquid(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid(); }
 
     /**
      * Search for model free to receive a ConsumableItem
@@ -102,6 +103,10 @@ public class WorldHelper {
         }
 
         if (parcel.hasPlant()) {
+            return false;
+        }
+
+        if (!parcel.hasGround() || !parcel.getGroundInfo().isWalkable) {
             return false;
         }
 

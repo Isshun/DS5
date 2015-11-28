@@ -23,7 +23,7 @@ data:extend({
         }}
     },
 
-    on_load = function(view)
+    on_game_start = function(view)
     end,
 
     on_event = function(view, event, data)

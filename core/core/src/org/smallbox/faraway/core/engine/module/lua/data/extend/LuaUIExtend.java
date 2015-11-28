@@ -23,8 +23,6 @@ import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -353,11 +351,11 @@ public class LuaUIExtend extends LuaExtend {
                 }, view.inGame());
             }
 
-            LuaValue onLoad = value.get("on_load");
-            if (!onLoad.isnil()) {
+            LuaValue onGameStart = value.get("on_game_start");
+            if (!onGameStart.isnil()) {
                 luaModuleManager.addLuaLoadListener(() -> {
                     try {
-                        onLoad.call(luaView);
+                        onGameStart.call(luaView);
                     } catch (LuaError e) {
                         e.printStackTrace();
                     }

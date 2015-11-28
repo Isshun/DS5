@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**

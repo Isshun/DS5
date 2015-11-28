@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.game.module.world.factory;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
@@ -70,9 +70,7 @@ public class WorldFactory {
             else if (WorldFactoryConfig.has(terrain.pattern)) {
                 Log.notice("Create resources with pattern: " + terrain.pattern);
                 for (int z = 0; z < _floors; z++) {
-                    if (z == _floors - 1 || "rock".equals(terrain.condition)) {
-                        new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
-                    }
+                    new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
                 }
             }
             else {
@@ -85,7 +83,7 @@ public class WorldFactory {
 
         WorldHelper.init(game.getInfo(), _parcels);
         ModuleHelper.getWorldModule().init(game, _parcels, parcelList);
-        ((PathManager)ModuleManager.getInstance().getModule(PathManager.class)).init(game.getInfo());
+        PathManager.getInstance().init(parcelList);
     }
 
     private void cleanMap(List<ParcelModel> parcelList, ParcelModel[][][] parcels) {
@@ -137,17 +135,31 @@ public class WorldFactory {
     private void applyToParcel(RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
         if (terrain.condition == null
                 || ("rock".equals(terrain.condition) && parcel.hasRock())
-                || ("ground".equals(terrain.condition) && !parcel.hasRock())) {
+                || ("ground".equals(terrain.condition) && !parcel.hasRock() && parcel.hasGround())) {
+
+            // Set liquid
+            if (terrain.liquid != null) {
+                if (parcel.z == _floors - 1) {
+                    ItemInfo liquidInfo = Data.getData().getItemInfo(terrain.liquid);
+
+                    // Replace ground on current parcel by liquid surface
+                    parcel.setGroundInfo(liquidInfo.surface);
+
+                    // Put ground on z-1 parcel
+                    if (terrain.ground != null) {
+                        _parcels[parcel.x][parcel.y][parcel.z - 1].setGroundInfo(Data.getData().getItemInfo(terrain.ground));
+                        _parcels[parcel.x][parcel.y][parcel.z - 1].setRockInfo(null);
+                    }
+
+                    // Put liquid on z-1 parcel
+                    _parcels[parcel.x][parcel.y][parcel.z - 1].setLiquidInfo(liquidInfo, 0.5);
+                }
+                return;
+            }
 
             // Set ground
             if (terrain.ground != null) {
                 parcel.setGroundInfo(Data.getData().getItemInfo(terrain.ground));
-            }
-
-            // Set liquid
-            if (terrain.liquid != null) {
-                parcel.setGroundInfo(null);
-                parcel.setLiquidInfo(Data.getData().getItemInfo(terrain.liquid), 0.5);
             }
 
             // Add resource

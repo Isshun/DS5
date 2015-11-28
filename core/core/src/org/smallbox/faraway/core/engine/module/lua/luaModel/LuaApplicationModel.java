@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.engine.module.lua.luaModel;
 import org.luaj.vm2.LuaTable;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Config;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
@@ -27,7 +28,7 @@ import java.util.Optional;
  * Created by Alex on 26/09/2015.
  */
 public class LuaApplicationModel {
-    public final WorldModule        world;
+    public WorldModule        world;
     public long                     tick;
     public int                      day;
     public int                      hour;
@@ -48,11 +49,14 @@ public class LuaApplicationModel {
         ui = userInterface;
         crew = luaCrew;
         events = luaEvents;
-        jobs = ModuleHelper.getJobModule().getJobs();
-        world = ModuleHelper.getWorldModule();
         luaModules = LuaModuleManager.getInstance().getModules();
         modules = ModuleManager.getInstance().getModules();
         moduleThirds = ModuleManager.getInstance().getModulesThird();
+    }
+
+    public void startGame(Game game) {
+        jobs = ModuleHelper.getJobModule().getJobs();
+        world = ModuleHelper.getWorldModule();
     }
 
     public void update() {
@@ -131,5 +135,4 @@ public class LuaApplicationModel {
     public void sendEvent(String tag, Object object) {
         Application.getInstance().notify(observer -> observer.onCustomEvent(tag, object));
     }
-
 }

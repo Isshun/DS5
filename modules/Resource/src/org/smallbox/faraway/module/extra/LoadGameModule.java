@@ -2,12 +2,12 @@ package org.smallbox.faraway.module.extra;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.engine.module.ApplicationModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,27 +19,18 @@ import java.util.List;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class LoadGameModule extends ModuleBase {
+public class LoadGameModule extends ApplicationModule {
     private List<GameInfo>          _games = new ArrayList<>();
 
     private GameInfo                _currentGame;
     private GameInfo.GameSaveInfo   _currentSave;
 
     @Override
-    protected boolean loadOnStart() {
-        return true;
-    }
-
-    @Override
-    protected void onLoaded(Game game) {
+    protected void onGameStart(Game game) {
     }
 
     @Override
     protected void onUpdate(int tick) {
-    }
-
-    @Override
-    public void onReloadUI() {
     }
 
     public List<GameInfo> getGames() {

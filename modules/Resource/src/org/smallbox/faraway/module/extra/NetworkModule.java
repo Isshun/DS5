@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.extra;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
@@ -17,18 +17,13 @@ import java.util.Set;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class NetworkModule extends ModuleBase {
+public class NetworkModule extends GameModule {
     private Set<NetworkModel>           _networks = new HashSet<>();
     private Set<NetworkObjectModel>     _networkObjects = new HashSet<>();
     private Set<NetworkConnectionModel> _networkConnections= new HashSet<>();
 
     @Override
-    protected void onLoaded(Game game) {
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
+    protected void onGameStart(Game game) {
     }
 
     @Override

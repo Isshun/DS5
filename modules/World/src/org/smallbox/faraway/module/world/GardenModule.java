@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
@@ -11,14 +11,9 @@ import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 /**
  * Created by Alex on 05/07/2015.
  */
-public class GardenModule extends ModuleBase {
+public class GardenModule extends GameModule {
     @Override
-    protected void onLoaded(Game game) {
-    }
-
-    @Override
-    protected boolean loadOnStart() {
-        return true;
+    protected void onGameStart(Game game) {
     }
 
     @Override
