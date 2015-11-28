@@ -15,6 +15,9 @@ public class ApplicationConfig {
         config.screen.resolution = new int[] {
                 jsonScreen.getJSONArray("resolution").getInt(0),
                 jsonScreen.getJSONArray("resolution").getInt(1)};
+        config.screen.position = new int[] {
+                jsonScreen.getJSONArray("position").getInt(0),
+                jsonScreen.getJSONArray("position").getInt(1)};
         config.screen.mode = jsonScreen.getString("mode");
         config.screen.foregroundFPS = jsonScreen.getInt("foregroundFPS");
         config.screen.backgroundFPS = jsonScreen.getInt("backgroundFPS");
@@ -37,6 +40,7 @@ public class ApplicationConfig {
 
     public static class ConfigScreenInfo {
         public int[]            resolution;
+        public int[]            position;
         public String           mode;
         public int              foregroundFPS;
         public int              backgroundFPS;

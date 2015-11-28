@@ -28,6 +28,10 @@ public abstract class BaseRenderer implements GameObserver {
         onUpdate();
     }
 
+    protected void onGameStart(Game game) {
+
+    }
+
     protected void onLoad(Game game) {
     }
 
@@ -35,6 +39,11 @@ public abstract class BaseRenderer implements GameObserver {
     }
 
     public void destroy() {
+    }
+
+    public void startGame(Game game) {
+        Log.info("Load java render: " + getClass().getSimpleName());
+        onGameStart(game);
     }
 
     public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {

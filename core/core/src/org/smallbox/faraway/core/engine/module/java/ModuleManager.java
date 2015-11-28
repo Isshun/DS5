@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module.java;
 
+import com.sun.pisces.RendererBase;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
@@ -39,6 +40,8 @@ public class ModuleManager {
 
     public void startGame(Game game) {
         _gameModules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(game));
+        _gameRenders.stream().filter(BaseRenderer::isLoaded).forEach(renderer -> renderer.startGame(game));
+        _minimapRenderer.startGame(game);
     }
 
     public void initGame(Game game) {

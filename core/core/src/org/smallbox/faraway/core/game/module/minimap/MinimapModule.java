@@ -44,13 +44,8 @@ public class MinimapModule extends GameModule {
     }
 
     @Override
-    public void onGameStart() {
-        _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
-    }
-
-    @Override
     protected void onGameStart(Game game) {
-
+        _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
     }
 
     @Override

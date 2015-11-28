@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.area.model.*;
+import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.WorldModule;
@@ -23,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class AreaModule extends GameModule {
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
     private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
-    private SortedSet<StorageAreaModel> _storageAreas = new ConcurrentSkipListSet<>((o1, o2) -> o2.getPriority() - o1.getPriority());
+    private Collection<StorageAreaModel> _storageAreas = new LinkedBlockingQueue<>();
 
     public AreaModule() {
         _updateInterval = 10;
@@ -78,17 +79,28 @@ public class AreaModule extends GameModule {
     }
 
     public StorageAreaModel getBestStorage(ConsumableModel consumable) {
+        int bestDistance = Integer.MAX_VALUE;
+        StorageAreaModel bestStorage = null;
         for (StorageAreaModel storage: _storageAreas) {
-            if (storage.accept(consumable.getInfo()) && consumable.getStorage() == storage) {
-                return storage;
-            }
-            if (storage.accept(consumable.getInfo())
-                    && storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())
-                    && PathManager.getInstance().hasPath(consumable.getParcel(), storage.getBaseParcel())) {
-                return storage;
+            if ((bestStorage == null || storage.getPriority() >= bestStorage.getPriority()) && storage.accept(consumable.getInfo())) {
+                // Consumable is already in storage area
+                if (consumable.getStorage() == storage) {
+                    bestStorage = storage;
+                    bestDistance = 0;
+                }
+                // Consumable is not in storage area
+                else {
+                    if (storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())) {
+                        PathModel path = PathManager.getInstance().getPath(consumable.getParcel(), storage.getBaseParcel(), false, false);
+                        if (path != null && path.getLength() < bestDistance) {
+                            bestStorage = storage;
+                            bestDistance = path.getLength();
+                        }
+                    }
+                }
             }
         }
-        return null;
+        return bestStorage;
     }
 
     @Override

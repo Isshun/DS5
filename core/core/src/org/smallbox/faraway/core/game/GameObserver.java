@@ -52,7 +52,6 @@ public interface GameObserver {
     default void onSelectReceipt(ReceiptGroupInfo receipt) {}
     default void onOverParcel(ParcelModel parcel) {}
     default void onDeselect() {}
-    default void onGameStart() {}
     default void onLog(String tag, String message) {}
     default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
     default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}

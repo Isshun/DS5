@@ -94,7 +94,6 @@ public class Game {
 
     public void start() {
         MainRenderer.getInstance().init(this);
-        Application.getInstance().notify(GameObserver::onGameStart);
         Application.getInstance().notify(observer -> observer.onHourChange(_hour));
         Application.getInstance().notify(observer -> observer.onDayChange(_day));
         Application.getInstance().notify(observer -> observer.onYearChange(_year));

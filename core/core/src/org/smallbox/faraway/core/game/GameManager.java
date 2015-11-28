@@ -59,10 +59,11 @@ public class GameManager {
 
         WorldFactory factory = new WorldFactory();
         factory.create(game, regionInfo);
-        factory.createLandSite(game);
 
         ModuleManager.getInstance().startGame(game);
         game.start();
+        factory.createLandSite(game);
+
         _game = game;
 
 //        saveGame(gameInfo, GameInfo.Type.INIT);

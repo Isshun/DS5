@@ -47,12 +47,7 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onGameStart() {
-        _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
-    }
-
-    @Override
-    public void onReloadUI() {
+    public void onGameStart(Game game) {
         _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
     }
 

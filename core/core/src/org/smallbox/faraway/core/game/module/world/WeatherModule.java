@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
+import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
 import org.smallbox.faraway.core.util.Utils;
 
 import java.util.Collections;
@@ -54,8 +55,19 @@ public class WeatherModule extends GameModule implements GameObserver {
         _temperatureTargetByFloor = new double[_floors];
         _lightTarget = 1;
         _lightProgress = 1;
-        _weather = Data.getData().getWeather("base.weather.regular");
+        _weather = Data.getData().getWeather(game.getInfo().region.weather.get(0).name);
         ModuleHelper.getWorldModule().setLight(1);
+
+        int hour = Game.getInstance().getHour();
+        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+        if (planetInfo.dayTimes != null) {
+            for (PlanetInfo.DayTime hourInfo: planetInfo.dayTimes) {
+                if (hour < hourInfo.hour) {
+                    setHour(hourInfo);
+                    return;
+                }
+            }
+        }
     }
 
     @Override
@@ -82,7 +94,9 @@ public class WeatherModule extends GameModule implements GameObserver {
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;
 
-        switchSunColor(hourInfo.sun);
+        if (_weather != null && _weather.sun != null) {
+            switchSunColor(_weather.sun, _dayTime);
+        }
 
         Application.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
     }
@@ -147,7 +161,9 @@ public class WeatherModule extends GameModule implements GameObserver {
         Application.getInstance().notify(observer -> observer.onWeatherChange(weather));
 
         // Sun color
-        switchSunColor(_dayTime);
+        if (weather.sun != null) {
+            switchSunColor(weather.sun, _dayTime);
+        }
 
         // Set temperature offset
         _temperatureOffset = _weather.temperatureChange != null ? weather.temperatureChange[0] + Utils.getRandom(_weather.temperatureChange) : 0;
@@ -156,40 +172,26 @@ public class WeatherModule extends GameModule implements GameObserver {
     /**
      * Sun color
      */
-    private void switchSunColor(String dayTime) {
+    private void switchSunColor(WeatherSunModel sun, String dayTime) {
         _dayTime = dayTime;
 
         switch (dayTime) {
             case "dawn":
-                _previousLightColor = new Color(_weather.sun.midnight);
-                _nextLightColor = new Color(_weather.sun.dawn);
+                _previousLightColor = new Color(sun.midnight);
+                _nextLightColor = new Color(sun.dawn);
                 break;
             case "twilight":
-                _previousLightColor = new Color(_weather.sun.noon);
-                _nextLightColor = new Color(_weather.sun.twilight);
+                _previousLightColor = new Color(sun.noon);
+                _nextLightColor = new Color(sun.twilight);
                 break;
             case "midnight":
-                _previousLightColor = new Color(_weather.sun.twilight);
-                _nextLightColor = new Color(_weather.sun.midnight);
+                _previousLightColor = new Color(sun.twilight);
+                _nextLightColor = new Color(sun.midnight);
                 break;
             default:
-                _previousLightColor = new Color(_weather.sun.dawn);
-                _nextLightColor = new Color(_weather.sun.noon);
+                _previousLightColor = new Color(sun.dawn);
+                _nextLightColor = new Color(sun.noon);
                 break;
-        }
-    }
-
-    @Override
-    public void onGameStart() {
-        int hour = Game.getInstance().getHour();
-        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
-        if (planetInfo.dayTimes != null) {
-            for (PlanetInfo.DayTime hourInfo: planetInfo.dayTimes) {
-                if (hour < hourInfo.hour) {
-                    setHour(hourInfo);
-                    return;
-                }
-            }
         }
     }
 }

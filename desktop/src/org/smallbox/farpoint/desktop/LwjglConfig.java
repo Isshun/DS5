@@ -11,12 +11,12 @@ public class LwjglConfig {
     public static LwjglApplicationConfiguration from(ApplicationConfig config) {
         LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();
 //        config.samples = 2;
-        lwjglConfig.x = 0 + 0;
-        lwjglConfig.y = 0 + 0;
 
         lwjglConfig.foregroundFPS = config.screen.foregroundFPS;
         lwjglConfig.backgroundFPS = config.screen.backgroundFPS;
 
+        lwjglConfig.x = config.screen.position[0];
+        lwjglConfig.y = config.screen.position[1];
         lwjglConfig.width = config.screen.resolution[0];
         lwjglConfig.height = config.screen.resolution[1];
         lwjglConfig.fullscreen = "fullscreen".equals(config.screen.mode);
