@@ -50,6 +50,7 @@ public class Log {
 //                Application.getInstance().notify(observer -> observer.onLog("System", str));
 //            }
 
+            System.out.print(System.currentTimeMillis()/1000 + " ");
             System.out.println(getPrefix(level) + str);
 //
 //            if (UserInterface.getInstance() != null) {

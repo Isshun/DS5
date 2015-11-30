@@ -24,53 +24,71 @@ import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger logger = new FPSLogger();
 
-    private static class LoadTask {
-        private final String    message;
-        private final Runnable  runnable;
-
-        public LoadTask(String message, Runnable runnable) {
-            this.message = message;
-            this.runnable = runnable;
-        }
+    public interface OnLoad {
+        void onLoad(String message);
     }
 
     private final List<LoadTask>                _loadTasks = new ArrayList<>();
-    private String                              _currentMessage;
+    private LoadTask                            _currentTask;
     private SpriteBatch                         _batch;
     private GDXRenderer                         _renderer;
     private Application                         _application;
     private BitmapFont[]                        _fonts;
     private BitmapFont                          _systemFont;
+    private BitmapFont                          _systemFontDetail;
+    private Executor                            _loadExecutor = Executors.newSingleThreadExecutor();
 
     @Override
     public void create () {
         _batch = new SpriteBatch();
 
         _systemFont = new BitmapFont(Gdx.files.internal("data/font-42.fnt"), Gdx.files.internal("data/font-42.png"), false);
+        _systemFontDetail = new BitmapFont(Gdx.files.internal("data/font-32.fnt"), Gdx.files.internal("data/font-32.png"), false);
 
-        _loadTasks.add(new LoadTask("Load sprites", SpriteManager::new));
-
-        _loadTasks.add(new LoadTask("Generate fonts", () -> {
-            SmartFontGenerator fontGen = new SmartFontGenerator();
-            FileHandle exoFile = Gdx.files.local("data/res/fonts/font.ttf");
-            _fonts = new BitmapFont[50];
-            for (int i = 5; i < 50; i++) {
-                _fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
-                _fonts[i].getData().flipped = true;
+        _loadTasks.add(new LoadTask(this, "Load sprites", true) {
+            @Override
+            public void onExecute() {
+                new SpriteManager();
             }
-        }));
+        });
 
-        _loadTasks.add(new LoadTask("Create renderer", () ->
-                _renderer = new GDXRenderer(_batch, _fonts)));
+        _loadTasks.add(new LoadTask(this, "Generate fonts", true) {
+            @Override
+            public void onExecute() {
+                SmartFontGenerator fontGen = new SmartFontGenerator();
+                FileHandle exoFile = Gdx.files.local("data/fonts/font.ttf");
+                _fonts = new BitmapFont[50];
+                for (int i = 5; i < 50; i++) {
+                    _fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
+                    _fonts[i].getData().flipped = true;
+                }
+            }
+        });
 
-        _loadTasks.add(new LoadTask("Create app", () ->
-                _application = Application.getInstance()));
+        _loadTasks.add(new LoadTask(this, "Create renderer", true) {
+            @Override
+            public void onExecute() {
+                _renderer = new GDXRenderer(_batch, _fonts);
+            }
+        });
 
-        _loadTasks.add(new LoadTask("Launch DB thread", () ->
+        _loadTasks.add(new LoadTask(this, "Create app") {
+            @Override
+            public void onExecute() {
+                _application = Application.getInstance();
+            }
+        });
+
+        _loadTasks.add(new LoadTask(this, "Launch DB thread") {
+            @Override
+            public void onExecute() {
                 new Thread(() -> {
                     try {
                         while (_application.isRunning()) {
@@ -83,34 +101,56 @@ public class GDXApplication extends ApplicationAdapter {
                         Application.getInstance().setRunning(false);
                     }
                     Log.info("Background DB thread terminated");
-                }).start()));
+                }).start();
+            }
+        });
 
         // Load modules
-        _loadTasks.add(new LoadTask("Load modules", () ->
-                ModuleManager.getInstance().load()));
+        _loadTasks.add(new LoadTask(this, "Load modules") {
+            @Override
+            public void onExecute() {
+                ModuleManager.getInstance().load(message -> this.messageDetail = message);
+            }
+        });
 
         // Load lua modules
-        _loadTasks.add(new LoadTask("Load lua modules", () ->
-                LuaModuleManager.getInstance().load()));
+        _loadTasks.add(new LoadTask(this, "Load lua modules") {
+            @Override
+            public void onExecute() {
+                LuaModuleManager.getInstance().load();
+            }
+        });
 
         // Load sprites
-        _loadTasks.add(new LoadTask("Load sprites", () ->
-                SpriteManager.getInstance().init()));
+        _loadTasks.add(new LoadTask(this, "Load sprites", true) {
+            @Override
+            public void onExecute() {
+                SpriteManager.getInstance().init();
+            }
+        });
 
         // Create app
-        _loadTasks.add(new LoadTask("Init app", () -> {
-            GDXInputProcessor inputProcessor = new GDXInputProcessor(_application);
-            Gdx.input.setInputProcessor(inputProcessor);
-            _application.setInputProcessor(inputProcessor);
-        }));
+        _loadTasks.add(new LoadTask(this, "Init app") {
+            @Override
+            public void onExecute() {
+                GDXInputProcessor inputProcessor = new GDXInputProcessor(_application);
+                Gdx.input.setInputProcessor(inputProcessor);
+                _application.setInputProcessor(inputProcessor);
+            }
+        });
 
-        _loadTasks.add(new LoadTask("Resume game", () -> {
-//            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
-            Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+        _loadTasks.add(new LoadTask(this, "Resume game") {
+            @Override
+            public void onExecute() {
+                //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
+                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
 //            GameManager.getInstance().create(Data.getData().getRegion("base.planet.corrin", "mountain"));
-        }));
+            }
+        });
 
-        _loadTasks.add(new LoadTask("Launch world thread", () ->
+        _loadTasks.add(new LoadTask(this, "Launch world thread") {
+            @Override
+            public void onExecute() {
                 new Thread(() -> {
                     try {
                         while (_application.isRunning()) {
@@ -123,14 +163,23 @@ public class GDXApplication extends ApplicationAdapter {
                         displayError(e.getMessage());
                         Application.getInstance().setRunning(false);
                     }
-                }).start()));
+                }).start();
+            }
+        });
     }
 
     private void displayError(String message) {
-        _loadTasks.add(new LoadTask("Application has encounter an error and will be closed\n" + message, () -> {
-            try { Thread.sleep(4000); } catch (InterruptedException e1) { e1.printStackTrace(); }
-            System.exit(1);
-        }));
+        _loadTasks.add(new LoadTask(this, "Application has encounter an error and will be closed\n" + message) {
+            @Override
+            public void onExecute() {
+                try { Thread.sleep(4000); } catch (InterruptedException e1) { e1.printStackTrace(); }
+                System.exit(1);
+            }
+        });
+    }
+
+    public void onTaskComplete() {
+        _currentTask = null;
     }
 
     @Override
@@ -138,23 +187,35 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if (!_loadTasks.isEmpty()) {
-            LoadTask loadTask = _loadTasks.remove(0);
-            Gdx.app.postRunnable(loadTask.runnable);
-            _currentMessage = loadTask.message;
-        }
-
-        if (_currentMessage != null) {
+        // Display task message
+        LoadTask currentTask = _currentTask;
+        if (currentTask != null) {
             _batch.begin();
             OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             _batch.setProjectionMatrix(camera.combined);
-            _systemFont.draw(_batch, _currentMessage, 20, Gdx.graphics.getHeight() - 20);
+            if (_systemFont != null && currentTask.message != null) {
+                _systemFont.draw(_batch, currentTask.message, 20, Gdx.graphics.getHeight() - 20);
+            }
+            if (_systemFontDetail != null && currentTask.messageDetail != null) {
+                _systemFontDetail.draw(_batch, currentTask.messageDetail, 20, Gdx.graphics.getHeight() - 60);
+            }
             _batch.end();
-            _currentMessage = null;
             return;
         }
 
+        // Run next task
+        if (!_loadTasks.isEmpty()) {
+            _currentTask = _loadTasks.remove(0);
+            if (_currentTask.onMainThread) {
+                Gdx.app.postRunnable(_currentTask.runnable);
+            } else {
+                _loadExecutor.execute(_currentTask.runnable);
+            }
+            return;
+        }
+
+        // Render application
         _renderer.clear();
         _renderer.refresh();
 

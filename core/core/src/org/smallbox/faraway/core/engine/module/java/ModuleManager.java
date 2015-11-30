@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.engine.module.java;
 import com.sun.pisces.RendererBase;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -93,7 +94,7 @@ public class ModuleManager {
         Application.getInstance().addObserver(_minimapRenderer);
     }
 
-    public void load() {
+    public void load(GDXApplication.OnLoad onLoad) {
         // Load modules
         assert _applicationModules.isEmpty();
         new Reflections().getSubTypesOf(ApplicationModule.class).stream()
@@ -111,7 +112,10 @@ public class ModuleManager {
                     }
                 });
         _applicationModules.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
-        _applicationModules.forEach(ModuleBase::create);
+        _applicationModules.forEach(module -> {
+            onLoad.onLoad("Load: " + module.getClass().getSimpleName());
+            module.create();
+        });
         _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
 
         // Load game serializers

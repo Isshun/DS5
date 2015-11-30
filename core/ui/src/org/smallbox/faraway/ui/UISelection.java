@@ -20,7 +20,7 @@ public class UISelection extends GDXDrawable {
     private int                 _endZ;
 
     public UISelection() {
-        _shapeRenderer = new ShapeRenderer();
+        Gdx.app.postRunnable(() -> _shapeRenderer = new ShapeRenderer());
     }
 
     @Override

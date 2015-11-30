@@ -38,8 +38,6 @@ public class LuaPlanetExtend extends LuaExtend {
         }
 
         readPlanet(planetInfo, value);
-
-        Log.info("Extends planet from lua: " + planetInfo.label);
     }
 
     private void readPlanet(PlanetInfo planetInfo, LuaValue value) throws DataExtendException {

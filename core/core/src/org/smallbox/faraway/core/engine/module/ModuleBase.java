@@ -53,8 +53,9 @@ public abstract class ModuleBase implements GameObserver {
 
     public void create() {
         Log.info("Create java module: " + _info.name);
+        onCreate();
         if (hasOwnThread()) {
-            _needCreate = true;
+//            _needCreate = true;
             new Thread(() -> {
                 try {
                     while (Application.getInstance().isRunning()) {
@@ -79,7 +80,7 @@ public abstract class ModuleBase implements GameObserver {
                 }
             }).start();
         } else {
-            onCreate();
+//            onCreate();
         }
         _isLoaded = true;
     }

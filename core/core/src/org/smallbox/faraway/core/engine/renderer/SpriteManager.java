@@ -41,20 +41,9 @@ public class SpriteManager {
     private static SpriteManager            _self;
     private Map<Integer, Sprite>            _spritesCharacters;
     private Map<Long, Sprite>               _sprites;
-    private Map<Long, Texture>              _rocktextures;
-    private Texture[]                       _textureCharacters;
     private Sprite[]                        _selectors;
     private Map<String, Sprite>             _icons;
-    private ItemInfo                        _groundItemInfo;
-    private Map<String, Texture>            _textureCache = new HashMap<>();
     private HashMap<String, Texture>        _textures;
-
-    private int[] _random = {
-            0, 0, 1, 3, 2, 3, 1, 3, 0, 1,
-            0, 2, 1, 3, 1, 0, 1, 3, 0, 1,
-            0, 1, 2, 1, 3, 0, 1, 3, 0, 1,
-            0, 0, 1, 3, 2, 2, 1, 3, 2, 1,
-            3, 1, 1, 0, 3, 2, 0, 1, 0, 1};
 
     private int _spriteCount;
 
@@ -66,23 +55,8 @@ public class SpriteManager {
         _self = this;
         _icons = new HashMap<>();
 
-        _rocktextures = new HashMap<>();
         _sprites = new HashMap<>();
         _spritesCharacters = new HashMap<>();
-
-//        //you have an instance of Image
-//        Image image = createInstanceOfImage();
-//
-////These lines will resize your sprite to half of screen's width while keeping the ratio
-//        image.width = .5f * Gdx.graphics.getWidth();
-//        image.setScaling(Scaling.fillX);
-//
-////To resize in height's scale
-//        image.width = .5f * Gdx.graphics.getHeight();
-//        image.setScaling(Scaling.fillY);
-
-        FileUtils.listRecursively("data/res/").stream().filter(file -> file.getName().endsWith(".png")).forEach(file ->
-                _textureCache.put(file.getPath().replace("\\", "/"), new Texture(new FileHandle(file))));
 
         Texture itemSelector = new Texture("data/res/item_selector.png");
         _selectors = new Sprite[NB_SELECTOR_TILE];
@@ -103,6 +77,9 @@ public class SpriteManager {
 
     public void init() {
         _textures = new HashMap<>();
+
+        FileUtils.listRecursively("data/res/").stream().filter(file -> file.getName().endsWith(".png")).forEach(file ->
+                _textures.put(file.getPath().replace("\\", "/"), new Texture(new FileHandle(file))));
 
         Data.getData().getItems().forEach(itemInfo -> {
             if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
@@ -125,46 +102,6 @@ public class SpriteManager {
         }
         return _icons.get(path);
     }
-
-//    // TODO
-//    public Sprite getItem(MapObjectModel item, int tile) {
-//        if (item == null) {
-//            return null;
-//        }
-//
-//        if (!item.isStructure()) {
-//            if (item.isResource()) {
-//                return getResource((ResourceModel)item);
-//            }
-//
-////            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
-//            int alpha = 255;
-//
-//            return getSprite(item.getInfo(), item.getGraphic(), tile, 0, alpha, false);
-//        }
-//
-//        return getSprite(item.getInfo(), item.getGraphic(), tile, 0, 255, false);
-//    }
-
-//    public Sprite getItem(ItemInfo info, int tile) {
-//        if (info == null) {
-//            return null;
-//        }
-//
-//        if (!info.isStructure) {
-//            if (info.isResource) {
-//                return null;
-////                return getResource(info);
-//            }
-//
-////            int alpha = Math.min(item.getScience() == 0 ? 255 : 75 + 180 / item.getScience() * (int)item.getProgress(), 255);
-//            int alpha = 255;
-//
-//            return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, alpha, false);
-//        }
-//
-//        return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false);
-//    }
 
     public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
     public Sprite getItem(StructureModel structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
@@ -559,6 +496,7 @@ public class SpriteManager {
     }
 
     public Texture getTexture(String path) {
-        return _textureCache.get(path);
+        assert _textures.containsKey(path);
+        return _textures.get(path);
     }
 }
