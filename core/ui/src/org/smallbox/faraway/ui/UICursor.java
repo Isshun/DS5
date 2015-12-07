@@ -14,9 +14,11 @@ public abstract class UICursor {
     protected UIFrame RES_EDEN;
 
     public UICursor() {
-        RES_ODD = new UIFrame(32, 32);
+        RES_ODD = new UIFrame(null);
+        RES_ODD.setSize(32, 32);
         RES_ODD.setBackgroundColor(new Color(100, 255, 100, 20));
-        RES_EDEN = new UIFrame(32, 32);
+        RES_EDEN = new UIFrame(null);
+        RES_EDEN.setSize(32, 32);
         RES_EDEN.setBackgroundColor(new Color(100, 255, 100, 40));
     }
 

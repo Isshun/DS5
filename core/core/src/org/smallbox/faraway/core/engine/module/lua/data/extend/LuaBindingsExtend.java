@@ -5,7 +5,6 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
@@ -21,7 +20,7 @@ public class LuaBindingsExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
         try {
             // Read bindings
             BindingInfo bindingInfo = new BindingInfo();
@@ -43,9 +42,6 @@ public class LuaBindingsExtend extends LuaExtend {
             bindingInfo.action = () -> value.get("on_action").call();
 
             Data.getData().bindings.add(bindingInfo);
-
-            // Put binding to LuaApplicationModel
-            luaModuleManager.getGame().bindings.set(bindingInfo.name, CoerceJavaToLua.coerce(bindingInfo));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

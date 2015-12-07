@@ -120,8 +120,6 @@ public class Game {
             return;
         }
 
-        LuaModuleManager.getInstance().update();
-
         _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
 
         if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {

@@ -1,14 +1,11 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 
 public class UIFrame extends View {
-    public UIFrame(int width, int height) {
-        super(width, height);
-    }
-
-    public UIFrame() {
-        super(-1, -1);
+    public UIFrame(ModuleBase module) {
+        super(module);
     }
 
     @Override

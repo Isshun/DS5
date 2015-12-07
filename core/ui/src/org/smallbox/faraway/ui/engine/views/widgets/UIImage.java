@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 
@@ -19,8 +20,8 @@ public class UIImage extends View {
     protected double        _scaleY = 1;
     private boolean         _dirty;
 
-    public UIImage(int width, int height) {
-        super(width, height);
+    public UIImage(ModuleBase module) {
+        super(module);
     }
 
     public void setImage(Sprite sprite) {
@@ -28,12 +29,13 @@ public class UIImage extends View {
         _dirty = true;
     }
 
-    public void setImage(String path) {
-        if (!path.equals(_path)) {
+    public UIImage setImage(String path) {
+        if (path != null && !path.equals(_path)) {
             _sprite = null;
             _path = path;
             _dirty = true;
         }
+        return this;
     }
 
     public void setScale(double scaleX, double scaleY) {
@@ -109,6 +111,10 @@ public class UIImage extends View {
     @Override
     public int getContentHeight() {
         return 0;
+    }
+
+    public static UIImage create(ModuleBase module) {
+        return new UIImage(module);
     }
 }
 

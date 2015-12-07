@@ -12,12 +12,12 @@ data:extend({
             { type = "list", id = "list_crew", position = {0, 40}},
             { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 350}, text_size = 22, size = {100, 40},
                 on_click = function()
-                    application.ui:findById("base.ui.menu_new_crew"):setVisible(false)
-                    application.ui:findById("base.ui.menu_new_planet_region"):setVisible(true)
+                    ui:find("base.ui.menu_new_crew"):setVisible(false)
+                    ui:find("base.ui.menu_new_planet_region"):setVisible(true)
                 end},
             { type = "label", id = "bt_next", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "next", text_size = 22, size = {100, 40}, position = {200, 350},
                 on_click = function()
-                    application.ui:findById("base.ui.menu_new_crew"):setVisible(false)
+                    ui:find("base.ui.menu_new_crew"):setVisible(false)
                     application:sendEvent("new_game.start")
                 end},
         }}
@@ -29,10 +29,10 @@ data:extend({
     on_event = function(view, event, data)
         if event == "new_game.planet" then
             if data.graphics.background then
-                application.ui:findById("base.ui.menu_new_crew"):findById("img_background"):setVisible(true)
-                application.ui:findById("base.ui.menu_new_crew"):findById("img_background"):setImage(data.graphics.background.path)
+                ui:find("base.ui.menu_new_crew"):findById("img_background"):setVisible(true)
+                ui:find("base.ui.menu_new_crew"):findById("img_background"):setImage(data.graphics.background.path)
             else
-                application.ui:findById("base.ui.menu_new_crew"):findById("img_background"):setVisible(false)
+                ui:find("base.ui.menu_new_crew"):findById("img_background"):setVisible(false)
             end
         end
     end,

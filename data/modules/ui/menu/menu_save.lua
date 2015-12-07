@@ -12,7 +12,7 @@ data:extend({
 
     on_event = function(view, event, data)
         if view:isVisible() and event == application.events.on_key_press and data == "ESCAPE" then
-            application.ui:findById(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
+            ui:find(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
             view:setVisible(false)
         end
     end,

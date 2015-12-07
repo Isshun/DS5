@@ -25,7 +25,7 @@ data:extend({
         local list_consumables = view:findById("list_consumables")
         list_consumables:removeAllViews()
         for key, value in pairs(consumables) do
-            local lb_consumable = application.ui:createLabel()
+            local lb_consumable = ui:createLabel()
             lb_consumable:setDashedString(key.label, value, 22);
             lb_consumable:setSize(200, 24)
             list_consumables:addView(lb_consumable)

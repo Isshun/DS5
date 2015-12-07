@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.util.StringUtils;
@@ -21,32 +22,29 @@ public class UILabel extends View {
     private Color                               _textColor;
     private int                                 _maxLength;
 
-    public UILabel() {
-        super(-1, -1);
-    }
-
-    @Override
-    public void addView(View view) {
-    }
-
-    public UILabel(int width, int height) {
-        super(width, height);
+    public UILabel(ModuleBase module) {
+        super(module);
     }
 
     public void setMaxLength(int maxLength) {
         _maxLength = maxLength;
     }
 
-    public void setText(String string) {
+    public View setSize(int width, int height) {
+        return super.setSize(width, height != -1 ? height : 18);
+    }
+
+    public UILabel setText(String string) {
         if (string == null) {
             setStringValue("");
-            return;
+            return this;
         }
 
         int hash = string.hashCode();
         if (hash != _hash1) {
             setStringValue(Data.getData() != null && Data.getData().hasString(hash) ? Data.getData().getString(hash) : string);
         }
+        return this;
     }
 
     public void setText(String str1, String str2) {
@@ -211,6 +209,10 @@ public class UILabel extends View {
     }
 
     @Override
+    public void addView(View view) {
+    }
+
+    @Override
     public int getContentWidth() {
         if (_string != null) {
 //            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
@@ -228,4 +230,7 @@ public class UILabel extends View {
         return 0;
     }
 
+    public static UILabel create(ModuleBase module) {
+        return new UILabel(module);
+    }
 }

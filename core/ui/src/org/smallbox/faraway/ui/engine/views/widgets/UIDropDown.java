@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 
@@ -13,10 +14,10 @@ public class UIDropDown extends View {
     private View    _overlay;
     private int     _currentIndex = -1;
 
-    public UIDropDown(int width, int height) {
-        super(width, height);
+    public UIDropDown(ModuleBase module) {
+        super(module);
 
-        _overlay = new UIFrame(width, height);
+        _overlay = new UIFrame(module);
         _overlay.setDeep(100);
         _overlay.setOnClickListener(() -> {
             setOpen(true);

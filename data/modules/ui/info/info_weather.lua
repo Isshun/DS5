@@ -20,7 +20,7 @@ data:extend({
 
     on_refresh = function(view)
         local weather_module = application:getModule("WeatherModule")
-        if weather_module then
+        if weather_module and application.game then
             view:findById("lb_name"):setText(weather_module:getWeather() and weather_module:getWeather().label or "")
 
             local str_temp = ""

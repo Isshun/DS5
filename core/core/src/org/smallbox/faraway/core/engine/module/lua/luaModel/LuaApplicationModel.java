@@ -28,7 +28,7 @@ import java.util.Optional;
  * Created by Alex on 26/09/2015.
  */
 public class LuaApplicationModel {
-    public WorldModule        world;
+    public WorldModule              world;
     public long                     tick;
     public int                      day;
     public int                      hour;
@@ -39,14 +39,12 @@ public class LuaApplicationModel {
     public Game                     game;
     public Config                   config = new Config();
     public ApplicationInfo          info = new ApplicationInfo();
-    public LuaTable                 bindings = new LuaTable();
     public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<ModuleBase>   modules;
     public Collection<ModuleBase>   moduleThirds;
 
-    public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, UserInterface userInterface) {
-        ui = userInterface;
+    public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents) {
         crew = luaCrew;
         events = luaEvents;
         luaModules = LuaModuleManager.getInstance().getModules();

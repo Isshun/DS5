@@ -230,11 +230,11 @@ function display_buffs(view, character)
             local buff = iterator:next()
             if buff.level > 0 then
                 local is_warning = buff.mood < 0 and buff.level > 2
-                local view_buff = application.ui:createView()
+                local view_buff = ui:createView()
                 view_buff:setSize(400, 22)
 
                 if is_warning then
-                    local lb_buff_warning = application.ui:createLabel()
+                    local lb_buff_warning = ui:createLabel()
                     lb_buff_warning:setText("!")
                     lb_buff_warning:setSize(11, 13)
                     lb_buff_warning:setTextColor(0x121c1e)
@@ -243,7 +243,7 @@ function display_buffs(view, character)
                     view_buff:addView(lb_buff_warning)
                 end
 
-                local lb_buff = application.ui:createLabel()
+                local lb_buff = ui:createLabel()
                 lb_buff:setDashedString(buff.message, buff.mood, is_warning and 42 or 44)
                 lb_buff:setSize(400, 22)
                 lb_buff:setPosition(is_warning and 18 or 0, 3)
@@ -268,7 +268,7 @@ function display_diseases(view, character)
     while iterator:hasNext() do
         local disease = iterator:next()
 
-        local lb_disease = application.ui:createLabel()
+        local lb_disease = ui:createLabel()
         lb_disease:setText(disease.message)
         lb_disease:setSize(400, 22)
         list:addView(lb_disease)
@@ -295,14 +295,14 @@ function display_talents(view)
     local iterator = character:getTalents():getAll():iterator()
     while iterator:hasNext() do
         local talent = iterator:next()
-        local frame_talent = application.ui:createView()
+        local frame_talent = ui:createView()
         frame_talent:setSize(400, 24)
 
-        local lb_talent = application.ui:createLabel()
+        local lb_talent = ui:createLabel()
         lb_talent:setText(talent.name)
         frame_talent:addView(lb_talent)
 
-        local lb_up = application.ui:createLabel()
+        local lb_up = ui:createLabel()
         lb_up:setText("up")
         lb_up:setSize(50, 22)
         lb_up:setBackgroundColor(0xff0000)
@@ -313,7 +313,7 @@ function display_talents(view)
         end)
         frame_talent:addView(lb_up)
 
-        local lb_down = application.ui:createLabel()
+        local lb_down = ui:createLabel()
         lb_down:setText("down")
         lb_down:setSize(50, 22)
         lb_down:setPosition(250, 0)
@@ -333,7 +333,7 @@ function displayNeed(view, lb_res_id, gauge_res_id, label, value)
 end
 
 function open_page(bt_name, page_name)
-    local panel = application.ui:findById("base.ui.info_character")
+    local panel = ui:find("base.ui.info_character")
 
     for key, value in ipairs({"page_status", "page_inventory", "page_info", "page_health"}) do
         panel:findById(value):setVisible(false)

@@ -5,8 +5,8 @@ data:extend({
     visible = false,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)
-            application.ui:findById("base.ui.panel_main"):setVisible(true)
-            application.ui:findById("base.ui.panel_stats"):setVisible(false)
+            ui:find("base.ui.panel_main"):setVisible(true)
+            ui:find("base.ui.panel_stats"):setVisible(false)
         end},
         { type = "label", text = "Stats", text_size = 28, padding = 10, position = {40, 0}},
         { type = "list", position = {0, 40}, views = {
@@ -18,7 +18,7 @@ data:extend({
     on_event = function(view, event , data)
         if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            application.ui:findById("base.ui.panel_main"):setVisible(true)
+            ui:find("base.ui.panel_main"):setVisible(true)
             application:sendEvent("mini_map.display", true)
         end
     end

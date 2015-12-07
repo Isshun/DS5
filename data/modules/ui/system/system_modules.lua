@@ -14,13 +14,13 @@ data:extend(
                     { type = "label", text = "Modules", text_size = 16, size = {400, 24}, padding = 5, background = 0x55000000 },
                     { type = "view", size = {400, 32}, views = {
                         { type = "label", text = "Base", text_size = 16, size = {150, 24}, position = {0, 0}, padding = 5, background = 0x55000000, on_click = function()
-                            application.ui:findById("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.modules)
+                            ui:find("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.modules)
                         end},
                         { type = "label", text = "Third", text_size = 16, size = {150, 24}, position = {150, 0}, padding = 5, background = 0x55000000, on_click = function()
-                            application.ui:findById("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.moduleThirds)
+                            ui:find("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.moduleThirds)
                         end},
                         { type = "label", text = "Lua", text_size = 16, size = {150, 24}, position = {300, 0}, padding = 5, background = 0x55000000, on_click = function()
-                            application.ui:findById("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.luaModules)
+                            ui:find("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.luaModules)
                         end},
                     }},
                     --{ type = "label", text = "[F9]", text_size = 16, size = {50, 24}, position = {350, 0}, padding = 5 },

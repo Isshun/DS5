@@ -172,6 +172,6 @@ data:extend({
 
 function open_panel(panel_name)
     application:sendEvent("mini_map.display", false)
-    application.ui:findById("base.ui.panel_main"):setVisible(false)
-    application.ui:findById(panel_name):setVisible(true)
+    ui:find("base.ui.panel_main"):setVisible(false)
+    ui:find(panel_name):setVisible(true)
 end

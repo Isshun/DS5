@@ -6,8 +6,8 @@ data:extend({
     on_click = function() close_sub_menu() end,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)
-            application.ui:findById("base.ui.panel_main"):setVisible(true)
-            application.ui:findById("panel_plan"):setVisible(false)
+            ui:find("base.ui.panel_main"):setVisible(true)
+            ui:find("panel_plan"):setVisible(false)
         end},
         { type = "label", text = "Plan", text_size = 28, padding = 10, position = {40, 0}},
         { type = "grid", id = "main_menu", columns = 1, row_height = 50, position = {10, 50}, views = {
@@ -38,7 +38,7 @@ data:extend({
     on_event = function(view, event , data)
         if event == application.events.on_key_press and data == "ESCAPE" then
             view:setVisible(false)
-            application.ui:findById("base.ui.panel_main"):setVisible(true)
+            ui:find("base.ui.panel_main"):setVisible(true)
             application:sendEvent("mini_map.display", true)
         end
     end
@@ -46,25 +46,25 @@ data:extend({
 
 function open_sub_menu(id)
     close_sub_menu()
-    local iterator = application.ui:findById("base.ui.panel_plan"):findById("main_menu"):getViews():iterator()
+    local iterator = ui:find("base.ui.panel_plan"):findById("main_menu"):getViews():iterator()
     while iterator:hasNext() do
         local menu_entry = iterator:next()
         menu_entry:setBackgroundColor(0x34939455)
         menu_entry:setRegularBackgroundColor(0x34939455)
         menu_entry:setFocusBackgroundColor(0x349394bb)
     end
---    application.ui:findById("base.ui.panel_plan"):findById("main_menu"):setActive(false)
-    application.ui:findById("base.ui.panel_plan"):findById(id):setVisible(true)
+--    ui:find("base.ui.panel_plan"):findById("main_menu"):setActive(false)
+    ui:find("base.ui.panel_plan"):findById(id):setVisible(true)
 end
 
 function close_sub_menu()
-    local iterator = application.ui:findById("base.ui.panel_plan"):findById("main_menu"):getViews():iterator()
+    local iterator = ui:find("base.ui.panel_plan"):findById("main_menu"):getViews():iterator()
     while iterator:hasNext() do
         iterator:next():setBackgroundColor(0x349394)
     end
---    application.ui:findById("base.ui.panel_plan"):findById("main_menu"):setActive(true)
-    application.ui:findById("base.ui.panel_plan"):findById("sub_menu_dig"):setVisible(false)
-    application.ui:findById("base.ui.panel_plan"):findById("sub_menu_gather"):setVisible(false)
-    application.ui:findById("base.ui.panel_plan"):findById("sub_menu_dump"):setVisible(false)
-    application.ui:findById("base.ui.panel_plan"):findById("sub_menu_cancel"):setVisible(false)
+--    ui:find("base.ui.panel_plan"):findById("main_menu"):setActive(true)
+    ui:find("base.ui.panel_plan"):findById("sub_menu_dig"):setVisible(false)
+    ui:find("base.ui.panel_plan"):findById("sub_menu_gather"):setVisible(false)
+    ui:find("base.ui.panel_plan"):findById("sub_menu_dump"):setVisible(false)
+    ui:find("base.ui.panel_plan"):findById("sub_menu_cancel"):setVisible(false)
 end

@@ -26,6 +26,6 @@ data:extend({
 })
 
 function open_main_menu(menu_name)
-    application.ui:findById("base.ui.menu_main"):setVisible(false)
-    application.ui:findById(menu_name):setVisible(true)
+    ui:find("base.ui.menu_main"):setVisible(false)
+    ui:find(menu_name):setVisible(true)
 end

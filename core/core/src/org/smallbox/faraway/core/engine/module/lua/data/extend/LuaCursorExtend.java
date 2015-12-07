@@ -4,7 +4,6 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Data;
@@ -22,14 +21,17 @@ public class LuaCursorExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
-        final UIFrame resItem = new UIFrame(32, 32);
+    public void extend(LuaModule module, Globals globals, LuaValue value) {
+        final UIFrame resItem = new UIFrame(module);
+        resItem.setSize(32, 32);
         resItem.setBackgroundColor(value.get("default").get("color").tolong());
 
-        final UIFrame resOdd = new UIFrame(32, 32);
+        final UIFrame resOdd = new UIFrame(module);
+        resOdd.setSize(32, 32);
         resOdd.setBackgroundColor(value.get("odd").get("color").tolong());
 
-        final UIFrame resEden = new UIFrame(32, 32);
+        final UIFrame resEden = new UIFrame(module);
+        resEden.setSize(32, 32);
         resEden.setBackgroundColor(value.get("eden").get("color").tolong());
 
         final LuaValue luaOnParcel = value.get("on_parcel");

@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.OnKeyListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -19,8 +20,18 @@ public class UIGrid extends View {
     private int         _index;
     private boolean     _keepSorted;
 
-    public UIGrid(int width, int height) {
-        super(width, height);
+    public UIGrid(ModuleBase module) {
+        super(module);
+    }
+
+    @Override
+    public UIGrid setSize(int width, int height) {
+        if (width != -1 && height != -1) {
+            super.setSize(width, height);
+        } else {
+            super.setSize(_columns * _columnWidth, height);
+        }
+        return this;
     }
 
     @Override

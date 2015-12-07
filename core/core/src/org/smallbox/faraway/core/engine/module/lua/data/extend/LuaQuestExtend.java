@@ -4,7 +4,6 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
@@ -20,7 +19,7 @@ public class LuaQuestExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
         String name = getString(value, "name", null);
 
         QuestInfo questInfo = null;

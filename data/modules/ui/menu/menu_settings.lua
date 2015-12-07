@@ -31,7 +31,7 @@ local settings = {}
 local function set_screen_mode(mode)
     settings.screen_mode = mode
 
-    local window = application.ui:findById("base.ui.menu_settings")
+    local window = ui:find("base.ui.menu_settings")
 
     window:findById("lb_screen_mode_0"):setText((mode == "borderless" and "[x]" or "[ ]") .. " Borderless")
     window:findById("lb_screen_mode_1"):setText((mode == "fullscreen" and "[x]" or "[ ]") .. " Fullscreen")
@@ -41,7 +41,7 @@ end
 local function set_resolution(resolution)
     settings.resolution = resolution
 
-    local window = application.ui:findById("base.ui.menu_settings")
+    local window = ui:find("base.ui.menu_settings")
 
     local dd_resolutions = window:findById("dd_resolutions")
     for key, value in ipairs(RESOLUTIONS[settings.ratio]) do
@@ -54,13 +54,13 @@ end
 local function set_ratio(ratio)
     settings.ratio = ratio
 
-    local window = application.ui:findById("base.ui.menu_settings")
+    local window = ui:find("base.ui.menu_settings")
     window:findById("bt_ratio"):setText(ratio)
 
     local dd_resolutions = window:findById("dd_resolutions")
     dd_resolutions:removeAllViews()
     for key, value in ipairs(RESOLUTIONS[settings.ratio]) do
-        local dd_entry = application.ui:createLabel()
+        local dd_entry = ui:createLabel()
         dd_entry:setText(value[1] .. "x" .. value[2]);
         dd_entry:setTextSize(16)
         dd_entry:setSize(100, 22)
@@ -74,7 +74,7 @@ local function set_ratio(ratio)
 end
 
 local function open_settings_menu(view, sub_menu_id)
-    local main_view = application.ui:findById("base.ui.menu_settings")
+    local main_view = ui:find("base.ui.menu_settings")
 
     local iterator = main_view:findById("grid_settings_sections"):getViews():iterator()
     while iterator:hasNext() do
@@ -148,8 +148,8 @@ data:extend({
             }},
             { type = "view", size = {800, 45}, views = {
                 { type = "label", text = "Close", text_size = 22, padding = 16, size = {160, 45}, position = {458, 0}, background = {regular = 0x01000000, focus = 0x25c9cb}, on_click = function()
-                    application.ui:find("base.ui.menu_settings"):setVisible(false)
-                    application.ui:find(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
+                    ui:find("base.ui.menu_settings"):setVisible(false)
+                    ui:find(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
                 end},
                 { type = "label", text = "Apply", text_size = 22, padding = 16, size = {160, 45}, position = {630, 0}, background = {regular = 0x01000000, focus = 0x25c9cb}, on_click = function()
                     application:sendEvent("game_settings.apply", settings)
@@ -166,7 +166,7 @@ data:extend({
 
     on_event = function(view, event, data)
         if view:isVisible() and event == application.events.on_key_press and data == "ESCAPE" then
-            application.ui:findById(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
+            ui:find(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
             view:setVisible(false)
         end
     end,

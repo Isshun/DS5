@@ -30,17 +30,17 @@ data:extend({
         if event == application.events.on_game_paused then
             print("open")
             view:setVisible(true)
-            application.ui:findById("base.ui.panel_main"):setVisible(false)
+            ui:find("base.ui.panel_main"):setVisible(false)
         end
         if event == application.events.on_game_resume then
             print("bye")
             view:setVisible(false)
-            application.ui:findById("base.ui.panel_main"):setVisible(true)
+            ui:find("base.ui.panel_main"):setVisible(true)
         end
     end,
 })
 
 function open_menu(menu_name)
-    application.ui:findById("base.ui.menu_pause"):setVisible(false)
-    application.ui:findById(menu_name):setVisible(true)
+    ui:find("base.ui.menu_pause"):setVisible(false)
+    ui:find(menu_name):setVisible(true)
 end

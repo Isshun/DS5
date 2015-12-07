@@ -88,6 +88,7 @@ public class ItemInfo extends ObjectInfo {
     public static class ItemInfoReceipt {
         public String                   name;
         public String                   label;
+        public String                   icon;
         public List<ItemComponentInfo>  components;
         public List<ItemProductInfo>    products;
     }
@@ -204,12 +205,11 @@ public class ItemInfo extends ObjectInfo {
     public String                       labelChild;
     public String                       category;
     public String                       type;
-    public ItemMaterialInfo             material;
     public ItemInfoStorage              storage;
     public List<int[]>                  slots;
     public List<ItemInfoReceipt>        receipts;
     public int[]                        tiles;
-    public boolean                      isWalkable;
+    public boolean                      isWalkable = true;
     public int                          frames;
     public int                          framesInterval;
     public int                          width;
@@ -221,7 +221,7 @@ public class ItemInfo extends ObjectInfo {
     public ItemEquipmentInfo            equipment;
     public ItemInfoEffects              effects;
     public ItemInfoPlant                plant;
-    public boolean                      isDoor;
+    public boolean                      isDoor = false;
     public boolean                      isEquipment;
     public boolean                      isStructure;
     public boolean                      isResource;
@@ -259,7 +259,7 @@ public class ItemInfo extends ObjectInfo {
     public boolean                      isRamp;
     public boolean                      isGround;
     public boolean                      isLinkDown;
-    public boolean                      isWall;
+    public boolean                      isWall = false;
     public int                          color;
 
     public ItemInfo() {

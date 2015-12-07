@@ -12,8 +12,8 @@ data:extend({
             { type = "list", id = "list_regions", position = {0, 40}},
             { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 350}, text_size = 22, size = {100, 40},
                 on_click = function()
-                    application.ui:findById("base.ui.menu_new_planet_region"):setVisible(false)
-                    application.ui:findById("base.ui.menu_new_planet"):setVisible(true)
+                    ui:find("base.ui.menu_new_planet_region"):setVisible(false)
+                    ui:find("base.ui.menu_new_planet"):setVisible(true)
                 end},
             { type = "label", id = "bt_next", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "next", text_size = 22, size = {100, 40}, position = {200, 350}},
         }}
@@ -22,10 +22,10 @@ data:extend({
     on_event = function(view, event, data)
         if event == "new_game.planet" then
             if data.graphics.background then
-                application.ui:findById("base.ui.menu_new_planet_region"):findById("img_background"):setVisible(true)
-                application.ui:findById("base.ui.menu_new_planet_region"):findById("img_background"):setImage(data.graphics.background.path)
+                ui:find("base.ui.menu_new_planet_region"):findById("img_background"):setVisible(true)
+                ui:find("base.ui.menu_new_planet_region"):findById("img_background"):setImage(data.graphics.background.path)
             else
-                application.ui:findById("base.ui.menu_new_planet_region"):findById("img_background"):setVisible(false)
+                ui:find("base.ui.menu_new_planet_region"):findById("img_background"):setVisible(false)
             end
 
             local list_regions = view:findById("list_regions")
@@ -34,7 +34,7 @@ data:extend({
             local iterator = data.regions:iterator()
             while iterator:hasNext() do
                 local region = iterator:next()
-                local lb_region = application.ui:createLabel()
+                local lb_region = ui:createLabel()
                 lb_region:setText(region.label)
                 lb_region:setTextSize(16)
                 lb_region:setSize(300, 34)
@@ -60,10 +60,10 @@ function select_region(lb_region, region)
     end
     lb_region:setBackgroundColor(0x8814dcb9)
 
---    application.ui:findById("base.ui.menu_new_planet_region"):findById("bt_next"):setBackgroundColor(0x8814dcb9)
-    application.ui:findById("base.ui.menu_new_planet_region"):findById("bt_next"):setOnClickListener(function()
-        application.ui:findById("base.ui.menu_new_planet_region"):setVisible(false)
-        application.ui:findById("base.ui.menu_new_crew"):setVisible(true)
+--    ui:find("base.ui.menu_new_planet_region"):findById("bt_next"):setBackgroundColor(0x8814dcb9)
+    ui:find("base.ui.menu_new_planet_region"):findById("bt_next"):setOnClickListener(function()
+        ui:find("base.ui.menu_new_planet_region"):setVisible(false)
+        ui:find("base.ui.menu_new_crew"):setVisible(true)
     end)
 
 end

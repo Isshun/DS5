@@ -8,6 +8,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -22,7 +23,6 @@ import org.smallbox.faraway.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -44,35 +44,26 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) {
+    public void extend(LuaModule module, Globals globals, LuaValue value) {
         boolean inGame = getBoolean(value, "in_game", true);
-        UIFrame frame = new UIFrame(-1, -1);
+        UIFrame frame = new UIFrame(module);
         frame.setInGame(inGame);
-        frame.addView(createView(luaModuleManager, globals, value, inGame, 0, frame));
-        frame.setModule(module);
+        frame.addView(createView(LuaModuleManager.getInstance(), module, globals, value, inGame, 0, frame));
         frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         frame.setLevel(getInt(value, "level", 0));
-        UserInterface.getInstance()._views.add(frame);
-        Collections.sort(UserInterface.getInstance()._views, (v1, v2) -> v1.getLevel() - v2.getLevel());
+        UserInterface.getInstance().addView(frame);
     }
 
-    public View createView(LuaModuleManager luaModuleManager, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
+    public View createView(LuaModuleManager luaModuleManager, ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
         View view = null;
-
-        int width = -1, height = -1;
-        LuaValue size = value.get("size");
-        if (!size.isnil()) {
-            width = size.get(1).toint();
-            height = size.get(2).toint();
-        }
 
         switch (value.get("type").toString()) {
             case "view":
-                view = new UIFrame(width, height);
+                view = new UIFrame(module);
                 break;
 
            case "minimap":
-                view = new View(width, height) {
+                view = new View(module) {
 
                     @Override
                     public void draw(GDXRenderer renderer, int x, int y) {
@@ -103,19 +94,16 @@ public class LuaUIExtend extends LuaExtend {
                 break;
 
             case "dropdown":
-                view = new UIDropDown(width, height);
-                UserInterface.getInstance()._dropsDowns.add((UIDropDown)view);
+                view = new UIDropDown(module);
+                UserInterface.getInstance().addDropsDowns((UIDropDown)view);
                 break;
 
             case "list":
-                view = new UIList(width, height);
-                if (width != -1 && height != -1) {
-                    view.setFixedSize(width, height);
-                }
+                view = new UIList(module);
                 break;
 
             case "grid":
-                UIGrid grid = new UIGrid(width, height);
+                UIGrid grid = new UIGrid(module);
 
                 LuaValue columns = value.get("columns");
                 if (!columns.isnil()) {
@@ -132,18 +120,11 @@ public class LuaUIExtend extends LuaExtend {
                     grid.setColumnWidth(columnWidth.toint());
                 }
 
-                if (width != -1 && height != -1) {
-                    grid.setFixedSize(width, height);
-                    grid.setSize(width, height);
-                } else {
-                    grid.setSize(grid.getColumns() * grid.getColumnWidth(), grid.getHeight());
-                }
-
                 view = grid;
                 break;
 
             case "image":
-                UIImage image = new UIImage(width, height);
+                UIImage image = new UIImage(module);
 
                 LuaValue src = value.get("src");
                 if (!src.isnil()) {
@@ -159,7 +140,7 @@ public class LuaUIExtend extends LuaExtend {
                 break;
 
             case "label":
-                UILabel label = new UILabel(width, height);
+                UILabel label = new UILabel(module);
 
                 LuaValue text = value.get("text");
                 if (!text.isnil()) {
@@ -182,6 +163,15 @@ public class LuaUIExtend extends LuaExtend {
 
         if (view != null) {
             LuaValue luaView = CoerceJavaToLua.coerce(view);
+
+            int width = -1, height = -1;
+            LuaValue size = value.get("size");
+            if (!size.isnil()) {
+                width = size.get(1).toint();
+                height = size.get(2).toint();
+                view.setFixedSize(width, height);
+            }
+            view.setSize(width, height);
 
             view.setParent(parent);
             view.setDeep(deep);
@@ -308,7 +298,7 @@ public class LuaUIExtend extends LuaExtend {
                 view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
                     @Override
                     public View onCreateView() {
-                        return createView(luaModuleManager, globals, subview, inGame, deep + 1, finalView1);
+                        return createView(luaModuleManager, module, globals, subview, inGame, deep + 1, finalView1);
                     }
 
                     @Override
@@ -380,10 +370,10 @@ public class LuaUIExtend extends LuaExtend {
             if (!subViews.isnil()) {
                 if (subViews.get("type").isnil()) {
                     for (int i = 1; i <= subViews.length(); i++) {
-                        view.addView(createView(luaModuleManager, globals, subViews.get(i), inGame, deep + 1, view));
+                        view.addView(createView(luaModuleManager, module, globals, subViews.get(i), inGame, deep + 1, view));
                     }
                 } else {
-                    view.addView(createView(luaModuleManager, globals, subViews, inGame, deep + 1, view));
+                    view.addView(createView(luaModuleManager, module, globals, subViews, inGame, deep + 1, view));
                 }
             }
         }

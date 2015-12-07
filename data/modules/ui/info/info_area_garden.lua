@@ -5,7 +5,7 @@ local function display_accepted_items(view, garden)
     local iterator = garden:getPotentials():iterator()
     while iterator:hasNext() do
         local plant = iterator:next()
-        local lb_plant = application.ui:createLabel()
+        local lb_plant = ui:createLabel()
         lb_plant:setText((garden:getCurrent() == plant and "[x] " or "[ ] "), plant.label)
         lb_plant:setTextSize(14)
         lb_plant:setSize(180, 20)

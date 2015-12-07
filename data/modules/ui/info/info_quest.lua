@@ -24,11 +24,11 @@ data:extend({
             view:findById("lb_label"):setText(data.info.label)
             view:findById("lb_message"):setText(data.info.openMessage)
 
-            local list_options = application.ui:findById("list_options")
+            local list_options = ui:find("list_options")
             list_options:removeAllViews()
             list_options:setPosition(16, 396 - (26 * data.info.openOptions.length))
             for i = 1, data.info.openOptions.length, 1 do
-                local lb_option = application.ui:createLabel()
+                local lb_option = ui:createLabel()
                 lb_option:setText("[" .. i .. "] " .. data.info.openOptions[i])
                 lb_option:setTextSize(16)
                 lb_option:setSize(100, 26)

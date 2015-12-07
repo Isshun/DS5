@@ -1,13 +1,14 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 
 /**
  * Created by Alex on 26/09/2015.
  */
 public class UIList extends View {
-    public UIList(int width, int height) {
-        super(width, height);
+    public UIList(ModuleBase module) {
+        super(module);
     }
 
     @Override

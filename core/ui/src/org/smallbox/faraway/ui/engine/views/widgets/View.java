@@ -4,6 +4,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.FadeEffect;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.RotateAnimation;
@@ -29,6 +30,10 @@ public abstract class View {
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
         _horizontalAlign = horizontalAlign;
+    }
+
+    public void clear() {
+        _views.clear();
     }
 
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
@@ -58,6 +63,7 @@ public abstract class View {
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
+    protected final ModuleBase  _module;
     protected List<View>        _views = new ArrayList<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
@@ -69,7 +75,6 @@ public abstract class View {
     protected int               _marginLeft;
     protected UIAdapter         _adapter;
     protected int               _objectId;
-    protected LuaModule         _module;
     protected int               _hash;
     protected int               _fixedWidth = -1;
     protected int               _fixedHeight = -1;
@@ -106,11 +111,8 @@ public abstract class View {
     protected HorizontalAlign   _horizontalAlign;
     protected VerticalAlign     _verticalAlign;
 
-    public View(int width, int height) {
-        _originWidth = width;
-        _originHeight = height;
-        _width = width != -1 ? (int) (width * Application.getInstance().getConfig().uiScale) : -1;
-        _height = height != -1 ? (int) (height * Application.getInstance().getConfig().uiScale) : -1;
+    public View(ModuleBase module) {
+        _module = module;
         _isVisible = true;
         _borderSize = 2;
         _x = 0;
@@ -137,7 +139,6 @@ public abstract class View {
     public void         setInGame(boolean inGame) { _inGame = inGame; }
     public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
     public void         setLevel(int level) { _level = level; }
-    public void         setModule(LuaModule module) { _module = module; }
     public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
     public void         setBackgroundColor(Color color) { _backgroundColor = color; }
     public void         setVisible(boolean visible) { _isVisible = visible; }
@@ -158,7 +159,7 @@ public abstract class View {
     public int          getFocusBackground() { return _focusBackground; }
     public String       getName() { return _name; }
     public List<View>   getViews() { return _views; }
-    public LuaModule    getModule() { return _module; }
+    public ModuleBase   getModule() { return _module; }
     protected String    getString() { return null; }
     public int          getHeight() { return _height; }
     public int          getWidth() { return _width; }
@@ -259,10 +260,11 @@ public abstract class View {
         _backgroundFocusColor = new Color(color);
     }
 
-    public void setOnClickListener(OnClickListener onClickListener) {
+    public View setOnClickListener(OnClickListener onClickListener) {
         assert onClickListener != null;
         _onClickListener = onClickListener;
         UIEventManager.getInstance().setOnClickListener(this, onClickListener);
+        return this;
     }
 
     // TODO: crash in lua throw on main thread
@@ -335,20 +337,23 @@ public abstract class View {
         _paddingRight = _paddingLeft = (int) (r * Application.getInstance().getConfig().uiScale);
     }
 
-    public void setPadding(int padding) {
+    public View setPadding(int padding) {
         _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.getInstance().getConfig().uiScale);
+        return this;
     }
 
-    public void setFixedSize(int width, int height) {
+    public View setFixedSize(int width, int height) {
         _fixedWidth = (int) (width * Application.getInstance().getConfig().uiScale);
         _fixedHeight = (int) (height * Application.getInstance().getConfig().uiScale);
+        return this;
     }
 
-    public void setSize(int width, int height) {
+    public View setSize(int width, int height) {
         _width = (int) (width * Application.getInstance().getConfig().uiScale);
         _height = (int) (height * Application.getInstance().getConfig().uiScale);
         _originWidth = width;
         _originHeight = height;
+        return this;
     }
 
     public void setPosition(int x, int y) {

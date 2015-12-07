@@ -37,7 +37,7 @@ data:extend({
         if event == application.events.on_plant_selected then
             view:setVisible(true)
             view:findById("lb_name"):setText(data:getLabel())
-            application.ui:findById("base.ui.panel_main"):setVisible(false)
+            ui:find("base.ui.panel_main"):setVisible(false)
             plant = data;
         end
     end,

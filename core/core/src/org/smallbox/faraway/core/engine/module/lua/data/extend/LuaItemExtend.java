@@ -4,7 +4,6 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
@@ -38,7 +37,7 @@ public class LuaItemExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(LuaModule module, Globals globals, LuaValue value) throws DataExtendException {
         String name = getString(value, "name", null);
 
         _cache.put(name, value);
@@ -75,12 +74,6 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.category = getString(value, "category", null);
         itemInfo.type = getString(value, "type", null);
 
-        if (!value.get("material").isnil()) {
-            itemInfo.material = new ItemInfo.ItemMaterialInfo();
-            itemInfo.material.label = getString(value.get("material"), "label", null);
-            itemInfo.material.iconPath = getString(value.get("material"), "icon", null);
-        }
-
         if (!value.get("size").isnil()) {
             itemInfo.width = value.get("size").get(1).toint();
             itemInfo.height = value.get("size").get(2).toint();
@@ -104,20 +97,17 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.graphics.add(new GraphicInfo("base", "/graphics/missing.png"));
         }
 
-        itemInfo.isWalkable = getBoolean(value, "walkable", true);
-        itemInfo.health = getInt(value, "health", 1);
-        itemInfo.networkName = getString(value, "network", null);
+        itemInfo.isWalkable = getBoolean(value, "walkable", itemInfo.isWalkable);
+        itemInfo.health = getInt(value, "health", itemInfo.health);
+        itemInfo.networkName = getString(value, "network", itemInfo.networkName);
         itemInfo.isGround = "ground".equals(getString(value, "type", null));
         itemInfo.isLiquid = "liquid".equals(getString(value, "type", null));
         itemInfo.isLinkDown = getBoolean(value, "is_link_down", false);
-        itemInfo.isWall= getBoolean(value, "is_wall", false);
+        itemInfo.isWall = getBoolean(value, "is_wall", itemInfo.isWall);
+        itemInfo.isDoor = getBoolean(value, "door", itemInfo.isDoor);
         itemInfo.color = getInt(value, "color", 0x000000);
 
         itemInfo.permeability = getDouble(value, "permeability", 1);
-
-        if (!value.get("door").isnil()) {
-            itemInfo.isDoor = value.get("door").toboolean();
-        }
 
         if (!value.get("liquid").isnil()) {
             itemInfo.surfaceName = value.get("liquid").get("surface").toString();
@@ -257,6 +247,9 @@ public class LuaItemExtend extends LuaExtend {
 
     private void readReceiptValue(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         ItemInfo.ItemInfoReceipt receipt = new ItemInfo.ItemInfoReceipt();
+
+        receipt.label = getString(value, "label", null);
+        receipt.icon = getString(value, "icon", null);
 
         receipt.components = new ArrayList<>();
         LuaValue luaComponents = value.get("components");

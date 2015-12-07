@@ -55,24 +55,24 @@ data:extend(
                         local iterator = info.plant.states:iterator()
                         while iterator:hasNext() do
                             local state = iterator:next()
-                            local viewState = application.ui:createView()
+                            local viewState = ui:createView()
                             viewState:setSize(600, 24)
 
-                            local labelState = application.ui:createLabel()
+                            local labelState = ui:createLabel()
                             labelState:setText(state.name)
                             labelState:setTextSize(16)
                             labelState:setSize(200, 24)
                             labelState:setPosition(0, 0)
                             viewState:addView(labelState)
 
-                            local labelState = application.ui:createLabel()
+                            local labelState = ui:createLabel()
                             labelState:setText("Light: " .. state.light[1] .. " to " .. state.light[2])
                             labelState:setTextSize(16)
                             labelState:setSize(200, 24)
                             labelState:setPosition(200, 0)
                             viewState:addView(labelState)
 
-                            local labelState = application.ui:createLabel()
+                            local labelState = ui:createLabel()
                             labelState:setText("Temperature: " .. state.temperature[1] .. " to " .. state.temperature[2])
                             labelState:setTextSize(16)
                             labelState:setSize(200, 24)

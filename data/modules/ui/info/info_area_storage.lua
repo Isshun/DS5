@@ -31,13 +31,13 @@ local function open_category(category, items)
         end
     end
 
-    local window = application.ui:findById("base.ui.info_area_storage")
+    local window = ui:find("base.ui.info_area_storage")
     local grid = window:findById("grid_items")
     grid:removeAllViews()
     grid:keepSorted(true)
     for key in pairs(list_item) do
         local entry = list_item[key]
-        local lb_entry = application.ui:createLabel()
+        local lb_entry = ui:createLabel()
         lb_entry:setText((entry:getValue() and "[x] " or "[ ] "), entry:getKey().label)
         lb_entry:setTextSize(14)
         lb_entry:setSize(180, 20)
@@ -81,17 +81,17 @@ data:extend({
             { type = "grid", position = {10, 18}, columns = 2, column_width = 195, row_height = 60, views = {
                 { type = "label", id = "bt_inventory", text = "Content", text_size = 20, padding = 18, background = 0x4be7da, size = {180, 50},
                     on_click = function()
-                        application.ui:findById("base.ui.info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
-                        application.ui:findById("base.ui.info_area_storage"):findById("bt_rules"):setBackgroundColor(0x689999);
-                        application.ui:findById("base.ui.info_area_storage"):findById("frame_inventory"):setVisible(true);
-                        application.ui:findById("base.ui.info_area_storage"):findById("frame_rules"):setVisible(false);
+                        ui:find("base.ui.info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x4be7da);
+                        ui:find("base.ui.info_area_storage"):findById("bt_rules"):setBackgroundColor(0x689999);
+                        ui:find("base.ui.info_area_storage"):findById("frame_inventory"):setVisible(true);
+                        ui:find("base.ui.info_area_storage"):findById("frame_rules"):setVisible(false);
                     end},
                 { type = "label", id = "bt_rules", text = "Rules", text_size = 20, padding = 18, background = 0x689999, size = {180, 50},
                     on_click = function()
-                        application.ui:findById("base.ui.info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x689999);
-                        application.ui:findById("base.ui.info_area_storage"):findById("bt_rules"):setBackgroundColor(0x4be7da);
-                        application.ui:findById("base.ui.info_area_storage"):findById("frame_inventory"):setVisible(false);
-                        application.ui:findById("base.ui.info_area_storage"):findById("frame_rules"):setVisible(true);
+                        ui:find("base.ui.info_area_storage"):findById("bt_inventory"):setBackgroundColor(0x689999);
+                        ui:find("base.ui.info_area_storage"):findById("bt_rules"):setBackgroundColor(0x4be7da);
+                        ui:find("base.ui.info_area_storage"):findById("frame_inventory"):setVisible(false);
+                        ui:find("base.ui.info_area_storage"):findById("frame_rules"):setVisible(true);
                     end},
             }},
             { type = "list", id = "frame_inventory", position = {0, 18}, views = {
@@ -134,7 +134,7 @@ data:extend({
         grid:removeAllViews()
         for key, value in pairs(items_by_category) do
             if key ~= "special" then
-                local lb_category = application.ui:createLabel()
+                local lb_category = ui:createLabel()
                 lb_category:setText(key)
                 lb_category:setTextSize(16)
                 lb_category:setSize(90, 32)
@@ -200,7 +200,7 @@ data:extend({
             local list_storage_content = view:findById("list_storage_content")
             list_storage_content:removeAllViews()
             for key, value in pairs(item_map) do
-                local lb_item = application.ui:createLabel()
+                local lb_item = ui:createLabel()
                 lb_item:setDashedString(key, value, 47)
                 lb_item:setTextSize(14)
                 lb_item:setSize(180, 20)

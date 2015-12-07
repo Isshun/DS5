@@ -166,7 +166,7 @@ data:extend({
                 while iterator:hasNext() do
                     local networkConnection = iterator:next()
                     if networkConnection:getNetwork() then
-                        local lb_network = application.ui:createLabel()
+                        local lb_network = ui:createLabel()
                         lb_network:setDashedString(networkConnection:getNetwork():getInfo().label, math.floor(networkConnection:getNetwork():getQuantity()) .. "/" .. networkConnection:getNetwork():getMaxQuantity(), 48)
                         lb_network:setTextSize(14)
                         lb_network:setSize(400, 24)
@@ -236,11 +236,11 @@ function display_actions_info(view, item)
         while iterator:hasNext() do
             local action = iterator:next()
 
-            local view_action = application.ui:createView()
+            local view_action = ui:createView()
             view_action:setSize(372, 42)
             list_actions:addView(view_action)
 
-            local icon_action = application.ui:createLabel()
+            local icon_action = ui:createLabel()
             icon_action:setText("+")
             icon_action:setTextSize(14)
             icon_action:setPadding(0, 2)
@@ -248,7 +248,7 @@ function display_actions_info(view, item)
             icon_action:setBackgroundColor(0x349394)
             view_action:addView(icon_action)
 
-            local lb_action = application.ui:createLabel()
+            local lb_action = ui:createLabel()
             lb_action:setText(action.type)
             lb_action:setTextSize(16)
             lb_action:setPosition(20, 0)
@@ -256,7 +256,7 @@ function display_actions_info(view, item)
             view_action:addView(lb_action)
 
             local str = ""
-            local grid_effects = application.ui:createGrid()
+            local grid_effects = ui:createGrid()
             grid_effects:setColumns(8)
             grid_effects:setColumnWidth(80)
             grid_effects:setRowHeight(24)
@@ -280,7 +280,7 @@ end
 
 function add_effect_to_grid(grid, label, value)
     if value and value ~= 0 then
-        local lb_effects = application.ui:createLabel()
+        local lb_effects = ui:createLabel()
         lb_effects:setText(label, ": ", (value > 0 and "+" or "-") .. value)
         lb_effects:setTextSize(14)
         lb_effects:setSize(400, 24)
@@ -298,7 +298,7 @@ function display_factory_info(view, factory, factoryInfo)
         local receipt_group = order.receiptGroupInfo
 
         -- Create frame receipt detail
-        local frame_receipt_detail = application.ui:createList()
+        local frame_receipt_detail = ui:createList()
         frame_receipt_detail:setSize(372, 100)
         frame_receipt_detail:setVisible(false)
         local iterator_receipt = receipt_group.receipts:iterator()
@@ -313,7 +313,7 @@ function display_factory_info(view, factory, factoryInfo)
                     str_inputs = str_inputs .. (string.len(str_inputs) > 0 and " + " or "") .. input.quantity .. " " .. input.item.label
                 end
 
-                local lb_receipt = application.ui:createLabel()
+                local lb_receipt = ui:createLabel()
                 lb_receipt:setSize(372, 22)
                 lb_receipt:setText(str_inputs)
                 lb_receipt:setTextSize(14)
@@ -322,10 +322,10 @@ function display_factory_info(view, factory, factoryInfo)
         end
 
         -- Create frame receipt
-        local frame_receipt = application.ui:createView()
+        local frame_receipt = ui:createView()
         frame_receipt:setSize(372, 22)
 
-        local lb_receipt_expend = application.ui:createLabel()
+        local lb_receipt_expend = ui:createLabel()
         lb_receipt_expend:setSize(14, 14)
         lb_receipt_expend:setText("+")
         lb_receipt_expend:setTextSize(14)
@@ -337,14 +337,14 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_receipt_expend)
 
-        local lb_receipt_group = application.ui:createLabel()
+        local lb_receipt_group = ui:createLabel()
         lb_receipt_group:setSize(372, 32)
         lb_receipt_group:setPosition(20, 0)
         lb_receipt_group:setPadding(3)
         lb_receipt_group:setText(receipt_group.label)
         frame_receipt:addView(lb_receipt_group)
 
-        local lb_mode = application.ui:createLabel()
+        local lb_mode = ui:createLabel()
         lb_mode:setText("mode")
         lb_mode:setSize(50, 22)
         lb_mode:setPosition(280, 0)
@@ -354,7 +354,7 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_mode)
 
-        local lb_up = application.ui:createLabel()
+        local lb_up = ui:createLabel()
         lb_up:setText("U")
         lb_up:setSize(50, 22)
         lb_up:setPosition(240, 0)
@@ -365,7 +365,7 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_up)
 
-        local lb_down = application.ui:createLabel()
+        local lb_down = ui:createLabel()
         lb_down:setText("D")
         lb_down:setSize(50, 22)
         lb_down:setPosition(260, 0)
@@ -376,7 +376,7 @@ function display_factory_info(view, factory, factoryInfo)
         end)
         frame_receipt:addView(lb_down)
 
-        local lb_active = application.ui:createLabel()
+        local lb_active = ui:createLabel()
         lb_active:setText(order.isActive and "[x]" or "[ ]")
         lb_active:setSize(50, 22)
         lb_active:setPosition(326, 0)

@@ -12,8 +12,8 @@ data:extend({
                 { type = "list", id = "list_games" },
                 { type = "list", id = "list_game_saves", position = {180, 0}},
                 { type = "label", text = "back", text_size = 18, id = "bt_back", size = {100, 38}, padding = 12, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, position = {0, 300}, on_click = function()
-                    application.ui:findById("base.ui.menu_load"):setVisible(false)
-                    application.ui:findById("base.ui.menu_main"):setVisible(true)
+                    ui:find("base.ui.menu_load"):setVisible(false)
+                    ui:find("base.ui.menu_main"):setVisible(true)
                 end},
                 { type = "label", text = "load", text_size = 18, id = "bt_load", size = {100, 38}, padding = 12, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, position = {450, 300}, on_click = function()
                     application:sendEvent("load_game.load")
@@ -28,7 +28,7 @@ data:extend({
 
     on_event = function(view, event, data)
         if view:isVisible() and event == application.events.on_key_press and data == "ESCAPE" then
-            application.ui:findById(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
+            ui:find(application.game and "base.ui.menu_pause" or "base.ui.menu_main"):setVisible(true)
             view:setVisible(false)
         end
 
@@ -40,7 +40,7 @@ data:extend({
                 local iterator = module_load_game:getGames():iterator()
                 while iterator:hasNext() do
                     local game = iterator:next()
-                    local lb_game = application.ui:createLabel()
+                    local lb_game = ui:createLabel()
                     lb_game:setText(game.name)
                     lb_game:setSize(170, 38)
                     lb_game:setPadding(14)
@@ -68,7 +68,7 @@ function open_game(view, game)
     local iterator = game.saveFiles:iterator()
     while iterator:hasNext() do
         local saveFile = iterator:next()
-        local view_game = application.ui:createView()
+        local view_game = ui:createView()
         view_game:setMargin(0, 0, 10, 0)
         view_game:setSize(370, 38)
         view_game:setBackgroundColor(0x55ffffff)
@@ -79,13 +79,13 @@ function open_game(view, game)
             application:sendEvent("load_game.save", saveFile)
         end)
 
-        local lb_game = application.ui:createLabel()
+        local lb_game = ui:createLabel()
         lb_game:setText(saveFile.label)
         lb_game:setPadding(14)
         view_game:addView(lb_game)
 
 
-        local lb_game_type = application.ui:createLabel()
+        local lb_game_type = ui:createLabel()
         lb_game_type:setText(saveFile.type:toString())
         lb_game_type:setPadding(14)
         lb_game_type:setPosition(300, 0)

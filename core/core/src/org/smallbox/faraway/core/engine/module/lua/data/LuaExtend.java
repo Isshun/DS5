@@ -3,14 +3,13 @@ package org.smallbox.faraway.core.engine.module.lua.data;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 
 /**
  * Created by Alex on 29/09/2015.
  */
 public abstract class LuaExtend {
     public abstract boolean accept(String type);
-    public abstract void extend(LuaModuleManager luaModuleManager, LuaModule module, Globals globals, LuaValue value) throws DataExtendException;
+    public abstract void extend(LuaModule module, Globals globals, LuaValue value) throws DataExtendException;
 
     protected static boolean getBoolean(LuaValue value, String key, boolean defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toboolean() : defaultValue;

@@ -9,15 +9,15 @@ data:extend({
     visible = true,
     views = {
         { type = "list", position = {10, 10}, views = {
-            { type = "label", id = "lb_name", text = "name", text_size = 16, size = {100, 30}},
-            { type = "label", id = "lb_id", text_size = 12},
-            { type = "label", id = "lb_size", text_size = 12},
-            { type = "label", id = "lb_exterior", text_size = 12},
-            { type = "label", id = "lb_temperature", text_size = 12},
-            { type = "label", id = "lb_oxygen", text_size = 12},
-            { type = "label", id = "lb_target_oxygen", text_size = 12},
-            { type = "label", id = "lb_neighborhood", text_size = 12, text = "Connections:"},
-            { type = "grid", id = "grid_neighborhood", columns = 3, column_width = 132, row_height = 16},
+            { type = "label", id = "lb_name", text = "name", text_size = 16, size = {100, 28}},
+            { type = "label", id = "lb_id", text_size = 12, size = {100, 18}},
+            { type = "label", id = "lb_size", text_size = 12, size = {100, 18}},
+            { type = "label", id = "lb_exterior", text_size = 12, size = {100, 18}},
+            { type = "label", id = "lb_temperature", text_size = 12, size = {100, 18}},
+            { type = "label", id = "lb_oxygen", text_size = 12, size = {100, 18}},
+            { type = "label", id = "lb_target_oxygen", text_size = 12, size = {100, 18}},
+            { type = "label", id = "lb_neighborhood", text_size = 12, text = "Connections:", size = {100, 18}},
+            { type = "grid", id = "grid_neighborhood", columns = 3, column_width = 132, row_height = 16, size = {100, 18}},
         }},
     },
 
@@ -46,7 +46,7 @@ data:extend({
                 local iterator = room:getConnections():iterator()
                 while iterator:hasNext() do
                     local neighbor = iterator:next()
-                    local lb_connection = application.ui:createLabel()
+                    local lb_connection = ui:createLabel()
                     lb_connection:setTextSize(12)
                     lb_connection:setText(neighbor:getRoom():getName() .. " (" .. neighbor:getPermeability() .. "/" .. neighbor:getBorderSize() .. ")")
                     view:findById("grid_neighborhood"):addView(lb_connection)

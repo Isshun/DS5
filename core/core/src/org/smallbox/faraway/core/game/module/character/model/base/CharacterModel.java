@@ -33,7 +33,8 @@ public abstract class CharacterModel extends MovableModel {
 
     public UILabel getLabelDrawable() {
         if (_label == null) {
-            _label = new UILabel(_personals.getFirstName().trim().length() * 6 + 1, 13);
+            _label = new UILabel(null);
+            _label.setSize(_personals.getFirstName().trim().length() * 6 + 1, 13);
             _label.setText(_personals.getFirstName().trim());
             _label.setTextSize(10);
             _label.setTextColor(Color.YELLOW);

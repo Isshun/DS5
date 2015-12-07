@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
@@ -12,13 +11,25 @@ import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
 public class UserInterface {
-    private ArrayList<Integer> visibleViews;
+    public void addView(View view) {
+        _views.add(view);
+//        Collections.sort(_views, (v1, v2) -> v1.getLevel() - v2.getLevel());
+    }
+
+    public void clearViews() {
+        _views.clear();
+    }
+
+    public void addDropsDowns(UIDropDown view) {
+        _dropsDowns.add(view);
+    }
 
     private static class ContextEntry {
         public String                   label;
@@ -34,8 +45,9 @@ public class UserInterface {
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
-    public List<View>                   _views = new ArrayList<>();
-    public List<UIDropDown>             _dropsDowns = new ArrayList<>();
+    private Collection<View>             _views = new LinkedBlockingQueue<>();
+    private Collection<UIDropDown>       _dropsDowns = new LinkedBlockingQueue<>();
+    private Collection<Integer>         _visibleViews = new LinkedBlockingQueue<>();
 
     public static UserInterface getInstance() {
         if (_self == null) {
@@ -45,24 +57,17 @@ public class UserInterface {
     }
 
     public UserInterface() {
-        _context = new UIFrame();
+        _context = new UIFrame(null);
         _context.setVisible(false);
     }
 
-    // Used by lua modules
-    public UILabel                  createLabel() { return new UILabel(); }
-    public UIImage                  createImage() { return new UIImage(-1, -1); }
-    public View                     createView() { return new UIFrame(-1, -1); }
-    public UIGrid                   createGrid() { return new UIGrid(-1, -1); }
-    public UIList                   createList() { return new UIList(-1, -1); }
-
     public void reload() {
-        visibleViews = new ArrayList<>();
+        _visibleViews.clear();
         _views.stream()
                 .filter(view -> view.getViews() != null)
                 .forEach(view -> view.getViews().stream()
                         .filter(View::isVisible)
-                        .forEach(subview -> visibleViews.add(subview.getId())));
+                        .forEach(subview -> _visibleViews.add(subview.getId())));
         _views.clear();
         _dropsDowns.clear();
         UIEventManager.getInstance().clear();
@@ -72,7 +77,7 @@ public class UserInterface {
         _views.stream()
                 .filter(view -> view.getViews() != null)
                 .forEach(view -> view.getViews().stream()
-                        .filter(subview -> visibleViews.contains(subview.getId()))
+                        .filter(subview -> _visibleViews.contains(subview.getId()))
                         .forEach(subview -> subview.setVisible(true)));
     }
 
@@ -167,7 +172,8 @@ public class UserInterface {
 
         int index = 0;
         for (ContextEntry entry: entries) {
-            UILabel lbEntry = new UILabel(100, 20);
+            UILabel lbEntry = new UILabel(null);
+            lbEntry.setSize(100, 20);
             lbEntry.setTextSize(14);
             lbEntry.setText(entry.label);
             lbEntry.setOnClickListener(entry.listener);
@@ -177,10 +183,6 @@ public class UserInterface {
         }
 
         _context.setSize(100, index * 20);
-    }
-
-    public View find(String id) {
-        return findById(id);
     }
 
     public View findById(String id) {
