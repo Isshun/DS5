@@ -29,7 +29,7 @@ public class RoomModule extends GameModule implements GameObserver {
     private boolean[]                                           _refresh;
     private HashSet<ParcelModel>                                _closeList = new HashSet<>();
 
-    public boolean      hasOwnThread() { return true; }
+    public boolean runOnMainThread() { return true; }
 
     @Override
     protected void onGameStart(Game game) {
@@ -49,7 +49,7 @@ public class RoomModule extends GameModule implements GameObserver {
 
     public Collection<RoomModel> getRooms() { return _rooms; }
 
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         if (_needRefresh) {
             _needRefresh = false;
             for (int floor = 0; floor < _refresh.length; floor++) {

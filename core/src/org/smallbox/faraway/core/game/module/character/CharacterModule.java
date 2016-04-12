@@ -62,7 +62,7 @@ public class CharacterModule extends GameModule {
     }
 
     @Override
-    public void onUpdate(int tick) {
+    public void onGameUpdate(int tick) {
         // Add new born
         _characters.addAll(_addOnUpdate);
         _addOnUpdate.clear();

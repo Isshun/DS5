@@ -98,7 +98,7 @@ public abstract class JobModel extends ObjectModel {
         _label = "none";
         _finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
 
-        Log.debug("Job #" + _id + " onCreate");
+        Log.debug("Job #" + _id + " onGameInit");
     }
 
     public String                   getMessage() { return _message; }

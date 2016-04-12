@@ -148,7 +148,7 @@ public class GDXRenderer {
 
         if (string != null) {
             _batch.begin();
-//            _cameraUI.update();
+//            _cameraUI.updateGame();
 //            _batch.setProjectionMatrix(_cameraUI.projection);
             _fonts[textSize].setColor(color != null ? color : TEXT_COLOR);
             _fonts[textSize].draw(_batch, string, x, y);

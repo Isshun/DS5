@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class FileUtils {
     public static void write(File file, String str) throws IOException {
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(str.getBytes("UTF-8"));
-        fos.close();
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(str.getBytes("UTF-8"));
+        }
     }
 
     public static List<File> listRecursively(String filePath) {
@@ -68,12 +68,10 @@ public class FileUtils {
 
         File configFile = new File(gameDirectory, "config.json");
         if (!configFile.exists()) {
-            try {
-                FileInputStream fis = new FileInputStream("data/config.json");
-                FileOutputStream fos = new FileOutputStream(configFile);
-                IOUtils.copy(fis, fos);
-                fis.close();
-                fos.close();
+            try (FileInputStream fis = new FileInputStream("data/config.json")) {
+                try (FileOutputStream fos = new FileOutputStream(configFile)) {
+                    IOUtils.copy(fis, fos);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

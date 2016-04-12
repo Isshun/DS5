@@ -1,13 +1,18 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
-import org.json.JSONObject;
+import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.engine.module.lua.data.extend.*;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.core.game.Data;
@@ -25,14 +30,14 @@ import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -48,7 +53,7 @@ public class LuaModuleManager implements GameObserver {
     private Collection<LuaRefreshListener>    _luaRefreshListeners = new LinkedBlockingQueue<>();
     private Collection<LuaLoadListener>       _luaLoadListeners = new LinkedBlockingQueue<>();
     private Collection<LuaModule>             _modules = new LinkedBlockingQueue<>();
-    private List<LuaExtend> _extends = new ArrayList<>();
+    private List<LuaExtend>                     _extends = new ArrayList<>();
 
     public LuaModuleManager() {
         Application.getInstance().addObserver(this);
@@ -58,7 +63,7 @@ public class LuaModuleManager implements GameObserver {
         _modules.forEach(module -> module.startGame(game));
     }
 
-    public void load() {
+    public void init() {
         // TODO: wrong emplacement
         Data.getData().bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
@@ -73,8 +78,8 @@ public class LuaModuleManager implements GameObserver {
         // Load modules info
         _modules.clear();
         FileUtils.list("data/modules/").forEach(file -> {
-            try {
-                ModuleInfo info = ModuleInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(new File(file, "module.json").toPath()), StandardCharsets.UTF_8)));
+            try (FileInputStream fis = new FileInputStream(new File(file, "module.json"))) {
+                ModuleInfo info = ModuleInfo.fromJSON(Utils.toJSON(fis));
                 if ("lua".equals(info.type)) {
                     LuaModule module = new LuaModule(file);
                     module.setInfo(info);
@@ -84,13 +89,46 @@ public class LuaModuleManager implements GameObserver {
                 e.printStackTrace();
             }
         });
-
         _modules.forEach(this::loadModule);
+
+        // Load lua from java modules
+        FileUtils.list("modules/game/").forEach(moduleDirectory -> {
+            File dataDirectory = new File(moduleDirectory, "data");
+            if (dataDirectory.exists()) {
+                loadLuaFiles(null, dataDirectory);
+            }
+        });
 
         Data.getData().fix();
 
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
         __devResume();
+    }
+
+    public void loadLuaFiles(ModuleBase module, File directory) {
+        Globals globals = JsePlatform.standardGlobals();
+        globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
+
+        globals.get("main").call(
+                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
+                CoerceJavaToLua.coerce(new LuaUIBridge(null)),
+                CoerceJavaToLua.coerce(new LuaDataModel(values -> {
+                    if (!values.get("type").isnil()) {
+                        extendLuaValue(module, values, globals);
+                    } else {
+                        for (int i = 1; i <= values.length(); i++) {
+                            extendLuaValue(module, values.get(i), globals);
+                        }
+                    }
+                })));
+
+        FileUtils.listRecursively(directory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".lua")).forEach(f -> {
+            try {
+                globals.load(new FileReader(f), f.getName()).call();
+            } catch (FileNotFoundException | LuaError e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void __devResume() {
@@ -117,12 +155,12 @@ public class LuaModuleManager implements GameObserver {
         ModuleInfo info = luaModule.getInfo();
 
         if (!hasRequiredModules(info)) {
-            Log.info("Unable to load lua module: " + info.id + " (" + info.name + ")");
+            Log.info("Unable to init lua module: " + info.id + " (" + info.name + ")");
             return;
         }
         Log.info("Load lua module: " + info.id + " (" + info.name + ")");
 
-        luaModule.loadLuaFiles();
+        loadLuaFiles(luaModule, luaModule.getDirectory());
 
         luaModule.setActivate(true);
     }
@@ -226,7 +264,7 @@ public class LuaModuleManager implements GameObserver {
     public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
     public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
     public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
-    public void onReloadUI() { load(); }
+    public void onReloadUI() { init(); }
     public void onRefreshUI(int frame) { _luaRefreshListeners.forEach(listener -> listener.onRefresh(frame)); }
     public void onKeyPress(GameEventListener.Key key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name());}
     public void onWeatherChange(WeatherInfo weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
@@ -270,4 +308,49 @@ public class LuaModuleManager implements GameObserver {
     public List<LuaExtend> getExtends() {
         return _extends;
     }
+
+    private static final List<LuaExtend> EXTENDS = Arrays.asList(
+            new LuaUIExtend(),
+            new LuaItemExtend(),
+            new LuaWeatherExtend(),
+            new LuaPlanetExtend(),
+            new LuaBindingsExtend(),
+            new LuaNetworkExtend(),
+            new LuaReceiptExtend(),
+            new LuaCharacterExtend(),
+            new LuaCursorExtend(),
+            new LuaCharacterBuffExtend(),
+            new LuaCharacterDiseaseExtend(),
+            new LuaLangExtend());
+
+    private void extendLuaValue(ModuleBase module, LuaValue value, Globals globals) {
+        String type = value.get("type").toString();
+        for (LuaExtend luaExtend: EXTENDS) {
+            if (luaExtend.accept(type)) {
+                try {
+                    luaExtend.extend(module, globals, value);
+                } catch (DataExtendException e) {
+                    if (!value.get("name").isnil()) {
+                        Log.info("Error during extend " + value.get("name").toString());
+                    }
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+        for (LuaExtend luaExtend: LuaModuleManager.getInstance().getExtends()) {
+            if (luaExtend.accept(type)) {
+                try {
+                    luaExtend.extend(module, globals, value);
+                } catch (DataExtendException e) {
+                    if (!value.get("name").isnil()) {
+                        Log.info("Error during extend " + value.get("name").toString());
+                    }
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+    }
+
 }

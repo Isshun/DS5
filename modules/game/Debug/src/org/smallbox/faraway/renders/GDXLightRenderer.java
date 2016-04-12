@@ -53,7 +53,7 @@
 //        _camera = new OrthographicCamera();
 //        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //        _camera.position.set(4000, viewportHeight / 2f, 0);
-//        _camera.update();
+//        _camera.updateGame();
 //
 //        createPhysicsWorld();
 //
@@ -84,7 +84,7 @@
 //        _camera.position.set(
 //                -viewport.getPosX() * viewport.getScale(),
 //                -viewport.getPosY() * viewport.getScale() + viewportHeight / 2f, 0);
-//        _camera.update();
+//        _camera.updateGame();
 //
 ////        _batch.setProjectionMatrix(_camera.combined);
 ////        _batch.disableBlending();
@@ -118,7 +118,7 @@
 //
 //        /** BOX2D LIGHT STUFF BEGIN */
 //        _rayHandler.setCombinedMatrix(_camera);
-//        _rayHandler.update();
+//        _rayHandler.updateGame();
 //        _rayHandler.render();
 //        /** BOX2D LIGHT STUFF END */
 //    }

@@ -33,7 +33,7 @@ public class OxygenModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         if (_roomModule != null) {
             _roomModule.getRooms().forEach(r1 -> {
                         // Mix oxygen with neighbors

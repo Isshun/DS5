@@ -16,7 +16,7 @@
 //
 //    private JobModel _job;
 //
-//    public void onCreate(JobModule jobManager) {
+//    public void onGameInit(JobModule jobManager) {
 //        if (_job != null && _job.isFinish() == false) {
 //            return;
 //        }
@@ -34,7 +34,7 @@
 //        }
 //
 //        // Create job
-//        jobManager.addJob(UseJob.onCreate(item));
+//        jobManager.addJob(UseJob.onGameInit(item));
 //    }
 //
 //}

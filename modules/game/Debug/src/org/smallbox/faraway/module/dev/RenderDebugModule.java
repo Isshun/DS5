@@ -17,7 +17,7 @@
 //public class RenderDebugModule extends GameModule {
 //    public class RenderDebugModuleWindow extends UITitleWindow {
 //        @Override
-//        protected void onCreate(UIWindow window, UIFrame content) {
+//        protected void onGameInit(UIWindow window, UIFrame content) {
 //            window.setPosition(500, 500);
 //
 //            List<UILabel> entries = new ArrayList<>();
@@ -41,7 +41,7 @@
 //        }
 //
 //        @Override
-//        protected void onRefresh(int update) {
+//        protected void onRefresh(int updateGame) {
 //
 //        }
 //
@@ -85,6 +85,6 @@
 //    }
 //
 //    @Override
-//    protected void onUpdate(int tick) {
+//    protected void onGameUpdate(int tick) {
 //    }
 //}

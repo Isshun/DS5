@@ -1,12 +1,8 @@
 package org.smallbox.faraway.core.engine.module;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
-import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +23,12 @@ public abstract class GameModule extends ModuleBase implements GameObserver {
     }
 
     @Override
-    public void update(int tick) {
+    public void updateGame(int tick) {
         if (_isStarted) {
-            if (hasOwnThread()) {
-                _needUpdate = true;
-                _needUpdateTick = tick;
-            } else {
+            if (runOnMainThread()) {
                 innerUpdate(tick);
+            } else {
+                ModuleManager.getInstance().getExecutor().execute(() -> onGameUpdate(tick));
             }
         }
     }
@@ -41,7 +36,7 @@ public abstract class GameModule extends ModuleBase implements GameObserver {
     private void innerUpdate(int tick) {
         if (tick % _updateInterval == 0) {
             long time = System.currentTimeMillis();
-            onUpdate(tick);
+            onGameUpdate(tick);
             _updateTimeHistory.add((System.currentTimeMillis() - time));
             if (_updateTimeHistory.size() > 10) {
                 _updateTimeHistory.remove(0);

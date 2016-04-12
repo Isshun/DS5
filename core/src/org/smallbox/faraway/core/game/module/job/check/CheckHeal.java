@@ -11,7 +11,7 @@
 //public class CheckHeal extends CharacterCheck {
 //
 //    @Override
-//    public JobModel onCreate(CharacterModel characters) {
+//    public JobModel onGameInit(CharacterModel characters) {
 //        return null;
 //    }
 //

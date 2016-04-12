@@ -9,7 +9,6 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
@@ -44,7 +43,7 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(LuaModule module, Globals globals, LuaValue value) {
+    public void extend(ModuleBase module, Globals globals, LuaValue value) {
         boolean inGame = getBoolean(value, "in_game", true);
         UIFrame frame = new UIFrame(module);
         frame.setInGame(inGame);

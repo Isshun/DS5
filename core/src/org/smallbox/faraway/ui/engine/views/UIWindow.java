@@ -19,17 +19,17 @@
 //        _isLoaded = true;
 //    }
 //
-//    protected abstract void onCreate(UIWindow window, UIFrame content);
-//    protected abstract void onRefresh(int update);
+//    protected abstract void onGameInit(UIWindow window, UIFrame content);
+//    protected abstract void onRefresh(int updateGame);
 //    protected abstract String getContentLayout();
 //
 //    public void create() {
-//        onCreate(this, _frameContent);
+//        onGameInit(this, _frameContent);
 //    }
 //
-//    public void refresh(int update) {
+//    public void refresh(int updateGame) {
 //        if (_isVisible && _isLoaded) {
-//            onRefresh(update);
+//            onRefresh(updateGame);
 //        }
 //    }
 //

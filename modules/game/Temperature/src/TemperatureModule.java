@@ -36,7 +36,7 @@ public class TemperatureModule extends GameModule {
         _items.remove(item);
     }
 
-    public void onUpdate(int tick) {
+    public void onGameUpdate(int tick) {
         if (_roomModule != null) {
             _roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {

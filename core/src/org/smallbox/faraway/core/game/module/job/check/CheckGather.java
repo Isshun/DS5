@@ -14,7 +14,7 @@
 //    }
 //
 //    @Override
-//    public boolean onCreate(JobModule jobManager) {
+//    public boolean onGameInit(JobModule jobManager) {
 //        return false;
 //    }
 //}

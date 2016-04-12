@@ -73,7 +73,7 @@ public class JobModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isFinish);
 

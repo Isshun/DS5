@@ -17,7 +17,7 @@ public class GardenModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         if (_areaModule != null && _areaModule.getGardens() != null) {
             _areaModule.getGardens().forEach(garden -> {
                 if (garden.getCurrent() != null) {

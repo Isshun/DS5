@@ -30,7 +30,7 @@ public class LoadGameModule extends ApplicationModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
     }
 
     public List<GameInfo> getGames() {
@@ -68,7 +68,7 @@ public class LoadGameModule extends ApplicationModule {
         if ("load_game.save".equals(tag) && object instanceof GameInfo.GameSaveInfo) {
             _currentSave = (GameInfo.GameSaveInfo) object;
         }
-        if ("load_game.load".equals(tag) && _currentGame != null && _currentSave != null) {
+        if ("load_game.init".equals(tag) && _currentGame != null && _currentSave != null) {
             GameManager.getInstance().loadGame(_currentGame, _currentSave);
         }
         if ("load_game.last_game".equals(tag)) {

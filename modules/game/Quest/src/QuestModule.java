@@ -44,7 +44,7 @@ public class QuestModule extends GameModule {
 //    }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         // Check status of current running quests
         if (tick % 100 == 0) {
             checkOpenedQuests();

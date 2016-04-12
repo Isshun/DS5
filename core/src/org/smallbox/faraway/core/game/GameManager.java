@@ -50,7 +50,7 @@ public class GameManager {
         GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
         File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
         if (!gameDirectory.mkdirs()) {
-            Log.info("Unable to create game save directory");
+            Log.info("Unable to initGame game save directory");
             return;
         }
 

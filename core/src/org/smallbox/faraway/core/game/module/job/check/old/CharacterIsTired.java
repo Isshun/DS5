@@ -14,7 +14,7 @@
 //public class CharacterIsTired implements CharacterCheck {
 //
 //    @Override
-//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//    public boolean onGameInit(JobModule jobManager, CharacterModel characters) {
 //        if (characters.getNeeds().isExhausted()) {
 //            ItemFilter filter = ItemFilter.createUsableFilter();
 //            filter.effectEnergy = true;
@@ -23,7 +23,7 @@
 //            if (characters.getQuarter() != null) {
 //                ItemBase item = characters.getQuarter().find(filter);
 //                if (item != null) {
-//                    jobManager.addJob(UseJob.onCreate(item, characters), characters);
+//                    jobManager.addJob(UseJob.onGameInit(item, characters), characters);
 //                    return true;
 //                }
 //            }
@@ -31,7 +31,7 @@
 //            // No quarters or no usable bed in quarters
 //            ItemBase item = Game.getWorldFinder().getNearest(filter, characters);
 //            if (item != null) {
-//                jobManager.addJob(UseJob.onCreate(item, characters), characters);
+//                jobManager.addJob(UseJob.onGameInit(item, characters), characters);
 //                return true;
 //            }
 //        }

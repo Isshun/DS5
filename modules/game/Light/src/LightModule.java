@@ -28,15 +28,15 @@
 //    }
 //
 //    @Override
-//    protected void onUpdate(int tick) {
+//    protected void onGameUpdate(int tick) {
 //        double light = ModuleHelper.getWorldModule().getLight();
 //        ModuleHelper.getWorldModule().getParcelList().forEach(parcel -> parcel.setLight(light));
 ////        for (MapObjectModel item: _items) {
-////            update(item.getX(), item.getY());
+////            updateGame(item.getX(), item.getY());
 ////        }
 //    }
 //
-//    private void update(ParcelModel parcel) {
+//    private void updateGame(ParcelModel parcel) {
 ////        for (int i = x - 8; i <= x + 8; i++) {
 ////            for (int j = y - 8; j <= y + 8; j++) {
 ////                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(i, j);
@@ -47,10 +47,10 @@
 ////        }
 //
 //        if (parcel.getItem() != null && parcel.getItem().isLight()) {
-//            update(parcel, parcel.getItem());
+//            updateGame(parcel, parcel.getItem());
 //        }
 //        if (parcel.hasResource() && parcel.getResource().isLight()) {
-//            update(parcel, parcel.getResource());
+//            updateGame(parcel, parcel.getResource());
 //        }
 //
 ////        for (int i = x - 8; i <= x + 8; i++) {
@@ -58,17 +58,17 @@
 ////                ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(i, j);
 ////                if (parcel != null) {
 ////                    if (parcel.getItem() != null && parcel.getItem().isLight()) {
-////                        update(parcel, parcel.getItem(), x-8, x+8, y-8, y+8);
+////                        updateGame(parcel, parcel.getItem(), x-8, x+8, y-8, y+8);
 ////                    }
 ////                    if (parcel.hasResource() && parcel.getResource().isLight()) {
-////                        update(parcel, parcel.getResource(), x-8, x+8, y-8, y+8);
+////                        updateGame(parcel, parcel.getResource(), x-8, x+8, y-8, y+8);
 ////                    }
 ////                }
 ////            }
 ////        }
 //    }
 //
-//    private void update(ParcelModel parcel, MapObjectModel item) {
+//    private void updateGame(ParcelModel parcel, MapObjectModel item) {
 //        int itemX = item.getParcel().x;
 //        int itemY = item.getParcel().y;
 //        int distance = item.getInfo().lightDistance;
@@ -84,12 +84,12 @@
 //        }
 //    }
 //
-//    public void onAddItem(ItemModel item) { if (item.isLight()) { _items.add(item); update(item.getParcel()); } }
-//    public void onAddStructure(StructureModel structure) { if (structure.isLight()) { _items.add(structure); update(structure.getParcel()); } }
-//    public void onAddResource(ResourceModel resource) { if (resource.isLight()) { _items.add(resource); update(resource.getParcel()); } }
-//    public void onAddConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.add(consumable); update(consumable.getParcel()); } }
-//    public void onRemoveItem(ItemModel item) { if (item.isLight()) { _items.remove(item); update(item.getParcel()); } }
-//    public void onRemoveStructure(StructureModel structure) { if (structure.isLight()) { _items.remove(structure); update(structure.getParcel()); } }
-//    public void onRemovePlant(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); update(resource.getParcel()); } }
-//    public void onRemoveConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.remove(consumable); update(consumable.getParcel()); } }
+//    public void onAddItem(ItemModel item) { if (item.isLight()) { _items.add(item); updateGame(item.getParcel()); } }
+//    public void onAddStructure(StructureModel structure) { if (structure.isLight()) { _items.add(structure); updateGame(structure.getParcel()); } }
+//    public void onAddResource(ResourceModel resource) { if (resource.isLight()) { _items.add(resource); updateGame(resource.getParcel()); } }
+//    public void onAddConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.add(consumable); updateGame(consumable.getParcel()); } }
+//    public void onRemoveItem(ItemModel item) { if (item.isLight()) { _items.remove(item); updateGame(item.getParcel()); } }
+//    public void onRemoveStructure(StructureModel structure) { if (structure.isLight()) { _items.remove(structure); updateGame(structure.getParcel()); } }
+//    public void onRemovePlant(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); updateGame(resource.getParcel()); } }
+//    public void onRemoveConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.remove(consumable); updateGame(consumable.getParcel()); } }
 //}

@@ -11,7 +11,7 @@
 //public class CheckCraft extends TalentCheck {
 //
 //    @Override
-//    public boolean onCreate(JobModule jobManager) {
+//    public boolean onGameInit(JobModule jobManager) {
 //        int bestDistance = Integer.MAX_VALUE;
 //        JobModel bestJob = null;
 //        for (JobModel job: jobManager.getJobs()) {
@@ -31,7 +31,7 @@
 //
 //
 //    @Override
-//    public JobModel onCreate(CharacterModel characters) {
+//    public JobModel onGameInit(CharacterModel characters) {
 //        return null;
 //    }
 //

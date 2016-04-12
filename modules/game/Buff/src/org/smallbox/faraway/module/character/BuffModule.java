@@ -42,7 +42,7 @@ public class BuffModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         _charactersData.forEach(buff -> {buff.check(tick); buff.update(tick);});
         for (Map.Entry<CharacterModel, List<BuffCharacterModel>> entry: _characters.entrySet()) {
             Collections.sort(entry.getValue(), (b1, b2) -> b2.mood - b1.mood);

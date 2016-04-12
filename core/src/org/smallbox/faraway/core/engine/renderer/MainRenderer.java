@@ -21,7 +21,7 @@ public class MainRenderer {
     public MainRenderer(GDXRenderer renderer) {
         _self = this;
         _renders = ModuleManager.getInstance().getRenders();
-        _minimapRender = ModuleManager.getInstance().getMinimapRender();
+        _minimapRender = ModuleManager.getInstance().getMiniMapRender();
     }
 
     public void onRefresh(int frame) {

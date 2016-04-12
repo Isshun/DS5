@@ -14,7 +14,7 @@
 //public class CharacterIsHungry implements CharacterCheck {
 //
 //    @Override
-//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//    public boolean onGameInit(JobModule jobManager, CharacterModel characters) {
 //        if (characters.getNeeds().isHungry()) {
 //            ItemFilter consomableItemFilter = ItemFilter.createConsumableFilter();
 //            consomableItemFilter.effectFood = true;
@@ -22,14 +22,14 @@
 //            // Have item in inventory
 //            ItemBase item = characters.find(consomableItemFilter);
 //            if (item != null) {
-//                jobManager.addJob(JobUseInventory.onCreate(characters, item), characters);
+//                jobManager.addJob(JobUseInventory.onGameInit(characters, item), characters);
 //                return true;
 //            }
 //
 //            // Take item from storage
 //            StorageRoom storage = Game.getRoomManager().findStorageContains(consomableItemFilter, characters.getX(), characters.getY());
 //            if (storage != null) {
-//                jobManager.addJob(JobTake.onCreate(characters, storage, consomableItemFilter), characters);
+//                jobManager.addJob(JobTake.onGameInit(characters, storage, consomableItemFilter), characters);
 //                return true;
 //            }
 //
@@ -38,7 +38,7 @@
 //            factoryFilter.effectFood = true;
 //            item = Game.getWorldFinder().getNearest(factoryFilter, characters);
 //            if (item != null) {
-//                jobManager.addJob(UseJob.onCreate(item), characters);
+//                jobManager.addJob(UseJob.onGameInit(item), characters);
 //                return true;
 //            }
 //        }

@@ -52,7 +52,7 @@ public class PathManager extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         _runnable.forEach(java.lang.Runnable::run);
         _runnable.clear();
     }

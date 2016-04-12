@@ -1,10 +1,8 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
@@ -15,9 +13,7 @@ import org.smallbox.faraway.ui.GameSelectionExtra;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.UserInterface;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Game {
@@ -38,7 +34,6 @@ public class Game {
     private GameSelectionExtra              _selector;
     private static Game                     _self;
     private final GameInfo                  _info;
-    private List<GameModule>                _modules;
     private PlanetModel                     _planet;
     private int                             _hour = 5;
     private int                             _day;
@@ -62,7 +57,6 @@ public class Game {
     public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }
     public void                             toggleRunning() { setRunning(!_isRunning); }
     public void                             toggleSpeed0() { setSpeed(_speed == 0 ? _lastSpeed : 0); }
-    public void                             setModules(List<GameModule> modules) { _modules = modules; }
 
     public static Game                      getInstance() { return _self; }
     public int                              getHour() { return _hour; }
@@ -120,7 +114,7 @@ public class Game {
             return;
         }
 
-        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.update(tick));
+        ModuleManager.getInstance().getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(tick));
 
         if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {

@@ -18,12 +18,12 @@
 //    protected void onGameStart() {
 //        DebugWindow window = (DebugWindow)WindowDebugBuilder.create().setTitle("Temperature Debug").build(new UIWindowListener() {
 //            @Override
-//            public void onCreate(UIWindow window, UIFrame view) {
+//            public void onGameInit(UIWindow window, UIFrame view) {
 //                window.setPosition(500, 500);
 //            }
 //
 //            @Override
-//            public void onRefresh(int update) {
+//            public void onRefresh(int updateGame) {
 //            }
 //
 //            @Override
@@ -44,6 +44,6 @@
 //    }
 //
 //    @Override
-//    protected void onUpdate(int tick) {
+//    protected void onGameUpdate(int tick) {
 //    }
 //}

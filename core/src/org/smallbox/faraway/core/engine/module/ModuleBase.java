@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
@@ -18,25 +19,22 @@ public abstract class ModuleBase implements GameObserver {
     protected ModuleInfo        _info;
     protected boolean           _isLoaded;
     protected boolean           _isStarted;
-    protected boolean           _needCreate;
-    protected boolean           _needGameStart;
-    protected boolean           _needUpdate;
-    protected int               _needUpdateTick;
 
     public ModuleBase() {
         _isLoaded = loadOnStart();
     }
 
-    protected void onCreate() {}
-    protected abstract void onGameStart(Game game);
-    protected abstract void onUpdate(int tick);
+    protected void onGameInit() {}
+    protected void onGameStart(Game game) {}
+    protected void onGameUpdate(int tick) {}
     protected void onDestroy() {}
 
     public abstract boolean loadOnStart();
 
-    public boolean      hasOwnThread() { return true; }
+    public boolean      runOnMainThread() { return false; }
     public boolean      isThirdParty() { return false; }
     public boolean      isLoaded() { return true; }
+    public boolean      isModuleMandatory() { return false; }
 
     public int          getModulePriority() { return 0; }
     public ModuleInfo   getInfo() { return _info; }
@@ -51,60 +49,42 @@ public abstract class ModuleBase implements GameObserver {
         return false;
     }
 
-    public void create() {
-        Log.info("Create java module: " + _info.name);
-        onCreate();
-        if (hasOwnThread()) {
-//            _needCreate = true;
-            new Thread(() -> {
-                try {
-                    while (Application.getInstance().isRunning()) {
-                        if (_needCreate) {
-                            _needCreate = false;
-                            onCreate();
-                        }
-                        if (_needGameStart) {
-                            _needGameStart = false;
-                            onGameStart(Game.getInstance());
-                            _isStarted = true;
-                        }
-                        if (_needUpdate) {
-                            _needUpdate = false;
-                            onUpdate(_needUpdateTick);
-                        }
-                        Thread.sleep(16);
-                    }
-                } catch (Error | Exception e) {
-                    e.printStackTrace();
-                    Application.getInstance().setRunning(false);
-                }
-            }).start();
+    // TODO: Only on GameModule
+    public void initGame() {
+        Log.info("Init java module: " + _info.name);
+        onGameInit();
+        if (runOnMainThread()) {
+            onGameInit();
+            _isLoaded = true;
         } else {
-//            onCreate();
+            ModuleManager.getInstance().getExecutor().execute(() -> {
+                onGameInit();
+                _isLoaded = true;
+            });
         }
-        _isLoaded = true;
     }
 
+    // TODO: Only on GameModule
     public void startGame(Game game) {
         Log.debug("Start java module: " + _info.name);
-        if (hasOwnThread()) {
-            _needGameStart = true;
-        } else {
+        if (runOnMainThread()) {
             onGameStart(game);
             _isStarted = true;
+        } else {
+            ModuleManager.getInstance().getExecutor().execute(() -> {
+                onGameStart(game);
+                _isStarted = true;
+            });
         }
     }
 
-    public void update(int tick) {
+    // TODO: Only on GameModule
+    public void updateGame(int tick) {
     }
 
     public void destroy() {
         onDestroy();
         _isLoaded = false;
-    }
-
-    public boolean isModuleMandatory() {
-        return false;
     }
 
     protected void printNotice(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }

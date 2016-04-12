@@ -27,7 +27,7 @@ public class NetworkModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
     }
 
     public Collection<NetworkModel> getNetworks() { return _networks; }

@@ -61,7 +61,7 @@ public class ResourceModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         _foodCount = 0;
         for (ConsumableModel consumable: _foods) {
             _foodCount += consumable.getQuantity();

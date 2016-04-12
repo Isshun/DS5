@@ -35,7 +35,7 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
         ModuleHelper.getWorldModule().getConsumables().stream()

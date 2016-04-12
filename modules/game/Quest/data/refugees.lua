@@ -2,7 +2,7 @@ local g_visitor
 
 data:extend({
     label = "Refugee",
-    name = "base.quest_refugee",
+    name = "base.quest.refugee",
     type = "quest",
 
     open_message = "Un groupe de chercheurs s'est perdu lors d'une expédition et vous demande de\nles heberger pour la nuit, l'un d'eux semble être bléssé.\n\nIls n'ont helas aucuns biens de valeur à vous proposer en échange",

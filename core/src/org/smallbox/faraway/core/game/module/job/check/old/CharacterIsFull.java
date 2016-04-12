@@ -8,9 +8,9 @@
 //public class CharacterIsFull implements CharacterCheck {
 //
 //    @Override
-//    public boolean onCreate(JobModule jobManager, CharacterModel characters) {
+//    public boolean onGameInit(JobModule jobManager, CharacterModel characters) {
 //        if (characters.isFull()) {
-//            JobModel job = StoreJob.onCreate(characters);
+//            JobModel job = StoreJob.onGameInit(characters);
 //            if (job != null) {
 //                jobManager.addJob(job, characters);
 //                return true;

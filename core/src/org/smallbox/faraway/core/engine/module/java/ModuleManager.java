@@ -15,15 +15,18 @@ import org.smallbox.faraway.core.util.Log;
 
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Alex on 31/08/2015.
  */
 public class ModuleManager {
     private static ModuleManager        _self;
+    private final Executor              _executor = Executors.newFixedThreadPool(5);
     private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<BaseRenderer>          _gameRenders = new ArrayList<>();
-    private BaseRenderer                _minimapRenderer;
+    private BaseRenderer                _miniMapRenderer;
     private List<SerializerInterface>   _serializers = new ArrayList<>();
     private List<ApplicationModule>     _applicationModules = new ArrayList<>();
     private List<GameModule>            _gameModules = new ArrayList<>();
@@ -39,69 +42,19 @@ public class ModuleManager {
     public void startGame(Game game) {
         _gameModules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(game));
         _gameRenders.stream().filter(BaseRenderer::isLoaded).forEach(renderer -> renderer.startGame(game));
-        _minimapRenderer.startGame(game);
+        _miniMapRenderer.startGame(game);
     }
 
+    /**
+     * Call modules onGameInit and construct renders
+     * initGame() is call before game load or initGame
+     * initGame() is call before startGame()
+     * @param game
+     */
     public void initGame(Game game) {
         Log.info("============ INIT GAME ============");
 
-        // Clear old modules
-        _gameModules.forEach(ModuleBase::destroy);
-        _gameModules.clear();
-
-        // Load modules
-        List<GameModule> modulesToLoad = new ArrayList<>();
-        new Reflections().getSubTypesOf(GameModule.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .forEach(cls -> {
-                    try {
-                        Log.info("Find module: " + cls.getSimpleName());
-                        GameModule module = cls.getConstructor().newInstance();
-                        ModuleInfo info = new ModuleInfo();
-                        info.name = module.getClass().getSimpleName();
-                        module.setInfo(info);
-                        modulesToLoad.add(module);
-                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-        // Load modules
-        boolean moduleHasBeenLoaded;
-        do {
-            moduleHasBeenLoaded = false;
-            for (GameModule module: modulesToLoad) {
-                if (checkModuleDependencies(module)) {
-                    try {
-                        injectModuleDependencies(module);
-                        _gameModules.add(module);
-                        modulesToLoad.remove(module);
-                        moduleHasBeenLoaded = true;
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                }
-            }
-        } while (moduleHasBeenLoaded);
-
-        // Some modules could not be loaded
-        if (!modulesToLoad.isEmpty()) {
-            Log.warning("Some modules could not be loaded");
-            modulesToLoad.forEach(module -> Log.warning(module.toString()));
-            throw new RuntimeException("Some modules could not be loaded");
-        }
-        System.out.println("All modules has been loaded");
-
-        Collections.sort(_gameModules, (o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
-        game.setModules(_gameModules);
-        _gameModules.stream().filter(ModuleBase::isLoaded).forEach(GameModule::create);
-        _gameModules.forEach(module -> Application.getInstance().addObserver(module));
-
-        _modules.clear();
-        _modules.addAll(_applicationModules);
-        _modules.addAll(_gameModules);
-        _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
+        _gameModules.stream().filter(ModuleBase::isLoaded).forEach(GameModule::initGame);
 
         // Load renders
         _gameRenders.forEach(BaseRenderer::destroy);
@@ -111,7 +64,7 @@ public class ModuleManager {
                 Log.info("Load render: " + cls.getSimpleName());
                 BaseRenderer render = cls.getConstructor().newInstance();
                 if (render instanceof  MinimapRenderer) {
-                    _minimapRenderer = render;
+                    _miniMapRenderer = render;
                 } else {
                     _gameRenders.add(render);
                 }
@@ -121,7 +74,7 @@ public class ModuleManager {
         });
         _gameRenders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
         _gameRenders.forEach(renderer -> Application.getInstance().addObserver(renderer));
-        Application.getInstance().addObserver(_minimapRenderer);
+        Application.getInstance().addObserver(_miniMapRenderer);
     }
 
     private void injectModuleDependencies(GameModule module) throws IllegalAccessException {
@@ -165,44 +118,18 @@ public class ModuleManager {
         return false;
     }
 
-    public void load(GDXApplication.OnLoad onLoad) {
-        // Load modules
-        assert _applicationModules.isEmpty();
-        new Reflections().getSubTypesOf(ApplicationModule.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .forEach(cls -> {
-                    try {
-                        Log.info("Find module: " + cls.getSimpleName());
-                        ApplicationModule module = cls.getConstructor().newInstance();
-                        ModuleInfo info = new ModuleInfo();
-                        info.name = module.getClass().getSimpleName();
-                        module.setInfo(info);
-                        _applicationModules.add(module);
-                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                });
-        _applicationModules.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
-        _applicationModules.forEach(module -> {
-            onLoad.onLoad("Load: " + module.getClass().getSimpleName());
-            module.create();
-        });
-        _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
+    public void init(GDXApplication.OnLoad onLoad) {
+        initApplicationModules(onLoad);
+        initGameModules(onLoad);
+        initSerializers(onLoad);
+        initThirdPartyModules(onLoad);
 
-        // Load game serializers
-        _serializers.clear();
-        new Reflections().getSubTypesOf(SerializerInterface.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
-            try {
-                Log.info("Load serializer: " + cls.getSimpleName());
-                SerializerInterface serializer = cls.getConstructor().newInstance();
-                _serializers.add(serializer);
-            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
-        _serializers.sort((r1, r2) -> r2.getModulePriority() - r1.getModulePriority());
+        // Send reload-ui notification
+        Application.getInstance().notify(GameObserver::onReloadUI);
+    }
 
-//        // List thirds party modules
+    private void initThirdPartyModules(GDXApplication.OnLoad onLoad) {
+        //        // List thirds party modules
 //        List<ThirdPartyModule> thirdPartyModules = new ArrayList<>();
 //        FileUtils.list("data/modules/").forEach(file -> {
 //            try {
@@ -265,9 +192,103 @@ public class ModuleManager {
 //        _modules.addAll(_modulesThird);
 
 //        Log.info("Load third party modules");
-//        _modulesThird.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(ModuleBase::create);
+//        _modulesThird.stream().filter(ModuleBase::isLoaded).filter(module -> module.getModulePriority() == 0).forEach(ModuleBase::initGame);
 //
-        Application.getInstance().notify(GameObserver::onReloadUI);
+    }
+
+    // TODO: wtf ?
+    private void initSerializers(GDXApplication.OnLoad onLoad) {
+        // Load game serializers
+        _serializers.clear();
+        new Reflections().getSubTypesOf(SerializerInterface.class).stream().filter(cls -> !Modifier.isAbstract(cls.getModifiers())).forEach(cls -> {
+            try {
+                Log.info("Load serializer: " + cls.getSimpleName());
+                SerializerInterface serializer = cls.getConstructor().newInstance();
+                _serializers.add(serializer);
+            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+        _serializers.sort((r1, r2) -> r2.getModulePriority() - r1.getModulePriority());
+    }
+
+    private void initGameModules(GDXApplication.OnLoad onLoad) {
+        // Load game modules
+        List<GameModule> modulesToLoad = new ArrayList<>();
+        new Reflections().getSubTypesOf(GameModule.class).stream()
+                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+                .forEach(cls -> {
+                    try {
+                        Log.info("Find module: " + cls.getSimpleName());
+                        GameModule module = cls.getConstructor().newInstance();
+                        ModuleInfo info = new ModuleInfo();
+                        info.name = module.getClass().getSimpleName();
+                        module.setInfo(info);
+                        modulesToLoad.add(module);
+                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        // Load modules
+        boolean moduleHasBeenLoaded;
+        do {
+            moduleHasBeenLoaded = false;
+            for (GameModule module: modulesToLoad) {
+                if (checkModuleDependencies(module)) {
+                    try {
+                        injectModuleDependencies(module);
+                        _gameModules.add(module);
+                        modulesToLoad.remove(module);
+                        moduleHasBeenLoaded = true;
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+            }
+        } while (moduleHasBeenLoaded);
+
+        // Some modules could not be loaded
+        if (!modulesToLoad.isEmpty()) {
+            Log.warning("Some modules could not be loaded");
+            modulesToLoad.forEach(module -> Log.warning(module.toString()));
+            throw new RuntimeException("Some modules could not be loaded");
+        }
+        System.out.println("All modules has been loaded");
+
+        _gameModules.forEach(module -> Application.getInstance().addObserver(module));
+
+        // TODO: move
+        _modules.clear();
+        _modules.addAll(_applicationModules);
+        _modules.addAll(_gameModules);
+        _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
+    }
+
+    // Init application modules
+    private void initApplicationModules(GDXApplication.OnLoad onLoad) {
+        assert _applicationModules.isEmpty();
+        new Reflections().getSubTypesOf(ApplicationModule.class).stream()
+                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+                .forEach(cls -> {
+                    try {
+                        Log.info("Find module: " + cls.getSimpleName());
+                        ApplicationModule module = cls.getConstructor().newInstance();
+                        ModuleInfo info = new ModuleInfo();
+                        info.name = module.getClass().getSimpleName();
+                        module.setInfo(info);
+                        _applicationModules.add(module);
+                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+        _applicationModules.sort((m1, m2) -> m2.getModulePriority() - m1.getModulePriority());
+        _applicationModules.forEach(module -> {
+            onLoad.onLoad("Load: " + module.getClass().getSimpleName());
+            module.initGame();
+        });
+        _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
     }
 
     public BaseRenderer                     getRender(Class<? extends BaseRenderer> cls) { return _gameRenders.stream().filter(cls::isInstance).findFirst().get(); }
@@ -277,6 +298,8 @@ public class ModuleManager {
     public Collection<ModuleBase>           getModules() { return _modules; }
     public Collection<ModuleBase>           getModulesThird() { return _modulesThird; }
     public Collection<SerializerInterface>  getSerializers() { return _serializers; }
+    public BaseRenderer                     getMiniMapRender() { return _miniMapRenderer; }
+    public List<GameModule>                 getGameModules() { return _gameModules; }
 
     public void unloadModule(Class<? extends ModuleBase> cls) { unloadModule(getModule(cls)); }
     public void loadModule(Class<? extends ModuleBase> cls) { loadModule(getModule(cls)); }
@@ -290,23 +313,16 @@ public class ModuleManager {
     }
 
     public void loadModule(ModuleBase module) {
-        module.create();
+        module.initGame();
         Application.getInstance().addObserver(module);
     }
 
     public void toggleModule(ModuleBase module) {
-        if (module.isLoaded()) {
-            if (!module.isModuleMandatory()) {
-                module.destroy();
-                Application.getInstance().removeObserver(module);
-            }
-        } else {
-            module.create();
-            Application.getInstance().addObserver(module);
-        }
+        if (module.isLoaded()) { unloadModule(module); }
+        else { loadModule(module); }
     }
 
-    public BaseRenderer getMinimapRender() {
-        return _minimapRenderer;
+    public Executor getExecutor() {
+        return _executor;
     }
 }

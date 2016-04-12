@@ -1,9 +1,14 @@
 package org.smallbox.faraway.core.util;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Utils {
     private static int _uuid;
@@ -43,5 +48,9 @@ public class Utils {
 
     public static int getInventoryMaxQuantity(ItemInfo itemInfo) {
         return Math.max(Application.getInstance().getConfig().game.inventoryMaxQuantity, itemInfo.stack);
+    }
+
+    public static JSONObject toJSON(FileInputStream fis) throws IOException {
+        return new JSONObject(IOUtils.toString(fis, StandardCharsets.UTF_8));
     }
 }

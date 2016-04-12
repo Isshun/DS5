@@ -27,7 +27,7 @@
 //    }
 //
 //    @Override
-//    protected void onUpdate(int tick) {
+//    protected void onGameUpdate(int tick) {
 //    }
 //
 //    @Override

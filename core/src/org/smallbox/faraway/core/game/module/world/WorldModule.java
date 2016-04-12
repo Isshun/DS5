@@ -369,7 +369,7 @@ public class WorldModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
         _consumables.forEach(ConsumableModel::fixPosition);
         _consumables.stream()
                 .filter(consumable -> consumable.getQuantity() == 0 && consumable.getParcel() != null)

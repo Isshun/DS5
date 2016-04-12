@@ -16,11 +16,11 @@ public class MusicModule extends GameModule {
     }
 
     @Override
-    protected void onUpdate(int tick) {
+    protected void onGameUpdate(int tick) {
     }
 
     @Override
-    public boolean hasOwnThread() { return true; }
+    public boolean runOnMainThread() { return true; }
 
     @Override
     public void onGamePaused() {

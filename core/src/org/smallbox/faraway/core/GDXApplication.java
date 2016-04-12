@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -25,7 +24,6 @@ import org.smallbox.faraway.ui.UserInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class GDXApplication extends ApplicationAdapter {
@@ -109,7 +107,7 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask(this, "Load modules") {
             @Override
             public void onExecute() {
-                ModuleManager.getInstance().load(message -> this.messageDetail = message);
+                ModuleManager.getInstance().init(message -> this.messageDetail = message);
             }
         });
 
@@ -117,7 +115,7 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask(this, "Load lua modules") {
             @Override
             public void onExecute() {
-                LuaModuleManager.getInstance().load();
+                LuaModuleManager.getInstance().init();
             }
         });
 
@@ -144,7 +142,7 @@ public class GDXApplication extends ApplicationAdapter {
             public void onExecute() {
                 //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
                 Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            GameManager.getInstance().create(Data.getData().getRegion("base.planet.corrin", "mountain"));
+//            GameManager.getInstance().initGame(Data.getData().getRegion("base.planet.corrin", "mountain"));
             }
         });
 

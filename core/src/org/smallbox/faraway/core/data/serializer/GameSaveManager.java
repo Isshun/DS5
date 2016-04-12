@@ -23,17 +23,16 @@ public class GameSaveManager {
         try {
             File archiveFile = new File(gameDirectory, filename + ".zip");
 
-            InputStream archiveStream = new FileInputStream(archiveFile);
-            ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, archiveStream);
-
-            ArchiveEntry entry;
-            while ((entry = archive.getNextEntry()) != null) {
-                FileOutputStream fos = new FileOutputStream(new File(gameDirectory, entry.getName()));
-                IOUtils.copy(archive, fos);
-                fos.close();
+            try (InputStream archiveStream = new FileInputStream(archiveFile)) {
+                try (ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, archiveStream)) {
+                    ArchiveEntry entry;
+                    while ((entry = archive.getNextEntry()) != null) {
+                        try (FileOutputStream fos = new FileOutputStream(new File(gameDirectory, entry.getName()))) {
+                            IOUtils.copy(archive, fos);
+                        }
+                    }
+                }
             }
-            archive.close();
-            archiveStream.close();
 
             Log.info("Extract zip: " + (System.currentTimeMillis() - time));
             File dbFile = new File(gameDirectory, filename + ".db");
@@ -68,17 +67,16 @@ public class GameSaveManager {
             try {
                 // Create zip file
                 File archiveFile = new File(gameDirectory, filename + ".zip");
-                OutputStream archiveStream = new FileOutputStream(archiveFile);
-                ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, archiveStream);
-                archive.putArchiveEntry(new ZipArchiveEntry(filename + ".db"));
-
-                BufferedInputStream input = new BufferedInputStream(new FileInputStream(dbFile));
-                IOUtils.copy(input, archive);
-                input.close();
-                archive.closeArchiveEntry();
-
-                archive.finish();
-                archiveStream.close();
+                try (OutputStream archiveStream = new FileOutputStream(archiveFile)) {
+                    try (ArchiveOutputStream archive = new ArchiveStreamFactory().createArchiveOutputStream(ArchiveStreamFactory.ZIP, archiveStream)) {
+                        archive.putArchiveEntry(new ZipArchiveEntry(filename + ".db"));
+                        try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(dbFile))) {
+                            IOUtils.copy(input, archive);
+                        }
+                        archive.closeArchiveEntry();
+                        archive.finish();
+                    }
+                }
 
                 // Delete DB file
                 dbFile.delete();

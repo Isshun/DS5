@@ -125,7 +125,7 @@
 //    }
 //
 //    @Override
-//    protected void onUpdate(int tick) {
+//    protected void onGameUpdate(int tick) {
 //        // Leave parent quarters
 //        if (_old > Constant.CHARACTER_LEAVE_HOME_OLD && _quarter != null && (_quarter.getOwner() != this || _quarter.getOwner() != _relations.getMate())) {
 //            _quarter.removeOccupant(this);

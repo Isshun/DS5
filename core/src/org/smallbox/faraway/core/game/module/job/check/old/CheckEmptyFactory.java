@@ -10,7 +10,7 @@
 //// Refill dispenser
 //public class CheckEmptyFactory implements Check {
 //
-//    public void onCreate(JobModule jobManager) {
+//    public void onGameInit(JobModule jobManager) {
 //        List<FactoryItem> factories = ModuleHelper.getWorldModule().getFactories();
 //        for (FactoryItem factory: factories) {
 //            if (factory.needRefill() && factory.isWaitForRefill() == false) {

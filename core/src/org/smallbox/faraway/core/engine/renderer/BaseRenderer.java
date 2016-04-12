@@ -64,7 +64,7 @@ public abstract class BaseRenderer implements GameObserver {
     }
 
     public void load(Game game) {
-        Log.info("[BaseRender] load " + getClass().getSimpleName());
+        Log.info("[BaseRender] init " + getClass().getSimpleName());
         onLoad(game);
         _isLoaded = true;
     }
