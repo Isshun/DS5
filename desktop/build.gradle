@@ -48,16 +48,25 @@ eclipse {
 }
 
 dependencies {
-//    compile project(":modules/Bridge")
-    compile project(":modules/Character")
-    compile project(":modules/Debug")
-    compile project(":modules/Fauna")
-    compile project(":modules/Flora")
-    compile project(":modules/Quest")
-    compile project(":modules/Stats")
-    compile project(":modules/World")
-    compile project(":modules/Music")
-    compile project(":modules/Resource")
+    compile project(":modules/game/Bridge")
+    compile project(":modules/game/Character")
+    compile project(":modules/game/Buff")
+    compile project(":modules/game/Disease")
+    compile project(":modules/game/Debug")
+    compile project(":modules/game/Fauna")
+    compile project(":modules/game/Flora")
+    compile project(":modules/game/Quest")
+    compile project(":modules/game/Stats")
+    compile project(":modules/game/Garden")
+    compile project(":modules/game/Power")
+    compile project(":modules/game/Temperature")
+    compile project(":modules/game/Light")
+    compile project(":modules/game/Music")
+    compile project(":modules/game/Resource")
+    compile project(":modules/game/MiniMap")
+    compile project(":modules/game/Quest")
+    compile project(":modules/game/Oxygen")
+    compile project(":modules/game/Weather")
 }
 
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {

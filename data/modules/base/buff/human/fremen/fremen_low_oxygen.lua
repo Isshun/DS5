@@ -7,8 +7,8 @@ data:extend({
             return character.type == "base.character.human" and character.faction == "base.character.fremen"
         end,
         on_update = function (data, character)
-            -- model.stats.buff.oxygen = model.stats.buff.oxygen + 20;
-            -- model.stats.resist.hot = model.stats.resist.hot + 20;
+            -- org.smallbox.faraway.core.game.module.room.model.stats.buff.oxygen = org.smallbox.faraway.core.game.module.room.model.stats.buff.oxygen + 20;
+            -- org.smallbox.faraway.core.game.module.room.model.stats.resist.hot = org.smallbox.faraway.core.game.module.room.model.stats.resist.hot + 20;
         end
     }
 })
