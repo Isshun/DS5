@@ -1,20 +1,23 @@
 package org.smallbox.faraway.core.game;
 
+import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.engine.renderer.Viewport;
+import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.UserInterface;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Game {
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
@@ -42,6 +45,9 @@ public class Game {
     private Map<String, Boolean>            _displays;
     private int                             _speed = 1;
     private int                             _lastSpeed = 1;
+    private List<GameModule>                _modules;
+    private List<BaseRenderer>              _renders;
+    private BaseRenderer                    _miniMapRenderer;
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
@@ -70,6 +76,8 @@ public class Game {
     public GameSelectionExtra               getSelector() { return _selector; }
     public int                              getSpeed() { return _speed; }
     public int                              getLastSpeed() { return _lastSpeed; }
+    public Collection<GameModule>           getModules() { return _modules; }
+    public Collection<BaseRenderer>         getRenders() { return _renders; }
 
     public Game(GameInfo info) {
         _self = this;
@@ -86,12 +94,44 @@ public class Game {
         GDXRenderer.getInstance().setViewport(_viewport);
     }
 
+    /**
+     * Call game modules onGameCreate method and construct renders
+     * createGame() is call before game load or createGame
+     * createGame() is call before startGame()
+     */
+    public void createModules() {
+        Log.info("============ CREATE GAME ============");
+
+        _renders = new ArrayList<>();
+
+        // Create mini-map render
+        _miniMapRenderer = new MinimapRenderer();
+        Application.getInstance().addObserver(_miniMapRenderer);
+
+        // Call onGameCreate method to each modules
+        _modules = ModuleManager.getInstance().getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
+        _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
+        _modules.forEach(module -> module.createGame(this));
+
+        // Sort renders by level and add them to observers
+        _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
+        _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
+    }
+
     public void start() {
-        MainRenderer.getInstance().init(this);
+        startModules();
+        MainRenderer.getInstance().init(this, _renders, _miniMapRenderer);
+
         Application.getInstance().notify(observer -> observer.onHourChange(_hour));
         Application.getInstance().notify(observer -> observer.onDayChange(_day));
         Application.getInstance().notify(observer -> observer.onYearChange(_year));
         Application.getInstance().notify(observer -> observer.onFloorChange(WorldHelper.getCurrentFloor()));
+    }
+
+    private void startModules() {
+        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
+        _renders.stream().filter(BaseRenderer::isLoaded).forEach(renderer -> renderer.startGame(this));
+        _miniMapRenderer.startGame(this);
     }
 
     public void                     clearCursor() { _gameAction.setCursor(null); }
@@ -114,7 +154,7 @@ public class Game {
             return;
         }
 
-        ModuleManager.getInstance().getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(tick));
+        ModuleManager.getInstance().getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(this, tick));
 
         if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {

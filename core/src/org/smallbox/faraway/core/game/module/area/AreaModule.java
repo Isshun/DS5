@@ -15,7 +15,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -31,11 +30,17 @@ public class AreaModule extends GameModule {
     }
 
     @Override
+    protected void onGameCreate(Game game) {
+        game.getRenders().add(new AreaRenderer());
+        getSerializers().add(new AreaSerializer());
+    }
+
+    @Override
     protected void onGameStart(Game game) {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
         ModuleHelper.getWorldModule().getConsumables().stream()

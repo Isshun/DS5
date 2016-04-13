@@ -13,7 +13,7 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 public class CheckJoyTalk extends CharacterCheck {
     @Override
     public JobModel create(CharacterModel character) {
-//        return JobTalk.initGame(character, getBestCharacter(character));
+//        return JobTalk.createGame(character, getBestCharacter(character));
         return null;
     }
 

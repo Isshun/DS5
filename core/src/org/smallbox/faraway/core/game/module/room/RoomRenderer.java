@@ -1,4 +1,4 @@
-package org.smallbox.faraway.renders;
+package org.smallbox.faraway.core.game.module.room;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;

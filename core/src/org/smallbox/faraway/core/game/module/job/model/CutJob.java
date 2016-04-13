@@ -25,7 +25,7 @@
 //        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_cut.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
 //    }
 //
-//    public static JobModel create(ResourceModel res) {
+//    public static JobModel createModules(ResourceModel res) {
 //        // Resource is not cut-able
 //        if (res == null) {
 //            return null;

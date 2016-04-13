@@ -1,5 +1,3 @@
-package org.smallbox.faraway.renders;
-
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;

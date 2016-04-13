@@ -26,7 +26,7 @@ public class PowerModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         if (tick % UPDATE_INTERVAL == 0) {
             Collections.shuffle(_items);
             double powerLeft = _stored;

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
+import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 
@@ -8,9 +9,9 @@ import java.io.File;
 /**
  * Created by Alex on 09/10/2015.
  */
-public class LuaModule extends ModuleBase {
+public class LuaModule extends AbsGameModule {
     private final File          _directory;
-    private boolean             _isLoaded;
+    private boolean             _isActivate;
 
     public LuaModule(File directory) {
         _directory = directory;
@@ -21,15 +22,10 @@ public class LuaModule extends ModuleBase {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
     }
 
-    @Override
-    public boolean loadOnStart() {
-        return false;
-    }
-
-    public void setActivate(boolean isActivate) { _isLoaded = isActivate; }
+    public void setActivate(boolean isActivate) { _isActivate = isActivate; }
 
     public File getDirectory() {
         return _directory;

@@ -54,7 +54,7 @@ public class ItemModel extends BuildableMapObject {
     public void                         setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
     public void                         setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
 
-    // TODO: this method must only be used by world serializer, initGame pack/unpack method for in-game use
+    // TODO: this method must only be used by world serializer, createGame pack/unpack method for in-game use
     @Override
     public void setParcel(ParcelModel parcel) {
         super.setParcel(parcel);

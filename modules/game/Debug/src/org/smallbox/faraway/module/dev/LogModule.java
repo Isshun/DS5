@@ -28,7 +28,7 @@ public class LogModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
 
     }
 

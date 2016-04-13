@@ -20,7 +20,7 @@ public class FloraModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         // Growing
         _plants.forEach(plant -> {
             if (plant.hasSeed() && computeGrowingInfo(plant)) {

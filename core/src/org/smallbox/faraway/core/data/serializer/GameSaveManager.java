@@ -38,7 +38,7 @@ public class GameSaveManager {
             File dbFile = new File(gameDirectory, filename + ".db");
             SQLHelper.getInstance().openDB(dbFile);
             new GameSerializer().load(game);
-            ModuleManager.getInstance().getSerializers().forEach(serializer -> serializer.load(game));
+            game.getModules().forEach(module -> module.getSerializers().forEach(serializer -> serializer.load(game)));
             SQLHelper.getInstance().closeDB();
 
             SQLHelper.getInstance().post(db -> {
@@ -52,14 +52,14 @@ public class GameSaveManager {
         }
     }
 
-    public static void save(File gameDirectory, String filename) {
+    public static void save(Game game, File gameDirectory, String filename) {
         Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.begin", null));
         long time = System.currentTimeMillis();
 
         // Create DB file
         File dbFile = new  File(gameDirectory, filename + ".db");
         SQLHelper.getInstance().openDB(dbFile);
-        ModuleManager.getInstance().getSerializers().forEach(SerializerInterface::save);
+        game.getModules().forEach(module -> module.getSerializers().forEach(SerializerInterface::save));
         SQLHelper.getInstance().closeDB();
         Log.notice("Create save game (" + (System.currentTimeMillis() - time) + "ms)");
 

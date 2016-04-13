@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 
 import java.util.Collection;
+import java.util.List;
 
 public class MainRenderer {
     public static final int                 WORLD_GROUND_RENDERER_LEVEL = -100;
@@ -15,13 +15,12 @@ public class MainRenderer {
     private static MainRenderer             _self;
     private static long                     _renderTime;
     private static int                      _frame;
-    private final Collection<BaseRenderer>  _renders;
-    private final BaseRenderer              _minimapRender;
+
+    private Collection<BaseRenderer>        _renders;
+    private BaseRenderer                    _miniMapRender;
 
     public MainRenderer(GDXRenderer renderer) {
         _self = this;
-        _renders = ModuleManager.getInstance().getRenders();
-        _minimapRender = ModuleManager.getInstance().getMiniMapRender();
     }
 
     public void onRefresh(int frame) {
@@ -46,10 +45,13 @@ public class MainRenderer {
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public void init(Game game) {
+    public void init(Game game, List<BaseRenderer> renders, BaseRenderer miniMapRender) {
         _frame = 0;
+        _renders = renders;
+        _miniMapRender = miniMapRender;
+
         _renders.forEach(render -> render.load(game));
-        _minimapRender.load(game);
+        _miniMapRender.load(game);
     }
 
     private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
@@ -84,6 +86,6 @@ public class MainRenderer {
     }
 
     public BaseRenderer getMinimapRender() {
-        return _minimapRender;
+        return _miniMapRender;
     }
 }

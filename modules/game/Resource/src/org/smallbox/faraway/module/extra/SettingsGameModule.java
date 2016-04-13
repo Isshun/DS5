@@ -15,14 +15,11 @@ public class SettingsGameModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
     }
 
     @Override
     public void onReloadUI() {
-    }
-
-    private void load() {
     }
 
     @Override

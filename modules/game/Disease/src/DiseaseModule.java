@@ -12,7 +12,7 @@ public class DiseaseModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         ModuleHelper.getCharacterModule().getCharacters().forEach(character -> character.getDiseases().forEach(disease -> disease.update(tick)));
     }
 }

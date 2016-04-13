@@ -332,7 +332,7 @@ public class GameActionExtra {
         }
 
         switch (_selectedPlan) {
-            case "destroy": planDestroy(WorldHelper.getParcel(x, y, z)); break;
+            case "unload": planDestroy(WorldHelper.getParcel(x, y, z)); break;
             case "gather": planGather(x, y, z); break;
             case "dig": planMining(x, y, z, DigMode.FRONT); break;
             case "dig_hole": planMining(x, y, z, DigMode.HOLE); break;
@@ -376,8 +376,8 @@ public class GameActionExtra {
             case "cut":
                 Game.getInstance().setCursor("base.cursor.cut");
                 break;
-            case "destroy":
-                Game.getInstance().setCursor("base.cursor.destroy");
+            case "unload":
+                Game.getInstance().setCursor("base.cursor.unload");
                 break;
             case "haul":
                 Game.getInstance().setCursor("base.cursor.haul");

@@ -107,7 +107,7 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask(this, "Load modules") {
             @Override
             public void onExecute() {
-                ModuleManager.getInstance().init(message -> this.messageDetail = message);
+                ModuleManager.getInstance().loadModules(message -> this.messageDetail = message);
             }
         });
 
@@ -140,9 +140,11 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask(this, "Resume game") {
             @Override
             public void onExecute() {
+                Log.info("Resume game");
+
                 //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
                 Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            GameManager.getInstance().initGame(Data.getData().getRegion("base.planet.corrin", "mountain"));
+//            GameManager.getInstance().createGame(Data.getData().getRegion("base.planet.corrin", "mountain"));
             }
         });
 

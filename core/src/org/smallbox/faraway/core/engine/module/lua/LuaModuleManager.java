@@ -48,11 +48,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class LuaModuleManager implements GameObserver {
     private static LuaModuleManager _self;
 
-    private Collection<LuaEventListener>      _luaEventListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaEventListener>      _luaEventInGameListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaRefreshListener>    _luaRefreshListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaLoadListener>       _luaLoadListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaModule>             _modules = new LinkedBlockingQueue<>();
+    private Collection<LuaEventListener>        _luaEventListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaEventListener>        _luaEventInGameListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaRefreshListener>      _luaRefreshListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaLoadListener>         _luaLoadListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaModule> _luaModules = new LinkedBlockingQueue<>();
     private List<LuaExtend>                     _extends = new ArrayList<>();
 
     public LuaModuleManager() {
@@ -60,7 +60,7 @@ public class LuaModuleManager implements GameObserver {
     }
 
     public void startGame(Game game) {
-        _modules.forEach(module -> module.startGame(game));
+        _luaModules.forEach(module -> module.startGame(game));
     }
 
     public void init() {
@@ -76,20 +76,20 @@ public class LuaModuleManager implements GameObserver {
         _luaRefreshListeners.clear();
 
         // Load modules info
-        _modules.clear();
+        _luaModules.clear();
         FileUtils.list("data/modules/").forEach(file -> {
             try (FileInputStream fis = new FileInputStream(new File(file, "module.json"))) {
                 ModuleInfo info = ModuleInfo.fromJSON(Utils.toJSON(fis));
                 if ("lua".equals(info.type)) {
                     LuaModule module = new LuaModule(file);
                     module.setInfo(info);
-                    _modules.add(module);
+                    _luaModules.add(module);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        _modules.forEach(this::loadModule);
+        _luaModules.forEach(this::loadModule);
 
         // Load lua from java modules
         FileUtils.list("modules/game/").forEach(moduleDirectory -> {
@@ -101,7 +101,9 @@ public class LuaModuleManager implements GameObserver {
 
         Data.getData().fix();
 
+        Log.info("LOAD LUA !!!");
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
+
         __devResume();
     }
 
@@ -155,7 +157,7 @@ public class LuaModuleManager implements GameObserver {
         ModuleInfo info = luaModule.getInfo();
 
         if (!hasRequiredModules(info)) {
-            Log.info("Unable to init lua module: " + info.id + " (" + info.name + ")");
+            Log.info("Unable to load lua module: " + info.id + " (" + info.name + ")");
             return;
         }
         Log.info("Load lua module: " + info.id + " (" + info.name + ")");
@@ -168,7 +170,7 @@ public class LuaModuleManager implements GameObserver {
     private boolean hasRequiredModules(ModuleInfo info) {
         for (ModuleInfo.Required required: info.required) {
             boolean requiredOk = false;
-            for (LuaModule module: _modules) {
+            for (LuaModule module: _luaModules) {
                 if (module.getInfo().id.equals(required.id) && module.getInfo().version >= required.minVersion) {
                     requiredOk = true;
                 }
@@ -295,7 +297,7 @@ public class LuaModuleManager implements GameObserver {
     }
 
     public Collection<LuaModule> getModules() {
-        return _modules;
+        return _luaModules;
     }
 
     public static LuaModuleManager getInstance() {

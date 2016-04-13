@@ -4,10 +4,14 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
+import org.smallbox.faraway.core.engine.renderer.WorldGroundRenderer;
+import org.smallbox.faraway.core.engine.renderer.WorldTopRenderer;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.module.area.AreaRenderer;
+import org.smallbox.faraway.core.game.module.area.AreaSerializer;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
@@ -30,6 +34,13 @@ public class WorldModule extends GameModule {
     private Collection<StructureModel>          _structures;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
+
+    @Override
+    protected void onGameCreate(Game game) {
+        game.getRenders().add(new WorldGroundRenderer());
+        game.getRenders().add(new WorldTopRenderer());
+        getSerializers().add(new WorldModuleSerializer());
+    }
 
     @Override
     protected void onGameStart(Game game) {
@@ -369,7 +380,7 @@ public class WorldModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         _consumables.forEach(ConsumableModel::fixPosition);
         _consumables.stream()
                 .filter(consumable -> consumable.getQuantity() == 0 && consumable.getParcel() != null)

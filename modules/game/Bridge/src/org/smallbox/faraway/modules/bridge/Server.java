@@ -29,7 +29,7 @@
 //            public void run() {
 //                try {
 //                    // Instead of creating a ServerSocket,
-//                    // create a ServerSocketChannel
+//                    // createModules a ServerSocketChannel
 //                    ServerSocketChannel ssc = ServerSocketChannel.open();
 //
 //                    // Set it to non-blocking, so we can use select

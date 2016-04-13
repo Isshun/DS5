@@ -22,6 +22,12 @@ public class ModuleInfo {
     public double           version;
     public List<Required>   required;
 
+    public static ModuleInfo fromName(String name) {
+        ModuleInfo info = new ModuleInfo();
+        info.name = name;
+        return info;
+    }
+
     public static ModuleInfo fromJSON(JSONObject json) {
         ModuleInfo info = new ModuleInfo();
         info.id = json.getString("id");

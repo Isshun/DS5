@@ -25,19 +25,11 @@ public class LoadGameModule extends ApplicationModule {
     private GameInfo                _currentGame;
     private GameInfo.GameSaveInfo   _currentSave;
 
-    @Override
-    protected void onGameStart(Game game) {
-    }
-
-    @Override
-    protected void onGameUpdate(int tick) {
-    }
-
     public List<GameInfo> getGames() {
         return _games;
     }
 
-    private void load() {
+    private void loadAction() {
         _games.clear();
         FileUtils.list(FileUtils.getSaveDirectory()).stream().filter(File::isDirectory).forEach(gameDirectory -> {
             File file = new File(gameDirectory, "game.json");
@@ -60,7 +52,7 @@ public class LoadGameModule extends ApplicationModule {
     @Override
     public void onCustomEvent(String tag, Object object) {
         if ("on_load_menu_create".equals(tag)) {
-            load();
+            loadAction();
         }
         if ("load_game.game".equals(tag) && object instanceof GameInfo) {
             _currentGame = (GameInfo) object;
@@ -68,7 +60,7 @@ public class LoadGameModule extends ApplicationModule {
         if ("load_game.save".equals(tag) && object instanceof GameInfo.GameSaveInfo) {
             _currentSave = (GameInfo.GameSaveInfo) object;
         }
-        if ("load_game.init".equals(tag) && _currentGame != null && _currentSave != null) {
+        if ("load_game.load".equals(tag) && _currentGame != null && _currentSave != null) {
             GameManager.getInstance().loadGame(_currentGame, _currentSave);
         }
         if ("load_game.last_game".equals(tag)) {

@@ -47,7 +47,7 @@ public class MiniMapModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
 
     }
 

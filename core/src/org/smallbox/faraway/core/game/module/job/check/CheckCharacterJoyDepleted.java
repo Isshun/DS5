@@ -14,13 +14,13 @@
 // */
 //public class CheckCharacterEntertainmentDepleted extends CharacterCheck {
 //    @Override
-//    public BaseJobModel create(CharacterModel model) {
+//    public BaseJobModel createModules(CharacterModel model) {
 //        List<CharacterCheck> joys = ModuleHelper.getJobModule().getEntertainments();
 //
 //        Collections.shuffle(joys);
 //        for (CharacterCheck jobCheck: joys) {
 //            if (jobCheck.check(model)) {
-//                return jobCheck.create(model);
+//                return jobCheck.createModules(model);
 //            }
 //        }
 //

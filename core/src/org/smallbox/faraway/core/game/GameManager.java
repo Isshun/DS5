@@ -32,10 +32,9 @@ public class GameManager {
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
         Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info);
-        ModuleManager.getInstance().initGame(game);
+        game.createModules();
         GameSaveManager.load(game, FileUtils.getSaveDirectory(game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
-            ModuleManager.getInstance().startGame(game);
             LuaModuleManager.getInstance().startGame(game);
             game.start();
             _game = game;
@@ -50,17 +49,16 @@ public class GameManager {
         GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
         File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
         if (!gameDirectory.mkdirs()) {
-            Log.info("Unable to initGame game save directory");
+            Log.info("Unable to createGame game save directory");
             return;
         }
 
         Game game = new Game(gameInfo);
-        ModuleManager.getInstance().initGame(game);
+        game.createModules();
 
         WorldFactory factory = new WorldFactory();
         factory.create(game, regionInfo);
 
-        ModuleManager.getInstance().startGame(game);
         game.start();
         factory.createLandSite(game);
 
@@ -96,7 +94,7 @@ public class GameManager {
             gameInfo.saveFiles.add(saveInfo);
             writeGameInfo(gameInfo);
 
-            GameSaveManager.save(gameDirectory, filename);
+            GameSaveManager.save(_game, gameDirectory, filename);
         }
     }
 

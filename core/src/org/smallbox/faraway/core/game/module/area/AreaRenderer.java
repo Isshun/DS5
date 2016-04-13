@@ -1,4 +1,4 @@
-package org.smallbox.faraway.renders;
+package org.smallbox.faraway.core.game.module.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

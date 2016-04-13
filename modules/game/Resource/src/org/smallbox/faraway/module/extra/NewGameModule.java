@@ -18,7 +18,7 @@ public class NewGameModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
     }
 
     @Override

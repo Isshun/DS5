@@ -43,7 +43,7 @@ public class FaunaModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
 //        // Drop unusual
 //        if (tick % 800 == 0) {
 //            Random r = new Random();

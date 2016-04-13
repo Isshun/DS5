@@ -4,7 +4,6 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.CharacterModule;
@@ -42,7 +41,7 @@ public class BuffModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         _charactersData.forEach(buff -> {buff.check(tick); buff.update(tick);});
         for (Map.Entry<CharacterModel, List<BuffCharacterModel>> entry: _characters.entrySet()) {
             Collections.sort(entry.getValue(), (b1, b2) -> b2.mood - b1.mood);

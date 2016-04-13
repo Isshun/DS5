@@ -2,7 +2,6 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Data;
@@ -13,10 +12,7 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.UserInterface;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 

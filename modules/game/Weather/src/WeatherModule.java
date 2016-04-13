@@ -101,7 +101,7 @@ public class WeatherModule extends GameModule implements GameObserver {
     public double getOxygen() { return 0.5; }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         if (_duration-- <= 0) {
             _duration = 2500;
             loadRandomWeather();

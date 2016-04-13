@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;

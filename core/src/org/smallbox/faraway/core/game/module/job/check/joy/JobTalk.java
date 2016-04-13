@@ -14,7 +14,7 @@
 //public class JobTalk extends JobModel {
 //    private CharacterModel  _friend;
 //
-//    public static JobTalk create(CharacterModel character, CharacterModel friend) {
+//    public static JobTalk createModules(CharacterModel character, CharacterModel friend) {
 //
 //        if (friend.getJob() != null && friend.getJob().isEntertainment()) {
 //            ModuleHelper.getJobModule().closeJob(friend.getJob());

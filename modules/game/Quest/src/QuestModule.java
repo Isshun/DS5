@@ -1,11 +1,9 @@
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.lua.LuaGameModel;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 
 import java.util.ArrayList;
@@ -44,7 +42,7 @@ public class QuestModule extends GameModule {
 //    }
 
     @Override
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         // Check status of current running quests
         if (tick % 100 == 0) {
             checkOpenedQuests();

@@ -1,6 +1,8 @@
 package org.smallbox.faraway.core.game.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import org.smallbox.faraway.core.game.module.area.AreaRenderer;
+import org.smallbox.faraway.core.game.module.area.AreaSerializer;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -32,6 +34,10 @@ public class RoomModule extends GameModule implements GameObserver {
     public boolean runOnMainThread() { return true; }
 
     @Override
+    protected void onGameCreate(Game game) {
+    }
+
+    @Override
     protected void onGameStart(Game game) {
         _updateInterval = 10;
 
@@ -49,7 +55,7 @@ public class RoomModule extends GameModule implements GameObserver {
 
     public Collection<RoomModel> getRooms() { return _rooms; }
 
-    protected void onGameUpdate(int tick) {
+    protected void onGameUpdate(Game game, int tick) {
         if (_needRefresh) {
             _needRefresh = false;
             for (int floor = 0; floor < _refresh.length; floor++) {

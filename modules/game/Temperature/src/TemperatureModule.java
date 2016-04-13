@@ -1,7 +1,7 @@
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -36,7 +36,7 @@ public class TemperatureModule extends GameModule {
         _items.remove(item);
     }
 
-    public void onGameUpdate(int tick) {
+    public void onGameUpdate(Game game, int tick) {
         if (_roomModule != null) {
             _roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {

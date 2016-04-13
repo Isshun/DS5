@@ -23,7 +23,7 @@
 //    protected abstract void onRefresh(int updateGame);
 //    protected abstract String getContentLayout();
 //
-//    public void create() {
+//    public void createModules() {
 //        onGameInit(this, _frameContent);
 //    }
 //

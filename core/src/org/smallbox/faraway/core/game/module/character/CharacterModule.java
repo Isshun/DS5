@@ -3,12 +3,16 @@ package org.smallbox.faraway.core.game.module.character;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
+import org.smallbox.faraway.core.engine.renderer.WorldGroundRenderer;
+import org.smallbox.faraway.core.engine.renderer.WorldTopRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
+import org.smallbox.faraway.core.game.module.world.WorldModuleSerializer;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
@@ -41,6 +45,12 @@ public class CharacterModule extends GameModule {
         ModuleHelper.setCharacterModule(this);
     }
 
+    @Override
+    protected void onGameCreate(Game game) {
+        game.getRenders().add(new CharacterRenderer());
+        getSerializers().add(new CharacterModuleSerializer());
+    }
+
     // TODO
     public CharacterModel getNext(CharacterModel character) {
         for (CharacterModel c: _characters) {
@@ -62,7 +72,7 @@ public class CharacterModule extends GameModule {
     }
 
     @Override
-    public void onGameUpdate(int tick) {
+    public void onGameUpdate(Game game, int tick) {
         // Add new born
         _characters.addAll(_addOnUpdate);
         _addOnUpdate.clear();
