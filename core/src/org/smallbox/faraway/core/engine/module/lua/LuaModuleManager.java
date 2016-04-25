@@ -52,7 +52,7 @@ public class LuaModuleManager implements GameObserver {
     private Collection<LuaEventListener>        _luaEventInGameListeners = new LinkedBlockingQueue<>();
     private Collection<LuaRefreshListener>      _luaRefreshListeners = new LinkedBlockingQueue<>();
     private Collection<LuaLoadListener>         _luaLoadListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaModule> _luaModules = new LinkedBlockingQueue<>();
+    private Collection<LuaModule>               _luaModules = new LinkedBlockingQueue<>();
     private List<LuaExtend>                     _extends = new ArrayList<>();
 
     public LuaModuleManager() {
@@ -138,9 +138,9 @@ public class LuaModuleManager implements GameObserver {
             if (Game.getInstance().getSelector().getSelectedCharacter() != null) {
                 Application.getInstance().notify(o -> o.onSelectCharacter(Game.getInstance().getSelector().getSelectedCharacter()));
             }
-            if (Game.getInstance().getSelector().getSelectedConsumable() != null) {
-                Application.getInstance().notify(o -> o.onSelectConsumable(Game.getInstance().getSelector().getSelectedConsumable()));
-            }
+//            if (Game.getInstance().getSelector().getSelectedConsumable() != null) {
+//                Application.getInstance().notify(o -> o.onSelectConsumable(Game.getInstance().getSelector().getSelectedConsumable()));
+//            }
             if (Game.getInstance().getSelector().getSelectedItem() != null) {
                 Application.getInstance().notify(o -> o.onSelectItem(Game.getInstance().getSelector().getSelectedItem()));
             }
@@ -255,8 +255,8 @@ public class LuaModuleManager implements GameObserver {
 //    //    default void onOpenQuest(QuestModel quest) {}
 ////    default void onCloseQuest(QuestModel quest) {}
     public void onSelectArea(AreaModel area) { broadcastToLuaModules(LuaEventsModel.on_area_selected, area); }
-    public void onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); }
-    public void onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); }
+    public boolean onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); return true; }
+    public boolean onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); return true; }
     public void onSelectItem(ItemModel item) { broadcastToLuaModules(LuaEventsModel.on_item_selected, item); }
     public void onSelectRock(ItemInfo rockInfo) { broadcastToLuaModules(LuaEventsModel.on_rock_selected, rockInfo); }
     public void onSelectPlant(PlantModel plant) { broadcastToLuaModules(LuaEventsModel.on_plant_selected, plant); }

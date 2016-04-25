@@ -61,10 +61,9 @@ public class GDXApplication extends ApplicationAdapter {
             @Override
             public void onExecute() {
                 SmartFontGenerator fontGen = new SmartFontGenerator();
-                FileHandle exoFile = Gdx.files.local("data/fonts/font.ttf");
                 _fonts = new BitmapFont[50];
                 for (int i = 5; i < 50; i++) {
-                    _fonts[i] = fontGen.createFont(exoFile, "font-" + i, i);
+                    _fonts[i] = fontGen.createFont(Gdx.files.local("data/fonts/font.ttf"), "font-" + i, i);
                     _fonts[i].getData().flipped = true;
                 }
             }

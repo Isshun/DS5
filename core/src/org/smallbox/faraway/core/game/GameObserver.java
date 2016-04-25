@@ -40,8 +40,8 @@ public interface GameObserver {
 //    default void onOpenQuest(QuestModel quest) {}
 //    default void onCloseQuest(QuestModel quest) {}
     default void onSelectArea(AreaModel area) {}
-    default void onSelectCharacter(CharacterModel character) {}
-    default void onSelectParcel(ParcelModel parcel) {}
+    default boolean onSelectCharacter(CharacterModel character) {return false;}
+    default boolean onSelectParcel(ParcelModel parcel) {return false;}
     default void onSelectRock(ItemInfo rockInfo) {}
     default void onSelectItem(ItemModel item) {}
     default void onSelectPlant(PlantModel resource) {}
