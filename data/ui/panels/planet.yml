@@ -1,7 +1,0 @@
-entries:
-
-    -   type: label
-        id: lb_planet
-        text: Planet
-        textsize: 24
-        position: [24, 24]

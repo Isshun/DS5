@@ -1,0 +1,116 @@
+data:extend({
+    label = "Arrakis",
+    name = "base.planet.arrakis",
+    type = "planet",
+    class = "desert",
+    description = "Arrakis is a hostile desertic planet, its sands contains rare resource carefully protected by strong local forces",
+    graphics = {
+        thumb = {path = "[base]/graphics/planets/arrakis_thumb.png", credit = { author = "Adam Koebel", site = "http://nightvisions.ca/2012/08/planet-arrakis/" }},
+        background = {path = "[base]/graphics/planets/arrakis_bg.jpg"},
+    },
+    stats = {
+        water = -2,
+        fertility = -1,
+        atmosphere = -1,
+        fauna = -2,
+        flora = -2,
+        hostile_fauna = 2,
+        hostile_humankind = 1,
+    },
+    day_times = {
+        { hour = 5, sun = "dawn", duration = 1, light = 0.5 },
+        { hour = 6, sun = "noon", duration = 2, light = 1 },
+        { hour = 19, sun = "twilight", duration = 1, light = 0.5 },
+        { hour = 20, sun = "midnight", duration = 2, light = 0.2 },
+    },
+    regions = {{
+        name = "mountain",
+        label = "mountain",
+        color = 0x804f15,
+        temperatures = {
+            {floors = {-99, -1}, value = {20, 20}},
+            {floors = {0, 0}, value = {30, 40}},
+        },
+        spots = {{latitude = {40, 90}, frequency = 1}},
+        terrains = {
+            { ground = "base.ground.sand" },
+            { resource = "base.granite", pattern = "mountain" },
+            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
+        },
+        weather = {
+            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
+        },
+        fauna = {
+            {name = "kulon", frequency = 0.4, count = {5, 8}},
+            {name = "muad_dib", frequency = 1, count = {5, 8}},
+            {name = "desert_hare", frequency = 1, count = {5, 8}},
+            {name = "desert_owl", frequency = 1, count = {5, 8}},
+            {name = "muad_dib", frequency = 1, count = {5, 8}},
+            {name = "desert_hawk", frequency = 1, count = {5, 8}},
+        },
+    }, {
+        name = "valley",
+        label = "Valley",
+        color = 0xa06f35,
+        temperatures = {
+            {floors = {-99, -1}, value = {20, 20}},
+            {floors = {0, 0}, value = {30, 40}},
+        },
+        spots = {
+            {latitude = {40, 90}, frequency = 0.5},
+            {latitude = {-90, 40}, frequency = 0.2}},
+        terrains = {
+            { ground = "base.ground.sand" },
+            { resource = "base.granite", pattern = "valley" },
+            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
+        },
+        weather = {
+            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
+        },
+        fauna = {
+            {name = "kulon", frequency = 0.4, count = {5, 8}},
+            {name = "muad_dib", frequency = 1, count = {5, 8}},
+            {name = "desert_hare", frequency = 1, count = {5, 8}},
+            {name = "desert_owl", frequency = 1, count = {5, 8}},
+            {name = "muad_dib", frequency = 1, count = {5, 8}},
+            {name = "desert_hawk", frequency = 1, count = {5, 8}},
+        },
+    }, {
+        name = "desert",
+        label = "Desert",
+        color = 0xffda3b,
+        temperatures = {
+            {floors = {-99, -1}, value = {20, 30}},
+            {floors = {0, 0}, value = {30, 50}},
+        },
+        spots = {{latitude = {-90, 40}, frequency = 1}},
+        terrains = {
+            { ground = "base.ground.sand" },
+            { resource = "base.granite", pattern = "mineral_rare_large" },
+            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
+            { resource = "base.raw_spice", pattern = "mineral_rare_large", condition = "ground" },
+            { resource = "base.desert_laitue", pattern = "random_light", condition = "ground" },
+        },
+        weather = {
+            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.sandwhirl", frequency = {2, 10}, duration = {0.5, 2}},
+            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
+        },
+        fauna = {
+            {name = "sandworm", frequency = 0.5, count = {1, 1}},
+            {name = "kulon", frequency = 0.4, count = {5, 8}},
+            {name = "muad_dib", frequency = 1, count = {5, 8}},
+            {name = "desert_hare", frequency = 1, count = {5, 8}},
+            {name = "desert_owl", frequency = 1, count = {5, 8}},
+            {name = "muad_dib", frequency = 0.8, count = {5, 8}},
+            {name = "desert_hawk", frequency = 0.8, count = {5, 8}},
+        },
+    }}
+})

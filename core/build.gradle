@@ -1,16 +1,21 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
-
 
 eclipse.project {
     name = appName + "-core"
 }
 
 dependencies {
-    compile project(":FAGame")
     compile project(":gdx-smart-font")
+    compile project(":PathFinding")
+    compile 'org.apache.commons:commons-compress:1.10'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+    compile 'org.luaj:luaj-jse:3.0.1'
+    compile 'org.reflections:reflections:0.9.10'
+    compile 'org.json:json:20150729'
 }

@@ -1,9 +1,0 @@
-levels:
-    -   label: In the dark for a long time
-        disease: malnutrition
-        delay: 8
-        conditions:
-            character: [human, android]
-            minLight: 50
-        effects:
-            mood: -5

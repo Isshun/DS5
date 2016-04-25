@@ -1,0 +1,40 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+sourceSets.main.java.srcDirs = [ "src/" ]
+mainClassName = ""
+
+import groovy.json.JsonSlurper
+def info = new JsonSlurper().parseText(new File(projectDir.path + "/module.json").text)
+println info.name
+println info.version
+
+jar {
+    baseName = info.name
+    version = info.version
+}
+
+task copyResources << {
+    copy {
+        from '.'
+        into '../../data/modules/' + info.name
+        include('module.json')
+    }
+    copy {
+        from 'data'
+        into '../../data/modules/' + info.name + '/data/'
+    }
+    copy {
+        from 'build/libs/'
+        into '../../data/modules/' + info.name
+        include(info.name + '-' + info.version + '.jar')
+    }
+}
+copyResources.mustRunAfter jar
+distZip.dependsOn copyResources
+
+dependencies {
+    compile project(":core")
+}

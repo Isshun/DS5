@@ -1,8 +1,0 @@
-name: floor
-label: Floor
-width: 1
-height: 1
-type: structure
-isWalkable: true
-maxHealth: 100
-cost: 1

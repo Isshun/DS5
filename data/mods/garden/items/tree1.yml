@@ -1,6 +1,0 @@
-name: tree_1
-label: Tree 1
-type: item
-inherits: base.tree
-width: 1
-height: 2

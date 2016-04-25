@@ -1,0 +1,18 @@
+{
+    "lang": "en",
+    "uiScale": 1,
+    "screen": {
+        "resolution": [1880, 1100],
+        "position": [1940, 20],
+        "mode": "window",
+        "foregroundFPS": 60,
+        "backgroundFPS": 30
+    },
+    "game": {
+        "tickPerHour": 50,
+        "inventoryMaxQuantity": 100,
+        "storageMaxQuantity": 100,
+        "environmentDistance": 5,
+        "maxNearDistance": 32
+    }
+}
