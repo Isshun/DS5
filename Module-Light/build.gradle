@@ -1,0 +1,11 @@
+apply plugin: 'java'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+
+dependencies {
+    compile project(":Application-Core")
+    compile project(":Module-Flora")
+    compile project(":Module-Fauna")
+}
