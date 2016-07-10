@@ -95,7 +95,7 @@ public class SmartFontGenerator {
                 }
             };
             tex.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-            texRegions.set(i, new TextureRegion(tex));
+            texRegions.add(new TextureRegion(tex));
         }
         BitmapFont font = new BitmapFont(fontData, texRegions, false);
         saveFontToFile(font, fontSize, fontName, packer);
