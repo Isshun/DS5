@@ -30,4 +30,7 @@ public class LuaModule extends AbsGameModule {
     public File getDirectory() {
         return _directory;
     }
+
+    @Override
+    public boolean isLoaded() { return true; }
 }

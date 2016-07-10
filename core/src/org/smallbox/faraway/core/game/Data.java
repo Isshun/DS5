@@ -23,7 +23,7 @@ public class Data {
     public List<PlanetInfo>                     planets = new ArrayList<>();
     public Map<String, WeatherInfo>             weathers = new HashMap<>();
     public HashMap<Integer, String>             strings = new HashMap<>();
-    public boolean                              needUIRefresh;
+    public boolean                              needUIRefresh = false;
     public HashMap<String, CharacterInfo>       characters = new HashMap<>();
     public Map<String, UICursor>                cursors = new HashMap<>();
     public List<BuffInfo>                       buffs = new ArrayList<>();

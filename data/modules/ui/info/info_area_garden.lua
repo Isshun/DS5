@@ -1,26 +1,26 @@
-local function display_accepted_items(view, garden)
-    local list = view:findById("list_accepted_plant")
-    list:removeAllViews()
-
-    local iterator = garden:getPotentials():iterator()
-    while iterator:hasNext() do
-        local plant = iterator:next()
-        local lb_plant = ui:createLabel()
-        lb_plant:setText((garden:getCurrent() == plant and "[x] " or "[ ] "), plant.label)
-        lb_plant:setTextSize(14)
-        lb_plant:setSize(180, 20)
-        lb_plant:setPadding(5)
-        lb_plant:setOnClickListener(function()
-            garden:setAccept(plant, true)
-            display_accepted_items(view, garden)
-        end)
-        list:addView(lb_plant)
-    end
-end
+--local function display_accepted_items(view, garden)
+--    local list = view:findById("list_accepted_plant")
+--    list:removeAllViews()
+--
+--    local iterator = garden:getPotentials():iterator()
+--    while iterator:hasNext() do
+--        local plant = iterator:next()
+--        local lb_plant = ui:createLabel()
+--        lb_plant:setText((garden:getCurrent() == plant and "[x] " or "[ ] "), plant.label)
+--        lb_plant:setTextSize(14)
+--        lb_plant:setSize(180, 20)
+--        lb_plant:setPadding(5)
+--        lb_plant:setOnClickListener(function()
+--            garden:setAccept(plant, true)
+--            display_accepted_items(view, garden)
+--        end)
+--        list:addView(lb_plant)
+--    end
+--end
 
 data:extend({
     type = "list",
-    id = "info_area_garden",
+    id = "base.ui.info_area_garden",
     style = "base.style.right_panel",
     visible = false,
     views = {
@@ -34,20 +34,20 @@ data:extend({
         { type = "list", id = "list_accepted_plant", position = {5, 3}},
     },
 
-    on_event = function(view, event, data)
-        if event == application.events.on_key_press and data == "ESCAPE" then
-            view:setVisible(false)
-            application.game:clearSelection();
-        end
-
-        if event == application.events.on_deselect then
-            view:setVisible(false)
-        end
-
-        if event == application.events.on_area_selected and data:getTypeName() == "GARDEN" then
-            display_accepted_items(view, data)
-            view:setVisible(true)
-            view:findById("lb_name"):setText(data:getName())
-        end
-    end,
+--    on_event = function(view, event, data)
+--        if event == application.events.on_key_press and data == "ESCAPE" then
+--            view:setVisible(false)
+--            application.game:clearSelection();
+--        end
+--
+--        if event == application.events.on_deselect then
+--            view:setVisible(false)
+--        end
+--
+--        if event == application.events.on_area_selected and data:getTypeName() == "GARDEN" then
+--            display_accepted_items(view, data)
+--            view:setVisible(true)
+--            view:findById("lb_name"):setText(data:getName())
+--        end
+--    end,
 })

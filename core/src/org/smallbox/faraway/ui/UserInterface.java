@@ -12,7 +12,6 @@ import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
@@ -150,7 +149,9 @@ public class UserInterface {
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0.5f;
 
-        _views.stream().filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded())).forEach(view -> view.draw(renderer, 0, 0));
+        _views.stream()
+                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
+                .forEach(view -> view.draw(renderer, 0, 0));
         _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }
 
@@ -186,16 +187,32 @@ public class UserInterface {
     }
 
     public View findById(String id) {
-        int resId = id.hashCode();
-        for (View view: _views) {
-            if (view.getId() == resId) {
+        if (id.contains(" ")) {
+            String[] ids = id.split(" ");
+            if (ids.length >= 1) {
+                View view = findById(ids[0]);
+                for (int i = 1; i < ids.length; i++) {
+                    if (view != null) {
+                        view = view.findById(ids[i]);
+                    }
+                }
                 return view;
             }
-            View v = view.findById(resId);
-            if (v != null) {
-                return v;
+        }
+
+        else {
+            int resId = id.hashCode();
+            for (View view : _views) {
+                if (view.getId() == resId) {
+                    return view;
+                }
+                View v = view.findById(resId);
+                if (v != null) {
+                    return v;
+                }
             }
         }
+
         return null;
     }
 

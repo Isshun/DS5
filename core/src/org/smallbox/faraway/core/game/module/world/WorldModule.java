@@ -6,12 +6,12 @@ import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.engine.renderer.WorldGroundRenderer;
 import org.smallbox.faraway.core.engine.renderer.WorldTopRenderer;
+import org.smallbox.faraway.core.game.BindController;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.area.AreaRenderer;
-import org.smallbox.faraway.core.game.module.area.AreaSerializer;
+import org.smallbox.faraway.core.game.module.world.controller.WorldConsumableController;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule {
+    @BindController("base.ui.info_consumable")
+    private WorldConsumableController           _consumableController;
+
     private ParcelModel[][][]                   _parcels;
     private int                                 _width;
     private int                                 _height;
@@ -45,6 +48,17 @@ public class WorldModule extends GameModule {
     @Override
     protected void onGameStart(Game game) {
         assert _game != null;
+    }
+
+    @Override
+    public boolean onSelectParcel(ParcelModel parcel) {
+        for (ConsumableModel consumable: _consumables) {
+            if (consumable.getParcel() == parcel) {
+                _consumableController.select(consumable);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {

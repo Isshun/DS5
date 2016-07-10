@@ -2,14 +2,11 @@ package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.*;
-import org.smallbox.faraway.core.data.serializer.SerializerInterface;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
-import org.smallbox.faraway.core.engine.renderer.MinimapRenderer;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.BindController;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
 
@@ -172,7 +169,7 @@ public class ModuleManager {
         // Find game modules
         new Reflections().getSubTypesOf(GameModule.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
+//                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
                 .forEach(cls -> {
                     try {
                         Log.info("Find game module: " + cls.getSimpleName());

@@ -7,6 +7,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
@@ -131,6 +132,11 @@ public class LuaModuleManager implements GameObserver {
                 e.printStackTrace();
             }
         });
+
+        // Inject controllers to modules
+        LuaControllerManager.getInstance().injectControllersToModules();
+//        // Inject sub-controllers to controllers
+//        LuaControllerManager.getInstance().injectSubControllersToControllers();
     }
 
     private void __devResume() {

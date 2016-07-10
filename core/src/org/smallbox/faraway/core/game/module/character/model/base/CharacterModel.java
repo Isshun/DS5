@@ -386,4 +386,8 @@ public abstract class CharacterModel extends MovableModel {
     public void cancelMove() {
         _moveListener = null;
     }
+
+    public String toString() {
+        return _personals.getFirstName() + " " + _personals.getLastName();
+    }
 }

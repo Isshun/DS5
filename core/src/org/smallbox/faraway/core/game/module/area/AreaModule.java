@@ -2,9 +2,12 @@ package org.smallbox.faraway.core.game.module.area;
 
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.smallbox.faraway.core.game.BindController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.area.controller.AreaController;
+import org.smallbox.faraway.core.game.module.area.controller.AreaGardenInfoController;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.StoreJob;
@@ -21,12 +24,29 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 13/06/2015.
  */
 public class AreaModule extends GameModule {
+    @BindController("base.ui.panel_areas")
+    private AreaController              _controller;
+
+    @BindController("base.ui.info_area_garden")
+    private AreaGardenInfoController    _gardenInfo;
+
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
     private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
     private Collection<StorageAreaModel> _storageAreas = new LinkedBlockingQueue<>();
 
     public AreaModule() {
         _updateInterval = 10;
+    }
+
+    @Override
+    public boolean onSelectParcel(ParcelModel parcel) {
+        for (GardenAreaModel garden: _gardens) {
+            if (garden.contains(parcel.x, parcel.y, parcel.z)) {
+                _gardenInfo.select(garden);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

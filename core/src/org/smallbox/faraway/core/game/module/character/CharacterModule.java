@@ -4,15 +4,14 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
-import org.smallbox.faraway.core.engine.renderer.WorldGroundRenderer;
-import org.smallbox.faraway.core.engine.renderer.WorldTopRenderer;
+import org.smallbox.faraway.core.game.BindController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
+import org.smallbox.faraway.core.game.module.character.controller.CharacterController;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
-import org.smallbox.faraway.core.game.module.world.WorldModuleSerializer;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
@@ -27,6 +26,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterModule extends GameModule {
+    @BindController("base.ui.info_character")
+    private CharacterController                 _controller;
+
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private int                                 _count;
@@ -60,6 +62,17 @@ public class CharacterModule extends GameModule {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean onSelectParcel(ParcelModel parcel) {
+        for (CharacterModel character: _characters) {
+            if (character.getParcel() == parcel) {
+                _controller.selectCharacter(character);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addVisitor() {
