@@ -2,10 +2,24 @@ parcel = nil
 
 data:extend({
     type = "view",
-    name = "info_parcel",
+    id = "info_parcel_2",
+    controller = "org.smallbox.faraway.core.game.module.world.controller.WorldInfoParcel2Controller",
+    position = {0, 100},
+    size = {200, 80},
+    --background = 0x121c1e,
+    level = 100,
+    visible = true,
+    views = {
+        { type = "label", id = "lb_name", text = "name", text_size = 22, size = {100, 28}},
+    }
+})
+
+data:extend({
+    type = "view",
+    id = "info_parcel",
     position = {0, 200},
     size = {372, 320},
-    background = 0x121c1e,
+    --background = 0x121c1e,
     level = 100,
     visible = true,
     views = {
@@ -41,8 +55,7 @@ data:extend({
         end
     end,
 
-    on_refresh =
-    function(view)
+    on_refresh = function(view)
         if parcel ~= nil then
             view:findById("lb_position"):setText("Position", ": ", parcel.x .. "x" .. parcel.y .. "x" .. parcel.z)
             view:findById("lb_name"):setText(parcel:getGroundInfo() and parcel:getGroundInfo().label or "no")

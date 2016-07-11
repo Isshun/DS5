@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.BindController;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.ui.UserInterface;
@@ -35,11 +36,11 @@ public class LuaControllerManager {
     public void injectControllersToModules() {
         ModuleManager.getInstance().getModules().forEach(module -> {
             for (Field field: module.getClass().getDeclaredFields()) {
-                BindController bindLuaView = field.getAnnotation(BindController.class);
-                if (bindLuaView != null) {
+                BindController annotation = field.getAnnotation(BindController.class);
+                if (annotation != null) {
                     try {
                         field.setAccessible(true);
-                        field.set(module, invokeController(field.getType(), bindLuaView.value()));
+                        field.set(module, invokeController(field.getType()));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -52,7 +53,7 @@ public class LuaControllerManager {
 //    public void injectSubControllersToControllers() {
 //        _controllers.forEach(module -> {
 //            for (Field field: module.getClass().getDeclaredFields()) {
-//                BindController bindLuaView = field.getAnnotation(BindController.class);
+//                LegacyBindController bindLuaView = field.getAnnotation(LegacyBindController.class);
 //                if (bindLuaView != null) {
 //                    try {
 //                        field.setAccessible(true);
@@ -67,22 +68,18 @@ public class LuaControllerManager {
 
     /**
      * Invoke LuaController
-     * @param type LuaController type
-     * @param viewId View to bind to controller
+     * @param cls LuaController type
      * @return Invoked LuaController
      */
-    private LuaController invokeController(Class<?> type, String viewId) {
-        View view = UserInterface.getInstance().findById(viewId);
-        if (view != null) {
-            try {
-                Constructor constructor = type.getConstructor();
-                constructor.setAccessible(true);
-                LuaController controller = (LuaController) constructor.newInstance();
-                controller.setView(view);
-                return controller;
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
+    private LuaController invokeController(Class<?> cls) {
+        try {
+            Constructor constructor = cls.getConstructor();
+            constructor.setAccessible(true);
+            LuaController controller = (LuaController) constructor.newInstance();
+            controller.setView(ModuleManager.getInstance().getViewByController(cls.getCanonicalName()));
+            return controller;
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
         }
         return null;
     }

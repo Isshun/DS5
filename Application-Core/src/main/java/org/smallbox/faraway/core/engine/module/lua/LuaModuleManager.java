@@ -1,5 +1,9 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
+import com.steadystate.css.dom.CSSStyleRuleImpl;
+import com.steadystate.css.format.CSSFormat;
+import com.steadystate.css.parser.CSSOMParser;
+import com.steadystate.css.parser.SACParserCSS3;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
@@ -35,6 +39,10 @@ import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.LuaDataModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.UIEventManager;
+import org.w3c.css.sac.InputSource;
+import org.w3c.dom.css.CSSRule;
+import org.w3c.dom.css.CSSRuleList;
+import org.w3c.dom.css.CSSStyleSheet;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -101,6 +109,8 @@ public class LuaModuleManager implements GameObserver {
             }
         });
 
+        LuaControllerManager.getInstance().injectControllersToModules();
+
         Data.getData().fix();
 
         Log.info("LOAD LUA !!!");
@@ -134,8 +144,28 @@ public class LuaModuleManager implements GameObserver {
             }
         });
 
+        FileUtils.listRecursively(directory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".css")).forEach(f -> {
+            Log.info("Found css file: %s", f.getName());
+
+            try {
+                InputSource source = new InputSource(new FileReader(f));
+                CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+                CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
+                CSSRuleList rules = sheet.getCssRules();
+                for (int i = 0; i < rules.getLength(); i++) {
+                    final CSSRule rule = rules.item(i);
+
+                    if (rule instanceof CSSStyleRuleImpl) {
+                        LuaStyleManager.getInstance().addRule(((CSSStyleRuleImpl)rule).getSelectorText(), ((CSSStyleRuleImpl)rule).getStyle());
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
         // Inject controllers to modules
-        LuaControllerManager.getInstance().injectControllersToModules();
+//        LuaControllerManager.getInstance().injectControllersToModules();
 //        // Inject sub-controllers to controllers
 //        LuaControllerManager.getInstance().injectSubControllersToControllers();
     }
@@ -361,5 +391,4 @@ public class LuaModuleManager implements GameObserver {
             }
         }
     }
-
 }

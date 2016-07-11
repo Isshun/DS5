@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 28/06/2015.
@@ -55,8 +56,14 @@ public class GameSelectionExtra {
         ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
         if (parcel != null) {
             for (GameModule module: ModuleManager.getInstance().getGameModules()) {
-                if (module.onSelectParcel(parcel)) {
-                    return true;
+                try {
+                    if (module.onSelectParcel(parcel)) {
+                        return true;
+                    }
+                } catch (Exception e) {
+                    // TODO
+                    Log.error(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }

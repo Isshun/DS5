@@ -9,13 +9,16 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaStyleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
@@ -182,12 +185,14 @@ public class LuaUIExtend extends LuaExtend {
             if (!id.isnil()) {
                 view.setId(id.toString().hashCode());
                 view.setName(id.toString());
+                LuaStyleManager.getInstance().applyStyleFromId(id.toString(), view);
             }
 
             LuaValue name = value.get("name");
             if (!name.isnil()) {
                 view.setId(name.toString().hashCode());
                 view.setName(name.toString());
+                Log.warning("Deprecated parameter: " + name.toString());
             }
 
             LuaValue align = value.get("align");
@@ -374,6 +379,11 @@ public class LuaUIExtend extends LuaExtend {
                 } else {
                     view.addView(createView(luaModuleManager, module, globals, subViews, inGame, deep + 1, view));
                 }
+            }
+
+            LuaValue controller = value.get("controller");
+            if (!controller.isnil()) {
+                ModuleManager.getInstance().addController(controller.toString(), view);
             }
         }
 

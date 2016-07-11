@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.character.controller;
 
-import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindController;
+import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
@@ -12,7 +12,8 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
  * Created by Alex on 25/04/2016.
  */
 public class CharacterController extends LuaController {
-    @BindController("base.ui.info_character page_status")
+//    @LegacyBindController("base.ui.info_character page_status")
+    @BindController
     private CharacterStatusController   statusController;
 
     @BindLua private View               pageStatus;

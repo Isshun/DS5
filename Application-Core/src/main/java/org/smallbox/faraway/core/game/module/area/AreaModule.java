@@ -24,10 +24,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 13/06/2015.
  */
 public class AreaModule extends GameModule {
-    @BindController("base.ui.panel_areas")
+    @BindController
     private AreaController              _controller;
 
-    @BindController("base.ui.info_area_garden")
+    @BindController
     private AreaGardenInfoController    _gardenInfo;
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();

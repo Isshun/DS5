@@ -4,6 +4,7 @@ data:extend({
     type = "view",
     id = "base.ui.info_character",
     style = "base.style.right_panel",
+    controller = "org.smallbox.faraway.core.game.module.character.controller.CharacterController",
     visible = true,
     views = {
         { type = "label", text = "Character", text_size = 12, position = {12, 8}},

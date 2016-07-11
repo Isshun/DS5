@@ -3,6 +3,7 @@ consumable = nil
 data:extend({
     type = "view",
     id = "base.ui.info_consumable",
+    controller = "org.smallbox.faraway.core.game.module.world.controller.WorldConsumableController",
     style = "base.style.right_panel",
     level = 10,
 --    position = {1000, 200},

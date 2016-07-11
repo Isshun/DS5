@@ -26,7 +26,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterModule extends GameModule {
-    @BindController("base.ui.info_character")
+//    @LegacyBindController("base.ui.info_character")
+    @BindController
     private CharacterController                 _controller;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();

@@ -17,9 +17,9 @@ public class Log {
         println(LEVEL_DEBUG, str);
     }
 
-    public static void info(String str) {
+    public static void info(String str, Object... args) {
         if (LEVEL < LEVEL_INFO) return;
-        println(LEVEL_INFO, str);
+        println(LEVEL_INFO, str, args);
     }
 
     public static void warning(String str) {
@@ -44,14 +44,16 @@ public class Log {
         println(LEVEL_NOTICE, str);
     }
 
-    private static void println(int level, String str) {
+    private static void println(int level, String str, Object... args) {
         if (str != null) {
 //            if (Game.getInstance() != null) {
 //                Application.getInstance().notify(observer -> observer.onLog("System", str));
 //            }
 
-            System.out.print(System.currentTimeMillis()/1000 + " ");
-            System.out.println(getPrefix(level) + str);
+            System.out.print(String.valueOf(System.currentTimeMillis() / 1000));
+            System.out.print(" ");
+            System.out.print(getPrefix(level));
+            System.out.println(String.format(str, args));
 //
 //            if (UserInterface.getInstance() != null) {
 //                UserInterface.getInstance().addMessage(level, str);

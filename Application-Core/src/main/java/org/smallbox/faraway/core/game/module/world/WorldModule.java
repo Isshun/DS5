@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.controller.WorldConsumableController;
+import org.smallbox.faraway.core.game.module.world.controller.WorldInfoParcel2Controller;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
@@ -22,8 +23,11 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule {
-    @BindController("base.ui.info_consumable")
+    @BindController
     private WorldConsumableController           _consumableController;
+
+    @BindController
+    private WorldInfoParcel2Controller          _infoParcel2Controller;
 
     private ParcelModel[][][]                   _parcels;
     private int                                 _width;
@@ -52,6 +56,7 @@ public class WorldModule extends GameModule {
 
     @Override
     public boolean onSelectParcel(ParcelModel parcel) {
+        _infoParcel2Controller.select(parcel);
         for (ConsumableModel consumable: _consumables) {
             if (consumable.getParcel() == parcel) {
                 _consumableController.select(consumable);
