@@ -4,12 +4,14 @@ import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.*;
+import java.util.function.Consumer;
 
 public class GameSaveManager {
     public interface GameSerializerInterface {
@@ -38,7 +40,22 @@ public class GameSaveManager {
             File dbFile = new File(gameDirectory, filename + ".db");
             SQLHelper.getInstance().openDB(dbFile);
             new GameSerializer().load(game);
-            game.getModules().forEach(module -> module.getSerializers().forEach(serializer -> serializer.load(game)));
+
+// TODO
+//            game.getModules().forEach(module -> module.getSerializers().forEach(serializer -> serializer.load(game)));
+
+            game.getModules().forEach(new Consumer<GameModule>() {
+                @Override
+                public void accept(GameModule gameModule) {
+                    gameModule.getSerializers().forEach(new Consumer<SerializerInterface>() {
+                        @Override
+                        public void accept(SerializerInterface o) {
+                            o.load(game);
+                        }
+                    });
+                }
+            });
+
             SQLHelper.getInstance().closeDB();
 
             SQLHelper.getInstance().post(db -> {
@@ -59,7 +76,22 @@ public class GameSaveManager {
         // Create DB file
         File dbFile = new  File(gameDirectory, filename + ".db");
         SQLHelper.getInstance().openDB(dbFile);
-        game.getModules().forEach(module -> module.getSerializers().forEach(SerializerInterface::save));
+
+        // TODO
+//        game.getModules().forEach(module -> module.getSerializers().forEach(SerializerInterface::save));
+
+        game.getModules().forEach(new Consumer<GameModule>() {
+            @Override
+            public void accept(GameModule gameModule) {
+                gameModule.getSerializers().forEach(new Consumer<SerializerInterface>() {
+                    @Override
+                    public void accept(SerializerInterface o) {
+                        o.save();
+                    }
+                });
+            }
+        });
+
         SQLHelper.getInstance().closeDB();
         Log.notice("Create save game (" + (System.currentTimeMillis() - time) + "ms)");
 

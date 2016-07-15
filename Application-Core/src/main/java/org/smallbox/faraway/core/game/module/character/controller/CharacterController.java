@@ -13,7 +13,6 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
  * Created by Alex on 25/04/2016.
  */
 public class CharacterController extends LuaController {
-//    @LegacyBindController("base.ui.info_character page_status")
     @BindLuaController private CharacterStatusController    statusController;
 
     @BindLua private View               pageStatus;
@@ -26,9 +25,6 @@ public class CharacterController extends LuaController {
 
     @Override
     protected void onCreate() {
-        pageStatus.setOnClickListener(() -> {
-            Log.debug("gg !");
-        });
     }
 
     public void selectCharacter(CharacterModel character) {

@@ -48,6 +48,7 @@ eclipse {
 }
 
 dependencies {
+    compile project(":Application-Core")
     compile project(":Module-Bridge")
     compile project(":Module-Character")
     compile project(":Module-Buff")
