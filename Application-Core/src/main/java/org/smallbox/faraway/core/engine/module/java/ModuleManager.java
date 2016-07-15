@@ -6,7 +6,6 @@ import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.game.BindController;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
@@ -28,8 +27,6 @@ public class ModuleManager {
     private List<GameModule>            _gameModules = new ArrayList<>();
     private List<ModuleBase>            _modules = new ArrayList<>();
     private List<String>                _allowedModulesNames = Arrays.asList("WorldModule", "CharacterModule", "JobModule", "PathManager");
-    private Map<String, LuaController>  _controllers = new HashMap<>();
-    private Map<String, View>           _viewByControllerName = new HashMap<>();
 
     public static ModuleManager getInstance() {
         if (_self == null) {
@@ -56,7 +53,7 @@ public class ModuleManager {
 //        _controllers.entrySet()
 //                .stream()
 //                .filter(entry -> _viewByControllerName.containsKey(entry.getKey()))
-//                .forEach(entry -> entry.getValue().setView(_viewByControllerName.get(entry.getKey())));
+//                .forEach(entry -> entry.getValue().setRootView(_viewByControllerName.get(entry.getKey())));
     }
 
     private void loadThirdPartyModules(GDXApplication.OnLoad onLoad) {
@@ -133,7 +130,7 @@ public class ModuleManager {
         Log.info("Load application modules");
 
         // Find application modules
-        new Reflections().getSubTypesOf(ApplicationModule.class).stream()
+        new Reflections("org.smallbox.faraway").getSubTypesOf(ApplicationModule.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
                 .forEach(cls -> {
                     try {
@@ -181,7 +178,7 @@ public class ModuleManager {
         Log.info("Load game modules");
 
         // Find game modules
-        new Reflections().getSubTypesOf(GameModule.class).stream()
+        new Reflections("org.smallbox.faraway").getSubTypesOf(GameModule.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
 //                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
                 .forEach(cls -> {
@@ -266,18 +263,5 @@ public class ModuleManager {
 
     public Executor getExecutor() {
         return _executor;
-    }
-
-    public void addController(String controllerName, LuaController controller) {
-        System.out.println("Add controller: " + controllerName);
-        _controllers.put(controllerName, controller);
-    }
-
-    public void addController(String controllerName, View view) {
-        _viewByControllerName.put(controllerName, view);
-    }
-
-    public View getViewByController(String controllerName) {
-        return _viewByControllerName.get(controllerName);
     }
 }

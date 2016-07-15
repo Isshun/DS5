@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.engine.renderer.WorldGroundRenderer;
 import org.smallbox.faraway.core.engine.renderer.WorldTopRenderer;
-import org.smallbox.faraway.core.game.BindController;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule {
-    @BindController
+    @BindLuaController
     private WorldConsumableController           _consumableController;
 
-    @BindController
+    @BindLuaController
     private WorldInfoParcel2Controller          _infoParcel2Controller;
 
     private ParcelModel[][][]                   _parcels;

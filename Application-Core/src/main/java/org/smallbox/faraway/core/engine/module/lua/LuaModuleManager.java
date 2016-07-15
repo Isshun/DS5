@@ -10,9 +10,11 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
@@ -45,6 +47,8 @@ import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleSheet;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -348,6 +352,17 @@ public class LuaModuleManager implements GameObserver {
         return _extends;
     }
 
+    // TODO: replace static EXTENDS by reflection
+//    new Reflections("org.smallbox.faraway").getSubTypesOf(LuaExtend.class).stream()
+//    .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+//            .forEach(cls -> {
+//        try {
+//            Log.info("Find extend class: " + cls.getSimpleName());
+//        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//    });
+
     private static final List<LuaExtend> EXTENDS = Arrays.asList(
             new LuaUIExtend(),
             new LuaItemExtend(),
@@ -364,6 +379,7 @@ public class LuaModuleManager implements GameObserver {
 
     private void extendLuaValue(ModuleBase module, LuaValue value, Globals globals) {
         String type = value.get("type").toString();
+
         for (LuaExtend luaExtend: EXTENDS) {
             if (luaExtend.accept(type)) {
                 try {

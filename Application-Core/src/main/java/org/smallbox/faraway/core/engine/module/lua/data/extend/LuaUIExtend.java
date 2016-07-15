@@ -8,6 +8,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
@@ -195,12 +196,17 @@ public class LuaUIExtend extends LuaExtend {
                 Log.warning("Deprecated parameter: " + name.toString());
             }
 
+            LuaValue action = value.get("action");
+            if (!action.isnil()) {
+                view.setActionName(action.toString());
+            }
+
             LuaValue align = value.get("align");
             if (!align.isnil()) {
                 view.setAlign(
                         View.VerticalAlign.valueOf(align.get(1).toString().toUpperCase()),
                         View.HorizontalAlign.valueOf(align.get(2).toString().toUpperCase()));
-                view.setName(name.toString());
+                view.setName(action.toString());
             } else {
                 view.setAlign(View.VerticalAlign.TOP, View.HorizontalAlign.LEFT);
             }
@@ -383,7 +389,7 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue controller = value.get("controller");
             if (!controller.isnil()) {
-                ModuleManager.getInstance().addController(controller.toString(), view);
+                LuaControllerManager.getInstance().addController(controller.toString(), view);
             }
         }
 

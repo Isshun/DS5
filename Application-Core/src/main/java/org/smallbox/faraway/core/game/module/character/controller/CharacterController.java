@@ -1,7 +1,8 @@
 package org.smallbox.faraway.core.game.module.character.controller;
 
-import org.smallbox.faraway.core.game.BindController;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.BindLua;
+import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.UserInterface;
@@ -13,8 +14,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
  */
 public class CharacterController extends LuaController {
 //    @LegacyBindController("base.ui.info_character page_status")
-    @BindController
-    private CharacterStatusController   statusController;
+    @BindLuaController private CharacterStatusController    statusController;
 
     @BindLua private View               pageStatus;
     @BindLua private View               pageInventory;
@@ -36,6 +36,7 @@ public class CharacterController extends LuaController {
 
         UserInterface.getInstance().findById("base.ui.panel_main").setVisible(false);
 
+        pageStatus.setVisible(false);
         pageInventory.setVisible(false);
         pageHealth.setVisible(false);
         pageInfo.setVisible(false);
@@ -45,5 +46,33 @@ public class CharacterController extends LuaController {
         lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
 
         statusController.selectCharacter(character);
+    }
+
+    @BindLuaAction
+    public void onOpenStatus() {
+        openPage(pageStatus);
+    }
+
+    @BindLuaAction
+    public void onOpenInfo() {
+        openPage(pageInfo);
+    }
+
+    @BindLuaAction
+    public void onOpenInventory() {
+        openPage(pageInventory);
+    }
+
+    @BindLuaAction
+    public void onOpenHealth() {
+        openPage(pageHealth);
+    }
+
+    private void openPage(View page) {
+        pageStatus.setVisible(false);
+        pageInventory.setVisible(false);
+        pageHealth.setVisible(false);
+        pageInfo.setVisible(false);
+        page.setVisible(true);
     }
 }

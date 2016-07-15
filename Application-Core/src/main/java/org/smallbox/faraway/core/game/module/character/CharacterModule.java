@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
-import org.smallbox.faraway.core.game.BindController;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
@@ -27,7 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterModule extends GameModule {
 //    @LegacyBindController("base.ui.info_character")
-    @BindController
+    @BindLuaController
     private CharacterController                 _controller;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();

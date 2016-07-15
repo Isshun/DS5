@@ -101,6 +101,7 @@ public abstract class View {
     protected boolean           _isFocus;
     protected boolean           _isActive = true;
     protected int               _id;
+    protected String            _actionName;
     protected int               _borderSize;
     protected Object            _data;
     protected Align             _align = Align.LEFT;
@@ -145,6 +146,7 @@ public abstract class View {
     public void         setEffect(FadeEffect effect) { _effect = effect; }
     public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
     public void         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; }
+    public void         setActionName(String actionName) { _actionName = actionName; }
 
     private Color       getBackgroundColor() { return _backgroundColor; }
     public View         getParent() { return _parent; }
@@ -168,6 +170,7 @@ public abstract class View {
     public int          getMarginBottom() { return _marginBottom; }
     public int          getMarginLeft() { return _marginLeft; }
     public FadeEffect   getEffect() { return _effect; }
+    public String       getActionName() { return _actionName; }
 
     public int          compareLevel(View view) { return _deep != view.getDeep() ? _deep - view.getDeep() : hashCode() - view.hashCode(); }
 
@@ -400,6 +403,19 @@ public abstract class View {
 
     public View findById(String id) {
         return findById(id.hashCode());
+    }
+
+    public View findByAction(String actionName) {
+        for (View view: _views) {
+            if (view._actionName != null && view._actionName.equals(actionName)) {
+                return view;
+            }
+            View ret = view.findByAction(actionName);
+            if (ret != null) {
+                return ret;
+            }
+        }
+        return null;
     }
 
     public View findById(int resId) {

@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Alex on 11/07/2016.
+ * Created by Alex on 15/07/2016.
  */
-@Target({ ElementType.FIELD })
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BindController {
+public @interface BindLuaAction {
 }

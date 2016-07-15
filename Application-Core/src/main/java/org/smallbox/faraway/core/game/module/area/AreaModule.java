@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.module.area;
 
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.game.BindController;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -24,10 +24,10 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 13/06/2015.
  */
 public class AreaModule extends GameModule {
-    @BindController
+    @BindLuaController
     private AreaController              _controller;
 
-    @BindController
+    @BindLuaController
     private AreaGardenInfoController    _gardenInfo;
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();

@@ -12,10 +12,10 @@ data:extend({
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}},
 
         { type = "grid", position = {12, 72}, columns = 2, column_width = 180, row_height = 60, views = {
-            { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "label", id = "bt_inventory", text = "Inventory", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "label", id = "bt_info", text = "Info", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "view", id = "bt_health", background = 0x5588bb, size = {170, 50}, views = {
+            { type = "label", id = "bt_status", action="onOpenStatus", text = "Status", text_size = 20, padding = 18, size = {170, 50}},
+            { type = "label", id = "bt_inventory", action="onOpenInventory", text = "Inventory", text_size = 20, padding = 18, size = {170, 50}},
+            { type = "label", id = "bt_info", action="onOpenInfo", text = "Info", text_size = 20, padding = 18, size = {170, 50}},
+            { type = "view", id = "bt_health", action="onOpenHealth", background = 0x5588bb, size = {170, 50}, views = {
                 { type = "label", text = "Health", text_size = 20, padding = 18 },
                 { type = "label", text = "!", id = "bt_health_warning", text_size = 26, padding = 9, size = {32, 32}, position = {138, 9} },
             }},
@@ -32,7 +32,7 @@ data:extend({
         {
             type = "list",
             id = "page_status",
---            controller = "org.smallbox.faraway.core.game.module.character.controller.CharacterStatusController",
+            controller = "org.smallbox.faraway.core.game.module.character.controller.CharacterStatusController",
             position = {12, 200},
             size = {400, 400},
             views = {
