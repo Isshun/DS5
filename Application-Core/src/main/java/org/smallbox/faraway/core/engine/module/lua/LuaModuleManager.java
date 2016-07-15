@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
 import com.steadystate.css.dom.CSSStyleRuleImpl;
-import com.steadystate.css.format.CSSFormat;
 import com.steadystate.css.parser.CSSOMParser;
 import com.steadystate.css.parser.SACParserCSS3;
 import org.luaj.vm2.Globals;
@@ -10,11 +9,9 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
-import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
@@ -47,8 +44,6 @@ import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleSheet;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -113,7 +108,8 @@ public class LuaModuleManager implements GameObserver {
             }
         });
 
-        LuaControllerManager.getInstance().injectControllersToModules();
+        LuaControllerManager.getInstance().init();
+        LuaControllerManager.getInstance().create();
 
         Data.getData().fix();
 
@@ -169,7 +165,7 @@ public class LuaModuleManager implements GameObserver {
         });
 
         // Inject controllers to modules
-//        LuaControllerManager.getInstance().injectControllersToModules();
+//        LuaControllerManager.getInstance().init();
 //        // Inject sub-controllers to controllers
 //        LuaControllerManager.getInstance().injectSubControllersToControllers();
     }

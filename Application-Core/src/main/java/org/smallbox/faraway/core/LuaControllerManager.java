@@ -2,6 +2,7 @@ package org.smallbox.faraway.core;
 
 import com.google.common.base.CaseFormat;
 import org.reflections.Reflections;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
@@ -13,6 +14,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -30,56 +32,86 @@ public class LuaControllerManager {
         return _self;
     }
 
-    public void addController(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
+    public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
 
-    // Inject controllers to modules
-    public void injectControllersToModules() {
+    /**
+     * Inject controllers to modules
+     */
+    public void init() {
         // Invoke controllers
-        new Reflections("org.smallbox.faraway").getSubTypesOf(LuaController.class).stream()
+        _controllers = new Reflections("org.smallbox.faraway").getSubTypesOf(LuaController.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .forEach(cls -> {
-                    Log.info("LuaController: Invoke controller %s", cls.getName());
-                    try {
-                        Constructor constructor = cls.getConstructor();
-                        constructor.setAccessible(true);
-                        LuaController controller = (LuaController) constructor.newInstance();
-                        controller.setRootView(_viewByControllerName.get(cls.getCanonicalName()));
-                        _controllers.put(cls.getCanonicalName(), controller);
-                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                        e.printStackTrace();
-                    }
-                });
+                .collect(Collectors.toMap(Class::getCanonicalName, this::invokeController));
 
-        // Bind controllers to modules
-        ModuleManager.getInstance().getModules().forEach(module -> {
-            for (Field field: module.getClass().getDeclaredFields()) {
-                if (field.isAnnotationPresent(BindLuaController.class)) {
-                    _controllers.entrySet().stream()
-                            .filter(entry -> entry.getValue().getClass() == field.getType())
-                            .map(Map.Entry::getValue)
-                            .findAny()
-                            .ifPresent(controller -> {
-                                try {
-                                    field.setAccessible(true);
-                                    field.set(module, controller);
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                }
-            }
-        });
+        // Bind sub controllers
+        _controllers.values().forEach(this::bindControllerSubControllers);
 
+        // Bind lua field and action methods
         _controllers.values().stream()
                 .filter(controller -> controller.getRootView() != null)
                 .forEach(controller -> {
-                    bindFields(controller, controller.getRootView());
-                    bindSubControllers(controller);
-                    bindMethods(controller, controller.getRootView());
+                    bindControllerFields(controller, controller.getRootView());
+                    bindControllerMethods(controller, controller.getRootView());
                 });
+
+        // Bind controller to module
+        ModuleManager.getInstance().getModules().forEach(this::bindControllerToModule);
     }
 
-    private void bindFields(LuaController controller, View rootView) {
+    public void create() {
+        _controllers.values().forEach(LuaController::create);
+    }
+
+    /**
+     * Bind controllers to modules
+     *
+     * @param module Module receiving binding
+     */
+    private void bindControllerToModule(ModuleBase module) {
+        for (Field field: module.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(BindLuaController.class)) {
+                _controllers.entrySet().stream()
+                        .filter(entry -> entry.getValue().getClass() == field.getType())
+                        .map(Map.Entry::getValue)
+                        .findAny()
+                        .ifPresent(controller -> {
+                            try {
+                                field.setAccessible(true);
+                                field.set(module, controller);
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                        });
+            }
+        }
+    }
+
+    /**
+     * Invoke controllers
+     *
+     * @param cls Controller to invoke
+     */
+    private LuaController invokeController(Class<? extends LuaController> cls) {
+        Log.info("LuaController: Invoke controller %s", cls.getName());
+        try {
+            Constructor constructor = cls.getConstructor();
+            constructor.setAccessible(true);
+            LuaController controller = (LuaController) constructor.newInstance();
+            controller.setRootView(_viewByControllerName.get(cls.getCanonicalName()));
+            return controller;
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Bind controller fields
+     *
+     * @param controller Controller receiving binding
+     * @param rootView Root view
+     */
+    private void bindControllerFields(LuaController controller, View rootView) {
         for (Field field : controller.getClass().getDeclaredFields()) {
             if (field.getAnnotation(BindLua.class) != null) {
                 field.setAccessible(true);
@@ -107,7 +139,12 @@ public class LuaControllerManager {
         }
     }
 
-    private void bindSubControllers(LuaController controller) {
+    /**
+     * Bind sub controllers
+     *
+     * @param controller Controller receiving binding
+     */
+    private void bindControllerSubControllers(LuaController controller) {
         String packageName = controller.getClass().getPackage().getName();
 
         for (Field field : controller.getClass().getDeclaredFields()) {
@@ -129,7 +166,13 @@ public class LuaControllerManager {
         }
     }
 
-    private void bindMethods(LuaController controller, View rootView) {
+    /**
+     * Bind controller methods
+     *
+     * @param controller Controller receiving binding
+     * @param rootView Root view
+     */
+    private void bindControllerMethods(LuaController controller, View rootView) {
         for (Method method: controller.getClass().getDeclaredMethods()) {
             if (method.getAnnotation(BindLuaAction.class) != null) {
                 method.setAccessible(true);

@@ -10,7 +10,6 @@ import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaStyleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -389,7 +388,7 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue controller = value.get("controller");
             if (!controller.isnil()) {
-                LuaControllerManager.getInstance().addController(controller.toString(), view);
+                LuaControllerManager.getInstance().setControllerView(controller.toString(), view);
             }
         }
 
