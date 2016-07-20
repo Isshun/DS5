@@ -73,6 +73,7 @@ dependencies {
     compile project(":Module-Oxygen")
     compile project(":Module-Structure")
     compile project(":Module-Weather")
+    compile project(":Module-TopResource")
 }
 
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {

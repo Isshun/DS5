@@ -28,5 +28,6 @@ include 'Module-Oxygen'
 include 'Module-Structure'
 include 'Module-Weather'
 include 'Module-World'
+include 'Module-TopResource'
 
 
