@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
@@ -27,30 +27,34 @@ public class GardenAreaModel extends AreaModel {
     }
 
     public void cleanField(ParcelModel parcel) {
-        //  Plan to remove plant
-        if (parcel.hasPlant()) {
-            if (parcel.getPlant().getJob() != null) {
-                parcel.getPlant().getJob().cancel();
-            }
-            ModuleHelper.getJobModule().addJob(GatherJob.create(parcel.getPlant(), GatherJob.Mode.CUT));
-        }
+        throw new NotImplementedException("");
 
-        //  Plan to remove rock
-        if (parcel.hasRock()) {
-            if (parcel.hasDigJob()) {
-                parcel.getDigJob().cancel();
-            }
-            ModuleHelper.getJobModule().addJob(DigJob.create(parcel, parcel.getRockInfo(), null));
-        }
+//        //  Plan to remove plant
+//        if (parcel.hasPlant()) {
+//            if (parcel.getPlant().getJob() != null) {
+//                parcel.getPlant().getJob().cancel();
+//            }
+//            ModuleHelper.getJobModule().addJob(GatherJob.create(parcel.getPlant(), GatherJob.Mode.CUT));
+//        }
+//
+//        //  Plan to remove rock
+//        if (parcel.hasRock()) {
+//            if (parcel.hasDigJob()) {
+//                parcel.getDigJob().cancel();
+//            }
+//            ModuleHelper.getJobModule().addJob(DigJob.create(parcel, parcel.getRockInfo(), null));
+//        }
     }
 
     public void resetField(ParcelModel parcel) {
-        // Put new resource on parcel
-        if (parcel.getPlant() == null && _currentItem != null) {
-            PlantModel plant = (PlantModel) ModuleHelper.getWorldModule().putObject(parcel, _currentItem, 0);
-            plant.setGarden(this);
-            plant.setSeed(false);
-        }
+        throw new NotImplementedException("");
+
+//        // Put new resource on parcel
+//        if (parcel.getPlant() == null && _currentItem != null) {
+//            PlantModel plant = (PlantModel) ModuleHelper.getWorldModule().putObject(parcel, _currentItem, 0);
+//            plant.setGarden(this);
+//            plant.setSeed(false);
+//        }
     }
 
     @Override

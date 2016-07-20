@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.helper;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -19,48 +19,48 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemFinder extends GameModule {
-    private List<ConsumableModel>   _consumables;
     private List<ItemModel>         _items;
 
     @Override
     protected void onGameStart(Game game) {
         _items = new ArrayList<>();
-        _consumables = new ArrayList<>();
     }
 
     // TODO: lock item
     // TODO: check path
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
-        if (filter.needItem) {
-            int bestDistance = Integer.MAX_VALUE;
-            ItemModel bestItem = null;
-            for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
-                if (item.matchFilter(filter)) {
-                    PathModel path = PathManager.getInstance().getPath(character.getParcel(), item.getParcel(), true, false);
-                    if (path != null && path.getLength() < bestDistance) {
-                        bestDistance = path.getLength();
-                        bestItem = item;
-                    }
-                }
-            }
-            return bestItem;
-        }
+        throw new NotImplementedException("");
 
-        if (filter.needConsumable) {
-            int bestDistance = Integer.MAX_VALUE;
-            ConsumableModel bestConsumable = null;
-            for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
-                if (consumable.getLock() == null && consumable.matchFilter(filter)) {
-                    PathModel path = PathManager.getInstance().getPath(character.getParcel(), consumable.getParcel(), true, false);
-                    if (path != null && path.getLength() < bestDistance) {
-                        bestDistance = path.getLength();
-                        bestConsumable = consumable;
-                    }
-                }
-            }
-            return bestConsumable;
-        }
-        return null;
+//        if (filter.needItem) {
+//            int bestDistance = Integer.MAX_VALUE;
+//            ItemModel bestItem = null;
+//            for (ItemModel item: ModuleHelper.getWorldModule().getItems()) {
+//                if (item.matchFilter(filter)) {
+//                    PathModel path = PathManager.getInstance().getPath(character.getParcel(), item.getParcel(), true, false);
+//                    if (path != null && path.getLength() < bestDistance) {
+//                        bestDistance = path.getLength();
+//                        bestItem = item;
+//                    }
+//                }
+//            }
+//            return bestItem;
+//        }
+//
+//        if (filter.needConsumable) {
+//            int bestDistance = Integer.MAX_VALUE;
+//            ConsumableModel bestConsumable = null;
+//            for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
+//                if (consumable.getLock() == null && consumable.matchFilter(filter)) {
+//                    PathModel path = PathManager.getInstance().getPath(character.getParcel(), consumable.getParcel(), true, false);
+//                    if (path != null && path.getLength() < bestDistance) {
+//                        bestDistance = path.getLength();
+//                        bestConsumable = consumable;
+//                    }
+//                }
+//            }
+//            return bestConsumable;
+//        }
+//        return null;
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, CharacterModel character) {
@@ -68,7 +68,7 @@ public class ItemFinder extends GameModule {
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
-        List<? extends MapObjectModel> list = filter.needConsumable ? _consumables : _items;
+        List<? extends MapObjectModel> list = _items;
 
         // Get matching items
         int start = (int) (Math.random() * list.size());
@@ -100,25 +100,5 @@ public class ItemFinder extends GameModule {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-    }
-
-    @Override
-    public void onAddItem(ItemModel item) {
-        _items.add(item);
-    }
-
-    @Override
-    public void onAddConsumable(ConsumableModel consumable) {
-        _consumables.add(consumable);
-    }
-
-    @Override
-    public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-        _items.remove(item);
-    }
-
-    @Override
-    public void onRemoveConsumable(ConsumableModel consumable) {
-        _consumables.remove(consumable);
     }
 }

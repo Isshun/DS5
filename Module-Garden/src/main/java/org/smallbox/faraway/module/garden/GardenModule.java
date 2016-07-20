@@ -4,15 +4,16 @@ import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.module.area.AreaModule;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
+import org.smallbox.faraway.module.area.AreaModule;
 
 /**
  * Created by Alex on 05/07/2015.
  */
 public class GardenModule extends GameModule {
-    private @BindModule("base.module.area") AreaModule  _areaModule;
+    @BindModule("base.module.area")
+    private AreaModule _areaModule;
 
     @Override
     protected void onGameStart(Game game) {

@@ -3,7 +3,6 @@ package org.smallbox.faraway.module.weather;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -52,7 +51,9 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         _lightTarget = 1;
         _lightProgress = 1;
         _weather = Data.getData().getWeather(game.getInfo().region.weather.get(0).name);
-        ModuleHelper.getWorldModule().setLight(1);
+
+        // TODO
+//        ModuleHelper.getWorldModule().setLight(1);
 
         int hour = Game.getInstance().getHour();
         PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
@@ -125,7 +126,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
                 _lightColor = (_lightColor << 8) + (int) ((_previousLightColor.b * (1 - _lightProgress)) + (_nextLightColor.b * _lightProgress));
             }
 
-            Application.getInstance().notify(observer -> observer.onLightChange(_light, _lightColor));
+            notifyObservers(observer -> observer.onLightChange(_light, _lightColor));
         }
 
         // Set temperature
@@ -137,7 +138,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
                 else _temperatureByFloor[floor] += change;
             }
         }
-        Application.getInstance().notify(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));
+
         notifyObservers(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));
     }
 
@@ -157,7 +158,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         _weather = weather;
 
         printInfo("Start weather: " + _weather.name);
-        Application.getInstance().notify(observer -> observer.onWeatherChange(weather));
+        notifyObservers(observer -> observer.onWeatherChange(weather));
 
         // Sun color
         if (weather.sun != null) {

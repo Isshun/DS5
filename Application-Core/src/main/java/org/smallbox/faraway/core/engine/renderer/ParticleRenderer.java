@@ -66,9 +66,4 @@ public class ParticleRenderer extends ExtraRenderer {
     @Override
     public void onRefresh(int frame) {
     }
-
-    @Override
-    public void onWeatherChange(WeatherInfo weather) {
-//        setParticle(weather.particle);
-    }
 }

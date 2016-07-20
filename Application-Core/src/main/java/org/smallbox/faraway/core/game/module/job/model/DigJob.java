@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -115,24 +115,26 @@ public class DigJob extends JobModel {
     }
     @Override
     protected void onComplete() {
-        Log.info("Mine complete");
+        throw new NotImplementedException("");
 
-        _jobParcel.setRockInfo(null);
-        Application.getInstance().notify(observer -> observer.onRemoveRock(_jobParcel));
-
-        if (_actionInfo.products != null) {
-            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
-                ModuleHelper.getWorldModule().putObject(_jobParcel, productInfo.item, Utils.getRandom(productInfo.quantity));
-            });
-        }
-
-        if (_parcelToRemoveGround != null ) {
-            ModuleHelper.getWorldModule().replaceGround(_parcelToRemoveGround, _groundInfo);
-        }
-
-        if (_itemProduct != null) {
-            ModuleHelper.getWorldModule().putObject(_jobParcel, _itemProduct, 10, true);
-        }
+//        Log.info("Mine complete");
+//
+//        _jobParcel.setRockInfo(null);
+//        Application.getInstance().notify(observer -> observer.onRemoveRock(_jobParcel));
+//
+//        if (_actionInfo.products != null) {
+//            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
+//                ModuleHelper.getWorldModule().putObject(_jobParcel, productInfo.item, Utils.getRandom(productInfo.quantity));
+//            });
+//        }
+//
+//        if (_parcelToRemoveGround != null ) {
+//            ModuleHelper.getWorldModule().replaceGround(_parcelToRemoveGround, _groundInfo);
+//        }
+//
+//        if (_itemProduct != null) {
+//            ModuleHelper.getWorldModule().putObject(_jobParcel, _itemProduct, 10, true);
+//        }
     }
 
     @Override

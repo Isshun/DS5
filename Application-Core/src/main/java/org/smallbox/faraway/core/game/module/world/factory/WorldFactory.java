@@ -1,8 +1,7 @@
 package org.smallbox.faraway.core.game.module.world.factory;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -25,65 +24,69 @@ public class WorldFactory {
     private int                 _height;
 
     public void create(Game game, RegionInfo regionInfo) {
-        MathUtils.random.setSeed(42);
+        throw new NotImplementedException("");
 
-        _floors = game.getInfo().worldFloors;
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
-        _parcels = new ParcelModel[_width][_height][_floors];
-        List<ParcelModel> parcelList = new ArrayList<>();
-        Map<Integer, List<ParcelModel>> parcelListFloors = new HashMap<>();
-        for (int f = 0; f < _floors; f++) {
-            parcelListFloors.put(f, new ArrayList<>());
-        }
-
-        // Create parcels
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                for (int f = 0; f < _floors; f++) {
-                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
-                    parcelList.add(parcel);
-                    parcelListFloors.get(f).add(parcel);
-                    _parcels[x][y][f] = parcel;
-                }
-            }
-        }
-
-        // Add underground rock
-        ItemInfo graniteInfo = Data.getData().getItemInfo("base.granite");
-        for (int z = 0; z < _floors - 1; z++) {
-            for (int y = 0; y < _height; y++) {
-                for (int x = 0; x < _width; x++) {
-                    _parcels[x][y][z].setRockInfo(graniteInfo);
-                }
-            }
-        }
-
-        // Add region terrains
-        for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {
-            if ("random_light".equals(terrain.pattern) || "random_large".equals(terrain.pattern)) {
-                Log.notice("Create old with random pattern: " + terrain.pattern);
-                parcelList.stream()
-                        .filter(parcel -> MathUtils.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
-                        .forEach(parcel -> applyToParcel(terrain, parcel));
-            }
-            else if (WorldFactoryConfig.has(terrain.pattern)) {
-                Log.notice("Create resources with pattern: " + terrain.pattern);
-                for (int z = 0; z < _floors; z++) {
-                    new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
-                }
-            }
-            else {
-                parcelList.forEach(parcel -> applyToParcel(terrain, parcel));
-            }
-        }
-
-        // Clean old
-        cleanMap(parcelList, _parcels);
-
-        WorldHelper.init(game.getInfo(), _parcels);
-        ModuleHelper.getWorldModule().init(game, _parcels, parcelList);
-        PathManager.getInstance().init(parcelList);
+//        MathUtils.random.setSeed(42);
+//
+//        _floors = game.getInfo().worldFloors;
+//        _width = game.getInfo().worldWidth;
+//        _height = game.getInfo().worldHeight;
+//        _parcels = new ParcelModel[_width][_height][_floors];
+//        List<ParcelModel> parcelList = new ArrayList<>();
+//        Map<Integer, List<ParcelModel>> parcelListFloors = new HashMap<>();
+//        for (int f = 0; f < _floors; f++) {
+//            parcelListFloors.put(f, new ArrayList<>());
+//        }
+//
+//        // Create parcels
+//        for (int x = 0; x < _width; x++) {
+//            for (int y = 0; y < _height; y++) {
+//                for (int f = 0; f < _floors; f++) {
+//                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
+//                    parcelList.add(parcel);
+//                    parcelListFloors.get(f).add(parcel);
+//                    _parcels[x][y][f] = parcel;
+//                }
+//            }
+//        }
+//
+//        // Add underground rock
+//        ItemInfo graniteInfo = Data.getData().getItemInfo("base.granite");
+//        for (int z = 0; z < _floors - 1; z++) {
+//            for (int y = 0; y < _height; y++) {
+//                for (int x = 0; x < _width; x++) {
+//                    _parcels[x][y][z].setRockInfo(graniteInfo);
+//                }
+//            }
+//        }
+//
+//        // Add region terrains
+//        for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {
+//            if ("random_light".equals(terrain.pattern) || "random_large".equals(terrain.pattern)) {
+//                Log.notice("Create old with random pattern: " + terrain.pattern);
+//                parcelList.stream()
+//                        .filter(parcel -> MathUtils.random() < ("random_light".equals(terrain.pattern) ? 0.05f : 0.1f))
+//                        .forEach(parcel -> applyToParcel(terrain, parcel));
+//            }
+//            else if (WorldFactoryConfig.has(terrain.pattern)) {
+//                Log.notice("Create resources with pattern: " + terrain.pattern);
+//                for (int z = 0; z < _floors; z++) {
+//                    new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
+//                }
+//            }
+//            else {
+//                parcelList.forEach(parcel -> applyToParcel(terrain, parcel));
+//            }
+//        }
+//
+//        // Clean old
+//        cleanMap(parcelList, _parcels);
+//
+//        WorldHelper.init(game.getInfo(), _parcels);
+//
+//        ModuleHelper.getWorldModule().init(game, _parcels, parcelList);
+//
+//        PathManager.getInstance().init(parcelList);
     }
 
     private void cleanMap(List<ParcelModel> parcelList, ParcelModel[][][] parcels) {
@@ -196,39 +199,41 @@ public class WorldFactory {
     }
 
     public void createLandSite(Game game) {
-        // Get free parcels
-        ParcelModel startParcel = null;
-        Queue<ParcelModel> freeParcels = null;
-        for (int i = 0; i < 50; i++) {
-            startParcel = WorldHelper.getRandomFreeSpace(game.getInfo().worldFloors - 1, false, true);
-            freeParcels = getFreeParcels(startParcel);
-            if (freeParcels.size() > 15) {
-                break;
-            }
-        }
-        assert freeParcels != null;
-        assert startParcel != null;
+        throw new NotImplementedException("");
 
-        // Put characters
-        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
-        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
-        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
-
-        // Put resources
-        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
-        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
-
-        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
-        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
-        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
-
-        ModuleHelper.getWorldModule().putObject("base.iron_plate", freeParcels.poll(), 25);
-        ModuleHelper.getWorldModule().putObject("base.iron_plate", freeParcels.poll(), 25);
-
-        game.getViewport().moveTo(startParcel.x, startParcel.y);
+//        // Get free parcels
+//        ParcelModel startParcel = null;
+//        Queue<ParcelModel> freeParcels = null;
+//        for (int i = 0; i < 50; i++) {
+//            startParcel = WorldHelper.getRandomFreeSpace(game.getInfo().worldFloors - 1, false, true);
+//            freeParcels = getFreeParcels(startParcel);
+//            if (freeParcels.size() > 15) {
+//                break;
+//            }
+//        }
+//        assert freeParcels != null;
+//        assert startParcel != null;
+//
+//        // Put characters
+//        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
+//        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
+//        ModuleHelper.getCharacterModule().addRandom(freeParcels.poll());
+//
+//        // Put resources
+//        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+//        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+//        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+//        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+//        ModuleHelper.getWorldModule().putObject("base.consumable.wood_log", freeParcels.poll(), 500);
+//
+//        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
+//        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
+//        ModuleHelper.getWorldModule().putObject("base.military_meal", freeParcels.poll(), 25);
+//
+//        ModuleHelper.getWorldModule().putObject("base.iron_plate", freeParcels.poll(), 25);
+//        ModuleHelper.getWorldModule().putObject("base.iron_plate", freeParcels.poll(), 25);
+//
+//        game.getViewport().moveTo(startParcel.x, startParcel.y);
     }
 
     public ParcelModel[][][] getParcels() {

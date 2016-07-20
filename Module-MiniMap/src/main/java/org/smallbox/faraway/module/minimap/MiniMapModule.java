@@ -54,16 +54,6 @@ public class MiniMapModule extends GameModule {
     }
 
     @Override
-    public void onAddStructure(StructureModel structure) {
-
-    }
-
-    @Override
-    public void onRemoveStructure(ParcelModel parcel, StructureModel structure) {
-
-    }
-
-    @Override
     public void onRemoveRock(ParcelModel parcel) {
 
     }

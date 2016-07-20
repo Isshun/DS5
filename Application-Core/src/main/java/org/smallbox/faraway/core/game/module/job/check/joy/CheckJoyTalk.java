@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.check.joy;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
@@ -24,18 +24,20 @@ public class CheckJoyTalk extends CharacterCheck {
     }
 
     private CharacterModel getBestCharacter(CharacterModel character) {
-        int bestDistance = Integer.MAX_VALUE;
-        CharacterModel bestCharacter = null;
-        for (CharacterModel friend: ModuleHelper.getCharacterModule().getCharacters()) {
-            if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isEntertainment())) {
-                PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel(), true, false);
-                if (path != null && path.getLength() < bestDistance) {
-                    bestDistance = path.getLength();
-                    bestCharacter = friend;
-                }
-            }
-        }
-        return bestCharacter;
+        throw new NotImplementedException("");
+
+//        int bestDistance = Integer.MAX_VALUE;
+//        CharacterModel bestCharacter = null;
+//        for (CharacterModel friend: ModuleHelper.getCharacterModule().getCharacters()) {
+//            if (friend != character && friend.isAlive() && (friend.getJob() == null || friend.getJob().isEntertainment())) {
+//                PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel(), true, false);
+//                if (path != null && path.getLength() < bestDistance) {
+//                    bestDistance = path.getLength();
+//                    bestCharacter = friend;
+//                }
+//            }
+//        }
+//        return bestCharacter;
     }
 
     @Override

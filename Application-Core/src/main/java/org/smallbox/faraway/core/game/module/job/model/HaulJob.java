@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -39,23 +39,25 @@ public class HaulJob extends JobModel {
     private JobActionReturn                             _return = JobActionReturn.CONTINUE;
 
     public HaulJob(BuildableMapObject item, BuildableMapObject.ComponentModel component) {
-        super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
+        throw new NotImplementedException("");
 
-        _label = "Build " + item.getInfo().label;
-        _message = "Move to " + component.info.label;
-        _buildItem = item;
-        _component = component;
-        _component.job = this;
-
-        // Create potentials consumables
-        _potentialConsumables = new ArrayList<>();
-        ModuleHelper.getWorldModule().getConsumables().stream()
-                .filter(consumable -> consumable.getInfo() == _component.info)
-                .forEach(consumable -> {
-                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
-                    _potentialConsumables.add(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
-                });
-        Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
+//        super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
+//
+//        _label = "Build " + item.getInfo().label;
+//        _message = "Move to " + component.info.label;
+//        _buildItem = item;
+//        _component = component;
+//        _component.job = this;
+//
+//        // Create potentials consumables
+//        _potentialConsumables = new ArrayList<>();
+//        ModuleHelper.getWorldModule().getConsumables().stream()
+//                .filter(consumable -> consumable.getInfo() == _component.info)
+//                .forEach(consumable -> {
+//                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
+//                    _potentialConsumables.add(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
+//                });
+//        Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
     }
 
     public BuildableMapObject getBuildItem() {
@@ -133,16 +135,18 @@ public class HaulJob extends JobModel {
 
     @Override
     public void onQuit(CharacterModel character) {
-        if (character.getInventory() != null) {
-            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
-            character.setInventory(null);
-        }
-        _currentConsumable = null;
-        _potentialConsumables.forEach(potentialConsumable -> {
-            if (potentialConsumable.consumable.getLock() == this) {
-                potentialConsumable.consumable.lock(null);
-            }
-        });
+        throw new NotImplementedException("");
+
+//        if (character.getInventory() != null) {
+//            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
+//            character.setInventory(null);
+//        }
+//        _currentConsumable = null;
+//        _potentialConsumables.forEach(potentialConsumable -> {
+//            if (potentialConsumable.consumable.getLock() == this) {
+//                potentialConsumable.consumable.lock(null);
+//            }
+//        });
     }
 
     @Override
@@ -225,34 +229,36 @@ public class HaulJob extends JobModel {
     }
 
     protected void moveToMainItem() {
-        Log.info("Haul job: move to main item");
-        _message = "Bring " + _character.getInventory().getInfo().label + " to " + _buildItem.getInfo().label;
+        throw new NotImplementedException("");
 
-        // Move to build item
-        _targetParcel = _buildItem.getParcel();
-        _character.moveTo(_buildItem.getParcel(), new MoveListener<CharacterModel>() {
-            @Override
-            public void onReach(CharacterModel character) {
-                // Store component in factory
-                _buildItem.addComponent(_character.getInventory());
-
-                // Clear inventory if consumable has been depleted
-                if (_character.getInventory().getQuantity() == 0) {
-                    _character.setInventory(null);
-                }
-
-                // By-pass JobModule to start BuildJob without delay
-                if (_buildItem.hasAllComponents()) {
-                    ModuleHelper.getJobModule().addJob(new BuildJob(_buildItem));
-                }
-
-                _return = _component.currentQuantity == _component.neededQuantity ? JobActionReturn.COMPLETE : JobActionReturn.QUIT;
-            }
-
-            @Override
-            public void onFail(CharacterModel movable) {
-                quit(_character);
-            }
-        });
+//        Log.info("Haul job: move to main item");
+//        _message = "Bring " + _character.getInventory().getInfo().label + " to " + _buildItem.getInfo().label;
+//
+//        // Move to build item
+//        _targetParcel = _buildItem.getParcel();
+//        _character.moveTo(_buildItem.getParcel(), new MoveListener<CharacterModel>() {
+//            @Override
+//            public void onReach(CharacterModel character) {
+//                // Store component in factory
+//                _buildItem.addComponent(_character.getInventory());
+//
+//                // Clear inventory if consumable has been depleted
+//                if (_character.getInventory().getQuantity() == 0) {
+//                    _character.setInventory(null);
+//                }
+//
+//                // By-pass JobModule to start BuildJob without delay
+//                if (_buildItem.hasAllComponents()) {
+//                    ModuleHelper.getJobModule().addJob(new BuildJob(_buildItem));
+//                }
+//
+//                _return = _component.currentQuantity == _component.neededQuantity ? JobActionReturn.COMPLETE : JobActionReturn.QUIT;
+//            }
+//
+//            @Override
+//            public void onFail(CharacterModel movable) {
+//                quit(_character);
+//            }
+//        });
     }
 }

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -115,13 +115,15 @@ public class BuildableMapObject extends MapObjectModel {
     public boolean          isComplete() { return _isComplete; }
 
     public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
-        // Drop all existing components on the floor
-        _components.stream().filter(component -> component.currentQuantity > 0)
-                .forEach(component -> ModuleHelper.getWorldModule().putConsumable(_parcel, component.info, component.currentQuantity));
+        throw new NotImplementedException("");
 
-        // Set new receipt
-        _receipt = receipt;
-        _components = receipt.components.stream().map(componentInfo -> new ComponentModel(componentInfo.item, componentInfo.quantity)).collect(Collectors.toList());
+//        // Drop all existing components on the floor
+//        _components.stream().filter(component -> component.currentQuantity > 0)
+//                .forEach(component -> ModuleHelper.getWorldModule().putConsumable(_parcel, component.info, component.currentQuantity));
+//
+//        // Set new receipt
+//        _receipt = receipt;
+//        _components = receipt.components.stream().map(componentInfo -> new ComponentModel(componentInfo.item, componentInfo.quantity)).collect(Collectors.toList());
     }
 
     @Override

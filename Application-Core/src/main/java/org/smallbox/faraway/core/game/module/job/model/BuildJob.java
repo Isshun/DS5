@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -34,8 +34,10 @@ public class BuildJob extends JobModel {
 
     @Override
     public void onCancel() {
-        _buildItem.getComponents().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_jobParcel, component.info, component.currentQuantity));
-        _buildItem.getComponents().clear();
+        throw new NotImplementedException("");
+
+//        _buildItem.getComponents().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_jobParcel, component.info, component.currentQuantity));
+//        _buildItem.getComponents().clear();
     }
 
     @Override

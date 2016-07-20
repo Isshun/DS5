@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -80,7 +79,8 @@ public class CharacterNeedsExtra {
         addValue(TAG_FOOD, isSleeping ? needs.food.change.sleep : needs.food.change.wake);
         addValue(TAG_DRINK, isSleeping ? needs.water.change.sleep : needs.water.change.wake);
         addValue(TAG_ENTERTAINMENT, isSleeping ? needs.joy.change.sleep : needs.joy.change.wake);
-        addValue(TAG_RELATION, ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
+        // TODO
+//        addValue(TAG_RELATION, ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
         addValue(TAG_HAPPINESS, happinessChange / 100);
 
         // Oxygen

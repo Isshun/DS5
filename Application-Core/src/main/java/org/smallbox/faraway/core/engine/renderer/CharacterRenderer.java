@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.engine.renderer;
 
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -22,12 +21,13 @@ public class CharacterRenderer extends BaseRenderer {
     }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        for (CharacterModel c : ModuleHelper.getCharacterModule().getCharacters()) {
-            drawCharacter(renderer, viewport, c);
-        }
-        for (CharacterModel c : ModuleHelper.getCharacterModule().getVisitors()) {
-            drawCharacter(renderer, viewport, c);
-        }
+        // TODO
+//        for (CharacterModel c : ModuleHelper.getCharacterModule().getCharacters()) {
+//            drawCharacter(renderer, viewport, c);
+//        }
+//        for (CharacterModel c : ModuleHelper.getCharacterModule().getVisitors()) {
+//            drawCharacter(renderer, viewport, c);
+//        }
     }
 
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel c) {

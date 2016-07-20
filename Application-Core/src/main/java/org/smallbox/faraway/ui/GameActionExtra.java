@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.Data;
@@ -15,6 +14,7 @@ import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.job.model.DumpJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -80,58 +80,79 @@ public class GameActionExtra {
     public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 
     public boolean onKeyLeft(int cursorX, int cursorY, int fromX, int fromY, int toX, int toY) {
-        int floor = WorldHelper.getCurrentFloor();
+        throw new org.apache.commons.lang3.NotImplementedException("");
 
-        // Add area
-        if (_action == Action.SET_AREA) {
-            Application.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
-            return true;
-        }
-
-        // Remove area
-        if (_action == Action.REMOVE_AREA) {
-            Application.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
-            return true;
-        }
-
-        boolean consume = false;
-        for (int x = fromX; x <= toX; x++) {
-            for (int y = fromY; y <= toY; y++) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y, WorldHelper.getCurrentFloor());
-
-                // Remove item
-                if (_action == Action.REMOVE_ITEM) {
-                    ModuleHelper.getWorldModule().takeItem(x, y, WorldHelper.getCurrentFloor());
-                    consume = true;
-                }
-
-                // Set plan
-                if (_action == Action.SET_PLAN) {
-                    actionPlan(x, y, floor);
-                    consume = true;
-                }
-
-                // Remove structure
-                if (_action == Action.REMOVE_STRUCTURE) {
-                    ModuleHelper.getWorldModule().removeStructure(x, y, WorldHelper.getCurrentFloor());
-                    consume = true;
-                }
-
-                // Build item
-                if (_action == Action.BUILD_ITEM) {
-                    actionBuild(parcel);
-                    consume = true;
-                }
-
-                // Build item free
-                if (_action == Action.PUT_ITEM_FREE) {
-                    // TODO
-                    consume = true;
-                }
-            }
-        }
-
-        return consume;
+//        int floor = WorldHelper.getCurrentFloor();
+//
+//        // Add area
+//        if (_action == Action.SET_AREA) {
+//            Application.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
+//            return true;
+//        }
+//
+//        // Remove area
+//        if (_action == Action.REMOVE_AREA) {
+//            Application.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
+//            return true;
+//        }
+//
+//        boolean consume = false;
+//        for (int x = fromX; x <= toX; x++) {
+//            for (int y = fromY; y <= toY; y++) {
+//                ParcelModel parcel = WorldHelper.getParcel(x, y, WorldHelper.getCurrentFloor());
+//
+//                // Remove item
+//                if (_action == Action.REMOVE_ITEM) {
+//                    ModuleHelper.getWorldModule().takeItem(x, y, WorldHelper.getCurrentFloor());
+//                    consume = true;
+//                }
+//
+//                // Set plan
+//                if (_action == Action.SET_PLAN) {
+//                    actionPlan(x, y, floor);
+//                    consume = true;
+//                }
+//
+//                // TODO
+//                // Remove structure
+//                if (_action == Action.REMOVE_STRUCTURE) {
+////                    Application.getInstance().notify(observer -> observer.);
+////                    ModuleHelper.getWorldModule().removeStructure(x, y, WorldHelper.getCurrentFloor());
+//
+////                    public void removeStructure(int x, int y, int z) {
+////                        if (!WorldHelper.inMapBounds(x, y, z)) {
+////                            return;
+////                        }
+////
+////                        StructureModel structure = _parcels[x][y][z].getStructure();
+////                        if (structure != null) {
+////                            if (structure.getParcel().getStructure() == structure) {
+////                                structure.getParcel().setStructure(null);
+////                            }
+////
+////                            _structures.remove(structure);
+////                            Application.getInstance().notify(observer -> observer.onRemoveStructure(_parcels[x][y][z], structure));
+////                        }
+////                    }
+//
+//                    consume = true;
+//                }
+//
+//                // Build item
+//                if (_action == Action.BUILD_ITEM) {
+//                    actionBuild(parcel);
+//                    consume = true;
+//                }
+//
+//                // Build item free
+//                if (_action == Action.PUT_ITEM_FREE) {
+//                    // TODO
+//                    consume = true;
+//                }
+//            }
+//        }
+//
+//        return consume;
     }
 
     public void onMoveEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
@@ -237,39 +258,45 @@ public class GameActionExtra {
     public Action  getAction() { return _action; }
 
     public void     actionBuild(ParcelModel parcel) {
-        if (_selectedItemInfo == null) {
-            return;
-        }
+        throw new org.apache.commons.lang3.NotImplementedException("");
 
-        if (parcel != null) {
-            // Check if rock is present on parcel
-            if (parcel.hasRock()) {
-                JobHelper.addMineJob(parcel.x, parcel.y, parcel.z, false);
-            }
-
-            // Check if plant is present on parcel
-            if (parcel.hasPlant()) {
-                JobHelper.addGatherJob(parcel.x, parcel.y, parcel.z, true);
-            }
-
-            if (_selectedItemInfo != null) {
-                ModuleHelper.getWorldModule().putObject(parcel, _selectedItemInfo, 0);
-            }
-        }
+//        if (_selectedItemInfo == null) {
+//            return;
+//        }
+//
+//        if (parcel != null) {
+//            // Check if rock is present on parcel
+//            if (parcel.hasRock()) {
+//                JobHelper.addMineJob(parcel.x, parcel.y, parcel.z, false);
+//            }
+//
+//            // Check if plant is present on parcel
+//            if (parcel.hasPlant()) {
+//                JobHelper.addGatherJob(parcel.x, parcel.y, parcel.z, true);
+//            }
+//
+//            if (_selectedItemInfo != null) {
+//                ModuleHelper.getWorldModule().putObject(parcel, _selectedItemInfo, 0);
+//            }
+//        }
     }
 
     public void planGather(int x, int y, int z) {
-        JobModel job = JobHelper.createGatherJob(x, y, z);
-        if (job != null) {
-            ModuleHelper.getJobModule().addJob(job);
-        }
+        throw new org.apache.commons.lang3.NotImplementedException("");
+
+//        JobModel job = JobHelper.createGatherJob(x, y, z);
+//        if (job != null) {
+//            ModuleHelper.getJobModule().addJob(job);
+//        }
     }
 
     private void planCut(int x, int y, int z) {
-        JobModel job = JobHelper.createCutJob(x, y, z);
-        if (job != null) {
-            ModuleHelper.getJobModule().addJob(job);
-        }
+        throw new org.apache.commons.lang3.NotImplementedException("");
+
+//        JobModel job = JobHelper.createCutJob(x, y, z);
+//        if (job != null) {
+//            ModuleHelper.getJobModule().addJob(job);
+//        }
     }
 
     private void planCancel(int x, int y, int z) {
@@ -277,36 +304,38 @@ public class GameActionExtra {
     }
 
     public void planMining(int x, int y, int z, DigMode mode) {
-        if (mode == DigMode.RAMP_DOWN) {
-            if (WorldHelper.hasRock(x, y, z - 1)) {
-                DigJob job = JobHelper.createMiningJob(x, y, z - 1, true, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link"));
-                ModuleHelper.getJobModule().addJob(job);
-            }
-            if (WorldHelper.hasRock(x, y, z)) {
-                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link")));
-            }
-        }
-        if (mode == DigMode.RAMP_UP) {
-            if (WorldHelper.hasRock(x, y, z + 1)) {
-                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z + 1, false, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
-            }
-            if (WorldHelper.hasRock(x, y, z)) {
-                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, true, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
-            }
-        }
-        if (mode == DigMode.HOLE) {
-            if (WorldHelper.hasRock(x, y, z - 1)) {
-                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z - 1, false, WorldHelper.getParcel(x, y, z), null));
-            }
-            if (WorldHelper.hasRock(x, y, z)) {
-                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), null));
-            }
-        }
-        if (mode == DigMode.FRONT) {
-            if (WorldHelper.hasRock(x, y, z)) {
-                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, null, null));
-            }
-        }
+        throw new org.apache.commons.lang3.NotImplementedException("");
+
+//        if (mode == DigMode.RAMP_DOWN) {
+//            if (WorldHelper.hasRock(x, y, z - 1)) {
+//                DigJob job = JobHelper.createMiningJob(x, y, z - 1, true, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link"));
+//                ModuleHelper.getJobModule().addJob(job);
+//            }
+//            if (WorldHelper.hasRock(x, y, z)) {
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link")));
+//            }
+//        }
+//        if (mode == DigMode.RAMP_UP) {
+//            if (WorldHelper.hasRock(x, y, z + 1)) {
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z + 1, false, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
+//            }
+//            if (WorldHelper.hasRock(x, y, z)) {
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, true, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
+//            }
+//        }
+//        if (mode == DigMode.HOLE) {
+//            if (WorldHelper.hasRock(x, y, z - 1)) {
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z - 1, false, WorldHelper.getParcel(x, y, z), null));
+//            }
+//            if (WorldHelper.hasRock(x, y, z)) {
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), null));
+//            }
+//        }
+//        if (mode == DigMode.FRONT) {
+//            if (WorldHelper.hasRock(x, y, z)) {
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, null, null));
+//            }
+//        }
     }
 
     public void planPick(int x, int y, int z) {
@@ -314,12 +343,14 @@ public class GameActionExtra {
     }
 
     public void planDestroy(ParcelModel parcel) {
-        if (parcel.hasItem() && parcel.getItem().isComplete()) {
-            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getItem()));
-        }
-        if (parcel.hasStructure() && parcel.getStructure().isComplete()) {
-            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getStructure()));
-        }
+        throw new org.apache.commons.lang3.NotImplementedException("");
+
+//        if (parcel.hasItem() && parcel.getItem().isComplete()) {
+//            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getItem()));
+//        }
+//        if (parcel.hasStructure() && parcel.getStructure().isComplete()) {
+//            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getStructure()));
+//        }
     }
 
     public void planHaul(int x, int y, int z) {

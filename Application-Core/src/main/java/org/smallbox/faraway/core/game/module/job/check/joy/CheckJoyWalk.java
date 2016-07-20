@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.check.joy;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.module.area.AreaModule;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
@@ -37,35 +37,37 @@ public class CheckJoyWalk extends CharacterCheck {
 
     @Override
     public boolean check(CharacterModel character) {
-        // LF org.smallbox.faraway.core.game.module.room.model
-        _area = null;
-        int bestDistance = Integer.MAX_VALUE;
-        for (AreaModel area: ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getAreas()) {
-            if (area.isHome()) {
-                int distance = Math.abs(character.getParcel().x - area.getX()) + Math.abs(character.getParcel().y - area.getY());
-                if (bestDistance > distance) {
-                    bestDistance = distance;
-                    _area = area;
-                }
-            }
-        }
+        throw new NotImplementedException("");
 
-        // LF parcel
-        if (_area != null) {
-            _parcel = null;
-            int size = _area.getParcels().size();
-            int r = (int)(Math.random() * size);
-            int i = 0;
-            for (ParcelModel parcel: _area.getParcels()) {
-                if (parcel.isWalkable() && parcel.getItem() == null && (i++ < r || _parcel == null)) {
-                    _parcel = parcel;
-                }
-            }
-            if (_parcel != null) {
-                return true;
-            }
-        }
-        return false;
+//        // LF org.smallbox.faraway.core.game.module.room.model
+//        _area = null;
+//        int bestDistance = Integer.MAX_VALUE;
+//        for (AreaModel area: ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getAreas()) {
+//            if (area.isHome()) {
+//                int distance = Math.abs(character.getParcel().x - area.getX()) + Math.abs(character.getParcel().y - area.getY());
+//                if (bestDistance > distance) {
+//                    bestDistance = distance;
+//                    _area = area;
+//                }
+//            }
+//        }
+//
+//        // LF parcel
+//        if (_area != null) {
+//            _parcel = null;
+//            int size = _area.getParcels().size();
+//            int r = (int)(Math.random() * size);
+//            int i = 0;
+//            for (ParcelModel parcel: _area.getParcels()) {
+//                if (parcel.isWalkable() && parcel.getItem() == null && (i++ < r || _parcel == null)) {
+//                    _parcel = parcel;
+//                }
+//            }
+//            if (_parcel != null) {
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     @Override

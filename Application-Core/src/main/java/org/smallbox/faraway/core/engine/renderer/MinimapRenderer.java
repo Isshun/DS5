@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -17,6 +16,7 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class MinimapRenderer extends BaseRenderer {
@@ -55,7 +55,9 @@ public class MinimapRenderer extends BaseRenderer {
     protected void onLoad(Game game) {
         POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.getInstance().getConfig().uiScale - 10 * Application.getInstance().getConfig().uiScale);
         POS_Y = (int) (84 * Application.getInstance().getConfig().uiScale);
-        _characters = ModuleHelper.getCharacterModule().getCharacters();
+
+        // TODO
+        _characters = new ArrayList<>();
         _width = Game.getInstance().getInfo().worldWidth;
         _height = Game.getInstance().getInfo().worldHeight;
 
@@ -125,24 +127,25 @@ public class MinimapRenderer extends BaseRenderer {
 
     private void createMap(int width, int height) {
         if (GameManager.getInstance().isLoaded()) {
-            ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
-            for (int x = 0; x < _width; x++) {
-                for (int y = 0; y < _height; y++) {
-                    if (parcels[x][y][_floor].hasStructure()) {
-                        _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
-                    } else if (parcels[x][y][_floor].hasPlant()) {
-                        _pixmap.drawPixel(x, y, COLOR_PLANT);
-                    } else if (parcels[x][y][_floor].hasRock()) {
-                        _pixmap.drawPixel(x, y, COLOR_ROCK);
-                    } else if (parcels[x][y][_floor].hasGround()) {
-                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getGroundInfo().color);
-                    } else if (parcels[x][y][_floor].hasLiquid()) {
-                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getLiquidInfo().color);
-                    } else {
-                        _pixmap.drawPixel(x, y, 0x000000);
-                    }
-                }
-            }
+        // TODO
+//            ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
+//            for (int x = 0; x < _width; x++) {
+//                for (int y = 0; y < _height; y++) {
+//                    if (parcels[x][y][_floor].hasStructure()) {
+//                        _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
+//                    } else if (parcels[x][y][_floor].hasPlant()) {
+//                        _pixmap.drawPixel(x, y, COLOR_PLANT);
+//                    } else if (parcels[x][y][_floor].hasRock()) {
+//                        _pixmap.drawPixel(x, y, COLOR_ROCK);
+//                    } else if (parcels[x][y][_floor].hasGround()) {
+//                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getGroundInfo().color);
+//                    } else if (parcels[x][y][_floor].hasLiquid()) {
+//                        _pixmap.drawPixel(x, y, parcels[x][y][_floor].getLiquidInfo().color);
+//                    } else {
+//                        _pixmap.drawPixel(x, y, 0x000000);
+//                    }
+//                }
+//            }
             _spriteMap = new Sprite(new Texture(_pixmap, Pixmap.Format.RGB888, false));
             _spriteMap.setSize(_width, _height);
             _spriteMap.setRegion(0, 0, _width, _height);

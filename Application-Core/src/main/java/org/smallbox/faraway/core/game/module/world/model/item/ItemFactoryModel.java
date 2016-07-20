@@ -1,15 +1,14 @@
 package org.smallbox.faraway.core.game.module.world.model.item;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.CraftJob;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
@@ -93,87 +92,91 @@ public class ItemFactoryModel {
     }
 
     public void clear() {
-        _message = "Stand-by";
+        throw new NotImplementedException("");
 
-        if (_activeReceipt != null) {
-            _activeReceipt.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_item.getParcel(), component.consumable));
-            _activeReceipt.clear();
-            _activeReceipt = null;
-        }
-
-        _job = null;
+//        _message = "Stand-by";
+//
+//        if (_activeReceipt != null) {
+//            _activeReceipt.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_item.getParcel(), component.consumable));
+//            _activeReceipt.clear();
+//            _activeReceipt = null;
+//        }
+//
+//        _job = null;
     }
 
     // TODO: Do not use with locked consumables
     public boolean scan() {
-//        Log.info("scan");
+        throw new NotImplementedException("");
 
-        long time = System.currentTimeMillis();
-        _activeReceipt = null;
-
-        if (_storageParcel != null && _storageParcel.getConsumable() != null) {
-            _message = "Factory is full";
-            return false;
-        }
-
-        // List itemInfo needed in all receipts
-        Set <ItemInfo> allInputs = new HashSet<>();
-        _receiptEntries.stream()
-                .filter(receipt -> receipt.order.isActive)
-                .forEach(receipt -> allInputs.addAll(receipt.receiptInfo.inputs.stream().map(inputInfo -> inputInfo.item).collect(Collectors.toList())));
-
-        // Get distance for all of them
-        List<PotentialConsumable> potentials = new ArrayList<>();
-        allInputs.forEach(inputInfo ->
-                ModuleHelper.getWorldModule().getConsumables().stream()
-                        .filter(consumable -> consumable.getInfo().instanceOf(inputInfo))
-                        .filter(consumable -> consumable.getParcel().isWalkable())
-                        .filter(consumable -> consumable.getLock() == null)
-                        .forEach(consumable -> {
-                            PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel(), false, false);
-                            if (path != null) {
-                                potentials.add(new PotentialConsumable(consumable, path.getLength()));
-                            }
-                        }));
-        Collections.sort(potentials, (c1, c2) -> c1.distance - c2.distance);
-
-        // For each receipt, find total distance between factory and components
-        _receiptEntries.stream().filter(receipt -> receipt.order.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(potentials));
-
-        // Get receipt group based on components availability
-        OrderEntry bestOrder = null;
-        for (OrderEntry order: _orderEntries) {
-            if (order.isActive) {
-                for (ItemFactoryReceiptModel receipt : _receiptEntries) {
-                    if (bestOrder == null && receipt.order == order && receipt.enoughComponents) {
-                        bestOrder = order;
-                    }
-                }
-            }
-        }
-        if (bestOrder == null) {
-            _message = "Missing components";
-            return false;
-        }
-
-        // Get receipt based on components distance
-        int bestDistance = Integer.MAX_VALUE;
-        _activeReceipt = null;
-        for (ItemFactoryReceiptModel receipt: _receiptEntries) {
-            if (receipt.enoughComponents && receipt.order == bestOrder && receipt.totalDistance < bestDistance) {
-                _activeReceipt = receipt;
-            }
-        }
-        if (_activeReceipt == null) {
-            throw new RuntimeException("_activeReceipt cannot be null");
-        }
-
-        // Fill components list
-        _activeReceipt.prepare(potentials);
-
-        _message = "Refilling";
-
-        return true;
-//        Log.info("total time: " + (System.currentTimeMillis() - time) + "ms");
+////        Log.info("scan");
+//
+//        long time = System.currentTimeMillis();
+//        _activeReceipt = null;
+//
+//        if (_storageParcel != null && _storageParcel.getConsumable() != null) {
+//            _message = "Factory is full";
+//            return false;
+//        }
+//
+//        // List itemInfo needed in all receipts
+//        Set <ItemInfo> allInputs = new HashSet<>();
+//        _receiptEntries.stream()
+//                .filter(receipt -> receipt.order.isActive)
+//                .forEach(receipt -> allInputs.addAll(receipt.receiptInfo.inputs.stream().map(inputInfo -> inputInfo.item).collect(Collectors.toList())));
+//
+//        // Get distance for all of them
+//        List<PotentialConsumable> potentials = new ArrayList<>();
+//        allInputs.forEach(inputInfo ->
+//                ModuleHelper.getWorldModule().getConsumables().stream()
+//                        .filter(consumable -> consumable.getInfo().instanceOf(inputInfo))
+//                        .filter(consumable -> consumable.getParcel().isWalkable())
+//                        .filter(consumable -> consumable.getLock() == null)
+//                        .forEach(consumable -> {
+//                            PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel(), false, false);
+//                            if (path != null) {
+//                                potentials.add(new PotentialConsumable(consumable, path.getLength()));
+//                            }
+//                        }));
+//        Collections.sort(potentials, (c1, c2) -> c1.distance - c2.distance);
+//
+//        // For each receipt, find total distance between factory and components
+//        _receiptEntries.stream().filter(receipt -> receipt.order.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(potentials));
+//
+//        // Get receipt group based on components availability
+//        OrderEntry bestOrder = null;
+//        for (OrderEntry order: _orderEntries) {
+//            if (order.isActive) {
+//                for (ItemFactoryReceiptModel receipt : _receiptEntries) {
+//                    if (bestOrder == null && receipt.order == order && receipt.enoughComponents) {
+//                        bestOrder = order;
+//                    }
+//                }
+//            }
+//        }
+//        if (bestOrder == null) {
+//            _message = "Missing components";
+//            return false;
+//        }
+//
+//        // Get receipt based on components distance
+//        int bestDistance = Integer.MAX_VALUE;
+//        _activeReceipt = null;
+//        for (ItemFactoryReceiptModel receipt: _receiptEntries) {
+//            if (receipt.enoughComponents && receipt.order == bestOrder && receipt.totalDistance < bestDistance) {
+//                _activeReceipt = receipt;
+//            }
+//        }
+//        if (_activeReceipt == null) {
+//            throw new RuntimeException("_activeReceipt cannot be null");
+//        }
+//
+//        // Fill components list
+//        _activeReceipt.prepare(potentials);
+//
+//        _message = "Refilling";
+//
+//        return true;
+////        Log.info("total time: " + (System.currentTimeMillis() - time) + "ms");
     }
 }

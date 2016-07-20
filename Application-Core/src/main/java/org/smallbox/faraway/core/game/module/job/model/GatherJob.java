@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -129,32 +129,34 @@ public class GatherJob extends JobModel {
 
     @Override
     protected void onComplete() {
-        Log.info("Gather complete");
+        throw new NotImplementedException("");
 
-        if (_mode == Mode.PLANT_SEED) {
-            _plant.setSeed(true);
-            _plant.setNourish(1);
-        }
-
-        if (_mode == Mode.NOURISH) {
-            _plant.setNourish(Math.min(1, _plant.getNourish() + 0.5));
-        }
-
-        if (_mode == Mode.HARVEST || _mode == Mode.CUT) {
-            double maturity = _plant.getMaturity();
-
-            // Create consumable from resource
-            if (_actionInfo.products != null) {
-                _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
-                    ModuleHelper.getWorldModule().putConsumable(_plant.getParcel(), productInfo.item, (int) Math.round(Utils.getRandom(productInfo.quantity) * maturity));
-                });
-            }
-
-            // Remove resource from parcel function of mode or resource info
-            if (_mode == Mode.CUT || _plant.getInfo().plant.cutOnGathering) {
-                ModuleHelper.getWorldModule().removeResource(_plant);
-            }
-        }
+//        Log.info("Gather complete");
+//
+//        if (_mode == Mode.PLANT_SEED) {
+//            _plant.setSeed(true);
+//            _plant.setNourish(1);
+//        }
+//
+//        if (_mode == Mode.NOURISH) {
+//            _plant.setNourish(Math.min(1, _plant.getNourish() + 0.5));
+//        }
+//
+//        if (_mode == Mode.HARVEST || _mode == Mode.CUT) {
+//            double maturity = _plant.getMaturity();
+//
+//            // Create consumable from resource
+//            if (_actionInfo.products != null) {
+//                _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {
+//                    ModuleHelper.getWorldModule().putConsumable(_plant.getParcel(), productInfo.item, (int) Math.round(Utils.getRandom(productInfo.quantity) * maturity));
+//                });
+//            }
+//
+//            // Remove resource from parcel function of mode or resource info
+//            if (_mode == Mode.CUT || _plant.getInfo().plant.cutOnGathering) {
+//                ModuleHelper.getWorldModule().remove(_plant);
+//            }
+//        }
     }
 
     @Override

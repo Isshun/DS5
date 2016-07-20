@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -105,64 +105,66 @@ public class ConsumeJob extends JobModel {
     // TODO: make objects stats table instead switch
     @Override
     public JobActionReturn onAction(CharacterModel character) {
-        // Wrong call
-        if (character == null) {
-            Log.error("wrong call");
-            return JobActionReturn.ABORT;
-        }
+        throw new NotImplementedException("");
 
-//        if (!check(character)) {
+//        // Wrong call
+//        if (character == null) {
+//            Log.error("wrong call");
 //            return JobActionReturn.ABORT;
 //        }
-
-        // Part 1 - Move to consumable
-        if (_state == State.MOVE_TO_CONSUMABLE) {
-            _state = State.MOVE_TO_FREE_SPACE;
-
-            if (_consumable.getLock() != this) {
-                Log.error("consumable is not locked for current job");
-                return JobActionReturn.ABORT;
-            }
-
-//            ParcelModel parcel = WorldHelper.getNearest(_targetParcel.x, _targetParcel.y, true, true, false, false, false, false, false);
-//            if (parcel == null) {
+//
+////        if (!check(character)) {
+////            return JobActionReturn.ABORT;
+////        }
+//
+//        // Part 1 - Move to consumable
+//        if (_state == State.MOVE_TO_CONSUMABLE) {
+//            _state = State.MOVE_TO_FREE_SPACE;
+//
+//            if (_consumable.getLock() != this) {
+//                Log.error("consumable is not locked for current job");
 //                return JobActionReturn.ABORT;
 //            }
-
-//            _targetParcel = parcel;
-            _character.addInventory(_consumable, 1);
-            if (_character.getInventory() == null || _character.getInventory().getInfo() != _consumable.getInfo()) {
-                return JobActionReturn.ABORT;
-            }
-            _consumable.lock(null);
-
-            // Remove consumable if depleted
-            if (_consumable.getQuantity() <= 0) {
-                ModuleHelper.getWorldModule().removeConsumable(_consumable);
-            }
-
-//            character.moveTo(parcel, null);
-
-            return JobActionReturn.CONTINUE;
-        }
-
-        // Part 2 - Move to free space
-        if (_state == State.MOVE_TO_FREE_SPACE) {
-            Log.debug("Character #" + character.getPersonals().getName() + ": actionUse (" + _progress + ")");
-
-            // Character use item
-            _current++;
-            _progress = _current / _cost;
-            _character.getInventory().consume(_character, 0);
-            if (_current < _cost) {
-                return JobActionReturn.CONTINUE;
-            }
-
-            // Clear inventory when job are done
-            _character.setInventory(null);
-        }
-
-        return JobActionReturn.COMPLETE;
+//
+////            ParcelModel parcel = WorldHelper.getNearest(_targetParcel.x, _targetParcel.y, true, true, false, false, false, false, false);
+////            if (parcel == null) {
+////                return JobActionReturn.ABORT;
+////            }
+//
+////            _targetParcel = parcel;
+//            _character.addInventory(_consumable, 1);
+//            if (_character.getInventory() == null || _character.getInventory().getInfo() != _consumable.getInfo()) {
+//                return JobActionReturn.ABORT;
+//            }
+//            _consumable.lock(null);
+//
+//            // Remove consumable if depleted
+//            if (_consumable.getQuantity() <= 0) {
+//                ModuleHelper.getWorldModule().removeConsumable(_consumable);
+//            }
+//
+////            character.moveTo(parcel, null);
+//
+//            return JobActionReturn.CONTINUE;
+//        }
+//
+//        // Part 2 - Move to free space
+//        if (_state == State.MOVE_TO_FREE_SPACE) {
+//            Log.debug("Character #" + character.getPersonals().getName() + ": actionUse (" + _progress + ")");
+//
+//            // Character use item
+//            _current++;
+//            _progress = _current / _cost;
+//            _character.getInventory().consume(_character, 0);
+//            if (_current < _cost) {
+//                return JobActionReturn.CONTINUE;
+//            }
+//
+//            // Clear inventory when job are done
+//            _character.setInventory(null);
+//        }
+//
+//        return JobActionReturn.COMPLETE;
     }
 
     @Override

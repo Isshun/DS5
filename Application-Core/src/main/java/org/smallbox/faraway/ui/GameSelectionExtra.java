@@ -1,19 +1,17 @@
 package org.smallbox.faraway.ui;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.ToolTips;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.area.AreaModule;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.PlantModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
 /**
@@ -51,53 +49,59 @@ public class GameSelectionExtra {
     public AreaModel            getSelectedArea() { return _selectedArea; }
 
     public boolean selectAt(int x, int y, int z) {
-        Application.getInstance().notify(GameObserver::onDeselect);
+        throw new NotImplementedException("");
 
-        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
-        if (parcel != null) {
-            for (GameModule module: ModuleManager.getInstance().getGameModules()) {
-                try {
-                    if (module.onSelectParcel(parcel)) {
-                        return true;
-                    }
-                } catch (Exception e) {
-                    // TODO
-                    Log.error(e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return false;
+//        Application.getInstance().notify(GameObserver::onDeselect);
+//
+//        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
+//        if (parcel != null) {
+//            for (GameModule module: ModuleManager.getInstance().getGameModules()) {
+//                try {
+//                    if (module.onSelectParcel(parcel)) {
+//                        return true;
+//                    }
+//                } catch (Exception e) {
+//                     //TODO
+//                    Log.error(e.getMessage());
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        return false;
     }
 
     public boolean selectAt(int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
-        Application.getInstance().notify(GameObserver::onDeselect);
+        throw new NotImplementedException("");
 
-        for (int x = fromX; x <= toX; x++) {
-            for (int y = fromY; y <= toY; y++) {
-                for (int z = fromZ; z <= toZ; z++) {
-                    CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
-                    if (character != null) {
-                        for (GameModule module: ModuleManager.getInstance().getGameModules()) {
-                            if (module.onSelectCharacter(character)) {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
+//        Application.getInstance().notify(GameObserver::onDeselect);
+//
+//        for (int x = fromX; x <= toX; x++) {
+//            for (int y = fromY; y <= toY; y++) {
+//                for (int z = fromZ; z <= toZ; z++) {
+//                    CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
+//                    if (character != null) {
+//                        for (GameModule module: ModuleManager.getInstance().getGameModules()) {
+//                            if (module.onSelectCharacter(character)) {
+//                                return true;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return false;
     }
 
     public void moveAt(int x, int y, int z) {
-        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
-        if (_lastMoveParcel != parcel) {
-            _lastMoveParcel = parcel;
-            Application.getInstance().notify(observer -> observer.onOverParcel(parcel));
-        }
+        throw new NotImplementedException("");
+
+//        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
+//        if (_lastMoveParcel != parcel) {
+//            _lastMoveParcel = parcel;
+//            Application.getInstance().notify(observer -> observer.onOverParcel(parcel));
+//        }
     }
 
     public void clear() {

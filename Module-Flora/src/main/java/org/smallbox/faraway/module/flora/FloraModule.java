@@ -1,24 +1,81 @@
 package org.smallbox.faraway.module.flora;
 
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
+import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.module.world.WorldModuleObserver;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 /**
  * Created by Alex on 05/07/2015.
  */
-public class FloraModule extends GameModule {
+public class FloraModule extends GameModule<FloraModuleObserver> {
+    @BindModule("base.module.world")
+    private WorldModule _world;
+
     private Collection<PlantModel> _plants;
 
     @Override
+    protected void onGameCreate(Game game) {
+//        game.getRenders().add(new WorldGroundRenderer(this));
+        game.getRenders().add(new FloraTopRenderer(this));
+//        getSerializers().add(new WorldModuleSerializer(this));
+    }
+
+    @Override
     protected void onGameStart(Game game) {
-        _plants = ModuleHelper.getWorldModule().getPlants();
+        _plants = new LinkedList<>();
+
+        _world.addObserver(new WorldModuleObserver() {
+// TODO
+            //            @Override
+//            public void onRemoveResource(MapObjectModel mapObject) {
+//                if (mapObject instanceof PlantModel) {
+//                    removeResource((PlantModel) mapObject);
+//                }
+//            }
+//
+//            @Override
+//            public void onAddResource(MapObjectModel resource) {
+//                if (resource instanceof PlantModel && resource.getInfo().plant != null) {
+//                    _plants.add((PlantModel) resource);
+//                }
+//            }
+
+            @Override
+            public PlantModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+                if (itemInfo.isPlant) {
+                    return putPlant(parcel, itemInfo, data);
+                }
+                return null;
+            }
+
+            @Override
+            public void onAddParcel(ParcelModel parcel) {
+
+            }
+
+            @Override
+            public void onAddItem(ParcelModel parcel, ItemModel item) {
+
+            }
+
+            @Override
+            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+
+            }
+        });
     }
 
     @Override
@@ -49,17 +106,50 @@ public class FloraModule extends GameModule {
                 && temperature >= infoEntry.temperature[0] && temperature <= infoEntry.temperature[1];
     }
 
-    @Override
-    public void onAddPlant(PlantModel resource) {
-        if (resource.getInfo().plant != null) {
-            _plants.add(resource);
+    private PlantModel putPlant(ParcelModel parcel, ItemInfo itemInfo, int matterSupply) {
+        // Put item on floor
+        PlantModel plant = new PlantModel(itemInfo);
+        for (int i = 0; i < plant.getWidth(); i++) {
+            for (int j = 0; j < plant.getHeight(); j++) {
+                movePlantToParcel(parcel, plant);
+            }
+        }
+        _plants.add(plant);
+
+        PathManager.getInstance().resetAround(parcel);
+
+        notifyObservers(observer -> observer.onAddPlant(plant));
+
+        return plant;
+    }
+
+    private void movePlantToParcel(ParcelModel parcel, PlantModel resource) {
+        parcel.setPlant(resource);
+        if (resource != null) {
+            resource.setParcel(parcel);
         }
     }
 
-    @Override
-    public void onRemovePlant(PlantModel plant) {
-        if (plant.getInfo().plant != null) {
+    public void removeResource(PlantModel plant) {
+        if (plant != null) {
+            if (plant.getParcel().getPlant() == plant) {
+                plant.getParcel().setPlant(null);
+            }
+
+            // TODO ?
+            if (plant.getInfo().plant != null) {
+                _plants.remove(plant);
+            }
+
             _plants.remove(plant);
+
+            PathManager.getInstance().resetAround(plant.getParcel());
+
+            notifyObservers(observer -> observer.onRemovePlant(plant));
         }
+    }
+
+    public Collection<PlantModel> getPlants() {
+        return _plants;
     }
 }

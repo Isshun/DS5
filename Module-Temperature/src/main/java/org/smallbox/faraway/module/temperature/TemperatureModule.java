@@ -1,15 +1,20 @@
 package org.smallbox.faraway.module.temperature;
 
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
-import org.smallbox.faraway.core.game.module.room.RoomModule;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.module.world.WorldModuleObserver;
+import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.module.room.RoomModule;
 import org.smallbox.faraway.module.weather.WeatherModule;
 import org.smallbox.faraway.module.weather.WeatherModuleObserver;
 
@@ -20,14 +25,44 @@ import java.util.List;
  * Created by Alex on 13/06/2015.
  */
 public class TemperatureModule extends GameModule {
-    private @BindModule("base.module.weather") WeatherModule    _weatherModule;
-    private @BindModule("base.module.room") RoomModule          _roomModule;
+    @BindModule("base.module.world")
+    private WorldModule _worldModule;
 
-    private List<ItemModel>                                     _items = new ArrayList<>();
+    @BindModule("base.module.weather")
+    private WeatherModule _weatherModule;
+
+    @BindModule("base.module.room")
+    private RoomModule _roomModule;
+
+    private List<ItemModel> _items = new ArrayList<>();
 
     @Override
     public void onGameStart(Game game) {
         _updateInterval = 10;
+
+        _worldModule.addObserver(new WorldModuleObserver() {
+            @Override
+            public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+                return null;
+            }
+
+            @Override
+            public void onAddParcel(ParcelModel parcel) {
+
+            }
+
+            @Override
+            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+                _items.remove(item);
+            }
+
+            @Override
+            public void onAddItem(ParcelModel parcel, ItemModel item) {
+                if (item.getInfo().hasTemperatureEffect()) {
+                    _items.add(item);
+                }
+            }
+        });
 
         _weatherModule.addObserver(new WeatherModuleObserver() {
             @Override
@@ -38,19 +73,11 @@ public class TemperatureModule extends GameModule {
             public void onTemperatureChange(double temperature) {
                 Log.info("La temperature a changé !!!! " + temperature);
             }
+
+            @Override
+            public void onLightChange(double light, long color) {
+            }
         });
-    }
-
-    @Override
-    public void onAddItem(ItemModel item) {
-        if (item.getInfo().hasTemperatureEffect()) {
-            _items.add(item);
-        }
-    }
-
-    @Override
-    public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-        _items.remove(item);
     }
 
     public void onGameUpdate(Game game, int tick) {
@@ -81,9 +108,5 @@ public class TemperatureModule extends GameModule {
         if (Math.abs(diff) > 5) ratio = 0.5;
         if (Math.abs(diff) > 10) ratio = 0.1;
         room.setTemperature(room.getTemperature() + (diff * connectionValue * ratio));
-    }
-
-    @Override
-    public void onTemperatureChange(double temperature) {
     }
 }

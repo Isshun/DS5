@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.module.character;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class CharacterModule extends GameModule {
+public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindLuaController
     private CharacterController                 _controller;
 
@@ -43,14 +42,10 @@ public class CharacterModule extends GameModule {
     public Collection<CharacterModel>     getVisitors() { return _visitors; }
     public int                             getCount() { return _count; }
 
-    public CharacterModule() {
-        ModuleHelper.setCharacterModule(this);
-    }
-
     @Override
     protected void onGameCreate(Game game) {
         game.getRenders().add(new CharacterRenderer());
-        getSerializers().add(new CharacterModuleSerializer());
+        getSerializers().add(new CharacterModuleSerializer(this));
     }
 
     // TODO
@@ -81,57 +76,57 @@ public class CharacterModule extends GameModule {
 
     @Override
     public void onGameStart(Game game) {
-        ModuleHelper.setCharacterModule(this);
     }
 
     @Override
     public void onGameUpdate(Game game, int tick) {
-        // Add new born
-        _characters.addAll(_addOnUpdate);
-        _addOnUpdate.clear();
-
-        for (CharacterModel c: _characters) {
-            // Check if characters is dead
-            if (!c.isAlive()) {
-
-                // Cancel job
-                if (c.getJob() != null) {
-                    ModuleHelper.getJobModule().quitJob(c.getJob(), JobAbortReason.DIED);
-                }
-
-                if (!c.getBuffs().isEmpty()) {
-                    c.getBuffs().clear();
-                }
-
-//                characterToRemove = c;
-            }
-
-            else {
-                if (tick % 10 == c.getLag()) {
-                    // Assign job
-                    if (c.getJob() == null && !c.isSleeping()) {
-                        ModuleHelper.getJobModule().assign(c);
-                    }
-
-                    // Update characters (buffs, stats)
-                    c.update();
-                }
-
-                // Update needs
-                c.getNeeds().update();
-
-                c.setDirection(Direction.NONE);
-                c.action();
-                c.move();
-                c.fixPosition();
-            }
-        }
-
-        if (tick % 10 == 0) {
-            for (CharacterModel c: _characters) {
-                c.longUpdate();
-            }
-        }
+        // TODO
+//        // Add new born
+//        _characters.addAll(_addOnUpdate);
+//        _addOnUpdate.clear();
+//
+//        for (CharacterModel c: _characters) {
+//            // Check if characters is dead
+//            if (!c.isAlive()) {
+//
+//                // Cancel job
+//                if (c.getJob() != null) {
+//                    ModuleHelper.getJobModule().quitJob(c.getJob(), JobAbortReason.DIED);
+//                }
+//
+//                if (!c.getBuffs().isEmpty()) {
+//                    c.getBuffs().clear();
+//                }
+//
+////                characterToRemove = c;
+//            }
+//
+//            else {
+//                if (tick % 10 == c.getLag()) {
+//                    // Assign job
+//                    if (c.getJob() == null && !c.isSleeping()) {
+//                        ModuleHelper.getJobModule().assign(c);
+//                    }
+//
+//                    // Update characters (buffs, stats)
+//                    c.update();
+//                }
+//
+//                // Update needs
+//                c.getNeeds().update();
+//
+//                c.setDirection(Direction.NONE);
+//                c.action();
+//                c.move();
+//                c.fixPosition();
+//            }
+//        }
+//
+//        if (tick % 10 == 0) {
+//            for (CharacterModel c: _characters) {
+//                c.longUpdate();
+//            }
+//        }
     }
 
     // TODO: heavy
@@ -152,7 +147,7 @@ public class CharacterModule extends GameModule {
         _count++;
         _addOnUpdate.add(character);
 
-        Application.getInstance().notify(observer -> observer.onAddCharacter(character));
+        notifyObservers(observer -> observer.onAddCharacter(character));
 
         return character;
     }

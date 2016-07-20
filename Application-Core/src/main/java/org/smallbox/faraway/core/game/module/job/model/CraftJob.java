@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
@@ -133,31 +133,33 @@ public class CraftJob extends JobModel {
 
     @Override
     protected void onComplete() {
-        // Current item is done
-        for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _receipt.receiptInfo.outputs) {
-            // Put consumables on the ground
-            if (_order.output == ItemInfo.FactoryOutputMode.GROUND) {
-                ParcelModel parcel = _item.getParcel();
-                if (_item.getInfo().factory.outputSlots != null) {
-                    parcel = WorldHelper.getParcel(
-                            _item.getParcel().x + _item.getInfo().factory.outputSlots[0],
-                            _item.getParcel().y + _item.getInfo().factory.outputSlots[1],
-                            _item.getParcel().z);
-                }
-                Log.info("Factory: put crafted consumable on ground");
-                ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));
-            }
+        throw new NotImplementedException("");
 
-            // Put consumables on item network
-            if (_order.output == ItemInfo.FactoryOutputMode.NETWORK) {
-                Log.info("Factory: put crafted consumable in network");
-                if (_item.getNetworkConnections() != null) {
-                    _item.getNetworkConnections().stream()
-                            .filter(networkObject -> networkObject.getNetwork() != null && networkObject.getNetwork().accept(productInfo.item))
-                            .forEach(networkObject -> networkObject.getNetwork().addQuantity(Utils.getRandom(productInfo.quantity)));
-                }
-            }
-        }
+//        // Current item is done
+//        for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _receipt.receiptInfo.outputs) {
+//            // Put consumables on the ground
+//            if (_order.output == ItemInfo.FactoryOutputMode.GROUND) {
+//                ParcelModel parcel = _item.getParcel();
+//                if (_item.getInfo().factory.outputSlots != null) {
+//                    parcel = WorldHelper.getParcel(
+//                            _item.getParcel().x + _item.getInfo().factory.outputSlots[0],
+//                            _item.getParcel().y + _item.getInfo().factory.outputSlots[1],
+//                            _item.getParcel().z);
+//                }
+//                Log.info("Factory: put crafted consumable on ground");
+//                ModuleHelper.getWorldModule().putConsumable(parcel, productInfo.item, Utils.getRandom(productInfo.quantity));
+//            }
+//
+//            // Put consumables on item network
+//            if (_order.output == ItemInfo.FactoryOutputMode.NETWORK) {
+//                Log.info("Factory: put crafted consumable in network");
+//                if (_item.getNetworkConnections() != null) {
+//                    _item.getNetworkConnections().stream()
+//                            .filter(networkObject -> networkObject.getNetwork() != null && networkObject.getNetwork().accept(productInfo.item))
+//                            .forEach(networkObject -> networkObject.getNetwork().addQuantity(Utils.getRandom(productInfo.quantity)));
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -167,45 +169,47 @@ public class CraftJob extends JobModel {
     }
 
     protected void moveToIngredient(CharacterModel character, ItemFactoryReceiptModel.FactoryShoppingItemModel input) {
-        ConsumableModel consumable = input.consumable;
-        ItemInfo info = consumable.getInfo();
-        _targetParcel = consumable.getParcel();
-        character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
-            @Override
-            public void onReach(CharacterModel character) {
-                consumable.lock(null);
+        throw new NotImplementedException("");
 
-                int neededQuantity = Math.min(consumable.getQuantity(), input.quantity);
-                if (neededQuantity > 0) {
-                    character.addInventory(consumable, neededQuantity);
-                    if (consumable.getQuantity() == 0) {
-                        ModuleHelper.getWorldModule().removeConsumable(consumable);
-                    } else {
-                        consumable.lock(null);
-                    }
-                }
-
-                // Remove consumable from factory input list
-                _receipt.getShoppingList().remove(input);
-
-                // Move to next input (if same ingredient), or get back to factory
-                Optional<ItemFactoryReceiptModel.FactoryShoppingItemModel> optionalNextInput = _receipt.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
-                if (optionalNextInput.isPresent() && optionalNextInput.get().quantity + character.getInventoryQuantity() <= info.stack) {
-                    moveToIngredient(character, optionalNextInput.get());
-                } else {
-                    moveToMainItem();
-                }
-
-                _message = "Carry " + consumable.getInfo().label + " to " + _item.getInfo().label;
-            }
-
-            @Override
-            public void onFail(CharacterModel character) {
-                Log.info("CraftJob: character cannot reach factory");
-                quit(character);
-            }
-        });
-        _message = "Move to " + input.consumable.getInfo().label;
+//        ConsumableModel consumable = input.consumable;
+//        ItemInfo info = consumable.getInfo();
+//        _targetParcel = consumable.getParcel();
+//        character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
+//            @Override
+//            public void onReach(CharacterModel character) {
+//                consumable.lock(null);
+//
+//                int neededQuantity = Math.min(consumable.getQuantity(), input.quantity);
+//                if (neededQuantity > 0) {
+//                    character.addInventory(consumable, neededQuantity);
+//                    if (consumable.getQuantity() == 0) {
+//                        ModuleHelper.getWorldModule().removeConsumable(consumable);
+//                    } else {
+//                        consumable.lock(null);
+//                    }
+//                }
+//
+//                // Remove consumable from factory input list
+//                _receipt.getShoppingList().remove(input);
+//
+//                // Move to next input (if same ingredient), or get back to factory
+//                Optional<ItemFactoryReceiptModel.FactoryShoppingItemModel> optionalNextInput = _receipt.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
+//                if (optionalNextInput.isPresent() && optionalNextInput.get().quantity + character.getInventoryQuantity() <= info.stack) {
+//                    moveToIngredient(character, optionalNextInput.get());
+//                } else {
+//                    moveToMainItem();
+//                }
+//
+//                _message = "Carry " + consumable.getInfo().label + " to " + _item.getInfo().label;
+//            }
+//
+//            @Override
+//            public void onFail(CharacterModel character) {
+//                Log.info("CraftJob: character cannot reach factory");
+//                quit(character);
+//            }
+//        });
+//        _message = "Move to " + input.consumable.getInfo().label;
     }
 
     protected void moveToMainItem() {

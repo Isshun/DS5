@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -108,109 +108,115 @@ public class StoreJob extends JobModel implements GameObserver {
     }
 
     private void refreshJob() {
-        // Go to next consumable
-        if (!_consumables.isEmpty()) {
-            _mode = Mode.MOVE_TO_CONSUMABLE;
-            moveToConsumable(_consumables.peek());
-            return;
-        }
+        throw new NotImplementedException("");
 
-        // Go to storage
-        else if (_character.getInventory() != null) {
-            if (_storageArea != null) {
-                ParcelModel parcel = _storageArea.getNearestFreeParcel(_character.getInventory());
-                if (parcel != null) {
-                    moveToStorage(parcel);
-                    return;
-                }
-            }
-            if (_storageParcel != null) {
-                ParcelModel parcel = _storageParcel.accept(_itemInfo, 1)
-                        ? _storageParcel
-                        : WorldHelper.getNearestFreeParcel(_storageParcel, _itemInfo, 1);
-                if (parcel != null) {
-                    moveToStorage(parcel);
-                    return;
-                }
-            }
-        }
-
-        quit(_character);
+//        // Go to next consumable
+//        if (!_consumables.isEmpty()) {
+//            _mode = Mode.MOVE_TO_CONSUMABLE;
+//            moveToConsumable(_consumables.peek());
+//            return;
+//        }
+//
+//        // Go to storage
+//        else if (_character.getInventory() != null) {
+//            if (_storageArea != null) {
+//                ParcelModel parcel = _storageArea.getNearestFreeParcel(_character.getInventory());
+//                if (parcel != null) {
+//                    moveToStorage(parcel);
+//                    return;
+//                }
+//            }
+//            if (_storageParcel != null) {
+//                ParcelModel parcel = _storageParcel.accept(_itemInfo, 1)
+//                        ? _storageParcel
+//                        : WorldHelper.getNearestFreeParcel(_storageParcel, _itemInfo, 1);
+//                if (parcel != null) {
+//                    moveToStorage(parcel);
+//                    return;
+//                }
+//            }
+//        }
+//
+//        quit(_character);
     }
 
     private void moveToConsumable(ConsumableModel consumable) {
-        Log.info("Haul consumable: " + consumable.getInfo().label);
+        throw new NotImplementedException("");
 
-        _targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel(), 0, 1);
-        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
-            @Override
-            public void onReach(CharacterModel movable) {
-                // TODO: check characters inventory free space
-                if (_character.getInventory() == null) {
-                    _character.addInventory(consumable, consumable.getQuantity());
-                    ModuleHelper.getWorldModule().removeConsumable(consumable);
-                } else if (_character.getInventory().getInfo() == consumable.getInfo()) {
-                    _character.getInventory().addQuantity(consumable.getQuantity());
-                    consumable.setQuantity(0);
-                    if (consumable.isEmpty()) {
-                        ModuleHelper.getWorldModule().removeConsumable(consumable);
-                    }
-                } else {
-                    Log.error("JobHaul: characters inventory must be empty");
-                    quit(_character);
-                }
-                consumable.removeJob(StoreJob.this);
-                consumable.setStoreJob(null);
-                consumable.lock(null);
-                _consumables.remove(consumable);
-
-                refreshJob();
-            }
-
-            @Override
-            public void onFail(CharacterModel movable) {
-                _reason = JobAbortReason.BLOCKED;
-                quit(_character);
-            }
-        });
+//        Log.info("Haul consumable: " + consumable.getInfo().label);
+//
+//        _targetParcel = WorldHelper.getNearestWalkable(consumable.getParcel(), 0, 1);
+//        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
+//            @Override
+//            public void onReach(CharacterModel movable) {
+//                // TODO: check characters inventory free space
+//                if (_character.getInventory() == null) {
+//                    _character.addInventory(consumable, consumable.getQuantity());
+//                    ModuleHelper.getWorldModule().removeConsumable(consumable);
+//                } else if (_character.getInventory().getInfo() == consumable.getInfo()) {
+//                    _character.getInventory().addQuantity(consumable.getQuantity());
+//                    consumable.setQuantity(0);
+//                    if (consumable.isEmpty()) {
+//                        ModuleHelper.getWorldModule().removeConsumable(consumable);
+//                    }
+//                } else {
+//                    Log.error("JobHaul: characters inventory must be empty");
+//                    quit(_character);
+//                }
+//                consumable.removeJob(StoreJob.this);
+//                consumable.setStoreJob(null);
+//                consumable.lock(null);
+//                _consumables.remove(consumable);
+//
+//                refreshJob();
+//            }
+//
+//            @Override
+//            public void onFail(CharacterModel movable) {
+//                _reason = JobAbortReason.BLOCKED;
+//                quit(_character);
+//            }
+//        });
     }
 
     private void moveToStorage(ParcelModel parcel) {
-        _targetParcel = parcel;
-        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
-            @Override
-            public void onReach(CharacterModel movable) {
-                if (_targetParcel.getConsumable() == null) {
-                    ModuleHelper.getWorldModule().putConsumable(_targetParcel, _character.getInventory());
-                    _character.setInventory(null);
-                    complete();
-                    return;
-                }
-                if (_targetParcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
-                    int freeQuantity = _targetParcel.getConsumable().getInfo().stack - _targetParcel.getConsumable().getQuantity();
-                    // Store all inventory consumables on storage org.smallbox.faraway.core.game.module.room.model
-                    if (freeQuantity >= _character.getInventory().getQuantity()) {
-                        _targetParcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
-                        _character.setInventory(null);
-                        complete();
-                        return;
-                    }
-                    // Store some inventory consumables
-                    else {
-                        _targetParcel.getConsumable().addQuantity(freeQuantity);
-                        _character.getInventory().addQuantity(-freeQuantity);
-                    }
-                }
+        throw new NotImplementedException("");
 
-                refreshJob();
-            }
-
-            @Override
-            public void onFail(CharacterModel movable) {
-                _reason = JobAbortReason.BLOCKED;
-                quit(_character);
-            }
-        });
+//        _targetParcel = parcel;
+//        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
+//            @Override
+//            public void onReach(CharacterModel movable) {
+//                if (_targetParcel.getConsumable() == null) {
+//                    ModuleHelper.getWorldModule().putConsumable(_targetParcel, _character.getInventory());
+//                    _character.setInventory(null);
+//                    complete();
+//                    return;
+//                }
+//                if (_targetParcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
+//                    int freeQuantity = _targetParcel.getConsumable().getInfo().stack - _targetParcel.getConsumable().getQuantity();
+//                    // Store all inventory consumables on storage org.smallbox.faraway.core.game.module.room.model
+//                    if (freeQuantity >= _character.getInventory().getQuantity()) {
+//                        _targetParcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
+//                        _character.setInventory(null);
+//                        complete();
+//                        return;
+//                    }
+//                    // Store some inventory consumables
+//                    else {
+//                        _targetParcel.getConsumable().addQuantity(freeQuantity);
+//                        _character.getInventory().addQuantity(-freeQuantity);
+//                    }
+//                }
+//
+//                refreshJob();
+//            }
+//
+//            @Override
+//            public void onFail(CharacterModel movable) {
+//                _reason = JobAbortReason.BLOCKED;
+//                quit(_character);
+//            }
+//        });
     }
 
     @Override
@@ -278,11 +284,13 @@ public class StoreJob extends JobModel implements GameObserver {
 
     @Override
     public void onQuit(CharacterModel character) {
-        if (character.getInventory() != null) {
-            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
-            character.setInventory(null);
-        }
-        _consumables.forEach(consumable -> consumable.lock(null));
+        throw new NotImplementedException("");
+
+//        if (character.getInventory() != null) {
+//            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
+//            character.setInventory(null);
+//        }
+//        _consumables.forEach(consumable -> consumable.lock(null));
     }
 
     @Override
@@ -293,22 +301,5 @@ public class StoreJob extends JobModel implements GameObserver {
     @Override
     public String getLabel() {
         return "Store " + _itemInfo.label;
-    }
-
-    // TODO
-    @Override
-    public void onAddConsumable(ConsumableModel consumable){
-    }
-
-    @Override
-    public void onRemoveConsumable(ConsumableModel consumable){
-        if (_consumables.contains(consumable)) {
-            _consumables.remove(consumable);
-            consumable.removeJob(this);
-            consumable.setStoreJob(null);
-            if (consumable.getLock() == this) {
-                consumable.lock(null);
-            }
-        }
     }
 }

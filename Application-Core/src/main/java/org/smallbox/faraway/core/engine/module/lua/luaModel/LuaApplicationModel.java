@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Config;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
@@ -13,7 +12,6 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
@@ -26,7 +24,6 @@ import java.util.Optional;
  * Created by Alex on 26/09/2015.
  */
 public class LuaApplicationModel {
-    public WorldModule              world;
     public long                     tick;
     public int                      day;
     public int                      hour;
@@ -37,7 +34,6 @@ public class LuaApplicationModel {
     public Game                     game;
     public Config                   config = new Config();
     public ApplicationInfo          info = new ApplicationInfo();
-    public Collection<JobModel>     jobs;
     public Collection<LuaModule>    luaModules;
     public Collection<ModuleBase>   modules;
     public Collection<ModuleBase>   moduleThirds;
@@ -51,8 +47,6 @@ public class LuaApplicationModel {
     }
 
     public void startGame(Game game) {
-        jobs = ModuleHelper.getJobModule().getJobs();
-        world = ModuleHelper.getWorldModule();
     }
 
     public void update() {

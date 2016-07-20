@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -79,7 +79,9 @@ public class DumpJob extends JobModel {
 
     @Override
     protected void onComplete() {
-        ModuleHelper.getWorldModule().remove(_item);
+        throw new NotImplementedException("");
+
+//        ModuleHelper.getWorldModule().remove(_item);
     }
 
     @Override

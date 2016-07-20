@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Alex on 19/06/2015.
  */
-public class QuestModule extends GameModule {
+public class QuestModule extends GameModule<QuestModuleObserver> {
     private final LuaQuestExtend    _extend;
     private List<QuestModel>        _quests;
 
@@ -95,7 +95,8 @@ public class QuestModule extends GameModule {
             _quests.add(quest);
 
             Game.getInstance().setSpeed(0);
-//            Application.getInstance().notify(observer -> observer.onOpenQuest(quest));
+
+            notifyObservers(observer -> observer.onOpenQuest(quest));
         } catch (LuaError error) {
             error.printStackTrace();
             printError(error.getMessage());
