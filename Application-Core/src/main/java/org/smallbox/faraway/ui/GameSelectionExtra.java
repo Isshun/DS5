@@ -29,6 +29,26 @@ public class GameSelectionExtra {
                 && _selectedCharacter == null;
     }
 
+    public void clear() {
+        Application.getInstance().notify(GameObserver::onDeselect);
+
+        if (_selectedCharacter != null) {
+            _selectedCharacter.setSelected(false);
+        }
+        _selectedCharacter = null;
+
+        if (_selectedItem != null) {
+            _selectedItem.setSelected(false);
+        }
+        _selectedItem = null;
+
+        _selectedPlant = null;
+        _selectedParcel = null;
+        _selectedCharacter = null;
+        _selectedArea = null;
+        _selectedStructure = null;
+    }
+
     public interface SelectStrategy {
         boolean onSelect(CharacterModel character, ParcelModel parcel, AreaModel area);
     }
@@ -47,77 +67,4 @@ public class GameSelectionExtra {
     public StructureModel       getSelectedStructure() { return _selectedStructure; }
     public ParcelModel          getSelectedParcel() { return _selectedParcel; }
     public AreaModel            getSelectedArea() { return _selectedArea; }
-
-    public boolean selectAt(int x, int y, int z) {
-        throw new NotImplementedException("");
-
-//        Application.getInstance().notify(GameObserver::onDeselect);
-//
-//        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
-//        if (parcel != null) {
-//            for (GameModule module: ModuleManager.getInstance().getGameModules()) {
-//                try {
-//                    if (module.onSelectParcel(parcel)) {
-//                        return true;
-//                    }
-//                } catch (Exception e) {
-//                     //TODO
-//                    Log.error(e.getMessage());
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//        return false;
-    }
-
-    public boolean selectAt(int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
-        throw new NotImplementedException("");
-
-//        Application.getInstance().notify(GameObserver::onDeselect);
-//
-//        for (int x = fromX; x <= toX; x++) {
-//            for (int y = fromY; y <= toY; y++) {
-//                for (int z = fromZ; z <= toZ; z++) {
-//                    CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
-//                    if (character != null) {
-//                        for (GameModule module: ModuleManager.getInstance().getGameModules()) {
-//                            if (module.onSelectCharacter(character)) {
-//                                return true;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        return false;
-    }
-
-    public void moveAt(int x, int y, int z) {
-        throw new NotImplementedException("");
-
-//        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
-//        if (_lastMoveParcel != parcel) {
-//            _lastMoveParcel = parcel;
-//            Application.getInstance().notify(observer -> observer.onOverParcel(parcel));
-//        }
-    }
-
-    public void clear() {
-        Application.getInstance().notify(GameObserver::onDeselect);
-        if (_selectedCharacter != null) {
-            _selectedCharacter.setSelected(false);
-        }
-        _selectedCharacter = null;
-        if (_selectedItem != null) {
-            _selectedItem.setSelected(false);
-        }
-        _selectedItem = null;
-        _selectedPlant = null;
-        _selectedParcel = null;
-        _selectedCharacter = null;
-        _selectedArea = null;
-        _selectedStructure = null;
-    }
 }

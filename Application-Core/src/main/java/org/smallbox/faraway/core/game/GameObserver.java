@@ -35,7 +35,7 @@ public interface GameObserver {
     default void onSelectArea(AreaModel area) {}
     default boolean onSelectCharacter(CharacterModel character) {return false;}
     default boolean onSelectParcel(ParcelModel parcel) {return false;}
-    default void onOverParcel(ParcelModel parcel) {}
+//    default void onOverParcel(ParcelModel parcel) {}
     default void onDeselect() {}
     default void onLog(String tag, String message) {}
     default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
@@ -58,4 +58,8 @@ public interface GameObserver {
 
     default void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {}
     default void removeObject(MapObjectModel mapObjectModel) {}
+
+    default void onMouseMove(int x, int y) {}
+    default void onMousePress(int x, int y, GameEventListener.MouseButton button) {}
+    default void onMouseRelease(int x, int y, GameEventListener.MouseButton button) {}
 }

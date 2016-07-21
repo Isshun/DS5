@@ -135,7 +135,7 @@ public class Game {
     }
 
     public void                     clearCursor() { _gameAction.setCursor(null); }
-    public void                     clearSelection() { _selector.clear(); }
+//    public void                     clearSelection() { _selector.clear(); }
     public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
     public void                     setCursor(String cursorName) { _gameAction.setCursor(Data.getData().getCursor(cursorName)); }
 
@@ -203,7 +203,7 @@ public class Game {
             e.printStackTrace();
         }
 
-        _gameAction.draw(renderer);
+//        _gameAction.draw(renderer);
         _frame++;
     }
 

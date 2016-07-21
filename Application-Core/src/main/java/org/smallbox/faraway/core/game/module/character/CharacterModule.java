@@ -1,16 +1,14 @@
 package org.smallbox.faraway.core.game.module.character;
 
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.controller.CharacterController;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
@@ -27,6 +25,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindLuaController
     private CharacterController                 _controller;
+
+    @BindModule("")
+    private WorldMo _controller;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
@@ -46,6 +47,16 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     protected void onGameCreate(Game game) {
         game.getRenders().add(new CharacterRenderer());
         getSerializers().add(new CharacterModuleSerializer(this));
+
+        //                    CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
+//                    if (character != null) {
+//                        for (GameModule module: ModuleManager.getInstance().getGameModules()) {
+//                            if (module.onSelectCharacter(character)) {
+//                                return true;
+//                            }
+//                        }
+//                    }
+
     }
 
     // TODO

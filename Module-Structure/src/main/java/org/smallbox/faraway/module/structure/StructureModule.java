@@ -69,6 +69,10 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
             @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {
             }
+
+            @Override
+            public void onMouseMove(int parcelX, int parcelY, int floor) {
+            }
         });
     }
 

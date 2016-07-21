@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
  * Created by Alex on 15/07/2016.
  */
 public interface WeatherModuleObserver extends ModuleObserver {
-    void onWeatherChange(WeatherInfo weather);
-    void onTemperatureChange(double temperature);
-    void onLightChange(double light, long color);
+    default void onWeatherChange(WeatherInfo weather) {}
+    default void onTemperatureChange(double temperature) {}
+    default void onLightChange(double light, long color) {}
 }

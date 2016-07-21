@@ -6,15 +6,10 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
-import org.smallbox.faraway.core.game.module.job.model.DigJob;
-import org.smallbox.faraway.core.game.module.job.model.DumpJob;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -22,19 +17,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class GameActionExtra {
     private final Viewport              _viewport;
     private final GameSelectionExtra    _selector;
-    private boolean                     _keyLeftPressed;
-    private boolean                     _keyRightPressed;
 
-    // TODO: replace by UISelection
-    private int                         _keyPressPosX;
-    private int                         _keyPressPosY;
-    private int                         _keyPressPosZ;
-    private int                         _keyMovePosX;
-    private int                         _keyMovePosY;
-
-    private boolean                     _mouseOnMap;
     private UICursor                    _cursor;
-    private UISelection                 _selection;
 
     public void setCursor(UICursor cursor) {
         _cursor = cursor;
@@ -52,6 +36,9 @@ public class GameActionExtra {
         FRONT, RAMP_UP, RAMP_DOWN, HOLE
     }
 
+    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+
     Action                              _action;
     int                                 _startPressX;
     int                                 _startPressY;
@@ -59,8 +46,6 @@ public class GameActionExtra {
     int                                 _mouseMoveY;
     GameEventListener.MouseButton       _button;
     private String                      _selectedPlan;
-    private ItemInfo                    _selectedItemInfo;
-    private AreaType                    _selectedAreaType;
 
     public GameActionExtra(Viewport viewport, GameSelectionExtra selector) {
         _viewport = viewport;
@@ -71,189 +56,46 @@ public class GameActionExtra {
         _mouseMoveY = 0;
         _button = null;
         _action = Action.NONE;
-        _selection = new UISelection();
     }
 
-    public int                      getMouseX() { return _keyMovePosX; }
-    public int                      getMouseY() { return _keyMovePosY; }
-    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-
-    public boolean onKeyLeft(int cursorX, int cursorY, int fromX, int fromY, int toX, int toY) {
-        throw new org.apache.commons.lang3.NotImplementedException("");
-
-//        int floor = WorldHelper.getCurrentFloor();
-//
-//        // Add area
-//        if (_action == Action.SET_AREA) {
-//            Application.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
-//            return true;
-//        }
-//
-//        // Remove area
-//        if (_action == Action.REMOVE_AREA) {
-//            Application.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
-//            return true;
-//        }
-//
-//        boolean consume = false;
-//        for (int x = fromX; x <= toX; x++) {
-//            for (int y = fromY; y <= toY; y++) {
-//                ParcelModel parcel = WorldHelper.getParcel(x, y, WorldHelper.getCurrentFloor());
-//
-//                // Remove item
-//                if (_action == Action.REMOVE_ITEM) {
-//                    ModuleHelper.getWorldModule().takeItem(x, y, WorldHelper.getCurrentFloor());
-//                    consume = true;
-//                }
-//
-//                // Set plan
-//                if (_action == Action.SET_PLAN) {
-//                    actionPlan(x, y, floor);
-//                    consume = true;
-//                }
-//
-//                // TODO
-//                // Remove structure
-//                if (_action == Action.REMOVE_STRUCTURE) {
-////                    Application.getInstance().notify(observer -> observer.);
-////                    ModuleHelper.getWorldModule().removeStructure(x, y, WorldHelper.getCurrentFloor());
-//
-////                    public void removeStructure(int x, int y, int z) {
-////                        if (!WorldHelper.inMapBounds(x, y, z)) {
-////                            return;
-////                        }
-////
-////                        StructureModel structure = _parcels[x][y][z].getStructure();
-////                        if (structure != null) {
-////                            if (structure.getParcel().getStructure() == structure) {
-////                                structure.getParcel().setStructure(null);
-////                            }
-////
-////                            _structures.remove(structure);
-////                            Application.getInstance().notify(observer -> observer.onRemoveStructure(_parcels[x][y][z], structure));
-////                        }
-////                    }
-//
-//                    consume = true;
-//                }
-//
-//                // Build item
-//                if (_action == Action.BUILD_ITEM) {
-//                    actionBuild(parcel);
-//                    consume = true;
-//                }
-//
-//                // Build item free
-//                if (_action == Action.PUT_ITEM_FREE) {
-//                    // TODO
-//                    consume = true;
-//                }
-//            }
-//        }
-//
-//        return consume;
-    }
+//    public int                      getMouseX() { return _keyMovePosX; }
+//    public int                      getMouseY() { return _keyMovePosY; }
 
     public void onMoveEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
-        _keyMovePosX = getRelativePosX(x);
-        _keyMovePosY = getRelativePosY(y);
 
         // Left click
-        if (action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.LEFT) {
-            if (_keyLeftPressed) {
-                _keyLeftPressed = false;
-
-                if (onKeyLeft(_keyPressPosX, _keyPressPosY,
-                        Math.min(_keyPressPosX, _keyMovePosX),
-                        Math.min(_keyPressPosY, _keyMovePosY),
-                        Math.max(_keyPressPosX, _keyMovePosX),
-                        Math.max(_keyPressPosY, _keyMovePosY))) {
-                    return;
-                }
-
-                _selection.clear();
-
-                // Check selection
-                if (_selector.selectAt(
-                        getRelativePosX(_selection.getFromX()),
-                        getRelativePosY(_selection.getFromY()),
-                        getRelativePosY(_selection.getFromZ()),
-                        getRelativePosX(_selection.getToX()),
-                        getRelativePosY(_selection.getToY()),
-                        getRelativePosY(_selection.getToZ()))) {
-                    _selection.clear();
-                    return;
-                }
-
-                // Select characters
-                if (_action == GameActionExtra.Action.NONE) {
-                    if (_selector.selectAt(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor())) {
-                        return;
-                    }
-                }
-            }
+        if (action == GameEventListener.Action.RELEASED) {
+            Application.getInstance().notify(obs -> obs.onMouseRelease(x, y, button));
         }
 
-        if (action == GameEventListener.Action.PRESSED && button == GameEventListener.MouseButton.LEFT) {
-            _keyLeftPressed = true;
-            _keyMovePosX = _keyPressPosX = getRelativePosX(x);
-            _keyMovePosY = _keyPressPosY = getRelativePosY(y);
-            _keyPressPosZ = WorldHelper.getCurrentFloor();
-
-            _selection.setStart(x, y, WorldHelper.getCurrentFloor());
-        }
-
-        if (action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.RIGHT) {
-            _keyRightPressed = false;
-        }
-
-        if (action == GameEventListener.Action.PRESSED && button == GameEventListener.MouseButton.RIGHT) {
-            _keyRightPressed = true;
+        if (action == GameEventListener.Action.PRESSED) {
+            Application.getInstance().notify(obs -> obs.onMousePress(x, y, button));
         }
 
         if (action == GameEventListener.Action.MOVE) {
-            if (_selector != null) {
-                _selector.moveAt(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor());
-            }
+            Application.getInstance().notify(observer -> observer.onMouseMove(x, y));
+        }
+    }
 
-            // TODO
-            _mouseOnMap = x < 1500;
-
-            // right button pressed
-            if (_keyRightPressed || rightPressed) {
-                _viewport.update(x, y);
-                Log.debug("pos: " + _viewport.getPosX() + "x" + _viewport.getPosY());
-//            if (_menu != null && _menu.isVisible()) {
-//                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
-//                _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
+    // TODO
+//    public void draw(GDXRenderer renderer) {
+//        if (_mouseOnMap && _cursor != null) {
+//            if (_keyLeftPressed) {
+//                _cursor.draw(renderer, _viewport,
+//                        Math.min(_keyPressPosX, _keyMovePosX),
+//                        Math.min(_keyPressPosY, _keyMovePosY),
+//                        Math.max(_keyPressPosX, _keyMovePosX),
+//                        Math.max(_keyPressPosY, _keyMovePosY),
+//                        true);
+//            } else {
+//                _cursor.draw(renderer, _viewport, _keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY, false);
 //            }
-            }
-
-            if (_keyLeftPressed) {
-                _selection.setPosition(x, y, WorldHelper.getCurrentFloor());
-            }
-        }
-    }
-
-    public void draw(GDXRenderer renderer) {
-        if (_mouseOnMap && _cursor != null) {
-            if (_keyLeftPressed) {
-                _cursor.draw(renderer, _viewport,
-                        Math.min(_keyPressPosX, _keyMovePosX),
-                        Math.min(_keyPressPosY, _keyMovePosY),
-                        Math.max(_keyPressPosX, _keyMovePosX),
-                        Math.max(_keyPressPosY, _keyMovePosY),
-                        true);
-            } else {
-                _cursor.draw(renderer, _viewport, _keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY, false);
-            }
-        }
-
-        if (_cursor == null) {
-            renderer.draw(_selection, 100, 100);
-        }
-    }
+//        }
+//
+//        if (_cursor == null) {
+//            renderer.draw(_selection, 100, 100);
+//        }
+//    }
 
     public Action  getAction() { return _action; }
 
@@ -382,10 +224,12 @@ public class GameActionExtra {
     }
 
     public void clear() {
-        _action = Action.NONE;
-        _selectedPlan = null;
-        _selectedItemInfo = null;
-        Game.getInstance().clearCursor();
+        throw new NotImplementedException();
+
+//        _action = Action.NONE;
+//        _selectedPlan = null;
+//        _selectedItemInfo = null;
+//        Game.getInstance().clearCursor();
     }
 
     public void set(Action action, String plan) {
@@ -420,34 +264,38 @@ public class GameActionExtra {
     }
 
     public void set(Action action, ItemInfo info) {
-        Game.getInstance().setCursor("base.cursor.build");
-        _action = action;
-        _selectedItemInfo = info;
+        throw new NotImplementedException();
+
+//        Game.getInstance().setCursor("base.cursor.build");
+//        _action = action;
+//        _selectedItemInfo = info;
     }
 
     public void set(Action action, AreaType areaType) {
-        _action = action;
-        _selectedAreaType = areaType;
+        throw new NotImplementedException();
 
-        switch (action) {
-            case NONE:
-                break;
-            case REMOVE_ITEM:
-                break;
-            case REMOVE_STRUCTURE:
-                break;
-            case BUILD_ITEM:
-                break;
-            case SET_AREA:
-                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
-                break;
-            case PUT_ITEM_FREE:
-                break;
-            case REMOVE_AREA:
-                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
-                break;
-            case SET_PLAN:
-                break;
-        }
+//        _action = action;
+//        _selectedAreaType = areaType;
+//
+//        switch (action) {
+//            case NONE:
+//                break;
+//            case REMOVE_ITEM:
+//                break;
+//            case REMOVE_STRUCTURE:
+//                break;
+//            case BUILD_ITEM:
+//                break;
+//            case SET_AREA:
+//                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
+//                break;
+//            case PUT_ITEM_FREE:
+//                break;
+//            case REMOVE_AREA:
+//                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
+//                break;
+//            case SET_PLAN:
+//                break;
+//        }
     }
 }

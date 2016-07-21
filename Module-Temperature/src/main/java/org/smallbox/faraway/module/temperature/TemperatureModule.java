@@ -42,16 +42,6 @@ public class TemperatureModule extends GameModule {
 
         _worldModule.addObserver(new WorldModuleObserver() {
             @Override
-            public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-                return null;
-            }
-
-            @Override
-            public void onAddParcel(ParcelModel parcel) {
-
-            }
-
-            @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {
                 _items.remove(item);
             }
@@ -66,16 +56,7 @@ public class TemperatureModule extends GameModule {
 
         _weatherModule.addObserver(new WeatherModuleObserver() {
             @Override
-            public void onWeatherChange(WeatherInfo weather) {
-            }
-
-            @Override
             public void onTemperatureChange(double temperature) {
-                Log.info("La temperature a changé !!!! " + temperature);
-            }
-
-            @Override
-            public void onLightChange(double light, long color) {
             }
         });
     }

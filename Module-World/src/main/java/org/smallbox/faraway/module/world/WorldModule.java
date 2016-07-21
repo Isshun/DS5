@@ -2,8 +2,10 @@ package org.smallbox.faraway.module.world;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -41,9 +43,12 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     private Collection<ItemModel>               _items;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
+    private Viewport                            _viewport;
 
     @Override
     protected void onGameCreate(Game game) {
+        _viewport = game.getViewport();
+
         game.getRenders().add(new WorldGroundRenderer(this));
         game.getRenders().add(new WorldTopRenderer(this));
         getSerializers().add(new WorldModuleSerializer(this));
@@ -169,6 +174,32 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             }
         }
     }
+
+    @Override
+    public void onMouseMove(int x, int y) {
+        // TODO
+        if (x < 1500) {
+            notifyObservers(observer -> observer.onMouseMove(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor()));
+        }
+    }
+
+    @Override
+    public void onMousePress(int x, int y, GameEventListener.MouseButton button) {
+        // TODO
+        if (x < 1500) {
+            notifyObservers(observer -> observer.onMousePress(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor(), button));
+        }
+    }
+
+    public void onMouseRelease(int x, int y, GameEventListener.MouseButton button) {
+        // TODO
+        if (x < 1500) {
+            notifyObservers(observer -> observer.onMouseRelease(getRelativePosX(x), getRelativePosY(y), WorldHelper.getCurrentFloor(), button));
+        }
+    }
+
+    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 
     public void putObject(String itemName, ParcelModel parcel, int data) {
         putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);

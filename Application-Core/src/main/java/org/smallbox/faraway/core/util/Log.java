@@ -17,6 +17,11 @@ public class Log {
         println(LEVEL_DEBUG, str);
     }
 
+    public static void debug(String str, Object... args) {
+        if (LEVEL < LEVEL_DEBUG) return;
+        println(LEVEL_DEBUG, str, args);
+    }
+
     public static void info(String str, Object... args) {
         if (LEVEL < LEVEL_INFO) return;
         println(LEVEL_INFO, str, args);
