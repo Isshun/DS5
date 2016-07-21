@@ -11,8 +11,6 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
@@ -75,15 +73,16 @@ public class MinimapRenderer extends BaseRenderer {
         _dirty = true;
     }
 
-    @Override
-    public void onStructureComplete(StructureModel structure) {
-        _dirty = true;
-    }
-
-    @Override
-    public void onItemComplete(ItemModel item) {
-        _dirty = true;
-    }
+    // TODO
+//    @Override
+//    public void onStructureComplete(StructureModel structure) {
+//        _dirty = true;
+//    }
+//
+//    @Override
+//    public void onItemComplete(ItemModel item) {
+//        _dirty = true;
+//    }
 
     @Override
     public void onRemoveRock(ParcelModel parcel) {

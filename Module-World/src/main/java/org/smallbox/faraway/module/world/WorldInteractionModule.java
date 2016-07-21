@@ -199,7 +199,8 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 
                 // Remove item
                 if (_action == GameActionExtra.Action.REMOVE_ITEM) {
-                    _world.takeItem(x, y, WorldHelper.getCurrentFloor());
+                    // TODO
+//                    _world.takeItem(x, y, WorldHelper.getCurrentFloor());
                     consume = true;
                 }
 

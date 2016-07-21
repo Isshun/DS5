@@ -4,14 +4,12 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -19,15 +17,13 @@ import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 public interface GameObserver {
     default void onReloadUI(){}
     default void onRefreshUI(int frame){}
-    default void onStructureComplete(StructureModel structure){}
-    default void onItemComplete(ItemModel item){}
+    default void onObjectComplete(MapObjectModel mapObjectModel){}
     default void onChangeGround(ParcelModel parcel){}
 //    default void onRemoveItem(ParcelModel parcel, ItemModel item){}
 //    default void onRemoveConsumable(ConsumableModel consumable){}
 //    default void onRemoveStructure(ParcelModel parcel, StructureModel structure){}
 //    default void onRemovePlant(PlantModel plant){}
     default void onRemoveRock(ParcelModel parcel){}
-    default void onRefreshItem(ItemModel item) {}
     default void onRefreshStructure(StructureModel structure) {}
     default void onHourChange(int hour){}
     default void onDayChange(int day) {}

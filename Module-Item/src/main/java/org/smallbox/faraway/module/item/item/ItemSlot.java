@@ -1,10 +1,10 @@
-package org.smallbox.faraway.core.game.module.world.model;
+package org.smallbox.faraway.module.item.item;
 
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 public class ItemSlot {
-    private final ParcelModel   _parcel;
+    private final ParcelModel _parcel;
     private final ItemModel     _item;
     private JobModel            _job;
 

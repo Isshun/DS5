@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.module.world.model.item;
+package org.smallbox.faraway.module.item.item;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;

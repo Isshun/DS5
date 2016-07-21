@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.helper;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
@@ -11,7 +10,6 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -33,7 +31,6 @@ public class WorldHelper {
         _floors = gameInfo.worldFloors;
     }
 
-    public static ItemModel         getItem(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem() : null; }
     public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getConsumable() : null; }
     public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructure() : null; }
     public static PlantModel        getResource(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getPlant() : null; }
@@ -115,9 +112,10 @@ public class WorldHelper {
             return false;
         }
 
-        if (parcel.getItem() != null && !parcel.getItem().isStorageParcel(parcel)) {
-            return false;
-        }
+        // TODO
+//        if (parcel.getItem() != null && !parcel.getItem().isStorageParcel(parcel)) {
+//            return false;
+//        }
 
         if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
             return false;
@@ -222,9 +220,10 @@ public class WorldHelper {
         if (_parcels[x][y][z].hasPlant()) {
             return false;
         }
-        if (_parcels[x][y][z].hasItem()) {
-            return false;
-        }
+        // TODO
+        //        if (_parcels[x][y][z].hasItem()) {
+//            return false;
+//        }
         if (_parcels[x][y][z].hasConsumable()) {
             return false;
         }

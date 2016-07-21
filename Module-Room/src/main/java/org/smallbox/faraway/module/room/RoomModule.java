@@ -2,12 +2,12 @@ package org.smallbox.faraway.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
-import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
+import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.AsyncTask;
@@ -273,10 +273,12 @@ public class RoomModule extends GameModule implements GameObserver {
         _refresh[floor] = true;
         _needRefresh = true;
     }
-    @Override
-    public void onStructureComplete(StructureModel structure) {
-        plantRefresh(structure.getParcel().z);
-    }
+
+    // TODO
+//    @Override
+//    public void onStructureComplete(StructureModel structure) {
+//        plantRefresh(structure.getParcel().z);
+//    }
 
     @Override
     public void onRemoveRock(ParcelModel parcel){

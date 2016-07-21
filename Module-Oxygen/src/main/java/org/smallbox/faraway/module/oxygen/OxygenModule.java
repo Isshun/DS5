@@ -3,16 +3,15 @@ package org.smallbox.faraway.module.oxygen;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.module.job.JobModule;
-import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.module.item.ItemModule;
+import org.smallbox.faraway.module.item.ItemModuleObserver;
+import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.room.RoomModule;
 import org.smallbox.faraway.module.weather.WeatherModule;
+import org.smallbox.faraway.module.world.WorldModule;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,17 +20,20 @@ import java.util.stream.Collectors;
  * Created by Alex on 18/06/2015.
  */
 public class OxygenModule extends GameModule {
-    private @BindModule("base.module.job")
-    JobModule _jobModule;
+    @BindModule("base.module.job")
+    private JobModule _jobModule;
 
-    private @BindModule("base.module.room")
-    RoomModule _roomModule;
+    @BindModule("base.module.room")
+    private RoomModule _roomModule;
 
-    private @BindModule("base.module.weather")
-    WeatherModule _weatherModule;
+    @BindModule("base.module.weather")
+    private WeatherModule _weatherModule;
 
-    private @BindModule("base.module.world")
-    WorldModule _worldModule;
+    @BindModule("base.module.world")
+    private WorldModule _worldModule;
+
+    @BindModule("base.module.item")
+    private ItemModule _itemModule;
 
     private double                  _oxygen;
     private List<ItemModel>         _items;
@@ -44,14 +46,10 @@ public class OxygenModule extends GameModule {
 
     @Override
     protected void onGameCreate(Game game) {
-        _worldModule.addObserver(new WorldModuleObserver() {
+        _itemModule.addObserver(new ItemModuleObserver() {
             @Override
-            public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-                return null;
-            }
-
-            @Override
-            public void onAddParcel(ParcelModel parcel) {
+            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+                _items.remove(item);
             }
 
             @Override
@@ -60,11 +58,6 @@ public class OxygenModule extends GameModule {
                     _items.add(item);
                 }
             }
-
-            @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-                _items.remove(item);
-            }
         });
     }
 
@@ -72,7 +65,7 @@ public class OxygenModule extends GameModule {
     protected void onGameStart(Game game) {
         _jobModule.addPriorityCheck(new CheckCharacterOxygen(this, _roomModule));
         _oxygen = game.getPlanet().getOxygen();
-        _items = _worldModule.getItems().stream().filter(item -> item.getInfo().effects != null && item.getInfo().effects.oxygen > 0).collect(Collectors.toList());
+        _items = _itemModule.getItems().stream().filter(item -> item.getInfo().effects != null && item.getInfo().effects.oxygen > 0).collect(Collectors.toList());
     }
 
     @Override

@@ -39,11 +39,12 @@ public class DumpJob extends JobModel {
 
     @Override
     public JobCheckReturn onCheck(CharacterModel character) {
-        // Item is no longer exists
-        if (_item != _item.getParcel().getItem() && _item != _item.getParcel().getStructure()) {
-            _reason = JobAbortReason.INVALID;
-            return JobCheckReturn.ABORT;
-        }
+        // TODO
+        //        // Item is no longer exists
+//        if (_item != _item.getParcel().getItem() && _item != _item.getParcel().getStructure()) {
+//            _reason = JobAbortReason.INVALID;
+//            return JobCheckReturn.ABORT;
+//        }
 
         // No path to item
         if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel(), true, false)) {

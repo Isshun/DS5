@@ -9,8 +9,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -196,8 +194,9 @@ public class PathManager extends GameModule {
         return sum;
     }
 
-    @Override
-    public void onStructureComplete(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
+    // TODO
+//    @Override
+//    public void onStructureComplete(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
 
     public void resetAround(ParcelModel parcel) { _graph.resetAround(parcel); }
 

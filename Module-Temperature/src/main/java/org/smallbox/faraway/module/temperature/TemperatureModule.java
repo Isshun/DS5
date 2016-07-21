@@ -1,19 +1,16 @@
 package org.smallbox.faraway.module.temperature;
 
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
+import org.smallbox.faraway.module.item.ItemModule;
+import org.smallbox.faraway.module.item.ItemModuleObserver;
+import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.room.RoomModule;
 import org.smallbox.faraway.module.weather.WeatherModule;
 import org.smallbox.faraway.module.weather.WeatherModuleObserver;
@@ -34,11 +31,14 @@ public class TemperatureModule extends GameModule {
     @BindModule("base.module.room")
     private RoomModule _roomModule;
 
+    @BindModule("base.module.item")
+    private ItemModule _itemModule;
+
     private List<ItemModel> _items = new ArrayList<>();
 
     @Override
     public void onGameCreate(Game game) {
-        _worldModule.addObserver(new WorldModuleObserver() {
+        _itemModule.addObserver(new ItemModuleObserver() {
             @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {
                 _items.remove(item);

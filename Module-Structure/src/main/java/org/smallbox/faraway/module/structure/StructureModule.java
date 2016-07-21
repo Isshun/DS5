@@ -7,13 +7,13 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.module.world.*;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.job.JobModuleObserver;
+import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.module.world.WorldModuleObserver;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -49,6 +49,9 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         _world.addObserver(new WorldModuleObserver() {
             @Override
             public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+                if (itemInfo.isStructure) {
+                    // TODO
+                }
                 return null;
             }
 
@@ -57,18 +60,6 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
                 if (parcel.hasStructure()) {
                     _structures.add(parcel.getStructure());
                 }
-            }
-
-            @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
-            }
-
-            @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-            }
-
-            @Override
-            public void onMouseMove(int parcelX, int parcelY, int floor) {
             }
         });
     }

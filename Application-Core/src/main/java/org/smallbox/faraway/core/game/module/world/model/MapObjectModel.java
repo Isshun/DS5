@@ -5,7 +5,6 @@ import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +118,7 @@ public abstract class MapObjectModel extends ObjectModel {
     public boolean          matchPosition(int x, int y) { return _parcel != null && _parcel.x == x && _parcel.y == y; }
     public boolean          hasJobs() { return _jobs != null && !_jobs.isEmpty(); }
 
-    public ItemModel use(CharacterModel character, int durationLeft) {
+    public void use(CharacterModel character, int durationLeft) {
         // Add buffEffect on characters
         _info.actions.stream().filter(action -> "use".equals(action.type)).forEach(action -> character.getNeeds().use(this, action.effects, action.cost));
 
@@ -127,8 +126,6 @@ public abstract class MapObjectModel extends ObjectModel {
         if (_animFrame++ % _animFrameInterval == 0) {
             _currentFrame = (_currentFrame + 1) % _nbFrame;
         }
-
-        return null;
     }
 
     public boolean matchFilter(ItemFilter filter) {

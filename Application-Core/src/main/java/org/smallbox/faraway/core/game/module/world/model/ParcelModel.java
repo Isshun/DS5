@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Utils;
 
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ConsumableModel                  _consumable;
     public StructureModel                   _structure;
     public PlantModel                       _plant;
-    public ItemModel                        _item;
     public List<NetworkObjectModel>         _networks;
     private ItemInfo                        _liquidInfo;
 
@@ -48,7 +46,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void                     setArea(AreaModel area) { _area = area; }
     public void                     setConnections(Array<Connection<ParcelModel>> connections) { _connections = connections; }
 
-    public void                     setItem(ItemModel item) { _item = item; }
     public void                     setConsumable(ConsumableModel consumable) { _consumable = consumable; }
     public void                     setPlant(PlantModel plant) { _plant = plant; }
     public void                     setStructure(StructureModel structure) { _structure = structure; }
@@ -63,7 +60,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
     public boolean                  hasConsumable() { return _consumable != null; }
     public boolean                  hasPlant() { return _plant != null; }
-    public boolean                  hasItem() { return _item != null; }
     public boolean                  hasStructure() { return _structure != null; }
     public boolean                  hasNonFloorStructure() { return _structure != null && !_structure.isFloor(); }
     public boolean                  hasGround() { return _groundInfo != null; }
@@ -80,7 +76,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ItemInfo                 getGroundInfo() { return _groundInfo; }
     public ItemInfo                 getLiquidInfo() { return _liquidInfo; }
     public DigJob                   getDigJob() { return _digJob; }
-    public ItemModel                getItem() { return _item; }
     public StructureModel           getStructure() { return _structure; }
     public ItemInfo                 getStructureInfo() { return _structure != null ? _structure.getInfo() : null; }
     public PlantModel               getPlant() { return _plant; }
@@ -149,10 +144,11 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
             return false;
         }
 
-        // Check item
-        if (_item != null && !_item.getInfo().isWalkable && _item.isComplete()) {
-            return false;
-        }
+        // TODO: add is walkable field set by modules
+//        // Check item
+//        if (_item != null && !_item.getInfo().isWalkable && _item.isComplete()) {
+//            return false;
+//        }
 
         // Check resource
         if (_plant != null && !_plant.getInfo().isWalkable) {
@@ -197,9 +193,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         if (_environment != null) {
             score += _environment.getScore();
         }
-        if (_item != null) {
-            score += _item.getValue();
-        }
+//        if (_item != null) {
+//            score += _item.getValue();
+//        }
 
         return score;
     }
@@ -217,9 +213,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
             return false;
         }
 
-        if (_rockInfo != null || _liquidInfo != null || _plant != null || _item != null || this.hasWallOrDoor()) {
-            return false;
-        }
+        // TODO
+//        if (_rockInfo != null || _liquidInfo != null || _plant != null || _item != null || this.hasWallOrDoor()) {
+//            return false;
+//        }
 
         if (_consumable != null && _consumable.getInfo() != itemInfo) {
             return false;

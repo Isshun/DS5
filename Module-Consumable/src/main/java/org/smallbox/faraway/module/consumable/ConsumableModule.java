@@ -15,7 +15,6 @@ import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.structure.StructureModuleObserver;
@@ -195,12 +194,12 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
-    @Override
-    public void onItemComplete(ItemModel item) {
-        if (item.getParcel().hasConsumable()) {
-            moveConsumableToParcel(WorldHelper.getNearestFreeParcel(item.getParcel(), true, true), item.getParcel().getConsumable());
-        }
-    }
+//    @Override
+//    public void onItemComplete(ItemModel item) {
+//        if (item.getParcel().hasConsumable()) {
+//            moveConsumableToParcel(WorldHelper.getNearestFreeParcel(item.getParcel(), true, true), item.getParcel().getConsumable());
+//        }
+//    }
 
     @Override
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {

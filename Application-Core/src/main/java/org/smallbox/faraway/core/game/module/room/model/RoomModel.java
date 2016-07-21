@@ -5,8 +5,8 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Utils;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
@@ -28,9 +28,6 @@ public class RoomModel {
     private double                      _lightValue;
     private double                      _permeability;
     private List<RoomConnectionModel>   _connections;
-    private List<ItemModel>             _heatItems = new ArrayList<>();
-    private List<ItemModel>             _coldItems = new ArrayList<>();
-    private List<ItemModel>             _oxygenItems = new ArrayList<>();
     private RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
     private String                      _autoName;
     private String                      _name;
@@ -106,9 +103,6 @@ public class RoomModel {
     public List<RoomConnectionModel>    getConnections() { return _connections; }
     public Set<ParcelModel>             getParcels() { return _parcels; }
     public String                       getName() { return _name != null ? _name : _autoName; }
-    public List<ItemModel>              getHeatItems() { return _heatItems; }
-    public List<ItemModel>              getColdItems() { return _coldItems; }
-    public List<ItemModel>              getOxygenItems() { return _oxygenItems; }
 
     public void                         addOxygen(double oxygen) { _oxygen = Math.max(0, Math.min(1, _oxygen + oxygen / _parcels.size())); }
     public void                         addParcels(Collection<ParcelModel> parcels) { parcels.forEach(parcel -> parcel.setRoom(this)); _parcels.addAll(parcels); }
@@ -192,13 +186,15 @@ public class RoomModel {
      * @return
      */
     public MapObjectModel find(ItemFilter filter) {
-        for (ParcelModel area: _parcels) {
-            ItemModel item = area.getItem();
-            if (item != null && item.matchFilter(filter)) {
-                return item;
-            }
-        }
-        return null;
+        throw new NotImplementedException();
+
+//        for (ParcelModel area: _parcels) {
+//            ItemModel item = area.getItem();
+//            if (item != null && item.matchFilter(filter)) {
+//                return item;
+//            }
+//        }
+//        return null;
     }
 
     public void removeArea(ParcelModel area) {

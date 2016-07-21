@@ -1,13 +1,13 @@
-package org.smallbox.faraway.core.game.module.job.check.character;
+package org.smallbox.faraway.module.character.job;
 
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.helper.ItemFinder;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
+import org.smallbox.faraway.module.item.ItemFinder;
 
 /**
  * Created by Alex on 01/06/2015.

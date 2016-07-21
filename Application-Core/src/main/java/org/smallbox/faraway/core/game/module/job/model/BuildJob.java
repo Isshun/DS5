@@ -11,8 +11,6 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Log;
 
 /**
@@ -75,11 +73,7 @@ public class BuildJob extends JobModel {
         if (WorldHelper.getApproxDistance(_character.getParcel(), _buildItem.getParcel()) <= 2) {
             if (_buildItem.build()) {
                 _buildItem.setBuildJob(null);
-                if (_buildItem instanceof ItemModel) {
-                    Application.getInstance().notify(observer -> observer.onItemComplete((ItemModel) _buildItem));
-                } else if (_buildItem instanceof StructureModel) {
-                    Application.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)_buildItem));
-                }
+                Application.getInstance().notify(observer -> observer.onObjectComplete(_buildItem));
                 return JobActionReturn.COMPLETE;
             }
             _progress = (double)_buildItem.getCurrentBuild() / _buildItem.getTotalBuild();

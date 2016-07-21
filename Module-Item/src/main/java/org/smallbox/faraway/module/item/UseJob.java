@@ -1,19 +1,19 @@
-package org.smallbox.faraway.core.game.module.job.model;
+package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.game.module.world.model.item.NetworkConnectionModel;
+import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.item.ItemSlot;
+import org.smallbox.faraway.module.item.item.NetworkConnectionModel;
 import org.smallbox.faraway.core.util.Log;
 
 public class UseJob extends JobModel {
     private int         _current;
     private ItemModel   _item;
-    private ItemSlot    _slot;
+    private ItemSlot _slot;
 
     @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
@@ -56,11 +56,12 @@ public class UseJob extends JobModel {
 
     @Override
     public JobCheckReturn onCheck(CharacterModel character) {
-        // Item is no longer exists
-        if (_item != _item.getParcel().getItem()) {
-            _reason = JobAbortReason.INVALID;
-            return JobCheckReturn.ABORT;
-        }
+        // TODO
+//        // Item is no longer exists
+//        if (_item != _item.getParcel().getItem()) {
+//            _reason = JobAbortReason.INVALID;
+//            return JobCheckReturn.ABORT;
+//        }
 
         if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
             return JobCheckReturn.STAND_BY;

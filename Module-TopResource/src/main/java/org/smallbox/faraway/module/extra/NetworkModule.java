@@ -12,8 +12,8 @@
 //import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 //import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-//import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-//import org.smallbox.faraway.core.game.module.world.model.item.NetworkConnectionModel;
+//import org.smallbox.faraway.module.item.item.ItemModel;
+//import org.smallbox.faraway.module.item.item.NetworkConnectionModel;
 //
 //import java.util.Collection;
 //import java.util.HashSet;

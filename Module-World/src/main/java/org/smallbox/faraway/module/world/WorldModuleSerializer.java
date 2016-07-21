@@ -12,7 +12,6 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.ArrayList;
@@ -79,17 +78,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                                     st.bindNull(6);
                                 }
 
-                                // Item
-                                if (parcel.hasItem() && parcel.getItem().getParcel() == parcel) {
-                                    ItemModel item = parcel.getItem();
-                                    st.bind(7, item.getId());
-                                    stItem.bind(1, item.getId()).bind(2, item.getInfo().name).bind(3, item.isComplete() ? 1 : 0);
-                                    stItem.step();
-                                    stItem.reset(false);
-                                } else {
-                                    st.bindNull(7);
-                                }
-
                                 // Structure
                                 if (parcel.hasStructure()) {
                                     StructureModel structure = parcel.getStructure();
@@ -147,7 +135,6 @@ public class WorldModuleSerializer extends SerializerInterface {
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value FROM WorldModule_parcel");
                 SQLiteStatement stPlant = db.prepare("SELECT id, name, maturity, nourish, seed FROM WorldModule_plant WHERE id = ?");
-                SQLiteStatement stItem = db.prepare("SELECT id, name, complete FROM WorldModule_item WHERE id = ?");
                 SQLiteStatement stStructure = db.prepare("SELECT id, name, complete FROM WorldModule_structure WHERE id = ?");
                 SQLiteStatement stConsumable = db.prepare("SELECT id, name, quantity FROM WorldModule_consumable WHERE id = ?");
                 try {
@@ -185,19 +172,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                             stPlant.reset(false);
                         }
 
-                        // Item
-                        if (!st.columnNull(6)) {
-                            int itemId = st.columnInt(6);
-                            stItem.bind(1, itemId);
-                            if (stItem.step()) {
-                                ItemModel item = new ItemModel(Data.getData().getItemInfo(stItem.columnString(1)), parcel, itemId);
-                                item.setComplete(stItem.columnInt(2) > 0);
-                                item.setParcel(parcel);
-                                parcel.setItem(item);
-                            }
-                            stItem.reset(false);
-                        }
-
                         // Structure
                         if (!st.columnNull(7)) {
                             int structureId = st.columnInt(7);
@@ -233,7 +207,6 @@ public class WorldModuleSerializer extends SerializerInterface {
                 } finally {
                     st.dispose();
                     stConsumable.dispose();
-                    stItem.dispose();
                     stPlant.dispose();
                     stStructure.dispose();
                 }

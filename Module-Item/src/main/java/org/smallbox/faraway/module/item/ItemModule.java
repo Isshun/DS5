@@ -2,15 +2,16 @@ package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.core.game.module.job.model.CraftJob;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
+import org.smallbox.faraway.module.consumable.ConsumableModule;
+import org.smallbox.faraway.module.item.job.CheckJoyItem;
 import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 
@@ -30,6 +31,9 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     @BindModule("base.module.structure")
     private StructureModule _structureModel;
 
+    @BindModule("base.module.consumable")
+    private ConsumableModule _consumableModel;
+
     private Collection<ItemModel> _items;
 
     public Collection<ItemModel> getItems() {
@@ -38,28 +42,15 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
+        getSerializers().add(new ItemModuleSerializer(this, _world));
+        game.getRenders().add(new ItemRenderer(this));
+
         _items = new LinkedBlockingQueue<>();
-        _world.addObserver(new WorldModuleObserver() {
-            @Override
-            public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-                return null;
-            }
+    }
 
-            @Override
-            public void onAddParcel(ParcelModel parcel) {
-                if (parcel.hasItem()) {
-                    _items.add(parcel.getItem());
-                }
-            }
-
-            @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-            }
-
-            @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
-            }
-        });
+    @Override
+    protected void onGameStart(Game game) {
+        _jobs.addJoyCheck(new CheckJoyItem());
     }
 
     @Override
@@ -75,17 +66,19 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
                     .forEach(item -> _jobs.addJob(new BuildJob(item)));
 
             // Create craft jobs
-            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan())
+            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
                     .forEach(item -> _jobs.addJob(new CraftJob(item)));
         }
     }
 
     @Override
-    public void onItemComplete(ItemModel item) {
-    }
-
-    @Override
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+        if (itemInfo.isUserItem) {
+            ItemModel item = new ItemModel(itemInfo, parcel, data);
+            _items.add(item);
+
+            notifyObservers(obs -> obs.onAddItem(parcel, item));
+        }
     }
 
     @Override
@@ -93,6 +86,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         if (mapObjectModel.isUserItem() && mapObjectModel instanceof ItemModel) {
             _items.remove(mapObjectModel);
             _jobs.onCancelJobs(mapObjectModel.getParcel(), mapObjectModel);
+
+            notifyObservers(obs -> obs.onRemoveItem(mapObjectModel.getParcel(), (ItemModel) mapObjectModel));
         }
     }
 }

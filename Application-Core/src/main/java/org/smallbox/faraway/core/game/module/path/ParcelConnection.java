@@ -17,9 +17,10 @@ public class ParcelConnection implements Connection<ParcelModel> {
 
     @Override
     public float getCost() {
-        if (_toParcel.getItem() != null) {
-            return 10;
-        }
+// TODO
+        //        if (_toParcel.getItem() != null) {
+//            return 10;
+//        }
         if (_toParcel.hasPlant()) {
             return 5;
         }

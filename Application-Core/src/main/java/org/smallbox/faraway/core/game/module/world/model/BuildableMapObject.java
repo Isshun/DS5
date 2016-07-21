@@ -7,11 +7,9 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 14/07/2015.
@@ -88,11 +86,7 @@ public class BuildableMapObject extends MapObjectModel {
         _currentBuild++;
         if (!_isComplete && _currentBuild >= _totalBuild) {
             _isComplete = true;
-            if (this instanceof ItemModel) {
-                Application.getInstance().notify(observer -> observer.onItemComplete((ItemModel)this));
-            } else if (this instanceof StructureModel) {
-                Application.getInstance().notify(observer -> observer.onStructureComplete((StructureModel)this));
-            }
+            Application.getInstance().notify(observer -> observer.onObjectComplete(this));
         }
         return _isComplete;
     }

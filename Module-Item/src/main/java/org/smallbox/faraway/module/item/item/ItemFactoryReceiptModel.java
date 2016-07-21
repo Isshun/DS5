@@ -1,10 +1,11 @@
-package org.smallbox.faraway.core.game.module.world.model.item;
+package org.smallbox.faraway.module.item.item;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.job.model.CraftJob;
+import org.smallbox.faraway.module.item.CraftJob;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.module.item.ItemFactoryModel;
 
 import java.util.ArrayList;
 import java.util.List;

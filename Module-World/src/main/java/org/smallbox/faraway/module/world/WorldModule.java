@@ -11,10 +11,10 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.world.controller.WorldConsumableController;
 import org.smallbox.faraway.core.game.module.world.controller.WorldInfoParcel2Controller;
-import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.module.job.JobModule;
 
@@ -36,7 +36,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     private int                                 _floors;
     private Game                                _game;
     private Collection<PlantModel>              _plants;
-    private Collection<ItemModel>               _items;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
     private Viewport                            _viewport;
@@ -69,7 +68,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         _floor = _floors - 1;
 
         _parcels = parcels;
-        _items = new LinkedBlockingQueue<>();
         _plants = new LinkedBlockingQueue<>();
 
         // Notify world observers
@@ -78,10 +76,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 
             if (parcel.hasPlant()) {
                 _plants.add(parcel.getPlant());
-            }
-            if (parcel.hasItem()) {
-                _items.add(parcel.getItem());
-                parcel.getItem().init();
             }
         });
     }
@@ -104,7 +98,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         getParcelListener.onGetParcel(parcels);
     }
 
-    public Collection<ItemModel>                getItems() { return _items; }
     public Collection<PlantModel>               getPlants() { return _plants; }
     public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y, int z) {
@@ -128,18 +121,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         }
     }
 
-    public void removeItem(ItemModel item) {
-        if (item != null && item.getParcel() != null) {
-            ParcelModel parcel = item.getParcel();
-            if (parcel.getItem() == item) {
-                parcel.setItem(null);
-            }
-            _items.remove(item);
-
-            notifyObservers(observer -> observer.onRemoveItem(parcel, item));
-        }
-    }
-
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
         putObject(parcel, itemInfo, quantity, false);
     }
@@ -148,10 +129,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         Application.getInstance().notify(observer -> observer.putObject(parcel, itemInfo, data, complete));
 
         if (parcel != null) {
-            if (itemInfo.isUserItem) {
-                putItem(parcel, itemInfo, data);
-            }
-
             notifyObservers(observer -> observer.putObject(parcel, itemInfo, data, complete));
 
             if (itemInfo.isRock) {
@@ -190,39 +167,39 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);
     }
 
-    private ItemModel putItem(ParcelModel parcel, ItemInfo itemInfo, int progress) {
-        // Put item on floor
-        ItemModel item = new ItemModel(itemInfo, parcel);
-        item.addProgress(progress);
-        moveItemToParcel(parcel, item);
-        if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
-            item.setReceipt(item.getInfo().receipts.get(0));
-        }
-        item.init();
-        _items.add(item);
-
-        notifyObservers(observer -> observer.onAddItem(parcel, item));
-
-        return item;
-    }
-
-    private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
-        if (parcel != null && item != null) {
-            moveItemToParcel(parcel, null);
-            Application.getInstance().notify(observer -> observer.onRefreshItem(item));
-            return item;
-        }
-        printError("Area or item is null");
-        return null;
-    }
-
-    public ItemModel takeItem(int x, int y, int z) {
-        ParcelModel area = getParcel(x, y, z);
-        if (area != null) {
-            return takeItem(area.getItem(), area);
-        }
-        return null;
-    }
+//    private ItemModel putItem(ParcelModel parcel, ItemInfo itemInfo, int progress) {
+//        // Put item on floor
+//        ItemModel item = new ItemModel(itemInfo, parcel);
+//        item.addProgress(progress);
+//        moveItemToParcel(parcel, item);
+//        if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
+//            item.setReceipt(item.getInfo().receipts.get(0));
+//        }
+//        item.init();
+//        _items.add(item);
+//
+//        notifyObservers(observer -> observer.onAddItem(parcel, item));
+//
+//        return item;
+//    }
+//
+//    private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
+//        if (parcel != null && item != null) {
+//            moveItemToParcel(parcel, null);
+//            Application.getInstance().notify(observer -> observer.onRefreshItem(item));
+//            return item;
+//        }
+//        printError("Area or item is null");
+//        return null;
+//    }
+//
+//    public ItemModel takeItem(int x, int y, int z) {
+//        ParcelModel area = getParcel(x, y, z);
+//        if (area != null) {
+//            return takeItem(area.getItem(), area);
+//        }
+//        return null;
+//    }
 
     public void remove(MapObjectModel mapObject) {
         if (mapObject == null) {
@@ -231,23 +208,19 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         }
 
         Application.getInstance().notify(observer -> observer.removeObject(mapObject));
-
-        if (mapObject.isUserItem()) {
-            removeItem((ItemModel) mapObject);
-        }
     }
 
-    // TODO
-    public ItemModel getItemById(int itemId) {
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                if (_parcels[x][y][0].getItem() != null && _parcels[x][y][0].getItem().getId() == itemId) {
-                    return _parcels[x][y][0].getItem();
-                }
-            }
-        }
-        return null;
-    }
+//    // TODO
+//    public ItemModel getItemById(int itemId) {
+//        for (int x = 0; x < _width; x++) {
+//            for (int y = 0; y < _height; y++) {
+//                if (_parcels[x][y][0].getItem() != null && _parcels[x][y][0].getItem().getId() == itemId) {
+//                    return _parcels[x][y][0].getItem();
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
     public int getEnvironmentValue(int startX, int startY, int z, int distance) {
         int fromX = startX - distance;
@@ -265,19 +238,19 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         return value;
     }
 
-    private void moveItemToParcel(ParcelModel parcel, ItemModel item) {
-        parcel.setItem(item);
-        if (item != null) {
-            item.setParcel(parcel);
-            for (int i = 0; i < item.getWidth(); i++) {
-                for (int j = 0; j < item.getHeight(); j++) {
-                    if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j, parcel.z)) {
-                        _parcels[parcel.x + i][parcel.y + j][parcel.z].setItem(item);
-                    }
-                }
-            }
-        }
-    }
+//    private void moveItemToParcel(ParcelModel parcel, ItemModel item) {
+//        parcel.setItem(item);
+//        if (item != null) {
+//            item.setParcel(parcel);
+//            for (int i = 0; i < item.getWidth(); i++) {
+//                for (int j = 0; j < item.getHeight(); j++) {
+//                    if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j, parcel.z)) {
+//                        _parcels[parcel.x + i][parcel.y + j][parcel.z].setItem(item);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public int getModulePriority() {
@@ -304,15 +277,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             _floor--;
             WorldHelper.setCurrentFloor(_floor);
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
-        }
-    }
-
-    @Override
-    public void onCancelJobs(ParcelModel parcel, Object object) {
-        if (parcel.hasItem() && !parcel.getItem().isComplete() && (object == null || object instanceof ItemModel)) {
-            ItemModel item = parcel.getItem();
-            parcel.setItem(null);
-            notifyObservers(observer -> observer.onRemoveItem(parcel, item));
         }
     }
 }

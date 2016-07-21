@@ -4,13 +4,11 @@ import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 
 /**
  * Created by Alex on 04/11/2015.
  */
 public class NetworkObjectModel extends MapObjectModel {
-    private final ItemModel         _item;
     private final ItemInfo          _info;
     private final NetworkInfo       _networkInfo;
     private boolean                 _isComplete;
@@ -23,15 +21,13 @@ public class NetworkObjectModel extends MapObjectModel {
         super(itemInfo);
         _info = itemInfo;
         _networkInfo = networkInfo;
-        _item = null;
     }
 
-    public NetworkObjectModel(ItemInfo itemInfo, NetworkInfo networkInfo, ItemModel item) {
-        super(itemInfo);
-        _info = itemInfo;
-        _networkInfo = networkInfo;
-        _item = item;
-    }
+//    public NetworkObjectModel(ItemInfo itemInfo, NetworkInfo networkInfo, ItemModel item) {
+//        super(itemInfo);
+//        _info = itemInfo;
+//        _networkInfo = networkInfo;
+//    }
 
     public void         setComplete(boolean complete) { _isComplete = complete; }
     public void         setParcel(ParcelModel parcel) { _parcel = parcel; }

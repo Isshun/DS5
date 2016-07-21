@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
@@ -119,8 +118,8 @@ public class SpriteManager {
     }
 
     public Sprite getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
-    public Sprite getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
-    public Sprite getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
+//    public Sprite getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
+//    public Sprite getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
     public Sprite getItem(GraphicInfo graphicInfo, int parcelTile, int itemTile) {
         if (graphicInfo.type == GraphicInfo.Type.TERRAIN) {
@@ -136,7 +135,7 @@ public class SpriteManager {
         return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;
     }
 
-    private Sprite getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
+    public Sprite getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
         return getSprite(graphicInfo, tile, state, alpha, isIcon, graphicInfo.width, graphicInfo.height);
     }
 

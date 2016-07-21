@@ -39,5 +39,6 @@ dependencies {
     compile project(":Application-Core")
     compile project(":Module-Jobs")
     compile project(":Module-Structure")
+    compile project(":Module-Consumable")
     compile project(":Module-World")
 }

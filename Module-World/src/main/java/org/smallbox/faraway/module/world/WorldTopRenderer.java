@@ -62,9 +62,6 @@ public class WorldTopRenderer extends BaseRenderer {
                         renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                     }
                 }
-                if (parcel.getItem() != null && parcel == parcel.getItem().getParcel()) {
-                    renderer.draw(_spriteManager.getItem(parcel.getItem()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
-                }
                 if (parcel.getConsumable() != null) {
                     renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                 }

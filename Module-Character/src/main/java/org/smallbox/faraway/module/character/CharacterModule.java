@@ -12,6 +12,8 @@ import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.module.character.controller.CharacterController;
+import org.smallbox.faraway.module.character.job.*;
+import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 
@@ -29,6 +31,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @BindModule("")
     private WorldInteractionModule _worldInteraction;
+
+    @BindModule("")
+    private JobModule _jobs;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
@@ -62,6 +67,15 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         });
     }
 
+    @Override
+    protected void onGameStart(Game game) {
+        _jobs.addPriorityCheck(new CheckCharacterEnergyCritical());
+        _jobs.addPriorityCheck(new CheckCharacterWaterWarning());
+        _jobs.addPriorityCheck(new CheckCharacterFoodWarning());
+        _jobs.addPriorityCheck(new CheckCharacterEnergyWarning());
+        _jobs.addSleepCheck(new CheckCharacterTimetableSleep());
+    }
+
     // TODO
     public CharacterModel getNext(CharacterModel character) {
         for (CharacterModel c: _characters) {
@@ -75,10 +89,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     public void addVisitor() {
         _visitors.add(new HumanModel(Utils.getUUID(), WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true), "plop", "plop", 0));
-    }
-
-    @Override
-    public void onGameStart(Game game) {
     }
 
     @Override

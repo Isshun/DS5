@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.helper;
+package org.smallbox.faraway.module.item;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
@@ -7,11 +7,10 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.module.item.item.ItemModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

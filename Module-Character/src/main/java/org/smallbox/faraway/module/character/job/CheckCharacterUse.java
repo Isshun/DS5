@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.module.job.check;
+package org.smallbox.faraway.module.character.job;
 
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;

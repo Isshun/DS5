@@ -1,9 +1,6 @@
 package org.smallbox.faraway.ui;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
@@ -11,8 +8,6 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
-import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 28/06/2015.
@@ -22,7 +17,7 @@ public class GameSelectionExtra {
 
     public boolean isClear() {
         return _selectedArea == null
-                && _selectedItem == null
+//                && _selectedItem == null
                 && _selectedPlant == null
                 && _selectedStructure == null
                 && _selectedParcel == null
@@ -37,10 +32,10 @@ public class GameSelectionExtra {
         }
         _selectedCharacter = null;
 
-        if (_selectedItem != null) {
-            _selectedItem.setSelected(false);
-        }
-        _selectedItem = null;
+//        if (_selectedItem != null) {
+//            _selectedItem.setSelected(false);
+//        }
+//        _selectedItem = null;
 
         _selectedPlant = null;
         _selectedParcel = null;
@@ -54,7 +49,7 @@ public class GameSelectionExtra {
     }
 
     private CharacterModel      _selectedCharacter;
-    private ItemModel           _selectedItem;
+//    private ItemModel           _selectedItem;
     private ItemInfo            _selectedRock;
     private PlantModel          _selectedPlant;
     private StructureModel      _selectedStructure;
@@ -63,7 +58,7 @@ public class GameSelectionExtra {
 
     public CharacterModel       getSelectedCharacter() { return _selectedCharacter; }
     public PlantModel           getSelectedResource() { return _selectedPlant; }
-    public ItemModel            getSelectedItem() { return _selectedItem; }
+//    public ItemModel            getSelectedItem() { return _selectedItem; }
     public StructureModel       getSelectedStructure() { return _selectedStructure; }
     public ParcelModel          getSelectedParcel() { return _selectedParcel; }
     public AreaModel            getSelectedArea() { return _selectedArea; }

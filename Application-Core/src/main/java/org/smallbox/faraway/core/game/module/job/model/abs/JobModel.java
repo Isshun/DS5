@@ -1,9 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.model.abs;
 
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.game.helper.ItemFinder;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
@@ -69,7 +67,6 @@ public abstract class JobModel extends ObjectModel {
     protected ParcelModel       _targetParcel;
     private boolean             _isEntertainment;
     protected JobStrategy       _strategy;
-    protected ItemFinder        _finder;
     private boolean             _isCreate;
     protected boolean           _auto;
 
@@ -96,7 +93,6 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.WAITING;
         _limit = -1;
         _label = "none";
-        _finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
 
         Log.debug("Job #" + _id + " onGameCreate");
     }

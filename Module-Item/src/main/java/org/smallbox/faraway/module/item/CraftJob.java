@@ -1,26 +1,17 @@
-package org.smallbox.faraway.core.game.module.job.model;
+package org.smallbox.faraway.module.item;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ItemSlot;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemFactoryReceiptModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
+import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
+import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
-import org.smallbox.faraway.core.util.Utils;
-
-import java.util.Optional;
+import org.smallbox.faraway.module.item.item.ItemSlot;
 
 public class CraftJob extends JobModel {
     protected final ItemModel                   _item;

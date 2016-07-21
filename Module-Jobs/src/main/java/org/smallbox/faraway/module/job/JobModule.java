@@ -7,12 +7,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.check.CheckCharacterEnergyCritical;
-import org.smallbox.faraway.core.game.module.job.check.CheckCharacterTimetableSleep;
-import org.smallbox.faraway.core.game.module.job.check.CheckJoyItem;
-import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterEnergyWarning;
-import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterFoodWarning;
-import org.smallbox.faraway.core.game.module.job.check.character.CheckCharacterWaterWarning;
 import org.smallbox.faraway.core.game.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
@@ -21,7 +15,6 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
@@ -43,21 +36,15 @@ public class JobModule extends GameModule<JobModuleObserver> {
         printDebug("JobModule");
 
         _priorities = new ArrayList<>();
-        _priorities.add(new CheckCharacterEnergyCritical());
-        _priorities.add(new CheckCharacterWaterWarning());
-        _priorities.add(new CheckCharacterFoodWarning());
-        _priorities.add(new CheckCharacterEnergyWarning());
 //        _priorities.add(new CheckCharacterEntertainmentDepleted());
 
 
         _joys = new ArrayList<>();
 //        _joys.add(new CheckEntertainmentTalk());
         _joys.add(new CheckJoyWalk());
-        _joys.add(new CheckJoyItem());
 //        _joys.add(new CheckEntertainmentSleep());
 
         _sleeps = new ArrayList<>();
-        _sleeps.add(new CheckCharacterTimetableSleep());
 
         printDebug("JobModule done");
     }
@@ -303,6 +290,14 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     public void addPriorityCheck(CharacterCheck check) {
+        _priorities.add(check);
+    }
+
+    public void addJoyCheck(CharacterCheck check) {
+        _joys.add(check);
+    }
+
+    public void addSleepCheck(CharacterCheck check) {
         _priorities.add(check);
     }
 }
