@@ -28,9 +28,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     private JobModule _jobs;
 
     @BindLuaController
-    private WorldConsumableController           _consumableController;
-
-    @BindLuaController
     private WorldInfoParcel2Controller          _infoParcel2Controller;
 
     private ParcelModel[][][]                   _parcels;
@@ -38,7 +35,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     private int                                 _height;
     private int                                 _floors;
     private Game                                _game;
-    private Collection<ConsumableModel>         _consumables;
     private Collection<PlantModel>              _plants;
     private Collection<ItemModel>               _items;
     private double                              _light;
@@ -62,12 +58,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     @Override
     public boolean onSelectParcel(ParcelModel parcel) {
         _infoParcel2Controller.select(parcel);
-        for (ConsumableModel consumable: _consumables) {
-            if (consumable.getParcel() == parcel) {
-                _consumableController.select(consumable);
-                return true;
-            }
-        }
         return false;
     }
 
@@ -81,7 +71,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         _parcels = parcels;
         _items = new LinkedBlockingQueue<>();
         _plants = new LinkedBlockingQueue<>();
-        _consumables = new LinkedBlockingQueue<>();
 
         // Notify world observers
         parcelList.forEach(parcel -> {
@@ -93,9 +82,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             if (parcel.hasItem()) {
                 _items.add(parcel.getItem());
                 parcel.getItem().init();
-            }
-            if (parcel.hasConsumable()) {
-                _consumables.add(parcel.getConsumable());
             }
         });
     }
@@ -119,7 +105,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     }
 
     public Collection<ItemModel>                getItems() { return _items; }
-    public Collection<ConsumableModel>          getConsumables() { return _consumables; }
     public Collection<PlantModel>               getPlants() { return _plants; }
     public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y, int z) {
@@ -262,15 +247,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             }
         }
         return null;
-    }
-
-    @Override
-    protected void onGameUpdate(Game game, int tick) {
-        _consumables.forEach(ConsumableModel::fixPosition);
-        _consumables.stream()
-                .filter(consumable -> consumable.getQuantity() == 0 && consumable.getParcel() != null)
-                .forEach(consumable -> consumable.getParcel().setConsumable(null));
-        _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
     }
 
     public int getEnvironmentValue(int startX, int startY, int z, int distance) {

@@ -43,10 +43,7 @@ public class OxygenModule extends GameModule {
     public double getOxygen() { return _oxygen; }
 
     @Override
-    protected void onGameStart(Game game) {
-
-        _jobModule.addPriorityCheck(new CheckCharacterOxygen(this, _roomModule));
-
+    protected void onGameCreate(Game game) {
         _worldModule.addObserver(new WorldModuleObserver() {
             @Override
             public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
@@ -69,7 +66,11 @@ public class OxygenModule extends GameModule {
                 _items.remove(item);
             }
         });
+    }
 
+    @Override
+    protected void onGameStart(Game game) {
+        _jobModule.addPriorityCheck(new CheckCharacterOxygen(this, _roomModule));
         _oxygen = game.getPlanet().getOxygen();
         _items = _worldModule.getItems().stream().filter(item -> item.getInfo().effects != null && item.getInfo().effects.oxygen > 0).collect(Collectors.toList());
     }

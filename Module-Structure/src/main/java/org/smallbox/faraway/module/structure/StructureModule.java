@@ -40,10 +40,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         game.getRenders().add(new StructureBottomRenderer(this));
         game.getRenders().add(new StructureTopRenderer(this));
 //        getSerializers().add(new WorldModuleSerializer(this));
-    }
 
-    @Override
-    protected void onGameStart(Game game) {
         _structures = new LinkedBlockingQueue<>();
 
         _jobs.addObserver(new JobModuleObserver() {

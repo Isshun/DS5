@@ -65,21 +65,13 @@ public class AreaModule extends GameModule {
     protected void onGameCreate(Game game) {
         game.getRenders().add(new AreaRenderer(this));
         getSerializers().add(new AreaSerializer(this));
-    }
 
-    @Override
-    protected void onGameStart(Game game) {
         _consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {
                 if (consumable.getStoreJob() == null) {
                     storeConsumable(consumable);
                 }
-            }
-
-            @Override
-            public void onRemoveConsumable(ParcelModel parcel, ConsumableModel consumable) {
-
             }
         });
     }
@@ -204,9 +196,11 @@ public class AreaModule extends GameModule {
     @Override
     public void onStorageRulesChanged(StorageAreaModel storage) {
         // Reset not running store job
-        _world.getConsumables().stream()
-                .filter(consumable -> consumable.getStoreJob() != null && consumable.getStoreJob().getCharacter() == null)
-                .forEach(this::storeConsumable);
+        if (_consumableModule.getConsumables() != null) {
+            _consumableModule.getConsumables().stream()
+                    .filter(consumable -> consumable.getStoreJob() != null && consumable.getStoreJob().getCharacter() == null)
+                    .forEach(this::storeConsumable);
+        }
     }
 
     public static AreaModel createArea(AreaType type) {

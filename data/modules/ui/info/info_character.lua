@@ -4,7 +4,7 @@ data:extend({
     type = "view",
     id = "base.ui.info_character",
     style = "base.style.right_panel",
-    controller = "org.smallbox.faraway.core.game.module.character.controller.CharacterController",
+    controller = "org.smallbox.faraway.module.character.controller.CharacterController",
     visible = true,
     views = {
         { type = "label", text = "Character", text_size = 12, position = {12, 8}},
@@ -32,7 +32,7 @@ data:extend({
         {
             type = "list",
             id = "page_status",
-            controller = "org.smallbox.faraway.core.game.module.character.controller.CharacterStatusController",
+            controller = "org.smallbox.faraway.module.character.controller.CharacterStatusController",
             position = {12, 200},
             size = {400, 400},
             views = {

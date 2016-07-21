@@ -37,9 +37,7 @@ public class TemperatureModule extends GameModule {
     private List<ItemModel> _items = new ArrayList<>();
 
     @Override
-    public void onGameStart(Game game) {
-        _updateInterval = 10;
-
+    public void onGameCreate(Game game) {
         _worldModule.addObserver(new WorldModuleObserver() {
             @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {
@@ -59,6 +57,11 @@ public class TemperatureModule extends GameModule {
             public void onTemperatureChange(double temperature) {
             }
         });
+    }
+
+    @Override
+    public void onGameStart(Game game) {
+        _updateInterval = 10;
     }
 
     public void onGameUpdate(Game game, int tick) {

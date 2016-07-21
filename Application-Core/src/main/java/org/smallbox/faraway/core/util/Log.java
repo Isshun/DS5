@@ -27,9 +27,17 @@ public class Log {
         println(LEVEL_INFO, str, args);
     }
 
+    public static void warning(String str, Object... args) {
+        warning(String.format(str, args));
+    }
+
     public static void warning(String str) {
         if (LEVEL < LEVEL_WARNING) return;
         println(LEVEL_WARNING, str);
+    }
+
+    public static void error(String str, Object... args) {
+        error(String.format(str, args));
     }
 
     public static void error(String str) {

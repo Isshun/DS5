@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
  * Created by Alex on 19/07/2016.
  */
 public interface ConsumableModuleObserver extends ModuleObserver {
-    void onAddConsumable(ParcelModel parcel, ConsumableModel consumable);
-    void onRemoveConsumable(ParcelModel parcel, ConsumableModel consumable);
+    default void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {}
+    default void onRemoveConsumable(ParcelModel parcel, ConsumableModel consumable) {}
+    default void onSelectConsumable(ConsumableModel consumable) {}
 }

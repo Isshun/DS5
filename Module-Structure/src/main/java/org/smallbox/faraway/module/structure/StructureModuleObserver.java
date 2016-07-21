@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.module.world.model.StructureModel;
  * Created by Alex on 19/07/2016.
  */
 public interface StructureModuleObserver extends ModuleObserver {
-    void onAddStructure(StructureModel structure);
-    void onRemoveStructure(ParcelModel parcel, StructureModel structure);
-    void onStructureComplete(StructureModel structure);
+    default void onAddStructure(StructureModel structure) {}
+    default void onRemoveStructure(ParcelModel parcel, StructureModel structure) {}
+    default void onStructureComplete(StructureModel structure) {}
 }

@@ -2,7 +2,6 @@ package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -15,8 +14,6 @@ import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.module.character.controller.CharacterController;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -49,7 +46,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.getRenders().add(new CharacterRenderer());
+        game.getRenders().add(new CharacterRenderer(this));
         getSerializers().add(new CharacterModuleSerializer(this));
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
@@ -57,7 +54,10 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             public void onSelect(Collection<ParcelModel> parcels) {
                 _characters.stream()
                         .filter(character -> parcels.contains(character.getParcel()))
-                        .forEach(character -> notifyObservers(obs -> obs.onSelectCharacter(character)));
+                        .forEach(character -> {
+                            _controller.selectCharacter(character);
+                            notifyObservers(obs -> obs.onSelectCharacter(character));
+                        });
             }
         });
     }
@@ -71,17 +71,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         }
 
         return null;
-    }
-
-    @Override
-    public boolean onSelectParcel(ParcelModel parcel) {
-        for (CharacterModel character: _characters) {
-            if (character.getParcel() == parcel) {
-                _controller.selectCharacter(character);
-                return true;
-            }
-        }
-        return false;
     }
 
     public void addVisitor() {

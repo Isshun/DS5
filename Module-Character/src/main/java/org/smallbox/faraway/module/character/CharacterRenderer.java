@@ -1,6 +1,7 @@
-package org.smallbox.faraway.core.engine.renderer;
+package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -8,7 +9,8 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 
 public class CharacterRenderer extends BaseRenderer {
-    private SpriteManager           _spriteManager;
+    private final CharacterModule _characterModule;
+    private SpriteManager _spriteManager;
     private int                     _frame;
     private int                     _floor;
 
@@ -16,18 +18,14 @@ public class CharacterRenderer extends BaseRenderer {
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
 
-    public CharacterRenderer() {
+    public CharacterRenderer(CharacterModule characterModule) {
+        _characterModule = characterModule;
         _spriteManager = SpriteManager.getInstance();
     }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        // TODO
-//        for (CharacterModel c : ModuleHelper.getCharacterModule().getCharacters()) {
-//            drawCharacter(renderer, viewport, c);
-//        }
-//        for (CharacterModel c : ModuleHelper.getCharacterModule().getVisitors()) {
-//            drawCharacter(renderer, viewport, c);
-//        }
+        _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
+        _characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
     }
 
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel c) {

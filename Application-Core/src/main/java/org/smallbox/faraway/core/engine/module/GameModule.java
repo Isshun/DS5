@@ -2,9 +2,11 @@ package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +28,10 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
     }
 
     public void addObserver(T observer) {
+        if (Game.getInstance().getState() != Game.GameModuleState.UNINITIALIZED) {
+            Log.error("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
+        }
+
         _observers.add(observer);
     }
 

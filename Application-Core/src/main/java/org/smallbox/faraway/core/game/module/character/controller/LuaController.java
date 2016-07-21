@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.character.controller;
 
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 /**
@@ -9,6 +10,10 @@ public abstract class LuaController {
     private View _rootView;
 
     public void setRootView(View rootView) {
+        if (rootView == null) {
+            Log.error("LuaController: Unable to find view (controller: %s)", getClass().getName());
+        }
+
         _rootView = rootView;
 
 //        if (rootView != null) {

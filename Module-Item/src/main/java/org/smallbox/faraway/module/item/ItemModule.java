@@ -37,9 +37,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    protected void onGameCreate(Game game) {
         _items = new LinkedBlockingQueue<>();
-
         _world.addObserver(new WorldModuleObserver() {
             @Override
             public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {

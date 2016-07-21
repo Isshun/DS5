@@ -11,6 +11,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
  */
 public class WorldConsumableController extends LuaController {
     @BindLua private UILabel        lbName;
+    @BindLua private UILabel        lbQuantity;
 
     @Override
     protected void onCreate() {
@@ -22,5 +23,6 @@ public class WorldConsumableController extends LuaController {
         getView().setVisible(true);
 
         lbName.setText(consumable.getLabel());
+        lbQuantity.setText("Quantity: " + consumable.getQuantity());
     }
 }

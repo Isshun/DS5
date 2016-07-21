@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.character.controller;
 
-import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.util.Log;

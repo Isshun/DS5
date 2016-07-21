@@ -31,10 +31,7 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
 //        game.getRenders().add(new WorldGroundRenderer(this));
         game.getRenders().add(new FloraTopRenderer(this));
 //        getSerializers().add(new WorldModuleSerializer(this));
-    }
 
-    @Override
-    protected void onGameStart(Game game) {
         _plants = new LinkedList<>();
 
         _world.addObserver(new WorldModuleObserver() {
@@ -59,21 +56,6 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
                     return putPlant(parcel, itemInfo, data);
                 }
                 return null;
-            }
-
-            @Override
-            public void onAddParcel(ParcelModel parcel) {
-
-            }
-
-            @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
-
-            }
-
-            @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-
             }
         });
     }

@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Game {
+    public enum GameModuleState {UNINITIALIZED, CREATED, STARTED}
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
 
     // Update
@@ -48,6 +49,9 @@ public class Game {
     private List<GameModule>                _modules;
     private List<BaseRenderer>              _renders;
     private BaseRenderer                    _miniMapRenderer;
+    private GameModuleState _state = GameModuleState.UNINITIALIZED;
+
+    public GameModuleState  getState() { return _state; }
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
@@ -116,6 +120,8 @@ public class Game {
         // Sort renders by level and add them to observers
         _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
         _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
+
+        _state = GameModuleState.CREATED;
     }
 
     public void start() {
@@ -132,6 +138,8 @@ public class Game {
         _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
         _renders.stream().filter(BaseRenderer::isLoaded).forEach(renderer -> renderer.startGame(this));
         _miniMapRenderer.startGame(this);
+
+        _state = GameModuleState.STARTED;
     }
 
     public void                     clearCursor() { _gameAction.setCursor(null); }

@@ -3,12 +3,16 @@ package org.smallbox.faraway.module.consumable;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.controller.WorldConsumableController;
+import org.smallbox.faraway.module.world.WorldInteractionModule;
+import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.core.game.module.world.model.item.ItemModel;
@@ -27,11 +31,17 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @BindModule("base.module.world")
     private WorldModule _world;
 
+    @BindModule("")
+    private WorldInteractionModule _worldInteraction;
+
     @BindModule("base.module.jobs")
     private JobModule _jobs;
 
     @BindModule("base.module.structure")
     private StructureModule _structureModel;
+
+    @BindLuaController
+    private WorldConsumableController _infoController;
 
     private Collection<ConsumableModel> _consumables;
 
@@ -40,18 +50,10 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    protected void onGameCreate(Game game) {
         _consumables = new LinkedBlockingQueue<>();
 
         _structureModel.addObserver(new StructureModuleObserver() {
-            @Override
-            public void onAddStructure(StructureModel structure) {
-            }
-
-            @Override
-            public void onRemoveStructure(ParcelModel parcel, StructureModel structure) {
-            }
-
             @Override
             public void onStructureComplete(StructureModel structure) {
                 if (!structure.isWalkable() && structure.getParcel().hasConsumable()) {
@@ -62,29 +64,33 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         _world.addObserver(new WorldModuleObserver() {
             @Override
-            public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-                return null;
-            }
-
-            @Override
             public void onAddParcel(ParcelModel parcel) {
                 if (parcel.hasConsumable()) {
                     _consumables.add(parcel.getConsumable());
                 }
             }
+        });
 
+        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
-            }
-
-            @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
+            public void onSelect(Collection<ParcelModel> parcels) {
+                _consumables.stream()
+                        .filter(consumable -> parcels.contains(consumable.getParcel()))
+                        .forEach(consumable -> {
+                            _infoController.select(consumable);
+                            notifyObservers(obs -> obs.onSelectConsumable(consumable));
+                        });
             }
         });
     }
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
+        _consumables.forEach(ConsumableModel::fixPosition);
+        _consumables.stream()
+                .filter(consumable -> consumable.getQuantity() == 0 && consumable.getParcel() != null)
+                .forEach(consumable -> consumable.getParcel().setConsumable(null));
+        _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
