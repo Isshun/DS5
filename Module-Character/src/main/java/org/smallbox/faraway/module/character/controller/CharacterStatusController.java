@@ -1,6 +1,7 @@
-package org.smallbox.faraway.core.game.module.character.controller;
+package org.smallbox.faraway.module.character.controller;
 
 import org.smallbox.faraway.core.game.BindLua;
+import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;

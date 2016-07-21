@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.module.character;
+package org.smallbox.faraway.module.character;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;

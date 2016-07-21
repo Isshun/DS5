@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.module.character;
+package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -6,13 +6,17 @@ import org.smallbox.faraway.core.engine.renderer.CharacterRenderer;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.character.controller.CharacterController;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Strings;
 import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.module.character.controller.CharacterController;
+import org.smallbox.faraway.module.world.WorldInteractionModule;
+import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
+import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.module.world.WorldModuleObserver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,10 +28,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindLuaController
-    private CharacterController                 _controller;
+    private CharacterController _controller;
 
     @BindModule("")
-    private WorldMo _controller;
+    private WorldInteractionModule _worldInteraction;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
@@ -48,15 +52,14 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         game.getRenders().add(new CharacterRenderer());
         getSerializers().add(new CharacterModuleSerializer(this));
 
-        //                    CharacterModel character = ModuleHelper.getCharacterModule().getCharacterAtPos(x, y, z);
-//                    if (character != null) {
-//                        for (GameModule module: ModuleManager.getInstance().getGameModules()) {
-//                            if (module.onSelectCharacter(character)) {
-//                                return true;
-//                            }
-//                        }
-//                    }
-
+        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+            @Override
+            public void onSelect(Collection<ParcelModel> parcels) {
+                _characters.stream()
+                        .filter(character -> parcels.contains(character.getParcel()))
+                        .forEach(character -> notifyObservers(obs -> obs.onSelectCharacter(character)));
+            }
+        });
     }
 
     // TODO
