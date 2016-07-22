@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -126,6 +127,10 @@ public class Game {
 
     public void start() {
         startModules();
+
+        // Notify controller
+        LuaControllerManager.getInstance().gameStart();
+
         MainRenderer.getInstance().init(this, _renders, _miniMapRenderer);
 
         Application.getInstance().notify(observer -> observer.onHourChange(_hour));

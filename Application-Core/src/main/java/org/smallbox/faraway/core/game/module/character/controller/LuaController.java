@@ -35,9 +35,16 @@ public abstract class LuaController {
         onCreate();
     }
 
-    protected abstract void onCreate();
+    protected void onCreate() {}
 
     public View getRootView() {
         return _rootView;
+    }
+
+    public void gameStart() {
+        onGameStart();
+    }
+
+    protected void onGameStart() {
     }
 }

@@ -28,7 +28,6 @@ public abstract class UICursor {
         toX = Math.min(toX, Game.getInstance().getInfo().worldWidth);
         toY = Math.min(toY, Game.getInstance().getInfo().worldHeight);
 
-        //TODO
 //        for (int x = startX; x <= toX; x++) {
 //            for (int y = startY; y <= toY; y++) {
 //                onDraw(renderer, ModuleHelper.getWorldModule().getParcel(x, y, WorldHelper.getCurrentFloor()), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
@@ -37,5 +36,4 @@ public abstract class UICursor {
     }
 
     protected abstract void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed);
-
 }

@@ -62,6 +62,10 @@ public class LuaControllerManager {
         _controllers.values().forEach(LuaController::create);
     }
 
+    public void gameStart() {
+        _controllers.values().forEach(LuaController::gameStart);
+    }
+
     /**
      * Bind controllers to modules
      *

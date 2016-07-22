@@ -14,7 +14,8 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
  * Created by Alex on 25/04/2016.
  */
 public class CharacterController extends LuaController {
-    @BindLuaController private CharacterStatusController    statusController;
+    @BindLuaController
+    private CharacterStatusController   statusController;
 
     @BindLua private View               pageStatus;
     @BindLua private View               pageInventory;
