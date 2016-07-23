@@ -47,22 +47,22 @@ public class CharacterController extends LuaController {
     }
 
     @BindLuaAction
-    public void onOpenStatus() {
+    public void onOpenStatus(View view) {
         openPage(pageStatus);
     }
 
     @BindLuaAction
-    public void onOpenInfo() {
+    public void onOpenInfo(View view) {
         openPage(pageInfo);
     }
 
     @BindLuaAction
-    public void onOpenInventory() {
+    public void onOpenInventory(View view) {
         openPage(pageInventory);
     }
 
     @BindLuaAction
-    public void onOpenHealth() {
+    public void onOpenHealth(View view) {
         openPage(pageHealth);
     }
 

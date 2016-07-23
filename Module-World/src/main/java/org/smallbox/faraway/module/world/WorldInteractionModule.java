@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
+import org.smallbox.faraway.ui.MouseEvent;
 import org.smallbox.faraway.ui.UISelection;
 
 import java.util.ArrayList;
@@ -42,10 +43,10 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     }
 
     @Override
-    public void onMouseMove(int x, int y) {
+    public void onMouseMove(MouseEvent event) {
         // right button pressed
         if (_keyRightPressed) {
-            Game.getInstance().getViewport().update(x, y);
+            Game.getInstance().getViewport().update(event.x, event.y);
             Log.debug("pos: %d x %d", Game.getInstance().getViewport().getPosX(), Game.getInstance().getViewport().getPosY());
 //            if (_menu != null && _menu.isVisible()) {
 //                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
@@ -60,7 +61,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 
         _world.addObserver(new WorldModuleObserver() {
             @Override
-            public void onMouseMove(int parcelX, int parcelY, int floor) {
+            public void onMouseMove(MouseEvent event, int parcelX, int parcelY, int floor) {
                 _keyMovePosX = parcelX;
                 _keyMovePosY = parcelY;
 
@@ -76,7 +77,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
             }
 
             @Override
-            public void onMousePress(int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
+            public void onMousePress(MouseEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
                 if (button == GameEventListener.MouseButton.LEFT) {
                     _keyLeftPressed = true;
 
@@ -93,7 +94,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
             }
 
             @Override
-            public void onMouseRelease(int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
+            public void onMouseRelease(MouseEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
                 if (button == GameEventListener.MouseButton.LEFT) {
                     if (_keyLeftPressed) {
                         _keyLeftPressed = false;

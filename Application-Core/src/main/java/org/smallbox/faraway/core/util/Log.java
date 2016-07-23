@@ -1,86 +1,105 @@
 package org.smallbox.faraway.core.util;
 
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Game;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.*;
 
+/**
+ * Created by Alex on 13/05/2016.
+ */
 public class Log {
-    public static int LEVEL_NOTICE = 0;
-    public static int LEVEL_FATAL = 1;
-    public static int LEVEL_ERROR = 2;
-    public static int LEVEL_WARNING = 3;
-    public static int LEVEL_INFO = 4;
-    public static int LEVEL_DEBUG = 5;
-    public static int LEVEL = LEVEL_DEBUG;
+    private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final static Logger logger = Logger.getLogger("FarAway");
 
-    public static void debug(String str) {
-        if (LEVEL < LEVEL_DEBUG) return;
-        println(LEVEL_DEBUG, str);
+    static {
+        logger.setLevel(Level.INFO);
+        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setFormatter(new SimpleFormatter() {
+            @Override
+            public String format(LogRecord record) {
+                return "[" + record.getSourceMethodName() + "] ["
+                        + format.format(new Date(record.getMillis())) + "] "
+                        + record.getMessage() + "\n";
+            }
+        });
+        logger.getHandlers();
+        logger.addHandler(consoleHandler);
+        logger.setUseParentHandlers(false);
     }
 
-    public static void debug(String str, Object... args) {
-        if (LEVEL < LEVEL_DEBUG) return;
-        println(LEVEL_DEBUG, str, args);
+    public static void warning(String message) {
+        logger.warning(message);
     }
 
-    public static void info(String str, Object... args) {
-        if (LEVEL < LEVEL_INFO) return;
-        println(LEVEL_INFO, str, args);
-    }
-
-    public static void warning(String str, Object... args) {
-        warning(String.format(str, args));
-    }
-
-    public static void warning(String str) {
-        if (LEVEL < LEVEL_WARNING) return;
-        println(LEVEL_WARNING, str);
-    }
-
-    public static void error(String str, Object... args) {
-        error(String.format(str, args));
-    }
-
-    public static void error(String str) {
-        if (LEVEL < LEVEL_ERROR) return;
-        println(LEVEL_ERROR, str);
-
-        // Print stack
-        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-        Log.debug("Error occurred \"" + str + "\"");
-        for (int i = 2; i < elements.length; i++) {
-            Log.debug("          " + elements[i].toString());
+    public static void error(Exception e, String message, Object... args) {
+        logger.severe(String.format(message, args));
+        logger.severe(e.getMessage());
+        for (StackTraceElement element: e.getStackTrace()) {
+            logger.severe(element.toString());
         }
     }
 
-    public static void notice(String str) {
-        if (LEVEL < LEVEL_NOTICE) return;
-        println(LEVEL_NOTICE, str);
-    }
+    public static void error(Throwable t) {
+        logger.severe(t.getMessage());
+        for (StackTraceElement element: t.getStackTrace()) {
+            logger.severe(element.toString());
+        }
 
-    private static void println(int level, String str, Object... args) {
-        if (str != null) {
-//            if (Game.getInstance() != null) {
-//                Application.getInstance().notify(observer -> observer.onLog("System", str));
-//            }
-
-            System.out.print(String.valueOf(System.currentTimeMillis() / 1000));
-            System.out.print(" ");
-            System.out.print(getPrefix(level));
-            System.out.println(String.format(str, args));
-//
-//            if (UserInterface.getInstance() != null) {
-//                UserInterface.getInstance().addMessage(level, str);
-//            }
+        if (t.getCause() != null) {
+            logger.severe("Cause by:");
+            error(t.getCause());
         }
     }
 
-    public static String getPrefix(int level) {
-        if (level == LEVEL_DEBUG)     return "[D] ";
-        if (level == LEVEL_INFO)     return "[I] ";
-        if (level == LEVEL_WARNING) return "[W] ";
-        if (level == LEVEL_ERROR)     return "[E] ";
-        if (level == LEVEL_FATAL)     return "[F] ";
-        if (level == LEVEL_NOTICE)     return "[N] ";
-        return null;
+    public static void error(String message) {
+        logger.severe(message);
+        for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
+            logger.severe(element.toString());
+        }
+    }
+
+    public static void error(String message, Object... args) {
+        error(String.format(message, args));
+    }
+
+
+    public static void fatal(String message) {
+        logger.severe(message);
+        for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
+            logger.severe(element.toString());
+        }
+        System.exit(1);
+    }
+
+    public static void fatal(String message, Object... args) {
+        fatal(String.format(message, args));
+    }
+
+    public static void error(Exception e, String message) {
+        logger.severe(message);
+        logger.severe(e.getMessage());
+        for (StackTraceElement element: e.getStackTrace()) {
+            logger.severe(element.toString());
+        }
+    }
+
+    public static void info(String message) {
+        logger.log(Level.INFO, message);
+    }
+
+    public static void info(String message, Object... args) {
+        info(String.format(message, args));
+    }
+
+    public static void debug(String message) {
+        logger.fine(message);
+    }
+
+    public static void debug(String message, Object... args) {
+        logger.fine(String.format(message, args));
+    }
+
+    public static void notice(String message) {
+        info(message);
     }
 }

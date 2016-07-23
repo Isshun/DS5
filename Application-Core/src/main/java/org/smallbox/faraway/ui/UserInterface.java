@@ -11,8 +11,11 @@ import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
@@ -28,6 +31,10 @@ public class UserInterface {
 
     public void addDropsDowns(UIDropDown view) {
         _dropsDowns.add(view);
+    }
+
+    public Collection<View> getViews() {
+        return _views;
     }
 
     private static class ContextEntry {
@@ -141,6 +148,12 @@ public class UserInterface {
 
     public void onRefresh(int frame) {
         _update = frame;
+
+//        // Collect views
+//        UIEventManager.getInstance().removeListeners(
+//                UIEventManager.getInstance().getClickListeners().keySet().stream()
+//                        .filter(view -> !_views.contains(view.getRootView()))
+//                        .collect(Collectors.toList()));
 
         Application.getInstance().notify(observer -> observer.onRefreshUI(frame));
     }

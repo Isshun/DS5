@@ -48,7 +48,7 @@ public class BuildRenderer extends BaseRenderer {
 
         for (int x = startX; x <= toX; x++) {
             for (int y = startY; y <= toY; y++) {
-                Log.info("Draw cursor: %d x %d", x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
+//                Log.info("Draw cursor: %d x %d", x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
 
                 renderer.draw(resEden, x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
 

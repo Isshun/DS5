@@ -2,11 +2,14 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.util.Log;
+
+import java.util.ConcurrentModificationException;
 
 /**
  * Created by Alex on 26/09/2015.
  */
-public class UIList extends View {
+public class UIList extends View implements AutoCloseable {
     public UIList(ModuleBase module) {
         super(module);
     }
@@ -34,12 +37,16 @@ public class UIList extends View {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
-            int offset = 0;
-            for (View view : _views) {
-                if (view.isVisible()) {
-                    view.draw(renderer, getAlignedX() + x + _marginLeft, offset + getAlignedY() + y + _marginTop);
-                    offset += view.getHeight() + view.getMarginTop() + view.getMarginBottom();
+            try {
+                int offset = 0;
+                for (View view : _views) {
+                    if (view.isVisible()) {
+                        view.draw(renderer, getAlignedX() + x + _marginLeft, offset + getAlignedY() + y + _marginTop);
+                        offset += view.getHeight() + view.getMarginTop() + view.getMarginBottom();
+                    }
                 }
+            } catch (ConcurrentModificationException e) {
+                Log.error(e);
             }
         }
     }
@@ -52,5 +59,9 @@ public class UIList extends View {
     @Override
     public int getContentHeight() {
         return _height;
+    }
+
+    @Override
+    public void close() throws Exception {
     }
 }

@@ -5,8 +5,8 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class UIEventManager {
     private static UIEventManager           _self;
@@ -25,6 +25,10 @@ public class UIEventManager {
         _onKeysListeners = new HashMap<>();
         _onMouseWheelUpListeners = new HashMap<>();
         _onMouseWheelDownListeners = new HashMap<>();
+    }
+
+    public Map<View, OnClickListener> getClickListeners() {
+        return _onClickListeners;
     }
 
     public static UIEventManager getInstance() {
@@ -169,7 +173,7 @@ public class UIEventManager {
         return false;
     }
 
-    private boolean hasVisibleHierarchy(View view) {
+    public boolean hasVisibleHierarchy(View view) {
         while (view != null) {
             if (!view.isVisible()) {
                 return false;
@@ -203,7 +207,19 @@ public class UIEventManager {
         _onMouseWheelUpListeners.clear();
     }
 
+    public void removeListeners(List<View> views) {
+        views.forEach(view -> {
+            _onRightClickListeners.remove(view);
+            _onRightClickListeners.remove(view);
+            _onClickListeners.remove(view);
+            _onFocusListeners.remove(view);
+            _onKeysListeners.remove(view);
+            _onMouseWheelDownListeners.remove(view);
+            _onMouseWheelUpListeners.remove(view);
+        });
+    }
     public void removeListeners(View view) {
+        _onRightClickListeners.remove(view);
         _onRightClickListeners.remove(view);
         _onClickListeners.remove(view);
         _onFocusListeners.remove(view);

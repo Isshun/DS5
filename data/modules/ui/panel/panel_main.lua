@@ -102,7 +102,7 @@ data:extend({
         end
 
         if event == application.events.on_deselect then
-            view:setVisible(true)
+            -- view:setVisible(true)
         end
 
         if event == application.events.on_floor_change then

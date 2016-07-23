@@ -38,7 +38,6 @@ public class WorldModuleSerializer extends SerializerInterface {
             try {
                 db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL)");
                 db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, complete INTEGER)");
-                db.exec("CREATE TABLE WorldModule_item (id INTEGER, name TEXT, complete INTEGER)");
                 db.exec("CREATE TABLE WorldModule_plant (id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
                 db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, name TEXT, quantity INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_network (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");

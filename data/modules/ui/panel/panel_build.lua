@@ -3,34 +3,21 @@ data:extend({
     id = "base.ui.panel_build",
     style = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.world.controller.BuildController",
-    visible = true,
+    visible = false,
     views = {
         { type = "label", text = "Character", text_size = 12, position = {12, 8}},
         { type = "view", size = {380, 1}, background = 0xffbbbb, position = {12, 22}},
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}},
 
-        { type = "grid", position = {12, 72}, columns = 2, column_width = 180, row_height = 60, views = {
-            { type = "label", id = "bt_status", action="onOpenStatus", text = "Status", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "label", id = "bt_inventory", action="onOpenInventory", text = "Inventory", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "label", id = "bt_info", action="onOpenInfo", text = "Info", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "view", id = "bt_health", action="onOpenHealth", background = 0x5588bb, size = {170, 50}, views = {
-                { type = "label", text = "Health", text_size = 20, padding = 18 },
-                { type = "label", text = "!", id = "bt_health_warning", text_size = 26, padding = 9, size = {32, 32}, position = {138, 9} },
-            }}
+        { type = "grid", position = {12, 72}, columns = 1, column_width = 360, row_height = 32, views = {
+            { type = "label", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 5, size = {350, 28}, action="onOpenItems", text = "Items"},
+            { type = "label", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 5, size = {350, 28}, action="onOpenStructures", text = "Structures"},
+            { type = "label", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 5, size = {350, 28}, action="onOpenNetworks", text = "Networks"},
         }},
 
-        -- Item page
-        {
-            type = "list",
-            id = "page_item",
-            controller = "org.smallbox.faraway.module.world.controller.BuildItemController",
-            position = {12, 200},
-            size = {400, 400},
-            views = {
-                { type = "label", text = "Build item", text_size = 28, position = {0, 5}},
-                { type = "grid", id ="item_grid", position = {0, 33}, columns = 1, column_width = 300, row_height = 32},
-            }
-        },
+        { type = "label", id = "contentLabel", text_size = 22, position = {10, 220}},
+
+        { type = "view", id ="content", position = {12, 240}},
     }
 })
 

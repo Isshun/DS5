@@ -33,7 +33,18 @@ public abstract class View {
     }
 
     public void clear() {
+        UIEventManager.getInstance().removeListeners(_views);
+
+        _views.forEach(View::clear);
         _views.clear();
+    }
+
+    public View getRootView() {
+        for (View view = this; true; view = view.getParent()) {
+            if (view.getParent() == null) {
+                return view;
+            }
+        }
     }
 
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
@@ -141,7 +152,7 @@ public abstract class View {
     public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
     public void         setLevel(int level) { _level = level; }
     public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
-    public void         setBackgroundColor(Color color) { _backgroundColor = color; }
+    public View         setBackgroundColor(Color color) { _backgroundColor = color; return this; }
     public void         setVisible(boolean visible) { _isVisible = visible; }
     public void         setEffect(FadeEffect effect) { _effect = effect; }
     public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
@@ -244,7 +255,7 @@ public abstract class View {
         return _objectId;
     }
 
-    public void setBackgroundFocusColor(long color) {
+    public View setBackgroundFocusColor(long color) {
         if (_backgroundFocusColor == null) {
             UIEventManager.getInstance().setOnFocusListener(this, new OnFocusListener() {
                 Color _oldColor;
@@ -261,6 +272,8 @@ public abstract class View {
             });
         }
         _backgroundFocusColor = new Color(color);
+
+        return this;
     }
 
     public View setOnClickListener(OnClickListener onClickListener) {
@@ -359,13 +372,15 @@ public abstract class View {
         return this;
     }
 
-    public void setPosition(int x, int y) {
+    public View setPosition(int x, int y) {
 //        x = (int) (x * Application.getInstance().getConfig().uiScale);
 //        y = (int) (y * Application.getInstance().getConfig().uiScale);
 //        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.getInstance().getConfig().screen.resolution[0] - x;
 //        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.getInstance().getConfig().screen.resolution[1] - y;
         _x = (int) (x * Application.getInstance().getConfig().uiScale);
         _y = (int) (y * Application.getInstance().getConfig().uiScale);
+
+        return this;
     }
 
     public void onEnter() {

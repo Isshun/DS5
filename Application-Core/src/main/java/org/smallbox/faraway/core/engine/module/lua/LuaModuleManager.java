@@ -166,7 +166,7 @@ public class LuaModuleManager {
         // TODO
         // Load lua from java modules
         Arrays.stream(new File(".").listFiles()).filter(file -> file.getName().startsWith("Module-")).forEach(moduleDirectory -> {
-            File dataDirectory = new File(moduleDirectory, "data");
+            File dataDirectory = new File(moduleDirectory, "src/main/resources/");
             if (dataDirectory.exists()) {
                 loadLuaFiles(null, dataDirectory);
             }

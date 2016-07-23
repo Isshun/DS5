@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.BindLuaController;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
@@ -56,14 +57,21 @@ public class LuaControllerManager {
 
         // Bind controller to module
         ModuleManager.getInstance().getModules().forEach(this::bindControllerToModule);
+
+        // Bind game observers to controllers
+        _controllers.values().forEach(controller -> Application.getInstance().addObserver(controller));
     }
 
     public void create() {
         _controllers.values().forEach(LuaController::create);
     }
 
-    public void gameStart() {
-        _controllers.values().forEach(LuaController::gameStart);
+    public void gameStart(Game game) {
+        _controllers.values().forEach(controller -> controller.gameStart(game));
+    }
+
+    public void gameUpdate(Game game) {
+        _controllers.values().forEach(controller -> controller.gameUpdate(game));
     }
 
     /**
@@ -186,9 +194,11 @@ public class LuaControllerManager {
                     Log.info("LuaController: Bind method %s", method.getName());
                     view.setOnClickListener(() -> {
                         try {
-                            method.invoke(controller);
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
+                            Log.info("Method: %s", method.getName());
+                            Log.info("View: %s", view.getName());
+                            method.invoke(controller, view);
+                        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+                            Log.error(e);
                         }
                     });
                 }

@@ -73,9 +73,12 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override
             public void onSelect(Collection<ParcelModel> parcels) {
+                _infoController.setVisible(false);
                 _consumables.stream()
                         .filter(consumable -> parcels.contains(consumable.getParcel()))
-                        .forEach(consumable -> {
+                        .findAny()
+                        .ifPresent(consumable -> {
+                            _infoController.setVisible(true);
                             _infoController.select(consumable);
                             notifyObservers(obs -> obs.onSelectConsumable(consumable));
                         });

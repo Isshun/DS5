@@ -2,7 +2,7 @@
     "lang": "en",
     "uiScale": 1,
     "screen": {
-        "resolution": [1480, 750],
+        "resolution": [1600, 1100],
         "position": [40, 20],
         "mode": "window",
         "foregroundFPS": 60,

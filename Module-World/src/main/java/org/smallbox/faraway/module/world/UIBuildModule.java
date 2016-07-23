@@ -2,11 +2,13 @@ package org.smallbox.faraway.module.world;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.module.world.controller.BuildController;
+import org.smallbox.faraway.ui.MouseEvent;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 public class UIBuildModule extends GameModule {
@@ -28,7 +30,7 @@ public class UIBuildModule extends GameModule {
     private BuildRenderer render;
 
     @Override
-    public void onMouseMove(int x, int y) {
+    public void onMouseMove(MouseEvent event) {
 //        if (_selected != null) {
 //            render.setCursor(_selected, x, y);
 //        }
@@ -41,7 +43,7 @@ public class UIBuildModule extends GameModule {
 
         _world.addObserver(new WorldModuleObserver() {
             @Override
-            public void onMouseMove(int parcelX, int parcelY, int floor) {
+            public void onMouseMove(MouseEvent event, int parcelX, int parcelY, int floor) {
                 if (_selected != null) {
                     render.setCursor(_selected, parcelX, parcelY);
                 }
@@ -52,7 +54,6 @@ public class UIBuildModule extends GameModule {
     @Override
     protected void onGameStart(Game game) {
         _controller.create(this);
-        createDisplay();
     }
 
     @Override
@@ -61,7 +62,6 @@ public class UIBuildModule extends GameModule {
 
     @Override
     public void onReloadUI() {
-        createDisplay();
     }
 
     private void createDisplay() {
@@ -89,41 +89,6 @@ public class UIBuildModule extends GameModule {
 //        view.addView(_mainList);
 //
 //        UserInterface.getInstance().addView(view);
-    }
-
-    private void openNetworks() {
-
-    }
-
-    private void openItems() {
-
-    }
-
-    private void openStructures() {
-        _mainList.clear();
-        for (String parentName: new String[] {"base.wall", "base.door", "base.floor"}) {
-            UIFrame listEntry = new UIFrame(this);
-            listEntry.setSize(372, 32);
-            listEntry.addView(UILabel.create(this).setText(Data.getData().getItemInfo(parentName).label).setSize(372, 32).setPadding(10));
-            UIGrid categoryGrid = new UIGrid(this);
-            categoryGrid.setSize(200, 32);
-            categoryGrid.setPosition(200, 0);
-            categoryGrid.setColumns(10);
-            categoryGrid.setColumnWidth(32);
-            categoryGrid.setRowHeight(32);
-            for (ItemInfo itemInfo: Data.getData().items) {
-                if (itemInfo.receipts != null && !itemInfo.receipts.isEmpty() && parentName.equals(itemInfo.parentName)) {
-                    View icStructure = UIImage.create(this).setImage(itemInfo.receipts.get(0).icon).setSize(32, 32);
-                    icStructure.setOnClickListener(() -> selectStructure(icStructure, itemInfo));
-                    categoryGrid.addView(icStructure);
-                }
-                if (itemInfo == _currentStructure) {
-                    listEntry.setBackgroundColor(0x349394);
-                }
-            }
-            listEntry.addView(categoryGrid);
-            _mainList.addView(listEntry);
-        }
     }
 
     private void selectStructure(View icStructure, ItemInfo structureInfo) {

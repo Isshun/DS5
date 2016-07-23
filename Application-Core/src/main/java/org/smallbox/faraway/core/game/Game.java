@@ -129,7 +129,7 @@ public class Game {
         startModules();
 
         // Notify controller
-        LuaControllerManager.getInstance().gameStart();
+        LuaControllerManager.getInstance().gameStart(this);
 
         MainRenderer.getInstance().init(this, _renders, _miniMapRenderer);
 
@@ -158,6 +158,7 @@ public class Game {
             _nextUpdate = System.currentTimeMillis() + _tickInterval;
             _tick += 1;
             MainRenderer.getInstance().onUpdate();
+            LuaControllerManager.getInstance().gameUpdate(this);
             onUpdate(_tick);
         }
     }

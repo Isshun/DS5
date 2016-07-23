@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.ui.MouseEvent;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -55,7 +56,7 @@ public interface GameObserver {
     default void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {}
     default void removeObject(MapObjectModel mapObjectModel) {}
 
-    default void onMouseMove(int x, int y) {}
-    default void onMousePress(int x, int y, GameEventListener.MouseButton button) {}
-    default void onMouseRelease(int x, int y, GameEventListener.MouseButton button) {}
+    default void onMouseMove(MouseEvent event) {}
+    default void onMousePress(MouseEvent event) {}
+    default void onMouseRelease(MouseEvent event) {}
 }
