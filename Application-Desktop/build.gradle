@@ -54,6 +54,7 @@ dependencies {
     compile project(":Module-Character")
     compile project(":Module-Consumable")
     compile project(":Module-Buff")
+    compile project(":Module-Build")
     compile project(":Module-Disease")
     compile project(":Module-Debug")
     compile project(":Module-Fauna")

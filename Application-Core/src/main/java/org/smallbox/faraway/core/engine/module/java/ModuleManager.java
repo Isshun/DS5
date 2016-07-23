@@ -44,9 +44,6 @@ public class ModuleManager {
 
         // Inject view to controllers
         injectViewToControllers();
-
-        // Send reload-ui notification
-        Application.getInstance().notify(GameObserver::onReloadUI);
     }
 
     public void injectViewToControllers() {
@@ -151,13 +148,8 @@ public class ModuleManager {
             moduleHasBeenLoaded = false;
             for (ApplicationModule module: _applicationModules) {
                 if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_applicationModules)) {
-                    try {
-                        module.injectModuleDependencies(_applicationModules);
-                        module.load();
-                        moduleHasBeenLoaded = true;
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                    module.load();
+                    moduleHasBeenLoaded = true;
                     break;
                 }
             }
@@ -171,6 +163,10 @@ public class ModuleManager {
         }
 
         _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
+
+        _applicationModules.forEach(module -> DependencyInjector.getInstance().register(module));
+
+        _applicationModules.forEach(ModuleBase::onCreate);
     }
 
     private void loadGameModules(GDXApplication.OnLoad onLoad) {
@@ -200,13 +196,8 @@ public class ModuleManager {
             moduleHasBeenLoaded = false;
             for (GameModule module: _gameModules) {
                 if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_gameModules)) {
-                    try {
-                        module.injectModuleDependencies(_gameModules);
-                        module.load();
-                        moduleHasBeenLoaded = true;
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                    module.load();
+                    moduleHasBeenLoaded = true;
                     break;
                 }
             }
@@ -220,6 +211,10 @@ public class ModuleManager {
         }
 
         _gameModules.forEach(module -> Application.getInstance().addObserver(module));
+
+        _gameModules.forEach(module -> DependencyInjector.getInstance().register(module));
+
+        _gameModules.forEach(ModuleBase::onCreate);
     }
 
     // Check if all modules have been loaded
@@ -239,6 +234,7 @@ public class ModuleManager {
     public Collection<ModuleBase>           getModules() { return _modules; }
     public Collection<ModuleBase>           getModulesThird() { return _modulesThird; }
     public List<GameModule>                 getGameModules() { return _gameModules; }
+    public List<ApplicationModule>          getApplicationModules() { return _applicationModules; }
 
     public void unloadModule(Class<? extends ModuleBase> cls) { unloadModule(getModule(cls)); }
     public void loadModule(Class<? extends ModuleBase> cls) { loadModule(getModule(cls)); }

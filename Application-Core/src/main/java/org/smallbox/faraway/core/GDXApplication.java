@@ -125,6 +125,14 @@ public class GDXApplication extends ApplicationAdapter {
             }
         });
 
+        // Call dependency injector
+        _loadTasks.add(new LoadTask(this, "Calling dependency injector") {
+            @Override
+            public void onExecute() {
+                DependencyInjector.getInstance().injectDependencies();
+            }
+        });
+
         // Create app
         _loadTasks.add(new LoadTask(this, "Init app") {
             @Override

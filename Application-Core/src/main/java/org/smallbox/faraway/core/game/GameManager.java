@@ -30,7 +30,7 @@ public class GameManager {
     }
 
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
-        Application.getInstance().notify(GameObserver::onReloadUI);
+//        Application.getInstance().notify(GameObserver::onReloadUI);
         Game game = new Game(info);
         game.createModules();
         GameSaveManager.load(game, FileUtils.getSaveDirectory(game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
@@ -43,8 +43,6 @@ public class GameManager {
 
     public void create(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
-
-        Application.getInstance().notify(GameObserver::onReloadUI);
 
         GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
         File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);

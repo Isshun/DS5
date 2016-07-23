@@ -90,4 +90,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             notifyObservers(obs -> obs.onRemoveItem(mapObjectModel.getParcel(), (ItemModel) mapObjectModel));
         }
     }
+
+    public void addItem(ParcelModel parcel, ItemInfo itemInfo) {
+        _items.add(new ItemModel(itemInfo, parcel));
+    }
 }

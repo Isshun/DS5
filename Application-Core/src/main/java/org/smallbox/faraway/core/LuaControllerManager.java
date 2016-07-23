@@ -2,7 +2,6 @@ package org.smallbox.faraway.core;
 
 import com.google.common.base.CaseFormat;
 import org.reflections.Reflections;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
@@ -34,6 +33,7 @@ public class LuaControllerManager {
     }
 
     public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
+    public Map<String, LuaController> getControllers() { return _controllers; }
 
     /**
      * Inject controllers to modules
@@ -55,11 +55,11 @@ public class LuaControllerManager {
                     bindControllerMethods(controller, controller.getRootView());
                 });
 
-        // Bind controller to module
-        ModuleManager.getInstance().getModules().forEach(this::bindControllerToModule);
-
         // Bind game observers to controllers
         _controllers.values().forEach(controller -> Application.getInstance().addObserver(controller));
+
+        // Register to DependencyInjector
+        _controllers.values().forEach(controller -> DependencyInjector.getInstance().register(controller));
     }
 
     public void create() {
@@ -72,30 +72,6 @@ public class LuaControllerManager {
 
     public void gameUpdate(Game game) {
         _controllers.values().forEach(controller -> controller.gameUpdate(game));
-    }
-
-    /**
-     * Bind controllers to modules
-     *
-     * @param module Module receiving binding
-     */
-    private void bindControllerToModule(ModuleBase module) {
-        for (Field field: module.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(BindLuaController.class)) {
-                _controllers.entrySet().stream()
-                        .filter(entry -> entry.getValue().getClass() == field.getType())
-                        .map(Map.Entry::getValue)
-                        .findAny()
-                        .ifPresent(controller -> {
-                            try {
-                                field.setAccessible(true);
-                                field.set(module, controller);
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        });
-            }
-        }
     }
 
     /**

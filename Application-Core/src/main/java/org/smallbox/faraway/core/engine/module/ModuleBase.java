@@ -22,6 +22,8 @@ public abstract class ModuleBase implements GameObserver {
     protected void onLoad() {}
     protected void onUnload() {}
 
+    public void onCreate() {}
+
     public void load() {
         assert !_isLoaded;
 
@@ -99,26 +101,6 @@ public abstract class ModuleBase implements GameObserver {
             }
         }
         return false;
-    }
-
-    public void injectModuleDependencies(List<? extends ModuleBase> loadedModules) throws IllegalAccessException {
-        for (Field field: this.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            BindModule bindModule = field.getAnnotation(BindModule.class);
-            if (bindModule != null) {
-                Log.debug(String.format("Try to inject %s (%s) to %s", field.getType().getSimpleName(), bindModule.value(), this.getClass().getSimpleName()));
-                field.set(this, getModuleDependency(loadedModules, field.getType()));
-            }
-        }
-    }
-
-    private ModuleBase getModuleDependency(List<? extends ModuleBase> loadedModules, Class cls) {
-        for (ModuleBase module: loadedModules) {
-            if (cls.isInstance(module)) {
-                return module;
-            }
-        }
-        return null;
     }
 
     public String getName() {

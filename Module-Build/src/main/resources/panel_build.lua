@@ -2,7 +2,7 @@ data:extend({
     type = "view",
     id = "base.ui.panel_build",
     style = "base.style.right_panel",
-    controller = "org.smallbox.faraway.module.world.controller.BuildController",
+    controller = "org.smallbox.faraway.module.build.controller.BuildController",
     visible = false,
     views = {
         { type = "label", text = "Character", text_size = 12, position = {12, 8}},
