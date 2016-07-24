@@ -200,6 +200,11 @@ public class LuaUIExtend extends LuaExtend {
                 view.setActionName(action.toString());
             }
 
+            LuaValue layer = value.get("layer");
+            if (!layer.isnil()) {
+                view.setLayer(layer.toint());
+            }
+
             LuaValue align = value.get("align");
             if (!align.isnil()) {
                 view.setAlign(

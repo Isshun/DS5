@@ -118,6 +118,7 @@ public abstract class View {
     protected Align             _align = Align.LEFT;
     protected int               _offsetX;
     protected int               _offsetY;
+    protected int               _layer;
     protected Color             _backgroundColor;
     protected FadeEffect        _effect;
     protected HorizontalAlign   _horizontalAlign;
@@ -158,8 +159,10 @@ public abstract class View {
     public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
     public void         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; }
     public void         setActionName(String actionName) { _actionName = actionName; }
+    public void         setLayer(int layer) { _layer = layer; }
 
-    private Color       getBackgroundColor() { return _backgroundColor; }
+    public Color        getBackgroundColor() { return _backgroundColor; }
+    public int          getLayer() { return _layer; }
     public View         getParent() { return _parent; }
     public int          getId() { return _id; }
     public int          getPosX() { return _x; }

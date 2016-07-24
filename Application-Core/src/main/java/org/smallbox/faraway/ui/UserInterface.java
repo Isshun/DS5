@@ -11,9 +11,7 @@ import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
@@ -22,7 +20,7 @@ import static org.smallbox.faraway.core.engine.GameEventListener.*;
 public class UserInterface {
     public void addView(View view) {
         _views.add(view);
-//        Collections.sort(_views, (v1, v2) -> v1.getLevel() - v2.getLevel());
+        Collections.sort(_views, (v1, v2) -> v1.getLayer() - v2.getLayer());
     }
 
     public void clearViews() {
@@ -51,7 +49,7 @@ public class UserInterface {
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
-    private Collection<View>             _views = new LinkedBlockingQueue<>();
+    private List<View>                  _views = new ArrayList<>();
     private Collection<UIDropDown>       _dropsDowns = new LinkedBlockingQueue<>();
     private Collection<Integer>         _visibleViews = new LinkedBlockingQueue<>();
 

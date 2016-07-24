@@ -5,6 +5,7 @@ data:extend({
     id = "base.ui.panel_main",
     style = "base.style.right_panel",
     visible = true,
+    layer = -1,
     views = {{
         type = "list",
         position = {10, 0},
@@ -139,7 +140,7 @@ data:extend({
                 or event == application.events.on_structure_selected
                 or event == application.events.on_item_selected
                 or event == application.events.on_consumable_selected then
-            view:setVisible(false)
+            --view:setVisible(false)
         end
     end,
 
