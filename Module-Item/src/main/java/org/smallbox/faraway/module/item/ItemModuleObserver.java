@@ -10,6 +10,7 @@ import org.smallbox.faraway.module.item.item.ItemModel;
  * Created by Alex on 19/07/2016.
  */
 public interface ItemModuleObserver extends ModuleObserver {
-    void onAddItem(ParcelModel parcel, ItemModel item);
-    void onRemoveItem(ParcelModel parcel, ItemModel item);
+    default void onAddItem(ParcelModel parcel, ItemModel item) {}
+    default void onRemoveItem(ParcelModel parcel, ItemModel item) {}
+    default void onSelectItem(ItemModel item) {}
 }

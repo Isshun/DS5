@@ -59,10 +59,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             public void onSelect(Collection<ParcelModel> parcels) {
                 _characters.stream()
                         .filter(character -> parcels.contains(character.getParcel()))
-                        .forEach(character -> {
-                            _controller.selectCharacter(character);
-                            notifyObservers(obs -> obs.onSelectCharacter(character));
-                        });
+                        .forEach(character -> notifyObservers(obs -> obs.onSelectCharacter(character)));
             }
         });
     }

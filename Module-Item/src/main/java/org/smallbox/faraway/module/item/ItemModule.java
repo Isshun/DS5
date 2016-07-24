@@ -3,12 +3,16 @@ package org.smallbox.faraway.module.item;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
+import org.smallbox.faraway.module.consumable.ConsumableInfoController;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.item.job.CheckJoyItem;
+import org.smallbox.faraway.module.world.WorldInteractionModule;
+import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.module.item.item.ItemModel;
@@ -34,6 +38,9 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     @BindModule("base.module.consumable")
     private ConsumableModule _consumableModel;
 
+    @BindModule("")
+    private WorldInteractionModule _worldInteraction;
+
     private Collection<ItemModel> _items;
 
     public Collection<ItemModel> getItems() {
@@ -46,6 +53,15 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         game.getRenders().add(new ItemRenderer(this));
 
         _items = new LinkedBlockingQueue<>();
+
+        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+            @Override
+            public void onSelect(Collection<ParcelModel> parcels) {
+                _items.stream()
+                        .filter(consumable -> parcels.contains(consumable.getParcel()))
+                        .forEach(item -> notifyObservers(obs -> obs.onSelectItem(item)));
+            }
+        });
     }
 
     @Override

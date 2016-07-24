@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.controller.WorldConsumableController;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
@@ -30,17 +29,17 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @BindModule("base.module.world")
     private WorldModule _world;
 
-    @BindModule("")
-    private WorldInteractionModule _worldInteraction;
-
     @BindModule("base.module.jobs")
     private JobModule _jobs;
 
     @BindModule("base.module.structure")
     private StructureModule _structureModel;
 
+    @BindModule("")
+    private WorldInteractionModule _worldInteraction;
+
     @BindLuaController
-    private WorldConsumableController _infoController;
+    private ConsumableInfoController _infoController;
 
     private Collection<ConsumableModel> _consumables;
 
@@ -61,27 +60,34 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             }
         });
 
+        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+            private ConsumableModel _lastConsumable;
+            private ConsumableModel _currentConsumable;
+
+            @Override
+            public void onSelect(Collection<ParcelModel> parcels) {
+                _currentConsumable = null;
+                _consumables.stream()
+                        .filter(consumable -> parcels.contains(consumable.getParcel()))
+                        .forEach(consumable -> {
+                            _currentConsumable = consumable;
+                            notifyObservers(obs -> obs.onSelectConsumable(consumable));
+                        });
+
+                if (_lastConsumable != null && _currentConsumable == null) {
+                    notifyObservers(obs -> obs.onDeselectConsumable(_lastConsumable));
+                }
+
+                _lastConsumable = _currentConsumable;
+            }
+        });
+
         _world.addObserver(new WorldModuleObserver() {
             @Override
             public void onAddParcel(ParcelModel parcel) {
                 if (parcel.hasConsumable()) {
                     _consumables.add(parcel.getConsumable());
                 }
-            }
-        });
-
-        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
-            @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
-                _infoController.setVisible(false);
-                _consumables.stream()
-                        .filter(consumable -> parcels.contains(consumable.getParcel()))
-                        .findAny()
-                        .ifPresent(consumable -> {
-                            _infoController.setVisible(true);
-                            _infoController.select(consumable);
-                            notifyObservers(obs -> obs.onSelectConsumable(consumable));
-                        });
             }
         });
     }

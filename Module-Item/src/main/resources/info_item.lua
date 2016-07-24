@@ -4,6 +4,7 @@ data:extend({
     type = "view",
     name = "ui-test",
     style = "base.style.right_panel",
+    controller = "org.smallbox.faraway.module.item.ItemInfoController",
     visible = false,
     views = {
         { type = "label", text = "Item", text_size = 12, position = {10, 8}},

@@ -11,4 +11,5 @@ public interface ConsumableModuleObserver extends ModuleObserver {
     default void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {}
     default void onRemoveConsumable(ParcelModel parcel, ConsumableModel consumable) {}
     default void onSelectConsumable(ConsumableModel consumable) {}
+    default void onDeselectConsumable(ConsumableModel consumable) {}
 }
