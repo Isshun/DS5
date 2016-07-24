@@ -1,11 +1,10 @@
 data:extend({
     { label = "Wall",
         name = "base.wall",
-        type = "structure",
+        type = "structure_group",
         category = "Wall",
         is_wall = true,
-        walkable = false,
-    },
+        walkable = false},
     { label = "Wood wall",
         name = "base.wood_wall",
         parent = "base.wall",

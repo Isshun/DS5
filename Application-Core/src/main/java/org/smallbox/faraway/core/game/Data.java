@@ -53,8 +53,8 @@ public class Data {
                 return object;
             }
         }
-        throw new RuntimeException("Unable to find object \"" + name + "\"");
-//        return null;
+//        throw new RuntimeException("Unable to find object \"" + name + "\"");
+        return null;
     }
 
     public UICursor         getCursor(String name) { return this.cursors.get(name); }
