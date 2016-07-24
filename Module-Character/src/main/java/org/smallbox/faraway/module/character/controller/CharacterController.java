@@ -1,6 +1,8 @@
 package org.smallbox.faraway.module.character.controller;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.LuaPanelController;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -22,7 +24,7 @@ import java.util.Collection;
 /**
  * Created by Alex on 25/04/2016.
  */
-public class CharacterController extends LuaController {
+public class CharacterController extends LuaPanelController {
     @BindLuaController
     private CharacterStatusController   statusController;
 
@@ -50,6 +52,8 @@ public class CharacterController extends LuaController {
     }
 
     public void selectCharacter(CharacterModel character) {
+        setVisible(true);
+
         Log.debug("Select character: " + character);
 
         lbName.setText(character.getName());

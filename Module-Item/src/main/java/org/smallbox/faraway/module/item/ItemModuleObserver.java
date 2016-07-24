@@ -13,4 +13,5 @@ public interface ItemModuleObserver extends ModuleObserver {
     default void onAddItem(ParcelModel parcel, ItemModel item) {}
     default void onRemoveItem(ParcelModel parcel, ItemModel item) {}
     default void onSelectItem(ItemModel item) {}
+    default void onDeselectItem(ItemModel item) {}
 }

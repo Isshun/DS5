@@ -76,7 +76,7 @@ public class BuildJob extends JobModel {
                 Application.getInstance().notify(observer -> observer.onObjectComplete(_buildItem));
                 return JobActionReturn.COMPLETE;
             }
-            _progress = (double)_buildItem.getCurrentBuild() / _buildItem.getTotalBuild();
+            _progress = (double)_buildItem.getBuildProgress() / _buildItem.getBuildCost();
         }
         return JobActionReturn.CONTINUE;
     }

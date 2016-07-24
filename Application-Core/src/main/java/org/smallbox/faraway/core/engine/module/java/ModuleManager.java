@@ -144,7 +144,7 @@ public class ModuleManager {
         // Load application modules
         boolean moduleHasBeenLoaded;
         do {
-            // Try to load first module with required dependencies
+            // Try to onLoad first module with required dependencies
             moduleHasBeenLoaded = false;
             for (ApplicationModule module: _applicationModules) {
                 if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_applicationModules)) {
@@ -192,7 +192,7 @@ public class ModuleManager {
         // Load game modules
         boolean moduleHasBeenLoaded;
         do {
-            // Try to load first module with required dependencies
+            // Try to onLoad first module with required dependencies
             moduleHasBeenLoaded = false;
             for (GameModule module: _gameModules) {
                 if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_gameModules)) {

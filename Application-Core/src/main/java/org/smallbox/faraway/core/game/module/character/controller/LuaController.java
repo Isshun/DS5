@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.character.controller;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
@@ -33,6 +34,8 @@ public abstract class LuaController implements GameObserver {
         if (getRootView() != null) {
             getRootView().setVisible(visible);
         }
+
+        Application.getInstance().notify(obs -> obs.onOpenPanel(this));
     }
 
     protected View getView() {

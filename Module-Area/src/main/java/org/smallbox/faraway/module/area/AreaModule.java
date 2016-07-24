@@ -63,8 +63,8 @@ public class AreaModule extends GameModule {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.getRenders().add(new AreaRenderer(this));
-        getSerializers().add(new AreaSerializer(this));
+        game.addRender(new AreaRenderer(this));
+        game.addSerializer(new AreaSerializer(this));
 
         _consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override

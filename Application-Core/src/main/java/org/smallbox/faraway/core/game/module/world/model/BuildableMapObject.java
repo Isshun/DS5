@@ -15,6 +15,14 @@ import java.util.List;
  * Created by Alex on 14/07/2015.
  */
 public class BuildableMapObject extends MapObjectModel {
+    public BuildableMapObject(ItemInfo info) {
+        super(info);
+    }
+
+    public BuildableMapObject(ItemInfo info, int id) {
+        super(info, id);
+    }
+
     public static class ComponentModel extends ObjectModel {
         public ItemInfo         info;
         public int              currentQuantity;
@@ -37,26 +45,10 @@ public class BuildableMapObject extends MapObjectModel {
         }
     }
 
-    protected boolean                   _isComplete = false;
     private ItemInfo.ItemInfoReceipt    _receipt;
-    private int                         _totalBuild;
-    private int                         _currentBuild;
+    private int                         _buildProgress;
     private BuildJob                    _buildJob;
     private List<ComponentModel>        _components = new ArrayList<>();
-
-    public BuildableMapObject(ItemInfo info, int id) {
-        super(info, id);
-        init(info);
-    }
-
-    public BuildableMapObject(ItemInfo info) {
-        super(info);
-        init(info);
-    }
-
-    private void init(ItemInfo info) {
-        _totalBuild = info.build != null ? info.build.cost : 0;
-    }
 
     @Override
     public int addComponent(ConsumableModel consumable) {
@@ -82,31 +74,41 @@ public class BuildableMapObject extends MapObjectModel {
         return true;
     }
 
-    public boolean          build() {
-        _currentBuild++;
-        if (!_isComplete && _currentBuild >= _totalBuild) {
-            _isComplete = true;
-            Application.getInstance().notify(observer -> observer.onObjectComplete(this));
+    /**
+     * Build item
+     *
+     * @return true if item build is complete
+     */
+    public boolean build() {
+        if (_buildProgress < _info.build.cost) {
+            _buildProgress++;
+
+            // Item build complete
+            if (_buildProgress >= _info.build.cost) {
+                Application.getInstance().notify(observer -> observer.onObjectComplete(this));
+                return true;
+            }
+
+            return false;
         }
-        return _isComplete;
+
+        return true;
     }
 
     public void             setComponents(List<ComponentModel> components) {
         _components = components;
     }
-    public void             setBuild(int currentBuild, int totalBuild) { _currentBuild = currentBuild; _totalBuild = totalBuild; }
     public void             setBuildJob(BuildJob job) { _buildJob = job; }
-    public void             setComplete(boolean complete) { _isComplete = complete; }
+    public void             setBuildProgress(int buildProgress) { _buildProgress = buildProgress; }
 
-    public int              getCurrentBuild() { return _currentBuild; }
-    public int              getTotalBuild() { return _totalBuild; }
+    public int              getBuildProgress() { return _buildProgress; }
+    public int              getBuildCost() { return _info.build.cost; }
     public BuildJob         getBuildJob() { return _buildJob; }
     public CharacterModel   getBuilder() { return _buildJob != null ? _buildJob.getCharacter() : null; }
-    public double           getBuildProgress() { return (double)_currentBuild / _totalBuild; }
 
     @Override
-    public boolean          isWalkable() { return !_isComplete || _info.isWalkable; }
-    public boolean          isComplete() { return _isComplete; }
+    public boolean          isWalkable() { return !isComplete() || _info.isWalkable; }
+    public boolean          isComplete() { return _buildProgress < _info.build.cost; }
 
     public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
         throw new NotImplementedException("");

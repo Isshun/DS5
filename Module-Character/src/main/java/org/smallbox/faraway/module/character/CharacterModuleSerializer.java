@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.character;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Constant;
 
-public class CharacterModuleSerializer extends SerializerInterface {
+public class CharacterModuleSerializer extends GameSerializer {
     private final CharacterModule _characterModule;
 
     public CharacterModuleSerializer(CharacterModule characterModule) {
@@ -21,7 +21,7 @@ public class CharacterModuleSerializer extends SerializerInterface {
     public int getModulePriority() { return Constant.MODULE_CHARACTER_PRIORITY; }
 
     @Override
-    public void save() {
+    public void onSave(Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 db.exec("CREATE TABLE characters (id INTEGER, x INTEGER, y INTEGER, z INTEGER, firstname TEXT, lastname TEXT)");
@@ -48,7 +48,7 @@ public class CharacterModuleSerializer extends SerializerInterface {
         });
     }
 
-    public void load(Game game) {
+    public void onLoad(Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement st = db.prepare("SELECT id, x, y, z, firstname, lastname FROM characters");

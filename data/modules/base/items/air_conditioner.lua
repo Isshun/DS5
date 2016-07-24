@@ -5,6 +5,7 @@ data:extend(
         name = "base.air_conditioner",
         type = "item",
         category = "temperature",
+        build = { cost = 600 },
         size = {1, 1},
         cost = 42,
         effects = {

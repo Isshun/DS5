@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.area;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AreaSerializer extends SerializerInterface {
-
+public class AreaSerializer extends GameSerializer {
     private final AreaModule _areaModule;
 
     public AreaSerializer(AreaModule areaModule) {
@@ -25,7 +24,7 @@ public class AreaSerializer extends SerializerInterface {
     }
 
     @Override
-    public void save() {
+    public void onSave(Game game) {
         SQLHelper.getInstance().post(db -> {
             AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
             try {
@@ -115,7 +114,7 @@ public class AreaSerializer extends SerializerInterface {
         });
     }
 
-    public void load(Game game) {
+    public void onLoad(Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");

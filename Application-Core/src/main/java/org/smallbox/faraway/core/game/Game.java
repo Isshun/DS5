@@ -1,8 +1,10 @@
 package org.smallbox.faraway.core.game;
 
-import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.LuaControllerManager;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.data.serializer.MainSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -15,12 +17,29 @@ import org.smallbox.faraway.ui.GameSelectionExtra;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.UserInterface;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 public class Game {
+    private Collection<GameSerializer> _serializers = new LinkedBlockingQueue<>();
+
+    public Collection<GameSerializer> getSerializers() {
+        return _serializers;
+    }
+
+    public void addSerializer(GameSerializer serializer) {
+        if (CollectionUtils.notContains(_serializers, serializer)) {
+            _serializers.add(serializer);
+        }
+    }
+
+    public void addRender(BaseRenderer renderer) {
+        if (CollectionUtils.notContains(_renders, renderer)) {
+            _renders.add(renderer);
+        }
+    }
+
     public enum GameModuleState {UNINITIALIZED, CREATED, STARTED}
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
 
@@ -101,7 +120,7 @@ public class Game {
 
     /**
      * Call game modules onGameCreate method and construct renders
-     * createGame() is call before game load or createGame
+     * createGame() is call before game onLoad or createGame
      * createGame() is call before startGame()
      */
     public void createModules() {
@@ -126,6 +145,8 @@ public class Game {
     }
 
     public void start() {
+        addSerializer(new MainSerializer());
+
         startModules();
 
         // Notify controller

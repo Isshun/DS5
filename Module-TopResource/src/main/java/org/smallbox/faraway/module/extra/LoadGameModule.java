@@ -57,10 +57,10 @@ public class LoadGameModule extends ApplicationModule {
         if ("load_game.game".equals(tag) && object instanceof GameInfo) {
             _currentGame = (GameInfo) object;
         }
-        if ("load_game.save".equals(tag) && object instanceof GameInfo.GameSaveInfo) {
+        if ("load_game.onSave".equals(tag) && object instanceof GameInfo.GameSaveInfo) {
             _currentSave = (GameInfo.GameSaveInfo) object;
         }
-        if ("load_game.load".equals(tag) && _currentGame != null && _currentSave != null) {
+        if ("load_game.onLoad".equals(tag) && _currentGame != null && _currentSave != null) {
             GameManager.getInstance().loadGame(_currentGame, _currentSave);
         }
         if ("load_game.last_game".equals(tag)) {

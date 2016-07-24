@@ -247,7 +247,7 @@ public class LuaModuleManager {
         ModuleInfo info = luaModule.getInfo();
 
         if (!hasRequiredModules(info)) {
-            Log.info("Unable to load lua module: " + info.id + " (" + info.name + ")");
+            Log.info("Unable to onLoad lua module: " + info.id + " (" + info.name + ")");
             return;
         }
         Log.info("Load lua module: " + info.id + " (" + info.name + ")");

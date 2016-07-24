@@ -123,8 +123,8 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
 
+        itemInfo.build = new ItemInfo.ItemBuildInfo();
         if (!value.get("build").isnil()) {
-            itemInfo.build = new ItemInfo.ItemBuildInfo();
             itemInfo.build.cost = getInt(value.get("build"), "cost", 0);
         }
 

@@ -44,9 +44,9 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     protected void onGameCreate(Game game) {
         _viewport = game.getViewport();
 
-        game.getRenders().add(new WorldGroundRenderer(this));
-        game.getRenders().add(new WorldTopRenderer(this));
-        getSerializers().add(new WorldModuleSerializer(this));
+        game.addRender(new WorldGroundRenderer(this));
+        game.addRender(new WorldTopRenderer(this));
+        game.addSerializer(new WorldModuleSerializer(this));
     }
 
     @Override

@@ -24,7 +24,6 @@ public class ItemModel extends BuildableMapObject {
     private int[]                           _storageSlot;
     private List<NetworkConnectionModel>    _networkConnections;
 
-
     public ItemModel(ItemInfo info, ParcelModel parcel, int id) {
         super(info, id);
         _parcel = parcel;
@@ -117,7 +116,7 @@ public class ItemModel extends BuildableMapObject {
                 return false;
             }
 
-            if (!_isComplete) {
+            if (!isComplete()) {
                 return false;
             }
 

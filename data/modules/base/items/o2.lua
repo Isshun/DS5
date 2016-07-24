@@ -5,7 +5,7 @@ data:extend({
         type = "item",
         category = "Oxygen",
         size = {1, 2},
-        cost = 42,
+        build = {cost = 4000},
         effects = {
             { type = "oxygen", value = 1, pressure = 100 },
         },

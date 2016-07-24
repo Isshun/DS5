@@ -2,15 +2,14 @@ package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
-import org.smallbox.faraway.module.consumable.ConsumableInfoController;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.item.job.CheckJoyItem;
+import org.smallbox.faraway.module.job.JobModuleObserver;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
@@ -20,6 +19,7 @@ import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -49,24 +49,54 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        getSerializers().add(new ItemModuleSerializer(this, _world));
-        game.getRenders().add(new ItemRenderer(this));
+        game.addSerializer(new ItemModuleSerializer(this, _world));
+        game.addRender(new ItemRenderer(this));
 
         _items = new LinkedBlockingQueue<>();
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+            public ItemModel _lastItem;
+
             @Override
             public void onSelect(Collection<ParcelModel> parcels) {
-                _items.stream()
+                // Get item on parcel
+                ItemModel item = _items.stream()
                         .filter(consumable -> parcels.contains(consumable.getParcel()))
-                        .forEach(item -> notifyObservers(obs -> obs.onSelectItem(item)));
+                        .findAny()
+                        .orElse(null);
+
+                // Call observers
+                if (item != null) {
+                    notifyObservers(obs -> obs.onSelectItem(item));
+                } else if (_lastItem != null) {
+                    notifyObservers(obs -> obs.onDeselectItem(_lastItem));
+                }
+
+                // Store current item
+                _lastItem = item;
             }
         });
+
+        _jobs.addObserver(new JobModuleObserver() {
+            @Override
+            public void onJobCancel(JobModel job) {
+                _items.removeIf(item -> item.getBuildJob() == job);
+            }
+
+            @Override
+            public void onJobComplete(JobModel job) {
+                _items.removeIf(item -> item.getBuildJob() == job);
+            }
+        });
+
+        _jobs.addJoyCheck(new CheckJoyItem());
     }
 
     @Override
     protected void onGameStart(Game game) {
-        _jobs.addJoyCheck(new CheckJoyItem());
+        _items.stream()
+                .filter(item -> item.getBuildProgress() < item.getBuildCost())
+                .forEach(this::launchBuild);
     }
 
     @Override
@@ -109,5 +139,25 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     public void addItem(ParcelModel parcel, ItemInfo itemInfo) {
         _items.add(new ItemModel(itemInfo, parcel));
+    }
+
+    public void addItemPattern(ParcelModel parcel, ItemInfo itemInfo) {
+        // Create item
+        ItemModel item = new ItemModel(itemInfo, parcel);
+        item.setBuildProgress(0);
+        _items.add(item);
+
+        launchBuild(item);
+    }
+
+    /**
+     * Create build job
+     *
+     * @param item to build
+     */
+    private void launchBuild(ItemModel item) {
+        BuildJob job = new BuildJob(item);
+        item.setBuildJob(job);
+        _jobs.addJob(job);
     }
 }

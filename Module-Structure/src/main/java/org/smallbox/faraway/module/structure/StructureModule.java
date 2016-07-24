@@ -125,7 +125,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         if (parcel.getStructure() == null || parcel.getStructure().isFloor()) {
             StructureModel structure = new StructureModel(itemInfo);
             structure.addProgress(complete ? itemInfo.cost : 0);
-            structure.setComplete(complete);
+//            structure.setComplete(complete);
             if (structure.getInfo().receipts != null && structure.getInfo().receipts.size() > 0) {
                 structure.setReceipt(structure.getInfo().receipts.get(0));
             }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
@@ -204,5 +205,9 @@ public class GDXRenderer {
 
     public void setViewport(Viewport viewport) {
         _viewport = viewport;
+    }
+
+    public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
+        draw(itemSprite, (parcel.x * Constant.TILE_WIDTH) + _viewport.getPosX(), (parcel.y * Constant.TILE_HEIGHT) + _viewport.getPosY());
     }
 }

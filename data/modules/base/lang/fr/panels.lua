@@ -28,7 +28,7 @@ data:extend({
         {"Personal records", "Informations personnelles"},
         {"Birth", "Date de naissance"},
         {"Enlisted", "Date d'enrolement"},
-        {"No job", "Aucune"},
+        {"No job", "Aucune tâche"},
         {"Needs", "Besoins"},
         {"Buffs", "Effets"},
         {"Sleep on the ground", "Dors sur le sol"},

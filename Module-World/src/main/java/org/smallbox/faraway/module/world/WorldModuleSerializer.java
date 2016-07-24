@@ -2,10 +2,11 @@ package org.smallbox.faraway.module.world;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
@@ -13,11 +14,12 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldModuleSerializer extends SerializerInterface {
+public class WorldModuleSerializer extends GameSerializer {
     private final WorldModule _worldModule;
 
     public WorldModuleSerializer(WorldModule worldModule) {
@@ -28,7 +30,7 @@ public class WorldModuleSerializer extends SerializerInterface {
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void save() {
+    public void onSave(Game game) {
         SQLHelper.getInstance().post(db -> {
             int width = Game.getInstance().getInfo().worldWidth;
             int height = Game.getInstance().getInfo().worldHeight;
@@ -37,13 +39,12 @@ public class WorldModuleSerializer extends SerializerInterface {
 
             try {
                 db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL)");
-                db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, complete INTEGER)");
+//                db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, buildProgress INTEGER)");
                 db.exec("CREATE TABLE WorldModule_plant (id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
                 db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, name TEXT, quantity INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_network (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");
                 SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, name, complete) VALUES (?, ?, ?)");
-                SQLiteStatement stStructure = db.prepare("INSERT INTO WorldModule_structure (id, name, complete) VALUES (?, ?, ?)");
+//                SQLiteStatement stStructure = db.prepare("INSERT INTO WorldModule_structure (id, name, buildProgress) VALUES (?, ?, ?)");
                 SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (id, name, maturity, nourish, seed) VALUES (?, ?, ?, ?, ?)");
                 SQLiteStatement stConsumable = db.prepare("INSERT INTO WorldModule_consumable (id, name, quantity) VALUES (?, ?, ?)");
                 try {
@@ -77,16 +78,16 @@ public class WorldModuleSerializer extends SerializerInterface {
                                     st.bindNull(6);
                                 }
 
-                                // Structure
-                                if (parcel.hasStructure()) {
-                                    StructureModel structure = parcel.getStructure();
-                                    st.bind(8, structure.getId());
-                                    stStructure.bind(1, structure.getId()).bind(2, structure.getInfo().name).bind(3, structure.isComplete() ? 1 : 0);
-                                    stStructure.step();
-                                    stStructure.reset(false);
-                                } else {
-                                    st.bindNull(8);
-                                }
+//                                // Structure
+//                                if (parcel.hasStructure()) {
+//                                    StructureModel structure = parcel.getStructure();
+//                                    st.bind(8, structure.getId());
+//                                    stStructure.bind(1, structure.getId()).bind(2, structure.getInfo().name).bind(3, structure.isComplete() ? 1 : 0);
+//                                    stStructure.step();
+//                                    stStructure.reset(false);
+//                                } else {
+//                                    st.bindNull(8);
+//                                }
 
                                 // Consumable
                                 if (parcel.hasConsumable()) {
@@ -123,7 +124,7 @@ public class WorldModuleSerializer extends SerializerInterface {
         });
     }
 
-    public void load(Game game) {
+    public void onLoad(Game game) {
         SQLHelper.getInstance().post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
@@ -134,7 +135,7 @@ public class WorldModuleSerializer extends SerializerInterface {
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value FROM WorldModule_parcel");
                 SQLiteStatement stPlant = db.prepare("SELECT id, name, maturity, nourish, seed FROM WorldModule_plant WHERE id = ?");
-                SQLiteStatement stStructure = db.prepare("SELECT id, name, complete FROM WorldModule_structure WHERE id = ?");
+//                SQLiteStatement stStructure = db.prepare("SELECT id, name, buildProgress FROM WorldModule_structure WHERE id = ?");
                 SQLiteStatement stConsumable = db.prepare("SELECT id, name, quantity FROM WorldModule_consumable WHERE id = ?");
                 try {
                     while (st.step()) {
@@ -171,18 +172,18 @@ public class WorldModuleSerializer extends SerializerInterface {
                             stPlant.reset(false);
                         }
 
-                        // Structure
-                        if (!st.columnNull(7)) {
-                            int structureId = st.columnInt(7);
-                            stStructure.bind(1, structureId);
-                            if (stStructure.step()) {
-                                StructureModel structure = new StructureModel(Data.getData().getItemInfo(stStructure.columnString(1)), structureId);
-                                structure.setComplete(stStructure.columnInt(2) > 0);
-                                structure.setParcel(parcel);
-                                parcel.setStructure(structure);
-                            }
-                            stStructure.reset(false);
-                        }
+//                        // Structure
+//                        if (!st.columnNull(7)) {
+//                            int structureId = st.columnInt(7);
+//                            stStructure.bind(1, structureId);
+//                            if (stStructure.step()) {
+//                                StructureModel structure = new StructureModel(Data.getData().getItemInfo(stStructure.columnString(1)), structureId);
+//                                structure.setBuildProgress(stStructure.columnInt(2));
+//                                structure.setParcel(parcel);
+//                                parcel.setStructure(structure);
+//                            }
+//                            stStructure.reset(false);
+//                        }
 
                         // Consumable
                         if (!st.columnNull(8)) {
@@ -207,7 +208,7 @@ public class WorldModuleSerializer extends SerializerInterface {
                     st.dispose();
                     stConsumable.dispose();
                     stPlant.dispose();
-                    stStructure.dispose();
+//                    stStructure.dispose();
                 }
 
                 WorldHelper.init(game.getInfo(), parcels);

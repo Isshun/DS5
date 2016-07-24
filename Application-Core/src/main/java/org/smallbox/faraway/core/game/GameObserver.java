@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
@@ -59,4 +60,6 @@ public interface GameObserver {
     default void onMouseMove(MouseEvent event) {}
     default void onMousePress(MouseEvent event) {}
     default void onMouseRelease(MouseEvent event) {}
+
+    default void onOpenPanel(LuaController controller) {}
 }

@@ -4,14 +4,11 @@ import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.*;
-import java.util.function.Consumer;
 
 public class GameSaveManager {
     public interface GameSerializerInterface {
@@ -39,29 +36,15 @@ public class GameSaveManager {
             Log.info("Extract zip: " + (System.currentTimeMillis() - time));
             File dbFile = new File(gameDirectory, filename + ".db");
             SQLHelper.getInstance().openDB(dbFile);
-            new GameSerializer().load(game);
 
-// TODO
-//            game.getModules().forEach(module -> module.getSerializers().forEach(serializer -> serializer.load(game)));
-
-            game.getModules().forEach(new Consumer<GameModule>() {
-                @Override
-                public void accept(GameModule gameModule) {
-                    gameModule.getSerializers().forEach(new Consumer<SerializerInterface>() {
-                        @Override
-                        public void accept(SerializerInterface o) {
-                            o.load(game);
-                        }
-                    });
-                }
-            });
+            game.getSerializers().forEach(serializer -> serializer.onLoad(game));
 
             SQLHelper.getInstance().closeDB();
 
             SQLHelper.getInstance().post(db -> {
                 listener.onSerializerComplete();
                 dbFile.delete();
-                Log.info("Load save game: " + (System.currentTimeMillis() - time));
+                Log.info("Load onSave game: " + (System.currentTimeMillis() - time));
                 Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
             });
         } catch (IOException | ArchiveException e) {
@@ -77,23 +60,10 @@ public class GameSaveManager {
         File dbFile = new  File(gameDirectory, filename + ".db");
         SQLHelper.getInstance().openDB(dbFile);
 
-        // TODO
-//        game.getModules().forEach(module -> module.getSerializers().forEach(SerializerInterface::save));
-
-        game.getModules().forEach(new Consumer<GameModule>() {
-            @Override
-            public void accept(GameModule gameModule) {
-                gameModule.getSerializers().forEach(new Consumer<SerializerInterface>() {
-                    @Override
-                    public void accept(SerializerInterface o) {
-                        o.save();
-                    }
-                });
-            }
-        });
+        game.getSerializers().forEach(serializer -> serializer.save(game));
 
         SQLHelper.getInstance().closeDB();
-        Log.notice("Create save game (" + (System.currentTimeMillis() - time) + "ms)");
+        Log.notice("Create onSave game (" + (System.currentTimeMillis() - time) + "ms)");
 
         SQLHelper.getInstance().post(db -> {
             try {
@@ -113,7 +83,7 @@ public class GameSaveManager {
                 // Delete DB file
                 dbFile.delete();
 
-                Log.notice("Zip save game (" + (System.currentTimeMillis() - time) + "ms)");
+                Log.notice("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
                 Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
                 e.printStackTrace();

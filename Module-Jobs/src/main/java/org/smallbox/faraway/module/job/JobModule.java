@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.serializer.SerializerInterface;
+import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -32,9 +32,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private List<CharacterCheck>        _sleeps;
 
     @Override
-    public void onGameStart(Game game) {
-        printDebug("JobModule");
-
+    protected void onGameCreate(Game game) {
         _priorities = new ArrayList<>();
 //        _priorities.add(new CheckCharacterEntertainmentDepleted());
 
@@ -45,8 +43,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
 //        _joys.add(new CheckEntertainmentSleep());
 
         _sleeps = new ArrayList<>();
+    }
 
-        printDebug("JobModule done");
+    @Override
+    public void onGameStart(Game game) {
     }
 
     @Override
@@ -280,7 +280,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
         }
     }
 
-    public SerializerInterface getSerializer() {
+    public GameSerializer getSerializer() {
         return null;
 //        return new JobModuleSerializer(this);
     }
