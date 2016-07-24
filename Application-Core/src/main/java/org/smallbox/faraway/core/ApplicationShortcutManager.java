@@ -82,7 +82,7 @@ public class ApplicationShortcutManager {
 
             new ApplicationShortcut(ESCAPE, NONE, () -> Data.getData().getBinding("base.binding.open_panel_main").action()),
             new ApplicationShortcut(B, NONE, () -> Data.getData().getBinding("base.binding.open_panel_build").action()),
-            new ApplicationShortcut(P, NONE, () -> Data.getData().getBinding("base.binding.open_panel_plan").action()),
+//            new ApplicationShortcut(P, NONE, () -> Data.getData().getBinding("base.binding.open_panel_plan").action()),
             new ApplicationShortcut(T, NONE, () -> Data.getData().getBinding("base.binding.open_panel_jobs").action()),
             new ApplicationShortcut(C, NONE, () -> Data.getData().getBinding("base.binding.open_panel_crew").action()),
 

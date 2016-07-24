@@ -108,7 +108,7 @@ public class BuildableMapObject extends MapObjectModel {
 
     @Override
     public boolean          isWalkable() { return !isComplete() || _info.isWalkable; }
-    public boolean          isComplete() { return _buildProgress < _info.build.cost; }
+    public boolean          isComplete() { return _buildProgress >= _info.build.cost; }
 
     public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
         throw new NotImplementedException("");

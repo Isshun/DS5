@@ -56,7 +56,7 @@ public class ItemInfoController extends LuaPanelController {
         if (_item != null) {
             lbName.setText(_item.getLabel());
 
-            if (_item.getBuildCost() > 0) {
+            if (!_item.isComplete()) {
                 frameBuild.setVisible(true);
                 imgBuildProgress.setTextureRect(0, 80, (int) (Math.floor(_item.getBuildProgress() * 352 / _item.getBuildCost() / 10) * 10), 16);
                 lbBuildProgress.setText(String.format("Progress: %d/%d", _item.getBuildProgress(), _item.getBuildCost()));
