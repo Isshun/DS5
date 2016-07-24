@@ -11,4 +11,7 @@ public interface StructureModuleObserver extends ModuleObserver {
     default void onAddStructure(StructureModel structure) {}
     default void onRemoveStructure(ParcelModel parcel, StructureModel structure) {}
     default void onStructureComplete(StructureModel structure) {}
+
+    default void onSelectStructure(StructureModel structure) {}
+    default void onDeselectStructure(StructureModel lastStructure) {}
 }

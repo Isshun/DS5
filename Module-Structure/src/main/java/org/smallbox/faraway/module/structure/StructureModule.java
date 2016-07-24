@@ -6,12 +6,15 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
 import org.smallbox.faraway.core.game.module.job.model.HaulJob;
+import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.job.JobModuleObserver;
+import org.smallbox.faraway.module.world.WorldInteractionModule;
+import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
 
@@ -31,37 +34,62 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     @BindModule("base.module.jobs")
     private JobModule _jobs;
 
+    @BindModule("")
+    private WorldInteractionModule _worldInteraction;
+
     private Collection<StructureModel> _structures;
 
-    public Collection<StructureModel>           getStructures() { return _structures; }
+    public Collection<StructureModel> getStructures() { return _structures; }
 
     @Override
     protected void onGameCreate(Game game) {
-        game.getRenders().add(new StructureBottomRenderer(this));
-        game.getRenders().add(new StructureTopRenderer(this));
-//        getSerializers().add(new WorldModuleSerializer(this));
-
         _structures = new LinkedBlockingQueue<>();
 
+        game.addRender(new StructureBottomRenderer(this));
+        game.addRender(new StructureTopRenderer(this));
+        game.addSerializer(new StructureModuleSerializer(this, _world));
+
+        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+            public StructureModel _lastStructure;
+
+            @Override
+            public void onSelect(Collection<ParcelModel> parcels) {
+                // Get structure on parcel
+                StructureModel structure = _structures.stream()
+                        .filter(s -> parcels.contains(s.getParcel()))
+                        .findAny()
+                        .orElse(null);
+
+                // Call observers
+                if (structure != null) {
+                    notifyObservers(obs -> obs.onSelectStructure(structure));
+                } else if (_lastStructure != null) {
+                    notifyObservers(obs -> obs.onDeselectStructure(_lastStructure));
+                }
+
+                // Store current structure
+                _lastStructure = structure;
+            }
+        });
+
         _jobs.addObserver(new JobModuleObserver() {
-        });
-
-        _world.addObserver(new WorldModuleObserver() {
             @Override
-            public MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-                if (itemInfo.isStructure) {
-                    // TODO
-                }
-                return null;
+            public void onJobCancel(JobModel job) {
+                _structures.removeIf(item -> item.getBuildJob() == job);
             }
 
             @Override
-            public void onAddParcel(ParcelModel parcel) {
-                if (parcel.hasStructure()) {
-                    _structures.add(parcel.getStructure());
-                }
+            public void onJobComplete(JobModel job) {
+                _structures.removeIf(item -> item.getBuildJob() == job);
             }
         });
+    }
+
+    @Override
+    protected void onGameStart(Game game) {
+        _structures.stream()
+                .filter(item -> item.getBuildProgress() < item.getBuildCost())
+                .forEach(this::launchBuild);
     }
 
     @Override
@@ -140,5 +168,16 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         }
 
         return null;
+    }
+
+    /**
+     * Create build job
+     *
+     * @param structure to build
+     */
+    private void launchBuild(StructureModel structure) {
+        BuildJob job = new BuildJob(structure);
+        structure.setBuildJob(job);
+        _jobs.addJob(job);
     }
 }

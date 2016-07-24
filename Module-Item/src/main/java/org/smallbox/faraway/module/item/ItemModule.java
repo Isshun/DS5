@@ -61,7 +61,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             public void onSelect(Collection<ParcelModel> parcels) {
                 // Get item on parcel
                 ItemModel item = _items.stream()
-                        .filter(consumable -> parcels.contains(consumable.getParcel()))
+                        .filter(i -> parcels.contains(i.getParcel()))
                         .findAny()
                         .orElse(null);
 
