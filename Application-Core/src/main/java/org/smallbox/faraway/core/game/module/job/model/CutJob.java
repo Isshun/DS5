@@ -51,7 +51,7 @@
 //
 //    @Override
 //    public boolean onCheck(CharacterModel character) {
-//        Log.info("check job: " + this);
+//        Log.info("isJobLaunchable job: " + this);
 //
 //        // Item is null
 //        if (_resource == null) {

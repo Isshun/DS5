@@ -1,13 +1,11 @@
 package org.smallbox.faraway.module.character.controller;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.LuaPanelController;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
@@ -15,7 +13,8 @@ import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.character.CharacterModuleObserver;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
@@ -29,7 +28,10 @@ public class CharacterController extends LuaPanelController {
     private CharacterStatusController   statusController;
 
     @BindModule("")
-    private CharacterModule _module;
+    private CharacterModule             _characters;
+
+    @BindModule("")
+    private WorldInteractionModule      _worldInteraction;
 
     @BindLua private View               pageStatus;
     @BindLua private View               pageInventory;
@@ -39,28 +41,34 @@ public class CharacterController extends LuaPanelController {
     @BindLua private UILabel            lbInfoBirth;
     @BindLua private UILabel            lbInfoEnlisted;
 
+    private CharacterModel              _selected;
+
+    @Override
+    protected void onGameCreate(Game game) {
+        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+            @Override
+            public void onSelect(Collection<ParcelModel> parcels) {
+                CharacterModel selected = _characters.getCharacters().stream()
+                        .filter(character -> parcels.contains(character.getParcel()))
+                        .findAny().orElse(null);
+                setVisible(selected != null);
+                if (selected != null) {
+                    select(selected);
+                }
+            }
+        });
+    }
+
     @Override
     public void gameStart(Game game) {
-        _module.addObserver(new CharacterModuleObserver() {
+        _characters.addObserver(new CharacterModuleObserver() {
             @Override
             public void onSelectCharacter(CharacterModel character) {
-                selectCharacter(character);
+                select(character);
             }
         });
 
         openPage(pageStatus);
-    }
-
-    public void selectCharacter(CharacterModel character) {
-        setVisible(true);
-
-        Log.debug("Select character: " + character);
-
-        lbName.setText(character.getName());
-        lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
-        lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
-
-        statusController.selectCharacter(character);
     }
 
     @BindLuaAction
@@ -83,11 +91,28 @@ public class CharacterController extends LuaPanelController {
         openPage(pageHealth);
     }
 
+    private void select(CharacterModel character) {
+        setVisible(true);
+
+        Log.debug("Select character: " + character);
+
+        _selected = character;
+        lbName.setText(character.getName());
+        lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
+        lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
+
+        statusController.selectCharacter(character);
+    }
+
     private void openPage(View page) {
         pageStatus.setVisible(false);
         pageInventory.setVisible(false);
         pageHealth.setVisible(false);
         pageInfo.setVisible(false);
         page.setVisible(true);
+    }
+
+    public CharacterModel getSelected() {
+        return _selected;
     }
 }

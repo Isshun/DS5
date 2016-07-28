@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.module.item.ItemFinder;
+import org.smallbox.faraway.module.item.ItemFinderModule;
 import org.smallbox.faraway.module.item.UseJob;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
@@ -18,17 +18,17 @@ import org.smallbox.faraway.module.item.item.ItemModel;
 public class CheckCharacterWaterWarning extends CharacterCheck {
 
     @Override
-    public boolean check(CharacterModel character) {
+    public boolean isJobLaunchable(CharacterModel character) {
         return character.getType().needs.water != null && character.getNeeds().get("drink") < character.getType().needs.water.warning;
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return character.getType().needs.water != null && character.getNeeds().get("drink") < character.getType().needs.water.warning;
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         ConsumableModel consumable = null;
         ItemFilter consumableFilter = ItemFilter.createConsumableFilter();
         consumableFilter.effectDrink = true;
@@ -39,7 +39,7 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
         }
 
         // Get consumable on ground
-        ConsumableModel nearestConsumable = (ConsumableModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(consumableFilter, character);
+        ConsumableModel nearestConsumable = (ConsumableModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
         if (nearestConsumable != null && nearestConsumable.hasFreeSlot()) {
             consumable = nearestConsumable;
         }
@@ -49,7 +49,7 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
         itemFilter.effectDrink = true;
 
         // Get drink provider
-        ItemModel nearestItem = (ItemModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(itemFilter, character);
+        ItemModel nearestItem = (ItemModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(itemFilter, character);
         if (nearestItem != null && nearestItem.hasFreeSlot()) {
             item = nearestItem;
         }
@@ -71,5 +71,10 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
         }
 
         return null;
+    }
+
+    @Override
+    public String getLabel() {
+        return "A soif";
     }
 }

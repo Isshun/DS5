@@ -13,10 +13,6 @@ import org.smallbox.faraway.ui.engine.views.widgets.UIList;
 public class AreaGardenInfoController extends LuaController {
     @BindLua private UIList             listAcceptedPlant;
 
-    @Override
-    protected void onCreate() {
-    }
-
     public void select(GardenAreaModel garden) {
         UserInterface.getInstance().findById("base.ui.panel_main").setVisible(false);
         UserInterface.getInstance().findById("base.ui.panel_areas").setVisible(false);

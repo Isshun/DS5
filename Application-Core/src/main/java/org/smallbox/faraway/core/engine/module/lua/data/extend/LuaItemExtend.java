@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -126,6 +127,18 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.build = new ItemInfo.ItemBuildInfo();
         if (!value.get("build").isnil()) {
             itemInfo.build.cost = getInt(value.get("build"), "cost", 0);
+
+            LuaValue componentsValue = value.get("components");
+            if (!componentsValue.isnil()) {
+                for (int i = 1; i <= componentsValue.length(); i++) {
+                    ItemInfo.ItemBuildInfo.ItemBuildComponentInfo componentInfo = new ItemInfo.ItemBuildInfo.ItemBuildComponentInfo();
+                    Data.getData().getAsync(componentsValue.get(i).get("id").toString(), component -> componentInfo.component = component);
+                    componentInfo.count = componentsValue.get(i).get("count").toint();
+                    itemInfo.build.components.add(componentInfo);
+
+                    itemInfo.slots.add(new int[] {value.get("slots").get(i).get(1).toint(), value.get("slots").get(i).get(2).toint()});
+                }
+            }
         }
 
         if (!value.get("slots").isnil()) {
@@ -205,8 +218,8 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.isNetworkItem = true;
         } else if ("resource".equals(itemInfo.type)) {
             itemInfo.isResource = true;
-            itemInfo.isRock = itemInfo.actions != null && "mine".equals(itemInfo.actions.get(0).type);
-            itemInfo.canSupportRoof = itemInfo.actions != null && "mine".equals(itemInfo.actions.get(0).type);
+            itemInfo.isRock = itemInfo.actions != null && itemInfo.actions.get(0).type == ItemInfo.ItemInfoAction.ActionType.MINE;
+            itemInfo.canSupportRoof = itemInfo.actions != null && itemInfo.actions.get(0).type == ItemInfo.ItemInfoAction.ActionType.MINE;
         } else if ("equipment".equals(itemInfo.type) || itemInfo.equipment != null) {
             itemInfo.isEquipment = true;
             itemInfo.isConsumable = true;
@@ -319,19 +332,18 @@ public class LuaItemExtend extends LuaExtend {
 
     private void readActionValue(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         ItemInfo.ItemInfoAction action = new ItemInfo.ItemInfoAction();
-        action.type = getString(value, "type", null);
+        action.type = ItemInfo.ItemInfoAction.ActionType.valueOf(getString(value, "type", null).toUpperCase());
         action.cost = getInt(value, "cost", 0);
 
         if (!value.get("inputs").isnil()) {
             action.inputs = new ArrayList<>();
-            for (int i = 1; i <= value.get("inputs").length(); i++) {
-                LuaValue luaInput = value.get("inputs").get(i);
+            readLuaComposite(value.get("inputs"), input -> {
                 ItemInfo.ActionInputInfo inputInfo = new ItemInfo.ActionInputInfo();
-                inputInfo.networkName = getString(luaInput, "network", null);
-                inputInfo.itemName = getString(luaInput, "item", null);
-                inputInfo.quantity = getInt(luaInput, "quantity", 1);
+                inputInfo.networkName = getString(input, "network", null);
+                inputInfo.itemName = getString(input, "item", null);
+                inputInfo.quantity = getInt(input, "quantity", 1);
                 action.inputs.add(inputInfo);
-            }
+            });
         }
 
         LuaValue luaEffects = value.get("effects");
@@ -340,33 +352,52 @@ public class LuaItemExtend extends LuaExtend {
             readEffectValues(action.effects, luaEffects);
         }
 
-        LuaValue luaProducts = value.get("products");
-        if (!luaProducts.isnil()) {
-            action.products = new ArrayList<>();
-            for (int i = 1; i <= luaProducts.length(); i++) {
-                ItemInfo.ItemProductInfo product = new ItemInfo.ItemProductInfo();
+        action.products = new ArrayList<>();
+        readLuaComposite(value.get("products"), luaProduct -> {
+            ItemInfo.ItemProductInfo product = new ItemInfo.ItemProductInfo();
 
-                // Get product item name
-                if (!luaProducts.get(i).get("item").isnil()) {
-                    product.itemName = getString(luaProducts.get(i), "item", null);
-                } else {
-                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.item");
-                }
-
-                // Get product quantity
-                if (!luaProducts.get(i).get("quantity").isnil()) {
-                    product.quantity = new int[]{
-                            luaProducts.get(i).get("quantity").get(1).toint(),
-                            luaProducts.get(i).get("quantity").get(2).toint()};
-                } else {
-                    throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.quantity");
-                }
-                product.rate = getDouble(luaProducts.get(i), "rate", 1);
-                action.products.add(product);
+            // Get product item name
+            if (!luaProduct.get("item").isnil()) {
+                product.itemName = getString(luaProduct, "item", null);
+            } else {
+//                throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.item");
             }
-        }
+
+            // Get product quantity
+            if (!luaProduct.get("quantity").isnil()) {
+                product.quantity = readLuaInterval(luaProduct.get("quantity"));
+            } else {
+//                throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.quantity");
+            }
+            product.rate = getDouble(luaProduct, "rate", 1);
+            action.products.add(product);
+        });
 
         itemInfo.actions.add(action);
+    }
+
+    private int[] readLuaInterval(LuaValue luaValue) {
+        if (luaValue.istable() && luaValue.length() > 0) {
+            return new int[]{ luaValue.get(1).toint(), luaValue.get(2).toint()};
+        } else {
+            return new int[]{ luaValue.toint(), luaValue.toint()};
+        }
+    }
+
+    private interface LuaCompositeCallback {
+        void onEach(LuaValue value);
+    }
+
+    private void readLuaComposite(LuaValue composite, LuaCompositeCallback callback) {
+        if (composite != null && !composite.isnil()) {
+            if (composite.istable() && composite.length() > 0) {
+                for (int i = 1; i <= composite.length(); i++) {
+                    callback.onEach(composite.get(i));
+                }
+            } else {
+                callback.onEach(composite);
+            }
+        }
     }
 
     private void readEffectValues(ItemInfo.ItemInfoEffects effects, LuaValue luaEffects) {

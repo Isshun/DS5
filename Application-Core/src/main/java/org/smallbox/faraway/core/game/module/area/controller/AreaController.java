@@ -32,7 +32,7 @@ public class AreaController extends LuaController {
     @BindLua private UILabel    btRemoveGarden;
 
     @Override
-    protected void onCreate() {
+    protected void onGameCreate(Game game) {
         btAddStorage.setOnClickListener(() -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
         });

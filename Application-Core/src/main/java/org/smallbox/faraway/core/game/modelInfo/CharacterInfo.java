@@ -9,7 +9,7 @@ public class CharacterInfo extends ObjectInfo {
     }
 
     public static class ChangeInfo {
-        public double       wake;
+        public double rest;
         public double       work;
         public double       sleep;
         public double       sleepOnFloor;
@@ -19,23 +19,23 @@ public class CharacterInfo extends ObjectInfo {
         public double       optimal;
         public int          warning;
         public int          critical;
-        public ChangeInfo   change;
+        public ChangeInfo   change = new ChangeInfo();
     }
 
     public static class Needs {
-        public NeedInfo     water;
-        public NeedInfo     food;
-        public NeedInfo     energy;
-        public NeedInfo     oxygen;
-        public NeedInfo     relation;
-        public NeedInfo     joy;
-        public NeedInfo     happiness;
-        public NeedInfo     heat;
+        public NeedInfo     water = new NeedInfo();
+        public NeedInfo     food = new NeedInfo();
+        public NeedInfo     energy = new NeedInfo();
+        public NeedInfo     oxygen = new NeedInfo();
+        public NeedInfo     relation = new NeedInfo();
+        public NeedInfo     joy = new NeedInfo();
+        public NeedInfo     happiness = new NeedInfo();
+        public NeedInfo     heat = new NeedInfo();
     }
 
     public String           label;
-    public Needs            needs;
     public int              index;
     public String           path;
     public int              thermolysis;
+    public Needs            needs = new Needs();
 }

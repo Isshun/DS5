@@ -71,7 +71,7 @@ public class WorldFactory {
 //            else if (WorldFactoryConfig.has(terrain.pattern)) {
 //                Log.notice("Create resources with pattern: " + terrain.pattern);
 //                for (int z = 0; z < _floors; z++) {
-//                    new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).create(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
+//                    new MidpointDisplacement(WorldFactoryConfig.get(terrain.pattern)).onCreateJob(game.getInfo(), _parcels, z, parcel -> applyToParcel(terrain, parcel));
 //                }
 //            }
 //            else {

@@ -12,10 +12,6 @@ public class WorldInfoParcel2Controller extends LuaController {
     @BindLua
     private UILabel lbName;
 
-    @Override
-    protected void onCreate() {
-    }
-
     public void select(ParcelModel parcel) {
         lbName.setText("Hello");
     }

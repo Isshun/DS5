@@ -173,7 +173,6 @@ public class LuaModuleManager {
         });
 
         LuaControllerManager.getInstance().init();
-        LuaControllerManager.getInstance().create();
 
         Data.getData().fix();
 

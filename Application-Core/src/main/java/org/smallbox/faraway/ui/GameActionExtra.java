@@ -192,10 +192,10 @@ public class GameActionExtra {
         throw new org.apache.commons.lang3.NotImplementedException("");
 
 //        if (parcel.hasItem() && parcel.getItem().isComplete()) {
-//            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getItem()));
+//            ModuleHelper.getJobModule().addJob(DumpJob.onCreateJob(parcel.getItem()));
 //        }
 //        if (parcel.hasStructure() && parcel.getStructure().isComplete()) {
-//            ModuleHelper.getJobModule().addJob(DumpJob.create(parcel.getStructure()));
+//            ModuleHelper.getJobModule().addJob(DumpJob.onCreateJob(parcel.getStructure()));
 //        }
     }
 

@@ -41,6 +41,7 @@ public interface GameObserver {
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
     default void onKeyPress(GameEventListener.Key key) {}
+    default void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {}
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
     default void onSpeedChange(int speed) {}

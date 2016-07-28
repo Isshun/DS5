@@ -24,19 +24,19 @@ public class ClickDebugController extends LuaController {
     public void onMouseMove(MouseEvent event) {
         viewsList.clear();
 
-        UIEventManager.getInstance().getClickListeners().keySet().forEach(view -> {
-            if (view.isActive() && UIEventManager.getInstance().hasVisibleHierarchy(view)) {
-                if (view.contains(event.x, event.y)) {
-                    String name = getAbsoluteName(view);
-
-                    UILabel label = new UILabel(null);
-                    label.setText((view.isVisible() ? "[*] " : "[ ] ") + "(name: " + name + ", action: " + view.getActionName() + ")");
-                    label.setSize(100, 13);
-                    label.setTextSize(12);
-                    viewsList.addView(label);
-                }
-            }
-        });
+//        UIEventManager.getInstance().getClickListeners().keySet().forEach(view -> {
+//            if (view.isActive() && UIEventManager.getInstance().hasVisibleHierarchy(view)) {
+//                if (view.contains(event.x, event.y)) {
+//                    String name = getAbsoluteName(view);
+//
+//                    UILabel label = new UILabel(null);
+//                    label.setText((view.isVisible() ? "[*] " : "[ ] ") + "(name: " + name + ", action: " + view.getActionName() + ")");
+//                    label.setSize(100, 13);
+//                    label.setTextSize(12);
+//                    viewsList.addView(label);
+//                }
+//            }
+//        });
     }
 
     private String getAbsoluteName(View view) {

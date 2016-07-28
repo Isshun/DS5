@@ -1,6 +1,7 @@
 data:extend({
     type = "view",
     style = "base.style.right_panel",
+    controller = "org.smallbox.faraway.module.character.controller.CrewController",
     id = "base.ui.panel_crew",
     visible = false,
     views = {
@@ -9,13 +10,7 @@ data:extend({
             ui:find("base.ui.panel_crew"):setVisible(false)
         end},
         { type = "label", text = "Crew", text_size = 28, padding = 10, position = {40, 0}},
---        { type = "list", position = {0, 40}, adapter = {
---            view = { type = "label", id = "lb_character", size = {180, 40}, text = "hello", text_size = 18, padding = 10},
---            data = application.crew:list(),
---            on_bind = function(view, data)
---                view:setText(data.name)
---            end
---        }},
+        { type = "list", id = "list_crew", position = {12, 52}},
     },
     on_event = function(view, event , data)
         if event == application.events.on_key_press and data == "ESCAPE" then

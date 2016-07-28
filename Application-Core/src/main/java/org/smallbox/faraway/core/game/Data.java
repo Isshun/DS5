@@ -30,6 +30,7 @@ public class Data {
     public List<DiseaseInfo>                    diseases = new ArrayList<>();
     public List<ItemInfo>                       consumables;
     public List<BindingInfo>                    bindings = new ArrayList<>();
+    private List<DataAsyncEntry> _async = new LinkedList<>();
 
     public static Data getData() {
         if (_self == null) {
@@ -104,18 +105,17 @@ public class Data {
                         item.factory.receipts.forEach(receipt -> receipt.receipt = getReceipt(receipt.receiptName));
                     }
                     if (item.actions != null) {
-                        item.actions.stream()
-                                .forEach(action -> {
-                                    if (action.inputs != null) {
-                                        action.inputs.forEach(input -> {
-                                            if (input.itemName != null) input.item = getItemInfo(input.itemName);
-                                            if (input.networkName != null) input.network = getNetwork(input.networkName);
-                                        });
-                                    }
-                                    if (action.products != null) {
-                                        action.products.forEach(product -> product.item = getItemInfo(product.itemName));
-                                    }
+                        item.actions.forEach(action -> {
+                            if (action.inputs != null) {
+                                action.inputs.forEach(input -> {
+                                    if (input.itemName != null) input.item = getItemInfo(input.itemName);
+                                    if (input.networkName != null) input.network = getNetwork(input.networkName);
                                 });
+                            }
+                            if (action.products != null) {
+                                action.products.forEach(product -> product.item = getItemInfo(product.itemName));
+                            }
+                        });
                     }
                     if (item.receipts != null) {
                         item.receipts.stream().filter((receipt -> receipt.components != null))
@@ -136,5 +136,25 @@ public class Data {
         this.networks.forEach(network -> network.items = network.itemNames.stream().map(this::getItemInfo).collect(Collectors.toList()));
 
         this.consumables = this.items.stream().filter(item -> item.isConsumable).collect(Collectors.toList());
+
+        _async.forEach(entry -> entry.listener.onGetAsync(getItemInfo(entry.name)));
+    }
+
+    public void getAsync(String itemName, DataAsyncListener dataAsyncListener) {
+        _async.add(new DataAsyncEntry(itemName, dataAsyncListener));
+    }
+
+    public interface DataAsyncListener {
+        void onGetAsync(ItemInfo itemInfo);
+    }
+
+    private static class DataAsyncEntry {
+        public String name;
+        DataAsyncListener listener;
+
+        DataAsyncEntry(String itemName, DataAsyncListener dataAsyncListener) {
+            this.name = itemName;
+            this.listener = dataAsyncListener;
+        }
     }
 }

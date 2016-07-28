@@ -24,22 +24,6 @@ import java.util.stream.Collectors;
 public class Game {
     private Collection<GameSerializer> _serializers = new LinkedBlockingQueue<>();
 
-    public Collection<GameSerializer> getSerializers() {
-        return _serializers;
-    }
-
-    public void addSerializer(GameSerializer serializer) {
-        if (CollectionUtils.notContains(_serializers, serializer)) {
-            _serializers.add(serializer);
-        }
-    }
-
-    public void addRender(BaseRenderer renderer) {
-        if (CollectionUtils.notContains(_renders, renderer)) {
-            _renders.add(renderer);
-        }
-    }
-
     public enum GameModuleState {UNINITIALIZED, CREATED, STARTED}
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
 
@@ -92,6 +76,8 @@ public class Game {
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
     public int                              getYear() { return _year; }
+    public int                              getTickPerHour() { return Application.getInstance().getConfig().game.tickPerHour; }
+    public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public Viewport                         getViewport() { return _viewport; }
     public static int                       getUpdate() { return _tick; }
     public PlanetModel                      getPlanet() { return _planet; }
@@ -158,6 +144,8 @@ public class Game {
         Application.getInstance().notify(observer -> observer.onDayChange(_day));
         Application.getInstance().notify(observer -> observer.onYearChange(_year));
         Application.getInstance().notify(observer -> observer.onFloorChange(WorldHelper.getCurrentFloor()));
+
+        _viewport.setPosition(-500, -3800);
     }
 
     private void startModules() {
@@ -205,6 +193,8 @@ public class Game {
         }
 
         _tick = tick;
+
+        Log.info("Tick: " + tick);
     }
 
     public GameInfo getInfo() { return _info; }
@@ -250,5 +240,20 @@ public class Game {
         _tickInterval = TICK_INTERVALS[Math.max(0, Math.min(4, speed))];
         _isRunning = _tickInterval > 0;
         Application.getInstance().notify(observer -> observer.onSpeedChange(speed));
+    }
+
+    public Collection<GameSerializer> getSerializers() { return _serializers; }
+    public void createControllers() { LuaControllerManager.getInstance().gameCreate(this); }
+
+    public void addSerializer(GameSerializer serializer) {
+        if (CollectionUtils.notContains(_serializers, serializer)) {
+            _serializers.add(serializer);
+        }
+    }
+
+    public void addRender(BaseRenderer renderer) {
+        if (CollectionUtils.notContains(_renders, renderer)) {
+            _renders.add(renderer);
+        }
     }
 }

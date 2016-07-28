@@ -108,8 +108,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     private JobModel getBestSleep(CharacterModel character, boolean force) {
         for (CharacterCheck check: _sleeps) {
-            if ((force || check.need(character)) && check.check(character)) {
-                return check.create(character);
+            if ((force || check.checkJobNeeded(character)) && check.checkJobLaunchable(character)) {
+                return check.createJob(character);
             }
         }
         return null;
@@ -155,8 +155,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private JobModel getBestEntertainment(CharacterModel character, boolean force) {
         Collections.shuffle(_joys);
         for (CharacterCheck check: _joys) {
-            if ((force || check.need(character)) && check.check(character)) {
-                return check.create(character);
+            if ((force || check.checkJobNeeded(character)) && check.checkJobLaunchable(character)) {
+                return check.createJob(character);
             }
         }
         return null;
@@ -171,8 +171,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private JobModel getBestPriority(CharacterModel character) {
         JobModel job = null;
         for (CharacterCheck jobCheck: _priorities) {
-            if (job == null && jobCheck.need(character) && jobCheck.check(character)) {
-                job = jobCheck.create(character);
+            if (job == null && jobCheck.checkJobNeeded(character) && jobCheck.checkJobLaunchable(character)) {
+                job = jobCheck.createJob(character);
             }
         }
         return job;

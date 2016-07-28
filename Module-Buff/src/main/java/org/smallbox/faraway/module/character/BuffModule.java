@@ -42,7 +42,7 @@
 //
 //    @Override
 //    protected void onGameUpdate(Game game, int tick) {
-//        _charactersData.forEach(buff -> {buff.check(tick); buff.update(tick);});
+//        _charactersData.forEach(buff -> {buff.isJobLaunchable(tick); buff.update(tick);});
 //        for (Map.Entry<CharacterModel, List<BuffCharacterModel>> entry: _characters.entrySet()) {
 //            Collections.sort(entry.getValue(), (b1, b2) -> b2.mood - b1.mood);
 //        }

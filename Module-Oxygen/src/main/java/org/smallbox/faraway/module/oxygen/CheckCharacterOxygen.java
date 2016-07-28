@@ -23,7 +23,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         if (_parcel == null) {
             Log.error("[CheckEntertainmentWalk] Create job with null parcel");
             return null;
@@ -38,7 +38,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
     }
 
     @Override
-    public boolean check(CharacterModel character) {
+    public boolean isJobLaunchable(CharacterModel character) {
         if (character.getNeeds().get("oxygen") < 20) {
             Optional<RoomModel> roomOpt = _roomModule.getRooms().stream().filter(room -> room.getOxygen() >= 0.75).findAny();
             if (roomOpt.isPresent()) {
@@ -53,7 +53,7 @@ public class CheckCharacterOxygen extends CharacterCheck {
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return character.getType().needs.oxygen != null && character.getNeeds().get("oxygen") < character.getType().needs.oxygen.critical;
     }
 }

@@ -84,7 +84,7 @@ public class JobHelper {
 //            return null;
 //        }
 //
-//        JobModel job = GatherJob.create(resource, mode);
+//        JobModel job = GatherJob.onCreateJob(resource, mode);
 //        ModuleHelper.getJobModule().addJob(job);
 //
 //        return job;

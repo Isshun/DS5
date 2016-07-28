@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.item;
 
+import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -13,7 +14,7 @@ import org.smallbox.faraway.core.util.Log;
 public class UseJob extends JobModel {
     private int         _current;
     private ItemModel   _item;
-    private ItemSlot _slot;
+    private ItemSlot    _slot;
 
     @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
@@ -31,18 +32,23 @@ public class UseJob extends JobModel {
             return null;
         }
 
-        ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
-
         UseJob job = new UseJob();
-        job.setActionInfo(infoAction);
         job._item = item;
-        job.setCost(infoAction.cost);
+
+        if (CollectionUtils.isNotEmpty(item.getInfo().actions)) {
+            ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
+            job.setActionInfo(infoAction);
+            job.setCost(infoAction.cost);
+        } else {
+            Log.warning("No action for item");
+        }
 
         return job;
     }
 
     public static UseJob create(CharacterModel character, ItemModel item) {
         if (character == null) {
+            Log.warning("Cannot create job with null character");
             return null;
         }
 
@@ -99,15 +105,15 @@ public class UseJob extends JobModel {
             return JobActionReturn.CONTINUE;
         }
 
-        // Use consumable if need by action
-        if (_actionInfo.inputs != null) {
+        // Use consumable if isJobNeeded by action
+        if (_actionInfo != null && _actionInfo.inputs != null) {
             for (ItemInfo.ActionInputInfo inputInfo: _actionInfo.inputs) {
                 // TODO
-                // Action need consumable
+                // Action isJobNeeded consumable
                 if (inputInfo.item != null) {
                 }
 
-                // Action need consumable through network
+                // Action isJobNeeded consumable through network
                 if (inputInfo.network != null && _item.getNetworkConnections() != null) {
                     for (NetworkConnectionModel networkConnection: _item.getNetworkConnections()) {
                         if (networkConnection.getNetwork() != null && networkConnection.getNetwork().getInfo() == inputInfo.network) {

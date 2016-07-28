@@ -149,7 +149,7 @@ public class StoreJob extends JobModel implements GameObserver {
 //        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
 //            @Override
 //            public void onReach(CharacterModel movable) {
-//                // TODO: check characters inventory free space
+//                // TODO: isJobLaunchable characters inventory free space
 //                if (_character.getInventory() == null) {
 //                    _character.addInventory(consumable, consumable.getQuantity());
 //                    ModuleHelper.getWorldModule().removeConsumable(consumable);

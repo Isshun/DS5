@@ -23,16 +23,17 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
     }
 
     public void addObserver(T observer) {
-        if (Game.getInstance().getState() != Game.GameModuleState.UNINITIALIZED) {
-            Log.error("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
-        }
+        // TODO
+//        if (Game.getInstance().getState() != Game.GameModuleState.UNINITIALIZED) {
+//            Log.error("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
+//        }
 
         _observers.add(observer);
     }
 
     public void notifyObservers(Consumer<T> action) {
         try {
-            _observers.stream().forEach(action);
+            _observers.forEach(action);
         } catch (Error | RuntimeException e) {
             Application.getInstance().setRunning(false);
             e.printStackTrace();

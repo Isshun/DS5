@@ -85,6 +85,7 @@ data:extend({
     end,
 
     on_event = function(view, event, data)
+        view:setVisible(true)
 
         -- Check bindings
         if event == application.events.on_binding then
@@ -103,7 +104,7 @@ data:extend({
         end
 
         if event == application.events.on_deselect then
-            -- view:setVisible(true)
+            view:setVisible(true)
         end
 
         if event == application.events.on_floor_change then
@@ -145,6 +146,8 @@ data:extend({
     end,
 
     on_refresh = function(view)
+        view:setVisible(true)
+
         if parcel ~= nil then
             local room = parcel:getRoom()
             view:findById("lb_ground"):setText("Ground", ": ", parcel:getGroundInfo() and parcel:getGroundInfo().name or "no")

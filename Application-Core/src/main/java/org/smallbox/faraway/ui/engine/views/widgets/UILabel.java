@@ -127,11 +127,12 @@ public class UILabel extends View {
 ////        }
 //    }
 
-    public void setTextColor(Color color) {
+    public UILabel setTextColor(Color color) {
         if (color != null && _textColor != color) {
             _gdxTextColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
         }
         _textColor = color;
+        return this;
     }
 
     public void setTextColor(int color) {
@@ -164,8 +165,9 @@ public class UILabel extends View {
         return _textColor;
     }
 
-    public void setDashedString(String label, String value, int nbColumns) {
+    public UILabel setDashedString(String label, String value, int nbColumns) {
         _string = StringUtils.getDashedString(label, value, nbColumns);
+        return this;
     }
 
     @Override

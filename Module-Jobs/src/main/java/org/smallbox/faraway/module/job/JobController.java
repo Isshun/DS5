@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.job;
 
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
@@ -27,5 +28,12 @@ public class JobController extends LuaController {
             lbJob.setSize(300, 22);
             listJobs.addView(lbJob);
         });
+    }
+
+    @Override
+    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
+        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.T && modifier == GameEventListener.Modifier.NONE) {
+            setVisible(!isVisible());
+        }
     }
 }

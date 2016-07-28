@@ -60,6 +60,8 @@ public class BuildJob extends JobModel {
     protected void onStart(CharacterModel character) {
         _message = "Building";
 
+        _buildItem.addJob(this);
+
         PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, false);
         if (path != null) {
             _targetParcel = path.getLastParcel();
@@ -83,5 +85,6 @@ public class BuildJob extends JobModel {
 
     @Override
     protected void onFinish() {
+        _buildItem.removeJob(this);
     }
 }

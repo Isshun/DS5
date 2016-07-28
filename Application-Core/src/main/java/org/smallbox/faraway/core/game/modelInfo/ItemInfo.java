@@ -14,7 +14,7 @@ public class ItemInfo extends ObjectInfo {
     public boolean hasCraftAction() {
         if (actions != null) {
             for (ItemInfoAction action : actions) {
-                if ("craft".equals(action.type) || "cook".equals(action.type)) {
+                if (action.type == ItemInfoAction.ActionType.CRAFT || action.type == ItemInfoAction.ActionType.COOK) {
                     return true;
                 }
             }
@@ -59,8 +59,9 @@ public class ItemInfo extends ObjectInfo {
     }
 
     public static class ItemInfoAction {
+        public enum ActionType {USE, MINE, GATHER, BUILD, CRAFT, COOK, CUT}
         public int                      storage;
-        public String                   type;
+        public ActionType               type;
         public String                   label;
         public List<ItemInfoReceipt>    receipts;
         public ItemInfoEffects          effects;
@@ -171,7 +172,13 @@ public class ItemInfo extends ObjectInfo {
     }
 
     public static class ItemBuildInfo {
-        public int                      cost;
+        public static class ItemBuildComponentInfo {
+            public ItemInfo    component;
+            public int         count;
+        }
+
+        public int                          cost;
+        public List<ItemBuildComponentInfo> components = new ArrayList<>();
     }
 
     public static class NetworkItemInfo {

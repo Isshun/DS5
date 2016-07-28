@@ -14,7 +14,7 @@ public abstract class LuaController implements GameObserver {
 
     public void setRootView(View rootView) {
         if (rootView == null) {
-            Log.error("LuaController: Unable to find view (controller: %s)", getClass().getName());
+            Log.error("LuaController: Unable to find root view for controller: %s", getClass().getName());
         }
 
         _rootView = rootView;
@@ -38,15 +38,22 @@ public abstract class LuaController implements GameObserver {
         Application.getInstance().notify(obs -> obs.onOpenPanel(this));
     }
 
+    protected boolean isVisible() {
+        if (getRootView() != null) {
+            return getRootView().isVisible();
+        }
+        return false;
+    }
+
     protected View getView() {
         return _rootView;
     }
 
-    public void create() { onCreate(); }
+    public void gameCreate(Game game) { onGameCreate(game); }
     public void gameStart(Game game) { onGameStart(game); }
     public void gameUpdate(Game game) { onGameUpdate(game); }
 
-    protected void onCreate() {}
+    protected void onGameCreate(Game game) {}
     protected void onGameStart(Game game) {}
     protected void onGameUpdate(Game game) {}
 

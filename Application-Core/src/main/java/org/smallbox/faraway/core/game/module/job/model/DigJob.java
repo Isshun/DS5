@@ -36,7 +36,7 @@ public class DigJob extends JobModel {
 
         if (rockInfo.actions != null) {
             for (ItemInfo.ItemInfoAction action: rockInfo.actions) {
-                if ("mine".equals(action.type)) {
+                if (action.type == ItemInfo.ItemInfoAction.ActionType.MINE) {
                     DigJob job = new DigJob(action, parcel);
                     job.setStrategy(j -> {
                         if (j.getCharacter().getType().needs.joy != null) {
@@ -82,7 +82,7 @@ public class DigJob extends JobModel {
 
     @Override
     public JobCheckReturn onCheck(CharacterModel character) {
-        Log.info("check job: " + this);
+        Log.info("isJobLaunchable job: " + this);
 
         // Resource no longer exists
         if (_rockInfo != _jobParcel.getRockInfo()) {
@@ -101,7 +101,7 @@ public class DigJob extends JobModel {
 
     @Override
     public JobActionReturn onAction(CharacterModel character) {
-        assert "mine".equals(_actionInfo.type);
+        assert _actionInfo.type == ItemInfo.ItemInfoAction.ActionType.MINE;
 
         _message = "Mining";
 

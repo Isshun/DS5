@@ -51,6 +51,8 @@ public abstract class JobModel extends ObjectModel {
     protected int               _nbUsed;
     protected int               _cost = 1;
     protected int               _durationLeft;
+    protected long              _startTime;
+    protected long              _endTime;
     protected boolean           _isFinish;
     protected double            _progress;
     protected ItemFilter        _filter;
@@ -115,6 +117,8 @@ public abstract class JobModel extends ObjectModel {
     public ParcelModel              getTargetParcel() { return _targetParcel; }
     public ParcelModel              getJobParcel() { return _jobParcel; }
     public ItemInfo.ItemInfoAction  getActionInfo() { return _actionInfo; }
+    public long                     getStartTime() { return _startTime; }
+    public long                     getEndTime() { return _endTime; }
 
     public void                     setEntertainment(boolean isEntertainment) { _isEntertainment = isEntertainment; }
     public void                     setStrategy(JobStrategy strategy) { _strategy = strategy; }
@@ -154,7 +158,6 @@ public abstract class JobModel extends ObjectModel {
         // Remove job from old characters
         if (_character != null) {
             quit(_character);
-            _character.clearJob(this);
         }
 
         // Set job to new characters

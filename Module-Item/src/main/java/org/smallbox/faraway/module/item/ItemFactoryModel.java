@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
@@ -21,6 +22,10 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
  * Created by Alex on 15/10/2015.
  */
 public class ItemFactoryModel {
+    public void run() {
+        Log.info("Run factory for " + _item.getName());
+    }
+
     public static class OrderEntry {
         public final ReceiptGroupInfo   receiptGroupInfo;
         public final FactoryOutputMode  output;

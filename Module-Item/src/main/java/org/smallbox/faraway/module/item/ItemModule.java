@@ -115,6 +115,9 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
                     .forEach(item -> _jobs.addJob(new CraftJob(item)));
         }
+
+        // Run factory
+        _items.stream().filter(ItemModel::hasFactory).forEach(item -> item.getFactory().run());
     }
 
     @Override

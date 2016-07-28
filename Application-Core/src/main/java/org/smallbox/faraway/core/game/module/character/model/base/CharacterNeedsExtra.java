@@ -38,7 +38,6 @@ public class CharacterNeedsExtra {
     public int         light;
     public int         pain;
 
-    private MapObjectModel     _sleepItem;
     private CharacterStatsExtra _stats;
     private boolean isFainting;
 
@@ -46,7 +45,6 @@ public class CharacterNeedsExtra {
         _data = Data.getData();
         _character = character;
         _stats = stats;
-        _sleepItem = null;
         _values.put(TAG_FOOD, Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
         _values.put(TAG_OXYGEN, Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 40 - 20);
         _values.put(TAG_HAPPINESS, Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 40 - 20);
@@ -75,10 +73,10 @@ public class CharacterNeedsExtra {
     public void    update() {
         CharacterInfo.Needs needs = _character.getType().needs;
 
-        addValue(TAG_ENERGY, isSleeping ? needs.energy.change.sleep : needs.energy.change.wake);
-        addValue(TAG_FOOD, isSleeping ? needs.food.change.sleep : needs.food.change.wake);
-        addValue(TAG_DRINK, isSleeping ? needs.water.change.sleep : needs.water.change.wake);
-        addValue(TAG_ENTERTAINMENT, isSleeping ? needs.joy.change.sleep : needs.joy.change.wake);
+        addValue(TAG_ENERGY, isSleeping ? needs.energy.change.sleep : needs.energy.change.rest);
+        addValue(TAG_FOOD, isSleeping ? needs.food.change.sleep : needs.food.change.rest);
+        addValue(TAG_DRINK, isSleeping ? needs.water.change.sleep : needs.water.change.rest);
+        addValue(TAG_ENTERTAINMENT, isSleeping ? needs.joy.change.sleep : needs.joy.change.rest);
         // TODO
 //        addValue(TAG_RELATION, ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
         addValue(TAG_HAPPINESS, happinessChange / 100);
@@ -148,14 +146,7 @@ public class CharacterNeedsExtra {
 //        Log.info("bodyHeat: " + this.heat);
     }
 
-    public void use(MapObjectModel item, ItemInfo.ItemInfoEffects effects, int cost) {
-        if (item.isSleepingItem()) {
-            _sleepItem = item;
-            isSleeping = true;
-        } else {
-            _sleepItem = null;
-        }
-
+    public void use(ItemInfo.ItemInfoEffects effects, int cost) {
         if (effects != null) {
             addValue("energy", (double)effects.energy / cost);
             addValue("food", (double)effects.food / cost);

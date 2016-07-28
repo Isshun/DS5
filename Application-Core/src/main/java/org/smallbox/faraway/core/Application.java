@@ -51,6 +51,7 @@ public class Application implements GameEventListener {
 
         if (GameManager.getInstance().isLoaded()) {
             notify(observer -> observer.onKeyPress(key));
+            notify(observer -> observer.onKeyEvent(action, key, modifier));
         }
     }
 

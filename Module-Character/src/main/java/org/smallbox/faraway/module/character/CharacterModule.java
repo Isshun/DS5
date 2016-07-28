@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
@@ -16,6 +17,7 @@ import org.smallbox.faraway.core.util.Strings;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.module.character.controller.CharacterController;
 import org.smallbox.faraway.module.character.job.*;
+import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
@@ -24,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,6 +41,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindModule("")
     private JobModule _jobs;
 
+    @BindModule("")
+    private ItemModule _items;
+
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private int                                 _count;
@@ -50,7 +56,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     public Collection<CharacterModel>     getCharacters() { return _characters; }
     public Collection<CharacterModel>     getVisitors() { return _visitors; }
-    public int                             getCount() { return _count; }
+    public int                            getCount() { return _count; }
 
     @Override
     protected void onGameCreate(Game game) {
@@ -74,16 +80,32 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _jobs.addPriorityCheck(new CheckCharacterFoodWarning());
         _jobs.addPriorityCheck(new CheckCharacterEnergyWarning());
         _jobs.addSleepCheck(new CheckCharacterTimetableSleep());
+        _jobs.addSleepCheck(new CheckJoySleep(_items));
     }
 
-    // TODO
-    public CharacterModel getNext(CharacterModel character) {
-        for (CharacterModel c: _characters) {
-            if (c == character) {
-                return c;
+    @Override
+    public boolean onKey(GameEventListener.Key key) {
+        if (key == GameEventListener.Key.TAB) {
+            select(getNext(_controller.getSelected()));
+            return true;
+        }
+        return false;
+    }
+
+    private CharacterModel getNext(CharacterModel currentCharacter) {
+        if (CollectionUtils.isNotEmpty(_characters)) {
+            Iterator<CharacterModel> iterator = _characters.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next() == currentCharacter) {
+                    break;
+                }
+            }
+            if (iterator.hasNext()) {
+                return iterator.next();
+            } else {
+                return _characters.iterator().next();
             }
         }
-
         return null;
     }
 
@@ -230,5 +252,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             }
         }
         return false;
+    }
+
+    public void select(CharacterModel character) {
+        notifyObservers(obs -> obs.onSelectCharacter(character));
     }
 }

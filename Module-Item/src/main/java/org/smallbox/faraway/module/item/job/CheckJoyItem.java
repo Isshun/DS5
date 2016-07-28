@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.module.item.ItemFinder;
+import org.smallbox.faraway.module.item.ItemFinderModule;
 import org.smallbox.faraway.module.item.UseJob;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
@@ -15,12 +15,14 @@ import org.smallbox.faraway.module.item.item.ItemModel;
 public class CheckJoyItem extends CharacterCheck {
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         ItemModel item = getItem(character);
         if (item != null) {
             UseJob job = UseJob.create(character, item);
-            job.start(character);
-            job.setCharacterRequire(character);
+            if (job != null) {
+                job.start(character);
+                job.setCharacterRequire(character);
+            }
             return job;
         }
         return null;
@@ -29,16 +31,16 @@ public class CheckJoyItem extends CharacterCheck {
     private ItemModel getItem(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
         filter.effectEntertainment = true;
-        return (ItemModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getRandomNearest(filter, character);
+        return (ItemModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getRandomNearest(filter, character);
     }
 
     @Override
-    public boolean check(CharacterModel character) {
+    public boolean isJobLaunchable(CharacterModel character) {
         return getItem(character) != null;
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return character.getNeeds().get("entertainment") < character.getType().needs.joy.warning;
     }
 }

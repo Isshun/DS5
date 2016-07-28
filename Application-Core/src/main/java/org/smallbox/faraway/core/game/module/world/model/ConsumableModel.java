@@ -74,6 +74,6 @@ public class ConsumableModel extends MapObjectModel {
 
     public void consume(CharacterModel character, int durationLeft) {
         // Add buffEffect on characters
-        character.getNeeds().use(this, _info.consume.effects, _info.consume.cost);
+        character.apply(_info.consume);
     }
 }

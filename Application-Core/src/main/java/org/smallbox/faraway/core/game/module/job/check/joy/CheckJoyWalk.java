@@ -18,7 +18,7 @@ public class CheckJoyWalk extends CharacterCheck {
     private AreaModel               _area;
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         if (_parcel == null) {
             Log.error("[CheckEntertainmentWalk] Create job with null parcel");
             return null;
@@ -36,8 +36,9 @@ public class CheckJoyWalk extends CharacterCheck {
     }
 
     @Override
-    public boolean check(CharacterModel character) {
-        throw new NotImplementedException("");
+    public boolean isJobLaunchable(CharacterModel character) {
+        return false;
+//        throw new NotImplementedException("");
 
 //        // LF org.smallbox.faraway.core.game.module.room.model
 //        _area = null;
@@ -71,7 +72,7 @@ public class CheckJoyWalk extends CharacterCheck {
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return character.getNeeds().get("entertainment") < character.getType().needs.joy.warning;
     }
 }

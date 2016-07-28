@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.module.item.ItemFinder;
+import org.smallbox.faraway.module.item.ItemFinderModule;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -15,18 +15,18 @@ import org.smallbox.faraway.module.item.ItemFinder;
 public class CheckCharacterFoodWarning extends CharacterCheck {
 
     @Override
-    public boolean check(CharacterModel character) {
+    public boolean isJobLaunchable(CharacterModel character) {
         return character.getType().needs.food != null && character.getNeeds().get("food") < character.getType().needs.food.warning;
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return character.getType().needs.food != null && character.getNeeds().get("food") < character.getType().needs.food.warning;
     }
 
     // TODO: change name by filter
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         ItemFilter filter = ItemFilter.createConsumableFilter();
         filter.effectFood = true;
 
@@ -36,11 +36,16 @@ public class CheckCharacterFoodWarning extends CharacterCheck {
         }
 
         // Get consumable on ground
-        ConsumableModel nearestItem = (ConsumableModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(filter, character);
+        ConsumableModel nearestItem = (ConsumableModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(filter, character);
         if (nearestItem != null && nearestItem.hasFreeSlot()) {
             return ConsumeJob.create(character, nearestItem);
         }
 
         return null;
+    }
+
+    @Override
+    public String getLabel() {
+        return "A faim";
     }
 }

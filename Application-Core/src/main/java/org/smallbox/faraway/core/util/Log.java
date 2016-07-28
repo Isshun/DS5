@@ -1,13 +1,19 @@
 package org.smallbox.faraway.core.util;
 
+import org.apache.commons.lang3.builder.RecursiveToStringStyle;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.logging.*;
 
 /**
  * Created by Alex on 13/05/2016.
  */
 public class Log {
+    private final static boolean EXIT_ON_ERROR = true;
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final static Logger logger = Logger.getLogger("FarAway");
 
@@ -56,6 +62,10 @@ public class Log {
         for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
             logger.severe(element.toString());
         }
+
+        if (EXIT_ON_ERROR) {
+            System.exit(1);
+        }
     }
 
     public static void error(String message, Object... args) {
@@ -68,6 +78,7 @@ public class Log {
         for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
             logger.severe(element.toString());
         }
+
         System.exit(1);
     }
 
@@ -80,6 +91,10 @@ public class Log {
         logger.severe(e.getMessage());
         for (StackTraceElement element: e.getStackTrace()) {
             logger.severe(element.toString());
+        }
+
+        if (EXIT_ON_ERROR) {
+            System.exit(1);
         }
     }
 
@@ -101,5 +116,9 @@ public class Log {
 
     public static void notice(String message) {
         info(message);
+    }
+
+    public static void dump(Object object) {
+        System.out.println(ReflectionToStringBuilder.toString(object, RecursiveToStringStyle.MULTI_LINE_STYLE));
     }
 }

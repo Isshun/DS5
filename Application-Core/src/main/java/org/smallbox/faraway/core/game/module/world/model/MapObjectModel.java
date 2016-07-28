@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.world.model;
 
+import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -120,7 +121,11 @@ public abstract class MapObjectModel extends ObjectModel {
 
     public void use(CharacterModel character, int durationLeft) {
         // Add buffEffect on characters
-        _info.actions.stream().filter(action -> "use".equals(action.type)).forEach(action -> character.getNeeds().use(this, action.effects, action.cost));
+        if (CollectionUtils.isNotEmpty(_info.actions)) {
+            _info.actions.stream()
+                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.USE)
+                    .forEach(character::apply);
+        }
 
         // Play animation
         if (_animFrame++ % _animFrameInterval == 0) {
@@ -139,7 +144,9 @@ public abstract class MapObjectModel extends ObjectModel {
             _jobs = new ArrayList<>();
         }
 
-        _jobs.add(job);
+        if (CollectionUtils.notContains(_jobs, job)) {
+            _jobs.add(job);
+        }
     }
 
     public void removeJob(JobModel job) {

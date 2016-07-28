@@ -62,17 +62,10 @@ public class LuaControllerManager {
         _controllers.values().forEach(controller -> DependencyInjector.getInstance().register(controller));
     }
 
-    public void create() {
-        _controllers.values().forEach(LuaController::create);
-    }
 
-    public void gameStart(Game game) {
-        _controllers.values().forEach(controller -> controller.gameStart(game));
-    }
-
-    public void gameUpdate(Game game) {
-        _controllers.values().forEach(controller -> controller.gameUpdate(game));
-    }
+    public void gameCreate(Game game) { _controllers.values().forEach(controller -> controller.gameCreate(game)); }
+    public void gameStart(Game game) { _controllers.values().forEach(controller -> controller.gameStart(game)); }
+    public void gameUpdate(Game game) { _controllers.values().forEach(controller -> controller.gameUpdate(game)); }
 
     /**
      * Invoke controllers
@@ -119,6 +112,9 @@ public class LuaControllerManager {
                             Log.info("LuaController: Bind view %s", view.getName());
                             field.set(controller, view);
                         }
+                    }
+                    if (field.get(controller) == null) {
+                        Log.error("Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();

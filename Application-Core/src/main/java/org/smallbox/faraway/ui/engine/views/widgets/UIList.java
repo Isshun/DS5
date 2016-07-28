@@ -46,7 +46,8 @@ public class UIList extends View implements AutoCloseable {
                     }
                 }
             } catch (ConcurrentModificationException e) {
-                Log.error(e);
+                // TODO
+//                Log.error(e);
             }
         }
     }

@@ -113,7 +113,7 @@ public class ConsumeJob extends JobModel {
 //            return JobActionReturn.ABORT;
 //        }
 //
-////        if (!check(character)) {
+////        if (!isJobLaunchable(character)) {
 ////            return JobActionReturn.ABORT;
 ////        }
 //

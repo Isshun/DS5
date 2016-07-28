@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.module.job.model.ConsumeJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.module.item.ItemFinder;
+import org.smallbox.faraway.module.item.ItemFinderModule;
 import org.smallbox.faraway.module.item.SleepJob;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
@@ -30,30 +30,35 @@ public class CheckCharacterEnergyWarning extends CharacterCheck {
     }
 
     @Override
-    public boolean check(CharacterModel character) {
-        ItemFinder finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
+    public boolean isJobLaunchable(CharacterModel character) {
+        ItemFinderModule finder = (ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class);
         return finder.getNearest(bedFilter, character) != null || finder.getNearest(consumableFilter, character) != null;
     }
 
     @Override
-    public boolean need(CharacterModel character) {
-        return character.getNeeds().get("energy") < character.getType().needs.energy.warning;
+    public boolean isJobNeeded(CharacterModel character) {
+        return character.getNeeds().get("energy") < character.getType().needs.energy.warning && character.getNeeds().get("energy") >= character.getType().needs.energy.critical;
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         // Get nearest bed
-        ItemModel item = (ItemModel)((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(bedFilter, character);
+        ItemModel item = (ItemModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(bedFilter, character);
         if (item != null) {
             return new SleepJob(item.getParcel(), item);
         }
 
         // Get energy consumable
-        ConsumableModel consumable = (ConsumableModel) ((ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class)).getNearest(consumableFilter, character);
+        ConsumableModel consumable = (ConsumableModel) ((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
         if (consumable != null) {
             return ConsumeJob.create(character, consumable);
         }
 
         return null;
+    }
+
+    @Override
+    public String getLabel() {
+        return "A sommeil";
     }
 }

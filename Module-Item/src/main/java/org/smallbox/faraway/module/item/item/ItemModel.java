@@ -27,11 +27,13 @@ public class ItemModel extends BuildableMapObject {
     public ItemModel(ItemInfo info, ParcelModel parcel, int id) {
         super(info, id);
         _parcel = parcel;
+        init();
     }
 
     public ItemModel(ItemInfo info, ParcelModel parcel) {
         super(info);
         _parcel = parcel;
+        init();
     }
 
     public int                          getTargetTemperature() { return _targetTemperature; }
@@ -67,18 +69,26 @@ public class ItemModel extends BuildableMapObject {
     public void init() {
         initSlots();
 
-        // Initialize factory extra object
-        if (_info.factory != null) {
-            _factory = new ItemFactoryModel(this, _info.factory);
-            if (_info.factory.outputSlots != null) {
-                _storageSlot = _info.factory.outputSlots;
-            }
-        }
+        _info.actions.stream()
+                .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.CRAFT)
+                .forEach(action -> {
+                    if (_factory == null) {
+                        _factory = new ItemFactoryModel(this, _info.factory);
+                    }
+                });
 
-        // Initialize network extra objects
-        if (_info.networks != null) {
-            _networkConnections = _info.networks.stream().map(networkItemInfo -> new NetworkConnectionModel(networkItemInfo.network, networkItemInfo.distance)).collect(Collectors.toList());
-        }
+//        // Initialize factory extra object
+//        if (_info.factory != null) {
+//            _factory = new ItemFactoryModel(this, _info.factory);
+//            if (_info.factory.outputSlots != null) {
+//                _storageSlot = _info.factory.outputSlots;
+//            }
+//        }
+//
+//        // Initialize network extra objects
+//        if (_info.networks != null) {
+//            _networkConnections = _info.networks.stream().map(networkItemInfo -> new NetworkConnectionModel(networkItemInfo.network, networkItemInfo.distance)).collect(Collectors.toList());
+//        }
     }
 
     public void initSlots() {
@@ -111,7 +121,7 @@ public class ItemModel extends BuildableMapObject {
         // Filter looking for item
         if (filter.lookingForItem) {
 
-            // Filter need free slots but item is busy
+            // Filter isJobNeeded free slots but item is busy
             if (filter.needFreeSlot && !hasFreeSlot()) {
                 return false;
             }
@@ -128,7 +138,7 @@ public class ItemModel extends BuildableMapObject {
 
             if (_info.actions != null) {
                 for (ItemInfo.ItemInfoAction action: _info.actions) {
-                    if ("use".equals(action.type) && _info.matchFilter(action.effects, filter) && canLaunchAction(action)) {
+                    if (action.type == ItemInfo.ItemInfoAction.ActionType.USE && _info.matchFilter(action.effects, filter) && canLaunchAction(action)) {
                         filter.itemMatched = _info;
                         return true;
                     }
@@ -143,12 +153,12 @@ public class ItemModel extends BuildableMapObject {
         if (action.inputs != null) {
             for (ItemInfo.ActionInputInfo inputInfo: action.inputs) {
                 // TODO
-                // Item need consumable to be used
+                // Item isJobNeeded consumable to be used
                 if (inputInfo.item != null) {
                     return false;
                 }
 
-                // Item need consumable through network connection
+                // Item isJobNeeded consumable through network connection
                 if (inputInfo.network != null) {
                     boolean haveRequirement = false;
                     if (_networkConnections != null) {
@@ -171,5 +181,9 @@ public class ItemModel extends BuildableMapObject {
 
     public boolean isStorageParcel(ParcelModel parcel) {
         return _storageSlot != null && _parcel.x + _storageSlot[0] == parcel.x && _parcel.y + _storageSlot[1] == parcel.y;
+    }
+
+    public boolean hasFactory() {
+        return _factory != null;
     }
 }

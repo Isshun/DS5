@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.util;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.io.File;
@@ -52,5 +53,16 @@ public class Utils {
 
     public static JSONObject toJSON(FileInputStream fis) throws IOException {
         return new JSONObject(IOUtils.toString(fis, StandardCharsets.UTF_8));
+    }
+
+    public static String getDateStr(long time) {
+        int totalHours = (int)(time / Game.getInstance().getTickPerHour());
+        int totalDays = totalHours / Game.getInstance().getHourPerDay();
+        return "Day " + String.valueOf(totalDays) + " - " + String.valueOf(totalHours % Game.getInstance().getHourPerDay()) + "h";
+    }
+
+    public static String getTimeStr(long time) {
+        int totalHours = (int)(time / Game.getInstance().getTickPerHour());
+        return String.valueOf(totalHours % Game.getInstance().getHourPerDay()) + "h";
     }
 }

@@ -1,7 +1,10 @@
 package org.smallbox.faraway.core;
 
+import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Created by Alex on 12/05/2016.

@@ -10,17 +10,17 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 public class CheckCharacterUse extends CharacterCheck {
 
     @Override
-    public JobModel create(CharacterModel character) {
+    public JobModel onCreateJob(CharacterModel character) {
         return null;
     }
 
     @Override
-    public boolean check(CharacterModel character) {
+    public boolean isJobLaunchable(CharacterModel character) {
         return false;
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return false;
     }
 }

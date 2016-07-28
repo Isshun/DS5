@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.module.item.ItemFinder;
+import org.smallbox.faraway.module.item.ItemFinderModule;
 import org.smallbox.faraway.module.item.SleepJob;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
@@ -24,21 +24,12 @@ public class CheckCharacterTimetableSleep extends CharacterCheck {
     }
 
     @Override
-    public JobModel create(CharacterModel character) {
-        // TODO: magic
-        int bedHour = Game.getInstance().getHour();
-        int wakeTime = 0;
-        for (int i = 0; i < 8; i++) {
-            if (character.getTimetable().get(bedHour + i) != 1) {
-                wakeTime = i;
-            }
-        }
-
-        ItemFinder finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
+    public JobModel onCreateJob(CharacterModel character) {
+        ItemFinderModule finder = (ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class);
         ItemModel item = (ItemModel)finder.getNearest(bedFilter, character);
         if (item != null) {
             SleepJob job = new SleepJob(item.getParcel(), item);
-            job.setWakeTime(wakeTime);
+            job.setCharacterRequire(character);
             return job;
         }
 
@@ -46,13 +37,13 @@ public class CheckCharacterTimetableSleep extends CharacterCheck {
     }
 
     @Override
-    public boolean check(CharacterModel character) {
-        ItemFinder finder = (ItemFinder) ModuleManager.getInstance().getModule(ItemFinder.class);
+    public boolean isJobLaunchable(CharacterModel character) {
+        ItemFinderModule finder = (ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class);
         return finder.getNearest(bedFilter, character) != null;
     }
 
     @Override
-    public boolean need(CharacterModel character) {
+    public boolean isJobNeeded(CharacterModel character) {
         return character.getTimetable().get(Game.getInstance().getHour()) == 1;
     }
 }

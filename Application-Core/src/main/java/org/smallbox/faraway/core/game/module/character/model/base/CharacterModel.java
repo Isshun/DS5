@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
+import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
@@ -7,7 +8,9 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.*;
+import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -22,7 +25,9 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -59,6 +64,7 @@ public abstract class CharacterModel extends MovableModel {
     protected boolean                           _isFaint;
     private double                              _moveStep;
     private Collection<BuffCharacterModel>      _buffs;
+    private Collection<CharacterCheck>          _needsCheck;
     public Collection<DiseaseCharacterModel>    _diseases;
     protected CharacterInfo _type;
     private boolean                             _isSleeping;
@@ -70,6 +76,7 @@ public abstract class CharacterModel extends MovableModel {
 
         _type = type;
         _buffs = new ConcurrentLinkedQueue<>();
+        _needsCheck = new ConcurrentLinkedQueue<>();
         _diseases = new ArrayList<>();
         _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
         _lag = (int)(Math.random() * 10);
@@ -378,6 +385,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void clearJob(JobModel job) {
         assert _job == job;
+
         _job = null;
         _moveListener = null;
         _path = null;
@@ -389,5 +397,31 @@ public abstract class CharacterModel extends MovableModel {
 
     public String toString() {
         return _personals.getFirstName() + " " + _personals.getLastName();
+    }
+
+    public void addNeed(CharacterCheck check) {
+        if (CollectionUtils.notContains(_needsCheck, check)) {
+            _needsCheck.add(check);
+        }
+    }
+
+    public void removeNeed(CharacterCheck check) {
+        _needsCheck.remove(check);
+    }
+
+    public boolean hasNeed(CharacterCheck check) {
+        return _needsCheck.contains(check);
+    }
+
+    public Collection<CharacterCheck> getChecks() {
+        return _needsCheck;
+    }
+
+    public void apply(ItemInfo.ItemInfoAction action) {
+        getNeeds().use(action.effects, action.cost);
+    }
+
+    public void apply(ItemInfo.ItemConsumeInfo consume) {
+        getNeeds().use(consume.effects, consume.cost);
     }
 }

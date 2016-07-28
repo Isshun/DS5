@@ -1,3 +1,5 @@
+package org.smallbox.faraway.module.character.model;
+
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.util.ArrayList;

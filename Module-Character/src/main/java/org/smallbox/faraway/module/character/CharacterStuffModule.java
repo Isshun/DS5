@@ -13,7 +13,7 @@
 // * Created by Alex on 24/06/2015.
 // */
 //public class CharacterStuffModule extends GameModule {
-//    protected Map<CharacterModel, StuffModel> _data;
+//    protected Map<CharacterModel, org.smallbox.faraway.module.character.model.StuffModel> _data;
 //
 //    @Override
 //    protected void onGameStart(Game game) {
@@ -35,7 +35,7 @@
 //    @Override
 //    public void onAddCharacter(CharacterModel character) {
 //        // TODO
-////        StuffModel stuff = new StuffModel();
+////        org.smallbox.faraway.module.character.model.StuffModel stuff = new org.smallbox.faraway.module.character.model.StuffModel();
 ////        stuff.add(Data.getData().getEquipment("base.equipments.regular_shirt"));
 ////        stuff.add(Data.getData().getEquipment("base.equipments.regular_pants"));
 ////        stuff.add(Data.getData().getEquipment("base.equipments.regular_shoes"));

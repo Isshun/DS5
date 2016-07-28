@@ -7,6 +7,7 @@ data:extend({
     controller = "org.smallbox.faraway.module.item.ItemInfoController",
     visible = false,
     views = {
+        { type = "label", text = "Dump", text_size = 12, position = {10, 8}, size = {100, 32}, action = "onDump"},
         { type = "label", text = "Item", text_size = 12, position = {10, 8}},
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {60, 18}, on_click = function()
@@ -19,7 +20,25 @@ data:extend({
         }},
 
         -- Detailled informations
-        { type = "list", position = {0, 60}, views = {
+        { type = "list", id = "frame_content", position = {0, 60}, views = {
+
+            -- Building
+            { type = "list", id = "frame_build", position = {0, 60}, margin = {10, 0, 0, 10}, size = {300, 200}, views = {
+                { type = "label", id = "lb_build_progress", text_size = 22, size = {400, 26}},
+                { type = "image", id = "img_build_progress", src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
+                { type = "label", id = "lb_build_cost", text_size = 12, size = {400, 26}},
+
+                { type = "list", id = "frame_components", size = {300, 100}, views = {
+                    { type = "label", text = "Components", text_size = 20, margin = {10, 0, 0, 0}},
+                    { type = "list", id = "list_components", position = {0, 10}},
+                }},
+            }},
+
+            -- Workers
+            { type = "list", id = "frame_workers", margin = {10, 0, 0, 10}, size = {300, 200}, views = {
+                { type = "label", text = "Workers", text_size = 20},
+                { type = "list", id = "list_workers"},
+            }},
 
             -- Effects
             { type = "label", id = "lb_effect_oxygen", text_size = 18, padding = 10},
@@ -27,22 +46,6 @@ data:extend({
             -- Slots
             { type = "label", id = "lb_slots", text_size = 18, padding = 10},
             { type = "label", id = "lb_used_by", text_size = 18, padding = 10},
-
-            -- Building
-            { type = "list", id = "frame_build", margin = {10, 0, 0, 10}, views = {
-                { type = "label", text = "Building in progress", text_size = 22, size = {400, 26}},
-                { type = "image", id = "img_build_progress", src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
-                { type = "label", id = "lb_build_progress", text_size = 14, margin = {10, 0, 0, 0}},
-                { type = "label", id = "lb_build_job", text_size = 14},
-                { type = "label", id = "lb_build_character", text_size = 14},
-                { type = "label", text = "Components", text_size = 20, margin = {10, 0, 0, 0}},
-                { type = "list", id = "list_building_components", position = {0, 10}, adapter = {
-                    view = { type = "label", text_size = 14, padding = 10 },
-                    on_bind = function(view, data)
-                        view:setDashedString(data.info.label .. " (" .. data.currentQuantity .. "/" .. data.neededQuantity .. ")", (data.job and (data.job:getCharacter() and data.job:getCharacter():getName() or (data.currentQuantity < data.neededQuantity and "waiting" or "complete")) or "no job"), 48)
-                    end
-                }},
-            }},
 
             -- Actions
             { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, views = {
@@ -85,145 +88,145 @@ data:extend({
         }},
     },
 
---    on_event = function(view, event , data)
---        if event == application.events.on_key_press and data == "ESCAPE" then
---            view:setVisible(false)
---            application.game:clearSelection();
---            item = nil
---        end
---
---        if event == application.events.on_deselect then
---            view:setVisible(false)
---            item = nil
---        end
---
---        if event == application.events.on_item_selected then
---            item = data;
---            view:setVisible(true)
---            view:findById("lb_name"):setText(item:getLabel())
---
---            display_actions_info(view, item)
---
---            if item:getInfo().factory and item:getInfo().factory.receipts then
---                display_factory_info(view, item:getFactory(), item:getInfo().factory)
---                view:findById("frame_factory_progress"):setVisible(true)
---                view:findById("frame_factory_orders"):setVisible(true)
---            else
---                view:findById("frame_factory_progress"):setVisible(false)
---                view:findById("frame_factory_orders"):setVisible(false)
---            end
---        end
---    end,
---
---    on_refresh = function(view)
---        if item ~= nil then
---            view:findById("lb_health"):setText(item:getHealth() .. "/" .. item:getMaxHealth())
---            view:findById("progress_health"):setSize(item:getHealth() / item:getMaxHealth() * 80, 25)
---
---            if item:getInfo().effects and item:getInfo().effects.oxygen > 0 then
---                view:findById("lb_effect_oxygen"):setText("Oxygen", ": ", item:getInfo().effects.oxygen .. "(" .. item:getInfo().effects.pressure .. ")")
---            end
---
---            if item:getNbFreeSlots() ~= -1 then
---                view:findById("lb_slots"):setText("Slots", ":", item:getNbFreeSlots() .. "/" .. item:getSlots():size())
---                view:findById("lb_slots"):setVisible(true)
---            else
---                view:findById("lb_slots"):setVisible(false)
---            end
---
---            if item:getNbFreeSlots() < item:getNbSlots() then
---                local str = ""
---                local iterator = item:getSlots():iterator()
---                while iterator:hasNext() do
---                    local slot = iterator:next()
---                    if slot:getJob() and slot:getJob():getCharacter() then
---                        str = str .. (string.len(str) ~= 0 and ", " or "") .. slot:getJob():getCharacter():getName()
---                    end
---                end
---                view:findById("lb_used_by"):setText("Used by", ": ", str)
---                view:findById("lb_used_by"):setVisible(true)
---            else
---                view:findById("lb_used_by"):setVisible(false)
---            end
---
---            if item:isComplete() then
---                view:findById("frame_building"):setVisible(false)
---            else
---                view:findById("frame_building"):setVisible(true)
---                view:findById("lb_building"):setDashedString("Building", item:getBuildProgress() > 0 and math.floor(item:getBuildProgress() * 100) or "waiting", 29)
---                view:findById("img_building_progress"):setTextureRect(0, 80, math.floor(item:getBuildProgress() * 352 / 10) * 10, 16)
---                view:findById("lb_building_progress"):setText("Progress: " .. item:getBuildProgress() .. "/" .. item:getTotalBuild())
---                view:findById("lb_building_job"):setText("Build job: " .. (item:getBuildJob() and "yes" or "no"))
---                view:findById("lb_building_character"):setText("Builder: " .. (item:getBuilder() and item:getBuilder():getName() or "no"))
---                view:findById("list_building_components"):getAdapter():setData(item:getComponents());
---            end
---
---            if item:getNetworkConnections() then
---                local list_networks = view:findById("list_networks")
---                list_networks:removeAllViews()
---
---                local isConnected = false
---                local iterator = item:getNetworkConnections():iterator()
---                while iterator:hasNext() do
---                    local networkConnection = iterator:next()
---                    if networkConnection:getNetwork() then
---                        local lb_network = ui:createLabel()
---                        lb_network:setDashedString(networkConnection:getNetwork():getInfo().label, math.floor(networkConnection:getNetwork():getQuantity()) .. "/" .. networkConnection:getNetwork():getMaxQuantity(), 48)
---                        lb_network:setTextSize(14)
---                        lb_network:setSize(400, 24)
---                        list_networks:addView(lb_network)
---                        isConnected = true
---                    end
---                end
---
---                view:findById("frame_networks"):setVisible(isConnected)
---            else
---                view:findById("frame_networks"):setVisible(false)
---            end
---
---            if item:getFactory() then
---                local factory = item:getFactory()
---                local progress = factory:getJob() and factory:getJob():getProgress() or 0
---
---                --                view:findById("lb_factory_progress"):setText("Status", ": ", factory:getMessage())
---                view:findById("img_factory_progress"):setTextureRect(0, 80, math.floor(progress * 352 / 10) * 10, 16)
---
---                if factory:getActiveReceipt() then
---                    view:findById("lb_factory_status"):setDashedString(
---                        factory:getActiveReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 44)
---                else
---                    view:findById("lb_factory_status"):setText("None", " (", factory:getMessage():lower(), ")");
---                end
---
---                --                view:findById("lb_factory_character"):setText("Crafter", ": ",
---                --                    factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
---                --
---                --                if item:getFactory():getActiveReceipt() then
---                --                    local str = "shopping list: "
---                --                    local iterator = item:getFactory():getActiveReceipt():getShoppingList():iterator()
---                --                    while iterator:hasNext() do
---                --                        local product = iterator:next()
---                --                        str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
---                --                    end
---                --                    view:findById("lb_factory_components"):setText(str)
---                --                else
---                --                    view:findById("lb_factory_components"):setText("shopping list: none")
---                --                end
---                --
---                --                if item:getFactory():getActiveReceipt() then
---                --                    local str = "components: "
---                --                    local iterator = item:getFactory():getActiveReceipt():getComponents():iterator()
---                --                    while iterator:hasNext() do
---                --                        local component = iterator:next()
---                --                        str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
---                --                    end
---                --                    view:findById("lb_factory_inputs"):setText(str)
---                --                else
---                --                    view:findById("lb_factory_inputs"):setText("components: none")
---                --                end
---            end
---        end
---    end
+    --    on_event = function(view, event , data)
+    --        if event == application.events.on_key_press and data == "ESCAPE" then
+    --            view:setVisible(false)
+    --            application.game:clearSelection();
+    --            item = nil
+    --        end
+    --
+    --        if event == application.events.on_deselect then
+    --            view:setVisible(false)
+    --            item = nil
+    --        end
+    --
+    --        if event == application.events.on_item_selected then
+    --            item = data;
+    --            view:setVisible(true)
+    --            view:findById("lb_name"):setText(item:getLabel())
+    --
+    --            display_actions_info(view, item)
+    --
+    --            if item:getInfo().factory and item:getInfo().factory.receipts then
+    --                display_factory_info(view, item:getFactory(), item:getInfo().factory)
+    --                view:findById("frame_factory_progress"):setVisible(true)
+    --                view:findById("frame_factory_orders"):setVisible(true)
+    --            else
+    --                view:findById("frame_factory_progress"):setVisible(false)
+    --                view:findById("frame_factory_orders"):setVisible(false)
+    --            end
+    --        end
+    --    end,
+    --
+    --    on_refresh = function(view)
+    --        if item ~= nil then
+    --            view:findById("lb_health"):setText(item:getHealth() .. "/" .. item:getMaxHealth())
+    --            view:findById("progress_health"):setSize(item:getHealth() / item:getMaxHealth() * 80, 25)
+    --
+    --            if item:getInfo().effects and item:getInfo().effects.oxygen > 0 then
+    --                view:findById("lb_effect_oxygen"):setText("Oxygen", ": ", item:getInfo().effects.oxygen .. "(" .. item:getInfo().effects.pressure .. ")")
+    --            end
+    --
+    --            if item:getNbFreeSlots() ~= -1 then
+    --                view:findById("lb_slots"):setText("Slots", ":", item:getNbFreeSlots() .. "/" .. item:getSlots():size())
+    --                view:findById("lb_slots"):setVisible(true)
+    --            else
+    --                view:findById("lb_slots"):setVisible(false)
+    --            end
+    --
+    --            if item:getNbFreeSlots() < item:getNbSlots() then
+    --                local str = ""
+    --                local iterator = item:getSlots():iterator()
+    --                while iterator:hasNext() do
+    --                    local slot = iterator:next()
+    --                    if slot:getJob() and slot:getJob():getCharacter() then
+    --                        str = str .. (string.len(str) ~= 0 and ", " or "") .. slot:getJob():getCharacter():getName()
+    --                    end
+    --                end
+    --                view:findById("lb_used_by"):setText("Used by", ": ", str)
+    --                view:findById("lb_used_by"):setVisible(true)
+    --            else
+    --                view:findById("lb_used_by"):setVisible(false)
+    --            end
+    --
+    --            if item:isComplete() then
+    --                view:findById("frame_building"):setVisible(false)
+    --            else
+    --                view:findById("frame_building"):setVisible(true)
+    --                view:findById("lb_building"):setDashedString("Building", item:getBuildProgress() > 0 and math.floor(item:getBuildProgress() * 100) or "waiting", 29)
+    --                view:findById("img_building_progress"):setTextureRect(0, 80, math.floor(item:getBuildProgress() * 352 / 10) * 10, 16)
+    --                view:findById("lb_building_progress"):setText("Progress: " .. item:getBuildProgress() .. "/" .. item:getTotalBuild())
+    --                view:findById("lb_building_job"):setText("Build job: " .. (item:getBuildJob() and "yes" or "no"))
+    --                view:findById("lb_building_character"):setText("Builder: " .. (item:getBuilder() and item:getBuilder():getName() or "no"))
+    --                view:findById("list_building_components"):getAdapter():setData(item:getComponents());
+    --            end
+    --
+    --            if item:getNetworkConnections() then
+    --                local list_networks = view:findById("list_networks")
+    --                list_networks:removeAllViews()
+    --
+    --                local isConnected = false
+    --                local iterator = item:getNetworkConnections():iterator()
+    --                while iterator:hasNext() do
+    --                    local networkConnection = iterator:next()
+    --                    if networkConnection:getNetwork() then
+    --                        local lb_network = ui:createLabel()
+    --                        lb_network:setDashedString(networkConnection:getNetwork():getInfo().label, math.floor(networkConnection:getNetwork():getQuantity()) .. "/" .. networkConnection:getNetwork():getMaxQuantity(), 48)
+    --                        lb_network:setTextSize(14)
+    --                        lb_network:setSize(400, 24)
+    --                        list_networks:addView(lb_network)
+    --                        isConnected = true
+    --                    end
+    --                end
+    --
+    --                view:findById("frame_networks"):setVisible(isConnected)
+    --            else
+    --                view:findById("frame_networks"):setVisible(false)
+    --            end
+    --
+    --            if item:getFactory() then
+    --                local factory = item:getFactory()
+    --                local progress = factory:getJob() and factory:getJob():getProgress() or 0
+    --
+    --                --                view:findById("lb_factory_progress"):setText("Status", ": ", factory:getMessage())
+    --                view:findById("img_factory_progress"):setTextureRect(0, 80, math.floor(progress * 352 / 10) * 10, 16)
+    --
+    --                if factory:getActiveReceipt() then
+    --                    view:findById("lb_factory_status"):setDashedString(
+    --                        factory:getActiveReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 44)
+    --                else
+    --                    view:findById("lb_factory_status"):setText("None", " (", factory:getMessage():lower(), ")");
+    --                end
+    --
+    --                --                view:findById("lb_factory_character"):setText("Crafter", ": ",
+    --                --                    factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
+    --                --
+    --                --                if item:getFactory():getActiveReceipt() then
+    --                --                    local str = "shopping list: "
+    --                --                    local iterator = item:getFactory():getActiveReceipt():getShoppingList():iterator()
+    --                --                    while iterator:hasNext() do
+    --                --                        local product = iterator:next()
+    --                --                        str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
+    --                --                    end
+    --                --                    view:findById("lb_factory_components"):setText(str)
+    --                --                else
+    --                --                    view:findById("lb_factory_components"):setText("shopping list: none")
+    --                --                end
+    --                --
+    --                --                if item:getFactory():getActiveReceipt() then
+    --                --                    local str = "components: "
+    --                --                    local iterator = item:getFactory():getActiveReceipt():getComponents():iterator()
+    --                --                    while iterator:hasNext() do
+    --                --                        local component = iterator:next()
+    --                --                        str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity
+    --                --                    end
+    --                --                    view:findById("lb_factory_inputs"):setText(str)
+    --                --                else
+    --                --                    view:findById("lb_factory_inputs"):setText("components: none")
+    --                --                end
+    --            end
+    --        end
+    --    end
 })
 
 --function display_actions_info(view, item)

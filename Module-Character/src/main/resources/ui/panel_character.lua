@@ -38,7 +38,11 @@ data:extend({
             views = {
                 { type = "label", text = "Current occupation", text_size = 28, position = {0, 5}},
                 { type = "label", id = "lb_job", text_size = 18, position = {0, 15}, size = {-1, 28}},
-                { type = "label", id = "lb_job_detail", visible = false, text_size = 14, position = {0, 12}, size = {-1, 40}},
+                { type = "label", id = "lb_job_detail", text_size = 14, position = {0, 12}, size = {-1, 40}},
+                { type = "label", id = "lb_job_from", text_size = 14, position = {0, 12}, size = {-1, 40}},
+                { type = "label", id = "lb_job_to", text_size = 14, position = {0, 12}, size = {-1, 40}},
+                { type = "label", id = "lb_job_progress", text_size = 14, position = {0, 12}, size = {-1, 40}},
+                { type = "image", id = "img_job_progress", src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
 
                 { type = "label", position = {0, 20}, text = "Needs", text_size = 28},
                 { type = "grid", position = {0, 33}, columns = 2, column_width = 182, row_height = 44, views = {

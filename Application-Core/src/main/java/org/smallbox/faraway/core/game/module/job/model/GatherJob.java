@@ -44,7 +44,7 @@ public class GatherJob extends JobModel {
         // Resource is not gatherable
         boolean hasGatherAction = false;
         for (ItemInfo.ItemInfoAction action: info.actions) {
-            if ("gather".equals(action.type)) {
+            if (action.type == ItemInfo.ItemInfoAction.ActionType.GATHER) {
                 hasGatherAction = true;
             }
         }
