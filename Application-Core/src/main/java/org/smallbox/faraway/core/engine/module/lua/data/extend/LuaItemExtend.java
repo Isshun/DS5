@@ -334,14 +334,16 @@ public class LuaItemExtend extends LuaExtend {
         ItemInfo.ItemInfoAction action = new ItemInfo.ItemInfoAction();
         action.type = ItemInfo.ItemInfoAction.ActionType.valueOf(getString(value, "type", null).toUpperCase());
         action.cost = getInt(value, "cost", 0);
+        action.label = getString(value, "label", null);
+        action.auto = value.get("auto").optboolean(false);
 
+        action.inputs = new ArrayList<>();
         if (!value.get("inputs").isnil()) {
-            action.inputs = new ArrayList<>();
-            readLuaComposite(value.get("inputs"), input -> {
+            readLuaComposite(value.get("inputs"), luaInput -> {
                 ItemInfo.ActionInputInfo inputInfo = new ItemInfo.ActionInputInfo();
-                inputInfo.networkName = getString(input, "network", null);
-                inputInfo.itemName = getString(input, "item", null);
-                inputInfo.quantity = getInt(input, "quantity", 1);
+                inputInfo.networkName = getString(luaInput, "network", null);
+                inputInfo.itemName = getString(luaInput, "item", null);
+                inputInfo.quantity = getInt(luaInput, "quantity", 1);
                 action.inputs.add(inputInfo);
             });
         }
@@ -354,23 +356,11 @@ public class LuaItemExtend extends LuaExtend {
 
         action.products = new ArrayList<>();
         readLuaComposite(value.get("products"), luaProduct -> {
-            ItemInfo.ItemProductInfo product = new ItemInfo.ItemProductInfo();
-
-            // Get product item name
-            if (!luaProduct.get("item").isnil()) {
-                product.itemName = getString(luaProduct, "item", null);
-            } else {
-//                throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.item");
-            }
-
-            // Get product quantity
-            if (!luaProduct.get("quantity").isnil()) {
-                product.quantity = readLuaInterval(luaProduct.get("quantity"));
-            } else {
-//                throw new DataExtendException(DataExtendException.Type.MANDATORY, "actions.products.quantity");
-            }
-            product.rate = getDouble(luaProduct, "rate", 1);
-            action.products.add(product);
+            ItemInfo.ItemProductInfo productInfo = new ItemInfo.ItemProductInfo();
+            productInfo.itemName = getString(luaProduct, "item", null);
+            productInfo.quantity = getIntInterval(luaProduct, "quantity", new int[] {1, 1});
+            productInfo.rate = getDouble(luaProduct, "rate", 1);
+            action.products.add(productInfo);
         });
 
         itemInfo.actions.add(action);

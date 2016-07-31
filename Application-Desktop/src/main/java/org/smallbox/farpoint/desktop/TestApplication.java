@@ -97,16 +97,16 @@ public class TestApplication extends ApplicationAdapter {
 
         cache.beginCache();
         cache.add(groundTexture, 0, 0);
-//                cache.add(sprite, 32, 32);
+//                cache.addSubJob(sprite, 32, 32);
 
         int i = 0;
         for (int x = 0; x < 60; x++) {
             for (int y = 0; y < 40; y++) {
                 i++;
-//                        cache.add(texture);
+//                        cache.addSubJob(texture);
                 Log.info("cache " + i);
-//                        cache.add(sprite, x * 32, y * 32);
-//                        cache.add(textureRegion[i % 20], x * 32, y * 32);
+//                        cache.addSubJob(sprite, x * 32, y * 32);
+//                        cache.addSubJob(textureRegion[i % 20], x * 32, y * 32);
 //                        batch.draw(textureRegion[x*y % 10], x * 32, y * 32);
 //                        batch.draw(textureRegion[(int)(Math.random() * 100)], x * 32, y * 32);
             }

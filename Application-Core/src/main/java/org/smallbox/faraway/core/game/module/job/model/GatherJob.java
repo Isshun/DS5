@@ -12,7 +12,6 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.core.util.Utils;
 
 public class GatherJob extends JobModel {
     public enum Mode {PLANT_SEED, NOURISH, HARVEST, CUT}
@@ -53,9 +52,9 @@ public class GatherJob extends JobModel {
         }
 
         GatherJob job = new GatherJob(info.actions.get(0), plant.getParcel());
-        job.setStrategy(j -> {
-            if (j.getCharacter().getType().needs.joy != null) {
-                j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
+        job.setOnActionListener(() -> {
+            if (job.getCharacter().getType().needs.joy != null) {
+                job.getCharacter().getNeeds().addValue("entertainment", job.getCharacter().getType().needs.joy.change.work);
             }
         });
         job._plant = plant;

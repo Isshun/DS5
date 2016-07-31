@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -13,7 +12,6 @@ import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
-import org.smallbox.faraway.core.util.Utils;
 
 public class DigJob extends JobModel {
     private int                 _totalCost;
@@ -38,9 +36,9 @@ public class DigJob extends JobModel {
             for (ItemInfo.ItemInfoAction action: rockInfo.actions) {
                 if (action.type == ItemInfo.ItemInfoAction.ActionType.MINE) {
                     DigJob job = new DigJob(action, parcel);
-                    job.setStrategy(j -> {
-                        if (j.getCharacter().getType().needs.joy != null) {
-                            j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
+                    job.setOnActionListener(() -> {
+                        if (job.getCharacter().getType().needs.joy != null) {
+                            job.getCharacter().getNeeds().addValue("entertainment", job.getCharacter().getType().needs.joy.change.work);
                         }
                     });
                     job._jobParcel = parcel;

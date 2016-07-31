@@ -70,6 +70,7 @@ public class ItemInfo extends ObjectInfo {
         public String                   name;
         public float                    dropRate;
         public List<ItemProductInfo>    products;
+        public boolean                  auto;
     }
 
     public static class ItemInfoPlant {

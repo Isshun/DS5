@@ -5,7 +5,6 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
@@ -16,7 +15,6 @@ import org.smallbox.faraway.module.job.JobModuleObserver;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -95,11 +93,12 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     @Override
     protected void onGameUpdate(Game game, int tick) {
         if (tick % 10 == 0) {
-            // Create hauling jobs
-            _structures.stream().filter(structure -> !structure.isComplete())
-                    .forEach(item -> item.getComponents().stream()
-                            .filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-                            .forEach(component -> _jobs.addJob(new HaulJob(item, component))));
+// TODO
+            //            // Create hauling jobs
+//            _structures.stream().filter(structure -> !structure.isComplete())
+//                    .forEach(item -> item.getComponents().stream()
+//                            .filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
+//                            .forEach(component -> _jobs.addJob(new HaulJob(item, component))));
 
             // Create Build jobs
             _structures.stream().filter(structure -> !structure.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)

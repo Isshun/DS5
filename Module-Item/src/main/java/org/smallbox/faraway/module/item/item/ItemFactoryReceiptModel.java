@@ -137,7 +137,7 @@ public class ItemFactoryReceiptModel {
 
     public boolean isComponentsAvailable(CraftJob job) {
         for (FactoryShoppingItemModel shoppingItem: _shoppingList) {
-            if (shoppingItem.consumable.getLock() != null && shoppingItem.consumable.getLock() != job) {
+            if (shoppingItem.consumable.getJob() != null && shoppingItem.consumable.getJob() != job) {
                 return false;
             }
             if (shoppingItem.consumable.getQuantity() < shoppingItem.quantity) {

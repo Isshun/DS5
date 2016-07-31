@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
@@ -49,6 +48,9 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
+        game.addSerializer(new ConsumableSerializer(this, _world));
+        game.addRender(new ConsumableRenderer(this));
+
         _consumables = new LinkedBlockingQueue<>();
 
         _structureModel.addObserver(new StructureModuleObserver() {
@@ -141,8 +143,8 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 //
 //                consumable.removeJob(this);
 //                consumable.setStoreJob(null);
-//                if (consumable.getLock() == this) {
-//                    consumable.lock(null);
+//                if (consumable.getJob() == this) {
+//                    consumable.setJob(null);
 //                }
 //            }
 //        }
@@ -242,6 +244,26 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 notifyObservers(observer -> observer.onAddConsumable(finalParcel, finalParcel.getConsumable()));
             }
         }
+        return consumable;
+    }
+
+    public ConsumableModel find(ItemInfo itemInfo) {
+        return _consumables.stream()
+                .filter(consumable -> consumable.getInfo() == itemInfo && consumable.getParcel() != null)
+                .findAny().orElse(null);
+    }
+
+    public ConsumableModel create(ItemInfo info, int quantity) {
+        return create(info, quantity, null);
+    }
+
+    public ConsumableModel create(ItemInfo info, int quantity, ParcelModel parcel) {
+        ConsumableModel consumable = new ConsumableModel(info);
+        consumable.setQuantity(quantity);
+        consumable.setParcel(parcel);
+
+        _consumables.add(consumable);
+
         return consumable;
     }
 }

@@ -123,7 +123,7 @@ public class Game {
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
         _modules.forEach(module -> module.createGame(this));
 
-        // Sort renders by level and add them to observers
+        // Sort renders by level and addSubJob them to observers
         _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
         _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
 

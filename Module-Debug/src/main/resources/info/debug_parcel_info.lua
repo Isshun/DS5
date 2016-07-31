@@ -16,10 +16,11 @@ data:extend({
 
 data:extend({
     type = "view",
-    id = "info_parcel",
+    id = "debug_parcel_info",
+    controller = "org.smallbox.faraway.module.dev.controller.info.DebugParcelInfoController",
     position = {0, 200},
     size = {372, 320},
-    --background = 0x121c1e,
+--    background = 0xff1c1e,
     level = 100,
     visible = true,
     views = {
@@ -44,6 +45,8 @@ data:extend({
             { type = "label", id = "lb_network", text_size = 14, size = {100, 18}},
         }},
     },
+
+
 
     on_event = function(view, event, data)
         if event == application.events.on_parcel_over then

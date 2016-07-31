@@ -24,8 +24,11 @@ public abstract class LuaExtend {
     }
 
     protected static int[] getIntInterval(LuaValue value, String key, int[] defaultValue) {
-        if (!value.get(key).isnil() && value.get(key).length() == 2) {
+        if (!value.get(key).isnil() && value.get(key).istable() && value.get(key).length() == 2) {
             return new int[] {value.get(key).get(1).toint(), value.get(key).get(2).toint()};
+        }
+        if (!value.get(key).isnil() && value.get(key).isint()) {
+            return new int[] {value.get(key).toint(), value.get(key).toint()};
         }
         return defaultValue;
     }

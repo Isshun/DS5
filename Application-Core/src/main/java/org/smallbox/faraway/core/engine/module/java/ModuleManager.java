@@ -60,7 +60,7 @@ public class ModuleManager {
 //            try {
 //                ModuleInfo info = ModuleInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(new File(file, "module.json").toPath()), StandardCharsets.UTF_8)));
 //                if ("java".equals(info.type)) {
-//                    thirdPartyModules.add(new ThirdPartyModule(info, file));
+//                    thirdPartyModules.addSubJob(new ThirdPartyModule(info, file));
 //                }
 //            } catch (IOException e) {
 //                e.printStackTrace();
@@ -94,7 +94,7 @@ public class ModuleManager {
 //                            try {
 //                                GameModule module = cls.asSubclass(GameModule.class).getConstructor().newInstance();
 //                                module.setInfo(thirdPartyModule.getInfo());
-//                                _modulesThird.add(module);
+//                                _modulesThird.addSubJob(module);
 //                            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 //                                e.printStackTrace();
 //                            }
@@ -102,7 +102,7 @@ public class ModuleManager {
 //                        if (BaseRenderer.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
 //                            Log.info("Discover third party render: " + cls.getSimpleName());
 //                            try {
-//                                _rendersThird.add(cls.asSubclass(BaseRenderer.class).getConstructor().newInstance());
+//                                _rendersThird.addSubJob(cls.asSubclass(BaseRenderer.class).getConstructor().newInstance());
 //                            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 //                                e.printStackTrace();
 //                            }

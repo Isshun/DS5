@@ -16,7 +16,7 @@ data:extend({
         { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
         { type = "list", position = {10, 70}, views = {
             { type = "label", id = "lb_quantity", text_size = 16},
-            { type = "label", id = "lb_haul", text_size = 16},
+            { type = "label", id = "lb_job", text_size = 16},
             { type = "label", id = "lb_storage_area", text_size = 16},
         }},
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {100, 40}, on_click = function()

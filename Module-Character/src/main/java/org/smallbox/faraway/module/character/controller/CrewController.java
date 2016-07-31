@@ -23,7 +23,7 @@ public class CrewController extends LuaController {
         listCrew.clear();
         _characters.getCharacters().forEach(character -> {
             listCrew.addView(UILabel.create(null)
-                    .setText(character.getName())
+                    .setText(character.getName() + " " + (character.getJob() != null ? character.getJob().getLabel() : ""))
                     .setSize(300, 28)
                     .setOnClickListener(() -> {
                         _characters.select(character);

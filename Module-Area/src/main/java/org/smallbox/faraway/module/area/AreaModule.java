@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.game.module.area.controller.AreaController;
 import org.smallbox.faraway.core.game.module.area.controller.AreaGardenInfoController;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -69,7 +68,7 @@ public class AreaModule extends GameModule {
         _consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {
-                if (consumable.getStoreJob() == null) {
+                if (consumable.getJob() == null) {
                     storeConsumable(consumable);
                 }
             }
@@ -81,7 +80,7 @@ public class AreaModule extends GameModule {
         // Create store jobs
 //        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
         _consumableModule.getConsumables().stream()
-                .filter(consumable -> consumable.getStoreJob() == null)
+                .filter(consumable -> consumable.getJob() == null)
                 .forEach(this::storeConsumable);
     }
 
@@ -94,30 +93,31 @@ public class AreaModule extends GameModule {
         _storageAreas.addAll(storageAreas);
     }
 
+    // TODO: auto refresh in job
     private void storeConsumable(ConsumableModel consumable) {
-        if (consumable.getStoreJob() != null) {
-            consumable.getStoreJob().cancel();
-        }
-
-        StorageAreaModel bestStorage = getBestStorage(consumable);
-        if (bestStorage != null && consumable.getStorage() != bestStorage) {
-            Log.info("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
-            _jobs.addJob(StoreJob.create(consumable, bestStorage));
-            return;
-        }
-
-        if (bestStorage != null && consumable.getStorage() == bestStorage) {
-//            Log.debug("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
-            return;
-        }
-
-        if (bestStorage == null && consumable.getStorage() != null) {
-            Log.debug("Consumable in wrong storage (" + consumable.getInfo().label + ")");
-            ParcelModel parcel = WorldHelper.getNearestFreeParcel(consumable.getParcel(), consumable.getInfo(), consumable.getQuantity());
-            if (parcel != null) {
-                _jobs.addJob(StoreJob.create(consumable, parcel));
-            }
-        }
+//        if (consumable.getJob() != null) {
+//            Log.error("AreaModule.storeConsumable: consumable have a job");
+//        }
+//
+//        StorageAreaModel bestStorage = getBestStorage(consumable);
+//        if (bestStorage != null && consumable.getStorage() != bestStorage) {
+//            Log.info("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+//            _jobs.addJob(StoreJob.create(consumable, bestStorage));
+//            return;
+//        }
+//
+//        if (bestStorage != null && consumable.getStorage() == bestStorage) {
+////            Log.debug("Consumable already in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
+//            return;
+//        }
+//
+//        if (bestStorage == null && consumable.getStorage() != null) {
+//            Log.debug("Consumable in wrong storage (" + consumable.getInfo().label + ")");
+//            ParcelModel parcel = WorldHelper.getNearestFreeParcel(consumable.getParcel(), consumable.getInfo(), consumable.getQuantity());
+//            if (parcel != null) {
+//                _jobs.addJob(StoreJob.create(consumable, parcel));
+//            }
+//        }
     }
 
     public StorageAreaModel getBestStorage(ConsumableModel consumable) {
@@ -165,11 +165,6 @@ public class AreaModule extends GameModule {
         area.setFloor(z);
         addArea(area);
         addParcelToArea(area, fromX, fromY, toX, toY, z);
-
-        // Reset not running store job
-        _consumableModule.getConsumables().stream()
-                .filter(consumable -> consumable.getStoreJob() != null && consumable.getStoreJob().getCharacter() == null)
-                .forEach(this::storeConsumable);
     }
 
     @Override
@@ -198,7 +193,7 @@ public class AreaModule extends GameModule {
         // Reset not running store job
         if (_consumableModule.getConsumables() != null) {
             _consumableModule.getConsumables().stream()
-                    .filter(consumable -> consumable.getStoreJob() != null && consumable.getStoreJob().getCharacter() == null)
+                    .filter(consumable -> consumable.getJob() != null && consumable.getJob() instanceof StoreJob && consumable.getJob().getCharacter() == null)
                     .forEach(this::storeConsumable);
         }
     }

@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.core.game.module.job.model.HaulJob;
+import org.smallbox.faraway.module.consumable.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.item.job.CheckJoyItem;
@@ -19,7 +19,6 @@ import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -33,10 +32,10 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     private JobModule _jobs;
 
     @BindModule("base.module.structure")
-    private StructureModule _structureModel;
+    private StructureModule _structureModule;
 
     @BindModule("base.module.consumable")
-    private ConsumableModule _consumableModel;
+    private ConsumableModule _consumableModule;
 
     @BindModule("")
     private WorldInteractionModule _worldInteraction;
@@ -111,13 +110,15 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             _items.stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
                     .forEach(item -> _jobs.addJob(new BuildJob(item)));
 
-            // Create craft jobs
-            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
-                    .forEach(item -> _jobs.addJob(new CraftJob(item)));
+////             Create craft jobs
+//            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
+//                    .forEach(item -> _jobs.addJob(new CraftJob(item)));
         }
 
         // Run factory
-        _items.stream().filter(ItemModel::hasFactory).forEach(item -> item.getFactory().run());
+        _items.stream()
+                .filter(ItemModel::hasFactory)
+                .forEach(item -> item.getFactory().run(_jobs, _consumableModule));
     }
 
     @Override

@@ -5,7 +5,7 @@ data:extend({
     position = {000, 100},
     size = {300, 600},
     background = 0x55bbdd,
-    visible = true,
+    visible = false,
     views = {
         { type = "label", text = "DEBUG CLICK", text_size = 14, position = {10, 8}},
         { type = "list", id = "views_list", position = {10, 30}},

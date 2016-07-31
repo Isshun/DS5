@@ -188,7 +188,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //            item.setReceipt(item.getInfo().receipts.get(0));
 //        }
 //        item.init();
-//        _items.add(item);
+//        _items.addSubJob(item);
 //
 //        notifyObservers(observer -> observer.onAddItem(parcel, item));
 //

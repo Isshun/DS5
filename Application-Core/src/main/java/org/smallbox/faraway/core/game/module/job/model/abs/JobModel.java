@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.job.model.abs;
 
+import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
@@ -11,13 +12,44 @@ import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public abstract class JobModel extends ObjectModel {
+
+    public List<JobModel> getSubJobs() {
+        return _subJobs;
+    }
+
+    public interface OnStartListener {
+        void onStart();
+    }
+
+    public interface OnActionListener {
+        void onAction();
+    }
+
+    public interface OnCompleteListener {
+        void onComplete();
+    }
+
+    private List<JobModel> _subJobs = new LinkedList<>();
+    private OnStartListener _onStartListener;
+
     public void cancel() {
         onCancel();
         finish();
     }
 
     protected void onCancel() {}
+
+    public boolean isActive() {
+        return true;
+    }
+
+    public void addSubJob(JobModel subJob) {
+        _subJobs.add(subJob);
+    }
 
     public interface onDrawCallback {
         void onDraw(int x, int y, int z);
@@ -68,9 +100,10 @@ public abstract class JobModel extends ObjectModel {
     protected ParcelModel       _jobParcel;
     protected ParcelModel       _targetParcel;
     private boolean             _isEntertainment;
-    protected JobStrategy       _strategy;
+    protected OnActionListener _onActionListener;
     private boolean             _isCreate;
-    protected boolean           _auto;
+    protected boolean _isAuto;
+    protected OnCompleteListener _onCompleteListener;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
         init();
@@ -119,10 +152,10 @@ public abstract class JobModel extends ObjectModel {
     public ItemInfo.ItemInfoAction  getActionInfo() { return _actionInfo; }
     public long                     getStartTime() { return _startTime; }
     public long                     getEndTime() { return _endTime; }
+    public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
 
     public void                     setEntertainment(boolean isEntertainment) { _isEntertainment = isEntertainment; }
-    public void                     setStrategy(JobStrategy strategy) { _strategy = strategy; }
-    public void                     setActionInfo(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; }
+    public void                     setAction(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; _isAuto = _actionInfo.auto; }
     public void                     setLabel(String label) { _label = label; }
     public void                     setLimit(int limit) { _currentLimit = _limit = limit; }
     public void                     setQuantity(int quantity) { _progress = quantity; }
@@ -132,11 +165,15 @@ public abstract class JobModel extends ObjectModel {
     public void                     setBlocked(int frame) { _blocked = frame; _nbBlocked++; }
     public void                     setItemFilter(ItemFilter filter) { _filter = filter; }
     public void                     setStatus(JobStatus status) { _status = status; }
+    public void                     setOnStartListener(OnStartListener onStartListener) { _onStartListener = onStartListener; }
+    public void                     setOnActionListener(OnActionListener onActionListener) { _onActionListener = onActionListener; }
+    public void                     setOnCompleteListener(OnCompleteListener onCompleteListener) { _onCompleteListener = onCompleteListener; }
 
     public boolean                  hasTargetParcel() { return _targetParcel != null; }
     public boolean                  hasJobParcel() { return _jobParcel != null; }
     public boolean                  hasCharacter(CharacterModel character) { return _character != null && _character == character; }
     public boolean                  hasCharacter() { return _character != null; }
+    public boolean                  hasCharacterReady() { return _character != null && _character.getParcel() == _targetParcel; }
     public boolean                  isVisibleInUI() { return true; }
     public boolean                  isFinish() { return _isFinish; }
     public boolean                  isOpen() { return !_isFinish; }
@@ -144,7 +181,7 @@ public abstract class JobModel extends ObjectModel {
     public boolean                  isCreate() { return _isCreate; }
     public boolean                  isVisible() { return true; }
     public boolean                  isRunning() { return _character != null; }
-    public boolean                  isAuto() { return _auto; }
+    public boolean                  isAuto() { return _isAuto; }
 
     public void create() {
         _isCreate = true;
@@ -152,8 +189,14 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void start(CharacterModel character) {
-        assert character != null;
-        assert character.getJob() == null;
+        Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));
+
+//        assert character != null;
+//        assert character.getJob() == null;
+
+        if (_isAuto && character != null) {
+            Log.error("cannot assign character to auto job");
+        }
 
         // Remove job from old characters
         if (_character != null) {
@@ -162,10 +205,14 @@ public abstract class JobModel extends ObjectModel {
 
         // Set job to new characters
         _character = character;
-        character.setJob(this);
+        if (character != null) {
+            character.setJob(this);
+        }
 
-        // Start job
-        Log.debug("Start job " + this + " by " + character.getName());
+        if (_onStartListener != null) {
+            _onStartListener.onStart();
+        }
+
         onStart(character);
     }
 
@@ -221,7 +268,12 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public boolean check(CharacterModel character) {
-        if (_auto && character != null) {
+        if (_isAuto && character != null) {
+            return false;
+        }
+
+        // Job have sub jobs
+        if (CollectionUtils.isNotEmpty(_subJobs)) {
             return false;
         }
 
@@ -229,20 +281,41 @@ public abstract class JobModel extends ObjectModel {
         if (ret == JobCheckReturn.BLOCKED) {
             _fail = MainRenderer.getFrame();
         }
+
         if (ret == JobCheckReturn.ABORT) {
             finish();
         }
+
         return ret == JobCheckReturn.OK;
     }
 
+    public void action() {
+        action(_character);
+    }
+
     public JobActionReturn action(CharacterModel character) {
+        if (isFinish()) {
+            Log.error("Cannot call action on finished job");
+        }
+
+        // Job is not auto and have no character ready
+        if (!_isAuto && !hasCharacterReady()) {
+            return JobActionReturn.CONTINUE;
+        }
+
+        // Job have sub jobs
+        _subJobs.removeIf(JobModel::isFinish);
+        if (CollectionUtils.isNotEmpty(_subJobs)) {
+            return JobActionReturn.CONTINUE;
+        }
+
         if (_limit != -1 && _currentLimit-- == 0) {
             return JobActionReturn.COMPLETE;
         }
 
         // Launch strategy
-        if (_strategy != null) {
-            _strategy.onAction(this);
+        if (_onActionListener != null) {
+            _onActionListener.onAction();
         }
 
         JobActionReturn ret = onAction(character);
@@ -262,7 +335,7 @@ public abstract class JobModel extends ObjectModel {
         return ret;
     }
 
-    public interface JobStrategy {
-        void onAction(JobModel job);
+    public int getProgressPercent() {
+        return (int)(_progress * 100);
     }
 }

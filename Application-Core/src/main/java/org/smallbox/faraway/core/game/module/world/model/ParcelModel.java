@@ -144,7 +144,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
             return false;
         }
 
-        // TODO: add is walkable field set by modules
+        // TODO: addSubJob is walkable field set by modules
 //        // Check item
 //        if (_item != null && !_item.getInfo().isWalkable && _item.isComplete()) {
 //            return false;

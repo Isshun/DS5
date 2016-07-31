@@ -54,10 +54,17 @@ data:extend({
             }},
 
             -- Factory progress
-            { type = "list", id = "frame_factory_progress", margin = {40, 0, 0, 10}, views = {
-                { type = "label", text = "Work in progress", text_size = 22},
-                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", size = {100, 20}},
-                { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {352, 16}},
+            { type = "list", id = "frame_factory", position = {0, 300}, margin = {40, 0, 0, 10}, views = {
+--                { type = "label", text = "Work in progress", text_size = 22},
+--                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", size = {100, 20}},
+--                { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {352, 16}},
+
+                -- Factory inventory
+                { type = "list", id = "frame_factory_inventory", margin = {10, 0, 0, 10}, views = {
+                    { type = "label", text = "Inventory", text_size = 18, size = {400, 26}},
+                    { type = "list", id = "list_factory_inventory"},
+                }},
+
                 --                { type = "label", id = "lb_factory_receipt", text = "lb_factory_receipt", position = {0, 10}},
                 --                { type = "label", id = "lb_factory_progress", text = "lb_factory_progress", position = {0, 20}},
                 --                { type = "label", id = "lb_factory_character", text = "lb_factory_character", position = {0, 20}},
@@ -66,17 +73,17 @@ data:extend({
                 --                { type = "label", id = "lb_factory_products", position = {0, 20}},
             }},
 
-            -- Factory orders
-            { type = "list", id = "frame_factory_orders", margin = {40, 0, 0, 10}, views = {
-                { type = "label", text = "Orders", text_size = 22},
-                { type = "list", id = "list_orders", position = {0, 8}},
-            }},
-
-            -- Networks
-            { type = "list", id = "frame_networks", margin = {60, 0, 0, 10}, views = {
-                { type = "label", text = "Networks", text_size = 22, size = {400, 26}},
-                { type = "list", id = "list_networks"},
-            }},
+--            -- Factory orders
+--            { type = "list", id = "frame_factory_orders", margin = {40, 0, 0, 10}, views = {
+--                { type = "label", text = "Orders", text_size = 22},
+--                { type = "list", id = "list_orders", position = {0, 8}},
+--            }},
+--
+--            -- Networks
+--            { type = "list", id = "frame_networks", margin = {60, 0, 0, 10}, views = {
+--                { type = "label", text = "Networks", text_size = 22, size = {400, 26}},
+--                { type = "list", id = "list_networks"},
+--            }},
 
             -- Action buttons
             { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()

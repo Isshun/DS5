@@ -26,9 +26,9 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-//        game.getRenders().add(new WorldGroundRenderer(this));
+//        game.getRenders().addSubJob(new WorldGroundRenderer(this));
         game.getRenders().add(new FloraTopRenderer(this));
-//        getSerializers().add(new WorldModuleSerializer(this));
+//        getSerializers().addSubJob(new WorldModuleSerializer(this));
 
         _plants = new LinkedList<>();
 
@@ -44,7 +44,7 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
 //            @Override
 //            public void onAddResource(MapObjectModel resource) {
 //                if (resource instanceof PlantModel && resource.getInfo().plant != null) {
-//                    _plants.add((PlantModel) resource);
+//                    _plants.addSubJob((PlantModel) resource);
 //                }
 //            }
 

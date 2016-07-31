@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.StoreJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 
 /**
@@ -13,11 +12,15 @@ import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 public class ConsumableModel extends MapObjectModel {
     private int             _quantity = 1;
     private int             _slots = 0;
-    private JobModel        _lock;
-    private StoreJob        _storeJob;
+    private JobModel        _job;
 
     public ConsumableModel(ItemInfo info) {
         super(info);
+    }
+
+    public ConsumableModel(ItemInfo info, int quantity) {
+        super(info);
+        _quantity = quantity;
     }
 
     public void addQuantity(int quantity) {
@@ -51,8 +54,8 @@ public class ConsumableModel extends MapObjectModel {
 
     public String getFullLabel() { return getLabel() + " (" + _quantity + ")"; }
     public boolean isEmpty() { return _quantity <= 0; }
-    public void lock(JobModel lock) { _lock = lock; }
-    public JobModel getLock() { return _lock; }
+    public void setJob(JobModel job) { _job = job; }
+    public JobModel getJob() { return _job; }
     public boolean inValidStorage() { return _parcel.getArea() != null && _parcel.getArea().accept(_info); }
     public boolean hasFreeSlot() { return _slots < _quantity; }
 
@@ -69,8 +72,8 @@ public class ConsumableModel extends MapObjectModel {
         return _parcel != null && _parcel.getArea() != null && _parcel.getArea().isStorage() ? (StorageAreaModel) _parcel.getArea() : null;
     }
 
-    public void setStoreJob(StoreJob job) { _storeJob = job; }
-    public StoreJob getStoreJob() { return _storeJob; }
+//    public void setStoreJob(StoreJob job) { _storeJob = job; }
+//    public StoreJob getStoreJob() { return _storeJob; }
 
     public void consume(CharacterModel character, int durationLeft) {
         // Add buffEffect on characters

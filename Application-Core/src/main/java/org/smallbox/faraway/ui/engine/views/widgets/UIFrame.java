@@ -33,7 +33,7 @@ public class UIFrame extends View {
 
     public void addView(View view) {
         if (this.equals(view)) {
-//            Log.error("UIFrame: try to add itself to childrens");
+//            Log.error("UIFrame: try to addSubJob itself to childrens");
             return;
         }
 

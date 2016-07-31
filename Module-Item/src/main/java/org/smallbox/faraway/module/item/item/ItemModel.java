@@ -73,8 +73,9 @@ public class ItemModel extends BuildableMapObject {
                 .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.CRAFT)
                 .forEach(action -> {
                     if (_factory == null) {
-                        _factory = new ItemFactoryModel(this, _info.factory);
+                        _factory = new ItemFactoryModel(this);
                     }
+                    _factory.addAction(action);
                 });
 
 //        // Initialize factory extra object

@@ -77,7 +77,7 @@ public class FaunaModule extends GameModule {
     private void addFauna(RegionInfo.RegionFauna faunaInfo, int count) {
 //        ParcelModel parcel = WorldHelper.getRandomFreeSpace(false, true);
 //        if (parcel != null) {
-////            _animals.add(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
+////            _animals.addSubJob(new AnimalModel(Utils.getUUID(), faunaInfo, parcel.x, parcel.y));
 //        } else {
 //            printError("[org.smallbox.faraway.module.fauna.FaunaModule] No space to proc fauna");
 //        }

@@ -28,11 +28,11 @@ public class DumpJob extends JobModel {
         job.setLabel(Data.getString("Dump") + " " + Data.getString(item.getLabel()));
         job._item = item;
         job._cost = item.getInfo().cost;
-        job._strategy = j -> {
-            if (j.getCharacter().getType().needs.joy != null) {
-                j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
+        job.setOnActionListener(() -> {
+            if (job.getCharacter().getType().needs.joy != null) {
+                job.getCharacter().getNeeds().addValue("entertainment", job.getCharacter().getType().needs.joy.change.work);
             }
-        };
+        });
 
         return job;
     }

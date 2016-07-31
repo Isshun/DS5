@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.util.Log;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -303,6 +304,16 @@ public class WorldHelper {
     }
 
     public static int getApproxDistance(ParcelModel p1, ParcelModel p2) {
+        if (p1 == null) {
+            Log.error("P1 cannot be null");
+            return -1;
+        }
+
+        if (p2 == null) {
+            Log.error("P2 cannot be null");
+            return -1;
+        }
+
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
     }
 

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.module.job.model;
+package org.smallbox.faraway.module.consumable;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
@@ -63,7 +63,7 @@ public class ConsumeJob extends JobModel {
         }
 
         // Consumable has been locked by another job
-        if (_consumable.getLock() != null && _consumable.getLock() != this) {
+        if (_consumable.getJob() != null && _consumable.getJob() != this) {
             return JobCheckReturn.ABORT;
         }
 
@@ -77,7 +77,7 @@ public class ConsumeJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        if (_consumable.getLock() != null && _consumable.getLock() != this) {
+        if (_consumable.getJob() != null && _consumable.getJob() != this) {
             _status = JobStatus.ABORTED;
             return;
         }
@@ -88,7 +88,7 @@ public class ConsumeJob extends JobModel {
             return;
         }
 
-        _consumable.lock(this);
+        _consumable.setJob(this);
         _targetParcel = path.getLastParcel();
         character.move(path, new MoveListener<CharacterModel>() {
             @Override
@@ -121,7 +121,7 @@ public class ConsumeJob extends JobModel {
 //        if (_state == State.MOVE_TO_CONSUMABLE) {
 //            _state = State.MOVE_TO_FREE_SPACE;
 //
-//            if (_consumable.getLock() != this) {
+//            if (_consumable.getJob() != this) {
 //                Log.error("consumable is not locked for current job");
 //                return JobActionReturn.ABORT;
 //            }
@@ -132,11 +132,11 @@ public class ConsumeJob extends JobModel {
 ////            }
 //
 ////            _targetParcel = parcel;
-//            _character.addInventory(_consumable, 1);
+//            _character.createInventoryFromConsumable(_consumable, 1);
 //            if (_character.getInventory() == null || _character.getInventory().getInfo() != _consumable.getInfo()) {
 //                return JobActionReturn.ABORT;
 //            }
-//            _consumable.lock(null);
+//            _consumable.setJob(null);
 //
 //            // Remove consumable if depleted
 //            if (_consumable.getQuantity() <= 0) {
@@ -169,15 +169,15 @@ public class ConsumeJob extends JobModel {
 
     @Override
     public void onQuit(CharacterModel character) {
-        if (_consumable != null && _consumable.getLock() == this) {
-            _consumable.lock(null);
+        if (_consumable != null && _consumable.getJob() == this) {
+            _consumable.setJob(null);
         }
     }
 
     @Override
     protected void onFinish() {
-        if (_consumable != null && _consumable.getLock() == this) {
-            _consumable.lock(null);
+        if (_consumable != null && _consumable.getJob() == this) {
+            _consumable.setJob(null);
         }
     }
 

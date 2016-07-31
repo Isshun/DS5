@@ -35,7 +35,7 @@
 //            for (ItemInfo.ItemInfoAction action: res.getInfo().actions) {
 //                if ("cut".equals(action.type)) {
 //                    CutJob job = new CutJob(action, res.getParcel());
-//                    job.setStrategy(j -> {
+//                    job.setOnActionListener(j -> {
 //                        if (j.getCharacter().getType().needs.joy != null) {
 //                            j.getCharacter().getNeeds().addValue("entertainment", j.getCharacter().getType().needs.joy.change.work);
 //                        }

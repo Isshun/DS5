@@ -1,7 +1,5 @@
 package org.smallbox.faraway.core.game.module.job.check.joy;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
@@ -27,7 +25,7 @@ public class CheckJoyWalk extends CharacterCheck {
         MoveJob job = MoveJob.create(character, _parcel);
         job.start(character);
         job.setLabel("Move for a walk");
-        job.setStrategy(j -> j.getCharacter().getNeeds().addValue("entertainment", 1));
+        job.setOnActionListener(() -> job.getCharacter().getNeeds().addValue("entertainment", 1));
         job.setSpeedModifier(0.5);
         job.setLimit(150);
         job.setEntertainment(true);

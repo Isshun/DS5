@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,6 +118,14 @@ public class PathManager extends GameModule {
     }
 
     private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
+        if (fromParcel == null) {
+            Log.error("fromParcel is null");
+        }
+
+        if (toParcel == null) {
+            Log.error("toParcel is null");
+        }
+
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
         // Non walkable origin / target parcel

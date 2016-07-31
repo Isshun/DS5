@@ -17,12 +17,14 @@ import static com.sun.glass.ui.Cursor.setVisible;
 public class ConsumableInfoController extends LuaPanelController {
     @BindLua private UILabel        lbName;
     @BindLua private UILabel        lbQuantity;
+    @BindLua private UILabel        lbJob;
 
     @BindModule("")
     private ConsumableModule _module;
 
     @BindModule("")
     private WorldInteractionModule _worldInteraction;
+    private ConsumableModel _consumable;
 
     @Override
     public void gameStart(Game game) {
@@ -39,10 +41,23 @@ public class ConsumableInfoController extends LuaPanelController {
         });
     }
 
-    public void selectConsumable(ConsumableModel consumable) {
-        setVisible(true);
+    @Override
+    protected void onGameUpdate(Game game) {
+        if (isVisible()) {
+            refreshConsumable();
+        }
+    }
 
-        lbName.setText(consumable.getLabel());
-        lbQuantity.setText("Quantity: " + consumable.getQuantity());
+    private void refreshConsumable() {
+        if (_consumable != null) {
+            lbName.setText(_consumable.getLabel());
+            lbQuantity.setText("Quantity: " + _consumable.getQuantity());
+            lbJob.setText("Job: " + (_consumable.getJob() != null ? _consumable.getJob().getLabel() : "no job"));
+        }
+    }
+
+    private void selectConsumable(ConsumableModel consumable) {
+        setVisible(true);
+        _consumable = consumable;
     }
 }

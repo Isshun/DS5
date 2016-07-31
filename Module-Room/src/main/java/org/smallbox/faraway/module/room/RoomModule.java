@@ -36,7 +36,7 @@ public class RoomModule extends GameModule implements GameObserver {
     private boolean[]                                           _refresh;
     private HashSet<ParcelModel>                                _closeList = new HashSet<>();
 
-    public boolean runOnMainThread() { return true; }
+    public boolean runOnMainThread() { return false; }
 
     @Override
     protected void onGameCreate(Game game) {

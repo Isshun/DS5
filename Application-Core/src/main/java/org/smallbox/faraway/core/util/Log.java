@@ -18,8 +18,9 @@ public class Log {
     private final static Logger logger = Logger.getLogger("FarAway");
 
     static {
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.ALL);
         ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler.setLevel(Level.ALL);
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
             public String format(LogRecord record) {

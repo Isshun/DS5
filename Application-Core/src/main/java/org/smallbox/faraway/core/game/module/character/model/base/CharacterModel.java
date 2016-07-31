@@ -25,9 +25,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
@@ -88,11 +86,11 @@ public abstract class CharacterModel extends MovableModel {
         _talents = new CharacterTalentExtra();
 
 //        _equipments = new ArrayList<>();
-//        _equipments.add(Data.getData().getEquipment("base.equipments.regular_shirt"));
-//        _equipments.add(Data.getData().getEquipment("base.equipments.regular_pants"));
-//        _equipments.add(Data.getData().getEquipment("base.equipments.regular_shoes"));
-//        _equipments.add(Data.getData().getEquipment("base.equipments.oxygen_bottle"));
-//        _equipments.add(Data.getData().getEquipment("base.equipments.fremen_body"));
+//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.regular_shirt"));
+//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.regular_pants"));
+//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.regular_shoes"));
+//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.oxygen_bottle"));
+//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.fremen_body"));
 
         _stats = new CharacterStatsExtra();
         _stats.speed = 1;
@@ -358,7 +356,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void addInventory(ConsumableModel consumable, int quantity) {
+    public void createInventoryFromConsumable(ConsumableModel consumable, int quantity) {
         if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
             Log.error("Character inventory has non-compatible item");
             return;

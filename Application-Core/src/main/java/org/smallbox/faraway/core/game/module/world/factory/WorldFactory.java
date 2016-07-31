@@ -43,8 +43,8 @@ public class WorldFactory {
 //            for (int y = 0; y < _height; y++) {
 //                for (int f = 0; f < _floors; f++) {
 //                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
-//                    parcelList.add(parcel);
-//                    parcelListFloors.get(f).add(parcel);
+//                    parcelList.addSubJob(parcel);
+//                    parcelListFloors.get(f).addSubJob(parcel);
 //                    _parcels[x][y][f] = parcel;
 //                }
 //            }

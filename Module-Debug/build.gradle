@@ -7,4 +7,8 @@ apply plugin: 'java'
 dependencies {
     compile project(":Application-Core")
     compile project(":Module-Quest")
+    compile project(":Module-World")
+    compile project(":Module-Consumable")
+    compile project(":Module-Structure")
+    compile project(":Module-Item")
 }

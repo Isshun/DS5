@@ -18,8 +18,9 @@ data:extend({
         actions = {
             {
                 type = "craft",
-                cost = 100,
+                cost = 25,
                 auto = true,
+                label = "Craft easy meal",
                 products = {item = "base.easy_meal", quantity = 1},
                 inputs = {item = "base.vegetable", quantity = 1},
             },
@@ -27,6 +28,7 @@ data:extend({
                 type = "craft",
                 cost = 50,
                 auto = true,
+                label = "Craft spice",
                 products = {item = "base.spice", quantity = 1},
             },
         },

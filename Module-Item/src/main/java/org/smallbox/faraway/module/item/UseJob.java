@@ -37,7 +37,7 @@ public class UseJob extends JobModel {
 
         if (CollectionUtils.isNotEmpty(item.getInfo().actions)) {
             ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
-            job.setActionInfo(infoAction);
+            job.setAction(infoAction);
             job.setCost(infoAction.cost);
         } else {
             Log.warning("No action for item");

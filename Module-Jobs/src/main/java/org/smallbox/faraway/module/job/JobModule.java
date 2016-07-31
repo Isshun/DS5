@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.core.game.module.job.model.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
@@ -34,13 +33,13 @@ public class JobModule extends GameModule<JobModuleObserver> {
     @Override
     protected void onGameCreate(Game game) {
         _priorities = new ArrayList<>();
-//        _priorities.add(new CheckCharacterEntertainmentDepleted());
+//        _priorities.addSubJob(new CheckCharacterEntertainmentDepleted());
 
 
         _joys = new ArrayList<>();
-//        _joys.add(new CheckEntertainmentTalk());
+//        _joys.addSubJob(new CheckEntertainmentTalk());
         _joys.add(new CheckJoyWalk());
-//        _joys.add(new CheckEntertainmentSleep());
+//        _joys.addSubJob(new CheckEntertainmentSleep());
 
         _sleeps = new ArrayList<>();
     }
@@ -135,11 +134,11 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public void    addJob(JobModel job) {
         if (job == null || _jobs.contains(job)) {
-            printError("Trying to add null or already existing job to JobModule");
+            printError("Trying to addSubJob null or already existing job to JobModule");
             return;
         }
 
-        printDebug("add job: " + job.getLabel());
+        printDebug("addSubJob job: " + job.getLabel());
 
         _jobs.add(job);
 
@@ -192,12 +191,15 @@ public class JobModule extends GameModule<JobModuleObserver> {
         for (CharacterTalentExtra.TalentEntry talent: character.getTalents().getAll()) {
             if (bestJob == null) {
                 for (JobModel job: _jobs) {
-                    ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                    if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
-                        int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
-                        if (distance < bestDistance && job.check(character)) {
-                            bestJob = job;
-                            bestDistance = distance;
+                    if (job.isActive() && !job.isAuto()) {
+                        Log.debug("Check best regular: " + job.getLabel());
+                        ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
+                        if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
+                            int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
+                            if (distance < bestDistance && job.check(character)) {
+                                bestJob = job;
+                                bestDistance = distance;
+                            }
                         }
                     }
                 }
@@ -270,9 +272,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
                 if (object == null && job.getJobParcel() == parcel) {
                     job.cancel();
                 }
-                if (object != null && job instanceof HaulJob && ((HaulJob) job).getBuildItem() == object) {
-                    job.cancel();
-                }
+//                if (object != null && job instanceof HaulJob && ((HaulJob) job).getBuildItem() == object) {
+//                    job.cancel();
+//                }
                 if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
                     job.cancel();
                 }
@@ -299,5 +301,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public void addSleepCheck(CharacterCheck check) {
         _priorities.add(check);
+    }
+
+    public void addJobs(List<JobModel> jobs) {
+        jobs.forEach(this::addJob);
     }
 }
