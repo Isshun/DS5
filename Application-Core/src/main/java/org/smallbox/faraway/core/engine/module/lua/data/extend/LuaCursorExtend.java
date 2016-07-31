@@ -11,6 +11,8 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
 
+import java.io.File;
+
 /**
  * Created by Alex on 29/09/2015.
  */
@@ -21,7 +23,7 @@ public class LuaCursorExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         final UIFrame resItem = new UIFrame(module);
         resItem.setSize(32, 32);
         resItem.setBackgroundColor(value.get("default").get("color").tolong());

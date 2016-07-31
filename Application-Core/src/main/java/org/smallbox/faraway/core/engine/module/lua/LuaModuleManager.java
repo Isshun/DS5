@@ -166,9 +166,13 @@ public class LuaModuleManager {
         // TODO
         // Load lua from java modules
         Arrays.stream(new File(".").listFiles()).filter(file -> file.getName().startsWith("Module-")).forEach(moduleDirectory -> {
-            File dataDirectory = new File(moduleDirectory, "src/main/resources/");
-            if (dataDirectory.exists()) {
-                loadLuaFiles(null, dataDirectory);
+            try {
+                File dataDirectory = dataDirectory = new File(moduleDirectory.getCanonicalPath(), "src/main/resources/");
+                if (dataDirectory.exists()) {
+                    loadLuaFiles(null, dataDirectory);
+                }
+            } catch (IOException e) {
+                Log.error(e);
             }
         });
 
@@ -180,7 +184,7 @@ public class LuaModuleManager {
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
     }
 
-    public void loadLuaFiles(ModuleBase module, File directory) {
+    public void loadLuaFiles(ModuleBase module, File dataDirectory) {
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
 
@@ -189,16 +193,16 @@ public class LuaModuleManager {
                 CoerceJavaToLua.coerce(new LuaUIBridge(null)),
                 CoerceJavaToLua.coerce(new LuaDataModel(values -> {
                     if (!values.get("type").isnil()) {
-                        extendLuaValue(module, values, globals);
+                        extendLuaValue(module, values, globals, dataDirectory);
                     } else {
                         for (int i = 1; i <= values.length(); i++) {
-                            extendLuaValue(module, values.get(i), globals);
+                            extendLuaValue(module, values.get(i), globals, dataDirectory);
                         }
                     }
                 })));
 
         // Load lua files
-        FileUtils.listRecursively(directory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".lua")).forEach(f -> {
+        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".lua")).forEach(f -> {
             try {
                 globals.load(new FileReader(f), f.getName()).call();
             } catch (FileNotFoundException | LuaError e) {
@@ -207,7 +211,7 @@ public class LuaModuleManager {
         });
 
         // Load css files
-        FileUtils.listRecursively(directory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".css")).forEach(f -> {
+        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".css")).forEach(f -> {
             Log.info("Found css file: %s", f.getName());
 
             try {
@@ -227,12 +231,12 @@ public class LuaModuleManager {
         });
     }
 
-    private void extendLuaValue(ModuleBase module, LuaValue value, Globals globals) {
+    private void extendLuaValue(ModuleBase module, LuaValue value, Globals globals, File dataDirectory) {
         _extends.stream()
                 .filter(extend -> extend.accept(value.get("type").toString()))
                 .forEach(extender -> {
                     try {
-                        extender.extend(module, globals, value);
+                        extender.extend(module, globals, value, dataDirectory);
                     } catch (DataExtendException e) {
                         if (!value.get("name").isnil()) {
                             Log.info("Error during extend " + value.get("name").toString());

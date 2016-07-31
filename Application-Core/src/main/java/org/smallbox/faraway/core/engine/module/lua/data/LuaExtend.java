@@ -4,12 +4,14 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
+import java.io.File;
+
 /**
  * Created by Alex on 29/09/2015.
  */
 public abstract class LuaExtend {
     public abstract boolean accept(String type);
-    public abstract void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException;
+    public abstract void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException;
 
     protected static boolean getBoolean(LuaValue value, String key, boolean defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toboolean() : defaultValue;

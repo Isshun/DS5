@@ -60,25 +60,25 @@ public class WorldGroundRenderer extends BaseRenderer {
         _pxGroundDecorations = new HashMap<>();
 
         Data.getData().items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
-            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(0))));
+            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
             textureIn.getTextureData().prepare();
             _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
 
             if (itemInfo.graphics.size() >= 2) {
-                Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(1))));
+                Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(1))));
                 textureDecoration.getTextureData().prepare();
                 _pxGroundDecorations.put(itemInfo, textureDecoration.getTextureData().consumePixmap());
             }
 
             if (itemInfo.graphics.size() == 3) {
-                Texture textureBorders = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(2))));
+                Texture textureBorders = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(2))));
                 textureBorders.getTextureData().prepare();
                 _pxGroundBorders.put(itemInfo, textureBorders.getTextureData().consumePixmap());
             }
         });
 
         Data.getData().items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
-            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo.graphics.get(0))));
+            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
             textureIn.getTextureData().prepare();
             _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
         });

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -83,7 +84,7 @@ public class SpriteManager {
         Data.getData().getItems().forEach(itemInfo -> {
             if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
                 itemInfo.graphics.forEach(graphicInfo -> {
-                    File file = getFile(graphicInfo);
+                    File file = getFile(itemInfo, graphicInfo);
                     if (file.exists()) {
                         _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
                     }
@@ -356,11 +357,11 @@ public class SpriteManager {
         return sprite;
     }
 
-    public static File getFile(GraphicInfo graphicInfo) {
+    public static File getFile(ItemInfo itemInfo, GraphicInfo graphicInfo) {
         if ("base".equals(graphicInfo.packageName)) {
             return new File("data", graphicInfo.path);
         } else {
-            return new File("mods/" + graphicInfo.packageName + "/items/" + graphicInfo.path + ".png");
+            return new File(itemInfo.dataDirectory, graphicInfo.path);
         }
     }
 
@@ -374,7 +375,8 @@ public class SpriteManager {
         if ("base".equals(packageName)) {
             return new File("data", path);
         } else {
-            return new File("mods/" + packageName + "/items/" + path + ".png");
+            throw new NotImplementedException("");
+//            return new File("mods/" + packageName + "/items/" + path);
         }
     }
 

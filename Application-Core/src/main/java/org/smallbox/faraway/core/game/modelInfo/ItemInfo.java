@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.modelInfo;
 import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class ItemInfo extends ObjectInfo {
     public boolean isLiquid;
     public String surfaceName;
     public ItemInfo surface;
+    public File dataDirectory;
 
     public boolean hasCraftAction() {
         if (actions != null) {

@@ -24,6 +24,7 @@ import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -46,7 +47,7 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         boolean inGame = getBoolean(value, "in_game", true);
         UIFrame frame = new UIFrame(module);
         frame.setInGame(inGame);

@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class LuaPlanetExtend extends LuaExtend {
     public boolean accept(String type) { return "planet".equals(type); }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
 
         PlanetInfo planetInfo = null;

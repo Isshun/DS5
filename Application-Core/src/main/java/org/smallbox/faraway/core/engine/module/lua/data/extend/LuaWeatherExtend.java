@@ -8,6 +8,8 @@ import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 
+import java.io.File;
+
 /**
  * Created by Alex on 29/09/2015.
  */
@@ -16,7 +18,7 @@ public class LuaWeatherExtend extends LuaExtend {
     public boolean accept(String type) { return "weather".equals(type); }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
 
         WeatherInfo weatherInfo = Data.getData().weathers.get(name);

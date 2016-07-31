@@ -15,6 +15,8 @@ import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterMod
 import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.util.Log;
 
+import java.io.File;
+
 /**
  * Created by Alex on 14/10/2015.
  */
@@ -25,7 +27,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
         if (name == null) {
             return;

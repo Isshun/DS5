@@ -7,6 +7,8 @@ import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 
+import java.io.File;
+
 /**
  * Created by Alex on 15/10/2015.
  */
@@ -17,7 +19,7 @@ public class LuaLangExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         LuaValue luaStrings = value.get("strings");
         if (!luaStrings.isnil()) {
             for (int i = 1; i <= luaStrings.length(); i++) {

@@ -8,6 +8,8 @@ import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 
+import java.io.File;
+
 /**
  * Created by Alex on 22/11/2015.
  */
@@ -18,7 +20,7 @@ public class LuaCharacterExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
         CharacterInfo characterInfo = Data.getData().characters.get(name);
         if (characterInfo == null) {

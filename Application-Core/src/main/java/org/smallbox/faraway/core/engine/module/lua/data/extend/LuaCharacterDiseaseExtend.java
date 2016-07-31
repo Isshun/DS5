@@ -9,6 +9,8 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 
+import java.io.File;
+
 /**
  * Created by Alex on 14/10/2015.
  */
@@ -19,7 +21,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         DiseaseInfo disease = new DiseaseInfo();
 
         disease.label = value.get("label").toString();

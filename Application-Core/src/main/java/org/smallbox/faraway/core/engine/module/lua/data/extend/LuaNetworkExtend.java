@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +21,7 @@ public class LuaNetworkExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
 
         NetworkInfo networkInfo;
