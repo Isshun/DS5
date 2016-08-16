@@ -62,5 +62,5 @@ public interface GameObserver {
     default void onMousePress(MouseEvent event) {}
     default void onMouseRelease(MouseEvent event) {}
 
-    default void onOpenPanel(LuaController controller) {}
+    default void onClickOnMap(MouseEvent mouseEvent) {}
 }

@@ -1,37 +1,27 @@
 package org.smallbox.faraway.module.character.controller;
 
 import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.LuaPanelController;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.character.CharacterModuleObserver;
-import org.smallbox.faraway.module.world.WorldInteractionModule;
-import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
-
-import java.util.Collection;
 
 /**
  * Created by Alex on 25/04/2016.
  */
-public class CharacterController extends LuaPanelController {
+public class CharacterController extends LuaController {
     @BindLuaController
     private CharacterStatusController   statusController;
 
-    @BindModule("")
+    @BindModule
     private CharacterModule             _characters;
-
-    @BindModule("")
-    private WorldInteractionModule      _worldInteraction;
 
     @BindLua private View               pageStatus;
     @BindLua private View               pageInventory;
@@ -45,29 +35,18 @@ public class CharacterController extends LuaPanelController {
 
     @Override
     protected void onGameCreate(Game game) {
-        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+        _characters.addObserver(new CharacterModuleObserver() {
             @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
-                CharacterModel selected = _characters.getCharacters().stream()
-                        .filter(character -> parcels.contains(character.getParcel()))
-                        .findAny().orElse(null);
-                setVisible(selected != null);
-                if (selected != null) {
-                    select(selected);
-                }
+            public void onSelectCharacter(CharacterModel character) {
+
+                setVisible(true);
+                select(character);
             }
         });
     }
 
     @Override
-    public void gameStart(Game game) {
-        _characters.addObserver(new CharacterModuleObserver() {
-            @Override
-            public void onSelectCharacter(CharacterModel character) {
-                select(character);
-            }
-        });
-
+    public void onGameStart(Game game) {
         openPage(pageStatus);
     }
 
@@ -92,8 +71,6 @@ public class CharacterController extends LuaPanelController {
     }
 
     private void select(CharacterModel character) {
-        setVisible(true);
-
         Log.debug("Select character: " + character);
 
         _selected = character;

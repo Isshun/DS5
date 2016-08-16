@@ -34,8 +34,6 @@ public abstract class LuaController implements GameObserver {
         if (getRootView() != null) {
             getRootView().setVisible(visible);
         }
-
-        Application.getInstance().notify(obs -> obs.onOpenPanel(this));
     }
 
     protected boolean isVisible() {
@@ -49,9 +47,9 @@ public abstract class LuaController implements GameObserver {
         return _rootView;
     }
 
-    public void gameCreate(Game game) { onGameCreate(game); }
-    public void gameStart(Game game) { onGameStart(game); }
-    public void gameUpdate(Game game) { onGameUpdate(game); }
+    public final void gameCreate(Game game) { onGameCreate(game); }
+    public final void gameStart(Game game) { onGameStart(game); }
+    public final void gameUpdate(Game game) { onGameUpdate(game); }
 
     protected void onGameCreate(Game game) {}
     protected void onGameStart(Game game) {}

@@ -41,4 +41,5 @@ dependencies {
     compile project(":Module-Structure")
     compile project(":Module-World")
     compile project(":Module-Jobs")
+    compile project(":Module-MainPanel")
 }

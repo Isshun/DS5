@@ -35,19 +35,19 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindLuaController
     private CharacterController _controller;
 
-    @BindModule("")
+    @BindModule
     private WorldInteractionModule _worldInteraction;
 
-    @BindModule("")
+    @BindModule
     private JobModule _jobs;
 
-    @BindModule("")
+    @BindModule
     private ItemModule _items;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
-    private int                                 _count;
     private List<CharacterModel>                _visitors = new ArrayList<>();
+    private int                                 _count;
 
     @Override
     public boolean isModuleMandatory() {

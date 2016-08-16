@@ -1,6 +1,8 @@
 package org.smallbox.faraway.module.structure;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -8,25 +10,20 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.module.world.WorldModule;
 
 public class StructureTopRenderer extends BaseRenderer {
-    private final StructureModule _structureModule;
+
+    @BindModule
+    private StructureModule _structureModule;
+
     protected SpriteManager _spriteManager;
     protected MapObjectModel    _itemSelected;
-    private int                 _floor;
-    private int                 _width;
-    private int                 _height;
-
-    public StructureTopRenderer(StructureModule structureModule) {
-        _structureModule = structureModule;
-    }
 
     @Override
-    protected void onLoad(Game game) {
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
+    protected void onGameStart(Game game) {
         _spriteManager = SpriteManager.getInstance();
     }
 
@@ -36,7 +33,7 @@ public class StructureTopRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onUpdate() {
+    protected void onGameUpdate() {
         _structureModule.getStructures().forEach(structure -> {
             ParcelModel parcel = structure.getParcel();
 
@@ -57,15 +54,14 @@ public class StructureTopRenderer extends BaseRenderer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+        Sprite buildSprite = SpriteManager.getInstance().getIcon("../Module-Structure/src/main/resources/ic_build.png", 32, 32);
+        _structureModule.getStructures().stream()
+                .filter(structure -> parcelInViewport(structure.getParcel()))
+                .forEach(structure -> renderer.drawOnMap(structure.getParcel(), structure.isComplete() ? getSprite(structure) : buildSprite));
     }
 
-    @Override
-    public void onRefresh(int frame) {
-    }
-
-    @Override
-    public void onFloorChange(int floor) {
-        _floor = floor;
+    private Sprite getSprite(StructureModel structure) {
+        return SpriteManager.getInstance().getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
     }
 
     @Override

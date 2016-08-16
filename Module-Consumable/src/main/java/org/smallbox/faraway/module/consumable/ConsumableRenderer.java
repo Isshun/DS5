@@ -17,7 +17,7 @@ public class ConsumableRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onLoad(Game game) {
+    protected void onGameStart(Game game) {
     }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {

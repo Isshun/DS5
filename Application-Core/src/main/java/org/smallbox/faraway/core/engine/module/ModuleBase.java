@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.ui.engine.OnClickListener;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -21,10 +22,9 @@ public abstract class ModuleBase implements GameObserver {
 
     protected void onLoad() {}
     protected void onUnload() {}
+    protected void onCreate() {}
 
-    public void onCreate() {}
-
-    public void load() {
+    public final void load() {
         assert !_isLoaded;
 
         Log.info("[" + _info.name + "] Load");
@@ -43,7 +43,12 @@ public abstract class ModuleBase implements GameObserver {
 //        }
     }
 
-    public void unload() {
+    public final void create() {
+        Log.info("[" + _info.name + "] create");
+        onCreate();
+    }
+
+    public final void unload() {
         assert _isLoaded;
 
         Log.info("[" + _info.name + "] Unload");

@@ -2,10 +2,12 @@ package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Predicate;
 
 public class UIEventManager {
@@ -19,16 +21,12 @@ public class UIEventManager {
     private UIDropDown                      _currentDropDown;
 
     private UIEventManager() {
-        _onClickListeners = new HashMap<>();
-        _onRightClickListeners = new HashMap<>();
-        _onFocusListeners = new HashMap<>();
-        _onKeysListeners = new HashMap<>();
-        _onMouseWheelUpListeners = new HashMap<>();
-        _onMouseWheelDownListeners = new HashMap<>();
-    }
-
-    public Map<View, OnClickListener> getClickListeners() {
-        return _onClickListeners;
+        _onClickListeners = new ConcurrentSkipListMap<>();
+        _onRightClickListeners = new ConcurrentSkipListMap<>();
+        _onFocusListeners = new ConcurrentSkipListMap<>();
+        _onKeysListeners = new ConcurrentSkipListMap<>();
+        _onMouseWheelUpListeners = new ConcurrentSkipListMap<>();
+        _onMouseWheelDownListeners = new ConcurrentSkipListMap<>();
     }
 
     public static UIEventManager getInstance() {
@@ -153,15 +151,16 @@ public class UIEventManager {
 
     public void onMouseMove(int x, int y) {
         boolean gameRunning = GameManager.getInstance().isLoaded();
-        for (View view: _onFocusListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view)) {
-                if (hasVisibleHierarchy(view) && view.contains(x, y)) {
-                    view.onEnter();
-                } else if (view.isFocus()) {
-                    view.onExit();
-                }
-            }
-        }
+
+        UserInterface.getInstance().getViews().stream()
+                .filter(view -> view.isVisible() && view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view))
+                .forEach(view -> {
+                    if (hasVisibleHierarchy(view) && view.contains(x, y)) {
+                        view.onEnter();
+                    } else if (view.isFocus()) {
+                        view.onExit();
+                    }
+                });
     }
 
     public boolean has(int x, int y) {

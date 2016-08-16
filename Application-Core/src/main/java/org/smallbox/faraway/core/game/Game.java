@@ -133,25 +133,17 @@ public class Game {
     public void start() {
         addSerializer(new MainSerializer());
 
-        startModules();
-
-        // Notify controller
+        // Notify modules, renders and controllers
+        ModuleManager.getInstance().gameStart(this, _modules);
+        MainRenderer.getInstance().gameStart(this, _renders, _miniMapRenderer);
         LuaControllerManager.getInstance().gameStart(this);
-
-        MainRenderer.getInstance().init(this, _renders, _miniMapRenderer);
 
         Application.getInstance().notify(observer -> observer.onHourChange(_hour));
         Application.getInstance().notify(observer -> observer.onDayChange(_day));
         Application.getInstance().notify(observer -> observer.onYearChange(_year));
-        Application.getInstance().notify(observer -> observer.onFloorChange(WorldHelper.getCurrentFloor()));
+        Application.getInstance().notify(observer -> observer.onFloorChange(7));
 
-        _viewport.setPosition(-500, -3800);
-    }
-
-    private void startModules() {
-        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
-        _renders.stream().filter(BaseRenderer::isLoaded).forEach(renderer -> renderer.startGame(this));
-        _miniMapRenderer.startGame(this);
+        _viewport.setPosition(-500, -3800, 7);
 
         _state = GameModuleState.STARTED;
     }
@@ -166,7 +158,7 @@ public class Game {
         if (_nextUpdate < System.currentTimeMillis() && _isRunning) {
             _nextUpdate = System.currentTimeMillis() + _tickInterval;
             _tick += 1;
-            MainRenderer.getInstance().onUpdate();
+            MainRenderer.getInstance().gameUpdate(this);
             LuaControllerManager.getInstance().gameUpdate(this);
             onUpdate(_tick);
         }

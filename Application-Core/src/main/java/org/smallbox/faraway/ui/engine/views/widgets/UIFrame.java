@@ -31,7 +31,8 @@ public class UIFrame extends View {
         }
     }
 
-    public void addView(View view) {
+    @Override
+    protected void onAddView(View view) {
         if (this.equals(view)) {
 //            Log.error("UIFrame: try to addSubJob itself to childrens");
             return;
@@ -60,13 +61,8 @@ public class UIFrame extends View {
         return 0;
     }
 
-    public void removeAllViews() {
-        _views.forEach(View::remove);
-        _views.clear();
-    }
-
-    public void removeView(View view) {
+    @Override
+    protected void onRemoveView(View view) {
         view.remove();
-        _views.remove(view);
     }
 }

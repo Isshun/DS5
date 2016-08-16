@@ -54,7 +54,7 @@ public class LuaUIExtend extends LuaExtend {
         frame.addView(createView(LuaModuleManager.getInstance(), module, globals, value, inGame, 0, frame));
         frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         frame.setLevel(getInt(value, "level", 0));
-        UserInterface.getInstance().addView(frame);
+        UserInterface.getInstance().addRootView(frame);
     }
 
     public View createView(LuaModuleManager luaModuleManager, ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
@@ -81,7 +81,12 @@ public class LuaUIExtend extends LuaExtend {
                     }
 
                     @Override
-                    public void addView(View view) {
+                    protected void onAddView(View view) {
+                    }
+
+                    @Override
+                    protected void onRemoveView(View view) {
+
                     }
 
                     @Override
@@ -219,6 +224,11 @@ public class LuaUIExtend extends LuaExtend {
             LuaValue style = value.get("style");
             if (!style.isnil()) {
                 applyStyle(view, style.toString());
+            }
+
+            LuaValue group = value.get("group");
+            if (!group.isnil()) {
+                view.setGroup(group.toString());
             }
 
             LuaValue visible = value.get("visible");
@@ -397,6 +407,8 @@ public class LuaUIExtend extends LuaExtend {
                 LuaControllerManager.getInstance().setControllerView(controller.toString(), view);
             }
         }
+
+        UserInterface.getInstance().addView(view);
 
         return view;
     }

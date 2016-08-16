@@ -150,11 +150,12 @@ public class UILabel extends View {
         _string = string;
     }
 
-    public void setTextSize(int size) {
+    public UILabel setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
             _height = (int)(GDXRenderer.getInstance().getFont(_textSize).getLineHeight() * 1.2);
         }
+        return this;
     }
 
     public void setStyle(int style) {
@@ -211,7 +212,11 @@ public class UILabel extends View {
     }
 
     @Override
-    public void addView(View view) {
+    protected void onAddView(View view) {
+    }
+
+    @Override
+    protected void onRemoveView(View view) {
     }
 
     @Override

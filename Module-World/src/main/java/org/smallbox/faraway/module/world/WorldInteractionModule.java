@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldInteractionModule extends GameModule<WorldInteractionModuleObserver> {
-    @BindModule("")
+    @BindModule
     private WorldModule _world;
 
     private GameActionExtra.Action      _action;
@@ -66,13 +66,15 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                 _keyMovePosY = parcelY;
 
                 ParcelModel parcel = _world.getParcel(parcelX, parcelY, floor);
-                if (_lastMoveParcel != parcel) {
-                    _lastMoveParcel = parcel;
-                    _world.notifyObservers(obs -> obs.onOverParcel(parcel));
-                }
+                if (parcel != null) {
+                    if (_lastMoveParcel != parcel) {
+                        _lastMoveParcel = parcel;
+                        _world.notifyObservers(obs -> obs.onOverParcel(parcel));
+                    }
 
-                if (_keyLeftPressed) {
-                    _selection.setPosition(parcelX, parcelY, WorldHelper.getCurrentFloor());
+                    if (_keyLeftPressed) {
+                        _selection.setPosition(parcelX, parcelY, WorldHelper.getCurrentFloor());
+                    }
                 }
             }
 

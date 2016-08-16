@@ -103,6 +103,17 @@ public class SpriteManager {
         return _icons.get(path);
     }
 
+    public Sprite getIcon(String path, int width, int height) {
+        if (!_icons.containsKey(path)) {
+            File file = getFile(path);
+            Texture texture = new Texture(new FileHandle(file));
+            Sprite sprite = new Sprite(texture, 0, 0, width, height);
+            sprite.flip(false, true);
+            _icons.put(path, sprite);
+        }
+        return _icons.get(path);
+    }
+
     public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
     public Sprite getItem(StructureModel structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
 

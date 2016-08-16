@@ -1,11 +1,13 @@
-package org.smallbox.faraway.core.game.module.area.controller;
+package org.smallbox.faraway.module.area;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.ui.UIPanelModule;
+import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
@@ -13,7 +15,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
  * Created by Alex on 26/04/2016.
  */
 public class AreaController extends LuaController {
-    @BindModule("base.module.uiPanel")
+    @BindModule
     private UIPanelModule       uiPanelModule;
 
     @BindLua private UILabel    btAddStorage;
@@ -31,8 +33,13 @@ public class AreaController extends LuaController {
     @BindLua private UILabel    btAddGarden;
     @BindLua private UILabel    btRemoveGarden;
 
+    @BindLuaController
+    private MainPanelController _mainPanelController;
+
     @Override
     protected void onGameCreate(Game game) {
+        _mainPanelController.addShortcut("Areas", () -> setVisible(true));
+
         btAddStorage.setOnClickListener(() -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
         });

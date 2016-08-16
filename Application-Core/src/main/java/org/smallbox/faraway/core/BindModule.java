@@ -7,6 +7,4 @@ import java.lang.annotation.*;
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BindModule {
-    String value();
-}
+public @interface BindModule {}

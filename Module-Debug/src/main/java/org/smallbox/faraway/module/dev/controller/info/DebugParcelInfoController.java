@@ -13,7 +13,7 @@ import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
  * Created by Alex on 31/07/2016.
  */
 public class DebugParcelInfoController extends LuaController {
-    @BindModule("")
+    @BindModule
     private WorldModule _world;
 
     @BindLua private UILabel    lbName;

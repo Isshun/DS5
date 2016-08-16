@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import org.smallbox.faraway.core.DependencyInjector;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -7,62 +8,46 @@ import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
 public abstract class BaseRenderer implements GameObserver {
-    private final boolean _isThirdParty;
-    private long     _totalTime;
-    private int     _nbDraw;
-    private boolean _isLoaded;
+    private final boolean       _isThirdParty;
+    private long                _totalTime;
+    private int                 _nbDraw;
+    private boolean             _isLoaded;
 
     private int                 _width;
     private int                 _height;
     private int                 _floor;
-    private int fromX;
-    private int fromY;
-    private int toX;
-    private int toY;
+    private int                 _fromX;
+    private int                 _fromY;
+    private int                 _toX;
+    private int                 _toY;
 
     public BaseRenderer() {
         _isThirdParty = false;
+        DependencyInjector.getInstance().register(this);
     }
 
     public BaseRenderer(boolean isThirdParty) {
         _isThirdParty = isThirdParty;
+        DependencyInjector.getInstance().register(this);
     }
 
-    public abstract void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress);
-    public abstract void onRefresh(int frame);
     public int getLevel() {
         return 0;
     }
 
-    public void update() {
-        onUpdate();
-    }
+    protected void onGameStart(Game game) {}
+    protected void onGameUpdate() {}
+    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {}
+    protected void onRefresh(int frame) {}
 
-    protected void onGameStart(Game game) {
-
-    }
-
-    protected void onLoad(Game game) {
-    }
-
-    protected void onUpdate() {
-    }
-
-    public void destroy() {
-    }
-
-    public void startGame(Game game) {
-        Log.info("Load java render: " + getClass().getSimpleName());
-        onGameStart(game);
-    }
-
-    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 
-        fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
-        fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
-        toX = Math.min(_width, fromX + 50);
-        toY = Math.min(_height, fromY + 40);
+        _floor = viewport.getFloor();
+        _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
+        _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
+        _toX = Math.min(_width, _fromX + 50);
+        _toY = Math.min(_height, _fromY + 40);
 
         onDraw(renderer, viewport, animProgress);
 
@@ -73,8 +58,8 @@ public abstract class BaseRenderer implements GameObserver {
     protected boolean parcelInViewport(ParcelModel parcel) {
         return parcel != null
                 && parcel.z == _floor
-                && parcel.x >= fromX && parcel.x <= toX
-                && parcel.y >= fromY && parcel.y <= toY;
+                && parcel.x >= _fromX && parcel.x <= _toX
+                && parcel.y >= _fromY && parcel.y <= _toY;
     }
 
     public void dump() {
@@ -87,15 +72,19 @@ public abstract class BaseRenderer implements GameObserver {
         return _isLoaded;
     }
 
-    public void load(Game game) {
-        Log.info("[BaseRender] onLoad " + getClass().getSimpleName());
+    public final void gameStart(Game game) {
+        Log.info("[BaseRender] gameStart: " + getClass().getSimpleName());
 
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
 
-        onLoad(game);
+        onGameStart(game);
 
         _isLoaded = true;
+    }
+
+    public final void gameUpdate() {
+        onGameUpdate();
     }
 
     public void unload() {

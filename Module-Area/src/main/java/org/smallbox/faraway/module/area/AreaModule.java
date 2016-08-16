@@ -5,15 +5,12 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.area.controller.AreaController;
 import org.smallbox.faraway.core.game.module.area.controller.AreaGardenInfoController;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableModuleObserver;
 import org.smallbox.faraway.module.job.JobModule;
@@ -32,13 +29,13 @@ public class AreaModule extends GameModule {
     @BindLuaController
     private AreaGardenInfoController    _gardenInfo;
 
-    @BindModule("")
+    @BindModule
     private ConsumableModule _consumableModule;
 
-    @BindModule("")
+    @BindModule
     private JobModule _jobs;
 
-    @BindModule("")
+    @BindModule
     private WorldModule _world;
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();

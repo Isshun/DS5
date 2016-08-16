@@ -1,15 +1,16 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import com.sun.istack.internal.NotNull;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.FadeEffect;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.RotateAnimation;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -23,9 +24,10 @@ import java.util.List;
 /**
  * Created by Alex on 27/05/2015.
  */
-public abstract class View {
+public abstract class View implements Comparable<View> {
     protected int _originWidth;
     protected int _originHeight;
+    private String _group;
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
@@ -45,6 +47,10 @@ public abstract class View {
                 return view;
             }
         }
+    }
+
+    public String getGroup() {
+        return _group;
     }
 
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
@@ -152,12 +158,25 @@ public abstract class View {
     public void         setInGame(boolean inGame) { _inGame = inGame; }
     public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
     public void         setLevel(int level) { _level = level; }
-    public void         setBackgroundColor(long color) { _backgroundColor = new Color(color); }
+    public View         setBackgroundColor(long color) { _backgroundColor = new Color(color); return this; }
     public View         setBackgroundColor(Color color) { _backgroundColor = color; return this; }
-    public void         setVisible(boolean visible) { _isVisible = visible; }
+
+    public void         setVisible(boolean visible) {
+        if (visible && _group != null) {
+            // Set visible false for other views sharing current view's group
+            UserInterface.getInstance().getViews().stream()
+                    .filter(view -> _group.equals(view.getGroup()))
+                    .forEach(view -> view.setVisible(false));
+        }
+
+        // Set current view visible
+        _isVisible = visible;
+    }
+
+    public void         setGroup(String group) { _group = group; }
     public void         setEffect(FadeEffect effect) { _effect = effect; }
     public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
-    public void         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; }
+    public View         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; return this; }
     public void         setActionName(String actionName) { _actionName = actionName; }
     public void         setLayer(int layer) { _layer = layer; }
 
@@ -188,12 +207,20 @@ public abstract class View {
 
     public int          compareLevel(View view) { return _deep != view.getDeep() ? _deep - view.getDeep() : hashCode() - view.hashCode(); }
 
+    @Override
+    public int compareTo(@NotNull View view) {
+        return view.hashCode() - hashCode();
+    }
+
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
             _finalX = getAlignedX() + _marginLeft + x;
             _finalY = getAlignedY() + _marginTop + y;
 
-            if (_backgroundColor != null) {
+            if (_backgroundFocusColor != null && _isFocus) {
+                renderer.draw(_backgroundFocusColor, _finalX, _finalY, _width, _height);
+            }
+            else if (_backgroundColor != null) {
                 renderer.draw(_backgroundColor, _finalX, _finalY, _width, _height);
             }
 
@@ -221,15 +248,25 @@ public abstract class View {
         _isAlignTop = isAlignTop;
     }
 
-    public abstract void addView(View view);
+    public final void addView(View view) {
+        UserInterface.getInstance().addView(view);
 
-    public void removeAllViews() {
+        onAddView(view);
+    }
+
+    protected abstract void onAddView(View view);
+
+    public final void removeAllViews() {
         _views.forEach(view -> {
+            UserInterface.getInstance().removeView(view);
             UIEventManager.getInstance().removeListeners(view);
             view.removeAllViews();
+            onRemoveView(view);
         });
         _views.clear();
     }
+
+    protected abstract void onRemoveView(View view);
 
     public boolean contains(int x, int y) {
         return (_finalX <= x && _finalX + _width >= x && _finalY <= y && _finalY + _height >= y);
@@ -259,23 +296,7 @@ public abstract class View {
     }
 
     public View setBackgroundFocusColor(long color) {
-        if (_backgroundFocusColor == null) {
-            UIEventManager.getInstance().setOnFocusListener(this, new OnFocusListener() {
-                Color _oldColor;
-                @Override
-                public void onEnter(View view) {
-                    _oldColor = view.getBackgroundColor();
-                    view.setBackgroundColor(_backgroundFocusColor);
-                }
-
-                @Override
-                public void onExit(View view) {
-                    view.setBackgroundColor(_oldColor);
-                }
-            });
-        }
         _backgroundFocusColor = new Color(color);
-
         return this;
     }
 

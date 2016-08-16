@@ -9,4 +9,5 @@ dependencies {
     compile project(":Module-World")
     compile project(":Module-Item")
     compile project(":Module-Consumable")
+    compile project(":Module-MainPanel")
 }

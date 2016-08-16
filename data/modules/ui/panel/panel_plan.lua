@@ -3,6 +3,7 @@ data:extend({
     style = "base.style.right_panel",
     id = "base.ui.panel_plan",
     visible = false,
+    group = "right_panel",
     on_click = function() close_sub_menu() end,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)

@@ -22,16 +22,16 @@ import java.util.List;
  * Created by Alex on 13/06/2015.
  */
 public class TemperatureModule extends GameModule {
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _worldModule;
 
-    @BindModule("base.module.weather")
+    @BindModule
     private WeatherModule _weatherModule;
 
-    @BindModule("base.module.room")
+    @BindModule
     private RoomModule _roomModule;
 
-    @BindModule("base.module.item")
+    @BindModule
     private ItemModule _itemModule;
 
     private List<ItemModel> _items = new ArrayList<>();

@@ -2,7 +2,8 @@ data:extend({
     type = "view",
     style = "base.style.right_panel",
     id = "base.ui.panel_areas",
-    controller = "org.smallbox.faraway.core.game.module.area.controller.AreaController",
+    controller = "org.smallbox.faraway.module.area.AreaController",
+    group = "right_panel",
     visible = false,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)

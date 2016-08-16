@@ -25,6 +25,8 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
@@ -33,6 +35,7 @@ public abstract class CharacterModel extends MovableModel {
     private UILabel _label;
     private PathModel _path;
     private PathModel _lastPath;
+    private Map<ItemInfo, Integer> _inventory2 = new HashMap<>();
 
     public UILabel getLabelDrawable() {
         if (_label == null) {
@@ -110,10 +113,11 @@ public abstract class CharacterModel extends MovableModel {
     public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableModel              getInventory() { return _inventory; }
+    public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
     public abstract String[][]          getEquipmentViewIds();
     public abstract String              getEquipmentViewPath();
     public abstract String              getNeedViewPath();
-    public CharacterInfo getType() { return _type; }
+    public CharacterInfo                getType() { return _type; }
     public String                       getTypeName() { return _type.name; }
     public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();
@@ -421,5 +425,14 @@ public abstract class CharacterModel extends MovableModel {
 
     public void apply(ItemInfo.ItemConsumeInfo consume) {
         getNeeds().use(consume.effects, consume.cost);
+    }
+
+    public void addInventory(ItemInfo itemInfo, int quantity) {
+        int inventoryQuantity = _inventory2.containsKey(itemInfo) ? _inventory2.get(itemInfo) : 0;
+        if (inventoryQuantity + quantity > 0) {
+            _inventory2.put(itemInfo, inventoryQuantity + quantity);
+        } else {
+            _inventory2.remove(itemInfo);
+        }
     }
 }

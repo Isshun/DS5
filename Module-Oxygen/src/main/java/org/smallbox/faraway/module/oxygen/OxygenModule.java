@@ -20,19 +20,19 @@ import java.util.stream.Collectors;
  * Created by Alex on 18/06/2015.
  */
 public class OxygenModule extends GameModule {
-    @BindModule("base.module.job")
+    @BindModule
     private JobModule _jobModule;
 
-    @BindModule("base.module.room")
+    @BindModule
     private RoomModule _roomModule;
 
-    @BindModule("base.module.weather")
+    @BindModule
     private WeatherModule _weatherModule;
 
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _worldModule;
 
-    @BindModule("base.module.item")
+    @BindModule
     private ItemModule _itemModule;
 
     private double                  _oxygen;

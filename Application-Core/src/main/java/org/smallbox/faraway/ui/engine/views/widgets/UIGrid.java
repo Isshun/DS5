@@ -69,7 +69,7 @@ public class UIGrid extends View {
     }
 
     @Override
-    public void addView(View view) {
+    protected void onAddView(View view) {
         view.setDeep(_deep + 1);
 
         _views.add(view);
@@ -93,9 +93,8 @@ public class UIGrid extends View {
 //    }
 
     @Override
-    public void removeAllViews() {
-        super.removeAllViews();
-        _count = 0;
+    protected void onRemoveView(View view) {
+        _count = _views.size();
     }
 
 

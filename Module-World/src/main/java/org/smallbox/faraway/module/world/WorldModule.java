@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WorldModule extends GameModule<WorldModuleObserver> {
-    @BindModule("base.module.jobs")
+    @BindModule
     private JobModule _jobs;
 
     @BindLuaController
@@ -187,7 +187,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //        if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
 //            item.setReceipt(item.getInfo().receipts.get(0));
 //        }
-//        item.init();
+//        item.gameStart();
 //        _items.addSubJob(item);
 //
 //        notifyObservers(observer -> observer.onAddItem(parcel, item));
@@ -278,6 +278,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public void onFloorUp() {
         if (_floor < _floors - 1) {
             _floor++;
+            _viewport.setFloor(_floor);
             WorldHelper.setCurrentFloor(_floor);
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }
@@ -287,6 +288,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public void onFloorDown() {
         if (_floor > 0) {
             _floor--;
+            _viewport.setFloor(_floor);
             WorldHelper.setCurrentFloor(_floor);
             Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
         }

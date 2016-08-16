@@ -23,10 +23,10 @@ import java.util.Collection;
  * Created by Alex on 31/07/2016.
  */
 public class DebugConsumableController extends LuaController {
-    @BindModule("")
+    @BindModule
     private ConsumableModule _consumableModule;
 
-    @BindModule("")
+    @BindModule
     private WorldInteractionModule _worldInteraction;
 
     @BindLua

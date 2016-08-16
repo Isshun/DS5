@@ -15,7 +15,7 @@ import org.smallbox.faraway.module.item.item.ItemModel;
 import java.util.*;
 
 public class ItemFinderModule extends GameModule {
-    @BindModule("")
+    @BindModule
     private ItemModule  _items;
 
     // TODO: setJob item

@@ -68,6 +68,7 @@ dependencies {
     compile project(":Module-Temperature")
     compile project(":Module-Light")
     compile project(":Module-Music")
+    compile project(":Module-MainPanel")
     compile project(":Module-MiniMap")
     compile project(":Module-Quest")
     compile project(":Module-Oxygen")

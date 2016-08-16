@@ -25,6 +25,7 @@ public class Viewport {
     private int         _fromScale;
     private int         _scaleAnim;
     private int         _zoom = ZOOM_LEVELS.length - 1;
+    private int         _floor;
 
     public Viewport(int x, int y) {
         _posX = x;
@@ -84,5 +85,18 @@ public class Viewport {
     public void move(int x, int y) {
         _posX += (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 1);
         _posY += (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 1);
+    }
+
+    public int getFloor() {
+        return _floor;
+    }
+
+    public void setFloor(int floor) {
+        _floor = floor;
+    }
+
+    public void setPosition(int x, int y, int z) {
+        setPosition(x, y);
+        _floor = z;
     }
 }

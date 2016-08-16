@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
@@ -41,16 +42,6 @@ public class ModuleManager {
         loadApplicationModules(onLoad);
         loadGameModules(onLoad);
         loadThirdPartyModules(onLoad);
-
-        // Inject view to controllers
-        injectViewToControllers();
-    }
-
-    public void injectViewToControllers() {
-//        _controllers.entrySet()
-//                .stream()
-//                .filter(entry -> _viewByControllerName.containsKey(entry.getKey()))
-//                .forEach(entry -> entry.getValue().setRootView(_viewByControllerName.get(entry.getKey())));
     }
 
     private void loadThirdPartyModules(GDXApplication.OnLoad onLoad) {
@@ -163,10 +154,8 @@ public class ModuleManager {
         }
 
         _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
-
         _applicationModules.forEach(module -> DependencyInjector.getInstance().register(module));
-
-        _applicationModules.forEach(ModuleBase::onCreate);
+        _applicationModules.forEach(ModuleBase::create);
     }
 
     private void loadGameModules(GDXApplication.OnLoad onLoad) {
@@ -211,10 +200,8 @@ public class ModuleManager {
         }
 
         _gameModules.forEach(module -> Application.getInstance().addObserver(module));
-
         _gameModules.forEach(module -> DependencyInjector.getInstance().register(module));
-
-        _gameModules.forEach(ModuleBase::onCreate);
+        _gameModules.forEach(ModuleBase::create);
     }
 
     // Check if all modules have been loaded
@@ -259,5 +246,9 @@ public class ModuleManager {
 
     public Executor getExecutor() {
         return _executor;
+    }
+
+    public void gameStart(Game game, List<GameModule> modules) {
+        modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(game));
     }
 }

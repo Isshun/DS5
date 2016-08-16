@@ -39,4 +39,5 @@ dependencies {
     compile project(":Application-Core")
     compile project(":Module-World")
     compile project(":Module-Item")
+    compile project(":Module-MainPanel")
 }

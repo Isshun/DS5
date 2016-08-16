@@ -29,29 +29,36 @@ public class MainRenderer {
         }
     }
 
-    public void onUpdate() {
-        _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::update);
+    public void gameUpdate(Game game) {
+        _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::gameUpdate);
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 
         Game game = Game.getInstance();
-        _renders.stream().filter(BaseRenderer::isLoaded)
-                .filter(render -> !(render instanceof GameDisplay) || render.isMandatory() || (game.hasDisplay(((GameDisplay)render).getName())))
-                .forEach(render -> render.draw(renderer, viewport, animProgress));
+
+        //noinspection Convert2streamapi
+        for (BaseRenderer render: _renders) {
+            if (!(render instanceof GameDisplay) || render.isMandatory() || (game.hasDisplay(((GameDisplay)render).getName()))) {
+                render.draw(renderer, viewport, animProgress);
+            }
+        }
+//        _renders.stream().filter(BaseRenderer::isLoaded)
+//                .filter(render -> !(render instanceof GameDisplay) || render.isMandatory() || (game.hasDisplay(((GameDisplay)render).getName())))
+//                .forEach(render -> render.draw(renderer, viewport, animProgress));
 
         _frame++;
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public void init(Game game, List<BaseRenderer> renders, BaseRenderer miniMapRender) {
+    public void gameStart(Game game, List<BaseRenderer> renders, BaseRenderer miniMapRender) {
         _frame = 0;
         _renders = renders;
         _miniMapRender = miniMapRender;
 
-        _renders.forEach(render -> render.load(game));
-        _miniMapRender.load(game);
+        _renders.forEach(render -> render.gameStart(game));
+        _miniMapRender.gameStart(game);
     }
 
     private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
@@ -81,7 +88,7 @@ public class MainRenderer {
         if (render.isLoaded()) {
             render.unload();
         } else {
-            render.load(Game.getInstance());
+            render.gameStart(Game.getInstance());
         }
     }
 

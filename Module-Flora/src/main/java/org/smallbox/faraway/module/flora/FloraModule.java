@@ -19,7 +19,7 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.Gr
  * Created by Alex on 05/07/2015.
  */
 public class FloraModule extends GameModule<FloraModuleObserver> {
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _world;
 
     private Collection<PlantModel> _plants;

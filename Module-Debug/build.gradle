@@ -11,4 +11,6 @@ dependencies {
     compile project(":Module-Consumable")
     compile project(":Module-Structure")
     compile project(":Module-Item")
+    compile 'org.fusesource:sigar:1.6.4'
+    compile 'net.java.dev.jna:jna-platform:4.2.2'
 }

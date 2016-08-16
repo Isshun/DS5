@@ -21,10 +21,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class RoomModule extends GameModule implements GameObserver {
-    @BindModule("base.module.structure")
+    @BindModule
     private StructureModule _structureModule;
 
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _world;
 
     private static final int                                    ROOF_MAX_DISTANCE = 6;

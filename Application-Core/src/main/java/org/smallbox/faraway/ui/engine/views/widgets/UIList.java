@@ -15,7 +15,7 @@ public class UIList extends View implements AutoCloseable {
     }
 
     @Override
-    public void addView(View view) {
+    protected void onAddView(View view) {
         view.setDeep(_deep + 1);
 
         _views.add(view);
@@ -30,6 +30,10 @@ public class UIList extends View implements AutoCloseable {
         if (_fixedWidth == -1 || _fixedHeight == -1) {
             setSize(_width, offset);
         }
+    }
+
+    @Override
+    protected void onRemoveView(View view) {
     }
 
     @Override

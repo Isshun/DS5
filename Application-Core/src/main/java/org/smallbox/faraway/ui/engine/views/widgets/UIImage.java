@@ -51,10 +51,6 @@ public class UIImage extends View {
     }
 
     @Override
-    public void addView(View view) {
-    }
-
-    @Override
     public void draw(GDXRenderer renderer, int x, int y) {
         super.draw(renderer, x, y);
 
@@ -101,6 +97,14 @@ public class UIImage extends View {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onAddView(View view) {
+    }
+
+    @Override
+    protected void onRemoveView(View view) {
     }
 
     @Override

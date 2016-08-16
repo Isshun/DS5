@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.structure;
 
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -8,19 +9,17 @@ import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 public class StructureBottomRenderer extends BaseRenderer {
-    private final StructureModule _structureModule;
+    @BindModule
+    private StructureModule _structureModule;
+
     protected SpriteManager _spriteManager;
     protected MapObjectModel    _itemSelected;
     private int                 _floor;
     private int                 _width;
     private int                 _height;
 
-    public StructureBottomRenderer(StructureModule structureModule) {
-        _structureModule = structureModule;
-    }
-
     @Override
-    protected void onLoad(Game game) {
+    protected void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
         _spriteManager = SpriteManager.getInstance();
@@ -32,7 +31,7 @@ public class StructureBottomRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onUpdate() {
+    protected void onGameUpdate() {
         _structureModule.getStructures().forEach(structure -> {
             if (structure.isDoor()) {
                 boolean isOpen = false;

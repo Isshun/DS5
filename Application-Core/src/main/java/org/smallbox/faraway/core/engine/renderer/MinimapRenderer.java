@@ -45,12 +45,9 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onGameStart(Game game) {
+    protected void onGameStart(Game game) {
         _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
-    }
 
-    @Override
-    protected void onLoad(Game game) {
         POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.getInstance().getConfig().uiScale - 10 * Application.getInstance().getConfig().uiScale);
         POS_Y = (int) (84 * Application.getInstance().getConfig().uiScale);
 
@@ -90,7 +87,7 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onUpdate() {
+    protected void onGameUpdate() {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {

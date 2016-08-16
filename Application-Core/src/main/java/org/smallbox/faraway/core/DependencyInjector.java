@@ -15,6 +15,7 @@ import java.util.*;
 public class DependencyInjector {
     private Set<Object> _objects = new HashSet<>();
     private static DependencyInjector _self;
+    private boolean _init;
 
     public static DependencyInjector getInstance() {
         if (_self == null) {
@@ -25,14 +26,20 @@ public class DependencyInjector {
 
     public void register(Object object) {
         _objects.add(object);
+        if (_init) {
+            injectDependencies(object);
+        }
     }
 
     public void injectDependencies() {
-        _objects.forEach(object -> {
-            Log.info("Inject dependency to: " + object.getClass().getName());
-            injectModules(object, ModuleManager.getInstance().getGameModules());
-            injectControllers(object, LuaControllerManager.getInstance().getControllers());
-        });
+        _init = true;
+        _objects.forEach(this::injectDependencies);
+    }
+
+    private void injectDependencies(Object object) {
+        Log.info("Inject dependency to: " + object.getClass().getName());
+        injectModules(object, ModuleManager.getInstance().getGameModules());
+        injectControllers(object, LuaControllerManager.getInstance().getControllers());
     }
 
     private void injectControllers(Object object, Map<String, LuaController> controllers) {
@@ -63,8 +70,13 @@ public class DependencyInjector {
                 field.setAccessible(true);
                 BindModule bindModule = field.getAnnotation(BindModule.class);
                 if (bindModule != null) {
-                    Log.debug(String.format("Try to inject %s (%s) to %s", field.getType().getSimpleName(), bindModule.value(), object.getClass().getSimpleName()));
-                    field.set(object, getModuleDependency(loadedModules, field.getType()));
+                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), object.getClass().getSimpleName()));
+                    ModuleBase module = getModuleDependency(loadedModules, field.getType());
+                    if (module != null) {
+                        field.set(object, module);
+                    } else {
+                        Log.error("DependencyInjector: cannot find module: " + field.getType());
+                    }
                 }
             } catch (IllegalAccessException e) {
                 Log.error(e);

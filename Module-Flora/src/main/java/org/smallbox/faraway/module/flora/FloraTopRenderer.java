@@ -20,7 +20,7 @@ public class FloraTopRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onLoad(Game game) {
+    protected void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
         _spriteManager = SpriteManager.getInstance();
@@ -32,7 +32,7 @@ public class FloraTopRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onUpdate() {
+    protected void onGameUpdate() {
         _floraModule.getPlants().forEach(plant -> {
             if (plant.getInfo().graphics != null) {
                 ParcelModel parcel = plant.getParcel();

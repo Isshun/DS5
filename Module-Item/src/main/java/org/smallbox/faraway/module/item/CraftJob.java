@@ -53,7 +53,9 @@ public class CraftJob extends JobModel {
         _inputs = action.inputs.stream()
                 .peek(input -> {
                     HaulJob haulJob = HaulJob.create(consumableModule, _item.getParcel(), input.item, input.quantity);
-                    haulJob.setOnCompleteListener(() -> _inputs.put(input, _inputs.get(input) + haulJob.getCurrentQuantity()));
+                    haulJob.setOnCompleteListener(() -> {
+                        _inputs.put(input, _inputs.get(input) + haulJob.getCurrentQuantity());
+                    });
                     addSubJob(haulJob);
                 })
                 .collect(Collectors.toMap(input -> input, input -> 0));

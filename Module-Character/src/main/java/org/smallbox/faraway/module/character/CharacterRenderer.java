@@ -3,10 +3,12 @@ package org.smallbox.faraway.module.character;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.module.consumable.HaulJob;
 
 public class CharacterRenderer extends BaseRenderer {
     private final CharacterModule _characterModule;
@@ -129,6 +131,13 @@ public class CharacterRenderer extends BaseRenderer {
                 // Draw inventory
                 if (c.getInventory() != null) {
                     renderer.draw(_spriteManager.getItem(c.getInventory()), posX, posY + 2);
+                }
+
+                // Draw inventory 2
+                if (c.getInventory2() != null) {
+                    for (ItemInfo itemInfo: c.getInventory2().keySet()) {
+                        renderer.draw(_spriteManager.getIcon(itemInfo), posX, posY + 2);
+                    }
                 }
 
                 // Draw action icon

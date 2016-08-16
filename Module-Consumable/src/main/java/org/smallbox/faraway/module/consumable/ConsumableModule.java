@@ -25,16 +25,16 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _world;
 
-    @BindModule("base.module.jobs")
+    @BindModule
     private JobModule _jobs;
 
-    @BindModule("base.module.structure")
+    @BindModule
     private StructureModule _structureModel;
 
-    @BindModule("")
+    @BindModule
     private WorldInteractionModule _worldInteraction;
 
     @BindLuaController

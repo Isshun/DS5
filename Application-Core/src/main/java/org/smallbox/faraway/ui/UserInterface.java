@@ -12,27 +12,51 @@ import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
 public class UserInterface {
+    public void addRootView(View view) {
+        _rootViews.add(view);
+    }
+
     public void addView(View view) {
         _views.add(view);
-        Collections.sort(_views, (v1, v2) -> v1.getLayer() - v2.getLayer());
+
+        String group = view.getGroup();
+        if (group != null) {
+            if (!_groups.containsKey(group)) {
+                _groups.put(group, new ArrayList<>());
+            }
+            _groups.get(group).add(view);
+        }
     }
 
     public void clearViews() {
-        _views.clear();
+        _rootViews.clear();
     }
 
     public void addDropsDowns(UIDropDown view) {
         _dropsDowns.add(view);
     }
 
+    public Collection<View> getRootViews() {
+        return _rootViews;
+    }
     public Collection<View> getViews() {
         return _views;
+    }
+
+    public List<View> findByGroup(String group) {
+        return _groups.get(group);
+    }
+
+    public void removeView(View view) {
+        _views.remove(view);
     }
 
     private static class ContextEntry {
@@ -49,9 +73,21 @@ public class UserInterface {
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
-    private List<View>                  _views = new ArrayList<>();
-    private Collection<UIDropDown>       _dropsDowns = new LinkedBlockingQueue<>();
-    private Collection<Integer>         _visibleViews = new LinkedBlockingQueue<>();
+    private PriorityBlockingQueue<View> _rootViews = new PriorityBlockingQueue<>(200, new Comparator<View>() {
+        @Override
+        public int compare(View v1, View v2) {
+            return v1.getLayer() - v2.getLayer();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return false;
+        }
+    });
+    private Queue<View>                 _views = new ConcurrentLinkedQueue<>();
+    private Queue<UIDropDown>           _dropsDowns = new ConcurrentLinkedQueue<>();
+    private Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
+    private Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
 
     public static UserInterface getInstance() {
         if (_self == null) {
@@ -67,18 +103,18 @@ public class UserInterface {
 
     public void reload() {
         _visibleViews.clear();
-        _views.stream()
+        _rootViews.stream()
                 .filter(view -> view.getViews() != null)
                 .forEach(view -> view.getViews().stream()
                         .filter(View::isVisible)
                         .forEach(subview -> _visibleViews.add(subview.getId())));
-        _views.clear();
+        _rootViews.clear();
         _dropsDowns.clear();
         UIEventManager.getInstance().clear();
     }
 
     public void restore() {
-        _views.stream()
+        _rootViews.stream()
                 .filter(view -> view.getViews() != null)
                 .forEach(view -> view.getViews().stream()
                         .filter(subview -> _visibleViews.contains(subview.getId()))
@@ -150,7 +186,7 @@ public class UserInterface {
 //        // Collect views
 //        UIEventManager.getInstance().removeListeners(
 //                UIEventManager.getInstance().getClickListeners().keySet().stream()
-//                        .filter(view -> !_views.contains(view.getRootView()))
+//                        .filter(view -> !_rootViews.contains(view.getRootView()))
 //                        .collect(Collectors.toList()));
 
         Application.getInstance().notify(observer -> observer.onRefreshUI(frame));
@@ -160,7 +196,7 @@ public class UserInterface {
         OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.zoom = 0.5f;
 
-        _views.stream()
+        _rootViews.stream()
                 .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
                 .forEach(view -> view.draw(renderer, 0, 0));
         _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
@@ -213,7 +249,7 @@ public class UserInterface {
 
         else {
             int resId = id.hashCode();
-            for (View view : _views) {
+            for (View view : _rootViews) {
                 if (view.getId() == resId) {
                     return view;
                 }

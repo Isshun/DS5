@@ -5,6 +5,7 @@ data:extend({
     id = "base.ui.info_character",
     style = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.character.controller.CharacterController",
+    group = "right_panel",
     visible = false,
     views = {
         { type = "label", text = "Character", text_size = 12, position = {12, 8}},
@@ -253,7 +254,7 @@ data:extend({
 --                    lb_buff_warning:setTextColor(0x121c1e)
 --                    lb_buff_warning:setPadding(2)
 --                    lb_buff_warning:setBackgroundColor(buff.mood > 0 and 0xb3d035 or 0xff5555)
---                    view_buff:addView(lb_buff_warning)
+--                    view_buff:addRootView(lb_buff_warning)
 --                end
 --
 --                local lb_buff = ui:createLabel()
@@ -264,9 +265,9 @@ data:extend({
 --                lb_buff:setOnClickListener(function()
 --                    application.events:send("debug.open_buff", data)
 --                end)
---                view_buff:addView(lb_buff)
+--                view_buff:addRootView(lb_buff)
 --
---                list:addView(view_buff)
+--                list:addRootView(view_buff)
 --            end
 --        end
 --    end
@@ -284,7 +285,7 @@ data:extend({
 --        local lb_disease = ui:createLabel()
 --        lb_disease:setText(disease.message)
 --        lb_disease:setSize(400, 22)
---        list:addView(lb_disease)
+--        list:addRootView(lb_disease)
 --
 --        if disease.level > level then
 --            level = disease.level
@@ -313,7 +314,7 @@ data:extend({
 --
 --        local lb_talent = ui:createLabel()
 --        lb_talent:setText(talent.name)
---        frame_talent:addView(lb_talent)
+--        frame_talent:addRootView(lb_talent)
 --
 --        local lb_up = ui:createLabel()
 --        lb_up:setText("up")
@@ -324,7 +325,7 @@ data:extend({
 --            character:getTalents():moveTalent(talent, -1)
 --            display_talents(view)
 --        end)
---        frame_talent:addView(lb_up)
+--        frame_talent:addRootView(lb_up)
 --
 --        local lb_down = ui:createLabel()
 --        lb_down:setText("down")
@@ -334,9 +335,9 @@ data:extend({
 --            character:moveTalent(talent, 1)
 --            display_talents(view)
 --        end)
---        frame_talent:addView(lb_down)
+--        frame_talent:addRootView(lb_down)
 --
---        list:addView(frame_talent)
+--        list:addRootView(frame_talent)
 --    end
 --end
 --

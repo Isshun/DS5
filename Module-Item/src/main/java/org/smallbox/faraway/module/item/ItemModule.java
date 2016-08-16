@@ -25,19 +25,19 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 public class ItemModule extends GameModule<ItemModuleObserver> {
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _world;
 
-    @BindModule("base.module.jobs")
+    @BindModule
     private JobModule _jobs;
 
-    @BindModule("base.module.structure")
+    @BindModule
     private StructureModule _structureModule;
 
-    @BindModule("base.module.consumable")
+    @BindModule
     private ConsumableModule _consumableModule;
 
-    @BindModule("")
+    @BindModule
     private WorldInteractionModule _worldInteraction;
 
     private Collection<ItemModel> _items;
@@ -49,7 +49,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     @Override
     protected void onGameCreate(Game game) {
         game.addSerializer(new ItemModuleSerializer(this, _world));
-        game.addRender(new ItemRenderer(this));
+        game.addRender(new ItemRenderer());
 
         _items = new LinkedBlockingQueue<>();
 
@@ -145,7 +145,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         _items.add(new ItemModel(itemInfo, parcel));
     }
 
-    public void addItemPattern(ParcelModel parcel, ItemInfo itemInfo) {
+    public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
         // Create item
         ItemModel item = new ItemModel(itemInfo, parcel);
         item.setBuildProgress(0);

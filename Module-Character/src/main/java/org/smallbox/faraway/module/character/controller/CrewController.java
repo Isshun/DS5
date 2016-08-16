@@ -2,9 +2,11 @@ package org.smallbox.faraway.module.character.controller;
 
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.module.character.CharacterModule;
+import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.UIList;
 
@@ -15,8 +17,16 @@ public class CrewController extends LuaController {
     @BindLua
     private UIList listCrew;
 
-    @BindModule("")
+    @BindModule
     private CharacterModule _characters;
+
+    @BindLuaController
+    private MainPanelController _mainPanelController;
+
+    @Override
+    protected void onGameCreate(Game game) {
+        _mainPanelController.addShortcut("Crew", () -> setVisible(true));
+    }
 
     @Override
     protected void onGameUpdate(Game game) {

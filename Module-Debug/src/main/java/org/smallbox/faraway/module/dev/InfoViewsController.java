@@ -19,7 +19,7 @@ public class InfoViewsController extends LuaController {
     protected void onGameUpdate(Game game) {
         viewsList.clear();
 
-        UserInterface.getInstance().getViews().forEach(view -> {
+        UserInterface.getInstance().getRootViews().forEach(view -> {
             if (!view.getViews().isEmpty()) {
                 View child = view.getViews().get(0);
 

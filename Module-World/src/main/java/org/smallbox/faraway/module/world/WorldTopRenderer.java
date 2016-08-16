@@ -23,7 +23,7 @@ public class WorldTopRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onLoad(Game game) {
+    protected void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
         _spriteManager = SpriteManager.getInstance();
@@ -35,7 +35,7 @@ public class WorldTopRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onUpdate() {
+    protected void onGameUpdate() {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {

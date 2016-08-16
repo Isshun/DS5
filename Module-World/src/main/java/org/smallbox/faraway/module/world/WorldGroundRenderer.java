@@ -50,8 +50,8 @@ public class WorldGroundRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onLoad(Game game) {
-        super.onLoad(game);
+    protected void onGameStart(Game game) {
+        super.onGameStart(game);
 
         _pxLiquids = new HashMap<>();
 

@@ -70,6 +70,10 @@ public class GameActionExtra {
         // Left click
         if (action == GameEventListener.Action.RELEASED) {
             Application.getInstance().notify(obs -> obs.onMouseRelease(_mouseEvent));
+
+            if (!_mouseEvent.consumed && _mouseEvent.x < 1500) {
+                Application.getInstance().notify(obs -> obs.onClickOnMap(_mouseEvent));
+            }
         }
 
         if (action == GameEventListener.Action.PRESSED) {

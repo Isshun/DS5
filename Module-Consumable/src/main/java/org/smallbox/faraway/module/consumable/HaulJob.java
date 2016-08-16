@@ -21,6 +21,8 @@ import java.util.List;
  * Created by Alex on 09/10/2015.
  */
 public class HaulJob extends JobModel {
+    private final ItemInfo _itemInfo;
+
     public static HaulJob create(ConsumableModule consumableModule, ParcelModel targetParcel, ItemInfo item, int quantity) {
         return new HaulJob(consumableModule, targetParcel, item, quantity);
     }
@@ -28,6 +30,7 @@ public class HaulJob extends JobModel {
     public HaulJob(ConsumableModule consumableModule, ParcelModel targetParcel, ItemInfo itemInfo, int quantity) {
         _quantity = quantity;
         _targetParcel = targetParcel;
+        _itemInfo = itemInfo;
         _label = "Haul " + itemInfo.label + " to " + targetParcel.x + "x" + targetParcel.y;
         _message = "Haul " + itemInfo.label + " to " + targetParcel.x + "x" + targetParcel.y;
         _consumableModule = consumableModule;
@@ -188,7 +191,7 @@ public class HaulJob extends JobModel {
                     _currentQuantity += _quantity;
                 }
                 consumable.setJob(null);
-//                character.setInventory(_consumable);
+                character.addInventory(_itemInfo, _currentQuantity);
 //                character.createInventoryFromConsumable(_consumable, _consumable.getQuantity());
 
                 moveToItem(character);
@@ -234,6 +237,8 @@ public class HaulJob extends JobModel {
 
     @Override
     public void onQuit(CharacterModel character) {
+        character.addInventory(_itemInfo, -_currentQuantity);
+
 //        if (character.getInventory() != null) {
 //            ModuleHelper.getWorldModule().putConsumable(character.getParcel(), character.getInventory());
 //            character.setInventory(null);

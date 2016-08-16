@@ -44,7 +44,7 @@ public class UIDropDown extends View {
     }
 
     @Override
-    public void addView(View view) {
+    public void onAddView(View view) {
         view.setDeep(_deep + 10);
         _views.add(view);
         view.setParent(this);
@@ -57,9 +57,8 @@ public class UIDropDown extends View {
     }
 
     @Override
-    public void removeAllViews() {
-        super.removeAllViews();
-        _count = 0;
+    protected void onRemoveView(View view) {
+        _count = _views.size();
     }
 
     @Override

@@ -3,9 +3,11 @@ package org.smallbox.faraway.module.job;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
+import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.UIList;
@@ -14,11 +16,19 @@ import org.smallbox.faraway.ui.engine.views.widgets.UIList;
  * Created by Alex on 24/07/2016.
  */
 public class JobController extends LuaController {
-    @BindModule("")
+    @BindModule
     private JobModule jobs;
 
     @BindLua
     private UIList listJobs;
+
+    @BindLuaController
+    private MainPanelController _mainPanelController;
+
+    @Override
+    protected void onGameCreate(Game game) {
+        _mainPanelController.addShortcut("Jobs", () -> setVisible(true));
+    }
 
     @Override
     protected void onGameUpdate(Game game) {

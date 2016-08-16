@@ -1,7 +1,6 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.LuaPanelController;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
@@ -9,25 +8,23 @@ import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 
-import static com.sun.glass.ui.Cursor.setVisible;
-
 /**
  * Created by Alex on 26/04/2016.
  */
-public class ConsumableInfoController extends LuaPanelController {
+public class ConsumableInfoController extends LuaController {
     @BindLua private UILabel        lbName;
     @BindLua private UILabel        lbQuantity;
     @BindLua private UILabel        lbJob;
 
-    @BindModule("")
+    @BindModule
     private ConsumableModule _module;
 
-    @BindModule("")
+    @BindModule
     private WorldInteractionModule _worldInteraction;
     private ConsumableModel _consumable;
 
     @Override
-    public void gameStart(Game game) {
+    public void onGameStart(Game game) {
         _module.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onDeselectConsumable(ConsumableModel consumable) {

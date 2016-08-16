@@ -1,26 +1,24 @@
 package org.smallbox.faraway.module.item;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
-import org.smallbox.faraway.core.LuaPanelController;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 26/04/2016.
  */
-public class ItemInfoController extends LuaPanelController {
+public class ItemInfoController extends LuaController {
     @BindLua private UILabel        lbName;
 
     @BindLua private View           frameContent;
@@ -36,13 +34,13 @@ public class ItemInfoController extends LuaPanelController {
     @BindLua private UIList         listComponents;
     @BindLua private UIList         listFactoryInventory;
 
-    @BindModule("")
+    @BindModule
     private ItemModule _module;
 
     public ItemModel _item;
 
     @Override
-    public void gameStart(Game game) {
+    public void onGameStart(Game game) {
         _module.addObserver(new ItemModuleObserver() {
             @Override
             public void onDeselectItem(ItemModel item) {
@@ -59,7 +57,7 @@ public class ItemInfoController extends LuaPanelController {
     }
 
     @Override
-    public void gameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         if (_item != null) {
             refreshItem(_item);
         }
@@ -77,15 +75,19 @@ public class ItemInfoController extends LuaPanelController {
 
     private void refreshActions(ItemModel item) {
         listActions.clear();
-        item.getFactory().getCraftActions().entrySet().forEach(entry -> {
-            listActions.addView(createActionView(entry.getKey(), entry.getValue()));
-        });
+        if (item.getFactory() != null) {
+            item.getFactory().getCraftActions().entrySet().forEach(entry -> {
+                listActions.addView(createActionView(entry.getKey(), entry.getValue()));
+            });
+        }
 
         listFactoryInventory.clear();
-        item.getFactory().getInventory().forEach(consumableStack ->
-                listFactoryInventory.addView(UILabel.create(null)
-                        .setText(consumableStack.getItemInfo().label + " (" + consumableStack.getConsumables().size() + ")")
-                        .setSize(300, 22)));
+        if (item.getFactory() != null) {
+            item.getFactory().getInventory().forEach(consumableStack ->
+                    listFactoryInventory.addView(UILabel.create(null)
+                            .setText(consumableStack.getItemInfo().label + " (" + consumableStack.getConsumables().size() + ")")
+                            .setSize(300, 22)));
+        }
     }
 
     private View createActionView(ItemInfo.ItemInfoAction action, CraftJob job) {
@@ -123,9 +125,9 @@ public class ItemInfoController extends LuaPanelController {
         }
 
 //        if (job != null) {
-//            listActions.addView(UILabel.create(null).setDashedString(job.getLabel(), job.getProgressPercent() + "%", 42).setSize(300, 22));
+//            listActions.addRootView(UILabel.create(null).setDashedString(job.getLabel(), job.getProgressPercent() + "%", 42).setSize(300, 22));
 //        } else {
-//            listActions.addView();
+//            listActions.addRootView();
 //        }
 
         return frame;

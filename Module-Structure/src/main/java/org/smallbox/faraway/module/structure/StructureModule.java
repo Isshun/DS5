@@ -23,16 +23,16 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 public class StructureModule extends GameModule<StructureModuleObserver> {
-    @BindModule("")
+    @BindModule
     private PathManager _path;
 
-    @BindModule("base.module.world")
+    @BindModule
     private WorldModule _world;
 
-    @BindModule("base.module.jobs")
+    @BindModule
     private JobModule _jobs;
 
-    @BindModule("")
+    @BindModule
     private WorldInteractionModule _worldInteraction;
 
     private Collection<StructureModel> _structures;
@@ -43,8 +43,8 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     protected void onGameCreate(Game game) {
         _structures = new LinkedBlockingQueue<>();
 
-        game.addRender(new StructureBottomRenderer(this));
-        game.addRender(new StructureTopRenderer(this));
+        game.addRender(new StructureBottomRenderer());
+        game.addRender(new StructureTopRenderer());
         game.addSerializer(new StructureModuleSerializer(this, _world));
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
@@ -178,5 +178,15 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         BuildJob job = new BuildJob(structure);
         structure.setBuildJob(job);
         _jobs.addJob(job);
+    }
+
+    public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
+        // Create structure
+        StructureModel structure = new StructureModel(itemInfo);
+        structure.setBuildProgress(0);
+        structure.setParcel(parcel);
+        _structures.add(structure);
+
+        launchBuild(structure);
     }
 }
