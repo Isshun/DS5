@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.dev.controller.toolbox;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.Data;
@@ -11,9 +12,6 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
-import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.UIList;
 
@@ -41,14 +39,14 @@ public class DebugConsumableController extends LuaController {
                 .forEach(itemInfo -> listConsumables.addView(UILabel.create(null)
                         .setText(itemInfo.label)
                         .setSize(100, 22)
-                        .setOnClickListener(() -> {
+                        .setOnClickListener((GameEvent event) -> {
                             Log.info("select consumable: " + itemInfo.name);
                             _consumable = itemInfo;
                         })));
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
+            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 if (_consumable != null) {
                     Log.info("put consumable on map: " + _consumable.name);
                     parcels.forEach(parcel -> {

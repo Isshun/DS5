@@ -7,6 +7,7 @@ import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -340,7 +341,7 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue onClick = value.get("on_click");
             if (!onClick.isnil()) {
-                view.setOnClickListener(() -> {
+                view.setOnClickListener((GameEvent event) -> {
                     try {
                         if (onClick.isfunction()) {
                             onClick.call(luaView);

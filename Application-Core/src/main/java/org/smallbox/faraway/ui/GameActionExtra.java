@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
@@ -60,7 +61,7 @@ public class GameActionExtra {
 //    public int                      getMouseX() { return _keyMovePosX; }
 //    public int                      getMouseY() { return _keyMovePosY; }
 
-    public void onMoveEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
+    public void onMoveEvent(GameEvent event, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         _mouseEvent.consumed = false;
         _mouseEvent.x = x;
         _mouseEvent.y = y;
@@ -69,19 +70,25 @@ public class GameActionExtra {
 
         // Left click
         if (action == GameEventListener.Action.RELEASED) {
-            Application.getInstance().notify(obs -> obs.onMouseRelease(_mouseEvent));
+            if (!event.consumed) {
+                Application.getInstance().notify(obs -> obs.onMouseRelease(event));
+            }
 
-            if (!_mouseEvent.consumed && _mouseEvent.x < 1500) {
-                Application.getInstance().notify(obs -> obs.onClickOnMap(_mouseEvent));
+            if (!event.consumed && _mouseEvent.x < 1500) {
+                Application.getInstance().notify(obs -> obs.onClickOnMap(event));
             }
         }
 
         if (action == GameEventListener.Action.PRESSED) {
-            Application.getInstance().notify(obs -> obs.onMousePress(_mouseEvent));
+            if (!event.consumed) {
+                Application.getInstance().notify(obs -> obs.onMousePress(event));
+            }
         }
 
         if (action == GameEventListener.Action.MOVE) {
-            Application.getInstance().notify(observer -> observer.onMouseMove(_mouseEvent));
+            if (!event.consumed) {
+                Application.getInstance().notify(observer -> observer.onMouseMove(event));
+            }
         }
     }
 

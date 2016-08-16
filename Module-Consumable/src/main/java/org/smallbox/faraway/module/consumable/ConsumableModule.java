@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.consumable;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -67,7 +68,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             private ConsumableModel _currentConsumable;
 
             @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
+            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 _currentConsumable = null;
                 _consumables.stream()
                         .filter(consumable -> parcels.contains(consumable.getParcel()))

@@ -3,6 +3,7 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 import com.sun.istack.internal.NotNull;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -69,9 +70,9 @@ public abstract class View implements Comparable<View> {
         _focusable = focusable;
     }
 
-    public void click() {
+    public void click(GameEvent event) {
         assert _onClickListener != null;
-        _onClickListener.onClick();
+        _onClickListener.onClick(event);
 
         if (_parent != null && _parent instanceof UIDropDown) {
             ((UIDropDown)_parent).setCurrent(this);
@@ -309,25 +310,25 @@ public abstract class View implements Comparable<View> {
 
     // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
-        _onClickListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        _onClickListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
         UIEventManager.getInstance().setOnClickListener(this, _onClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnRightClickListener(LuaValue value) {
-        _onRightClickListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        _onRightClickListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
         UIEventManager.getInstance().setOnRightClickListener(this, _onRightClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelUpListener(LuaValue value) {
-        _onMouseWheelUpListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        _onMouseWheelUpListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
         UIEventManager.getInstance().setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelDownListener(LuaValue value) {
-        _onMouseWheelDownListener = () -> value.call(CoerceJavaToLua.coerce(this));
+        _onMouseWheelDownListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
         UIEventManager.getInstance().setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
     }
 
@@ -359,9 +360,9 @@ public abstract class View implements Comparable<View> {
         UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
     }
 
-    public void onClick() {
+    public void onClick(GameEvent event) {
         if (_onClickListener != null) {
-            _onClickListener.onClick();
+            _onClickListener.onClick(event);
         }
     }
 

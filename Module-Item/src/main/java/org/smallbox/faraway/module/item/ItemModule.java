@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.item;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -57,7 +58,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             public ItemModel _lastItem;
 
             @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
+            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 // Get item on parcel
                 ItemModel item = _items.stream()
                         .filter(i -> parcels.contains(i.getParcel()))
@@ -66,7 +67,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
                 // Call observers
                 if (item != null) {
-                    notifyObservers(obs -> obs.onSelectItem(item));
+                    notifyObservers(obs -> obs.onSelectItem(event, item));
                 } else if (_lastItem != null) {
                     notifyObservers(obs -> obs.onDeselectItem(_lastItem));
                 }

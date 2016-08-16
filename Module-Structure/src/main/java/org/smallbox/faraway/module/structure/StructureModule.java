@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.structure;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -51,7 +52,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
             public StructureModel _lastStructure;
 
             @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
+            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 // Get structure on parcel
                 StructureModel structure = _structures.stream()
                         .filter(s -> parcels.contains(s.getParcel()))

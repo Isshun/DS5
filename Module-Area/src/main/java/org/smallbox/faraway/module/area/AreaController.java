@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.area;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -38,13 +39,13 @@ public class AreaController extends LuaController {
 
     @Override
     protected void onGameCreate(Game game) {
-        _mainPanelController.addShortcut("Areas", () -> setVisible(true));
+        _mainPanelController.addShortcut("Areas", (GameEvent event) -> setVisible(true));
 
-        btAddStorage.setOnClickListener(() -> {
+        btAddStorage.setOnClickListener((GameEvent event) -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
         });
 
-        btRemoveStorage.setOnClickListener(() -> {
+        btRemoveStorage.setOnClickListener((GameEvent event) -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
         });
 
@@ -56,11 +57,11 @@ public class AreaController extends LuaController {
 //            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
 //        });
 
-        btAddHome.setOnClickListener(() -> {
+        btAddHome.setOnClickListener((GameEvent event) -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.HOME);
         });
 
-        btRemoveHome.setOnClickListener(() -> {
+        btRemoveHome.setOnClickListener((GameEvent event) -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.HOME);
         });
 
@@ -72,11 +73,11 @@ public class AreaController extends LuaController {
 //            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
 //        });
 
-        btAddGarden.setOnClickListener(() -> {
+        btAddGarden.setOnClickListener((GameEvent event) -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.GARDEN);
         });
 
-        btRemoveGarden.setOnClickListener(() -> {
+        btRemoveGarden.setOnClickListener((GameEvent event) -> {
             Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
         });
     }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.character.controller;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
@@ -37,10 +38,10 @@ public class CharacterController extends LuaController {
     protected void onGameCreate(Game game) {
         _characters.addObserver(new CharacterModuleObserver() {
             @Override
-            public void onSelectCharacter(CharacterModel character) {
-
+            public void onSelectCharacter(GameEvent event, CharacterModel character) {
                 setVisible(true);
                 select(character);
+                event.consume();
             }
         });
     }

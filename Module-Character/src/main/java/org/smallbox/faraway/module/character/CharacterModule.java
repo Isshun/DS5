@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.character;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -65,10 +66,10 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override
-            public void onSelect(Collection<ParcelModel> parcels) {
+            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 _characters.stream()
                         .filter(character -> parcels.contains(character.getParcel()))
-                        .forEach(character -> notifyObservers(obs -> obs.onSelectCharacter(character)));
+                        .forEach(character -> notifyObservers(obs -> obs.onSelectCharacter(event, character)));
             }
         });
     }
@@ -84,9 +85,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     }
 
     @Override
-    public boolean onKey(GameEventListener.Key key) {
+    public boolean onKey(GameEvent event, GameEventListener.Key key) {
         if (key == GameEventListener.Key.TAB) {
-            select(getNext(_controller.getSelected()));
+            select(event, getNext(_controller.getSelected()));
             return true;
         }
         return false;
@@ -254,7 +255,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         return false;
     }
 
-    public void select(CharacterModel character) {
-        notifyObservers(obs -> obs.onSelectCharacter(character));
+    public void select(GameEvent event, CharacterModel character) {
+        notifyObservers(obs -> obs.onSelectCharacter(event, character));
     }
 }

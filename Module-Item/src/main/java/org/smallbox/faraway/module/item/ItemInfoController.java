@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.item;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.game.BindLua;
@@ -49,9 +50,10 @@ public class ItemInfoController extends LuaController {
             }
 
             @Override
-            public void onSelectItem(ItemModel item) {
+            public void onSelectItem(GameEvent event, ItemModel item) {
                 setVisible(true);
                 refreshItem(item);
+                event.consume();
             }
         });
     }

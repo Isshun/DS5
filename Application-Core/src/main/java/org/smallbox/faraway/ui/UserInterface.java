@@ -2,6 +2,7 @@ package org.smallbox.faraway.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -123,41 +124,41 @@ public class UserInterface {
 
     public void onKeyEvent(Action action, Key key, Modifier modifier) {
         if (action == Action.RELEASED) {
-            if (checkKeyboard(key)) {
+            if (checkKeyboard(new GameEvent(key), key)) {
                 return;
             }
         }
     }
 
-    public boolean onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
+    public boolean onMouseEvent(GameEvent event, Action action, MouseButton button, int x, int y, boolean rightPressed) {
         for (ModuleBase module: ModuleManager.getInstance().getModules()) {
-            if (module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
+            if (!event.consumed && module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
                 return true;
             }
         }
 
-        if (action == Action.MOVE) {
+        if (!event.consumed && action == Action.MOVE) {
             UIEventManager.getInstance().onMouseMove(x, y);
             return false;
         }
 
-        if (action == Action.PRESSED && UIEventManager.getInstance().has(x, y)) {
+        if (!event.consumed && action == Action.PRESSED && UIEventManager.getInstance().has(x, y)) {
             return true;
         }
 
-        if (action == Action.RELEASED && button == MouseButton.LEFT && UIEventManager.getInstance().click(x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && UIEventManager.getInstance().click(event, x, y)) {
             return true;
         }
 
-        if (action == Action.RELEASED && button == MouseButton.RIGHT && UIEventManager.getInstance().rightClick(x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.RIGHT && UIEventManager.getInstance().rightClick(event, x, y)) {
             return true;
         }
 
-        if (action == Action.RELEASED && button == MouseButton.WHEEL_UP && UIEventManager.getInstance().mouseWheelUp(x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_UP && UIEventManager.getInstance().mouseWheelUp(event, x, y)) {
             return true;
         }
 
-        if (action == Action.RELEASED && button == MouseButton.WHEEL_DOWN && UIEventManager.getInstance().mouseWheelDown(x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_DOWN && UIEventManager.getInstance().mouseWheelDown(event, x, y)) {
             return true;
         }
 
@@ -202,9 +203,9 @@ public class UserInterface {
         _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }
 
-    public boolean checkKeyboard(Key key) {
+    public boolean checkKeyboard(GameEvent event, Key key) {
         for (ModuleBase module: ModuleManager.getInstance().getModules()) {
-            if (module.isLoaded() && module.onKey(key)) {
+            if (module.isLoaded() && module.onKey(event, key)) {
                 return true;
             }
         }

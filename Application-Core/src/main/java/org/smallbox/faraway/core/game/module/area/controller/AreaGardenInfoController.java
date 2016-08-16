@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.area.controller;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
@@ -28,7 +29,7 @@ public class AreaGardenInfoController extends LuaController {
             label.setText((garden.getCurrent() == itemInfo ? "[x] " : "[ ] ") + itemInfo.label);
             label.setTextSize(12);
             label.setPadding(5);
-            label.setOnClickListener(() -> {
+            label.setOnClickListener((GameEvent event) -> {
                 garden.setAccept(itemInfo, true);
             });
             listAcceptedPlant.addView(label);

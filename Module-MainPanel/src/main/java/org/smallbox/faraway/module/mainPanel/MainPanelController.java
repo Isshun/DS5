@@ -1,10 +1,10 @@
 package org.smallbox.faraway.module.mainPanel;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
-import org.smallbox.faraway.ui.MouseEvent;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
@@ -28,7 +28,7 @@ public class MainPanelController extends LuaController {
     }
 
     @Override
-    public void onClickOnMap(MouseEvent mouseEvent) {
+    public void onClickOnMap(GameEvent mouseEvent) {
         setVisible(true);
     }
 

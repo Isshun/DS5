@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -131,7 +132,7 @@ public class ApplicationShortcutManager {
                 .forEach(binding -> Application.getInstance().notify(observer -> observer.onBindingPress(binding)));
     }
 
-    public static boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
+    public static boolean onMouseEvent(GameEvent event, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         if (button == GameEventListener.MouseButton.RIGHT && action == GameEventListener.Action.PRESSED) {
             if (GameManager.getInstance().isLoaded()) {
                 GameManager.getInstance().getGame().getViewport().startMove(x, y);

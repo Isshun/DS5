@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.world;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -43,10 +44,10 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     }
 
     @Override
-    public void onMouseMove(MouseEvent event) {
+    public void onMouseMove(GameEvent event) {
         // right button pressed
         if (_keyRightPressed) {
-            Game.getInstance().getViewport().update(event.x, event.y);
+            Game.getInstance().getViewport().update(event.mouseEvent.x, event.mouseEvent.y);
             Log.debug("pos: %d x %d", Game.getInstance().getViewport().getPosX(), Game.getInstance().getViewport().getPosY());
 //            if (_menu != null && _menu.isVisible()) {
 //                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
@@ -61,7 +62,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 
         _world.addObserver(new WorldModuleObserver() {
             @Override
-            public void onMouseMove(MouseEvent event, int parcelX, int parcelY, int floor) {
+            public void onMouseMove(GameEvent event, int parcelX, int parcelY, int floor) {
                 _keyMovePosX = parcelX;
                 _keyMovePosY = parcelY;
 
@@ -79,7 +80,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
             }
 
             @Override
-            public void onMousePress(MouseEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
+            public void onMousePress(GameEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
                 if (button == GameEventListener.MouseButton.LEFT) {
                     _keyLeftPressed = true;
 
@@ -96,12 +97,12 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
             }
 
             @Override
-            public void onMouseRelease(MouseEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
+            public void onMouseRelease(GameEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {
                 if (button == GameEventListener.MouseButton.LEFT) {
                     if (_keyLeftPressed) {
                         _keyLeftPressed = false;
 
-                        if (onKeyLeft(_keyPressPosX, _keyPressPosY,
+                        if (!event.consumed && onKeyLeft(_keyPressPosX, _keyPressPosY,
                                 Math.min(_keyPressPosX, _keyMovePosX),
                                 Math.min(_keyPressPosY, _keyMovePosY),
                                 Math.max(_keyPressPosX, _keyMovePosX),
@@ -112,7 +113,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                         Game.getInstance().getSelector().clear();
 
                         // Check selection
-                        if (selectAt(
+                        if (!event.consumed && selectAt(event,
                                 _selection.getFromX(),
                                 _selection.getFromY(),
                                 _selection.getFromZ(),
@@ -123,9 +124,9 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                             return;
                         }
 
-                        // Select characters
-                        if (_action == GameActionExtra.Action.NONE) {
-                            if (selectAt(parcelX, parcelY, WorldHelper.getCurrentFloor())) {
+                        // Select parcel
+                        if (!event.consumed && _action == GameActionExtra.Action.NONE) {
+                            if (selectAt(parcelX, parcelY, floor)) {
                                 return;
                             }
                         }
@@ -162,10 +163,10 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 //        return false;
     }
 
-    public boolean selectAt(int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
+    public boolean selectAt(GameEvent event, int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
         Application.getInstance().notify(GameObserver::onDeselect);
 
-        notifyObservers(obs -> obs.onSelect(fromX, fromY, fromZ, toX, toY, toZ));
+        notifyObservers(obs -> obs.onSelect(event, fromX, fromY, fromZ, toX, toY, toZ));
 
         List<ParcelModel> parcels = new ArrayList<>();
         for (int x = fromX; x <= toX; x++) {
@@ -175,7 +176,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                 }
             }
         }
-        notifyObservers(obs -> obs.onSelect(parcels));
+        notifyObservers(obs -> obs.onSelect(event, parcels));
 
         return false;
     }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.ui.engine;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.ui.UserInterface;
@@ -8,7 +9,6 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.function.Predicate;
 
 public class UIEventManager {
     private static UIEventManager           _self;
@@ -76,7 +76,7 @@ public class UIEventManager {
         }
     }
 
-    public boolean click(int x, int y) {
+    public boolean click(GameEvent event, int x, int y) {
         View bestView = null;
         int bestDepth = -1;
         boolean gameRunning = GameManager.getInstance().isLoaded();
@@ -93,7 +93,7 @@ public class UIEventManager {
         }
 
         if (bestView != null) {
-            bestView.click();
+            bestView.click(event);
 //            _onClickListeners.get(bestView).onClick();
             return true;
         }
@@ -101,33 +101,33 @@ public class UIEventManager {
         return false;
     }
 
-    public boolean rightClick(int x, int y) {
+    public boolean rightClick(GameEvent event, int x, int y) {
         boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onRightClickListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onRightClickListeners.get(view).onClick();
+                _onRightClickListeners.get(view).onClick(event);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean mouseWheelUp(int x, int y) {
+    public boolean mouseWheelUp(GameEvent event, int x, int y) {
         boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onMouseWheelUpListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onMouseWheelUpListeners.get(view).onClick();
+                _onMouseWheelUpListeners.get(view).onClick(event);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean mouseWheelDown(int x, int y) {
+    public boolean mouseWheelDown(GameEvent event, int x, int y) {
         boolean gameRunning = GameManager.getInstance().isLoaded();
         for (View view: _onMouseWheelDownListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onMouseWheelDownListeners.get(view).onClick();
+                _onMouseWheelDownListeners.get(view).onClick(event);
                 return true;
             }
         }

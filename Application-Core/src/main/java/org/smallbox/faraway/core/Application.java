@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.ApplicationConfig;
@@ -10,6 +11,7 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.ui.MouseEvent;
 import org.smallbox.faraway.ui.UserInterface;
 
 import java.util.Collection;
@@ -62,13 +64,15 @@ public class Application implements GameEventListener {
 
     @Override
     public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
-        if (UserInterface.getInstance().onMouseEvent(action, button, x, y, rightPressed)) {
+        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
+
+        if (UserInterface.getInstance().onMouseEvent(event, action, button, x, y, rightPressed)) {
             return;
         }
 
         if (GameManager.getInstance().isLoaded()) {
-            GameManager.getInstance().getGame().getInteraction().onMoveEvent(action, button, x, y, rightPressed);
-            if (ApplicationShortcutManager.onMouseEvent(action, button, x, y, rightPressed)) {
+            GameManager.getInstance().getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
+            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
                 return;
             }
         }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.job;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
@@ -27,7 +28,7 @@ public class JobController extends LuaController {
 
     @Override
     protected void onGameCreate(Game game) {
-        _mainPanelController.addShortcut("Jobs", () -> setVisible(true));
+        _mainPanelController.addShortcut("Jobs", (GameEvent event) -> setVisible(true));
     }
 
     @Override

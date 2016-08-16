@@ -1,7 +1,9 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -16,7 +18,7 @@ public interface WorldModuleObserver extends ModuleObserver {
     default void onAddParcel(ParcelModel parcel) {}
     default void onOverParcel(ParcelModel parcel) {}
 
-    default void onMouseMove(MouseEvent event, int parcelX, int parcelY, int floor) {}
-    default void onMousePress(MouseEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {}
-    default void onMouseRelease(MouseEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {}
+    default void onMouseMove(GameEvent event, int parcelX, int parcelY, int floor) {}
+    default void onMousePress(GameEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {}
+    default void onMouseRelease(GameEvent event, int parcelX, int parcelY, int floor, GameEventListener.MouseButton button) {}
 }

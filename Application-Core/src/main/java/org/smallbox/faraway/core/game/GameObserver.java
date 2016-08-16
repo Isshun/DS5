@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
@@ -7,11 +8,9 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.ui.MouseEvent;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -58,9 +57,9 @@ public interface GameObserver {
     default void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {}
     default void removeObject(MapObjectModel mapObjectModel) {}
 
-    default void onMouseMove(MouseEvent event) {}
-    default void onMousePress(MouseEvent event) {}
-    default void onMouseRelease(MouseEvent event) {}
+    default void onMouseMove(GameEvent event) {}
+    default void onMousePress(GameEvent event) {}
+    default void onMouseRelease(GameEvent event) {}
 
-    default void onClickOnMap(MouseEvent mouseEvent) {}
+    default void onClickOnMap(GameEvent mouseEvent) {}
 }

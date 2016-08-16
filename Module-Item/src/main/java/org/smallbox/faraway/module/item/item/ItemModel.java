@@ -69,14 +69,16 @@ public class ItemModel extends BuildableMapObject {
     public void init() {
         initSlots();
 
-        _info.actions.stream()
-                .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.CRAFT)
-                .forEach(action -> {
-                    if (_factory == null) {
-                        _factory = new ItemFactoryModel(this);
-                    }
-                    _factory.addAction(action);
-                });
+        if (_info.actions != null) {
+            _info.actions.stream()
+                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.CRAFT)
+                    .forEach(action -> {
+                        if (_factory == null) {
+                            _factory = new ItemFactoryModel(this);
+                        }
+                        _factory.addAction(action);
+                    });
+        }
 
 //        // Initialize factory extra object
 //        if (_info.factory != null) {

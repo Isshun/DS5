@@ -1,12 +1,12 @@
 package org.smallbox.faraway.core.engine.module;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.engine.OnClickListener;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -75,7 +75,7 @@ public abstract class ModuleBase implements GameObserver {
 
     public void         setInfo(ModuleInfo info) { _info = info; }
 
-    public boolean onKey(GameEventListener.Key key) {
+    public boolean onKey(GameEvent event, GameEventListener.Key key) {
         return false;
     }
 

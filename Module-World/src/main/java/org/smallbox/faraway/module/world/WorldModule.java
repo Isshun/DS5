@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.world;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -16,7 +17,6 @@ import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.module.job.JobModule;
-import org.smallbox.faraway.ui.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -138,35 +138,35 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     }
 
     @Override
-    public void onMouseMove(MouseEvent event) {
+    public void onMouseMove(GameEvent event) {
         // TODO
-        if (!event.consumed && event.x < 1500) {
+        if (!event.consumed && event.mouseEvent.x < 1500) {
             notifyObservers(observer -> {
                 if (!event.consumed) {
-                    observer.onMouseMove(event, getRelativePosX(event.x), getRelativePosY(event.y), WorldHelper.getCurrentFloor());
+                    observer.onMouseMove(event, getRelativePosX(event.mouseEvent.x), getRelativePosY(event.mouseEvent.y), WorldHelper.getCurrentFloor());
                 }
             });
         }
     }
 
     @Override
-    public void onMousePress(MouseEvent event) {
+    public void onMousePress(GameEvent event) {
         // TODO
-        if (!event.consumed && event.x < 1500) {
+        if (!event.consumed && event.mouseEvent.x < 1500) {
             notifyObservers(observer -> {
                 if (!event.consumed) {
-                    observer.onMousePress(event, getRelativePosX(event.x), getRelativePosY(event.y), WorldHelper.getCurrentFloor(), event.button);
+                    observer.onMousePress(event, getRelativePosX(event.mouseEvent.x), getRelativePosY(event.mouseEvent.y), WorldHelper.getCurrentFloor(), event.mouseEvent.button);
                 }
             });
         }
     }
 
-    public void onMouseRelease(MouseEvent event) {
+    public void onMouseRelease(GameEvent event) {
         // TODO
-        if (!event.consumed && event.x < 1500) {
+        if (!event.consumed && event.mouseEvent.x < 1500) {
             notifyObservers(observer -> {
                 if (!event.consumed) {
-                    observer.onMouseRelease(event, getRelativePosX(event.x), getRelativePosY(event.y), WorldHelper.getCurrentFloor(), event.button);
+                    observer.onMouseRelease(event, getRelativePosX(event.mouseEvent.x), getRelativePosY(event.mouseEvent.y), WorldHelper.getCurrentFloor(), event.mouseEvent.button);
                 }
             });
         }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.character.controller;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -25,7 +26,7 @@ public class CrewController extends LuaController {
 
     @Override
     protected void onGameCreate(Game game) {
-        _mainPanelController.addShortcut("Crew", () -> setVisible(true));
+        _mainPanelController.addShortcut("Crew", (GameEvent event) -> setVisible(true));
     }
 
     @Override
@@ -35,8 +36,8 @@ public class CrewController extends LuaController {
             listCrew.addView(UILabel.create(null)
                     .setText(character.getName() + " " + (character.getJob() != null ? character.getJob().getLabel() : ""))
                     .setSize(300, 28)
-                    .setOnClickListener(() -> {
-                        _characters.select(character);
+                    .setOnClickListener((GameEvent event) -> {
+                        _characters.select(event, character);
                         setVisible(false);
                     }));
         });

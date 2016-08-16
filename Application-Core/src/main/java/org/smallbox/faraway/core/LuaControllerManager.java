@@ -2,7 +2,7 @@ package org.smallbox.faraway.core;
 
 import com.google.common.base.CaseFormat;
 import org.reflections.Reflections;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaAction;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -164,7 +164,7 @@ public class LuaControllerManager {
                 View view = rootView.findByAction(method.getName());
                 if (view != null) {
                     Log.info("LuaController: Bind method %s", method.getName());
-                    view.setOnClickListener(() -> {
+                    view.setOnClickListener((GameEvent event) -> {
                         try {
                             Log.info("Method: %s", method.getName());
                             Log.info("View: %s", view.getName());
