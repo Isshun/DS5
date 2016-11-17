@@ -17,6 +17,6 @@ dependencies {
     compile 'org.luaj:luaj-jse:3.0.1'
     compile 'org.reflections:reflections:0.9.10'
     compile 'org.json:json:20150729'
-    compile 'com.google.guava:guava:19.0'
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile 'net.sourceforge.cssparser:cssparser:0.9.19'
 }

@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.structure;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.BindManager;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.Game;
@@ -16,16 +17,13 @@ import org.smallbox.faraway.module.world.WorldModule;
 
 public class StructureTopRenderer extends BaseRenderer {
 
+    @BindManager
+    private SpriteManager   _spriteManager;
+
     @BindModule
     private StructureModule _structureModule;
 
-    protected SpriteManager _spriteManager;
     protected MapObjectModel    _itemSelected;
-
-    @Override
-    protected void onGameStart(Game game) {
-        _spriteManager = SpriteManager.getInstance();
-    }
 
     @Override
     public int getLevel() {
@@ -61,7 +59,7 @@ public class StructureTopRenderer extends BaseRenderer {
     }
 
     private Sprite getSprite(StructureModel structure) {
-        return SpriteManager.getInstance().getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
+        return _spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
     }
 
     @Override

@@ -161,7 +161,7 @@ public class GDXApplication extends ApplicationAdapter {
                     try {
                         while (_application.isRunning()) {
                             _application.update();
-                            Thread.sleep(16);
+                            Thread.sleep(1);
                         }
                         Log.info("Background world thread terminated");
                     } catch (Exception e) {

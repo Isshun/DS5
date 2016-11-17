@@ -29,7 +29,7 @@ public class Game {
 
     // Update
     private long                            _nextUpdate;
-    private int                             _tickInterval = TICK_INTERVALS[1];
+    private int                             _tickInterval = TICK_INTERVALS[4];
 
     // Render
     private int                             _frame;

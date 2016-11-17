@@ -1,7 +1,9 @@
 package org.smallbox.faraway.core;
 
+import org.smallbox.faraway.BindManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
@@ -38,8 +40,28 @@ public class DependencyInjector {
 
     private void injectDependencies(Object object) {
         Log.info("Inject dependency to: " + object.getClass().getName());
+        injectManagers(object);
         injectModules(object, ModuleManager.getInstance().getGameModules());
         injectControllers(object, LuaControllerManager.getInstance().getControllers());
+    }
+
+    private void injectManagers(Object object) {
+        for (Field field: object.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                BindManager bindManager = field.getAnnotation(BindManager.class);
+                if (bindManager != null) {
+                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), object.getClass().getSimpleName()));
+                    if (field.getType() == SpriteManager.class) {
+                        field.set(object, SpriteManager.getInstance());
+                    } else {
+                        Log.error("DependencyInjector: cannot find module: " + field.getType());
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                Log.error(e);
+            }
+        }
     }
 
     private void injectControllers(Object object, Map<String, LuaController> controllers) {

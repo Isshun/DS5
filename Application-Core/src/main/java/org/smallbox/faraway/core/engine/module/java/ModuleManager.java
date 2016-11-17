@@ -1,11 +1,13 @@
 package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
+import org.smallbox.faraway.SingletonApplicationModule;
 import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;

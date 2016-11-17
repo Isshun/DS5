@@ -15,9 +15,10 @@ public class AreaGardenInfoController extends LuaController {
     @BindLua private UIList             listAcceptedPlant;
 
     public void select(GardenAreaModel garden) {
+        setVisible(true);
+
         UserInterface.getInstance().findById("base.ui.panel_main").setVisible(false);
         UserInterface.getInstance().findById("base.ui.panel_areas").setVisible(false);
-        getView().setVisible(true);
 
         displayAcceptedItem(garden);
     }

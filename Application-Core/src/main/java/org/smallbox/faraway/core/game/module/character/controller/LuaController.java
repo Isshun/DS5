@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.module.character.controller;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
@@ -18,33 +17,12 @@ public abstract class LuaController implements GameObserver {
         }
 
         _rootView = rootView;
-
-//        if (rootView != null) {
-//            Log.info("Set view to controller (%s -> %s)", rootView.getName(), getClass().getName());
-//
-//            bindFields(rootView);
-//            bindSubControllers(rootView);
-//            bindMethods(rootView);
-//
-//            onCreate();
-//        }
     }
 
     public void setVisible(boolean visible) {
         if (getRootView() != null) {
             getRootView().setVisible(visible);
         }
-    }
-
-    protected boolean isVisible() {
-        if (getRootView() != null) {
-            return getRootView().isVisible();
-        }
-        return false;
-    }
-
-    protected View getView() {
-        return _rootView;
     }
 
     public final void gameCreate(Game game) { onGameCreate(game); }
@@ -55,7 +33,6 @@ public abstract class LuaController implements GameObserver {
     protected void onGameStart(Game game) {}
     protected void onGameUpdate(Game game) {}
 
-    public View getRootView() {
-        return _rootView;
-    }
+    public View getRootView() { return _rootView; }
+    public boolean isVisible() { return getRootView() != null && getRootView().isVisible(); }
 }
