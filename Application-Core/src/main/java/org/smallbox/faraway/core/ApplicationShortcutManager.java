@@ -42,7 +42,7 @@ public class ApplicationShortcutManager {
                 }
             }),
             new ApplicationShortcut(F5, NONE, () -> {
-                GameManager.getInstance().saveGame(Game.getInstance().getInfo(), GameInfo.Type.FAST);
+                Application.gameManager.saveGame(Game.getInstance().getInfo(), GameInfo.Type.FAST);
             }),
             new ApplicationShortcut(ENTER, ALT, () -> {
 //            _isFullscreen = !_isFullscreen;
@@ -96,7 +96,7 @@ public class ApplicationShortcutManager {
             new ApplicationShortcut(F12, NONE, () -> Data.getData().getBinding("base.binding.toggle_display_debug").action()),
 
             new ApplicationShortcut(ESCAPE, NONE , () -> {
-                if (GameManager.getInstance().isLoaded()) {
+                if (Application.gameManager.isLoaded()) {
                     if (!Game.getInstance().getInteraction().isClear()) {
                         Game.getInstance().getInteraction().clear();
                         return;
@@ -107,13 +107,13 @@ public class ApplicationShortcutManager {
                         return;
                     }
 
-                    if (!GameManager.getInstance().isRunning() && UserInterface.getInstance().findById("base.ui.menu_pause").isVisible()) {
-                        GameManager.getInstance().setRunning(true);
+                    if (!Application.gameManager.isRunning() && UserInterface.getInstance().findById("base.ui.menu_pause").isVisible()) {
+                        Application.gameManager.setRunning(true);
                         return;
                     }
 
-                    if (GameManager.getInstance().isRunning() && UserInterface.getInstance().findById("base.ui.panel_main").isVisible()) {
-                        GameManager.getInstance().setRunning(false);
+                    if (Application.gameManager.isRunning() && UserInterface.getInstance().findById("base.ui.panel_main").isVisible()) {
+                        Application.gameManager.setRunning(false);
                         return;
                     }
                 }
@@ -134,8 +134,8 @@ public class ApplicationShortcutManager {
 
     public static boolean onMouseEvent(GameEvent event, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         if (button == GameEventListener.MouseButton.RIGHT && action == GameEventListener.Action.PRESSED) {
-            if (GameManager.getInstance().isLoaded()) {
-                GameManager.getInstance().getGame().getViewport().startMove(x, y);
+            if (Application.gameManager.isLoaded()) {
+                Application.gameManager.getGame().getViewport().startMove(x, y);
             }
             return true;
         }

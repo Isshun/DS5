@@ -127,7 +127,7 @@ public class ItemInfoController extends LuaController {
         }
 
 //        if (job != null) {
-//            listActions.addRootView(UILabel.create(null).setDashedString(job.getLabel(), job.getProgressPercent() + "%", 42).setSize(300, 22));
+//            listActions.addRootView(UILabel.createGame(null).setDashedString(job.getLabel(), job.getProgressPercent() + "%", 42).setSize(300, 22));
 //        } else {
 //            listActions.addRootView();
 //        }

@@ -4,6 +4,8 @@ import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ModuleSerializer;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Log;
@@ -37,19 +39,40 @@ public class GameSaveManager {
             File dbFile = new File(gameDirectory, filename + ".db");
             SQLHelper.getInstance().openDB(dbFile);
 
-            game.getSerializers().forEach(serializer -> serializer.onLoad(game));
+
+            game.getModules().stream()
+                    .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
+                    .forEach(module -> {
+                        GameSerializer<GameModule> serializer = getSerializer(module);
+                        if (serializer != null) {
+                            serializer.load(module, game);
+                        } else {
+                            throw new RuntimeException("Unable to find serializer");
+                        }
+                    });
 
             SQLHelper.getInstance().closeDB();
 
             SQLHelper.getInstance().post(db -> {
                 listener.onSerializerComplete();
-                dbFile.delete();
+                // TODO
+//                dbFile.delete();
                 Log.info("Load onSave game: " + (System.currentTimeMillis() - time));
                 Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
             });
         } catch (IOException | ArchiveException e) {
             e.printStackTrace();
         }
+    }
+
+    private static GameSerializer<GameModule> getSerializer(GameModule module) {
+        Class<? extends GameSerializer> cls = module.getClass().getAnnotation(ModuleSerializer.class).value();
+        try {
+            return cls.newInstance();
+        } catch ( IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void save(Game game, File gameDirectory, String filename) {
@@ -60,7 +83,16 @@ public class GameSaveManager {
         File dbFile = new  File(gameDirectory, filename + ".db");
         SQLHelper.getInstance().openDB(dbFile);
 
-        game.getSerializers().forEach(serializer -> serializer.save(game));
+        game.getModules().stream()
+                .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
+                .forEach(module -> {
+                    GameSerializer<GameModule> serializer = getSerializer(module);
+                    if (serializer != null) {
+                        serializer.save(module, game);
+                    } else {
+                        throw new RuntimeException("Unable to find serializer");
+                    }
+                });
 
         SQLHelper.getInstance().closeDB();
         Log.notice("Create onSave game (" + (System.currentTimeMillis() - time) + "ms)");

@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.area;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Data;
@@ -16,15 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AreaSerializer extends GameSerializer {
-    private final AreaModule _areaModule;
-
-    public AreaSerializer(AreaModule areaModule) {
-        _areaModule = areaModule;
-    }
-
+public class AreaSerializer extends GameSerializer<AreaModule> {
     @Override
-    public void onSave(Game game) {
+    public void onSave(AreaModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
             try {
@@ -114,7 +109,7 @@ public class AreaSerializer extends GameSerializer {
         });
     }
 
-    public void onLoad(Game game) {
+    public void onLoad(AreaModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");
@@ -149,7 +144,7 @@ public class AreaSerializer extends GameSerializer {
                 AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
                 areaModule.init(storageAreas, gardenAreas);
             } catch (SQLiteException e) {
-                e.printStackTrace();
+                Application.logger.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());
             }
         });
     }

@@ -3,6 +3,7 @@ package org.smallbox.faraway.module.world;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@ModuleSerializer(WorldModuleSerializer.class)
 public class WorldModule extends GameModule<WorldModuleObserver> {
     @BindModule
     private JobModule _jobs;
@@ -46,7 +48,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 
         game.addRender(new WorldGroundRenderer(this));
         game.addRender(new WorldTopRenderer(this));
-        game.addSerializer(new WorldModuleSerializer(this));
     }
 
     @Override

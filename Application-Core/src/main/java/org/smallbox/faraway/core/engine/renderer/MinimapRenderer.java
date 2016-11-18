@@ -122,7 +122,7 @@ public class MinimapRenderer extends BaseRenderer {
     }
 
     private void createMap(int width, int height) {
-        if (GameManager.getInstance().isLoaded()) {
+        if (Application.gameManager.isLoaded()) {
         // TODO
 //            ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
 //            for (int x = 0; x < _width; x++) {

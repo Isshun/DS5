@@ -83,8 +83,8 @@ public class LuaApplicationModel {
     }
 
     public void setSpeed(int speed) {
-        if (GameManager.getInstance().isLoaded()) {
-            GameManager.getInstance().getGame().setSpeed(speed);
+        if (Application.gameManager.isLoaded()) {
+            Application.gameManager.getGame().setSpeed(speed);
         }
     }
 
@@ -103,11 +103,11 @@ public class LuaApplicationModel {
 
     public void stopGame() {
         this.game = null;
-        GameManager.getInstance().stopGame();
+        Application.gameManager.stopGame();
     }
 
     public void resumeGame() {
-        GameManager.getInstance().setRunning(true);
+        Application.gameManager.setRunning(true);
     }
 
     public void exit() {

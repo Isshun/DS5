@@ -156,7 +156,7 @@ public class ModuleManager {
         }
 
         _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
-        _applicationModules.forEach(module -> DependencyInjector.getInstance().register(module));
+        _applicationModules.forEach(Application.dependencyInjector::register);
         _applicationModules.forEach(ModuleBase::create);
     }
 
@@ -202,7 +202,7 @@ public class ModuleManager {
         }
 
         _gameModules.forEach(module -> Application.getInstance().addObserver(module));
-        _gameModules.forEach(module -> DependencyInjector.getInstance().register(module));
+        _gameModules.forEach(Application.dependencyInjector::register);
         _gameModules.forEach(ModuleBase::create);
     }
 

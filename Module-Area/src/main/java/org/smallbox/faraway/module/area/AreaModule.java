@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.area;
 
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
@@ -22,6 +23,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 13/06/2015.
  */
+@ModuleSerializer(AreaSerializer.class)
 public class AreaModule extends GameModule {
     @BindLuaController
     private AreaController              _controller;
@@ -60,7 +62,6 @@ public class AreaModule extends GameModule {
     @Override
     protected void onGameCreate(Game game) {
         game.addRender(new AreaRenderer(this));
-        game.addSerializer(new AreaSerializer(this));
 
         _consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override

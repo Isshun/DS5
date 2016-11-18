@@ -1,6 +1,7 @@
 package org.smallbox.faraway.ui.engine;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.ui.UserInterface;
@@ -79,7 +80,7 @@ public class UIEventManager {
     public boolean click(GameEvent event, int x, int y) {
         View bestView = null;
         int bestDepth = -1;
-        boolean gameRunning = GameManager.getInstance().isLoaded();
+        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onClickListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                 bestDepth = view.getDeep();
@@ -102,7 +103,7 @@ public class UIEventManager {
     }
 
     public boolean rightClick(GameEvent event, int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isLoaded();
+        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onRightClickListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onRightClickListeners.get(view).onClick(event);
@@ -113,7 +114,7 @@ public class UIEventManager {
     }
 
     public boolean mouseWheelUp(GameEvent event, int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isLoaded();
+        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onMouseWheelUpListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onMouseWheelUpListeners.get(view).onClick(event);
@@ -124,7 +125,7 @@ public class UIEventManager {
     }
 
     public boolean mouseWheelDown(GameEvent event, int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isLoaded();
+        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onMouseWheelDownListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onMouseWheelDownListeners.get(view).onClick(event);
@@ -135,7 +136,7 @@ public class UIEventManager {
     }
 
     public boolean keyRelease(GameEventListener.Key key) {
-        boolean gameRunning = GameManager.getInstance().isLoaded();
+        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onKeysListeners.keySet()) {
             if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && hasFocus(view)) {
                 _onKeysListeners.get(view).onKeyRelease(view, key);
@@ -150,7 +151,7 @@ public class UIEventManager {
     }
 
     public void onMouseMove(int x, int y) {
-        boolean gameRunning = GameManager.getInstance().isLoaded();
+        boolean gameRunning = Application.gameManager.isLoaded();
 
         UserInterface.getInstance().getViews().stream()
                 .filter(view -> view.isVisible() && view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view))

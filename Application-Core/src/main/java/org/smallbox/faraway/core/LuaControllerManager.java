@@ -59,7 +59,7 @@ public class LuaControllerManager {
         _controllers.values().forEach(controller -> Application.getInstance().addObserver(controller));
 
         // Register to DependencyInjector
-        _controllers.values().forEach(controller -> DependencyInjector.getInstance().register(controller));
+        _controllers.values().forEach(Application.dependencyInjector::register);
     }
 
 

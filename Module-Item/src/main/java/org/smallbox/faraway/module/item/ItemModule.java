@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -25,6 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 26/06/2015.
  */
+@ModuleSerializer(ItemModuleSerializer.class)
 public class ItemModule extends GameModule<ItemModuleObserver> {
     @BindModule
     private WorldModule _world;
@@ -49,7 +51,6 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.addSerializer(new ItemModuleSerializer(this, _world));
         game.addRender(new ItemRenderer());
 
         _items = new LinkedBlockingQueue<>();
@@ -125,7 +126,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     @Override
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isUserItem) {
-            ItemModel item = new ItemModel(itemInfo, parcel, data);
+            ItemModel item = new ItemModel(itemInfo, data);
+            item.setParcel(parcel);
             _items.add(item);
 
             notifyObservers(obs -> obs.onAddItem(parcel, item));
@@ -142,13 +144,10 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         }
     }
 
-    public void addItem(ParcelModel parcel, ItemInfo itemInfo) {
-        _items.add(new ItemModel(itemInfo, parcel));
-    }
-
     public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
         // Create item
-        ItemModel item = new ItemModel(itemInfo, parcel);
+        ItemModel item = new ItemModel(itemInfo);
+        item.setParcel(parcel);
         item.setBuildProgress(0);
         _items.add(item);
 
@@ -164,5 +163,13 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         BuildJob job = new BuildJob(item);
         item.setBuildJob(job);
         _jobs.addJob(job);
+    }
+
+    public void addItem(ItemModel item, int x, int y, int z) {
+        ParcelModel parcel = _world.getParcel(x, y, z);
+        if (parcel != null) {
+            item.setParcel(parcel);
+            _items.add(item);
+        }
     }
 }

@@ -44,7 +44,7 @@ public abstract class ModuleBase implements GameObserver {
     }
 
     public final void create() {
-        Log.info("[" + _info.name + "] create");
+        Log.info("[" + _info.name + "] createGame");
         onCreate();
     }
 

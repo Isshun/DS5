@@ -24,15 +24,13 @@ public class ItemModel extends BuildableMapObject {
     private int[]                           _storageSlot;
     private List<NetworkConnectionModel>    _networkConnections;
 
-    public ItemModel(ItemInfo info, ParcelModel parcel, int id) {
+    public ItemModel(ItemInfo info, int id) {
         super(info, id);
-        _parcel = parcel;
         init();
     }
 
-    public ItemModel(ItemInfo info, ParcelModel parcel) {
+    public ItemModel(ItemInfo info) {
         super(info);
-        _parcel = parcel;
         init();
     }
 

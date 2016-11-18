@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.consumable;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -15,20 +16,13 @@ import org.smallbox.faraway.module.world.WorldModule;
 /**
  * Created by Alex on 21/07/2016.
  */
-public class ConsumableSerializer extends GameSerializer {
-    private final ConsumableModule _consumableModule;
-    private final WorldModule _world;
-
-    public ConsumableSerializer(ConsumableModule consumableModule, WorldModule world) {
-        _consumableModule = consumableModule;
-        _world = world;
-    }
+public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
 
     @Override
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void onSave(Game game) {
+    public void onSave(ConsumableModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
@@ -36,7 +30,7 @@ public class ConsumableSerializer extends GameSerializer {
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (id, x, y, z, name, quantity) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    _consumableModule.getConsumables().forEach(consumable -> {
+                    module.getConsumables().forEach(consumable -> {
                         try {
                             if (consumable.getParcel() != null) {
                                 stItem.bind(1, consumable.getId());
@@ -62,25 +56,22 @@ public class ConsumableSerializer extends GameSerializer {
         });
     }
 
-    public void onLoad(Game game) {
+    public void onLoad(ConsumableModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, quantity FROM WorldModule_consumable");
                 try {
                     while (stItem.step()) {
-                        ParcelModel parcel = _world.getParcel(stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
-                        if (parcel != null) {
-                            ItemInfo itemInfo = Data.getData().getItemInfo(stItem.columnString(4));
-                            if (itemInfo != null) {
-                                _consumableModule.create(itemInfo, stItem.columnInt(5), parcel);
-                            }
+                        ItemInfo itemInfo = Data.getData().getItemInfo(stItem.columnString(4));
+                        if (itemInfo != null) {
+                            module.create(itemInfo, stItem.columnInt(5), stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                         }
                     }
                 } finally {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                Log.error(e);
+                Application.logger.warning("Unable to read WorldModule_consumable table: " + e.getMessage());
             }
         });
     }

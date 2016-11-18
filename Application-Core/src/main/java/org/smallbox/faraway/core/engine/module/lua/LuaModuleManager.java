@@ -296,7 +296,7 @@ public class LuaModuleManager {
         if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, null)) {
             return;
         }
-        if (GameManager.getInstance().isLoaded()) {
+        if (Application.gameManager.isLoaded()) {
             broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, null);
         }
     }
@@ -306,7 +306,7 @@ public class LuaModuleManager {
         if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, value)) {
             return;
         }
-        if (GameManager.getInstance().isLoaded()) {
+        if (Application.gameManager.isLoaded()) {
             broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, value);
         }
     }
@@ -318,7 +318,7 @@ public class LuaModuleManager {
         if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, value)) {
             return;
         }
-        if (GameManager.getInstance().isLoaded()) {
+        if (Application.gameManager.isLoaded()) {
             broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, value);
         }
     }

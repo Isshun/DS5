@@ -75,7 +75,7 @@ public class LuaUIExtend extends LuaExtend {
                             _finalX = getAlignedX() + _marginLeft + x;
                             _finalY = _y + _marginTop + y;
 
-                            if (GameManager.getInstance().isLoaded()) {
+                            if (Application.gameManager.isLoaded()) {
                                 MainRenderer.getInstance().getMinimapRender().draw(renderer, Game.getInstance().getViewport(), 0);
                             }
                         }

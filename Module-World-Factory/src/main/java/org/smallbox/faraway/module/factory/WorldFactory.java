@@ -1,36 +1,76 @@
-package org.smallbox.faraway.core.game.module.world.factory;
+package org.smallbox.faraway.module.factory;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.engine.module.ApplicationModule;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.IWorldFactory;
+import org.smallbox.faraway.module.job.JobModule;
+import org.smallbox.faraway.module.world.WorldModule;
 
 import java.util.*;
 
 /**
  * Created by Alex on 06/07/2015.
  */
-public class WorldFactory {
+public class WorldFactory extends GameModule implements IWorldFactory {
+
+    @BindModule
+    private WorldModule         _world;
+
     private ParcelModel[][][]   _parcels;
     private int                 _floors;
     private int                 _width;
     private int                 _height;
 
+    @Override
     public void create(Game game, RegionInfo regionInfo) {
-        throw new NotImplementedException("");
+        ItemInfo graniteInfo = Data.getData().getItemInfo("base.granite");
+        ItemInfo groundInfo = Data.getData().getItemInfo(regionInfo.terrains.get(0).ground);
+        List<ParcelModel> parcelList = new ArrayList<>();
 
-//        MathUtils.random.setSeed(42);
-//
-//        _floors = game.getInfo().worldFloors;
-//        _width = game.getInfo().worldWidth;
-//        _height = game.getInfo().worldHeight;
+        MathUtils.random.setSeed(42);
+
+        _floors = game.getInfo().worldFloors;
+        _width = game.getInfo().worldWidth;
+        _height = game.getInfo().worldHeight;
+        _parcels = new ParcelModel[_width][_height][_floors];
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
+                for (int f = 0; f < _floors; f++) {
+                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
+                    _parcels[x][y][f] = parcel;
+                    parcelList.add(parcel);
+                    if (f < _floors - 1) {
+                        _parcels[x][y][f].setRockInfo(graniteInfo);
+                    } else {
+                        _parcels[x][y][f].setGroundInfo(groundInfo);
+                    }
+                }
+            }
+        }
+
+        _world.init(game, _parcels, parcelList);
+
+//        WorldHelper.init(game.getInfo(), _parcels);
+
+//        ModuleHelper.getWorldModule().init(game, _parcels, parcelList);
+
+
+//        throw new NotImplementedException("");
+
 //        _parcels = new ParcelModel[_width][_height][_floors];
 //        List<ParcelModel> parcelList = new ArrayList<>();
 //        Map<Integer, List<ParcelModel>> parcelListFloors = new HashMap<>();

@@ -3,6 +3,7 @@ package org.smallbox.faraway.module.character;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
+import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@ModuleSerializer(CharacterModuleSerializer.class)
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindLuaController
     private CharacterController _controller;
@@ -55,6 +57,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         return true;
     }
 
+    public void addCharacter(CharacterModel character) { _characters.add(character); }
     public Collection<CharacterModel>     getCharacters() { return _characters; }
     public Collection<CharacterModel>     getVisitors() { return _visitors; }
     public int                            getCount() { return _count; }
@@ -62,7 +65,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @Override
     protected void onGameCreate(Game game) {
         game.addRender(new CharacterRenderer(this));
-        game.addSerializer(new CharacterModuleSerializer(this));
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override

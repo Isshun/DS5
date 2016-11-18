@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.game.module.world.factory;
+package org.smallbox.faraway.module.factory;
 
 /**
  * Created by Alex on 06/07/2015.

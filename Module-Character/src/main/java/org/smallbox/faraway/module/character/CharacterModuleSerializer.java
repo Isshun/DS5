@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.character;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -10,25 +11,20 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Constant;
 
-public class CharacterModuleSerializer extends GameSerializer {
-    private final CharacterModule _characterModule;
-
-    public CharacterModuleSerializer(CharacterModule characterModule) {
-        _characterModule = characterModule;
-    }
+public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
 
     @Override
     public int getModulePriority() { return Constant.MODULE_CHARACTER_PRIORITY; }
 
     @Override
-    public void onSave(Game game) {
+    public void onSave(CharacterModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 db.exec("CREATE TABLE characters (id INTEGER, x INTEGER, y INTEGER, z INTEGER, firstname TEXT, lastname TEXT)");
                 SQLiteStatement st = db.prepare("INSERT INTO characters (id, x, y, z, firstname, lastname) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    for (CharacterModel character: _characterModule.getCharacters()) {
+                    for (CharacterModel character: module.getCharacters()) {
                         st.bind(1, character.getId());
                         st.bind(2, character.getParcel().x);
                         st.bind(3, character.getParcel().y);
@@ -48,7 +44,7 @@ public class CharacterModuleSerializer extends GameSerializer {
         });
     }
 
-    public void onLoad(Game game) {
+    public void onLoad(CharacterModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement st = db.prepare("SELECT id, x, y, z, firstname, lastname FROM characters");
@@ -61,14 +57,13 @@ public class CharacterModuleSerializer extends GameSerializer {
                         String firstname = st.columnString(4);
                         String lastname =  st.columnString(5);
 
-                        CharacterModel character = new HumanModel(id, WorldHelper.getParcel(x, y, z), firstname, lastname, 10);
-                        _characterModule.getCharacters().add(character);
+                        module.addCharacter(new HumanModel(id, WorldHelper.getParcel(x, y, z), firstname, lastname, 10));
                     }
                 } finally {
                     st.dispose();
                 }
             } catch (SQLiteException e) {
-                e.printStackTrace();
+                Application.logger.warning("Unable to read characters table: " + e.getMessage());
             }
         });
     }

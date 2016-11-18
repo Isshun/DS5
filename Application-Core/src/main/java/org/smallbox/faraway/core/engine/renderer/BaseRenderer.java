@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.DependencyInjector;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -23,12 +24,12 @@ public abstract class BaseRenderer implements GameObserver {
 
     public BaseRenderer() {
         _isThirdParty = false;
-        DependencyInjector.getInstance().register(this);
+        Application.dependencyInjector.register(this);
     }
 
     public BaseRenderer(boolean isThirdParty) {
         _isThirdParty = isThirdParty;
-        DependencyInjector.getInstance().register(this);
+        Application.dependencyInjector.register(this);
     }
 
     public int getLevel() {

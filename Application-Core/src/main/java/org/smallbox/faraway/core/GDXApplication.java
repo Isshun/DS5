@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.module.path.PathManager;
@@ -129,7 +130,7 @@ public class GDXApplication extends ApplicationAdapter {
         _loadTasks.add(new LoadTask(this, "Calling dependency injector") {
             @Override
             public void onExecute() {
-                DependencyInjector.getInstance().injectDependencies();
+                Application.dependencyInjector.injectDependencies();
             }
         });
 
@@ -150,7 +151,8 @@ public class GDXApplication extends ApplicationAdapter {
 
                 //            UserInterface.getInstance().findById("base.ui.menu_main").setVisible(true);
                 Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            GameManager.getInstance().createGame(Data.getData().getRegion("base.planet.corrin", "mountain"));
+//            Application.gameManager.createGame(Data.getData().getRegion("base.planet.corrin", "mountain"));
+//                Application.gameManager.loadGame();
             }
         });
 
@@ -228,12 +230,12 @@ public class GDXApplication extends ApplicationAdapter {
         Viewport viewport = Game.getInstance() != null ? Game.getInstance().getViewport() : null;
 
         // Render game
-        if (GameManager.getInstance().isLoaded()) {
-            GameManager.getInstance().getGame().render(_renderer, viewport);
+        if (Application.gameManager.isLoaded()) {
+            Application.gameManager.getGame().render(_renderer, viewport);
         }
 
         // Render interface
-        UserInterface.getInstance().draw(_renderer, GameManager.getInstance().isLoaded());
+        UserInterface.getInstance().draw(_renderer, Application.gameManager.isLoaded());
 
         logger.log();
     }

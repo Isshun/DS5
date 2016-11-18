@@ -17,8 +17,19 @@ import org.smallbox.faraway.ui.UserInterface;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 public class Application implements GameEventListener {
+    public final static DependencyInjector      dependencyInjector;
+    public final static GameManager             gameManager;
+    public final static Logger                  logger;
+
+    static {
+        dependencyInjector = new DependencyInjector();
+        gameManager = dependencyInjector.create(GameManager.class);
+        logger = Logger.getAnonymousLogger();
+    }
+
     private static Application              _self;
     private boolean                         _isRunning = true;
     private GDXInputProcessor               _inputProcessor;
@@ -51,7 +62,7 @@ public class Application implements GameEventListener {
 
         UserInterface.getInstance().onKeyEvent(action, key, modifier);
 
-        if (GameManager.getInstance().isLoaded()) {
+        if (Application.gameManager.isLoaded()) {
             notify(observer -> observer.onKeyPress(key));
             notify(observer -> observer.onKeyEvent(action, key, modifier));
         }
@@ -70,8 +81,8 @@ public class Application implements GameEventListener {
             return;
         }
 
-        if (GameManager.getInstance().isLoaded()) {
-            GameManager.getInstance().getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
+        if (Application.gameManager.isLoaded()) {
+            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
             if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
                 return;
             }
@@ -81,8 +92,8 @@ public class Application implements GameEventListener {
     }
 
     public void update() {
-        if (GameManager.getInstance().isLoaded()) {
-            GameManager.getInstance().getGame().update();
+        if (Application.gameManager.isLoaded()) {
+            Application.gameManager.getGame().update();
         }
 
         // Reload data

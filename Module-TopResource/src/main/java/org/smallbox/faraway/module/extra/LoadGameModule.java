@@ -61,7 +61,7 @@ public class LoadGameModule extends ApplicationModule {
             _currentSave = (GameInfo.GameSaveInfo) object;
         }
         if ("load_game.onLoad".equals(tag) && _currentGame != null && _currentSave != null) {
-            GameManager.getInstance().loadGame(_currentGame, _currentSave);
+            Application.gameManager.loadGame(_currentGame, _currentSave);
         }
         if ("load_game.last_game".equals(tag)) {
             GameInfo gameInfo = null;
@@ -75,7 +75,7 @@ public class LoadGameModule extends ApplicationModule {
                 }
             }
             if (saveInfo != null) {
-                GameManager.getInstance().loadGame(gameInfo, saveInfo);
+                Application.gameManager.loadGame(gameInfo, saveInfo);
             }
         }
     }

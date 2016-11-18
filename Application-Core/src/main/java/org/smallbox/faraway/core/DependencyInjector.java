@@ -15,19 +15,23 @@ import java.util.*;
  * Created by Alex on 24/07/2016.
  */
 public class DependencyInjector {
-    private Set<Object> _objects = new HashSet<>();
+    private Set<Object> _objectPool = new HashSet<>();
     private static DependencyInjector _self;
     private boolean _init;
 
-    public static DependencyInjector getInstance() {
-        if (_self == null) {
-            _self = new DependencyInjector();
+    public <T> T create(Class<T> cls) {
+        try {
+            T object = cls.newInstance();
+            register(object);
+            return object;
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return _self;
+        return null;
     }
 
     public void register(Object object) {
-        _objects.add(object);
+        _objectPool.add(object);
         if (_init) {
             injectDependencies(object);
         }
@@ -35,7 +39,7 @@ public class DependencyInjector {
 
     public void injectDependencies() {
         _init = true;
-        _objects.forEach(this::injectDependencies);
+        _objectPool.forEach(this::injectDependencies);
     }
 
     private void injectDependencies(Object object) {

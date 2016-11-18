@@ -48,7 +48,7 @@ public class UseJob extends JobModel {
 
     public static UseJob create(CharacterModel character, ItemModel item) {
         if (character == null) {
-            Log.warning("Cannot create job with null character");
+            Log.warning("Cannot createGame job with null character");
             return null;
         }
 

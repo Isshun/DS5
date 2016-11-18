@@ -3,6 +3,7 @@ package org.smallbox.faraway.module.consumable;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
@@ -25,6 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 26/06/2015.
  */
+@ModuleSerializer(ConsumableSerializer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @BindModule
     private WorldModule _world;
@@ -49,7 +51,6 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.addSerializer(new ConsumableSerializer(this, _world));
         game.addRender(new ConsumableRenderer(this));
 
         _consumables = new LinkedBlockingQueue<>();
@@ -266,5 +267,12 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         _consumables.add(consumable);
 
         return consumable;
+    }
+
+    public void create(ItemInfo itemInfo, int quantity, int x, int y, int z) {
+        ParcelModel parcel = _world.getParcel(x, y, z);
+        if (parcel != null) {
+            create(itemInfo, quantity);
+        }
     }
 }

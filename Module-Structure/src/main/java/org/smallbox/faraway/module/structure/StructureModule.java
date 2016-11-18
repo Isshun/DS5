@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.structure;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -23,6 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 26/06/2015.
  */
+@ModuleSerializer(StructureModuleSerializer.class)
 public class StructureModule extends GameModule<StructureModuleObserver> {
     @BindModule
     private PathManager _path;
@@ -46,7 +48,6 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
 
         game.addRender(new StructureBottomRenderer());
         game.addRender(new StructureTopRenderer());
-        game.addSerializer(new StructureModuleSerializer(this, _world));
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             public StructureModel _lastStructure;
@@ -189,5 +190,13 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         _structures.add(structure);
 
         launchBuild(structure);
+    }
+
+    public void addStructure(StructureModel structure, int x, int y, int z) {
+        ParcelModel parcel = _world.getParcel(x, y, z);
+        if (parcel != null) {
+            structure.setParcel(parcel);
+            _structures.add(structure);
+        }
     }
 }

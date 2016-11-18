@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
-import org.smallbox.faraway.core.data.serializer.MainSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -22,8 +21,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 public class Game {
-    private Collection<GameSerializer> _serializers = new LinkedBlockingQueue<>();
-
     public enum GameModuleState {UNINITIALIZED, CREATED, STARTED}
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
 
@@ -131,8 +128,6 @@ public class Game {
     }
 
     public void start() {
-        addSerializer(new MainSerializer());
-
         // Notify modules, renders and controllers
         ModuleManager.getInstance().gameStart(this, _modules);
         MainRenderer.getInstance().gameStart(this, _renders, _miniMapRenderer);
@@ -198,7 +193,7 @@ public class Game {
 
     public void render(GDXRenderer renderer, Viewport viewport) {
         // Draw
-        if (!GameManager.getInstance().isRunning()) {
+        if (!Application.gameManager.isRunning()) {
             _animationProgress = 1 - ((double) (_nextUpdate - System.currentTimeMillis()) / _tickInterval);
         }
 
@@ -234,14 +229,7 @@ public class Game {
         Application.getInstance().notify(observer -> observer.onSpeedChange(speed));
     }
 
-    public Collection<GameSerializer> getSerializers() { return _serializers; }
     public void createControllers() { LuaControllerManager.getInstance().gameCreate(this); }
-
-    public void addSerializer(GameSerializer serializer) {
-        if (CollectionUtils.notContains(_serializers, serializer)) {
-            _serializers.add(serializer);
-        }
-    }
 
     public void addRender(BaseRenderer renderer) {
         if (CollectionUtils.notContains(_renders, renderer)) {

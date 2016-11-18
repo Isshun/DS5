@@ -31,6 +31,7 @@ include 'Module-Panel-Build'
 include 'Module-Structure'
 include 'Module-Weather'
 include 'Module-World'
+include 'Module-World-Factory'
 include 'Module-TopResource'
 
 

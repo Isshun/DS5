@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.item;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -16,20 +17,13 @@ import org.smallbox.faraway.module.world.WorldModule;
 /**
  * Created by Alex on 21/07/2016.
  */
-public class ItemModuleSerializer extends GameSerializer {
-    private final ItemModule _itemModule;
-    private final WorldModule _world;
-
-    public ItemModuleSerializer(ItemModule itemModule, WorldModule world) {
-        _itemModule = itemModule;
-        _world = world;
-    }
+public class ItemModuleSerializer extends GameSerializer<ItemModule> {
 
     @Override
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void onSave(Game game) {
+    public void onSave(ItemModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_item (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
@@ -37,7 +31,7 @@ public class ItemModuleSerializer extends GameSerializer {
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    _itemModule.getItems().forEach(item -> {
+                    module.getItems().forEach(item -> {
                         try {
                             if (item.getParcel() != null) {
                                 stItem.bind(1, item.getId());
@@ -63,28 +57,24 @@ public class ItemModuleSerializer extends GameSerializer {
         });
     }
 
-    public void onLoad(Game game) {
+    public void onLoad(ItemModule module, Game game) {
         SQLHelper.getInstance().post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress FROM WorldModule_item");
                 try {
                     while (stItem.step()) {
-                        ParcelModel parcel = _world.getParcel(stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
-                        if (parcel != null) {
-                            ItemInfo itemInfo = Data.getData().getItemInfo(stItem.columnString(4));
-                            if (itemInfo != null) {
-                                ItemModel item = new ItemModel(itemInfo, parcel, stItem.columnInt(0));
-                                item.setBuildProgress(stItem.columnInt(5));
-                                item.setParcel(parcel);
-                                _itemModule.getItems().add(item);
-                            }
+                        ItemInfo itemInfo = Data.getData().getItemInfo(stItem.columnString(4));
+                        if (itemInfo != null) {
+                            ItemModel item = new ItemModel(itemInfo, stItem.columnInt(0));
+                            item.setBuildProgress(stItem.columnInt(5));
+                            module.addItem(item, stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                         }
                     }
                 } finally {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                Log.error(e);
+                Application.logger.warning("Unable to read WorldModule_item table: " + e.getMessage());
             }
         });
     }
