@@ -1,14 +1,17 @@
 package org.smallbox.faraway.core.engine.renderer;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.DependencyInjector;
+import org.smallbox.faraway.core.ModuleRenderer;
+import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
-public abstract class BaseRenderer implements GameObserver {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class BaseRenderer<T> implements GameObserver {
     private final boolean       _isThirdParty;
     private long                _totalTime;
     private int                 _nbDraw;
@@ -36,7 +39,6 @@ public abstract class BaseRenderer implements GameObserver {
         return 0;
     }
 
-    protected void onGameStart(Game game) {}
     protected void onGameUpdate() {}
     protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {}
     protected void onRefresh(int frame) {}
@@ -54,13 +56,6 @@ public abstract class BaseRenderer implements GameObserver {
 
         _totalTime += (System.currentTimeMillis() - time);
         _nbDraw++;
-    }
-
-    protected boolean parcelInViewport(ParcelModel parcel) {
-        return parcel != null
-                && parcel.z == _floor
-                && parcel.x >= _fromX && parcel.x <= _toX
-                && parcel.y >= _fromY && parcel.y <= _toY;
     }
 
     public void dump() {
@@ -100,5 +95,17 @@ public abstract class BaseRenderer implements GameObserver {
     @Override
     public void onFloorChange(int floor) {
         _floor = floor;
+    }
+
+    public static List<BaseRenderer<GameModule>> createRenderer(GameModule module) {
+        List<BaseRenderer<GameModule>> rendererList = new ArrayList<>();
+        try {
+            for (Class<? extends BaseRenderer> cls: module.getClass().getAnnotation(ModuleRenderer.class).value()) {
+                rendererList.add(cls.newInstance());
+            }
+        } catch ( IllegalAccessException | InstantiationException e) {
+            Log.error(e);
+        }
+        return rendererList;
     }
 }

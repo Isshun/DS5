@@ -1,32 +1,32 @@
 package org.smallbox.faraway.module.world;
 
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.BindManager;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 
 public class WorldTopRenderer extends BaseRenderer {
-    private final WorldModule _worldModule;
-    protected SpriteManager _spriteManager;
+
+    @BindModule
+    private WorldModule         _worldModule;
+
+    @BindManager
+    protected SpriteManager     _spriteManager;
+
     protected MapObjectModel    _itemSelected;
     private int                 _floor;
     private int                 _width;
     private int                 _height;
 
-    public WorldTopRenderer(WorldModule worldModule) {
-        _worldModule = worldModule;
-    }
-
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
-        _spriteManager = SpriteManager.getInstance();
     }
 
     @Override

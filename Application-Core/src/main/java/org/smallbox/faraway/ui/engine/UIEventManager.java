@@ -3,12 +3,11 @@ package org.smallbox.faraway.ui.engine;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UIEventManager {
@@ -153,7 +152,7 @@ public class UIEventManager {
     public void onMouseMove(int x, int y) {
         boolean gameRunning = Application.gameManager.isLoaded();
 
-        UserInterface.getInstance().getViews().stream()
+        Application.uiManager.getViews().stream()
                 .filter(view -> view.isVisible() && view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view))
                 .forEach(view -> {
                     if (hasVisibleHierarchy(view) && view.contains(x, y)) {

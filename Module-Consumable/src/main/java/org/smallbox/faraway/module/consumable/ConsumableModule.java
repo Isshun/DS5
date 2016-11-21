@@ -3,6 +3,7 @@ package org.smallbox.faraway.module.consumable;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -10,15 +11,14 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.module.world.WorldInteractionModule;
-import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.core.game.module.world.model.*;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.structure.StructureModuleObserver;
+import org.smallbox.faraway.module.world.WorldInteractionModule;
+import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.module.world.WorldModuleObserver;
 
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -27,6 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 @ModuleSerializer(ConsumableSerializer.class)
+@ModuleRenderer(ConsumableRenderer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @BindModule
     private WorldModule _world;
@@ -51,8 +52,6 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.addRender(new ConsumableRenderer(this));
-
         _consumables = new LinkedBlockingQueue<>();
 
         _structureModel.addObserver(new StructureModuleObserver() {
@@ -116,7 +115,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = PathManager.getInstance().getPath(fromParcel, mapObject.getParcel(), false, false);
+                PathModel path = Application.pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {
@@ -127,7 +126,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + Application.getInstance().getConfig().game.maxNearDistance) {
+            if (entry.getValue() <= bestDistance + Application.configurationManager.game.maxNearDistance) {
                 return entry.getKey();
             }
         }
@@ -228,7 +227,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
-    private ConsumableModel putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+    public ConsumableModel putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
         ConsumableModel consumable = null;
         if (parcel != null && quantity > 0) {
             final ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, itemInfo, quantity);

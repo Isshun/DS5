@@ -1,12 +1,12 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -88,7 +88,7 @@ public class HaulJob extends JobModel {
 //        ModuleHelper.getWorldModule().getConsumables().stream()
 //                .filter(consumable -> consumable.getInfo() == _component.info)
 //                .forEach(consumable -> {
-//                    PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
+//                    PathModel path = Application.pathManager.getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
 //                    _potentialConsumables.addSubJob(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
 //                });
 //        Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
@@ -100,7 +100,7 @@ public class HaulJob extends JobModel {
 
     public void addPotentialConsumable(ConsumableModel consumable) {
         if (consumable.getInfo() == _component.info) {
-            PathModel path = PathManager.getInstance().getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
+            PathModel path = Application.pathManager.getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
             _potentialConsumables.add(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
             Collections.sort(_potentialConsumables, (c1, c2) -> c1.distance - c2.distance);
         }
@@ -136,7 +136,7 @@ public class HaulJob extends JobModel {
         }
 
 //        // Check if path exist
-//        if (!PathManager.getInstance().hasPath(character.getParcel(), _buildItem.getParcel(), true, true)) {
+//        if (!Application.pathManager.hasPath(character.getParcel(), _buildItem.getParcel(), true, true)) {
 //            return JobCheckReturn.STAND_BY;
 //        }
 //
@@ -147,12 +147,12 @@ public class HaulJob extends JobModel {
 //        }
 //
 //        for (PotentialConsumable potentialConsumable: _potentialConsumables) {
-//            if (potentialConsumable.consumable.getJob() == null && PathManager.getInstance().hasPath(character.getParcel(), potentialConsumable.consumable.getParcel())) {
+//            if (potentialConsumable.consumable.getJob() == null && Application.pathManager.hasPath(character.getParcel(), potentialConsumable.consumable.getParcel())) {
 //                return JobCheckReturn.OK;
 //            }
 //        }
 
-        if (_consumable != null && (_consumable.getJob() == null || _consumable.getJob() == this) && PathManager.getInstance().hasPath(character.getParcel(), _consumable.getParcel())) {
+        if (_consumable != null && (_consumable.getJob() == null || _consumable.getJob() == this) && Application.pathManager.hasPath(character.getParcel(), _consumable.getParcel())) {
             return JobCheckReturn.OK;
         }
 
@@ -309,7 +309,7 @@ public class HaulJob extends JobModel {
             return false;
         }
 
-        // Character has enough item to complete job
+        // Character has enough item to state job
         if (_character.getInventoryQuantity() >= (_component.neededQuantity - _component.currentQuantity)) {
             return false;
         }
@@ -320,7 +320,7 @@ public class HaulJob extends JobModel {
         }
 
         for (PotentialConsumable potentialConsumable: _potentialConsumables) {
-            if (PathManager.getInstance().hasPath(_character.getParcel(), potentialConsumable.consumable.getParcel(), true, false)) {
+            if (Application.pathManager.hasPath(_character.getParcel(), potentialConsumable.consumable.getParcel(), true, false)) {
                 _currentConsumable = potentialConsumable.consumable;
                 moveToComponent(potentialConsumable.consumable);
                 return true;

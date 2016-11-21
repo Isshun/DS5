@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
@@ -102,8 +101,8 @@ public class StoreJob extends JobModel implements GameObserver {
                 if (consumable != null && consumable != firstConsumable
                         && consumable.getJob() == null
                         && consumable.getInfo() == firstConsumable.getInfo()
-                        && consumable.getQuantity() + _quantity <= Application.getInstance().getConfig().game.inventoryMaxQuantity
-                        && PathManager.getInstance().hasPath(consumable.getParcel(), firstConsumable.getParcel())) {
+                        && consumable.getQuantity() + _quantity <= Application.configurationManager.game.inventoryMaxQuantity
+                        && Application.pathManager.hasPath(consumable.getParcel(), firstConsumable.getParcel())) {
                     _quantity += consumable.getQuantity();
                     _consumables.add(consumable);
                     consumable.addJob(this);
@@ -269,13 +268,13 @@ public class StoreJob extends JobModel implements GameObserver {
         }
 
         // No path from consumable to storage
-        if (!PathManager.getInstance().hasPath(_targetParcel, _jobParcel)) {
+        if (!Application.pathManager.hasPath(_targetParcel, _jobParcel)) {
             _message = "No path to storage";
             return JobCheckReturn.ABORT;
         }
 
         // No path from character to consumable
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _targetParcel)) {
+        if (!Application.pathManager.hasPath(character.getParcel(), _targetParcel)) {
             _message = "No path to consumable";
             return JobCheckReturn.STAND_BY;
         }

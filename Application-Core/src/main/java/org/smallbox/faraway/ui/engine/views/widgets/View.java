@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.engine.module.lua.data.extend.FadeEffect;
 import org.smallbox.faraway.core.engine.module.lua.data.extend.RotateAnimation;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
@@ -165,7 +164,7 @@ public abstract class View implements Comparable<View> {
     public void         setVisible(boolean visible) {
         if (visible && _group != null) {
             // Set visible false for other views sharing current view's group
-            UserInterface.getInstance().getViews().stream()
+            Application.uiManager.getViews().stream()
                     .filter(view -> _group.equals(view.getGroup()))
                     .forEach(view -> view.setVisible(false));
         }
@@ -250,7 +249,7 @@ public abstract class View implements Comparable<View> {
     }
 
     public final void addView(View view) {
-        UserInterface.getInstance().addView(view);
+        Application.uiManager.addView(view);
 
         onAddView(view);
     }
@@ -259,7 +258,7 @@ public abstract class View implements Comparable<View> {
 
     public final void removeAllViews() {
         _views.forEach(view -> {
-            UserInterface.getInstance().removeView(view);
+            Application.uiManager.removeView(view);
             UIEventManager.getInstance().removeListeners(view);
             view.removeAllViews();
             onRemoveView(view);
@@ -274,10 +273,10 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setMargin(int top, int right, int bottom, int left) {
-        _marginTop = (int) (top * Application.getInstance().getConfig().uiScale);
-        _marginRight = (int) (right * Application.getInstance().getConfig().uiScale);
-        _marginBottom = (int) (bottom * Application.getInstance().getConfig().uiScale);
-        _marginLeft = (int) (left * Application.getInstance().getConfig().uiScale);
+        _marginTop = (int) (top * Application.configurationManager.uiScale);
+        _marginRight = (int) (right * Application.configurationManager.uiScale);
+        _marginBottom = (int) (bottom * Application.configurationManager.uiScale);
+        _marginLeft = (int) (left * Application.configurationManager.uiScale);
     }
 
     public UIAdapter getAdapter() {
@@ -367,43 +366,43 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = (int) (t * Application.getInstance().getConfig().uiScale);
-        _paddingRight = (int) (r * Application.getInstance().getConfig().uiScale);
-        _paddingBottom = (int) (b * Application.getInstance().getConfig().uiScale);
-        _paddingLeft = (int) (l * Application.getInstance().getConfig().uiScale);
+        _paddingTop = (int) (t * Application.configurationManager.uiScale);
+        _paddingRight = (int) (r * Application.configurationManager.uiScale);
+        _paddingBottom = (int) (b * Application.configurationManager.uiScale);
+        _paddingLeft = (int) (l * Application.configurationManager.uiScale);
     }
 
     public void setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = (int) (t * Application.getInstance().getConfig().uiScale);
-        _paddingRight = _paddingLeft = (int) (r * Application.getInstance().getConfig().uiScale);
+        _paddingTop = _paddingBottom = (int) (t * Application.configurationManager.uiScale);
+        _paddingRight = _paddingLeft = (int) (r * Application.configurationManager.uiScale);
     }
 
     public View setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.getInstance().getConfig().uiScale);
+        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.configurationManager.uiScale);
         return this;
     }
 
     public View setFixedSize(int width, int height) {
-        _fixedWidth = (int) (width * Application.getInstance().getConfig().uiScale);
-        _fixedHeight = (int) (height * Application.getInstance().getConfig().uiScale);
+        _fixedWidth = (int) (width * Application.configurationManager.uiScale);
+        _fixedHeight = (int) (height * Application.configurationManager.uiScale);
         return this;
     }
 
     public View setSize(int width, int height) {
-        _width = (int) (width * Application.getInstance().getConfig().uiScale);
-        _height = (int) (height * Application.getInstance().getConfig().uiScale);
+        _width = (int) (width * Application.configurationManager.uiScale);
+        _height = (int) (height * Application.configurationManager.uiScale);
         _originWidth = width;
         _originHeight = height;
         return this;
     }
 
     public View setPosition(int x, int y) {
-//        x = (int) (x * Application.getInstance().getConfig().uiScale);
-//        y = (int) (y * Application.getInstance().getConfig().uiScale);
-//        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.getInstance().getConfig().screen.resolution[0] - x;
-//        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.getInstance().getConfig().screen.resolution[1] - y;
-        _x = (int) (x * Application.getInstance().getConfig().uiScale);
-        _y = (int) (y * Application.getInstance().getConfig().uiScale);
+//        x = (int) (x * Application.configurationManager.uiScale);
+//        y = (int) (y * Application.configurationManager.uiScale);
+//        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.configurationManager.screen.resolution[0] - x;
+//        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.configurationManager.screen.resolution[1] - y;
+        _x = (int) (x * Application.configurationManager.uiScale);
+        _y = (int) (y * Application.configurationManager.uiScale);
 
         return this;
     }

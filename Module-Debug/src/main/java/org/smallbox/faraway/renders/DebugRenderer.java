@@ -8,7 +8,7 @@
 //import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.smallbox.faraway.core.util.Constant;
-//import org.smallbox.faraway.ui.UserInterface;
+//import org.smallbox.faraway.ui.UIManager;
 //import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 //import org.smallbox.faraway.ui.engine.views.widgets.View;
 //
@@ -38,8 +38,8 @@
 //    }
 //
 //    @Override
-//    public boolean isActive(GameConfig config) {
-//        return config.render.debug;
+//    public boolean isActive(GameConfig configurationManager) {
+//        return configurationManager.render.debug;
 //    }
 //
 //    @Override
@@ -51,8 +51,8 @@
 //        lbDebug.setSize(32, 32);
 //        lbDebug.setTextAlign(View.Align.CENTER);
 //
-////        int relX = UserInterface.getInstance().getMouseX();
-////        int relY = UserInterface.getInstance().getMouseY();
+////        int relX = Application.uiManager.getMouseX();
+////        int relY = Application.uiManager.getMouseY();
 //
 //        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
 //            if (parcel.z == 0) {

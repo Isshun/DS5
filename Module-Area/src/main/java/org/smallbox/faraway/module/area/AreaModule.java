@@ -1,6 +1,8 @@
 package org.smallbox.faraway.module.area;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -9,7 +11,6 @@ import org.smallbox.faraway.core.game.helper.JobHelper;
 import org.smallbox.faraway.core.game.module.area.controller.AreaGardenInfoController;
 import org.smallbox.faraway.core.game.module.area.model.*;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
@@ -17,28 +18,31 @@ import org.smallbox.faraway.module.consumable.ConsumableModuleObserver;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.world.WorldModule;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Alex on 13/06/2015.
  */
 @ModuleSerializer(AreaSerializer.class)
+@ModuleRenderer(AreaRenderer.class)
 public class AreaModule extends GameModule {
-    @BindLuaController
-    private AreaController              _controller;
 
     @BindLuaController
-    private AreaGardenInfoController    _gardenInfo;
+    private AreaController areaController;
+
+    @BindLuaController
+    private AreaGardenInfoController areaGardenInfoController;
 
     @BindModule
-    private ConsumableModule _consumableModule;
+    private ConsumableModule consumableModule;
 
     @BindModule
-    private JobModule _jobs;
+    private JobModule jobModule;
 
     @BindModule
-    private WorldModule _world;
+    private WorldModule worldModule;
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
     private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
@@ -52,7 +56,7 @@ public class AreaModule extends GameModule {
     public boolean onSelectParcel(ParcelModel parcel) {
         for (GardenAreaModel garden: _gardens) {
             if (garden.contains(parcel.x, parcel.y, parcel.z)) {
-                _gardenInfo.select(garden);
+                areaGardenInfoController.select(garden);
                 return true;
             }
         }
@@ -61,9 +65,7 @@ public class AreaModule extends GameModule {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.addRender(new AreaRenderer(this));
-
-        _consumableModule.addObserver(new ConsumableModuleObserver() {
+        consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {
                 if (consumable.getJob() == null) {
@@ -76,8 +78,8 @@ public class AreaModule extends GameModule {
     @Override
     protected void onGameUpdate(Game game, int tick) {
         // Create store jobs
-//        _jobs.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
-        _consumableModule.getConsumables().stream()
+//        jobModule.stream().filter(job -> job instanceof JobHaul).forEach(job -> ((JobHaul)job).foundConsumablesAround());
+        consumableModule.getConsumables().stream()
                 .filter(consumable -> consumable.getJob() == null)
                 .forEach(this::storeConsumable);
     }
@@ -100,7 +102,7 @@ public class AreaModule extends GameModule {
 //        StorageAreaModel bestStorage = getBestStorage(consumable);
 //        if (bestStorage != null && consumable.getStorage() != bestStorage) {
 //            Log.info("Consumable have to move in best storage (" + consumable.getInfo().label + " -> " + bestStorage.getName() + ")");
-//            _jobs.addJob(StoreJob.create(consumable, bestStorage));
+//            jobModule.addJob(StoreJob.create(consumable, bestStorage));
 //            return;
 //        }
 //
@@ -113,7 +115,7 @@ public class AreaModule extends GameModule {
 //            Log.debug("Consumable in wrong storage (" + consumable.getInfo().label + ")");
 //            ParcelModel parcel = WorldHelper.getNearestFreeParcel(consumable.getParcel(), consumable.getInfo(), consumable.getQuantity());
 //            if (parcel != null) {
-//                _jobs.addJob(StoreJob.create(consumable, parcel));
+//                jobModule.addJob(StoreJob.create(consumable, parcel));
 //            }
 //        }
     }
@@ -131,7 +133,7 @@ public class AreaModule extends GameModule {
                 // Consumable is not in storage area
                 else {
                     if (storage.hasFreeSpace(consumable.getInfo(), consumable.getQuantity())) {
-                        PathModel path = PathManager.getInstance().getPath(consumable.getParcel(), storage.getBaseParcel(), false, false);
+                        PathModel path = Application.pathManager.getPath(consumable.getParcel(), storage.getBaseParcel(), false, false);
                         if (path != null && path.getLength() < bestDistance) {
                             bestStorage = storage;
                             bestDistance = path.getLength();
@@ -172,7 +174,7 @@ public class AreaModule extends GameModule {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {
                     if (area.getType() == type && area.getFloor() == z && area.contains(x, y, z)) {
-                        ParcelModel parcel = _world.getParcel(x, y, z);
+                        ParcelModel parcel = worldModule.getParcel(x, y, z);
                         parcel.setArea(null);
                         area.removeParcel(parcel);
                     }
@@ -189,8 +191,8 @@ public class AreaModule extends GameModule {
     @Override
     public void onStorageRulesChanged(StorageAreaModel storage) {
         // Reset not running store job
-        if (_consumableModule.getConsumables() != null) {
-            _consumableModule.getConsumables().stream()
+        if (consumableModule.getConsumables() != null) {
+            consumableModule.getConsumables().stream()
                     .filter(consumable -> consumable.getJob() != null && consumable.getJob() instanceof StoreJob && consumable.getJob().getCharacter() == null)
                     .forEach(this::storeConsumable);
         }
@@ -208,7 +210,7 @@ public class AreaModule extends GameModule {
     private void addParcelToArea(AreaModel area, int fromX, int fromY, int toX, int toY, int z) {
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ParcelModel parcel = _world.getParcel(x, y, z);
+                ParcelModel parcel = worldModule.getParcel(x, y, z);
 
                 // Remove existing plant on parcel
                 if (parcel.hasPlant()) {

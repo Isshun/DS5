@@ -62,7 +62,7 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _updateInterval = 10;
 
         _needRefresh = true;

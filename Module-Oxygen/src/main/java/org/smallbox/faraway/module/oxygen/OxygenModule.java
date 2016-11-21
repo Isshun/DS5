@@ -62,7 +62,7 @@ public class OxygenModule extends GameModule {
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _jobModule.addPriorityCheck(new CheckCharacterOxygen(this, _roomModule));
         _oxygen = game.getPlanet().getOxygen();
         _items = _itemModule.getItems().stream().filter(item -> item.getInfo().effects != null && item.getInfo().effects.oxygen > 0).collect(Collectors.toList());

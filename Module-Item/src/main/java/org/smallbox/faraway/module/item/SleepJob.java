@@ -1,12 +1,11 @@
 package org.smallbox.faraway.module.item;
 
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.item.item.ItemSlot;
@@ -26,7 +25,7 @@ public class SleepJob extends JobModel {
     }
 
     public SleepJob(ParcelModel parcel, ItemModel item) {
-        _label = _message = Data.getString("Sleep in") + " " + Data.getString(item.getInfo().label);
+        _label = _message = Application.data.getString("Sleep in") + " " + Application.data.getString(item.getInfo().label);
         _sleepItem = item;
         _jobParcel = _targetParcel = parcel;
     }
@@ -35,7 +34,7 @@ public class SleepJob extends JobModel {
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {
-        if (_sleepItem != null && !PathManager.getInstance().hasPath(character.getParcel(), _sleepItem.getParcel())) {
+        if (_sleepItem != null && !Application.pathManager.hasPath(character.getParcel(), _sleepItem.getParcel())) {
             return JobCheckReturn.ABORT;
         }
         return JobCheckReturn.OK;
@@ -115,6 +114,6 @@ public class SleepJob extends JobModel {
     }
 
 //    public void setWakeTime(int time) {
-//        _wakeTime = _startTime + (Application.getInstance().getConfig().game.tickPerHour * time);
+//        _wakeTime = _startTime + (Application.config.game.tickPerHour * time);
 //    }
 }

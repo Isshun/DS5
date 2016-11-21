@@ -1,13 +1,13 @@
 package org.smallbox.faraway.core.util;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Data;
 
 public class StringUtils {
 
     public static String getDashedString(String label, String value, int columns) {
         int hash = label.hashCode();
-        label = Data.getData() != null && Data.getData().hasString(hash) ? Data.getData().getString(hash) : label;
+        label = Application.data != null && Application.data.hasString(hash) ? Application.data.getString(hash) : label;
 
         StringBuilder sb = new StringBuilder();
         sb.append(label);

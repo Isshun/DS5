@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
-import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 /**
@@ -9,8 +9,8 @@ import org.smallbox.faraway.ui.engine.views.widgets.*;
 public class LuaUIBridge {
     private final LuaModule _module;
 
-    public View find(String id) { return UserInterface.getInstance().findById(id); }
-    public boolean  isVisible(String id) { return UserInterface.getInstance().isVisible(id); }
+    public View find(String id) { return Application.uiManager.findById(id); }
+    public boolean  isVisible(String id) { return Application.uiManager.isVisible(id); }
 
     public LuaUIBridge(LuaModule module) {
         _module = module;

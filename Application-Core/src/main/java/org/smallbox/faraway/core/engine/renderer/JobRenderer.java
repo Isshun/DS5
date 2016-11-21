@@ -1,9 +1,5 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.util.Constant;
-
 public class JobRenderer extends BaseRenderer {
     private int[][]         _areas;
     private int             _floor;

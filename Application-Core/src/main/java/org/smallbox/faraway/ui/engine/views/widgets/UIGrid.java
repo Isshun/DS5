@@ -138,11 +138,11 @@ public class UIGrid extends View {
     }
 
     public void setRowHeight(int rowHeight) {
-        _rowHeight = (int) (rowHeight * Application.getInstance().getConfig().uiScale);
+        _rowHeight = (int) (rowHeight * Application.configurationManager.uiScale);
     }
 
     public void setColumnWidth(int columnWidth) {
-        _columnWidth = (int) (columnWidth * Application.getInstance().getConfig().uiScale);
+        _columnWidth = (int) (columnWidth * Application.configurationManager.uiScale);
     }
 
     public int getColumnWidth() {

@@ -72,7 +72,7 @@
 //////            }
 //////            quest.isOpen = false;
 //////            quest.message = luaQuest.get("closeMessage").isnil() ? null : String.valueOf(luaQuest.get("closeMessage"));
-////////            Application.getInstance().notify(observer -> observer.onCloseQuest(quest));
+////////            Application.notify(observer -> observer.onCloseQuest(quest));
 //////            if (_ui != null) {
 //////                _ui.onCloseQuest(quest);
 //////            }

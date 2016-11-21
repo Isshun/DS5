@@ -15,12 +15,8 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaStyleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.ui.engine.views.widgets.*;
@@ -55,7 +51,7 @@ public class LuaUIExtend extends LuaExtend {
         frame.addView(createView(LuaModuleManager.getInstance(), module, globals, value, inGame, 0, frame));
         frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         frame.setLevel(getInt(value, "level", 0));
-        UserInterface.getInstance().addRootView(frame);
+        Application.uiManager.addRootView(frame);
     }
 
     public View createView(LuaModuleManager luaModuleManager, ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
@@ -75,9 +71,9 @@ public class LuaUIExtend extends LuaExtend {
                             _finalX = getAlignedX() + _marginLeft + x;
                             _finalY = _y + _marginTop + y;
 
-                            if (Application.gameManager.isLoaded()) {
-                                MainRenderer.getInstance().getMinimapRender().draw(renderer, Game.getInstance().getViewport(), 0);
-                            }
+//                            if (Application.gameManager.isLoaded()) {
+//                                MainRenderer.getInstance().getMinimapRender().draw(renderer, Game.getInstance().getViewport(), 0);
+//                            }
                         }
                     }
 
@@ -104,7 +100,7 @@ public class LuaUIExtend extends LuaExtend {
 
             case "dropdown":
                 view = new UIDropDown(module);
-                UserInterface.getInstance().addDropsDowns((UIDropDown)view);
+                Application.uiManager.addDropsDowns((UIDropDown)view);
                 break;
 
             case "list":
@@ -409,7 +405,7 @@ public class LuaUIExtend extends LuaExtend {
             }
         }
 
-        UserInterface.getInstance().addView(view);
+        Application.uiManager.addView(view);
 
         return view;
     }
@@ -417,9 +413,9 @@ public class LuaUIExtend extends LuaExtend {
     private void applyStyle(View view, String styleName) {
         view.setAlign(View.VerticalAlign.TOP, View.HorizontalAlign.RIGHT);
         view.setPosition(372, 38);
-        view.setSize(372, Application.getInstance().getConfig().screen.resolution[1]);
+        view.setSize(372, Application.configurationManager.screen.resolution[1]);
 //        if (width != -1 && height != -1) {
-            view.setFixedSize(372, Application.getInstance().getConfig().screen.resolution[1]);
+            view.setFixedSize(372, Application.configurationManager.screen.resolution[1]);
 //        }
         view.setBackgroundColor(0x121c1e);
     }

@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Log;
 
 import java.io.*;
@@ -18,7 +17,7 @@ public class GameSaveManager {
     }
 
     public static void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.begin", null));
+        Application.notify(observer -> observer.onCustomEvent("load_game.begin", null));
         long time = System.currentTimeMillis();
 
         try {
@@ -37,56 +36,45 @@ public class GameSaveManager {
 
             Log.info("Extract zip: " + (System.currentTimeMillis() - time));
             File dbFile = new File(gameDirectory, filename + ".db");
-            SQLHelper.getInstance().openDB(dbFile);
-
+            Application.sqlManager.openDB(dbFile);
 
             game.getModules().stream()
                     .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
                     .forEach(module -> {
-                        GameSerializer<GameModule> serializer = getSerializer(module);
+                        GameSerializer<GameModule> serializer = GameSerializer.createSerializer(module);
                         if (serializer != null) {
                             serializer.load(module, game);
                         } else {
-                            throw new RuntimeException("Unable to find serializer");
+                            throw new RuntimeException("Unable to find serializer for module: " + module);
                         }
                     });
 
-            SQLHelper.getInstance().closeDB();
+            Application.sqlManager.closeDB();
 
-            SQLHelper.getInstance().post(db -> {
+            Application.sqlManager.post(db -> {
                 listener.onSerializerComplete();
                 // TODO
 //                dbFile.delete();
                 Log.info("Load onSave game: " + (System.currentTimeMillis() - time));
-                Application.getInstance().notify(observer -> observer.onCustomEvent("load_game.complete", null));
+                Application.notify(observer -> observer.onCustomEvent("load_game.complete", null));
             });
         } catch (IOException | ArchiveException e) {
             e.printStackTrace();
         }
     }
 
-    private static GameSerializer<GameModule> getSerializer(GameModule module) {
-        Class<? extends GameSerializer> cls = module.getClass().getAnnotation(ModuleSerializer.class).value();
-        try {
-            return cls.newInstance();
-        } catch ( IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static void save(Game game, File gameDirectory, String filename) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.begin", null));
+        Application.notify(observer -> observer.onCustomEvent("save_game.begin", null));
         long time = System.currentTimeMillis();
 
         // Create DB file
         File dbFile = new  File(gameDirectory, filename + ".db");
-        SQLHelper.getInstance().openDB(dbFile);
+        Application.sqlManager.openDB(dbFile);
 
         game.getModules().stream()
                 .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
                 .forEach(module -> {
-                    GameSerializer<GameModule> serializer = getSerializer(module);
+                    GameSerializer<GameModule> serializer = GameSerializer.createSerializer(module);
                     if (serializer != null) {
                         serializer.save(module, game);
                     } else {
@@ -94,10 +82,10 @@ public class GameSaveManager {
                     }
                 });
 
-        SQLHelper.getInstance().closeDB();
+        Application.sqlManager.closeDB();
         Log.notice("Create onSave game (" + (System.currentTimeMillis() - time) + "ms)");
 
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 // Create zip file
                 File archiveFile = new File(gameDirectory, filename + ".zip");
@@ -116,7 +104,7 @@ public class GameSaveManager {
                 dbFile.delete();
 
                 Log.notice("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
-                Application.getInstance().notify(observer -> observer.onCustomEvent("save_game.complete", null));
+                Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
                 e.printStackTrace();
             }

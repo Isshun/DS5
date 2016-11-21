@@ -19,9 +19,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
@@ -35,7 +33,6 @@ import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.LuaDataModel;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRule;
@@ -72,7 +69,7 @@ public class LuaModuleManager {
     }
 
     private LuaModuleManager() {
-        Application.getInstance().addObserver(new GameObserver() {
+        Application.addObserver(new GameObserver() {
             public void onSelectArea(AreaModel area) { broadcastToLuaModules(LuaEventsModel.on_area_selected, area); }
             public boolean onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); return true; }
             public boolean onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); return true; }
@@ -137,11 +134,11 @@ public class LuaModuleManager {
                 .collect(Collectors.toList());
 
         // TODO: wrong emplacement
-        Data.getData().bindings.clear();
+        Application.data.bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
 
         UIEventManager.getInstance().clear();
-        UserInterface.getInstance().clearViews();
+        Application.uiManager.clearViews();
         _luaEventListeners.clear();
         _luaEventInGameListeners.clear();
         _luaLoadListeners.clear();
@@ -178,7 +175,7 @@ public class LuaModuleManager {
 
         LuaControllerManager.getInstance().init();
 
-        Data.getData().fix();
+        Application.data.fix();
 
         Log.info("LOAD LUA !!!");
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);

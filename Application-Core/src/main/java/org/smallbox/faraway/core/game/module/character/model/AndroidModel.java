@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.module.character.model;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -25,7 +25,7 @@ public class AndroidModel extends CharacterModel {
     };
 
     public AndroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, parcel, name, lastName, old, Data.getData().characters.get("android"));
+        super(id, parcel, name, lastName, old, Application.data.characters.get("android"));
         _personals.setColor(new Color(0xc57de6));
     }
 

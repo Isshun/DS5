@@ -1,12 +1,9 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.job.model.DigJob;
-import org.smallbox.faraway.core.game.module.job.model.GatherJob;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -23,7 +20,7 @@ public class GardenAreaModel extends AreaModel {
         super(AreaType.GARDEN);
 
         _potentialItem = new LinkedBlockingQueue<>();
-        _potentialItem.addAll(Data.getData().items.stream().filter(item -> item.isPlant).collect(Collectors.toList()));
+        _potentialItem.addAll(Application.data.items.stream().filter(item -> item.isPlant).collect(Collectors.toList()));
     }
 
     public void cleanField(ParcelModel parcel) {

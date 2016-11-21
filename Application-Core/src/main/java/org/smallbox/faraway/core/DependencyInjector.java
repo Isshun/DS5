@@ -3,13 +3,15 @@ package org.smallbox.faraway.core;
 import org.smallbox.faraway.BindManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Alex on 24/07/2016.
@@ -17,7 +19,7 @@ import java.util.*;
 public class DependencyInjector {
     private Set<Object> _objectPool = new HashSet<>();
     private static DependencyInjector _self;
-    private boolean _init;
+    private boolean _init = false;
 
     public <T> T create(Class<T> cls) {
         try {
@@ -30,14 +32,17 @@ public class DependencyInjector {
         return null;
     }
 
-    public void register(Object object) {
-        _objectPool.add(object);
+    public void register(Object targetObject) {
+        _objectPool.add(targetObject);
         if (_init) {
-            injectDependencies(object);
+            injectDependencies(targetObject);
         }
     }
 
     public void injectDependencies() {
+        if (_init) {
+            Log.error("injectDependencies should be called only once");
+        }
         _init = true;
         _objectPool.forEach(this::injectDependencies);
     }
@@ -49,16 +54,21 @@ public class DependencyInjector {
         injectControllers(object, LuaControllerManager.getInstance().getControllers());
     }
 
-    private void injectManagers(Object object) {
-        for (Field field: object.getClass().getDeclaredFields()) {
+    private void injectManagers(Object targetObject) {
+        for (Field field: targetObject.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 BindManager bindManager = field.getAnnotation(BindManager.class);
                 if (bindManager != null) {
-                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), object.getClass().getSimpleName()));
-                    if (field.getType() == SpriteManager.class) {
-                        field.set(object, SpriteManager.getInstance());
-                    } else {
+                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), targetObject.getClass().getSimpleName()));
+                    boolean hasBeenFound = false;
+                    for (Object object: _objectPool) {
+                        if (field.getType() == object.getClass()) {
+                            field.set(targetObject, object);
+                            hasBeenFound = true;
+                        }
+                    }
+                    if (!hasBeenFound) {
                         Log.error("DependencyInjector: cannot find module: " + field.getType());
                     }
                 }

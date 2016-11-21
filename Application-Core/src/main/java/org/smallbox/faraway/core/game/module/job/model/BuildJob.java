@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtr
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.util.Log;
 
@@ -49,7 +48,7 @@ public class BuildJob extends JobModel {
             return JobCheckReturn.STAND_BY;
         }
 
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _buildItem.getParcel())) {
+        if (!Application.pathManager.hasPath(character.getParcel(), _buildItem.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 
@@ -62,7 +61,7 @@ public class BuildJob extends JobModel {
 
         _buildItem.addJob(this);
 
-        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, false);
+        PathModel path = Application.pathManager.getPath(character.getParcel(), _jobParcel, true, false);
         if (path != null) {
             _targetParcel = path.getLastParcel();
             Log.info("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
@@ -75,7 +74,7 @@ public class BuildJob extends JobModel {
         if (WorldHelper.getApproxDistance(_character.getParcel(), _buildItem.getParcel()) <= 2) {
             if (_buildItem.build()) {
                 _buildItem.setBuildJob(null);
-                Application.getInstance().notify(observer -> observer.onObjectComplete(_buildItem));
+                Application.notify(observer -> observer.onObjectComplete(_buildItem));
                 return JobActionReturn.COMPLETE;
             }
             _progress = (double)_buildItem.getBuildProgress() / _buildItem.getBuildCost();

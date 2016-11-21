@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.HashMap;
@@ -42,7 +42,7 @@ public class CharacterNeedsExtra {
     private boolean isFainting;
 
     public CharacterNeedsExtra(CharacterModel character, CharacterStatsExtra stats) {
-        _data = Data.getData();
+        _data = Application.data;
         _character = character;
         _stats = stats;
         _values.put(TAG_FOOD, Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);

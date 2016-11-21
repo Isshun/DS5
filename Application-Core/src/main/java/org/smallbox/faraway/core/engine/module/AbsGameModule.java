@@ -26,7 +26,6 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     private long            _totalTime;
 
     protected void onGameCreate(Game game) {}
-    protected void onGameStart(Game game) {}
     protected void onGameUpdate(Game game, int tick) {}
 
     public void createGame(Game game) {

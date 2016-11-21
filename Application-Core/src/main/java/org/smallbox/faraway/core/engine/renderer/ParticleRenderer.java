@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.util.Log;
 
 /**
@@ -40,7 +39,7 @@ public class ParticleRenderer extends ExtraRenderer {
     private void loadEffect(String name) {
         if (name == null || !name.equals(_name)) {
             _name = name;
-            Application.getInstance().addTask(() -> {
+            Application.addTask(() -> {
                 // Dispose old buffEffect
                 if (_effect != null) {
                     _effect.dispose();

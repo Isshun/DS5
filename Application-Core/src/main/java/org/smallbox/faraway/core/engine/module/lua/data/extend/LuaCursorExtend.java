@@ -3,10 +3,10 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.ui.UICursor;
 import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
@@ -38,7 +38,7 @@ public class LuaCursorExtend extends LuaExtend {
 
         final LuaValue luaOnParcel = value.get("on_parcel");
 
-        Data.getData().cursors.put(value.get("id").toString(), new UICursor() {
+        Application.data.cursors.put(value.get("id").toString(), new UICursor() {
             @Override
             protected void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
                 if (isPressed) {

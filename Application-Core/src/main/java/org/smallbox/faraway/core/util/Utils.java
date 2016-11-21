@@ -44,11 +44,11 @@ public class Utils {
     }
 
     public static int getStorageMaxQuantity(ItemInfo itemInfo) {
-        return Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, itemInfo.stack);
+        return Math.max(Application.configurationManager.game.storageMaxQuantity, itemInfo.stack);
     }
 
     public static int getInventoryMaxQuantity(ItemInfo itemInfo) {
-        return Math.max(Application.getInstance().getConfig().game.inventoryMaxQuantity, itemInfo.stack);
+        return Math.max(Application.configurationManager.game.inventoryMaxQuantity, itemInfo.stack);
     }
 
     public static JSONObject toJSON(FileInputStream fis) throws IOException {

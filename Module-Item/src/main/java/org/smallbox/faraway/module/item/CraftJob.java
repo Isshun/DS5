@@ -8,13 +8,13 @@ import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtr
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.util.MoveListener;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
 import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.core.util.MoveListener;
 import org.smallbox.faraway.module.item.item.ItemSlot;
 
 import java.util.Map;
@@ -88,7 +88,7 @@ public class CraftJob extends JobModel {
 //            return JobCheckReturn.ABORT;
 //        }
 //
-//        if (character != null && !PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel())) {
+//        if (character != null && !Application.pathManager.hasPath(character.getParcel(), _item.getParcel())) {
 //            return JobCheckReturn.STAND_BY;
 //        }
 

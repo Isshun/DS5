@@ -5,13 +5,12 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
+import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.Map;
 public class AreaSerializer extends GameSerializer<AreaModule> {
     @Override
     public void onSave(AreaModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
             try {
                 // Save areas
@@ -110,7 +109,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
     }
 
     public void onLoad(AreaModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");
 
@@ -119,7 +118,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
                 try {
                     while (stGarden.step()) {
                         GardenAreaModel garden = new GardenAreaModel();
-                        garden.setAccept(Data.getData().getItemInfo(stGarden.columnString(1)), true);
+                        garden.setAccept(Application.data.getItemInfo(stGarden.columnString(1)), true);
                         getAreaParcels(garden, stParcel, stGarden.columnInt(0));
                         gardenAreas.add(garden);
                     }
@@ -144,7 +143,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
                 AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
                 areaModule.init(storageAreas, gardenAreas);
             } catch (SQLiteException e) {
-                Application.logger.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());
+                Log.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());
             }
         });
     }
@@ -152,7 +151,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
     private void getAreaStorageItems(StorageAreaModel storage, SQLiteStatement stItem, int areaId) throws SQLiteException {
         stItem.bind(1, areaId);
         while (stItem.step()) {
-            storage.setAccept(Data.getData().getItemInfo(stItem.columnString(0)), true);
+            storage.setAccept(Application.data.getItemInfo(stItem.columnString(0)), true);
             storage.setPriority(stItem.columnInt(2));
         }
         stItem.reset(false);

@@ -1,23 +1,24 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.LuaControllerManager;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.renderer.*;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.MainRenderer;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
 import org.smallbox.faraway.ui.GameSelectionExtra;
 import org.smallbox.faraway.ui.UICursor;
-import org.smallbox.faraway.ui.UserInterface;
 
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Game {
@@ -26,7 +27,7 @@ public class Game {
 
     // Update
     private long                            _nextUpdate;
-    private int                             _tickInterval = TICK_INTERVALS[4];
+    private int                             _tickInterval = TICK_INTERVALS[3];
 
     // Render
     private int                             _frame;
@@ -48,7 +49,7 @@ public class Game {
     private int                             _speed = 1;
     private int                             _lastSpeed = 1;
     private List<GameModule>                _modules;
-    private List<BaseRenderer>              _renders;
+//    private List<BaseRenderer>              _renders;
     private BaseRenderer                    _miniMapRenderer;
     private GameModuleState _state = GameModuleState.UNINITIALIZED;
 
@@ -56,12 +57,12 @@ public class Game {
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
-        Application.getInstance().notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
+        Application.notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
     }
 
     public void toggleDisplay(String displayName) {
         _displays.put(displayName, !_displays.containsKey(displayName) || !_displays.get(displayName));
-        Application.getInstance().notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
+        Application.notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
     }
 
     public boolean                          isRunning() { return _isRunning; }
@@ -73,7 +74,7 @@ public class Game {
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
     public int                              getYear() { return _year; }
-    public int                              getTickPerHour() { return Application.getInstance().getConfig().game.tickPerHour; }
+    public int                              getTickPerHour() { return Application.configurationManager.game.tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public Viewport                         getViewport() { return _viewport; }
     public static int                       getUpdate() { return _tick; }
@@ -84,7 +85,6 @@ public class Game {
     public int                              getSpeed() { return _speed; }
     public int                              getLastSpeed() { return _lastSpeed; }
     public Collection<GameModule>           getModules() { return _modules; }
-    public Collection<BaseRenderer>         getRenders() { return _renders; }
 
     public Game(GameInfo info) {
         _self = this;
@@ -94,7 +94,7 @@ public class Game {
         _info = info;
         _isRunning = true;
         _planet = new PlanetModel(info.planet);
-        _directions = Application.getInstance().getInputProcessor().getDirection();
+        _directions = Application.inputManager.getDirection();
         _displays = new HashMap<>();
         _tick = 0;
 
@@ -109,20 +109,10 @@ public class Game {
     public void createModules() {
         Log.info("============ CREATE GAME ============");
 
-        _renders = new ArrayList<>();
-
-        // Create mini-map render
-        _miniMapRenderer = new MinimapRenderer();
-        Application.getInstance().addObserver(_miniMapRenderer);
-
         // Call onGameCreate method to each modules
         _modules = ModuleManager.getInstance().getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
         _modules.forEach(module -> module.createGame(this));
-
-        // Sort renders by level and addSubJob them to observers
-        _renders.sort((r1, r2) -> r1.getLevel() - r2.getLevel());
-        _renders.forEach(renderer -> Application.getInstance().addObserver(renderer));
 
         _state = GameModuleState.CREATED;
     }
@@ -130,13 +120,14 @@ public class Game {
     public void start() {
         // Notify modules, renders and controllers
         ModuleManager.getInstance().gameStart(this, _modules);
-        MainRenderer.getInstance().gameStart(this, _renders, _miniMapRenderer);
+        MainRenderer.getInstance().gameStart(this, _miniMapRenderer);
         LuaControllerManager.getInstance().gameStart(this);
 
-        Application.getInstance().notify(observer -> observer.onHourChange(_hour));
-        Application.getInstance().notify(observer -> observer.onDayChange(_day));
-        Application.getInstance().notify(observer -> observer.onYearChange(_year));
-        Application.getInstance().notify(observer -> observer.onFloorChange(7));
+        Application.notify(observer -> observer.onHourChange(_hour));
+        Application.notify(observer -> observer.onDayChange(_day));
+        Application.notify(observer -> observer.onYearChange(_year));
+        Application.notify(observer -> observer.onFloorChange(7));
+        Application.notify(observer -> observer.onGameStart(this));
 
         _viewport.setPosition(-500, -3800, 7);
 
@@ -146,7 +137,7 @@ public class Game {
     public void                     clearCursor() { _gameAction.setCursor(null); }
 //    public void                     clearSelection() { _selector.clear(); }
     public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
-    public void                     setCursor(String cursorName) { _gameAction.setCursor(Data.getData().getCursor(cursorName)); }
+    public void                     setCursor(String cursorName) { _gameAction.setCursor(Application.data.getCursor(cursorName)); }
 
     public void update() {
         // Update
@@ -166,17 +157,17 @@ public class Game {
 
         ModuleManager.getInstance().getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(this, tick));
 
-        if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
+        if (tick % Application.configurationManager.game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {
                     _day = 1;
                     _year++;
-                    Application.getInstance().notify(observer -> observer.onYearChange(_year));
+                    Application.notify(observer -> observer.onYearChange(_year));
                 }
-                Application.getInstance().notify(observer -> observer.onDayChange(_day));
+                Application.notify(observer -> observer.onDayChange(_day));
             }
-            Application.getInstance().notify(observer -> observer.onHourChange(_hour));
+            Application.notify(observer -> observer.onHourChange(_hour));
         }
 
         _tick = tick;
@@ -188,7 +179,7 @@ public class Game {
 
     public void setRunning(boolean isRunning) {
         _isRunning = isRunning;
-        Application.getInstance().notify(isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
+        Application.notify(isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
     }
 
     public void render(GDXRenderer renderer, Viewport viewport) {
@@ -210,7 +201,7 @@ public class Game {
 
         // TODO
         try {
-            UserInterface.getInstance().onRefresh(_frame);
+            Application.uiManager.onRefresh(_frame);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -226,14 +217,8 @@ public class Game {
         _speed = speed;
         _tickInterval = TICK_INTERVALS[Math.max(0, Math.min(4, speed))];
         _isRunning = _tickInterval > 0;
-        Application.getInstance().notify(observer -> observer.onSpeedChange(speed));
+        Application.notify(observer -> observer.onSpeedChange(speed));
     }
 
     public void createControllers() { LuaControllerManager.getInstance().gameCreate(this); }
-
-    public void addRender(BaseRenderer renderer) {
-        if (CollectionUtils.notContains(_renders, renderer)) {
-            _renders.add(renderer);
-        }
-    }
 }

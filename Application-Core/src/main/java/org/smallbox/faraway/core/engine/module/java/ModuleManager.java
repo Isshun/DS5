@@ -1,21 +1,21 @@
 package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
-import org.smallbox.faraway.SingletonApplicationModule;
-import org.smallbox.faraway.core.*;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.engine.renderer.SpriteManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -155,7 +155,7 @@ public class ModuleManager {
             throw new RuntimeException("Some application modules could not be loaded");
         }
 
-        _applicationModules.forEach(module -> Application.getInstance().addObserver(module));
+        _applicationModules.forEach(module -> Application.addObserver(module));
         _applicationModules.forEach(Application.dependencyInjector::register);
         _applicationModules.forEach(ModuleBase::create);
     }
@@ -201,7 +201,7 @@ public class ModuleManager {
             throw new RuntimeException("Some game modules could not be loaded");
         }
 
-        _gameModules.forEach(module -> Application.getInstance().addObserver(module));
+        _gameModules.forEach(module -> Application.addObserver(module));
         _gameModules.forEach(Application.dependencyInjector::register);
         _gameModules.forEach(ModuleBase::create);
     }
@@ -232,13 +232,13 @@ public class ModuleManager {
     public void unloadModule(ModuleBase module) {
         if (!module.isModuleMandatory()) {
             module.unload();
-            Application.getInstance().removeObserver(module);
+            Application.removeObserver(module);
         }
     }
 
     public void loadModule(ModuleBase module) {
         module.load();
-        Application.getInstance().addObserver(module);
+        Application.addObserver(module);
     }
 
     public void toggleModule(ModuleBase module) {

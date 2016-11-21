@@ -25,7 +25,7 @@ public class GameSelectionExtra {
     }
 
     public void clear() {
-        Application.getInstance().notify(GameObserver::onDeselect);
+        Application.notify(GameObserver::onDeselect);
 
         if (_selectedCharacter != null) {
             _selectedCharacter.setSelected(false);

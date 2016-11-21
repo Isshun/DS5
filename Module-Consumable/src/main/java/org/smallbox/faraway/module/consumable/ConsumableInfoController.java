@@ -17,15 +17,16 @@ public class ConsumableInfoController extends LuaController {
     @BindLua private UILabel        lbJob;
 
     @BindModule
-    private ConsumableModule _module;
+    private ConsumableModule consumableModule;
 
     @BindModule
-    private WorldInteractionModule _worldInteraction;
+    private WorldInteractionModule worldInteractionModule;
+
     private ConsumableModel _consumable;
 
     @Override
     public void onGameStart(Game game) {
-        _module.addObserver(new ConsumableModuleObserver() {
+        consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onDeselectConsumable(ConsumableModel consumable) {
                 setVisible(false);

@@ -3,29 +3,29 @@ package org.smallbox.faraway.core;
 /**
  * Created by Alex on 29/11/2015.
  */
-public abstract class LoadTask {
-    public final Runnable   runnable;
+public abstract class LoadTask implements Runnable {
+    public enum State {NONE, RUNNING, COMPLETE}
+
     public final boolean    onMainThread;
-    public final String     message;
-    public String           messageDetail;
+    public final String     label;
+    public Throwable        throwable;
+    public State            state = State.NONE;
 
-    public LoadTask(GDXApplication application, String message) {
-        this.message = message;
-        this.runnable = () -> {
-            onExecute();
-            application.onTaskComplete();
-        };
-        this.onMainThread = false;
-    }
-
-    public LoadTask(GDXApplication application, String message, boolean onMainThread) {
-        this.message = message;
-        this.runnable = () -> {
-            onExecute();
-            application.onTaskComplete();
-        };
+    public LoadTask(String label, boolean onMainThread) {
+        this.label = label;
         this.onMainThread = onMainThread;
     }
 
-    public abstract void onExecute();
+    @Override
+    public void run() {
+        try {
+            state = State.RUNNING;
+            onRun();
+            state = State.COMPLETE;
+        } catch (Throwable t) {
+            throwable = t;
+        }
+    }
+
+    protected abstract void onRun();
 }

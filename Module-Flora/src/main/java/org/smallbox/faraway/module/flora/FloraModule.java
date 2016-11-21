@@ -1,10 +1,11 @@
 package org.smallbox.faraway.module.flora;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.module.world.WorldModule;
@@ -18,6 +19,7 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.Gr
 /**
  * Created by Alex on 05/07/2015.
  */
+@ModuleRenderer(FloraTopRenderer.class)
 public class FloraModule extends GameModule<FloraModuleObserver> {
     @BindModule
     private WorldModule _world;
@@ -26,10 +28,6 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-//        game.getRenders().addSubJob(new WorldGroundRenderer(this));
-        game.getRenders().add(new FloraTopRenderer(this));
-//        getSerializers().addSubJob(new WorldModuleSerializer(this));
-
         _plants = new LinkedList<>();
 
         _world.addObserver(new WorldModuleObserver() {
@@ -96,7 +94,7 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
         }
         _plants.add(plant);
 
-        PathManager.getInstance().resetAround(parcel);
+        Application.pathManager.resetAround(parcel);
 
         notifyObservers(observer -> observer.onAddPlant(plant));
 
@@ -123,7 +121,7 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
 
             _plants.remove(plant);
 
-            PathManager.getInstance().resetAround(plant.getParcel());
+            Application.pathManager.resetAround(plant.getParcel());
 
             notifyObservers(observer -> observer.onRemovePlant(plant));
         }

@@ -2,7 +2,6 @@ package org.smallbox.faraway.ui.engine.views.widgets;
 
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.util.Log;
 
 import java.util.ConcurrentModificationException;
 

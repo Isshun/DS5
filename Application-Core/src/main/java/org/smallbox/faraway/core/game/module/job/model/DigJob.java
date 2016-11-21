@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -8,7 +9,6 @@ import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtr
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.MoveListener;
@@ -60,7 +60,7 @@ public class DigJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, _parcelToRemoveGround != null);
+        PathModel path = Application.pathManager.getPath(character.getParcel(), _jobParcel, true, _parcelToRemoveGround != null);
 
         if (path != null) {
             _targetParcel = path.getLastParcel();
@@ -89,7 +89,7 @@ public class DigJob extends JobModel {
             return JobCheckReturn.ABORT;
         }
 
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _jobParcel, true, _parcelToRemoveGround != null)) {
+        if (!Application.pathManager.hasPath(character.getParcel(), _jobParcel, true, _parcelToRemoveGround != null)) {
             _status = JobStatus.BLOCKED;
             return JobCheckReturn.STAND_BY;
         }
@@ -118,7 +118,7 @@ public class DigJob extends JobModel {
 //        Log.info("Mine complete");
 //
 //        _jobParcel.setRockInfo(null);
-//        Application.getInstance().notify(observer -> observer.onRemoveRock(_jobParcel));
+//        Application.notify(observer -> observer.onRemoveRock(_jobParcel));
 //
 //        if (_actionInfo.products != null) {
 //            _actionInfo.products.stream().filter(productInfo -> productInfo.rate > Math.random()).forEach(productInfo -> {

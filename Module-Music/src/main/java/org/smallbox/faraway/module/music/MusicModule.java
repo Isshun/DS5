@@ -11,7 +11,7 @@ public class MusicModule extends GameModule {
     private Music music;
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
 //        music = Gdx.audio.newMusic(Gdx.files.internal("data/musics/Clean Soul.mp3"));
 //        music.play();
 //        music.setOnCompletionListener(Music::dispose);

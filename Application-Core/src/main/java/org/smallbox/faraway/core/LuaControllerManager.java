@@ -56,7 +56,7 @@ public class LuaControllerManager {
                 });
 
         // Bind game observers to controllers
-        _controllers.values().forEach(controller -> Application.getInstance().addObserver(controller));
+        _controllers.values().forEach(controller -> Application.addObserver(controller));
 
         // Register to DependencyInjector
         _controllers.values().forEach(Application.dependencyInjector::register);

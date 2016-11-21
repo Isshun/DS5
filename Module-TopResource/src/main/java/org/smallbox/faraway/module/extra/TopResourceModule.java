@@ -38,7 +38,7 @@
 //    private List<ConsumableModel>           _foods = new ArrayList<>();
 //    private int                             _foodCount;
 //
-//    public int                      getConsumableCount(String name) { return getConsumableCount(Data.getData().getItemInfo(name)); }
+//    public int                      getConsumableCount(String name) { return getConsumableCount(Application.data.getItemInfo(name)); }
 //
 //    public int                      getConsumableCount(ItemInfo info) {
 //        int quantity = _consumablesCollection.containsKey(info) ? _consumablesCollection.get(info).count : 0;

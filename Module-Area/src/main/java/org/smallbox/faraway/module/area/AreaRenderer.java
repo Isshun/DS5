@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import org.smallbox.faraway.BindManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
@@ -12,7 +13,10 @@ import org.smallbox.faraway.core.util.Constant;
  * Created by Alex on 13/06/2015.
  */
 public class AreaRenderer extends GameDisplay {
-    private final SpriteManager _spriteManager;
+
+    @BindManager
+    private SpriteManager spriteManager;
+
     private final TextureRegion[] _regions;
     private final TextureRegion[] _regionsSelected;
 
@@ -24,20 +28,19 @@ public class AreaRenderer extends GameDisplay {
             new Color(1, 0.5f, 0.5f, 0.4f)
     };
 
-    public AreaRenderer(AreaModule areaModule) {
-        _spriteManager = SpriteManager.getInstance();
+    public AreaRenderer() {
         _regions = new TextureRegion[5];
-        _regions[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);
-        _regions[1] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
-        _regions[2] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 64, 32, 32);
-        _regions[3] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 96, 32, 32);
-        _regions[4] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 128, 32, 32);
+        _regions[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);
+        _regions[1] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
+        _regions[2] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 64, 32, 32);
+        _regions[3] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 96, 32, 32);
+        _regions[4] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 128, 32, 32);
         _regionsSelected = new TextureRegion[5];
-        _regionsSelected[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 0, 32, 32);
-        _regionsSelected[1] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 32, 32, 32);
-        _regionsSelected[2] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 64, 32, 32);
-        _regionsSelected[3] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 96, 32, 32);
-        _regionsSelected[4] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 32, 128, 32, 32);
+        _regionsSelected[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 0, 32, 32);
+        _regionsSelected[1] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 32, 32, 32);
+        _regionsSelected[2] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 64, 32, 32);
+        _regionsSelected[3] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 96, 32, 32);
+        _regionsSelected[4] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 32, 128, 32, 32);
     }
 
     @Override

@@ -2,12 +2,11 @@ data:extend({
     type = "view",
     name = "base.ui.click_debug_views",
     controller = "org.smallbox.faraway.module.dev.ClickDebugController",
-    position = {000, 100},
-    size = {300, 600},
-    background = 0x55bbdd,
-    visible = false,
+    position = {500, 800},
+    size = {600, 200},
+    background = 0x228844,
+    visible = true,
     views = {
-        { type = "label", text = "DEBUG CLICK", text_size = 14, position = {10, 8}},
-        { type = "list", id = "views_list", position = {10, 30}},
+        { type = "label", id = "entry", text_size = 14, position = {10, 8}},
     },
 })

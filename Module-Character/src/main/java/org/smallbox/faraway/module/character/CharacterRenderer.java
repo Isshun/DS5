@@ -1,5 +1,7 @@
 package org.smallbox.faraway.module.character;
 
+import org.smallbox.faraway.BindManager;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
@@ -8,22 +10,21 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.module.consumable.HaulJob;
 
 public class CharacterRenderer extends BaseRenderer {
-    private final CharacterModule _characterModule;
-    private SpriteManager _spriteManager;
+
+    @BindModule
+    private CharacterModule         _characterModule;
+
+    @BindManager
+    private SpriteManager           _spriteManager;
+
     private int                     _frame;
     private int                     _floor;
 
     private static Color    COLOR_CRITICAL = new Color(0xbb0000);
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
-
-    public CharacterRenderer(CharacterModule characterModule) {
-        _characterModule = characterModule;
-        _spriteManager = SpriteManager.getInstance();
-    }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));

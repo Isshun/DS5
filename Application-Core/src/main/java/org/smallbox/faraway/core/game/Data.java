@@ -12,8 +12,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Data {
-    public static Data _self;
-
     public List<ReceiptGroupInfo>               receipts = new ArrayList<>();
     public List<ItemInfo>                       items = new ArrayList<>();
     public List<NetworkInfo>                    networks = new ArrayList<>();
@@ -31,13 +29,6 @@ public class Data {
     public List<ItemInfo>                       consumables;
     public List<BindingInfo>                    bindings = new ArrayList<>();
     private List<DataAsyncEntry> _async = new LinkedList<>();
-
-    public static Data getData() {
-        if (_self == null) {
-            _self = new Data();
-        }
-        return _self;
-    }
 
     private boolean hasObject(List<NetworkInfo> objects, String name) {
         for (ObjectInfo object: objects) {
@@ -66,13 +57,13 @@ public class Data {
     public ItemInfo         getItemInfo(String receiptName) { return (ItemInfo) getObject(items, receiptName); }
     public ItemInfo         getEquipment(String receiptName) { return (ItemInfo) getObject(equipments, receiptName); }
     public BindingInfo      getBinding(String bindingId) { return (BindingInfo) getObject(bindings, bindingId); }
-    public String           getString(int hash) { return _self.strings.get(hash); }
-    public static String    getString(String str) { return _self.strings.containsKey(str.hashCode()) ? _self.strings.get(str.hashCode()) : str; }
+    public String           getString(int hash) { return strings.get(hash); }
+    public String           getString(String str) { return strings.containsKey(str.hashCode()) ? strings.get(str.hashCode()) : str; }
     public PlanetInfo       getPlanet(String planetName) { return (PlanetInfo) getObject(planets, planetName); }
-    public Collection<ItemInfo> getItems() { return _self.items; }
+    public Collection<ItemInfo> getItems() { return items; }
 
     public boolean          hasNetwork(String name) { return hasObject(networks, name); }
-    public boolean          hasString(int hash) { return _self.strings.containsKey(hash); }
+    public boolean          hasString(int hash) { return strings.containsKey(hash); }
 
     public RegionInfo getRegion(String planetName, String regionName) {
         for (PlanetInfo planet: planets) {

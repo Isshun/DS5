@@ -83,11 +83,11 @@ public abstract class ModuleBase implements GameObserver {
         return false;
     }
 
-    protected void printNotice(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printInfo(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printError(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printWarning(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
-    protected void printDebug(String message) { Application.getInstance().notify(observer -> observer.onLog(TAG, message)); }
+    protected void printNotice(String message) { Application.notify(observer -> observer.onLog(TAG, message)); }
+    protected void printInfo(String message) { Application.notify(observer -> observer.onLog(TAG, message)); }
+    protected void printError(String message) { Application.notify(observer -> observer.onLog(TAG, message)); }
+    protected void printWarning(String message) { Application.notify(observer -> observer.onLog(TAG, message)); }
+    protected void printDebug(String message) { Application.notify(observer -> observer.onLog(TAG, message)); }
 
     public boolean hasRequiredDependencies(List<? extends ModuleBase> modules) {
         for (Field field: this.getClass().getDeclaredFields()) {

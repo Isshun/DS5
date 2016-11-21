@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.helper;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.DigJob;
 import org.smallbox.faraway.core.game.module.job.model.GatherJob;
@@ -47,7 +47,7 @@ public class JobHelper {
 
         ItemInfo itemProduct = null;
         if (ramp) {
-            itemProduct = Data.getData().getItemInfo("base.structure.ramp");
+            itemProduct = Application.data.getItemInfo("base.structure.ramp");
         }
 
         return DigJob.create(parcel, parcel.getRockInfo(), itemProduct, parcelToRemoveGround, groundInfo);

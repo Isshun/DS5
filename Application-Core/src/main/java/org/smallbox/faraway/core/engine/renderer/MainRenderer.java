@@ -1,12 +1,15 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.game.Game;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainRenderer {
     public static final int                 WORLD_GROUND_RENDERER_LEVEL = -100;
+    public static final int                 MINI_MAP_LEVEL = 100;
     public static final int                 PARTICLE_RENDERER_LEVEL = -99;
     public static final int                 WORLD_TOP_RENDERER_LEVEL = -98;
     public static final int                 CHARACTER_RENDERER_LEVEL = -97;
@@ -17,7 +20,6 @@ public class MainRenderer {
     private static int                      _frame;
 
     private Collection<BaseRenderer>        _renders;
-    private BaseRenderer                    _miniMapRender;
 
     public MainRenderer(GDXRenderer renderer) {
         _self = this;
@@ -52,22 +54,18 @@ public class MainRenderer {
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public void gameStart(Game game, List<BaseRenderer> renders, BaseRenderer miniMapRender) {
+    public void gameStart(Game game, BaseRenderer miniMapRender) {
         _frame = 0;
-        _renders = renders;
-        _miniMapRender = miniMapRender;
+
+        // Sort renders by level and addSubJob them to observers
+        _renders = game.getModules().stream()
+                .filter(module -> module.getClass().isAnnotationPresent(ModuleRenderer.class))
+                .flatMap(module -> BaseRenderer.createRenderer(module).stream())
+                .sorted((r1, r2) -> r1.getLevel() - r2.getLevel())
+                .peek(Application::addObserver)
+                .collect(Collectors.toList());
 
         _renders.forEach(render -> render.gameStart(game));
-        _miniMapRender.gameStart(game);
-    }
-
-    private BaseRenderer getRender(Class<? extends BaseRenderer> cls) {
-        for (BaseRenderer renderer: _renders) {
-            if (renderer.getClass() == cls) {
-                return renderer;
-            }
-        }
-        return null;
     }
 
     public static MainRenderer getInstance() {
@@ -90,9 +88,5 @@ public class MainRenderer {
         } else {
             render.gameStart(Game.getInstance());
         }
-    }
-
-    public BaseRenderer getMinimapRender() {
-        return _miniMapRender;
     }
 }

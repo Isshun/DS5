@@ -4,14 +4,10 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.module.world.WorldModule;
 
 /**
  * Created by Alex on 21/07/2016.
@@ -23,7 +19,7 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
 
     @Override
     public void onSave(ConsumableModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
 
@@ -57,12 +53,12 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
     }
 
     public void onLoad(ConsumableModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, quantity FROM WorldModule_consumable");
                 try {
                     while (stItem.step()) {
-                        ItemInfo itemInfo = Data.getData().getItemInfo(stItem.columnString(4));
+                        ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));
                         if (itemInfo != null) {
                             module.create(itemInfo, stItem.columnInt(5), stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                         }
@@ -71,7 +67,7 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                Application.logger.warning("Unable to read WorldModule_consumable table: " + e.getMessage());
+                Log.warning("Unable to read WorldModule_consumable table: " + e.getMessage());
             }
         });
     }

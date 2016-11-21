@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -21,17 +22,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class WorldGroundRenderer extends BaseRenderer {
-    private static final int        CHUNK_SIZE = 16;
-    private static final int                TOP_LEFT = 0b10000000;
-    private static final int                TOP = 0b01000000;
-    private static final int                TOP_RIGHT = 0b00100000;
-    private static final int                LEFT = 0b00010000;
-    private static final int                RIGHT = 0b00001000;
-    private static final int                BOTTOM_LEFT = 0b00000100;
-    private static final int                BOTTOM = 0b00000010;
-    private static final int                BOTTOM_RIGHT = 0b00000001;
+    private static final int CHUNK_SIZE = 16;
+    private static final int TOP_LEFT = 0b10000000;
+    private static final int TOP = 0b01000000;
+    private static final int TOP_RIGHT = 0b00100000;
+    private static final int LEFT = 0b00010000;
+    private static final int RIGHT = 0b00001000;
+    private static final int BOTTOM_LEFT = 0b00000100;
+    private static final int BOTTOM = 0b00000010;
+    private static final int BOTTOM_RIGHT = 0b00000001;
 
-    private final WorldModule       _worldModule;
+    @BindModule
+    private WorldModule             _worldModule;
+
     private ExecutorService         _executor = Executors.newSingleThreadExecutor();
     private Texture[][]             _groundLayers;
     private Texture[][]             _rockLayers;
@@ -45,21 +48,15 @@ public class WorldGroundRenderer extends BaseRenderer {
     private Map<ItemInfo, Pixmap>   _pxGroundBorders;
     private Map<ItemInfo, Pixmap>   _pxGroundDecorations;
 
-    public WorldGroundRenderer(WorldModule worldModule) {
-        _worldModule = worldModule;
-    }
-
     @Override
-    protected void onGameStart(Game game) {
-        super.onGameStart(game);
-
+    public void onGameStart(Game game) {
         _pxLiquids = new HashMap<>();
 
         _pxGrounds = new HashMap<>();
         _pxGroundBorders = new HashMap<>();
         _pxGroundDecorations = new HashMap<>();
 
-        Data.getData().items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
+        Application.data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
             Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
             textureIn.getTextureData().prepare();
             _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
@@ -77,7 +74,7 @@ public class WorldGroundRenderer extends BaseRenderer {
             }
         });
 
-        Data.getData().items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
+        Application.data.items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
             Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
             textureIn.getTextureData().prepare();
             _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
@@ -140,14 +137,14 @@ public class WorldGroundRenderer extends BaseRenderer {
     }
 
     private void createGround(int col, int row) {
-        _executor.submit((Runnable) () -> {
+        _executor.submit(() -> {
             final int fromX = Math.max(col * CHUNK_SIZE, 0);
             final int fromY = Math.max(row * CHUNK_SIZE, 0);
             final int toX = Math.min(col * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldWidth);
             final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldHeight);
 
             _worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, _floor, _floor, parcels -> {
-                SpriteManager spriteManager = SpriteManager.getInstance();
+                SpriteManager spriteManager = Application.spriteManager;
                 Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
                 Pixmap pxOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
 
@@ -169,7 +166,7 @@ public class WorldGroundRenderer extends BaseRenderer {
                         if (WorldHelper.getGroundInfo(parcel.x + 1, parcel.y + 1, parcel.z) != groundInfo) { tile |= 0b00000001; }
 
                         if (tile != 0) {
-                            pxGroundOut.drawPixmap(_pxGrounds.get(Data.getData().getItemInfo("base.ground.grass")), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
+                            pxGroundOut.drawPixmap(_pxGrounds.get(Application.data.getItemInfo("base.ground.grass")), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
                         }
 
                         int offsetX = (parcel.x % parcel.getGroundInfo().width) * 32;

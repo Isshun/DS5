@@ -2,7 +2,6 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.ui.engine.UIEventManager;
 
@@ -12,16 +11,14 @@ import static com.badlogic.gdx.Input.Keys;
 /**
  * Created by Alex on 04/06/2015.
  */
-public class GDXInputProcessor implements InputProcessor {
-    private final Application   _application;
+public class InputManager implements InputProcessor {
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
     private boolean[]           _keyDirection;
     private int                 _lastPosX;
     private int                 _lastPosY;
 
-    public GDXInputProcessor(Application application) {
-        _application = application;
+    public InputManager() {
         _modifier = GameEventListener.Modifier.NONE;
         _keyDirection = new boolean[4];
     }
@@ -148,7 +145,6 @@ public class GDXInputProcessor implements InputProcessor {
             case Keys.F11: key = GameEventListener.Key.F11; break;
             case Keys.F12: key = GameEventListener.Key.F12; break;
             case Keys.GRAVE: key = GameEventListener.Key.TILDE; break;
-            case Keys.PERIOD: key = GameEventListener.Key.PERIOD; break;
 //            case Input.Keys.LCONTROL:
 //            case Input.Keys.LSHIFT:
 //            case Input.Keys.LALT:
@@ -160,9 +156,9 @@ public class GDXInputProcessor implements InputProcessor {
 //            case Input.Keys.MENU:
 //            case Input.Keys.LBRACKET:
 //            case Input.Keys.RBRACKET:
-//            case Input.Keys.SEMICOLON:
-//            case Input.Keys.COMMA:
-//            case Input.Keys.PERIOD:
+//            case Keys.SEMICOLON:
+            case Keys.COMMA: key = GameEventListener.Key.COMMA; break;
+            case Keys.PERIOD: key = GameEventListener.Key.PERIOD; break;
 //            case Input.Keys.QUOTE:
 //            case Input.Keys.SLASH:
 //            case Input.Keys.BACKSLASH:
@@ -200,7 +196,7 @@ public class GDXInputProcessor implements InputProcessor {
 //            case Input.Keys.F15:
 //            case Input.Keys.PAUSE: key = GameEventListener.Key.UNKNOWN; break;
         }
-        _application.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
+        Application.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
 
         UIEventManager.getInstance().keyRelease(key);
 
@@ -230,7 +226,7 @@ public class GDXInputProcessor implements InputProcessor {
                     break;
             }
 
-            _application.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
+            Application.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
         }
 
         return false;
@@ -252,7 +248,7 @@ public class GDXInputProcessor implements InputProcessor {
                     break;
             }
 
-            _application.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
+            Application.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
         }
         return false;
     }
@@ -266,7 +262,7 @@ public class GDXInputProcessor implements InputProcessor {
             }
             return false;
         } else {
-            _application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+            Application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }
         return false;
     }
@@ -276,7 +272,7 @@ public class GDXInputProcessor implements InputProcessor {
         _lastPosX = x;
         _lastPosY = y;
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            _application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
+            Application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
         }
         return false;
     }
@@ -284,11 +280,11 @@ public class GDXInputProcessor implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         if (amount < 0) {
-            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, _lastPosX, _lastPosY, false);
+            Application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, _lastPosX, _lastPosY, false);
             return true;
         }
         if (amount > 0) {
-            _application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, _lastPosX, _lastPosY, false);
+            Application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, _lastPosX, _lastPosY, false);
             return true;
         }
         return false;

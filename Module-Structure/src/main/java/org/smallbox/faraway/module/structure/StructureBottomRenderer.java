@@ -1,12 +1,10 @@
 package org.smallbox.faraway.module.structure;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 public class StructureBottomRenderer extends BaseRenderer {
     @BindModule
@@ -19,10 +17,10 @@ public class StructureBottomRenderer extends BaseRenderer {
     private int                 _height;
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
-        _spriteManager = SpriteManager.getInstance();
+        _spriteManager = Application.spriteManager;
     }
 
     @Override

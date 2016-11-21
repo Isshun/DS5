@@ -1,7 +1,5 @@
 package org.smallbox.faraway.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
@@ -10,17 +8,19 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.UIEventManager;
-import org.smallbox.faraway.ui.engine.views.widgets.*;
+import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
+import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.ui.engine.views.widgets.View;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
-public class UserInterface {
+public class UIManager {
     public void addRootView(View view) {
         _rootViews.add(view);
     }
@@ -70,7 +70,6 @@ public class UserInterface {
         }
     }
 
-    private static UserInterface        _self;
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
@@ -90,14 +89,7 @@ public class UserInterface {
     private Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
     private Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
 
-    public static UserInterface getInstance() {
-        if (_self == null) {
-            _self = new UserInterface();
-        }
-        return _self;
-    }
-
-    public UserInterface() {
+    public UIManager() {
         _context = new UIFrame(null);
         _context.setVisible(false);
     }
@@ -166,7 +158,7 @@ public class UserInterface {
 //            if (UIEventManager.getInstance().rightClick(x, y)) {
 //                return true;
 //            } else {
-//                Application.getInstance().notify(observer -> observer.onKeyPress(Key.ESCAPE));
+//                Application.notify(observer -> observer.onKeyPress(Key.ESCAPE));
 //                return false;
 //            }
 //        }
@@ -190,17 +182,18 @@ public class UserInterface {
 //                        .filter(view -> !_rootViews.contains(view.getRootView()))
 //                        .collect(Collectors.toList()));
 
-        Application.getInstance().notify(observer -> observer.onRefreshUI(frame));
+        Application.notify(observer -> observer.onRefreshUI(frame));
     }
 
+    // TODO
     public void draw(GDXRenderer renderer, boolean gameRunning) {
-        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.zoom = 0.5f;
-
-        _rootViews.stream()
-                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
-                .forEach(view -> view.draw(renderer, 0, 0));
-        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
+//        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        camera.zoom = 0.5f;
+//
+//        _rootViews.stream()
+//                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
+//                .forEach(view -> view.draw(renderer, 0, 0));
+//        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }
 
     public boolean checkKeyboard(GameEvent event, Key key) {

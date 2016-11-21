@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.util.Constant;
@@ -60,7 +61,7 @@ public class GameInfo {
         GameInfo gameInfo = new GameInfo();
 
         gameInfo.name = json.getString("name");
-        gameInfo.planet = Data.getData().getPlanet(json.getString("planet"));
+        gameInfo.planet = Application.data.getPlanet(json.getString("planet"));
         gameInfo.region = gameInfo.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
         gameInfo.worldWidth = json.getInt("width");
         gameInfo.worldHeight = json.getInt("height");

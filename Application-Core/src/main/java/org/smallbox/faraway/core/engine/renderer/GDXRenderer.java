@@ -145,7 +145,7 @@ public class GDXRenderer {
     }
 
     public void draw(String string, int textSize, int x, int y, Color color) {
-        textSize *= Application.getInstance().getConfig().uiScale;
+        textSize *= Application.configurationManager.uiScale;
 
         if (string != null) {
             _batch.begin();

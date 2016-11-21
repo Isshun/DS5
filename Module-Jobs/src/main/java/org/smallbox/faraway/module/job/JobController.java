@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.job;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.UIList;
 
@@ -47,9 +47,9 @@ public class JobController extends LuaController {
     public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
         if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.T && modifier == GameEventListener.Modifier.NONE) {
             setVisible(!isVisible());
-            UserInterface.getInstance().findById("base.ui.panel_main").setVisible(!isVisible());
+            Application.uiManager.findById("base.ui.panel_main").setVisible(!isVisible());
 
-            Log.info("jobs: " + isVisible() + ", main: " + UserInterface.getInstance().findById("base.ui.panel_main").isVisible());
+            Log.info("jobs: " + isVisible() + ", main: " + Application.uiManager.findById("base.ui.panel_main").isVisible());
         }
     }
 }

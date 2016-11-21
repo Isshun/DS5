@@ -3,6 +3,7 @@ package org.smallbox.faraway.module.character;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -15,6 +16,7 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Strings;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.module.character.controller.CharacterController;
@@ -34,6 +36,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @ModuleSerializer(CharacterModuleSerializer.class)
+@ModuleRenderer(CharacterRenderer.class)
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @BindLuaController
     private CharacterController _controller;
@@ -64,8 +67,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.addRender(new CharacterRenderer(this));
-
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override
             public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
@@ -77,7 +78,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _jobs.addPriorityCheck(new CheckCharacterEnergyCritical());
         _jobs.addPriorityCheck(new CheckCharacterWaterWarning());
         _jobs.addPriorityCheck(new CheckCharacterFoodWarning());
@@ -118,11 +119,12 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onGameUpdate(Game game, int tick) {
-        // TODO
-//        // Add new born
-//        _characters.addAll(_addOnUpdate);
-//        _addOnUpdate.clear();
-//
+        // Add new born
+        if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
+            Log.info("Add new character");
+            _characters.addAll(_addOnUpdate);
+            _addOnUpdate.clear();
+        }
 
         // Remove dead characters
         _characters.stream()

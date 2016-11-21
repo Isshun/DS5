@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.module.character.model.base;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
@@ -13,7 +14,6 @@ import org.smallbox.faraway.core.game.module.character.model.*;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.MoveJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.room.model.RoomModel;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -89,11 +89,11 @@ public abstract class CharacterModel extends MovableModel {
         _talents = new CharacterTalentExtra();
 
 //        _equipments = new ArrayList<>();
-//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.regular_shirt"));
-//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.regular_pants"));
-//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.regular_shoes"));
-//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.oxygen_bottle"));
-//        _equipments.addSubJob(Data.getData().getEquipment("base.equipments.fremen_body"));
+//        _equipments.addSubJob(Application.data.getEquipment("base.equipments.regular_shirt"));
+//        _equipments.addSubJob(Application.data.getEquipment("base.equipments.regular_pants"));
+//        _equipments.addSubJob(Application.data.getEquipment("base.equipments.regular_shoes"));
+//        _equipments.addSubJob(Application.data.getEquipment("base.equipments.oxygen_bottle"));
+//        _equipments.addSubJob(Application.data.getEquipment("base.equipments.fremen_body"));
 
         _stats = new CharacterStatsExtra();
         _stats.speed = 1;
@@ -182,7 +182,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
-        PathModel path = PathManager.getInstance().getPath(_parcel, targetParcel, true, false);
+        PathModel path = Application.pathManager.getPath(_parcel, targetParcel, true, false);
 
         // No path to target parcel
         if (path == null) {
@@ -237,7 +237,7 @@ public abstract class CharacterModel extends MovableModel {
             return;
         }
 
-        _path = PathManager.getInstance().getPath(_parcel, parcel, false, false);
+        _path = Application.pathManager.getPath(_parcel, parcel, false, false);
         if (_path != null) {
             _moveListener = listener;
         } else if (listener != null) {
@@ -324,14 +324,14 @@ public abstract class CharacterModel extends MovableModel {
                     else _direction = Direction.NONE;
                 }
 
-                // Move complete, set path to null and call listener
+                // Move state, set path to null and call listener
                 else {
-                    Log.info(getName() + " Move complete (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
+                    Log.info(getName() + " Move state (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
                     _lastPath = _path;
                     _path = null;
 
                     if (_moveListener != null) {
-                        Log.info(getName() + " Move complete: call onReach");
+                        Log.info(getName() + " Move state: call onReach");
                         MoveListener listener = _moveListener;
                         _moveListener = null;
                         listener.onReach(this);

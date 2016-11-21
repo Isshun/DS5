@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game.module.area.controller;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.ui.engine.views.widgets.UIList;
 
@@ -17,8 +17,8 @@ public class AreaGardenInfoController extends LuaController {
     public void select(GardenAreaModel garden) {
         setVisible(true);
 
-        UserInterface.getInstance().findById("base.ui.panel_main").setVisible(false);
-        UserInterface.getInstance().findById("base.ui.panel_areas").setVisible(false);
+        Application.uiManager.findById("base.ui.panel_main").setVisible(false);
+        Application.uiManager.findById("base.ui.panel_areas").setVisible(false);
 
         displayAcceptedItem(garden);
     }

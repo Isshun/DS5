@@ -20,7 +20,7 @@
 //            ModuleHelper.getJobModule().closeJob(friend.getJob());
 //        }
 //
-//        PathModel path = PathManager.getInstance().getPath(character.getParcel(), friend.getParcel(), true, false);
+//        PathModel path = Application.pathManager.getPath(character.getParcel(), friend.getParcel(), true, false);
 //        if (path == null) {
 //            return null;
 //        }

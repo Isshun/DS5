@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
-import org.smallbox.faraway.ui.MouseEvent;
 import org.smallbox.faraway.ui.UISelection;
 
 import java.util.ArrayList;
@@ -143,7 +142,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     public boolean selectAt(int x, int y, int z) {
         throw new NotImplementedException("");
 
-//        Application.getInstance().notify(GameObserver::onDeselect);
+//        Application.notify(GameObserver::onDeselect);
 //
 //        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
 //        if (parcel != null) {
@@ -164,7 +163,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     }
 
     public boolean selectAt(GameEvent event, int fromX, int fromY, int fromZ, int toX, int toY, int toZ) {
-        Application.getInstance().notify(GameObserver::onDeselect);
+        Application.notify(GameObserver::onDeselect);
 
         notifyObservers(obs -> obs.onSelect(event, fromX, fromY, fromZ, toX, toY, toZ));
 
@@ -186,13 +185,13 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 
         // Add area
         if (_action == GameActionExtra.Action.SET_AREA) {
-            Application.getInstance().notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
+            Application.notify(gameObserver -> gameObserver.onAddArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
             return true;
         }
 
         // Remove area
         if (_action == GameActionExtra.Action.REMOVE_AREA) {
-            Application.getInstance().notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
+            Application.notify(gameObserver -> gameObserver.onRemoveArea(_selectedAreaType, fromX, fromY, toX, toY, floor));
             return true;
         }
 
@@ -219,7 +218,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                 // TODO
                 // Remove structure
                 if (_action == GameActionExtra.Action.REMOVE_STRUCTURE) {
-//                    Application.getInstance().notify(observer -> observer.);
+//                    Application.notify(observer -> observer.);
 //                    ModuleHelper.getWorldModule().removeStructure(x, y, WorldHelper.getCurrentFloor());
 
 //                    public void removeStructure(int x, int y, int z) {
@@ -234,7 +233,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 //                            }
 //
 //                            _structures.remove(structure);
-//                            Application.getInstance().notify(observer -> observer.onRemoveStructure(_parcels[x][y][z], structure));
+//                            Application.notify(observer -> observer.onRemoveStructure(_parcels[x][y][z], structure));
 //                        }
 //                    }
 

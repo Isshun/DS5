@@ -1,13 +1,12 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.MoveListener;
@@ -25,7 +24,7 @@ public class DumpJob extends JobModel {
 
         DumpJob job = new DumpJob(item.getParcel());
 
-        job.setLabel(Data.getString("Dump") + " " + Data.getString(item.getLabel()));
+        job.setLabel(Application.data.getString("Dump") + " " + Application.data.getString(item.getLabel()));
         job._item = item;
         job._cost = item.getInfo().cost;
         job.setOnActionListener(() -> {
@@ -47,7 +46,7 @@ public class DumpJob extends JobModel {
 //        }
 
         // No path to item
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _item.getParcel(), true, false)) {
+        if (!Application.pathManager.hasPath(character.getParcel(), _item.getParcel(), true, false)) {
             return JobCheckReturn.STAND_BY;
         }
 

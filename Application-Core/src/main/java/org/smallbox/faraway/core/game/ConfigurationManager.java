@@ -5,9 +5,9 @@ import org.json.JSONObject;
 /**
  * Created by Alex on 22/11/2015.
  */
-public class ApplicationConfig {
-    public static ApplicationConfig fromJSON(JSONObject json) {
-        ApplicationConfig config = new ApplicationConfig();
+public class ConfigurationManager {
+    public static ConfigurationManager fromJSON(JSONObject json) {
+        ConfigurationManager config = new ConfigurationManager();
 
         // Read screen info
         JSONObject jsonScreen = json.getJSONObject("screen");

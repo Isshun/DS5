@@ -37,7 +37,7 @@ public class BuffCharacterModel extends ObjectModel {
         if (this.character.isAlive()) {
             this.buff.update(this, tick);
         }
-        if (tick % Application.getInstance().getConfig().game.tickPerHour == 0) {
+        if (tick % Application.configurationManager.game.tickPerHour == 0) {
             this.buff.updateHourly(this, tick);
         }
     }

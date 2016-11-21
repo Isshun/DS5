@@ -5,7 +5,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
@@ -118,7 +117,7 @@ public class WorldHelper {
 //            return false;
 //        }
 
-        if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
+        if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(Application.configurationManager.game.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
             return false;
         }
 
@@ -318,7 +317,7 @@ public class WorldHelper {
     }
 
     public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        PathModel path = PathManager.getInstance().getPath(p1, p2, true, false);
+        PathModel path = Application.pathManager.getPath(p1, p2, true, false);
         if (path != null) {
             return path.getLength();
         }

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -8,7 +9,6 @@ import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtr
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.util.Log;
@@ -85,7 +85,7 @@ public class GatherJob extends JobModel {
             return JobCheckReturn.ABORT;
         }
 
-        if (!PathManager.getInstance().hasPath(character.getParcel(), _plant.getParcel())) {
+        if (!Application.pathManager.hasPath(character.getParcel(), _plant.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 
@@ -94,7 +94,7 @@ public class GatherJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _jobParcel, true, false);
+        PathModel path = Application.pathManager.getPath(character.getParcel(), _jobParcel, true, false);
 
         if (path != null) {
             _targetParcel = path.getLastParcel();

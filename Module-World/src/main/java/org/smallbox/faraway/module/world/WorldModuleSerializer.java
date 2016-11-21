@@ -4,16 +4,10 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
@@ -27,7 +21,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
     @Override
     public void onSave(WorldModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             int width = Game.getInstance().getInfo().worldWidth;
             int height = Game.getInstance().getInfo().worldHeight;
             int floors = Game.getInstance().getInfo().worldFloors;
@@ -121,7 +115,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
     }
 
     public void onLoad(WorldModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
             int floors = game.getInfo().worldFloors;
@@ -143,12 +137,12 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                         // Ground
                         if (!st.columnNull(3)) {
-                            parcel.setGroundInfo(Data.getData().getItemInfo(st.columnString(3)));
+                            parcel.setGroundInfo(Application.data.getItemInfo(st.columnString(3)));
                         }
 
                         // Rock
                         if (!st.columnNull(4)) {
-                            parcel.setRockInfo(Data.getData().getItemInfo(st.columnString(4)));
+                            parcel.setRockInfo(Application.data.getItemInfo(st.columnString(4)));
                         }
 
                         // Plant
@@ -156,7 +150,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
                             int plantId = st.columnInt(5);
                             stPlant.bind(1, plantId);
                             if (stPlant.step()) {
-                                PlantModel plant = new PlantModel(Data.getData().getItemInfo(stPlant.columnString(1)), plantId);
+                                PlantModel plant = new PlantModel(Application.data.getItemInfo(stPlant.columnString(1)), plantId);
                                 plant.setSeed(stPlant.columnInt(4) > 0);
                                 plant.setMaturity(stPlant.columnDouble(2));
                                 plant.setNourish(stPlant.columnDouble(3));
@@ -168,7 +162,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                         // Liquid
                         if (!st.columnNull(9)) {
-                            parcel.setLiquidInfo(Data.getData().getItemInfo(st.columnString(9)), st.columnDouble(10));
+                            parcel.setLiquidInfo(Application.data.getItemInfo(st.columnString(9)), st.columnDouble(10));
                         }
                     }
                 } finally {
@@ -182,9 +176,9 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                 module.init(game, parcels, parcelsList);
 
-                PathManager.getInstance().init(parcelsList);
+                Application.pathManager.init(parcelsList);
             } catch (SQLiteException e) {
-                Application.logger.warning("Unable to read WorldModule_parcel or WorldModule_plant table: " + e.getMessage());
+                Log.warning("Unable to read WorldModule_parcel or WorldModule_plant table: " + e.getMessage());
                 e.printStackTrace();
             }
         });

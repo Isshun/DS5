@@ -2,11 +2,11 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 
 import java.io.File;
@@ -42,7 +42,7 @@ public class LuaBindingsExtend extends LuaExtend {
             };
             bindingInfo.action = () -> value.get("on_action").call();
 
-            Data.getData().bindings.add(bindingInfo);
+            Application.data.bindings.add(bindingInfo);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

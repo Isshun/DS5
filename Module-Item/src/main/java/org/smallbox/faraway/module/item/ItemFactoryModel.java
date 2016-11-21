@@ -176,7 +176,7 @@ public class ItemFactoryModel {
 //                        .filter(consumable -> consumable.getParcel().isWalkable())
 //                        .filter(consumable -> consumable.getJob() == null)
 //                        .forEach(consumable -> {
-//                            PathModel path = PathManager.getInstance().getPath(_item.getParcel(), consumable.getParcel(), false, false);
+//                            PathModel path = Application.pathManager.getPath(_item.getParcel(), consumable.getParcel(), false, false);
 //                            if (path != null) {
 //                                potentials.addSubJob(new PotentialConsumable(consumable, path.getLength()));
 //                            }

@@ -8,14 +8,12 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.ui.GameActionExtra;
-import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.UIManager;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -28,7 +26,7 @@ public class LuaApplicationModel {
     public int                      day;
     public int                      hour;
     public int                      year;
-    public UserInterface            ui;
+    public UIManager ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
@@ -79,7 +77,7 @@ public class LuaApplicationModel {
     }
 
     public void cancel(MapObjectModel object) {
-        Application.getInstance().notify(observer -> observer.onCancelJobs(object.getParcel(), object));
+        Application.notify(observer -> observer.onCancelJobs(object.getParcel(), object));
     }
 
     public void setSpeed(int speed) {
@@ -111,7 +109,7 @@ public class LuaApplicationModel {
     }
 
     public void exit() {
-        Application.getInstance().setRunning(false);
+        Application.setRunning(false);
     }
 
     public void clearAction() {
@@ -119,10 +117,10 @@ public class LuaApplicationModel {
     }
 
     public void sendEvent(String tag) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, null));
+        Application.notify(observer -> observer.onCustomEvent(tag, null));
     }
 
     public void sendEvent(String tag, Object object) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, object));
+        Application.notify(observer -> observer.onCustomEvent(tag, object));
     }
 }

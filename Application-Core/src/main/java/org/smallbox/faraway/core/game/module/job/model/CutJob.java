@@ -70,7 +70,7 @@
 //            return false;
 //        }
 //
-//        if (!PathManager.getInstance().hasPath(character.getParcel(), _resource.getParcel())) {
+//        if (!Application.pathManager.hasPath(character.getParcel(), _resource.getParcel())) {
 //            return false;
 //        }
 //
@@ -116,7 +116,7 @@
 //
 //    @Override
 //    protected void onStart(CharacterModel character) {
-//        PathModel path = PathManager.getInstance().getBestApprox(character.getParcel(), _jobParcel);
+//        PathModel path = Application.pathManager.getBestApprox(character.getParcel(), _jobParcel);
 //
 //        if (path != null) {
 //            _targetParcel = path.getLastParcel();

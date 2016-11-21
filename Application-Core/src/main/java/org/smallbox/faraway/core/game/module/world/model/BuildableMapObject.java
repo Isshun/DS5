@@ -85,7 +85,7 @@ public class BuildableMapObject extends MapObjectModel {
 
             // Item build complete
             if (_buildProgress >= _info.build.cost) {
-                Application.getInstance().notify(observer -> observer.onObjectComplete(this));
+                Application.notify(observer -> observer.onObjectComplete(this));
                 return true;
             }
 

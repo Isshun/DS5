@@ -33,7 +33,7 @@
 //    private void addCharacter(CharacterModel character) {
 //        LuaValue luaCharacter = CoerceJavaToLua.coerce(character);
 //
-//        List<BuffCharacterModel> dataList = Data.getData().buffs.stream().map(buff -> new BuffCharacterModel(buff, luaCharacter, character)).collect(Collectors.toList());
+//        List<BuffCharacterModel> dataList = Application.data.buffs.stream().map(buff -> new BuffCharacterModel(buff, luaCharacter, character)).collect(Collectors.toList());
 //        dataList.forEach(BuffCharacterModel::start);
 //
 //        _characters.put(character, dataList);

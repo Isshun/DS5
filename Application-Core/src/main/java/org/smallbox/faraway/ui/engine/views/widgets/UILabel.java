@@ -1,9 +1,9 @@
 package org.smallbox.faraway.ui.engine.views.widgets;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.util.StringUtils;
 
 public class UILabel extends View {
@@ -42,7 +42,7 @@ public class UILabel extends View {
 
         int hash = string.hashCode();
         if (hash != _hash1) {
-            setStringValue(Data.getData() != null && Data.getData().hasString(hash) ? Data.getData().getString(hash) : string);
+            setStringValue(Application.data != null && Application.data.hasString(hash) ? Application.data.getString(hash) : string);
         }
         return this;
     }
@@ -54,8 +54,8 @@ public class UILabel extends View {
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2) {
-            str1 = Data.getData() != null && Data.getData().hasString(hash1) ? Data.getData().getString(hash1) : str1;
-            str2 = Data.getData() != null && Data.getData().hasString(hash2) ? Data.getData().getString(hash2) : str2;
+            str1 = Application.data != null && Application.data.hasString(hash1) ? Application.data.getString(hash1) : str1;
+            str2 = Application.data != null && Application.data.hasString(hash2) ? Application.data.getString(hash2) : str2;
             setStringValue(str1 + str2);
         }
     }
@@ -73,9 +73,9 @@ public class UILabel extends View {
         int hash2 = str2.hashCode();
         int hash3 = str3.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3) {
-            str1 = Data.getData() != null && Data.getData().hasString(hash1) ? Data.getData().getString(hash1) : str1;
-            str2 = Data.getData() != null && Data.getData().hasString(hash2) ? Data.getData().getString(hash2) : str2;
-            str3 = Data.getData() != null && Data.getData().hasString(hash3) ? Data.getData().getString(hash3) : str3;
+            str1 = Application.data != null && Application.data.hasString(hash1) ? Application.data.getString(hash1) : str1;
+            str2 = Application.data != null && Application.data.hasString(hash2) ? Application.data.getString(hash2) : str2;
+            str3 = Application.data != null && Application.data.hasString(hash3) ? Application.data.getString(hash3) : str3;
             setStringValue(str1 + str2 + str3);
         }
     }
@@ -91,10 +91,10 @@ public class UILabel extends View {
         int hash3 = str3.hashCode();
         int hash4 = str4.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3 || hash4 != _hash4) {
-            str1 = Data.getData() != null && Data.getData().hasString(hash1) ? Data.getData().getString(hash1) : str1;
-            str2 = Data.getData() != null && Data.getData().hasString(hash2) ? Data.getData().getString(hash2) : str2;
-            str3 = Data.getData() != null && Data.getData().hasString(hash3) ? Data.getData().getString(hash3) : str3;
-            str4 = Data.getData() != null && Data.getData().hasString(hash4) ? Data.getData().getString(hash4) : str4;
+            str1 = Application.data != null && Application.data.hasString(hash1) ? Application.data.getString(hash1) : str1;
+            str2 = Application.data != null && Application.data.hasString(hash2) ? Application.data.getString(hash2) : str2;
+            str3 = Application.data != null && Application.data.hasString(hash3) ? Application.data.getString(hash3) : str3;
+            str4 = Application.data != null && Application.data.hasString(hash4) ? Application.data.getString(hash4) : str4;
             setStringValue(str1 + str2 + str3 + str4);
         }
     }
@@ -108,7 +108,7 @@ public class UILabel extends View {
         // TODO
         int hash = string.hashCode();
 //        if (hash != _hash1) {
-            string = Data.getData() != null && Data.getData().hasString(hash) ? Data.getData().getString(hash) : string;
+            string = Application.data != null && Application.data.hasString(hash) ? Application.data.getString(hash) : string;
         setStringValue(String.format(string, value));
 //        }
     }
@@ -122,7 +122,7 @@ public class UILabel extends View {
 //        // TODO
 //        int hash = string.hashCode();
 ////        if (hash != _hash1) {
-//            string = Data.getData() != null && Data.getData().hasString(hash) ? Data.getData().getString(hash) : string;
+//            string = Application.data != null && Application.data.hasString(hash) ? Application.data.getString(hash) : string;
 //            setStringValue(String.format(string, value));
 ////        }
 //    }

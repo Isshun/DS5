@@ -36,11 +36,11 @@
 //    public void onAddCharacter(CharacterModel character) {
 //        // TODO
 ////        org.smallbox.faraway.module.character.model.StuffModel stuff = new org.smallbox.faraway.module.character.model.StuffModel();
-////        stuff.add(Data.getData().getEquipment("base.equipments.regular_shirt"));
-////        stuff.add(Data.getData().getEquipment("base.equipments.regular_pants"));
-////        stuff.add(Data.getData().getEquipment("base.equipments.regular_shoes"));
-////        stuff.add(Data.getData().getEquipment("base.equipments.oxygen_bottle"));
-////        stuff.add(Data.getData().getEquipment("base.equipments.fremen_body"));
+////        stuff.add(Application.data.getEquipment("base.equipments.regular_shirt"));
+////        stuff.add(Application.data.getEquipment("base.equipments.regular_pants"));
+////        stuff.add(Application.data.getEquipment("base.equipments.regular_shoes"));
+////        stuff.add(Application.data.getEquipment("base.equipments.oxygen_bottle"));
+////        stuff.add(Application.data.getEquipment("base.equipments.fremen_body"));
 ////
 ////        for (ItemInfo item: stuff.getItemsInfo()) {
 ////            if (item.equipment.effects != null) {

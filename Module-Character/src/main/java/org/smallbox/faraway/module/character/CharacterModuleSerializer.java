@@ -8,8 +8,8 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.HumanModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
 import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.util.Log;
 
 public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
 
@@ -18,7 +18,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
 
     @Override
     public void onSave(CharacterModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE characters (id INTEGER, x INTEGER, y INTEGER, z INTEGER, firstname TEXT, lastname TEXT)");
                 SQLiteStatement st = db.prepare("INSERT INTO characters (id, x, y, z, firstname, lastname) VALUES (?, ?, ?, ?, ?, ?)");
@@ -45,7 +45,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
     }
 
     public void onLoad(CharacterModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 SQLiteStatement st = db.prepare("SELECT id, x, y, z, firstname, lastname FROM characters");
                 try {
@@ -63,7 +63,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                     st.dispose();
                 }
             } catch (SQLiteException e) {
-                Application.logger.warning("Unable to read characters table: " + e.getMessage());
+                Log.warning("Unable to read characters table: " + e.getMessage());
             }
         });
     }

@@ -1,13 +1,13 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.apache.commons.lang3.NotImplementedException;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.game.module.character.model.PathModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
@@ -68,7 +68,7 @@ public class ConsumeJob extends JobModel {
         }
 
         // Path exists
-        if (PathManager.getInstance().hasPath(character.getParcel(), _consumable.getParcel(), true, false)) {
+        if (Application.pathManager.hasPath(character.getParcel(), _consumable.getParcel(), true, false)) {
             return JobCheckReturn.ABORT;
         }
 
@@ -82,7 +82,7 @@ public class ConsumeJob extends JobModel {
             return;
         }
 
-        PathModel path = PathManager.getInstance().getPath(character.getParcel(), _consumable.getParcel(), true, false);
+        PathModel path = Application.pathManager.getPath(character.getParcel(), _consumable.getParcel(), true, false);
         if (path == null) {
             _status = JobStatus.ABORTED;
             return;

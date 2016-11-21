@@ -2,10 +2,10 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
@@ -27,15 +27,15 @@ public class LuaLangExtend extends LuaExtend {
                 String str2 = luaStrings.get(i).get(2).toString();
 
                 // Exact case
-                Data.getData().strings.put(str1.hashCode(), str2);
+                Application.data.strings.put(str1.hashCode(), str2);
 
                 // Lower case
                 if (!str1.toLowerCase().equals(str1)) {
-                    Data.getData().strings.put(str1.toLowerCase().hashCode(), str2.toLowerCase());
+                    Application.data.strings.put(str1.toLowerCase().hashCode(), str2.toLowerCase());
                 }
 
                 // Capitalized
-                Data.getData().strings.put(
+                Application.data.strings.put(
                         (Character.toUpperCase(str1.toLowerCase().charAt(0)) + str1.substring(1)).hashCode(),
                         Character.toUpperCase(str2.toLowerCase().charAt(0)) + str2.substring(1));
             }

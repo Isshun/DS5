@@ -1,7 +1,7 @@
 package org.smallbox.faraway.ui;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.CategoryInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -26,10 +26,10 @@ public class LuaDataModel {
 
     public LuaDataModel(OnExtendListener extendListener) {
         _extendListener = extendListener;
-        this.networks = Data.getData().networks;
-        this.items = Data.getData().items;
-        this.categories = Data.getData().categories;
-        this.planets = Data.getData().planets;
+        this.networks = Application.data.networks;
+        this.items = Application.data.items;
+        this.categories = Application.data.categories;
+        this.planets = Application.data.planets;
     }
 
     @SuppressWarnings("unused")

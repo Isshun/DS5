@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
-import org.apache.commons.lang3.builder.RecursiveToStringStyle;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 /**
  * Created by Alex on 04/11/2015.
  */

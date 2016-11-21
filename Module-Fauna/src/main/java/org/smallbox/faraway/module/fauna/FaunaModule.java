@@ -15,7 +15,7 @@ public class FaunaModule extends GameModule {
     private List<RegionInfo.RegionFauna>    FAUNA_UNUSUAL_POOL = new ArrayList<>();
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         printInfo("[FaunaModule] loads");
 
         RegionInfo region = Game.getInstance().getInfo().region;

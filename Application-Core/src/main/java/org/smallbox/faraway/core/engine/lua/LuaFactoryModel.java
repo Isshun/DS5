@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Application;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -23,6 +23,6 @@ public class LuaFactoryModel {
     }
 
     public LuaConsumableModel createConsumable(String itemName, int quantity) {
-        return new LuaConsumableModel(Data.getData().getItemInfo(itemName), quantity);
+        return new LuaConsumableModel(Application.data.getItemInfo(itemName), quantity);
     }
 }

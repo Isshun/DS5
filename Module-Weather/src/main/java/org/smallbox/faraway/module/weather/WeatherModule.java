@@ -3,7 +3,6 @@ package org.smallbox.faraway.module.weather;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -43,14 +42,14 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     private double[]                            _temperatureTargetByFloor;
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _floors = game.getInfo().worldFloors;
         _temperatures = game.getInfo().region.temperatures;
         _temperatureByFloor = new double[_floors];
         _temperatureTargetByFloor = new double[_floors];
         _lightTarget = 1;
         _lightProgress = 1;
-        _weather = Data.getData().getWeather(game.getInfo().region.weather.get(0).name);
+        _weather = Application.data.getWeather(game.getInfo().region.weather.get(0).name);
 
         // TODO
 //        ModuleHelper.getWorldModule().setLight(1);
@@ -88,7 +87,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     }
 
     private void setHour(PlanetInfo.DayTime hourInfo) {
-        _lightChange = 1 / hourInfo.duration / Application.getInstance().getConfig().game.tickPerHour;
+        _lightChange = 1 / hourInfo.duration / Application.configurationManager.game.tickPerHour;
         _lightProgress = 0;
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;
@@ -97,7 +96,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
             switchSunColor(_weather.sun, _dayTime);
         }
 
-        Application.getInstance().notify(observer -> observer.onDayTimeChange(hourInfo));
+        Application.notify(observer -> observer.onDayTimeChange(hourInfo));
     }
 
     public WeatherInfo getWeather() { return _weather; }
@@ -144,13 +143,13 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 
     private void loadRandomWeather() {
         List<String> allowedWeathers = Game.getInstance().getInfo().region.weather.stream().map(weather -> weather.name).collect(Collectors.toList());
-        List<WeatherInfo> allWeathers = Data.getData().weathers.values().stream().collect(Collectors.toList());
+        List<WeatherInfo> allWeathers = Application.data.weathers.values().stream().collect(Collectors.toList());
         Collections.shuffle(allWeathers);
         Optional<WeatherInfo> optionalWeather = allWeathers.stream().filter(weather -> allowedWeathers.contains(weather.name)).findFirst();
         if (optionalWeather.isPresent()) {
             loadWeather(optionalWeather.get());
         } else {
-            loadWeather(Data.getData().weathers.get("base.weather.regular"));
+            loadWeather(Application.data.weathers.get("base.weather.regular"));
         }
     }
 

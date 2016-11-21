@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Constant;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GameActionExtra {
@@ -35,8 +34,8 @@ public class GameActionExtra {
         FRONT, RAMP_UP, RAMP_DOWN, HOLE
     }
 
-    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+//    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+//    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 
     Action                              _action;
     int                                 _startPressX;
@@ -71,23 +70,23 @@ public class GameActionExtra {
         // Left click
         if (action == GameEventListener.Action.RELEASED) {
             if (!event.consumed) {
-                Application.getInstance().notify(obs -> obs.onMouseRelease(event));
+                Application.notify(obs -> obs.onMouseRelease(event));
             }
 
             if (!event.consumed && _mouseEvent.x < 1500) {
-                Application.getInstance().notify(obs -> obs.onClickOnMap(event));
+                Application.notify(obs -> obs.onClickOnMap(event));
             }
         }
 
         if (action == GameEventListener.Action.PRESSED) {
             if (!event.consumed) {
-                Application.getInstance().notify(obs -> obs.onMousePress(event));
+                Application.notify(obs -> obs.onMousePress(event));
             }
         }
 
         if (action == GameEventListener.Action.MOVE) {
             if (!event.consumed) {
-                Application.getInstance().notify(observer -> observer.onMouseMove(event));
+                Application.notify(observer -> observer.onMouseMove(event));
             }
         }
     }
@@ -157,7 +156,7 @@ public class GameActionExtra {
     }
 
     private void planCancel(int x, int y, int z) {
-        Application.getInstance().notify(obs -> obs.onCancelJobs(WorldHelper.getParcel(x, y, z), null));
+        Application.notify(obs -> obs.onCancelJobs(WorldHelper.getParcel(x, y, z), null));
     }
 
     public void planMining(int x, int y, int z, DigMode mode) {
@@ -165,19 +164,19 @@ public class GameActionExtra {
 
 //        if (mode == DigMode.RAMP_DOWN) {
 //            if (WorldHelper.hasRock(x, y, z - 1)) {
-//                DigJob job = JobHelper.createMiningJob(x, y, z - 1, true, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link"));
+//                DigJob job = JobHelper.createMiningJob(x, y, z - 1, true, WorldHelper.getParcel(x, y, z), Application.data.getItemInfo("base.ground.link"));
 //                ModuleHelper.getJobModule().addJob(job);
 //            }
 //            if (WorldHelper.hasRock(x, y, z)) {
-//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo("base.ground.link")));
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, false, WorldHelper.getParcel(x, y, z), Application.data.getItemInfo("base.ground.link")));
 //            }
 //        }
 //        if (mode == DigMode.RAMP_UP) {
 //            if (WorldHelper.hasRock(x, y, z + 1)) {
-//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z + 1, false, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z + 1, false, WorldHelper.getParcel(x, y, z + 1), Application.data.getItemInfo("base.ground.link")));
 //            }
 //            if (WorldHelper.hasRock(x, y, z)) {
-//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, true, WorldHelper.getParcel(x, y, z + 1), Data.getData().getItemInfo("base.ground.link")));
+//                ModuleHelper.getJobModule().addJob(JobHelper.createMiningJob(x, y, z, true, WorldHelper.getParcel(x, y, z + 1), Application.data.getItemInfo("base.ground.link")));
 //            }
 //        }
 //        if (mode == DigMode.HOLE) {
@@ -302,12 +301,12 @@ public class GameActionExtra {
 //            case BUILD_ITEM:
 //                break;
 //            case SET_AREA:
-//                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
+//                Game.getInstance().setCursor(Application.data.getCursor("base.cursor.area"));
 //                break;
 //            case PUT_ITEM_FREE:
 //                break;
 //            case REMOVE_AREA:
-//                Game.getInstance().setCursor(Data.getData().getCursor("base.cursor.area"));
+//                Game.getInstance().setCursor(Application.data.getCursor("base.cursor.area"));
 //                break;
 //            case SET_PLAN:
 //                break;

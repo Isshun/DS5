@@ -2,10 +2,10 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 
@@ -70,6 +70,6 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
             }
         });
 
-        Data.getData().diseases.add(disease);
+        Application.data.diseases.add(disease);
     }
 }

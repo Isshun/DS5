@@ -1,30 +1,22 @@
 package org.smallbox.faraway.module.flora;
 
+import org.smallbox.faraway.BindManager;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 
 public class FloraTopRenderer extends BaseRenderer {
-    private final FloraModule _floraModule;
-    protected SpriteManager _spriteManager;
+
+    @BindModule
+    private FloraModule floraModule;
+
+    @BindManager
+    protected SpriteManager spriteManager;
+
     protected MapObjectModel    _itemSelected;
-    private int                 _floor;
-    private int                 _width;
-    private int                 _height;
-
-    public FloraTopRenderer(FloraModule floraModule) {
-        _floraModule = floraModule;
-    }
-
-    @Override
-    protected void onGameStart(Game game) {
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
-        _spriteManager = SpriteManager.getInstance();
-    }
 
     @Override
     public int getLevel() {
@@ -33,7 +25,7 @@ public class FloraTopRenderer extends BaseRenderer {
 
     @Override
     protected void onGameUpdate() {
-        _floraModule.getPlants().forEach(plant -> {
+        floraModule.getPlants().forEach(plant -> {
             if (plant.getInfo().graphics != null) {
                 ParcelModel parcel = plant.getParcel();
                 ItemInfo plantInfo = plant.getInfo();
@@ -58,11 +50,6 @@ public class FloraTopRenderer extends BaseRenderer {
 
     @Override
     public void onRefresh(int frame) {
-    }
-
-    @Override
-    public void onFloorChange(int floor) {
-        _floor = floor;
     }
 
     @Override

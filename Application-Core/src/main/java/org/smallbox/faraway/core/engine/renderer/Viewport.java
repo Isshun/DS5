@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.renderer;
 
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 
@@ -26,10 +27,11 @@ public class Viewport {
     private int         _scaleAnim;
     private int         _zoom = ZOOM_LEVELS.length - 1;
     private int         _floor;
+    private int         _worldX;
+    private int         _worldY;
 
     public Viewport(int x, int y) {
-        _posX = x;
-        _posY = y;
+        setPosition(x, y);
         _lastPosX = 0;
         _lastPosY = 0;
         _width = Constant.WINDOW_WIDTH - Constant.PANEL_WIDTH;
@@ -39,24 +41,28 @@ public class Viewport {
     public void update(int x, int y) {
         x *= (1 + (1 - ZOOM_LEVELS[_zoom])) * 4;
         y *= (1 + (1 - ZOOM_LEVELS[_zoom])) * 4;
-        if (x != 0 || y != 0) {
-            Log.info("drag: " + (_lastPosX - x) + "x" + (_lastPosY - y));
 
-            _posX -= (_lastPosX - x);
-            _posY -= (_lastPosY - y);
+        if (x != 0 || y != 0) {
+            setPosition(_posX - (_lastPosX - x), _posY - (_lastPosY - y));
             _lastPosX = x;
             _lastPosY = y;
         }
     }
 
     public void moveTo(int x, int y) {
-        _posX = (-x * Constant.TILE_WIDTH) + (50/2 * Constant.TILE_WIDTH);
-        _posY = (-y * Constant.TILE_HEIGHT) + (40/2 * Constant.TILE_HEIGHT);
+        setPosition(
+                (-x * Constant.TILE_WIDTH) + (50/2 * Constant.TILE_WIDTH),
+                (-y * Constant.TILE_HEIGHT) + (40/2 * Constant.TILE_HEIGHT));
     }
 
     public void setPosition(int x, int y) {
+        Log.debug("set position to: " + x + "x" + y);
+
         _posX = x;
         _posY = y;
+
+        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_WIDTH) * getScale());
+        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_HEIGHT) * getScale());
     }
 
     public int   getPosX() { return _posX; }
@@ -64,12 +70,16 @@ public class Viewport {
     public int   getWidth() { return _width; }
     public int   getHeight() { return _height; }
 
+    public int                      getRelativePosX() { return (int) ((-getPosX()) / getScale() / Constant.TILE_WIDTH); }
+    public int                      getRelativePosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
+
     public void setScale(int delta, int x, int y) {
     }
 
     public void setZoom(int zoom) {
-        _posX += ((ZOOM_LEVELS[_zoom] * 1500) - (ZOOM_LEVELS[zoom] * 1500));
-        _posY += ((ZOOM_LEVELS[_zoom] * 1200) - (ZOOM_LEVELS[zoom] * 1200));
+        setPosition(
+                (int)(_posX + ((ZOOM_LEVELS[_zoom] * 1500) - (ZOOM_LEVELS[zoom] * 1500))),
+                (int)(_posY + ((ZOOM_LEVELS[_zoom] * 1200) - (ZOOM_LEVELS[zoom] * 1200))));
         _zoom = zoom;
     }
 
@@ -98,5 +108,12 @@ public class Viewport {
     public void setPosition(int x, int y, int z) {
         setPosition(x, y);
         _floor = z;
+    }
+
+    public boolean hasParcel(ParcelModel parcel) {
+        return parcel != null
+                && parcel.z == _floor
+                && parcel.x >= _worldX && parcel.x <= _worldX + 50
+                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }
 }

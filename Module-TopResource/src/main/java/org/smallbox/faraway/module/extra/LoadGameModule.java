@@ -2,12 +2,10 @@ package org.smallbox.faraway.module.extra;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.core.engine.module.ApplicationModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +44,7 @@ public class LoadGameModule extends ApplicationModule {
             }
         });
 
-        Application.getInstance().notify(observer -> observer.onCustomEvent("on_refresh_save_directory", null));
+        Application.notify(observer -> observer.onCustomEvent("on_refresh_save_directory", null));
     }
 
     @Override

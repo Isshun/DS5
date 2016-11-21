@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.module.area.model;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
@@ -21,13 +20,13 @@ public class StorageAreaModel extends AreaModel {
     public StorageAreaModel() {
         super(AreaType.STORAGE);
         _index = ++_count;
-        _items = Data.getData().consumables.stream().collect(Collectors.toMap(item -> item, b -> false));
+        _items = Application.data.consumables.stream().collect(Collectors.toMap(item -> item, b -> false));
     }
 
     @Override
     public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
         _items.put(itemInfo, isAccepted);
-        Application.getInstance().notify(observer -> observer.onStorageRulesChanged(this));
+        Application.notify(observer -> observer.onStorageRulesChanged(this));
     }
 
     public Map<ItemInfo, Boolean>   getItemsAccepts() { return _items; }
@@ -75,7 +74,7 @@ public class StorageAreaModel extends AreaModel {
 //        ParcelModel bestParcel = null;
 //        for (ParcelModel parcel: _parcels) {
 //            // Storage parcel have similar consumable
-//            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Application.getInstance().getConfig().game.storageMaxQuantity, consumable.getInfo().stack)) {
+//            if (parcel.getConsumable() != null && parcel.getConsumable().getInfo() == consumable.getInfo() && parcel.getConsumable().getQuantity() < Math.max(Application.config.game.storageMaxQuantity, consumable.getInfo().stack)) {
 //                bestParcel = parcel;
 //                break;
 //            }

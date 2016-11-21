@@ -23,11 +23,6 @@ public class LogModule extends GameModule {
     );
 
     @Override
-    protected void onGameStart(Game game) {
-
-    }
-
-    @Override
     protected void onGameUpdate(Game game, int tick) {
 
     }

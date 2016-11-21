@@ -1,15 +1,16 @@
 package org.smallbox.faraway.module.minimap;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.ui.UserInterface;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
+@ModuleRenderer(MinimapRenderer.class)
 public class MiniMapModule extends GameModule {
     private static final int    FRAME_WIDTH = 352;
     private static final int    FRAME_HEIGHT = 220;
@@ -40,12 +41,12 @@ public class MiniMapModule extends GameModule {
 
     @Override
     public void onReloadUI() {
-        _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
+        _panelMain = Application.uiManager.findById("base.ui.panel_main");
     }
 
     @Override
-    protected void onGameStart(Game game) {
-        _panelMain = UserInterface.getInstance().findById("base.ui.panel_main");
+    public void onGameStart(Game game) {
+        _panelMain = Application.uiManager.findById("base.ui.panel_main");
     }
 
     @Override

@@ -3,12 +3,12 @@ package org.smallbox.faraway.module.world;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.renderer.GetParcelListener;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.BindLuaController;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @ModuleSerializer(WorldModuleSerializer.class)
+@ModuleRenderer({WorldGroundRenderer.class, WorldTopRenderer.class})
 public class WorldModule extends GameModule<WorldModuleObserver> {
     @BindModule
     private JobModule _jobs;
@@ -45,13 +46,10 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     @Override
     protected void onGameCreate(Game game) {
         _viewport = game.getViewport();
-
-        game.addRender(new WorldGroundRenderer(this));
-        game.addRender(new WorldTopRenderer(this));
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         assert _game != null;
     }
 
@@ -109,7 +107,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 
     // Used only by serializers
     public void putObject(String name, int x, int y, int z, int data, boolean complete) {
-        putObject(WorldHelper.getParcel(x, y, z), Data.getData().getItemInfo(name), data, complete);
+        putObject(WorldHelper.getParcel(x, y, z), Application.data.getItemInfo(name), data, complete);
     }
 
     public void replaceGround(ParcelModel parcel, ItemInfo groundInfo) {
@@ -117,7 +115,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             ParcelModel parcelBottom = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
             if (parcelBottom != null && !parcelBottom.hasRock()) {
                 parcel.setGroundInfo(groundInfo);
-                Application.getInstance().notify(observer -> observer.onChangeGround(parcel));
+                Application.notify(observer -> observer.onChangeGround(parcel));
             }
         }
     }
@@ -127,7 +125,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     }
 
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-        Application.getInstance().notify(observer -> observer.putObject(parcel, itemInfo, data, complete));
+        Application.notify(observer -> observer.putObject(parcel, itemInfo, data, complete));
 
         if (parcel != null) {
             notifyObservers(observer -> observer.putObject(parcel, itemInfo, data, complete));
@@ -199,7 +197,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //    private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
 //        if (parcel != null && item != null) {
 //            moveItemToParcel(parcel, null);
-//            Application.getInstance().notify(observer -> observer.onRefreshItem(item));
+//            Application.notify(observer -> observer.onRefreshItem(item));
 //            return item;
 //        }
 //        printError("Area or item is null");
@@ -220,7 +218,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             return;
         }
 
-        Application.getInstance().notify(observer -> observer.removeObject(mapObject));
+        Application.notify(observer -> observer.removeObject(mapObject));
     }
 
 //    // TODO
@@ -281,7 +279,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             _floor++;
             _viewport.setFloor(_floor);
             WorldHelper.setCurrentFloor(_floor);
-            Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
+            Application.notify(observer -> observer.onFloorChange(_floor));
         }
     }
 
@@ -291,7 +289,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
             _floor--;
             _viewport.setFloor(_floor);
             WorldHelper.setCurrentFloor(_floor);
-            Application.getInstance().notify(observer -> observer.onFloorChange(_floor));
+            Application.notify(observer -> observer.onFloorChange(_floor));
         }
     }
 }

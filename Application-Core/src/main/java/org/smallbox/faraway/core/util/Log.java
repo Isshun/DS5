@@ -2,11 +2,10 @@ package org.smallbox.faraway.core.util;
 
 import org.apache.commons.lang3.builder.RecursiveToStringStyle;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import org.smallbox.faraway.core.Application;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 import java.util.logging.*;
 
 /**
@@ -18,9 +17,9 @@ public class Log {
     private final static Logger logger = Logger.getLogger("FarAway");
 
     static {
-        logger.setLevel(Level.ALL);
+        logger.setLevel(Level.SEVERE);
         ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.ALL);
+        consoleHandler.setLevel(Level.SEVERE);
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
             public String format(LogRecord record) {
@@ -47,6 +46,11 @@ public class Log {
     }
 
     public static void error(Throwable t) {
+        printError(t);
+        Application.exitWithError();
+    }
+
+    private static void printError(Throwable t) {
         logger.severe(t.getMessage());
         for (StackTraceElement element: t.getStackTrace()) {
             logger.severe(element.toString());
@@ -54,7 +58,7 @@ public class Log {
 
         if (t.getCause() != null) {
             logger.severe("Cause by:");
-            error(t.getCause());
+            printError(t.getCause());
         }
     }
 
@@ -63,10 +67,7 @@ public class Log {
         for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
             logger.severe(element.toString());
         }
-
-        if (EXIT_ON_ERROR) {
-            System.exit(1);
-        }
+        Application.exitWithError();
     }
 
     public static void error(String message, Object... args) {

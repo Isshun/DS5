@@ -6,7 +6,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
@@ -44,7 +43,7 @@ public class LuaItemExtend extends LuaExtend {
         _cache.put(name, value);
 
         ItemInfo itemInfo = null;
-        for (ItemInfo info: Data.getData().items) {
+        for (ItemInfo info: Application.data.items) {
             if (info.name != null && info.name.equals(name)) {
                 itemInfo = info;
             }
@@ -53,7 +52,7 @@ public class LuaItemExtend extends LuaExtend {
         if (itemInfo == null) {
             itemInfo = new ItemInfo();
             itemInfo.dataDirectory = dataDirectory;
-            Data.getData().items.add(itemInfo);
+            Application.data.items.add(itemInfo);
         }
 
 //        if (!value.get("parent").isnil()) {
@@ -133,7 +132,7 @@ public class LuaItemExtend extends LuaExtend {
             if (!componentsValue.isnil()) {
                 for (int i = 1; i <= componentsValue.length(); i++) {
                     ItemInfo.ItemBuildInfo.ItemBuildComponentInfo componentInfo = new ItemInfo.ItemBuildInfo.ItemBuildComponentInfo();
-                    Data.getData().getAsync(componentsValue.get(i).get("id").toString(), component -> componentInfo.component = component);
+                    Application.data.getAsync(componentsValue.get(i).get("id").toString(), component -> componentInfo.component = component);
                     componentInfo.count = componentsValue.get(i).get("count").toint();
                     itemInfo.build.components.add(componentInfo);
 
@@ -149,7 +148,7 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
 
-        itemInfo.stack = getInt(value, "stack", Application.getInstance().getConfig().game.storageMaxQuantity);
+        itemInfo.stack = getInt(value, "stack", Application.configurationManager.game.storageMaxQuantity);
 
         if (!value.get("floor").isnil()) {
             itemInfo.isFloor = true;

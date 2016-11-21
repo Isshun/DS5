@@ -4,63 +4,88 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
-import org.smallbox.faraway.core.game.ApplicationConfig;
+import org.smallbox.faraway.core.game.ConfigurationManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.module.path.PathManager;
+import org.smallbox.faraway.core.game.module.world.SQLManager;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.MouseEvent;
-import org.smallbox.faraway.ui.UserInterface;
+import org.smallbox.faraway.ui.UIManager;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
-public class Application implements GameEventListener {
-    public final static DependencyInjector      dependencyInjector;
-    public final static GameManager             gameManager;
-    public final static Logger                  logger;
+public class Application {
+    public static final DependencyInjector      dependencyInjector;
+
+    // Server
+    public static final GameManager             gameManager;
+    public static final PathManager             pathManager;
+    public static final SpriteManager           spriteManager;
+    public static final TaskManager             taskManager;
+    public static final SQLManager              sqlManager;
+    public static final Data                    data;
+
+    // Both
+    public static final ConfigurationManager    configurationManager;
+
+    // Client
+    public static final UIManager               uiManager;
+    public static final InputManager            inputManager;
+
+    public static boolean isLoaded = false;
 
     static {
         dependencyInjector = new DependencyInjector();
         gameManager = dependencyInjector.create(GameManager.class);
-        logger = Logger.getAnonymousLogger();
+        pathManager = dependencyInjector.create(PathManager.class);
+        uiManager = dependencyInjector.create(UIManager.class);
+        spriteManager = dependencyInjector.create(SpriteManager.class);
+        taskManager = dependencyInjector.create(TaskManager.class);
+        sqlManager = dependencyInjector.create(SQLManager.class);
+        data = dependencyInjector.create(Data.class);
+
+        // Create configurationManager
+        configurationManager = loadConfig();
+
+        // Create input processor
+        inputManager = new InputManager();
     }
 
-    private static Application              _self;
-    private boolean                         _isRunning = true;
-    private GDXInputProcessor               _inputProcessor;
-    private long                            _nextDataUpdate;
-    private long                            _dataLastModified = Utils.getLastDataModified();
-    private Collection<GameObserver>        _observers = new LinkedBlockingQueue<>();
-    public ConfigChangeListener             _configChangeListener;
-    private ApplicationConfig               _config;
-
-    public static Application getInstance() {
-        if (_self == null) {
-            _self = new Application();
+    private static ConfigurationManager loadConfig() {
+        Log.info("Load application configurationManager");
+        try (FileInputStream fis = new FileInputStream(new File("data/config.json"))) {
+            return ConfigurationManager.fromJSON(Utils.toJSON(fis));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return _self;
+        return null;
     }
 
-    public void                 addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
-    public void                 setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }
-    public void                 setInputProcessor(GDXInputProcessor inputProcessor) { _inputProcessor = inputProcessor; }
-    public GDXInputProcessor    getInputProcessor() { return _inputProcessor; }
-    public boolean              isRunning() { return _isRunning; }
-    public void                 addObserver(GameObserver observer) { assert observer != null; _observers.add(observer); }
-    public void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ApplicationConfig    getConfig() { return _config; }
-    public void                 setConfig(ApplicationConfig config) { _config = config; }
+    private static boolean                          _isRunning = true;
+    private long                                    _nextDataUpdate;
+    private long                                    _dataLastModified = Utils.getLastDataModified();
+    private static Collection<GameObserver>         _observers = new LinkedBlockingQueue<>();
 
-    @Override
-    public void onKeyEvent(Action action, Key key, Modifier modifier) {
+    public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
+    public static void          setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }
+    public boolean              isRunning() { return _isRunning; }
+    public static void          addObserver(GameObserver observer) { assert observer != null; _observers.add(observer); }
+    public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
+    public ConfigurationManager getConfig() { return configurationManager; }
+
+    public static void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
         ApplicationShortcutManager.onKeyPress(key, modifier);
 
-        UserInterface.getInstance().onKeyEvent(action, key, modifier);
+        Application.uiManager.onKeyEvent(action, key, modifier);
 
         if (Application.gameManager.isLoaded()) {
             notify(observer -> observer.onKeyPress(key));
@@ -68,16 +93,14 @@ public class Application implements GameEventListener {
         }
     }
 
-    @Override
-    public void onWindowEvent(Action action) {
-        UserInterface.getInstance().onWindowEvent(action);
+    public void onWindowEvent(GameEventListener.Action action) {
+        Application.uiManager.onWindowEvent(action);
     }
 
-    @Override
-    public void onMouseEvent(Action action, MouseButton button, int x, int y, boolean rightPressed) {
+    public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
 
-        if (UserInterface.getInstance().onMouseEvent(event, action, button, x, y, rightPressed)) {
+        if (Application.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
             return;
         }
 
@@ -88,7 +111,7 @@ public class Application implements GameEventListener {
             }
         }
 
-//        UserInterface.getInstance().onMouseEvent(action, button, x, y, rightPressed);
+//        Application.uiManager.onMouseEvent(action, button, x, y, rightPressed);
     }
 
     public void update() {
@@ -99,27 +122,32 @@ public class Application implements GameEventListener {
         // Reload data
         if (_nextDataUpdate < System.currentTimeMillis()) {
             _nextDataUpdate = System.currentTimeMillis() + Constant.RELOAD_DATA_INTERVAL;
-            Application.getInstance().addTask(() -> {
+            Application.addTask(() -> {
                 long lastResModified = Utils.getLastDataModified();
-                if (Data.getData().needUIRefresh || lastResModified > _dataLastModified) {
-                    Data.getData().needUIRefresh = false;
+                if (Application.data.needUIRefresh || lastResModified > _dataLastModified) {
+                    Application.data.needUIRefresh = false;
                     _dataLastModified = lastResModified;
-                    UserInterface.getInstance().reload();
-                    SpriteManager.getInstance().reload();
-                    Application.getInstance().notify(GameObserver::onReloadUI);
+                    Application.uiManager.reload();
+                    Application.spriteManager.reload();
+                    Application.notify(GameObserver::onReloadUI);
                     Log.info("Data reloaded");
-                    UserInterface.getInstance().restore();
+                    Application.uiManager.restore();
                 }
             });
         }
     }
 
-    public void notify(Consumer<GameObserver> action) {
+    public static void notify(Consumer<GameObserver> action) {
         try {
-            _observers.stream().forEach(action::accept);
+            _observers.forEach(action);
         } catch (Error | RuntimeException e) {
-            Application.getInstance().setRunning(false);
+            setRunning(false);
             e.printStackTrace();
         }
+    }
+
+    public static void exitWithError() {
+        _isRunning = false;
+        Gdx.app.exit();
     }
 }

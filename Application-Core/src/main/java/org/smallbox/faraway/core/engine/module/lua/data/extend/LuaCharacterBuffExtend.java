@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
 import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
@@ -33,7 +32,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
             return;
         }
 
-        for (BuffInfo buff: Data.getData().buffs) {
+        for (BuffInfo buff: Application.data.buffs) {
             if (name.equals(buff.getName())) {
                 return;
             }
@@ -83,7 +82,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
 
                     // Update duration
                     long duration = tick - data.startTick;
-                    long durationHour = duration / Application.getInstance().getConfig().game.tickPerHour;
+                    long durationHour = duration / Application.configurationManager.game.tickPerHour;
                     long durationDay = durationHour / Game.getInstance().getPlanet().getInfo().dayDuration;
                     data.luaData.get("duration").set("tick", duration);
                     data.luaData.get("duration").set("hour", durationHour);
@@ -120,7 +119,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
                                         // Apply disease
                                         if ("disease".equals(luaEffect.get("type").toString())) {
                                             String diseaseName = luaEffect.get("disease").toString();
-                                            DiseaseInfo disease = Data.getData().getDisease(diseaseName);
+                                            DiseaseInfo disease = Application.data.getDisease(diseaseName);
                                             if (disease != null) {
                                                 // Add new disease to character
                                                 if (!data.character.hasDisease(diseaseName)) {
@@ -164,6 +163,6 @@ public class LuaCharacterBuffExtend extends LuaExtend {
             }
         });
 
-        Data.getData().buffs.add(buff);
+        Application.data.buffs.add(buff);
     }
 }

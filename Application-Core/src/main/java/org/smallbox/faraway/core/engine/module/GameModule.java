@@ -1,11 +1,9 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
         try {
             _observers.forEach(action);
         } catch (Error | RuntimeException e) {
-            Application.getInstance().setRunning(false);
+            Application.setRunning(false);
             e.printStackTrace();
         }
     }

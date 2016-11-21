@@ -2,31 +2,34 @@ package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.module.consumable.HaulJob;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
+import org.smallbox.faraway.module.consumable.HaulJob;
+import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.item.job.CheckJoyItem;
+import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.job.JobModuleObserver;
+import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.core.game.module.world.model.*;
-import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.module.job.JobModule;
-import org.smallbox.faraway.module.structure.StructureModule;
 
-import java.util.*;
+import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Alex on 26/06/2015.
  */
 @ModuleSerializer(ItemModuleSerializer.class)
+@ModuleRenderer(ItemRenderer.class)
 public class ItemModule extends GameModule<ItemModuleObserver> {
     @BindModule
     private WorldModule _world;
@@ -51,8 +54,6 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     protected void onGameCreate(Game game) {
-        game.addRender(new ItemRenderer());
-
         _items = new LinkedBlockingQueue<>();
 
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
@@ -94,7 +95,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     }
 
     @Override
-    protected void onGameStart(Game game) {
+    public void onGameStart(Game game) {
         _items.stream()
                 .filter(item -> item.getBuildProgress() < item.getBuildCost())
                 .forEach(this::launchBuild);

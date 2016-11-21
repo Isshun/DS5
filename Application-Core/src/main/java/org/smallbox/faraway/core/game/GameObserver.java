@@ -10,7 +10,9 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 
 /**
  * Created by Alex on 06/06/2015.
@@ -47,6 +49,7 @@ public interface GameObserver {
     default void onBindingPress(BindingInfo binding) {}
     default void onGamePaused() {}
     default void onGameResume() {}
+    default void onGameStart(Game game) {}
     default void onFloorUp() {}
     default void onFloorDown() {}
     default void onFloorChange(int floor) {}

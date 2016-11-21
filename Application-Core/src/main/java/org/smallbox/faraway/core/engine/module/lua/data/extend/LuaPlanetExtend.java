@@ -2,10 +2,10 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 
@@ -25,7 +25,7 @@ public class LuaPlanetExtend extends LuaExtend {
         String name = getString(value, "name", null);
 
         PlanetInfo planetInfo = null;
-        for (PlanetInfo info: Data.getData().planets) {
+        for (PlanetInfo info: Application.data.planets) {
             if (info.name != null && info.name.equals(name)) {
                 planetInfo = info;
             }
@@ -33,7 +33,7 @@ public class LuaPlanetExtend extends LuaExtend {
 
         if (planetInfo == null) {
             planetInfo = new PlanetInfo();
-            Data.getData().planets.add(planetInfo);
+            Application.data.planets.add(planetInfo);
         }
 
         readPlanet(planetInfo, value);

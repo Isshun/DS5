@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Game;
 
 import java.io.File;
@@ -15,10 +14,6 @@ public class LuaModule extends AbsGameModule {
 
     public LuaModule(File directory) {
         _directory = directory;
-    }
-
-    @Override
-    protected void onGameStart(Game game) {
     }
 
     @Override

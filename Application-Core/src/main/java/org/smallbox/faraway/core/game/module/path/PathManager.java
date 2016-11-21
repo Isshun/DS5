@@ -21,7 +21,6 @@ import java.util.concurrent.Executors;
 public class PathManager extends GameModule {
     private static final int                    THREAD_POOL_SIZE = 1;
 
-    private static PathManager                  _self;
     final private ArrayList<Runnable>           _runnable;
     final private ExecutorService               _threadPool;
     private IndexedAStarPathFinder<ParcelModel> _finder;
@@ -30,7 +29,6 @@ public class PathManager extends GameModule {
     private IndexedGraph                        _graph;
 
     public PathManager() {
-        _self = this;
         _threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         _runnable = new ArrayList<>();
     }
@@ -45,17 +43,9 @@ public class PathManager extends GameModule {
     }
 
     @Override
-    protected void onGameStart(Game game) {
-    }
-
-    @Override
     protected void onGameUpdate(Game game, int tick) {
         _runnable.forEach(java.lang.Runnable::run);
         _runnable.clear();
-    }
-
-    public static PathManager getInstance() {
-        return _self;
     }
 
     public void close() {

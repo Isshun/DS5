@@ -12,12 +12,9 @@ import org.smallbox.faraway.module.area.AreaModule;
  * Created by Alex on 05/07/2015.
  */
 public class GardenModule extends GameModule {
+
     @BindModule
     private AreaModule _areaModule;
-
-    @Override
-    protected void onGameStart(Game game) {
-    }
 
     @Override
     protected void onGameUpdate(Game game, int tick) {

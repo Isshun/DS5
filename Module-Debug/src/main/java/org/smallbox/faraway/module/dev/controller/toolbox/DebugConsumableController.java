@@ -1,9 +1,9 @@
 package org.smallbox.faraway.module.dev.controller.toolbox;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
@@ -34,7 +34,7 @@ public class DebugConsumableController extends LuaController {
 
     @Override
     protected void onGameCreate(Game game) {
-        Data.getData().getItems().stream()
+        Application.data.getItems().stream()
                 .filter(itemInfo -> itemInfo.isConsumable)
                 .forEach(itemInfo -> listConsumables.addView(UILabel.create(null)
                         .setText(itemInfo.label)

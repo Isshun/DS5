@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.module.room;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
@@ -26,7 +25,7 @@ public class RoomRenderer extends GameDisplay {
         throw new NotImplementedException("");
 
 //        _roomList = ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).getRooms();
-//        _spriteManager = SpriteManager.getInstance();
+//        _spriteManager = Application.spriteManager;
 //        _regions = new TextureRegion[5];
 //        _regions[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);
 //        _regions[1] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
@@ -48,7 +47,7 @@ public class RoomRenderer extends GameDisplay {
                 if (!room.isExterior() && room.getFloor() == WorldHelper.getCurrentFloor()) {
                     synchronized (room.getParcels()) {
                         TextureRegion texture = _regions[0];
-//                        TextureRegion texture = UserInterface.getInstance().getSelector().getSelectedRoom() == parcel.getRoom() ? _regionsSelected[0] : _regions[0];
+//                        TextureRegion texture = Application.userInterface.getSelector().getSelectedRoom() == parcel.getRoom() ? _regionsSelected[0] : _regions[0];
                         for (ParcelModel parcel : room.getParcels()) {
                             renderer.drawOnMap(texture, parcel.x, parcel.y);
                         }

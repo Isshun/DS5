@@ -142,7 +142,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         _jobs.add(job);
 
-        Application.getInstance().notify(observer -> observer.onJobCreate(job));
+        Application.notify(observer -> observer.onJobCreate(job));
     }
 
     /**

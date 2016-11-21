@@ -10,17 +10,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 10/11/2015.
  */
-public class SQLHelper {
-    private static SQLHelper    _self;
+public class SQLManager {
     private Queue<DBRunnable>   _queue = new LinkedBlockingQueue<>();
     private SQLiteConnection    _db;
-
-    public static SQLHelper getInstance() {
-        if (_self == null) {
-            _self = new SQLHelper();
-        }
-        return _self;
-    }
 
     public void post(DBRunnable runnable) {
         _queue.add(runnable);

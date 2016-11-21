@@ -24,7 +24,7 @@ public class GameManager {
     private IWorldFactory       worldFactory;
 
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
-//        Application.getInstance().notify(GameObserver::onReloadUI);
+//        Application.notify(GameObserver::onReloadUI);
         Game game = new Game(info);
         game.createModules();
         game.createControllers();

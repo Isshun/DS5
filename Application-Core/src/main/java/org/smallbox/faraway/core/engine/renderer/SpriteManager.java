@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.SingletonApplicationModule;
-import org.smallbox.faraway.core.engine.module.ApplicationModule;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
@@ -41,7 +39,6 @@ public class SpriteManager {
     private static final int                BOTTOM = 0b00000010;
     private static final int                BOTTOM_RIGHT = 0b00000001;
 
-    private static SpriteManager            _self;
     private Map<Integer, Sprite>            _spritesCharacters;
     private Map<Long, Sprite>               _sprites;
     private Sprite[]                        _selectors;
@@ -50,17 +47,19 @@ public class SpriteManager {
 
     private int _spriteCount;
 
-    public static SpriteManager getInstance() {
-        return _self;
-    }
-
     public SpriteManager() {
-        _self = this;
         _icons = new HashMap<>();
 
         _sprites = new HashMap<>();
         _spritesCharacters = new HashMap<>();
+    }
 
+    public void reload() {
+        _sprites.clear();
+        _spriteCount = 0;
+    }
+
+    public void init() {
         Texture itemSelector = new Texture("data/res/item_selector.png");
         _selectors = new Sprite[NB_SELECTOR_TILE];
         _selectors[0] = new Sprite(itemSelector, 0, 0, 8, 8);
@@ -71,29 +70,28 @@ public class SpriteManager {
         _selectors[2].flip(false, true);
         _selectors[3] = new Sprite(itemSelector, 8, 8, 8, 8);
         _selectors[3].flip(false, true);
-    }
 
-    public void reload() {
-        _sprites.clear();
-        _spriteCount = 0;
-    }
-
-    public void init() {
         _textures = new HashMap<>();
 
         FileUtils.listRecursively("data/res/").stream().filter(file -> file.getName().endsWith(".png")).forEach(file ->
                 _textures.put(file.getPath().replace("\\", "/"), new Texture(new FileHandle(file))));
 
-        Data.getData().getItems().forEach(itemInfo -> {
-            if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
-                itemInfo.graphics.forEach(graphicInfo -> {
-                    File file = getFile(itemInfo, graphicInfo);
-                    if (file.exists()) {
-                        _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
-                    }
-                });
-            }
-        });
+        if (CollectionUtils.isNotEmpty(Application.data.getItems())) {
+            Application.data.getItems().forEach(itemInfo -> {
+                if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
+                    itemInfo.graphics.forEach(graphicInfo -> {
+                        File file = getFile(itemInfo, graphicInfo);
+                        if (file.exists()) {
+                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
+                        } else {
+                            Log.warning("Impossible de trouver la texture de l'item: " + itemInfo.name);
+                        }
+                    });
+                }
+            });
+        } else {
+            Log.error("Data collection should not be empty");
+        }
     }
 
     public Sprite getIcon(String path) {

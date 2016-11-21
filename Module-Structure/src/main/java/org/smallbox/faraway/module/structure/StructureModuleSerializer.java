@@ -4,14 +4,10 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.world.SQLHelper;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.StructureModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.module.world.WorldModule;
 
 /**
  * Created by Alex on 21/07/2016.
@@ -23,7 +19,7 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
 
     @Override
     public void onSave(StructureModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_structure (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
 
@@ -57,12 +53,12 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
     }
 
     public void onLoad(StructureModule module, Game game) {
-        SQLHelper.getInstance().post(db -> {
+        Application.sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress FROM WorldModule_structure");
                 try {
                     while (stItem.step()) {
-                        StructureModel structure = new StructureModel(Data.getData().getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
+                        StructureModel structure = new StructureModel(Application.data.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
                         structure.setBuildProgress(stItem.columnInt(5));
                         module.addStructure(structure, stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                     }
@@ -70,7 +66,7 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                Application.logger.warning("Unable to read WorldModule_structure table: " + e.getMessage());
+                Log.warning("Unable to read WorldModule_structure table: " + e.getMessage());
             }
         });
     }

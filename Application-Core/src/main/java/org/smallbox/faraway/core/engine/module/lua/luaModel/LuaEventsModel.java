@@ -37,10 +37,10 @@ public class LuaEventsModel {
     public static final int on_log = 29;
 
     public void send(String tag) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, null));
+        Application.notify(observer -> observer.onCustomEvent(tag, null));
     }
 
     public void send(String tag, Object object) {
-        Application.getInstance().notify(observer -> observer.onCustomEvent(tag, object));
+        Application.notify(observer -> observer.onCustomEvent(tag, object));
     }
 }
