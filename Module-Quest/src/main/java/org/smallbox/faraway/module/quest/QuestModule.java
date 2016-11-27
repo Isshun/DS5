@@ -21,7 +21,7 @@
 //
 //    public QuestModule() {
 //        _extend = new LuaQuestExtend();
-//        LuaModuleManager.getInstance().getExtends().add(_extend);
+//        Application.luaModuleManager.getExtends().add(_extend);
 //        _quests = new ArrayList<>();
 //    }
 //
@@ -61,7 +61,7 @@
 //    private void checkOpenedQuests() {
 //        printInfo("Check quests (open: " + _quests.size() + ")");
 //
-//        LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
+//        LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Application.gameManager.getGame()));
 ////        _quests.stream().filter(quest -> quest.isOpen && !quest.globals.get("OnUpdate").call(luaGame).toboolean()).forEach(quest -> {
 ////            LuaValue luaQuest = CoerceJavaToLua.coerce(new org.smallbox.faraway.module.quest.LuaQuestModel(quest));
 //////
@@ -83,7 +83,7 @@
 //
 //    public void launchRandomQuest() {
 //        try {
-//            LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Game.getInstance()));
+//            LuaValue luaGame = CoerceJavaToLua.coerce(new LuaGameModel(Application.gameManager.getGame()));
 //            Collections.shuffle(_extend.getQuestInfos());
 //
 //            QuestModel quest = new QuestModel(_extend.getQuestInfos().get(0));
@@ -94,7 +94,7 @@
 //
 //            _quests.add(quest);
 //
-//            Game.getInstance().setSpeed(0);
+//            Application.gameManager.getGame().setSpeed(0);
 //
 //            notifyObservers(observer -> observer.onOpenQuest(quest));
 //        } catch (LuaError error) {
@@ -113,6 +113,6 @@
 //
 //        checkOpenedQuests();
 //
-//        Game.getInstance().setSpeed(Game.getInstance().getLastSpeed());
+//        Application.gameManager.getGame().setSpeed(Application.gameManager.getGame().getLastSpeed());
 //    }
 //}

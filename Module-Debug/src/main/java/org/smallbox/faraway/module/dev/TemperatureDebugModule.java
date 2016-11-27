@@ -31,7 +31,7 @@
 //            }
 //        });
 //
-//        TemperatureModule module = (TemperatureModule)ModuleManager.getInstance().getModule(TemperatureModule.class);
+//        TemperatureModule module = (TemperatureModule)Application.moduleManager.getModule(TemperatureModule.class);
 //
 //        window.addDebugView("increase", view -> module.increaseTemperature());
 //        window.addDebugView("decrease", view -> module.decreaseTemperature());

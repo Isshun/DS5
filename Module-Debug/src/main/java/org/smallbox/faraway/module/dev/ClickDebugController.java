@@ -27,8 +27,8 @@ public class ClickDebugController extends LuaController {
     @Override
     public void onMouseMove(GameEvent event) {
 
-//        UIEventManager.getInstance().getClickListeners().keySet().forEach(view -> {
-//            if (view.isActive() && UIEventManager.getInstance().hasVisibleHierarchy(view)) {
+//        Application.uiEventManager.getClickListeners().keySet().forEach(view -> {
+//            if (view.isActive() && Application.uiEventManager.hasVisibleHierarchy(view)) {
 //                if (view.contains(event.x, event.y)) {
 //                    String name = getAbsoluteName(view);
 //

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.area;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.BindLuaController;
@@ -42,43 +43,43 @@ public class AreaController extends LuaController {
         _mainPanelController.addShortcut("Areas", (GameEvent event) -> setVisible(true));
 
         btAddStorage.setOnClickListener((GameEvent event) -> {
-            Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
+            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
         });
 
         btRemoveStorage.setOnClickListener((GameEvent event) -> {
-            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
+            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
         });
 
 //        btAddDump.setOnClickListener(() -> {
-//            Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
+//            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
 //        });
 //
 //        btRemoveDump.setOnClickListener(() -> {
-//            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
+//            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
 //        });
 
         btAddHome.setOnClickListener((GameEvent event) -> {
-            Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.HOME);
+            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.HOME);
         });
 
         btRemoveHome.setOnClickListener((GameEvent event) -> {
-            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.HOME);
+            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.HOME);
         });
 
 //        btAddSector.setOnClickListener(() -> {
-//            Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
+//            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.STORAGE);
 //        });
 //
 //        btRemoveSector.setOnClickListener(() -> {
-//            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
+//            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.STORAGE);
 //        });
 
         btAddGarden.setOnClickListener((GameEvent event) -> {
-            Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.GARDEN);
+            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.GARDEN);
         });
 
         btRemoveGarden.setOnClickListener((GameEvent event) -> {
-            Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
+            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
         });
     }
 }

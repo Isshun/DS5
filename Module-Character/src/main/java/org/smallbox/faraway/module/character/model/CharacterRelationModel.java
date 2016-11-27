@@ -110,7 +110,7 @@ public class CharacterRelationModel {
     public void longUpdate(CharacterModel character) {
 //        if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && org.smallbox.faraway.core.game.module.room.model.getOld() > Constant.CHARACTER_CHILD_MIN_OLD && org.smallbox.faraway.core.game.module.room.model.getOld() < Constant.CHARACTER_CHILD_MAX_OLD && org.smallbox.faraway.core.game.module.room.model.getOld() > _nextChildAtOld && _nextChildAtOld > 0) {
 //            _nextChildAtOld = org.smallbox.faraway.core.game.module.room.model.getOld() + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
-//            if (((RelationModule) ModuleManager.getInstance().getModule(RelationModule.class)).createChildren(org.smallbox.faraway.core.game.module.room.model, _mate) != null) {
+//            if (((RelationModule) Application.moduleManager.getModule(RelationModule.class)).createChildren(org.smallbox.faraway.core.game.module.room.model, _mate) != null) {
 //                _nbChild++;
 //            }
 //        }

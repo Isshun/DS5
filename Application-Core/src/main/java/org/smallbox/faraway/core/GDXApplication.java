@@ -8,11 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
-import org.smallbox.faraway.core.game.Game;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger fpsLogger = new FPSLogger();
@@ -22,10 +18,15 @@ public class GDXApplication extends ApplicationAdapter {
     }
 
     private SpriteBatch                         _batch;
-    private GDXRenderer                         _renderer;
     private Application                         _application;
     private BitmapFont[]                        _fonts;
     private BitmapFont                          _systemFont;
+
+    private class TestBinding {
+        void sayHello() {
+            System.out.println("hello");
+        }
+    }
 
     @Override
     public void create () {
@@ -42,11 +43,14 @@ public class GDXApplication extends ApplicationAdapter {
             }
         });
 
-        Application.taskManager.addLoadTask("Create renderer", true, () ->
-                _renderer = new GDXRenderer(_batch, _fonts));
-
         Application.taskManager.addLoadTask("Create app", false, () ->
                 _application = new Application());
+
+        Application.taskManager.addLoadTask("Create app", false, () ->
+                _application.groovyManager.init());
+
+        Application.taskManager.addLoadTask("Create renderer", true, () ->
+                Application.gdxRenderer.init(_batch, _fonts));
 
 
 
@@ -56,10 +60,9 @@ public class GDXApplication extends ApplicationAdapter {
                 Application.taskManager.launchBackgroundThread(Application.sqlManager::update, 16));
 
         Application.taskManager.addLoadTask("Load modules", false, () ->
-                ModuleManager.getInstance().loadModules(null));
+                Application.moduleManager.loadModules(null));
 
-        Application.taskManager.addLoadTask("Load lua modules", false, () ->
-                LuaModuleManager.getInstance().init());
+        Application.taskManager.addLoadTask("Load lua modules", false, Application.luaModuleManager::init);
 
 
 
@@ -104,18 +107,15 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render application
-        _renderer.clear();
-        _renderer.refresh();
+        Application.gdxRenderer.clear();
+        Application.gdxRenderer.refresh();
 
-        Viewport viewport = Game.getInstance() != null ? Game.getInstance().getViewport() : null;
+        Viewport viewport = Application.gameManager.getGame() != null ? Application.gameManager.getGame().getViewport() : null;
 
         // Render game
         if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().render(_renderer, viewport);
+            Application.gameManager.getGame().render(Application.gdxRenderer, viewport);
         }
-
-        // Render interface
-        Application.uiManager.draw(_renderer, Application.gameManager.isLoaded());
 
 //        fpsLogger.log();
     }

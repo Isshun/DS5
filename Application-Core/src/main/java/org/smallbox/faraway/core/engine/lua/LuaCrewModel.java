@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class LuaCrewModel {
     public LuaCharacterModel add() {
         throw new NotImplementedException("");
 
-//        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5, Game.getInstance().getInfo().worldFloors - 1);
+//        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5, Application.gameManager.getGame().getInfo().worldFloors - 1);
 //        return new LuaCharacterModel(character);
     }
 
@@ -33,6 +33,6 @@ public class LuaCrewModel {
     }
 
     public CharacterModel getSelected() {
-        return Game.getInstance().getSelector().getSelectedCharacter();
+        return Application.gameManager.getGame().getSelector().getSelectedCharacter();
     }
 }

@@ -2,7 +2,6 @@ package org.smallbox.faraway.core;
 
 import org.smallbox.faraway.BindManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
@@ -50,7 +49,7 @@ public class DependencyInjector {
     private void injectDependencies(Object object) {
         Log.info("Inject dependency to: " + object.getClass().getName());
         injectManagers(object);
-        injectModules(object, ModuleManager.getInstance().getGameModules());
+        injectModules(object, Application.moduleManager.getGameModules());
         injectControllers(object, LuaControllerManager.getInstance().getControllers());
     }
 

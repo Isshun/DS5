@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.character.job;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -32,13 +32,13 @@ public class CheckCharacterEnergyCritical extends CharacterCheck {
     @Override
     public JobModel onCreateJob(CharacterModel character) {
         // Go to nearest bed
-        ItemModel item = (ItemModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(bedFilter, character);
+        ItemModel item = (ItemModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(bedFilter, character);
         if (item != null) {
             return new SleepJob(item.getParcel(), item);
         }
 
         // Use energy consumable
-        ConsumableModel consumable = (ConsumableModel) ((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
+        ConsumableModel consumable = (ConsumableModel) ((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
         if (consumable != null) {
             return ConsumeJob.create(character, consumable);
         }

@@ -21,18 +21,15 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
 public class GDXRenderer {
     private static final Color TEXT_COLOR = Color.WHITE;
 
-    private static GDXRenderer          _self;
-    private final SpriteBatch           _batch;
-    private final BitmapFont[]          _fonts;
-    private final OrthographicCamera    _camera;
-    private final OrthographicCamera    _cameraUI;
-    private final OrthographicCamera    _cameraWorld;
+    private SpriteBatch           _batch;
+    private BitmapFont[]          _fonts;
+    private OrthographicCamera    _camera;
+    private OrthographicCamera    _cameraUI;
+    private OrthographicCamera    _cameraWorld;
     private ShapeRenderer               _shapeRenderer;
     private int                         _zoom = Viewport.ZOOM_LEVELS.length - 1;
-    private Viewport                    _viewport;
 
-    public GDXRenderer(SpriteBatch batch, BitmapFont[] fonts) {
-        _self = this;
+    public void init(SpriteBatch batch, BitmapFont[] fonts) {
         _fonts = fonts;
         _batch = batch;
         _shapeRenderer = new ShapeRenderer();
@@ -100,12 +97,12 @@ public class GDXRenderer {
 
     public void zoomUp() {
         _zoom = Math.max(0, _zoom - 1);
-        Game.getInstance().getViewport().setZoom(_zoom);
+        Application.gameManager.getGame().getViewport().setZoom(_zoom);
     }
 
     public void zoomDown() {
         _zoom = Math.min(Viewport.ZOOM_LEVELS.length - 1, _zoom + 1);
-        Game.getInstance().getViewport().setZoom(_zoom);
+        Application.gameManager.getGame().getViewport().setZoom(_zoom);
     }
 
     public void draw(Sprite sprite, int x, int y) {
@@ -176,8 +173,8 @@ public class GDXRenderer {
             Gdx.gl.glEnable(GL20.GL_BLEND);
 
             Matrix4 matrix = new Matrix4();
-            matrix.translate(x * Game.getInstance().getViewport().getScale(), y * Game.getInstance().getViewport().getScale(), 0);
-//            matrix.scale(Game.getInstance().getViewport().getScale(), Game.getInstance().getViewport().getScale(), 1f);
+            matrix.translate(x * Application.gameManager.getGame().getViewport().getScale(), y * Application.gameManager.getGame().getViewport().getScale(), 0);
+//            matrix.scale(Application.gameManager.getGame().getViewport().getScale(), Application.gameManager.getGame().getViewport().getScale(), 1f);
 
             cache.setProjectionMatrix(_cameraWorld.combined);
             cache.setTransformMatrix(matrix);
@@ -195,19 +192,11 @@ public class GDXRenderer {
         return _fonts[size];
     }
 
-    public static GDXRenderer getInstance() {
-        return _self;
-    }
-
     public void drawOnMap(TextureRegion region, int x, int y) {
-        draw(region, _viewport.getPosX() + (x * Constant.TILE_WIDTH), _viewport.getPosY() + (y * Constant.TILE_HEIGHT));
-    }
-
-    public void setViewport(Viewport viewport) {
-        _viewport = viewport;
+        draw(region, Application.gameManager.getGame().getViewport().getPosX() + (x * Constant.TILE_WIDTH), Application.gameManager.getGame().getViewport().getPosY() + (y * Constant.TILE_HEIGHT));
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw(itemSprite, (parcel.x * Constant.TILE_WIDTH) + _viewport.getPosX(), (parcel.y * Constant.TILE_HEIGHT) + _viewport.getPosY());
+        draw(itemSprite, (parcel.x * Constant.TILE_WIDTH) + Application.gameManager.getGame().getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + Application.gameManager.getGame().getViewport().getPosY());
     }
 }

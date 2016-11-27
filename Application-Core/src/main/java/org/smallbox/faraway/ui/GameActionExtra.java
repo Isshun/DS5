@@ -243,7 +243,7 @@ public class GameActionExtra {
 //        _action = Action.NONE;
 //        _selectedPlan = null;
 //        _selectedItemInfo = null;
-//        Game.getInstance().clearCursor();
+//        Application.gameManager.getGame().clearCursor();
     }
 
     public void set(Action action, String plan) {
@@ -251,28 +251,28 @@ public class GameActionExtra {
         _selectedPlan = plan;
         switch (plan) {
             case "build":
-                Game.getInstance().setCursor("base.cursor.build");
+                Application.gameManager.getGame().setCursor("base.cursor.build");
                 break;
             case "gather":
-                Game.getInstance().setCursor("base.cursor.gather");
+                Application.gameManager.getGame().setCursor("base.cursor.gather");
                 break;
             case "dig":
             case "dig_hole":
             case "dig_ramp_up":
             case "dig_ramp_down":
-                Game.getInstance().setCursor("base.cursor.dig");
+                Application.gameManager.getGame().setCursor("base.cursor.dig");
                 break;
             case "cut":
-                Game.getInstance().setCursor("base.cursor.cut");
+                Application.gameManager.getGame().setCursor("base.cursor.cut");
                 break;
             case "unload":
-                Game.getInstance().setCursor("base.cursor.unload");
+                Application.gameManager.getGame().setCursor("base.cursor.unload");
                 break;
             case "haul":
-                Game.getInstance().setCursor("base.cursor.haul");
+                Application.gameManager.getGame().setCursor("base.cursor.haul");
                 break;
             case "cancel":
-                Game.getInstance().setCursor("base.cursor.cancel");
+                Application.gameManager.getGame().setCursor("base.cursor.cancel");
                 break;
         }
     }
@@ -280,7 +280,7 @@ public class GameActionExtra {
     public void set(Action action, ItemInfo info) {
         throw new NotImplementedException();
 
-//        Game.getInstance().setCursor("base.cursor.build");
+//        Application.gameManager.getGame().setCursor("base.cursor.build");
 //        _action = action;
 //        _selectedItemInfo = info;
     }
@@ -301,12 +301,12 @@ public class GameActionExtra {
 //            case BUILD_ITEM:
 //                break;
 //            case SET_AREA:
-//                Game.getInstance().setCursor(Application.data.getCursor("base.cursor.area"));
+//                Application.gameManager.getGame().setCursor(Application.data.getCursor("base.cursor.area"));
 //                break;
 //            case PUT_ITEM_FREE:
 //                break;
 //            case REMOVE_AREA:
-//                Game.getInstance().setCursor(Application.data.getCursor("base.cursor.area"));
+//                Application.gameManager.getGame().setCursor(Application.data.getCursor("base.cursor.area"));
 //                break;
 //            case SET_PLAN:
 //                break;

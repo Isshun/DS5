@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.character.job;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
@@ -25,7 +25,7 @@ public class CheckCharacterTimetableSleep extends CharacterCheck {
 
     @Override
     public JobModel onCreateJob(CharacterModel character) {
-        ItemFinderModule finder = (ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class);
+        ItemFinderModule finder = (ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class);
         ItemModel item = (ItemModel)finder.getNearest(bedFilter, character);
         if (item != null) {
             SleepJob job = new SleepJob(item.getParcel(), item);
@@ -38,12 +38,12 @@ public class CheckCharacterTimetableSleep extends CharacterCheck {
 
     @Override
     public boolean isJobLaunchable(CharacterModel character) {
-        ItemFinderModule finder = (ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class);
+        ItemFinderModule finder = (ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class);
         return finder.getNearest(bedFilter, character) != null;
     }
 
     @Override
     public boolean isJobNeeded(CharacterModel character) {
-        return character.getTimetable().get(Game.getInstance().getHour()) == 1;
+        return character.getTimetable().get(Application.gameManager.getGame().getHour()) == 1;
     }
 }

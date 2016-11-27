@@ -24,7 +24,7 @@ public class RoomRenderer extends GameDisplay {
     public RoomRenderer() {
         throw new NotImplementedException("");
 
-//        _roomList = ((RoomModule)ModuleManager.getInstance().getModule(RoomModule.class)).getRooms();
+//        _roomList = ((RoomModule)Application.moduleManager.getModule(RoomModule.class)).getRooms();
 //        _spriteManager = Application.spriteManager;
 //        _regions = new TextureRegion[5];
 //        _regions[0] = new TextureRegion(_spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);

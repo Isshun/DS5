@@ -22,7 +22,7 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
 
     public void addObserver(T observer) {
         // TODO
-//        if (Game.getInstance().getState() != Game.GameModuleState.UNINITIALIZED) {
+//        if (Application.gameManager.getGame().getState() != Game.GameModuleState.UNINITIALIZED) {
 //            Log.error("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
 //        }
 

@@ -79,7 +79,7 @@ public abstract class CharacterModel extends MovableModel {
         _buffs = new ConcurrentLinkedQueue<>();
         _needsCheck = new ConcurrentLinkedQueue<>();
         _diseases = new ArrayList<>();
-        _timeTable = new TimeTableModel(Game.getInstance().getPlanet().getInfo().dayDuration);
+        _timeTable = new TimeTableModel(Application.gameManager.getGame().getPlanet().getInfo().dayDuration);
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
         _direction = Direction.NONE;
@@ -267,7 +267,7 @@ public abstract class CharacterModel extends MovableModel {
     public void update() {
         _needs.environment = _parcel.getEnvironmentScore();
         //TODO
-//        _needs.light = ((RoomModule) ModuleManager.getInstance().getModule(RoomModule.class)).getLight(_posX, _posY);
+//        _needs.light = ((RoomModule) Application.moduleManager.getModule(RoomModule.class)).getLight(_posX, _posY);
     }
 
     public void    setJob(JobModel job) {

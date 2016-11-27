@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.module;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
@@ -34,7 +34,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
 //            onGameCreate(game);
 //            _isLoaded = true;
 //        } else {
-//            ModuleManager.getInstance().getExecutor().execute(() -> {
+//            Application.moduleManager.getExecutor().execute(() -> {
 //                onGameCreate(game);
 //                _isLoaded = true;
 //            });
@@ -49,7 +49,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
             onGameStart(game);
             _isStarted = true;
         } else {
-            ModuleManager.getInstance().getExecutor().execute(() -> {
+            Application.moduleManager.getExecutor().execute(() -> {
                 onGameStart(game);
                 _isStarted = true;
             });
@@ -61,7 +61,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
             if (runOnMainThread()) {
                 innerUpdate(game, tick);
             } else {
-                ModuleManager.getInstance().getExecutor().execute(() -> onGameUpdate(game, tick));
+                Application.moduleManager.getExecutor().execute(() -> onGameUpdate(game, tick));
             }
         }
     }

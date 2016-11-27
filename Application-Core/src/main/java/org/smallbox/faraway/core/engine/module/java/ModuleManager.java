@@ -23,20 +23,12 @@ import java.util.concurrent.Executors;
  * Created by Alex on 31/08/2015.
  */
 public class ModuleManager {
-    private static ModuleManager        _self;
     private final Executor              _executor = Executors.newFixedThreadPool(5);
     private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<ApplicationModule>     _applicationModules = new ArrayList<>();
     private List<GameModule>            _gameModules = new ArrayList<>();
     private List<ModuleBase>            _modules = new ArrayList<>();
     private List<String>                _allowedModulesNames = Arrays.asList("WorldModule", "CharacterModule", "JobModule", "PathManager");
-
-    public static ModuleManager getInstance() {
-        if (_self == null) {
-            _self = new ModuleManager();
-        }
-        return _self;
-    }
 
     public void loadModules(GDXApplication.OnLoad onLoad) {
         assert _modules.isEmpty();

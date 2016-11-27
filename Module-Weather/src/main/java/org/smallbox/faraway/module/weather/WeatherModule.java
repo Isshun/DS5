@@ -54,8 +54,8 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         // TODO
 //        ModuleHelper.getWorldModule().setLight(1);
 
-        int hour = Game.getInstance().getHour();
-        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+        int hour = Application.gameManager.getGame().getHour();
+        PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
         if (planetInfo.dayTimes != null) {
             for (PlanetInfo.DayTime hourInfo: planetInfo.dayTimes) {
                 if (hour < hourInfo.hour) {
@@ -78,7 +78,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
             }
         }
 
-        PlanetInfo planetInfo = Game.getInstance().getPlanet().getInfo();
+        PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
         if (planetInfo.dayTimes != null) {
             planetInfo.dayTimes.stream().filter(hourInfo -> hourInfo.hour == hour).forEach(this::setHour);
         }
@@ -142,7 +142,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     }
 
     private void loadRandomWeather() {
-        List<String> allowedWeathers = Game.getInstance().getInfo().region.weather.stream().map(weather -> weather.name).collect(Collectors.toList());
+        List<String> allowedWeathers = Application.gameManager.getGame().getInfo().region.weather.stream().map(weather -> weather.name).collect(Collectors.toList());
         List<WeatherInfo> allWeathers = Application.data.weathers.values().stream().collect(Collectors.toList());
         Collections.shuffle(allWeathers);
         Optional<WeatherInfo> optionalWeather = allWeathers.stream().filter(weather -> allowedWeathers.contains(weather.name)).findFirst();

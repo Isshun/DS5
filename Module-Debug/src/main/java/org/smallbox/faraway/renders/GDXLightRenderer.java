@@ -187,8 +187,8 @@
 //        boxBodyDef.type = BodyDef.BodyType.DynamicBody;
 //
 //        if (ModuleHelper.getWorldModule() != null) {
-//            int width = Game.getInstance().getInfo().worldWidth;
-//            int height = Game.getInstance().getInfo().worldHeight;
+//            int width = Application.gameManager.getGame().getInfo().worldWidth;
+//            int height = Application.gameManager.getGame().getInfo().worldHeight;
 //            ParcelModel[][][] areas = ModuleHelper.getWorldModule().getParcels();
 //            for (int x = 0; x < width; x++) {
 //                for (int y = 0; y < height; y++) {
@@ -227,8 +227,8 @@
 //        bodyDef.type = BodyDef.BodyType.StaticBody;
 //
 //        if (ModuleHelper.getWorldModule() != null) {
-//            int width = Game.getInstance().getInfo().worldWidth;
-//            int height = Game.getInstance().getInfo().worldHeight;
+//            int width = Application.gameManager.getGame().getInfo().worldWidth;
+//            int height = Application.gameManager.getGame().getInfo().worldHeight;
 //            ParcelModel[][][] areas = ModuleHelper.getWorldModule().getParcels();
 //            for (int x = 0; x < width; x++) {
 //                for (int y = 0; y < height; y++) {

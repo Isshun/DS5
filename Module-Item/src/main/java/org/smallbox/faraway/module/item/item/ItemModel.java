@@ -26,12 +26,10 @@ public class ItemModel extends BuildableMapObject {
 
     public ItemModel(ItemInfo info, int id) {
         super(info, id);
-        init();
     }
 
     public ItemModel(ItemInfo info) {
         super(info);
-        init();
     }
 
     public int                          getTargetTemperature() { return _targetTemperature; }
@@ -92,10 +90,19 @@ public class ItemModel extends BuildableMapObject {
 //        }
     }
 
+    /**
+     * Initialise les slots depuis l'objet ItemInfo ou crée un slot unique
+     * sur l'emplacement de l'objet si ItemInfo ne contient pas de données
+     */
     public void initSlots() {
-        _slots = _info.slots != null
-                ? _info.slots.stream().map(slot -> new ItemSlot(this, WorldHelper.getParcel(_parcel.x + slot[0], _parcel.y + slot[1], _parcel.z))).filter(slot -> slot.getParcel() != null && slot.getParcel().isWalkable()).collect(Collectors.toList())
-                : Collections.singletonList(new ItemSlot(this, _parcel));
+        if (_info.slots != null) {
+            _slots = _info.slots.stream()
+                    .filter(slot -> WorldHelper.getParcelOffset(_parcel, slot[0], slot[1]) != null)
+                    .map(slot -> new ItemSlot(this, WorldHelper.getParcelOffset(_parcel, slot[0], slot[1])))
+                    .collect(Collectors.toList());
+        } else {
+            _slots = Collections.singletonList(new ItemSlot(this, _parcel));
+        }
         _nbSlot = _nbFreeSlot = _slots.size();
     }
 

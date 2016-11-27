@@ -5,7 +5,6 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.util.Constant;
@@ -22,9 +21,9 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
     @Override
     public void onSave(WorldModule module, Game game) {
         Application.sqlManager.post(db -> {
-            int width = Game.getInstance().getInfo().worldWidth;
-            int height = Game.getInstance().getInfo().worldHeight;
-            int floors = Game.getInstance().getInfo().worldFloors;
+            int width = Application.gameManager.getGame().getInfo().worldWidth;
+            int height = Application.gameManager.getGame().getInfo().worldHeight;
+            int floors = Application.gameManager.getGame().getInfo().worldFloors;
             ParcelModel[][][] parcels = module.getParcels();
 
             try {
@@ -114,7 +113,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
         });
     }
 
-    public void onLoad(WorldModule module, Game game) {
+    public void onLoad(WorldModule worldModule, Game game) {
         Application.sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
@@ -172,9 +171,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 //                    stStructure.dispose();
                 }
 
-                WorldHelper.init(game.getInfo(), parcels);
-
-                module.init(game, parcels, parcelsList);
+                worldModule.init(game, parcels, parcelsList);
 
                 Application.pathManager.init(parcelsList);
             } catch (SQLiteException e) {

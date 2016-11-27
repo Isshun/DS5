@@ -31,20 +31,21 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleSerializer(ItemModuleSerializer.class)
 @ModuleRenderer(ItemRenderer.class)
 public class ItemModule extends GameModule<ItemModuleObserver> {
-    @BindModule
-    private WorldModule _world;
 
     @BindModule
-    private JobModule _jobs;
+    private WorldModule worldModule;
 
     @BindModule
-    private StructureModule _structureModule;
+    private JobModule jobModule;
 
     @BindModule
-    private ConsumableModule _consumableModule;
+    private StructureModule structureModule;
 
     @BindModule
-    private WorldInteractionModule _worldInteraction;
+    private ConsumableModule consumableModule;
+
+    @BindModule
+    private WorldInteractionModule worldInteractionModule;
 
     private Collection<ItemModel> _items;
 
@@ -56,7 +57,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     protected void onGameCreate(Game game) {
         _items = new LinkedBlockingQueue<>();
 
-        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
             public ItemModel _lastItem;
 
             @Override
@@ -79,7 +80,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             }
         });
 
-        _jobs.addObserver(new JobModuleObserver() {
+        jobModule.addObserver(new JobModuleObserver() {
             @Override
             public void onJobCancel(JobModel job) {
                 _items.removeIf(item -> item.getBuildJob() == job);
@@ -91,7 +92,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             }
         });
 
-        _jobs.addJoyCheck(new CheckJoyItem());
+        jobModule.addJoyCheck(new CheckJoyItem());
     }
 
     @Override
@@ -107,21 +108,21 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             // Create hauling jobs
             _items.stream().filter(item -> !item.isComplete())
                     .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-                            .forEach(component -> _jobs.addJob(new HaulJob(item, component))));
+                            .forEach(component -> jobModule.addJob(new HaulJob(item, component))));
 
             // Create Build jobs
             _items.stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                    .forEach(item -> _jobs.addJob(new BuildJob(item)));
+                    .forEach(item -> jobModule.addJob(new BuildJob(item)));
 
 ////             Create craft jobs
 //            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
-//                    .forEach(item -> _jobs.addJob(new CraftJob(item)));
+//                    .forEach(item -> jobModule.addJob(new CraftJob(item)));
         }
 
         // Run factory
         _items.stream()
                 .filter(ItemModel::hasFactory)
-                .forEach(item -> item.getFactory().run(_jobs, _consumableModule));
+                .forEach(item -> item.getFactory().run(jobModule, consumableModule));
     }
 
     @Override
@@ -129,6 +130,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         if (itemInfo.isUserItem) {
             ItemModel item = new ItemModel(itemInfo, data);
             item.setParcel(parcel);
+            item.init();
             _items.add(item);
 
             notifyObservers(obs -> obs.onAddItem(parcel, item));
@@ -139,7 +141,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     public void removeObject(MapObjectModel mapObjectModel) {
         if (mapObjectModel.isUserItem() && mapObjectModel instanceof ItemModel) {
             _items.remove(mapObjectModel);
-            _jobs.onCancelJobs(mapObjectModel.getParcel(), mapObjectModel);
+            jobModule.onCancelJobs(mapObjectModel.getParcel(), mapObjectModel);
 
             notifyObservers(obs -> obs.onRemoveItem(mapObjectModel.getParcel(), (ItemModel) mapObjectModel));
         }
@@ -149,6 +151,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         // Create item
         ItemModel item = new ItemModel(itemInfo);
         item.setParcel(parcel);
+        item.init();
         item.setBuildProgress(0);
         _items.add(item);
 
@@ -163,13 +166,11 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     private void launchBuild(ItemModel item) {
         BuildJob job = new BuildJob(item);
         item.setBuildJob(job);
-        _jobs.addJob(job);
+        jobModule.addJob(job);
     }
 
-    public void addItem(ItemModel item, int x, int y, int z) {
-        ParcelModel parcel = _world.getParcel(x, y, z);
-        if (parcel != null) {
-            item.setParcel(parcel);
+    public void addItem(ItemModel item) {
+        if (!_items.contains(item)) {
             _items.add(item);
         }
     }

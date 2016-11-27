@@ -103,8 +103,8 @@ public class WorldGroundRenderer extends BaseRenderer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         int fromX = Math.max((int) ((-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale()), 0);
         int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale()), 0);
-        int toX = Math.min(fromX + 50, Game.getInstance().getInfo().worldWidth);
-        int toY = Math.min(fromY + 40, Game.getInstance().getInfo().worldHeight);
+        int toX = Math.min(fromX + 50, Application.gameManager.getGame().getInfo().worldWidth);
+        int toY = Math.min(fromY + 40, Application.gameManager.getGame().getInfo().worldHeight);
 
         int fromCol = Math.max(fromX / CHUNK_SIZE, 0);
         int fromRow = Math.max(fromY / CHUNK_SIZE, 0);
@@ -140,8 +140,8 @@ public class WorldGroundRenderer extends BaseRenderer {
         _executor.submit(() -> {
             final int fromX = Math.max(col * CHUNK_SIZE, 0);
             final int fromY = Math.max(row * CHUNK_SIZE, 0);
-            final int toX = Math.min(col * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldWidth);
-            final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Game.getInstance().getInfo().worldHeight);
+            final int toX = Math.min(col * CHUNK_SIZE + CHUNK_SIZE, Application.gameManager.getGame().getInfo().worldWidth);
+            final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Application.gameManager.getGame().getInfo().worldHeight);
 
             _worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, _floor, _floor, parcels -> {
                 SpriteManager spriteManager = Application.spriteManager;

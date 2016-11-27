@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -109,8 +110,8 @@ public class RoomModule extends GameModule implements GameObserver {
         long time = System.currentTimeMillis();
 
         ParcelModel[][][] parcels = _world.getParcels();
-        int width = Game.getInstance().getInfo().worldWidth;
-        int height = Game.getInstance().getInfo().worldHeight;
+        int width = Application.gameManager.getGame().getInfo().worldWidth;
+        int height = Application.gameManager.getGame().getInfo().worldHeight;
 
         // Remove all room for this floor
         _rooms.removeIf(room -> room.getFloor() == floor);

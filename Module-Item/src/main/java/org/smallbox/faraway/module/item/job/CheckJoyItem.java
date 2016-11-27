@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.item.job;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -31,7 +31,7 @@ public class CheckJoyItem extends CharacterCheck {
     private ItemModel getItem(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
         filter.effectEntertainment = true;
-        return (ItemModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getRandomNearest(filter, character);
+        return (ItemModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getRandomNearest(filter, character);
     }
 
     @Override

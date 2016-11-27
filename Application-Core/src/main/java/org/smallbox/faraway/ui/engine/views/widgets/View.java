@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.ui.engine.OnClickListener;
 import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.UIAdapter;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public abstract class View implements Comparable<View> {
     }
 
     public void clear() {
-        UIEventManager.getInstance().removeListeners(_views);
+        Application.uiEventManager.removeListeners(_views);
 
         _views.forEach(View::clear);
         _views.clear();
@@ -161,6 +160,7 @@ public abstract class View implements Comparable<View> {
     public View         setBackgroundColor(long color) { _backgroundColor = new Color(color); return this; }
     public View         setBackgroundColor(Color color) { _backgroundColor = color; return this; }
 
+    public void         toggleVisible() { setVisible(!isVisible()); }
     public void         setVisible(boolean visible) {
         if (visible && _group != null) {
             // Set visible false for other views sharing current view's group
@@ -259,7 +259,7 @@ public abstract class View implements Comparable<View> {
     public final void removeAllViews() {
         _views.forEach(view -> {
             Application.uiManager.removeView(view);
-            UIEventManager.getInstance().removeListeners(view);
+            Application.uiEventManager.removeListeners(view);
             view.removeAllViews();
             onRemoveView(view);
         });
@@ -303,32 +303,32 @@ public abstract class View implements Comparable<View> {
     public View setOnClickListener(OnClickListener onClickListener) {
         assert onClickListener != null;
         _onClickListener = onClickListener;
-        UIEventManager.getInstance().setOnClickListener(this, onClickListener);
+        Application.uiEventManager.setOnClickListener(this, onClickListener);
         return this;
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
         _onClickListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
-        UIEventManager.getInstance().setOnClickListener(this, _onClickListener);
+        Application.uiEventManager.setOnClickListener(this, _onClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnRightClickListener(LuaValue value) {
         _onRightClickListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
-        UIEventManager.getInstance().setOnRightClickListener(this, _onRightClickListener);
+        Application.uiEventManager.setOnRightClickListener(this, _onRightClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelUpListener(LuaValue value) {
         _onMouseWheelUpListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
-        UIEventManager.getInstance().setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
+        Application.uiEventManager.setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelDownListener(LuaValue value) {
         _onMouseWheelDownListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
-        UIEventManager.getInstance().setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
+        Application.uiEventManager.setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
     }
 
     // TODO: crash in lua throw on main thread
@@ -344,19 +344,19 @@ public abstract class View implements Comparable<View> {
                 value.call(CoerceJavaToLua.coerce(this), LuaValue.valueOf(false));
             }
         };
-        UIEventManager.getInstance().setOnFocusListener(this, _onFocusListener);
+        Application.uiEventManager.setOnFocusListener(this, _onFocusListener);
     }
 
     public void setOnRightClickListener(OnClickListener onClickListener) {
         assert onClickListener != null;
         _onRightClickListener = onClickListener;
-        UIEventManager.getInstance().setOnRightClickListener(this, onClickListener);
+        Application.uiEventManager.setOnRightClickListener(this, onClickListener);
     }
 
     public void setOnFocusListener(OnFocusListener onFocusListener) {
         assert onFocusListener != null;
         _onFocusListener = onFocusListener;
-        UIEventManager.getInstance().setOnFocusListener(this, onFocusListener);
+        Application.uiEventManager.setOnFocusListener(this, onFocusListener);
     }
 
     public void onClick(GameEvent event) {
@@ -432,7 +432,7 @@ public abstract class View implements Comparable<View> {
     protected void remove() {
         _parent = null;
         if (_onClickListener != null) {
-            UIEventManager.getInstance().removeOnClickListener(this);
+            Application.uiEventManager.removeOnClickListener(this);
         }
     }
 

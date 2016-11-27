@@ -21,7 +21,7 @@ import java.util.List;
 
 public class WorldInteractionModule extends GameModule<WorldInteractionModuleObserver> {
     @BindModule
-    private WorldModule _world;
+    private WorldModule worldModule;
 
     private GameActionExtra.Action      _action;
     private int                         _keyPressPosX;
@@ -36,6 +36,20 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     private ItemInfo                    _selectedItemInfo;
     private AreaType                    _selectedAreaType;
     private boolean                     _mouseOnMap;
+    private OnClickListener             _onClickListener;
+
+    public interface OnClickListener {
+        /**
+         *
+         * @param parcel ParcelModel
+         * @return consume
+         */
+        boolean onClick(ParcelModel parcel);
+    }
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        _onClickListener = onClickListener;
+    }
 
     @Override
     public boolean isModuleMandatory() {
@@ -46,8 +60,8 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     public void onMouseMove(GameEvent event) {
         // right button pressed
         if (_keyRightPressed) {
-            Game.getInstance().getViewport().update(event.mouseEvent.x, event.mouseEvent.y);
-            Log.debug("pos: %d x %d", Game.getInstance().getViewport().getPosX(), Game.getInstance().getViewport().getPosY());
+            Application.gameManager.getGame().getViewport().update(event.mouseEvent.x, event.mouseEvent.y);
+            Log.debug("pos: %d x %d", Application.gameManager.getGame().getViewport().getPosX(), Application.gameManager.getGame().getViewport().getPosY());
 //            if (_menu != null && _menu.isVisible()) {
 //                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
 //                _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
@@ -59,17 +73,17 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     protected void onGameCreate(Game game) {
         _selection = new UISelection();
 
-        _world.addObserver(new WorldModuleObserver() {
+        worldModule.addObserver(new WorldModuleObserver() {
             @Override
             public void onMouseMove(GameEvent event, int parcelX, int parcelY, int floor) {
                 _keyMovePosX = parcelX;
                 _keyMovePosY = parcelY;
 
-                ParcelModel parcel = _world.getParcel(parcelX, parcelY, floor);
+                ParcelModel parcel = worldModule.getParcel(parcelX, parcelY, floor);
                 if (parcel != null) {
                     if (_lastMoveParcel != parcel) {
                         _lastMoveParcel = parcel;
-                        _world.notifyObservers(obs -> obs.onOverParcel(parcel));
+                        worldModule.notifyObservers(obs -> obs.onOverParcel(parcel));
                     }
 
                     if (_keyLeftPressed) {
@@ -101,6 +115,15 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                     if (_keyLeftPressed) {
                         _keyLeftPressed = false;
 
+                        if (_onClickListener != null) {
+                            ParcelModel parcel = worldModule.getParcel(parcelX, parcelY, floor);
+                            if (parcel != null) {
+                                if (_onClickListener.onClick(parcel)) {
+                                    _onClickListener = null;
+                                }
+                            }
+                        }
+
                         if (!event.consumed && onKeyLeft(_keyPressPosX, _keyPressPosY,
                                 Math.min(_keyPressPosX, _keyMovePosX),
                                 Math.min(_keyPressPosY, _keyMovePosY),
@@ -109,7 +132,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                             return;
                         }
 
-                        Game.getInstance().getSelector().clear();
+                        Application.gameManager.getGame().getSelector().clear();
 
                         // Check selection
                         if (!event.consumed && selectAt(event,
@@ -146,7 +169,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 //
 //        ParcelModel parcel = ModuleHelper.getWorldModule().getParcel(x, y, z);
 //        if (parcel != null) {
-//            for (GameModule module: ModuleManager.getInstance().getGameModules()) {
+//            for (GameModule module: Application.moduleManager.getGameModules()) {
 //                try {
 //                    if (module.onSelectParcel(parcel)) {
 //                        return true;
@@ -171,7 +194,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (int z = fromZ; z <= toZ; z++) {
-                    parcels.add(_world.getParcel(x, y, z));
+                    parcels.add(worldModule.getParcel(x, y, z));
                 }
             }
         }
@@ -203,7 +226,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                 // Remove item
                 if (_action == GameActionExtra.Action.REMOVE_ITEM) {
                     // TODO
-//                    _world.takeItem(x, y, WorldHelper.getCurrentFloor());
+//                    worldModule.takeItem(x, y, WorldHelper.getCurrentFloor());
                     consume = true;
                 }
 

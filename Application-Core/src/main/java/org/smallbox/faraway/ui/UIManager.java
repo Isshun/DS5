@@ -1,13 +1,15 @@
 package org.smallbox.faraway.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.smallbox.faraway.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
@@ -21,6 +23,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
 public class UIManager {
+
     public void addRootView(View view) {
         _rootViews.add(view);
     }
@@ -103,7 +106,7 @@ public class UIManager {
                         .forEach(subview -> _visibleViews.add(subview.getId())));
         _rootViews.clear();
         _dropsDowns.clear();
-        UIEventManager.getInstance().clear();
+        Application.uiEventManager.clear();
     }
 
     public void restore() {
@@ -123,39 +126,39 @@ public class UIManager {
     }
 
     public boolean onMouseEvent(GameEvent event, Action action, MouseButton button, int x, int y, boolean rightPressed) {
-        for (ModuleBase module: ModuleManager.getInstance().getModules()) {
+        for (ModuleBase module: Application.moduleManager.getModules()) {
             if (!event.consumed && module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
                 return true;
             }
         }
 
         if (!event.consumed && action == Action.MOVE) {
-            UIEventManager.getInstance().onMouseMove(x, y);
+            Application.uiEventManager.onMouseMove(x, y);
             return false;
         }
 
-        if (!event.consumed && action == Action.PRESSED && UIEventManager.getInstance().has(x, y)) {
+        if (!event.consumed && action == Action.PRESSED && Application.uiEventManager.has(x, y)) {
             return true;
         }
 
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && UIEventManager.getInstance().click(event, x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && Application.uiEventManager.click(event, x, y)) {
             return true;
         }
 
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.RIGHT && UIEventManager.getInstance().rightClick(event, x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.RIGHT && Application.uiEventManager.rightClick(event, x, y)) {
             return true;
         }
 
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_UP && UIEventManager.getInstance().mouseWheelUp(event, x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_UP && Application.uiEventManager.mouseWheelUp(event, x, y)) {
             return true;
         }
 
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_DOWN && UIEventManager.getInstance().mouseWheelDown(event, x, y)) {
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_DOWN && Application.uiEventManager.mouseWheelDown(event, x, y)) {
             return true;
         }
 
 //        if (action == Action.RELEASED && button == MouseButton.LEFT) {
-//            if (UIEventManager.getInstance().rightClick(x, y)) {
+//            if (Application.uiEventManager.rightClick(x, y)) {
 //                return true;
 //            } else {
 //                Application.notify(observer -> observer.onKeyPress(Key.ESCAPE));
@@ -177,8 +180,8 @@ public class UIManager {
         _update = frame;
 
 //        // Collect views
-//        UIEventManager.getInstance().removeListeners(
-//                UIEventManager.getInstance().getClickListeners().keySet().stream()
+//        Application.uiEventManager.removeListeners(
+//                Application.uiEventManager.getClickListeners().keySet().stream()
 //                        .filter(view -> !_rootViews.contains(view.getRootView()))
 //                        .collect(Collectors.toList()));
 
@@ -187,17 +190,17 @@ public class UIManager {
 
     // TODO
     public void draw(GDXRenderer renderer, boolean gameRunning) {
-//        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        camera.zoom = 0.5f;
-//
-//        _rootViews.stream()
-//                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
-//                .forEach(view -> view.draw(renderer, 0, 0));
-//        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.zoom = 0.5f;
+
+        _rootViews.stream()
+                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
+                .forEach(view -> view.draw(renderer, 0, 0));
+        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }
 
     public boolean checkKeyboard(GameEvent event, Key key) {
-        for (ModuleBase module: ModuleManager.getInstance().getModules()) {
+        for (ModuleBase module: Application.moduleManager.getModules()) {
             if (module.isLoaded() && module.onKey(event, key)) {
                 return true;
             }

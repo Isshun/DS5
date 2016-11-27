@@ -20,7 +20,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
     @Override
     public void onSave(AreaModule module, Game game) {
         Application.sqlManager.post(db -> {
-            AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
+            AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
             try {
                 // Save areas
                 db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
@@ -140,7 +140,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
                     stStorage.dispose();
                 }
 
-                AreaModule areaModule = (AreaModule) ModuleManager.getInstance().getModule(AreaModule.class);
+                AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
                 areaModule.init(storageAreas, gardenAreas);
             } catch (SQLiteException e) {
                 Log.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());

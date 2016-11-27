@@ -31,7 +31,7 @@ public class MiniMapModule extends GameModule {
             }
             if ((action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.LEFT) ||
                     (action == GameEventListener.Action.MOVE && _isPressed)) {
-                Game.getInstance().getViewport().setPosition(-((x - 19 - POS_X) * Game.getInstance().getInfo().worldWidth / FRAME_WIDTH) * Constant.TILE_WIDTH, -((y - 16 - POS_Y) * Game.getInstance().getInfo().worldHeight / FRAME_HEIGHT) * Constant.TILE_HEIGHT);
+                Application.gameManager.getGame().getViewport().setPosition(-((x - 19 - POS_X) * Application.gameManager.getGame().getInfo().worldWidth / FRAME_WIDTH) * Constant.TILE_WIDTH, -((y - 16 - POS_Y) * Application.gameManager.getGame().getInfo().worldHeight / FRAME_HEIGHT) * Constant.TILE_HEIGHT);
                 return true;
             }
         }

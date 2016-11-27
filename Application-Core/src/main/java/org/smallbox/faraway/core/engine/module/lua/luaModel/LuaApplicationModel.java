@@ -4,9 +4,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.Config;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
@@ -26,7 +24,7 @@ public class LuaApplicationModel {
     public int                      day;
     public int                      hour;
     public int                      year;
-    public UIManager ui;
+    public UIManager                ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
@@ -39,16 +37,16 @@ public class LuaApplicationModel {
     public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents) {
         crew = luaCrew;
         events = luaEvents;
-        luaModules = LuaModuleManager.getInstance().getModules();
-        modules = ModuleManager.getInstance().getModules();
-        moduleThirds = ModuleManager.getInstance().getModulesThird();
+        luaModules = Application.luaModuleManager.getModules();
+        modules = Application.moduleManager.getModules();
+        moduleThirds = Application.moduleManager.getModulesThird();
     }
 
     public void startGame(Game game) {
     }
 
     public void update() {
-        this.game = Game.getInstance();
+        this.game = Application.gameManager.getGame();
         this.tick = game.getTick();
         this.hour = game.getHour();
         this.day = game.getDay();
@@ -61,19 +59,19 @@ public class LuaApplicationModel {
     }
 
     public void setDisplay(String display) {
-        Game.getInstance().setDisplay(display, true);
+        Application.gameManager.getGame().setDisplay(display, true);
     }
 
     public void toggleDisplay(String display) {
-        Game.getInstance().toggleDisplay(display);
+        Application.gameManager.getGame().toggleDisplay(display);
     }
 
     public void setPlan(String plan) {
-        Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
+        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
     }
 
     public void destroy(MapObjectModel object) {
-        Game.getInstance().getInteraction().planDestroy(object.getParcel());
+        Application.gameManager.getGame().getInteraction().planDestroy(object.getParcel());
     }
 
     public void cancel(MapObjectModel object) {
@@ -87,16 +85,16 @@ public class LuaApplicationModel {
     }
 
     public void setArea(String area) {
-        Game.getInstance().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
+        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void removeArea(String area) {
-        Game.getInstance().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
+        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void setBuild(ItemInfo itemInfo) {
         Log.info("Set build from lua: " + itemInfo.name);
-        Game.getInstance().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
+        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
 
     public void stopGame() {
@@ -113,7 +111,7 @@ public class LuaApplicationModel {
     }
 
     public void clearAction() {
-        Game.getInstance().getInteraction().clear();
+        Application.gameManager.getGame().getInteraction().clear();
     }
 
     public void sendEvent(String tag) {

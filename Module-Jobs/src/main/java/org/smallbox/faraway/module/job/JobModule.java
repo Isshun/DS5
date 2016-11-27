@@ -70,7 +70,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
      * @param character
      */
     public void assign(CharacterModel character) {
-        int timetable = character.getTimetable().get(Game.getInstance().getHour());
+        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
 
         // Priority jobs
         JobModel job = getBestPriority(character);
@@ -234,7 +234,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         for (JobModel job: _jobs) {
             if (job.getCharacter() == null && job.getFail() > 0) {
-                if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Game.getUpdate() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
+                if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Application.gameManager.getGame().getTick() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
                     continue;
                 }
 

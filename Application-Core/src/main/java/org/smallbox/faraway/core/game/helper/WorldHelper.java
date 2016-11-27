@@ -302,6 +302,13 @@ public class WorldHelper {
         return null;
     }
 
+    public static ParcelModel getParcelOffset(ParcelModel parcel, int offsetX, int offsetY) {
+        if (inMapBounds(parcel.x + offsetX, parcel.y + offsetY, parcel.z)) {
+            return _parcels[parcel.x + offsetX][parcel.y + offsetY][parcel.z];
+        }
+        return null;
+    }
+
     public static int getApproxDistance(ParcelModel p1, ParcelModel p2) {
         if (p1 == null) {
             Log.error("P1 cannot be null");

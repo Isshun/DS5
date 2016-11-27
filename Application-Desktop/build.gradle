@@ -74,6 +74,7 @@ dependencies {
     compile project(":Module-Oxygen")
     compile project(":Module-Panel-Build")
     compile project(":Module-Structure")
+    compile project(":Module-UI")
     compile project(":Module-Weather")
     compile project(":Module-TopResource")
     compile project(":Module-World-Factory")

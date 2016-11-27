@@ -83,7 +83,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
                     // Update duration
                     long duration = tick - data.startTick;
                     long durationHour = duration / Application.configurationManager.game.tickPerHour;
-                    long durationDay = durationHour / Game.getInstance().getPlanet().getInfo().dayDuration;
+                    long durationDay = durationHour / Application.gameManager.getGame().getPlanet().getInfo().dayDuration;
                     data.luaData.get("duration").set("tick", duration);
                     data.luaData.get("duration").set("hour", durationHour);
                     data.luaData.get("duration").set("day", durationDay);

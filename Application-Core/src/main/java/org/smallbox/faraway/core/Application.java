@@ -3,11 +3,12 @@ package org.smallbox.faraway.core;
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
+import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.engine.renderer.SpriteManager;
-import org.smallbox.faraway.core.game.ConfigurationManager;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.*;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.SQLManager;
 import org.smallbox.faraway.core.util.Constant;
@@ -15,6 +16,7 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.MouseEvent;
 import org.smallbox.faraway.ui.UIManager;
+import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,14 +27,21 @@ import java.util.function.Consumer;
 
 public class Application {
     public static final DependencyInjector      dependencyInjector;
+    private static Collection<GameObserver>     _observers = new LinkedBlockingQueue<>();
 
     // Server
     public static final GameManager             gameManager;
+    public static final ModuleManager           moduleManager;
+    public static final LuaModuleManager        luaModuleManager;
+    public static final MainRenderer            mainRenderer;
     public static final PathManager             pathManager;
     public static final SpriteManager           spriteManager;
     public static final TaskManager             taskManager;
     public static final SQLManager              sqlManager;
+    public static final GDXRenderer             gdxRenderer;
     public static final Data                    data;
+    public static final UIEventManager          uiEventManager;
+    public static final GroovyManager           groovyManager;
 
     // Both
     public static final ConfigurationManager    configurationManager;
@@ -51,6 +60,12 @@ public class Application {
         spriteManager = dependencyInjector.create(SpriteManager.class);
         taskManager = dependencyInjector.create(TaskManager.class);
         sqlManager = dependencyInjector.create(SQLManager.class);
+        moduleManager = dependencyInjector.create(ModuleManager.class);
+        luaModuleManager = dependencyInjector.create(LuaModuleManager.class);
+        mainRenderer = dependencyInjector.create(MainRenderer.class);
+        gdxRenderer = dependencyInjector.create(GDXRenderer.class);
+        uiEventManager = dependencyInjector.create(UIEventManager.class);
+        groovyManager = dependencyInjector.create(GroovyManager.class);
         data = dependencyInjector.create(Data.class);
 
         // Create configurationManager
@@ -73,7 +88,6 @@ public class Application {
     private static boolean                          _isRunning = true;
     private long                                    _nextDataUpdate;
     private long                                    _dataLastModified = Utils.getLastDataModified();
-    private static Collection<GameObserver>         _observers = new LinkedBlockingQueue<>();
 
     public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
     public static void          setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }

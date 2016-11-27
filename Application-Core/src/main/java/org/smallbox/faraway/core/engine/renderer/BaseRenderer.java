@@ -13,7 +13,8 @@ import java.util.List;
 
 public abstract class BaseRenderer<T> implements GameObserver {
     private final boolean       _isThirdParty;
-    private long                _totalTime;
+    private long                _totalDrawDelay;
+    private long                _lastDrawDelay;
     private int                 _nbDraw;
     private boolean             _isLoaded;
 
@@ -44,6 +45,8 @@ public abstract class BaseRenderer<T> implements GameObserver {
     protected void onRefresh(int frame) {}
 
     public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+        //                if (render.isMandatory() || (game.hasDisplay(render.getClass().getName()))) {
+
         long time = System.currentTimeMillis();
 
         _floor = viewport.getFloor();
@@ -54,19 +57,22 @@ public abstract class BaseRenderer<T> implements GameObserver {
 
         onDraw(renderer, viewport, animProgress);
 
-        _totalTime += (System.currentTimeMillis() - time);
+        _lastDrawDelay = (System.currentTimeMillis() - time);
+        _totalDrawDelay += _lastDrawDelay;
         _nbDraw++;
     }
 
     public void dump() {
         if (_nbDraw != 0) {
-            Log.notice("Renderer: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalTime / _nbDraw);
+            Log.notice("Renderer: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalDrawDelay / _nbDraw);
         }
     }
 
     public boolean isLoaded() {
         return _isLoaded;
     }
+    public long getTotalDrawDelay() { return _totalDrawDelay; }
+    public long getLastDrawDelay() { return _lastDrawDelay; }
 
     public final void gameStart(Game game) {
         Log.info("[BaseRender] gameStart: " + getClass().getSimpleName());

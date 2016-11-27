@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.character.job;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
@@ -39,7 +39,7 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
         }
 
         // Get consumable on ground
-        ConsumableModel nearestConsumable = (ConsumableModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
+        ConsumableModel nearestConsumable = (ConsumableModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
         if (nearestConsumable != null && nearestConsumable.hasFreeSlot()) {
             consumable = nearestConsumable;
         }
@@ -49,7 +49,7 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
         itemFilter.effectDrink = true;
 
         // Get drink provider
-        ItemModel nearestItem = (ItemModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(itemFilter, character);
+        ItemModel nearestItem = (ItemModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(itemFilter, character);
         if (nearestItem != null && nearestItem.hasFreeSlot()) {
             item = nearestItem;
         }

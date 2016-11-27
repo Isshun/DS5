@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.fauna;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
@@ -18,7 +19,7 @@ public class FaunaModule extends GameModule {
     public void onGameStart(Game game) {
         printInfo("[FaunaModule] loads");
 
-        RegionInfo region = Game.getInstance().getInfo().region;
+        RegionInfo region = Application.gameManager.getGame().getInfo().region;
         if (region.fauna != null) {
             double commonTotalFrequency = 0;
             double unusualTotalFrequency = 0;

@@ -39,7 +39,7 @@ public class UIGrid extends View {
         _focusable = focusable;
 
         if (_focusable) {
-            UIEventManager.getInstance().setOnKeyListener(this, new OnKeyListener() {
+            Application.uiEventManager.setOnKeyListener(this, new OnKeyListener() {
                 @Override
                 public void onKeyPress(View view, GameEventListener.Key key) {
                 }
@@ -64,7 +64,7 @@ public class UIGrid extends View {
                 }
             });
         } else {
-            UIEventManager.getInstance().removeOnKeyListener(this);
+            Application.uiEventManager.removeOnKeyListener(this);
         }
     }
 

@@ -20,8 +20,8 @@
 //                SQLiteStatement stText = db.prepare("INSERT INTO game (key, t) VALUES (?, ?)");
 //                try {
 //                    db.exec("begin transaction");
-//                    saveInt(stInt, "viewport_x", Game.getInstance().getViewport().getPosX());
-//                    saveInt(stInt, "viewport_y", Game.getInstance().getViewport().getPosY());
+//                    saveInt(stInt, "viewport_x", Application.gameManager.getGame().getViewport().getPosX());
+//                    saveInt(stInt, "viewport_y", Application.gameManager.getGame().getViewport().getPosY());
 //                    db.exec("end transaction");
 //                } finally {
 //                    stInt.dispose();

@@ -51,12 +51,12 @@ public class AreaRenderer extends GameDisplay {
         int toY = fromY + viewport.getHeight() / Constant.TILE_HEIGHT;
 
         // TODO
-//        WorldModule world = (WorldModule) ModuleManager.getInstance().getModule(WorldModule.class);
+//        WorldModule world = (WorldModule) Application.moduleManager.getModule(WorldModule.class);
 //        for (int x = fromX; x < toX; x++) {
 //            for (int y = fromY; y < toY; y++) {
 //                ParcelModel parcel = world.getParcel(x, y, WorldHelper.getCurrentFloor());
 //                if (parcel != null && parcel.getArea() != null) {
-//                    if (Game.getInstance().getSelector().getSelectedArea() == parcel.getArea()) {
+//                    if (Application.gameManager.getGame().getSelector().getSelectedArea() == parcel.getArea()) {
 //                        renderer.drawOnMap(_regionsSelected[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);
 //                    } else {
 //                        renderer.drawOnMap(_regions[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);

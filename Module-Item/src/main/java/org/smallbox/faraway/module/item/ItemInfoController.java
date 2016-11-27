@@ -1,5 +1,6 @@
 package org.smallbox.faraway.module.item;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
@@ -54,6 +55,8 @@ public class ItemInfoController extends LuaController {
                 setVisible(true);
                 refreshItem(item);
                 event.consume();
+
+                System.out.println(ReflectionToStringBuilder.toString(item).replace(",", "\n"));
             }
         });
     }

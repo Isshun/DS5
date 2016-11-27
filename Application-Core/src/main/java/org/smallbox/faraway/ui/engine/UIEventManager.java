@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UIEventManager {
-    private static UIEventManager           _self;
     private Map<View, OnClickListener>      _onClickListeners;
     private Map<View, OnClickListener>      _onRightClickListeners;
     private Map<View, OnClickListener>      _onMouseWheelUpListeners;
@@ -20,20 +19,13 @@ public class UIEventManager {
     private Map<View, OnKeyListener>        _onKeysListeners;
     private UIDropDown                      _currentDropDown;
 
-    private UIEventManager() {
+    public UIEventManager() {
         _onClickListeners = new ConcurrentSkipListMap<>();
         _onRightClickListeners = new ConcurrentSkipListMap<>();
         _onFocusListeners = new ConcurrentSkipListMap<>();
         _onKeysListeners = new ConcurrentSkipListMap<>();
         _onMouseWheelUpListeners = new ConcurrentSkipListMap<>();
         _onMouseWheelDownListeners = new ConcurrentSkipListMap<>();
-    }
-
-    public static UIEventManager getInstance() {
-        if (_self == null) {
-            _self = new UIEventManager();
-        }
-        return _self;
     }
 
     public void setOnFocusListener(View view, OnFocusListener onFocusListener) {

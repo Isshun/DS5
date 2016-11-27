@@ -42,7 +42,7 @@ public class SleepJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-        _startTime = Game.getInstance().getTick();
+        _startTime = Application.gameManager.getGame().getTick();
         _endTime = computeWakeTime(character);
 
         if (_sleepItem != null) {
@@ -70,8 +70,8 @@ public class SleepJob extends JobModel {
         assert change > 0;
 
 //        // Get next alarm
-//        int hoursByDay = Game.getInstance().getInfo().planet.dayDuration;
-//        int bedHour = Game.getInstance().getHour();
+//        int hoursByDay = Application.gameManager.getGame().getInfo().planet.dayDuration;
+//        int bedHour = Application.gameManager.getGame().getHour();
 //        int wakeTime = -1;
 //        for (int i = 0; i < hoursByDay; i++) {
 //            if (character.getTimetable().get((bedHour + i) % hoursByDay) != 1) {
@@ -79,15 +79,15 @@ public class SleepJob extends JobModel {
 //            }
 //        }
 
-        return Game.getInstance().getTick() + (int)((100 - character.getNeeds().get("energy")) / change);
+        return Application.gameManager.getGame().getTick() + (int)((100 - character.getNeeds().get("energy")) / change);
     }
 
     @Override
     public JobActionReturn onAction(CharacterModel character) {
-        if (Game.getInstance().getTick() < _endTime) {
+        if (Application.gameManager.getGame().getTick() < _endTime) {
             character.setSleeping(true);
             character.getNeeds().isSleeping = true;
-            _progress = (double)(Game.getInstance().getTick() - _startTime) / (_endTime - _startTime);
+            _progress = (double)(Application.gameManager.getGame().getTick() - _startTime) / (_endTime - _startTime);
             return JobActionReturn.CONTINUE;
         }
 

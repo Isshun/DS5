@@ -4,10 +4,9 @@ data:extend({
     controller = "org.smallbox.faraway.module.dev.InfoViewsController",
     position = {300, 100},
     size = {300, 600},
-    background = 0x55bbdd,
     visible = true,
     views = {
-        { type = "label", text = "DEBUG INFO VIEWS", text_size = 14, position = {10, 8}},
-        { type = "list", id = "views_list", position = {10, 30}},
+        { type = "label", id = "header", text = "DEBUG INFO VIEWS", text_size = 14, position = {10, 8}, size = {300, 30}, background = 0x55bbdd},
+        { type = "list", id = "views_list", position = {10, 30}, visible = false},
     },
 })

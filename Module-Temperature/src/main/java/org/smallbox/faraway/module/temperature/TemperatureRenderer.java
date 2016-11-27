@@ -1,7 +1,8 @@
 package org.smallbox.faraway.module.temperature;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
@@ -15,9 +16,11 @@ import org.smallbox.faraway.module.room.RoomModule;
  */
 public class TemperatureRenderer extends GameDisplay {
 
+    @BindModule
+    private RoomModule roomModule;
+
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        RoomModule roomModule = (RoomModule) ModuleManager.getInstance().getModule(RoomModule.class);
         for (RoomModel room: roomModule.getRooms()) {
             if (!room.isExterior()) {
                 int minX = Integer.MAX_VALUE;

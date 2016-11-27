@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.game.Game;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class MainRenderer {
@@ -15,15 +16,10 @@ public class MainRenderer {
     public static final int                 CHARACTER_RENDERER_LEVEL = -97;
     public static final int                 JOB_RENDERER_LEVEL = -96;
 
-    private static MainRenderer             _self;
     private static long                     _renderTime;
     private static int                      _frame;
 
     private Collection<BaseRenderer>        _renders;
-
-    public MainRenderer(GDXRenderer renderer) {
-        _self = this;
-    }
 
     public void onRefresh(int frame) {
         for (BaseRenderer render: _renders) {
@@ -38,41 +34,28 @@ public class MainRenderer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 
-        Game game = Game.getInstance();
+        Game game = Application.gameManager.getGame();
 
         //noinspection Convert2streamapi
-        for (BaseRenderer render: _renders) {
-            if (!(render instanceof GameDisplay) || render.isMandatory() || (game.hasDisplay(((GameDisplay)render).getName()))) {
-                render.draw(renderer, viewport, animProgress);
-            }
-        }
-//        _renders.stream().filter(BaseRenderer::isLoaded)
-//                .filter(render -> !(render instanceof GameDisplay) || render.isMandatory() || (game.hasDisplay(((GameDisplay)render).getName())))
-//                .forEach(render -> render.draw(renderer, viewport, animProgress));
+        _renders.forEach(render -> render.draw(renderer, viewport, animProgress));
 
         _frame++;
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public void gameStart(Game game, BaseRenderer miniMapRender) {
+    public void gameStart(Game game) {
         _frame = 0;
 
         // Sort renders by level and addSubJob them to observers
         _renders = game.getModules().stream()
                 .filter(module -> module.getClass().isAnnotationPresent(ModuleRenderer.class))
                 .flatMap(module -> BaseRenderer.createRenderer(module).stream())
-                .sorted((r1, r2) -> r1.getLevel() - r2.getLevel())
+                .sorted(Comparator.comparingInt(BaseRenderer::getLevel))
                 .peek(Application::addObserver)
                 .collect(Collectors.toList());
 
         _renders.forEach(render -> render.gameStart(game));
     }
-
-    public static MainRenderer getInstance() {
-        if (_self == null) {
-            _self = new MainRenderer(GDXRenderer.getInstance());
-        }
-        return _self; }
 
     public static int getFrame() { return _frame; }
 
@@ -86,7 +69,7 @@ public class MainRenderer {
         if (render.isLoaded()) {
             render.unload();
         } else {
-            render.gameStart(Game.getInstance());
+            render.gameStart(Application.gameManager.getGame());
         }
     }
 }

@@ -100,15 +100,11 @@ public class ItemInfo extends ObjectInfo {
     public enum FactoryOutputMode {GROUND, NETWORK};
 
     public static class FactoryGroupReceiptInfo {
-        public final String             receiptName;
+        public String                   receiptName;
         public ReceiptGroupInfo         receipt;
         public FactoryOutputMode        output;
         public boolean                  auto;
         public int                      cost;
-
-        public FactoryGroupReceiptInfo(String name) {
-            this.receiptName = name;
-        }
     }
 
     public static class ItemInfoFactory {

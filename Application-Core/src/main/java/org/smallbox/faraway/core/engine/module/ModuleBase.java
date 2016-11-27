@@ -36,7 +36,7 @@ public abstract class ModuleBase implements GameObserver {
 //            onLoad();
 //            _isLoaded = true;
 //        } else {
-//            ModuleManager.getInstance().getExecutor().execute(() -> {
+//            Application.moduleManager.getExecutor().execute(() -> {
 //                onLoad();
 //                _isLoaded = true;
 //            });
@@ -56,7 +56,7 @@ public abstract class ModuleBase implements GameObserver {
             onUnload();
             _isLoaded = false;
         } else {
-            ModuleManager.getInstance().getExecutor().execute(() -> {
+            Application.moduleManager.getExecutor().execute(() -> {
                 onUnload();
                 _isLoaded = false;
             });

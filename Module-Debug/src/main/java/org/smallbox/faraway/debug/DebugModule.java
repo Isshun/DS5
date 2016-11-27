@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.util.Log;
@@ -29,9 +28,9 @@ public class DebugModule extends GameModule {
     public void execute(String command) {
         Log.info("Execute: " + command);
 
-        int x = Game.getInstance().getViewport().getRelativePosX();
-        int y = Game.getInstance().getViewport().getRelativePosY();
-        int z = Game.getInstance().getViewport().getFloor();
+        int x = Application.gameManager.getGame().getViewport().getRelativePosX();
+        int y = Application.gameManager.getGame().getViewport().getRelativePosY();
+        int z = Application.gameManager.getGame().getViewport().getFloor();
         ParcelModel parcel = worldModule.getParcel(x, y, z);
 
         switch (StringUtils.trim(command)) {

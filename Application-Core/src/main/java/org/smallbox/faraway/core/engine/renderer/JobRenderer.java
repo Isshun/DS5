@@ -7,7 +7,7 @@ public class JobRenderer extends BaseRenderer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         //TODO
 //        if (_areas == null) {
-//            _areas = new int[Game.getInstance().getInfo().worldWidth][Game.getInstance().getInfo().worldHeight];
+//            _areas = new int[Application.gameManager.getGame().getInfo().worldWidth][Application.gameManager.getGame().getInfo().worldHeight];
 //        }
 //
 //        int offsetX = viewport.getPosX();

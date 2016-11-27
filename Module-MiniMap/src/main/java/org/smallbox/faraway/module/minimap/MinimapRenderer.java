@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.renderer.GameDisplay;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.Game;
@@ -18,7 +18,7 @@ import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.ui.engine.views.widgets.View;
 
-public class MinimapRenderer extends BaseRenderer {
+public class MinimapRenderer extends GameDisplay {
     //    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
     private static final int    COLOR_ROCK = 0x60442dff;
     private static final int    COLOR_PLANT = 0x9bcd4dff;
@@ -155,5 +155,10 @@ public class MinimapRenderer extends BaseRenderer {
             _spriteMap.setPosition(POS_X, POS_Y);
             _spriteMap.setOrigin(0, 0);
         }
+    }
+
+    @Override
+    public String getName() {
+        return "minimap";
     }
 }

@@ -153,7 +153,7 @@ public class UILabel extends View {
     public UILabel setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
-            _height = (int)(GDXRenderer.getInstance().getFont(_textSize).getLineHeight() * 1.2);
+            _height = (int)(Application.gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
         }
         return this;
     }
@@ -222,8 +222,8 @@ public class UILabel extends View {
     @Override
     public int getContentWidth() {
         if (_string != null) {
-//            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).width;
-            return (int) (_string.length() * GDXRenderer.getInstance().getFont(_textSize).getSpaceWidth());
+//            return (int) Application.gdxRenderer.getFont(_textSize).getBounds(_string).width;
+            return (int) (_string.length() * Application.gdxRenderer.getFont(_textSize).getSpaceWidth());
         }
         return 0;
     }
@@ -231,8 +231,8 @@ public class UILabel extends View {
     @Override
     public int getContentHeight() {
         if (_string != null) {
-//            return (int) GDXRenderer.getInstance().getFont(_textSize).getBounds(_string).height;
-            return (int) GDXRenderer.getInstance().getFont(_textSize).getLineHeight();
+//            return (int) Application.gdxRenderer.getFont(_textSize).getBounds(_string).height;
+            return (int) Application.gdxRenderer.getFont(_textSize).getLineHeight();
         }
         return 0;
     }

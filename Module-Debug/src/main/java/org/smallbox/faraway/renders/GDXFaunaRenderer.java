@@ -20,7 +20,7 @@
 //    @Override
 //    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
 //        if (_faunaModule == null) {
-//            _faunaModule = (FaunaModule) ModuleManager.getInstance().getModule(FaunaModule.class);
+//            _faunaModule = (FaunaModule) Application.moduleManager.getModule(FaunaModule.class);
 //        }
 //
 //        for (AnimalModel animal: _faunaModule.getAnimals()) {

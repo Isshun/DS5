@@ -30,7 +30,7 @@
 //        public void addResource(String resource, int quantity) {
 //            switch (resource) {
 //                case "science":
-////                    ((ResourceModule)ModuleManager.getInstance().getModule(ResourceModule.class)).addScience(quantity);
+////                    ((ResourceModule)Application.moduleManager.getModule(ResourceModule.class)).addScience(quantity);
 //                    break;
 //            }
 //        }

@@ -249,7 +249,8 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.factory.receipts = new ArrayList<>();
             for (int i = 1; i <= value.get("receipts").length(); i++) {
                 LuaValue luaReceipt = value.get("receipts").get(i);
-                ItemInfo.FactoryGroupReceiptInfo factoryGroupReceiptInfo = new ItemInfo.FactoryGroupReceiptInfo(luaReceipt.get("receipt").toString());
+                ItemInfo.FactoryGroupReceiptInfo factoryGroupReceiptInfo = new ItemInfo.FactoryGroupReceiptInfo();
+                factoryGroupReceiptInfo.receiptName = luaReceipt.get("receipt").toString();
                 factoryGroupReceiptInfo.auto = getBoolean(luaReceipt, "auto", false);
                 factoryGroupReceiptInfo.cost = getInt(luaReceipt, "cost", -1);
                 factoryGroupReceiptInfo.output = "network".equals(getString(luaReceipt, "output", null)) ? ItemInfo.FactoryOutputMode.NETWORK : ItemInfo.FactoryOutputMode.GROUND;

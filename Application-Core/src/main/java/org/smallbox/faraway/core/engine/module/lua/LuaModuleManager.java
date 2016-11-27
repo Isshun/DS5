@@ -33,7 +33,6 @@ import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
 import org.smallbox.faraway.ui.LuaDataModel;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
@@ -52,8 +51,6 @@ import java.util.stream.Collectors;
  * Created by Alex on 26/09/2015.
  */
 public class LuaModuleManager {
-    private static LuaModuleManager _self;
-
     private Collection<LuaEventListener>        _luaEventListeners = new LinkedBlockingQueue<>();
     private Collection<LuaEventListener>        _luaEventInGameListeners = new LinkedBlockingQueue<>();
     private Collection<LuaRefreshListener>      _luaRefreshListeners = new LinkedBlockingQueue<>();
@@ -61,14 +58,7 @@ public class LuaModuleManager {
     private Collection<LuaModule>               _luaModules = new LinkedBlockingQueue<>();
     private List<LuaExtend>                     _extends;
 
-    public static LuaModuleManager getInstance() {
-        if (_self == null) {
-            _self = new LuaModuleManager();
-        }
-        return _self;
-    }
-
-    private LuaModuleManager() {
+    public LuaModuleManager() {
         Application.addObserver(new GameObserver() {
             public void onSelectArea(AreaModel area) { broadcastToLuaModules(LuaEventsModel.on_area_selected, area); }
             public boolean onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); return true; }
@@ -137,7 +127,7 @@ public class LuaModuleManager {
         Application.data.bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
 
-        UIEventManager.getInstance().clear();
+        Application.uiEventManager.clear();
         Application.uiManager.clearViews();
         _luaEventListeners.clear();
         _luaEventInGameListeners.clear();

@@ -15,20 +15,18 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.controller.WorldInfoParcel2Controller;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.module.job.JobModule;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
 
 @ModuleSerializer(WorldModuleSerializer.class)
 @ModuleRenderer({WorldGroundRenderer.class, WorldTopRenderer.class})
 public class WorldModule extends GameModule<WorldModuleObserver> {
+
     @BindModule
-    private JobModule _jobs;
+    private JobModule jobModule;
 
     @BindLuaController
     private WorldInfoParcel2Controller          _infoParcel2Controller;
@@ -37,8 +35,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     private int                                 _width;
     private int                                 _height;
     private int                                 _floors;
-    private Game                                _game;
-    private Collection<PlantModel>              _plants;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
     private Viewport                            _viewport;
@@ -49,9 +45,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     }
 
     @Override
-    public void onGameStart(Game game) {
-        assert _game != null;
-    }
+    public void onGameStart(Game game) { }
 
     @Override
     public boolean onSelectParcel(ParcelModel parcel) {
@@ -60,23 +54,17 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     }
 
     public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
-        _game = game;
-        _width = _game.getInfo().worldWidth;
-        _height = _game.getInfo().worldHeight;
-        _floors = _game.getInfo().worldFloors;
+        WorldHelper.init(game.getInfo(), parcels);
+
+        _width = game.getInfo().worldWidth;
+        _height = game.getInfo().worldHeight;
+        _floors = game.getInfo().worldFloors;
         _floor = _floors - 1;
 
         _parcels = parcels;
-        _plants = new LinkedBlockingQueue<>();
 
         // Notify world observers
-        parcelList.forEach(parcel -> {
-            notifyObservers(observer -> observer.onAddParcel(parcel));
-
-            if (parcel.hasPlant()) {
-                _plants.add(parcel.getPlant());
-            }
-        });
+        parcelList.forEach(parcel -> notifyObservers(observer -> observer.onAddParcel(parcel)));
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
@@ -97,7 +85,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         getParcelListener.onGetParcel(parcels);
     }
 
-    public Collection<PlantModel>               getPlants() { return _plants; }
     public double                               getLight() { return _light; }
     public ParcelModel                          getParcel(int x, int y, int z) {
         return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : _parcels[x][y][z];

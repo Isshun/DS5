@@ -12,8 +12,8 @@
 //public class LuaMapModel {
 //    public LuaValue getDropLocation() {
 //        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
-//        int width = Game.getInstance().getInfo().worldWidth;
-//        int height = Game.getInstance().getInfo().worldHeight;
+//        int width = Application.gameManager.getGame().getInfo().worldWidth;
+//        int height = Application.gameManager.getGame().getInfo().worldHeight;
 //
 //        int startX = (int) (Math.random() * width);
 //        int startY = (int) (Math.random() * height);

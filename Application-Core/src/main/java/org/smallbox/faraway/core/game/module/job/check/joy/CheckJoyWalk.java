@@ -41,7 +41,7 @@ public class CheckJoyWalk extends CharacterCheck {
 //        // LF org.smallbox.faraway.core.game.module.room.model
 //        _area = null;
 //        int bestDistance = Integer.MAX_VALUE;
-//        for (AreaModel area: ((AreaModule) ModuleManager.getInstance().getModule(AreaModule.class)).getAreas()) {
+//        for (AreaModel area: ((AreaModule) Application.moduleManager.getModule(AreaModule.class)).getAreas()) {
 //            if (area.isHome()) {
 //                int distance = Math.abs(character.getParcel().x - area.getX()) + Math.abs(character.getParcel().y - area.getY());
 //                if (bestDistance > distance) {

@@ -3,8 +3,6 @@ package org.smallbox.faraway.core;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -31,19 +29,19 @@ public class ApplicationShortcutManager {
 
     private static ApplicationShortcut[] SHORTCUTS = new ApplicationShortcut[] {
             new ApplicationShortcut(RIGHT, null, () -> {
-                Game.getInstance().getViewport().startMove(0, 0);
-                Game.getInstance().getViewport().update(100, 0);
+                Application.gameManager.getGame().getViewport().startMove(0, 0);
+                Application.gameManager.getGame().getViewport().update(100, 0);
             }),
             new ApplicationShortcut(F10, null, () -> {
-                ModuleBase debugModule = ModuleManager.getInstance().getModule("DebugModule");
+                ModuleBase debugModule = Application.moduleManager.getModule("DebugModule");
                 if (debugModule != null && debugModule.isLoaded()) {
-                    ModuleManager.getInstance().unloadModule(debugModule);
+                    Application.moduleManager.unloadModule(debugModule);
                 } else if (debugModule != null) {
-                    ModuleManager.getInstance().loadModule(debugModule);
+                    Application.moduleManager.loadModule(debugModule);
                 }
             }),
             new ApplicationShortcut(F5, NONE, () -> {
-                Application.gameManager.saveGame(Game.getInstance().getInfo(), GameInfo.Type.FAST);
+                Application.gameManager.saveGame(Application.gameManager.getGame().getInfo(), GameInfo.Type.FAST);
             }),
             new ApplicationShortcut(ENTER, ALT, () -> {
 //            _isFullscreen = !_isFullscreen;
@@ -98,13 +96,13 @@ public class ApplicationShortcutManager {
 
             new ApplicationShortcut(ESCAPE, NONE , () -> {
                 if (Application.gameManager.isLoaded()) {
-                    if (!Game.getInstance().getInteraction().isClear()) {
-                        Game.getInstance().getInteraction().clear();
+                    if (!Application.gameManager.getGame().getInteraction().isClear()) {
+                        Application.gameManager.getGame().getInteraction().clear();
                         return;
                     }
 
-                    if (!Game.getInstance().getSelector().isClear()) {
-                        Game.getInstance().getSelector().clear();
+                    if (!Application.gameManager.getGame().getSelector().isClear()) {
+                        Application.gameManager.getGame().getSelector().clear();
                         return;
                     }
 
@@ -141,11 +139,11 @@ public class ApplicationShortcutManager {
             return true;
         }
         if (button == GameEventListener.MouseButton.WHEEL_UP) {
-            GDXRenderer.getInstance().zoomUp();
+            Application.gdxRenderer.zoomUp();
             return true;
         }
         else if (button == GameEventListener.MouseButton.WHEEL_DOWN) {
-            GDXRenderer.getInstance().zoomDown();
+            Application.gdxRenderer.zoomDown();
             return true;
         }
 

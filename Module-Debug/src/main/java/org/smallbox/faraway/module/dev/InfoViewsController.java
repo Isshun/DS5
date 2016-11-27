@@ -12,8 +12,12 @@ import org.smallbox.faraway.ui.engine.views.widgets.View;
  * Created by Alex on 30/08/2015.
  */
 public class InfoViewsController extends LuaController {
+
     @BindLua
     private UIList viewsList;
+
+    @BindLua
+    private View header;
 
     @Override
     protected void onGameUpdate(Game game) {
@@ -30,5 +34,7 @@ public class InfoViewsController extends LuaController {
                 viewsList.addView(label);
             }
         });
+
+        header.setOnClickListener(event -> viewsList.toggleVisible());
     }
 }

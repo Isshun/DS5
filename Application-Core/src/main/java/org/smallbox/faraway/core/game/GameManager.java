@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.data.serializer.GameSaveManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.core.util.FileUtils;
@@ -25,14 +25,13 @@ public class GameManager {
 
     public void loadGame(GameInfo info, GameInfo.GameSaveInfo saveInfo) {
 //        Application.notify(GameObserver::onReloadUI);
-        Game game = new Game(info);
-        game.createModules();
-        game.createControllers();
-        GameSaveManager.load(game, FileUtils.getSaveDirectory(game.getInfo().name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
+        _game = new Game(info);
+        _game.createModules();
+        _game.createControllers();
+        GameSaveManager.load(_game, FileUtils.getSaveDirectory(info.name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
-            LuaModuleManager.getInstance().startGame(game);
-            game.start();
-            _game = game;
+            Application.luaModuleManager.startGame(_game);
+            _game.start();
         }));
     }
 
@@ -46,16 +45,15 @@ public class GameManager {
             return;
         }
 
-        Game game = new Game(gameInfo);
-        _game = game;
-        game.createModules();
-        game.createControllers();
+        _game = new Game(gameInfo);
+        _game.createModules();
+        _game.createControllers();
 
-        worldFactory.create(game, regionInfo);
+        worldFactory.create(_game, regionInfo);
 
         saveGame(gameInfo, GameInfo.Type.INIT);
 
-        game.start();
+        _game.start();
 //        worldFactory.createLandSite(game);
 
 
@@ -95,7 +93,7 @@ public class GameManager {
     }
 
     public boolean isLoaded() {
-        return _game != null;
+        return _game != null && _game.getState() == Game.GameModuleState.STARTED;
     }
 
     public Game getGame() {

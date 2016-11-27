@@ -56,13 +56,13 @@ public class Utils {
     }
 
     public static String getDateStr(long time) {
-        int totalHours = (int)(time / Game.getInstance().getTickPerHour());
-        int totalDays = totalHours / Game.getInstance().getHourPerDay();
-        return "Day " + String.valueOf(totalDays) + " - " + String.valueOf(totalHours % Game.getInstance().getHourPerDay()) + "h";
+        int totalHours = (int)(time / Application.gameManager.getGame().getTickPerHour());
+        int totalDays = totalHours / Application.gameManager.getGame().getHourPerDay();
+        return "Day " + String.valueOf(totalDays) + " - " + String.valueOf(totalHours % Application.gameManager.getGame().getHourPerDay()) + "h";
     }
 
     public static String getTimeStr(long time) {
-        int totalHours = (int)(time / Game.getInstance().getTickPerHour());
-        return String.valueOf(totalHours % Game.getInstance().getHourPerDay()) + "h";
+        int totalHours = (int)(time / Application.gameManager.getGame().getTickPerHour());
+        return String.valueOf(totalHours % Application.gameManager.getGame().getHourPerDay()) + "h";
     }
 }

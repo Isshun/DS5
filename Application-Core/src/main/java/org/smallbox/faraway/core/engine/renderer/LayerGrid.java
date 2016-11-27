@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.renderer;
 
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.util.Constant;
 
 /**
@@ -46,7 +46,7 @@ public class LayerGrid {
     public void refresh() {
         for (int column = 0; column < _columns; column++) {
             for (int row = 0; row < _rows; row++) {
-                if (_layers[column][row].isVisible(Game.getInstance().getViewport()) && _layers[column][row].needRefresh()) {
+                if (_layers[column][row].isVisible(Application.gameManager.getGame().getViewport()) && _layers[column][row].needRefresh()) {
                     _layers[column][row].refresh();
                     _onRefreshLayer.onRefreshLayer(_layers[column][row], column * CACHE_SIZE, row * CACHE_SIZE, (column + 1) * CACHE_SIZE, (row + 1) * CACHE_SIZE);
                 }
@@ -64,7 +64,7 @@ public class LayerGrid {
     }
 
     public void draw(GDXRenderer renderer) {
-        Viewport viewport = Game.getInstance().getViewport();
+        Viewport viewport = Application.gameManager.getGame().getViewport();
 
         for (int column = _columns - 1; column >= 0; column--) {
             for (int row = _rows - 1; row >= 0; row--) {

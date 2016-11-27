@@ -5,6 +5,7 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.data.serializer.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
@@ -62,8 +63,10 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                         ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));
                         if (itemInfo != null) {
                             ItemModel item = new ItemModel(itemInfo, stItem.columnInt(0));
+                            item.setParcel(WorldHelper.getParcel(stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3)));
                             item.setBuildProgress(stItem.columnInt(5));
-                            module.addItem(item, stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
+                            item.init();
+                            module.addItem(item);
                         }
                     }
                 } finally {

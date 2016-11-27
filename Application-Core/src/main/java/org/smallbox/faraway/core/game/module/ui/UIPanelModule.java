@@ -1,8 +1,10 @@
 package org.smallbox.faraway.core.game.module.ui;
 
+import org.smallbox.faraway.core.ModuleRenderer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 
+@ModuleRenderer(UIRenderer.class)
 public class UIPanelModule extends GameModule {
 
     @Override

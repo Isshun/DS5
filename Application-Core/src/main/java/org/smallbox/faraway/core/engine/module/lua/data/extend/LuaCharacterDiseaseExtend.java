@@ -55,7 +55,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
 //                            for (int j = 0; j < luaEffects.length(); j++) {
 //                                if (Math.random() <= luaEffects.get(j + 1).get(2).todouble()) {
 //                                    printNotice("apply buff effect: " + luaEffects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
-//                                    ((DiseaseModule) ModuleManager.getInstance().getModule(DiseaseModule.class)).apply(
+//                                    ((DiseaseModule) Application.moduleManager.getModule(DiseaseModule.class)).apply(
 //                                            org.smallbox.faraway.core.game.module.room.model,
 //                                            luaEffects.get(j + 1).get(1).toString(),
 //                                            luaEffects.get(j + 1).get(3));

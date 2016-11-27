@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.character.job;
 
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
@@ -36,7 +36,7 @@ public class CheckCharacterFoodWarning extends CharacterCheck {
         }
 
         // Get consumable on ground
-        ConsumableModel nearestItem = (ConsumableModel)((ItemFinderModule) ModuleManager.getInstance().getModule(ItemFinderModule.class)).getNearest(filter, character);
+        ConsumableModel nearestItem = (ConsumableModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(filter, character);
         if (nearestItem != null && nearestItem.hasFreeSlot()) {
             return ConsumeJob.create(character, nearestItem);
         }

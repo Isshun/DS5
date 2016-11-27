@@ -20,7 +20,7 @@ public class ParticleRenderer extends ExtraRenderer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         if (_effect != null) {
-            if (Game.getInstance().isRunning()) {
+            if (Application.gameManager.getGame().isRunning()) {
                 _effect.update(Gdx.graphics.getDeltaTime());
             }
             renderer.getBatch().begin();

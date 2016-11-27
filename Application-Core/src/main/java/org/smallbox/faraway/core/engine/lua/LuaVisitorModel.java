@@ -11,7 +11,7 @@ public class LuaVisitorModel {
     public LuaCharacterModel add() {
         throw new NotImplementedException("");
 
-//        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5, Game.getInstance().getInfo().worldFloors - 1);
+//        CharacterModel character = ModuleHelper.getCharacterModule().addRandom(5, 5, Application.gameManager.getGame().getInfo().worldFloors - 1);
 //        return new LuaCharacterModel(character);
     }
 

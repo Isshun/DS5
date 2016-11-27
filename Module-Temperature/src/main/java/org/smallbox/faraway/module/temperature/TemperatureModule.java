@@ -22,22 +22,22 @@ import java.util.List;
  */
 public class TemperatureModule extends GameModule {
     @BindModule
-    private WorldModule _worldModule;
+    private WorldModule worldModule;
 
     @BindModule
-    private WeatherModule _weatherModule;
+    private WeatherModule weatherModule;
 
     @BindModule
-    private RoomModule _roomModule;
+    private RoomModule roomModule;
 
     @BindModule
-    private ItemModule _itemModule;
+    private ItemModule itemModule;
 
     private List<ItemModel> _items = new ArrayList<>();
 
     @Override
     public void onGameCreate(Game game) {
-        _itemModule.addObserver(new ItemModuleObserver() {
+        itemModule.addObserver(new ItemModuleObserver() {
             @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {
                 _items.remove(item);
@@ -51,7 +51,7 @@ public class TemperatureModule extends GameModule {
             }
         });
 
-        _weatherModule.addObserver(new WeatherModuleObserver() {
+        weatherModule.addObserver(new WeatherModuleObserver() {
             @Override
             public void onTemperatureChange(double temperature) {
             }
@@ -64,10 +64,10 @@ public class TemperatureModule extends GameModule {
     }
 
     public void onGameUpdate(Game game, int tick) {
-        if (_roomModule != null) {
-            _roomModule.getRooms().forEach(room -> {
+        if (roomModule != null) {
+            roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {
-                    room.setTemperature(_weatherModule.getTemperature(room.getFloor()));
+                    room.setTemperature(weatherModule.getTemperature(room.getFloor()));
                 } else {
                     // Mix temperature with neighbors
                     for (RoomConnectionModel roomConnection: room.getConnections()) {
