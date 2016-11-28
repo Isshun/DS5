@@ -8,9 +8,9 @@
 //import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.smallbox.faraway.core.util.Constant;
-//import org.smallbox.faraway.ui.UIManager;
-//import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
-//import org.smallbox.faraway.ui.engine.views.widgets.View;
+//import UIManager;
+//import UILabel;
+//import View;
 //
 //public class DebugRenderer extends BaseRenderer {
 //
@@ -51,8 +51,8 @@
 //        lbDebug.setSize(32, 32);
 //        lbDebug.setTextAlign(View.Align.CENTER);
 //
-////        int relX = Application.uiManager.getMouseX();
-////        int relY = Application.uiManager.getMouseY();
+////        int relX = ApplicationClient.uiManager.getMouseX();
+////        int relY = ApplicationClient.uiManager.getMouseY();
 //
 //        for (ParcelModel parcel: ModuleHelper.getWorldModule().getParcelList()) {
 //            if (parcel.z == 0) {

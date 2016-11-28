@@ -12,8 +12,8 @@ import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 
 import java.util.Collection;
 

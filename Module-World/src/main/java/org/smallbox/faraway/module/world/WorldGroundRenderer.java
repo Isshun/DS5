@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.core.util.Constant;
 
 import java.util.HashMap;
@@ -144,7 +145,7 @@ public class WorldGroundRenderer extends BaseRenderer {
             final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Application.gameManager.getGame().getInfo().worldHeight);
 
             _worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, _floor, _floor, parcels -> {
-                SpriteManager spriteManager = Application.spriteManager;
+                SpriteManager spriteManager = ApplicationClient.spriteManager;
                 Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
                 Pixmap pxOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
 

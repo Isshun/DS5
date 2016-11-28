@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 import java.lang.reflect.*;
 import java.util.HashMap;

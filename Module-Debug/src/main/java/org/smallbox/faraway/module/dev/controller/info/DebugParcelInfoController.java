@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 31/07/2016.

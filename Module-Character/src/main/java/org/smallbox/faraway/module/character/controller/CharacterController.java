@@ -11,8 +11,8 @@ import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.character.CharacterModuleObserver;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 /**
  * Created by Alex on 25/04/2016.

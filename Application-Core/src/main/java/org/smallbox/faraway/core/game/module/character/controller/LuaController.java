@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.character.controller;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 /**
  * Created by Alex on 25/04/2016.

@@ -1,13 +1,13 @@
 package org.smallbox.faraway.module.consumable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.BaseRenderer;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.MainRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 
 /**
  * Created by Alex on 31/07/2016.
@@ -26,7 +26,7 @@ public class ConsumableRenderer extends BaseRenderer {
     }
 
     private Sprite getItemSprite(ConsumableModel consumable) {
-        return Application.spriteManager.getSprite(consumable.getInfo(), consumable.getGraphic(), consumable.getInfo().height, 0, 255, false);
+        return ApplicationClient.spriteManager.getSprite(consumable.getInfo(), consumable.getGraphic(), consumable.getInfo().height, 0, 255, false);
     }
 
     public void onRefresh(int frame) {

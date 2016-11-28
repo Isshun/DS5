@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 31/07/2016.

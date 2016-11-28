@@ -2,6 +2,7 @@ package org.smallbox.faraway.module.item;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.CollectionUtils;
 import org.smallbox.faraway.core.game.BindLua;
@@ -12,7 +13,6 @@ import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.ui.engine.views.widgets.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,17 +21,17 @@ import java.util.stream.Collectors;
  * Created by Alex on 26/04/2016.
  */
 public class ItemInfoController extends LuaController {
-    @BindLua private UILabel        lbName;
+    @BindLua private UILabel lbName;
 
-    @BindLua private View           frameContent;
+    @BindLua private View frameContent;
     @BindLua private View           frameBuild;
     @BindLua private View           frameWorkers;
     @BindLua private View           frameComponents;
     @BindLua private UILabel        lbBuildCost;
     @BindLua private UILabel        lbBuildProgress;
-    @BindLua private UIImage        imgBuildProgress;
+    @BindLua private UIImage imgBuildProgress;
 
-    @BindLua private UIList         listActions;
+    @BindLua private UIList listActions;
     @BindLua private UIList         listWorkers;
     @BindLua private UIList         listComponents;
     @BindLua private UIList         listFactoryInventory;

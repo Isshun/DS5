@@ -1,12 +1,12 @@
 package org.smallbox.faraway.module.dev;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.ApplicationClient;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 /**
  * Created by Alex on 30/08/2015.
@@ -23,7 +23,7 @@ public class InfoViewsController extends LuaController {
     protected void onGameUpdate(Game game) {
         viewsList.clear();
 
-        Application.uiManager.getRootViews().forEach(view -> {
+        ApplicationClient.uiManager.getRootViews().forEach(view -> {
             if (!view.getViews().isEmpty()) {
                 View child = view.getViews().get(0);
 

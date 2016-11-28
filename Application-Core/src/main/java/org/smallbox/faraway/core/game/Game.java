@@ -7,10 +7,11 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.GameActionExtra;
-import org.smallbox.faraway.ui.GameSelectionExtra;
-import org.smallbox.faraway.ui.UICursor;
+import org.smallbox.faraway.client.ui.GameActionExtra;
+import org.smallbox.faraway.client.ui.GameSelectionExtra;
+import org.smallbox.faraway.client.ui.UICursor;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class Game {
         _info = info;
         _isRunning = true;
         _planet = new PlanetModel(info.planet);
-        _directions = Application.inputManager.getDirection();
+        _directions = ApplicationClient.inputManager.getDirection();
         _displays = new HashMap<>();
         _tick = 0;
     }
@@ -108,7 +109,7 @@ public class Game {
     public void start() {
         // Notify modules, renders and controllers
         Application.moduleManager.gameStart(this, _modules);
-        Application.mainRenderer.gameStart(this);
+        ApplicationClient.mainRenderer.gameStart(this);
         LuaControllerManager.getInstance().gameStart(this);
 
         Application.notify(observer -> observer.onHourChange(_hour));
@@ -132,7 +133,7 @@ public class Game {
         if (_nextUpdate < System.currentTimeMillis() && _isRunning) {
             _nextUpdate = System.currentTimeMillis() + _tickInterval;
             _tick += 1;
-            Application.mainRenderer.gameUpdate(this);
+            ApplicationClient.mainRenderer.gameUpdate(this);
             LuaControllerManager.getInstance().gameUpdate(this);
             onUpdate(_tick);
         }
@@ -176,7 +177,7 @@ public class Game {
             _animationProgress = 1 - ((double) (_nextUpdate - System.currentTimeMillis()) / _tickInterval);
         }
 
-        Application.mainRenderer.onDraw(renderer, viewport, _animationProgress);
+        ApplicationClient.mainRenderer.onDraw(renderer, viewport, _animationProgress);
 
         if (_isRunning) {
             if (_directions[0]) { _viewport.move(20, 0); }
@@ -185,11 +186,11 @@ public class Game {
             if (_directions[3]) { _viewport.move(0, -20); }
         }
 
-        Application.mainRenderer.onRefresh(_frame);
+        ApplicationClient.mainRenderer.onRefresh(_frame);
 
         // TODO
         try {
-            Application.uiManager.onRefresh(_frame);
+            ApplicationClient.uiManager.onRefresh(_frame);
         } catch (Exception e) {
             e.printStackTrace();
         }

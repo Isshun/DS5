@@ -2,8 +2,8 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
@@ -196,9 +196,9 @@ public class InputManager implements InputProcessor {
 //            case Input.Keys.F15:
 //            case Input.Keys.PAUSE: key = GameEventListener.Key.UNKNOWN; break;
         }
-        Application.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
+        ApplicationClient.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
 
-        Application.uiEventManager.keyRelease(key);
+        ApplicationClient.uiEventManager.keyRelease(key);
 
         return false;
     }
@@ -226,7 +226,7 @@ public class InputManager implements InputProcessor {
                     break;
             }
 
-            Application.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
         }
 
         return false;
@@ -248,7 +248,7 @@ public class InputManager implements InputProcessor {
                     break;
             }
 
-            Application.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
         }
         return false;
     }
@@ -262,7 +262,7 @@ public class InputManager implements InputProcessor {
             }
             return false;
         } else {
-            Application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }
         return false;
     }
@@ -272,7 +272,7 @@ public class InputManager implements InputProcessor {
         _lastPosX = x;
         _lastPosY = y;
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            Application.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
         }
         return false;
     }
@@ -280,11 +280,11 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         if (amount < 0) {
-            Application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, _lastPosX, _lastPosY, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, _lastPosX, _lastPosY, false);
             return true;
         }
         if (amount > 0) {
-            Application.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, _lastPosX, _lastPosY, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, _lastPosX, _lastPosY, false);
             return true;
         }
         return false;

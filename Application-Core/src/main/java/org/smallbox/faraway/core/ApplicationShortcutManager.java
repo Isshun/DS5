@@ -3,9 +3,9 @@ package org.smallbox.faraway.core;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.Key.*;
 import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.ALT;
@@ -106,12 +106,12 @@ public class ApplicationShortcutManager {
                         return;
                     }
 
-                    if (!Application.gameManager.isRunning() && Application.uiManager.findById("base.ui.menu_pause").isVisible()) {
+                    if (!Application.gameManager.isRunning() && ApplicationClient.uiManager.findById("base.ui.menu_pause").isVisible()) {
                         Application.gameManager.setRunning(true);
                         return;
                     }
 
-                    if (Application.gameManager.isRunning() && Application.uiManager.findById("base.ui.panel_main").isVisible()) {
+                    if (Application.gameManager.isRunning() && ApplicationClient.uiManager.findById("base.ui.panel_main").isVisible()) {
                         Application.gameManager.setRunning(false);
                         return;
                     }
@@ -139,11 +139,11 @@ public class ApplicationShortcutManager {
             return true;
         }
         if (button == GameEventListener.MouseButton.WHEEL_UP) {
-            Application.gdxRenderer.zoomUp();
+            ApplicationClient.gdxRenderer.zoomUp();
             return true;
         }
         else if (button == GameEventListener.MouseButton.WHEEL_DOWN) {
-            Application.gdxRenderer.zoomDown();
+            ApplicationClient.gdxRenderer.zoomDown();
             return true;
         }
 

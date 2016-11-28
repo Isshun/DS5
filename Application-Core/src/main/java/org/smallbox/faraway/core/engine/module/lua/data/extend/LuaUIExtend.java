@@ -8,6 +8,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -16,10 +17,10 @@ import org.smallbox.faraway.core.engine.module.lua.LuaStyleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
+import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.engine.OnFocusListener;
-import org.smallbox.faraway.ui.engine.views.UIAdapter;
-import org.smallbox.faraway.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 
 import java.io.File;
 import java.util.Collection;
@@ -51,7 +52,7 @@ public class LuaUIExtend extends LuaExtend {
         frame.addView(createView(Application.luaModuleManager, module, globals, value, inGame, 0, frame));
         frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         frame.setLevel(getInt(value, "level", 0));
-        Application.uiManager.addRootView(frame);
+        ApplicationClient.uiManager.addRootView(frame);
     }
 
     public View createView(LuaModuleManager luaModuleManager, ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
@@ -100,7 +101,7 @@ public class LuaUIExtend extends LuaExtend {
 
             case "dropdown":
                 view = new UIDropDown(module);
-                Application.uiManager.addDropsDowns((UIDropDown)view);
+                ApplicationClient.uiManager.addDropsDowns((UIDropDown)view);
                 break;
 
             case "list":
@@ -405,7 +406,7 @@ public class LuaUIExtend extends LuaExtend {
             }
         }
 
-        Application.uiManager.addView(view);
+        ApplicationClient.uiManager.addView(view);
 
         return view;
     }

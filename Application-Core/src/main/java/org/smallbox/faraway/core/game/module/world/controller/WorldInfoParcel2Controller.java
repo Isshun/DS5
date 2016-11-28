@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.module.world.controller;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 11/07/2016.

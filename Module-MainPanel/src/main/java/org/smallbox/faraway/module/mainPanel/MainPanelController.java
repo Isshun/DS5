@@ -5,9 +5,9 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
-import org.smallbox.faraway.ui.engine.OnClickListener;
-import org.smallbox.faraway.ui.engine.views.widgets.UIGrid;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.OnClickListener;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 15/08/2016.

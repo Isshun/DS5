@@ -8,8 +8,8 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 
 /**
  * Created by Alex on 25/07/2016.

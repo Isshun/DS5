@@ -10,8 +10,8 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.ui.GameActionExtra;
-import org.smallbox.faraway.ui.UIManager;
+import org.smallbox.faraway.client.ui.GameActionExtra;
+import org.smallbox.faraway.client.ui.UIManager;
 
 import java.util.Collection;
 import java.util.Optional;

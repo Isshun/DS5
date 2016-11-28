@@ -1,5 +1,7 @@
 include 'Application-Desktop'
 include 'Application-Core'
+include 'Application-Client'
+include 'Application-Server'
 include 'Application-PathFinding'
 include 'Application-SmartFontGenerator'
 

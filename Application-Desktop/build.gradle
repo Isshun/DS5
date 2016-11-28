@@ -49,6 +49,8 @@ eclipse {
 
 dependencies {
     compile project(":Application-Core")
+    compile project(":Application-Server")
+    compile project(":Application-Client")
     compile project(":Module-Area")
     compile project(":Module-Bridge")
     compile project(":Module-Character")

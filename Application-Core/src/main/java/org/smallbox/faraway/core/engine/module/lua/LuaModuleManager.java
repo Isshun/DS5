@@ -29,10 +29,11 @@ import org.smallbox.faraway.core.game.module.area.model.AreaModel;
 import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.core.util.FileUtils;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
-import org.smallbox.faraway.ui.LuaDataModel;
+import org.smallbox.faraway.client.ui.LuaDataModel;
 import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
@@ -127,8 +128,8 @@ public class LuaModuleManager {
         Application.data.bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
 
-        Application.uiEventManager.clear();
-        Application.uiManager.clearViews();
+        ApplicationClient.uiEventManager.clear();
+        ApplicationClient.uiManager.clearViews();
         _luaEventListeners.clear();
         _luaEventInGameListeners.clear();
         _luaLoadListeners.clear();

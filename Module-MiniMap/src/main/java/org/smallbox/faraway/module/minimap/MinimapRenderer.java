@@ -14,9 +14,10 @@ import org.smallbox.faraway.core.engine.renderer.Viewport;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 public class MinimapRenderer extends GameDisplay {
     //    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
@@ -52,7 +53,7 @@ public class MinimapRenderer extends GameDisplay {
 
     @Override
     public void onGameStart(Game game) {
-        _panelMain = Application.uiManager.findById("base.ui.panel_main");
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
 
         POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.configurationManager.uiScale - 10 * Application.configurationManager.uiScale);
         POS_Y = (int) (84 * Application.configurationManager.uiScale);

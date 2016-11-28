@@ -17,8 +17,10 @@ import java.util.Set;
  */
 public class DependencyInjector {
     private Set<Object> _objectPool = new HashSet<>();
-    private static DependencyInjector _self;
     private boolean _init = false;
+    private static final DependencyInjector _self = new DependencyInjector();
+
+    public static DependencyInjector getInstance() { return _self; }
 
     public <T> T create(Class<T> cls) {
         try {

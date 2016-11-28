@@ -1,22 +1,17 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.MainRenderer;
-import org.smallbox.faraway.core.engine.renderer.SpriteManager;
-import org.smallbox.faraway.core.game.*;
+import org.smallbox.faraway.core.game.ConfigurationManager;
+import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.module.path.PathManager;
 import org.smallbox.faraway.core.game.module.world.SQLManager;
 import org.smallbox.faraway.core.util.Constant;
 import org.smallbox.faraway.core.util.Log;
 import org.smallbox.faraway.core.util.Utils;
-import org.smallbox.faraway.ui.MouseEvent;
-import org.smallbox.faraway.ui.UIManager;
-import org.smallbox.faraway.ui.engine.UIEventManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,46 +28,30 @@ public class Application {
     public static final GameManager             gameManager;
     public static final ModuleManager           moduleManager;
     public static final LuaModuleManager        luaModuleManager;
-    public static final MainRenderer            mainRenderer;
     public static final PathManager             pathManager;
-    public static final SpriteManager           spriteManager;
     public static final TaskManager             taskManager;
     public static final SQLManager              sqlManager;
-    public static final GDXRenderer             gdxRenderer;
     public static final Data                    data;
-    public static final UIEventManager          uiEventManager;
     public static final GroovyManager           groovyManager;
 
     // Both
     public static final ConfigurationManager    configurationManager;
 
-    // Client
-    public static final UIManager               uiManager;
-    public static final InputManager            inputManager;
-
     public static boolean isLoaded = false;
 
     static {
-        dependencyInjector = new DependencyInjector();
+        dependencyInjector = DependencyInjector.getInstance();
         gameManager = dependencyInjector.create(GameManager.class);
         pathManager = dependencyInjector.create(PathManager.class);
-        uiManager = dependencyInjector.create(UIManager.class);
-        spriteManager = dependencyInjector.create(SpriteManager.class);
         taskManager = dependencyInjector.create(TaskManager.class);
         sqlManager = dependencyInjector.create(SQLManager.class);
         moduleManager = dependencyInjector.create(ModuleManager.class);
         luaModuleManager = dependencyInjector.create(LuaModuleManager.class);
-        mainRenderer = dependencyInjector.create(MainRenderer.class);
-        gdxRenderer = dependencyInjector.create(GDXRenderer.class);
-        uiEventManager = dependencyInjector.create(UIEventManager.class);
         groovyManager = dependencyInjector.create(GroovyManager.class);
         data = dependencyInjector.create(Data.class);
 
         // Create configurationManager
         configurationManager = loadConfig();
-
-        // Create input processor
-        inputManager = new InputManager();
     }
 
     private static ConfigurationManager loadConfig() {
@@ -96,38 +75,6 @@ public class Application {
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
     public ConfigurationManager getConfig() { return configurationManager; }
 
-    public static void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        ApplicationShortcutManager.onKeyPress(key, modifier);
-
-        Application.uiManager.onKeyEvent(action, key, modifier);
-
-        if (Application.gameManager.isLoaded()) {
-            notify(observer -> observer.onKeyPress(key));
-            notify(observer -> observer.onKeyEvent(action, key, modifier));
-        }
-    }
-
-    public void onWindowEvent(GameEventListener.Action action) {
-        Application.uiManager.onWindowEvent(action);
-    }
-
-    public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
-        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
-
-        if (Application.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-            return;
-        }
-
-        if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
-            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-                return;
-            }
-        }
-
-//        Application.uiManager.onMouseEvent(action, button, x, y, rightPressed);
-    }
-
     public void update() {
         if (Application.gameManager.isLoaded()) {
             Application.gameManager.getGame().update();
@@ -136,18 +83,18 @@ public class Application {
         // Reload data
         if (_nextDataUpdate < System.currentTimeMillis()) {
             _nextDataUpdate = System.currentTimeMillis() + Constant.RELOAD_DATA_INTERVAL;
-            Application.addTask(() -> {
-                long lastResModified = Utils.getLastDataModified();
-                if (Application.data.needUIRefresh || lastResModified > _dataLastModified) {
-                    Application.data.needUIRefresh = false;
-                    _dataLastModified = lastResModified;
-                    Application.uiManager.reload();
-                    Application.spriteManager.reload();
-                    Application.notify(GameObserver::onReloadUI);
-                    Log.info("Data reloaded");
-                    Application.uiManager.restore();
-                }
-            });
+//            Application.addTask(() -> {
+//                long lastResModified = Utils.getLastDataModified();
+//                if (Application.data.needUIRefresh || lastResModified > _dataLastModified) {
+//                    Application.data.needUIRefresh = false;
+//                    _dataLastModified = lastResModified;
+//                    ApplicationClient.uiManager.reload();
+//                    ApplicationClient.spriteManager.reload();
+//                    Application.notify(GameObserver::onReloadUI);
+//                    Log.info("Data reloaded");
+//                    ApplicationClient.uiManager.restore();
+//                }
+//            });
         }
     }
 

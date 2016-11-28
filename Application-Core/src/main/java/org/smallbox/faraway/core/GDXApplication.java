@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.engine.renderer.Viewport;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger fpsLogger = new FPSLogger();
@@ -19,6 +20,7 @@ public class GDXApplication extends ApplicationAdapter {
 
     private SpriteBatch                         _batch;
     private Application                         _application;
+    private ApplicationClient                   _client;
     private BitmapFont[]                        _fonts;
     private BitmapFont                          _systemFont;
 
@@ -47,10 +49,13 @@ public class GDXApplication extends ApplicationAdapter {
                 _application = new Application());
 
         Application.taskManager.addLoadTask("Create app", false, () ->
+                _client = new ApplicationClient());
+
+        Application.taskManager.addLoadTask("Create app", false, () ->
                 _application.groovyManager.init());
 
         Application.taskManager.addLoadTask("Create renderer", true, () ->
-                Application.gdxRenderer.init(_batch, _fonts));
+                ApplicationClient.gdxRenderer.init(_batch, _fonts));
 
 
 
@@ -68,7 +73,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Load sprites
         Application.taskManager.addLoadTask("Load sprites", true,
-                Application.spriteManager::init);
+                ApplicationClient.spriteManager::init);
 
         // Call dependency injector
         Application.taskManager.addLoadTask("Calling dependency injector", false,
@@ -76,11 +81,11 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Init input processor
         Application.taskManager.addLoadTask("Init input processor", false, () ->
-                Gdx.input.setInputProcessor(Application.inputManager));
+                Gdx.input.setInputProcessor(ApplicationClient.inputManager));
 
         // Resume game
         Application.taskManager.addLoadTask("Resume game", false, () -> {
-            //            Application.uiManager.findById("base.ui.menu_main").setVisible(true);
+            //            ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
             Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
 //            Application.gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
 //                Application.gameManager.loadGame();
@@ -107,14 +112,14 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render application
-        Application.gdxRenderer.clear();
-        Application.gdxRenderer.refresh();
+        ApplicationClient.gdxRenderer.clear();
+        ApplicationClient.gdxRenderer.refresh();
 
         Viewport viewport = Application.gameManager.getGame() != null ? Application.gameManager.getGame().getViewport() : null;
 
         // Render game
         if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().render(Application.gdxRenderer, viewport);
+            Application.gameManager.getGame().render(ApplicationClient.gdxRenderer, viewport);
         }
 
 //        fpsLogger.log();

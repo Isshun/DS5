@@ -7,8 +7,9 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 @ModuleRenderer(MinimapRenderer.class)
 public class MiniMapModule extends GameModule {
@@ -41,12 +42,12 @@ public class MiniMapModule extends GameModule {
 
     @Override
     public void onReloadUI() {
-        _panelMain = Application.uiManager.findById("base.ui.panel_main");
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
     }
 
     @Override
     public void onGameStart(Game game) {
-        _panelMain = Application.uiManager.findById("base.ui.panel_main");
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
     }
 
     @Override

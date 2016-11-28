@@ -1,7 +1,7 @@
 package org.smallbox.faraway;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.ui.MouseEvent;
+import org.smallbox.faraway.client.ui.MouseEvent;
 
 /**
  * Created by Alex on 16/08/2016.

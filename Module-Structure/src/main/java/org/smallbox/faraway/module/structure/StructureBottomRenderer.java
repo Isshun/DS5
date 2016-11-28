@@ -1,10 +1,10 @@
 package org.smallbox.faraway.module.structure;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.BindModule;
 import org.smallbox.faraway.core.engine.renderer.*;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 
 public class StructureBottomRenderer extends BaseRenderer {
     @BindModule
@@ -20,7 +20,7 @@ public class StructureBottomRenderer extends BaseRenderer {
     public void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
-        _spriteManager = Application.spriteManager;
+        _spriteManager = ApplicationClient.spriteManager;
     }
 
     @Override

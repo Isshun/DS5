@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.ui.UICursor;
+import org.smallbox.faraway.client.ui.UICursor;
 
 import java.util.*;
 import java.util.stream.Collectors;

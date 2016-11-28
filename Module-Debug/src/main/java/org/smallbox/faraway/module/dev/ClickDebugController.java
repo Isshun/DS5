@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.BindLua;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.debug.DebugModule;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ public class ClickDebugController extends LuaController {
     @Override
     public void onMouseMove(GameEvent event) {
 
-//        Application.uiEventManager.getClickListeners().keySet().forEach(view -> {
-//            if (view.isActive() && Application.uiEventManager.hasVisibleHierarchy(view)) {
+//        ApplicationClient.uiEventManager.getClickListeners().keySet().forEach(view -> {
+//            if (view.isActive() && ApplicationClient.uiEventManager.hasVisibleHierarchy(view)) {
 //                if (view.contains(event.x, event.y)) {
 //                    String name = getAbsoluteName(view);
 //

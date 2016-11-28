@@ -52,7 +52,7 @@
 //                default: break;
 //            }
 //
-//            renderer.draw(Application.spriteManager.getAnimal("data/res/animals/sand_worm.png"), posX - 2, posY - 2);
+//            renderer.draw(ApplicationClient.spriteManager.getAnimal("data/res/animals/sand_worm.png"), posX - 2, posY - 2);
 //        }
 //    }
 //

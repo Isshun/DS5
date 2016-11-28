@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.engine.drawable;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.core.util.Constant;
 
 /**
@@ -19,7 +19,7 @@ public class AnimDrawable extends GDXDrawable {
         _nbTile = nbTile;
         _textureRegion = new TextureRegion[nbTile];
         for (int i = 0; i < nbTile; i++) {
-            _textureRegion[i] = new TextureRegion(Application.spriteManager.getTexture(path), i * Constant.TILE_WIDTH, 0, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+            _textureRegion[i] = new TextureRegion(ApplicationClient.spriteManager.getTexture(path), i * Constant.TILE_WIDTH, 0, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
             _textureRegion[i].flip(false, true);
         }
     }
@@ -29,7 +29,7 @@ public class AnimDrawable extends GDXDrawable {
         _nbTile = nbTile;
         _textureRegion = new TextureRegion[nbTile];
         for (int i = 0; i < nbTile; i++) {
-            _textureRegion[i] = new TextureRegion(Application.spriteManager.getTexture(path), x + i * width, y, width, height);
+            _textureRegion[i] = new TextureRegion(ApplicationClient.spriteManager.getTexture(path), x + i * width, y, width, height);
             _textureRegion[i].flip(false, true);
         }
     }

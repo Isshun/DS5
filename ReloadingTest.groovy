@@ -1,4 +1,4 @@
-bridge.extend(new ItemInfo(
+bridge.extend(new org.smallbox.faraway.core.game.modelInfo.ItemInfo(
         label: 'Cooker',
         name : 'base.cooker',
         type: "item",

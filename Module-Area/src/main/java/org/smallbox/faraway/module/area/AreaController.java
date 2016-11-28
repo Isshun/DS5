@@ -10,8 +10,8 @@ import org.smallbox.faraway.core.game.module.area.model.AreaType;
 import org.smallbox.faraway.core.game.module.character.controller.LuaController;
 import org.smallbox.faraway.core.game.module.ui.UIPanelModule;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
-import org.smallbox.faraway.ui.GameActionExtra;
-import org.smallbox.faraway.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.GameActionExtra;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 26/04/2016.
