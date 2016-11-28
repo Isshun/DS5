@@ -2,8 +2,8 @@
 //
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ActionInputInfo;
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
-//import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-//import org.smallbox.faraway.core.util.Log;
+//import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+//import org.smallbox.faraway.util.Log;
 //import org.smallbox.faraway.module.consumable.ConsumableModule;
 //import org.smallbox.faraway.module.consumable.HaulJob;
 //import org.smallbox.faraway.module.item.item.ItemModel;

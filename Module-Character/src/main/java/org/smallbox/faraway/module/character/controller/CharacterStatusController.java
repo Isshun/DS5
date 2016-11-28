@@ -1,11 +1,11 @@
 package org.smallbox.faraway.module.character.controller;
 
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.BindLua;
+import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.character.controller.LuaController;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;

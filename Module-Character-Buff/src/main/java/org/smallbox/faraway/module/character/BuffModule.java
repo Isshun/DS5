@@ -6,9 +6,9 @@
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.Data;
-//import org.smallbox.faraway.core.game.module.character.CharacterModule;
-//import org.smallbox.faraway.core.game.module.character.model.BuffCharacterModel;
-//import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+//import org.smallbox.faraway.core.module.character.CharacterModule;
+//import org.smallbox.faraway.core.module.character.model.BuffCharacterModel;
+//import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 //
 //import java.util.*;
 //import java.util.stream.Collectors;

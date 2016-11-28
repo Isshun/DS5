@@ -1,14 +1,13 @@
 package org.smallbox.faraway.module.temperature;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.GameDisplay;
-import org.smallbox.faraway.core.engine.renderer.Viewport;
-import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.renderer.GameDisplay;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.module.room.RoomModule;
 
 /**

@@ -1,14 +1,14 @@
 package org.smallbox.faraway.module.world;
 
 import com.badlogic.gdx.math.Rectangle;
-import org.smallbox.faraway.BindManager;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.renderer.*;
+import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.Constant;
 
 public class WorldTopRenderer extends BaseRenderer {
 

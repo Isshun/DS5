@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.module.bridge;
 //
-//import org.smallbox.faraway.core.game.module.world.item.*;
-//import org.smallbox.faraway.core.game.module.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.base.CharacterModel;
+//import org.smallbox.faraway.core.module.world.item.*;
+//import org.smallbox.faraway.core.module.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.item.*;
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.w3c.dom.Document;

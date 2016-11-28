@@ -3,13 +3,13 @@ package org.smallbox.faraway.module.character;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.character.model.HumanModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.character.model.HumanModel;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
 

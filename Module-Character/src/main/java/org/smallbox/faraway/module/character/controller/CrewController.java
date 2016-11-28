@@ -1,11 +1,11 @@
 package org.smallbox.faraway.module.character.controller;
 
-import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.game.BindLua;
-import org.smallbox.faraway.core.game.BindLuaController;
+import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.character.controller.LuaController;
+import org.smallbox.faraway.core.module.character.controller.LuaController;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;

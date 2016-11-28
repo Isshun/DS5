@@ -1,9 +1,9 @@
 package org.smallbox.faraway.module.item;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.BindManager;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.renderer.*;
+import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
 public class ItemRenderer extends BaseRenderer {

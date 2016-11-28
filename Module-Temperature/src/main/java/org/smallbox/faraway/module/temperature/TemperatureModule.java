@@ -1,11 +1,11 @@
 package org.smallbox.faraway.module.temperature;
 
-import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
-import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.room.model.RoomConnectionModel;
+import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.ItemModuleObserver;
 import org.smallbox.faraway.module.item.item.ItemModel;

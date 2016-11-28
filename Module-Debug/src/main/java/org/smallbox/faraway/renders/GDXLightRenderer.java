@@ -8,17 +8,17 @@
 //import com.badlogic.gdx.graphics.OrthographicCamera;
 //import com.badlogic.gdx.math.Vector2;
 //import com.badlogic.gdx.physics.box2d.*;
-//import org.smallbox.faraway.core.engine.renderer.Viewport;
-//import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-//import org.smallbox.faraway.core.engine.renderer.LightRenderer;
+//import org.smallbox.faraway.client.renderer.Viewport;
+//import org.smallbox.faraway.client.renderer.GDXRenderer;
+//import org.smallbox.faraway.client.renderer.LightRenderer;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.model.GameConfig;
 //import org.smallbox.faraway.module.item.item.ItemModel;
-//import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-//import org.smallbox.faraway.core.game.module.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+//import org.smallbox.faraway.core.module.world.model.ParcelModel;
+//import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
+//import org.smallbox.faraway.core.module.world.model.StructureModel;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-//import org.smallbox.faraway.core.util.Constant;
+//import org.smallbox.faraway.util.Constant;
 //
 //import java.util.ArrayList;
 //import java.util.List;

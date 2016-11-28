@@ -3,12 +3,12 @@ package org.smallbox.faraway.module.item;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
 /**

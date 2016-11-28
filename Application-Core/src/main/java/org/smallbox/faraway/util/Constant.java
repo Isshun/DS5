@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.util;
+package org.smallbox.faraway.util;
 
 public class Constant {
     public static final boolean     DEBUG = true;

@@ -2,9 +2,9 @@ package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GDXApplication;
-import org.smallbox.faraway.core.util.FileUtils;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.client.GDXApplication;
+import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.Log;
 
 import java.awt.*;
 

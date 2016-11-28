@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 
 import java.util.Collection;
 import java.util.LinkedList;

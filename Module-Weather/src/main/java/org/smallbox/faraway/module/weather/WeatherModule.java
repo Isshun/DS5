@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
-import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.util.Utils;
 
 import java.util.Collections;
 import java.util.List;

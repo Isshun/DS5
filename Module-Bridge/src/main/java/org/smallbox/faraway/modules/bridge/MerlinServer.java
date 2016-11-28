@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.module.bridge;
 //
-//import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+//import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.w3c.dom.Document;
 //import org.w3c.dom.Element;

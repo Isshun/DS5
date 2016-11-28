@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.character.model;
 
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterPersonalsExtra;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterRelation;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.character.model.base.CharacterPersonalsExtra;
+import org.smallbox.faraway.core.module.character.model.base.CharacterRelation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,9 +108,9 @@ public class CharacterRelationModel {
     }
 
     public void longUpdate(CharacterModel character) {
-//        if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && org.smallbox.faraway.core.game.module.room.model.getOld() > Constant.CHARACTER_CHILD_MIN_OLD && org.smallbox.faraway.core.game.module.room.model.getOld() < Constant.CHARACTER_CHILD_MAX_OLD && org.smallbox.faraway.core.game.module.room.model.getOld() > _nextChildAtOld && _nextChildAtOld > 0) {
-//            _nextChildAtOld = org.smallbox.faraway.core.game.module.room.model.getOld() + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
-//            if (((RelationModule) Application.moduleManager.getModule(RelationModule.class)).createChildren(org.smallbox.faraway.core.game.module.room.model, _mate) != null) {
+//        if (_nbChild < Constant.CHARACTER_MAX_CHILD && _mate != null && org.smallbox.faraway.core.module.room.model.getOld() > Constant.CHARACTER_CHILD_MIN_OLD && org.smallbox.faraway.core.module.room.model.getOld() < Constant.CHARACTER_CHILD_MAX_OLD && org.smallbox.faraway.core.module.room.model.getOld() > _nextChildAtOld && _nextChildAtOld > 0) {
+//            _nextChildAtOld = org.smallbox.faraway.core.module.room.model.getOld() + Constant.CHARACTER_DELAY_BETWEEN_CHILDS;
+//            if (((RelationModule) Application.moduleManager.getModule(RelationModule.class)).createChildren(org.smallbox.faraway.core.module.room.model, _mate) != null) {
 //                _nbChild++;
 //            }
 //        }

@@ -1,18 +1,18 @@
 package org.smallbox.faraway.module.world;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.game.GameEvent;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.area.model.AreaType;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.area.model.AreaType;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.client.ui.GameActionExtra;
 import org.smallbox.faraway.client.ui.UISelection;
 

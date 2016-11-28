@@ -1,16 +1,16 @@
 package org.smallbox.faraway.module.item;
 
-import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.ModuleRenderer;
-import org.smallbox.faraway.core.ModuleSerializer;
+import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.job.model.BuildJob;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
 import org.smallbox.faraway.module.item.item.ItemModel;

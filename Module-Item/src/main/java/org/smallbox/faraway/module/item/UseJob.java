@@ -1,12 +1,12 @@
 package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.CollectionUtils;
+import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.item.item.ItemSlot;
 import org.smallbox.faraway.module.item.item.NetworkConnectionModel;

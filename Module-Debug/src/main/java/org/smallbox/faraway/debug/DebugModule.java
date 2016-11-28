@@ -2,11 +2,11 @@ package org.smallbox.faraway.debug;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldModule;

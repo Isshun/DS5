@@ -1,17 +1,17 @@
 package org.smallbox.faraway.module.consumable;
 
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.game.GameEvent;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.ModuleRenderer;
-import org.smallbox.faraway.core.ModuleSerializer;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.BindLuaController;
+import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.world.model.*;
+import org.smallbox.faraway.core.module.character.model.PathModel;
+import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.structure.StructureModuleObserver;
@@ -172,7 +172,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 return null;
             }
 
-            // Put consumable on free org.smallbox.faraway.core.game.module.room.model
+            // Put consumable on free org.smallbox.faraway.core.module.room.model
             if (finalParcel.getConsumable() != null) {
                 finalParcel.getConsumable().addQuantity(consumable.getQuantity());
             } else {

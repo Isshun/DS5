@@ -1,11 +1,11 @@
 //package org.smallbox.faraway.modules.character;
 //
 //import org.smallbox.faraway.game.Game;
-//import org.smallbox.faraway.game.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.HumanModel;
-//import org.smallbox.faraway.game.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.base.CharacterPersonalsExtra;
-//import org.smallbox.faraway.game.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.base.CharacterModel;
-//import org.smallbox.faraway.game.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.base.CharacterRelation;
-//import org.smallbox.faraway.game.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.base.CharacterRelation.Relation;
+//import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.HumanModel;
+//import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterPersonalsExtra;
+//import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterModel;
+//import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterRelation;
+//import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterRelation.Relation;
 //import org.smallbox.faraway.game.module.GameModule;
 //import org.smallbox.faraway.util.Constant;
 //import org.smallbox.faraway.util.Utils;

@@ -2,7 +2,7 @@ package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.smallbox.faraway.core.game.ConfigurationManager;
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 22/11/2015.

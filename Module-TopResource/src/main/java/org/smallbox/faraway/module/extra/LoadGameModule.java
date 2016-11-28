@@ -4,8 +4,8 @@ import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.core.util.FileUtils;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 import java.io.IOException;

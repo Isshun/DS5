@@ -2,13 +2,13 @@ package org.smallbox.faraway.module.minimap;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.ModuleRenderer;
+import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.client.ui.ApplicationClient;
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 @ModuleRenderer(MinimapRenderer.class)

@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.item;
 
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.game.GameEvent;
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
 
 /**

@@ -1,9 +1,9 @@
 package org.smallbox.faraway.module.dev.controller;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.BindLua;
-import org.smallbox.faraway.core.game.module.character.controller.LuaController;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**

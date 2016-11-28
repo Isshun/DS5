@@ -1,18 +1,18 @@
 package org.smallbox.faraway.module.area;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.ModuleRenderer;
-import org.smallbox.faraway.core.ModuleSerializer;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.BindLuaController;
+import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.game.module.area.controller.AreaGardenInfoController;
-import org.smallbox.faraway.core.game.module.area.model.*;
-import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.area.controller.AreaGardenInfoController;
+import org.smallbox.faraway.core.module.area.model.*;
+import org.smallbox.faraway.core.module.character.model.PathModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableModuleObserver;
 import org.smallbox.faraway.module.job.JobModule;
@@ -169,7 +169,7 @@ public class AreaModule extends GameModule {
 
     @Override
     public void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int z) {
-        // Search existing org.smallbox.faraway.core.game.module.room.model for current position
+        // Search existing org.smallbox.faraway.core.module.room.model for current position
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
                 for (AreaModel area: _areas) {

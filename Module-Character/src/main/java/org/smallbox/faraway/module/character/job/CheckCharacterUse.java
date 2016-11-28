@@ -1,8 +1,8 @@
 package org.smallbox.faraway.module.character.job;
 
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 
 /**
  * Created by Alex on 05/06/2015.

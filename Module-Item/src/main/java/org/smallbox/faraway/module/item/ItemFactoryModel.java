@@ -1,11 +1,11 @@
 package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableStackModel;
 import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
@@ -53,7 +53,7 @@ public class ItemFactoryModel {
 //            // Create order from receiptInfo
 //            _orderEntries = _info.receipts.stream().map(OrderEntry::new).collect(Collectors.toList());
 //
-//            // Create receipt org.smallbox.faraway.core.game.module.room.model for each order
+//            // Create receipt org.smallbox.faraway.core.module.room.model for each order
 //            _receiptEntries = new ArrayList<>();
 //            _orderEntries.forEach(order -> _receiptEntries.addAll(order.receiptGroupInfo.receipts.stream()
 //                    .map(receipt -> new ItemFactoryReceiptModel(order, receipt))

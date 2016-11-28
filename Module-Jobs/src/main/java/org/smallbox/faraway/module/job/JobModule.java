@@ -1,21 +1,21 @@
 package org.smallbox.faraway.module.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.data.serializer.GameSerializer;
+import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.check.joy.CheckJoyWalk;
-import org.smallbox.faraway.core.game.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.game.module.job.model.BuildJob;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobAbortReason;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel.JobStatus;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.check.joy.CheckJoyWalk;
+import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
+import org.smallbox.faraway.core.module.job.model.BuildJob;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobAbortReason;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobStatus;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -162,7 +162,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     /**
-     * Create priority job for list (eat / sleep / getRoom oxygen / move to temperate org.smallbox.faraway.core.game.module.room.model)
+     * Create priority job for list (eat / sleep / getRoom oxygen / move to temperate org.smallbox.faraway.core.module.room.model)
      *
      * @param character
      * @return

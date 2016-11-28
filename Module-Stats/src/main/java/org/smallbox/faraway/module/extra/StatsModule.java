@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.game.Game;
-//import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
+//import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 //
 //import java.util.ArrayList;
 //import java.util.List;
@@ -50,7 +50,7 @@
 //            for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
 //
 ////                // In relation or single
-////                if (org.smallbox.faraway.core.game.module.room.model.getRelations().getMate() != null) {
+////                if (org.smallbox.faraway.core.module.room.model.getRelations().getMate() != null) {
 ////                    nbCoupleValue++;
 ////                } else {
 ////                    nbSingleValue++;

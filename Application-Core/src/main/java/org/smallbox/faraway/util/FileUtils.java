@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.util;
+package org.smallbox.faraway.util;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;

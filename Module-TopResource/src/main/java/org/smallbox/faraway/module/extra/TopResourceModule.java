@@ -4,10 +4,10 @@
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.Data;
-//import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-//import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-//import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-//import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+//import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+//import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+//import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+//import org.smallbox.faraway.core.module.world.model.StructureModel;
 //
 //import java.util.ArrayList;
 //import java.util.HashMap;

@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.game.model.check;
 //
 //import JobModule;
-//import org.smallbox.faraway.game.org.smallbox.faraway.core.game.module.room.model.org.smallbox.faraway.core.game.module.room.model.base.CharacterModel;
+//import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.isJobLaunchable.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.BaseJobModel;
 //import org.smallbox.faraway.util.Log;
@@ -34,6 +34,6 @@
 //
 //    @Override
 //    public boolean isJobNeeded(CharacterModel model) {
-//        return org.smallbox.faraway.core.game.module.room.model.getType().needs.entertainment != null && org.smallbox.faraway.core.game.module.room.model.getNeeds().entertainment < org.smallbox.faraway.core.game.module.room.model.getType().needs.entertainment.warning;
+//        return org.smallbox.faraway.core.module.room.model.getType().needs.entertainment != null && org.smallbox.faraway.core.module.room.model.getNeeds().entertainment < org.smallbox.faraway.core.module.room.model.getType().needs.entertainment.warning;
 //    }
 //}

@@ -1,9 +1,9 @@
 //package org.smallbox.faraway.module.consumable;
 //
-//import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-//import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-//import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-//import org.smallbox.faraway.core.util.MoveListener;
+//import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+//import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+//import org.smallbox.faraway.core.module.world.model.ParcelModel;
+//import org.smallbox.faraway.util.MoveListener;
 //
 ///**
 // * Created by Alex on 29/07/2016.

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.util;
+package org.smallbox.faraway.util;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;

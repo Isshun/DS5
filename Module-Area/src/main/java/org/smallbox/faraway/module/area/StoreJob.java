@@ -6,12 +6,12 @@ import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.game.module.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -206,7 +206,7 @@ public class StoreJob extends JobModel implements GameObserver {
 //                }
 //                if (_targetParcel.getConsumable().getInfo() == _character.getInventory().getInfo()) {
 //                    int freeQuantity = _targetParcel.getConsumable().getInfo().stack - _targetParcel.getConsumable().getQuantity();
-//                    // Store all inventory consumables on storage org.smallbox.faraway.core.game.module.room.model
+//                    // Store all inventory consumables on storage org.smallbox.faraway.core.module.room.model
 //                    if (freeQuantity >= _character.getInventory().getQuantity()) {
 //                        _targetParcel.getConsumable().addQuantity(_character.getInventory().getQuantity());
 //                        _character.setInventory(null);
@@ -262,7 +262,7 @@ public class StoreJob extends JobModel implements GameObserver {
         if (_storageArea != null && (_jobParcel == null || _jobParcel.accept(_itemInfo, 1))) {
             _jobParcel = _storageArea.getNearestFreeParcel(_consumables.peek());
             if (_jobParcel == null) {
-                _message = "No storage org.smallbox.faraway.core.game.module.room.model";
+                _message = "No storage org.smallbox.faraway.core.module.room.model";
                 return JobCheckReturn.ABORT;
             }
         }

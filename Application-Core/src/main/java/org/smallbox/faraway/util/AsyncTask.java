@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.util;
+package org.smallbox.faraway.util;
 
 /**
  * Created by Alex on 08/07/2015.

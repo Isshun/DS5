@@ -21,7 +21,7 @@
 data:extend({
     type = "list",
     id = "base.ui.info_area_garden",
-    controller = "org.smallbox.faraway.core.game.module.area.controller.AreaGardenInfoController",
+    controller = "org.smallbox.faraway.core.module.area.controller.AreaGardenInfoController",
     style = "base.style.right_panel",
     visible = false,
     views = {

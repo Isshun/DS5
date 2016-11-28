@@ -1,17 +1,15 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.lua.LuaControllerManager;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.client.ui.ApplicationClient;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.client.ui.GameActionExtra;
-import org.smallbox.faraway.client.ui.GameSelectionExtra;
 import org.smallbox.faraway.client.ui.UICursor;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.game.model.planet.PlanetModel;
+import org.smallbox.faraway.core.lua.LuaControllerManager;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,8 +31,8 @@ public class Game {
     private boolean[]                       _directions = new boolean[4];
 
     private boolean                         _isRunning;
-    private GameActionExtra                 _gameAction;
-    private GameSelectionExtra              _selector;
+//    private GameActionExtra                 _gameAction;
+//    private GameSelectionExtra              _selector;
     private final GameInfo                  _info;
     private PlanetModel                     _planet;
     private int                             _hour = 5;
@@ -67,23 +65,22 @@ public class Game {
     public int                              getYear() { return _year; }
     public int                              getTickPerHour() { return Application.configurationManager.game.tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
-    public Viewport                         getViewport() { return _viewport; }
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
-    public GameActionExtra                  getInteraction() { return _gameAction; }
-    public GameSelectionExtra               getSelector() { return _selector; }
+//    public GameActionExtra                  getInteraction() { return _gameAction; }
+//    public GameSelectionExtra               getSelector() { return _selector; }
     public int                              getSpeed() { return _speed; }
     public int                              getLastSpeed() { return _lastSpeed; }
     public Collection<GameModule>           getModules() { return _modules; }
     public GameModuleState                  getState() { return _state; }
 
     public Game(GameInfo info) {
-        _selector = new GameSelectionExtra();
-        _gameAction = new GameActionExtra(_viewport, _selector);
+//        _selector = new GameSelectionExtra();
+//        _gameAction = new GameActionExtra(_viewport, _selector);
         _info = info;
         _isRunning = true;
         _planet = new PlanetModel(info.planet);
-        _directions = ApplicationClient.inputManager.getDirection();
+//        _directions = ApplicationClient.inputManager.getDirection();
         _displays = new HashMap<>();
         _tick = 0;
     }

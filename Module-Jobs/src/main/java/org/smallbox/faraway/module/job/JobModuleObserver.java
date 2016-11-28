@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.job;
 
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 
 /**
  * Created by Alex on 20/07/2016.

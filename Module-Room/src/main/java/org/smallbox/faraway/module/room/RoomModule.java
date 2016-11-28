@@ -2,17 +2,17 @@ package org.smallbox.faraway.module.room;
 
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.room.model.RoomConnectionModel;
-import org.smallbox.faraway.core.game.module.room.model.RoomModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.util.AsyncTask;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.room.model.RoomConnectionModel;
+import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.util.AsyncTask;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.structure.StructureModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
@@ -207,7 +207,7 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     private void makeNeighborhood(Collection<RoomModel> roomList, RoomModel room) {
-        // Create neighborhood org.smallbox.faraway.core.game.module.room.model form each room
+        // Create neighborhood org.smallbox.faraway.core.module.room.model form each room
         Map<RoomModel, RoomConnectionModel> neighborhood = roomList.stream()
                 .filter(r -> r != room && r.getFloor() >= room.getFloor() - 1 && r.getFloor() <= room.getFloor() + 1)
                 .map(RoomConnectionModel::new)

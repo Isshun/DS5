@@ -2,8 +2,8 @@ package org.smallbox.faraway.module.item.item;
 
 import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.game.module.world.model.NetworkObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 /**
  * Created by Alex on 05/11/2015.

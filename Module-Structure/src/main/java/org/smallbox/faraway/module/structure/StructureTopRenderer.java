@@ -1,13 +1,13 @@
 package org.smallbox.faraway.module.structure;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.BindManager;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.engine.renderer.*;
+import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.StructureModel;
 
 public class StructureTopRenderer extends BaseRenderer {
 

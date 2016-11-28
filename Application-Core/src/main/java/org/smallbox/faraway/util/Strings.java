@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.util;
+package org.smallbox.faraway.util;
 
 public class Strings {
     public static final String LB_SCIENCE = "Science";

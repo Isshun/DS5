@@ -2,12 +2,12 @@ package org.smallbox.faraway.module.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.smallbox.faraway.BindManager;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.GameDisplay;
-import org.smallbox.faraway.core.engine.renderer.SpriteManager;
-import org.smallbox.faraway.core.engine.renderer.Viewport;
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.renderer.GameDisplay;
+import org.smallbox.faraway.client.renderer.SpriteManager;
+import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 13/06/2015.
