@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
 
 /**
  * Created by Alex on 14/11/2015.

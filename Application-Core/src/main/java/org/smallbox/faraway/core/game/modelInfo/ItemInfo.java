@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
-import org.smallbox.faraway.core.game.module.world.model.ItemFilter;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.module.world.model.ItemFilter;
+import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 
 import java.io.File;
 import java.util.ArrayList;

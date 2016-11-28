@@ -3,9 +3,9 @@ package org.smallbox.faraway.core.game;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.*;
-import org.smallbox.faraway.core.game.module.character.model.BuffInfo;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.module.character.model.BuffInfo;
+import org.smallbox.faraway.core.module.character.model.DiseaseInfo;
+import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 import org.smallbox.faraway.client.ui.UICursor;
 
 import java.util.*;

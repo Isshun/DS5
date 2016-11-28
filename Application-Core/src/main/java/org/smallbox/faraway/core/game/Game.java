@@ -1,14 +1,14 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.LuaControllerManager;
+import org.smallbox.faraway.core.lua.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.renderer.GDXRenderer;
-import org.smallbox.faraway.core.engine.renderer.Viewport;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.client.ui.ApplicationClient;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.client.ui.GameActionExtra;
 import org.smallbox.faraway.client.ui.GameSelectionExtra;
 import org.smallbox.faraway.client.ui.UICursor;
@@ -31,7 +31,6 @@ public class Game {
     private int                             _frame;
     private double                          _animationProgress;
     private boolean[]                       _directions = new boolean[4];
-    private Viewport                        _viewport;
 
     private boolean                         _isRunning;
     private GameActionExtra                 _gameAction;
@@ -79,7 +78,6 @@ public class Game {
     public GameModuleState                  getState() { return _state; }
 
     public Game(GameInfo info) {
-        _viewport = new Viewport(400, 300);
         _selector = new GameSelectionExtra();
         _gameAction = new GameActionExtra(_viewport, _selector);
         _info = info;

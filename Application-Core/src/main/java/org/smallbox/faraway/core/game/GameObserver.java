@@ -1,18 +1,17 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.area.model.AreaModel;
-import org.smallbox.faraway.core.game.module.area.model.AreaType;
-import org.smallbox.faraway.core.game.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.game.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.area.model.AreaModel;
+import org.smallbox.faraway.core.module.area.model.AreaType;
+import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.StructureModel;
 
 /**
  * Created by Alex on 06/06/2015.

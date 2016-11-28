@@ -2,12 +2,11 @@ package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
-import org.smallbox.faraway.core.data.serializer.GameSaveManager;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
-import org.smallbox.faraway.core.util.FileUtils;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 import java.io.IOException;

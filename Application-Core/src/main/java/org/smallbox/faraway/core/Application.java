@@ -1,17 +1,20 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.ConfigurationManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.module.path.PathManager;
-import org.smallbox.faraway.core.game.module.world.SQLManager;
-import org.smallbox.faraway.core.util.Constant;
-import org.smallbox.faraway.core.util.Log;
-import org.smallbox.faraway.core.util.Utils;
+import org.smallbox.faraway.core.groovy.GroovyManager;
+import org.smallbox.faraway.core.module.path.PathManager;
+import org.smallbox.faraway.core.module.world.SQLManager;
+import org.smallbox.faraway.core.task.TaskManager;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application {
-    public static final DependencyInjector      dependencyInjector;
+    public static final DependencyInjector dependencyInjector;
     private static Collection<GameObserver>     _observers = new LinkedBlockingQueue<>();
 
     // Server
@@ -29,10 +32,10 @@ public class Application {
     public static final ModuleManager           moduleManager;
     public static final LuaModuleManager        luaModuleManager;
     public static final PathManager             pathManager;
-    public static final TaskManager             taskManager;
+    public static final TaskManager taskManager;
     public static final SQLManager              sqlManager;
     public static final Data                    data;
-    public static final GroovyManager           groovyManager;
+    public static final GroovyManager groovyManager;
 
     // Both
     public static final ConfigurationManager    configurationManager;

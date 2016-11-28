@@ -3,11 +3,11 @@ package org.smallbox.faraway.core.game.helper;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.job.model.DigJob;
-import org.smallbox.faraway.core.game.module.job.model.GatherJob;
-import org.smallbox.faraway.core.game.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
+import org.smallbox.faraway.core.module.job.model.DigJob;
+import org.smallbox.faraway.core.module.job.model.GatherJob;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.PlantModel;
 
 /**
  * Created by Alex on 06/07/2015.
@@ -75,7 +75,7 @@ public class JobHelper {
         throw new NotImplementedException("");
 
 //        if (resource == null) {
-//            Log.error("JobModule: gather on null org.smallbox.faraway.core.game.module.room.model");
+//            Log.error("JobModule: gather on null org.smallbox.faraway.core.module.room.model");
 //            return null;
 //        }
 //

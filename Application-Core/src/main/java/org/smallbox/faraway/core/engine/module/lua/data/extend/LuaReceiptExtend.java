@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 
 import java.io.File;
 import java.util.ArrayList;

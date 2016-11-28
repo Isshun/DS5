@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.util.Constant;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

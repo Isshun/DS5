@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseCharacterModel;
-import org.smallbox.faraway.core.game.module.character.model.DiseaseInfo;
+import org.smallbox.faraway.core.module.character.model.DiseaseCharacterModel;
+import org.smallbox.faraway.core.module.character.model.DiseaseInfo;
 
 import java.io.File;
 
@@ -56,7 +56,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
 //                                if (Math.random() <= luaEffects.get(j + 1).get(2).todouble()) {
 //                                    printNotice("apply buff effect: " + luaEffects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
 //                                    ((DiseaseModule) Application.moduleManager.getModule(DiseaseModule.class)).apply(
-//                                            org.smallbox.faraway.core.game.module.room.model,
+//                                            org.smallbox.faraway.core.module.room.model,
 //                                            luaEffects.get(j + 1).get(1).toString(),
 //                                            luaEffects.get(j + 1).get(3));
 //                                }

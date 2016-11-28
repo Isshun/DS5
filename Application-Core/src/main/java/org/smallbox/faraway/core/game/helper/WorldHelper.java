@@ -4,12 +4,12 @@ import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.character.model.PathModel;
-import org.smallbox.faraway.core.game.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.game.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.game.module.world.model.PlantModel;
-import org.smallbox.faraway.core.game.module.world.model.StructureModel;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.character.model.PathModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.PlantModel;
+import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 09/07/2015.
@@ -54,11 +54,11 @@ public class WorldHelper {
     public static boolean           hasLiquid(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid(); }
 
     /**
-     * Search for org.smallbox.faraway.core.game.module.room.model free to receive a ConsumableItem
+     * Search for org.smallbox.faraway.core.module.room.model free to receive a ConsumableItem
      *
      * @param parcel
      * @param itemInfo
-     * @return nearest free org.smallbox.faraway.core.game.module.room.model
+     * @return nearest free org.smallbox.faraway.core.module.room.model
      */
     public static ParcelModel getNearestFreeArea(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
         if (parcel != null && itemInfo.isConsumable) {
@@ -83,7 +83,7 @@ public class WorldHelper {
     }
 
     /**
-     * Check if current org.smallbox.faraway.core.game.module.room.model is free for consumable
+     * Check if current org.smallbox.faraway.core.module.room.model is free for consumable
      *
      * @param x
      * @param y

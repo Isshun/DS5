@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.game.model.planet;
 
-import org.smallbox.faraway.core.util.Constant;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,9 +53,9 @@ public class PlanetModel {
                     }
                 }
 
-                // Check region exists for org.smallbox.faraway.core.game.module.room.model
+                // Check region exists for org.smallbox.faraway.core.module.room.model
                 if (_areas[x][y].region == null) {
-                    throw new RuntimeException("No region for org.smallbox.faraway.core.game.module.room.model: " + x + "x" + y);
+                    throw new RuntimeException("No region for org.smallbox.faraway.core.module.room.model: " + x + "x" + y);
                 }
             }
         }

@@ -1,15 +1,15 @@
 package org.smallbox.faraway.core.engine.module.lua.luaModel;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.Config;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.module.area.model.AreaType;
-import org.smallbox.faraway.core.game.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.core.module.area.model.AreaType;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.client.ui.GameActionExtra;
 import org.smallbox.faraway.client.ui.UIManager;
 

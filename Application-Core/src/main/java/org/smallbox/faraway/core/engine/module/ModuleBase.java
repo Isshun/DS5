@@ -1,12 +1,11 @@
 package org.smallbox.faraway.core.engine.module;
 
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.game.GameEvent;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.util.Log;
+import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.List;
