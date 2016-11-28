@@ -1,21 +1,19 @@
 package org.smallbox.faraway.module.item;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.MoveListener;
-import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
 import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.item.item.ItemSlot;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.MoveListener;
+import org.smallbox.faraway.util.Utils;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,7 +39,8 @@ public class CraftJob extends JobModel {
     }
 
     private CraftJob(ConsumableModule consumableModule, ItemModel item, ItemInfo.ItemInfoAction action) {
-        super(action, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
+        super(action, item.getParcel());
+//        super(action, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
         assert item.getFactory() != null;
 
         _item = item;

@@ -1,13 +1,18 @@
-package org.smallbox.faraway.core.lua;
+package org.smallbox.faraway.client.lua;
 
 import com.google.common.base.CaseFormat;
 import org.reflections.Reflections;
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.lua.BindLuaAction;
+import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 import java.lang.reflect.*;
 import java.util.HashMap;
@@ -17,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 26/04/2016.
  */
-public class LuaControllerManager {
+public class LuaControllerManager implements GameObserver {
     private static LuaControllerManager     _self;
 
     private Map<String, LuaController>      _controllers = new HashMap<>();
@@ -32,6 +37,11 @@ public class LuaControllerManager {
 
     public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
     public Map<String, LuaController> getControllers() { return _controllers; }
+
+    @Override
+    public void onReloadUI() {
+        init();
+    }
 
     /**
      * Inject controllers to modules
@@ -61,9 +71,33 @@ public class LuaControllerManager {
     }
 
 
-    public void gameCreate(Game game) { _controllers.values().forEach(controller -> controller.gameCreate(game)); }
-    public void gameStart(Game game) { _controllers.values().forEach(controller -> controller.gameStart(game)); }
-    public void gameUpdate(Game game) { _controllers.values().forEach(controller -> controller.gameUpdate(game)); }
+//    public void gameCreate(Game game) { _controllers.values().forEach(controller -> controller.gameCreate(game)); }
+//    public void gameStart(Game game) { _controllers.values().forEach(controller -> controller.gameStart(game)); }
+//    public void gameUpdate(Game game) { _controllers.values().forEach(controller -> controller.gameUpdate(game)); }
+
+
+    @Override
+    public void onInjectDependency(Object object) {
+        for (Field field: object.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(BindLuaController.class)) {
+                LuaController controller = LuaControllerManager.getInstance().getControllers().entrySet().stream()
+                        .filter(entry -> entry.getValue().getClass() == field.getType())
+                        .map(Map.Entry::getValue)
+                        .findAny()
+                        .orElse(null);
+                if (controller != null) {
+                    try {
+                        field.setAccessible(true);
+                        field.set(object, controller);
+                    } catch (IllegalAccessException e) {
+                        Log.error(e);
+                    }
+                } else {
+                    Log.error("DependencyInjector: cannot find controller: " + field.getType());
+                }
+            }
+        }
+    }
 
     /**
      * Invoke controllers

@@ -1,11 +1,7 @@
-package org.smallbox.faraway.core.module.room;
+package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.renderer.GameDisplay;
-import org.smallbox.faraway.client.renderer.SpriteManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

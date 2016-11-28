@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.Application;

@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.core.data.ItemInfo;
 //import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
-//import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
+//import org.smallbox.faraway.client.drawable.GDXDrawable;
 //
 //import java.util.ArrayList;
 //import java.util.List;

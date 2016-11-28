@@ -27,7 +27,7 @@ public class FloraModule extends GameModule<FloraModuleObserver> {
     private Collection<PlantModel> _plants;
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _plants = new LinkedList<>();
 
         _world.addObserver(new WorldModuleObserver() {

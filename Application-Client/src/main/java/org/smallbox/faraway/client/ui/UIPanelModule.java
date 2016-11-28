@@ -13,7 +13,7 @@ public class UIPanelModule extends GameModule {
     }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
     }
 
     @Override

@@ -7,11 +7,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.area.model.AreaType;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.client.ui.GameActionExtra;
-import org.smallbox.faraway.client.ui.UIManager;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -24,7 +20,6 @@ public class LuaApplicationModel {
     public int                      day;
     public int                      hour;
     public int                      year;
-    public UIManager                ui;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
@@ -67,11 +62,13 @@ public class LuaApplicationModel {
     }
 
     public void setPlan(String plan) {
-        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
+        throw new RuntimeException("Not implemented");
+//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
     }
 
     public void destroy(MapObjectModel object) {
-        Application.gameManager.getGame().getInteraction().planDestroy(object.getParcel());
+        throw new RuntimeException("Not implemented");
+//        Application.gameManager.getGame().getInteraction().planDestroy(object.getParcel());
     }
 
     public void cancel(MapObjectModel object) {
@@ -85,16 +82,19 @@ public class LuaApplicationModel {
     }
 
     public void setArea(String area) {
-        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
+        throw new RuntimeException("Not implemented");
+//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void removeArea(String area) {
-        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
+        throw new RuntimeException("Not implemented");
+//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void setBuild(ItemInfo itemInfo) {
-        Log.info("Set build from lua: " + itemInfo.name);
-        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
+        throw new RuntimeException("Not implemented");
+//        Log.info("Set build from lua: " + itemInfo.name);
+//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
 
     public void stopGame() {
@@ -111,7 +111,8 @@ public class LuaApplicationModel {
     }
 
     public void clearAction() {
-        Application.gameManager.getGame().getInteraction().clear();
+        throw new RuntimeException("Not implemented");
+//        Application.gameManager.getGame().getInteraction().clear();
     }
 
     public void sendEvent(String tag) {

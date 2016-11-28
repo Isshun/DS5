@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.core;
 //
-//import org.smallbox.faraway.core.module.character.controller.LuaController;
+//import org.smallbox.faraway.client.controller.LuaController;
 //
 ///**
 // * Created by Alex on 24/07/2016.

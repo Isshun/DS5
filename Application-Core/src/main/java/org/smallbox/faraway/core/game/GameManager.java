@@ -26,7 +26,9 @@ public class GameManager {
 //        Application.notify(GameObserver::onReloadUI);
         _game = new Game(info);
         _game.createModules();
-        _game.createControllers();
+
+        Application.notify(observer -> observer.onGameCreate(_game));
+
         GameSaveManager.load(_game, FileUtils.getSaveDirectory(info.name), saveInfo.filename, () -> Gdx.app.postRunnable(() -> {
             System.gc();
             Application.luaModuleManager.startGame(_game);
@@ -46,7 +48,6 @@ public class GameManager {
 
         _game = new Game(gameInfo);
         _game.createModules();
-        _game.createControllers();
 
         worldFactory.create(_game, regionInfo);
 

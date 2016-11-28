@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
+import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
@@ -96,12 +97,12 @@ public class GDXRenderer {
 
     public void zoomUp() {
         _zoom = Math.max(0, _zoom - 1);
-        Application.gameManager.getGame().getViewport().setZoom(_zoom);
+        ApplicationClient.mainRenderer.getViewport().setZoom(_zoom);
     }
 
     public void zoomDown() {
         _zoom = Math.min(Viewport.ZOOM_LEVELS.length - 1, _zoom + 1);
-        Application.gameManager.getGame().getViewport().setZoom(_zoom);
+        ApplicationClient.mainRenderer.getViewport().setZoom(_zoom);
     }
 
     public void draw(Sprite sprite, int x, int y) {
@@ -172,7 +173,7 @@ public class GDXRenderer {
             Gdx.gl.glEnable(GL20.GL_BLEND);
 
             Matrix4 matrix = new Matrix4();
-            matrix.translate(x * Application.gameManager.getGame().getViewport().getScale(), y * Application.gameManager.getGame().getViewport().getScale(), 0);
+            matrix.translate(x * ApplicationClient.mainRenderer.getViewport().getScale(), y * ApplicationClient.mainRenderer.getViewport().getScale(), 0);
 //            matrix.scale(Application.gameManager.getGame().getViewport().getScale(), Application.gameManager.getGame().getViewport().getScale(), 1f);
 
             cache.setProjectionMatrix(_cameraWorld.combined);
@@ -192,10 +193,10 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(TextureRegion region, int x, int y) {
-        draw(region, Application.gameManager.getGame().getViewport().getPosX() + (x * Constant.TILE_WIDTH), Application.gameManager.getGame().getViewport().getPosY() + (y * Constant.TILE_HEIGHT));
+        draw(region, ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT));
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw(itemSprite, (parcel.x * Constant.TILE_WIDTH) + Application.gameManager.getGame().getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + Application.gameManager.getGame().getViewport().getPosY());
+        draw(itemSprite, (parcel.x * Constant.TILE_WIDTH) + ApplicationClient.mainRenderer.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.mainRenderer.getViewport().getPosY());
     }
 }

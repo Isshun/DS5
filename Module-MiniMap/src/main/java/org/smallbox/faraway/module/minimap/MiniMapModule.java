@@ -1,15 +1,15 @@
 package org.smallbox.faraway.module.minimap;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 @ModuleRenderer(MinimapRenderer.class)
 public class MiniMapModule extends GameModule {
@@ -32,7 +32,7 @@ public class MiniMapModule extends GameModule {
             }
             if ((action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.LEFT) ||
                     (action == GameEventListener.Action.MOVE && _isPressed)) {
-                Application.gameManager.getGame().getViewport().setPosition(-((x - 19 - POS_X) * Application.gameManager.getGame().getInfo().worldWidth / FRAME_WIDTH) * Constant.TILE_WIDTH, -((y - 16 - POS_Y) * Application.gameManager.getGame().getInfo().worldHeight / FRAME_HEIGHT) * Constant.TILE_HEIGHT);
+                ApplicationClient.mainRenderer.getViewport().setPosition(-((x - 19 - POS_X) * Application.gameManager.getGame().getInfo().worldWidth / FRAME_WIDTH) * Constant.TILE_WIDTH, -((y - 16 - POS_Y) * Application.gameManager.getGame().getInfo().worldHeight / FRAME_HEIGHT) * Constant.TILE_HEIGHT);
                 return true;
             }
         }

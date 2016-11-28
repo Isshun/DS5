@@ -2,8 +2,6 @@ package org.smallbox.faraway.core.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.PathModel;
@@ -27,7 +25,8 @@ public class GatherJob extends JobModel {
     }
 
     private GatherJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
-        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
+        super(actionInfo, jobParcel);
+//        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
     }
 
     public static JobModel create(PlantModel plant, Mode mode) {

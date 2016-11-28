@@ -31,7 +31,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private List<CharacterCheck>        _sleeps;
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _priorities = new ArrayList<>();
 //        _priorities.addSubJob(new CheckCharacterEntertainmentDepleted());
 

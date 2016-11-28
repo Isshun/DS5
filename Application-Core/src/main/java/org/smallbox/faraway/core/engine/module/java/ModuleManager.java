@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GDXApplication;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -23,6 +22,11 @@ import java.util.concurrent.Executors;
  * Created by Alex on 31/08/2015.
  */
 public class ModuleManager {
+
+    public interface OnLoad {
+        void onLoad(String message);
+    }
+
     private final Executor              _executor = Executors.newFixedThreadPool(5);
     private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<ApplicationModule>     _applicationModules = new ArrayList<>();
@@ -30,7 +34,7 @@ public class ModuleManager {
     private List<ModuleBase>            _modules = new ArrayList<>();
     private List<String>                _allowedModulesNames = Arrays.asList("WorldModule", "CharacterModule", "JobModule", "PathManager");
 
-    public void loadModules(GDXApplication.OnLoad onLoad) {
+    public void loadModules(OnLoad onLoad) {
         assert _modules.isEmpty();
 
         loadApplicationModules(onLoad);
@@ -38,7 +42,7 @@ public class ModuleManager {
         loadThirdPartyModules(onLoad);
     }
 
-    private void loadThirdPartyModules(GDXApplication.OnLoad onLoad) {
+    private void loadThirdPartyModules(OnLoad onLoad) {
         //        // List thirds party modules
 //        List<ThirdPartyModule> thirdPartyModules = new ArrayList<>();
 //        FileUtils.list("data/modules/").forEach(file -> {
@@ -107,7 +111,7 @@ public class ModuleManager {
     }
 
     // Load application modules
-    private void loadApplicationModules(GDXApplication.OnLoad onLoad) {
+    private void loadApplicationModules(OnLoad onLoad) {
         assert _applicationModules.isEmpty();
         Log.info("Load application modules");
 
@@ -152,7 +156,7 @@ public class ModuleManager {
         _applicationModules.forEach(ModuleBase::create);
     }
 
-    private void loadGameModules(GDXApplication.OnLoad onLoad) {
+    private void loadGameModules(OnLoad onLoad) {
         assert _gameModules.isEmpty();
         Log.info("Load game modules");
 

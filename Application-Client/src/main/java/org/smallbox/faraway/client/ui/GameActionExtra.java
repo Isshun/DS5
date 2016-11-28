@@ -1,6 +1,8 @@
 package org.smallbox.faraway.client.ui;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.MouseEvent;
+import org.smallbox.faraway.client.ui.engine.UICursor;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.client.renderer.Viewport;
@@ -14,8 +16,8 @@ public class GameActionExtra {
     private final Viewport              _viewport;
     private final GameSelectionExtra    _selector;
 
-    private UICursor                    _cursor;
-    private MouseEvent                  _mouseEvent;
+    private UICursor _cursor;
+    private MouseEvent _mouseEvent;
 
     public void setCursor(UICursor cursor) {
         _cursor = cursor;
@@ -248,32 +250,33 @@ public class GameActionExtra {
     public void set(Action action, String plan) {
         _action = action;
         _selectedPlan = plan;
-        switch (plan) {
-            case "build":
-                Application.gameManager.getGame().setCursor("base.cursor.build");
-                break;
-            case "gather":
-                Application.gameManager.getGame().setCursor("base.cursor.gather");
-                break;
-            case "dig":
-            case "dig_hole":
-            case "dig_ramp_up":
-            case "dig_ramp_down":
-                Application.gameManager.getGame().setCursor("base.cursor.dig");
-                break;
-            case "cut":
-                Application.gameManager.getGame().setCursor("base.cursor.cut");
-                break;
-            case "unload":
-                Application.gameManager.getGame().setCursor("base.cursor.unload");
-                break;
-            case "haul":
-                Application.gameManager.getGame().setCursor("base.cursor.haul");
-                break;
-            case "cancel":
-                Application.gameManager.getGame().setCursor("base.cursor.cancel");
-                break;
-        }
+        // TODO
+        //        switch (plan) {
+//            case "build":
+//                Application.gameManager.getGame().setCursor("base.cursor.build");
+//                break;
+//            case "gather":
+//                Application.gameManager.getGame().setCursor("base.cursor.gather");
+//                break;
+//            case "dig":
+//            case "dig_hole":
+//            case "dig_ramp_up":
+//            case "dig_ramp_down":
+//                Application.gameManager.getGame().setCursor("base.cursor.dig");
+//                break;
+//            case "cut":
+//                Application.gameManager.getGame().setCursor("base.cursor.cut");
+//                break;
+//            case "unload":
+//                Application.gameManager.getGame().setCursor("base.cursor.unload");
+//                break;
+//            case "haul":
+//                Application.gameManager.getGame().setCursor("base.cursor.haul");
+//                break;
+//            case "cancel":
+//                Application.gameManager.getGame().setCursor("base.cursor.cancel");
+//                break;
+//        }
     }
 
     public void set(Action action, ItemInfo info) {

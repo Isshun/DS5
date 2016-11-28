@@ -2,8 +2,6 @@ package org.smallbox.faraway.core.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
@@ -16,7 +14,8 @@ public class DumpJob extends JobModel {
     private int             _current;
 
     private DumpJob(ParcelModel jobParcel) {
-        super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
+        super(null, jobParcel);
+//        super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
     }
 
     public static JobModel create(MapObjectModel item) {

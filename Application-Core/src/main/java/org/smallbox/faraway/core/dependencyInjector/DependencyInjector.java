@@ -2,15 +2,12 @@ package org.smallbox.faraway.core.dependencyInjector;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.lua.BindLuaController;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
-import org.smallbox.faraway.core.lua.LuaControllerManager;
+import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -26,6 +23,11 @@ public class DependencyInjector {
     public <T> T create(Class<T> cls) {
         try {
             T object = cls.newInstance();
+
+            if (object instanceof GameObserver) {
+                Application.addObserver((GameObserver)object);
+            }
+
             register(object);
             return object;
         } catch (InstantiationException | IllegalAccessException e) {
@@ -53,7 +55,8 @@ public class DependencyInjector {
         Log.info("Inject dependency to: " + object.getClass().getName());
         injectManagers(object);
         injectModules(object, Application.moduleManager.getGameModules());
-        injectControllers(object, LuaControllerManager.getInstance().getControllers());
+
+        Application.notify(observer -> observer.onInjectDependency(object));
     }
 
     private void injectManagers(Object targetObject) {
@@ -76,28 +79,6 @@ public class DependencyInjector {
                 }
             } catch (IllegalAccessException e) {
                 Log.error(e);
-            }
-        }
-    }
-
-    private void injectControllers(Object object, Map<String, LuaController> controllers) {
-        for (Field field: object.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(BindLuaController.class)) {
-                LuaController controller = controllers.entrySet().stream()
-                        .filter(entry -> entry.getValue().getClass() == field.getType())
-                        .map(Map.Entry::getValue)
-                        .findAny()
-                        .orElse(null);
-                if (controller != null) {
-                    try {
-                        field.setAccessible(true);
-                        field.set(object, controller);
-                    } catch (IllegalAccessException e) {
-                        Log.error(e);
-                    }
-                } else {
-                    Log.error("DependencyInjector: cannot find controller: " + field.getType());
-                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.ui;
+package org.smallbox.faraway.core.engine.module.lua;
 
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;

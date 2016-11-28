@@ -8,18 +8,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.Application;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public interface OnLoad {
-        void onLoad(String message);
-    }
-
     private SpriteBatch                         _batch;
-    private Application _application;
+    private Application                         _application;
     private ApplicationClient                   _client;
     private BitmapFont[]                        _fonts;
     private BitmapFont                          _systemFont;
@@ -115,11 +110,9 @@ public class GDXApplication extends ApplicationAdapter {
         ApplicationClient.gdxRenderer.clear();
         ApplicationClient.gdxRenderer.refresh();
 
-        Viewport viewport = Application.gameManager.getGame() != null ? Application.gameManager.getGame().getViewport() : null;
-
         // Render game
         if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().render(ApplicationClient.gdxRenderer, viewport);
+            Application.notify(observer -> observer.onGameRender(Application.gameManager.getGame()));
         }
 
 //        fpsLogger.log();

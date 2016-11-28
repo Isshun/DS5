@@ -45,7 +45,7 @@ public class OxygenModule extends GameModule {
     public double getOxygen() { return _oxygen; }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _itemModule.addObserver(new ItemModuleObserver() {
             @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {

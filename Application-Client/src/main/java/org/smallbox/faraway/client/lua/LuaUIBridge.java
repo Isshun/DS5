@@ -1,7 +1,8 @@
-package org.smallbox.faraway.core.engine.module.lua;
+package org.smallbox.faraway.client.lua;
 
-import org.smallbox.faraway.client.ui.ApplicationClient;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 
 /**
  * Created by Alex on 12/04/2016.

@@ -1,22 +1,20 @@
 package org.smallbox.faraway.module.world;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.client.renderer.GetParcelListener;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.client.renderer.GetParcelListener;
-import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.controller.WorldInfoParcel2Controller;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.module.job.JobModule;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +26,8 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     @BindModule
     private JobModule jobModule;
 
-    @BindLuaController
-    private WorldInfoParcel2Controller          _infoParcel2Controller;
+//    @BindLuaController
+//    private WorldInfoParcel2Controller          _infoParcel2Controller;
 
     private ParcelModel[][][]                   _parcels;
     private int                                 _width;
@@ -37,19 +35,13 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     private int                                 _floors;
     private double                              _light;
     private int                                 _floor = WorldHelper.getCurrentFloor();
-    private Viewport                            _viewport;
-
-    @Override
-    protected void onGameCreate(Game game) {
-        _viewport = game.getViewport();
-    }
 
     @Override
     public void onGameStart(Game game) { }
 
     @Override
     public boolean onSelectParcel(ParcelModel parcel) {
-        _infoParcel2Controller.select(parcel);
+//        _infoParcel2Controller.select(parcel);
         return false;
     }
 
@@ -158,8 +150,10 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         }
     }
 
-    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+//    public int                      getRelativePosX(int x) { return (int) ((x - ApplicationClient.mainRenderer.getViewport().getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+//    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+    public int                      getRelativePosX(int x) { return ApplicationClient.mainRenderer.getViewport().getRelativePosX(x); }
+    public int                      getRelativePosY(int y) { return ApplicationClient.mainRenderer.getViewport().getRelativePosY(y); }
 
     public void putObject(String itemName, ParcelModel parcel, int data) {
         putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);
@@ -264,7 +258,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public void onFloorUp() {
         if (_floor < _floors - 1) {
             _floor++;
-            _viewport.setFloor(_floor);
+            ApplicationClient.mainRenderer.getViewport().setFloor(_floor);
             WorldHelper.setCurrentFloor(_floor);
             Application.notify(observer -> observer.onFloorChange(_floor));
         }
@@ -274,7 +268,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public void onFloorDown() {
         if (_floor > 0) {
             _floor--;
-            _viewport.setFloor(_floor);
+            ApplicationClient.mainRenderer.getViewport().setFloor(_floor);
             WorldHelper.setCurrentFloor(_floor);
             Application.notify(observer -> observer.onFloorChange(_floor));
         }

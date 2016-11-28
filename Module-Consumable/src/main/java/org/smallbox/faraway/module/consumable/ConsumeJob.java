@@ -2,7 +2,6 @@ package org.smallbox.faraway.module.consumable;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.PathModel;
@@ -26,7 +25,8 @@ public class ConsumeJob extends JobModel {
     private double              _current;
 
     private ConsumeJob(ParcelModel parcel) {
-        super(null, parcel, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
+        super(null, parcel);
+//        super(null, parcel, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
     }
 
     public static ConsumeJob create(CharacterModel character, ConsumableModel consumable) {

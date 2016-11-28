@@ -2,8 +2,6 @@ package org.smallbox.faraway.core.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.PathModel;
@@ -22,7 +20,8 @@ public class DigJob extends JobModel {
     private ItemInfo            _groundInfo;
 
     private DigJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
-        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
+        super(actionInfo, jobParcel);
+//        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_mining.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 0, 32, 32, 8, 1));
     }
 
     public static DigJob create(ParcelModel parcel, ItemInfo rockInfo, ItemInfo itemProduct) {

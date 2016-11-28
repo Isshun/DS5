@@ -1,7 +1,8 @@
 package org.smallbox.faraway.module.world;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -60,8 +61,8 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     public void onMouseMove(GameEvent event) {
         // right button pressed
         if (_keyRightPressed) {
-            Application.gameManager.getGame().getViewport().update(event.mouseEvent.x, event.mouseEvent.y);
-            Log.debug("pos: %d x %d", Application.gameManager.getGame().getViewport().getPosX(), Application.gameManager.getGame().getViewport().getPosY());
+            ApplicationClient.mainRenderer.getViewport().update(event.mouseEvent.x, event.mouseEvent.y);
+            Log.debug("pos: %d x %d", ApplicationClient.mainRenderer.getViewport().getPosX(), ApplicationClient.mainRenderer.getViewport().getPosY());
 //            if (_menu != null && _menu.isVisible()) {
 //                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
 //                _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
@@ -70,7 +71,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _selection = new UISelection();
 
         worldModule.addObserver(new WorldModuleObserver() {
@@ -132,7 +133,8 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                             return;
                         }
 
-                        Application.gameManager.getGame().getSelector().clear();
+                        // TODO
+//                        Application.gameManager.getGame().getSelector().clear();
 
                         // Check selection
                         if (!event.consumed && selectAt(event,

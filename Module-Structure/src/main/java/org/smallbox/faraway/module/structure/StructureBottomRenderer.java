@@ -1,10 +1,10 @@
 package org.smallbox.faraway.module.structure;
 
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.*;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.client.ui.ApplicationClient;
 
 public class StructureBottomRenderer extends BaseRenderer {
     @BindModule

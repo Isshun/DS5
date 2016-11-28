@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.GameDisplay;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 public class MinimapRenderer extends GameDisplay {
     //    private static final int    COLOR_BACKGROUND = 0xfff9bdff;

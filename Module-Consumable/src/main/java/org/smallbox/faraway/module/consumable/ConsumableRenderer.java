@@ -1,13 +1,13 @@
 package org.smallbox.faraway.module.consumable;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
-import org.smallbox.faraway.client.ui.ApplicationClient;
 
 /**
  * Created by Alex on 31/07/2016.

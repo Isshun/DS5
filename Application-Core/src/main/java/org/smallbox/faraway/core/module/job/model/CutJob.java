@@ -1,8 +1,8 @@
 //package org.smallbox.faraway.core.module.job.model;
 //
 //import org.smallbox.faraway.core.data.ItemInfo;
-//import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-//import org.smallbox.faraway.core.engine.drawable.IconDrawable;
+//import org.smallbox.faraway.client.drawable.AnimDrawable;
+//import org.smallbox.faraway.client.drawable.IconDrawable;
 //import org.smallbox.faraway.core.game.helper.WorldHelper;
 //import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 //import org.smallbox.faraway.core.module.character.model.PathModel;

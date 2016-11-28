@@ -6,15 +6,12 @@ import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.SpriteManager;
-import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.client.ui.MouseEvent;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ConfigurationManager;
-import org.smallbox.faraway.core.game.GameEvent;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -42,7 +39,6 @@ public class ApplicationClient {
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
     public static final MainRenderer            mainRenderer;
-    public static final Viewport                viewport;
 
     public static boolean isLoaded = false;
 
@@ -53,7 +49,6 @@ public class ApplicationClient {
         spriteManager = dependencyInjector.create(SpriteManager.class);
         gdxRenderer = dependencyInjector.create(GDXRenderer.class);
         mainRenderer = dependencyInjector.create(MainRenderer.class);
-        viewport = new Viewport(400, 300);
 
         // Create configurationManager
         configurationManager = loadConfig();
@@ -99,18 +94,18 @@ public class ApplicationClient {
     }
 
     public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
-        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
-
-        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-            return;
-        }
-
-        if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
-            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-                return;
-            }
-        }
+//        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
+//
+//        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
+//            return;
+//        }
+//
+//        if (Application.gameManager.isLoaded()) {
+//            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
+//            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
+//                return;
+//            }
+//        }
 
 //        ApplicationClient.uiManager.onMouseEvent(action, button, x, y, rightPressed);
     }

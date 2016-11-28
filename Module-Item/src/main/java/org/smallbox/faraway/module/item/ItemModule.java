@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.item;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.module.ModuleSerializer;
@@ -54,7 +54,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _items = new LinkedBlockingQueue<>();
 
         worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {

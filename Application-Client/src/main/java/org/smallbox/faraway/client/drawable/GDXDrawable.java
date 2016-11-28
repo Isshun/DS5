@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.engine.drawable;
+package org.smallbox.faraway.client.drawable;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

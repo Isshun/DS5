@@ -1,12 +1,12 @@
 package org.smallbox.faraway.module.consumable;
 
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -40,7 +40,7 @@ public class ConsumableInfoController extends LuaController {
     }
 
     @Override
-    protected void onGameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         if (isVisible()) {
             refreshConsumable();
         }

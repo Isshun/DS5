@@ -37,6 +37,7 @@ distZip.dependsOn copyResources
 
 dependencies {
     compile project(":Application-Core")
+    compile project(":Application-Client")
     compile project(":Module-Jobs")
     compile project(":Module-Structure")
     compile project(":Module-Consumable")

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.structure;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.module.ModuleSerializer;
@@ -46,7 +46,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     public Collection<StructureModel> getStructures() { return _structures; }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _structures = new LinkedBlockingQueue<>();
 
         worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {

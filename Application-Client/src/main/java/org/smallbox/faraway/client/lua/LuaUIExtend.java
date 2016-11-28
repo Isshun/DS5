@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.engine.module.lua.data.extend;
+package org.smallbox.faraway.client.lua;
 
 import com.badlogic.gdx.Gdx;
 import org.luaj.vm2.Globals;
@@ -7,20 +7,20 @@ import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.OnFocusListener;
+import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.lua.LuaControllerManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaStyleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.FadeEffect;
+import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.client.ui.ApplicationClient;
-import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 
 import java.io.File;
 import java.util.Collection;

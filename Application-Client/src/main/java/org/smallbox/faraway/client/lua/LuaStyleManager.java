@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.engine.module.lua;
+package org.smallbox.faraway.client.lua;
 
 import com.steadystate.css.dom.CSSValueImpl;
 import com.steadystate.css.dom.RGBColorImpl;

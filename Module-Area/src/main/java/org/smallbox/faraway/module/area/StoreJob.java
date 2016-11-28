@@ -2,7 +2,6 @@ package org.smallbox.faraway.module.area;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -30,7 +29,8 @@ public class StoreJob extends JobModel implements GameObserver {
     private ItemInfo                _itemInfo;
 
     private StoreJob(ParcelModel jobParcel) {
-        super(null, jobParcel, new IconDrawable("data/res/ic_haul.png", 0, 0, 32, 32), null);
+        super(null, jobParcel);
+//        super(null, jobParcel, new IconDrawable("data/res/ic_haul.png", 0, 0, 32, 32), null);
     }
 
     public static StoreJob create(ConsumableModel consumable, ParcelModel parcel) {

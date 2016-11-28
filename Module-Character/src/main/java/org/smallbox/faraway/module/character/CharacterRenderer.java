@@ -1,13 +1,12 @@
 package org.smallbox.faraway.module.character;
 
+import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.dependencyInjector.BindManager;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
@@ -111,15 +110,16 @@ public class CharacterRenderer extends BaseRenderer {
                 // Draw characters
                 renderer.draw(_spriteManager.getCharacter(c, dirIndex, frame), posX, posY);
 
-                // Draw label
-                if (c.getNeeds().get("happiness") < 20) {
-                    c.getLabelDrawable().setBackgroundColor(COLOR_CRITICAL);
-                } else if (c.getNeeds().get("happiness") < 40) {
-                    c.getLabelDrawable().setBackgroundColor(COLOR_WARNING);
-                } else {
-                    c.getLabelDrawable().setBackgroundColor(COLOR_OK);
-                }
-                renderer.draw(c.getLabelDrawable(), posX - ((c.getLabelDrawable().getContentWidth() - 24) / 2), posY - 8);
+                // TODO
+//                // Draw label
+//                if (c.getNeeds().get("happiness") < 20) {
+//                    c.getLabelDrawable().setBackgroundColor(COLOR_CRITICAL);
+//                } else if (c.getNeeds().get("happiness") < 40) {
+//                    c.getLabelDrawable().setBackgroundColor(COLOR_WARNING);
+//                } else {
+//                    c.getLabelDrawable().setBackgroundColor(COLOR_OK);
+//                }
+//                renderer.draw(c.getLabelDrawable(), posX - ((c.getLabelDrawable().getContentWidth() - 24) / 2), posY - 8);
 
                 // Selection
                 if (c.isSelected()) {
@@ -141,24 +141,25 @@ public class CharacterRenderer extends BaseRenderer {
                     }
                 }
 
-                // Draw action icon
-                JobModel job = c.getJob();
-                if (!c.isSleeping() && job != null && job.getActionDrawable() != null && job.getTargetParcel() == c.getParcel()) {
-                    int x = posX;
-                    int y = posY;
-                    ParcelModel targetParcel = job.getTargetParcel();
-                    if (targetParcel != null) {
-                        if (targetParcel.y < parcel.y) y -= 16;
-                        if (targetParcel.y > parcel.y) y += 16;
-                        if (targetParcel.x < parcel.x) x -= 16;
-                        if (targetParcel.x > parcel.x) x += 16;
-                    }
-                    renderer.draw(job.getActionDrawable(), x, y);
-                }
-
-                if (c.isSleeping()) {
-                    renderer.draw(c.getSleepDrawable(), posX + 16, posY - 16);
-                }
+// TODO
+                //                // Draw action icon
+//                JobModel job = c.getJob();
+//                if (!c.isSleeping() && job != null && job.getActionDrawable() != null && job.getTargetParcel() == c.getParcel()) {
+//                    int x = posX;
+//                    int y = posY;
+//                    ParcelModel targetParcel = job.getTargetParcel();
+//                    if (targetParcel != null) {
+//                        if (targetParcel.y < parcel.y) y -= 16;
+//                        if (targetParcel.y > parcel.y) y += 16;
+//                        if (targetParcel.x < parcel.x) x -= 16;
+//                        if (targetParcel.x > parcel.x) x += 16;
+//                    }
+//                    renderer.draw(job.getActionDrawable(), x, y);
+//                }
+//
+//                if (c.isSleeping()) {
+//                    renderer.draw(c.getSleepDrawable(), posX + 16, posY - 16);
+//                }
             }
 
             // Is dead

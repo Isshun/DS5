@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.character;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.client.ModuleRenderer;
@@ -66,7 +66,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     public int                            getCount() { return _count; }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
             @Override
             public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {

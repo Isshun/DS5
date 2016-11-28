@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
+import org.smallbox.faraway.client.drawable.GDXDrawable;
 
 /**
  * Created by Alex on 21/07/2015.

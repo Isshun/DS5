@@ -1,10 +1,6 @@
 package org.smallbox.faraway.core.module.character.model.base;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
@@ -16,11 +12,10 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,24 +25,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
-    private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
-    private UILabel _label;
+//    private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
+//    private UILabel _label;
     private PathModel _path;
     private PathModel _lastPath;
     private Map<ItemInfo, Integer> _inventory2 = new HashMap<>();
 
-    public UILabel getLabelDrawable() {
-        if (_label == null) {
-            _label = new UILabel(null);
-            _label.setSize(_personals.getFirstName().trim().length() * 6 + 1, 13);
-            _label.setText(_personals.getFirstName().trim());
-            _label.setTextSize(10);
-            _label.setTextColor(Color.YELLOW);
-            _label.setBackgroundColor(Color.BLUE);
-            _label.setTextAlign(View.Align.CENTER);
-        }
-        return _label;
-    }
+//    public UILabel getLabelDrawable() {
+//        if (_label == null) {
+//            _label = new UILabel(null);
+//            _label.setSize(_personals.getFirstName().trim().length() * 6 + 1, 13);
+//            _label.setText(_personals.getFirstName().trim());
+//            _label.setTextSize(10);
+//            _label.setTextColor(Color.YELLOW);
+//            _label.setBackgroundColor(Color.BLUE);
+//            _label.setTextAlign(View.Align.CENTER);
+//        }
+//        return _label;
+//    }
 
     protected CharacterPersonalsExtra           _personals;
     protected CharacterStatsExtra               _stats;
@@ -121,7 +116,7 @@ public abstract class CharacterModel extends MovableModel {
     public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();
     public double                       getMoveStep() { return _moveStep; }
-    public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
+//    public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
     public int                          getInventoryQuantity() { return _inventory != null ? _inventory.getQuantity() : 0; }
     public Collection<BuffCharacterModel>     getBuffs() { return _buffs; }
     public Collection<DiseaseCharacterModel>  getDiseases() { return _diseases; }

@@ -1,12 +1,11 @@
-package org.smallbox.faraway.core.module.area.controller;
+package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.core.game.GameEvent;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
-import org.smallbox.faraway.client.ui.ApplicationClient;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
 
 /**
  * Created by Alex on 26/04/2016.

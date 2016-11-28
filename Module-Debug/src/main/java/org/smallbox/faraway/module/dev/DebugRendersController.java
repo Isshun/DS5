@@ -1,13 +1,13 @@
 package org.smallbox.faraway.module.dev;
 
-import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.renderer.MainRenderer;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.lua.BindLua;
 
 /**
  * Created by Alex on 24/11/2016.
@@ -23,7 +23,7 @@ public class DebugRendersController extends LuaController {
     private View header;
 
     @Override
-    protected void onGameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         list.clear();
 
         mainRenderer.getRenders().forEach(render -> {

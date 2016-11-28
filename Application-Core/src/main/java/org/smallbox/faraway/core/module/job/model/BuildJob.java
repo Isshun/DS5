@@ -2,8 +2,6 @@ package org.smallbox.faraway.core.module.job.model;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.PathModel;
@@ -19,7 +17,8 @@ public class BuildJob extends JobModel {
     private final BuildableMapObject _buildItem;
 
     public BuildJob(BuildableMapObject item) {
-        super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
+        super(null, item.getParcel());
+//        super(null, item.getParcel(), new IconDrawable("data/res/ic_build.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 64, 32, 32, 7, 10));
         _buildItem = item;
         _buildItem.setBuildJob(this);
         _label = "Build " + _buildItem.getInfo().label;

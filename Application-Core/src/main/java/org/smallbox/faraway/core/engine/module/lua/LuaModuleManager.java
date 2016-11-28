@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.engine.module.lua;
 
-import com.steadystate.css.dom.CSSStyleRuleImpl;
-import com.steadystate.css.parser.CSSOMParser;
-import com.steadystate.css.parser.SACParserCSS3;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
@@ -11,7 +8,6 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.lua.LuaControllerManager;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
@@ -29,15 +25,9 @@ import org.smallbox.faraway.core.module.area.model.AreaModel;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.*;
-import org.smallbox.faraway.client.ui.ApplicationClient;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
-import org.smallbox.faraway.client.ui.LuaDataModel;
-import org.w3c.css.sac.InputSource;
-import org.w3c.dom.css.CSSRule;
-import org.w3c.dom.css.CSSRuleList;
-import org.w3c.dom.css.CSSStyleSheet;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -128,8 +118,6 @@ public class LuaModuleManager {
         Application.data.bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
 
-        ApplicationClient.uiEventManager.clear();
-        ApplicationClient.uiManager.clearViews();
         _luaEventListeners.clear();
         _luaEventInGameListeners.clear();
         _luaLoadListeners.clear();
@@ -164,8 +152,6 @@ public class LuaModuleManager {
             }
         });
 
-        LuaControllerManager.getInstance().init();
-
         Application.data.fix();
 
         Log.info("LOAD LUA !!!");
@@ -174,12 +160,13 @@ public class LuaModuleManager {
 
     public void loadLuaFiles(ModuleBase module, File dataDirectory) {
         Globals globals = JsePlatform.standardGlobals();
-        globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
+        globals.load("function main(a, d)\n application = a\n data = d\n ui = nil\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
 
         globals.get("main").call(
                 CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
-                CoerceJavaToLua.coerce(new LuaUIBridge(null)),
-                CoerceJavaToLua.coerce(new LuaDataModel(values -> {
+                // TODO
+//                CoerceJavaToLua.coerce(new LuaUIBridge(null)),
+aw                CoerceJavaToLua.coerce(new LuaDataModel(values -> {
                     if (!values.get("type").isnil()) {
                         extendLuaValue(module, values, globals, dataDirectory);
                     } else {
@@ -198,25 +185,26 @@ public class LuaModuleManager {
             }
         });
 
-        // Load css files
-        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".css")).forEach(f -> {
-            Log.info("Found css file: %s", f.getName());
-
-            try {
-                InputSource source = new InputSource(new FileReader(f));
-                CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
-                CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
-                CSSRuleList rules = sheet.getCssRules();
-                for (int i = 0; i < rules.getLength(); i++) {
-                    final CSSRule rule = rules.item(i);
-                    if (rule instanceof CSSStyleRuleImpl) {
-                        LuaStyleManager.getInstance().addRule(((CSSStyleRuleImpl)rule).getSelectorText(), ((CSSStyleRuleImpl)rule).getStyle());
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        // TODO
+//        // Load css files
+//        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".css")).forEach(f -> {
+//            Log.info("Found css file: %s", f.getName());
+//
+//            try {
+//                InputSource source = new InputSource(new FileReader(f));
+//                CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+//                CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
+//                CSSRuleList rules = sheet.getCssRules();
+//                for (int i = 0; i < rules.getLength(); i++) {
+//                    final CSSRule rule = rules.item(i);
+//                    if (rule instanceof CSSStyleRuleImpl) {
+//                        LuaStyleManager.getInstance().addRule(((CSSStyleRuleImpl)rule).getSelectorText(), ((CSSStyleRuleImpl)rule).getStyle());
+//                    }
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     private void extendLuaValue(ModuleBase module, LuaValue value, Globals globals, File dataDirectory) {

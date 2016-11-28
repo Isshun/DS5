@@ -6,7 +6,6 @@ import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.core.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.module.character.model.DiseaseInfo;
 import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.client.ui.UICursor;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ public class Data {
     public HashMap<Integer, String>             strings = new HashMap<>();
     public boolean                              needUIRefresh = false;
     public HashMap<String, CharacterInfo>       characters = new HashMap<>();
-    public Map<String, UICursor>                cursors = new HashMap<>();
+//    public Map<String, UICursor>                cursors = new HashMap<>();
     public List<BuffInfo>                       buffs = new ArrayList<>();
     public List<DiseaseInfo>                    diseases = new ArrayList<>();
     public List<ItemInfo>                       consumables;
@@ -49,7 +48,7 @@ public class Data {
         return null;
     }
 
-    public UICursor         getCursor(String name) { return this.cursors.get(name); }
+//    public UICursor         getCursor(String name) { return this.cursors.get(name); }
     public ReceiptGroupInfo getReceipt(String receiptName) { return (ReceiptGroupInfo) getObject(receipts, receiptName); }
     public WeatherInfo      getWeather(String receiptName) { return weathers.get(receiptName); }
     public DiseaseInfo      getDisease(String receiptName) { return (DiseaseInfo) getObject(diseases, receiptName); }

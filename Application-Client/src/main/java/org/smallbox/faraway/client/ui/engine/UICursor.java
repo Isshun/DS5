@@ -1,11 +1,11 @@
-package org.smallbox.faraway.client.ui;
+package org.smallbox.faraway.client.ui.engine;
 
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 public abstract class UICursor {
     protected UIFrame RES_ODD;

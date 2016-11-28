@@ -1,14 +1,14 @@
 package org.smallbox.faraway.module.area;
 
+import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.client.controller.AreaGardenInfoController;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.module.area.controller.AreaGardenInfoController;
+import org.smallbox.faraway.core.lua.BindLuaController;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.area.model.*;
 import org.smallbox.faraway.core.module.character.model.PathModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
@@ -64,7 +64,7 @@ public class AreaModule extends GameModule {
     }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {

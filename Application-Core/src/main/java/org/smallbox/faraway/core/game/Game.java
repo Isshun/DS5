@@ -1,14 +1,9 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.renderer.Viewport;
-import org.smallbox.faraway.client.ui.ApplicationClient;
-import org.smallbox.faraway.client.ui.UICursor;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
-import org.smallbox.faraway.core.lua.LuaControllerManager;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
@@ -24,11 +19,6 @@ public class Game {
     // Update
     private long                            _nextUpdate;
     private int                             _tickInterval = TICK_INTERVALS[3];
-
-    // Render
-    private int                             _frame;
-    private double                          _animationProgress;
-    private boolean[]                       _directions = new boolean[4];
 
     private boolean                         _isRunning;
 //    private GameActionExtra                 _gameAction;
@@ -73,6 +63,8 @@ public class Game {
     public int                              getLastSpeed() { return _lastSpeed; }
     public Collection<GameModule>           getModules() { return _modules; }
     public GameModuleState                  getState() { return _state; }
+    public long                             getNextUpdate() { return _nextUpdate; }
+    public int                              getTickInterval() { return _tickInterval; }
 
     public Game(GameInfo info) {
 //        _selector = new GameSelectionExtra();
@@ -104,8 +96,6 @@ public class Game {
     public void start() {
         // Notify modules, renders and controllers
         Application.moduleManager.gameStart(this, _modules);
-        ApplicationClient.mainRenderer.gameStart(this);
-        LuaControllerManager.getInstance().gameStart(this);
 
         Application.notify(observer -> observer.onHourChange(_hour));
         Application.notify(observer -> observer.onDayChange(_day));
@@ -113,23 +103,20 @@ public class Game {
         Application.notify(observer -> observer.onFloorChange(7));
         Application.notify(observer -> observer.onGameStart(this));
 
-        _viewport.setPosition(-500, -3800, 7);
-
         _state = GameModuleState.STARTED;
     }
 
-    public void                     clearCursor() { _gameAction.setCursor(null); }
-//    public void                     clearSelection() { _selector.clear(); }
-    public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
-    public void                     setCursor(String cursorName) { _gameAction.setCursor(Application.data.getCursor(cursorName)); }
+//    public void                     clearCursor() { _gameAction.setCursor(null); }
+////    public void                     clearSelection() { _selector.clear(); }
+//    public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
+//    public void                     setCursor(String cursorName) { _gameAction.setCursor(Application.data.getCursor(cursorName)); }
 
     public void update() {
         // Update
         if (_nextUpdate < System.currentTimeMillis() && _isRunning) {
             _nextUpdate = System.currentTimeMillis() + _tickInterval;
             _tick += 1;
-            ApplicationClient.mainRenderer.gameUpdate(this);
-            LuaControllerManager.getInstance().gameUpdate(this);
+            Application.notify(observer -> observer.onGameUpdate(this));
             onUpdate(_tick);
         }
     }
@@ -166,34 +153,6 @@ public class Game {
         Application.notify(isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
     }
 
-    public void render(GDXRenderer renderer, Viewport viewport) {
-        // Draw
-        if (!Application.gameManager.isRunning()) {
-            _animationProgress = 1 - ((double) (_nextUpdate - System.currentTimeMillis()) / _tickInterval);
-        }
-
-        ApplicationClient.mainRenderer.onDraw(renderer, viewport, _animationProgress);
-
-        if (_isRunning) {
-            if (_directions[0]) { _viewport.move(20, 0); }
-            if (_directions[1]) { _viewport.move(0, 20); }
-            if (_directions[2]) { _viewport.move(-20, 0); }
-            if (_directions[3]) { _viewport.move(0, -20); }
-        }
-
-        ApplicationClient.mainRenderer.onRefresh(_frame);
-
-        // TODO
-        try {
-            ApplicationClient.uiManager.onRefresh(_frame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        _gameAction.draw(renderer);
-        _frame++;
-    }
-
     public void setSpeed(int speed) {
         if (speed != 0) {
             _lastSpeed = speed;
@@ -203,6 +162,4 @@ public class Game {
         _isRunning = _tickInterval > 0;
         Application.notify(observer -> observer.onSpeedChange(speed));
     }
-
-    public void createControllers() { LuaControllerManager.getInstance().gameCreate(this); }
 }

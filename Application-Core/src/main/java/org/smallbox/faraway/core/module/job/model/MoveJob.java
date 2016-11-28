@@ -1,7 +1,5 @@
 package org.smallbox.faraway.core.module.job.model;
 
-import org.smallbox.faraway.core.engine.drawable.AnimDrawable;
-import org.smallbox.faraway.core.engine.drawable.IconDrawable;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
@@ -14,7 +12,8 @@ public class MoveJob extends JobModel {
     private double                     _speedModifier = 1;
 
     private MoveJob(ParcelModel jobParcel) {
-        super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
+        super(null, jobParcel);
+//        super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));
     }
 
     public static MoveJob create(CharacterModel character, ParcelModel jobParcel) {

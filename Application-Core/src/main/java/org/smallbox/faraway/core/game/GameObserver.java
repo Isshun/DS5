@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
@@ -49,6 +50,10 @@ public interface GameObserver {
     default void onGamePaused() {}
     default void onGameResume() {}
     default void onGameStart(Game game) {}
+    default void onGameCreate(Game game) {}
+    default void onGameUpdate(Game game) {}
+    default void onGameRender(Game game) {}
+    default void onInjectDependency(Object object) {}
     default void onFloorUp() {}
     default void onFloorDown() {}
     default void onFloorChange(int floor) {}

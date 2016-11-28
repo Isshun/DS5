@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.module.job.model.abs;
 
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.core.engine.drawable.GDXDrawable;
-import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
@@ -10,6 +7,7 @@ import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
 import java.util.LinkedList;
@@ -94,8 +92,8 @@ public abstract class JobModel extends ObjectModel {
     protected JobAbortReason    _reason;
     protected String            _label;
     protected JobStatus         _status;
-    private GDXDrawable         _iconDrawable;
-    private GDXDrawable         _actionDrawable;
+//    private GDXDrawable         _iconDrawable;
+//    private GDXDrawable         _actionDrawable;
     protected String            _message;
     protected ParcelModel       _jobParcel;
     protected ParcelModel       _targetParcel;
@@ -105,12 +103,12 @@ public abstract class JobModel extends ObjectModel {
     protected boolean _isAuto;
     protected OnCompleteListener _onCompleteListener;
 
-    public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel, GDXDrawable iconDrawable, GDXDrawable actionDrawable) {
+    public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
         init();
         _jobParcel = targetParcel;
         _targetParcel = targetParcel;
-        _iconDrawable = iconDrawable;
-        _actionDrawable = actionDrawable;
+//        _iconDrawable = iconDrawable;
+//        _actionDrawable = actionDrawable;
         if (actionInfo != null) {
             _actionInfo = actionInfo;
             _cost = actionInfo.cost;
@@ -144,8 +142,8 @@ public abstract class JobModel extends ObjectModel {
     public double                   getQuantity() { return _progress; }
     public double                   getProgress() { return Math.min(_progress, 1); }
     public JobStatus                getStatus() { return _status; }
-    public GDXDrawable              getIconDrawable() { return _iconDrawable; }
-    public GDXDrawable              getActionDrawable() { return _actionDrawable; }
+//    public GDXDrawable              getIconDrawable() { return _iconDrawable; }
+//    public GDXDrawable              getActionDrawable() { return _actionDrawable; }
     public double                   getSpeedModifier() { return 1; }
     public ParcelModel              getTargetParcel() { return _targetParcel; }
     public ParcelModel              getJobParcel() { return _jobParcel; }
@@ -278,9 +276,11 @@ public abstract class JobModel extends ObjectModel {
         }
 
         JobCheckReturn ret = onCheck(character);
-        if (ret == JobCheckReturn.BLOCKED) {
-            _fail = MainRenderer.getFrame();
-        }
+
+//        // TODO
+//        if (ret == JobCheckReturn.BLOCKED) {
+//            _fail = MainRenderer.getFrame();
+//        }
 
         if (ret == JobCheckReturn.ABORT) {
             finish();

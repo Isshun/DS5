@@ -1,13 +1,13 @@
 package org.smallbox.faraway.module.dev.controller.info;
 
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 
 /**
  * Created by Alex on 31/07/2016.
@@ -36,7 +36,7 @@ public class DebugParcelInfoController extends LuaController {
     @BindLua private UILabel    lbNetwork;
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _world.addObserver(new WorldModuleObserver() {
             @Override
             public void onOverParcel(ParcelModel parcel) {

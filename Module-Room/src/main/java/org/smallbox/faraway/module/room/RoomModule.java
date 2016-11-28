@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class RoomModule extends GameModule implements GameObserver {
+
     @BindModule
     private StructureModule _structureModule;
 
@@ -40,7 +41,7 @@ public class RoomModule extends GameModule implements GameObserver {
     public boolean runOnMainThread() { return false; }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _structureModule.addObserver(new StructureModuleObserver() {
             @Override
             public void onAddStructure(StructureModel structure) {

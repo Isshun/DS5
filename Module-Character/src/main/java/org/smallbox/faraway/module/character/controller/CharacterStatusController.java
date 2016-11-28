@@ -1,14 +1,14 @@
 package org.smallbox.faraway.module.character.controller;
 
-import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -50,7 +50,7 @@ public class CharacterStatusController extends LuaController {
     private CharacterModel _selected;
 
     @Override
-    protected void onGameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);
         }

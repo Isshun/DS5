@@ -258,7 +258,7 @@ public class InputManager implements InputProcessor {
     public boolean touchDragged(int x, int y, int pointer) {
         if (_lastMouseButton == Buttons.RIGHT) {
             if (Application.gameManager.isLoaded()) {
-                Application.gameManager.getGame().getViewport().update(x, y);
+                ApplicationClient.mainRenderer.getViewport().update(x, y);
                 return true;
             }
             return false;

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.module.consumable;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.ModuleRenderer;
@@ -51,7 +51,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _consumables = new LinkedBlockingQueue<>();
 
         _structureModel.addObserver(new StructureModuleObserver() {

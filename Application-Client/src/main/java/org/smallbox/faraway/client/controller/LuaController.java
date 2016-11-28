@@ -1,9 +1,8 @@
-package org.smallbox.faraway.core.module.character.controller;
+package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 /**
  * Created by Alex on 25/04/2016.
@@ -25,12 +24,12 @@ public abstract class LuaController implements GameObserver {
         }
     }
 
-    public final void gameCreate(Game game) { onGameCreate(game); }
-    public final void gameStart(Game game) { onGameStart(game); }
-    public final void gameUpdate(Game game) { onGameUpdate(game); }
-
-    protected void onGameCreate(Game game) {}
-    protected void onGameUpdate(Game game) {}
+//    public final void gameCreate(Game game) { onGameCreate(game); }
+//    public final void gameStart(Game game) { onGameStart(game); }
+//    public final void gameUpdate(Game game) { onGameUpdate(game); }
+//
+//    public void onGameCreate(Game game) {}
+//    public void onGameUpdate(Game game) {}
 
     public View getRootView() { return _rootView; }
     public boolean isVisible() { return getRootView() != null && getRootView().isVisible(); }

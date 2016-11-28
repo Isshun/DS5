@@ -1,19 +1,19 @@
 package org.smallbox.faraway.module.dev.controller.toolbox;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 
@@ -33,7 +33,7 @@ public class DebugConsumableController extends LuaController {
     private ItemInfo _consumable;
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         Application.data.getItems().stream()
                 .filter(itemInfo -> itemInfo.isConsumable)
                 .forEach(itemInfo -> listConsumables.addView(UILabel.create(null)

@@ -1,17 +1,17 @@
 package org.smallbox.faraway.module.job;
 
-import org.smallbox.faraway.core.game.GameEvent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.lua.BindLuaController;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
-import org.smallbox.faraway.client.ui.ApplicationClient;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.module.mainPanel.MainPanelController;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.lua.BindLuaController;
+import org.smallbox.faraway.module.mainPanel.MainPanelController;
+import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 24/07/2016.
@@ -27,12 +27,12 @@ public class JobController extends LuaController {
     private MainPanelController _mainPanelController;
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _mainPanelController.addShortcut("Jobs", (GameEvent event) -> setVisible(true));
     }
 
     @Override
-    protected void onGameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         listJobs.clear();
 
         jobs.getJobs().forEach(job -> {

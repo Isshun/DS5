@@ -1,11 +1,11 @@
 package org.smallbox.faraway.module.dev.controller;
 
 import org.hyperic.sigar.*;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.lua.BindLua;
 
 /**
  * Created by Alex on 15/08/2016.
@@ -51,7 +51,7 @@ public class DebugSystemController extends LuaController {
     }
 
     @Override
-    protected void onGameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         Runtime runtime = Runtime.getRuntime();
         int mb = 1024 * 1024;
         long total = runtime.totalMemory();

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.manager;
 
-import org.smallbox.faraway.core.game.GameEvent;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -30,8 +30,8 @@ public class ApplicationShortcutManager {
 
     private static ApplicationShortcut[] SHORTCUTS = new ApplicationShortcut[] {
             new ApplicationShortcut(RIGHT, null, () -> {
-                Application.gameManager.getGame().getViewport().startMove(0, 0);
-                Application.gameManager.getGame().getViewport().update(100, 0);
+                ApplicationClient.mainRenderer.getViewport().startMove(0, 0);
+                ApplicationClient.mainRenderer.getViewport().update(100, 0);
             }),
             new ApplicationShortcut(F10, null, () -> {
                 ModuleBase debugModule = Application.moduleManager.getModule("DebugModule");
@@ -97,15 +97,15 @@ public class ApplicationShortcutManager {
 
             new ApplicationShortcut(ESCAPE, NONE , () -> {
                 if (Application.gameManager.isLoaded()) {
-                    if (!Application.gameManager.getGame().getInteraction().isClear()) {
-                        Application.gameManager.getGame().getInteraction().clear();
-                        return;
-                    }
-
-                    if (!Application.gameManager.getGame().getSelector().isClear()) {
-                        Application.gameManager.getGame().getSelector().clear();
-                        return;
-                    }
+//                    if (!Application.gameManager.getGame().getInteraction().isClear()) {
+//                        Application.gameManager.getGame().getInteraction().clear();
+//                        return;
+//                    }
+//
+//                    if (!Application.gameManager.getGame().getSelector().isClear()) {
+//                        Application.gameManager.getGame().getSelector().clear();
+//                        return;
+//                    }
 
                     if (!Application.gameManager.isRunning() && ApplicationClient.uiManager.findById("base.ui.menu_pause").isVisible()) {
                         Application.gameManager.setRunning(true);
@@ -135,7 +135,7 @@ public class ApplicationShortcutManager {
     public static boolean onMouseEvent(GameEvent event, GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         if (button == GameEventListener.MouseButton.RIGHT && action == GameEventListener.Action.PRESSED) {
             if (Application.gameManager.isLoaded()) {
-                Application.gameManager.getGame().getViewport().startMove(x, y);
+                ApplicationClient.mainRenderer.getViewport().startMove(x, y);
             }
             return true;
         }

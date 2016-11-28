@@ -1,15 +1,15 @@
 package org.smallbox.faraway.module.character.controller;
 
-import org.smallbox.faraway.core.game.GameEvent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.lua.BindLuaController;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.character.controller.LuaController;
-import org.smallbox.faraway.module.character.CharacterModule;
-import org.smallbox.faraway.module.mainPanel.MainPanelController;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.core.lua.BindLuaController;
+import org.smallbox.faraway.module.character.CharacterModule;
+import org.smallbox.faraway.module.mainPanel.MainPanelController;
 
 /**
  * Created by Alex on 25/07/2016.
@@ -25,12 +25,12 @@ public class CrewController extends LuaController {
     private MainPanelController _mainPanelController;
 
     @Override
-    protected void onGameCreate(Game game) {
+    public void onGameCreate(Game game) {
         _mainPanelController.addShortcut("Crew", (GameEvent event) -> setVisible(true));
     }
 
     @Override
-    protected void onGameUpdate(Game game) {
+    public void onGameUpdate(Game game) {
         listCrew.clear();
         _characters.getCharacters().forEach(character -> {
             listCrew.addView(UILabel.create(null)
