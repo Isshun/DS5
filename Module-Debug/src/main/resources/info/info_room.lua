@@ -1,6 +1,6 @@
 room = nil
 
-data:extend({
+ui:extend({
     type = "view",
     name = "info_room",
     position = {0, 620},

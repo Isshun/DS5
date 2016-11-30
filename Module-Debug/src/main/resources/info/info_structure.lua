@@ -1,6 +1,6 @@
 structure = nil
 
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_structure",
     style = "base.style.right_panel",

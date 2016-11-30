@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.system_load",
     visible = false,

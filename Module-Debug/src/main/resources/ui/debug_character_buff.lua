@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "list",
     name = "debug_character_buff",
     position = {200, 20},

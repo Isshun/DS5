@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger fpsLogger = new FPSLogger();
@@ -40,13 +41,13 @@ public class GDXApplication extends ApplicationAdapter {
             }
         });
 
-        Application.taskManager.addLoadTask("Create app", false, () ->
+        Application.taskManager.addLoadTask("Create server app", false, () ->
                 _application = new Application());
 
-        Application.taskManager.addLoadTask("Create app", false, () ->
+        Application.taskManager.addLoadTask("Create client app", false, () ->
                 _client = new ApplicationClient());
 
-        Application.taskManager.addLoadTask("Create app", false, () ->
+        Application.taskManager.addLoadTask("Init groovy manager", false, () ->
                 _application.groovyManager.init());
 
         Application.taskManager.addLoadTask("Create renderer", true, () ->
@@ -62,7 +63,9 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Load modules", false, () ->
                 Application.moduleManager.loadModules(null));
 
-        Application.taskManager.addLoadTask("Load lua modules", false, Application.luaModuleManager::init);
+        Application.taskManager.addLoadTask("Load server lua modules", false, Application.luaModuleManager::init);
+
+        Application.taskManager.addLoadTask("Load client lua modules", false, ApplicationClient.luaModuleManager::init);
 
 
 
@@ -90,7 +93,11 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Launch world thread
         Application.taskManager.addLoadTask("Launch world thread", false, () ->
-                Application.taskManager.launchBackgroundThread(() -> _application.update(), 16));
+                Application.taskManager.launchBackgroundThread(() -> {
+                    if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
+                        Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
+                    }
+                }, 16));
     }
 
     @Override

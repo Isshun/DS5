@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -21,10 +22,10 @@ import java.util.concurrent.Executors;
 /**
  * Created by Alex on 31/08/2015.
  */
-public class ModuleManager {
+public class ModuleManager implements GameObserver {
 
-    public interface OnLoad {
-        void onLoad(String message);
+    public interface OnLoadModuleListener {
+        void onLoadModule(String message);
     }
 
     private final Executor              _executor = Executors.newFixedThreadPool(5);
@@ -34,7 +35,7 @@ public class ModuleManager {
     private List<ModuleBase>            _modules = new ArrayList<>();
     private List<String>                _allowedModulesNames = Arrays.asList("WorldModule", "CharacterModule", "JobModule", "PathManager");
 
-    public void loadModules(OnLoad onLoad) {
+    public void loadModules(OnLoadModuleListener onLoad) {
         assert _modules.isEmpty();
 
         loadApplicationModules(onLoad);
@@ -42,7 +43,7 @@ public class ModuleManager {
         loadThirdPartyModules(onLoad);
     }
 
-    private void loadThirdPartyModules(OnLoad onLoad) {
+    private void loadThirdPartyModules(OnLoadModuleListener onLoad) {
         //        // List thirds party modules
 //        List<ThirdPartyModule> thirdPartyModules = new ArrayList<>();
 //        FileUtils.list("data/modules/").forEach(file -> {
@@ -111,7 +112,7 @@ public class ModuleManager {
     }
 
     // Load application modules
-    private void loadApplicationModules(OnLoad onLoad) {
+    private void loadApplicationModules(OnLoadModuleListener onLoad) {
         assert _applicationModules.isEmpty();
         Log.info("Load application modules");
 
@@ -133,7 +134,7 @@ public class ModuleManager {
         // Load application modules
         boolean moduleHasBeenLoaded;
         do {
-            // Try to onLoad first module with required dependencies
+            // Try to onLoadModule first module with required dependencies
             moduleHasBeenLoaded = false;
             for (ApplicationModule module: _applicationModules) {
                 if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_applicationModules)) {
@@ -151,12 +152,12 @@ public class ModuleManager {
             throw new RuntimeException("Some application modules could not be loaded");
         }
 
-        _applicationModules.forEach(module -> Application.addObserver(module));
+        _applicationModules.forEach(Application::addObserver);
         _applicationModules.forEach(Application.dependencyInjector::register);
         _applicationModules.forEach(ModuleBase::create);
     }
 
-    private void loadGameModules(OnLoad onLoad) {
+    private void loadGameModules(OnLoadModuleListener onLoad) {
         assert _gameModules.isEmpty();
         Log.info("Load game modules");
 
@@ -179,7 +180,7 @@ public class ModuleManager {
         // Load game modules
         boolean moduleHasBeenLoaded;
         do {
-            // Try to onLoad first module with required dependencies
+            // Try to onLoadModule first module with required dependencies
             moduleHasBeenLoaded = false;
             for (GameModule module: _gameModules) {
                 if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_gameModules)) {
@@ -246,7 +247,8 @@ public class ModuleManager {
         return _executor;
     }
 
-    public void gameStart(Game game, List<GameModule> modules) {
-        modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(game));
+    @Override
+    public void onGameStart(Game game) {
+        game.getModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(game));
     }
 }

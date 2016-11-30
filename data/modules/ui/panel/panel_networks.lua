@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     style = "base.style.right_panel",
     id = "panel_networks",

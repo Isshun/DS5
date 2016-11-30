@@ -1,12 +1,12 @@
 package org.smallbox.faraway.client.manager;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.client.ApplicationClient;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.Key.*;
 import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.ALT;
@@ -42,7 +42,7 @@ public class ApplicationShortcutManager {
                 }
             }),
             new ApplicationShortcut(F5, NONE, () -> {
-                Application.gameManager.saveGame(Application.gameManager.getGame().getInfo(), GameInfo.Type.FAST);
+                Application.gameSaveManager.saveGame(Application.gameManager.getGame(), Application.gameManager.getGame().getInfo(), GameInfo.Type.FAST);
             }),
             new ApplicationShortcut(ENTER, ALT, () -> {
 //            _isFullscreen = !_isFullscreen;

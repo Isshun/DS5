@@ -52,7 +52,7 @@
 //        stText.reset(false);
 //    }
 //
-//    public void onLoad(Game game) {
+//    public void onLoadModule(Game game) {
 //        SQLHelper.getInstance().post(db -> {
 //            try {
 //                SQLiteStatement stInt = db.prepare("SELECT i FROM game WHERE key = ?");

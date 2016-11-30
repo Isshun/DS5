@@ -58,23 +58,15 @@ public class LoadGameModule extends ApplicationModule {
         if ("load_game.onSave".equals(tag) && object instanceof GameInfo.GameSaveInfo) {
             _currentSave = (GameInfo.GameSaveInfo) object;
         }
-        if ("load_game.onLoad".equals(tag) && _currentGame != null && _currentSave != null) {
-            Application.gameManager.loadGame(_currentGame, _currentSave);
+        if ("load_game.onLoadModule".equals(tag) && _currentGame != null && _currentSave != null) {
+            Application.notify(observer -> observer.onGameLoad(_currentGame, _currentSave));
         }
         if ("load_game.last_game".equals(tag)) {
-            GameInfo gameInfo = null;
-            GameInfo.GameSaveInfo saveInfo = null;
-            for (GameInfo game: _games) {
-                for (GameInfo.GameSaveInfo save: game.saveFiles) {
-                    if (saveInfo == null || save.date.after(saveInfo.date)) {
-                        saveInfo = save;
-                        gameInfo = game;
-                    }
-                }
-            }
-            if (saveInfo != null) {
-                Application.gameManager.loadGame(gameInfo, saveInfo);
-            }
+            _games.stream()
+                    .flatMap(gameInfo -> gameInfo.saveFiles.stream())
+                    .sorted((o1, o2) -> o2.date.compareTo(o1.date))
+                    .findFirst()
+                    .ifPresent(saveInfo -> Application.notify(observer -> observer.onGameLoad(saveInfo.game, saveInfo)));
         }
     }
 }

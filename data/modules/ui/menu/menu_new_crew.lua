@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.menu_new_crew",
     size = {300, -1},

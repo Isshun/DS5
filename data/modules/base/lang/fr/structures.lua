@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "lang",
     lang = "fr",
     strings = {

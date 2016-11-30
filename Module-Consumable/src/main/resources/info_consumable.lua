@@ -1,6 +1,6 @@
 consumable = nil
 
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.info_consumable",
     controller = "org.smallbox.faraway.module.consumable.ConsumableInfoController",

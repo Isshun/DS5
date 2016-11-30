@@ -1,6 +1,6 @@
 network = nil
 
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_network",
     style = "base.style.right_panel",

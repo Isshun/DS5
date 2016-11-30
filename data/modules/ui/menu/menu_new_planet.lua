@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.menu_new_planet",
     background = 0xdd121c1e,

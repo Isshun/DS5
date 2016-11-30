@@ -1,6 +1,6 @@
 parcel = nil
 
-data:extend({
+ui:extend({
     type = "view",
     id = "info_parcel_2",
     controller = "org.smallbox.faraway.core.module.world.controller.WorldInfoParcel2Controller",
@@ -14,7 +14,7 @@ data:extend({
     }
 })
 
-data:extend({
+ui:extend({
     type = "view",
     id = "debug_parcel_info",
     controller = "org.smallbox.faraway.module.dev.controller.info.DebugParcelInfoController",

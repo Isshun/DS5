@@ -1,6 +1,6 @@
 local quest
 
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_quest",
     align = {"center", "center"},

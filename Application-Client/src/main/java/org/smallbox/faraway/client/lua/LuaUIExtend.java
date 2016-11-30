@@ -49,7 +49,7 @@ public class LuaUIExtend extends LuaExtend {
         boolean inGame = getBoolean(value, "in_game", true);
         UIFrame frame = new UIFrame(module);
         frame.setInGame(inGame);
-        frame.addView(createView(Application.luaModuleManager, module, globals, value, inGame, 0, frame));
+        frame.addView(createView(ApplicationClient.luaModuleManager, module, globals, value, inGame, 0, frame));
         frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         frame.setLevel(getInt(value, "level", 0));
         ApplicationClient.uiManager.addRootView(frame);

@@ -1,6 +1,6 @@
 rock = nil
 
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_rock",
     style = "base.style.right_panel",

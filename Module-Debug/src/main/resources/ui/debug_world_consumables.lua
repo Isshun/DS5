@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.debug_world_consumables",
     controller = "org.smallbox.faraway.module.dev.controller.toolbox.DebugConsumableController",

@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.menu_pause",
     size = {application.info.screen_width, application.info.screen_height},

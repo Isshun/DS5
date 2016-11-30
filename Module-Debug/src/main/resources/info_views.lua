@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_views",
     controller = "org.smallbox.faraway.module.dev.InfoViewsController",

@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     name = "ui-test",
     position = {1200, 0},

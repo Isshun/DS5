@@ -1,4 +1,4 @@
---data:extend({
+--ui:extend({
 --    type = "list",
 --    id = "panel_test",
 --    position = {1200, 65},

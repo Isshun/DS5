@@ -24,7 +24,6 @@ public class MainRenderer implements GameObserver {
     // Render
 //    private int                             _frame;
     private double                          _animationProgress;
-    private boolean[]                       _directions = new boolean[4];
 
     private Collection<BaseRenderer>        _renders;
     private Viewport                        _viewport;
@@ -70,10 +69,10 @@ public class MainRenderer implements GameObserver {
         ApplicationClient.mainRenderer.onDraw(ApplicationClient.gdxRenderer, _viewport, _animationProgress);
 
         if (game.isRunning()) {
-            if (_directions[0]) { _viewport.move(20, 0); }
-            if (_directions[1]) { _viewport.move(0, 20); }
-            if (_directions[2]) { _viewport.move(-20, 0); }
-            if (_directions[3]) { _viewport.move(0, -20); }
+            if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
+            if (ApplicationClient.inputManager.getDirection()[1]) { _viewport.move(0, 20); }
+            if (ApplicationClient.inputManager.getDirection()[2]) { _viewport.move(-20, 0); }
+            if (ApplicationClient.inputManager.getDirection()[3]) { _viewport.move(0, -20); }
         }
 
         ApplicationClient.mainRenderer.onRefresh(_frame);

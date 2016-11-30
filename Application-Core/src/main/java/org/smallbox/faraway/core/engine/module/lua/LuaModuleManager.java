@@ -5,7 +5,6 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -13,7 +12,6 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -41,7 +39,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 26/09/2015.
  */
-public class LuaModuleManager {
+public abstract class LuaModuleManager implements GameObserver {
     private Collection<LuaEventListener>        _luaEventListeners = new LinkedBlockingQueue<>();
     private Collection<LuaEventListener>        _luaEventInGameListeners = new LinkedBlockingQueue<>();
     private Collection<LuaRefreshListener>      _luaRefreshListeners = new LinkedBlockingQueue<>();
@@ -95,7 +93,8 @@ public class LuaModuleManager {
         return _extends;
     }
 
-    public void startGame(Game game) {
+    @Override
+    public void onGameStart(Game game) {
         _luaModules.forEach(module -> module.startGame(game));
     }
 
@@ -159,22 +158,7 @@ public class LuaModuleManager {
     }
 
     public void loadLuaFiles(ModuleBase module, File dataDirectory) {
-        Globals globals = JsePlatform.standardGlobals();
-        globals.load("function main(a, d)\n application = a\n data = d\n ui = nil\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
-
-        globals.get("main").call(
-                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
-                // TODO
-//                CoerceJavaToLua.coerce(new LuaUIBridge(null)),
-aw                CoerceJavaToLua.coerce(new LuaDataModel(values -> {
-                    if (!values.get("type").isnil()) {
-                        extendLuaValue(module, values, globals, dataDirectory);
-                    } else {
-                        for (int i = 1; i <= values.length(); i++) {
-                            extendLuaValue(module, values.get(i), globals, dataDirectory);
-                        }
-                    }
-                })));
+        Globals globals = createGlobals(module, dataDirectory);
 
         // Load lua files
         FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".lua")).forEach(f -> {
@@ -207,7 +191,14 @@ aw                CoerceJavaToLua.coerce(new LuaDataModel(values -> {
 //        });
     }
 
-    private void extendLuaValue(ModuleBase module, LuaValue value, Globals globals, File dataDirectory) {
+    protected abstract Globals createGlobals(ModuleBase module, File dataDirectory);
+
+    // TODO, cree dans le client un luamodulemanager qui extend celui-ci et override cette methode pour renseigner le ui bridge
+    // creer un call a data:extend et ui:extend dans les lua
+    private void callMain(Globals globals, ModuleBase module, File dataDirectory) {
+    }
+
+    protected void extendLuaValue(ModuleBase module, LuaValue value, Globals globals, File dataDirectory) {
         _extends.stream()
                 .filter(extend -> extend.accept(value.get("type").toString()))
                 .forEach(extender -> {
@@ -226,7 +217,7 @@ aw                CoerceJavaToLua.coerce(new LuaDataModel(values -> {
         ModuleInfo info = luaModule.getInfo();
 
         if (!hasRequiredModules(info)) {
-            Log.info("Unable to onLoad lua module: " + info.id + " (" + info.name + ")");
+            Log.info("Unable to onLoadModule lua module: " + info.id + " (" + info.name + ")");
             return;
         }
         Log.info("Load lua module: " + info.id + " (" + info.name + ")");

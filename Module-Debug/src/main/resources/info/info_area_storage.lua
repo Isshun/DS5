@@ -64,7 +64,7 @@ local function open_category(category, items)
     end)
 end
 
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.info_area_storage",
     style = "base.style.right_panel",

@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ConfigurationManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -35,6 +34,7 @@ public class ApplicationClient {
     public static final UIManager uiManager;
     public static final UIEventManager          uiEventManager;
     public static final InputManager inputManager;
+    public static final ClientLuaModuleManager luaModuleManager;
 
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
@@ -49,6 +49,7 @@ public class ApplicationClient {
         spriteManager = dependencyInjector.create(SpriteManager.class);
         gdxRenderer = dependencyInjector.create(GDXRenderer.class);
         mainRenderer = dependencyInjector.create(MainRenderer.class);
+        luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
 
         // Create configurationManager
         configurationManager = loadConfig();
@@ -108,29 +109,6 @@ public class ApplicationClient {
 //        }
 
 //        ApplicationClient.uiManager.onMouseEvent(action, button, x, y, rightPressed);
-    }
-
-    public void update() {
-        if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().update();
-        }
-
-        // Reload data
-        if (_nextDataUpdate < System.currentTimeMillis()) {
-            _nextDataUpdate = System.currentTimeMillis() + Constant.RELOAD_DATA_INTERVAL;
-            ApplicationClient.addTask(() -> {
-                long lastResModified = Utils.getLastDataModified();
-                if (Application.data.needUIRefresh || lastResModified > _dataLastModified) {
-                    Application.data.needUIRefresh = false;
-                    _dataLastModified = lastResModified;
-                    ApplicationClient.uiManager.reload();
-                    ApplicationClient.spriteManager.reload();
-                    ApplicationClient.notify(GameObserver::onReloadUI);
-                    Log.info("Data reloaded");
-                    ApplicationClient.uiManager.restore();
-                }
-            });
-        }
     }
 
     public static void notify(Consumer<GameObserver> action) {

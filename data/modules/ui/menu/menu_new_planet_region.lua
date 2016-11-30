@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.menu_new_planet_region",
     size = {300, -1},

@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "cursor",
     id = "base.cursor.gather",
     default = { color = 0x88555588 },

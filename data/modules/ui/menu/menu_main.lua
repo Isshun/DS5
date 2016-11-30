@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.menu_main",
     background = 0xdd121c1e,

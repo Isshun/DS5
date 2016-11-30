@@ -2,12 +2,13 @@ package org.smallbox.faraway.client.lua;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 
 /**
  * Created by Alex on 12/04/2016.
  */
-public class LuaUIBridge {
+public abstract class LuaUIBridge implements LuaExtendInterface {
     private final LuaModule _module;
 
     public View find(String id) { return ApplicationClient.uiManager.findById(id); }

@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_weather",
     position = {0, 920},

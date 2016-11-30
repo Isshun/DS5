@@ -53,6 +53,7 @@ public interface GameObserver {
     default void onGameCreate(Game game) {}
     default void onGameUpdate(Game game) {}
     default void onGameRender(Game game) {}
+    default void onGameLoad(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo) {}
     default void onInjectDependency(Object object) {}
     default void onFloorUp() {}
     default void onFloorDown() {}

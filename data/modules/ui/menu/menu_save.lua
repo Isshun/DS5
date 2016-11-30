@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "list",
     id = "base.ui.menu_save",
     position = {500, 400},

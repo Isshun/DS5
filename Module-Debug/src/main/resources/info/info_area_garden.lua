@@ -18,7 +18,7 @@
 --    end
 --end
 
-data:extend({
+ui:extend({
     type = "list",
     id = "base.ui.info_area_garden",
     controller = "org.smallbox.faraway.core.module.area.controller.AreaGardenInfoController",

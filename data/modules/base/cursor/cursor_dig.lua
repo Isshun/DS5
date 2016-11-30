@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "cursor",
     id = "base.cursor.dig",
     default = { color = 0x88ff0088 },

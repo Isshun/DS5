@@ -1,6 +1,6 @@
 last_temperature_value = 0
 
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.game_info",
     size = {application.info.screen_width, 38},

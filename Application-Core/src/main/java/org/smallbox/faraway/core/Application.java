@@ -4,15 +4,11 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.game.ConfigurationManager;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.*;
 import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -32,10 +28,11 @@ public class Application {
     public static final ModuleManager           moduleManager;
     public static final LuaModuleManager        luaModuleManager;
     public static final PathManager             pathManager;
-    public static final TaskManager taskManager;
+    public static final TaskManager             taskManager;
     public static final SQLManager              sqlManager;
     public static final Data                    data;
-    public static final GroovyManager groovyManager;
+    public static final GroovyManager           groovyManager;
+    public static final GameSaveManager         gameSaveManager;
 
     // Both
     public static final ConfigurationManager    configurationManager;
@@ -49,8 +46,9 @@ public class Application {
         taskManager = dependencyInjector.create(TaskManager.class);
         sqlManager = dependencyInjector.create(SQLManager.class);
         moduleManager = dependencyInjector.create(ModuleManager.class);
-        luaModuleManager = dependencyInjector.create(LuaModuleManager.class);
+        luaModuleManager = dependencyInjector.create(ServerLuaModuleManager.class);
         groovyManager = dependencyInjector.create(GroovyManager.class);
+        gameSaveManager = dependencyInjector.create(GameSaveManager.class);
         data = dependencyInjector.create(Data.class);
 
         // Create configurationManager
@@ -78,28 +76,28 @@ public class Application {
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
     public ConfigurationManager getConfig() { return configurationManager; }
 
-    public void update() {
-        if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().update();
-        }
-
-        // Reload data
-        if (_nextDataUpdate < System.currentTimeMillis()) {
-            _nextDataUpdate = System.currentTimeMillis() + Constant.RELOAD_DATA_INTERVAL;
-//            Application.addTask(() -> {
-//                long lastResModified = Utils.getLastDataModified();
-//                if (Application.data.needUIRefresh || lastResModified > _dataLastModified) {
-//                    Application.data.needUIRefresh = false;
-//                    _dataLastModified = lastResModified;
-//                    ApplicationClient.uiManager.reload();
-//                    ApplicationClient.spriteManager.reload();
-//                    Application.notify(GameObserver::onReloadUI);
-//                    Log.info("Data reloaded");
-//                    ApplicationClient.uiManager.restore();
-//                }
-//            });
-        }
-    }
+//    public void update() {
+//        if (Application.gameManager.isLoaded()) {
+//            Application.gameManager.getGame().update();
+//        }
+//
+//        // Reload data
+//        if (_nextDataUpdate < System.currentTimeMillis()) {
+//            _nextDataUpdate = System.currentTimeMillis() + Constant.RELOAD_DATA_INTERVAL;
+////            Application.addTask(() -> {
+////                long lastResModified = Utils.getLastDataModified();
+////                if (Application.data.needUIRefresh || lastResModified > _dataLastModified) {
+////                    Application.data.needUIRefresh = false;
+////                    _dataLastModified = lastResModified;
+////                    ApplicationClient.uiManager.reload();
+////                    ApplicationClient.spriteManager.reload();
+////                    Application.notify(GameObserver::onReloadUI);
+////                    Log.info("Data reloaded");
+////                    ApplicationClient.uiManager.restore();
+////                }
+////            });
+//        }
+//    }
 
     public static void notify(Consumer<GameObserver> action) {
         try {

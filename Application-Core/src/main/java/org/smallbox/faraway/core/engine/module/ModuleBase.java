@@ -32,11 +32,11 @@ public abstract class ModuleBase implements GameObserver {
 
 //        Log.info("[" + _info.name + "] Load");
 //        if (runOnMainThread()) {
-//            onLoad();
+//            onLoadModule();
 //            _isLoaded = true;
 //        } else {
 //            Application.moduleManager.getExecutor().execute(() -> {
-//                onLoad();
+//                onLoadModule();
 //                _isLoaded = true;
 //            });
 //        }

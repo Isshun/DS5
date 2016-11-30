@@ -79,7 +79,7 @@ public class Game {
 
     /**
      * Call game modules onGameCreate method and construct renders
-     * createGame() is call before game onLoad or createGame
+     * createGame() is call before game onLoadModule or createGame
      * createGame() is call before startGame()
      */
     public void createModules() {
@@ -94,14 +94,10 @@ public class Game {
     }
 
     public void start() {
-        // Notify modules, renders and controllers
-        Application.moduleManager.gameStart(this, _modules);
-
         Application.notify(observer -> observer.onHourChange(_hour));
         Application.notify(observer -> observer.onDayChange(_day));
         Application.notify(observer -> observer.onYearChange(_year));
         Application.notify(observer -> observer.onFloorChange(7));
-        Application.notify(observer -> observer.onGameStart(this));
 
         _state = GameModuleState.STARTED;
     }
@@ -112,23 +108,11 @@ public class Game {
 //    public void                     setCursor(String cursorName) { _gameAction.setCursor(Application.data.getCursor(cursorName)); }
 
     public void update() {
-        // Update
-        if (_nextUpdate < System.currentTimeMillis() && _isRunning) {
-            _nextUpdate = System.currentTimeMillis() + _tickInterval;
-            _tick += 1;
-            Application.notify(observer -> observer.onGameUpdate(this));
-            onUpdate(_tick);
-        }
-    }
+        _tick += 1;
 
-    protected void onUpdate(int tick) {
-        if (!_isRunning) {
-            return;
-        }
+        Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(this, _tick));
 
-        Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(this, tick));
-
-        if (tick % Application.configurationManager.game.tickPerHour == 0) {
+        if (_tick % Application.configurationManager.game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {
@@ -141,9 +125,7 @@ public class Game {
             Application.notify(observer -> observer.onHourChange(_hour));
         }
 
-        _tick = tick;
-
-        Log.info("Tick: " + tick);
+        Log.info("Tick: " + _tick);
     }
 
     public GameInfo getInfo() { return _info; }

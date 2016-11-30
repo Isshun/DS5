@@ -199,7 +199,7 @@ public class InputManager implements InputProcessor {
         }
         ApplicationClient.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
 
-        ApplicationClient.uiEventManager.keyRelease(key);
+//        ApplicationClient.uiEventManager.keyRelease(key);
 
         return false;
     }

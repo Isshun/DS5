@@ -15,7 +15,7 @@ public abstract class GameSerializer<T_MODULE> {
     }
 
     public void load(T_MODULE module, Game game) {
-        Log.info("Serializer: call onLoad " + getClass().getName());
+        Log.info("Serializer: call onLoadModule " + getClass().getName());
         onLoad(module, game);
     }
 

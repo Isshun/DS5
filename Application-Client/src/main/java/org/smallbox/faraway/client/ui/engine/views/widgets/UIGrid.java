@@ -47,6 +47,7 @@ public class UIGrid extends View {
                 @Override
                 public void onKeyRelease(View view, GameEventListener.Key key) {
                     _views.get(_index).onExit();
+
                     if (key == GameEventListener.Key.DOWN) {
                         _index = Math.min(_count - 1, _index + _columns);
                     }

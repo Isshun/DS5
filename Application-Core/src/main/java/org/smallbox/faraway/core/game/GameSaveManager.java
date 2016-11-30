@@ -4,18 +4,22 @@ import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class GameSaveManager {
+
     public interface GameSerializerInterface {
         void onSerializerComplete();
     }
 
-    public static void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
+    public void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
         Application.notify(observer -> observer.onCustomEvent("load_game.begin", null));
         long time = System.currentTimeMillis();
 
@@ -51,6 +55,7 @@ public class GameSaveManager {
             Application.sqlManager.closeDB();
 
             Application.sqlManager.post(db -> {
+                System.gc();
                 listener.onSerializerComplete();
                 // TODO
 //                dbFile.delete();
@@ -62,7 +67,30 @@ public class GameSaveManager {
         }
     }
 
-    public static void save(Game game, File gameDirectory, String filename) {
+    public void saveGame(Game game, GameInfo gameInfo, GameInfo.Type type) {
+        Date date = new Date();
+        String filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(date);
+        File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
+
+        GameInfo.GameSaveInfo saveInfo = new GameInfo.GameSaveInfo();
+        saveInfo.game = gameInfo;
+        saveInfo.type = type;
+        saveInfo.date = date;
+        saveInfo.label = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(saveInfo.date);
+        saveInfo.filename = new SimpleDateFormat("yyyy-MM-dd-hh-hh-mm-ss").format(saveInfo.date);
+        gameInfo.saveFiles.add(saveInfo);
+
+        // Write game.json
+        try {
+            FileUtils.write(new File(FileUtils.getSaveDirectory(gameInfo.name), "game.json"), gameInfo.toJSON().toString(4));
+        } catch (IOException e) {
+            Log.error(e, "Unable to write game meta info");
+        }
+
+        save(game, gameDirectory, filename);
+    }
+
+    private void save(Game game, File gameDirectory, String filename) {
         Application.notify(observer -> observer.onCustomEvent("save_game.begin", null));
         long time = System.currentTimeMillis();
 
@@ -100,12 +128,14 @@ public class GameSaveManager {
                 }
 
                 // Delete DB file
-                dbFile.delete();
+                if (!dbFile.delete()) {
+                    throw new IOException("Unable to delete DB file: " + dbFile.getAbsolutePath());
+                }
 
                 Log.notice("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
                 Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
-                e.printStackTrace();
+                Log.error(e, "Error during game save");
             }
         });
     }

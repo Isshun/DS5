@@ -1,6 +1,6 @@
 local parcel
 
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.panel_main",
     style = "base.style.right_panel",

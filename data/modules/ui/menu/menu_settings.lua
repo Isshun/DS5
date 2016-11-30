@@ -89,7 +89,7 @@ local function open_settings_menu(view, sub_menu_id)
     main_view:findById(sub_menu_id):setVisible(true)
 end
 
-data:extend({
+ui:extend({
     type = "view",
     id = "base.ui.menu_settings",
     size = {application.info.screen_width, application.info.screen_height},

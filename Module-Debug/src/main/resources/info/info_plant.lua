@@ -1,6 +1,6 @@
 plant = nil
 
-data:extend({
+ui:extend({
     type = "view",
     name = "base.ui.info_plant",
     style = "base.style.right_panel",

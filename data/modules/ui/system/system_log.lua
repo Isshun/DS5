@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "list",
     name = "base.ui.system_log",
     size = {application.info.screen_width, 38},

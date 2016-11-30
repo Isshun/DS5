@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "view",
     name = "ui-test",
     style = "base.style.right_panel",

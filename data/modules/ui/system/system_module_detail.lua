@@ -1,4 +1,4 @@
-data:extend(
+ui:extend(
     {
         {
             type = "view",

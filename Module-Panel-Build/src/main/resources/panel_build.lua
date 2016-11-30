@@ -1,4 +1,4 @@
-data:extend({
+ui:extend({
     type = "list",
     id = "base.ui.panel_build",
     style = "base.style.right_panel",
