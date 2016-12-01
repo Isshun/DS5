@@ -60,7 +60,6 @@ public abstract class LuaModuleManager implements GameObserver {
             public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
             public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
             public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }
-            public void onReloadUI() { init(); }
             public void onRefreshUI(int frame) { _luaRefreshListeners.forEach(listener -> listener.onRefresh(frame)); }
             public void onKeyPress(GameEventListener.Key key) { broadcastToLuaModules(LuaEventsModel.on_key_press, key.name());}
             public void onWeatherChange(WeatherInfo weather) { broadcastToLuaModules(LuaEventsModel.on_weather_change, weather);}
@@ -93,6 +92,7 @@ public abstract class LuaModuleManager implements GameObserver {
         return _extends;
     }
 
+    // TODO: start twice ?
     @Override
     public void onGameStart(Game game) {
         _luaModules.forEach(module -> module.startGame(game));

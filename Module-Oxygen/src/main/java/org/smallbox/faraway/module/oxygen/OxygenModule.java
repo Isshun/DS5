@@ -20,20 +20,21 @@ import java.util.stream.Collectors;
  * Created by Alex on 18/06/2015.
  */
 public class OxygenModule extends GameModule {
-    @BindModule
-    private JobModule _jobModule;
 
     @BindModule
-    private RoomModule _roomModule;
+    private JobModule jobModule;
 
     @BindModule
-    private WeatherModule _weatherModule;
+    private RoomModule roomModule;
 
     @BindModule
-    private WorldModule _worldModule;
+    private WeatherModule weatherModule;
 
     @BindModule
-    private ItemModule _itemModule;
+    private WorldModule worldModule;
+
+    @BindModule
+    private ItemModule itemModule;
 
     private double                  _oxygen;
     private List<ItemModel>         _items;
@@ -46,7 +47,7 @@ public class OxygenModule extends GameModule {
 
     @Override
     public void onGameCreate(Game game) {
-        _itemModule.addObserver(new ItemModuleObserver() {
+        itemModule.addObserver(new ItemModuleObserver() {
             @Override
             public void onRemoveItem(ParcelModel parcel, ItemModel item) {
                 _items.remove(item);
@@ -63,15 +64,15 @@ public class OxygenModule extends GameModule {
 
     @Override
     public void onGameStart(Game game) {
-        _jobModule.addPriorityCheck(new CheckCharacterOxygen(this, _roomModule));
+        jobModule.addPriorityCheck(new CheckCharacterOxygen(this, roomModule));
         _oxygen = game.getPlanet().getOxygen();
-        _items = _itemModule.getItems().stream().filter(item -> item.getInfo().effects != null && item.getInfo().effects.oxygen > 0).collect(Collectors.toList());
+        _items = itemModule.getItems().stream().filter(item -> item.getInfo().effects != null && item.getInfo().effects.oxygen > 0).collect(Collectors.toList());
     }
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        if (_roomModule != null) {
-            _roomModule.getRooms().forEach(r1 -> {
+        if (roomModule != null) {
+            roomModule.getRooms().forEach(r1 -> {
                         // Mix oxygen with neighbors
                         r1.getConnections().forEach(connection -> {
                             RoomModel r2 = connection.getRoom();
@@ -104,7 +105,7 @@ public class OxygenModule extends GameModule {
             if (Math.abs(diff) > 0.5) ratio = 0.1;
             room.setOxygen(room.getOxygen() + (diff * permeability * ratio));
         } else {
-            room.setOxygen(_weatherModule.getOxygen());
+            room.setOxygen(weatherModule.getOxygen());
         }
     }
 }

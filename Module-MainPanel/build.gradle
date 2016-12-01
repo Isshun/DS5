@@ -5,4 +5,5 @@ apply plugin: 'java'
 dependencies {
     compile project(":Application-Core")
     compile project(":Application-Client")
+    compile project(":Module-Character")
 }

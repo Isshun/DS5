@@ -1,13 +1,11 @@
 package org.smallbox.faraway.module.area;
 
 import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.client.controller.AreaGardenInfoController;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
-import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.area.model.*;
 import org.smallbox.faraway.core.module.character.model.PathModel;
@@ -29,12 +27,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleRenderer(AreaRenderer.class)
 public class AreaModule extends GameModule {
 
-    @BindLuaController
-    private AreaController areaController;
-
-    @BindLuaController
-    private AreaGardenInfoController areaGardenInfoController;
-
     @BindModule
     private ConsumableModule consumableModule;
 
@@ -50,17 +42,6 @@ public class AreaModule extends GameModule {
 
     public AreaModule() {
         _updateInterval = 10;
-    }
-
-    @Override
-    public boolean onSelectParcel(ParcelModel parcel) {
-        for (GardenAreaModel garden: _gardens) {
-            if (garden.contains(parcel.x, parcel.y, parcel.z)) {
-                areaGardenInfoController.select(garden);
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

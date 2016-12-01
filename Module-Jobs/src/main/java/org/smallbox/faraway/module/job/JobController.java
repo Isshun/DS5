@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.lua.BindLuaController;
+import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.util.Log;
 

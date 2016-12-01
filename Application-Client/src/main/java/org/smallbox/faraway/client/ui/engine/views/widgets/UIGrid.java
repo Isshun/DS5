@@ -1,13 +1,14 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.OnKeyListener;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.ui.engine.OnKeyListener;
 
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 28/09/2015.
@@ -157,4 +158,7 @@ public class UIGrid extends View {
     public void keepSorted(boolean keepSorted) {
         _keepSorted = keepSorted;
     }
+
+    @Override
+    public String toString() { return "" + _name + " [" + String.join(", ", _views.stream().map(View::toString).collect(Collectors.toList()))+ "]"; }
 }

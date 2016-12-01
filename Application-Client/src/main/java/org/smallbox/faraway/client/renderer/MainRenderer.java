@@ -88,11 +88,11 @@ public class MainRenderer implements GameObserver {
         _frame++;
     }
 
-    @Override
-    public void onReloadUI() {
-        ApplicationClient.uiEventManager.clear();
-        ApplicationClient.uiManager.clearViews();
-    }
+//    @Override
+//    public void onReloadUI() {
+//        ApplicationClient.uiEventManager.clear();
+//        ApplicationClient.uiManager.clearViews();
+//    }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();

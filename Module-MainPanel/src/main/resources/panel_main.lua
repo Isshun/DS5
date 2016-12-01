@@ -29,17 +29,7 @@ ui:extend({
                 { type = "label", text = "W", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_water", on_click = function(v) application:toggleDisplay("water") end},
                 { type = "label", text = "S", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_security", on_click = function(v) application:toggleDisplay("security") end},
             }},
-            { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true, views = {
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Build", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_build") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Plan", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_plan") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Displays", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_displays") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Areas", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_areas") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Jobs", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_jobs") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Crew", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_crew") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Stats", text_size = 18, padding = 10, on_click = function() open_panel("base.ui.panel_stats") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Networks", text_size = 18, padding = 10, on_click = function() open_panel("panel_networks") end},
---                { type = "label", size = {170, 40}, background = {regular = 0x349394, focus = 0x25c9cb}, text = "Debug", text_size = 18, padding = 10, on_click = function() open_panel("panel_debug") end, id = "lb_debug"},
-            }},
+            { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true},
         }},
         {
             type = "view",

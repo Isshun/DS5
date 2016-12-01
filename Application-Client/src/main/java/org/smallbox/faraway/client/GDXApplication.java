@@ -65,8 +65,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         Application.taskManager.addLoadTask("Load server lua modules", false, Application.luaModuleManager::init);
 
-        Application.taskManager.addLoadTask("Load client lua modules", false, ApplicationClient.luaModuleManager::init);
-
+//        Application.taskManager.addLoadTask("Load client lua modules", false, ApplicationClient.luaModuleManager::init);
 
 
         // Load sprites

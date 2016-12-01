@@ -70,4 +70,7 @@ public interface GameObserver {
     default void onMouseRelease(GameEvent event) {}
 
     default void onClickOnMap(GameEvent mouseEvent) {}
+    default void onClickOnParcel(ParcelModel parcel) {}
+
+    default void onClick(int x, int y) {}
 }

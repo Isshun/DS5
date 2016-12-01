@@ -4,7 +4,7 @@ ui:extend({
     type = "view",
     id = "base.ui.info_character",
     style = "base.style.right_panel",
-    controller = "org.smallbox.faraway.module.character.controller.CharacterController",
+    controller = "org.smallbox.faraway.module.mainPanel.controller.CharacterController",
     group = "right_panel",
     visible = false,
     views = {
@@ -33,7 +33,7 @@ ui:extend({
         {
             type = "list",
             id = "page_status",
-            controller = "org.smallbox.faraway.module.character.controller.CharacterStatusController",
+            controller = "org.smallbox.faraway.module.mainPanel.controller.CharacterStatusController",
             position = {12, 200},
             size = {400, 400},
             views = {

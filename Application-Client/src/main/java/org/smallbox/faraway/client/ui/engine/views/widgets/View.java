@@ -490,4 +490,7 @@ public abstract class View implements Comparable<View> {
         }
         return _y;
     }
+
+    @Override
+    public String toString() { return "name: " + _name; }
 }

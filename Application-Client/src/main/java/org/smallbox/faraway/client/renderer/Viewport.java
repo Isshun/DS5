@@ -70,10 +70,10 @@ public class Viewport {
     public int   getWidth() { return _width; }
     public int   getHeight() { return _height; }
 
-    public int                      getRelativePosX() { return (int) ((-getPosX()) / getScale() / Constant.TILE_WIDTH); }
-    public int                      getRelativePosX(int x) { return (int) ((-x) / getScale() / Constant.TILE_WIDTH); }
-    public int                      getRelativePosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
-    public int                      getRelativePosY(int y) { return (int) ((-y) / getScale() / Constant.TILE_HEIGHT); }
+    public int   getRelativePosX() { return (int) ((-getPosX()) / getScale() / Constant.TILE_WIDTH); }
+    public int   getRelativePosX(int x) { return (int) ((-getPosX() + x) / getScale() / Constant.TILE_WIDTH); }
+    public int   getRelativePosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
+    public int   getRelativePosY(int y) { return (int) ((-getPosY() + y) / getScale() / Constant.TILE_HEIGHT); }
 
     public void setScale(int delta, int x, int y) {
     }

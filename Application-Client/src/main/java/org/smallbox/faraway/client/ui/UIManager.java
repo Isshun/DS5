@@ -124,6 +124,16 @@ public class UIManager {
         }
     }
 
+    /**
+     *
+     * @param event
+     * @param action
+     * @param button
+     * @param x
+     * @param y
+     * @param rightPressed
+     * @return L'evenement est consommé
+     */
     public boolean onMouseEvent(GameEvent event, Action action, MouseButton button, int x, int y, boolean rightPressed) {
         for (ModuleBase module: Application.moduleManager.getModules()) {
             if (!event.consumed && module.isLoaded() && module.onMouseEvent(action, button, x, y)) {

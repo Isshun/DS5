@@ -2,7 +2,7 @@ ui:extend({
     type = "view",
     style = "base.style.right_panel",
     id = "base.ui.panel_crew",
-    controller = "org.smallbox.faraway.module.character.controller.CrewController",
+    controller = "org.smallbox.faraway.module.mainPanel.controller.CrewController",
     group = "right_panel",
     visible = false,
     views = {

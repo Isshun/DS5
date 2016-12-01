@@ -6,19 +6,15 @@ import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 
 /**
  * Created by Alex on 15/08/2016.
  */
 public class MainPanelController extends LuaController {
+
     @BindLua
     private UIGrid mainGrid;
-
-    @Override
-    public void onGameUpdate(Game game) {
-    }
 
     @Override
     public void onKeyPress(GameEventListener.Key key) {

@@ -316,7 +316,7 @@ public class LuaUIExtend extends LuaExtend {
             if (!adapter.isnil()) {
                 LuaValue onBind = adapter.get("on_bind");
                 LuaValue subview = adapter.get("view");
-                Collection<ObjectModel> data = (Collection) CoerceLuaToJava.coerce(adapter.get("data"), Collection.class);
+                Collection data = (Collection) CoerceLuaToJava.coerce(adapter.get("data"), Collection.class);
                 final View finalView1 = view;
                 view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
                     @Override
@@ -402,7 +402,7 @@ public class LuaUIExtend extends LuaExtend {
 
             LuaValue controller = value.get("controller");
             if (!controller.isnil()) {
-                LuaControllerManager.getInstance().setControllerView(controller.toString(), view);
+                ApplicationClient.luaControllerManager.setControllerView(controller.toString(), view);
             }
         }
 

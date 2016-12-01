@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldInteractionModule extends GameModule<WorldInteractionModuleObserver> {
+
     @BindModule
     private WorldModule worldModule;
 

@@ -1,36 +1,28 @@
 package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.character.model.HumanModel;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.Strings;
-import org.smallbox.faraway.util.Utils;
-import org.smallbox.faraway.module.character.controller.CharacterController;
 import org.smallbox.faraway.module.character.job.*;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
+import org.smallbox.faraway.util.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -38,17 +30,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleSerializer(CharacterModuleSerializer.class)
 @ModuleRenderer(CharacterRenderer.class)
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
-    @BindLuaController
-    private CharacterController _controller;
 
     @BindModule
-    private WorldInteractionModule _worldInteraction;
+    private WorldInteractionModule worldInteractionModule;
 
     @BindModule
-    private JobModule _jobs;
+    private JobModule jobModule;
 
     @BindModule
-    private ItemModule _items;
+    private ItemModule itemModule;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
@@ -67,7 +57,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onGameCreate(Game game) {
-        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
             @Override
             public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 _characters.stream()
@@ -79,38 +69,12 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onGameStart(Game game) {
-        _jobs.addPriorityCheck(new CheckCharacterEnergyCritical());
-        _jobs.addPriorityCheck(new CheckCharacterWaterWarning());
-        _jobs.addPriorityCheck(new CheckCharacterFoodWarning());
-        _jobs.addPriorityCheck(new CheckCharacterEnergyWarning());
-        _jobs.addSleepCheck(new CheckCharacterTimetableSleep());
-        _jobs.addSleepCheck(new CheckJoySleep(_items));
-    }
-
-    @Override
-    public boolean onKey(GameEvent event, GameEventListener.Key key) {
-        if (key == GameEventListener.Key.TAB) {
-            select(event, getNext(_controller.getSelected()));
-            return true;
-        }
-        return false;
-    }
-
-    private CharacterModel getNext(CharacterModel currentCharacter) {
-        if (CollectionUtils.isNotEmpty(_characters)) {
-            Iterator<CharacterModel> iterator = _characters.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next() == currentCharacter) {
-                    break;
-                }
-            }
-            if (iterator.hasNext()) {
-                return iterator.next();
-            } else {
-                return _characters.iterator().next();
-            }
-        }
-        return null;
+        jobModule.addPriorityCheck(new CheckCharacterEnergyCritical());
+        jobModule.addPriorityCheck(new CheckCharacterWaterWarning());
+        jobModule.addPriorityCheck(new CheckCharacterFoodWarning());
+        jobModule.addPriorityCheck(new CheckCharacterEnergyWarning());
+        jobModule.addSleepCheck(new CheckCharacterTimetableSleep());
+        jobModule.addSleepCheck(new CheckJoySleep(itemModule));
     }
 
     public void addVisitor() {
@@ -132,7 +96,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
                 .forEach(character -> {
                     // Cancel job
                     if (character.getJob() != null) {
-                        _jobs.quitJob(character.getJob(), JobModel.JobAbortReason.DIED);
+                        jobModule.quitJob(character.getJob(), JobModel.JobAbortReason.DIED);
                     }
 
                     if (CollectionUtils.isEmpty(character.getBuffs())) {
@@ -146,7 +110,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
                     if (tick % 10 == character.getLag()) {
                         // Assign job
                         if (character.getJob() == null && !character.isSleeping()) {
-                            _jobs.assign(character);
+                            jobModule.assign(character);
                         }
 
                         // Update characters (buffs, stats)

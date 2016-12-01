@@ -62,6 +62,7 @@ public class LoadGameModule extends ApplicationModule {
             Application.notify(observer -> observer.onGameLoad(_currentGame, _currentSave));
         }
         if ("load_game.last_game".equals(tag)) {
+            loadAction();
             _games.stream()
                     .flatMap(gameInfo -> gameInfo.saveFiles.stream())
                     .sorted((o1, o2) -> o2.date.compareTo(o1.date))

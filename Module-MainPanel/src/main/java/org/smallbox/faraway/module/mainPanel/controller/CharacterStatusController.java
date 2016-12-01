@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.character.controller;
+package org.smallbox.faraway.module.mainPanel.controller;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;

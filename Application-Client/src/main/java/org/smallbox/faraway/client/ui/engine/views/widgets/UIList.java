@@ -1,9 +1,10 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.ConcurrentModificationException;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 26/09/2015.
@@ -68,4 +69,7 @@ public class UIList extends View implements AutoCloseable {
     @Override
     public void close() throws Exception {
     }
+
+    @Override
+    public String toString() { return "" + _name + " [" + String.join(", ", _views.stream().map(View::toString).collect(Collectors.toList()))+ "]"; }
 }

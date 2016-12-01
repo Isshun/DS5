@@ -1,15 +1,14 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.character.model.PathModel;
 import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.module.job.JobModule;
@@ -30,19 +29,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleRenderer(ConsumableRenderer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @BindModule
-    private WorldModule _world;
+    private WorldModule worldModule;
 
     @BindModule
-    private JobModule _jobs;
+    private JobModule jobModule;
 
     @BindModule
-    private StructureModule _structureModel;
+    private StructureModule structureModule;
 
     @BindModule
-    private WorldInteractionModule _worldInteraction;
-
-    @BindLuaController
-    private ConsumableInfoController _infoController;
+    private WorldInteractionModule worldInteractionModule;
 
     private Collection<ConsumableModel> _consumables;
 
@@ -54,7 +50,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     public void onGameCreate(Game game) {
         _consumables = new LinkedBlockingQueue<>();
 
-        _structureModel.addObserver(new StructureModuleObserver() {
+        structureModule.addObserver(new StructureModuleObserver() {
             @Override
             public void onStructureComplete(StructureModel structure) {
                 if (!structure.isWalkable() && structure.getParcel().hasConsumable()) {
@@ -63,7 +59,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             }
         });
 
-        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
             private ConsumableModel _lastConsumable;
             private ConsumableModel _currentConsumable;
 
@@ -85,7 +81,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             }
         });
 
-        _world.addObserver(new WorldModuleObserver() {
+        worldModule.addObserver(new WorldModuleObserver() {
             @Override
             public void onAddParcel(ParcelModel parcel) {
                 if (parcel.hasConsumable()) {
@@ -157,7 +153,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             }
             _consumables.remove(consumable);
 
-            _jobs.getJobs().stream()
+            jobModule.getJobs().stream()
                     .filter(job -> job instanceof HaulJob)
                     .forEach(job -> ((HaulJob) job).removePotentialConsumable(consumable));
 
@@ -180,7 +176,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 _consumables.add(finalParcel.getConsumable());
             }
 
-            _jobs.getJobs().stream()
+            jobModule.getJobs().stream()
                     .filter(job -> job instanceof HaulJob)
                     .forEach(job -> ((HaulJob) job).addPotentialConsumable(consumable));
 
@@ -269,7 +265,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public void create(ItemInfo itemInfo, int quantity, int x, int y, int z) {
-        ParcelModel parcel = _world.getParcel(x, y, z);
+        ParcelModel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
             create(itemInfo, quantity);
         }

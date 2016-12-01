@@ -15,11 +15,12 @@ public class Log {
     private final static boolean EXIT_ON_ERROR = true;
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final static Logger logger = Logger.getLogger("FarAway");
+    private final static Level level = Level.WARNING;
 
     static {
-        logger.setLevel(Level.SEVERE);
+        logger.setLevel(level);
         ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.SEVERE);
+        consoleHandler.setLevel(level);
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
             public String format(LogRecord record) {

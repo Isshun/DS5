@@ -21,29 +21,29 @@ import java.util.stream.Collectors;
  * Created by Alex on 26/04/2016.
  */
 public class ItemInfoController extends LuaController {
-    @BindLua private UILabel lbName;
+    @BindLua private UILabel        lbName;
 
-    @BindLua private View frameContent;
+    @BindLua private View           frameContent;
     @BindLua private View           frameBuild;
     @BindLua private View           frameWorkers;
     @BindLua private View           frameComponents;
     @BindLua private UILabel        lbBuildCost;
     @BindLua private UILabel        lbBuildProgress;
-    @BindLua private UIImage imgBuildProgress;
+    @BindLua private UIImage        imgBuildProgress;
 
-    @BindLua private UIList listActions;
+    @BindLua private UIList         listActions;
     @BindLua private UIList         listWorkers;
     @BindLua private UIList         listComponents;
     @BindLua private UIList         listFactoryInventory;
 
     @BindModule
-    private ItemModule _module;
+    private ItemModule itemModule;
 
     public ItemModel _item;
 
     @Override
     public void onGameStart(Game game) {
-        _module.addObserver(new ItemModuleObserver() {
+        itemModule.addObserver(new ItemModuleObserver() {
             @Override
             public void onDeselectItem(ItemModel item) {
                 _item = null;

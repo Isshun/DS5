@@ -1,11 +1,15 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.MouseEvent;
+import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.ApplicationShortcutManager;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.SpriteManager;
+import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
@@ -13,6 +17,8 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ConfigurationManager;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -31,10 +37,11 @@ public class ApplicationClient {
     public static final ConfigurationManager    configurationManager;
 
     // Client
-    public static final UIManager uiManager;
+    public static final UIManager               uiManager;
     public static final UIEventManager          uiEventManager;
-    public static final InputManager inputManager;
-    public static final ClientLuaModuleManager luaModuleManager;
+    public static final InputManager            inputManager;
+    public static final ClientLuaModuleManager  luaModuleManager;
+    public static final LuaControllerManager    luaControllerManager;
 
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
@@ -50,6 +57,7 @@ public class ApplicationClient {
         gdxRenderer = dependencyInjector.create(GDXRenderer.class);
         mainRenderer = dependencyInjector.create(MainRenderer.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
+        luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
 
         // Create configurationManager
         configurationManager = loadConfig();
@@ -95,20 +103,35 @@ public class ApplicationClient {
     }
 
     public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
-//        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
-//
-//        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-//            return;
-//        }
-//
-//        if (Application.gameManager.isLoaded()) {
+        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
+
+        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
+            return;
+        }
+
+        // Passe l'evenement à l'ui manager
+        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
+            return;
+        }
+
+        // Lance un evenement clickOnMap si le jeu est lancé
+        if (Application.gameManager.isLoaded()) {
+
+            if (action == GameEventListener.Action.RELEASED) {
+                System.out.println("Click on map at pixel: " + x + " x " + y);
+
+                Viewport viewport = ApplicationClient.mainRenderer.getViewport();
+                ParcelModel parcel = WorldHelper.getParcel(viewport.getRelativePosX(x), viewport.getRelativePosY(y), viewport.getFloor());
+                if (parcel != null) {
+                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);
+                    Application.notify(observer -> observer.onClickOnParcel(parcel));
+                }
 //            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
 //            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
 //                return;
 //            }
-//        }
-
-//        ApplicationClient.uiManager.onMouseEvent(action, button, x, y, rightPressed);
+            }
+        }
     }
 
     public static void notify(Consumer<GameObserver> action) {

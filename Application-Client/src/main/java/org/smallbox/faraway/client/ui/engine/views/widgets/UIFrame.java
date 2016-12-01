@@ -1,7 +1,9 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
+
+import java.util.stream.Collectors;
 
 public class UIFrame extends View {
     public UIFrame(ModuleBase module) {
@@ -65,4 +67,7 @@ public class UIFrame extends View {
     protected void onRemoveView(View view) {
         view.remove();
     }
+
+    @Override
+    public String toString() { return "" + _name + " [" + String.join(", ", _views.stream().map(View::toString).collect(Collectors.toList()))+ "]"; }
 }

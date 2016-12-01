@@ -1,13 +1,12 @@
 package org.smallbox.faraway.module.area;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.UIPanelModule;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.lua.BindLuaController;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
 
 /**
@@ -33,11 +32,11 @@ public class AreaController extends LuaController {
     @BindLua private UILabel    btRemoveGarden;
 
     @BindLuaController
-    private MainPanelController _mainPanelController;
+    private MainPanelController mainPanelController;
 
     @Override
-    public void onGameCreate(Game game) {
-        _mainPanelController.addShortcut("Areas", (GameEvent event) -> setVisible(true));
+    public void onReloadUI() {
+        mainPanelController.addShortcut("Areas", (GameEvent event) -> setVisible(true));
 
         // TODO
 //        btAddStorage.setOnClickListener((GameEvent event) -> {

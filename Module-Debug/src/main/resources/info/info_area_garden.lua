@@ -1,27 +1,7 @@
---local function display_accepted_items(view, garden)
---    local list = view:findById("list_accepted_plant")
---    list:removeAllViews()
---
---    local iterator = garden:getPotentials():iterator()
---    while iterator:hasNext() do
---        local plant = iterator:next()
---        local lb_plant = ui:createLabel()
---        lb_plant:setText((garden:getCurrent() == plant and "[x] " or "[ ] "), plant.label)
---        lb_plant:setTextSize(14)
---        lb_plant:setSize(180, 20)
---        lb_plant:setPadding(5)
---        lb_plant:setOnClickListener(function()
---            garden:setAccept(plant, true)
---            display_accepted_items(view, garden)
---        end)
---        list:addView(lb_plant)
---    end
---end
-
 ui:extend({
     type = "list",
     id = "base.ui.info_area_garden",
-    controller = "org.smallbox.faraway.core.module.area.controller.AreaGardenInfoController",
+    controller = "org.smallbox.faraway.client.controller.AreaGardenInfoController",
     style = "base.style.right_panel",
     visible = false,
     views = {
