@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
+import org.smallbox.faraway.DebugServer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 
@@ -66,6 +67,10 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Load server lua modules", false, Application.luaModuleManager::init);
 
 //        Application.taskManager.addLoadTask("Load client lua modules", false, ApplicationClient.luaModuleManager::init);
+
+        // Debug
+        Application.taskManager.addLoadTask("Init input processor", false, () ->
+                Application.taskManager.launchBackgroundThread(DebugServer::start));
 
 
         // Load sprites

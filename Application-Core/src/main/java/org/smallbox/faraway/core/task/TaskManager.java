@@ -83,4 +83,11 @@ public class TaskManager {
             Log.info("Background thread terminated");
         }).start();
     }
+
+    public void launchBackgroundThread(Runnable runnable) {
+        Log.info("Launch background thread");
+        new Thread(() -> {
+            runnable.run();
+        }).start();
+    }
 }

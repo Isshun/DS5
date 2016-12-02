@@ -2,8 +2,10 @@ include 'Application-Desktop'
 include 'Application-Core'
 include 'Application-Client'
 include 'Application-Server'
-include 'Application-PathFinding'
-include 'Application-SmartFontGenerator'
+include 'Core-PathFinding'
+include 'Core-SmartFontGenerator'
+
+include 'Core-Debug'
 
 include 'Module-Area'
 include 'Module-Bridge'

@@ -37,7 +37,7 @@ distZip.dependsOn copyResources
 
 dependencies {
     compile project(":Application-Core")
-    compile project(":Application-PathFinding")
+    compile project(":Core-PathFinding")
     compile project(":Module-World")
     compile project(":Module-Jobs")
 }

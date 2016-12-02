@@ -8,8 +8,9 @@ eclipse.project {
 }
 
 dependencies {
-    compile project(":Application-SmartFontGenerator")
-    compile project(":Application-PathFinding")
+    compile project(":Core-SmartFontGenerator")
+    compile project(":Core-PathFinding")
+    compile project(":Core-Debug")
     compile 'org.apache.commons:commons-compress:1.10'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'commons-io:commons-io:2.4'

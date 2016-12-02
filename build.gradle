@@ -76,7 +76,7 @@ project(":Application-Client") {
     }
 }
 
-project(":Application-SmartFontGenerator") {
+project(":Core-SmartFontGenerator") {
     apply plugin: "java"
 
     dependencies {

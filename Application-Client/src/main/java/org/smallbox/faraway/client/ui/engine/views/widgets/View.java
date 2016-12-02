@@ -1,19 +1,21 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.istack.internal.NotNull;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.FadeEffect;
+import org.smallbox.faraway.client.RotateAnimation;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.client.FadeEffect;
-import org.smallbox.faraway.client.RotateAnimation;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public abstract class View implements Comparable<View> {
         _views.clear();
     }
 
+    @JsonSerialize(using = SubViewSerializer.class)
     public View getRootView() {
         for (View view = this; true; view = view.getParent()) {
             if (view.getParent() == null) {
@@ -81,6 +84,7 @@ public abstract class View implements Comparable<View> {
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
 
     protected final ModuleBase  _module;
+
     protected List<View>        _views = new ArrayList<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
@@ -181,9 +185,14 @@ public abstract class View implements Comparable<View> {
     public void         setActionName(String actionName) { _actionName = actionName; }
     public void         setLayer(int layer) { _layer = layer; }
 
+    @JsonIgnore
     public Color        getBackgroundColor() { return _backgroundColor; }
+
     public int          getLayer() { return _layer; }
+
+    @JsonIgnore
     public View         getParent() { return _parent; }
+
     public int          getId() { return _id; }
     public int          getPosX() { return _x; }
     public int          getPosY() { return _y; }
@@ -194,8 +203,12 @@ public abstract class View implements Comparable<View> {
     public int          getRegularBackground() { return _regularBackground; }
     public int          getFocusBackground() { return _focusBackground; }
     public String       getName() { return _name; }
+
     public List<View>   getViews() { return _views; }
+
+    @JsonIgnore
     public ModuleBase   getModule() { return _module; }
+
     protected String    getString() { return null; }
     public int          getHeight() { return _height; }
     public int          getWidth() { return _width; }
@@ -203,7 +216,10 @@ public abstract class View implements Comparable<View> {
     public int          getMarginRight() { return _marginRight; }
     public int          getMarginBottom() { return _marginBottom; }
     public int          getMarginLeft() { return _marginLeft; }
+
+    @JsonIgnore
     public FadeEffect   getEffect() { return _effect; }
+
     public String       getActionName() { return _actionName; }
 
     public int          compareLevel(View view) { return _deep != view.getDeep() ? _deep - view.getDeep() : hashCode() - view.hashCode(); }
@@ -280,6 +296,7 @@ public abstract class View implements Comparable<View> {
         _marginLeft = (int) (left * Application.configurationManager.uiScale);
     }
 
+    @JsonIgnore
     public UIAdapter getAdapter() {
         return _adapter;
     }
@@ -422,6 +439,7 @@ public abstract class View implements Comparable<View> {
         }
     }
 
+    @JsonIgnore
     public Object getData() {
         return _data;
     }

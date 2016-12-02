@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
@@ -25,6 +26,10 @@ public class DebugModule extends GameModule {
 
     @BindModule
     private WorldModule         worldModule;
+
+    @Override
+    public void onGameCreate(Game game) {
+    }
 
     public void execute(String command) {
         Log.info("Execute: " + command);
