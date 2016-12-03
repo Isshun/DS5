@@ -125,7 +125,7 @@ public class Game {
             Application.notify(observer -> observer.onHourChange(_hour));
         }
 
-        Log.info("Tick: " + _tick);
+//        Log.info("Tick: " + _tick);
     }
 
     public GameInfo getInfo() { return _info; }

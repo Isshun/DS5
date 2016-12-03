@@ -11,6 +11,9 @@ import org.smallbox.faraway.core.module.world.model.PlantModel;
 import org.smallbox.faraway.core.module.world.model.StructureModel;
 import org.smallbox.faraway.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Alex on 09/07/2015.
  */
@@ -329,5 +332,25 @@ public class WorldHelper {
             return path.getLength();
         }
         return -1;
+    }
+
+    public static List<ParcelModel> getParcelForSquare(int x1, int y1, int x2, int y2, int z) {
+        List<ParcelModel> parcelList = new ArrayList<>();
+
+        int fromMapX = Math.min(x1, x2);
+        int fromMapY = Math.min(y1, y2);
+        int toMapX = Math.max(x1, x2);
+        int toMapY = Math.max(y1, y2);
+
+        for (int mapX = fromMapX; mapX <= toMapX; mapX++) {
+            for (int mapY = fromMapY; mapY <= toMapY; mapY++) {
+                ParcelModel parcel = WorldHelper.getParcel(mapX, mapY, z);
+                if (parcel != null) {
+                    parcelList.add(parcel);
+                }
+            }
+        }
+
+        return parcelList;
     }
 }

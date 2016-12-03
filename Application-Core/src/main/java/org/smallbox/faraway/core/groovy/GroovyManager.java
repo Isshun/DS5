@@ -13,6 +13,23 @@ public class GroovyManager {
 
 
     public void init() {
+//
+//        InputStream groovyClassIS = GroovyManager.class
+//                .getResourceAsStream("/org/jboss/loom/tools/groovy/Foo.groovy");
+//
+//        GroovyClassLoader gcl = new GroovyClassLoader();
+//        Class clazz = gcl.parseClass(groovyClassIS, "SomeClassName.groovy");
+//        Object obj = null;
+//        try {
+//            obj = clazz.newInstance();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
+//        IConfig action = (IConfig) obj;
+//        System.out.println( action.foo());
+
 //        try {
 //            Binding binding = new Binding();
 //            binding.setProperty("bridge", new GroovyBridge() {

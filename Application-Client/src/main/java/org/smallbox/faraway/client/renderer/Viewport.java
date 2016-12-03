@@ -75,6 +75,9 @@ public class Viewport {
     public int   getRelativePosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
     public int   getRelativePosY(int y) { return (int) ((-getPosY() + y) / getScale() / Constant.TILE_HEIGHT); }
 
+    public int   getRealPosX(int parcelX) { return parcelX * Constant.TILE_WIDTH + getPosX(); }
+    public int   getRealPosY(int parcelY) { return parcelY * Constant.TILE_HEIGHT + getPosY(); }
+
     public void setScale(int delta, int x, int y) {
     }
 

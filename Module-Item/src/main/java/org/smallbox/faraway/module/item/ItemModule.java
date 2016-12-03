@@ -21,6 +21,7 @@ import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -148,6 +149,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     }
 
     public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
+        Log.info("Add pattern for %s at position %s", itemInfo, parcel);
+
         // Create item
         ItemModel item = new ItemModel(itemInfo);
         item.setParcel(parcel);

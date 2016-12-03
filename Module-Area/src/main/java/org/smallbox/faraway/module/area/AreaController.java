@@ -1,6 +1,5 @@
 package org.smallbox.faraway.module.area;
 
-import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.UIPanelModule;
@@ -36,7 +35,7 @@ public class AreaController extends LuaController {
 
     @Override
     public void onReloadUI() {
-        mainPanelController.addShortcut("Areas", (GameEvent event) -> setVisible(true));
+        mainPanelController.addShortcut("Areas", this);
 
         // TODO
 //        btAddStorage.setOnClickListener((GameEvent event) -> {

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.module.mainPanel.controller;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
@@ -8,13 +9,14 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.lua.BindLuaAction;
-import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.character.CharacterModuleObserver;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.util.Log;
+
+import java.util.List;
 
 /**
  * Created by Alex on 25/04/2016.
@@ -53,12 +55,14 @@ public class CharacterController extends LuaController {
     }
 
     @Override
-    public void onClickOnParcel(ParcelModel parcel) {
-        if (parcel != null){
-            CharacterModel character = characterModule.getCharacterAtPos(parcel.x, parcel.y, parcel.z);
-            if (character != null) {
-                select(character);
-            }
+    public void onClickOnParcel(List<ParcelModel> parcelList) {
+        if (parcelList != null) {
+            parcelList.forEach(parcel -> {
+                CharacterModel character = characterModule.getCharacterAtPos(parcel.x, parcel.y, parcel.z);
+                if (character != null) {
+                    select(character);
+                }
+            });
         }
     }
 

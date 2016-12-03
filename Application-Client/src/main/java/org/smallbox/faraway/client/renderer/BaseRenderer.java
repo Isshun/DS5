@@ -107,7 +107,9 @@ public abstract class BaseRenderer<T> implements GameObserver {
         List<BaseRenderer<GameModule>> rendererList = new ArrayList<>();
         try {
             for (Class<? extends BaseRenderer> cls: module.getClass().getAnnotation(ModuleRenderer.class).value()) {
-                rendererList.add(cls.newInstance());
+                BaseRenderer renderer = cls.newInstance();
+                Application.dependencyInjector.register(renderer);
+                rendererList.add(renderer);
             }
         } catch ( IllegalAccessException | InstantiationException e) {
             Log.error(e);

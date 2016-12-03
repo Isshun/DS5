@@ -18,6 +18,7 @@ import org.smallbox.faraway.client.ui.GameActionExtra;
 import org.smallbox.faraway.client.ui.UISelection;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WorldInteractionModule extends GameModule<WorldInteractionModuleObserver> {
@@ -46,7 +47,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
          * @param parcel ParcelModel
          * @return consume
          */
-        boolean onClick(ParcelModel parcel);
+        boolean onClick(List<ParcelModel> parcel);
     }
 
     public void setOnClickListener(OnClickListener onClickListener) {
@@ -68,6 +69,13 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 //                //_menu.move(_viewport.getPosX(), _viewport.getPosY());
 //                _menu.setViewPortPosition(_viewport.getPosX(), _viewport.getPosY());
 //            }
+        }
+    }
+
+    @Override
+    public void onClickOnParcel(List<ParcelModel> parcel) {
+        if (_onClickListener != null && _onClickListener.onClick(parcel)) {
+            _onClickListener = null;
         }
     }
 
@@ -120,7 +128,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
                         if (_onClickListener != null) {
                             ParcelModel parcel = worldModule.getParcel(parcelX, parcelY, floor);
                             if (parcel != null) {
-                                if (_onClickListener.onClick(parcel)) {
+                                if (_onClickListener.onClick(Collections.singletonList(parcel))) {
                                     _onClickListener = null;
                                 }
                             }

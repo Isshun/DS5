@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.DebugServer;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.game.Game;
 
 public class GDXApplication extends ApplicationAdapter {
@@ -101,7 +102,7 @@ public class GDXApplication extends ApplicationAdapter {
                     if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
                         Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
                     }
-                }, 16));
+                }, Config.getInt("game.updateInterval")));
     }
 
     @Override

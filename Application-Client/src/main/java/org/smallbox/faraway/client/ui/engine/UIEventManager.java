@@ -6,7 +6,10 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -85,10 +88,36 @@ public class UIEventManager {
             _currentDropDown = null;
         }
 
+        // Click on UI
         if (bestView != null) {
             bestView.click(event);
 //            _onClickListeners.get(bestView).onClick();
             return true;
+        }
+
+        // Click on map
+        if (Application.gameManager.isRunning()) {
+
+            int fromMapX = ApplicationClient.mainRenderer.getViewport().getRelativePosX(ApplicationClient.inputManager.getTouchDownX());
+            int fromMapY = ApplicationClient.mainRenderer.getViewport().getRelativePosY(ApplicationClient.inputManager.getTouchDownY());
+            int toMapX = ApplicationClient.mainRenderer.getViewport().getRelativePosX(ApplicationClient.inputManager.getTouchDragX());
+            int toMapY = ApplicationClient.mainRenderer.getViewport().getRelativePosY(ApplicationClient.inputManager.getTouchDragY());
+
+            // Square selection
+            if (fromMapX != toMapX || fromMapY != toMapY) {
+                List<ParcelModel> parcelList = WorldHelper.getParcelForSquare(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
+                if (parcelList != null) {
+                    Application.notify(observer -> observer.onClickOnParcel(parcelList));
+                }
+            }
+
+            // Unique parcel
+            else {
+                ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
+                if (parcel != null) {
+                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
+                }
+            }
         }
 
         return false;

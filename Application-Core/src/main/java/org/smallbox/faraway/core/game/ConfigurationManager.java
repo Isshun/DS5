@@ -1,41 +1,80 @@
 package org.smallbox.faraway.core.game;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
+import org.smallbox.faraway.util.Log;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Alex on 22/11/2015.
  */
 public class ConfigurationManager {
+
+    private static JSONObject _json;
+
     public static ConfigurationManager fromJSON(JSONObject json) {
-        ConfigurationManager config = new ConfigurationManager();
+        _json = json;
+
+        ConfigurationManager configurationManager = new ConfigurationManager();
 
         // Read screen info
         JSONObject jsonScreen = json.getJSONObject("screen");
-        config.screen = new ConfigScreenInfo();
-        config.screen.resolution = new int[] {
+        configurationManager.screen = new ConfigScreenInfo();
+        configurationManager.screen.resolution = new int[] {
                 jsonScreen.getJSONArray("resolution").getInt(0),
                 jsonScreen.getJSONArray("resolution").getInt(1)};
-        config.screen.position = new int[] {
+        configurationManager.screen.position = new int[] {
                 jsonScreen.getJSONArray("position").getInt(0),
                 jsonScreen.getJSONArray("position").getInt(1)};
-        config.screen.mode = jsonScreen.getString("mode");
-        config.screen.foregroundFPS = jsonScreen.getInt("foregroundFPS");
-        config.screen.backgroundFPS = jsonScreen.getInt("backgroundFPS");
+        configurationManager.screen.mode = jsonScreen.getString("mode");
+        configurationManager.screen.foregroundFPS = jsonScreen.getInt("foregroundFPS");
+        configurationManager.screen.backgroundFPS = jsonScreen.getInt("backgroundFPS");
 
         // Read game info
         JSONObject jsonGame = json.getJSONObject("game");
-        config.game = new ConfigGameInfo();
-        config.game.environmentDistance = jsonGame.getInt("environmentDistance");
-        config.game.inventoryMaxQuantity = jsonGame.getInt("inventoryMaxQuantity");
-        config.game.storageMaxQuantity = jsonGame.getInt("storageMaxQuantity");
-        config.game.maxNearDistance = jsonGame.getInt("maxNearDistance");
-        config.game.tickPerHour = jsonGame.getInt("tickPerHour");
+        configurationManager.game = new ConfigGameInfo();
+        configurationManager.game.environmentDistance = jsonGame.getInt("environmentDistance");
+        configurationManager.game.inventoryMaxQuantity = jsonGame.getInt("inventoryMaxQuantity");
+        configurationManager.game.storageMaxQuantity = jsonGame.getInt("storageMaxQuantity");
+        configurationManager.game.maxNearDistance = jsonGame.getInt("maxNearDistance");
+        configurationManager.game.tickPerHour = jsonGame.getInt("tickPerHour");
 
         // Read application info
-        config.lang = json.getString("lang");
-        config.uiScale = json.getDouble("uiScale");
+        configurationManager.lang = json.getString("lang");
+        configurationManager.uiScale = json.getDouble("uiScale");
 
-        return config;
+        Log.setLevel(configurationManager.getString("log.level"));
+
+        return configurationManager;
+    }
+
+    public int getInt(String path) {
+        JSONObject object = _json;
+        List<String> keys = Arrays.asList(StringUtils.split(path, '.'));
+        for (String key: keys.subList(0, keys.size() - 1)) {
+            object = object.getJSONObject(key);
+        }
+        return object.getInt(keys.get(keys.size() - 1));
+    }
+
+    public double getDouble(String path) {
+        JSONObject object = _json;
+        List<String> keys = Arrays.asList(StringUtils.split(path, '.'));
+        for (String key: keys.subList(0, keys.size() - 1)) {
+            object = object.getJSONObject(key);
+        }
+        return object.getDouble(keys.get(keys.size() - 1));
+    }
+
+    public String getString(String path) {
+        JSONObject object = _json;
+        List<String> keys = Arrays.asList(StringUtils.split(path, '.'));
+        for (String key: keys.subList(0, keys.size() - 1)) {
+            object = object.getJSONObject(key);
+        }
+        return object.getString(keys.get(keys.size() - 1));
     }
 
     public static class ConfigScreenInfo {

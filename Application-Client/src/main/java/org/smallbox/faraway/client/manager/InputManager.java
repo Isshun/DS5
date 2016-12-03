@@ -1,9 +1,9 @@
 package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.util.Constant;
 
 import static com.badlogic.gdx.Input.Buttons;
@@ -18,6 +18,11 @@ public class InputManager implements InputProcessor {
     private boolean[]           _keyDirection;
     private int                 _lastPosX;
     private int                 _lastPosY;
+    private int _touchDownX;
+    private int _touchDownY;
+    private int _touchDragX;
+    private int _touchDragY;
+    private boolean _touchDrag;
 
     public InputManager() {
         _modifier = GameEventListener.Modifier.NONE;
@@ -212,6 +217,8 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         _lastMouseButton = button;
+        _touchDownX = x;
+        _touchDownY = y;
 
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             GameEventListener.MouseButton mouseButton = GameEventListener.MouseButton.LEFT;
@@ -235,6 +242,8 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
+        _touchDrag = false;
+
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             GameEventListener.MouseButton mouseButton = GameEventListener.MouseButton.LEFT;
             switch (button) {
@@ -256,15 +265,27 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
+        _touchDragX = x;
+        _touchDragY = y;
+        _touchDrag = true;
+
         if (_lastMouseButton == Buttons.RIGHT) {
             if (Application.gameManager.isLoaded()) {
                 ApplicationClient.mainRenderer.getViewport().update(x, y);
                 return true;
             }
             return false;
+        } else if (_lastMouseButton == Buttons.LEFT) {
+            System.out.println("select: " + _touchDownX + "x" + _touchDownY);
+            System.out.println("to: " + x + "x" + y );
+
+//            Application.notify(observer -> observer.onSelectParcel(parcels));
+
+            return false;
         } else {
             ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }
+
         return false;
     }
 
@@ -275,6 +296,7 @@ public class InputManager implements InputProcessor {
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
         }
+
         return false;
     }
 
@@ -290,6 +312,17 @@ public class InputManager implements InputProcessor {
         }
         return false;
     }
+
+    public int getMouseX() { return _lastPosX; }
+    public int getMouseY() { return _lastPosY; }
+
+    public int getTouchDownX() { return _touchDownX; }
+    public int getTouchDownY() { return _touchDownY; }
+
+    public int getTouchDragX() { return _touchDragX; }
+    public int getTouchDragY() { return _touchDragY; }
+
+    public boolean getTouchDrag() { return _touchDrag; }
 
     public boolean[] getDirection() {
         return _keyDirection;

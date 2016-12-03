@@ -27,7 +27,7 @@ public class CrewController extends LuaController {
 
     @Override
     public void onReloadUI() {
-        mainPanelController.addShortcut("Crew", (GameEvent event) -> setVisible(true));
+        mainPanelController.addShortcut("Crew", this);
     }
 
     @Override

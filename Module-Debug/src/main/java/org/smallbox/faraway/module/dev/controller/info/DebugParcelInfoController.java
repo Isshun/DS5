@@ -13,8 +13,9 @@ import org.smallbox.faraway.module.world.WorldModuleObserver;
  * Created by Alex on 31/07/2016.
  */
 public class DebugParcelInfoController extends LuaController {
+
     @BindModule
-    private WorldModule _world;
+    private WorldModule worldModule;
 
     @BindLua private UILabel    lbName;
     @BindLua private UILabel    lbGround;
@@ -37,7 +38,7 @@ public class DebugParcelInfoController extends LuaController {
 
     @Override
     public void onGameCreate(Game game) {
-        _world.addObserver(new WorldModuleObserver() {
+        worldModule.addObserver(new WorldModuleObserver() {
             @Override
             public void onOverParcel(ParcelModel parcel) {
                 selectParcel(parcel);

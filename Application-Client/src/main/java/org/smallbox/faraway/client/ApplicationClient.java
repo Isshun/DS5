@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
-import org.smallbox.faraway.client.manager.ApplicationShortcutManager;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
@@ -26,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
@@ -88,13 +88,13 @@ public class ApplicationClient {
     public ConfigurationManager getConfig() { return configurationManager; }
 
     public static void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        ApplicationShortcutManager.onKeyPress(key, modifier);
+//        ApplicationShortcutManager.onKeyPress(key, modifier);
 
-        ApplicationClient.uiManager.onKeyEvent(action, key, modifier);
+//        ApplicationClient.uiManager.onKeyEvent(action, key, modifier);
 
         if (Application.gameManager.isLoaded()) {
-            notify(observer -> observer.onKeyPress(key));
-            notify(observer -> observer.onKeyEvent(action, key, modifier));
+            Application.notify(observer -> observer.onKeyPress(key));
+            Application.notify(observer -> observer.onKeyEvent(action, key, modifier));
         }
     }
 
@@ -124,7 +124,7 @@ public class ApplicationClient {
                 ParcelModel parcel = WorldHelper.getParcel(viewport.getRelativePosX(x), viewport.getRelativePosY(y), viewport.getFloor());
                 if (parcel != null) {
                     System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);
-                    Application.notify(observer -> observer.onClickOnParcel(parcel));
+                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
                 }
 //            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
 //            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {

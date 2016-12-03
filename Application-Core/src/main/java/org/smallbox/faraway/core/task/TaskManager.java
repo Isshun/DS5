@@ -86,8 +86,6 @@ public class TaskManager {
 
     public void launchBackgroundThread(Runnable runnable) {
         Log.info("Launch background thread");
-        new Thread(() -> {
-            runnable.run();
-        }).start();
+        new Thread(runnable::run).start();
     }
 }

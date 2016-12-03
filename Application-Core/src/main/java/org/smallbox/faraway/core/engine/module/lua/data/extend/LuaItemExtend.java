@@ -95,7 +95,10 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
         if (itemInfo.graphics.isEmpty()) {
-            itemInfo.graphics.add(new GraphicInfo("base", "/graphics/missing.png"));
+            GraphicInfo graphicInfo = new GraphicInfo("base", "/graphics/missing.png");
+            graphicInfo.width = 32;
+            graphicInfo.height = 32;
+            itemInfo.graphics.add(graphicInfo);
         }
 
         itemInfo.isWalkable = getBoolean(value, "walkable", itemInfo.isWalkable);

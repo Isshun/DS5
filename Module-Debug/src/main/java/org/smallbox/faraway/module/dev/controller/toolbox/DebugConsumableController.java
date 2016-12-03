@@ -1,21 +1,12 @@
 package org.smallbox.faraway.module.dev.controller.toolbox;
 
-import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
-import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
-import org.smallbox.faraway.util.Log;
-
-import java.util.Collection;
 
 /**
  * Created by Alex on 31/07/2016.
@@ -32,29 +23,29 @@ public class DebugConsumableController extends LuaController {
 
     private ItemInfo _consumable;
 
-    @Override
-    public void onGameCreate(Game game) {
-        Application.data.getItems().stream()
-                .filter(itemInfo -> itemInfo.isConsumable)
-                .forEach(itemInfo -> listConsumables.addView(UILabel.create(null)
-                        .setText(itemInfo.label)
-                        .setSize(100, 22)
-                        .setOnClickListener((GameEvent event) -> {
-                            Log.info("select consumable: " + itemInfo.name);
-                            _consumable = itemInfo;
-                        })));
-
-        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
-            @Override
-            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
-                if (_consumable != null) {
-                    Log.info("put consumable on map: " + _consumable.name);
-                    parcels.forEach(parcel -> {
-                        _consumableModule.create(_consumable, 100, parcel);
-                        _consumable = null;
-                    });
-                }
-            }
-        });
-    }
+//    @Override
+//    public void onGameCreate(Game game) {
+//        Application.data.getItems().stream()
+//                .filter(itemInfo -> itemInfo.isConsumable)
+//                .forEach(itemInfo -> listConsumables.addView(UILabel.create(null)
+//                        .setText(itemInfo.label)
+//                        .setSize(100, 22)
+//                        .setOnClickListener((GameEvent event) -> {
+//                            Log.info("select consumable: " + itemInfo.name);
+//                            _consumable = itemInfo;
+//                        })));
+//
+//        _worldInteraction.addObserver(new WorldInteractionModuleObserver() {
+//            @Override
+//            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
+//                if (_consumable != null) {
+//                    Log.info("put consumable on map: " + _consumable.name);
+//                    parcels.forEach(parcel -> {
+//                        _consumableModule.create(_consumable, 100, parcel);
+//                        _consumable = null;
+//                    });
+//                }
+//            }
+//        });
+//    }
 }

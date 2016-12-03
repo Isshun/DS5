@@ -14,6 +14,8 @@ import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureModel;
 
+import java.util.List;
+
 /**
  * Created by Alex on 06/06/2015.
  */
@@ -70,7 +72,7 @@ public interface GameObserver {
     default void onMouseRelease(GameEvent event) {}
 
     default void onClickOnMap(GameEvent mouseEvent) {}
-    default void onClickOnParcel(ParcelModel parcel) {}
+    default void onClickOnParcel(List<ParcelModel> parcels) {}
 
     default void onClick(int x, int y) {}
 }

@@ -17,25 +17,26 @@ import org.smallbox.faraway.util.Log;
  * Created by Alex on 24/07/2016.
  */
 public class JobController extends LuaController {
+
     @BindModule
-    private JobModule jobs;
+    private JobModule jobModule;
 
     @BindLua
     private UIList listJobs;
 
     @BindLuaController
-    private MainPanelController _mainPanelController;
+    private MainPanelController mainPanelController;
 
     @Override
-    public void onGameCreate(Game game) {
-        _mainPanelController.addShortcut("Jobs", (GameEvent event) -> setVisible(true));
+    public void onReloadUI() {
+        mainPanelController.addShortcut("Jobs", this);
     }
 
     @Override
     public void onGameUpdate(Game game) {
         listJobs.clear();
 
-        jobs.getJobs().forEach(job -> {
+        jobModule.getJobs().forEach(job -> {
             UILabel lbJob = new UILabel(null);
             lbJob.setDashedString(job.getLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 42);
             lbJob.setSize(300, 22);
@@ -49,7 +50,7 @@ public class JobController extends LuaController {
             setVisible(!isVisible());
             ApplicationClient.uiManager.findById("base.ui.panel_main").setVisible(!isVisible());
 
-            Log.info("jobs: " + isVisible() + ", main: " + ApplicationClient.uiManager.findById("base.ui.panel_main").isVisible());
+            Log.info("jobModule: " + isVisible() + ", main: " + ApplicationClient.uiManager.findById("base.ui.panel_main").isVisible());
         }
     }
 }

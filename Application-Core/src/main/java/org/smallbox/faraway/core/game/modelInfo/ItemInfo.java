@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 
@@ -285,5 +286,13 @@ public class ItemInfo extends ObjectInfo {
             if (filter.effectRelation && effects.relation > 0) { return true; }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        if (StringUtils.isNotBlank(name)) {
+            return name;
+        }
+        return label;
     }
 }

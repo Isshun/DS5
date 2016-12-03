@@ -1,12 +1,12 @@
 package org.smallbox.faraway.module.structure;
 
 import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -18,6 +18,7 @@ import org.smallbox.faraway.module.job.JobModuleObserver;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -185,6 +186,8 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     }
 
     public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
+        Log.info("Add pattern for %s at position %s", itemInfo, parcel);
+
         // Create structure
         StructureModel structure = new StructureModel(itemInfo);
         structure.setBuildProgress(0);

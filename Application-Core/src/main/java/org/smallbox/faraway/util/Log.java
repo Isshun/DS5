@@ -17,9 +17,11 @@ public class Log {
     private final static Logger logger = Logger.getLogger("FarAway");
     private final static Level level = Level.WARNING;
 
+    private static final ConsoleHandler consoleHandler;
+
     static {
         logger.setLevel(level);
-        ConsoleHandler consoleHandler = new ConsoleHandler();
+        consoleHandler = new ConsoleHandler();
         consoleHandler.setLevel(level);
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
@@ -29,7 +31,6 @@ public class Log {
                         + record.getMessage() + "\n";
             }
         });
-        logger.getHandlers();
         logger.addHandler(consoleHandler);
         logger.setUseParentHandlers(false);
     }
@@ -123,5 +124,30 @@ public class Log {
 
     public static void dump(Object object) {
         System.out.println(ReflectionToStringBuilder.toString(object, RecursiveToStringStyle.MULTI_LINE_STYLE));
+    }
+
+    public static void setLevel(String levelName) {
+        switch (levelName) {
+            case "info":
+                logger.setLevel(Level.INFO);
+                consoleHandler.setLevel(Level.INFO);
+                break;
+            case "error":
+                logger.setLevel(Level.SEVERE);
+                consoleHandler.setLevel(Level.SEVERE);
+                break;
+            case "warning":
+                logger.setLevel(Level.WARNING);
+                consoleHandler.setLevel(Level.WARNING);
+                break;
+            case "debug":
+                logger.setLevel(Level.ALL);
+                consoleHandler.setLevel(Level.ALL);
+                break;
+        }
+//        if (levelName != null) {
+//            logger.setLevel(Level.parse(levelName));
+//            consoleHandler.setLevel(Level.parse(levelName));
+//        }
     }
 }
