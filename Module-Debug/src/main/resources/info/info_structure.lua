@@ -4,7 +4,8 @@ ui:extend({
     type = "view",
     name = "base.ui.info_structure",
     style = "base.style.right_panel",
-    controller = "org.smallbox.faraway.module.structure.InfoController",
+    group = "base.style.right_panel",
+    controller = "org.smallbox.faraway.module.structure.StructureInfoController",
     visible = false,
     views = {
         { type = "label", text = "Structure", text_size = 12, position = {10, 8}},

@@ -22,17 +22,11 @@ public class GDXApplication extends ApplicationAdapter {
     private BitmapFont[]                        _fonts;
     private BitmapFont                          _systemFont;
 
-    private class TestBinding {
-        void sayHello() {
-            System.out.println("hello");
-        }
-    }
-
     @Override
     public void create () {
         _batch = new SpriteBatch();
 
-        _systemFont = new BitmapFont(Gdx.files.internal("data/font-22.fnt"), Gdx.files.internal("data/font-22.png"), false);
+        _systemFont = new BitmapFont(Gdx.files.internal("data/font-14.fnt"), Gdx.files.internal("data/font-14.png"), false);
 
         Application.taskManager.addLoadTask("Generate fonts", true, () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
@@ -49,8 +43,8 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Create client app", false, () ->
                 _client = new ApplicationClient());
 
-        Application.taskManager.addLoadTask("Init groovy manager", false, () ->
-                _application.groovyManager.init());
+        Application.taskManager.addLoadTask("Init groovy manager", false,
+                Application.groovyManager::init);
 
         Application.taskManager.addLoadTask("Create renderer", true, () ->
                 ApplicationClient.gdxRenderer.init(_batch, _fonts));
@@ -123,7 +117,7 @@ public class GDXApplication extends ApplicationAdapter {
         ApplicationClient.gdxRenderer.refresh();
 
         // Render game
-        if (Application.gameManager.isLoaded()) {
+        if (Application.gameManager.isLoaded() && Application.gameManager.isRunning()) {
             Application.notify(observer -> observer.onGameRender(Application.gameManager.getGame()));
         }
 
@@ -154,7 +148,7 @@ public class GDXApplication extends ApplicationAdapter {
                     break;
             }
 
-            _systemFont.draw(_batch, task.label, 20, Gdx.graphics.getHeight() - (Application.taskManager.getLoadTasks().indexOf(task) * 20));
+            _systemFont.draw(_batch, task.label, 12, Gdx.graphics.getHeight() - (Application.taskManager.getLoadTasks().indexOf(task) * 20 + 12));
         });
 
         _batch.end();

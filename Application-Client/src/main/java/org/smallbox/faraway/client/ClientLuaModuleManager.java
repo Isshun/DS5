@@ -27,7 +27,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                 CoerceJavaToLua.coerce(new LuaUIBridge(null) {
                     @Override
                     public void extend(LuaValue values) {
-                        Log.debug("Load lua ui: " + values.get("name").toString());
+                        Log.info("Load lua ui: " + values.get("name").toString());
                         if (!values.get("type").isnil()) {
                             extendLuaValue(module, values, globals, dataDirectory);
                         } else {

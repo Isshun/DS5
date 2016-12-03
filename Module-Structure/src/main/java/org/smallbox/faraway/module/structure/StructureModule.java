@@ -204,4 +204,13 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
             _structures.add(structure);
         }
     }
+
+    public StructureModel getStructure(ParcelModel parcel) {
+        for (StructureModel structure: _structures) {
+            if (structure.getParcel() == parcel) {
+                return structure;
+            }
+        }
+        return null;
+    }
 }

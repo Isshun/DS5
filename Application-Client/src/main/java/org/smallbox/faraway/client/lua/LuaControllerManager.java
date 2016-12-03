@@ -168,23 +168,23 @@ public class LuaControllerManager implements GameObserver {
      * @param controller Controller receiving binding
      */
     private void bindControllerSubControllers(LuaController controller) {
-        String packageName = controller.getClass().getPackage().getName();
-
-        for (Field field : controller.getClass().getDeclaredFields()) {
-            if (field.getAnnotation(BindLuaController.class) != null) {
-                field.setAccessible(true);
-                _controllers.entrySet().stream()
-                        .filter(entry -> entry.getKey().startsWith(packageName) && entry.getKey().endsWith(field.getType().getName()))
-                        .map(Map.Entry::getValue)
-                        .findAny()
-                        .ifPresent(subController -> {
-                            try {
-                                Log.info("LuaController: Bind sub controller %s", subController.getClass().getName());
-                                field.set(controller, subController);
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        });
+        for (Class cls = controller.getClass(); cls != null; cls = cls.getSuperclass()) {
+            for (Field field : cls.getDeclaredFields()) {
+                if (field.getAnnotation(BindLuaController.class) != null) {
+                    field.setAccessible(true);
+                    _controllers.entrySet().stream()
+                            .filter(entry -> entry.getKey().equals(field.getType().getName()))
+                            .map(Map.Entry::getValue)
+                            .findAny()
+                            .ifPresent(subController -> {
+                                try {
+                                    Log.info("LuaController: Bind sub controller %s", subController.getClass().getName());
+                                    field.set(controller, subController);
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                }
             }
         }
     }

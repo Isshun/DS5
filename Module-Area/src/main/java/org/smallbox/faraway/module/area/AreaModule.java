@@ -74,7 +74,7 @@ public class AreaModule extends GameModule {
         _storageAreas.addAll(storageAreas);
     }
 
-    // TODO: auto refresh in job
+    // TODO: auto onDisplayMultiple in job
     private void storeConsumable(ConsumableModel consumable) {
 //        if (consumable.getJob() != null) {
 //            Log.error("AreaModule.storeConsumable: consumable have a job");

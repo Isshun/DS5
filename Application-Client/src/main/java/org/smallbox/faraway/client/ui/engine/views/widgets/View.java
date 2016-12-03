@@ -14,6 +14,7 @@ import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.model.ObjectModel;
@@ -256,6 +257,13 @@ public abstract class View implements Comparable<View> {
                 } catch (ConcurrentModificationException e) {
                     e.printStackTrace();
                 }
+            }
+
+            if (Config.onDebugView) {
+                renderer.draw("gg", 12,
+                        getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft,
+                        getAlignedY() + y + _offsetY + _paddingTop + _marginTop,
+                        com.badlogic.gdx.graphics.Color.CYAN);
             }
         }
     }

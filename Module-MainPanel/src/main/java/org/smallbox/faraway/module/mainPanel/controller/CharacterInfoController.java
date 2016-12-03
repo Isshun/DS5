@@ -1,37 +1,28 @@
 package org.smallbox.faraway.module.mainPanel.controller;
 
 import org.smallbox.faraway.client.controller.BindLuaController;
-import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.lua.BindLuaAction;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.character.CharacterModule;
-import org.smallbox.faraway.module.mainPanel.MainPanelController;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 25/04/2016.
  */
-public class CharacterInfoController extends LuaController {
+public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
 
     @BindLuaController
     private CharacterStatusController   characterStatusController;
 
     @BindModule
     private CharacterModule             characterModule;
-
-    @BindLuaController
-    private MainPanelController         mainPanelController;
 
     @BindLua private View               pageStatus;
     @BindLua private View               pageInventory;
@@ -41,49 +32,22 @@ public class CharacterInfoController extends LuaController {
     @BindLua private UILabel            lbInfoBirth;
     @BindLua private UILabel            lbInfoEnlisted;
 
-    private List<CharacterModel>        characterList;
-
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE) {
-            if (CollectionUtils.isNotEmpty(characterList)) {
-                mainPanelController.setVisible(true);
-                characterList = null;
-            }
-        }
+    protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
+        return characterModule.getCharacter(parcel);
     }
 
     @Override
-    public boolean onClickOnParcel(List<ParcelModel> parcels) {
-        characterList = parcels.stream()
-                .map(parcel -> characterModule.getCharacter(parcel))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    protected void onDisplayUnique(CharacterModel character) {
+        lbName.setText(character.getName());
+        lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
+        lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
 
-        refresh();
-
-        return CollectionUtils.isNotEmpty(characterList);
+        characterStatusController.selectCharacter(character);
     }
 
-    private void refresh() {
-        if (CollectionUtils.isNotEmpty(characterList)) {
-            setVisible(true);
-
-            if (characterList.size() == 1) {
-                CharacterModel character = characterList.get(0);
-
-                lbName.setText(character.getName());
-                lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
-                lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
-
-                characterStatusController.selectCharacter(character);
-            }
-        } else {
-            if (CollectionUtils.isNotEmpty(characterList)) {
-                mainPanelController.setVisible(true);
-                characterList = null;
-            }
-        }
+    @Override
+    protected void onDisplayMultiple(List<CharacterModel> characterList) {
     }
 
     @Override

@@ -1,9 +1,8 @@
-character = nil
-
 ui:extend({
     type = "view",
     id = "base.ui.info_character",
     style = "base.style.right_panel",
+    group = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.mainPanel.controller.CharacterInfoController",
     visible = false,
     views = {

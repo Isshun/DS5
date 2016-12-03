@@ -64,7 +64,7 @@ public class LuaUIExtend extends LuaExtend {
                 view = new UIFrame(module);
                 break;
 
-           case "minimap":
+            case "minimap":
                 view = new View(module) {
 
                     @Override
@@ -104,6 +104,29 @@ public class LuaUIExtend extends LuaExtend {
                 view = new UIDropDown(module);
                 ApplicationClient.uiManager.addDropsDowns((UIDropDown)view);
                 break;
+
+            case "checkbox": {
+                UICheckBox checkbox = new UICheckBox(module);
+
+                LuaValue text = value.get("text");
+                if (!text.isnil()) {
+                    checkbox.setText(text.toString());
+                }
+
+                LuaValue textSize = value.get("text_size");
+                if (!textSize.isnil()) {
+                    checkbox.setTextSize(textSize.toint());
+                }
+
+                LuaValue textColor = value.get("text_color");
+                if (!textColor.isnil()) {
+                    checkbox.setTextColor(textColor.toint());
+                }
+
+                view = checkbox;
+
+                break;
+            }
 
             case "list":
                 view = new UIList(module);
@@ -146,7 +169,7 @@ public class LuaUIExtend extends LuaExtend {
                 view = image;
                 break;
 
-            case "label":
+            case "label": {
                 UILabel label = new UILabel(module);
 
                 LuaValue text = value.get("text");
@@ -166,6 +189,7 @@ public class LuaUIExtend extends LuaExtend {
 
                 view = label;
                 break;
+            }
         }
 
         if (view != null) {
@@ -417,7 +441,7 @@ public class LuaUIExtend extends LuaExtend {
         view.setPosition(372, 38);
         view.setSize(372, Application.configurationManager.screen.resolution[1]);
 //        if (width != -1 && height != -1) {
-            view.setFixedSize(372, Application.configurationManager.screen.resolution[1]);
+        view.setFixedSize(372, Application.configurationManager.screen.resolution[1]);
 //        }
         view.setBackgroundColor(0x121c1e);
     }

@@ -1,7 +1,6 @@
 package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.client.controller.BindLuaController;
-import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -12,6 +11,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
+import org.smallbox.faraway.module.mainPanel.controller.AbsInfoLuaController;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 26/04/2016.
  */
-public class ItemInfoController extends LuaController {
+public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
     @BindLua private UILabel        lbName;
 
     @BindLua private View           frameContent;
@@ -40,57 +40,22 @@ public class ItemInfoController extends LuaController {
     @BindModule
     private ItemModule itemModule;
 
-    @BindLuaController
-    private MainPanelController mainPanelController;
-
-    private List<ItemModel> itemList;
-
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE) {
-            if (CollectionUtils.isNotEmpty(itemList)) {
-                mainPanelController.setVisible(true);
-                itemList = null;
-            }
-        }
+    protected void onDisplayUnique(ItemModel item) {
+        lbName.setText(item.getLabel());
+        refreshActions(item);
+        refreshBuilding(item);
+        refreshWorkers(item.getJobs());
     }
 
     @Override
-    public boolean onClickOnParcel(List<ParcelModel> parcels) {
-        itemList = parcels.stream()
-                .map(parcel -> itemModule.getItem(parcel))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+    protected void onDisplayMultiple(List<ItemModel> list) {
 
-        refresh();
-
-        return CollectionUtils.isNotEmpty(itemList);
-    }
-
-    private void refresh() {
-        if (CollectionUtils.isNotEmpty(itemList)) {
-            setVisible(true);
-
-            if (itemList.size() == 1) {
-                ItemModel item = itemList.get(0);
-
-                lbName.setText(item.getLabel());
-
-                refreshActions(item);
-                refreshBuilding(item);
-                refreshWorkers(item.getJobs());
-            }
-        } else {
-            if (CollectionUtils.isNotEmpty(itemList)) {
-                mainPanelController.setVisible(true);
-                itemList = null;
-            }
-        }
     }
 
     @Override
-    public void onGameUpdate(Game game) {
-        refresh();
+    protected ItemModel getObjectOnParcel(ParcelModel parcel) {
+        return itemModule.getItem(parcel);
     }
 
     private void refreshActions(ItemModel item) {

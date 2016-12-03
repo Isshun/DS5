@@ -107,7 +107,7 @@ public class RoomModule extends GameModule implements GameObserver {
     }
 
     public void refreshRooms(int floor) {
-        Log.info("org.smallbox.faraway.module.room.RoomModule: refresh floor " + floor);
+        Log.info("org.smallbox.faraway.module.room.RoomModule: onDisplayMultiple floor " + floor);
         long time = System.currentTimeMillis();
 
         ParcelModel[][][] parcels = _world.getParcels();
@@ -145,7 +145,7 @@ public class RoomModule extends GameModule implements GameObserver {
         _rooms.addAll(newRooms);
 
         Log.info("Room list: " + _rooms.size());
-        Log.info("org.smallbox.faraway.module.room.RoomModule: refresh done " + (System.currentTimeMillis() - time));
+        Log.info("org.smallbox.faraway.module.room.RoomModule: onDisplayMultiple done " + (System.currentTimeMillis() - time));
     }
 
     private void explore(RoomModel room, RoomModel exteriorRoom, ParcelModel parcel, Set<ParcelModel> closeList) {

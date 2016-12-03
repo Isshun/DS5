@@ -161,13 +161,15 @@ public abstract class LuaModuleManager implements GameObserver {
         Globals globals = createGlobals(module, dataDirectory);
 
         // Load lua files
-        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".lua")).forEach(f -> {
-            try {
-                globals.load(new FileReader(f), f.getName()).call();
-            } catch (FileNotFoundException | LuaError e) {
-                e.printStackTrace();
-            }
-        });
+        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream()
+                .filter(f -> f.getName().endsWith(".lua"))
+                .forEach(f -> {
+                    try {
+                        globals.load(new FileReader(f), f.getName()).call();
+                    } catch (FileNotFoundException | LuaError e) {
+                        e.printStackTrace();
+                    }
+                });
 
         // TODO
 //        // Load css files

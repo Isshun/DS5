@@ -27,7 +27,7 @@
 //        onGameInit(this, _frameContent);
 //    }
 //
-//    public void refresh(int updateGame) {
+//    public void onDisplayMultiple(int updateGame) {
 //        if (_isVisible && _isLoaded) {
 //            onRefresh(updateGame);
 //        }
