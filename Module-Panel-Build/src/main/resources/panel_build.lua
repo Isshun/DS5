@@ -2,8 +2,8 @@ ui:extend({
     type = "list",
     id = "base.ui.panel_build",
     style = "base.style.right_panel",
+    group = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.build.BuildController",
-    group = "right_panel",
     visible = false,
     views = {
         { type = "label", text = "Build", text_size = 12, position = {12, 10}},

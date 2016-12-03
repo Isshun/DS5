@@ -73,10 +73,11 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
     }
 
     @Override
-    public void onClickOnParcel(List<ParcelModel> parcel) {
-        if (_onClickListener != null && _onClickListener.onClick(parcel)) {
-            _onClickListener = null;
-        }
+    public boolean onClickOnParcel(List<ParcelModel> parcel) {
+//        if (_onClickListener != null && _onClickListener.onClick(parcel)) {
+//            _onClickListener = null;
+//        }
+        return false;
     }
 
     @Override

@@ -4,8 +4,8 @@ ui:extend({
     type = "view",
     id = "base.ui.panel_main",
     style = "base.style.right_panel",
+    group = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.mainPanel.MainPanelController",
-    group = "right_panel",
     visible = true,
     layer = -1,
     views = {{

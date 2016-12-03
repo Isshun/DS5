@@ -4,8 +4,8 @@ ui:extend({
     type = "view",
     name = "ui-test",
     style = "base.style.right_panel",
+    group = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.item.ItemInfoController",
-    group = "right_panel",
     visible = false,
     views = {
         { type = "label", text = "Dump", text_size = 12, position = {10, 8}, size = {100, 32}, action = "onDump"},

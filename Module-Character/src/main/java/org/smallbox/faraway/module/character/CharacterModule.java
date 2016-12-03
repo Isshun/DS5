@@ -160,9 +160,18 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     }
 
     public CharacterModel getCharacter(int characterId) {
-        for (CharacterModel c: _characters) {
-            if (c.getId() == characterId) {
-                return c;
+        for (CharacterModel character: _characters) {
+            if (character.getId() == characterId) {
+                return character;
+            }
+        }
+        return null;
+    }
+
+    public CharacterModel getCharacter(ParcelModel parcel) {
+        for (CharacterModel character: _characters) {
+            if (character.getParcel() == parcel) {
+                return character;
             }
         }
         return null;

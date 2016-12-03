@@ -1,9 +1,9 @@
 ui:extend({
     type = "view",
     style = "base.style.right_panel",
+    group = "base.style.right_panel",
     id = "base.ui.panel_crew",
     controller = "org.smallbox.faraway.module.mainPanel.controller.CrewController",
-    group = "right_panel",
     visible = false,
     views = {
         { type = "label", text = " < ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)

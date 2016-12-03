@@ -15,7 +15,7 @@ public class MainPanelController extends LuaController {
     @BindLua
     private UIGrid mainGrid;
 
-    private LuaController _openController;
+    private LuaController _currentPaneController;
 
     @Override
     public void onKeyPress(GameEventListener.Key key) {
@@ -31,9 +31,9 @@ public class MainPanelController extends LuaController {
 
     @Override
     public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (_openController != null && key == GameEventListener.Key.ESCAPE) {
-            _openController.setVisible(false);
-            _openController = null;
+        if (_currentPaneController != null && key == GameEventListener.Key.ESCAPE) {
+            _currentPaneController.setVisible(false);
+            _currentPaneController = null;
         }
     }
 
@@ -46,8 +46,8 @@ public class MainPanelController extends LuaController {
                 .setBackgroundColor(0x349394)
                 .setFocusBackgroundColor(0x25c9cb)
                 .setOnClickListener(event -> {
-                    _openController = controller;
-                    _openController.setVisible(true);
+                    _currentPaneController = controller;
+                    _currentPaneController.setVisible(true);
                 }));
     }
 }

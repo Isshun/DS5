@@ -72,7 +72,14 @@ public interface GameObserver {
     default void onMouseRelease(GameEvent event) {}
 
     default void onClickOnMap(GameEvent mouseEvent) {}
-    default void onClickOnParcel(List<ParcelModel> parcels) {}
+
+    /**
+     * Retourne une liste des parcels sélectionnées par le joueurs
+     *
+     * @param parcels Selected parcels
+     * @return true if event has been consumed
+     */
+    default boolean onClickOnParcel(List<ParcelModel> parcels) { return false; }
 
     default void onClick(int x, int y) {}
 }

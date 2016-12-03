@@ -177,4 +177,14 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             _items.add(item);
         }
     }
+
+    public ItemModel getItem(ParcelModel parcel) {
+        for (ItemModel item: _items) {
+            if (item.getParcel() == parcel) {
+                return item;
+            }
+        }
+
+        return null;
+    }
 }

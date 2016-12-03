@@ -4,6 +4,7 @@ ui:extend({
     type = "view",
     name = "base.ui.info_rock",
     style = "base.style.right_panel",
+    group = "base.style.right_panel",
     visible = false,
     views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
@@ -33,7 +34,7 @@ ui:extend({
         if event == application.events.on_rock_selected then
             view:setVisible(true)
             view:findById("lb_name"):setText(data.label)
-            ui:find("base.ui.panel_main"):setVisible(false)
+--            ui:find("base.ui.panel_main"):setVisible(false)
             rock = data;
         end
     end,

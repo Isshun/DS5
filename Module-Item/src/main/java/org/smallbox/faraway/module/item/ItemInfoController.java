@@ -1,20 +1,21 @@
 package org.smallbox.faraway.module.item;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.lua.BindLuaAction;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Log;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -39,43 +40,57 @@ public class ItemInfoController extends LuaController {
     @BindModule
     private ItemModule itemModule;
 
-    public ItemModel _item;
+    @BindLuaController
+    private MainPanelController mainPanelController;
+
+    private List<ItemModel> itemList;
 
     @Override
-    public void onGameStart(Game game) {
-        itemModule.addObserver(new ItemModuleObserver() {
-            @Override
-            public void onDeselectItem(ItemModel item) {
-                _item = null;
-                setVisible(false);
+    public void onKeyPress(GameEventListener.Key key) {
+        if (key == GameEventListener.Key.ESCAPE) {
+            if (CollectionUtils.isNotEmpty(itemList)) {
+                mainPanelController.setVisible(true);
+                itemList = null;
             }
+        }
+    }
 
-            @Override
-            public void onSelectItem(GameEvent event, ItemModel item) {
-                setVisible(true);
-                refreshItem(item);
-                event.consume();
+    @Override
+    public boolean onClickOnParcel(List<ParcelModel> parcels) {
+        itemList = parcels.stream()
+                .map(parcel -> itemModule.getItem(parcel))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-                System.out.println(ReflectionToStringBuilder.toString(item).replace(",", "\n"));
+        refresh();
+
+        return CollectionUtils.isNotEmpty(itemList);
+    }
+
+    private void refresh() {
+        if (CollectionUtils.isNotEmpty(itemList)) {
+            setVisible(true);
+
+            if (itemList.size() == 1) {
+                ItemModel item = itemList.get(0);
+
+                lbName.setText(item.getLabel());
+
+                refreshActions(item);
+                refreshBuilding(item);
+                refreshWorkers(item.getJobs());
             }
-        });
+        } else {
+            if (CollectionUtils.isNotEmpty(itemList)) {
+                mainPanelController.setVisible(true);
+                itemList = null;
+            }
+        }
     }
 
     @Override
     public void onGameUpdate(Game game) {
-        if (_item != null) {
-            refreshItem(_item);
-        }
-    }
-
-    private void refreshItem(ItemModel item) {
-        _item = item;
-
-        lbName.setText(item.getLabel());
-
-        refreshActions(item);
-        refreshBuilding(item);
-        refreshWorkers(item.getJobs());
+        refresh();
     }
 
     private void refreshActions(ItemModel item) {
@@ -168,13 +183,6 @@ public class ItemInfoController extends LuaController {
             jobs.forEach(job -> listWorkers.addView(UILabel.create(null).setText(job.getCharacter().getName()).setSize(300, 22)));
         } else {
             frameWorkers.setVisible(false);
-        }
-    }
-
-    @BindLuaAction
-    public void onDump(View view) {
-        if (_item != null) {
-            Log.dump(_item);
         }
     }
 }

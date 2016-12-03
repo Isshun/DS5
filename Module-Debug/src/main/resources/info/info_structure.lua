@@ -5,7 +5,6 @@ ui:extend({
     name = "base.ui.info_structure",
     style = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.structure.InfoController",
-    group = "right_panel",
     visible = false,
     views = {
         { type = "label", text = "Structure", text_size = 12, position = {10, 8}},

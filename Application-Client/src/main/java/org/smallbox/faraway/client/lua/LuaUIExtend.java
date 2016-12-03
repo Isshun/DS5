@@ -52,6 +52,7 @@ public class LuaUIExtend extends LuaExtend {
         frame.addView(createView(ApplicationClient.luaModuleManager, module, globals, value, inGame, 0, frame));
         frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         frame.setLevel(getInt(value, "level", 0));
+        frame.setLayer(getInt(value, "layer", 0));
         ApplicationClient.uiManager.addRootView(frame);
     }
 
