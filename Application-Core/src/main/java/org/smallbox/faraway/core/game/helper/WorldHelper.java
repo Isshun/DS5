@@ -334,7 +334,7 @@ public class WorldHelper {
         return -1;
     }
 
-    public static List<ParcelModel> getParcelForSquare(int x1, int y1, int x2, int y2, int z) {
+    public static List<ParcelModel> getParcelInRect(int x1, int y1, int x2, int y2, int z) {
         List<ParcelModel> parcelList = new ArrayList<>();
 
         int fromMapX = Math.min(x1, x2);

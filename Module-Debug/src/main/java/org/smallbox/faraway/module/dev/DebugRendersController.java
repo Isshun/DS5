@@ -33,7 +33,5 @@ public class DebugRendersController extends LuaController {
             label.setTextSize(12);
             list.addView(label);
         });
-
-        header.setOnClickListener(event -> list.toggleVisible());
     }
 }

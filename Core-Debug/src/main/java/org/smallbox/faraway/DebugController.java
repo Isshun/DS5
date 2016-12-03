@@ -1,5 +1,6 @@
 package org.smallbox.faraway;
 
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
@@ -13,7 +14,13 @@ import org.smallbox.faraway.module.mainPanel.MainPanelController;
 public class DebugController extends LuaController {
 
     @BindLua
-    private UICheckBox cbDebugView;
+    private UICheckBox cbViewId;
+
+    @BindLua
+    private UICheckBox cbViewWindow;
+
+    @BindLua
+    private UICheckBox cbRenderWindow;
 
     @BindLuaController
     private MainPanelController mainPanelController;
@@ -22,6 +29,8 @@ public class DebugController extends LuaController {
     public void onReloadUI() {
         mainPanelController.addShortcut("Debug", this);
 
-        cbDebugView.setOnCheckListener(checked -> Config.onDebugView = checked);
+        cbViewId.setOnCheckListener(checked -> Config.onDebugView = checked);
+        cbViewWindow.setOnCheckListener(checked -> ApplicationClient.uiManager.findById("base.ui.info_views").setVisible(checked));
+        cbRenderWindow.setOnCheckListener(checked -> ApplicationClient.uiManager.findById("base.ui.debug.renders_list").setVisible(checked));
     }
 }

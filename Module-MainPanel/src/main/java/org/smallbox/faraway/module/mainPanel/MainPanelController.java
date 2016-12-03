@@ -50,4 +50,12 @@ public class MainPanelController extends LuaController {
                     _currentPaneController.setVisible(true);
                 }));
     }
+
+    public void setCurrentController(LuaController controller) {
+        _currentPaneController = controller;
+    }
+
+    public LuaController getCurrentController() {
+        return _currentPaneController;
+    }
 }

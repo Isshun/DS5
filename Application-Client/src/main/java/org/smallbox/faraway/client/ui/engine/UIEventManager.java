@@ -2,10 +2,11 @@ package org.smallbox.faraway.client.ui.engine;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.Consumer;
 
 public class UIEventManager {
     private Map<View, OnClickListener>      _onClickListeners;
@@ -105,9 +107,9 @@ public class UIEventManager {
 
             // Square selection
             if (fromMapX != toMapX || fromMapY != toMapY) {
-                List<ParcelModel> parcelList = WorldHelper.getParcelForSquare(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
+                List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
                 if (parcelList != null) {
-                    Application.notify(observer -> observer.onClickOnParcel(parcelList));
+                    Application.notify(obs -> obs.onClickOnParcel(parcelList));
                 }
             }
 
@@ -115,7 +117,7 @@ public class UIEventManager {
             else {
                 ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
                 if (parcel != null) {
-                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
+                    Application.notify(obs -> obs.onClickOnParcel(Collections.singletonList(parcel)));
                 }
             }
         }

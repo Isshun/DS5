@@ -12,6 +12,7 @@ import org.smallbox.faraway.DebugServer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.util.Log;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger fpsLogger = new FPSLogger();
@@ -93,8 +94,12 @@ public class GDXApplication extends ApplicationAdapter {
         // Launch world thread
         Application.taskManager.addLoadTask("Launch world thread", false, () ->
                 Application.taskManager.launchBackgroundThread(() -> {
-                    if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
-                        Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
+                    try {
+                        if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
+                            Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
+                        }
+                    } catch (Exception e) {
+                        Log.error(e);
                     }
                 }, Config.getInt("game.updateInterval")));
     }

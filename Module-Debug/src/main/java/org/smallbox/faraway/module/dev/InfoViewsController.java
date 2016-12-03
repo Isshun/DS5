@@ -34,7 +34,5 @@ public class InfoViewsController extends LuaController {
                 viewsList.addView(label);
             }
         });
-
-        header.setOnClickListener(event -> viewsList.toggleVisible());
     }
 }

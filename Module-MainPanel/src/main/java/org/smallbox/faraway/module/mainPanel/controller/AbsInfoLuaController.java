@@ -40,6 +40,7 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
                 .collect(Collectors.toList());
 
         if (CollectionUtils.isNotEmpty(list)) {
+            mainPanelController.setCurrentController(this);
             displayObjects();
         } else if (isVisible()) {
             mainPanelController.setVisible(true);
@@ -56,12 +57,14 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     }
 
     private void displayObjects() {
-        setVisible(true);
+        if (mainPanelController.getCurrentController() == this) {
+            setVisible(true);
 
-        if (list.size() == 1) {
-            onDisplayUnique(list.get(0));
-        } else {
-            onDisplayMultiple(list);
+            if (list.size() == 1) {
+                onDisplayUnique(list.get(0));
+            } else {
+                onDisplayMultiple(list);
+            }
         }
     }
 

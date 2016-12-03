@@ -19,10 +19,10 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Alex on 27/05/2015.
@@ -86,7 +86,7 @@ public abstract class View implements Comparable<View> {
 
     protected final ModuleBase  _module;
 
-    protected List<View>        _views = new ArrayList<>();
+    protected List<View>        _views = new CopyOnWriteArrayList<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
     protected int               _finalX;
@@ -172,6 +172,7 @@ public abstract class View implements Comparable<View> {
             // Set visible false for other views sharing current view's group
             ApplicationClient.uiManager.getViews().stream()
                     .filter(view -> _group.equals(view.getGroup()))
+                    .filter(view -> view != this)
                     .forEach(view -> view.setVisible(false));
         }
 
@@ -260,7 +261,7 @@ public abstract class View implements Comparable<View> {
             }
 
             if (Config.onDebugView) {
-                renderer.draw("gg", 12,
+                renderer.draw(_name, 12,
                         getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft,
                         getAlignedY() + y + _offsetY + _paddingTop + _marginTop,
                         com.badlogic.gdx.graphics.Color.CYAN);
