@@ -13,6 +13,7 @@ import java.util.Set;
 /**
  * Created by Alex on 24/07/2016.
  */
+// TODO: injection des field sur les superclass
 public class DependencyInjector {
     private Set<Object> _objectPool = new HashSet<>();
     private boolean _init = false;

@@ -47,4 +47,7 @@ public class ModuleInfo {
         }
         return info;
     }
+
+    @Override
+    public String toString() { return name; }
 }

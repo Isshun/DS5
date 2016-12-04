@@ -90,7 +90,9 @@ public class ApplicationClient {
     public static void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);
 
-//        ApplicationClient.uiManager.onKeyEvent(action, key, modifier);
+        if (ApplicationClient.uiManager.onKeyEvent(action, key, modifier)) {
+            return;
+        }
 
         if (Application.gameManager.isLoaded()) {
             Application.notify(observer -> observer.onKeyPress(key));

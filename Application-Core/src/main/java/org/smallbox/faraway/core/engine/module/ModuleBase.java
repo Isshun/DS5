@@ -9,12 +9,10 @@ import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class ModuleBase implements GameObserver {
     protected final String      TAG = getClass().getSimpleName();
 
-    protected final int         _id = UUID.randomUUID().toString().hashCode();
     protected ModuleInfo        _info;
     protected boolean           _isLoaded;
     protected boolean           _isStarted;
@@ -26,7 +24,7 @@ public abstract class ModuleBase implements GameObserver {
     public final void load() {
         assert !_isLoaded;
 
-        Log.info("[" + _info.name + "] Load");
+        Log.info("[%s] Load", _info);
         onLoad();
         _isLoaded = true;
 
@@ -43,14 +41,14 @@ public abstract class ModuleBase implements GameObserver {
     }
 
     public final void create() {
-        Log.info("[" + _info.name + "] createGame");
+        Log.info("[%s] createGame", _info);
         onCreate();
     }
 
     public final void unload() {
         assert _isLoaded;
 
-        Log.info("[" + _info.name + "] Unload");
+        Log.info("[%s] Unload", _info);
         if (runOnMainThread()) {
             onUnload();
             _isLoaded = false;

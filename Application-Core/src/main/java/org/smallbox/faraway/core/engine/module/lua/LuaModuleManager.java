@@ -33,6 +33,8 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,7 @@ public abstract class LuaModuleManager implements GameObserver {
     private Collection<LuaLoadListener>         _luaLoadListeners = new LinkedBlockingQueue<>();
     private Collection<LuaModule>               _luaModules = new LinkedBlockingQueue<>();
     private List<LuaExtend>                     _extends;
+    private Queue<Runnable>                     _runAfterList = new ConcurrentLinkedQueue<>();
 
     public LuaModuleManager() {
         Application.addObserver(new GameObserver() {
@@ -191,6 +194,12 @@ public abstract class LuaModuleManager implements GameObserver {
 //                e.printStackTrace();
 //            }
 //        });
+
+        _runAfterList.forEach(Runnable::run);
+    }
+
+    public void runAfter(Runnable runnable) {
+        _runAfterList.add(runnable);
     }
 
     protected abstract Globals createGlobals(ModuleBase module, File dataDirectory);

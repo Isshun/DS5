@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.lua.BindLua;
  * Created by Alex on 24/11/2016.
  */
 public class DebugRendersController extends LuaController {
+
     @BindManager
     private MainRenderer mainRenderer;
 

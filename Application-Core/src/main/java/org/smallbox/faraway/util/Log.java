@@ -107,7 +107,10 @@ public class Log {
     }
 
     public static void info(String message, Object... args) {
-        info(String.format(message, args));
+        String callerClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+//        if (!callerClassName.startsWith("org.smallbox.faraway.core.engine.module")) {
+            info(callerClassName + " " + String.format(message, args));
+//        }
     }
 
     public static void debug(String message) {

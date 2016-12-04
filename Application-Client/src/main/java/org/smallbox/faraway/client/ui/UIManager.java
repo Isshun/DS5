@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
@@ -22,6 +23,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
 public class UIManager {
+
+    private Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
 
     public void addRootView(View view) {
         _rootViews.add(view);
@@ -60,6 +63,14 @@ public class UIManager {
 
     public void removeView(View view) {
         _views.remove(view);
+    }
+
+    public void addStyle(String id, LuaValue style) {
+        _styles.put(id, style);
+    }
+
+    public LuaValue getStyle(String id) {
+        return _styles.get(id);
     }
 
     private static class ContextEntry {
@@ -116,12 +127,14 @@ public class UIManager {
                         .forEach(subview -> subview.setVisible(true)));
     }
 
-    public void onKeyEvent(Action action, Key key, Modifier modifier) {
-        if (action == Action.RELEASED) {
-            if (checkKeyboard(new GameEvent(key), key)) {
-                return;
-            }
-        }
+    public boolean onKeyEvent(Action action, Key key, Modifier modifier) {
+//        if (action == Action.RELEASED) {
+//            if (checkKeyboard(new GameEvent(key), key)) {
+//                return false;
+//            }
+//        }
+
+        return false;
     }
 
     /**

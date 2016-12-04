@@ -132,8 +132,8 @@ public abstract class View implements Comparable<View> {
     protected int               _layer;
     protected Color             _backgroundColor;
     protected FadeEffect        _effect;
-    protected HorizontalAlign   _horizontalAlign;
-    protected VerticalAlign     _verticalAlign;
+    protected HorizontalAlign   _horizontalAlign = HorizontalAlign.LEFT;
+    protected VerticalAlign     _verticalAlign = VerticalAlign.TOP;
 
     public View(ModuleBase module) {
         _module = module;
@@ -168,11 +168,11 @@ public abstract class View implements Comparable<View> {
 
     public void         toggleVisible() { setVisible(!isVisible()); }
     public void         setVisible(boolean visible) {
+
+        // Masque les vues appartenemt au même groupe
         if (visible && _group != null) {
-            // Set visible false for other views sharing current view's group
             ApplicationClient.uiManager.getViews().stream()
-                    .filter(view -> _group.equals(view.getGroup()))
-                    .filter(view -> view != this)
+                    .filter(view -> view != this && _group.equals(view.getGroup()))
                     .forEach(view -> view.setVisible(false));
         }
 

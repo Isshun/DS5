@@ -5,6 +5,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.client.lua.LuaUIBridge;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
@@ -13,11 +14,14 @@ import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Alex on 29/11/2016.
  */
 public class ClientLuaModuleManager extends LuaModuleManager {
+
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
         Globals globals = JsePlatform.standardGlobals();
@@ -42,6 +46,8 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                     public void extend(LuaValue values) {
                     }
                 }));
+
         return globals;
     }
+
 }
