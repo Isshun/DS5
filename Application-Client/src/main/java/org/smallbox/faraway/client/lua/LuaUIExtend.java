@@ -254,42 +254,6 @@ public class LuaUIExtend extends LuaExtend {
         }
     }
 
-    public interface ReadCallback<T> {
-        void onReadCallback(T value);
-    }
-
-    private void readInt(LuaValue value, String key, ReadCallback<Integer> callback, int... def) {
-        LuaValue v = value.get(key);
-        if (!v.isnil()) {
-            callback.onReadCallback(v.toint());
-        } else if (def.length > 0) {
-            callback.onReadCallback(def[0]);
-        }
-    }
-
-    private void readString(LuaValue value, String key, ReadCallback<String> callback) {
-        LuaValue v = value.get(key);
-        if (!v.isnil()) {
-            callback.onReadCallback(v.tojstring());
-        }
-    }
-
-    private void readBoolean(LuaValue value, String key, ReadCallback<Boolean> callback, boolean... def) {
-        LuaValue v = value.get(key);
-        if (!v.isnil()) {
-            callback.onReadCallback(v.toboolean());
-        } else if (def.length > 0) {
-            callback.onReadCallback(def[0]);
-        }
-    }
-
-    private void readLua(LuaValue value, String key, ReadCallback<LuaValue> callback) {
-        LuaValue v = value.get(key);
-        if (!v.isnil()) {
-            callback.onReadCallback(v);
-        }
-    }
-
     public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
 
         // Create view for type

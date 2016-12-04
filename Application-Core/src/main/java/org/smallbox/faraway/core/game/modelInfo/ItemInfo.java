@@ -10,7 +10,6 @@ import java.util.List;
 
 public class ItemInfo extends ObjectInfo {
     public boolean isLiquid;
-    public String surfaceName;
     public ItemInfo surface;
     public File dataDirectory;
 
@@ -55,9 +54,7 @@ public class ItemInfo extends ObjectInfo {
 
     public static class ActionInputInfo {
         public ItemInfo                 item;
-        public String                   itemName;
         public NetworkInfo              network;
-        public String                   networkName;
         public int                      quantity;
     }
 
@@ -100,29 +97,19 @@ public class ItemInfo extends ObjectInfo {
 
     public enum FactoryOutputMode {GROUND, NETWORK};
 
-    public static class FactoryGroupReceiptInfo {
-        public String                   receiptName;
-        public ReceiptGroupInfo         receipt;
-        public FactoryOutputMode        output;
-        public boolean                  auto;
-        public int                      cost;
-    }
-
     public static class ItemInfoFactory {
-        public List<FactoryGroupReceiptInfo>   receipts;
+        public List<ReceiptGroupInfo>   receiptGroups;
         public int[]                    inputSlots;
         public int[]                    outputSlots;
     }
 
     public static class ItemProductInfo {
-        public String                   itemName;
         public ItemInfo                 item;
         public int[]                    quantity;
         public double                   rate = 1;
     }
 
     public static class ItemComponentInfo {
-        public String                   itemName;
         public ItemInfo                 item;
         public int                      quantity;
     }
@@ -251,7 +238,6 @@ public class ItemInfo extends ObjectInfo {
     public double                       permeability;
     public boolean                      isLive;
     public int                          stack;
-    public ItemInfo                     parentInfo;
     public List<ItemComponentInfo>      components;
     public List<ItemInfo>               childs = new ArrayList<>();
     public List<GraphicInfo>            graphics = new ArrayList<>();
@@ -260,7 +246,6 @@ public class ItemInfo extends ObjectInfo {
     public String                       parentName;
     public boolean                      canSupportRoof;
     public List<NetworkItemInfo>        networks;
-    public String                       networkName;
     public NetworkInfo                  network;
     public ItemConsumeInfo              consume;
     public boolean                      isRamp;

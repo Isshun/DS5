@@ -65,24 +65,24 @@ public class ItemModel extends BuildableMapObject {
     public void init() {
         initSlots();
 
-        if (_info.actions != null) {
-            _info.actions.stream()
-                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.CRAFT)
-                    .forEach(action -> {
-                        if (_factory == null) {
-                            _factory = new ItemFactoryModel(this);
-                        }
-                        _factory.addAction(action);
-                    });
-        }
-
-//        // Initialize factory extra object
-//        if (_info.factory != null) {
-//            _factory = new ItemFactoryModel(this, _info.factory);
-//            if (_info.factory.outputSlots != null) {
-//                _storageSlot = _info.factory.outputSlots;
-//            }
+//        if (_info.actions != null) {
+//            _info.actions.stream()
+//                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.CRAFT)
+//                    .forEach(action -> {
+//                        if (_factory == null) {
+//                            _factory = new ItemFactoryModel(this);
+//                        }
+//                        _factory.addAction(action);
+//                    });
 //        }
+
+        // Initialize factory extra object
+        if (_info.factory != null) {
+            _factory = new ItemFactoryModel(this);
+            if (_info.factory.outputSlots != null) {
+                _storageSlot = _info.factory.outputSlots;
+            }
+        }
 //
 //        // Initialize network extra objects
 //        if (_info.networks != null) {

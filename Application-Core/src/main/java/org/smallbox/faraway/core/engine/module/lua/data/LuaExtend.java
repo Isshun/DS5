@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.engine.module.lua.data;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.io.File;
@@ -44,6 +45,49 @@ public abstract class LuaExtend {
 
     protected static String getString(LuaValue value, String key, String defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toString() : defaultValue;
+    }
+
+    protected interface ReadCallback<T> {
+        void onReadCallback(T value);
+    }
+
+    protected void readInt(LuaValue value, String key, ReadCallback<Integer> callback, int... def) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v.toint());
+        } else if (def.length > 0) {
+            callback.onReadCallback(def[0]);
+        }
+    }
+
+    protected void readString(LuaValue value, String key, ReadCallback<String> callback) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v.tojstring());
+        }
+    }
+
+    protected void readBoolean(LuaValue value, String key, ReadCallback<Boolean> callback, boolean... def) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v.toboolean());
+        } else if (def.length > 0) {
+            callback.onReadCallback(def[0]);
+        }
+    }
+
+    protected void readLua(LuaValue value, String key, ReadCallback<LuaValue> callback) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v);
+        }
+    }
+
+    protected <T> void readAsync(LuaValue value, String key, Class<T> cls, ReadCallback<T> callback) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            Application.data.getAsync(v.tojstring(), cls, callback::onReadCallback);
+        }
     }
 
 }

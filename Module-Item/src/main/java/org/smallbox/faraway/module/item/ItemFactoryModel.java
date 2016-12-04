@@ -5,14 +5,15 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableStackModel;
-import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
+import org.smallbox.faraway.module.item.item.FactoryReceiptModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.job.JobModule;
+import org.smallbox.faraway.util.Log;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
 
@@ -23,42 +24,43 @@ public class ItemFactoryModel {
     private Map<ItemInfo, ConsumableStackModel>     _inventory = new HashMap<>();
     private final ItemModel                         _item;
     private Map<ItemInfoAction, CraftJob>           _craftJobs = new HashMap<>();
-    private ItemFactoryReceiptModel _activeReceipt;
-    private List<OrderEntry>                _orderEntries;
-    private List<ItemFactoryReceiptModel>   _receiptEntries;
+    private FactoryReceiptModel _activeReceipt;
+    private List<FactoryReceiptGroupModel> _receiptGroups;
+    private List<FactoryReceiptModel> _receipts;
     // TODO: file d'attente de sortie
 //    private List<FactoryShoppingItemModel>  _shoppingList;
-    private final ItemInfo _info;
+    private final ItemInfoFactory _factoryInfo;
     private ParcelModel _storageParcel;
     private String                          _message;
 
     public ItemFactoryModel(ItemModel item) {
         _item = item;
-        _info = item.getInfo();
+        _factoryInfo = item.getInfo().factory;
 
-        _info.actions.stream()
-                .filter(action -> action.type == ItemInfoAction.ActionType.CRAFT)
-                .forEach(action -> _craftJobs.put(action, null));
+//        _factoryInfo.actions.stream()
+//                .filter(action -> action.type == ItemInfoAction.ActionType.CRAFT)
+//                .forEach(action -> _craftJobs.put(action, null));
 
 //        ParcelModel itemParcel = _item.getParcel();
 //        _storageParcel = _item.getParcel();
-//        if (_info.outputSlots != null) {
+//        if (_factoryInfo.outputSlots != null) {
 //            _storageParcel = WorldHelper.getParcel(
-//                    itemParcel.x + _info.outputSlots[0],
-//                    itemParcel.y + _info.outputSlots[1],
+//                    itemParcel.x + _factoryInfo.outputSlots[0],
+//                    itemParcel.y + _factoryInfo.outputSlots[1],
 //                    itemParcel.z);
 //        }
-//
-//        if (_info.receipts != null) {
-//            // Create order from receiptInfo
-//            _orderEntries = _info.receipts.stream().map(OrderEntry::new).collect(Collectors.toList());
-//
-//            // Create receipt org.smallbox.faraway.core.module.room.model for each order
-//            _receiptEntries = new ArrayList<>();
-//            _orderEntries.forEach(order -> _receiptEntries.addAll(order.receiptGroupInfo.receipts.stream()
-//                    .map(receipt -> new ItemFactoryReceiptModel(order, receipt))
-//                    .collect(Collectors.toList())));
-//        }
+
+        if (_factoryInfo != null) {
+            // Create receipt groups from factory info
+            _receiptGroups = _factoryInfo.receiptGroups.stream()
+                    .map(FactoryReceiptGroupModel::new)
+                    .collect(Collectors.toList());
+
+            // Create receipt from each receipt group
+            _receipts = _receiptGroups.stream()
+                    .flatMap(receiptGroup -> receiptGroup.receiptGroupInfo.receipts.stream().map(receiptInfo -> new FactoryReceiptModel(receiptGroup, receiptInfo)))
+                    .collect(Collectors.toList());
+        }
     }
 
     public void run(JobModule jobModule, ConsumableModule consumableModule) {
@@ -100,39 +102,39 @@ public class ItemFactoryModel {
         return _craftJobs;
     }
 
-    public static class OrderEntry {
+    public static class FactoryReceiptGroupModel {
         public final ReceiptGroupInfo   receiptGroupInfo;
-        public final FactoryOutputMode  output;
+        public final FactoryOutputMode  outputMode;
         public final boolean            auto;
         public final int                cost;
         public int                      mode;
         public boolean                  isActive;
 
         // Rename this mess
-        public OrderEntry(FactoryGroupReceiptInfo receiptGroupInfo) {
-            this.receiptGroupInfo = receiptGroupInfo.receipt;
-            this.auto = receiptGroupInfo.auto;
+        public FactoryReceiptGroupModel(ReceiptGroupInfo receiptGroupInfo) {
+            this.receiptGroupInfo = receiptGroupInfo;
+            this.auto = false;
             this.cost = receiptGroupInfo.cost;
-            this.output = receiptGroupInfo.output;
+            this.outputMode = FactoryOutputMode.GROUND;
         }
     }
 
     public void setMessage(String message) { _message = message; }
 
-    public List<OrderEntry>                 getOrders() { return _orderEntries; }
-    public List<ItemFactoryReceiptModel>    getReceipts() { return _receiptEntries; }
+    public List<FactoryReceiptGroupModel>                 getOrders() { return _receiptGroups; }
+    public List<FactoryReceiptModel>    getReceipts() { return _receipts; }
     public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _activeReceipt != null ? _activeReceipt.receiptGroupInfo : null; }
     public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _activeReceipt != null ? _activeReceipt.receiptInfo : null; }
-    public ItemFactoryReceiptModel          getActiveReceipt() { return _activeReceipt; }
+    public FactoryReceiptModel getActiveReceipt() { return _activeReceipt; }
     public ParcelModel                      getStorageParcel() { return _storageParcel; }
     public String                           getMessage() { return _message; }
 
     public void moveReceipt(ReceiptGroupInfo receiptGroupInfo, int offset) {
-        Optional<OrderEntry> optionalEntry = _orderEntries.stream().filter(entry -> entry.receiptGroupInfo == receiptGroupInfo).findFirst();
+        Optional<FactoryReceiptGroupModel> optionalEntry = _receiptGroups.stream().filter(entry -> entry.receiptGroupInfo == receiptGroupInfo).findFirst();
         if (optionalEntry.isPresent()) {
-            int position = _orderEntries.indexOf(optionalEntry.get()) + offset;
-            _orderEntries.remove(optionalEntry.get());
-            _orderEntries.add(Math.min(Math.max(position, 0), _orderEntries.size()), optionalEntry.get());
+            int position = _receiptGroups.indexOf(optionalEntry.get()) + offset;
+            _receiptGroups.remove(optionalEntry.get());
+            _receiptGroups.add(Math.min(Math.max(position, 0), _receiptGroups.size()), optionalEntry.get());
         }
     }
 
@@ -162,10 +164,10 @@ public class ItemFactoryModel {
 //            return false;
 //        }
 //
-//        // List itemInfo needed in all receipts
+//        // List itemInfo needed in all receiptGroups
 //        Set <ItemInfo> allInputs = new HashSet<>();
-//        _receiptEntries.stream()
-//                .filter(receipt -> receipt.order.isActive)
+//        _receipts.stream()
+//                .filter(receipt -> receipt.receiptGroup.isActive)
 //                .forEach(receipt -> allInputs.addAll(receipt.receiptInfo.inputs.stream().map(inputInfo -> inputInfo.item).collect(Collectors.toList())));
 //
 //        // Get distance for all of them
@@ -184,15 +186,15 @@ public class ItemFactoryModel {
 //        Collections.sort(potentials, (c1, c2) -> c1.distance - c2.distance);
 //
 //        // For each receipt, find total distance between factory and components
-//        _receiptEntries.stream().filter(receipt -> receipt.order.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(potentials));
+//        _receipts.stream().filter(receipt -> receipt.receiptGroup.isActive).forEach(receiptEntry -> receiptEntry.setPotentialComponents(potentials));
 //
 //        // Get receipt group based on components availability
-//        OrderEntry bestOrder = null;
-//        for (OrderEntry order: _orderEntries) {
-//            if (order.isActive) {
-//                for (ItemFactoryReceiptModel receipt : _receiptEntries) {
-//                    if (bestOrder == null && receipt.order == order && receipt.enoughComponents) {
-//                        bestOrder = order;
+//        FactoryReceiptGroupModel bestOrder = null;
+//        for (FactoryReceiptGroupModel receiptGroup: _receiptGroups) {
+//            if (receiptGroup.isActive) {
+//                for (FactoryReceiptModel receipt : _receipts) {
+//                    if (bestOrder == null && receipt.receiptGroup == receiptGroup && receipt.enoughComponents) {
+//                        bestOrder = receiptGroup;
 //                    }
 //                }
 //            }
@@ -205,8 +207,8 @@ public class ItemFactoryModel {
 //        // Get receipt based on components distance
 //        int bestDistance = Integer.MAX_VALUE;
 //        _activeReceipt = null;
-//        for (ItemFactoryReceiptModel receipt: _receiptEntries) {
-//            if (receipt.enoughComponents && receipt.order == bestOrder && receipt.totalDistance < bestDistance) {
+//        for (FactoryReceiptModel receipt: _receipts) {
+//            if (receipt.enoughComponents && receipt.receiptGroup == bestOrder && receipt.totalDistance < bestDistance) {
 //                _activeReceipt = receipt;
 //            }
 //        }

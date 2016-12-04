@@ -164,8 +164,8 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //        ItemModel item = new ItemModel(itemInfo, parcel);
 //        item.addProgress(progress);
 //        moveItemToParcel(parcel, item);
-//        if (item.getInfo().receipts != null && item.getInfo().receipts.size() > 0) {
-//            item.setReceipt(item.getInfo().receipts.get(0));
+//        if (item.getInfo().receiptGroups != null && item.getInfo().receiptGroups.size() > 0) {
+//            item.setReceipt(item.getInfo().receiptGroups.get(0));
 //        }
 //        item.gameStart();
 //        _items.addSubJob(item);

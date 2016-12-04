@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.SpriteManager;
-import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
@@ -16,8 +15,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ConfigurationManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -25,7 +22,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
@@ -95,7 +91,8 @@ public class ApplicationClient {
         }
 
         if (Application.gameManager.isLoaded()) {
-            Application.notify(observer -> observer.onKeyPress(key));
+            GameEvent event = new GameEvent(key);
+            Application.notify(observer -> observer.onKeyPressWithEvent(event, key));
             Application.notify(observer -> observer.onKeyEvent(action, key, modifier));
         }
     }
@@ -116,24 +113,24 @@ public class ApplicationClient {
             return;
         }
 
-        // Lance un evenement clickOnMap si le jeu est lancé
-        if (Application.gameManager.isLoaded()) {
-
-            if (action == GameEventListener.Action.RELEASED) {
-                System.out.println("Click on map at pixel: " + x + " x " + y);
-
-                Viewport viewport = ApplicationClient.mainRenderer.getViewport();
-                ParcelModel parcel = WorldHelper.getParcel(viewport.getRelativePosX(x), viewport.getRelativePosY(y), viewport.getFloor());
-                if (parcel != null) {
-                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);
-                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
-                }
-//            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
-//            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-//                return;
+//        // Lance un evenement clickOnMap si le jeu est lancé
+//        if (Application.gameManager.isLoaded()) {
+//
+//            if (action == GameEventListener.Action.RELEASED) {
+//                System.out.println("Click on map at pixel: " + x + " x " + y);
+//
+//                Viewport viewport = ApplicationClient.mainRenderer.getViewport();
+//                ParcelModel parcel = WorldHelper.getParcel(viewport.getRelativePosX(x), viewport.getRelativePosY(y), viewport.getFloor());
+//                if (parcel != null) {
+//                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);
+//                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
+//                }
+////            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
+////            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
+////                return;
+////            }
 //            }
-            }
-        }
+//        }
     }
 
     public static void notify(Consumer<GameObserver> action) {

@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.GameObserverPriority;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
@@ -12,6 +13,7 @@ import org.smallbox.faraway.module.mainPanel.MainPanelController;
 /**
  * Created by Alex on 04/12/2016.
  */
+@GameObserverPriority(GameObserverPriority.Priority.LOW)
 public class GameMenuController extends LuaController {
 
     @BindLuaController
@@ -19,10 +21,12 @@ public class GameMenuController extends LuaController {
 
 
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
+    public boolean onKeyPress(GameEventListener.Key key) {
         if (key == GameEventListener.Key.ESCAPE && ApplicationClient.uiManager.findById("base.ui.panel_main").isVisible()) {
             setVisible(!isVisible());
+            return true;
         }
+        return false;
     }
 
     @BindLuaAction

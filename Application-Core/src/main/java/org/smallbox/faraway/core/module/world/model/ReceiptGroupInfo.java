@@ -10,13 +10,11 @@ import java.util.List;
  */
 public class ReceiptGroupInfo extends ObjectInfo {
     public static class ReceiptInputInfo {
-        public String       itemName;
         public ItemInfo     item;
         public int          quantity;
     }
 
     public static class ReceiptOutputInfo {
-        public String       itemName;
         public ItemInfo     item;
         public int[]        quantity;
     }

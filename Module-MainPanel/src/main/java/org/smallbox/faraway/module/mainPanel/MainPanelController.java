@@ -18,10 +18,12 @@ public class MainPanelController extends LuaController {
     private LuaController _currentPaneController;
 
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE) {
+    public boolean onKeyPress(GameEventListener.Key key) {
+        if (key == GameEventListener.Key.ESCAPE && !isVisible()) {
             setVisible(true);
+            return true;
         }
+        return false;
     }
 
     @Override

@@ -86,7 +86,7 @@ public class UIManager {
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
-    private PriorityBlockingQueue<View> _rootViews = new PriorityBlockingQueue<>(200, new Comparator<View>() {
+    private Queue<View>                 _rootViews = new PriorityBlockingQueue<>(200, new Comparator<View>() {
         @Override
         public int compare(View v1, View v2) {
             return v1.getLayer() - v2.getLayer();

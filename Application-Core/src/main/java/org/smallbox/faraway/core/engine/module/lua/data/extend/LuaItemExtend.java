@@ -8,6 +8,8 @@ import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
+import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo = new ItemInfo();
             itemInfo.dataDirectory = dataDirectory;
             Application.data.items.add(itemInfo);
+            Application.data.add(name, itemInfo);
         }
 
 //        if (!value.get("parent").isnil()) {
@@ -103,7 +106,9 @@ public class LuaItemExtend extends LuaExtend {
 
         itemInfo.isWalkable = getBoolean(value, "walkable", itemInfo.isWalkable);
         itemInfo.health = getInt(value, "health", itemInfo.health);
-        itemInfo.networkName = getString(value, "network", itemInfo.networkName);
+
+        readAsync(value, "network", NetworkInfo.class, networkInfo -> itemInfo.network = networkInfo);
+
         itemInfo.isGround = "ground".equals(getString(value, "type", null));
         itemInfo.isLiquid = "liquid".equals(getString(value, "type", null));
         itemInfo.isLinkDown = getBoolean(value, "is_link_down", false);
@@ -114,14 +119,14 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.permeability = getDouble(value, "permeability", 1);
 
         if (!value.get("liquid").isnil()) {
-            itemInfo.surfaceName = value.get("liquid").get("surface").toString();
+            Application.data.getAsync(value.get("liquid").get("surface").toString(), ItemInfo.class, surfaceInfo -> itemInfo.surface = surfaceInfo);
         }
 
         if (!value.get("networks").isnil()) {
             itemInfo.networks = new ArrayList<>();
             for (int i = 1; i <= value.get("networks").length(); i++) {
                 ItemInfo.NetworkItemInfo networkItemInfo = new ItemInfo.NetworkItemInfo();
-                networkItemInfo.name = getString(value.get("networks").get(i), "network", null);
+                Application.data.getAsync(getString(value.get("networks").get(i), "network", null), NetworkInfo.class, networkInfo -> networkItemInfo.network = networkInfo);
                 networkItemInfo.distance = getInt(value.get("networks").get(i), "distance", 0);
                 itemInfo.networks.add(networkItemInfo);
             }
@@ -135,7 +140,7 @@ public class LuaItemExtend extends LuaExtend {
             if (!componentsValue.isnil()) {
                 for (int i = 1; i <= componentsValue.length(); i++) {
                     ItemInfo.ItemBuildInfo.ItemBuildComponentInfo componentInfo = new ItemInfo.ItemBuildInfo.ItemBuildComponentInfo();
-                    Application.data.getAsync(componentsValue.get(i).get("id").toString(), component -> componentInfo.component = component);
+                    Application.data.getAsync(componentsValue.get(i).get("id").toString(), ItemInfo.class, component -> componentInfo.component = component);
                     componentInfo.count = componentsValue.get(i).get("count").toint();
                     itemInfo.build.components.add(componentInfo);
 
@@ -249,15 +254,10 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         if (!value.get("receipts").isnil()) {
-            itemInfo.factory.receipts = new ArrayList<>();
+            itemInfo.factory.receiptGroups = new ArrayList<>();
             for (int i = 1; i <= value.get("receipts").length(); i++) {
-                LuaValue luaReceipt = value.get("receipts").get(i);
-                ItemInfo.FactoryGroupReceiptInfo factoryGroupReceiptInfo = new ItemInfo.FactoryGroupReceiptInfo();
-                factoryGroupReceiptInfo.receiptName = luaReceipt.get("receipt").toString();
-                factoryGroupReceiptInfo.auto = getBoolean(luaReceipt, "auto", false);
-                factoryGroupReceiptInfo.cost = getInt(luaReceipt, "cost", -1);
-                factoryGroupReceiptInfo.output = "network".equals(getString(luaReceipt, "output", null)) ? ItemInfo.FactoryOutputMode.NETWORK : ItemInfo.FactoryOutputMode.GROUND;
-                itemInfo.factory.receipts.add(factoryGroupReceiptInfo);
+                Application.data.getAsync(value.get("receipts").get(i).get("receipt").tojstring(), ReceiptGroupInfo.class,
+                        receiptGroupInfo -> itemInfo.factory.receiptGroups.add(receiptGroupInfo));
             }
         }
     }
@@ -288,7 +288,7 @@ public class LuaItemExtend extends LuaExtend {
 
         // Get component item name
         if (!luaComponent.get("item").isnil()) {
-            component.itemName = getString(luaComponent, "item", null);
+            readAsync(luaComponent, "item", ItemInfo.class, componentItemInfo -> component.item = componentItemInfo);
         } else {
             throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.item");
         }
@@ -345,8 +345,8 @@ public class LuaItemExtend extends LuaExtend {
         if (!value.get("inputs").isnil()) {
             readLuaComposite(value.get("inputs"), luaInput -> {
                 ItemInfo.ActionInputInfo inputInfo = new ItemInfo.ActionInputInfo();
-                inputInfo.networkName = getString(luaInput, "network", null);
-                inputInfo.itemName = getString(luaInput, "item", null);
+                readAsync(luaInput, "network", NetworkInfo.class, inputNetworkInfo -> inputInfo.network = inputNetworkInfo);
+                readAsync(luaInput, "item", ItemInfo.class, inputItemInfo -> inputInfo.item = inputItemInfo);
                 inputInfo.quantity = getInt(luaInput, "quantity", 1);
                 action.inputs.add(inputInfo);
             });
@@ -361,7 +361,7 @@ public class LuaItemExtend extends LuaExtend {
         action.products = new ArrayList<>();
         readLuaComposite(value.get("products"), luaProduct -> {
             ItemInfo.ItemProductInfo productInfo = new ItemInfo.ItemProductInfo();
-            productInfo.itemName = getString(luaProduct, "item", null);
+            readAsync(luaProduct, "item", ItemInfo.class, productItemInfo -> productInfo.item = productItemInfo);
             productInfo.quantity = getIntInterval(luaProduct, "quantity", new int[] {1, 1});
             productInfo.rate = getDouble(luaProduct, "rate", 1);
             action.products.add(productInfo);

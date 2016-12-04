@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
-import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
+import org.smallbox.faraway.module.item.item.FactoryReceiptModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.item.item.ItemSlot;
 import org.smallbox.faraway.util.Log;
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public class CraftJob extends JobModel {
     protected final ItemModel                   _item;
     protected final ItemFactoryModel            _factory;
-    protected final ItemFactoryReceiptModel     _receipt;
-//    protected final ItemFactoryModel.OrderEntry _order;
+    protected final FactoryReceiptModel _receipt;
+//    protected final ItemFactoryModel.FactoryReceiptGroupModel _order;
     protected ItemSlot                          _slot;
     protected double                            _current;
     private Map<ItemInfo.ActionInputInfo, Integer> _inputs;
@@ -59,8 +59,8 @@ public class CraftJob extends JobModel {
                 })
                 .collect(Collectors.toMap(input -> input, input -> 0));
 
-//        _order = _receipt.order;
-//        _cost = _order.cost != -1 ? _receipt.order.cost : _receipt.receiptInfo.cost;
+//        _order = _receipt.receiptGroup;
+//        _cost = _order.cost != -1 ? _receipt.receiptGroup.cost : _receipt.receiptInfo.cost;
 //        _isAuto = _order.auto;
         _label = action.label;
     }
@@ -97,7 +97,7 @@ public class CraftJob extends JobModel {
 
     @Override
     protected void onStart(CharacterModel character) {
-//        for (ItemFactoryReceiptModel.FactoryShoppingItemModel shoppingItem: _receipt.getShoppingList()) {
+//        for (FactoryReceiptModel.FactoryShoppingItemModel shoppingItem: _receipt.getShoppingList()) {
 //            if (shoppingItem.consumable.getJob() != null && shoppingItem.consumable.getJob() != this) {
 //                throw new RuntimeException("Shopping item are already been locked");
 //            }
@@ -160,7 +160,7 @@ public class CraftJob extends JobModel {
 //        // Current item is done
 //        for (ReceiptGroupInfo.ReceiptOutputInfo productInfo : _receipt.receiptInfo.outputs) {
 //            // Put consumables on the ground
-//            if (_order.output == ItemInfo.FactoryOutputMode.GROUND) {
+//            if (_order.outputMode == ItemInfo.FactoryOutputMode.GROUND) {
 //                ParcelModel parcel = _item.getParcel();
 //                if (_item.getInfo().factory.outputSlots != null) {
 //                    parcel = WorldHelper.getParcel(
@@ -173,7 +173,7 @@ public class CraftJob extends JobModel {
 //            }
 //
 //            // Put consumables on item network
-//            if (_order.output == ItemInfo.FactoryOutputMode.NETWORK) {
+//            if (_order.outputMode == ItemInfo.FactoryOutputMode.NETWORK) {
 //                Log.info("Factory: put crafted consumable in network");
 //                if (_item.getNetworkConnections() != null) {
 //                    _item.getNetworkConnections().stream()
@@ -188,7 +188,7 @@ public class CraftJob extends JobModel {
     protected void onFinish() {
     }
 
-    protected void moveToIngredient(CharacterModel character, ItemFactoryReceiptModel.FactoryShoppingItemModel input) {
+    protected void moveToIngredient(CharacterModel character, FactoryReceiptModel.FactoryShoppingItemModel input) {
         throw new NotImplementedException("");
 
 //        ConsumableModel consumable = input.consumable;
@@ -213,7 +213,7 @@ public class CraftJob extends JobModel {
 //                _receipt.getShoppingList().remove(input);
 //
 //                // Move to next input (if same ingredient), or get back to factory
-//                Optional<ItemFactoryReceiptModel.FactoryShoppingItemModel> optionalNextInput = _receipt.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
+//                Optional<FactoryReceiptModel.FactoryShoppingItemModel> optionalNextInput = _receipt.getShoppingList().stream().filter(i -> i.consumable.getInfo() == info).findFirst();
 //                if (optionalNextInput.isPresent() && optionalNextInput.get().quantity + character.getInventoryQuantity() <= info.stack) {
 //                    moveToIngredient(character, optionalNextInput.get());
 //                } else {

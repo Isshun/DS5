@@ -43,7 +43,7 @@ public class ClickDebugController extends LuaController {
     }
 
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
+    public boolean onKeyPress(GameEventListener.Key key) {
         System.out.println("Console: " + key);
 
         switch (key) {
@@ -61,6 +61,8 @@ public class ClickDebugController extends LuaController {
                 entry.setText(current);
                 break;
         }
+
+        return false;
     }
 
     private String getAbsoluteName(View view) {

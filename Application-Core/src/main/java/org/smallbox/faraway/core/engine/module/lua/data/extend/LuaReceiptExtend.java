@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class LuaReceiptExtend extends LuaExtend {
 
         if (receiptGroupInfo == null) {
             receiptGroupInfo = new ReceiptGroupInfo();
+            Application.data.add(name, receiptGroupInfo);
             Application.data.receipts.add(receiptGroupInfo);
         }
 
@@ -55,7 +57,7 @@ public class LuaReceiptExtend extends LuaExtend {
                     for (int j = 1; j <= luaInputs.length(); j++) {
                         LuaValue luaInput = luaInputs.get(j);
                         ReceiptGroupInfo.ReceiptInputInfo componentInfo = new ReceiptGroupInfo.ReceiptInputInfo();
-                        componentInfo.itemName = luaInput.get("name").toString();
+                        readAsync(luaInput, "name", ItemInfo.class, itemInfo -> componentInfo.item = itemInfo);
                         componentInfo.quantity = luaInput.get("quantity").toint();
                         receiptInfo.inputs.add(componentInfo);
                     }
@@ -67,7 +69,7 @@ public class LuaReceiptExtend extends LuaExtend {
                     for (int j = 1; j <= luaOutputs.length(); j++) {
                         LuaValue luaComponent = luaOutputs.get(j);
                         ReceiptGroupInfo.ReceiptOutputInfo productItemInfo = new ReceiptGroupInfo.ReceiptOutputInfo();
-                        productItemInfo.itemName = luaComponent.get("name").toString();
+                        readAsync(luaComponent, "name", ItemInfo.class, itemInfo -> productItemInfo.item = itemInfo);
                         if (luaComponent.get("quantity").istable()) {
                             productItemInfo.quantity = new int[]{
                                     luaComponent.get("quantity").get(1).toint(),

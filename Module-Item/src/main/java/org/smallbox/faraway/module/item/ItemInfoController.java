@@ -1,21 +1,16 @@
 package org.smallbox.faraway.module.item;
 
-import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.module.mainPanel.controller.AbsInfoLuaController;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +45,6 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
 
     @Override
     protected void onDisplayMultiple(List<ItemModel> list) {
-
     }
 
     @Override
@@ -131,7 +125,7 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
             if (CollectionUtils.isNotEmpty(item.getInfo().components)) {
                 frameComponents.setVisible(true);
                 listComponents.clear();
-                item.getInfo().components.forEach(component -> listComponents.addView(UILabel.create(null).setText(component.itemName).setSize(100, 22)));
+                item.getInfo().components.forEach(component -> listComponents.addView(UILabel.create(null).setText(component.item.name).setSize(100, 22)));
             } else {
                 frameComponents.setVisible(false);
             }

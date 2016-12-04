@@ -394,7 +394,7 @@ ui:extend({
 --        lb_active:setPosition(326, 0)
 --        lb_active:setPadding(3)
 --        lb_active:setOnClickListener(function(v)
---            order.isActive = not order.isActive
+--            receiptGroup.isActive = not receiptGroup.isActive
 --            display_factory_info(view, factory, factoryInfo)
 --        end)
 --        frame_receipt:addView(lb_active)

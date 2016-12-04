@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.core.module.job.model.abs;
 //
-//import org.smallbox.faraway.module.item.item.ItemFactoryReceiptModel;
+//import org.smallbox.faraway.module.item.item.FactoryReceiptModel;
 //import org.smallbox.faraway.core.game.model.OldReceiptModel;
 //import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 //import org.smallbox.faraway.core.data.ItemInfo;
@@ -16,7 +16,7 @@
 // */
 //public abstract class BaseBuildJobModel extends JobModel {
 ////    protected List<OldReceiptModel>     _receipts = new ArrayList<>();
-//    protected ItemFactoryReceiptModel   _receipt;
+//    protected FactoryReceiptModel   _receipt;
 //    public MapObjectModel               _mainItem;
 //
 //    public BaseBuildJobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel, GDXDrawable iconPath, GDXDrawable iconActionPath) {

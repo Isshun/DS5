@@ -15,13 +15,21 @@ import org.smallbox.faraway.util.Utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Queue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application {
     public static final DependencyInjector dependencyInjector;
-    private static Collection<GameObserver>     _observers = new LinkedBlockingQueue<>();
+    private static Queue<GameObserver> _observers = new PriorityBlockingQueue<>(200, (o1, o2) -> {
+        GameObserverPriority.Priority p1 = o1.getClass().isAnnotationPresent(GameObserverPriority.class)
+                ? o1.getClass().getAnnotation(GameObserverPriority.class).value()
+                : GameObserverPriority.Priority.REGULAR;
+        GameObserverPriority.Priority p2 = o2.getClass().isAnnotationPresent(GameObserverPriority.class)
+                ? o2.getClass().getAnnotation(GameObserverPriority.class).value()
+                : GameObserverPriority.Priority.REGULAR;
+        return p1.compareTo(p2);
+    });
 
     // Server
     public static final GameManager             gameManager;
@@ -72,7 +80,13 @@ public class Application {
     public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
     public static void          setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }
     public boolean              isRunning() { return _isRunning; }
-    public static void          addObserver(GameObserver observer) { assert observer != null; _observers.add(observer); }
+
+    public static void          addObserver(GameObserver observer) {
+        assert observer != null;
+
+        _observers.add(observer);
+    }
+
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
     public ConfigurationManager getConfig() { return configurationManager; }
 
@@ -101,7 +115,7 @@ public class Application {
 
     public static void notify(Consumer<GameObserver> action) {
         try {
-            _observers.forEach(action);
+            _observers.forEach(action::accept);
         } catch (Error | RuntimeException e) {
             setRunning(false);
             e.printStackTrace();

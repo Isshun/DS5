@@ -43,7 +43,12 @@ public interface GameObserver {
     default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
-    default void onKeyPress(GameEventListener.Key key) {}
+    default void onKeyPressWithEvent(GameEvent event, GameEventListener.Key key) {
+        if (!event.consumed && onKeyPress(key)) {
+            event.consume();
+        }
+    }
+    default boolean onKeyPress(GameEventListener.Key key) { return false; }
     default void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {}
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}

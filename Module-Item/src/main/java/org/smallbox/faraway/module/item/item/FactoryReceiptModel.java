@@ -8,13 +8,14 @@ import org.smallbox.faraway.module.item.CraftJob;
 import org.smallbox.faraway.module.item.ItemFactoryModel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 17/10/2015.
  */
-public class ItemFactoryReceiptModel {
+public class FactoryReceiptModel {
     public static class FactoryShoppingItemModel {
         public ConsumableModel consumable;
         public int              quantity;
@@ -40,15 +41,13 @@ public class ItemFactoryReceiptModel {
     private List<FactoryShoppingItemModel>      _shoppingList;
     private boolean                             _isFull;
 
-    public final ItemFactoryModel.OrderEntry    order;
+    public final ItemFactoryModel.FactoryReceiptGroupModel receiptGroup;
     public final ReceiptGroupInfo.ReceiptInfo   receiptInfo;
-    public final ReceiptGroupInfo               receiptGroupInfo;
     public int                                  totalDistance;
     public boolean                              enoughComponents;
 
-    public ItemFactoryReceiptModel(ItemFactoryModel.OrderEntry order, ReceiptGroupInfo.ReceiptInfo receiptInfo) {
-        this.order = order;
-        this.receiptGroupInfo = order.receiptGroupInfo;
+    public FactoryReceiptModel(ItemFactoryModel.FactoryReceiptGroupModel factoryReceiptGroup, ReceiptGroupInfo.ReceiptInfo receiptInfo) {
+        this.receiptGroup = factoryReceiptGroup;
         this.receiptInfo = receiptInfo;
     }
 
@@ -63,7 +62,7 @@ public class ItemFactoryReceiptModel {
         for (ReceiptGroupInfo.ReceiptInputInfo inputInfo: this.receiptInfo.inputs) {
             List<PotentialConsumable> potentials = potentialComponents.stream()
                     .filter(potentialConsumable -> potentialConsumable.itemInfo.instanceOf(inputInfo.item))
-                    .sorted((o1, o2) -> o1.distance - o2.distance)
+                    .sorted(Comparator.comparingInt(o -> o.distance))
                     .collect(Collectors.toList());
             int quantity = 0;
             for (PotentialConsumable potential: potentials) {

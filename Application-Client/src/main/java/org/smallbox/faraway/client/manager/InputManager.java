@@ -217,8 +217,8 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
         _lastMouseButton = button;
-        _touchDownX = x;
-        _touchDownY = y;
+        _touchDownX = _touchDragX = x;
+        _touchDownY = _touchDragY = y;
 
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             GameEventListener.MouseButton mouseButton = GameEventListener.MouseButton.LEFT;
@@ -275,15 +275,15 @@ public class InputManager implements InputProcessor {
                 return true;
             }
             return false;
-        } else if (_lastMouseButton == Buttons.LEFT) {
-            System.out.println("select: " + _touchDownX + "x" + _touchDownY);
-            System.out.println("to: " + x + "x" + y );
-
-//            Application.notify(observer -> observer.onSelectParcel(parcels));
-
-            return false;
-        } else {
-            ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+//        } else if (_lastMouseButton == Buttons.LEFT) {
+//            Log.debug("select: " + _touchDownX + "x" + _touchDownY);
+//            Log.debug("to: " + x + "x" + y );
+//
+////            Application.notify(observer -> observer.onSelectParcel(parcels));
+//
+//            return false;
+//        } else {
+//            ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }
 
         return false;

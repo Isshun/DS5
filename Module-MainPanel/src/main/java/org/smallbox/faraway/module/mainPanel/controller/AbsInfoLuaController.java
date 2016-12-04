@@ -23,13 +23,13 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     private List<T> list;
 
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE) {
-            if (CollectionUtils.isNotEmpty(list)) {
-                mainPanelController.setVisible(true);
-                list = null;
-            }
+    public boolean onKeyPress(GameEventListener.Key key) {
+        if (key == GameEventListener.Key.ESCAPE && CollectionUtils.isNotEmpty(list)) {
+            mainPanelController.setVisible(true);
+            list = null;
+            return true;
         }
+        return false;
     }
 
     @Override

@@ -45,7 +45,6 @@ public class BuildableMapObject extends MapObjectModel {
         }
     }
 
-    private ItemInfo.ItemInfoReceipt    _receipt;
     private int                         _buildProgress;
     private BuildJob                    _buildJob;
     private List<ComponentModel>        _components = new ArrayList<>();

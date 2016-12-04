@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 
 import java.io.File;
@@ -36,9 +37,9 @@ public class LuaNetworkExtend extends LuaExtend {
         networkInfo.label = getString(value, "label", null);
 
         if (!value.get("items").isnil()) {
-            networkInfo.itemNames = new ArrayList<>();
+            networkInfo.items = new ArrayList<>();
             for (int i = 1; i <= value.get("items").length(); i++) {
-                networkInfo.itemNames.add(value.get("items").get(i).toString());
+                Application.data.getAsync(value.get("items").get(i).toString(), ItemInfo.class, itemInfo -> networkInfo.items.add(itemInfo));
             }
         }
     }

@@ -14,7 +14,7 @@ public class DebugConsoleController extends LuaController {
     private UILabel lbEntry;
 
     @Override
-    public void onKeyPress(GameEventListener.Key key) {
+    public boolean onKeyPress(GameEventListener.Key key) {
         if (lbEntry.isVisible()) {
             if (key == GameEventListener.Key.ENTER) {
                 Log.info("Execute: " + lbEntry.getText());
@@ -28,5 +28,7 @@ public class DebugConsoleController extends LuaController {
                 lbEntry.setVisible(true);
             }
         }
+
+        return false;
     }
 }
