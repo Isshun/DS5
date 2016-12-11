@@ -261,7 +261,7 @@ public class WorldInteractionModule extends GameModule<WorldInteractionModuleObs
 //                            return;
 //                        }
 //
-//                        StructureModel structure = _parcels[x][y][z].getStructure();
+//                        StructureItem structure = _parcels[x][y][z].getStructure();
 //                        if (structure != null) {
 //                            if (structure.getParcel().getStructure() == structure) {
 //                                structure.getParcel().setStructure(null);

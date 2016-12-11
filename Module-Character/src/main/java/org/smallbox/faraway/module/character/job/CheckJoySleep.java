@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.job.UseJob;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -20,7 +20,7 @@ public class CheckJoySleep extends CharacterCheck {
     @Override
     public JobModel onCreateJob(CharacterModel character) {
         if (character != null) {
-            ItemModel item = _items.getItems().stream().filter(ItemModel::isBed).findAny().orElse(null);
+            UsableItem item = _items.getItems().stream().filter(UsableItem::isBed).findAny().orElse(null);
             if (item != null) {
                 UseJob job = UseJob.create(item);
                 if (job != null) {
@@ -34,7 +34,7 @@ public class CheckJoySleep extends CharacterCheck {
 
     @Override
     public boolean isJobLaunchable(CharacterModel character) {
-        return _items.getItems().stream().filter(ItemModel::isBed).findAny().isPresent();
+        return _items.getItems().stream().filter(UsableItem::isBed).findAny().isPresent();
     }
 
     @Override

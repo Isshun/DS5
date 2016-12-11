@@ -94,12 +94,10 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _characters.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
         _characters.removeIf(CharacterModel::isDead);
 
-        if (tick % 10 == 0) {
 //            _characters.forEach(this::updateNeeds);
-            _characters.forEach(this::updateJobs);
-            _characters.forEach(this::updateBuffs);
-            _characters.forEach(this::updatePosition);
-        }
+        _characters.forEach(this::updateJobs);
+        _characters.forEach(this::updateBuffs);
+        _characters.forEach(this::updatePosition);
     }
 
     /**

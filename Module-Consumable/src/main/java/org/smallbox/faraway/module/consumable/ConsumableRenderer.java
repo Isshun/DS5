@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.Queue;
@@ -36,12 +36,12 @@ public class ConsumableRenderer extends BaseRenderer {
     public void onGameCreate(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
-            public void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {
+            public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {
                 addTag("+" + consumable.getQuantity(), consumable.getParcel());
             }
 
             @Override
-            public void onUpdateQuantity(ParcelModel parcel, ConsumableModel consumable, int quantityBefore, int quantityAfter) {
+            public void onUpdateQuantity(ParcelModel parcel, ConsumableItem consumable, int quantityBefore, int quantityAfter) {
                 addTag("+" + (quantityAfter - quantityBefore), consumable.getParcel());
             }
         });
@@ -72,7 +72,7 @@ public class ConsumableRenderer extends BaseRenderer {
 //        renderer.draw("Hello", 12, 100, 100, Color.CYAN);
     }
 
-    private Sprite getItemSprite(ConsumableModel consumable) {
+    private Sprite getItemSprite(ConsumableItem consumable) {
         return ApplicationClient.spriteManager.getSprite(consumable.getInfo(), consumable.getGraphic(), consumable.getInfo().height, 0, 255, false);
     }
 

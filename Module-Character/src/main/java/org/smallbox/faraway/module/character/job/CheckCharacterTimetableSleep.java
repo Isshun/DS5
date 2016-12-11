@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.module.item.ItemFinderModule;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.job.SleepJob;
-import org.smallbox.faraway.module.item.ItemModel;
 
 /**
  * Created by Alex on 25/10/2015.
@@ -25,7 +25,7 @@ public class CheckCharacterTimetableSleep extends CharacterCheck {
     @Override
     public JobModel onCreateJob(CharacterModel character) {
         ItemFinderModule finder = (ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class);
-        ItemModel item = (ItemModel)finder.getNearest(bedFilter, character);
+        UsableItem item = (UsableItem)finder.getNearest(bedFilter, character);
         if (item != null) {
             SleepJob job = new SleepJob(item.getParcel(), item);
             job.setCharacterRequire(character);

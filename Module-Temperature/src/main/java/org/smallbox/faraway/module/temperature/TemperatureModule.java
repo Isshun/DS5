@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.ItemModuleObserver;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.room.RoomModule;
 import org.smallbox.faraway.module.weather.WeatherModule;
 import org.smallbox.faraway.module.weather.WeatherModuleObserver;
@@ -33,18 +33,18 @@ public class TemperatureModule extends GameModule {
     @BindModule
     private ItemModule itemModule;
 
-    private List<ItemModel> _items = new ArrayList<>();
+    private List<UsableItem> _items = new ArrayList<>();
 
     @Override
     public void onGameCreate(Game game) {
         itemModule.addObserver(new ItemModuleObserver() {
             @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+            public void onRemoveItem(ParcelModel parcel, UsableItem item) {
                 _items.remove(item);
             }
 
             @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
+            public void onAddItem(ParcelModel parcel, UsableItem item) {
                 if (item.getInfo().hasTemperatureEffect()) {
                     _items.add(item);
                 }

@@ -5,10 +5,10 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.PathModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.PlantModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -34,14 +34,11 @@ public class WorldHelper {
         _floors = gameInfo.worldFloors;
     }
 
-    public static ConsumableModel   getConsumable(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getConsumable() : null; }
-    public static StructureModel    getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructure() : null; }
+    public static ConsumableItem    getConsumable(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(ConsumableItem.class) : null; }
+    public static StructureItem     getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(StructureItem.class) : null; }
     public static PlantModel        getResource(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getPlant() : null; }
     public static ItemInfo          getPlantInfo(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
     public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getGroundInfo() : null; }
-    public static ItemInfo          getRockInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getRockInfo() : null; }
-    public static ItemInfo          getStructureInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getStructureInfo() : null; }
-    public static ItemInfo          getLiquidInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getLiquidInfo() : null; }
     public static int               getCurrentFloor() { return _currentFloor; }
     public static int               getGroundFloor() { return _groundFloor; }
 
@@ -49,12 +46,18 @@ public class WorldHelper {
 
     public static boolean           hasGround(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getGroundInfo() != null; }
     public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
-    public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].getStructure().getInfo().isWall; }
-    public static boolean           hasDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].getStructure().getInfo().isDoor; }
+    public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isWall; }
+    public static boolean           hasDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isDoor; }
     public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null; }
-    public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null; }
-    public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getStructure() != null && _parcels[x][y][z].hasWallOrDoor(); }
+    public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class); }
+    public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && hasWallOrDoor(_parcels[x][y][z]); }
     public static boolean           hasLiquid(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid(); }
+
+    public static boolean           hasStructure(ParcelModel parcel) { return parcel.hasItem(StructureItem.class); }
+    public static boolean           hasWallOrDoor(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && (parcel.getItem(StructureItem.class).getInfo().isWall || parcel.getItem(StructureItem.class).getInfo().isDoor); }
+    public static boolean           hasWall(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isWall; }
+    public static boolean           hasDoor(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isDoor; }
+    public static boolean           hasFloor(ParcelModel parcel) { return parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isFloor; }
 
     /**
      * Search for org.smallbox.faraway.core.module.room.model free to receive a ConsumableItem
@@ -99,7 +102,7 @@ public class WorldHelper {
         }
 
         ParcelModel parcel = _parcels[x][y][z];
-        if (parcel.getStructure() != null && !parcel.getStructure().isWalkable()) {
+        if (parcel.hasItem(StructureItem.class) && !parcel.getItem(StructureItem.class).isWalkable()) {
             return false;
         }
 
@@ -120,7 +123,8 @@ public class WorldHelper {
 //            return false;
 //        }
 
-        if (parcel.getConsumable() != null && (parcel.getConsumable().getInfo() != info || parcel.getConsumable().getQuantity() + quantity > Math.max(Application.configurationManager.game.storageMaxQuantity, parcel.getConsumable().getInfo().stack))) {
+        ConsumableItem consumable = parcel.getItem(ConsumableItem.class);
+        if (consumable != null && (consumable.getInfo() != info || consumable.getQuantity() + quantity > Math.max(Application.configurationManager.game.storageMaxQuantity, consumable.getInfo().stack))) {
             return false;
         }
 
@@ -217,7 +221,7 @@ public class WorldHelper {
         if (_parcels[x][y][z].hasRock()) {
             return false;
         }
-        if (_parcels[x][y][z].hasStructure() && !_parcels[x][y][z].getStructure().isWalkable()) {
+        if (_parcels[x][y][z].hasItem(StructureItem.class) && !_parcels[x][y][z].getItem(StructureItem.class).isWalkable()) {
             return false;
         }
         if (_parcels[x][y][z].hasPlant()) {

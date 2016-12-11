@@ -58,9 +58,9 @@ public abstract class LuaModuleManager implements GameObserver {
             public boolean onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); return true; }
             public void onSelectRock(ItemInfo rockInfo) { broadcastToLuaModules(LuaEventsModel.on_rock_selected, rockInfo); }
             public void onSelectPlant(PlantModel plant) { broadcastToLuaModules(LuaEventsModel.on_plant_selected, plant); }
-            public void onSelectConsumable(ConsumableModel consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
-            public void onSelectStructure(StructureModel structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
-            public void onSelectNetwork(NetworkObjectModel network) { broadcastToLuaModules(LuaEventsModel.on_network_selected, network); }
+            public void onSelectConsumable(ConsumableItem consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
+            public void onSelectStructure(StructureItem structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
+            public void onSelectNetwork(NetworkItem network) { broadcastToLuaModules(LuaEventsModel.on_network_selected, network); }
             public void onSelectReceipt(ReceiptGroupInfo receipt) { broadcastToLuaModules(LuaEventsModel.on_receipt_select, receipt); }
             public void onOverParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_over, parcel); }
             public void onDeselect() { broadcastToLuaModules(LuaEventsModel.on_deselect, null); }

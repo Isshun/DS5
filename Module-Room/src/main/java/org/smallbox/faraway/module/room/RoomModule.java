@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.AsyncTask;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.module.structure.StructureModule;
@@ -44,21 +44,21 @@ public class RoomModule extends GameModule implements GameObserver {
     public void onGameCreate(Game game) {
         _structureModule.addObserver(new StructureModuleObserver() {
             @Override
-            public void onAddStructure(StructureModel structure) {
+            public void onAddStructure(StructureItem structure) {
                 if (structure.isComplete()) {
                     plantRefresh(structure.getParcel().z);
                 }
             }
 
             @Override
-            public void onRemoveStructure(ParcelModel parcel, StructureModel structure) {
+            public void onRemoveStructure(ParcelModel parcel, StructureItem structure) {
                 if (structure.isComplete()) {
                     plantRefresh(structure.getParcel().z);
                 }
             }
 
             @Override
-            public void onStructureComplete(StructureModel structure) {
+            public void onStructureComplete(StructureItem structure) {
             }
         });
     }
@@ -278,7 +278,7 @@ public class RoomModule extends GameModule implements GameObserver {
 
     // TODO
 //    @Override
-//    public void onStructureComplete(StructureModel structure) {
+//    public void onStructureComplete(StructureItem structure) {
 //        plantRefresh(structure.getParcel().z);
 //    }
 

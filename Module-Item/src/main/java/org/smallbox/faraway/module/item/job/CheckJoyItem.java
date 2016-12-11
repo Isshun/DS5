@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.module.item.ItemFinderModule;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -15,7 +15,7 @@ public class CheckJoyItem extends CharacterCheck {
 
     @Override
     public JobModel onCreateJob(CharacterModel character) {
-        ItemModel item = getItem(character);
+        UsableItem item = getItem(character);
         if (item != null) {
             UseJob job = UseJob.create(character, item);
             if (job != null) {
@@ -27,10 +27,10 @@ public class CheckJoyItem extends CharacterCheck {
         return null;
     }
 
-    private ItemModel getItem(CharacterModel character) {
+    private UsableItem getItem(CharacterModel character) {
         ItemFilter filter = ItemFilter.createUsableFilter();
         filter.effectEntertainment = true;
-        return (ItemModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getRandomNearest(filter, character);
+        return (UsableItem)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getRandomNearest(filter, character);
     }
 
     @Override

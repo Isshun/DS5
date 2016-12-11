@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.module.character.model.PathModel;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
@@ -46,15 +46,15 @@ public class HaulJob extends JobModel {
         return false;
     }
 
-    public ConsumableModel getConsumable() {
+    public ConsumableItem getConsumable() {
         return _consumable;
     }
 
     public static class PotentialConsumable {
-        public ConsumableModel  consumable;
+        public ConsumableItem consumable;
         public int              distance;
 
-        public PotentialConsumable(ConsumableModel consumable, int distance) {
+        public PotentialConsumable(ConsumableItem consumable, int distance) {
             this.consumable = consumable;
             this.distance = distance;
         }
@@ -62,11 +62,11 @@ public class HaulJob extends JobModel {
 
     private final ConsumableModule _consumableModule;
     private int _currentQuantity;
-    private ConsumableModel                         _consumable;
+    private ConsumableItem _consumable;
     private int                                     _quantity;
     private BuildableMapObject                      _buildItem;
     private BuildableMapObject.ComponentModel       _component;
-    private ConsumableModel                             _currentConsumable;
+    private ConsumableItem _currentConsumable;
     private List<PotentialConsumable>                   _potentialConsumables;
     private JobActionReturn                             _return = JobActionReturn.CONTINUE;
 
@@ -99,7 +99,7 @@ public class HaulJob extends JobModel {
         return _buildItem;
     }
 
-    public void addPotentialConsumable(ConsumableModel consumable) {
+    public void addPotentialConsumable(ConsumableItem consumable) {
         if (consumable.getInfo() == _component.info) {
             PathModel path = Application.pathManager.getPath(_buildItem.getParcel(), consumable.getParcel(), false, false);
             _potentialConsumables.add(new PotentialConsumable(consumable, path != null ? path.getLength() : -1));
@@ -107,7 +107,7 @@ public class HaulJob extends JobModel {
         }
     }
 
-    public void removePotentialConsumable(ConsumableModel consumable) {
+    public void removePotentialConsumable(ConsumableItem consumable) {
         if (consumable.getInfo() == _component.info) {
             // Remove consumable from potentials
             _potentialConsumables.removeIf(potentialConsumable -> potentialConsumable.consumable == consumable);
@@ -178,7 +178,7 @@ public class HaulJob extends JobModel {
 //        }
     }
 
-    private void moveToConsumable(CharacterModel character, ConsumableModel consumable) {
+    private void moveToConsumable(CharacterModel character, ConsumableItem consumable) {
         consumable.setJob(this);
         character.moveTo(_consumable.getParcel(), new MoveListener<CharacterModel>() {
             @Override
@@ -256,7 +256,7 @@ public class HaulJob extends JobModel {
     protected void onFinish() {
     }
 
-    private void moveToComponent(ConsumableModel currentConsumable) {
+    private void moveToComponent(ConsumableItem currentConsumable) {
         Log.info("Haul job: move to component");
 
         currentConsumable.setJob(this);
@@ -267,13 +267,13 @@ public class HaulJob extends JobModel {
         _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
             @Override
             public void onReach(CharacterModel character) {
-                if (_targetParcel.getConsumable() == currentConsumable) {
+                if (_targetParcel.getItem(ConsumableItem.class) == currentConsumable) {
                     int missingQuantity = (_component.neededQuantity - _component.currentQuantity);
                     if (currentConsumable.getQuantity() <= missingQuantity) {
-                        _character.createInventoryFromConsumable(new ConsumableModel(currentConsumable.getInfo()), currentConsumable.getQuantity());
+                        _character.createInventoryFromConsumable(new ConsumableItem(currentConsumable.getInfo()), currentConsumable.getQuantity());
                         currentConsumable.setQuantity(0);
                     } else {
-                        _character.createInventoryFromConsumable(new ConsumableModel(currentConsumable.getInfo()), missingQuantity);
+                        _character.createInventoryFromConsumable(new ConsumableItem(currentConsumable.getInfo()), missingQuantity);
                         currentConsumable.setQuantity(currentConsumable.getQuantity() - missingQuantity);
                     }
                 }

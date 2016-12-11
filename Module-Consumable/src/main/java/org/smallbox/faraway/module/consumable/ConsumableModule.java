@@ -12,14 +12,13 @@ import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.character.model.PathModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.*;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.structure.StructureModuleObserver;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 import org.smallbox.faraway.module.world.WorldInteractionModuleObserver;
 import org.smallbox.faraway.module.world.WorldModule;
-import org.smallbox.faraway.module.world.WorldModuleObserver;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;
@@ -44,9 +43,9 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @BindModule
     private WorldInteractionModule worldInteractionModule;
 
-    private Collection<ConsumableModel> _consumables;
+    private Collection<ConsumableItem> _consumables;
 
-    public Collection<ConsumableModel> getConsumables() {
+    public Collection<ConsumableItem> getConsumables() {
         return _consumables;
     }
 
@@ -56,16 +55,16 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         structureModule.addObserver(new StructureModuleObserver() {
             @Override
-            public void onStructureComplete(StructureModel structure) {
+            public void onStructureComplete(StructureItem structure) {
                 if (!structure.isWalkable() && structure.getParcel().hasConsumable()) {
-                    moveConsumableToParcel(WorldHelper.getNearestFreeParcel(structure.getParcel(), true, true), structure.getParcel().getConsumable());
+                    moveConsumableToParcel(WorldHelper.getNearestFreeParcel(structure.getParcel(), true, true), structure.getParcel().getItem(ConsumableItem.class));
                 }
             }
         });
 
         worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
-            private ConsumableModel _lastConsumable;
-            private ConsumableModel _currentConsumable;
+            private ConsumableItem _lastConsumable;
+            private ConsumableItem _currentConsumable;
 
             @Override
             public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
@@ -84,23 +83,11 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 _lastConsumable = _currentConsumable;
             }
         });
-
-        worldModule.addObserver(new WorldModuleObserver() {
-            @Override
-            public void onAddParcel(ParcelModel parcel) {
-                if (parcel.hasConsumable()) {
-                    _consumables.add(parcel.getConsumable());
-                }
-            }
-        });
     }
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        _consumables.forEach(ConsumableModel::fixPosition);
-        _consumables.stream()
-                .filter(consumable -> consumable.getQuantity() == 0 && consumable.getParcel() != null)
-                .forEach(consumable -> consumable.getParcel().setConsumable(null));
+        _consumables.forEach(ConsumableItem::fixPosition);
         _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
     }
 
@@ -135,7 +122,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
 
-    public void removeConsumable(ConsumableModel consumable) {
+    public void removeConsumable(ConsumableItem consumable) {
 
         // TODO
 //        if (consumable != null) {
@@ -152,9 +139,6 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         if (consumable != null && consumable.getParcel() != null) {
             ParcelModel parcel = consumable.getParcel();
-            if (consumable.getParcel().getConsumable() == consumable) {
-                consumable.getParcel().setConsumable(null);
-            }
             _consumables.remove(consumable);
 
             jobModule.getJobs().stream()
@@ -165,19 +149,23 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
-    public ConsumableModel putConsumable(ParcelModel parcel, ConsumableModel consumable) {
+    public ConsumableItem putConsumable(ParcelModel parcel, ConsumableItem consumable) {
         if (parcel != null) {
             ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, consumable.getInfo(), consumable.getQuantity());
             if (finalParcel == null) {
                 return null;
             }
 
-            // Put consumable on free org.smallbox.faraway.core.module.room.model
-            if (finalParcel.getConsumable() != null) {
-                finalParcel.getConsumable().addQuantity(consumable.getQuantity());
-            } else {
+            // Ajout la quantity au consomable déjà présent
+            ConsumableItem existingConsumable = finalParcel.getItem(ConsumableItem.class);
+            if (existingConsumable != null) {
+                existingConsumable.addQuantity(consumable.getQuantity());
+            }
+
+            // Ajout le nouveau consomable sur la carte
+            else {
                 moveConsumableToParcel(finalParcel, consumable);
-                _consumables.add(finalParcel.getConsumable());
+                _consumables.add(consumable);
             }
 
             jobModule.getJobs().stream()
@@ -192,26 +180,15 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return null;
     }
 
-    private void moveConsumableToParcel(ParcelModel parcel, ConsumableModel consumable) {
-        parcel.setConsumable(consumable);
-        if (consumable != null && consumable.getParcel() != null) {
-            consumable.getParcel().setConsumable(null);
-        }
+    private void moveConsumableToParcel(ParcelModel parcel, ConsumableItem consumable) {
         if (consumable != null) {
-            consumable.setParcel(parcel);
-
-            if (parcel.getConsumable() == null) {
-                parcel.setConsumable(consumable);
+            if (consumable.getParcel() != null) {
+                consumable.getParcel().setItem(null);
             }
+            consumable.setParcel(parcel);
+            parcel.setItem(consumable);
         }
     }
-
-//    @Override
-//    public void onItemComplete(ItemModel item) {
-//        if (item.getParcel().hasConsumable()) {
-//            moveConsumableToParcel(WorldHelper.getNearestFreeParcel(item.getParcel(), true, true), item.getParcel().getConsumable());
-//        }
-//    }
 
     @Override
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
@@ -222,33 +199,33 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @Override
     public void removeObject(MapObjectModel mapObjectModel) {
-        if (mapObjectModel.isConsumable() && mapObjectModel instanceof ConsumableModel) {
-            removeConsumable((ConsumableModel) mapObjectModel);
+        if (mapObjectModel.isConsumable() && mapObjectModel instanceof ConsumableItem) {
+            removeConsumable((ConsumableItem) mapObjectModel);
         }
     }
 
-    public ConsumableModel putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+    public ConsumableItem putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
         assert parcel != null;
 
         if (quantity > 0) {
             final ParcelModel finalParcel = WorldHelper.getNearestFreeArea(parcel, itemInfo, quantity);
             if (finalParcel != null) {
                 // Ajoute la quantité au consomable déjà présent
-                if (finalParcel.getConsumable() != null) {
+                ConsumableItem existingConsumable = finalParcel.getItem(ConsumableItem.class);
+                if (existingConsumable != null) {
                     Log.info("ConsumableModule", "Add %d to %s at %s", quantity, itemInfo, finalParcel);
-                    ConsumableModel consumable = finalParcel.getConsumable();
-                    consumable.addQuantity(quantity);
-                    notifyObservers(observer -> observer.onUpdateQuantity(finalParcel, consumable, consumable.getQuantity() - quantity, consumable.getQuantity()));
-                    return consumable;
+                    existingConsumable.addQuantity(quantity);
+                    notifyObservers(observer -> observer.onUpdateQuantity(finalParcel, existingConsumable, existingConsumable.getQuantity() - quantity, existingConsumable.getQuantity()));
+                    return existingConsumable;
                 }
 
                 // Crée un nouveau consomable
                 else {
                     Log.info("ConsumableModule", "Create %s x %d at %s", itemInfo, quantity, finalParcel);
-                    ConsumableModel consumable = new ConsumableModel(itemInfo);
+                    ConsumableItem consumable = new ConsumableItem(itemInfo);
                     consumable.setQuantity(quantity);
                     moveConsumableToParcel(finalParcel, consumable);
-                    _consumables.add(finalParcel.getConsumable());
+                    _consumables.add(consumable);
                     notifyObservers(observer -> observer.onAddConsumable(finalParcel, consumable));
                     return consumable;
                 }
@@ -258,14 +235,14 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return null;
     }
 
-    public ConsumableModel find(ItemInfo itemInfo) {
+    public ConsumableItem find(ItemInfo itemInfo) {
         return _consumables.stream()
                 .filter(consumable -> consumable.getInfo() == itemInfo && consumable.getParcel() != null)
                 .findAny().orElse(null);
     }
 
-    public ConsumableModel create(ItemInfo info, int quantity, ParcelModel parcel) {
-        ConsumableModel consumable = new ConsumableModel(info);
+    public ConsumableItem create(ItemInfo info, int quantity, ParcelModel parcel) {
+        ConsumableItem consumable = new ConsumableItem(info);
         consumable.setQuantity(quantity);
         consumable.setParcel(parcel);
 
@@ -291,8 +268,8 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     // TODO
-    public BasicHaulJob createHaulJob(ItemInfo itemInfo, ItemModel item, int needQuantity) {
-        for (ConsumableModel consumable: _consumables) {
+    public BasicHaulJob createHaulJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
+        for (ConsumableItem consumable: _consumables) {
             if (consumable.getInfo() == itemInfo) {
 
                 // Calcul le nombre d'élément de la pile déjà consomés par des jobs
@@ -313,4 +290,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         return null;
     }
+
+    // TODO: perfs
+    public ConsumableItem getConsumable(ParcelModel parcel) { return _consumables.stream().filter(consumableItem -> consumableItem.getParcel() == parcel).findFirst().orElse(null); }
 }

@@ -157,7 +157,7 @@ public abstract class MapObjectModel extends ObjectModel {
         }
     }
 
-    public int addComponent(ConsumableModel consumable) {
+    public int addComponent(ConsumableItem consumable) {
         throw new RuntimeException("addSubJob component on MapObjectItem is not allowed");
     }
 

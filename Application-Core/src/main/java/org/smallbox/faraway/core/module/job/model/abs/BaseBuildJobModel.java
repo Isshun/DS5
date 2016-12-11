@@ -2,7 +2,7 @@
 //
 //import FactoryReceiptModel;
 //import org.smallbox.faraway.core.game.model.OldReceiptModel;
-//import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+//import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 //import org.smallbox.faraway.core.data.ItemInfo;
 //import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -28,7 +28,7 @@
 ////        return _receipt;
 ////    }
 //
-////    public void addConsumable(ConsumableModel consumable) {
+////    public void addConsumable(ConsumableItem consumable) {
 ////        for (OldReceiptModel receipt: _receipts) {
 ////            receipt.addConsumable(consumable);
 ////        }
@@ -37,7 +37,7 @@
 ////        }
 ////    }
 ////
-////    public void removeConsumable(ConsumableModel consumable) {
+////    public void removeConsumable(ConsumableItem consumable) {
 ////        for (OldReceiptModel receipt: _receipts) {
 ////            receipt.removeConsumable(consumable);
 ////        }

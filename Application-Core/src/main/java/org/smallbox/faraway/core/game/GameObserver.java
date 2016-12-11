@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 
 import java.util.List;
 
@@ -24,12 +24,12 @@ public interface GameObserver {
     default void onRefreshUI(int frame){}
     default void onObjectComplete(MapObjectModel mapObjectModel){}
     default void onChangeGround(ParcelModel parcel){}
-//    default void onRemoveItem(ParcelModel parcel, ItemModel item){}
-//    default void onRemoveConsumable(ConsumableModel consumable){}
-//    default void onRemoveStructure(ParcelModel parcel, StructureModel structure){}
+//    default void onRemoveItem(ParcelModel parcel, UsableItem item){}
+//    default void onRemoveConsumable(ConsumableItem consumable){}
+//    default void onRemoveStructure(ParcelModel parcel, StructureItem structure){}
 //    default void onRemovePlant(PlantModel plant){}
     default void onRemoveRock(ParcelModel parcel){}
-    default void onRefreshStructure(StructureModel structure) {}
+    default void onRefreshStructure(StructureItem structure) {}
     default void onHourChange(int hour){}
     default void onDayChange(int day) {}
     default void onYearChange(int year) {}

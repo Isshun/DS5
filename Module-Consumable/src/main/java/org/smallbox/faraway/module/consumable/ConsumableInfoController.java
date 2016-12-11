@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 
 /**
@@ -22,18 +22,18 @@ public class ConsumableInfoController extends LuaController {
     @BindModule
     private WorldInteractionModule worldInteractionModule;
 
-    private ConsumableModel _consumable;
+    private ConsumableItem _consumable;
 
     @Override
     public void onGameStart(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
-            public void onDeselectConsumable(ConsumableModel consumable) {
+            public void onDeselectConsumable(ConsumableItem consumable) {
                 setVisible(false);
             }
 
             @Override
-            public void onSelectConsumable(ConsumableModel consumable) {
+            public void onSelectConsumable(ConsumableItem consumable) {
                 selectConsumable(consumable);
             }
         });
@@ -54,7 +54,7 @@ public class ConsumableInfoController extends LuaController {
         }
     }
 
-    private void selectConsumable(ConsumableModel consumable) {
+    private void selectConsumable(ConsumableItem consumable) {
         setVisible(true);
         _consumable = consumable;
     }

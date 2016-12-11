@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.job.JobModuleObserver;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
@@ -42,21 +42,21 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     @BindModule
     private WorldInteractionModule worldInteractionModule;
 
-    private Collection<StructureModel> _structures;
+    private Collection<StructureItem> _structures;
 
-    public Collection<StructureModel> getStructures() { return _structures; }
+    public Collection<StructureItem> getStructures() { return _structures; }
 
     @Override
     public void onGameCreate(Game game) {
         _structures = new LinkedBlockingQueue<>();
 
         worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
-            public StructureModel _lastStructure;
+            public StructureItem _lastStructure;
 
             @Override
             public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 // Get structure on parcel
-                StructureModel structure = _structures.stream()
+                StructureItem structure = _structures.stream()
                         .filter(s -> parcels.contains(s.getParcel()))
                         .findAny()
                         .orElse(null);
@@ -95,23 +95,21 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        if (tick % 10 == 0) {
 // TODO
-            //            // Create hauling jobs
+        //            // Create hauling jobs
 //            _structures.stream().filter(structure -> !structure.isComplete())
 //                    .forEach(item -> item.getComponents().stream()
 //                            .filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
 //                            .forEach(component -> jobModule.addHaulJob(new HaulJob(item, component))));
 
-            // Create Build jobs
-            _structures.stream()
-                    .filter(structure -> !structure.isComplete())
-                    .filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                    .forEach(item -> jobModule.addJob(new BuildJob(item)));
-        }
+        // Create Build jobs
+        _structures.stream()
+                .filter(structure -> !structure.isComplete())
+                .filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
+                .forEach(item -> jobModule.addJob(new BuildJob(item)));
     }
 
-    public void removeStructure(StructureModel structure) {
+    public void removeStructure(StructureItem structure) {
         if (structure != null && structure.getParcel() != null) {
             ParcelModel parcel = structure.getParcel();
             moveStructureToParcel(parcel, null);
@@ -123,8 +121,8 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         }
     }
 
-    private void moveStructureToParcel(ParcelModel parcel, StructureModel structure) {
-        parcel.setStructure(structure);
+    private void moveStructureToParcel(ParcelModel parcel, StructureItem structure) {
+        parcel.setItem(structure);
         if (structure != null) {
             structure.setParcel(parcel);
         }
@@ -132,17 +130,17 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
 
     @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
-        if (parcel.hasStructure() && !parcel.getStructure().isComplete() && (object == null || object instanceof StructureModel)) {
-            StructureModel structure = parcel.getStructure();
-            parcel.setStructure(null);
+        StructureItem structure = parcel.getItem(StructureItem.class);
+        if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {
+            parcel.removeItem(structure);
             notifyObservers(observer -> observer.onRemoveStructure(parcel, structure));
         }
     }
 
     @Override
     public void removeObject(MapObjectModel mapObjectModel) {
-        if (mapObjectModel.isStructure() && mapObjectModel instanceof StructureModel) {
-            removeStructure((StructureModel) mapObjectModel);
+        if (mapObjectModel.isStructure() && mapObjectModel instanceof StructureItem) {
+            removeStructure((StructureItem) mapObjectModel);
         }
     }
 
@@ -153,9 +151,9 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         }
     }
 
-    private StructureModel putStructure(ParcelModel parcel, ItemInfo itemInfo, int matterSupply, boolean complete) {
-        if (parcel.getStructure() == null || parcel.getStructure().isFloor()) {
-            StructureModel structure = new StructureModel(itemInfo);
+    private StructureItem putStructure(ParcelModel parcel, ItemInfo itemInfo, int matterSupply, boolean complete) {
+        if (parcel.hasItem(StructureItem.class) || parcel.getItem(StructureItem.class).isFloor()) {
+            StructureItem structure = new StructureItem(itemInfo);
             structure.addProgress(complete ? itemInfo.cost : 0);
 //            structure.setComplete(complete);
 
@@ -181,7 +179,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
      *
      * @param structure to build
      */
-    private void launchBuild(StructureModel structure) {
+    private void launchBuild(StructureItem structure) {
         BuildJob job = new BuildJob(structure);
         structure.setBuildJob(job);
         jobModule.addJob(job);
@@ -191,7 +189,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         Log.info("Add pattern for %s at position %s", itemInfo, parcel);
 
         // Create structure
-        StructureModel structure = new StructureModel(itemInfo);
+        StructureItem structure = new StructureItem(itemInfo);
         structure.setBuildProgress(0);
         structure.setParcel(parcel);
         _structures.add(structure);
@@ -199,7 +197,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         launchBuild(structure);
     }
 
-    public void addStructure(StructureModel structure, int x, int y, int z) {
+    public void addStructure(StructureItem structure, int x, int y, int z) {
         ParcelModel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
             structure.setParcel(parcel);
@@ -207,8 +205,8 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         }
     }
 
-    public StructureModel getStructure(ParcelModel parcel) {
-        for (StructureModel structure: _structures) {
+    public StructureItem getStructure(ParcelModel parcel) {
+        for (StructureItem structure: _structures) {
             if (structure.getParcel() == parcel) {
                 return structure;
             }

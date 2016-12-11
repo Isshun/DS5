@@ -13,10 +13,10 @@
 //import org.smallbox.faraway.client.renderer.LightRenderer;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.model.GameConfig;
-//import ItemModel;
+//import UsableItem;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
-//import org.smallbox.faraway.core.module.world.model.StructureModel;
+//import org.smallbox.faraway.core.module.world.model.StructureItem;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //import org.smallbox.faraway.util.Constant;
 //
@@ -266,14 +266,14 @@
 //    }
 //
 //    @Override
-//    public void onAddItem(ItemModel item) {
+//    public void onAddItem(UsableItem item) {
 //        if (item.isLight()) {
 //            _needRefresh = true;
 //        }
 //    }
 //
 //    @Override
-//    public void onRemoveItem(ItemModel item) {
+//    public void onRemoveItem(UsableItem item) {
 //        if (item.isLight()) {
 //            _needRefresh = true;
 //        }
@@ -294,7 +294,7 @@
 //    }
 //
 //    @Override
-//    public void onAddStructure(StructureModel structure) {
+//    public void onAddStructure(StructureItem structure) {
 //        if (structure.isSolid()) {
 //            _needRefresh = true;
 //        }

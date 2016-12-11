@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.item.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.ItemSlot;
 import org.smallbox.faraway.module.item.NetworkConnectionModel;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.util.Log;
 
 public class UseJob extends JobModel {
     private int         _current;
-    private ItemModel _item;
+    private UsableItem _item;
     private ItemSlot _slot;
 
     @Override
@@ -25,7 +25,7 @@ public class UseJob extends JobModel {
         super();
     }
 
-    public static UseJob create(ItemModel item) {
+    public static UseJob create(UsableItem item) {
         assert item != null;
 
         if (!item.hasFreeSlot()) {
@@ -46,7 +46,7 @@ public class UseJob extends JobModel {
         return job;
     }
 
-    public static UseJob create(CharacterModel character, ItemModel item) {
+    public static UseJob create(CharacterModel character, UsableItem item) {
         if (character == null) {
             Log.warning("Cannot createGame job with null character");
             return null;

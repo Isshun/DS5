@@ -45,7 +45,7 @@
 //    }
 //
 //    @Override
-//    public void onAddStructure(StructureModel structure) {
+//    public void onAddStructure(StructureItem structure) {
 //        sendEvent("AddStructure", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("structure");
 //            rootElement.appendChild(characterElement);
@@ -59,7 +59,7 @@
 //    }
 //
 //    @Override
-//    public void onAddItem(ItemModel item) {
+//    public void onAddItem(UsableItem item) {
 //        sendEvent("AddItem", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("item");
 //            rootElement.appendChild(characterElement);
@@ -73,7 +73,7 @@
 //    }
 //
 //    @Override
-//    public void onAddConsumable(ConsumableModel consumable) {
+//    public void onAddConsumable(ConsumableItem consumable) {
 //        sendEvent("AddConsumable", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("consumable");
 //            rootElement.appendChild(characterElement);
@@ -101,7 +101,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveItem(ItemModel item) {
+//    public void onRemoveItem(UsableItem item) {
 //        sendEvent("RemoveItem", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("item");
 //            rootElement.appendChild(characterElement);
@@ -115,7 +115,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveConsumable(ConsumableModel consumable) {
+//    public void onRemoveConsumable(ConsumableItem consumable) {
 //        sendEvent("RemoveConsumable", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("consumable");
 //            rootElement.appendChild(characterElement);
@@ -129,7 +129,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveStructure(StructureModel structure) {
+//    public void onRemoveStructure(StructureItem structure) {
 //        sendEvent("RemoveStructure", (doc, rootElement) -> {
 //            Element characterElement = doc.createElement("structure");
 //            rootElement.appendChild(characterElement);
@@ -157,12 +157,12 @@
 //    }
 //
 //    @Override
-//    public void onRefreshItem(ItemModel item) {
+//    public void onRefreshItem(UsableItem item) {
 //
 //    }
 //
 //    @Override
-//    public void onRefreshStructure(StructureModel structure) {
+//    public void onRefreshStructure(StructureItem structure) {
 //
 //    }
 //
@@ -198,7 +198,7 @@
 //    }
 //
 //    @Override
-//    public void onSelectItem(ItemModel item) {
+//    public void onSelectItem(UsableItem item) {
 //
 //    }
 //
@@ -208,12 +208,12 @@
 //    }
 //
 //    @Override
-//    public void onSelectConsumable(ConsumableModel consumable) {
+//    public void onSelectConsumable(ConsumableItem consumable) {
 //
 //    }
 //
 //    @Override
-//    public void onSelectStructure(StructureModel structure) {
+//    public void onSelectStructure(StructureItem structure) {
 //
 //    }
 //

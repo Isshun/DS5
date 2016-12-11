@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ItemModel extends BuildableMapObject {
+public class UsableItem extends BuildableMapObject {
     private int                             _targetTemperature = 21;
     private boolean                         _isFunctional = true;
     private boolean                         _isActive = true;
@@ -24,11 +24,11 @@ public class ItemModel extends BuildableMapObject {
     private int[]                           _storageSlot;
     private List<NetworkConnectionModel>    _networkConnections;
 
-    public ItemModel(ItemInfo info, int id) {
+    public UsableItem(ItemInfo info, int id) {
         super(info, id);
     }
 
-    public ItemModel(ItemInfo info) {
+    public UsableItem(ItemInfo info) {
         super(info);
     }
 

@@ -1,7 +1,9 @@
 package org.smallbox.faraway.module.item;
 
+import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 26/04/2016.
  */
-public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
+public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @BindLua private UILabel        lbName;
 
@@ -34,11 +36,14 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
     @BindLua private UIList         listComponents;
     @BindLua private UIList         listFactoryInventory;
 
+    @BindLuaController
+    private ItemInfoReceiptController itemInfoReceiptController;
+
     @BindModule
     private ItemModule itemModule;
 
     @Override
-    protected void onDisplayUnique(ItemModel item) {
+    protected void onDisplayUnique(UsableItem item) {
         lbName.setText(item.getLabel());
         refreshActions(item);
         refreshBuilding(item);
@@ -46,42 +51,43 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<ItemModel> list) {
+    protected void onDisplayMultiple(List<UsableItem> list) {
     }
 
     @Override
-    protected ItemModel getObjectOnParcel(ParcelModel parcel) {
+    protected UsableItem getObjectOnParcel(ParcelModel parcel) {
         return itemModule.getItem(parcel);
     }
 
-    private void refreshActions(ItemModel item) {
+    private void refreshActions(UsableItem item) {
         listActions.clear();
 
         if (item.getFactory() != null) {
             item.getFactory().getReceiptGroups().forEach(receiptGroup -> {
-                UICheckBox cbReceiptGroup = UICheckBox.create(null);
-                cbReceiptGroup.setText(receiptGroup.receiptGroupInfo.label);
-                cbReceiptGroup.setSize(100, 20);
-                cbReceiptGroup.setChecked(UICheckBox.Value.PARTIAL);
-                listActions.addView(cbReceiptGroup);
+                UIFrame lineReceiptGroup = new UIFrame(null);
+                lineReceiptGroup.setSize(100, 20);
+
+                UICheckBox lbLabel = UICheckBox.create(null);
+                lbLabel.setText(receiptGroup.receiptGroupInfo.label);
+                lbLabel.setChecked(UICheckBox.Value.PARTIAL);
+                lbLabel.setSize(220, 20);
+                lineReceiptGroup.addView(lbLabel);
+
+                UILabel btInfo = UILabel.create(null);
+                btInfo.setText("[info]");
+                btInfo.setOnClickListener(event -> itemInfoReceiptController.display(receiptGroup));
+                btInfo.setPosition(220, 0);
+                lbLabel.setSize(50, 20);
+                lbLabel.setBackgroundColor(Color.CYAN);
+                lineReceiptGroup.addView(btInfo);
+
+                listActions.addView(lineReceiptGroup);
 
                 if (item.getFactory().hasRunningReceipt()) {
                     currentAction.setText(item.getFactory().getRunningReceipt().receiptInfo.label);
                 } else {
                     currentAction.setText("no running receipt");
                 }
-
-                item.getFactory().getReceipts().stream()
-                        .filter(receipt -> receipt.receiptGroup == receiptGroup)
-                        .forEach(receipt -> {
-                            UICheckBox cbReceipt = UICheckBox.create(null);
-                            cbReceipt.setText(receipt.receiptInfo.inputs.toString());
-                            cbReceipt.setSize(100, 20);
-                            cbReceipt.setPosition(20, 0);
-                            cbReceipt.setChecked(receipt.isActive ? UICheckBox.Value.TRUE : UICheckBox.Value.FALSE);
-                            cbReceipt.setOnCheckListener(checked -> receipt.isActive = checked == UICheckBox.Value.TRUE);
-                            listActions.addView(cbReceipt);
-                        });
             });
         }
 
@@ -144,7 +150,7 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
     }
 
     // Refresh building frame
-    private void refreshBuilding(ItemModel item) {
+    private void refreshBuilding(UsableItem item) {
         if (!item.isComplete()) {
             frameBuild.setVisible(true);
 

@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
+import org.smallbox.faraway.core.module.world.model.NetworkItem;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class NetworkModel {
     private final NetworkInfo _info;
-    private Set<NetworkObjectModel> _objects = new HashSet<>();
+    private Set<NetworkItem> _objects = new HashSet<>();
     private double                  _quantity;
     private double                  _maxQuantity;
 
@@ -22,13 +22,13 @@ public class NetworkModel {
     }
 
     public NetworkInfo                      getInfo() { return _info; }
-    public Collection<NetworkObjectModel>   getObjects() { return _objects; }
+    public Collection<NetworkItem>   getObjects() { return _objects; }
     public int                              getSize() { return _objects.size(); }
     public double                           getQuantity() { return _quantity; }
     public double                           getMaxQuantity() { return _maxQuantity; }
-    public boolean                          contains(NetworkObjectModel object) { return _objects.contains(object); }
+    public boolean                          contains(NetworkItem object) { return _objects.contains(object); }
 
-    public void addObject(NetworkObjectModel object) {
+    public void addObject(NetworkItem object) {
         object.setNetwork(this);
         _objects.add(object);
         _quantity += object.getQuantity();
@@ -36,7 +36,7 @@ public class NetworkModel {
         flush();
     }
 
-    public void addObjects(Collection<NetworkObjectModel> objects) {
+    public void addObjects(Collection<NetworkItem> objects) {
         objects.forEach(object -> {
             object.setNetwork(this);
             _quantity += object.getQuantity();

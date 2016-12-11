@@ -1,9 +1,11 @@
 package org.smallbox.faraway.module.character;
 
 import org.smallbox.faraway.client.renderer.*;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.BindManager;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
@@ -27,44 +29,44 @@ public class CharacterRenderer extends BaseRenderer {
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
 
+    private long _updateInterval = Config.getInt("game.updateInterval");
+    private long _lastUpdate;
+
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
         _characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
     }
 
-    private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel c) {
+    @Override
+    public void onGameUpdate(Game game) {
+        _lastUpdate = System.currentTimeMillis();
+    }
+
+    private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
         int viewPortX = viewport.getPosX();
         int viewPortY = viewport.getPosY();
         double viewPortScale = viewport.getScale();
 
-        ParcelModel parcel = c.getParcel();
+        ParcelModel parcel = character.getParcel();
         if (parcel.z == _floor) {
             int posX = parcel.x * Constant.TILE_WIDTH + viewPortX;
             int posY = parcel.y * Constant.TILE_HEIGHT + viewPortY;
 
-            if (c.isAlive()) {
+            if (character.isAlive()) {
                 // Get game position and direction
-                Direction direction = c.getDirection();
+                Direction direction = character.getDirection();
                 int frame = 0;
                 int dirIndex = 0;
 
                 // Get offset based on current frame
-                if (c.isAlive()) {
+                if (character.isAlive()) {
                     int offset = 0;
                     if (direction != Direction.NONE) {
-//                    offset = (int) ((-c.getMoveProgress() + (c.getMoveStep() * animProgress)) * Constant.TILE_WIDTH);
-//                        offset = -(int)(((c.getMoveStep() * (1-animProgress))) * Constant.TILE_WIDTH);
-//                        if (animProgress > 1) {
-//                            offset += Constant.TILE_WIDTH;
-//                        }
-//                        if ("paige".equals(c.getInfo().getFirstName().toLowerCase().trim())) {
-////                            Log.info("offset: " + c.getMoveProgress());
-////                            Log.info("offset: " + offset + ", animProgress: " + animProgress);
-//                            Log.info("animProgress: " + animProgress);
-//                        }
-//                        offset = (int) ((c.getMoveProgress()) * Constant.TILE_WIDTH);
-                        frame = c.getFrameIndex() / 20 % 4;
+                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / _updateInterval);
+                        frame = character.getFrameIndex() / 20 % 4;
                     }
+
+                    System.out.println(offset);
 
                     // Get exact position
                     switch (direction) {
@@ -110,7 +112,7 @@ public class CharacterRenderer extends BaseRenderer {
                 }
 
                 // Draw characters
-                renderer.draw(_spriteManager.getCharacter(c, dirIndex, frame), posX, posY);
+                renderer.draw(_spriteManager.getCharacter(character, dirIndex, frame), posX, posY);
 
                 // TODO
 //                // Draw label
@@ -124,21 +126,21 @@ public class CharacterRenderer extends BaseRenderer {
 //                renderer.draw(c.getLabelDrawable(), posX - ((c.getLabelDrawable().getContentWidth() - 24) / 2), posY - 8);
 
                 // Selection
-                if (c.isSelected()) {
-                    renderer.draw(_spriteManager.getSelectorCorner(0), posX + 0, posY + -4);
+                if (character.isSelected()) {
+                    renderer.draw(_spriteManager.getSelectorCorner(0), posX, posY + -4);
                     renderer.draw(_spriteManager.getSelectorCorner(1), posX + 24, posY + -4);
-                    renderer.draw(_spriteManager.getSelectorCorner(2), posX + 0, posY + 28);
+                    renderer.draw(_spriteManager.getSelectorCorner(2), posX, posY + 28);
                     renderer.draw(_spriteManager.getSelectorCorner(3), posX + 24, posY + 28);
                 }
 
                 // Draw inventory
-                if (c.getInventory() != null) {
-                    renderer.draw(_spriteManager.getItem(c.getInventory()), posX, posY + 2);
+                if (character.getInventory() != null) {
+                    renderer.draw(_spriteManager.getItem(character.getInventory()), posX, posY + 2);
                 }
 
                 // Draw inventory 2
-                if (c.getInventory2() != null) {
-                    for (Map.Entry<ItemInfo, Integer> entry: c.getInventory2().entrySet()) {
+                if (character.getInventory2() != null) {
+                    for (Map.Entry<ItemInfo, Integer> entry: character.getInventory2().entrySet()) {
                         if (entry.getValue() > 0) {
                             renderer.draw(_spriteManager.getIcon(entry.getKey()), posX, posY + 2);
                         }

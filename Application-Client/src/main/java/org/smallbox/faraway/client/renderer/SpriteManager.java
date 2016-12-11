@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.NetworkItem;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -116,7 +116,7 @@ public class SpriteManager {
     }
 
     public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
-    public Sprite getItem(StructureModel structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
+    public Sprite getItem(StructureItem structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
 
     private Sprite getBluePrint() {
         long sum = getSum(-1, 0, 0, 0);
@@ -130,9 +130,9 @@ public class SpriteManager {
         return sprite;
     }
 
-    public Sprite getItem(NetworkObjectModel networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
-//    public Sprite getItem(ItemModel item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
-//    public Sprite getItem(ItemModel item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
+    public Sprite getItem(NetworkItem networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
+//    public Sprite getItem(UsableItem item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
+//    public Sprite getItem(UsableItem item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
     public Sprite getItem(GraphicInfo graphicInfo, int parcelTile, int itemTile) {
         if (graphicInfo.type == GraphicInfo.Type.TERRAIN) {
@@ -141,8 +141,8 @@ public class SpriteManager {
         return getSprite(graphicInfo, parcelTile, itemTile, 255, false);
     }
 
-    public Sprite getItem(ConsumableModel consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
-    public Sprite getItem(ConsumableModel consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+    public Sprite getItem(ConsumableItem consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+    public Sprite getItem(ConsumableItem consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
 
     public Sprite getIcon(ItemInfo info) {
         return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;

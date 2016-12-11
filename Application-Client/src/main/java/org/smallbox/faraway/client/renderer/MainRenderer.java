@@ -66,6 +66,7 @@ public class MainRenderer implements GameObserver {
 
     @Override
     public void onGameUpdate(Game game) {
+        System.out.println("UPDATE " + System.currentTimeMillis());
         if (_renders != null) {
             _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::gameUpdate);
         }
@@ -73,6 +74,7 @@ public class MainRenderer implements GameObserver {
 
     @Override
     public void onGameRender(Game game) {
+        System.out.println("RENDER " + System.currentTimeMillis());
         // Draw
         if (!Application.gameManager.isRunning()) {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
@@ -108,8 +110,6 @@ public class MainRenderer implements GameObserver {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
-
-        Game game = Application.gameManager.getGame();
 
         //noinspection Convert2streamapi
         if (_renders != null) {

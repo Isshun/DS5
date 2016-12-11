@@ -6,10 +6,11 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.JobHelper;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.area.model.*;
 import org.smallbox.faraway.core.module.character.model.PathModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableModuleObserver;
@@ -48,7 +49,7 @@ public class AreaModule extends GameModule {
     public void onGameCreate(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
-            public void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {
+            public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {
                 if (consumable.getJob() == null) {
                     storeConsumable(consumable);
                 }
@@ -75,7 +76,7 @@ public class AreaModule extends GameModule {
     }
 
     // TODO: auto onDisplayMultiple in job
-    private void storeConsumable(ConsumableModel consumable) {
+    private void storeConsumable(ConsumableItem consumable) {
 //        if (consumable.getJob() != null) {
 //            Log.error("AreaModule.storeConsumable: consumable have a job");
 //        }
@@ -101,7 +102,7 @@ public class AreaModule extends GameModule {
 //        }
     }
 
-    public StorageAreaModel getBestStorage(ConsumableModel consumable) {
+    public StorageAreaModel getBestStorage(ConsumableItem consumable) {
         int bestDistance = Integer.MAX_VALUE;
         StorageAreaModel bestStorage = null;
         for (StorageAreaModel storage: _storageAreas) {
@@ -210,7 +211,7 @@ public class AreaModule extends GameModule {
         if (parcel.hasRock()) {
             return false;
         }
-        if (parcel.hasStructure() && !parcel.getStructure().isFloor()) {
+        if (WorldHelper.hasFloor(parcel)) {
             return false;
         }
         if (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown) {

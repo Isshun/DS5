@@ -5,7 +5,7 @@ import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -58,7 +58,7 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
                 SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress FROM WorldModule_structure");
                 try {
                     while (stItem.step()) {
-                        StructureModel structure = new StructureModel(Application.data.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
+                        StructureItem structure = new StructureItem(Application.data.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
                         structure.setBuildProgress(stItem.columnInt(5));
                         module.addStructure(structure, stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                     }

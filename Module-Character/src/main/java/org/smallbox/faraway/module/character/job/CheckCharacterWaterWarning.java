@@ -5,12 +5,12 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.module.consumable.ConsumeJob;
 import org.smallbox.faraway.module.item.ItemFinderModule;
 import org.smallbox.faraway.module.item.job.UseJob;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 
 /**
  * Created by Alex on 01/06/2015.
@@ -29,7 +29,7 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
 
     @Override
     public JobModel onCreateJob(CharacterModel character) {
-        ConsumableModel consumable = null;
+        ConsumableItem consumable = null;
         ItemFilter consumableFilter = ItemFilter.createConsumableFilter();
         consumableFilter.effectDrink = true;
 
@@ -39,17 +39,17 @@ public class CheckCharacterWaterWarning extends CharacterCheck {
         }
 
         // Get consumable on ground
-        ConsumableModel nearestConsumable = (ConsumableModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
+        ConsumableItem nearestConsumable = (ConsumableItem)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(consumableFilter, character);
         if (nearestConsumable != null && nearestConsumable.hasFreeSlot()) {
             consumable = nearestConsumable;
         }
 
-        ItemModel item = null;
+        UsableItem item = null;
         ItemFilter itemFilter = ItemFilter.createItemFilter();
         itemFilter.effectDrink = true;
 
         // Get drink provider
-        ItemModel nearestItem = (ItemModel)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(itemFilter, character);
+        UsableItem nearestItem = (UsableItem)((ItemFinderModule) Application.moduleManager.getModule(ItemFinderModule.class)).getNearest(itemFilter, character);
         if (nearestItem != null && nearestItem.hasFreeSlot()) {
             item = nearestItem;
         }

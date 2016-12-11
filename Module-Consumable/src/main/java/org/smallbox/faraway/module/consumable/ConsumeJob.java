@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.PathModel;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
@@ -20,7 +20,7 @@ public class ConsumeJob extends JobModel {
     }
     private State _state = State.MOVE_TO_CONSUMABLE;
 
-    private ConsumableModel     _consumable;
+    private ConsumableItem _consumable;
     private ItemInfo            _itemInfo;
     private double              _current;
 
@@ -29,7 +29,7 @@ public class ConsumeJob extends JobModel {
 //        super(null, parcel, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
     }
 
-    public static ConsumeJob create(CharacterModel character, ConsumableModel consumable) {
+    public static ConsumeJob create(CharacterModel character, ConsumableItem consumable) {
         assert consumable != null;
         assert character != null;
         assert character.getInventory() == null;
@@ -57,7 +57,7 @@ public class ConsumeJob extends JobModel {
         }
 
         // Item is no longer exists
-        if (_consumable != _character.getInventory() && _consumable.getParcel().getConsumable() != _consumable) {
+        if (_consumable != _character.getInventory() && _consumable.getParcel().getItem(ConsumableItem.class) != _consumable) {
 //            _reason = JobAbortReason.ABORT;
             return JobCheckReturn.ABORT;
         }

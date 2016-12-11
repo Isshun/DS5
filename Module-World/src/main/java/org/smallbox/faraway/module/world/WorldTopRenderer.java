@@ -5,9 +5,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindManager;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.util.Constant;
 
 public class WorldTopRenderer extends BaseRenderer {
@@ -54,16 +52,16 @@ public class WorldTopRenderer extends BaseRenderer {
                 if (parcel.hasPlant()) {
                     renderer.draw(_spriteManager.getItem(parcel.getPlant().getGraphic(), parcel.getTile(), parcel.getPlant().getTile()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                 }
-                if (parcel.getStructure() != null) {
-                    renderer.draw(_spriteManager.getItem(parcel.getStructure()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                if (parcel.hasItem(StructureItem.class)) {
+                    renderer.draw(_spriteManager.getItem(parcel.getItem(StructureItem.class)), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                 }
                 if (parcel.getNetworkObjects() != null) {
-                    for (NetworkObjectModel networkObject: parcel.getNetworkObjects()) {
+                    for (NetworkItem networkObject: parcel.getNetworkObjects()) {
                         renderer.draw(_spriteManager.getItem(networkObject), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                     }
                 }
-                if (parcel.getConsumable() != null) {
-                    renderer.draw(_spriteManager.getItem(parcel.getConsumable()), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
+                if (parcel.hasItem(ConsumableItem.class)) {
+                    renderer.draw(_spriteManager.getItem(parcel.getItem(ConsumableItem.class)), (x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY);
                 }
             }
         }
@@ -119,7 +117,7 @@ public class WorldTopRenderer extends BaseRenderer {
     }
 
 //    @Override
-//    public void onSelectItem(ItemModel item) {
+//    public void onSelectItem(UsableItem item) {
 //        _itemSelected = item;
 //    }
 //
@@ -129,12 +127,12 @@ public class WorldTopRenderer extends BaseRenderer {
 //    }
 //
 //    @Override
-//    public void onSelectConsumable(ConsumableModel consumable) {
+//    public void onSelectConsumable(ConsumableItem consumable) {
 //        _itemSelected = consumable;
 //    }
 //
 //    @Override
-//    public void onSelectStructure(StructureModel structure) {
+//    public void onSelectStructure(StructureItem structure) {
 //        _itemSelected = structure;
 //    }
 

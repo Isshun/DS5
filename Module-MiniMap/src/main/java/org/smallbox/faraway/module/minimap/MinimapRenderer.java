@@ -16,6 +16,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.world.WorldModule;
 
@@ -80,12 +81,12 @@ public class MinimapRenderer extends GameDisplay {
 
     // TODO
 //    @Override
-//    public void onStructureComplete(StructureModel structure) {
+//    public void onStructureComplete(StructureItem structure) {
 //        _dirty = true;
 //    }
 //
 //    @Override
-//    public void onItemComplete(ItemModel item) {
+//    public void onItemComplete(UsableItem item) {
 //        _dirty = true;
 //    }
 
@@ -135,7 +136,7 @@ public class MinimapRenderer extends GameDisplay {
             ParcelModel[][][] parcels = worldModule.getParcels();
             for (int x = 0; x < _width; x++) {
                 for (int y = 0; y < _height; y++) {
-                    if (parcels[x][y][_floor].hasStructure()) {
+                    if (parcels[x][y][_floor].hasItem(StructureItem.class)) {
                         _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
                     } else if (parcels[x][y][_floor].hasPlant()) {
                         _pixmap.drawPixel(x, y, COLOR_PLANT);

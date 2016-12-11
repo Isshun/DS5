@@ -5,10 +5,10 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.ItemSlot;
 import org.smallbox.faraway.module.itemFactory.FactoryReceiptModel;
 import org.smallbox.faraway.module.itemFactory.ItemFactoryModel;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CraftJob extends JobModel {
-    protected final ItemModel _item;
+    protected final UsableItem _item;
     protected final ItemFactoryModel _factory;
     protected final FactoryReceiptModel _receipt;
 //    protected final ItemFactoryModel.FactoryReceiptGroupModel _order;
@@ -28,7 +28,7 @@ public class CraftJob extends JobModel {
     protected double                            _current;
     private Map<ItemInfo.ActionInputInfo, Integer> _inputs;
 
-    public static CraftJob create(ConsumableModule consumableModule, ItemModel item, ItemInfo.ItemInfoAction action) {
+    public static CraftJob create(ConsumableModule consumableModule, UsableItem item, ItemInfo.ItemInfoAction action) {
         CraftJob job = new CraftJob(consumableModule, item, action);
         job.setAction(action);
         job.setOnActionListener(() -> {
@@ -39,7 +39,7 @@ public class CraftJob extends JobModel {
         return job;
     }
 
-    private CraftJob(ConsumableModule consumableModule, ItemModel item, ItemInfo.ItemInfoAction action) {
+    private CraftJob(ConsumableModule consumableModule, UsableItem item, ItemInfo.ItemInfoAction action) {
         super(action, item.getParcel());
 //        super(action, item.getParcel(), new IconDrawable("data/res/ic_craft.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 160, 32, 32, 7, 10));
         assert item.getFactory() != null;
@@ -153,7 +153,7 @@ public class CraftJob extends JobModel {
             _actionInfo.products.forEach(product -> {
                 int quantity = Utils.getRandom(product.quantity);
                 for (int i = 0; i < quantity; i++) {
-                    _factory.store(new ConsumableModel(product.item));
+                    _factory.store(new ConsumableItem(product.item));
                 }
             });
         }
@@ -192,7 +192,7 @@ public class CraftJob extends JobModel {
     protected void moveToIngredient(CharacterModel character, FactoryReceiptModel.FactoryShoppingItemModel input) {
         throw new NotImplementedException("");
 
-//        ConsumableModel consumable = input.consumable;
+//        ConsumableItem consumable = input.consumable;
 //        ItemInfo info = consumable.getInfo();
 //        _targetParcel = consumable.getParcel();
 //        character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {

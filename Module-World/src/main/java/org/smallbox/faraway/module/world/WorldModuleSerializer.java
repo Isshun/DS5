@@ -69,7 +69,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
 //                                // Structure
 //                                if (parcel.hasStructure()) {
-//                                    StructureModel structure = parcel.getStructure();
+//                                    StructureItem structure = parcel.getStructure();
 //                                    st.bind(8, structure.getId());
 //                                    stStructure.bind(1, structure.getId()).bind(2, structure.getInfo().name).bind(3, structure.isComplete() ? 1 : 0);
 //                                    stStructure.step();
@@ -80,7 +80,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
 //                                // Consumable
 //                                if (parcel.hasConsumable()) {
-//                                    ConsumableModel consumable = parcel.getConsumable();
+//                                    ConsumableItem consumable = parcel.getConsumable();
 //                                    st.bind(9, consumable.getId());
 //                                    stConsumable.bind(1, consumable.getId()).bind(2, consumable.getInfo().name).bind(3, consumable.getQuantity());
 //                                    stConsumable.step();

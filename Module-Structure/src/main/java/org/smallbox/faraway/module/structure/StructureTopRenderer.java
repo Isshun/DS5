@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.renderer.*;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 
 public class StructureTopRenderer extends BaseRenderer {
 
@@ -52,7 +52,7 @@ public class StructureTopRenderer extends BaseRenderer {
                 .forEach(structure -> renderer.drawOnMap(structure.getParcel(), structure.isComplete() ? getSprite(structure) : buildSprite));
     }
 
-    private Sprite getSprite(StructureModel structure) {
+    private Sprite getSprite(StructureItem structure) {
         return spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
     }
 

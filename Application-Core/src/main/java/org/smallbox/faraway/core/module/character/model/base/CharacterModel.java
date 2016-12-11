@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.module.character.model.*;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
@@ -53,7 +53,7 @@ public abstract class CharacterModel extends MovableModel {
     protected int                               _lag;
     protected RoomModel                         _quarter;
     protected boolean                           _needRefresh;
-    protected ConsumableModel                   _inventory;
+    protected ConsumableItem _inventory;
     protected MoveListener                      _moveListener;
     protected boolean                           _isFaint;
     private double                              _moveStep;
@@ -105,7 +105,7 @@ public abstract class CharacterModel extends MovableModel {
     public RoomModel                    getQuarter() { return _quarter; }
     public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
-    public ConsumableModel              getInventory() { return _inventory; }
+    public ConsumableItem getInventory() { return _inventory; }
     public int                          getInventoryQuantity(ItemInfo itemInfo) { return _inventory2.get(itemInfo); }
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
     public abstract String[][]          getEquipmentViewIds();
@@ -127,7 +127,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
-    public void                         setInventory(ConsumableModel consumable) { _inventory = consumable; }
+    public void                         setInventory(ConsumableItem consumable) { _inventory = consumable; }
     public void                         setInventoryQuantity(ItemInfo itemInfo, int quantity) { _inventory2.put(itemInfo, Math.max(0, quantity)); }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setId(int id) { _id = id; }
@@ -362,7 +362,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void createInventoryFromConsumable(ConsumableModel consumable, int quantity) {
+    public void createInventoryFromConsumable(ConsumableItem consumable, int quantity) {
         if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
             Log.error("Character inventory has non-compatible item");
             return;
@@ -374,7 +374,7 @@ public abstract class CharacterModel extends MovableModel {
 
         // Create inventory item if empty
         if (_inventory == null) {
-            _inventory = new ConsumableModel(consumable.getInfo());
+            _inventory = new ConsumableItem(consumable.getInfo());
             _inventory.setQuantity(0);
         }
 
@@ -438,7 +438,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void addInventory(ConsumableModel consumable, int haulingQuantity) {
+    public void addInventory(ConsumableItem consumable, int haulingQuantity) {
         int quantity = Math.min(haulingQuantity, consumable.getQuantity());
         addInventory(consumable.getInfo(), quantity);
         consumable.addQuantity(-quantity);

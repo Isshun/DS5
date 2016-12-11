@@ -24,8 +24,8 @@ public class ItemFinderModule extends GameModule {
     public MapObjectModel getNearest(ItemFilter filter, CharacterModel character) {
         if (filter.needItem) {
             int bestDistance = Integer.MAX_VALUE;
-            ItemModel bestItem = null;
-            for (ItemModel item: _items.getItems()) {
+            UsableItem bestItem = null;
+            for (UsableItem item: _items.getItems()) {
                 if (item.matchFilter(filter)) {
                     PathModel path = Application.pathManager.getPath(character.getParcel(), item.getParcel(), true, false);
                     if (path != null && path.getLength() < bestDistance) {
@@ -39,8 +39,8 @@ public class ItemFinderModule extends GameModule {
 
 //        if (filter.needConsumable) {
 //            int bestDistance = Integer.MAX_VALUE;
-//            ConsumableModel bestConsumable = null;
-//            for (ConsumableModel consumable: ModuleHelper.getWorldModule().getConsumables()) {
+//            ConsumableItem bestConsumable = null;
+//            for (ConsumableItem consumable: ModuleHelper.getWorldModule().getConsumables()) {
 //                if (consumable.getJob() == null && consumable.matchFilter(filter)) {
 //                    PathModel path = Application.pathManager.getPath(character.getParcel(), consumable.getParcel(), true, false);
 //                    if (path != null && path.getLength() < bestDistance) {
@@ -65,7 +65,7 @@ public class ItemFinderModule extends GameModule {
 //                .findFirst()
 //                .orElse(null);
 
-        List<ItemModel> list = new ArrayList<>(_items.getItems());
+        List<UsableItem> list = new ArrayList<>(_items.getItems());
 
         // Get matching items
         int start = (int) (Math.random() * list.size());

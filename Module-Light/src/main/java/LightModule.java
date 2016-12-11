@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.model.Data;
 //import org.smallbox.faraway.core.module.world.model.*;
-//import ItemModel;
+//import UsableItem;
 //import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
@@ -84,12 +84,12 @@
 //        }
 //    }
 //
-//    public void onAddItem(ItemModel item) { if (item.isLight()) { _items.add(item); updateGame(item.getParcel()); } }
-//    public void onAddStructure(StructureModel structure) { if (structure.isLight()) { _items.add(structure); updateGame(structure.getParcel()); } }
+//    public void onAddItem(UsableItem item) { if (item.isLight()) { _items.add(item); updateGame(item.getParcel()); } }
+//    public void onAddStructure(StructureItem structure) { if (structure.isLight()) { _items.add(structure); updateGame(structure.getParcel()); } }
 //    public void onAddResource(ResourceModel resource) { if (resource.isLight()) { _items.add(resource); updateGame(resource.getParcel()); } }
-//    public void onAddConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.add(consumable); updateGame(consumable.getParcel()); } }
-//    public void onRemoveItem(ItemModel item) { if (item.isLight()) { _items.remove(item); updateGame(item.getParcel()); } }
-//    public void onRemoveStructure(StructureModel structure) { if (structure.isLight()) { _items.remove(structure); updateGame(structure.getParcel()); } }
+//    public void onAddConsumable(ConsumableItem consumable) { if (consumable.isLight()) { _items.add(consumable); updateGame(consumable.getParcel()); } }
+//    public void onRemoveItem(UsableItem item) { if (item.isLight()) { _items.remove(item); updateGame(item.getParcel()); } }
+//    public void onRemoveStructure(StructureItem structure) { if (structure.isLight()) { _items.remove(structure); updateGame(structure.getParcel()); } }
 //    public void onRemovePlant(ResourceModel resource) { if (resource.isLight()) { _items.remove(resource); updateGame(resource.getParcel()); } }
-//    public void onRemoveConsumable(ConsumableModel consumable) { if (consumable.isLight()) { _items.remove(consumable); updateGame(consumable.getParcel()); } }
+//    public void onRemoveConsumable(ConsumableItem consumable) { if (consumable.isLight()) { _items.remove(consumable); updateGame(consumable.getParcel()); } }
 //}

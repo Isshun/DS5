@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.ItemModuleObserver;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.room.RoomModule;
 import org.smallbox.faraway.module.weather.WeatherModule;
@@ -37,7 +37,7 @@ public class OxygenModule extends GameModule {
     private ItemModule itemModule;
 
     private double                  _oxygen;
-    private List<ItemModel>         _items;
+    private List<UsableItem>         _items;
 
     public OxygenModule() {
         _updateInterval = 10;
@@ -49,12 +49,12 @@ public class OxygenModule extends GameModule {
     public void onGameCreate(Game game) {
         itemModule.addObserver(new ItemModuleObserver() {
             @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+            public void onRemoveItem(ParcelModel parcel, UsableItem item) {
                 _items.remove(item);
             }
 
             @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
+            public void onAddItem(ParcelModel parcel, UsableItem item) {
                 if (item.getInfo().effects != null && item.getInfo().effects.oxygen > 0) {
                     _items.add(item);
                 }

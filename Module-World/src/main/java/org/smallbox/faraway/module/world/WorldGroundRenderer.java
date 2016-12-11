@@ -134,7 +134,7 @@ public class WorldGroundRenderer extends BaseRenderer {
 
     private boolean repeatTile(int x, int y, int z) {
         ParcelModel parcel = WorldHelper.getParcel(x, y, z);
-        return parcel == null || parcel.hasRock() || parcel.hasLiquid() || parcel.hasWall() || parcel.hasDoor();
+        return parcel == null || parcel.hasRock() || parcel.hasLiquid() || WorldHelper.hasWall(parcel) || WorldHelper.hasDoor(parcel);
     }
 
     private void createGround(int col, int row) {

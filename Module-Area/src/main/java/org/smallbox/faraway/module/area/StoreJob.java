@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.Queue;
@@ -21,7 +21,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class StoreJob extends JobModel implements GameObserver {
     private enum Mode {MOVE_TO_CONSUMABLE, MOVE_TO_STORAGE}
 
-    private Queue<ConsumableModel>  _consumables = new LinkedBlockingQueue<>();
+    private Queue<ConsumableItem>  _consumables = new LinkedBlockingQueue<>();
     private StorageAreaModel        _storageArea;
     private ParcelModel             _storageParcel;
     private Mode                    _mode;
@@ -33,15 +33,15 @@ public class StoreJob extends JobModel implements GameObserver {
 //        super(null, jobParcel, new IconDrawable("data/res/ic_haul.png", 0, 0, 32, 32), null);
     }
 
-    public static StoreJob create(ConsumableModel consumable, ParcelModel parcel) {
+    public static StoreJob create(ConsumableItem consumable, ParcelModel parcel) {
         return create(consumable, null, parcel);
     }
 
-    public static StoreJob create(ConsumableModel consumable, StorageAreaModel storage) {
+    public static StoreJob create(ConsumableItem consumable, StorageAreaModel storage) {
         return create(consumable, storage, null);
     }
 
-    public static StoreJob create(ConsumableModel firstConsumable, StorageAreaModel storage, ParcelModel parcel) {
+    public static StoreJob create(ConsumableItem firstConsumable, StorageAreaModel storage, ParcelModel parcel) {
         assert firstConsumable != null;
 
         ParcelModel targetParcel = WorldHelper.getNearestWalkable(firstConsumable.getParcel(), 1, 1);
@@ -85,7 +85,7 @@ public class StoreJob extends JobModel implements GameObserver {
         return storeJob;
     }
 
-    public void foundConsumablesAround(ConsumableModel firstConsumable) {
+    public void foundConsumablesAround(ConsumableItem firstConsumable) {
         int fromX = firstConsumable.getParcel().x - 5;
         int fromY = firstConsumable.getParcel().y - 5;
         int toX = firstConsumable.getParcel().x + 5;
@@ -97,7 +97,7 @@ public class StoreJob extends JobModel implements GameObserver {
         _quantity += firstConsumable.getQuantity();
         for (int x = fromX; x <= toX; x++) {
             for (int y = fromY; y <= toY; y++) {
-                ConsumableModel consumable = WorldHelper.getConsumable(x, y, z);
+                ConsumableItem consumable = WorldHelper.getConsumable(x, y, z);
                 if (consumable != null && consumable != firstConsumable
                         && consumable.getJob() == null
                         && consumable.getInfo() == firstConsumable.getInfo()
@@ -114,7 +114,7 @@ public class StoreJob extends JobModel implements GameObserver {
 
     @Override
     public void draw(onDrawCallback callback) {
-        for (ConsumableModel consumable: _consumables) {
+        for (ConsumableItem consumable: _consumables) {
             callback.onDraw(consumable.getParcel().x, consumable.getParcel().y, consumable.getParcel().z);
         }
     }
@@ -152,7 +152,7 @@ public class StoreJob extends JobModel implements GameObserver {
 //        quit(_character);
     }
 
-    private void moveToConsumable(ConsumableModel consumable) {
+    private void moveToConsumable(ConsumableItem consumable) {
         throw new NotImplementedException("");
 
 //        Log.info("Haul consumable: " + consumable.getInfo().label);

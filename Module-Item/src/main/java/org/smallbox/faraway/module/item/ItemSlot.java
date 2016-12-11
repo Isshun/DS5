@@ -5,10 +5,10 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 public class ItemSlot {
     private final ParcelModel _parcel;
-    private final ItemModel     _item;
+    private final UsableItem _item;
     private JobModel            _job;
 
-    public ItemSlot(ItemModel item, ParcelModel parcel) {
+    public ItemSlot(UsableItem item, ParcelModel parcel) {
         _item = item;
         _parcel = parcel;
     }
@@ -16,7 +16,7 @@ public class ItemSlot {
     public boolean      isFree() { return _job == null; }
     public ParcelModel  getParcel() { return _parcel; }
     public JobModel     getJob() { return _job; }
-    public ItemModel    getItem() { return _item; }
+    public UsableItem getItem() { return _item; }
     public void         take(JobModel job) { _job = job; }
     public void         free() { _job = null; }
 }

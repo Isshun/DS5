@@ -51,7 +51,7 @@ public class BuildableMapObject extends MapObjectModel {
     private List<ComponentModel>        _components = new ArrayList<>();
 
     @Override
-    public int addComponent(ConsumableModel consumable) {
+    public int addComponent(ConsumableItem consumable) {
         _components.stream().filter(component -> component.info == consumable.getInfo()).forEach(component -> {
             if (component.neededQuantity - component.currentQuantity > consumable.getQuantity()) {
                 component.currentQuantity += consumable.getQuantity();

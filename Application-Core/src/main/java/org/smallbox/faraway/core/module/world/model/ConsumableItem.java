@@ -9,16 +9,16 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 /**
  * Created by Alex on 03/06/2015.
  */
-public class ConsumableModel extends MapObjectModel {
+public class ConsumableItem extends MapObjectModel {
     private int             _quantity = 1;
     private int             _slots = 0;
     private JobModel        _job;
 
-    public ConsumableModel(ItemInfo info) {
+    public ConsumableItem(ItemInfo info) {
         super(info);
     }
 
-    public ConsumableModel(ItemInfo info, int quantity) {
+    public ConsumableItem(ItemInfo info, int quantity) {
         super(info);
         _quantity = quantity;
     }

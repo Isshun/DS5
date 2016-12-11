@@ -6,14 +6,14 @@ import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.ItemSlot;
 
 /**
  * Created by Alex on 25/10/2015.
  */
 public class SleepJob extends JobModel {
-    private ItemModel       _sleepItem;
+    private UsableItem _sleepItem;
     private long            _startTime;
     private ItemSlot        _slot;
 
@@ -23,13 +23,13 @@ public class SleepJob extends JobModel {
         _targetParcel = parcel;
     }
 
-    public SleepJob(ParcelModel parcel, ItemModel item) {
+    public SleepJob(ParcelModel parcel, UsableItem item) {
         _label = _message = Application.data.getString("Sleep in") + " " + Application.data.getString(item.getInfo().label);
         _sleepItem = item;
         _jobParcel = _targetParcel = parcel;
     }
 
-    public ItemModel getItem() { return _sleepItem; }
+    public UsableItem getItem() { return _sleepItem; }
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {

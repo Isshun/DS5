@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.module.consumable;
 //
 //import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-//import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+//import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.util.MoveListener;
 //
@@ -11,11 +11,11 @@
 //public class OnReachConsumableListener implements MoveListener<CharacterModel> {
 //    private final ConsumableModule  _consumableModule;
 //    private final CharacterModel    _character;
-//    private final ConsumableModel   _consumable;
+//    private final ConsumableItem   _consumable;
 //    private final int               _quantity;
 //    private final ParcelModel       _targetParcel;
 //
-//    public OnReachConsumableListener(ConsumableModule consumableModule, ConsumableModel consumable, int quantity, ParcelModel targetParcel, CharacterModel character) {
+//    public OnReachConsumableListener(ConsumableModule consumableModule, ConsumableItem consumable, int quantity, ParcelModel targetParcel, CharacterModel character) {
 //        _consumableModule = consumableModule;
 //        _character = character;
 //        _consumable = consumable;

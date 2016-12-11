@@ -47,9 +47,9 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     @BindModule
     private WorldInteractionModule worldInteractionModule;
 
-    private Collection<ItemModel> _items;
+    private Collection<UsableItem> _items;
 
-    public Collection<ItemModel> getItems() {
+    public Collection<UsableItem> getItems() {
         return _items;
     }
 
@@ -58,12 +58,12 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         _items = new LinkedBlockingQueue<>();
 
         worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
-            public ItemModel _lastItem;
+            public UsableItem _lastItem;
 
             @Override
             public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
                 // Get item on parcel
-                ItemModel item = _items.stream()
+                UsableItem item = _items.stream()
                         .filter(i -> parcels.contains(i.getParcel()))
                         .findAny()
                         .orElse(null);
@@ -104,26 +104,24 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        if (tick % 10 == 0) {
-            // Create hauling jobs
-            _items.stream().filter(item -> !item.isComplete())
-                    .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-                            .forEach(component -> jobModule.addJob(new HaulJob(item, component))));
+        // Create hauling jobs
+        _items.stream().filter(item -> !item.isComplete())
+                .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
+                        .forEach(component -> jobModule.addJob(new HaulJob(item, component))));
 
-            // Create Build jobs
-            _items.stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                    .forEach(item -> jobModule.addJob(new BuildJob(item)));
+        // Create Build jobs
+        _items.stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
+                .forEach(item -> jobModule.addJob(new BuildJob(item)));
 
 ////             Create craft jobs
 //            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
 //                    .forEach(item -> jobModule.addHaulJob(new CraftJob(item)));
-        }
     }
 
     @Override
     public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
         if (itemInfo.isUserItem) {
-            ItemModel item = new ItemModel(itemInfo, data);
+            UsableItem item = new UsableItem(itemInfo, data);
             item.setParcel(parcel);
             item.init();
             _items.add(item);
@@ -134,11 +132,11 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     public void removeObject(MapObjectModel mapObjectModel) {
-        if (mapObjectModel.isUserItem() && mapObjectModel instanceof ItemModel) {
+        if (mapObjectModel.isUserItem() && mapObjectModel instanceof UsableItem) {
             _items.remove(mapObjectModel);
             jobModule.onCancelJobs(mapObjectModel.getParcel(), mapObjectModel);
 
-            notifyObservers(obs -> obs.onRemoveItem(mapObjectModel.getParcel(), (ItemModel) mapObjectModel));
+            notifyObservers(obs -> obs.onRemoveItem(mapObjectModel.getParcel(), (UsableItem) mapObjectModel));
         }
     }
 
@@ -146,7 +144,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         Log.info("Add pattern for %s at position %s", itemInfo, parcel);
 
         // Create item
-        ItemModel item = new ItemModel(itemInfo);
+        UsableItem item = new UsableItem(itemInfo);
         item.setParcel(parcel);
         item.init();
         item.setBuildProgress(0);
@@ -160,13 +158,13 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
      *
      * @param item to build
      */
-    private void launchBuild(ItemModel item) {
+    private void launchBuild(UsableItem item) {
         BuildJob job = new BuildJob(item);
         item.setBuildJob(job);
         jobModule.addJob(job);
     }
 
-    public void addItem(ItemModel item) {
+    public void addItem(UsableItem item) {
         if (!_items.contains(item)) {
             _items.add(item);
 
@@ -174,8 +172,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         }
     }
 
-    public ItemModel getItem(ParcelModel parcel) {
-        for (ItemModel item: _items) {
+    public UsableItem getItem(ParcelModel parcel) {
+        for (UsableItem item: _items) {
             if (item.getParcel() == parcel) {
                 return item;
             }

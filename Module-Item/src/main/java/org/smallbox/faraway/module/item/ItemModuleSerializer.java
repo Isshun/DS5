@@ -61,7 +61,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                     while (stItem.step()) {
                         ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));
                         if (itemInfo != null) {
-                            ItemModel item = new ItemModel(itemInfo, stItem.columnInt(0));
+                            UsableItem item = new UsableItem(itemInfo, stItem.columnInt(0));
                             item.setParcel(WorldHelper.getParcel(stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3)));
                             item.setBuildProgress(stItem.columnInt(5));
                             item.init();

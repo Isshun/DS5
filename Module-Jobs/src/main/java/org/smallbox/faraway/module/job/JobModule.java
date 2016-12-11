@@ -53,13 +53,11 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isFinish);
 
-        if (tick % 10 == 0) {
-            // Create new job
-            _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
+        // Create new job
+        _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
 
-            // Run auto job
-            _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
-        }
+        // Run auto job
+        _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
     }
 
     public Collection<JobModel> getJobs() { return _jobs; };

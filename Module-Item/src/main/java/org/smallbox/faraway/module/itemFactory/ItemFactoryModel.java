@@ -3,13 +3,13 @@ package org.smallbox.faraway.module.itemFactory;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.BasicHaulJob;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableStackModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.job.CraftJob;
-import org.smallbox.faraway.module.item.ItemModel;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
@@ -23,7 +23,7 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
  */
 public class ItemFactoryModel {
     private Map<ItemInfo, ConsumableStackModel>     _inventory = new HashMap<>();
-    private final ItemModel                         _item;
+    private final UsableItem _item;
     private Map<ItemInfoAction, CraftJob>           _craftJobs = new HashMap<>();
     private FactoryReceiptModel _runningReceipt;
     private List<FactoryReceiptGroupModel> _receiptGroups;
@@ -41,7 +41,7 @@ public class ItemFactoryModel {
         return _runningReceipt != null;
     }
 
-    public ItemFactoryModel(ItemModel item) {
+    public ItemFactoryModel(UsableItem item) {
         _item = item;
         _factoryInfo = item.getInfo().factory;
 
@@ -61,7 +61,7 @@ public class ItemFactoryModel {
         if (_factoryInfo != null) {
             // Create receipt groups from factory info
             _receiptGroups = _factoryInfo.receiptGroups.stream()
-                    .map(FactoryReceiptGroupModel::new)
+                    .map(receiptGroupInfo -> new FactoryReceiptGroupModel(this, receiptGroupInfo))
                     .collect(Collectors.toList());
 
             // Create receipt from each receipt group
@@ -96,7 +96,7 @@ public class ItemFactoryModel {
         });
     }
 
-    public void store(ConsumableModel consumable) {
+    public void store(ConsumableItem consumable) {
         assert _inventory.containsKey(consumable.getInfo());
 
         _inventory.get(consumable.getInfo()).addConsumable(consumable);
@@ -126,11 +126,13 @@ public class ItemFactoryModel {
         public final FactoryOutputMode  outputMode;
         public final boolean            auto;
         public final int                cost;
+        public final ItemFactoryModel   factory;
         public int                      mode;
         public boolean                  isActive;
 
         // Rename this mess
-        public FactoryReceiptGroupModel(ReceiptGroupInfo receiptGroupInfo) {
+        public FactoryReceiptGroupModel(ItemFactoryModel factory, ReceiptGroupInfo receiptGroupInfo) {
+            this.factory = factory;
             this.receiptGroupInfo = receiptGroupInfo;
             this.auto = false;
             this.cost = receiptGroupInfo.cost;

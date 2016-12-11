@@ -195,7 +195,7 @@ public class PathManager extends GameModule {
 
     // TODO
 //    @Override
-//    public void onStructureComplete(StructureModel structure) { _graph.resetAround(structure.getParcel()); }
+//    public void onStructureComplete(StructureItem structure) { _graph.resetAround(structure.getParcel()); }
 
     public void resetAround(ParcelModel parcel) { _graph.resetAround(parcel); }
 

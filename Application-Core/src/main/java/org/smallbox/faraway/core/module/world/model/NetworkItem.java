@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 /**
  * Created by Alex on 04/11/2015.
  */
-public class NetworkObjectModel extends MapObjectModel {
+public class NetworkItem extends MapObjectModel {
     private final ItemInfo          _info;
     private final NetworkInfo       _networkInfo;
     private boolean                 _isComplete;
@@ -17,13 +17,13 @@ public class NetworkObjectModel extends MapObjectModel {
     private NetworkModel            _network;
     private double                  _quantity;
 
-    public NetworkObjectModel(ItemInfo itemInfo, NetworkInfo networkInfo) {
+    public NetworkItem(ItemInfo itemInfo, NetworkInfo networkInfo) {
         super(itemInfo);
         _info = itemInfo;
         _networkInfo = networkInfo;
     }
 
-//    public NetworkObjectModel(ItemInfo itemInfo, NetworkInfo networkInfo, ItemModel item) {
+//    public NetworkItem(ItemInfo itemInfo, NetworkInfo networkInfo, UsableItem item) {
 //        super(itemInfo);
 //        _info = itemInfo;
 //        _networkInfo = networkInfo;

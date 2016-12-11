@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.BasicHaulJob;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.ItemModuleObserver;
 import org.smallbox.faraway.module.job.JobModule;
@@ -44,7 +44,7 @@ public class ItemFactoryModule extends GameModule {
     @BindModule
     private ItemModule itemModule;
 
-    private List<ItemModel> _items;
+    private List<UsableItem> _items;
 
     @Override
     public void onGameCreate(Game game) {
@@ -52,14 +52,14 @@ public class ItemFactoryModule extends GameModule {
 
         itemModule.addObserver(new ItemModuleObserver() {
             @Override
-            public void onAddItem(ParcelModel parcel, ItemModel item) {
+            public void onAddItem(ParcelModel parcel, UsableItem item) {
                 if (item.hasFactory()) {
                     _items.add(item);
                 }
             }
 
             @Override
-            public void onRemoveItem(ParcelModel parcel, ItemModel item) {
+            public void onRemoveItem(ParcelModel parcel, UsableItem item) {
                 _items.remove(item);
             }
         });
@@ -67,20 +67,18 @@ public class ItemFactoryModule extends GameModule {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        if (tick % 10 == 0) {
-            _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
-            _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
-            _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
-            _items.forEach(item -> actionCraftJob(item, item.getFactory()));
-        }
+        _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
+        _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
+        _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
+        _items.forEach(item -> actionCraftJob(item, item.getFactory()));
     }
 
     /**
      * Verifie que la recette en cours ai assez de composants disponibles et accessibles
      *
-     * @param item ItemModel
+     * @param item UsableItem
      */
-    private void actionCheckComponents(ItemModel item, ItemFactoryModel factory) {
+    private void actionCheckComponents(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt()) {
             if (factory.getRunningReceipt().getComponents().stream().anyMatch(component -> !hasEnoughConsumables(component, item.getParcel()))) {
                 Log.debug("[Factory] %s -> not enough component", item);
@@ -93,9 +91,9 @@ public class ItemFactoryModule extends GameModule {
     /**
      * Lance la meilleur recette en fonction des composants disponibles
      *
-     * @param item ItemModel
+     * @param item UsableItem
      */
-    private void actionFindBestReceipt(ItemModel item, ItemFactoryModel factory) {
+    private void actionFindBestReceipt(UsableItem item, ItemFactoryModel factory) {
         if (!factory.hasRunningReceipt()) {
             Log.info("[Factory] %s -> seek best receipt", item);
 
@@ -109,9 +107,9 @@ public class ItemFactoryModule extends GameModule {
     /**
      * Lance les hauling jobs necessaire pour apporter tous les composants
      *
-     * @param item ItemModel
+     * @param item UsableItem
      */
-    private void actionHaulingJobs(ItemModel item, ItemFactoryModel factory) {
+    private void actionHaulingJobs(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt()) {
             for (FactoryReceiptModel.FactoryComponentModel component: factory.getRunningReceipt().getComponents()) {
                 if (component.currentQuantity < component.totalQuantity) {
@@ -151,7 +149,7 @@ public class ItemFactoryModule extends GameModule {
     }
 
     // TODO
-    private void actionCraftJob(ItemModel item, ItemFactoryModel factory) {
+    private void actionCraftJob(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt() && factory.getRunningReceipt().hasEnoughComponents()) {
             Log.info("[Factory] %s -> craft %s", item, factory.getRunningReceipt());
 
@@ -167,7 +165,7 @@ public class ItemFactoryModule extends GameModule {
         }
     }
 
-    private void actionClear(ItemModel item, ItemFactoryModel factory) {
+    private void actionClear(UsableItem item, ItemFactoryModel factory) {
         // Libère les objets non consommés
         factory.getRunningReceipt().getComponents().forEach(component -> component.currentQuantity = 0);
 

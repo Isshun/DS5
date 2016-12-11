@@ -21,7 +21,7 @@ public class ItemRenderer extends BaseRenderer {
                 .forEach(item -> renderer.drawOnMap(item.getParcel(), getItemSprite(item)));
     }
 
-    private Sprite getItemSprite(ItemModel item) {
+    private Sprite getItemSprite(UsableItem item) {
         return spriteManager.getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false);
     }
 

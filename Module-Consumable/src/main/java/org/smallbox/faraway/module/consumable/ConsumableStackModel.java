@@ -1,7 +1,7 @@
 package org.smallbox.faraway.module.consumable;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * Created by Alex on 29/07/2016.
  */
 public class ConsumableStackModel {
-    private final Collection<ConsumableModel>   _consumables;
+    private final Collection<ConsumableItem>   _consumables;
     private final ItemInfo                      _itemInfo;
     private final int                           _maxStack;
 
@@ -20,11 +20,11 @@ public class ConsumableStackModel {
         _maxStack = 100;
     }
 
-    public Collection<ConsumableModel> getConsumables() { return _consumables; }
+    public Collection<ConsumableItem> getConsumables() { return _consumables; }
     public ItemInfo getItemInfo() { return _itemInfo; }
     public int getMaxStack() { return _maxStack; }
 
-    public void addConsumable(ConsumableModel consumable) {
+    public void addConsumable(ConsumableItem consumable) {
         _consumables.add(consumable);
     }
 }

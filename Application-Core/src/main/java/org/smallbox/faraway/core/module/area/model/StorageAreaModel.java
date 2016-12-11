@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.module.area.model;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.Map;
@@ -40,7 +40,7 @@ public class StorageAreaModel extends AreaModel {
         return false;
     }
 
-//    public ParcelModel getFreeParcel(ConsumableModel consumable) {
+//    public ParcelModel getFreeParcel(ConsumableItem consumable) {
 //        ParcelModel bestParcel = null;
 //        for (ParcelModel parcel: _parcels) {
 //            if (parcel.getItem() == null && parcel.getPlant() == null && (parcel.getStructure() == null || parcel.getStructure().isFloor())) {
@@ -55,9 +55,9 @@ public class StorageAreaModel extends AreaModel {
 //        return bestParcel;
 //    }
 
-    public ParcelModel getNearestFreeParcel(ConsumableModel consumable) {
+    public ParcelModel getNearestFreeParcel(ConsumableItem consumable) {
         for (ParcelModel parcel: _parcels) {
-            if (parcel.getConsumable() != null && parcel.accept(consumable.getInfo(), 1)) {
+            if (parcel.hasItem(ConsumableItem.class) && parcel.accept(consumable.getInfo(), 1)) {
                 return parcel;
             }
         }
@@ -69,7 +69,7 @@ public class StorageAreaModel extends AreaModel {
         return null;
     }
 
-//    public ParcelModel getNearestFreeParcel(ConsumableModel consumable, ParcelModel consumableParcel) {
+//    public ParcelModel getNearestFreeParcel(ConsumableItem consumable, ParcelModel consumableParcel) {
 //        int bestDistance = Integer.MAX_VALUE;
 //        ParcelModel bestParcel = null;
 //        for (ParcelModel parcel: _parcels) {
@@ -112,7 +112,7 @@ public class StorageAreaModel extends AreaModel {
 
     public boolean hasFreeSpace(ItemInfo info, int quantity) {
         for (ParcelModel parcel: _parcels) {
-            if (!parcel.hasConsumable() || info.stack - parcel.getConsumable().getQuantity() >= quantity) {
+            if (!parcel.hasConsumable() || info.stack - parcel.getItem(ConsumableItem.class).getQuantity() >= quantity) {
                 return true;
             }
         }

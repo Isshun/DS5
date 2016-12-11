@@ -161,9 +161,9 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);
     }
 
-//    private ItemModel putItem(ParcelModel parcel, ItemInfo itemInfo, int progress) {
+//    private UsableItem putItem(ParcelModel parcel, ItemInfo itemInfo, int progress) {
 //        // Put item on floor
-//        ItemModel item = new ItemModel(itemInfo, parcel);
+//        UsableItem item = new UsableItem(itemInfo, parcel);
 //        item.addProgress(progress);
 //        moveItemToParcel(parcel, item);
 //        if (item.getInfo().receiptGroups != null && item.getInfo().receiptGroups.size() > 0) {
@@ -177,7 +177,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //        return item;
 //    }
 //
-//    private ItemModel takeItem(ItemModel item, ParcelModel parcel) {
+//    private UsableItem takeItem(UsableItem item, ParcelModel parcel) {
 //        if (parcel != null && item != null) {
 //            moveItemToParcel(parcel, null);
 //            Application.notify(observer -> observer.onRefreshItem(item));
@@ -187,7 +187,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //        return null;
 //    }
 //
-//    public ItemModel takeItem(int x, int y, int z) {
+//    public UsableItem takeItem(int x, int y, int z) {
 //        ParcelModel area = getParcel(x, y, z);
 //        if (area != null) {
 //            return takeItem(area.getItem(), area);
@@ -205,7 +205,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     }
 
 //    // TODO
-//    public ItemModel getItemById(int itemId) {
+//    public UsableItem getItemById(int itemId) {
 //        for (int x = 0; x < _width; x++) {
 //            for (int y = 0; y < _height; y++) {
 //                if (_parcels[x][y][0].getItem() != null && _parcels[x][y][0].getItem().getId() == itemId) {
@@ -232,7 +232,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         return value;
     }
 
-//    private void moveItemToParcel(ParcelModel parcel, ItemModel item) {
+//    private void moveItemToParcel(ParcelModel parcel, UsableItem item) {
 //        parcel.setItem(item);
 //        if (item != null) {
 //            item.setParcel(parcel);

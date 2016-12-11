@@ -5,9 +5,9 @@
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.Data;
 //import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-//import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+//import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 //import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-//import org.smallbox.faraway.core.module.world.model.StructureModel;
+//import org.smallbox.faraway.core.module.world.model.StructureItem;
 //
 //import java.util.ArrayList;
 //import java.util.HashMap;
@@ -20,22 +20,22 @@
 //public class TopResourceModule extends GameModule {
 //    private static class ConsumableCollection {
 //        public ItemInfo                 info;
-//        public List<ConsumableModel>    consumables = new ArrayList<>();
+//        public List<ConsumableItem>    consumables = new ArrayList<>();
 //        public int                      count;
 //
 //        public void update() {
 //            count = 0;
-//            for (ConsumableModel consumable: consumables) {
+//            for (ConsumableItem consumable: consumables) {
 //                count += consumable.getQuantity();
 //            }
 //        }
 //    }
 //
 //    private Map<ItemInfo, ConsumableCollection> _consumablesCollection = new HashMap<>();
-//    private List<ConsumableModel>           _drinks = new ArrayList<>();
+//    private List<ConsumableItem>           _drinks = new ArrayList<>();
 //    private int                             _drinkCount;
 //    private int                             _waterNetwork = 100;
-//    private List<ConsumableModel>           _foods = new ArrayList<>();
+//    private List<ConsumableItem>           _foods = new ArrayList<>();
 //    private int                             _foodCount;
 //
 //    public int                      getConsumableCount(String name) { return getConsumableCount(Application.data.getItemInfo(name)); }
@@ -50,9 +50,9 @@
 //        return quantity;
 //    }
 //
-//    public List<ConsumableModel>    getFoods() { return _foods; }
+//    public List<ConsumableItem>    getFoods() { return _foods; }
 //    public int                      getFoodCount() { return _foodCount; }
-//    public List<ConsumableModel>    getDrinks() { return _drinks; }
+//    public List<ConsumableItem>    getDrinks() { return _drinks; }
 //    public int                      getDrinkCount() { return _drinkCount + _waterNetwork; }
 //
 //    @Override
@@ -64,12 +64,12 @@
 //    @Override
 //    protected void onGameUpdate(Game game, int tick) {
 //        _foodCount = 0;
-//        for (ConsumableModel consumable: _foods) {
+//        for (ConsumableItem consumable: _foods) {
 //            _foodCount += consumable.getQuantity();
 //        }
 //
 //        _drinkCount = 0;
-//        for (ConsumableModel consumable: _drinks) {
+//        for (ConsumableItem consumable: _drinks) {
 //            _drinkCount += consumable.getQuantity();
 //        }
 //
@@ -77,7 +77,7 @@
 //    }
 //
 //    @Override
-//    public void onAddConsumable(ConsumableModel consumable) {
+//    public void onAddConsumable(ConsumableItem consumable) {
 //        ItemInfo info = consumable.getInfo();
 //        if (!_consumablesCollection.containsKey(info)) {
 //            _consumablesCollection.put(info, new ConsumableCollection());
@@ -94,7 +94,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveConsumable(ConsumableModel consumable) {
+//    public void onRemoveConsumable(ConsumableItem consumable) {
 //        ItemInfo info = consumable.getInfo();
 //        if (_consumablesCollection.containsKey(info)) {
 //            _consumablesCollection.get(info).consumables.remove(consumable);

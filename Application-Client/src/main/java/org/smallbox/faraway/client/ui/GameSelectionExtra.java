@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.module.area.model.AreaModel;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.PlantModel;
-import org.smallbox.faraway.core.module.world.model.StructureModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 
 /**
  * Created by Alex on 28/06/2015.
@@ -49,17 +49,17 @@ public class GameSelectionExtra {
     }
 
     private CharacterModel      _selectedCharacter;
-//    private ItemModel           _selectedItem;
+//    private UsableItem           _selectedItem;
     private ItemInfo            _selectedRock;
     private PlantModel          _selectedPlant;
-    private StructureModel      _selectedStructure;
+    private StructureItem _selectedStructure;
     private ParcelModel         _selectedParcel;
     private AreaModel           _selectedArea;
 
     public CharacterModel       getSelectedCharacter() { return _selectedCharacter; }
     public PlantModel           getSelectedResource() { return _selectedPlant; }
-//    public ItemModel            getSelectedItem() { return _selectedItem; }
-    public StructureModel       getSelectedStructure() { return _selectedStructure; }
+//    public UsableItem            getSelectedItem() { return _selectedItem; }
+    public StructureItem getSelectedStructure() { return _selectedStructure; }
     public ParcelModel          getSelectedParcel() { return _selectedParcel; }
     public AreaModel            getSelectedArea() { return _selectedArea; }
 }

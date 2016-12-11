@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.itemFactory;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.module.item.job.CraftJob;
 import org.smallbox.faraway.module.item.PotentialConsumable;
 
@@ -21,10 +21,10 @@ public class FactoryReceiptModel {
     }
 
     public static class FactoryShoppingItemModel {
-        public ConsumableModel consumable;
+        public ConsumableItem consumable;
         public int              quantity;
 
-        public FactoryShoppingItemModel(ConsumableModel consumable, int quantity) {
+        public FactoryShoppingItemModel(ConsumableItem consumable, int quantity) {
             this.consumable = consumable;
             this.quantity = quantity;
         }

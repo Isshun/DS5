@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
-//import ItemModel;
+//import UsableItem;
 //
 //import java.util.ArrayList;
 //import java.util.Collections;
@@ -15,7 +15,7 @@
 //public class PowerModule extends GameModule {
 //    private static final int    UPDATE_INTERVAL = 40;
 //
-//    private List<ItemModel>     _items;
+//    private List<UsableItem>     _items;
 //    private double              _produce;
 //    private double              _stored;
 //    private double              _maxStorage;
@@ -32,7 +32,7 @@
 //        if (tick % UPDATE_INTERVAL == 0) {
 //            Collections.shuffle(_items);
 //            double powerLeft = _stored;
-//            for (ItemModel item : _items) {
+//            for (UsableItem item : _items) {
 //                if (powerLeft + item.getInfo().power > 0) {
 //                    powerLeft += item.getInfo().power;
 //                    item.setFunctional(true);
@@ -46,7 +46,7 @@
 //    }
 //
 //    @Override
-//    public void onAddItem(ItemModel item){
+//    public void onAddItem(UsableItem item){
 //        if (item != null) {
 //            if (item.getInfo().power != 0) {
 //                _items.add(item);
@@ -55,7 +55,7 @@
 //    }
 //
 //    @Override
-//    public void onRemoveItem(ParcelModel parcel, ItemModel item){
+//    public void onRemoveItem(ParcelModel parcel, UsableItem item){
 //        _items.remove(item);
 //    }
 //

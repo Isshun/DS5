@@ -4,9 +4,9 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.job.JobTask;
 
 import java.util.Queue;
@@ -18,13 +18,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class BasicHaulJob extends JobModel {
 
     private int _haulingQuantity;
-    private ConsumableModel _consumable;
+    private ConsumableItem _consumable;
     private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
 
     public int getHaulingQuantity() { return _haulingQuantity; }
-    public ConsumableModel getHaulingConsumable() { return _consumable; }
+    public ConsumableItem getHaulingConsumable() { return _consumable; }
 
-    public static BasicHaulJob toFactory(ConsumableModel consumable, ItemModel item, int haulingQuantity) {
+    public static BasicHaulJob toFactory(ConsumableItem consumable, UsableItem item, int haulingQuantity) {
         BasicHaulJob job = new BasicHaulJob(consumable, haulingQuantity, consumable.getParcel());
 
         job._tasks.add(character -> character.moveTo(consumable.getParcel()));
@@ -41,7 +41,7 @@ public class BasicHaulJob extends JobModel {
         return job;
     }
 
-    public static BasicHaulJob toParcel(ConsumableModel consumable, ParcelModel targetParcel, int haulingQuantity) {
+    public static BasicHaulJob toParcel(ConsumableItem consumable, ParcelModel targetParcel, int haulingQuantity) {
         BasicHaulJob job = new BasicHaulJob(consumable, haulingQuantity, consumable.getParcel());
 
         job._tasks.add(character -> character.moveTo(consumable.getParcel()));
@@ -57,7 +57,7 @@ public class BasicHaulJob extends JobModel {
         return job;
     }
 
-    public BasicHaulJob(ConsumableModel consumable, int haulingQuantity, ParcelModel targetParcel) {
+    public BasicHaulJob(ConsumableItem consumable, int haulingQuantity, ParcelModel targetParcel) {
         _targetParcel = targetParcel;
         _consumable = consumable;
         _haulingQuantity = haulingQuantity;

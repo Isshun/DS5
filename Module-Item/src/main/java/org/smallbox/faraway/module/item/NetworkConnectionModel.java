@@ -2,7 +2,7 @@ package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
+import org.smallbox.faraway.core.module.world.model.NetworkItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 /**
@@ -12,7 +12,7 @@ public class NetworkConnectionModel {
     private final NetworkInfo   _networkInfo;
     private final int           _distance;
     private NetworkModel        _network;
-    private NetworkObjectModel  _object;
+    private NetworkItem _object;
     private ParcelModel         _parcel;
 
     public NetworkConnectionModel(NetworkInfo networkInfo, int distance) {
@@ -22,7 +22,7 @@ public class NetworkConnectionModel {
 
     public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
     public void             setNetwork(NetworkModel network) { _network = network; }
-    public void             setNetworkObject(NetworkObjectModel networkObject) { _object = networkObject; }
+    public void             setNetworkObject(NetworkItem networkObject) { _object = networkObject; }
 
     public NetworkInfo      getNetworkInfo() { return _networkInfo; }
     public NetworkModel     getNetwork() { return _network; }

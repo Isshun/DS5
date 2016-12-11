@@ -9,10 +9,10 @@
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 //import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 //import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-//import org.smallbox.faraway.core.module.world.model.NetworkObjectModel;
+//import org.smallbox.faraway.core.module.world.model.NetworkItem;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.module.world.model.PlantModel;
-//import ItemModel;
+//import UsableItem;
 //import NetworkConnectionModel;
 //
 //import java.util.Collection;
@@ -27,7 +27,7 @@
 //    private WorldModule _world;
 //
 //    private Set<NetworkModel>           _networks = new HashSet<>();
-//    private Set<NetworkObjectModel>     _networkObjects = new HashSet<>();
+//    private Set<NetworkItem>     _networkObjects = new HashSet<>();
 //    private Set<NetworkConnectionModel> _networkConnections= new HashSet<>();
 //
 //    @Override
@@ -46,14 +46,14 @@
 //
 //            @Override
 //            public void onAddResource(MapObjectModel resource) {
-//                if (resource instanceof NetworkObjectModel) {
-//                    _networkObjects.add((NetworkObjectModel) resource);
+//                if (resource instanceof NetworkItem) {
+//                    _networkObjects.add((NetworkItem) resource);
 //
 //                    // Recreate network for orphan objects
 //                    collectOrphans();
 //                    connectItems();
 //
-//                    notifyObservers(observer -> observer.onAddNetworkObject((NetworkObjectModel) resource));
+//                    notifyObservers(observer -> observer.onAddNetworkObject((NetworkItem) resource));
 //                }
 //            }
 //
@@ -71,9 +71,9 @@
 //        });
 //    }
 //
-//    public NetworkObjectModel putNetworkItem(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+//    public NetworkItem putNetworkItem(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
 //        if (!parcel.hasNetwork(itemInfo.network)) {
-//            NetworkObjectModel networkObject = new NetworkObjectModel(itemInfo, itemInfo.network);
+//            NetworkItem networkObject = new NetworkItem(itemInfo, itemInfo.network);
 //            networkObject.setComplete(complete);
 //            moveNetworkToParcel(parcel, networkObject);
 //            _networkObjects.add(networkObject);
@@ -85,7 +85,7 @@
 //        return null;
 //    }
 //
-//    private void moveNetworkToParcel(ParcelModel parcel, NetworkObjectModel network) {
+//    private void moveNetworkToParcel(ParcelModel parcel, NetworkItem network) {
 //        if (network != null) {
 //            if (network.getParcel() != null) {
 //                network.getParcel().removeNetwork(network);
@@ -102,7 +102,7 @@
 //    public Collection<NetworkModel> getNetworks() { return _networks; }
 //
 //    @Override
-//    public void onAddItem(ItemModel item) {
+//    public void onAddItem(UsableItem item) {
 //        if (item.getNetworkConnections() != null) {
 //            _networkConnections.addAll(item.getNetworkConnections());
 //
@@ -112,7 +112,7 @@
 //        }
 //    }
 //
-//    public void onRemoveNetworkObject(NetworkObjectModel networkObject) {
+//    public void onRemoveNetworkObject(NetworkItem networkObject) {
 //        _networkObjects.remove(networkObject);
 //
 //        // Recreate network for orphan objects
@@ -130,7 +130,7 @@
 //        boolean networkHasBeenCreated;
 //        do {
 //            networkHasBeenCreated = false;
-//            for (NetworkObjectModel object : _networkObjects) {
+//            for (NetworkItem object : _networkObjects) {
 //                if (object.getNetwork() == null) {
 //                    NetworkModel network = new NetworkModel(object.getNetworkInfo());
 //                    explore(network, object.getNetworkInfo(), object.getParcel());
@@ -142,7 +142,7 @@
 //    }
 //
 //    private void explore(NetworkModel network, NetworkInfo networkInfo, ParcelModel parcel) {
-//        NetworkObjectModel object = parcel.getNetworkObject(networkInfo);
+//        NetworkItem object = parcel.getNetworkObject(networkInfo);
 //        if (object != null && !network.contains(object)) {
 //            network.addObject(object);
 //
@@ -166,7 +166,7 @@
 //                    for (int z = p1.z - 1; z <= p1.z + 1; z++) {
 //                        ParcelModel p2 = WorldHelper.getParcel(x, y, z);
 //                        if (p2 != null && p2.hasNetwork(connection.getNetworkInfo()) && (bestDistance == -1 || WorldHelper.getApproxDistance(p1, p2) < bestDistance)) {
-//                            NetworkObjectModel networkObject = p2.getNetworkObject(connection.getNetworkInfo());
+//                            NetworkItem networkObject = p2.getNetworkObject(connection.getNetworkInfo());
 //                            if (networkObject != null && networkObject.getNetwork() != null) {
 //                                bestDistance = WorldHelper.getApproxDistance(p1, p2);
 //                                connection.setNetwork(networkObject.getNetwork());

@@ -189,7 +189,7 @@ public class RoomModel {
         throw new NotImplementedException();
 
 //        for (ParcelModel area: _parcels) {
-//            ItemModel item = area.getItem();
+//            UsableItem item = area.getItem();
 //            if (item != null && item.matchFilter(filter)) {
 //                return item;
 //            }
