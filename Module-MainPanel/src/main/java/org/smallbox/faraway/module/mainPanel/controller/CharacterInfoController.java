@@ -21,6 +21,9 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLuaController
     private CharacterStatusController   characterStatusController;
 
+    @BindLuaController
+    private CharacterHealthController   characterHealthController;
+
     @BindModule
     private CharacterModule             characterModule;
 
@@ -31,6 +34,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private UILabel            lbName;
     @BindLua private UILabel            lbInfoBirth;
     @BindLua private UILabel            lbInfoEnlisted;
+    @BindLua private UILabel            lbParcel;
 
     @Override
     protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
@@ -42,8 +46,10 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         lbName.setText(character.getName());
         lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
         lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
+        lbParcel.setText(character.getParcel().toString());
 
         characterStatusController.selectCharacter(character);
+        characterHealthController.selectCharacter(character);
     }
 
     @Override

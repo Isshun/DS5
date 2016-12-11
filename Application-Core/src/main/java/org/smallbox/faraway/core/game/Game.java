@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
@@ -97,7 +98,7 @@ public class Game {
         Application.notify(observer -> observer.onHourChange(_hour));
         Application.notify(observer -> observer.onDayChange(_day));
         Application.notify(observer -> observer.onYearChange(_year));
-        Application.notify(observer -> observer.onFloorChange(7));
+        Application.notify(observer -> observer.onFloorChange(Config.FLOOR));
 
         _state = GameModuleState.STARTED;
     }

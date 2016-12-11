@@ -27,6 +27,9 @@ public class CharacterTalentExtra {
             this.level = Math.min(10, this.level + 0.5 * this.learnCoef);
             return this.level / 2;
         }
+
+        @Override
+        public String toString() { return name; }
     }
 
     public enum TalentType {

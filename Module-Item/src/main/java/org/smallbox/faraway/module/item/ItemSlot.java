@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.item.item;
+package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

@@ -4,8 +4,8 @@ import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.module.item.ItemModule;
-import org.smallbox.faraway.module.item.UseJob;
-import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.job.UseJob;
+import org.smallbox.faraway.module.item.ItemModel;
 
 /**
  * Created by Alex on 17/06/2015.

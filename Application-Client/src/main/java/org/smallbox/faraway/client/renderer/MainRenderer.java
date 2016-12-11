@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.renderer;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 
@@ -11,12 +12,15 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class MainRenderer implements GameObserver {
-    public static final int                 WORLD_GROUND_RENDERER_LEVEL = -100;
     public static final int                 MINI_MAP_LEVEL = 100;
-    public static final int                 PARTICLE_RENDERER_LEVEL = -99;
-    public static final int                 WORLD_TOP_RENDERER_LEVEL = -98;
-    public static final int                 CHARACTER_RENDERER_LEVEL = -97;
-    public static final int                 JOB_RENDERER_LEVEL = -96;
+    public static final int                 PARTICLE_RENDERER_LEVEL = -100;
+    public static final int                 CONSUMABLE_RENDERER_LEVEL = -101;
+    public static final int                 CHARACTER_RENDERER_LEVEL = -102;
+    public static final int                 ITEM_RENDERER_LEVEL = -103;
+    public static final int                 STRUCTURE_RENDERER_LEVEL = -104;
+    public static final int                 WORLD_GROUND_RENDERER_LEVEL = -105;
+    public static final int                 WORLD_TOP_RENDERER_LEVEL = -106;
+//    public static final int                 JOB_RENDERER_LEVEL = -96;
 
     private static long                     _renderTime;
     private static int                      _frame;
@@ -29,12 +33,17 @@ public class MainRenderer implements GameObserver {
     private Viewport                        _viewport;
 
     public void onRefresh(int frame) {
-        for (BaseRenderer render: _renders) {
-            render.onRefresh(frame);
+        if (_renders != null) {
+            _renders.forEach(render -> render.onRefresh(frame));
         }
     }
 
     public Viewport getViewport() { return _viewport; }
+
+    @Override
+    public void onGameCreate(Game game) {
+
+    }
 
     @Override
     public void onGameStart(Game game) {
@@ -48,15 +57,18 @@ public class MainRenderer implements GameObserver {
                 .peek(Application::addObserver)
                 .collect(Collectors.toList());
 
+        _renders.forEach(render -> render.onGameCreate(game));
         _renders.forEach(render -> render.gameStart(game));
 
         _viewport = new Viewport(400, 300);
-        _viewport.setPosition(-500, -3800, 7);
+        _viewport.setPosition(-500, -3800, Config.FLOOR);
     }
 
     @Override
     public void onGameUpdate(Game game) {
-        _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::gameUpdate);
+        if (_renders != null) {
+            _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::gameUpdate);
+        }
     }
 
     @Override
@@ -100,7 +112,9 @@ public class MainRenderer implements GameObserver {
         Game game = Application.gameManager.getGame();
 
         //noinspection Convert2streamapi
-        _renders.forEach(render -> render.draw(renderer, viewport, animProgress));
+        if (_renders != null) {
+            _renders.forEach(render -> render.draw(renderer, viewport, animProgress));
+        }
 
         _frame++;
         _renderTime += System.currentTimeMillis() - time;

@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game.modelInfo;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
-import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -201,7 +200,7 @@ public class ItemInfo extends ObjectInfo {
     public String                       type;
     public ItemInfoStorage              storage;
     public List<int[]>                  slots;
-    public List<ItemInfoReceipt>        receipts;
+    public List<ReceiptGroupInfo.ReceiptInfo>        receipts;
     public int[]                        tiles;
     public boolean                      isWalkable = true;
     public int                          frames;

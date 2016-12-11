@@ -10,6 +10,8 @@ import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
+import java.util.Map;
+
 public class CharacterRenderer extends BaseRenderer {
 
     @BindModule
@@ -136,8 +138,10 @@ public class CharacterRenderer extends BaseRenderer {
 
                 // Draw inventory 2
                 if (c.getInventory2() != null) {
-                    for (ItemInfo itemInfo: c.getInventory2().keySet()) {
-                        renderer.draw(_spriteManager.getIcon(itemInfo), posX, posY + 2);
+                    for (Map.Entry<ItemInfo, Integer> entry: c.getInventory2().entrySet()) {
+                        if (entry.getValue() > 0) {
+                            renderer.draw(_spriteManager.getIcon(entry.getKey()), posX, posY + 2);
+                        }
                     }
                 }
 

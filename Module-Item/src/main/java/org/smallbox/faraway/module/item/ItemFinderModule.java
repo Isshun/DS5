@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.item.ItemModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 public class ItemFinderModule extends GameModule {
     @BindModule
-    private ItemModule  _items;
+    private ItemModule _items;
 
     // TODO: setJob item
     // TODO: isJobLaunchable path

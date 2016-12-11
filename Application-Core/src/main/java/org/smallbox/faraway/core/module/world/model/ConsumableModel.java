@@ -79,4 +79,7 @@ public class ConsumableModel extends MapObjectModel {
         // Add buffEffect on characters
         character.apply(_info.consume);
     }
+
+    @Override
+    public String toString() { return _info.name + " at " + _parcel; }
 }

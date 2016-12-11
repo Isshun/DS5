@@ -2,7 +2,7 @@
     "lang": "en",
     "uiScale": 1,
     "screen": {
-        "resolution": [1200, 700],
+        "resolution": [1400, 850],
         "position": [40, 20],
         "mode": "window",
         "foregroundFPS": 60,
@@ -14,7 +14,7 @@
         "storageMaxQuantity": 100,
         "environmentDistance": 5,
         "maxNearDistance": 32,
-        "updateInterval": 100
+        "updateInterval": 20
     },
     "log": {
         "level": "info"

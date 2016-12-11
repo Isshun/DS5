@@ -3,7 +3,6 @@ package org.smallbox.faraway.client.lua;
 import com.badlogic.gdx.Gdx;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
-import org.luaj.vm2.LuaInteger;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.CoerceLuaToJava;
@@ -215,43 +214,43 @@ public class LuaUIExtend extends LuaExtend {
             });
         }
 
-        LuaValue onEvent = value.get("on_event");
-        if (!onEvent.isnil()) {
-            ApplicationClient.luaModuleManager.addLuaEventListener((event, luaTag, luaData) -> {
-                try {
-                    LuaValue ret = onEvent.call(luaView, luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaData);
-                    return !ret.isnil() && ret.toboolean();
-                } catch (LuaError e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }, view.inGame());
-        }
+//        LuaValue onEvent = value.get("on_event");
+//        if (!onEvent.isnil()) {
+//            ApplicationClient.luaModuleManager.addLuaEventListener((event, luaTag, luaData) -> {
+//                try {
+//                    LuaValue ret = onEvent.call(luaView, luaTag.isnil() ? LuaValue.valueOf(event) : luaTag, luaData);
+//                    return !ret.isnil() && ret.toboolean();
+//                } catch (LuaError e) {
+//                    e.printStackTrace();
+//                }
+//                return false;
+//            }, view.inGame());
+//        }
 
-        LuaValue onGameStart = value.get("on_game_start");
-        if (!onGameStart.isnil()) {
-            ApplicationClient.luaModuleManager.addLuaLoadListener(() -> {
-                try {
-                    onGameStart.call(luaView);
-                } catch (LuaError e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+//        LuaValue onGameStart = value.get("on_game_start");
+//        if (!onGameStart.isnil()) {
+//            ApplicationClient.luaModuleManager.addLuaLoadListener(() -> {
+//                try {
+//                    onGameStart.call(luaView);
+//                } catch (LuaError e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
 
-        LuaValue onRefresh = value.get("on_refresh");
-        if (!onRefresh.isnil()) {
-            final View finalView = view;
-            ApplicationClient.luaModuleManager.addLuaRefreshListener((frame) -> {
-                if (finalView.isVisible()) {
-                    try {
-                        onRefresh.call(luaView, LuaInteger.valueOf(frame));
-                    } catch (LuaError e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
+//        LuaValue onRefresh = value.get("on_refresh");
+//        if (!onRefresh.isnil()) {
+//            final View finalView = view;
+//            ApplicationClient.luaModuleManager.addLuaRefreshListener((frame) -> {
+//                if (finalView.isVisible()) {
+//                    try {
+//                        onRefresh.call(luaView, LuaInteger.valueOf(frame));
+//                    } catch (LuaError e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
+//        }
     }
 
     public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {

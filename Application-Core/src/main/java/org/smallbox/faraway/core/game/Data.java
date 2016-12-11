@@ -6,7 +6,8 @@ import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.core.module.character.model.BuffInfo;
 import org.smallbox.faraway.core.module.character.model.DiseaseInfo;
-import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.util.Log;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -98,7 +99,11 @@ public class Data {
     }
 
     public void add(String name, Object object) {
-        _all.put(name, object);
+        if (!_all.containsKey(name)) {
+            _all.put(name, object);
+        } else {
+            Log.warning("Data: key %s already exists", name);
+        }
     }
 
     public interface DataAsyncListener<T> {

@@ -72,7 +72,6 @@ public abstract class JobModel extends ObjectModel {
     private static int          _countInstance;
 
     protected int               _id;
-    protected ParcelModel       _parcel;
     protected int               _limit;
     protected int               _currentLimit;
     protected int               _fail;
@@ -171,7 +170,6 @@ public abstract class JobModel extends ObjectModel {
     public boolean                  hasJobParcel() { return _jobParcel != null; }
     public boolean                  hasCharacter(CharacterModel character) { return _character != null && _character == character; }
     public boolean                  hasCharacter() { return _character != null; }
-    public boolean                  hasCharacterReady() { return _character != null && _character.getParcel() == _targetParcel; }
     public boolean                  isVisibleInUI() { return true; }
     public boolean                  isFinish() { return _isFinish; }
     public boolean                  isOpen() { return !_isFinish; }
@@ -253,8 +251,6 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void finish() {
-        assert !_isFinish;
-
         _isFinish = true;
 
         if (_character != null) {
@@ -296,11 +292,6 @@ public abstract class JobModel extends ObjectModel {
     public JobActionReturn action(CharacterModel character) {
         if (isFinish()) {
             Log.error("Cannot call action on finished job");
-        }
-
-        // Job is not auto and have no character ready
-        if (!_isAuto && !hasCharacterReady()) {
-            return JobActionReturn.CONTINUE;
         }
 
         // Job have sub jobs

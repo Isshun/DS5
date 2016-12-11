@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.mainPanel.MainPanelController;
 import org.smallbox.faraway.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -21,6 +22,12 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     private MainPanelController mainPanelController;
 
     private List<T> list;
+
+    public void display(T object) {
+        list = Collections.singletonList(object);
+        mainPanelController.setCurrentController(this);
+        displayObjects();
+    }
 
     @Override
     public boolean onKeyPress(GameEventListener.Key key) {

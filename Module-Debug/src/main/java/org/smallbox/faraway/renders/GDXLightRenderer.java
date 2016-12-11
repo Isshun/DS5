@@ -13,7 +13,7 @@
 //import org.smallbox.faraway.client.renderer.LightRenderer;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.model.GameConfig;
-//import org.smallbox.faraway.module.item.item.ItemModel;
+//import ItemModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
 //import org.smallbox.faraway.core.module.world.model.StructureModel;

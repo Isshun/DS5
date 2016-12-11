@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.item.item;
+package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.game.model.NetworkModel;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;

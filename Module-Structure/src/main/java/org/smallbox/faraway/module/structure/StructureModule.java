@@ -101,7 +101,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
 //            _structures.stream().filter(structure -> !structure.isComplete())
 //                    .forEach(item -> item.getComponents().stream()
 //                            .filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-//                            .forEach(component -> jobModule.addJob(new HaulJob(item, component))));
+//                            .forEach(component -> jobModule.addHaulJob(new HaulJob(item, component))));
 
             // Create Build jobs
             _structures.stream()

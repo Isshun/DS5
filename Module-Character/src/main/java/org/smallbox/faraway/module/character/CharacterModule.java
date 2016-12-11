@@ -91,58 +91,71 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         }
 
         // Remove dead characters
-        _characters.stream()
-                .filter(character -> !character.isAlive())
-                .forEach(character -> {
-                    // Cancel job
-                    if (character.getJob() != null) {
-                        jobModule.quitJob(character.getJob(), JobModel.JobAbortReason.DIED);
-                    }
-
-                    if (CollectionUtils.isEmpty(character.getBuffs())) {
-                        character.getBuffs().clear();
-                    }
-                });
-
-        _characters.stream()
-                .filter(CharacterModel::isAlive)
-                .forEach(character -> {
-                    if (tick % 10 == character.getLag()) {
-                        // Assign job
-                        if (character.getJob() == null && !character.isSleeping()) {
-                            jobModule.assign(character);
-                        }
-
-                        // Update characters (buffs, stats)
-                        character.update();
-                    }
-
-                    // Update needs
-                    character.getNeeds().update();
-
-                    character.setDirection(MovableModel.Direction.NONE);
-                    character.action();
-                    character.move();
-                    character.fixPosition();
-                });
+        _characters.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
+        _characters.removeIf(CharacterModel::isDead);
 
         if (tick % 10 == 0) {
-            _characters.forEach(CharacterModel::longUpdate);
+//            _characters.forEach(this::updateNeeds);
+            _characters.forEach(this::updateJobs);
+            _characters.forEach(this::updateBuffs);
+            _characters.forEach(this::updatePosition);
         }
     }
 
-    // TODO: heavy
-    public CharacterModel getCharacterAtPos(int x, int y, int z) {
-        printDebug("getCharacterAtPos: " + x + "x" + y);
-
-        for (CharacterModel c: _characters) {
-            if (c.getParcel().equals(x, y, z)) {
-                printDebug("getCharacterAtPos: found");
-                return c;
-            }
+    /**
+     * Cancel all actions for dead character
+     *
+     * @param character CharacterModel
+     */
+    private void updateDeadCharacter(CharacterModel character) {
+        // Cancel job
+        if (character.getJob() != null) {
+            jobModule.quitJob(character.getJob(), JobModel.JobAbortReason.DIED);
         }
 
-        return null;
+        if (CollectionUtils.isEmpty(character.getBuffs())) {
+            character.getBuffs().clear();
+        }
+    }
+
+    /**
+     *
+     * @param character CharacterModel
+     */
+    private void updateJobs(CharacterModel character) {
+        // Assign job
+        if (character.getJob() == null) {
+            jobModule.assign(character);
+        }
+    }
+
+    /**
+     *
+     * @param character CharacterModel
+     */
+    private void updateNeeds(CharacterModel character) {
+        // Update needs
+        character.getNeeds().update();
+    }
+
+    /**
+     *
+     * @param character CharacterModel
+     */
+    private void updateBuffs(CharacterModel character) {
+        // Update characters (buffs, stats)
+        character.update();
+    }
+
+    /**
+     *
+     * @param character CharacterModel
+     */
+    private void updatePosition(CharacterModel character) {
+        character.setDirection(MovableModel.Direction.NONE);
+        character.action();
+        character.move();
+        character.fixPosition();
     }
 
     public CharacterModel add(CharacterModel character) {
@@ -206,16 +219,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             }
         }
         return false;
-    }
-
-    public int countCharacterAtPos(int posX, int posY) {
-        int count = 0;
-        for (CharacterModel character: _characters) {
-            if (character.getParcel().x == posX && character.getParcel().y == posY) {
-                count++;
-            }
-        }
-        return count;
     }
 
     @Override

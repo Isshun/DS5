@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.job.CraftJob;
 import org.smallbox.faraway.module.mainPanel.controller.AbsInfoLuaController;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * Created by Alex on 26/04/2016.
  */
 public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
+
     @BindLua private UILabel        lbName;
 
     @BindLua private View           frameContent;
@@ -27,6 +28,7 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
     @BindLua private UILabel        lbBuildProgress;
     @BindLua private UIImage        imgBuildProgress;
 
+    @BindLua private UILabel        currentAction;
     @BindLua private UIList         listActions;
     @BindLua private UIList         listWorkers;
     @BindLua private UIList         listComponents;
@@ -54,19 +56,48 @@ public class ItemInfoController extends AbsInfoLuaController<ItemModel> {
 
     private void refreshActions(ItemModel item) {
         listActions.clear();
+
         if (item.getFactory() != null) {
-            item.getFactory().getCraftActions().entrySet().forEach(entry -> {
-                listActions.addView(createActionView(entry.getKey(), entry.getValue()));
+            item.getFactory().getReceiptGroups().forEach(receiptGroup -> {
+                UICheckBox cbReceiptGroup = UICheckBox.create(null);
+                cbReceiptGroup.setText(receiptGroup.receiptGroupInfo.label);
+                cbReceiptGroup.setSize(100, 20);
+                cbReceiptGroup.setChecked(UICheckBox.Value.PARTIAL);
+                listActions.addView(cbReceiptGroup);
+
+                if (item.getFactory().hasRunningReceipt()) {
+                    currentAction.setText(item.getFactory().getRunningReceipt().receiptInfo.label);
+                } else {
+                    currentAction.setText("no running receipt");
+                }
+
+                item.getFactory().getReceipts().stream()
+                        .filter(receipt -> receipt.receiptGroup == receiptGroup)
+                        .forEach(receipt -> {
+                            UICheckBox cbReceipt = UICheckBox.create(null);
+                            cbReceipt.setText(receipt.receiptInfo.inputs.toString());
+                            cbReceipt.setSize(100, 20);
+                            cbReceipt.setPosition(20, 0);
+                            cbReceipt.setChecked(receipt.isActive ? UICheckBox.Value.TRUE : UICheckBox.Value.FALSE);
+                            cbReceipt.setOnCheckListener(checked -> receipt.isActive = checked == UICheckBox.Value.TRUE);
+                            listActions.addView(cbReceipt);
+                        });
             });
         }
 
-        listFactoryInventory.clear();
-        if (item.getFactory() != null) {
-            item.getFactory().getInventory().forEach(consumableStack ->
-                    listFactoryInventory.addView(UILabel.create(null)
-                            .setText(consumableStack.getItemInfo().label + " (" + consumableStack.getConsumables().size() + ")")
-                            .setSize(300, 22)));
-        }
+        //        if (item.getFactory() != null) {
+//            item.getFactory().getCraftActions().entrySet().forEach(entry -> {
+//                listActions.addView(createActionView(entry.getKey(), entry.getValue()));
+//            });
+//        }
+//
+//        listFactoryInventory.clear();
+//        if (item.getFactory() != null) {
+//            item.getFactory().getInventory().forEach(consumableStack ->
+//                    listFactoryInventory.addView(UILabel.create(null)
+//                            .setText(consumableStack.getItemInfo().label + " (" + consumableStack.getConsumables().size() + ")")
+//                            .setSize(300, 22)));
+//        }
     }
 
     private View createActionView(ItemInfo.ItemInfoAction action, CraftJob job) {

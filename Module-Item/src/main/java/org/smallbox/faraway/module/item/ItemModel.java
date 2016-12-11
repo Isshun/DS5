@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.item.item;
+package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.ItemFactoryModel;
+import org.smallbox.faraway.module.itemFactory.ItemFactoryModel;
 
 import java.util.Collections;
 import java.util.List;
@@ -194,4 +194,7 @@ public class ItemModel extends BuildableMapObject {
     public boolean hasFactory() {
         return _factory != null;
     }
+
+    @Override
+    public String toString() { return _info + " at " + _parcel; }
 }

@@ -51,6 +51,7 @@ ui:extend({
             -- Actions
             { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, views = {
                 { type = "label", text = "Actions", text_size = 22, size = {400, 26}},
+                { type = "label", id = "current_action", size = {400, 20}},
                 { type = "list", id = "list_actions"},
             }},
 
@@ -199,9 +200,9 @@ ui:extend({
     --                --                view:findById("lb_factory_progress"):setText("Status", ": ", factory:getMessage())
     --                view:findById("img_factory_progress"):setTextureRect(0, 80, math.floor(progress * 352 / 10) * 10, 16)
     --
-    --                if factory:getActiveReceipt() then
+    --                if factory:getRunningReceipt() then
     --                    view:findById("lb_factory_status"):setDashedString(
-    --                        factory:getActiveReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 44)
+    --                        factory:getRunningReceipt().receiptInfo.label, progress > 0 and math.floor(progress * 100) .. "%" or factory:getMessage(), 44)
     --                else
     --                    view:findById("lb_factory_status"):setText("None", " (", factory:getMessage():lower(), ")");
     --                end
@@ -209,9 +210,9 @@ ui:extend({
     --                --                view:findById("lb_factory_character"):setText("Crafter", ": ",
     --                --                    factory:getJob() and factory:getJob():getCharacter() and factory:getJob():getCharacter():getName() or "none")
     --                --
-    --                --                if item:getFactory():getActiveReceipt() then
+    --                --                if item:getFactory():getRunningReceipt() then
     --                --                    local str = "shopping list: "
-    --                --                    local iterator = item:getFactory():getActiveReceipt():getShoppingList():iterator()
+    --                --                    local iterator = item:getFactory():getRunningReceipt():getShoppingList():iterator()
     --                --                    while iterator:hasNext() do
     --                --                        local product = iterator:next()
     --                --                        str = str .. product.consumable:getInfo().name .. " x" .. product.quantity
@@ -221,9 +222,9 @@ ui:extend({
     --                --                    view:findById("lb_factory_components"):setText("shopping list: none")
     --                --                end
     --                --
-    --                --                if item:getFactory():getActiveReceipt() then
+    --                --                if item:getFactory():getRunningReceipt() then
     --                --                    local str = "components: "
-    --                --                    local iterator = item:getFactory():getActiveReceipt():getComponents():iterator()
+    --                --                    local iterator = item:getFactory():getRunningReceipt():getComponents():iterator()
     --                --                    while iterator:hasNext() do
     --                --                        local component = iterator:next()
     --                --                        str = str .. component.itemInfo.name .. " " .. component.currentQuantity .. "/" .. component.totalQuantity

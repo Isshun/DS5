@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
  */
 public interface ConsumableModuleObserver extends ModuleObserver {
     default void onAddConsumable(ParcelModel parcel, ConsumableModel consumable) {}
+    default void onUpdateQuantity(ParcelModel parcel, ConsumableModel consumable, int quantityBefore, int quantityAfter) {}
     default void onRemoveConsumable(ParcelModel parcel, ConsumableModel consumable) {}
     default void onSelectConsumable(ConsumableModel consumable) {}
     default void onDeselectConsumable(ConsumableModel consumable) {}

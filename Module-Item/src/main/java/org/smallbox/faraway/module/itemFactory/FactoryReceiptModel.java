@@ -1,14 +1,11 @@
-package org.smallbox.faraway.module.item.item;
+package org.smallbox.faraway.module.itemFactory;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
-import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.module.item.CraftJob;
-import org.smallbox.faraway.module.item.ItemFactoryModel;
+import org.smallbox.faraway.module.item.job.CraftJob;
+import org.smallbox.faraway.module.item.PotentialConsumable;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +13,13 @@ import java.util.stream.Collectors;
  * Created by Alex on 17/10/2015.
  */
 public class FactoryReceiptModel {
+
+    public boolean isActive;
+
+    public boolean hasEnoughComponents() {
+        return _components.stream().allMatch(component -> component.currentQuantity >= component.totalQuantity);
+    }
+
     public static class FactoryShoppingItemModel {
         public ConsumableModel consumable;
         public int              quantity;
@@ -27,7 +31,7 @@ public class FactoryReceiptModel {
     }
 
     public static class FactoryComponentModel {
-        public ItemInfo itemInfo;
+        public ItemInfo         itemInfo;
         public int              currentQuantity;
         public int              totalQuantity;
 
@@ -35,6 +39,9 @@ public class FactoryReceiptModel {
             this.itemInfo = itemInfo;
             this.totalQuantity = quantity;
         }
+
+        @Override
+        public String toString() { return itemInfo + " " + currentQuantity + " / " + totalQuantity; }
     }
 
     private List<FactoryComponentModel>         _components;
@@ -55,29 +62,35 @@ public class FactoryReceiptModel {
     public List<FactoryShoppingItemModel>   getShoppingList() { return _shoppingList; }
     public boolean                          isFull() { return _isFull; }
 
-    public void setPotentialComponents(List<PotentialConsumable> potentialComponents) {
-        this.totalDistance = 0;
-        this.enoughComponents = true;
-
-        for (ReceiptGroupInfo.ReceiptInputInfo inputInfo: this.receiptInfo.inputs) {
-            List<PotentialConsumable> potentials = potentialComponents.stream()
-                    .filter(potentialConsumable -> potentialConsumable.itemInfo.instanceOf(inputInfo.item))
-                    .sorted(Comparator.comparingInt(o -> o.distance))
-                    .collect(Collectors.toList());
-            int quantity = 0;
-            for (PotentialConsumable potential: potentials) {
-                if (quantity < inputInfo.quantity) {
-                    this.totalDistance += potential.distance;
-                    quantity += potential.consumable.getQuantity();
-                }
-            }
-            if (quantity < inputInfo.quantity) {
-                this.enoughComponents = false;
-            }
-        }
-
-        Log.info("Set potential components for receipt entry: " + this.receiptInfo.label + " (distance: " + this.totalDistance + ", enough: " + this.enoughComponents + ")");
+    public void initComponents() {
+        _components = receiptInfo.inputs.stream()
+                .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
+                .collect(Collectors.toList());
     }
+
+//    public void setPotentialComponents(List<PotentialConsumable> potentialComponents) {
+//        this.totalDistance = 0;
+//        this.enoughComponents = true;
+//
+//        for (ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo inputInfo: this.receiptInfo.inputs) {
+//            List<PotentialConsumable> potentials = potentialComponents.stream()
+//                    .filter(potentialConsumable -> potentialConsumable.itemInfo.instanceOf(inputInfo.item))
+//                    .sorted(Comparator.comparingInt(o -> o.distance))
+//                    .collect(Collectors.toList());
+//            int quantity = 0;
+//            for (PotentialConsumable potential: potentials) {
+//                if (quantity < inputInfo.quantity) {
+//                    this.totalDistance += potential.distance;
+//                    quantity += potential.consumable.getQuantity();
+//                }
+//            }
+//            if (quantity < inputInfo.quantity) {
+//                this.enoughComponents = false;
+//            }
+//        }
+//
+//        Log.info("Set potential components for receipt entry: " + this.receiptInfo.label + " (distance: " + this.totalDistance + ", enough: " + this.enoughComponents + ")");
+//    }
 
     public void clear() {
         _components.clear();
@@ -117,21 +130,21 @@ public class FactoryReceiptModel {
                 .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
                 .collect(Collectors.toList());
 
-        // Fill consumables shopping list
-        _shoppingList = new ArrayList<>();
-        if (!_components.isEmpty()) {
-            _isFull = false;
-            receiptInfo.inputs.forEach(receiptInputInfo -> {
-                int quantity = 0;
-                for (PotentialConsumable potential: potentials) {
-                    if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
-                        int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
-                        _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
-                        quantity += neededQuantity;
-                    }
-                }
-            });
-        }
+//        // Fill consumables shopping list
+//        _shoppingList = new ArrayList<>();
+//        if (!_components.isEmpty()) {
+//            _isFull = false;
+//            receiptInfo.inputs.forEach(receiptInputInfo -> {
+//                int quantity = 0;
+//                for (PotentialConsumable potential: potentials) {
+//                    if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
+//                        int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
+//                        _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
+//                        quantity += neededQuantity;
+//                    }
+//                }
+//            });
+//        }
     }
 
     public boolean isComponentsAvailable(CraftJob job) {
@@ -149,5 +162,8 @@ public class FactoryReceiptModel {
     public FactoryShoppingItemModel getNextInput() {
         return !_shoppingList.isEmpty() ? _shoppingList.get(0) : null;
     }
+
+    @Override
+    public String toString() { return receiptInfo.label; }
 
 }

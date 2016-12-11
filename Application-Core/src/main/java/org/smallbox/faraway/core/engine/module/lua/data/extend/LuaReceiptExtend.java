@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,22 +24,14 @@ public class LuaReceiptExtend extends LuaExtend {
     @Override
     public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
-        ReceiptGroupInfo receiptGroupInfo = null;
-        for (ReceiptGroupInfo info: Application.data.receipts) {
-            if (info.name != null && info.name.equals(name)) {
-                receiptGroupInfo = info;
-            }
-        }
+        ReceiptGroupInfo receiptGroupInfo = new ReceiptGroupInfo();
 
-        if (receiptGroupInfo == null) {
-            receiptGroupInfo = new ReceiptGroupInfo();
-            Application.data.add(name, receiptGroupInfo);
-            Application.data.receipts.add(receiptGroupInfo);
-        }
+        Application.data.add(name, receiptGroupInfo);
+        Application.data.receipts.add(receiptGroupInfo);
 
-        receiptGroupInfo.name = getString(value, "name", null);
-        receiptGroupInfo.label = getString(value, "label", null);
-        receiptGroupInfo.cost = getInt(value, "cost", 1);
+        readString(value, "name", v -> receiptGroupInfo.name = v);
+        readString(value, "label", v -> receiptGroupInfo.label = v);
+        readInt(value, "cost", v -> receiptGroupInfo.cost = v, 1);
 
         LuaValue luaReceipts = value.get("receipts");
         if (!luaReceipts.isnil()) {
@@ -56,7 +48,7 @@ public class LuaReceiptExtend extends LuaExtend {
                     LuaValue luaInputs = luaReceipt.get("inputs");
                     for (int j = 1; j <= luaInputs.length(); j++) {
                         LuaValue luaInput = luaInputs.get(j);
-                        ReceiptGroupInfo.ReceiptInputInfo componentInfo = new ReceiptGroupInfo.ReceiptInputInfo();
+                        ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo componentInfo = new ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo();
                         readAsync(luaInput, "name", ItemInfo.class, itemInfo -> componentInfo.item = itemInfo);
                         componentInfo.quantity = luaInput.get("quantity").toint();
                         receiptInfo.inputs.add(componentInfo);
@@ -68,15 +60,15 @@ public class LuaReceiptExtend extends LuaExtend {
                     LuaValue luaOutputs = luaReceipt.get("outputs");
                     for (int j = 1; j <= luaOutputs.length(); j++) {
                         LuaValue luaComponent = luaOutputs.get(j);
-                        ReceiptGroupInfo.ReceiptOutputInfo productItemInfo = new ReceiptGroupInfo.ReceiptOutputInfo();
+                        ReceiptGroupInfo.ReceiptInfo.ReceiptOutputInfo productItemInfo = new ReceiptGroupInfo.ReceiptInfo.ReceiptOutputInfo();
                         readAsync(luaComponent, "name", ItemInfo.class, itemInfo -> productItemInfo.item = itemInfo);
                         if (luaComponent.get("quantity").istable()) {
-                            productItemInfo.quantity = new int[]{
+                            productItemInfo.quantity = new int[] {
                                     luaComponent.get("quantity").get(1).toint(),
                                     luaComponent.get("quantity").get(2).toint()
                             };
                         } else {
-                            productItemInfo.quantity = new int[]{
+                            productItemInfo.quantity = new int[] {
                                     luaComponent.get("quantity").toint(),
                                     luaComponent.get("quantity").toint()
                             };

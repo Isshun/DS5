@@ -4,6 +4,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
@@ -109,7 +110,7 @@ public class BuildableMapObject extends MapObjectModel {
     public boolean          isWalkable() { return !isComplete() || _info.isWalkable; }
     public boolean          isComplete() { return _buildProgress >= _info.build.cost; }
 
-    public void setReceipt(ItemInfo.ItemInfoReceipt receipt) {
+    public void setReceipt(ReceiptGroupInfo.ReceiptInfo receipt) {
         throw new NotImplementedException("");
 
 //        // Drop all existing components on the floor

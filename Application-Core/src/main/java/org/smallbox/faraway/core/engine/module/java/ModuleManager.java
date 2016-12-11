@@ -215,7 +215,7 @@ public class ModuleManager implements GameObserver {
         return allModulesHasBeenLoaded;
     }
 
-    public ModuleBase                       getModule(Class<? extends ModuleBase> cls) { return _modules.stream().filter(cls::isInstance).findFirst().get(); }
+    public <T> T                       getModule(Class<T> cls) { return (T) _modules.stream().filter(cls::isInstance).findFirst().get(); }
     public ModuleBase                       getModule(String className) { return _modules.stream().filter(module -> module.getClass().getSimpleName().equals(className)).findFirst().get(); }
     public Collection<ModuleBase>           getModules() { return _modules; }
     public Collection<ModuleBase>           getModulesThird() { return _modulesThird; }

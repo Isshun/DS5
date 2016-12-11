@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.Application;
 public class Config {
 
     public static boolean onDebugView;
+    public static final int FLOOR = 7;
 
     public static int getInt(String path) {
         return Application.configurationManager.getInt(path);

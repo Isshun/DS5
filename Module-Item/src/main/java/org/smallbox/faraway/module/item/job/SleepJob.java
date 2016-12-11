@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.item;
+package org.smallbox.faraway.module.item.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.module.item.item.ItemSlot;
+import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.ItemSlot;
 
 /**
  * Created by Alex on 25/10/2015.

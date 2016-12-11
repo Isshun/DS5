@@ -1,20 +1,20 @@
-package org.smallbox.faraway.module.item;
+package org.smallbox.faraway.module.item.job;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.ItemSlot;
+import org.smallbox.faraway.module.item.NetworkConnectionModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.module.item.item.ItemSlot;
-import org.smallbox.faraway.module.item.item.NetworkConnectionModel;
 
 public class UseJob extends JobModel {
     private int         _current;
-    private ItemModel   _item;
-    private ItemSlot    _slot;
+    private ItemModel _item;
+    private ItemSlot _slot;
 
     @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {

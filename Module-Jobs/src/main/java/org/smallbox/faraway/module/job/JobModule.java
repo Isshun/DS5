@@ -178,35 +178,38 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     /**
-     * Get job from _queue matching characters talents
+     * Retourne la meilleur tache disponible pour le personnage
      *
      * @param character
      */
     // TODO: one pass + onCheck profession
     private JobModel getBestRegular(CharacterModel character) {
-        int bestDistance = Integer.MAX_VALUE;
-        JobModel bestJob = null;
 
         // Regular jobs
         for (CharacterTalentExtra.TalentEntry talent: character.getTalents().getAll()) {
-            if (bestJob == null) {
-                for (JobModel job: _jobs) {
-                    if (job.isActive() && !job.isAuto()) {
-                        Log.debug("Check best regular: " + job.getLabel());
-                        ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                        if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
-                            int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
-                            if (distance < bestDistance && job.check(character)) {
-                                bestJob = job;
-                                bestDistance = distance;
-                            }
+            int bestDistance = Integer.MAX_VALUE;
+            JobModel bestJob = null;
+
+            for (JobModel job: _jobs) {
+                if (job.isActive() && !job.isAuto()) {
+                    Log.debug("Check best regular: " + job.getLabel());
+                    ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
+                    if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
+                        int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
+                        if (distance < bestDistance && job.check(character)) {
+                            bestJob = job;
+                            bestDistance = distance;
                         }
                     }
                 }
             }
+
+            if (bestJob != null) {
+                return bestJob;
+            }
         }
 
-        return bestJob;
+        return null;
     }
 
     /**

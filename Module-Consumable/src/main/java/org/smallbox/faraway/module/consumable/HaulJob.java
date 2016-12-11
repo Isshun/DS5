@@ -71,6 +71,7 @@ public class HaulJob extends JobModel {
     private JobActionReturn                             _return = JobActionReturn.CONTINUE;
 
     public int          getCurrentQuantity() { return _currentQuantity; }
+    public int          getRealQuantity() { return _quantity; }
 
     public HaulJob(BuildableMapObject item, BuildableMapObject.ComponentModel component) {
         throw new NotImplementedException("");
@@ -351,7 +352,7 @@ public class HaulJob extends JobModel {
 //
 //                // By-pass JobModule to start BuildJob without delay
 //                if (_buildItem.hasAllComponents()) {
-//                    ModuleHelper.getJobModule().addJob(new BuildJob(_buildItem));
+//                    ModuleHelper.getJobModule().addHaulJob(new BuildJob(_buildItem));
 //                }
 //
 //                _return = _component.currentQuantity == _component.neededQuantity ? JobActionReturn.COMPLETE : JobActionReturn.QUIT;

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.item;
+package org.smallbox.faraway.module.item.job;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -8,9 +8,10 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
-import org.smallbox.faraway.module.item.item.FactoryReceiptModel;
-import org.smallbox.faraway.module.item.item.ItemModel;
-import org.smallbox.faraway.module.item.item.ItemSlot;
+import org.smallbox.faraway.module.item.ItemModel;
+import org.smallbox.faraway.module.item.ItemSlot;
+import org.smallbox.faraway.module.itemFactory.FactoryReceiptModel;
+import org.smallbox.faraway.module.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.Utils;
@@ -19,11 +20,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CraftJob extends JobModel {
-    protected final ItemModel                   _item;
-    protected final ItemFactoryModel            _factory;
+    protected final ItemModel _item;
+    protected final ItemFactoryModel _factory;
     protected final FactoryReceiptModel _receipt;
 //    protected final ItemFactoryModel.FactoryReceiptGroupModel _order;
-    protected ItemSlot                          _slot;
+    protected ItemSlot _slot;
     protected double                            _current;
     private Map<ItemInfo.ActionInputInfo, Integer> _inputs;
 
@@ -46,7 +47,7 @@ public class CraftJob extends JobModel {
         _item = item;
         _targetParcel = item.getParcel();
         _factory = item.getFactory();
-        _receipt = _factory.getActiveReceipt();
+        _receipt = _factory.getRunningReceipt();
 
         // Create inputs map and haul jobs
         _inputs = action.inputs.stream()

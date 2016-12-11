@@ -21,7 +21,7 @@ public class StructureTopRenderer extends BaseRenderer {
 
     @Override
     public int getLevel() {
-        return MainRenderer.WORLD_TOP_RENDERER_LEVEL;
+        return MainRenderer.STRUCTURE_RENDERER_LEVEL;
     }
 
     @Override

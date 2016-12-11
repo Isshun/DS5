@@ -6,8 +6,7 @@ import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.module.item.ItemFinderModule;
-import org.smallbox.faraway.module.item.UseJob;
-import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.ItemModel;
 
 /**
  * Created by Alex on 17/06/2015.

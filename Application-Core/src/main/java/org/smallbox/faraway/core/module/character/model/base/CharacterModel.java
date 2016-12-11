@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.*;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.module.job.model.MoveJob;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
@@ -25,7 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
-//    private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
+    //    private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
 //    private UILabel _label;
     private PathModel _path;
     private PathModel _lastPath;
@@ -107,6 +106,7 @@ public abstract class CharacterModel extends MovableModel {
     public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableModel              getInventory() { return _inventory; }
+    public int                          getInventoryQuantity(ItemInfo itemInfo) { return _inventory2.get(itemInfo); }
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
     public abstract String[][]          getEquipmentViewIds();
     public abstract String              getEquipmentViewPath();
@@ -116,7 +116,7 @@ public abstract class CharacterModel extends MovableModel {
     public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();
     public double                       getMoveStep() { return _moveStep; }
-//    public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
+    //    public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
     public int                          getInventoryQuantity() { return _inventory != null ? _inventory.getQuantity() : 0; }
     public Collection<BuffCharacterModel>     getBuffs() { return _buffs; }
     public Collection<DiseaseCharacterModel>  getDiseases() { return _diseases; }
@@ -128,6 +128,7 @@ public abstract class CharacterModel extends MovableModel {
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
     public void                         setInventory(ConsumableModel consumable) { _inventory = consumable; }
+    public void                         setInventoryQuantity(ItemInfo itemInfo, int quantity) { _inventory2.put(itemInfo, Math.max(0, quantity)); }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setId(int id) { _id = id; }
     public void                         setIsDead() {
@@ -144,8 +145,9 @@ public abstract class CharacterModel extends MovableModel {
 
     public boolean                      isSelected() { return _isSelected; }
     public boolean                      isAlive() { return _stats.isAlive; }
+    public boolean                      isDead() { return !_stats.isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
-//    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
+    //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
 
     public DiseaseCharacterModel getDisease(String name) {
@@ -216,19 +218,38 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void moveTo(ParcelModel parcel, MoveListener<CharacterModel> listener) {
-        if (_moveListener != null) {
-            Log.debug("[" + getName() + "] Cancel previous move listener");
-            _moveListener.onFail(this);
-            _moveListener = null;
-        }
+    /**
+     * Déplace le personnage à la position demandée
+     *
+     * @param parcel Destination
+     * @return True si le personnage est déjà à la position voulue
+     */
+    public boolean moveTo(ParcelModel parcel) {
+        assert parcel != null;
 
-        // Already on position
+        return moveTo(parcel, null);
+    }
+
+    public boolean moveTo(ParcelModel parcel, MoveListener<CharacterModel> listener) {
+        assert parcel != null;
+
+        // Déjà à la position désirée
         if (parcel == _parcel) {
             if (listener != null) {
                 listener.onReach(this);
             }
-            return;
+            return true;
+        }
+
+        // Déjà entrain de se déplacer vers la postion
+        if (_path != null && _path.getLastParcel() == parcel) {
+            return false;
+        }
+
+        if (_moveListener != null) {
+            Log.debug("[" + getName() + "] Cancel previous move listener");
+            _moveListener.onFail(this);
+            _moveListener = null;
         }
 
         _path = Application.pathManager.getPath(_parcel, parcel, false, false);
@@ -237,6 +258,8 @@ public abstract class CharacterModel extends MovableModel {
         } else if (listener != null) {
             listener.onFail(this);
         }
+
+        return false;
     }
 
     public void fixPosition() {
@@ -251,10 +274,6 @@ public abstract class CharacterModel extends MovableModel {
                 _job.quit(this);
                 _job = null;
             }
-        }
-
-        if (_job != null && _job.getTargetParcel() != _parcel && _path == null) {
-            _job.quit(this);
         }
     }
 
@@ -338,18 +357,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void            action() {
-        if (_job == null) {
-            return;
-        }
-
-        if (!_job.hasCharacter(this)) {
-            _job = null;
-            Log.error("Job not owned by this characters");
-            return;
-        }
-
-        // Check if job location is reached or instance of MoveJob
-        if (_parcel == _job.getTargetParcel() || _job.getTargetParcel() == null || _job instanceof MoveJob) {
+        if (_job != null) {
             _job.action(this);
         }
     }
@@ -428,5 +436,11 @@ public abstract class CharacterModel extends MovableModel {
         } else {
             _inventory2.remove(itemInfo);
         }
+    }
+
+    public void addInventory(ConsumableModel consumable, int haulingQuantity) {
+        int quantity = Math.min(haulingQuantity, consumable.getQuantity());
+        addInventory(consumable.getInfo(), quantity);
+        consumable.addQuantity(-quantity);
     }
 }

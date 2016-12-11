@@ -22,19 +22,23 @@ public class UICheckBox extends View {
     private com.badlogic.gdx.graphics.Color     _gdxTextColor;
     private Color                               _textColor;
     private int                                 _maxLength;
-    private boolean                             _checked;
+    private Value                               _checked = Value.FALSE;
+
+    public enum Value { FALSE, TRUE, PARTIAL }
 
     public UICheckBox(ModuleBase module) {
         super(module);
     }
 
     public interface OnCheckListener {
-        void onCheck(boolean checked);
+        void onCheck(Value checked);
     }
+
+    public void setChecked(Value checked) { _checked = checked; }
 
     public void setOnCheckListener(OnCheckListener onCheckListener) {
         setOnClickListener(event -> {
-            _checked = !_checked;
+            _checked = _checked == Value.TRUE ? Value.FALSE : Value.TRUE;
             onCheckListener.onCheck(_checked);
         });
     }
@@ -217,7 +221,7 @@ public class UICheckBox extends View {
                 }
             }
 
-            renderer.draw(_checked ? "[x]" : "[ ]", _textSize,
+            renderer.draw(_checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]", _textSize,
                     getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft,
                     getAlignedY() + y + _offsetY + _paddingTop + _marginTop,
                     _gdxTextColor);

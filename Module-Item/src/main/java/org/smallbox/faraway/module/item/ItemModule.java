@@ -1,19 +1,18 @@
 package org.smallbox.faraway.module.item;
 
 import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.ModuleRenderer;
-import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
-import org.smallbox.faraway.module.item.item.ItemModel;
 import org.smallbox.faraway.module.item.job.CheckJoyItem;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.job.JobModuleObserver;
@@ -117,13 +116,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
 ////             Create craft jobs
 //            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
-//                    .forEach(item -> jobModule.addJob(new CraftJob(item)));
+//                    .forEach(item -> jobModule.addHaulJob(new CraftJob(item)));
         }
-
-        // Run factory
-        _items.stream()
-                .filter(ItemModel::hasFactory)
-                .forEach(item -> item.getFactory().run(jobModule, consumableModule));
     }
 
     @Override
@@ -175,6 +169,8 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     public void addItem(ItemModel item) {
         if (!_items.contains(item)) {
             _items.add(item);
+
+            notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
         }
     }
 

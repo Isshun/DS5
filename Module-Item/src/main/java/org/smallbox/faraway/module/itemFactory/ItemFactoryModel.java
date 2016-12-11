@@ -1,14 +1,15 @@
-package org.smallbox.faraway.module.item;
+package org.smallbox.faraway.module.itemFactory;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.module.consumable.BasicHaulJob;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.ConsumableStackModel;
-import org.smallbox.faraway.module.item.item.FactoryReceiptModel;
-import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.job.CraftJob;
+import org.smallbox.faraway.module.item.ItemModel;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
@@ -24,7 +25,7 @@ public class ItemFactoryModel {
     private Map<ItemInfo, ConsumableStackModel>     _inventory = new HashMap<>();
     private final ItemModel                         _item;
     private Map<ItemInfoAction, CraftJob>           _craftJobs = new HashMap<>();
-    private FactoryReceiptModel _activeReceipt;
+    private FactoryReceiptModel _runningReceipt;
     private List<FactoryReceiptGroupModel> _receiptGroups;
     private List<FactoryReceiptModel> _receipts;
     // TODO: file d'attente de sortie
@@ -32,6 +33,13 @@ public class ItemFactoryModel {
     private final ItemInfoFactory _factoryInfo;
     private ParcelModel _storageParcel;
     private String                          _message;
+    private List<BasicHaulJob> _haulJobs = new LinkedList<>();
+
+    public List<BasicHaulJob> getHaulJobs() { return _haulJobs; }
+
+    public boolean hasRunningReceipt() {
+        return _runningReceipt != null;
+    }
 
     public ItemFactoryModel(ItemModel item) {
         _item = item;
@@ -102,6 +110,17 @@ public class ItemFactoryModel {
         return _craftJobs;
     }
 
+    public void setRunningReceipt(FactoryReceiptModel receipt) {
+        _runningReceipt = receipt;
+
+        if (receipt != null) {
+            Log.info("Factory %s going to craft %s", _item, receipt);
+            _runningReceipt.initComponents();
+        }
+    }
+
+    public void addHaulJob(BasicHaulJob job) { _haulJobs.add(job); }
+
     public static class FactoryReceiptGroupModel {
         public final ReceiptGroupInfo   receiptGroupInfo;
         public final FactoryOutputMode  outputMode;
@@ -121,11 +140,12 @@ public class ItemFactoryModel {
 
     public void setMessage(String message) { _message = message; }
 
-    public List<FactoryReceiptGroupModel>                 getOrders() { return _receiptGroups; }
-    public List<FactoryReceiptModel>    getReceipts() { return _receipts; }
-    public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _activeReceipt != null ? _activeReceipt.receiptGroupInfo : null; }
-    public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _activeReceipt != null ? _activeReceipt.receiptInfo : null; }
-    public FactoryReceiptModel getActiveReceipt() { return _activeReceipt; }
+    public List<FactoryReceiptGroupModel>   getOrders() { return _receiptGroups; }
+    public List<FactoryReceiptModel>        getReceipts() { return _receipts; }
+    public List<FactoryReceiptGroupModel>   getReceiptGroups() { return _receiptGroups; }
+    public ReceiptGroupInfo                 getCurrentReceiptGroup() { return _runningReceipt != null ? _runningReceipt.receiptGroup.receiptGroupInfo : null; }
+    public ReceiptGroupInfo.ReceiptInfo     getCurrentReceiptInfo() { return _runningReceipt != null ? _runningReceipt.receiptInfo : null; }
+    public FactoryReceiptModel              getRunningReceipt() { return _runningReceipt; }
     public ParcelModel                      getStorageParcel() { return _storageParcel; }
     public String                           getMessage() { return _message; }
 
@@ -143,10 +163,10 @@ public class ItemFactoryModel {
 
 //        _message = "Stand-by";
 //
-//        if (_activeReceipt != null) {
-//            _activeReceipt.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_item.getParcel(), component.consumable));
-//            _activeReceipt.clear();
-//            _activeReceipt = null;
+//        if (_runningReceipt != null) {
+//            _runningReceipt.getShoppingList().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_item.getParcel(), component.consumable));
+//            _runningReceipt.clear();
+//            _runningReceipt = null;
 //        }
 //
 //        _job = null;
@@ -157,7 +177,7 @@ public class ItemFactoryModel {
 ////        Log.info("scan");
 //
 //        long time = System.currentTimeMillis();
-//        _activeReceipt = null;
+//        _runningReceipt = null;
 //
 //        if (_storageParcel != null && _storageParcel.getConsumable() != null) {
 //            _message = "Factory is full";
@@ -206,18 +226,18 @@ public class ItemFactoryModel {
 //
 //        // Get receipt based on components distance
 //        int bestDistance = Integer.MAX_VALUE;
-//        _activeReceipt = null;
+//        _runningReceipt = null;
 //        for (FactoryReceiptModel receipt: _receipts) {
 //            if (receipt.enoughComponents && receipt.receiptGroup == bestOrder && receipt.totalDistance < bestDistance) {
-//                _activeReceipt = receipt;
+//                _runningReceipt = receipt;
 //            }
 //        }
-//        if (_activeReceipt == null) {
-//            throw new RuntimeException("_activeReceipt cannot be null");
+//        if (_runningReceipt == null) {
+//            throw new RuntimeException("_runningReceipt cannot be null");
 //        }
 //
 //        // Fill components list
-//        _activeReceipt.prepare(potentials);
+//        _runningReceipt.prepare(potentials);
 //
 //        _message = "Refilling";
 //

@@ -53,8 +53,6 @@ public class MinimapRenderer extends GameDisplay {
 
     @Override
     public void onGameStart(Game game) {
-        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
-
         POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.configurationManager.uiScale - 10 * Application.configurationManager.uiScale);
         POS_Y = (int) (84 * Application.configurationManager.uiScale);
 
@@ -63,6 +61,11 @@ public class MinimapRenderer extends GameDisplay {
 
         _pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);
         _floor = WorldHelper.getCurrentFloor();
+    }
+
+    @Override
+    public void onReloadUI() {
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
     }
 
     @Override

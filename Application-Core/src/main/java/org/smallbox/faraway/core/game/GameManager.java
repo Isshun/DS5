@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
@@ -25,12 +26,13 @@ public class GameManager implements GameObserver {
         _game = new Game(gameInfo);
         _game.createModules();
 
-        Application.notify(observer -> observer.onGameCreate(_game));
+        Gdx.app.postRunnable(() -> Application.notify(observer -> observer.onGameCreate(_game)));
 
-        Application.gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> Gdx.app.postRunnable(() -> {
-            Application.notify(observer -> observer.onGameStart(_game));
-            _game.start();
-        }));
+        Application.gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename,
+                () -> Gdx.app.postRunnable(() -> {
+                    Application.notify(observer -> observer.onGameStart(_game));
+                    _game.start();
+                }));
     }
 
     @Override
@@ -41,7 +43,7 @@ public class GameManager implements GameObserver {
     public void createGame(RegionInfo regionInfo) {
         long time = System.currentTimeMillis();
 
-        GameInfo gameInfo = GameInfo.create(regionInfo, 256, 160, 8);
+        GameInfo gameInfo = GameInfo.create(regionInfo, 32, 32, Config.FLOOR + 1);
         File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
         if (!gameDirectory.mkdirs()) {
             Log.info("Unable to createGame game onSave directory");

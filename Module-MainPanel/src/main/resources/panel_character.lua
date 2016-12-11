@@ -42,52 +42,7 @@ ui:extend({
                 { type = "label", id = "lb_job_to", text_size = 14, position = {0, 12}, size = {-1, 40}},
                 { type = "label", id = "lb_job_progress", text_size = 14, position = {0, 12}, size = {-1, 40}},
                 { type = "image", id = "img_job_progress", src = "[base]/graphics/needbar.png", size = {380, 16}, texture_rect = {0, 0, 100, 16}},
-
-                { type = "label", position = {0, 20}, text = "Needs", text_size = 28},
-                { type = "grid", position = {0, 33}, columns = 2, column_width = 182, row_height = 44, views = {
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_food", position = {0, 0}, text = "food", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_food", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        --                        { type = "label", id = "lb_need_food_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_drink", position = {0, 0}, text = "drink", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_drink", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        --                        { type = "label", id = "lb_need_drink_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_energy", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_energy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        --                        { type = "label", id = "lb_need_energy_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_happiness", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_happiness", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_health", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_health", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_joy", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_joy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_relation", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "lb_need_oxygen", position = {0, 0}, text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                    }},
-                    { type = "view", size = {170, 44}, views = {
-                        { type = "label", id = "", position = {0, 0}, text = "energy", text_size = 14, text_color = 0xb3d035},
-                        { type = "image", id = "", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                    }},
-                }},
-
-                { type = "label", position = {0, 70}, text = "Buffs", text_size = 28},
-                { type = "list", id = "list_buffs", position = {0, 85}}
+                { type = "label", id = "lb_parcel", text_size = 14, position = {0, 12}, size = {-1, 40}},
             }
         },
 
@@ -97,6 +52,7 @@ ui:extend({
             id = "page_inventory",
             position = {0, 200},
             size = {400, 400},
+            visibility = false,
             views = {
                 { type = "label", id = "lb_inventory", position = {0, 10}, text_size = 14},
                 { type = "grid", position = {0, 24}, columns = 10, column_width = 32, row_height = 32, views = {
@@ -138,6 +94,7 @@ ui:extend({
             id = "page_info",
             position = {0, 200},
             size = {400, 400},
+            visibility = false,
             views = {
                 { type = "list", position = {10, 16}, views = {
                     { type = "label", text = "Talents", position = {0, 10}, text_size = 24},
@@ -154,12 +111,65 @@ ui:extend({
         {
             type = "view",
             id = "page_health",
+            controller = "org.smallbox.faraway.module.mainPanel.controller.CharacterHealthController",
             position = {0, 200},
             size = {400, 400},
+            visibility = false,
             views = {
                 { type = "list", position = {10, 16}, views = {
+
+                    -- Diseases
                     { type = "label", text = "Diseases", position = {0, 10}, text_size = 24},
                     { type = "list", id = "list_diseases", position = {0, 20}},
+
+                    -- Needs
+                    { type = "label", position = {0, 20}, text = "Needs", text_size = 28},
+                    { type = "grid", position = {0, 33}, columns = 2, column_width = 182, row_height = 44, views = {
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_food", text = "food", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_food", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            --                        { type = "label", id = "lb_need_food_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_drink", text = "drink", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_drink", style = "base.style.gauge"},
+                            --                        { type = "label", id = "lb_need_drink_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_energy", text = "energy", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_energy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            --                        { type = "label", id = "lb_need_energy_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_happiness", text = "energy", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_happiness", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_health", text = "energy", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_health", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_joy", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_joy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_relation", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "lb_need_oxygen", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        }},
+                        { type = "view", size = {170, 44}, views = {
+                            { type = "label", id = "", text = "energy", text_size = 14, text_color = 0xb3d035},
+                            { type = "image", id = "", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                        }},
+                    }},
+
+                    -- Buffs
+                    { type = "label", position = {0, 70}, text = "Buffs", text_size = 28},
+                    { type = "list", id = "list_buffs", position = {0, 85}}
+
                 }},
             }
         },

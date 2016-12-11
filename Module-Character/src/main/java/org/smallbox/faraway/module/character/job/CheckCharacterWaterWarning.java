@@ -9,8 +9,8 @@ import org.smallbox.faraway.core.module.world.model.ConsumableModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.module.consumable.ConsumeJob;
 import org.smallbox.faraway.module.item.ItemFinderModule;
-import org.smallbox.faraway.module.item.UseJob;
-import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.job.UseJob;
+import org.smallbox.faraway.module.item.ItemModel;
 
 /**
  * Created by Alex on 01/06/2015.

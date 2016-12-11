@@ -1,7 +1,5 @@
 package org.smallbox.faraway.util;
 
-import org.apache.commons.lang3.builder.RecursiveToStringStyle;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.smallbox.faraway.core.Application;
 
 import java.text.SimpleDateFormat;
@@ -18,6 +16,14 @@ public class Log {
     private final static Level level = Level.WARNING;
 
     private static final ConsoleHandler consoleHandler;
+
+    private static final String[] debugPackages = {
+            "org.smallbox.faraway.module.itemFactory",
+            "org.smallbox.faraway.module.consumable"
+    };
+
+    private static final String[] infoPackages = {
+    };
 
     static {
         logger.setLevel(level);
@@ -39,10 +45,14 @@ public class Log {
         logger.warning(message);
     }
 
+    public static void warning(String message, Object... objects) {
+        warning(String.format(message, objects));
+    }
+
     public static void error(Exception e, String message, Object... args) {
         logger.severe(String.format(message, args));
         logger.severe(e.getMessage());
-        for (StackTraceElement element: e.getStackTrace()) {
+        for (StackTraceElement element : e.getStackTrace()) {
             logger.severe(element.toString());
         }
     }
@@ -54,7 +64,7 @@ public class Log {
 
     private static void printError(Throwable t) {
         logger.severe(t.getMessage());
-        for (StackTraceElement element: t.getStackTrace()) {
+        for (StackTraceElement element : t.getStackTrace()) {
             logger.severe(element.toString());
         }
 
@@ -66,7 +76,7 @@ public class Log {
 
     public static void error(String message) {
         logger.severe(message);
-        for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
             logger.severe(element.toString());
         }
         Application.exitWithError();
@@ -79,7 +89,7 @@ public class Log {
 
     public static void fatal(String message) {
         logger.severe(message);
-        for (StackTraceElement element: Thread.currentThread().getStackTrace()) {
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
             logger.severe(element.toString());
         }
 
@@ -93,7 +103,7 @@ public class Log {
     public static void error(Exception e, String message) {
         logger.severe(message);
         logger.severe(e.getMessage());
-        for (StackTraceElement element: e.getStackTrace()) {
+        for (StackTraceElement element : e.getStackTrace()) {
             logger.severe(element.toString());
         }
 
@@ -102,31 +112,38 @@ public class Log {
         }
     }
 
-    public static void info(String message) {
-        logger.log(Level.INFO, message);
+    public static void info(String component, String message, Object... args) {
+        if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
+            logger.log(Level.INFO, "[" + component + "] " + String.format(message, args));
+        }
     }
 
     public static void info(String message, Object... args) {
-        String callerClassName = Thread.currentThread().getStackTrace()[2].getClassName();
-//        if (!callerClassName.startsWith("org.smallbox.faraway.core.engine.module")) {
-            info(callerClassName + " " + String.format(message, args));
-//        }
-    }
-
-    public static void debug(String message) {
-        logger.fine(message);
+        if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
+            logger.log(Level.INFO, String.format(message, args));
+        }
     }
 
     public static void debug(String message, Object... args) {
-        logger.fine(String.format(message, args));
+        if (inPackageList(debugPackages)) {
+            logger.fine(String.format(message, args));
+        }
+    }
+
+    private static boolean inPackageList(String[] packageList) {
+        String className = Thread.currentThread().getStackTrace()[3].getClassName();
+
+        for (String pkg: packageList) {
+            if (className.startsWith(pkg)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static void notice(String message) {
         info(message);
-    }
-
-    public static void dump(Object object) {
-        System.out.println(ReflectionToStringBuilder.toString(object, RecursiveToStringStyle.MULTI_LINE_STYLE));
     }
 
     public static void setLevel(String levelName) {

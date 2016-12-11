@@ -28,7 +28,13 @@ public class DebugModule extends GameModule {
     private WorldModule         worldModule;
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameStart(Game game) {
+//        for (int i = 0; i < 10; i++) {
+//            Application.data.getItems().stream()
+//                    .filter(itemInfo -> itemInfo.isConsumable)
+//                    .filter(itemInfo -> itemInfo.name.contains("vegetable"))
+//                    .forEach(itemInfo -> consumableModule.putConsumable(WorldHelper.getRandomFreeSpace(WorldHelper.getCurrentFloor(), true, true), itemInfo, 20));
+//        }
     }
 
     public void execute(String command) {

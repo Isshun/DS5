@@ -47,9 +47,9 @@ public class DebugController extends LuaController {
     public void onReloadUI() {
         mainPanelController.addShortcut("Debug", this);
 
-        cbViewId.setOnCheckListener(checked -> Config.onDebugView = checked);
-        cbViewWindow.setOnCheckListener(checked -> ApplicationClient.uiManager.findById("base.ui.info_views").setVisible(checked));
-        cbRenderWindow.setOnCheckListener(checked -> ApplicationClient.uiManager.findById("base.ui.debug.renders_list").setVisible(checked));
+        cbViewId.setOnCheckListener(checked -> Config.onDebugView = checked == UICheckBox.Value.TRUE);
+        cbViewWindow.setOnCheckListener(checked -> ApplicationClient.uiManager.findById("base.ui.info_views").setVisible(checked == UICheckBox.Value.TRUE));
+        cbRenderWindow.setOnCheckListener(checked -> ApplicationClient.uiManager.findById("base.ui.debug.renders_list").setVisible(checked == UICheckBox.Value.TRUE));
     }
 
     @Override

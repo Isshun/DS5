@@ -18,6 +18,7 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.module.area.model.AreaModel;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;

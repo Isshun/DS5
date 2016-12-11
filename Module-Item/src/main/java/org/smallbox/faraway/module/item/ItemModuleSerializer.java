@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.module.item.item.ItemModel;
 
 /**
  * Created by Alex on 21/07/2016.
@@ -54,7 +53,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
         });
     }
 
-    public void onLoad(ItemModule module, Game game) {
+    public void onLoad(ItemModule itemModule, Game game) {
         Application.sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress FROM WorldModule_item");
@@ -66,7 +65,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                             item.setParcel(WorldHelper.getParcel(stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3)));
                             item.setBuildProgress(stItem.columnInt(5));
                             item.init();
-                            module.addItem(item);
+                            itemModule.addItem(item);
                         }
                     }
                 } finally {

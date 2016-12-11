@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.client.controller.BindLuaController;
@@ -25,6 +26,9 @@ public class CrewController extends LuaController {
     @BindLuaController
     private MainPanelController mainPanelController;
 
+    @BindLuaController
+    private CharacterInfoController characterInfoController;
+
     @Override
     public void onReloadUI() {
         mainPanelController.addShortcut("Crew", this);
@@ -37,8 +41,10 @@ public class CrewController extends LuaController {
             listCrew.addView(UILabel.create(null)
                     .setText(character.getName() + " " + (character.getJob() != null ? character.getJob().getLabel() : ""))
                     .setSize(300, 28)
+                    .setBackgroundColor(Color.CYAN)
                     .setOnClickListener((GameEvent event) -> {
                         characterModule.select(event, character);
+                        characterInfoController.display(character);
                         setVisible(false);
                     }));
         });

@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.ItemModuleObserver;
-import org.smallbox.faraway.module.item.item.ItemModel;
+import org.smallbox.faraway.module.item.ItemModel;
 import org.smallbox.faraway.module.room.RoomModule;
 import org.smallbox.faraway.module.weather.WeatherModule;
 import org.smallbox.faraway.module.weather.WeatherModuleObserver;

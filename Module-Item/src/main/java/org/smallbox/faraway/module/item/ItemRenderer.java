@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.dependencyInjector.BindManager;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.client.renderer.*;
-import org.smallbox.faraway.module.item.item.ItemModel;
 
 public class ItemRenderer extends BaseRenderer {
 
@@ -18,7 +17,7 @@ public class ItemRenderer extends BaseRenderer {
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         itemModule.getItems().stream()
-                .filter(item -> viewport.hasParcel(item.getParcel()))
+//                .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> renderer.drawOnMap(item.getParcel(), getItemSprite(item)));
     }
 
@@ -31,6 +30,6 @@ public class ItemRenderer extends BaseRenderer {
     }
 
     public int getLevel() {
-        return MainRenderer.CHARACTER_RENDERER_LEVEL;
+        return MainRenderer.ITEM_RENDERER_LEVEL;
     }
 }

@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.world.model.ReceiptGroupInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -263,19 +263,19 @@ public class LuaItemExtend extends LuaExtend {
     }
 
     private void readReceiptValue(ItemInfo itemInfo, LuaValue value) throws DataExtendException {
-        ItemInfo.ItemInfoReceipt receipt = new ItemInfo.ItemInfoReceipt();
+        ReceiptGroupInfo.ReceiptInfo receipt = new ReceiptGroupInfo.ReceiptInfo();
 
         receipt.label = getString(value, "label", null);
         receipt.icon = getString(value, "icon", null);
 
-        receipt.components = new ArrayList<>();
+        receipt.inputs = new ArrayList<>();
         LuaValue luaComponents = value.get("components");
         if (!luaComponents.isnil()) {
             if (luaComponents.length() == 0) {
-                readReceiptComponentValue(receipt.components, luaComponents);
+                readReceiptComponentValue(receipt.inputs, luaComponents);
             } else {
                 for (int i = 1; i <= luaComponents.length(); i++) {
-                    readReceiptComponentValue(receipt.components, luaComponents.get(i));
+                    readReceiptComponentValue(receipt.inputs, luaComponents.get(i));
                 }
             }
         }
@@ -283,23 +283,24 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.receipts.add(receipt);
     }
 
-    private void readReceiptComponentValue(List<ItemInfo.ItemComponentInfo> components, LuaValue luaComponent) throws DataExtendException {
-        ItemInfo.ItemComponentInfo component = new ItemInfo.ItemComponentInfo();
+    private void readReceiptComponentValue(List<ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo> inputs, LuaValue luaComponent) throws DataExtendException {
+        ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo input = new ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo();
 
         // Get component item name
         if (!luaComponent.get("item").isnil()) {
-            readAsync(luaComponent, "item", ItemInfo.class, componentItemInfo -> component.item = componentItemInfo);
+            readAsync(luaComponent, "item", ItemInfo.class, componentItemInfo -> input.item = componentItemInfo);
         } else {
             throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.item");
         }
 
         // Get component quantity
         if (!luaComponent.get("quantity").isnil()) {
-            component.quantity = luaComponent.get("quantity").toint();
+            input.quantity = luaComponent.get("quantity").toint();
         } else {
             throw new DataExtendException(DataExtendException.Type.MANDATORY, "receipts.components.quantity");
         }
-        components.add(component);
+
+        inputs.add(input);
     }
 
     private GraphicInfo readGraphic(LuaValue luaGraphic, ItemInfo itemInfo) throws DataExtendException {

@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.game.model.Data;
 //import org.smallbox.faraway.core.module.world.model.*;
-//import org.smallbox.faraway.module.item.item.ItemModel;
+//import ItemModel;
 //import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
