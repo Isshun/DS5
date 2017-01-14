@@ -41,12 +41,12 @@
 package org.smallbox.faraway.resource;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import java.util.*;
 
 @Path("items")
 @Produces("application/json; charset=utf-8")
@@ -59,8 +59,23 @@ public class ItemResource {
     }
 
     @GET
-    public Data all() {
-        return Application.data;
+    public Map<String, String> all() {
+        return serialize(Application.data.items.get(0));
+    }
+
+    private Map<String, String> serialize(Object object) {
+        Map<String, String> map = new HashMap<>();
+
+        Arrays.asList(map.getClass().getFields())
+                .forEach(field -> {
+                    try {
+                        map.put(field.getName(), field.get(object).toString());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        return map;
     }
 
 }

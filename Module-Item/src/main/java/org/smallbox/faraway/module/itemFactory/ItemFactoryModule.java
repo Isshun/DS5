@@ -1,17 +1,19 @@
 package org.smallbox.faraway.module.itemFactory;
 
+import org.smallbox.faraway.core.ModuleInfo;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.BasicHaulJob;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
-import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.ItemModule;
 import org.smallbox.faraway.module.item.ItemModuleObserver;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
@@ -24,6 +26,7 @@ import java.util.List;
 /**
  * Created by Alex on 26/06/2015.
  */
+@ModuleInfo(name = "ItemFactoryModule")
 public class ItemFactoryModule extends GameModule {
 
     @BindModule
@@ -80,8 +83,8 @@ public class ItemFactoryModule extends GameModule {
      */
     private void actionCheckComponents(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt()) {
-            if (factory.getRunningReceipt().getComponents().stream().anyMatch(component -> !hasEnoughConsumables(component, item.getParcel()))) {
-                Log.debug("[Factory] %s -> not enough component", item);
+            if (factory.getRunningReceipt().receiptInfo.inputs.stream().anyMatch(ReceiptInputInfo -> !hasEnoughConsumables(ReceiptInputInfo, item))) {
+                item.getFactory().setMessage("not enough component");
 
                 actionClear(item, factory);
             }
@@ -95,10 +98,10 @@ public class ItemFactoryModule extends GameModule {
      */
     private void actionFindBestReceipt(UsableItem item, ItemFactoryModel factory) {
         if (!factory.hasRunningReceipt()) {
-            Log.info("[Factory] %s -> seek best receipt", item);
+            item.getFactory().setMessage("seek best receipt");
 
             factory.getReceipts().stream()
-                    .filter(receipt -> receipt.receiptInfo.inputs.stream().allMatch(inputInfo -> hasEnoughConsumables(inputInfo, item.getParcel())))
+                    .filter(receipt -> receipt.receiptInfo.inputs.stream().allMatch(inputInfo -> hasEnoughConsumables(inputInfo, item)))
                     .findFirst()
                     .ifPresent(factory::setRunningReceipt);
         }
@@ -111,24 +114,25 @@ public class ItemFactoryModule extends GameModule {
      */
     private void actionHaulingJobs(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt()) {
-            for (FactoryReceiptModel.FactoryComponentModel component: factory.getRunningReceipt().getComponents()) {
-                if (component.currentQuantity < component.totalQuantity) {
+            for (ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo receiptInputInfo: factory.getRunningReceipt().receiptInfo.inputs) {
+                int currentQuantity = factory.getCurrentQuantity(receiptInputInfo.item);
+                if (currentQuantity < receiptInputInfo.quantity) {
 
                     // Compte le nombre de consomables qui seront rapportés par les job existants
                     int quantityInJob = 0;
                     for (BasicHaulJob job: factory.getHaulJobs()) {
-                        if (job.getHaulingConsumable().getInfo() == component.itemInfo) {
+                        if (job.getHaulingConsumable().getInfo() == receiptInputInfo.item) {
                             quantityInJob += job.getHaulingQuantity();
                         }
                     }
 
                     // Ajoute des jobs tant que la quantité de consomable présent dans l'usine et les jobs est inférieur à la quantité requise
-                    while (component.currentQuantity + quantityInJob < component.totalQuantity) {
-                        BasicHaulJob job = consumableModule.createHaulJob(component.itemInfo, item, component.totalQuantity - (component.currentQuantity + quantityInJob));
+                    while (currentQuantity + quantityInJob < receiptInputInfo.quantity) {
+                        BasicHaulJob job = consumableModule.createHaulJob(receiptInputInfo.item, item, receiptInputInfo.quantity - (currentQuantity + quantityInJob));
 
                         // Ajoute la quantity de consomable ammené par ce nouveau job à la quantity existante
                         if (job != null) {
-                            Log.info("[Factory] %s -> launch hauling job for component: %s", item, component);
+                            Log.info("[Factory] %s -> launch hauling job for component: %s", item, receiptInputInfo);
 
                             quantityInJob += job.getHaulingQuantity();
                             factory.addHaulJob(job);
@@ -137,7 +141,7 @@ public class ItemFactoryModule extends GameModule {
 
                         // Annule la construction s'il n'y à plus suffisament de consomable disponible
                         else {
-                            Log.debug("[Factory] %s -> not enough component: %s", item, component);
+                            Log.debug("[Factory] %s -> not enough component: %s", item, receiptInputInfo);
 
                             actionClear(item, factory);
                             return;
@@ -150,24 +154,38 @@ public class ItemFactoryModule extends GameModule {
 
     // TODO
     private void actionCraftJob(UsableItem item, ItemFactoryModel factory) {
-        if (factory.hasRunningReceipt() && factory.getRunningReceipt().hasEnoughComponents()) {
-            Log.info("[Factory] %s -> craft %s", item, factory.getRunningReceipt());
+        if (factory.hasRunningReceipt() && factory.hasEnoughComponents()) {
+            item.getFactory().setMessage("craft " + factory.getRunningReceipt());
 
-            // Consomme les objets d'entrée
-            factory.getRunningReceipt().getComponents().forEach(component -> component.currentQuantity = 0);
+            // Crée les composants lorsque le craft est terminé
+            if (factory.getRunningReceipt().getCostRemaining() == 0) {
+                // TODO: consomme tous l'inventaire, y compris les objets non utilisés dans la recette
+                // Consomme les objets d'entrés
+                item.getInventory().clear();
 
-            // Crée les objets de sortie
-            factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.putConsumable(item.getParcel(), output.item, output.quantity[0]));
+                // Crée les objets de sorties
+                factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.putConsumable(item.getParcel(), output.item, output.quantity[0]));
 
-            Log.info("[Factory] %s -> craft %s complete", item, factory.getRunningReceipt());
+                item.getFactory().setMessage("craft " + factory.getRunningReceipt() + " complete");
 
-            actionClear(item, factory);
+                actionClear(item, factory);
+            }
+
+            // Incrémente la variable count de la recette (état d'avancement)
+            else {
+                factory.getRunningReceipt().setCostRemaining(factory.getRunningReceipt().getCostRemaining() - 1);
+            }
         }
     }
 
+    /**
+     * Nettoie la fabrique en prévision des futurs contructions
+     *
+     * @param item
+     * @param factory
+     */
     private void actionClear(UsableItem item, ItemFactoryModel factory) {
-        // Libère les objets non consommés
-        factory.getRunningReceipt().getComponents().forEach(component -> component.currentQuantity = 0);
+        // TODO: Libère les objets non consommés
 
         // Termine les jobs
         factory.getHaulJobs().forEach(JobModel::cancel);
@@ -177,36 +195,47 @@ public class ItemFactoryModule extends GameModule {
         factory.setRunningReceipt(null);
     }
 
-    private boolean hasEnoughConsumables(ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo inputInfo, ParcelModel parcel) {
-        return hasEnoughConsumables(inputInfo.item, inputInfo.quantity, parcel);
+    private boolean hasEnoughConsumables(ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo inputInfo, UsableItem item) {
+        return hasEnoughConsumables(inputInfo.item, inputInfo.quantity, item);
     }
 
-    private boolean hasEnoughConsumables(FactoryReceiptModel.FactoryComponentModel component, ParcelModel parcel) {
-        return hasEnoughConsumables(component.itemInfo, component.totalQuantity - component.currentQuantity, parcel);
+    private boolean hasEnoughConsumables(FactoryReceiptModel.FactoryComponentModel component, UsableItem item) {
+        return hasEnoughConsumables(component.itemInfo, component.totalQuantity - component.currentQuantity, item);
     }
 
     /**
-     * Appel le module des consomables et verifie si suffisament d'objets existent et sont accessible
+     * Appel le module des consomables et verifie si suffisament d'objets existent et sont accessibles
      *
      * @param itemInfo Composant à tester
      * @param needQuantity Quantity necessaire
-     * @param parcel Parcel de l'usine
+     * @param item Fabrique
      *
      * @return true si des composants existent et sont accéssibles
      */
-    private boolean hasEnoughConsumables(ItemInfo itemInfo, int needQuantity, ParcelModel parcel) {
+    private boolean hasEnoughConsumables(ItemInfo itemInfo, int needQuantity, UsableItem item) {
+        int availableQuantity = 0;
+
+        // Check l'inventaire de la fabrique
+        for (ConsumableItem consumable: item.getInventory()) {
+            if (consumable.getInfo() == itemInfo) {
+                availableQuantity += consumable.getQuantity();
+            }
+        }
+        if (availableQuantity >= needQuantity) {
+            return true;
+        }
 
         // Pas assez de composants sur la carte
-        if (consumableModule.getTotal(itemInfo) < needQuantity) {
-            return false;
+        if (consumableModule.getTotal(itemInfo) + availableQuantity >= needQuantity) {
+            return true;
         }
 
         // Pas assez de composants accessible
-        if (consumableModule.getTotalAccessible(itemInfo, parcel) < needQuantity) {
-            return false;
+        if (consumableModule.getTotalAccessible(itemInfo, item.getParcel()) + availableQuantity >= needQuantity) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
 }

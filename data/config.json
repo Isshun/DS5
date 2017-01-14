@@ -17,6 +17,6 @@
         "updateInterval": 250
     },
     "log": {
-        "level": "info"
+        "level": "debug"
     }
 }

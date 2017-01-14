@@ -31,9 +31,10 @@ public class BasicHaulJob extends JobModel {
         job._tasks.add(character -> { character.addInventory(consumable, haulingQuantity); return true; });
         job._tasks.add(character -> character.moveTo(item.getParcel()));
         job._tasks.add(character -> {
-            int needQuantity = item.getFactory().getRunningReceipt().getQuantityNeeded(consumable.getInfo());
+            int needQuantity = item.getFactory().getQuantityNeeded(consumable.getInfo());
             int availableQuantity = character.getInventoryQuantity(consumable.getInfo());
-            item.getFactory().getRunningReceipt().addComponent(consumable.getInfo(), Math.min(needQuantity, availableQuantity));
+            item.addInventory(consumable.getInfo(), Math.min(needQuantity, availableQuantity));
+//            item.getFactory().getRunningReceipt().addComponent(consumable.getInfo(), Math.min(needQuantity, availableQuantity));
             character.setInventoryQuantity(consumable.getInfo(), availableQuantity - needQuantity);
             return true;
         });

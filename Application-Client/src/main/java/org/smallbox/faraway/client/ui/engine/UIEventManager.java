@@ -99,10 +99,10 @@ public class UIEventManager {
         // Click on map
         if (Application.gameManager.isRunning()) {
 
-            int fromMapX = ApplicationClient.mainRenderer.getViewport().getRelativePosX(ApplicationClient.inputManager.getTouchDownX());
-            int fromMapY = ApplicationClient.mainRenderer.getViewport().getRelativePosY(ApplicationClient.inputManager.getTouchDownY());
-            int toMapX = ApplicationClient.mainRenderer.getViewport().getRelativePosX(ApplicationClient.inputManager.getTouchDragX());
-            int toMapY = ApplicationClient.mainRenderer.getViewport().getRelativePosY(ApplicationClient.inputManager.getTouchDragY());
+            int fromMapX = ApplicationClient.mainRenderer.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX());
+            int fromMapY = ApplicationClient.mainRenderer.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY());
+            int toMapX = ApplicationClient.mainRenderer.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX());
+            int toMapY = ApplicationClient.mainRenderer.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY());
 
             // Square selection
             if (fromMapX != toMapX || fromMapY != toMapY) {

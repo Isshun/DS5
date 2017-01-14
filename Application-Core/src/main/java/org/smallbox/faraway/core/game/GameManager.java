@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.util.FileUtils;
@@ -19,6 +20,7 @@ public class GameManager implements GameObserver {
 
     @BindModule
     private IWorldFactory       worldFactory;
+    private boolean _paused;
 
     @Override
     public void onGameLoad(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo) {
@@ -36,8 +38,17 @@ public class GameManager implements GameObserver {
     }
 
     @Override
+    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
+        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.P) {
+            _paused = !_paused;
+        }
+    }
+
+    @Override
     public void onGameUpdate(Game game) {
-        _game.update();
+        if (!_paused) {
+            _game.update();
+        }
     }
 
     public void createGame(RegionInfo regionInfo) {

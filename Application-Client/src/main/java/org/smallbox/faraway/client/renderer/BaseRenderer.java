@@ -17,6 +17,7 @@ public abstract class BaseRenderer<T> implements GameObserver {
     private long                _lastDrawDelay;
     private int                 _nbDraw;
     private boolean             _isLoaded;
+    private boolean             _isVisible = true;
 
     private int                 _width;
     private int                 _height;
@@ -36,6 +37,10 @@ public abstract class BaseRenderer<T> implements GameObserver {
         Application.dependencyInjector.register(this);
     }
 
+    public void toggleVisibility() { _isVisible = !_isVisible; }
+    public void setVisibility(boolean visibility) { _isVisible = visibility; }
+    public boolean isVisible() { return _isVisible; }
+
     public int getLevel() {
         return 0;
     }
@@ -45,21 +50,23 @@ public abstract class BaseRenderer<T> implements GameObserver {
     protected void onRefresh(int frame) {}
 
     public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        //                if (render.isMandatory() || (game.hasDisplay(render.getClass().getName()))) {
+        if (_isVisible) {
+            //                if (render.isMandatory() || (game.hasDisplay(render.getClass().getName()))) {
 
-        long time = System.currentTimeMillis();
+            long time = System.currentTimeMillis();
 
-        _floor = viewport.getFloor();
-        _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
-        _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
-        _toX = Math.min(_width, _fromX + 50);
-        _toY = Math.min(_height, _fromY + 40);
+            _floor = viewport.getFloor();
+            _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
+            _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
+            _toX = Math.min(_width, _fromX + 50);
+            _toY = Math.min(_height, _fromY + 40);
 
-        onDraw(renderer, viewport, animProgress);
+            onDraw(renderer, viewport, animProgress);
 
-        _lastDrawDelay = (System.currentTimeMillis() - time);
-        _totalDrawDelay += _lastDrawDelay;
-        _nbDraw++;
+            _lastDrawDelay = (System.currentTimeMillis() - time);
+            _totalDrawDelay += _lastDrawDelay;
+            _nbDraw++;
+        }
     }
 
     public void dump() {

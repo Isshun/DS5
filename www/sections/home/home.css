@@ -1,0 +1,188 @@
+.button {
+	font-size: 14px;
+	padding: 5px;
+	margin: 10px;
+	width: 150px;
+	border-radius: 5px;
+	cursor: pointer;
+	user-select: none;
+}
+
+.current {
+	color: red;
+    background: url('../../assets/images/right.png') -10px -22px no-repeat;
+	padding-left: 50px;
+}
+
+.standard {
+	color: green;
+	padding-left: 50px;
+}
+
+.button-command {
+	border: 2px solid #f52;
+	background: #fb4;
+}
+
+.button-action {
+	border: 2px solid #5f2;
+	background: #bf4;
+}
+
+.game-board .area {
+	width: 80px;
+	height: 80px;
+	border: 1px solid black;
+}
+
+.game-board .area-grass {
+	background: green;
+}
+
+.game-board .area-start {
+	background: lightblue;
+}
+
+.game-board .area-end {
+	background: #3bb9bb;
+}
+
+.game-board .area-block {
+	background: #8b89bb;
+}
+
+.game-board .player {
+    /*background-image: url('../../assets/images/sprites2.png');*/
+    background-image: url('../../assets/images/roller-shop-banner3.jpg');
+    background-size: 155px 155px;
+    width: 78px;
+    height: 78px;
+    top: 1px;
+	left: 1px;
+    /*width: 28px;*/
+	/*height: 38px;*/
+	/*top: 6px;*/
+	/*left: 11px;*/
+	transition: transform 0.5s;
+}
+
+.game-board .player-up {
+    background-position: -4px 80px;
+    /*background-position: -4px 40px;*/
+}
+
+.game-board .player-down {
+    background-position: -4px 0px;
+    /*background-position: -4px 0px;*/
+}
+
+.game-board .player-left {
+    background-position: 80px 80px;
+    /*background-position: 0px 122px;*/
+}
+
+.game-board .player-right {
+    background-position: 80px 0px;
+    /*background-position: 0px 162px;*/
+}
+
+.home-frame {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+.home-banner {
+    background: url('../../assets/images/shattered.png');
+}
+.home-banner .inner {
+    padding: 60px 0 0 0;
+}
+.home-banner .inner img {
+    float: left;
+    margin-top: -45px;
+}
+.home-banner .inner h1 {
+    line-height: 60px;
+    font-size: 40px;
+}
+.home-banner .inner h1 span {
+    color: #3bb9bb;
+}
+.home-banner .inner h2 {
+    font-size: 24px;
+    line-height: 30px;
+    color: #666;
+}
+.home-banner .inner p {
+    font-size: 16px;
+    line-height: 25px;
+    margin-top: 30px;
+}
+.tutorials-title {
+    font-size: 30px;
+    line-height: 50px;
+    font-weight: 300;
+    background-color: #333;
+    color: #FFF;
+}
+.tutorials {
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+}
+.tutorials li {
+    position: relative;
+    background-color: #FFF;
+    padding: 20px 150px 20px 20px;
+    margin-bottom: 20px;
+}
+.tutorials li.offline {
+    background-color: #999999;
+    color: #666666;
+}
+.tutorials li .btn {
+    position: absolute;
+    right: 40px;
+    top: 40px;
+}
+.tutorials li p {
+    margin: 10px 0 0 0;
+    font-size: 16px;
+    line-height: 20px;
+    color: #666;
+}
+.tutorials li .number {
+    width: 80px;
+    height: 80px;
+    float: left;
+    background-color: #333;
+    margin: 0 20px 0 0;
+    text-align: center;
+    line-height: 80px;
+    font-size: 40px;
+    color: #CCC;
+}
+.tutorials li.offline .number {
+    background-color: #919191;
+    color: #666;
+}
+.share-buttons {
+    float: right;
+    width: 330px;
+    height: 50px;
+    margin-top: -10px;
+}
+.home-buttons {
+    text-align: center;
+    padding: 20px 0 40px 0;
+}
+.no-data.tuts {
+    line-height: 50px;
+    margin-bottom: 30px;
+}
+@media(max-width:992px) {
+    .home-banner .inner {
+        width: 100%;
+        padding: 20px;
+    }
+}

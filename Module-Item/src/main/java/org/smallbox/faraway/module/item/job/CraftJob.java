@@ -5,16 +5,13 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.consumable.HaulJob;
-import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.ItemSlot;
+import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.itemFactory.FactoryReceiptModel;
 import org.smallbox.faraway.module.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.MoveListener;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -150,12 +147,12 @@ public class CraftJob extends JobModel {
     @Override
     protected void onComplete() {
         if (_factory != null) {
-            _actionInfo.products.forEach(product -> {
-                int quantity = Utils.getRandom(product.quantity);
-                for (int i = 0; i < quantity; i++) {
-                    _factory.store(new ConsumableItem(product.item));
-                }
-            });
+//            _actionInfo.products.forEach(product -> {
+//                int quantity = Utils.getRandom(product.quantity);
+//                for (int i = 0; i < quantity; i++) {
+//                    _item.addInventory(new ConsumableItem(product.item));
+//                }
+//            });
         }
 
 //        // Current item is done
@@ -233,44 +230,44 @@ public class CraftJob extends JobModel {
 //        _message = "Move to " + input.consumable.getInfo().label;
     }
 
-    protected void moveToMainItem() {
-        // Set target parcel
-        _slot = _item.takeSlot(this);
-        _targetParcel = _slot != null ? _slot.getParcel() : _item.getParcel();
-
-        // Store component in factory
-        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
-            @Override
-            public void onReach(CharacterModel character) {
-                if (_receipt != null) {
-                    if (character.getInventory() != null) {
-                        int quantityNeeded = Math.min(character.getInventory().getQuantity(), _receipt.getQuantityNeeded(character.getInventory().getInfo()));
-                        if (quantityNeeded > 0) {
-                            // Add components to factory
-                            _receipt.addComponent(character.getInventory().getInfo(), quantityNeeded);
-
-                            // Remove components from character's inventory
-                            if (character.getInventory().getQuantity() > quantityNeeded) {
-                                character.getInventory().addQuantity(-quantityNeeded);
-                            } else {
-                                character.setInventory(null);
-                            }
-                        }
-                    }
-
-                    if (!_receipt.isFull() && _receipt.getNextInput() != null) {
-                        moveToIngredient(character, _receipt.getNextInput());
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(CharacterModel character) {
-                Log.info("CraftJob: character cannot reach factory");
-                quit(character);
-            }
-        });
-    }
+//    protected void moveToMainItem() {
+//        // Set target parcel
+//        _slot = _item.takeSlot(this);
+//        _targetParcel = _slot != null ? _slot.getParcel() : _item.getParcel();
+//
+//        // Store component in factory
+//        _character.moveTo(_targetParcel, new MoveListener<CharacterModel>() {
+//            @Override
+//            public void onReach(CharacterModel character) {
+//                if (_receipt != null) {
+//                    if (character.getInventory() != null) {
+//                        int quantityNeeded = Math.min(character.getInventory().getQuantity(), _receipt.getQuantityNeeded(character.getInventory().getInfo()));
+//                        if (quantityNeeded > 0) {
+//                            // Add components to factory
+//                            _receipt.addComponent(character.getInventory().getInfo(), quantityNeeded);
+//
+//                            // Remove components from character's inventory
+//                            if (character.getInventory().getQuantity() > quantityNeeded) {
+//                                character.getInventory().addQuantity(-quantityNeeded);
+//                            } else {
+//                                character.setInventory(null);
+//                            }
+//                        }
+//                    }
+//
+//                    if (!_receipt.isFull() && _receipt.getNextInput() != null) {
+//                        moveToIngredient(character, _receipt.getNextInput());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFail(CharacterModel character) {
+//                Log.info("CraftJob: character cannot reach factory");
+//                quit(character);
+//            }
+//        });
+//    }
 
     public boolean hasComponents() {
         return false;

@@ -49,6 +49,8 @@ public class Application {
 
     static {
         dependencyInjector = DependencyInjector.getInstance();
+        addObserver(dependencyInjector);
+
         gameManager = dependencyInjector.create(GameManager.class);
         pathManager = dependencyInjector.create(PathManager.class);
         taskManager = dependencyInjector.create(TaskManager.class);

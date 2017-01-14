@@ -40,8 +40,8 @@ public class DebugModule extends GameModule {
     public void execute(String command) {
         Log.info("Execute: " + command);
 
-        int x = ApplicationClient.mainRenderer.getViewport().getRelativePosX();
-        int y = ApplicationClient.mainRenderer.getViewport().getRelativePosY();
+        int x = ApplicationClient.mainRenderer.getViewport().getWorldPosX();
+        int y = ApplicationClient.mainRenderer.getViewport().getWorldPosY();
         int z = ApplicationClient.mainRenderer.getViewport().getFloor();
         ParcelModel parcel = worldModule.getParcel(x, y, z);
 

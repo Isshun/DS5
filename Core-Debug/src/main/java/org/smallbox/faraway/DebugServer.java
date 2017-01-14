@@ -1,7 +1,6 @@
 package org.smallbox.faraway;
 
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.smallbox.faraway.config.EntityFilteringApplication;
 import org.smallbox.faraway.util.Log;
@@ -18,8 +17,12 @@ public class DebugServer {
     public DebugServer() throws Exception {
         try {
             final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, new EntityFilteringApplication(), false);
-            server.getServerConfiguration().addHttpHandler(new StaticHttpHandler("src/main/webapp/www/"), "/www/");
+//            server.getServerConfiguration().addHttpHandler(new StaticHttpHandler("www"), "/www/");
             Runtime.getRuntime().addShutdownHook(new Thread(server::shutdownNow));
+
+//            server.getServerConfiguration().addHttpHandler(
+//                    new CLStaticHttpHandler(new URLClassLoader(new URL[] {new URL("file:///home/username/staticfiles.jar")})), "/www");
+
             server.start();
 
 //            // Get the input stream

@@ -13,7 +13,7 @@ public class Log {
     private final static boolean EXIT_ON_ERROR = true;
     private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final static Logger logger = Logger.getLogger("FarAway");
-    private final static Level level = Level.WARNING;
+    private final static Level level = Level.ALL;
 
     private static final ConsoleHandler consoleHandler;
 
@@ -32,7 +32,7 @@ public class Log {
         consoleHandler.setFormatter(new SimpleFormatter() {
             @Override
             public String format(LogRecord record) {
-                return "[" + record.getSourceMethodName() + "] ["
+                return "[" + record.getSourceMethodName().substring(0, 1).toUpperCase() + "] ["
                         + format.format(new Date(record.getMillis())) + "] "
                         + record.getMessage() + "\n";
             }

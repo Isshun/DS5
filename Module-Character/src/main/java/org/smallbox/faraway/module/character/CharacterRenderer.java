@@ -66,8 +66,6 @@ public class CharacterRenderer extends BaseRenderer {
                         frame = character.getFrameIndex() / 20 % 4;
                     }
 
-                    System.out.println(offset);
-
                     // Get exact position
                     switch (direction) {
                         case BOTTOM:

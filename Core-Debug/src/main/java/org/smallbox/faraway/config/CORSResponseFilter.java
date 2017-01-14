@@ -11,7 +11,7 @@ public class CORSResponseFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         MultivaluedMap<String, Object> headers = responseContext.getHeaders();
 
-        headers.add("Access-Control-Allow-Origin", "http://127.0.0.1");
+        headers.add("Access-Control-Allow-Origin", "http://localhost:63343");
         //headers.add("Access-Control-Allow-Origin", "http://podcastpedia.org"); //allows CORS requests only coming from podcastpedia.org
         headers.add("Access-Control-Allow-Credentials", "true");
         headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");

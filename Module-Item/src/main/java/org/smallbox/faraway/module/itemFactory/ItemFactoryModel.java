@@ -7,12 +7,12 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.consumable.BasicHaulJob;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
-import org.smallbox.faraway.module.consumable.ConsumableStackModel;
 import org.smallbox.faraway.module.item.UsableItem;
 import org.smallbox.faraway.module.item.job.CraftJob;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
+import javax.ws.rs.NotSupportedException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,7 +22,6 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
  * Created by Alex on 15/10/2015.
  */
 public class ItemFactoryModel {
-    private Map<ItemInfo, ConsumableStackModel>     _inventory = new HashMap<>();
     private final UsableItem _item;
     private Map<ItemInfoAction, CraftJob>           _craftJobs = new HashMap<>();
     private FactoryReceiptModel _runningReceipt;
@@ -34,6 +33,7 @@ public class ItemFactoryModel {
     private ParcelModel _storageParcel;
     private String                          _message;
     private List<BasicHaulJob> _haulJobs = new LinkedList<>();
+    private int _costRemaining;
 
     public List<BasicHaulJob> getHaulJobs() { return _haulJobs; }
 
@@ -88,22 +88,40 @@ public class ItemFactoryModel {
         _craftJobs.values().forEach(JobModel::action);
     }
 
-    public void addAction(ItemInfoAction action) {
-        action.products.forEach(product -> {
-            if (!_inventory.containsKey(product.item)) {
-                _inventory.put(product.item, new ConsumableStackModel(product.item));
-            }
-        });
+    /**
+     * En se basant sur la recette actuelle retourne la quantité restant à fournir pour le consomable passé en paramètre
+     * @param itemInfo
+     * @return
+     */
+    public int getQuantityNeeded(ItemInfo itemInfo) {
+        if (_runningReceipt == null) {
+            throw new NotSupportedException(("Cannot call method if factory has no running receipt"));
+        }
+
+        int neededQuantity = _runningReceipt.receiptInfo.inputs.stream()
+                .filter(inputInfo -> itemInfo.instanceOf(inputInfo.item))
+                .mapToInt(inputInfo -> inputInfo.quantity)
+                .sum();
+
+        int currentQuantity = getCurrentQuantity(itemInfo);
+
+        return neededQuantity - currentQuantity;
     }
 
-    public void store(ConsumableItem consumable) {
-        assert _inventory.containsKey(consumable.getInfo());
+    /**
+     * Retourne la quantity d'un consomable présent dans l'inventaire
+     * @param itemInfo
+     * @return
+     */
+    public int getCurrentQuantity(ItemInfo itemInfo) {
+        if (_runningReceipt == null) {
+            throw new NotSupportedException(("Cannot call method if factory has no running receipt"));
+        }
 
-        _inventory.get(consumable.getInfo()).addConsumable(consumable);
-    }
-
-    public Collection<ConsumableStackModel> getInventory() {
-        return _inventory.values();
+        return _item.getInventory().stream()
+                .filter(consumable -> itemInfo.instanceOf(consumable.getInfo()))
+                .mapToInt(ConsumableItem::getQuantity)
+                .sum();
     }
 
     public Map<ItemInfoAction, CraftJob> getCraftActions() {
@@ -114,12 +132,31 @@ public class ItemFactoryModel {
         _runningReceipt = receipt;
 
         if (receipt != null) {
-            Log.info("Factory %s going to craft %s", _item, receipt);
+            _item.getFactory().setMessage("Waiting components for receipt: " + receipt);
             _runningReceipt.initComponents();
         }
     }
 
     public void addHaulJob(BasicHaulJob job) { _haulJobs.add(job); }
+
+    /**
+     * Vérifie si la quantité de composants présent dans l'inventaire est suffisant pour lancer la construction
+     *
+     * @return true si la quantité est suffisante
+     */
+    public boolean hasEnoughComponents() {
+        if (_runningReceipt == null) {
+            throw new NotSupportedException(("Cannot call method if factory has no running receipt"));
+        }
+
+        for (ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo input: _runningReceipt.receiptInfo.inputs) {
+            if (getQuantityNeeded(input.item) > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static class FactoryReceiptGroupModel {
         public final ReceiptGroupInfo   receiptGroupInfo;
@@ -140,7 +177,10 @@ public class ItemFactoryModel {
         }
     }
 
-    public void setMessage(String message) { _message = message; }
+    public void setMessage(String message) {
+        Log.debug("[Factory] %s -> %s", _item, message);
+        _message = message;
+    }
 
     public List<FactoryReceiptGroupModel>   getOrders() { return _receiptGroups; }
     public List<FactoryReceiptModel>        getReceipts() { return _receipts; }

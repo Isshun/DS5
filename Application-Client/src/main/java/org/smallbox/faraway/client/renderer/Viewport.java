@@ -65,18 +65,18 @@ public class Viewport {
         _worldY = (int) Math.max(0, (-_posY / Constant.TILE_HEIGHT) * getScale());
     }
 
-    public int   getPosX() { return _posX; }
-    public int   getPosY() { return _posY; }
-    public int   getWidth() { return _width; }
-    public int   getHeight() { return _height; }
+    public int  getPosX() { return _posX; }
+    public int  getPosY() { return _posY; }
+    public int  getWidth() { return _width; }
+    public int  getHeight() { return _height; }
 
-    public int   getRelativePosX() { return (int) ((-getPosX()) / getScale() / Constant.TILE_WIDTH); }
-    public int   getRelativePosX(int x) { return (int) ((-getPosX() + x) / getScale() / Constant.TILE_WIDTH); }
-    public int   getRelativePosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
-    public int   getRelativePosY(int y) { return (int) ((-getPosY() + y) / getScale() / Constant.TILE_HEIGHT); }
+    public int  getWorldPosX() { return (int) ((-getPosX()) / getScale() / Constant.TILE_WIDTH); }
+    public int  getWorldPosX(int x) { return (int) ((-getPosX() + x) / getScale() / Constant.TILE_WIDTH); }
+    public int  getWorldPosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
+    public int  getWorldPosY(int y) { return (int) ((-getPosY() + y) / getScale() / Constant.TILE_HEIGHT); }
 
-    public int   getRealPosX(int parcelX) { return parcelX * Constant.TILE_WIDTH + getPosX(); }
-    public int   getRealPosY(int parcelY) { return parcelY * Constant.TILE_HEIGHT + getPosY(); }
+    public int  getScreenPosX(int parcelX) { return parcelX * Constant.TILE_WIDTH + getPosX(); }
+    public int  getScreenPosY(int parcelY) { return parcelY * Constant.TILE_HEIGHT + getPosY(); }
 
     public void setScale(int delta, int x, int y) {
     }

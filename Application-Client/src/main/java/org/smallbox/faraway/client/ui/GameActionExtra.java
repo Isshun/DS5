@@ -35,8 +35,8 @@ public class GameActionExtra {
         FRONT, RAMP_UP, RAMP_DOWN, HOLE
     }
 
-//    public int                      getRelativePosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-//    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+//    public int                      getWorldPosX(int x) { return (int) ((x - _viewport.getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+//    public int                      getWorldPosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
 
     Action                              _action;
     int                                 _startPressX;

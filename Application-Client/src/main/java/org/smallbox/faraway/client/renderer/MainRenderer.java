@@ -1,11 +1,14 @@
 package org.smallbox.faraway.client.renderer;
 
+import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -57,6 +60,21 @@ public class MainRenderer implements GameObserver {
                 .peek(Application::addObserver)
                 .collect(Collectors.toList());
 
+        // Find GameRenderer annotated class
+        new Reflections("org.smallbox.faraway").getTypesAnnotatedWith(GameRenderer.class)
+                .forEach(cls -> {
+                    Log.info("Find game renderer: " + cls.getSimpleName());
+
+                    try {
+                        BaseRenderer renderer = (BaseRenderer) cls.newInstance();
+                        Application.dependencyInjector.register(renderer);
+                        Application.addObserver(renderer);
+                        _renders.add(renderer);
+                    } catch ( IllegalAccessException | InstantiationException e) {
+                        Log.error(e);
+                    }
+                });
+
         _renders.forEach(render -> render.onGameCreate(game));
         _renders.forEach(render -> render.gameStart(game));
 
@@ -66,7 +84,6 @@ public class MainRenderer implements GameObserver {
 
     @Override
     public void onGameUpdate(Game game) {
-        System.out.println("UPDATE " + System.currentTimeMillis());
         if (_renders != null) {
             _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::gameUpdate);
         }
@@ -74,7 +91,6 @@ public class MainRenderer implements GameObserver {
 
     @Override
     public void onGameRender(Game game) {
-        System.out.println("RENDER " + System.currentTimeMillis());
         // Draw
         if (!Application.gameManager.isRunning()) {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());

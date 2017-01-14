@@ -55,7 +55,7 @@ public class ConsumableRenderer extends BaseRenderer {
                         .setText(text)
                         .setTextSize(12)
                         .setTextColor(org.smallbox.faraway.core.engine.Color.CYAN)
-                        .draw(renderer, viewport.getRealPosX(parcel.x), viewport.getRealPosY(parcel.y));
+                        .draw(renderer, viewport.getScreenPosX(parcel.x), viewport.getScreenPosY(parcel.y));
                 frameLeft--;
             }
         });

@@ -1,6 +1,8 @@
 package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
+import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -296,6 +298,9 @@ public class InputManager implements InputProcessor {
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
             ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
         }
+
+        GameEvent event = new GameEvent(new MouseEvent(x, y, null, GameEventListener.Action.MOVE));
+        Application.notify(observer -> observer.onMouseMove(event));
 
         return false;
     }

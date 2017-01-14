@@ -22,7 +22,7 @@ data:extend({
             {outputs = {{ name = "base.great_meal", quantity = 10}}, inputs = {{ name = "base.vegetable", quantity = 5}, { name = "base.insect_meat", quantity = 50}}},
             {outputs = {{ name = "base.great_meal", quantity = 10}}, inputs = {{ name = "base.seaweed", quantity = 5}, { name = "base.seafood", quantity = 5}}},
             -- Todo: lancer la constuction direct sur la recette dont tout les composants sont disponibles
-            -- Si une autre recette devient disponible et que ses composants sont plus proches et que aucun perso n'est sur les composants de la recette actuel, démarrer la nouvelle recette.
+            -- Si une autre recette devient disponible et que ses composants sont plus proches et que aucun perso n'est sur les composants de la recette actuel, dÃ©marrer la nouvelle recette.
         }
     },
     {

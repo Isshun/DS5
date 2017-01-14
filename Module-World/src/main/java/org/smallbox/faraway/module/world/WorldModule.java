@@ -152,10 +152,21 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         }
     }
 
-//    public int                      getRelativePosX(int x) { return (int) ((x - ApplicationClient.mainRenderer.getViewport().getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
-//    public int                      getRelativePosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
-    public int                      getRelativePosX(int x) { return ApplicationClient.mainRenderer.getViewport().getRelativePosX(x); }
-    public int                      getRelativePosY(int y) { return ApplicationClient.mainRenderer.getViewport().getRelativePosY(y); }
+//    public int                      getWorldPosX(int x) { return (int) ((x - ApplicationClient.mainRenderer.getViewport().getPosX()) / _viewport.getScale() / Constant.TILE_WIDTH); }
+//    public int                      getWorldPosY(int y) { return (int) ((y - _viewport.getPosY()) / _viewport.getScale() / Constant.TILE_HEIGHT); }
+    public int                      getRelativePosX(int x) {
+        if (ApplicationClient.mainRenderer != null && ApplicationClient.mainRenderer.getViewport() != null) {
+            return ApplicationClient.mainRenderer.getViewport().getWorldPosX(x);
+        }
+        return -1;
+    }
+
+    public int                      getRelativePosY(int y) {
+        if (ApplicationClient.mainRenderer != null && ApplicationClient.mainRenderer.getViewport() != null) {
+            return ApplicationClient.mainRenderer.getViewport().getWorldPosY(y);
+        }
+        return -1;
+    }
 
     public void putObject(String itemName, ParcelModel parcel, int data) {
         putObject(itemName, parcel.x, parcel.y, parcel.z, data, true);

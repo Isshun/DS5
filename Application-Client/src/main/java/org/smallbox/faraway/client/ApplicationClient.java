@@ -47,6 +47,8 @@ public class ApplicationClient {
 
     static {
         dependencyInjector = DependencyInjector.getInstance();
+        addObserver(dependencyInjector);
+
         uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
@@ -120,7 +122,7 @@ public class ApplicationClient {
 //                System.out.println("Click on map at pixel: " + x + " x " + y);
 //
 //                Viewport viewport = ApplicationClient.mainRenderer.getViewport();
-//                ParcelModel parcel = WorldHelper.getParcel(viewport.getRelativePosX(x), viewport.getRelativePosY(y), viewport.getFloor());
+//                ParcelModel parcel = WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor());
 //                if (parcel != null) {
 //                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);
 //                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
