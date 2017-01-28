@@ -5,9 +5,6 @@ buildscript {
             url "https://maven.eveoh.nl/content/repositories/releases"
         }
     }
-    dependencies {
-        classpath "nl.eveoh:gradle-aspectj:1.6"
-    }
 }
 
 allprojects {
@@ -17,7 +14,6 @@ allprojects {
 
     version = '1.0'
     ext {
-        aspectjVersion = '1.8.4'
         appName = 'FarAway'
         gdxVersion = '1.7.1'
         roboVMVersion = '1.9.0'
@@ -25,8 +21,6 @@ allprojects {
         ashleyVersion = '1.3.1'
         aiVersion = '1.5.0'
     }
-
-    apply plugin: 'aspectj'
 
     repositories {
         mavenCentral()
@@ -39,24 +33,11 @@ project(":Application-Desktop") {
     apply plugin: "java"
 
     dependencies {
-        compile project(":Application-Core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-    }
-}
-
-project(":Application-Core") {
-    apply plugin: "java"
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
     }
 }
 

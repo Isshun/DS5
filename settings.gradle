@@ -4,7 +4,6 @@ include 'Application-Client'
 include 'Application-Server'
 include 'Core-PathFinding'
 include 'Core-SmartFontGenerator'
-
 include 'Core-Debug'
 
 include 'Module-Area'
@@ -38,5 +37,3 @@ include 'Module-Weather'
 include 'Module-World'
 include 'Module-World-Factory'
 include 'Module-TopResource'
-
-

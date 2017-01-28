@@ -1,0 +1,39 @@
+apply plugin: "java"
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+eclipse.project {
+    name = appName + "-core"
+}
+
+dependencies {
+//    compile project(":Core-SmartFontGenerator")
+//    compile project(":Core-PathFinding")
+//    compile project(":Core-Debug")
+
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+    compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+
+    compile 'org.apache.commons:commons-compress:1.10'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+    compile 'org.luaj:luaj-jse:3.0.1'
+    compile 'org.reflections:reflections:0.9.10'
+    compile 'org.json:json:20150729'
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
+    compile 'net.sourceforge.cssparser:cssparser:0.9.19'
+
+    // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy
+    compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.7'
+
+}

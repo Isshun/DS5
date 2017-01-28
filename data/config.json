@@ -14,7 +14,7 @@
         "storageMaxQuantity": 100,
         "environmentDistance": 5,
         "maxNearDistance": 32,
-        "updateInterval": 250
+        "updateInterval": 50
     },
     "log": {
         "level": "debug"
