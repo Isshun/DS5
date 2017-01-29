@@ -54,7 +54,7 @@ public class RenderLayer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, int x, int y) {
         if (_cacheId != -1) {
 //                Log.info("draw cache #" + _index + " (cacheId: " + _cacheId + ", count: " + _count + ")");
-            renderer.draw(_cache, _cacheId, viewport.getPosX() + x, viewport.getPosY() + y);
+            renderer.draw(viewport.getPosX() + x, viewport.getPosY() + y, _cacheId, _cache);
         }
     }
 

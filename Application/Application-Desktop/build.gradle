@@ -6,6 +6,11 @@ sourceCompatibility = 1.8
 project.ext.mainClassName = "org.smallbox.farpoint.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("../core/assets");
 
+//project {
+//    name = appName + "-desktop"
+//    linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/core/assets'
+//}
+
 task buildModules() {
     println "Build modules"
 
@@ -40,13 +45,6 @@ task dist(type: Jar) {
 dist.dependsOn classes
 run.dependsOn buildModules
 
-eclipse {
-    project {
-        name = appName + "-desktop"
-        linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/core/assets'
-    }
-}
-
 dependencies {
     compile project(":Application-Core")
     compile project(":Application-Server")
@@ -71,13 +69,11 @@ dependencies {
 //    compile project(":Module-Temperature")
 //    compile project(":Module-Light")
 //    compile project(":Module-Music")
-//    compile project(":Module-MainPanel")
 //    compile project(":Module-MiniMap")
 //    compile project(":Module-Quest")
 //    compile project(":Module-Oxygen")
 //    compile project(":Module-Panel-Build")
 //    compile project(":Module-Structure")
-//    compile project(":Module-UI")
 //    compile project(":Module-Weather")
 //    compile project(":Module-TopResource")
 //    compile project(":Module-World-Factory")

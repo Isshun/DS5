@@ -90,7 +90,7 @@ public abstract class JobModel extends ObjectModel {
     protected CharacterModel    _characterRequire;
     protected JobAbortReason    _reason;
     protected String            _label;
-    protected JobStatus         _status;
+    protected JobStatus         _status = JobStatus.WAITING;
 //    private GDXDrawable         _iconDrawable;
 //    private GDXDrawable         _actionDrawable;
     protected String            _message;

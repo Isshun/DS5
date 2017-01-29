@@ -1,9 +1,8 @@
 package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
+import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
@@ -42,8 +41,12 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     public void setVisibility(boolean visibility) { _isVisible = visibility; }
     public boolean isVisible() { return _isVisible; }
 
-    public int getLevel() {
-        return 0;
+    public final int getLevel() {
+        try {
+            return getClass().getAnnotation(GameRenderer.class).level();
+        } catch (NullPointerException e) {
+            throw new RuntimeException("GameRenderer annotation is missing for " + getClass());
+        }
     }
 
     protected void onGameUpdate() {}
@@ -111,14 +114,14 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
         _floor = floor;
     }
 
-    public static List<BaseRenderer<AbsGameModule>> createRenderer(AbsGameModule module) {
-        List<BaseRenderer<AbsGameModule>> rendererList = new ArrayList<>();
+    public static List<BaseRenderer> createRenderer(Class<? extends BaseRenderer> cls) {
+        List<BaseRenderer> rendererList = new ArrayList<>();
         try {
-            for (Class<? extends BaseRenderer> cls: module.getClass().getAnnotation(ModuleRenderer.class).value()) {
+//            for (Class<? extends BaseRenderer> cls: module.getClass().getAnnotation(ModuleRenderer.class).value()) {
                 BaseRenderer renderer = cls.newInstance();
                 Application.dependencyInjector.register(renderer);
                 rendererList.add(renderer);
-            }
+//            }
         } catch ( IllegalAccessException | InstantiationException e) {
             Log.error(e);
         }

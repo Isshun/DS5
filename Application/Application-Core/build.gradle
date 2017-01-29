@@ -3,9 +3,9 @@ apply plugin: "java"
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 
-eclipse.project {
-    name = appName + "-core"
-}
+//project {
+//    name = appName + "-core"
+//}
 
 dependencies {
 //    compile project(":Core-SmartFontGenerator")
@@ -35,5 +35,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy
     compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.7'
+
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '21.0'
 
 }

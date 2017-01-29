@@ -9,13 +9,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.NetworkItem;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
+import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -23,6 +23,7 @@ import org.smallbox.faraway.util.Log;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -43,7 +44,7 @@ public class SpriteManager {
     private Map<Long, Sprite>               _sprites;
     private Sprite[]                        _selectors;
     private Map<String, Sprite>             _icons;
-    private HashMap<String, Texture>        _textures;
+    private Map<String, Texture>            _textures;
 
     private int _spriteCount;
 
@@ -71,10 +72,9 @@ public class SpriteManager {
         _selectors[3] = new Sprite(itemSelector, 8, 8, 8, 8);
         _selectors[3].flip(false, true);
 
-        _textures = new HashMap<>();
-
-        FileUtils.listRecursively("data/res/").stream().filter(file -> file.getName().endsWith(".png")).forEach(file ->
-                _textures.put(file.getPath().replace("\\", "/"), new Texture(new FileHandle(file))));
+        _textures = FileUtils.listRecursively("data\\res").stream()
+                .filter(file -> file.getName().endsWith(".png"))
+                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
 
         if (CollectionUtils.isNotEmpty(Application.data.getItems())) {
             Application.data.getItems().forEach(itemInfo -> {

@@ -20,6 +20,6 @@ public class RotateAnimation {
         _rotation += (360f * 1000 * (Gdx.graphics.getDeltaTime() / _duration));
         sprite.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         sprite.setRotation(_rotation);
-        renderer.draw(sprite, x, y);
+        renderer.draw(x, y, sprite);
     }
 }

@@ -1,0 +1,12 @@
+rootProject.name = 'Farpoint'
+
+include 'Application-Desktop'
+include 'Application-Core'
+include 'Application-Client'
+include 'Application-Server'
+
+include 'Core-PathFinding'
+include 'Core-SmartFontGenerator'
+include 'Core-Debug'
+
+include 'Module-MiniMap'

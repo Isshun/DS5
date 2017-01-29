@@ -205,10 +205,8 @@ public class UILabel extends View {
                 }
             }
 
-            renderer.draw(_string, _textSize,
-                    getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft,
-                    getAlignedY() + y + _offsetY + _paddingTop + _marginTop,
-                    _gdxTextColor);
+            renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string
+            );
         }
     }
 

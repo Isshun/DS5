@@ -2,10 +2,9 @@ apply plugin: "java"
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-
-eclipse.project {
-    name = appName + "-server"
-}
+//project {
+//    name = appName + "-server"
+//}
 
 dependencies {
     compile project(":Core-SmartFontGenerator")

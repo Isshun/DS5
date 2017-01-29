@@ -83,7 +83,7 @@ public class UIImage extends View {
                 if (_textureHeight != 0) {
                     _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                     _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
-                    renderer.drawRegion(_sprite, _x + x, _y + y);
+                    renderer.drawRegion(_x + x, _y + y, _sprite);
                 }
 
                 else {
@@ -92,7 +92,7 @@ public class UIImage extends View {
                     } else if (_animation != null) {
                         _animation.draw(renderer, _sprite, _x + x, _y + y);
                     } else {
-                        renderer.draw(_sprite, _x + x, _y + y);
+                        renderer.draw(_x + x, _y + y, _sprite);
                     }
                 }
             }

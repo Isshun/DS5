@@ -3,15 +3,13 @@ package org.smallbox.faraway.client.renderer;
 import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.ModuleRenderer;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 
+import java.lang.reflect.Modifier;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class MainRenderer implements GameClientObserver {
@@ -45,41 +43,47 @@ public class MainRenderer implements GameClientObserver {
 
     @Override
     public void onGameCreate(Game game) {
-
     }
 
     @Override
     public void onGameStart(Game game) {
         _frame = 0;
 
-        // Sort renders by level and addSubJob them to observers
-        _renders = game.getModules().stream()
-                .filter(module -> module.getClass().isAnnotationPresent(ModuleRenderer.class))
-                .flatMap(module -> BaseRenderer.createRenderer(module).stream())
-                .sorted(Comparator.comparingInt(BaseRenderer::getLevel))
-                .peek(Application::addObserver)
-                .collect(Collectors.toList());
+//        // Sort renders by level and addSubJob them to observers
+//        _renders = game.getModules().stream()
+//                .filter(module -> module.getClass().isAnnotationPresent(ModuleRenderer.class))
+//                .flatMap(module -> BaseRenderer.createRenderer(module).stream())
+//                .sorted(Comparator.comparingInt(BaseRenderer::getLevel))
+//                .peek(Application::addObserver)
+//                .collect(Collectors.toList());
 
         // Find GameRenderer annotated class
-        new Reflections("org.smallbox.faraway").getTypesAnnotatedWith(GameRenderer.class)
-                .forEach(cls -> {
+        _renders = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class).stream()
+                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+                .map(cls -> {
                     Log.info("Find game renderer: " + cls.getSimpleName());
 
                     try {
-                        BaseRenderer renderer = (BaseRenderer) cls.newInstance();
+                        BaseRenderer renderer = cls.newInstance();
                         Application.dependencyInjector.register(renderer);
                         Application.addObserver(renderer);
-                        _renders.add(renderer);
+                        return renderer;
                     } catch ( IllegalAccessException | InstantiationException e) {
                         Log.error(e);
                     }
-                });
+                    return null;
+                })
+                .filter(renderer -> renderer != null)
+                .sorted((o1, o2) -> o1.getLevel() - o2.getLevel())
+                .collect(Collectors.toList());
 
         _renders.forEach(render -> render.onGameCreate(game));
         _renders.forEach(render -> render.gameStart(game));
 
         _viewport = new Viewport(400, 300);
         _viewport.setPosition(-500, -3800, Config.FLOOR);
+
+        ApplicationClient.notify(observer -> observer.onFloorChange(Config.FLOOR));
     }
 
     @Override

@@ -31,7 +31,6 @@ import org.smallbox.faraway.util.Utils;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Queue;
@@ -142,18 +141,44 @@ public abstract class LuaModuleManager implements GameObserver {
         });
         _luaModules.forEach(this::loadModule);
 
-        // TODO
-        // Load lua from java modules
-        Arrays.stream(new File(".").listFiles()).filter(file -> file.getName().startsWith("Module-")).forEach(moduleDirectory -> {
-            try {
-                File dataDirectory = dataDirectory = new File(moduleDirectory.getCanonicalPath(), "src/main/resources/");
-                if (dataDirectory.exists()) {
-                    loadLuaFiles(null, dataDirectory);
-                }
-            } catch (IOException e) {
-                Log.error(e);
-            }
-        });
+        Globals globals = createGlobals(null, null);
+
+        com.google.common.io.Files.fileTreeTraverser().preOrderTraversal(new File("."))
+                .filter(file -> file.getAbsolutePath().replace('\\', '/').contains("src/main/resources"))
+                .filter(file -> file.getName().endsWith(".lua"))
+                .forEach(file -> {
+                    try {
+                        Log.info("Load lua file: %s", file.getAbsolutePath());
+                        globals.load(new FileReader(file), file.getName()).call();
+                    } catch (FileNotFoundException | LuaError e) {
+                        e.printStackTrace();
+                    }
+                });
+
+//        org.apache.commons.io.FileUtils.listFilesAndDirs(new File("."), null, TrueFileFilter.TRUE).stream()
+//                .filter(file -> )
+
+//        // TODO
+//        // Load lua from java modules
+//        org.apache.commons.io.FileUtils.listFiles(new File("."), new String[] {"lua"}, true)
+//                .forEach(f -> {
+//                    try {
+//                        Log.info("Load lua file: %s", f.getAbsolutePath());
+//                        globals.load(new FileReader(f), f.getName()).call();
+//                    } catch (FileNotFoundException | LuaError e) {
+//                        e.printStackTrace();
+//                    }
+////                    try {
+////                        File dataDirectory = new File(moduleDirectory.getCanonicalPath(), "src/main/resources/");
+////                        if (dataDirectory.exists()) {
+////                            loadLuaFiles(null, dataDirectory);
+////                        }
+////                    } catch (IOException e) {
+////                        Log.error(e);
+////                    }
+//                });
+
+        _runAfterList.forEach(Runnable::run);
 
         Application.data.fix();
 

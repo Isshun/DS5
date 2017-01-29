@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import com.sun.istack.internal.NotNull;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.GameEvent;
@@ -206,7 +205,7 @@ public abstract class View implements Comparable<View> {
     public int          compareLevel(View view) { return _deep != view.getDeep() ? _deep - view.getDeep() : hashCode() - view.hashCode(); }
 
     @Override
-    public int compareTo(@NotNull View view) {
+    public int compareTo(View view) {
         return view.hashCode() - hashCode();
     }
 
@@ -240,10 +239,8 @@ public abstract class View implements Comparable<View> {
             }
 
             if (Config.onDebugView) {
-                renderer.draw(_name, 12,
-                        getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft,
-                        getAlignedY() + y + _offsetY + _paddingTop + _marginTop,
-                        com.badlogic.gdx.graphics.Color.CYAN);
+                renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name
+                );
             }
         }
     }

@@ -5,7 +5,7 @@ apply plugin: 'java'
 
 
 dependencies {
-    compile project(":Application-Core")
+    //compile project(":Application-Core")
     compile project(":Module-Flora")
     compile project(":Module-Fauna")
 }

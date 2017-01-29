@@ -438,9 +438,18 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void addInventory(ConsumableItem consumable, int haulingQuantity) {
-        int quantity = Math.min(haulingQuantity, consumable.getQuantity());
+    /**
+     * Ajoute une quantité d'objet à l'inventaire du personnage
+     *
+     * @param consumable
+     * @param desiredQuantity
+     * @return true si la quantité à put être ajoutée
+     */
+    public boolean addInventory(ConsumableItem consumable, int desiredQuantity) {
+        int quantity = Math.min(desiredQuantity, consumable.getQuantity());
         addInventory(consumable.getInfo(), quantity);
         consumable.addQuantity(-quantity);
+
+        return true;
     }
 }

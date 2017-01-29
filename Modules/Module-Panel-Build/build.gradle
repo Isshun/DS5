@@ -36,8 +36,8 @@ copyResources.mustRunAfter jar
 distZip.dependsOn copyResources
 
 dependencies {
-    compile project(":Application-Core")
-    compile project(":Application-Client")
+    //compile project(":Application-Core")
+    //compile project(":Application-Client")
     compile project(":Module-World")
     compile project(":Module-Item")
     compile project(":Module-MainPanel")

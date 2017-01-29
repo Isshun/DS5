@@ -43,19 +43,19 @@ public class GDXRenderer {
         _cameraWorld.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public void draw(TextureRegion textureRegion, int x, int y) {
+    public void draw(int x, int y, TextureRegion textureRegion) {
         _batch.begin();
         _batch.draw(textureRegion, x, y);
         _batch.end();
     }
 
-    public void draw(GDXDrawable drawable, int x, int y) {
+    public void draw(int x, int y, GDXDrawable drawable) {
         _batch.begin();
         drawable.draw(_batch, x, y);
         _batch.end();
     }
 
-    public void draw(Sprite sprite, int x, int y, float alpha) {
+    public void draw(int x, int y, Sprite sprite, float alpha) {
         if (sprite != null) {
             _batch.begin();
             sprite.setPosition(x, y);
@@ -65,11 +65,11 @@ public class GDXRenderer {
     }
 
     public void draw(org.smallbox.faraway.core.engine.Color color, int x, int y, int width, int height) {
-        draw(new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f), x, y, width, height);
+        draw(x, y, width, height, new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
     }
 
-    public void clear(org.smallbox.faraway.core.engine.Color color) {
-        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
+    public void clear(Color color) {
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
@@ -91,7 +91,7 @@ public class GDXRenderer {
         return Constant.WINDOW_HEIGHT;
     }
 
-    public void draw(View view, int x, int y) {
+    public void draw(int x, int y, View view) {
         view.draw(this, x, y);
     }
 
@@ -105,7 +105,7 @@ public class GDXRenderer {
         ApplicationClient.mainRenderer.getViewport().setZoom(_zoom);
     }
 
-    public void draw(Sprite sprite, int x, int y) {
+    public void draw(int x, int y, Sprite sprite) {
         if (sprite != null) {
             _batch.begin();
             sprite.setPosition(x, y);
@@ -115,7 +115,7 @@ public class GDXRenderer {
         }
     }
 
-    public void drawRegion(Sprite sprite, int x, int y) {
+    public void drawRegion(int x, int y, Sprite sprite) {
         if (sprite != null) {
             _batch.begin();
 //            sprite.setPosition(x, y);
@@ -133,7 +133,7 @@ public class GDXRenderer {
         }
     }
 
-    public void drawChunk(Texture texture, int x, int y) {
+    public void drawChunk(int x, int y, Texture texture) {
         if (texture != null) {
             _batch.begin();
             _batch.draw(texture, x, y, 512, 512, 0, 0, 512, 512, false, true);
@@ -141,7 +141,7 @@ public class GDXRenderer {
         }
     }
 
-    public void draw(String string, int textSize, int x, int y, Color color) {
+    public void draw(int x, int y, int textSize, Color color, String string) {
         textSize *= Application.configurationManager.uiScale;
 
         if (string != null) {
@@ -155,7 +155,7 @@ public class GDXRenderer {
         }
     }
 
-    public void draw(Color color, int x, int y, int width, int height) {
+    public void draw(int x, int y, int width, int height, Color color) {
         if (color != null) {
             _batch.begin();
             Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -168,7 +168,7 @@ public class GDXRenderer {
         }
     }
 
-    public void draw(SpriteCache cache, int cacheId, int x, int y) {
+    public void draw(int x, int y, int cacheId, SpriteCache cache) {
         if (cache != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
 
@@ -192,11 +192,42 @@ public class GDXRenderer {
         return _fonts[size];
     }
 
-    public void drawOnMap(TextureRegion region, int x, int y) {
-        draw(region, ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT));
+    public void drawOnMap(int x, int y, TextureRegion region) {
+        draw(ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), region);
     }
 
+    public void drawOnMap(int x, int y, Color color) {
+        draw(ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
+    }
+
+    public void drawOnMap(int x, int y, String string, int size) {
+        draw(
+                ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH),
+                ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT),
+                size,
+                Color.BLACK,
+                string);
+   }
+
+    public void drawOnMap(int x, int y, String string, int size, Color color) {
+        draw(
+                ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH),
+                ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT),
+                size,
+                color,
+                string);
+   }
+
+    public void drawOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
+        draw(
+                ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
+                ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                size,
+                color,
+                string);
+   }
+
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw(itemSprite, (parcel.x * Constant.TILE_WIDTH) + ApplicationClient.mainRenderer.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.mainRenderer.getViewport().getPosY());
+        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.mainRenderer.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.mainRenderer.getViewport().getPosY(), itemSprite);
     }
 }
