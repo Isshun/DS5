@@ -58,7 +58,7 @@ public class DebugRenderer extends BaseRenderer {
         // Display renders
         if (ApplicationClient.mainRenderer != null) {
             ApplicationClient.mainRenderer.getRenders()
-                    .forEach(render -> drawDebug(renderer, "Render", "[" + (render.isVisible() ? "X" : " ") + "] " + render.getClass().getSimpleName()));
+                    .forEach(render -> drawDebug(renderer, "Render", "[" + (render.isVisible() ? "X" : " ") + "] " + render.getClass().getSimpleName() + " (" + render.getLevel() + ")"));
         }
 
         // Display characters
@@ -81,9 +81,6 @@ public class DebugRenderer extends BaseRenderer {
 
             consumables.entrySet().forEach(entry -> drawDebugConsumableInfo(renderer, entry.getKey(), entry.getValue()));
         }
-
-        ApplicationClient.mainRenderer.getRenders()
-                .forEach(render -> drawDebug(renderer, "Render", render.getClass().getSimpleName() + " " + render.getLevel()));
     }
 
     private void drawDebugItem(GDXRenderer renderer, UsableItem item) {

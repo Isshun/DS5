@@ -169,7 +169,6 @@ public class ItemFactoryModule extends GameModule {
                     return factory.getRunningReceipt().decreaseCostRemaining() == 0;
                 }
             };
-            job.setLabel("Craft job");
 
             factory.setCraftJob(job);
             jobModule.addJob(job);

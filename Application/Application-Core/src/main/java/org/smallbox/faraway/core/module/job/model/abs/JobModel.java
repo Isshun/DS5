@@ -296,6 +296,11 @@ public abstract class JobModel extends ObjectModel {
     private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
 
     public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
+
+        if (_tasks.isEmpty()) {
+            _label = label;
+        }
+
         _tasks.add(new JobTask(label, jobTaskAction));
     }
 
