@@ -3,7 +3,7 @@ data:extend({
         label = "Cook easy meal",
         name = "base.receipt_easy_meal",
         type = "receipt",
-        cost = 32,
+        cost = 6,
         receipts = {
             {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.vegetable", quantity = 10}}},
             {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.seaweed", quantity = 10}}},

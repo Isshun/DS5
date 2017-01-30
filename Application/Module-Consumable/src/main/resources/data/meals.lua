@@ -4,7 +4,7 @@ data:extend({
         graphics = { path = "[module]/graphics/military_ration.png" },
     },
     { label = "Easy meal", name = "base.easy_meal", type = "consumable", category = "food",
-        consume = { cost = 20, effects = {{type = "food", quantity = 100}}},
+        consume = { cost = 5, effects = {{type = "food", quantity = 100}}},
         graphics = { path = "[module]/graphics/easy_meal.png" },
     },
     { label = "Great meal", name = "base.great_meal", type = "consumable", category = "food",

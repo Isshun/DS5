@@ -7,11 +7,15 @@ import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.job.JobTask;
+import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class JobModel extends ObjectModel {
 
@@ -91,7 +95,7 @@ public abstract class JobModel extends ObjectModel {
     protected JobAbortReason    _reason;
     protected String            _label;
     protected JobStatus         _status = JobStatus.WAITING;
-//    private GDXDrawable         _iconDrawable;
+    //    private GDXDrawable         _iconDrawable;
 //    private GDXDrawable         _actionDrawable;
     protected String            _message;
     protected ParcelModel       _jobParcel;
@@ -141,7 +145,7 @@ public abstract class JobModel extends ObjectModel {
     public double                   getQuantity() { return _progress; }
     public double                   getProgress() { return Math.min(_progress, 1); }
     public JobStatus                getStatus() { return _status; }
-//    public GDXDrawable              getIconDrawable() { return _iconDrawable; }
+    //    public GDXDrawable              getIconDrawable() { return _iconDrawable; }
 //    public GDXDrawable              getActionDrawable() { return _actionDrawable; }
     public double                   getSpeedModifier() { return 1; }
     public ParcelModel              getTargetParcel() { return _targetParcel; }
@@ -289,27 +293,78 @@ public abstract class JobModel extends ObjectModel {
         action(_character);
     }
 
+    private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
+
+    public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
+        _tasks.add(new JobTask(label, jobTaskAction));
+    }
+
     public JobActionReturn action(CharacterModel character) {
+
+        // TODO: à supprimer
         if (isFinish()) {
             Log.error("Cannot call action on finished job");
         }
 
+        // TODO: à supprimer
         // Job have sub jobs
         _subJobs.removeIf(JobModel::isFinish);
         if (CollectionUtils.isNotEmpty(_subJobs)) {
             return JobActionReturn.CONTINUE;
         }
 
+        // TODO: à supprimer
         if (_limit != -1 && _currentLimit-- == 0) {
             return JobActionReturn.COMPLETE;
         }
 
+        // TODO: à supprimer
         // Launch strategy
         if (_onActionListener != null) {
             _onActionListener.onAction();
         }
 
-        JobActionReturn ret = onAction(character);
+
+
+        // TODO: à conserver
+        _status = JobStatus.RUNNING;
+
+        JobActionReturn ret;
+
+        // TODO: à conserver
+        // Retourne COMPLETE si plus aucune tache n'existe
+        if (_tasks.isEmpty()) {
+            _status = JobStatus.COMPLETE;
+            ret = JobActionReturn.COMPLETE;
+        }
+
+        // Execute la tache en tête de file et la retire si elle est terminée
+        else {
+            // TODO: à conserver
+            JobTask jobTask = _tasks.peek();
+            JobTaskReturn jobTaskReturn = jobTask.action.onExecuteTask(character);
+            _label = jobTask.label;
+
+            // TODO: à conserver
+            switch (jobTaskReturn) {
+
+                case CONTINUE:
+                    ret = JobActionReturn.CONTINUE;
+                    break;
+
+                case COMPLETE:
+                    _tasks.poll();
+                    ret = JobActionReturn.CONTINUE;
+                    break;
+
+                default:
+                case INVALID:
+                    ret = JobActionReturn.ABORT;
+                    break;
+            }
+        }
+
+//        JobActionReturn ret = onAction(character);
 
         if (ret == JobActionReturn.ABORT) {
             finish();

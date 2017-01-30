@@ -72,7 +72,8 @@ public class ItemFactoryModule extends GameModule {
         _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
         _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
         _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
-        _items.forEach(item -> actionCraftJob(item, item.getFactory()));
+        _items.forEach(item -> actionCraftJobs(item, item.getFactory()));
+        _items.forEach(item -> actionRelease(item, item.getFactory()));
     }
 
     /**
@@ -117,7 +118,7 @@ public class ItemFactoryModule extends GameModule {
                 int currentQuantity = factory.getCurrentQuantity(receiptInputInfo.item);
                 if (currentQuantity < receiptInputInfo.quantity) {
 
-                    // Compte le nombre de consomables qui seront rapportés par les job existants
+                    // Compte le nombre de consomables qui seront rapportés par les jobs existants
                     int quantityInJob = 0;
                     for (BasicHaulJob job: factory.getHaulJobs()) {
                         if (job.getHaulingConsumable().getInfo() == receiptInputInfo.item) {
@@ -151,29 +152,48 @@ public class ItemFactoryModule extends GameModule {
         }
     }
 
-    // TODO
-    private void actionCraftJob(UsableItem item, ItemFactoryModel factory) {
-        if (factory.hasRunningReceipt() && factory.hasEnoughComponents()) {
-            item.getFactory().setMessage("craft " + factory.getRunningReceipt());
+    /**
+     * Crée la tache de création d'objet (BasicCraftJob)
+     *
+     * @param item
+     * @param factory
+     */
+    private void actionCraftJobs(UsableItem item, ItemFactoryModel factory) {
+        if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() > 0 && factory.getCraftJob() == null) {
+            item.getFactory().setMessage("Create craft job");
 
-            // Crée les composants lorsque le craft est terminé
-            if (factory.getRunningReceipt().getCostRemaining() == 0) {
-                // TODO: consomme tous l'inventaire, y compris les objets non utilisés dans la recette
-                // Consomme les objets d'entrés
-                item.getInventory().clear();
+            BasicCraftJob job = new BasicCraftJob(item.getParcel()) {
+                @Override
+                public boolean onCraft() {
+                    // Incrémente la variable count de la recette (état d'avancement)
+                    return factory.getRunningReceipt().decreaseCostRemaining() == 0;
+                }
+            };
+            job.setLabel("Craft job");
 
-                // Crée les objets de sorties
-                factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.putConsumable(item.getParcel(), output.item, output.quantity[0]));
+            factory.setCraftJob(job);
+            jobModule.addJob(job);
+        }
+    }
 
-                item.getFactory().setMessage("craft " + factory.getRunningReceipt() + " complete");
+    /**
+     * Crée les composants lorsque le craft est terminé
+     *
+     * @param item
+     * @param factory
+     */
+    private void actionRelease(UsableItem item, ItemFactoryModel factory) {
+        if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() == 0) {
+            // TODO: consomme tous l'inventaire, y compris les objets non utilisés dans la recette
+            // Consomme les objets d'entrés
+            item.getInventory().clear();
 
-                actionClear(item, factory);
-            }
+            // Crée les objets de sorties
+            factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.putConsumable(item.getParcel(), output.item, output.quantity[0]));
 
-            // Incrémente la variable count de la recette (état d'avancement)
-            else {
-                factory.getRunningReceipt().setCostRemaining(factory.getRunningReceipt().getCostRemaining() - 1);
-            }
+            factory.setMessage("craft " + factory.getRunningReceipt() + " complete");
+
+            actionClear(item, factory);
         }
     }
 
@@ -192,6 +212,9 @@ public class ItemFactoryModule extends GameModule {
 
         // Retire la recette en cours
         factory.setRunningReceipt(null);
+
+        // Supprime la tache de création d'objet
+        factory.setCraftJob(null);
     }
 
     private boolean hasEnoughConsumables(ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo inputInfo, UsableItem item) {

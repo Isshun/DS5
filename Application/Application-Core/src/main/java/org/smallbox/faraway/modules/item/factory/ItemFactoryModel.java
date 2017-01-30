@@ -31,9 +31,14 @@ public class ItemFactoryModel {
     private ParcelModel _storageParcel;
     private String                          _message;
     private List<BasicHaulJob> _haulJobs = new LinkedList<>();
+    private JobModel _craftJob;
     private int _costRemaining;
 
     public List<BasicHaulJob> getHaulJobs() { return _haulJobs; }
+
+    public JobModel getCraftJob() { return _craftJob; }
+
+    public void setCraftJob(JobModel craftJob) { _craftJob = craftJob; }
 
     public boolean hasRunningReceipt() {
         return _runningReceipt != null;
@@ -129,9 +134,9 @@ public class ItemFactoryModel {
     public void setRunningReceipt(FactoryReceiptModel receipt) {
         _runningReceipt = receipt;
 
-        if (receipt != null) {
-            _item.getFactory().setMessage("Waiting components for receipt: " + receipt);
+        if (_runningReceipt != null) {
             _runningReceipt.initComponents();
+            _item.getFactory().setMessage("Waiting components for receipt: " + _runningReceipt);
         }
     }
 

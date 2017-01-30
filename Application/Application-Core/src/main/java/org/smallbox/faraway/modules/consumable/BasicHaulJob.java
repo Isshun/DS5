@@ -7,11 +7,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.job.JobTask;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
-
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Alex on 09/12/2016.
@@ -20,7 +16,6 @@ public class BasicHaulJob extends JobModel {
 
     private int _haulingQuantity;
     private ConsumableItem _consumable;
-    private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
 
     public int getHaulingQuantity() { return _haulingQuantity; }
     public ConsumableItem getHaulingConsumable() { return _consumable; }
@@ -85,10 +80,6 @@ public class BasicHaulJob extends JobModel {
         return job;
     }
 
-    public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
-        _tasks.add(new JobTask(label, jobTaskAction));
-    }
-
     public BasicHaulJob(ConsumableItem consumable, int haulingQuantity, ParcelModel targetParcel) {
         _targetParcel = targetParcel;
         _consumable = consumable;
@@ -102,33 +93,7 @@ public class BasicHaulJob extends JobModel {
 
     @Override
     protected JobActionReturn onAction(CharacterModel character) {
-
-        _status = JobStatus.RUNNING;
-
-        // Retourne COMPLETE si plus aucune tache n'existe
-        if (_tasks.isEmpty()) {
-            _status = JobStatus.COMPLETE;
-            return JobActionReturn.COMPLETE;
-        }
-
-        // Execute la tache en tête de file et la retire si elle est terminée
-        JobTask jobTask = _tasks.peek();
-        JobTaskReturn jobTaskReturn = jobTask.action.onExecuteTask(character);
-        _label = jobTask.label;
-
-        switch (jobTaskReturn) {
-
-            case CONTINUE:
-                return JobActionReturn.CONTINUE;
-
-            case COMPLETE:
-                _tasks.poll();
-                return JobActionReturn.CONTINUE;
-
-            default:
-            case INVALID:
-                return JobActionReturn.ABORT;
-        }
+        return null;
     }
 
     @Override

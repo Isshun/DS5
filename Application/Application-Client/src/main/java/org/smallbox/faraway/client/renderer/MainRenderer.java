@@ -81,7 +81,7 @@ public class MainRenderer implements GameClientObserver {
         _renders.forEach(render -> render.gameStart(game));
 
         _viewport = new Viewport(400, 300);
-        _viewport.setPosition(-500, -3800, Config.FLOOR);
+        _viewport.setPosition(0, 0, Config.FLOOR);
 
         ApplicationClient.notify(observer -> observer.onFloorChange(Config.FLOOR));
     }
