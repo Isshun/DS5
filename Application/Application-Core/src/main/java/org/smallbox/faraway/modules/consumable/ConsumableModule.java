@@ -128,7 +128,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + Application.configurationManager.game.maxNearDistance) {
+            if (entry.getValue() <= bestDistance + Application.APPLICATION_CONFIG.game.maxNearDistance) {
                 return entry.getKey();
             }
         }

@@ -65,8 +65,8 @@ public class UIImage extends View {
                         _sprite.setRegion(0, 0, _originWidth, _originHeight);
                         _sprite.setSize(_originWidth, _originHeight);
                         _sprite.setScale(
-                                (float)Application.configurationManager.uiScale,
-                                (float)Application.configurationManager.uiScale);
+                                (float)Application.APPLICATION_CONFIG.uiScale,
+                                (float)Application.APPLICATION_CONFIG.uiScale);
                         _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();

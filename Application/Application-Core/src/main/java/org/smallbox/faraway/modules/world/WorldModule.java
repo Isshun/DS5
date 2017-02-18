@@ -76,6 +76,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public double                               getLight() { return _light; }
     public int getWidth() { return _width; }
     public int getHeight() { return _height; }
+    public int getFloors() { return _floors; }
     public ParcelModel                          getParcel(int x, int y, int z) {
         return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : _parcels[x][y][z];
     }

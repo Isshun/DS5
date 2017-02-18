@@ -7,12 +7,10 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +22,7 @@ public class DependencyInjector {
     private Set<Object> _objectPool = new HashSet<>();
     private boolean _init = false;
     private static final DependencyInjector _self = new DependencyInjector();
+    private HashMap<Class<?>, Object> _models = new HashMap<>();
 
     public static DependencyInjector getInstance() { return _self; }
 
@@ -43,7 +42,8 @@ public class DependencyInjector {
 
     public <T> T create(Class<T> cls) {
         try {
-            T object = cls.newInstance();
+
+            T object = _models.containsKey(cls) ? (T) _models.get(cls) : cls.newInstance();
 
             if (object instanceof GameObserver) {
                 Application.addObserver((GameObserver)object);
@@ -136,5 +136,21 @@ public class DependencyInjector {
             }
         }
         return null;
+    }
+
+    public void registerModel(Object model) {
+        _models.put(model.getClass(), model);
+    }
+
+    public interface RegisterModelCallback<T> {
+        T getModel() throws IOException;
+    }
+
+    public <T> void registerModel(Class<T> cls, RegisterModelCallback callback) {
+        try {
+            _models.put(cls, callback.getModel());
+        } catch (IOException e) {
+            Log.error(e);
+        }
     }
 }

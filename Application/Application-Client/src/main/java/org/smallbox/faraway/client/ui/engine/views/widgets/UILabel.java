@@ -1,10 +1,11 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.util.StringUtils;
 
 public class UILabel extends View {
@@ -17,9 +18,9 @@ public class UILabel extends View {
     private int _hash3;
     private int _hash4;
 
-    private String                              _string;
+    private String                              _string = "";
     private int                                 _textSize = 14;
-    private com.badlogic.gdx.graphics.Color     _gdxTextColor;
+    private com.badlogic.gdx.graphics.Color     _gdxTextColor = com.badlogic.gdx.graphics.Color.BLACK;
     private Color                               _textColor;
     private int                                 _maxLength;
 
@@ -109,7 +110,7 @@ public class UILabel extends View {
         // TODO
         int hash = string.hashCode();
 //        if (hash != _hash1) {
-            string = Application.data != null && Application.data.hasString(hash) ? Application.data.getString(hash) : string;
+        string = Application.data != null && Application.data.hasString(hash) ? Application.data.getString(hash) : string;
         setStringValue(String.format(string, value));
 //        }
     }
@@ -205,8 +206,79 @@ public class UILabel extends View {
                 }
             }
 
-            renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string
-            );
+//            renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string);
+            renderer.drawFont((batch, font) -> {
+                int finalX = getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft;
+                int finalY = getAlignedY() + y + _offsetY + _paddingTop + _marginTop;
+
+                int tagOffsetX = 0;
+
+                if (_string.contains("{")) {
+
+                    boolean inTag = false;
+                    boolean inTagMeta = false;
+                    StringBuilder sb = new StringBuilder();
+                    StringBuilder sbTag = new StringBuilder();
+                    StringBuilder sbTagMeta = new StringBuilder();
+                    for (int i = 0; i < _string.length(); i++) {
+                        if (_string.charAt(i) == '{') {
+                            inTagMeta = true;
+                        }
+
+                        else if (_string.charAt(i) == '}') {
+                            inTag = false;
+
+                            if (sbTagMeta.toString().contains("icon")) {
+                                Sprite sprite = ApplicationClient.spriteManager.getIcon("[base]/res/ic_blueprint.png");
+                                sprite.setPosition(finalX - 8, finalY - 8);
+                                sprite.draw(batch);
+                                tagOffsetX += 32;
+                                sb.append("   ");
+                            }
+
+                            if (sbTagMeta.toString().contains("blue")) {
+                                font.setColor(com.badlogic.gdx.graphics.Color.BLUE);
+                            }
+
+                            if (sbTagMeta.toString().contains("red")) {
+                                font.setColor(com.badlogic.gdx.graphics.Color.RED);
+                            }
+
+                            if (sbTag != null) {
+                                font.draw(batch, sbTag.toString(), finalX + tagOffsetX, finalY);
+                                sbTag = null;
+                            }
+                        }
+
+                        else if (inTagMeta && _string.charAt(i) == ';') {
+                            inTag = true;
+                            inTagMeta = false;
+                            sbTag = new StringBuilder();
+                        }
+
+                        else if (inTagMeta) {
+                            sbTagMeta.append(_string.charAt(i));
+                        }
+
+                        else if (inTag) {
+                            sb.append(' ');
+                            sbTag.append(_string.charAt(i));
+                        }
+
+                        else {
+                            sb.append(_string.charAt(i));
+                        }
+                    }
+
+                    font.setColor(_gdxTextColor);
+                    font.draw(batch, sb.toString(), finalX, finalY);
+                }
+
+                else {
+                    font.setColor(_gdxTextColor);
+                    font.draw(batch, _string, finalX, finalY);
+                }
+            }, _textSize);
         }
     }
 

@@ -141,8 +141,29 @@ public class GDXRenderer {
         }
     }
 
+    public interface DrawCallback {
+        void onDraw(SpriteBatch batch);
+    }
+
+    public void draw(DrawCallback callback) {
+        _batch.begin();
+        callback.onDraw(_batch);
+        _batch.end();
+    }
+
+    public interface DrawFontCallback {
+        void onDraw(SpriteBatch batch, BitmapFont font);
+    }
+
+    public void drawFont(DrawFontCallback callback, int fontSize) {
+        _batch.begin();
+        fontSize *= Application.APPLICATION_CONFIG.uiScale;
+        callback.onDraw(_batch, _fonts[fontSize]);
+        _batch.end();
+    }
+
     public void draw(int x, int y, int textSize, Color color, String string) {
-        textSize *= Application.configurationManager.uiScale;
+        textSize *= Application.APPLICATION_CONFIG.uiScale;
 
         if (string != null) {
             _batch.begin();

@@ -62,7 +62,9 @@ public class GameInfo {
 
         gameInfo.name = json.getString("name");
         gameInfo.planet = Application.data.getPlanet(json.getString("planet"));
-        gameInfo.region = gameInfo.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
+        if (gameInfo.planet != null && gameInfo.planet.regions != null) {
+            gameInfo.region = gameInfo.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
+        }
         gameInfo.worldWidth = json.getInt("width");
         gameInfo.worldHeight = json.getInt("height");
         gameInfo.worldFloors = json.getInt("floors");
@@ -98,6 +100,7 @@ public class GameInfo {
         info.worldWidth = worldWidth;
         info.worldHeight = worldHeight;
         info.worldFloors = worldFloors;
+        info.groundFloor = worldFloors - 1;
         info.planet = regionInfo.planet;
         info.region = regionInfo;
         info.name = UUID.randomUUID().toString();

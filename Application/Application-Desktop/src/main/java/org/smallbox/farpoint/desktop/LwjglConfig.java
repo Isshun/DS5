@@ -1,16 +1,16 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import org.smallbox.faraway.core.game.ConfigurationManager;
+import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 22/11/2015.
  */
 public class LwjglConfig {
-    public static LwjglApplicationConfiguration from(ConfigurationManager config) {
+    public static LwjglApplicationConfiguration from(ApplicationConfig config) {
         LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();
-//        configurationManager.samples = 2;
+//        APPLICATION_CONFIG.samples = 2;
 
         lwjglConfig.foregroundFPS = config.screen.foregroundFPS;
         lwjglConfig.backgroundFPS = config.screen.backgroundFPS;
@@ -22,7 +22,7 @@ public class LwjglConfig {
         lwjglConfig.fullscreen = "fullscreen".equals(config.screen.mode);
         lwjglConfig.resizable = false;
         lwjglConfig.vSyncEnabled = false;
-//        configurationManager.useGL30 = true;
+//        APPLICATION_CONFIG.useGL30 = true;
         lwjglConfig.title = Constant.NAME + " " + Constant.VERSION;
 
         if ("borderless".equals(config.screen.mode)) {

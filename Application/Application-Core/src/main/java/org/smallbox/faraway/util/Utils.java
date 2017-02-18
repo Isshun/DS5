@@ -26,7 +26,7 @@ public class Utils {
     public static long getLastDataModified() {
         long lastModified = 0;
 
-        for (File file: FileUtils.listRecursively("data/modules/")) {
+        for (File file: FileUtils.listRecursively(new File(Application.BASE_PATH, "data/modules/"))) {
             if (file.lastModified() > lastModified) {
                 lastModified = file.lastModified();
             }
@@ -43,11 +43,11 @@ public class Utils {
     }
 
     public static int getStorageMaxQuantity(ItemInfo itemInfo) {
-        return Math.max(Application.configurationManager.game.storageMaxQuantity, itemInfo.stack);
+        return Math.max(Application.APPLICATION_CONFIG.game.storageMaxQuantity, itemInfo.stack);
     }
 
     public static int getInventoryMaxQuantity(ItemInfo itemInfo) {
-        return Math.max(Application.configurationManager.game.inventoryMaxQuantity, itemInfo.stack);
+        return Math.max(Application.APPLICATION_CONFIG.game.inventoryMaxQuantity, itemInfo.stack);
     }
 
     public static JSONObject toJSON(FileInputStream fis) throws IOException {

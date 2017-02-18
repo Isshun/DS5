@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.renderer;
 
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.BindManager;
@@ -31,7 +32,6 @@ public class CharacterRenderer extends BaseRenderer {
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
 
-    private long _updateInterval = Config.getInt("game.updateInterval");
     private long _lastUpdate;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
@@ -64,7 +64,7 @@ public class CharacterRenderer extends BaseRenderer {
                 if (character.isAlive()) {
                     int offset = 0;
                     if (direction != Direction.NONE) {
-                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / _updateInterval);
+                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / ApplicationClient.APPLICATION_CONFIG.game.updateInterval);
                         frame = character.getFrameIndex() / 20 % 4;
                     }
 

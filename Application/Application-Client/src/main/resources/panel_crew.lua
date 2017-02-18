@@ -14,11 +14,11 @@ ui:extend({
         { type = "list", id = "list_crew", position = {12, 52}},
     },
 
-    on_event = function(view, event , data)
-        if event == application.events.on_key_press and data == "ESCAPE" then
-            view:setVisible(false)
-            ui:find("base.ui.panel_main"):setVisible(true)
-            application:sendEvent("mini_map.display", true)
-        end
-    end
+--    on_event = function(view, event , data)
+--        if event == application.events.on_key_press and data == "ESCAPE" then
+--            view:setVisible(false)
+--            ui:find("base.ui.panel_main"):setVisible(true)
+--            application:sendEvent("mini_map.display", true)
+--        end
+--    end
 })

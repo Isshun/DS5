@@ -54,6 +54,8 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onGameCreate(Game game) {
+//        _characters.add(new HumanModel(2, Application.moduleManager.getModule(WorldModule.class).getParcel(0, 0, Config.FLOOR), "gg", "gg", 12));
+
 //        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
 //            @Override
 //            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
@@ -193,6 +195,12 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     public CharacterModel addRandom(ParcelModel parcel) {
         CharacterModel character = new HumanModel(Utils.getUUID(), parcel, null, null, 16);
+        add(character);
+        return character;
+    }
+
+    public CharacterModel addRandom() {
+        CharacterModel character = new HumanModel(Utils.getUUID(), WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true), "rand", "rand", 16);
         add(character);
         return character;
     }

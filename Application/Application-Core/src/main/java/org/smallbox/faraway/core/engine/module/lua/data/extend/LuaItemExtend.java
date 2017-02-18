@@ -156,7 +156,7 @@ public class LuaItemExtend extends LuaExtend {
             }
         }
 
-        itemInfo.stack = getInt(value, "stack", Application.configurationManager.game.storageMaxQuantity);
+        itemInfo.stack = getInt(value, "stack", Application.APPLICATION_CONFIG.game.storageMaxQuantity);
 
         if (!value.get("floor").isnil()) {
             itemInfo.isFloor = true;

@@ -47,6 +47,7 @@ public class Data {
                 return object;
             }
         }
+        Log.error("Unable to find object: " + name);
 //        throw new RuntimeException("Unable to find object \"" + name + "\"");
         return null;
     }

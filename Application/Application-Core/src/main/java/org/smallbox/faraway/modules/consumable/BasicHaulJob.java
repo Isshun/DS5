@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
@@ -14,11 +15,13 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
  */
 public class BasicHaulJob extends JobModel {
 
+    private final ItemInfo _consumableInfo;
     private int _haulingQuantity;
     private ConsumableItem _consumable;
 
     public int getHaulingQuantity() { return _haulingQuantity; }
     public ConsumableItem getHaulingConsumable() { return _consumable; }
+    public ItemInfo getConsumableInfo() { return _consumableInfo; }
 
     public static BasicHaulJob toFactory(ConsumableItem consumable, UsableItem item, int haulingQuantity) {
         BasicHaulJob job = new BasicHaulJob(consumable, haulingQuantity, consumable.getParcel());
@@ -83,6 +86,7 @@ public class BasicHaulJob extends JobModel {
     public BasicHaulJob(ConsumableItem consumable, int haulingQuantity, ParcelModel targetParcel) {
         _targetParcel = targetParcel;
         _consumable = consumable;
+        _consumableInfo = consumable.getInfo();
         _haulingQuantity = haulingQuantity;
     }
 

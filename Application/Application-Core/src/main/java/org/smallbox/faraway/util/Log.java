@@ -140,7 +140,7 @@ public class Log {
             }
         }
 
-        return false;
+        return true;
     }
 
     public static void notice(String message) {

@@ -26,6 +26,7 @@ public class GameSaveManager {
         try {
             File archiveFile = new File(gameDirectory, filename + ".zip");
 
+            // Extract ZIP to sqlite DB file
             try (InputStream archiveStream = new FileInputStream(archiveFile)) {
                 try (ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, archiveStream)) {
                     ArchiveEntry entry;
@@ -36,11 +37,13 @@ public class GameSaveManager {
                     }
                 }
             }
-
             Log.info("Extract zip: " + (System.currentTimeMillis() - time));
+
+            // Load sqlite DB file
             File dbFile = new File(gameDirectory, filename + ".db");
             Application.sqlManager.openDB(dbFile);
 
+            // Call modules serializers
             game.getModules().stream()
                     .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
                     .forEach(module -> {

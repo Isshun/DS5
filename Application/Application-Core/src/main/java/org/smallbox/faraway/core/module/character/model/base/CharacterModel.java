@@ -264,7 +264,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
-            Log.error(getName() + " is stuck !");
+            Log.warning(getName() + " is stuck !");
             setParcel(WorldHelper.getNearestWalkable(_parcel, 1, 20));
             if (_path != null) {
                 _path = null;

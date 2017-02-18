@@ -1,26 +1,11 @@
 package org.smallbox.faraway.core.config;
 
-import org.smallbox.faraway.core.Application;
-
 /**
  * Created by Alex on 11/11/2015.
  */
 public class Config {
 
     public static boolean onDebugView;
-    public static final int FLOOR = 7;
-
-    public static int getInt(String path) {
-        return Application.configurationManager.getInt(path);
-    }
-
-    public static double getDouble(String path) {
-        return Application.configurationManager.getDouble(path);
-    }
-
-    public static String getString(String path) {
-        return Application.configurationManager.getString(path);
-    }
 
 //    public static class ConfigScreen {
 //        public int width = Gdx.graphics.getWidth();

@@ -20,13 +20,13 @@ ui:extend({
             { type = "label", text = "Electricity", text_size = 18, size = {400, 32}, padding = 10, on_click = function(v) setDisplay(v, "electricity") end},
         }},
     },
-    on_event = function(view, event , data)
-        if event == application.events.on_key_press and data == "ESCAPE" then
-            view:setVisible(false)
-            ui:find("base.ui.panel_main"):setVisible(true)
-            application:sendEvent("mini_map.display", true)
-        end
-    end,
+--    on_event = function(view, event , data)
+--        if event == application.events.on_key_press and data == "ESCAPE" then
+--            view:setVisible(false)
+--            ui:find("base.ui.panel_main"):setVisible(true)
+--            application:sendEvent("mini_map.display", true)
+--        end
+--    end,
 })
 
 function setDisplay(view, display)

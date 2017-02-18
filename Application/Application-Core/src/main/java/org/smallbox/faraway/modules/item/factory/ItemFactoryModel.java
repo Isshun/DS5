@@ -29,7 +29,7 @@ public class ItemFactoryModel {
 //    private List<FactoryShoppingItemModel>  _shoppingList;
     private final ItemInfoFactory _factoryInfo;
     private ParcelModel _storageParcel;
-    private String                          _message;
+    private String _message;
     private List<BasicHaulJob> _haulJobs = new LinkedList<>();
     private JobModel _craftJob;
     private int _costRemaining;
@@ -136,7 +136,6 @@ public class ItemFactoryModel {
 
         if (_runningReceipt != null) {
             _runningReceipt.initComponents();
-            _item.getFactory().setMessage("Waiting components for receipt: " + _runningReceipt);
         }
     }
 

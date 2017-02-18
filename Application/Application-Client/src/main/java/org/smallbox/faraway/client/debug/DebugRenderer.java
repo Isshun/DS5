@@ -37,7 +37,6 @@ public class DebugRenderer extends BaseRenderer {
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
-    private long _updateInterval = Config.getInt("game.updateInterval");
     private long _lastUpdate;
     private int _index;
 

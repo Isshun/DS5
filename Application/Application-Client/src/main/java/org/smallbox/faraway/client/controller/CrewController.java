@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -46,6 +47,14 @@ public class CrewController extends LuaController {
                             setVisible(false);
                         }));
             });
+        }
+    }
+
+    @Override
+    public void onKeyPressWithEvent(GameEvent event, GameEventListener.Key key) {
+        if (event.isAlive() && key == GameEventListener.Key.ESCAPE) {
+            setVisible(false);
+            mainPanelController.setVisible(true);
         }
     }
 }

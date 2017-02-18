@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
@@ -10,6 +11,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.item.factory.CraftJob;
+import org.smallbox.faraway.modules.item.factory.ItemFactoryModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
@@ -30,6 +32,9 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UILabel        lbBuildProgress;
     @BindLua private UIImage        imgBuildProgress;
 
+    @BindLua private UILabel        lbFactoryMessage;
+    @BindLua private UILabel        lbFactoryJob;
+
     @BindLua private UILabel        currentAction;
     @BindLua private UIList         listActions;
     @BindLua private UIList         listWorkers;
@@ -49,6 +54,39 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         refreshBuilding(item);
         refreshWorkers(item.getJobs());
         refreshInventory(item);
+
+        if (item.getFactory() != null) {
+            refreshFactory(item.getFactory());
+        }
+    }
+
+    private void refreshFactory(ItemFactoryModel factory) {
+        lbFactoryMessage.setText(factory.getMessage());
+
+        if (factory.getCraftJob() != null) {
+            if (factory.getCraftJob().getCharacter() != null) {
+                lbFactoryJob.setText("Crafting: " + factory.getCraftJob().getCharacter().getName());
+            }
+        }
+
+        else if (CollectionUtils.isNotEmpty(factory.getHaulJobs())) {
+            lbFactoryJob.setText(StringUtils.join(factory.getHaulJobs().stream()
+                    .map(job -> {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Hauling ").append(job.getConsumableInfo().label);
+
+                        if (job.getCharacter() != null) {
+                            sb.append(" (").append(job.getCharacter().getName()).append(")");
+                        }
+
+                        return sb.toString();
+                    })
+                    .collect(Collectors.toList()), ", "));
+        }
+
+        else {
+            lbFactoryJob.setText("No jobs");
+        }
     }
 
     private void refreshInventory(UsableItem item) {

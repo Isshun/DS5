@@ -7,6 +7,8 @@ import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 
@@ -22,6 +24,11 @@ public class DebugConsumableRenderer extends BaseRenderer {
     @BindModule
     private JobModule jobModule;
 
+    @Override
+    public void onGameCreate(Game game) {
+        setVisibility(false);
+    }
+
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         consumableModule.getConsumables()
                 .forEach(consumable -> {
@@ -34,4 +41,12 @@ public class DebugConsumableRenderer extends BaseRenderer {
                     renderer.drawOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getQuantity(), 14, Color.WHITE, 0, 16);
                 });
     }
+
+    @Override
+    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
+        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.F10) {
+            toggleVisibility();
+        }
+    }
+
 }

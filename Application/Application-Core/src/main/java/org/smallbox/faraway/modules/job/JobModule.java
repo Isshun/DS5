@@ -228,26 +228,29 @@ public class JobModule extends GameModule<JobModuleObserver> {
      * @return
      */
     private JobModel getFailedJob(CharacterModel character) {
-        int x = character.getParcel().x;
-        int y = character.getParcel().y;
-        int bestDistance = Integer.MAX_VALUE;
-        JobModel bestJob = null;
+        if (character.getParcel() != null) {
+            int x = character.getParcel().x;
+            int y = character.getParcel().y;
+            int bestDistance = Integer.MAX_VALUE;
+            JobModel bestJob = null;
 
-        for (JobModel job: _jobs) {
-            if (job.getCharacter() == null && job.getFail() > 0) {
-                if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Application.gameManager.getGame().getTick() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
-                    continue;
-                }
+            for (JobModel job : _jobs) {
+                if (job.getCharacter() == null && job.getFail() > 0) {
+                    if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Application.gameManager.getGame().getTick() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
+                        continue;
+                    }
 
-                int distance = Math.abs(x - job.getTargetParcel().x) + Math.abs(y - job.getTargetParcel().y);
-                if (distance < bestDistance && job.check(character)) {
-                    bestJob = job;
-                    bestDistance = distance;
+                    int distance = Math.abs(x - job.getTargetParcel().x) + Math.abs(y - job.getTargetParcel().y);
+                    if (distance < bestDistance && job.check(character)) {
+                        bestJob = job;
+                        bestDistance = distance;
+                    }
                 }
             }
-        }
 
-        return bestJob;
+            return bestJob;
+        }
+        return null;
     }
 
     public void addJob(JobModel job, CharacterModel character) {

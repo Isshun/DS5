@@ -124,7 +124,7 @@ public class WorldHelper {
 //        }
 
         ConsumableItem consumable = parcel.getItem(ConsumableItem.class);
-        if (consumable != null && (consumable.getInfo() != info || consumable.getQuantity() + quantity > Math.max(Application.configurationManager.game.storageMaxQuantity, consumable.getInfo().stack))) {
+        if (consumable != null && (consumable.getInfo() != info || consumable.getQuantity() + quantity > Math.max(Application.APPLICATION_CONFIG.game.storageMaxQuantity, consumable.getInfo().stack))) {
             return false;
         }
 

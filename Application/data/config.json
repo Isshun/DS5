@@ -1,22 +1,22 @@
-{
-    "lang": "en",
-    "uiScale": 1,
-    "screen": {
-        "resolution": [1400, 850],
-        "position": [40, 20],
-        "mode": "window",
-        "foregroundFPS": 60,
-        "backgroundFPS": 30
-    },
-    "game": {
-        "tickPerHour": 50,
-        "inventoryMaxQuantity": 100,
-        "storageMaxQuantity": 100,
-        "environmentDistance": 5,
-        "maxNearDistance": 32,
-        "updateInterval": 500
-    },
-    "log": {
-        "level": "debug"
-    }
-}
+//{
+//    "lang": "en",
+//    "uiScale": 1,
+//    "screen": {
+//        "resolution": [1400, 850],
+//        "position": [40, 20],
+//        "mode": "window",
+//        "foregroundFPS": 60,
+//        "backgroundFPS": 30
+//    },
+//    "game": {
+//        "tickPerHour": 50,
+//        "inventoryMaxQuantity": 100,
+//        "storageMaxQuantity": 100,
+//        "environmentDistance": 5,
+//        "maxNearDistance": 32,
+//        "updateInterval": 500
+//    },
+//    "log": {
+//        "level": "debug"
+//    }
+//}

@@ -103,6 +103,7 @@ ui:extend({
                     { type = "label", text = "Personal records", position = {0, 24}, text_size = 24},
                     { type = "label", id = "lb_info_birth", position = {0, 30}, text_size = 14},
                     { type = "label", id = "lb_info_enlisted", position = {0, 30}, text_size = 14},
+                    { type = "label", id = "lb_talents", position = {0, 30}, text_size = 14},
                 }},
             }
         },

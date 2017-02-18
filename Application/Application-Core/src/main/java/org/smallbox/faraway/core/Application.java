@@ -9,18 +9,14 @@ import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application {
     public static final DependencyInjector dependencyInjector;
+    public static final String BASE_PATH = "W:\\projects\\desktop\\FarAway\\Application";
     private static Queue<GameObserver> _observers = new PriorityBlockingQueue<>(200, (o1, o2) -> {
         GameObserverPriority.Priority p1 = o1.getClass().isAnnotationPresent(GameObserverPriority.class)
                 ? o1.getClass().getAnnotation(GameObserverPriority.class).value()
@@ -43,7 +39,7 @@ public class Application {
     public static final GameSaveManager         gameSaveManager;
 
     // Both
-    public static final ConfigurationManager    configurationManager;
+    public static final ApplicationConfig APPLICATION_CONFIG;
 
     public static boolean isLoaded = false;
 
@@ -59,23 +55,13 @@ public class Application {
         gameSaveManager = dependencyInjector.create(GameSaveManager.class);
         data = dependencyInjector.create(Data.class);
 
-        // Create configurationManager
-        configurationManager = loadConfig();
-    }
-
-    private static ConfigurationManager loadConfig() {
-        Log.info("Load application configurationManager");
-        try (FileInputStream fis = new FileInputStream(new File("data/config.json"))) {
-            return ConfigurationManager.fromJSON(Utils.toJSON(fis));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        // Create APPLICATION_CONFIG
+        APPLICATION_CONFIG = dependencyInjector.create(ApplicationConfig.class);
     }
 
     private static boolean                          _isRunning = true;
     private long                                    _nextDataUpdate;
-    private long                                    _dataLastModified = Utils.getLastDataModified();
+//    private long                                    _dataLastModified = Utils.getLastDataModified();
 
     public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
     public static void          setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }
@@ -88,7 +74,7 @@ public class Application {
     }
 
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ConfigurationManager getConfig() { return configurationManager; }
+    public ApplicationConfig getConfig() { return APPLICATION_CONFIG; }
 
 //    public void update() {
 //        if (Application.gameManager.isLoaded()) {
@@ -131,5 +117,15 @@ public class Application {
 
     public static Queue<GameObserver> getObservers() {
         return _observers;
+    }
+
+    public static void runOnMainThread(Runnable runnable) {
+
+        if (Gdx.app != null) {
+            Gdx.app.postRunnable(runnable);
+        } else {
+            runnable.run();
+        }
+
     }
 }

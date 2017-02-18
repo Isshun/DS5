@@ -31,8 +31,9 @@ public class WorldFactory extends GameModule implements IWorldFactory {
 
     @Override
     public void create(Game game, RegionInfo regionInfo) {
-        ItemInfo graniteInfo = Application.data.getItemInfo("base.granite");
-        ItemInfo groundInfo = Application.data.getItemInfo(regionInfo.terrains.get(0).ground);
+        ItemInfo defaultRockInfo = Application.data.getItemInfo("base.granite");
+        ItemInfo defaultGroundInfo = Application.data.getItemInfo("base.ground.grass");
+
         List<ParcelModel> parcelList = new ArrayList<>();
 
         MathUtils.random.setSeed(42);
@@ -45,15 +46,28 @@ public class WorldFactory extends GameModule implements IWorldFactory {
             for (int y = 0; y < _height; y++) {
                 for (int f = 0; f < _floors; f++) {
                     ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
+                    if (parcel.z < _floors - 1) {
+                        parcel.setRockInfo(defaultRockInfo);
+                    } else {
+                        parcel.setGroundInfo(defaultGroundInfo);
+                    }
                     _parcels[x][y][f] = parcel;
                     parcelList.add(parcel);
-                    if (f < _floors - 1) {
-                        _parcels[x][y][f].setRockInfo(graniteInfo);
-                    } else {
-                        _parcels[x][y][f].setGroundInfo(groundInfo);
-                    }
                 }
             }
+        }
+
+        // Add region elements
+        if (regionInfo != null) {
+            ItemInfo regionGroundInfo = Application.data.getItemInfo(regionInfo.terrains.get(0).ground);
+
+            parcelList.forEach(parcel -> {
+                if (parcel.z < _floors - 1) {
+                    parcel.setRockInfo(defaultRockInfo);
+                } else {
+                    parcel.setGroundInfo(regionGroundInfo);
+                }
+            });
         }
 
         _world.init(game, _parcels, parcelList);

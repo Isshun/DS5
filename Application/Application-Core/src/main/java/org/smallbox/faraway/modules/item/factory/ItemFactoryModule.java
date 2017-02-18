@@ -55,7 +55,7 @@ public class ItemFactoryModule extends GameModule {
         itemModule.addObserver(new ItemModuleObserver() {
             @Override
             public void onAddItem(ParcelModel parcel, UsableItem item) {
-                if (item.hasFactory()) {
+                if (item.hasFactory() && !_items.contains(item)) {
                     _items.add(item);
                 }
             }
@@ -84,7 +84,7 @@ public class ItemFactoryModule extends GameModule {
     private void actionCheckComponents(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt()) {
             if (factory.getRunningReceipt().receiptInfo.inputs.stream().anyMatch(ReceiptInputInfo -> !hasEnoughConsumables(ReceiptInputInfo, item))) {
-                item.getFactory().setMessage("not enough component");
+                factory.setMessage("not enough component");
 
                 actionClear(item, factory);
             }
@@ -98,12 +98,16 @@ public class ItemFactoryModule extends GameModule {
      */
     private void actionFindBestReceipt(UsableItem item, ItemFactoryModel factory) {
         if (!factory.hasRunningReceipt()) {
-            item.getFactory().setMessage("seek best receipt");
+            factory.setMessage("seek best receipt");
 
             factory.getReceipts().stream()
                     .filter(receipt -> receipt.receiptInfo.inputs.stream().allMatch(inputInfo -> hasEnoughConsumables(inputInfo, item)))
                     .findFirst()
                     .ifPresent(factory::setRunningReceipt);
+
+            if (factory.hasRunningReceipt()) {
+                factory.setMessage("{blue,icon;" + factory.getRunningReceipt() + "}: waiting components");
+            }
         }
     }
 
@@ -160,7 +164,7 @@ public class ItemFactoryModule extends GameModule {
      */
     private void actionCraftJobs(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() > 0 && factory.getCraftJob() == null) {
-            item.getFactory().setMessage("Create craft job");
+            factory.setMessage("{red,icon;" + factory.getRunningReceipt() + "}: crafting");
 
             BasicCraftJob job = new BasicCraftJob(item.getParcel()) {
                 @Override
@@ -190,7 +194,7 @@ public class ItemFactoryModule extends GameModule {
             // Crée les objets de sorties
             factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.putConsumable(item.getParcel(), output.item, output.quantity[0]));
 
-            factory.setMessage("craft " + factory.getRunningReceipt() + " complete");
+            factory.setMessage(factory.getRunningReceipt() + ": craft complete");
 
             actionClear(item, factory);
         }

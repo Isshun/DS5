@@ -16,15 +16,16 @@ import java.util.List;
  * Created by Alex on 02/07/2015.
  */
 public class FileUtils {
+
     public static void write(File file, String str) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(str.getBytes("UTF-8"));
         }
     }
 
-    public static List<File> listRecursively(String filePath) {
+    public static List<File> listRecursively(File file) {
         List<File> list = new ArrayList<>();
-        listDirectory(list, new File(filePath), true);
+        listDirectory(list, file, true);
         return list;
     }
 
@@ -34,18 +35,12 @@ public class FileUtils {
         return list;
     }
 
-    public static List<File> list(String filePath) {
-        List<File> list = new ArrayList<>();
-        listDirectory(list, new File(filePath), false);
-        return list;
-    }
-
-    private static void listDirectory(List<File> list, File directory, boolean recursively) {
+    private static void listDirectory(List<File> list, File directory, boolean isRecursive) {
         for (File file: directory.listFiles()) {
             list.add(file);
             if (file.isDirectory()) {
-                if (recursively) {
-                    listDirectory(list, file, recursively);
+                if (isRecursive) {
+                    listDirectory(list, file, isRecursive);
                 }
             }
         }

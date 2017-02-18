@@ -7,11 +7,16 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.google.gson.Gson;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.config.Config;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
+
+import java.io.File;
+import java.io.FileReader;
 
 public class GDXApplication extends ApplicationAdapter {
     private FPSLogger fpsLogger = new FPSLogger();
@@ -24,6 +29,13 @@ public class GDXApplication extends ApplicationAdapter {
 
     @Override
     public void create () {
+        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
+            Log.info("Load application APPLICATION_CONFIG");
+            try (FileReader fileReader = new FileReader(new File(Application.BASE_PATH, "data/config.json"))) {
+                return new Gson().fromJson(fileReader, ApplicationConfig.class);
+            }
+        });
+
         _batch = new SpriteBatch();
 
         _systemFont = new BitmapFont(Gdx.files.internal("data/font-14.fnt"), Gdx.files.internal("data/font-14.png"), false);
@@ -82,7 +94,8 @@ public class GDXApplication extends ApplicationAdapter {
         // Resume game
         Application.taskManager.addLoadTask("Resume game", false, () -> {
             //            ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
-            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
+            Application.gameManager.loadLastGame();
+//            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
 //            Application.gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
 //                Application.gameManager.loadGame();
 
@@ -99,7 +112,7 @@ public class GDXApplication extends ApplicationAdapter {
                     } catch (Exception e) {
                         Log.error(e);
                     }
-                }, Config.getInt("game.updateInterval")));
+                }, ApplicationClient.APPLICATION_CONFIG.game.updateInterval));
     }
 
     @Override

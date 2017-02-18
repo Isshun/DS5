@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -11,6 +12,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 25/04/2016.
@@ -35,6 +37,8 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private UILabel            lbInfoEnlisted;
     @BindLua private UILabel            lbParcel;
 
+    @BindLua private UILabel            lbTalents;
+
     @Override
     protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
         return characterModule.getCharacter(parcel);
@@ -46,6 +50,10 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
         lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
         lbParcel.setText(character.getParcel().toString());
+
+        // Info
+        lbTalents.setText(StringUtils.join(character.getTalents().getAll().stream().map(talentEntry -> talentEntry.name).collect(Collectors.toList()), ", "));
+
 
         characterStatusController.selectCharacter(character);
         characterHealthController.selectCharacter(character);

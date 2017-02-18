@@ -57,8 +57,9 @@ ui:extend({
 
             -- Factory progress
             { type = "list", id = "frame_factory", position = {0, 300}, margin = {40, 0, 0, 10}, views = {
---                { type = "label", text = "Work in progress", text_size = 22},
---                { type = "label", id = "lb_factory_status", text = "lb_factory_receipt", size = {100, 20}},
+                { type = "label", text = "Factory", text_size = 22},
+                { type = "label", id = "lb_factory_message", size = {100, 20}},
+                { type = "label", id = "lb_factory_job", size = {100, 20}},
 --                { type = "image", id = "img_factory_progress", src = "[base]/graphics/needbar.png", size = {352, 16}},
 
                 -- Factory inventory

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
+import com.google.gson.Gson;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
@@ -13,13 +14,12 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.ConfigurationManager;
+import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -30,7 +30,7 @@ public class ApplicationClient {
     private static Collection<GameClientObserver>     _observers = new LinkedBlockingQueue<>();
 
     // Both
-    public static final ConfigurationManager    configurationManager;
+    public static final ApplicationConfig APPLICATION_CONFIG;
 
     // Client
     public static final UIManager               uiManager;
@@ -55,17 +55,17 @@ public class ApplicationClient {
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
 
-        // Create configurationManager
-        configurationManager = loadConfig();
+        // Create APPLICATION_CONFIG
+        APPLICATION_CONFIG = loadConfig();
 
         // Create input processor
         inputManager = new InputManager();
     }
 
-    private static ConfigurationManager loadConfig() {
-        Log.info("Load application configurationManager");
-        try (FileInputStream fis = new FileInputStream(new File("data/config.json"))) {
-            return ConfigurationManager.fromJSON(Utils.toJSON(fis));
+    private static ApplicationConfig loadConfig() {
+        Log.info("Load application APPLICATION_CONFIG");
+        try (FileReader fileReader = new FileReader("data/config.json")) {
+            return new Gson().fromJson(fileReader, ApplicationConfig.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,7 +86,7 @@ public class ApplicationClient {
     }
 
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ConfigurationManager getConfig() { return configurationManager; }
+    public ApplicationConfig getConfig() { return APPLICATION_CONFIG; }
 
     public static void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);

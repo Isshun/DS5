@@ -21,4 +21,8 @@ public class GameEvent {
     public void consume() {
         this.consumed = true;
     }
+
+    public boolean isAlive() {
+        return !this.consumed;
+    }
 }

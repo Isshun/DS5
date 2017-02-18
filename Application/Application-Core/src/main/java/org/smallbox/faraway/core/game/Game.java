@@ -53,7 +53,7 @@ public class Game {
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
     public int                              getYear() { return _year; }
-    public int                              getTickPerHour() { return Application.configurationManager.game.tickPerHour; }
+    public int                              getTickPerHour() { return Application.APPLICATION_CONFIG.game.tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
@@ -71,7 +71,11 @@ public class Game {
 //        _gameAction = new GameActionExtra(_viewport, _selector);
         _info = info;
         _isRunning = true;
-        _planet = new PlanetModel(info.planet);
+
+        if (info.planet != null) {
+            _planet = new PlanetModel(info.planet);
+        }
+
 //        _directions = ApplicationClient.inputManager.getDirection();
         _displays = new HashMap<>();
         _tick = 0;
@@ -111,7 +115,7 @@ public class Game {
 
         Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(this, _tick));
 
-        if (_tick % Application.configurationManager.game.tickPerHour == 0) {
+        if (_tick % Application.APPLICATION_CONFIG.game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {

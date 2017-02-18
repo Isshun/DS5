@@ -275,10 +275,10 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setMargin(int top, int right, int bottom, int left) {
-        _marginTop = (int) (top * Application.configurationManager.uiScale);
-        _marginRight = (int) (right * Application.configurationManager.uiScale);
-        _marginBottom = (int) (bottom * Application.configurationManager.uiScale);
-        _marginLeft = (int) (left * Application.configurationManager.uiScale);
+        _marginTop = (int) (top * Application.APPLICATION_CONFIG.uiScale);
+        _marginRight = (int) (right * Application.APPLICATION_CONFIG.uiScale);
+        _marginBottom = (int) (bottom * Application.APPLICATION_CONFIG.uiScale);
+        _marginLeft = (int) (left * Application.APPLICATION_CONFIG.uiScale);
     }
 
     public UIAdapter getAdapter() {
@@ -368,43 +368,43 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = (int) (t * Application.configurationManager.uiScale);
-        _paddingRight = (int) (r * Application.configurationManager.uiScale);
-        _paddingBottom = (int) (b * Application.configurationManager.uiScale);
-        _paddingLeft = (int) (l * Application.configurationManager.uiScale);
+        _paddingTop = (int) (t * Application.APPLICATION_CONFIG.uiScale);
+        _paddingRight = (int) (r * Application.APPLICATION_CONFIG.uiScale);
+        _paddingBottom = (int) (b * Application.APPLICATION_CONFIG.uiScale);
+        _paddingLeft = (int) (l * Application.APPLICATION_CONFIG.uiScale);
     }
 
     public void setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = (int) (t * Application.configurationManager.uiScale);
-        _paddingRight = _paddingLeft = (int) (r * Application.configurationManager.uiScale);
+        _paddingTop = _paddingBottom = (int) (t * Application.APPLICATION_CONFIG.uiScale);
+        _paddingRight = _paddingLeft = (int) (r * Application.APPLICATION_CONFIG.uiScale);
     }
 
     public View setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.configurationManager.uiScale);
+        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.APPLICATION_CONFIG.uiScale);
         return this;
     }
 
     public View setFixedSize(int width, int height) {
-        _fixedWidth = (int) (width * Application.configurationManager.uiScale);
-        _fixedHeight = (int) (height * Application.configurationManager.uiScale);
+        _fixedWidth = (int) (width * Application.APPLICATION_CONFIG.uiScale);
+        _fixedHeight = (int) (height * Application.APPLICATION_CONFIG.uiScale);
         return this;
     }
 
     public View setSize(int width, int height) {
-        _width = (int) (width * Application.configurationManager.uiScale);
-        _height = (int) (height * Application.configurationManager.uiScale);
+        _width = (int) (width * Application.APPLICATION_CONFIG.uiScale);
+        _height = (int) (height * Application.APPLICATION_CONFIG.uiScale);
         _originWidth = width;
         _originHeight = height;
         return this;
     }
 
     public View setPosition(int x, int y) {
-//        x = (int) (x * Application.configurationManager.uiScale);
-//        y = (int) (y * Application.configurationManager.uiScale);
-//        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.configurationManager.screen.resolution[0] - x;
-//        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.configurationManager.screen.resolution[1] - y;
-        _x = (int) (x * Application.configurationManager.uiScale);
-        _y = (int) (y * Application.configurationManager.uiScale);
+//        x = (int) (x * Application.APPLICATION_CONFIG.uiScale);
+//        y = (int) (y * Application.APPLICATION_CONFIG.uiScale);
+//        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.APPLICATION_CONFIG.screen.resolution[0] - x;
+//        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.APPLICATION_CONFIG.screen.resolution[1] - y;
+        _x = (int) (x * Application.APPLICATION_CONFIG.uiScale);
+        _y = (int) (y * Application.APPLICATION_CONFIG.uiScale);
 
         return this;
     }
