@@ -2,6 +2,7 @@ package org.smallbox.faraway.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -15,7 +16,7 @@ public class CreateGameTest extends TestBase {
 
     @Test
     public void test1() throws InterruptedException {
-        launchGame(new GameTestCallback() {
+        launchGame(new GDXApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
 
@@ -52,5 +53,7 @@ public class CreateGameTest extends TestBase {
             public void onGameUpdate(long tick) {
             }
         });
+
+        Thread.sleep(1000000);
     }
 }

@@ -25,7 +25,7 @@ public class ModuleManager implements GameObserver {
         void onLoadModule(String message);
     }
 
-    private final Executor              _executor = Executors.newFixedThreadPool(5);
+    private final Executor              _executor = Executors.newFixedThreadPool(1);
     private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<ApplicationModule>     _applicationModules = new ArrayList<>();
     private List<AbsGameModule>         _gameModules = new ArrayList<>();
@@ -169,7 +169,9 @@ public class ModuleManager implements GameObserver {
                         module.setInfo(ModuleInfo.fromName(module.getClass().getSimpleName()));
                         _gameModules.add(module);
                         _modules.add(module);
-                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                    } catch (NoSuchMethodException e) {
+                        Log.warning(ModuleManager.class, "Unable to instantiate " + cls.getName() + " - No default constructor");
+                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 });
@@ -195,7 +197,7 @@ public class ModuleManager implements GameObserver {
             throw new RuntimeException("Some game modules could not be loaded");
         }
 
-        _gameModules.forEach(module -> Application.addObserver(module));
+        _gameModules.forEach(Application::addObserver);
         _gameModules.forEach(Application.dependencyInjector::register);
         _gameModules.forEach(ModuleBase::create);
     }

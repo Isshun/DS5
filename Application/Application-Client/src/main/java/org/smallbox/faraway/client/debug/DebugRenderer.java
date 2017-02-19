@@ -6,8 +6,8 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
-import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -45,12 +45,21 @@ public class DebugRenderer extends BaseRenderer {
     @Override
     public void onGameCreate(Game game) {
         setVisibility(false);
+
+        _data.put("Cursor screen position", "");
+        _data.put("Cursor world position", "");
     }
 
     @Override
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         _index = 0;
         renderer.draw(0, 0, 2000, 2000, BG_COLOR);
+
+        drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.mainRenderer.getViewport().getFloor());
+        drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.mainRenderer.getViewport().getWidth() + " x " + ApplicationClient.mainRenderer.getViewport().getHeight());
+
+        drawDebug(renderer, "WORLD", "Size: " + Application.gameManager.getGame().getInfo().worldWidth + " x " + Application.gameManager.getGame().getInfo().worldHeight + " x " + Application.gameManager.getGame().getInfo().worldFloors);
+        drawDebug(renderer, "WORLD", "Ground floor: " + Application.gameManager.getGame().getInfo().groundFloor);
 
         _data.entrySet().forEach(entry -> drawDebug(renderer, "UI", entry.getKey() + ": " + entry.getValue()));
 

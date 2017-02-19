@@ -13,6 +13,7 @@ import static org.smallbox.faraway.core.engine.GameEventListener.Modifier.NONE;
  * Created by Alex on 20/10/2015.
  */
 public class ApplicationShortcutManager {
+
     private static class ApplicationShortcut {
         public final GameEventListener.Key          key;
         public final GameEventListener.Modifier     modifier;

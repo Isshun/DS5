@@ -68,4 +68,9 @@ dependencies {
     compile 'org.fusesource:sigar:1.6.4'
     compile 'net.java.dev.jna:jna-platform:4.2.2'
 
+
+    // https://mvnrepository.com/artifact/junit/junit
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+
 }

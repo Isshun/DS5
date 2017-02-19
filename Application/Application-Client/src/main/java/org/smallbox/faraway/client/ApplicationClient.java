@@ -19,9 +19,12 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
@@ -44,9 +47,27 @@ public class ApplicationClient {
     public static final MainRenderer            mainRenderer;
 
     public static boolean isLoaded = false;
+    public static List<ApplicationShortcutStrategy> shortcutStrategies = new CopyOnWriteArrayList<>();
+
+    public static class ApplicationShortcutStrategy {
+        public GameEventListener.Key key;
+        public Runnable runnable;
+
+        public ApplicationShortcutStrategy(GameEventListener.Key key, Runnable runnable) {
+            this.key = key;
+            this.runnable = runnable;
+        }
+    }
 
     static {
         dependencyInjector = DependencyInjector.getInstance();
+        dependencyInjector.setShortcutBindingStrategy((key, runnable) -> {
+            if (shortcutStrategies.stream().noneMatch(strategy -> strategy.key == key)) {
+                shortcutStrategies.add(new ApplicationShortcutStrategy(key, runnable));
+            } else {
+                Log.warning(ApplicationClient.class, "Add already existing shortcut");
+            }
+        });
         uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
@@ -64,7 +85,7 @@ public class ApplicationClient {
 
     private static ApplicationConfig loadConfig() {
         Log.info("Load application APPLICATION_CONFIG");
-        try (FileReader fileReader = new FileReader("data/config.json")) {
+        try (FileReader fileReader = new FileReader(new File(Application.BASE_PATH, "data/config.json"))) {
             return new Gson().fromJson(fileReader, ApplicationConfig.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +120,14 @@ public class ApplicationClient {
             GameEvent event = new GameEvent(key);
             ApplicationClient.notify(observer -> observer.onKeyPressWithEvent(event, key));
             ApplicationClient.notify(observer -> observer.onKeyEvent(action, key, modifier));
+        }
+
+        // TODO: A deplacer dans ApplicationShortcutManage
+        // Call shortcut strategy
+        if (action == GameEventListener.Action.RELEASED) {
+            shortcutStrategies.stream()
+                    .filter(strategy -> strategy.key == key)
+                    .forEach(strategy -> strategy.runnable.run());
         }
     }
 

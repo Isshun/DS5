@@ -42,6 +42,10 @@ public class Log {
         logger.setUseParentHandlers(false);
     }
 
+    public static void warning(Class cls, String message) {
+        logger.warning(cls.getName() + ": " + message);
+    }
+
     public static void warning(String message) {
         logger.warning(message);
     }

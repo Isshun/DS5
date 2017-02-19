@@ -2,6 +2,7 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,13 +20,28 @@ import java.io.File;
 import java.io.FileReader;
 
 public class GDXApplication extends ApplicationAdapter {
+    private final GameTestCallback _callback;
     private FPSLogger fpsLogger = new FPSLogger();
 
-    private SpriteBatch                         _batch;
-    private Application                         _application;
-    private ApplicationClient                   _client;
-    private BitmapFont[]                        _fonts;
-    private BitmapFont                          _systemFont;
+    protected SpriteBatch                         _batch;
+    protected Application                         _application;
+    protected ApplicationClient                   _client;
+    protected BitmapFont[]                        _fonts;
+    protected BitmapFont                          _systemFont;
+
+    public GDXApplication(GameTestCallback callback) {
+        _callback = callback;
+    }
+
+    public static abstract class GameTestCallback {
+        public boolean _quit;
+
+        public abstract void onApplicationReady();
+        public abstract void onGameUpdate(long tick);
+        public void quit() {
+            _quit = true;
+        }
+    }
 
     @Override
     public void create () {
@@ -38,13 +54,16 @@ public class GDXApplication extends ApplicationAdapter {
 
         _batch = new SpriteBatch();
 
-        _systemFont = new BitmapFont(Gdx.files.internal("data/font-14.fnt"), Gdx.files.internal("data/font-14.png"), false);
+        _systemFont = new BitmapFont(
+                new FileHandle(new File(Application.BASE_PATH, "data/font-14.fnt")),
+                new FileHandle(new File(Application.BASE_PATH, "data/font-14.png")),
+                false);
 
         Application.taskManager.addLoadTask("Generate fonts", true, () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
             _fonts = new BitmapFont[50];
             for (int i = 5; i < 50; i++) {
-                _fonts[i] = fontGen.createFont(Gdx.files.local("data/fonts/font.ttf"), "font-" + i, i);
+                _fonts[i] = fontGen.createFont(new FileHandle(new File(Application.BASE_PATH, "data/fonts/font.ttf")), "font-" + i, i);
                 _fonts[i].getData().flipped = true;
             }
         });
@@ -108,11 +127,18 @@ public class GDXApplication extends ApplicationAdapter {
                     try {
                         if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
                             Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
+                            if (_callback != null) {
+                                _callback.onGameUpdate(Application.gameManager.getGame().getTick());
+                            }
                         }
                     } catch (Exception e) {
                         Log.error(e);
                     }
-                }, ApplicationClient.APPLICATION_CONFIG.game.updateInterval));
+                }, Application.APPLICATION_CONFIG.game.updateInterval));
+
+        if (_callback != null) {
+            Application.taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);
+        }
     }
 
     @Override

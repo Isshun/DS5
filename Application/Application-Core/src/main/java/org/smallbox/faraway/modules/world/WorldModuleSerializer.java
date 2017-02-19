@@ -172,8 +172,6 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
                 }
 
                 worldModule.init(game, parcels, parcelsList);
-
-                Application.pathManager.init(parcelsList);
             } catch (SQLiteException e) {
                 Log.warning("Unable to read WorldModule_parcel or WorldModule_plant table: " + e.getMessage());
                 e.printStackTrace();

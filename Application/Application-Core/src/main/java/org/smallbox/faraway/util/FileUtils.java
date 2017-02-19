@@ -1,7 +1,9 @@
 package org.smallbox.faraway.util;
 
+import com.badlogic.gdx.files.FileHandle;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.smallbox.faraway.core.Application;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,10 @@ public class FileUtils {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(str.getBytes("UTF-8"));
         }
+    }
+
+    public static List<File> listRecursively(String relativePath) {
+        return listRecursively(new File(Application.BASE_PATH, relativePath));
     }
 
     public static List<File> listRecursively(File file) {
@@ -92,5 +99,13 @@ public class FileUtils {
 
     public static File getSaveDirectory(String directory) {
         return new File(new File(getGameDirectory(), "saves"), directory);
+    }
+
+    public static File getFile(String... relativePath) {
+        return Paths.get(Application.BASE_PATH, relativePath).toFile();
+    }
+
+    public static FileHandle getFileHandle(String relativePath) {
+        return new FileHandle(getFile(relativePath));
     }
 }

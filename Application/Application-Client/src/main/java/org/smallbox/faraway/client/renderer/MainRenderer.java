@@ -4,7 +4,7 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.config.Config;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 
@@ -155,4 +155,16 @@ public class MainRenderer implements GameClientObserver {
             render.gameStart(Application.gameManager.getGame());
         }
     }
+
+    @Override
+    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
+        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.PAGEUP) {
+            _viewport.setFloor(_viewport.getFloor() + 1);
+        }
+
+        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.PAGEDOWN) {
+            _viewport.setFloor(_viewport.getFloor() - 1);
+        }
+    }
+
 }

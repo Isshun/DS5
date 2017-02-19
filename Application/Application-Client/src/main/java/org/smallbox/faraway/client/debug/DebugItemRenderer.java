@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.GameRenderer;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
@@ -31,6 +32,8 @@ public class DebugItemRenderer extends BaseRenderer {
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         itemModule.getItems()
+                .stream()
+                .filter(item -> item.getParcel().z == viewport.getFloor())
                 .forEach(item -> {
                     for (int i = 0; i < item.getWidth(); i++) {
                         for (int j = 0; j < item.getHeight(); j++) {
@@ -48,11 +51,10 @@ public class DebugItemRenderer extends BaseRenderer {
                 });
     }
 
-    @Override
-    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.F9) {
-            toggleVisibility();
-        }
+    @SuppressWarnings("unused")
+    @GameShortcut(key = GameEventListener.Key.F8)
+    public void onToggleVisibility() {
+        toggleVisibility();
     }
 
 }

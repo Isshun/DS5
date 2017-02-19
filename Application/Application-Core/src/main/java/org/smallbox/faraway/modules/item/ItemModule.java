@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.item;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
@@ -166,6 +167,21 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
             notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
         }
+    }
+
+    public void addItem(ItemInfo itemInfo, int x, int y, int z) {
+        addItem(itemInfo, WorldHelper.getParcel(x, y, z));
+    }
+
+    public void addItem(ItemInfo itemInfo, ParcelModel parcel) {
+        UsableItem item = new UsableItem(itemInfo);
+        item.setParcel(parcel);
+        item.setBuildProgress(0);
+        item.init();
+
+        _items.add(item);
+
+        notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
     }
 
     public UsableItem getItem(ParcelModel parcel) {

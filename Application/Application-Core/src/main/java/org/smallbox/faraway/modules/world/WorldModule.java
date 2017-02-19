@@ -26,6 +26,7 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
 //    private WorldInfoParcel2Controller          _infoParcel2Controller;
 
     private ParcelModel[][][]                   _parcels;
+    private List<ParcelModel>                   _parcelList;
     private int                                 _width;
     private int                                 _height;
     private int                                 _floors;
@@ -50,12 +51,16 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         _floor = _floors - 1;
 
         _parcels = parcels;
+        _parcelList = parcelList;
 
         // Notify world observers
         parcelList.forEach(parcel -> notifyObservers(observer -> observer.onAddParcel(parcel)));
+
+        Application.pathManager.init(parcelList);
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
+    public List<ParcelModel>                    getParcelList() { return _parcelList; }
 
     public void getParcels(int fromX, int toX, int fromY, int toY, int fromZ, int toZ, GetParcelListener getParcelListener) {
         assert getParcelListener != null;

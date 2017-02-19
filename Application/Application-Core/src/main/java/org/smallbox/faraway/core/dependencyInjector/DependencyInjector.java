@@ -2,13 +2,17 @@ package org.smallbox.faraway.core.dependencyInjector;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.handler.ComponentHandler;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,6 +27,7 @@ public class DependencyInjector {
     private boolean _init = false;
     private static final DependencyInjector _self = new DependencyInjector();
     private HashMap<Class<?>, Object> _models = new HashMap<>();
+    private ShortcutBindingStrategyInterface _shortcutBindingStrategy;
 
     public static DependencyInjector getInstance() { return _self; }
 
@@ -81,6 +86,7 @@ public class DependencyInjector {
         Log.info("Inject dependency to: " + object.getClass().getName());
         injectManagers(object);
         injectModules(object, Application.moduleManager.getGameModules());
+        injectShortcut(object);
 
         Application.notify(observer -> observer.onInjectDependency(object));
     }
@@ -105,6 +111,24 @@ public class DependencyInjector {
                 }
             } catch (IllegalAccessException e) {
                 Log.error(e);
+            }
+        }
+    }
+
+    // TODO: methode appelée plusieurs fois (2)
+    private void injectShortcut(Object object) {
+        for (Method method: object.getClass().getDeclaredMethods()) {
+            method.setAccessible(true);
+            GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
+            if (gameShortcut != null) {
+                Log.debug(String.format("Try to inject %s to %s", method.getName(), object.getClass().getSimpleName()));
+                _shortcutBindingStrategy.onShortcutBindingStrategy(gameShortcut.key(), () -> {
+                    try {
+                        method.invoke(object);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
     }
@@ -140,6 +164,14 @@ public class DependencyInjector {
 
     public void registerModel(Object model) {
         _models.put(model.getClass(), model);
+    }
+
+    public interface ShortcutBindingStrategyInterface {
+        void onShortcutBindingStrategy(GameEventListener.Key key, Runnable runnable);
+    }
+
+    public void setShortcutBindingStrategy(ShortcutBindingStrategyInterface shortcutBindingStrategy) {
+        _shortcutBindingStrategy = shortcutBindingStrategy;
     }
 
     public interface RegisterModelCallback<T> {

@@ -115,7 +115,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private void assign(CharacterModel character, JobModel job) {
         if (job != null) {
             assignJob(character, job);
-            if (character.getJob() != job) {
+            if (character.getJob() == null || character.getJob() != job) {
                 printError("Fail to assign job");
             } else {
                 printDebug("assign job (" + character.getPersonals().getName() + " -> " + character.getJob().getLabel() + ")");

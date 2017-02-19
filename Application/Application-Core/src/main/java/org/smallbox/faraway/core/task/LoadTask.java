@@ -23,6 +23,7 @@ public abstract class LoadTask implements Runnable {
             onRun();
             state = State.COMPLETE;
         } catch (Throwable t) {
+            t.printStackTrace();
             throwable = t;
         }
     }

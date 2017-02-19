@@ -1,19 +1,25 @@
 package org.smallbox.faraway.core.task;
 
-import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.util.Log;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Alex on 19/11/2016.
  */
 public class TaskManager {
-    private LoaderThreadExecutor _loadExecutor = new LoaderThreadExecutor();
+    private static int BACKGROUND_THREAD_LIMIT = 10;
+
+    private LoaderThreadExecutor                _loadExecutor = new LoaderThreadExecutor();
+    private ExecutorService                     _backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);
     private List<LoadTask>                      _loadTasks = new CopyOnWriteArrayList<>();
     private boolean                             _running = true;
+    private int                                 _backgroundThreadCount;
 
     public TaskManager() {
         launchBackgroundThread(() -> {
@@ -31,7 +37,7 @@ public class TaskManager {
 
     private void startTask(LoadTask task) {
         if (task.onMainThread) {
-            _loadExecutor.submit(() -> Gdx.app.postRunnable(() -> runLoadTask(task)));
+            _loadExecutor.submit(() -> Application.runOnMainThread(() -> runLoadTask(task)));
         } else {
             _loadExecutor.submit(() -> runLoadTask(task));
         }
@@ -53,7 +59,9 @@ public class TaskManager {
             if (task.throwable != null) {
                 System.out.println("Run load task:" + task.label + " has throw an exception");
                 System.out.println(task.throwable.getMessage());
+                Arrays.asList(task.throwable.getStackTrace()).forEach(element -> System.out.println(element));
                 task.throwable.printStackTrace();
+                System.out.println("-- END --");
                 exitWithError(task.throwable);
             }
         }
@@ -70,18 +78,26 @@ public class TaskManager {
     }
 
     public void launchBackgroundThread(Runnable runnable, int timeInterval) {
-        Log.info("Launch background thread");
-        new Thread(() -> {
-            while (_running) {
-                try {
-                    runnable.run();
-                    Thread.sleep(timeInterval);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (_backgroundThreadCount++ < BACKGROUND_THREAD_LIMIT) {
+
+            Log.info("Launch background thread");
+
+            _backgroundExecutor.submit(() -> {
+                while (_running) {
+                    try {
+                        runnable.run();
+                        Thread.sleep(timeInterval);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            Log.info("Background thread terminated");
-        }).start();
+
+                Log.info("Background thread terminated");
+            });
+
+        } else {
+            throw new Error("BACKGROUND_THREAD_LIMIT exceeded");
+        }
     }
 
     public void launchBackgroundThread(Runnable runnable) {

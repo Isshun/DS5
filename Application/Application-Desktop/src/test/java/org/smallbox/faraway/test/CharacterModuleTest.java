@@ -5,12 +5,13 @@ import org.junit.Test;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.farpoint.desktop.GdxTestApplication;
 
 public class CharacterModuleTest extends TestBase {
 
     @Test
     public void test1() throws InterruptedException {
-        launchGame(new GameTestCallback() {
+        launchGame(new GdxTestApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
 

@@ -61,7 +61,7 @@ public class SpriteManager {
     }
 
     public void init() {
-        Texture itemSelector = new Texture("data/res/item_selector.png");
+        Texture itemSelector = new Texture(FileUtils.getFileHandle("data/res/item_selector.png"));
         _selectors = new Sprite[NB_SELECTOR_TILE];
         _selectors[0] = new Sprite(itemSelector, 0, 0, 8, 8);
         _selectors[0].flip(false, true);
@@ -72,7 +72,7 @@ public class SpriteManager {
         _selectors[3] = new Sprite(itemSelector, 8, 8, 8, 8);
         _selectors[3].flip(false, true);
 
-        _textures = FileUtils.listRecursively("data\\res").stream()
+        _textures = FileUtils.listRecursively("data/res").stream()
                 .filter(file -> file.getName().endsWith(".png"))
                 .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
 
@@ -371,7 +371,7 @@ public class SpriteManager {
 
     public static File getFile(ItemInfo itemInfo, GraphicInfo graphicInfo) {
         if ("base".equals(graphicInfo.packageName)) {
-            return new File("data", graphicInfo.path);
+            return FileUtils.getFile("data", graphicInfo.path);
         } else {
             return new File(itemInfo.dataDirectory, graphicInfo.path);
         }
@@ -385,7 +385,7 @@ public class SpriteManager {
         }
 
         if ("base".equals(packageName)) {
-            return new File("data", path);
+            return FileUtils.getFile("data", path);
         } else {
             throw new NotImplementedException("");
 //            return new File("mods/" + packageName + "/items/" + path);

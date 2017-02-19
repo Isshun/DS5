@@ -132,14 +132,14 @@ public class PathManager extends GameModule {
 
         // Get path from cache
         long cacheId = getSum(fromParcel, toParcel);
-        PathModel path = _cache.get(cacheId);
+//        PathModel path = _cache.get(cacheId);
 //        if (path != null && path.isValid()) {
 //            return path;
 //        }
 
         // Looking for new path
-        path = PathModel.create(findPath(fromParcel, toParcel));
-        _cache.put(cacheId, path);
+        PathModel path = PathModel.create(findPath(fromParcel, toParcel));
+//        _cache.put(cacheId, path);
 
         return path;
     }
