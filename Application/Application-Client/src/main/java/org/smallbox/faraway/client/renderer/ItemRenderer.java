@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.GameRenderer;
-import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
@@ -13,7 +13,7 @@ public class ItemRenderer extends BaseRenderer {
     @BindModule
     private ItemModule itemModule;
 
-    @BindManager
+    @BindComponent
     private SpriteManager spriteManager;
 
     private int                 _frame;

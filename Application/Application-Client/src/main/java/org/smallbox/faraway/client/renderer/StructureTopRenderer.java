@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.core.GameRenderer;
-import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.modules.structure.StructureModule;
 @GameRenderer(level = MainRenderer.STRUCTURE_RENDERER_LEVEL)
 public class StructureTopRenderer extends BaseRenderer {
 
-    @BindManager
+    @BindComponent
     private SpriteManager spriteManager;
 
     @BindModule

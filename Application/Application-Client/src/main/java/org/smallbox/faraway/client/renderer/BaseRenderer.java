@@ -54,7 +54,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     protected void onRefresh(int frame) {}
 
     public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-        if (_isVisible) {
+        if (isVisible()) {
             //                if (render.isMandatory() || (game.hasDisplay(render.getClass().getName()))) {
 
             long time = System.currentTimeMillis();

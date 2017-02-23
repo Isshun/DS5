@@ -4,10 +4,10 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by Alex on 19/11/2016.
@@ -17,17 +17,15 @@ public class TaskManager {
 
     private LoaderThreadExecutor                _loadExecutor = new LoaderThreadExecutor();
     private ExecutorService                     _backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);
-    private List<LoadTask>                      _loadTasks = new CopyOnWriteArrayList<>();
+    private Collection<LoadTask>                _loadTasks = new LinkedBlockingQueue<>();
     private boolean                             _running = true;
     private int                                 _backgroundThreadCount;
 
     public TaskManager() {
         launchBackgroundThread(() -> {
             for (LoadTask task: _loadTasks) {
-                if (task.state == LoadTask.State.RUNNING) {
-                    return;
-                }
                 if (task.state == LoadTask.State.NONE) {
+                    task.state = LoadTask.State.WAITING;
                     startTask(task);
                     return;
                 }
@@ -36,15 +34,18 @@ public class TaskManager {
     }
 
     private void startTask(LoadTask task) {
-        if (task.onMainThread) {
-            _loadExecutor.submit(() -> Application.runOnMainThread(() -> runLoadTask(task)));
-        } else {
-            _loadExecutor.submit(() -> runLoadTask(task));
-        }
+//        if (task.onMainThread) {
+//            _loadExecutor.submit(() -> Application.runOnMainThread(() -> runLoadTask(task)));
+//        } else {
+//            _loadExecutor.submit(() -> runLoadTask(task));
+//        }
+
+        // TODO: no bg thread during early dev
+        Application.runOnMainThread(() -> runLoadTask(task));
     }
 
     public void addLoadTask(String label, boolean onMainThread, Runnable runnable) {
-        _loadTasks.add(new LoadTask(label, onMainThread) {
+        _loadTasks.add(new LoadTask(label, true) {
             @Override
             protected void onRun() {
                 runnable.run();
@@ -55,11 +56,13 @@ public class TaskManager {
     private void runLoadTask(LoadTask task) {
         if (_running) {
             Log.info("Run load task:" + task.label);
+            task.state = LoadTask.State.RUNNING;
             task.run();
+            task.state = LoadTask.State.COMPLETE;
             if (task.throwable != null) {
                 System.out.println("Run load task:" + task.label + " has throw an exception");
                 System.out.println(task.throwable.getMessage());
-                Arrays.asList(task.throwable.getStackTrace()).forEach(element -> System.out.println(element));
+                Arrays.asList(task.throwable.getStackTrace()).forEach(System.out::println);
                 task.throwable.printStackTrace();
                 System.out.println("-- END --");
                 exitWithError(task.throwable);
@@ -73,7 +76,7 @@ public class TaskManager {
         Application.exitWithError();
     }
 
-    public List<LoadTask> getLoadTasks() {
+    public Collection<LoadTask> getLoadTasks() {
         return _loadTasks;
     }
 
@@ -85,7 +88,9 @@ public class TaskManager {
             _backgroundExecutor.submit(() -> {
                 while (_running) {
                     try {
-                        runnable.run();
+//                         TODO: no bg thread during early dev
+                        Application.runOnMainThread(runnable);
+//                        runnable.run();
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -100,8 +105,4 @@ public class TaskManager {
         }
     }
 
-    public void launchBackgroundThread(Runnable runnable) {
-        Log.info("Launch background thread");
-        new Thread(runnable::run).start();
-    }
 }

@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.math.Rectangle;
 import org.smallbox.faraway.core.GameRenderer;
-import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.*;
@@ -15,7 +15,7 @@ public class WorldTopRenderer extends BaseRenderer {
     @BindModule
     private WorldModule _worldModule;
 
-    @BindManager
+    @BindComponent
     protected SpriteManager     _spriteManager;
 
     protected MapObjectModel    _itemSelected;

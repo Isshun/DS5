@@ -14,10 +14,12 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.task.LoadTask;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.function.Consumer;
 
 public class GDXApplication extends ApplicationAdapter {
     private final GameTestCallback _callback;
@@ -113,10 +115,14 @@ public class GDXApplication extends ApplicationAdapter {
         // Resume game
         Application.taskManager.addLoadTask("Resume game", false, () -> {
             //            ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
-            Application.gameManager.loadLastGame();
+//            Application.gameManager.loadLastGame();
 //            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
 //            Application.gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
 //                Application.gameManager.loadGame();
+
+            if (_callback != null) {
+                Application.taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);
+            }
 
             Application.isLoaded = true;
         });
@@ -135,10 +141,6 @@ public class GDXApplication extends ApplicationAdapter {
                         Log.error(e);
                     }
                 }, Application.APPLICATION_CONFIG.game.updateInterval));
-
-        if (_callback != null) {
-            Application.taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);
-        }
     }
 
     @Override
@@ -177,20 +179,28 @@ public class GDXApplication extends ApplicationAdapter {
         _batch.setProjectionMatrix(camera.combined);
 
         // Display tasks message
-        Application.taskManager.getLoadTasks().forEach(task -> {
-            switch (task.state) {
-                case NONE:
-                    _systemFont.setColor(1f, 1f, 1f, 0.5f);
-                    break;
-                case RUNNING:
-                    _systemFont.setColor(0.5f, 0.9f, 0.8f, 1);
-                    break;
-                case COMPLETE:
-                    _systemFont.setColor(0.9f, 0.6f, 0.8f, 1);
-                    break;
-            }
+        Application.taskManager.getLoadTasks().forEach(new Consumer<LoadTask>() {
 
-            _systemFont.draw(_batch, task.label, 12, Gdx.graphics.getHeight() - (Application.taskManager.getLoadTasks().indexOf(task) * 20 + 12));
+            private int taskIndex;
+
+            @Override
+            public void accept(LoadTask task) {
+
+                switch (task.state) {
+                    case NONE:
+                    case WAITING:
+                        _systemFont.setColor(1f, 1f, 1f, 0.5f);
+                        break;
+                    case RUNNING:
+                        _systemFont.setColor(0.5f, 0.9f, 0.8f, 1);
+                        break;
+                    case COMPLETE:
+                        _systemFont.setColor(0.9f, 0.6f, 0.8f, 1);
+                        break;
+                }
+
+                _systemFont.draw(_batch, task.label, 12, Gdx.graphics.getHeight() - (++taskIndex * 20 + 12));
+            }
         });
 
         _batch.end();

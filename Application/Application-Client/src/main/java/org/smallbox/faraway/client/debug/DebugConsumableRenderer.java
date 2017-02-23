@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.GameRenderer;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
@@ -42,11 +43,9 @@ public class DebugConsumableRenderer extends BaseRenderer {
                 });
     }
 
-    @Override
-    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.F10) {
-            toggleVisibility();
-        }
+    @GameShortcut(key = GameEventListener.Key.F10)
+    public void onToggleVisibility() {
+        toggleVisibility();
     }
 
 }

@@ -61,6 +61,7 @@ public class WorldInteractionModule extends GameClientModule<WorldInteractionMod
 
     @Override
     public void onMouseMove(GameEvent event) {
+
         // right button pressed
         if (_keyRightPressed) {
             ApplicationClient.mainRenderer.getViewport().update(event.mouseEvent.x, event.mouseEvent.y);
@@ -290,14 +291,6 @@ public class WorldInteractionModule extends GameClientModule<WorldInteractionMod
         }
 
         return consume;
-    }
-
-    @Override
-    public void onGameStart(Game game) {
-    }
-
-    @Override
-    public void onGameUpdate(Game game, int tick) {
     }
 
 }

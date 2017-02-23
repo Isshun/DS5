@@ -4,6 +4,7 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
@@ -43,20 +44,6 @@ public class MainRenderer implements GameClientObserver {
 
     @Override
     public void onGameCreate(Game game) {
-    }
-
-    @Override
-    public void onGameStart(Game game) {
-        _frame = 0;
-
-//        // Sort renders by level and addSubJob them to observers
-//        _renders = game.getModules().stream()
-//                .filter(module -> module.getClass().isAnnotationPresent(ModuleRenderer.class))
-//                .flatMap(module -> BaseRenderer.createRenderer(module).stream())
-//                .sorted(Comparator.comparingInt(BaseRenderer::getLevel))
-//                .peek(Application::addObserver)
-//                .collect(Collectors.toList());
-
         // Find GameRenderer annotated class
         _renders = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
@@ -78,10 +65,26 @@ public class MainRenderer implements GameClientObserver {
                 .collect(Collectors.toList());
 
         _renders.forEach(render -> render.onGameCreate(game));
+    }
+
+    @Override
+    public void onGameStart(Game game) {
+        _frame = 0;
+
+//        // Sort renders by level and addSubJob them to observers
+//        _renders = game.getModules().stream()
+//                .filter(module -> module.getClass().isAnnotationPresent(ModuleRenderer.class))
+//                .flatMap(module -> BaseRenderer.createRenderer(module).stream())
+//                .sorted(Comparator.comparingInt(BaseRenderer::getLevel))
+//                .peek(Application::addObserver)
+//                .collect(Collectors.toList());
+
         _renders.forEach(render -> render.gameStart(game));
 
         _viewport = new Viewport(400, 300);
         _viewport.setPosition(0, 0, game.getInfo().groundFloor);
+
+        ApplicationClient.dependencyInjector.register(_viewport);
 
         ApplicationClient.notify(observer -> observer.onFloorChange(game.getInfo().groundFloor));
     }
@@ -156,15 +159,14 @@ public class MainRenderer implements GameClientObserver {
         }
     }
 
-    @Override
-    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.PAGEUP) {
-            _viewport.setFloor(_viewport.getFloor() + 1);
-        }
+    @GameShortcut(key = GameEventListener.Key.PAGEUP)
+    public void onFloorUp() {
+        _viewport.setFloor(_viewport.getFloor() + 1);
+    }
 
-        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.PAGEDOWN) {
-            _viewport.setFloor(_viewport.getFloor() - 1);
-        }
+    @GameShortcut(key = GameEventListener.Key.PAGEDOWN)
+    public void onFloorDown() {
+        _viewport.setFloor(_viewport.getFloor() - 1);
     }
 
 }

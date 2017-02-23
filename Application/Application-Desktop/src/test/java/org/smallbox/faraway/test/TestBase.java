@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class TestBase {
 
-    protected void launchGame(GDXApplication.GameTestCallback callback) {
+    protected void launchApplication(GDXApplication.GameTestCallback callback) {
 
         FileUtils.createRoamingDirectory();
 

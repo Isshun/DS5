@@ -1,10 +1,12 @@
 package org.smallbox.faraway.core.task;
 
+import org.smallbox.faraway.util.Log;
+
 /**
  * Created by Alex on 29/11/2015.
  */
 public abstract class LoadTask implements Runnable {
-    public enum State {NONE, RUNNING, COMPLETE}
+    public enum State {NONE, WAITING, RUNNING, COMPLETE}
 
     public final boolean    onMainThread;
     public final String     label;
@@ -18,13 +20,15 @@ public abstract class LoadTask implements Runnable {
 
     @Override
     public void run() {
-        try {
-            state = State.RUNNING;
-            onRun();
-            state = State.COMPLETE;
-        } catch (Throwable t) {
-            t.printStackTrace();
-            throwable = t;
+        if (state == State.RUNNING) {
+            try {
+                onRun();
+            } catch (Throwable t) {
+                t.printStackTrace();
+                throwable = t;
+            }
+        } else {
+            Log.error("Only task with RUNNING status can be run");
         }
     }
 

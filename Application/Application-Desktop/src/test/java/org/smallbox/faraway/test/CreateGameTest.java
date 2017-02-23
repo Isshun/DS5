@@ -16,7 +16,7 @@ public class CreateGameTest extends TestBase {
 
     @Test
     public void test1() throws InterruptedException {
-        launchGame(new GDXApplication.GameTestCallback() {
+        launchApplication(new GDXApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
 
@@ -51,6 +51,7 @@ public class CreateGameTest extends TestBase {
 
             @Override
             public void onGameUpdate(long tick) {
+                System.out.println("Test onGameUpdate");
             }
         });
 

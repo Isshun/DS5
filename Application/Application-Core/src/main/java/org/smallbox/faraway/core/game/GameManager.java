@@ -2,7 +2,9 @@ package org.smallbox.faraway.core.game;
 
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -67,8 +69,16 @@ public class GameManager implements GameObserver {
 
         worldFactory.create(_game, gameInfo.region);
 
+        Application.runOnMainThread(() -> {
+            Application.notify(observer -> observer.onGameCreate(_game));
+        });
+
 //        Application.gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
 
+        // TODO: qui à la rsp de l'envoi des events ?
+        Application.runOnMainThread(() -> {
+            Application.notify(observer -> observer.onGameStart(_game));
+        });
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
 //        worldFactory.createLandSite(game);
@@ -126,5 +136,14 @@ public class GameManager implements GameObserver {
                     Log.info("Load save: " + saveInfo);
                     Application.notify(observer -> observer.onGameLoad(saveInfo.game, saveInfo));
                 });
+    }
+
+    @GameShortcut(key = GameEventListener.Key.F5)
+    public void quickSaveGame() {
+        Log.notice("quickSaveGame");
+        Application.gameSaveManager.saveGame(
+                Application.gameManager.getGame(),
+                Application.gameManager.getGame().getInfo(),
+                GameInfo.Type.FAST);
     }
 }

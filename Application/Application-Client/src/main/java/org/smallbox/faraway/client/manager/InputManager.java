@@ -205,11 +205,7 @@ public class InputManager implements InputProcessor {
 //            case Input.Keys.PAUSE: key = GameEventListener.Key.UNKNOWN; break;
         }
 
-        ApplicationShortcutManager.onKeyPress(key, _modifier);
-
         ApplicationClient.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
-
-//        ApplicationClient.uiEventManager.keyRelease(key);
 
         return false;
     }

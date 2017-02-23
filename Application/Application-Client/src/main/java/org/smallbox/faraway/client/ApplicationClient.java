@@ -6,6 +6,7 @@ import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.InputManager;
+import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.renderer.SpriteManager;
@@ -23,8 +24,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
@@ -47,27 +46,13 @@ public class ApplicationClient {
     public static final MainRenderer            mainRenderer;
 
     public static boolean isLoaded = false;
-    public static List<ApplicationShortcutStrategy> shortcutStrategies = new CopyOnWriteArrayList<>();
 
-    public static class ApplicationShortcutStrategy {
-        public GameEventListener.Key key;
-        public Runnable runnable;
-
-        public ApplicationShortcutStrategy(GameEventListener.Key key, Runnable runnable) {
-            this.key = key;
-            this.runnable = runnable;
-        }
-    }
+    public static final ShortcutManager shortcutManager;
 
     static {
         dependencyInjector = DependencyInjector.getInstance();
-        dependencyInjector.setShortcutBindingStrategy((key, runnable) -> {
-            if (shortcutStrategies.stream().noneMatch(strategy -> strategy.key == key)) {
-                shortcutStrategies.add(new ApplicationShortcutStrategy(key, runnable));
-            } else {
-                Log.warning(ApplicationClient.class, "Add already existing shortcut");
-            }
-        });
+
+        shortcutManager = dependencyInjector.create(ShortcutManager.class);
         uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
@@ -75,6 +60,14 @@ public class ApplicationClient {
         mainRenderer = dependencyInjector.create(MainRenderer.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
+
+        // Application client interface
+        dependencyInjector.setClientInterface(new DependencyInjector.ApplicationClientInterface() {
+            @Override
+            public void onShortcutBinding(String label, GameEventListener.Key key, Runnable runnable) {
+                shortcutManager.addBinding(label, key, runnable);
+            }
+        });
 
         // Create APPLICATION_CONFIG
         APPLICATION_CONFIG = loadConfig();
@@ -125,9 +118,7 @@ public class ApplicationClient {
         // TODO: A deplacer dans ApplicationShortcutManage
         // Call shortcut strategy
         if (action == GameEventListener.Action.RELEASED) {
-            shortcutStrategies.stream()
-                    .filter(strategy -> strategy.key == key)
-                    .forEach(strategy -> strategy.runnable.run());
+            shortcutManager.action(key);
         }
     }
 

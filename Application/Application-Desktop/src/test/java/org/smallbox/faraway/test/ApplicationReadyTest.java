@@ -2,14 +2,14 @@ package org.smallbox.faraway.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.farpoint.desktop.GdxTestApplication;
 
 public class ApplicationReadyTest extends TestBase {
 
     @Test
     public void test1() throws InterruptedException {
-        launchGame(new GdxTestApplication.GameTestCallback() {
+        launchApplication(new GDXApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
                 Assert.assertNotNull(Application.moduleManager);

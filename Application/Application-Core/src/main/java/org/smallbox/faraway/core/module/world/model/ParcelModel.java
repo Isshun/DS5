@@ -50,7 +50,9 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     public void                     setPlant(PlantModel plant) { _plant = plant; }
     public void                     setItem(MapObjectModel item) { _items.put(item.getClass(), item); }
-    public void                     setGroundInfo(ItemInfo groundInfo) { _groundInfo = groundInfo; }
+    public void                     setGroundInfo(ItemInfo groundInfo) {
+        _groundInfo = groundInfo;
+    }
     public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; }
     public void                     setTile(int tile) { _tile = tile; }
     public void                     setDigJob(DigJob digJob) { _digJob = digJob; }

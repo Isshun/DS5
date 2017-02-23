@@ -53,45 +53,47 @@ public class WorldGroundRenderer extends BaseRenderer {
 
     @Override
     public void onGameStart(Game game) {
-        _pxLiquids = new HashMap<>();
+        Application.runOnMainThread(() -> {
+            _pxLiquids = new HashMap<>();
 
-        _pxGrounds = new HashMap<>();
-        _pxGroundBorders = new HashMap<>();
-        _pxGroundDecorations = new HashMap<>();
+            _pxGrounds = new HashMap<>();
+            _pxGroundBorders = new HashMap<>();
+            _pxGroundDecorations = new HashMap<>();
 
-        Application.data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
-            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
-            textureIn.getTextureData().prepare();
-            _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
+            Application.data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
+                Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
+                textureIn.getTextureData().prepare();
+                _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
 
-            if (itemInfo.graphics.size() >= 2) {
-                Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(1))));
-                textureDecoration.getTextureData().prepare();
-                _pxGroundDecorations.put(itemInfo, textureDecoration.getTextureData().consumePixmap());
-            }
+                if (itemInfo.graphics.size() >= 2) {
+                    Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(1))));
+                    textureDecoration.getTextureData().prepare();
+                    _pxGroundDecorations.put(itemInfo, textureDecoration.getTextureData().consumePixmap());
+                }
 
-            if (itemInfo.graphics.size() == 3) {
-                Texture textureBorders = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(2))));
-                textureBorders.getTextureData().prepare();
-                _pxGroundBorders.put(itemInfo, textureBorders.getTextureData().consumePixmap());
-            }
+                if (itemInfo.graphics.size() == 3) {
+                    Texture textureBorders = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(2))));
+                    textureBorders.getTextureData().prepare();
+                    _pxGroundBorders.put(itemInfo, textureBorders.getTextureData().consumePixmap());
+                }
+            });
+
+            Application.data.items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
+                Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
+                textureIn.getTextureData().prepare();
+                _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
+            });
+
+            _pxRocks = new HashMap<>();
+
+            _cols = game.getInfo().worldWidth / CHUNK_SIZE;
+            _rows = game.getInfo().worldHeight / CHUNK_SIZE;
+
+            _floor = WorldHelper.getCurrentFloor();
+            _groundLayers = new Texture[_cols][_rows];
+            _rockLayers = new Texture[_cols][_rows];
+            _rockLayersUpToDate = new boolean[_cols][_rows];
         });
-
-        Application.data.items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
-            Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
-            textureIn.getTextureData().prepare();
-            _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
-        });
-
-        _pxRocks = new HashMap<>();
-
-        _cols = game.getInfo().worldWidth / CHUNK_SIZE;
-        _rows = game.getInfo().worldHeight / CHUNK_SIZE;
-
-        _floor = WorldHelper.getCurrentFloor();
-        _groundLayers = new Texture[_cols][_rows];
-        _rockLayers = new Texture[_cols][_rows];
-        _rockLayersUpToDate = new boolean[_cols][_rows];
     }
 
     @Override

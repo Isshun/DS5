@@ -42,6 +42,16 @@ public class Log {
         logger.setUseParentHandlers(false);
     }
 
+    private static void print(Level level, String message) {
+        if (level == Level.INFO) {
+            System.out.println(message);
+        }
+
+        if (level == Level.FINE) {
+            System.out.println(message);
+        }
+    }
+
     public static void warning(Class cls, String message) {
         logger.warning(cls.getName() + ": " + message);
     }
@@ -77,6 +87,10 @@ public class Log {
             logger.severe("Cause by:");
             printError(t.getCause());
         }
+    }
+
+    public static void error(Class cls, String message) {
+        error(cls.getSimpleName() + " - " + message);
     }
 
     public static void error(String message) {
@@ -119,20 +133,28 @@ public class Log {
 
     public static void info(String component, String message, Object... args) {
         if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-            logger.log(Level.INFO, "[" + component + "] " + String.format(message, args));
+            print(Level.INFO, "[" + component + "] " + String.format(message, args));
         }
+    }
+
+    public static void info(Class cls, String message, Object... args) {
+        info(cls.getSimpleName() + " - " + String.format(message, args));
     }
 
     public static void info(String message, Object... args) {
         if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-            logger.log(Level.INFO, String.format(message, args));
+            String className = Thread.currentThread().getStackTrace()[2].getClassName();
+            print(Level.INFO, "[" + className.substring(className.lastIndexOf('.') + 1) + "] " + String.format(message, args));
         }
     }
 
     public static void debug(String message, Object... args) {
         if (inPackageList(debugPackages)) {
-            logger.fine(String.format(message, args));
+            print(Level.FINE, String.format(message, args));
         }
+    }
+
+    public static void verbose(String message, Object... args) {
     }
 
     private static boolean inPackageList(String[] packageList) {

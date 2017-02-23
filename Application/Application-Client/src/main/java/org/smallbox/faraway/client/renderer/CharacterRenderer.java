@@ -2,8 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.GameRenderer;
-import org.smallbox.faraway.core.config.Config;
-import org.smallbox.faraway.core.dependencyInjector.BindManager;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
@@ -22,7 +21,7 @@ public class CharacterRenderer extends BaseRenderer {
     @BindModule
     private CharacterModule _characterModule;
 
-    @BindManager
+    @BindComponent
     private SpriteManager           _spriteManager;
 
     private int                     _frame;

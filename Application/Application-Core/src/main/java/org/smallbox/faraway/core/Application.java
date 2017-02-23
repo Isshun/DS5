@@ -102,6 +102,8 @@ public class Application {
     public static void notify(Consumer<GameObserver> action) {
 //        ApplicationClient.getObservers().forEach(action);
 
+        action.getClass();
+
         try {
             _observers.forEach(action);
         } catch (Error | RuntimeException e) {

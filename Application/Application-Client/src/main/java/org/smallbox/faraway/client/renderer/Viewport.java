@@ -1,5 +1,7 @@
 package org.smallbox.faraway.client.renderer;
 
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -107,7 +109,12 @@ public class Viewport {
     }
 
     public void setFloor(int floor) {
-        _floor = floor;
+        if (Application.gameManager.isRunning()) {
+            if (floor >= 0 && floor < Application.gameManager.getGame().getInfo().worldFloors) {
+                _floor = floor;
+                ApplicationClient.notify(gameObserver -> gameObserver.onFloorChange(_floor));
+            }
+        }
     }
 
     public void setPosition(int x, int y, int z) {

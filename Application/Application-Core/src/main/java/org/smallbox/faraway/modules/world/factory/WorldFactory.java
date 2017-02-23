@@ -64,6 +64,7 @@ public class WorldFactory extends GameModule implements IWorldFactory {
             parcelList.forEach(parcel -> {
                 if (parcel.z < _floors - 1) {
                     parcel.setRockInfo(defaultRockInfo);
+                    parcel.setGroundInfo(defaultRockInfo);
                 } else {
                     parcel.setGroundInfo(regionGroundInfo);
                 }

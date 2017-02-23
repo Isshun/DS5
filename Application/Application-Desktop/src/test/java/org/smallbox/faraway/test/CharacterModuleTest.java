@@ -2,16 +2,16 @@ package org.smallbox.faraway.test;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.farpoint.desktop.GdxTestApplication;
 
 public class CharacterModuleTest extends TestBase {
 
     @Test
     public void test1() throws InterruptedException {
-        launchGame(new GdxTestApplication.GameTestCallback() {
+        launchApplication(new GDXApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
 

@@ -8,6 +8,7 @@ import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -89,6 +90,9 @@ public class DebugRenderer extends BaseRenderer {
 
             consumables.entrySet().forEach(entry -> drawDebugConsumableInfo(renderer, entry.getKey(), entry.getValue()));
         }
+
+        ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));
+
     }
 
     private void drawDebugItem(GDXRenderer renderer, UsableItem item) {
@@ -132,11 +136,9 @@ public class DebugRenderer extends BaseRenderer {
         _data.put("Cursor world position", ApplicationClient.mainRenderer.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.mainRenderer.getViewport().getWorldPosY(event.mouseEvent.y));
     }
 
-    @Override
-    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.F12) {
-            toggleVisibility();
-        }
+    @GameShortcut(key = GameEventListener.Key.F12)
+    public void onToggleVisibility() {
+        toggleVisibility();
     }
 
     private void drawDebug(GDXRenderer renderer, String label, Object object) {

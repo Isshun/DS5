@@ -15,7 +15,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
+
+import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
 
 /**
  * Created by Alex on 24/07/2016.
@@ -23,11 +26,12 @@ import java.util.stream.Collectors;
 // TODO: injection des field sur les superclass
 public class DependencyInjector {
     private final Map<Class<?>, ComponentHandler> _handlers;
+    private final Collection<GameShortcut> _gameShortcut = new LinkedBlockingQueue<>();
     private Set<Object> _objectPool = new HashSet<>();
     private boolean _init = false;
     private static final DependencyInjector _self = new DependencyInjector();
     private HashMap<Class<?>, Object> _models = new HashMap<>();
-    private ShortcutBindingStrategyInterface _shortcutBindingStrategy;
+    private ApplicationClientInterface _clientInterface;
 
     public static DependencyInjector getInstance() { return _self; }
 
@@ -67,64 +71,80 @@ public class DependencyInjector {
         return null;
     }
 
-    public void register(Object targetObject) {
-        _objectPool.add(targetObject);
+    public void register(Object component) {
+        _objectPool.add(component);
+
         if (_init) {
-            injectDependencies(targetObject);
+//            Log.error(this.getClass(), "Cannot call register after init");
+            injectDependencies(component);
         }
     }
 
     public void injectDependencies() {
-        if (_init) {
-            Log.error("injectDependencies should be called only once");
-        }
-        _init = true;
-        _objectPool.forEach(this::injectDependencies);
+        injectDependencies(null);
     }
 
-    private void injectDependencies(Object object) {
-        Log.info("Inject dependency to: " + object.getClass().getName());
-        injectManagers(object);
-        injectModules(object, Application.moduleManager.getGameModules());
-        injectShortcut(object);
+    public void injectDependencies(Object component) {
+//        if (!_init) {
+        _init = true;
+
+        if (component != null) {
+            injectDependencies(component, null);
+        }
+
+        _objectPool.forEach(host -> injectDependencies(host, component));
+//        } else {
+//            Log.error("injectDependencies should be called only once");
+//        }
+    }
+
+    private void injectDependencies(Object host, Object component) {
+        Log.verbose("Inject dependency to: " + host.getClass().getName());
+        injectComponents(host, component);
+        injectModules(host, Application.moduleManager.getGameModules());
+        injectShortcut(host);
 
         Application.notify(observer -> observer.onInjectDependency(object));
     }
 
-    private void injectManagers(Object targetObject) {
-        for (Field field: targetObject.getClass().getDeclaredFields()) {
-            try {
-                field.setAccessible(true);
-                BindManager bindManager = field.getAnnotation(BindManager.class);
-                if (bindManager != null) {
-                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), targetObject.getClass().getSimpleName()));
-                    boolean hasBeenFound = false;
-                    for (Object object: _objectPool) {
-                        if (field.getType() == object.getClass()) {
-                            field.set(targetObject, object);
-                            hasBeenFound = true;
+    private void injectComponents(Object host, Object component) {
+        for (Field field: host.getClass().getDeclaredFields()) {
+            if (component == null || component.getClass() == field.getType()) {
+                try {
+                    field.setAccessible(true);
+                    BindComponent bindComponent = field.getAnnotation(BindComponent.class);
+                    if (bindComponent != null) {
+                        Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
+                        boolean hasBeenFound = false;
+                        for (Object object: _objectPool) {
+                            if (field.getType() == object.getClass()) {
+                                field.set(host, object);
+                                hasBeenFound = true;
+                            }
+                        }
+                        if (!hasBeenFound) {
+                            Log.error("DependencyInjector: cannot find module: " + field.getType());
                         }
                     }
-                    if (!hasBeenFound) {
-                        Log.error("DependencyInjector: cannot find module: " + field.getType());
-                    }
+                } catch (IllegalAccessException e) {
+                    Log.error(e);
                 }
-            } catch (IllegalAccessException e) {
-                Log.error(e);
             }
         }
     }
 
     // TODO: methode appelée plusieurs fois (2)
-    private void injectShortcut(Object object) {
-        for (Method method: object.getClass().getDeclaredMethods()) {
+    private void injectShortcut(Object host) {
+        for (Method method: host.getClass().getDeclaredMethods()) {
             method.setAccessible(true);
             GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
-            if (gameShortcut != null) {
-                Log.debug(String.format("Try to inject %s to %s", method.getName(), object.getClass().getSimpleName()));
-                _shortcutBindingStrategy.onShortcutBindingStrategy(gameShortcut.key(), () -> {
+            if (gameShortcut != null && !_gameShortcut.contains(gameShortcut)) {
+                _gameShortcut.add(gameShortcut);
+
+                Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
+                _clientInterface.onShortcutBinding(host.getClass().getName() + method.getName(), gameShortcut.key(), () -> {
                     try {
-                        method.invoke(object);
+                        method.invoke(host);
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
@@ -133,16 +153,16 @@ public class DependencyInjector {
         }
     }
 
-    private void injectModules(Object object, List<? extends ModuleBase> loadedModules) {
-        for (Field field: object.getClass().getDeclaredFields()) {
+    private void injectModules(Object host, List<? extends ModuleBase> loadedModules) {
+        for (Field field: host.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 BindModule bindModule = field.getAnnotation(BindModule.class);
                 if (bindModule != null) {
-                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), object.getClass().getSimpleName()));
+                    Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
                     ModuleBase module = getModuleDependency(loadedModules, field.getType());
                     if (module != null) {
-                        field.set(object, module);
+                        field.set(host, module);
                     } else {
                         Log.error("DependencyInjector: cannot find module: " + field.getType());
                     }
@@ -166,12 +186,12 @@ public class DependencyInjector {
         _models.put(model.getClass(), model);
     }
 
-    public interface ShortcutBindingStrategyInterface {
-        void onShortcutBindingStrategy(GameEventListener.Key key, Runnable runnable);
+    public interface ApplicationClientInterface {
+        void onShortcutBinding(String label, GameEventListener.Key key, Runnable runnable);
     }
 
-    public void setShortcutBindingStrategy(ShortcutBindingStrategyInterface shortcutBindingStrategy) {
-        _shortcutBindingStrategy = shortcutBindingStrategy;
+    public void setClientInterface(ApplicationClientInterface clientInterface) {
+        _clientInterface = clientInterface;
     }
 
     public interface RegisterModelCallback<T> {

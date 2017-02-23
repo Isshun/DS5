@@ -13,10 +13,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface GameShortcut {
-
-    interface GameShortcutCallback {
-        void onGameShortcut();
-    }
-
     GameEventListener.Key key();
 }
