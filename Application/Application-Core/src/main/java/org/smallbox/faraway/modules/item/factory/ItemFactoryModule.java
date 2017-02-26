@@ -125,7 +125,7 @@ public class ItemFactoryModule extends GameModule {
                     // Compte le nombre de consomables qui seront rapportés par les jobs existants
                     int quantityInJob = 0;
                     for (BasicHaulJob job: factory.getHaulJobs()) {
-                        if (job.getHaulingConsumable().getInfo() == receiptInputInfo.item) {
+                        if (job.getHaulingConsumable().getInfo().instanceOf(receiptInputInfo.item)) {
                             quantityInJob += job.getHaulingQuantity();
                         }
                     }
@@ -189,6 +189,7 @@ public class ItemFactoryModule extends GameModule {
         if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() == 0) {
             // TODO: consomme tous l'inventaire, y compris les objets non utilisés dans la recette
             // Consomme les objets d'entrés
+            item.getInventory().forEach(consumable -> consumableModule.removeConsumable(consumable));
             item.getInventory().clear();
 
             // Crée les objets de sorties
@@ -241,11 +242,17 @@ public class ItemFactoryModule extends GameModule {
         int availableQuantity = 0;
 
         // Check l'inventaire de la fabrique
-        for (ConsumableItem consumable: item.getInventory()) {
-            if (consumable.getInfo() == itemInfo) {
-                availableQuantity += consumable.getQuantity();
-            }
-        }
+        availableQuantity += item.getInventory().stream()
+                .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
+                .mapToInt(ConsumableItem::getQuantity)
+                .sum();
+
+        // Check l'inventaire des personnages sur les hauling jobs de la fabrique
+        availableQuantity += item.getFactory().getHaulJobs().stream()
+                .filter(job -> job.getCharacter() != null)
+                .mapToInt(job -> job.getCharacter().getInventoryQuantity(itemInfo))
+                .sum();
+
         if (availableQuantity >= needQuantity) {
             return true;
         }

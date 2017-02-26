@@ -210,4 +210,8 @@ public class UsableItem extends BuildableMapObject {
         _inventory.add(new ConsumableItem(itemInfo, quantity));
     }
 
+    public void addInventory(ConsumableItem consumable) {
+        _inventory.add(consumable);
+    }
+
 }

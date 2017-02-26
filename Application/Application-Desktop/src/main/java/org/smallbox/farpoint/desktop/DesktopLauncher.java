@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -33,6 +34,8 @@ public class DesktopLauncher {
                     public void onGameCreate(Game game) {
                         Application.moduleManager.getModule(CharacterModule.class).addRandom();
                         Application.moduleManager.getModule(ItemModule.class).addItem(Application.data.getItemInfo("base.cooker"), true, 2, 2, 1);
+                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable(Application.data.getItemInfo("base.vegetable_rice"), 10, 4, 4, 1);
+                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable(Application.data.getItemInfo("base.vegetable_carrot"), 10, 4, 6, 1);
                     }
                 });
             }

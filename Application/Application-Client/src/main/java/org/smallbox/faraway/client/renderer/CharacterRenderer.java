@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.renderer;
 
-import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -63,7 +63,7 @@ public class CharacterRenderer extends BaseRenderer {
                 if (character.isAlive()) {
                     int offset = 0;
                     if (direction != Direction.NONE) {
-                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / ApplicationClient.APPLICATION_CONFIG.game.updateInterval);
+                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / Application.APPLICATION_CONFIG.game.updateInterval);
                         frame = character.getFrameIndex() / 20 % 4;
                     }
 

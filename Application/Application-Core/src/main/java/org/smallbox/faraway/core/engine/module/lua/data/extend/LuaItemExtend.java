@@ -58,14 +58,11 @@ public class LuaItemExtend extends LuaExtend {
             Application.data.add(name, itemInfo);
         }
 
-//        if (!value.get("parent").isnil()) {
-//            itemInfo.parentName = value.get("parent").toString();
-//            if (_cache.containsKey(itemInfo.parentName)) {
-//                readItem(itemInfo, _cache.get(itemInfo.parentName));
-//            } else {
-//                throw new DataExtendException(DataExtendException.Type.MISSING_PARENT, itemInfo.parentName);
-//            }
-//        }
+        if (!value.get("parent").isnil()) {
+            itemInfo.parentName = value.get("parent").toString();
+            ItemInfo finalItemInfo = itemInfo;
+            Application.data.getAsync(itemInfo.parentName, ItemInfo.class, parentItemInfo -> finalItemInfo.parent = parentItemInfo);
+        }
 
         readItem(itemInfo, value);
 

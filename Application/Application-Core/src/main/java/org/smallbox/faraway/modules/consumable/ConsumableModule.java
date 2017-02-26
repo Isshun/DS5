@@ -38,9 +38,30 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     private StructureModule structureModule;
 
 //    @BindModule
+//    private CharacterModule characterModule;
+
+//    @BindModule
 //    private WorldInteractionModule worldInteractionModule;
 
     private Collection<ConsumableItem> _consumables;
+
+    public void addConsumable(ItemInfo itemInfo, int quantity, int x, int y, int z) {
+        ParcelModel parcel = WorldHelper.getParcel(x, y, z);
+
+        Optional<ConsumableItem> optional = _consumables.stream().filter(c -> c.getParcel() == parcel).findAny();
+
+        // Ajout de la quantité à un consomable déjà existant
+        if (optional.isPresent()) {
+            optional.get().addQuantity(quantity);
+        }
+
+        // Ajout d'un nouveau consomable
+        else {
+            ConsumableItem consumable = new ConsumableItem(itemInfo, quantity);
+            consumable.setParcel(parcel);
+            _consumables.add(consumable);
+        }
+    }
 
     private class ConsumableJobLock {
         public ConsumableItem consumable;
@@ -136,21 +157,36 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return null;
     }
 
+    public ConsumableItem removeConsumable(ConsumableItem consumable, int desiredQuantity) {
+
+        if (consumable != null && consumable.getParcel() != null && consumable.getQuantity() > 0) {
+
+            if (consumable.getQuantity() == desiredQuantity) {
+                ParcelModel parcel = consumable.getParcel();
+                _consumables.remove(consumable);
+
+                 // TODO
+                jobModule.getJobs().stream()
+                        .filter(job -> job instanceof HaulJob)
+                        .forEach(job -> ((HaulJob) job).removePotentialConsumable(consumable));
+
+                notifyObservers(observer -> observer.onRemoveConsumable(parcel, consumable));
+
+                return consumable;
+            }
+
+            else {
+                int quantity = Math.min(desiredQuantity, consumable.getQuantity());
+                consumable.addQuantity(-quantity);
+                return new ConsumableItem(consumable.getInfo(), quantity);
+            }
+
+        }
+
+        return null;
+    }
 
     public void removeConsumable(ConsumableItem consumable) {
-
-        // TODO
-//        if (consumable != null) {
-//            if (_consumables.contains(consumable)) {
-//                _consumables.remove(consumable);
-//
-//                consumable.removeJob(this);
-//                consumable.setStoreJob(null);
-//                if (consumable.getJob() == this) {
-//                    consumable.setJob(null);
-//                }
-//            }
-//        }
 
         if (consumable != null && consumable.getParcel() != null) {
             ParcelModel parcel = consumable.getParcel();
@@ -162,6 +198,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
             notifyObservers(observer -> observer.onRemoveConsumable(parcel, consumable));
         }
+
     }
 
     public ConsumableItem putConsumable(ParcelModel parcel, ConsumableItem consumable) {
@@ -275,7 +312,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     public int getTotal(ItemInfo itemInfo) {
         return _consumables.stream()
-                .filter(consumable -> consumable.getInfo() == itemInfo)
+                .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
                 .mapToInt(ConsumableItem::getQuantity)
                 .sum();
     }
@@ -291,7 +328,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     // TODO
     public BasicHaulJob createHaulJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
         for (ConsumableItem consumable: _consumables) {
-            if (consumable.getInfo() == itemInfo) {
+            if (consumable.getInfo().instanceOf(itemInfo)) {
 
                 // Calcul le nombre d'élément de la pile déjà consomés par des jobs
                 int quantityInJob = 0;
@@ -303,7 +340,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
                 // Si toute la pile n'est pas déjà consomée crée un nouveau HaulJob
                 if (quantityInJob < consumable.getQuantity()) {
-                    return BasicHaulJob.toFactory(consumable, item, Math.min(needQuantity, consumable.getQuantity() - quantityInJob));
+                    return BasicHaulJob.toFactory(this, consumable, item, Math.min(needQuantity, consumable.getQuantity() - quantityInJob));
                 }
 
             }

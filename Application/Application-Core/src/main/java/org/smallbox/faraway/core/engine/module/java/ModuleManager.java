@@ -208,6 +208,7 @@ public class ModuleManager implements GameObserver {
         for (ModuleBase module: modules) {
             if (module.isActivate() && !module.isLoaded()) {
                 allModulesHasBeenLoaded = false;
+                System.out.println("[" + module.getName() + "]" + " could not be loaded");
                 Log.warning("[" + module.getName() + "]" + " could not be loaded");
             }
         }
