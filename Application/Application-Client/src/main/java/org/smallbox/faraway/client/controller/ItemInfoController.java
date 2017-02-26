@@ -49,6 +49,8 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @Override
     protected void onDisplayUnique(UsableItem item) {
+        getRootView().setVisible(true);
+
         lbName.setText(item.getLabel());
         refreshActions(item);
         refreshBuilding(item);
@@ -125,8 +127,8 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
                 btInfo.setText("[info]");
                 btInfo.setOnClickListener(event -> itemInfoReceiptController.display(receiptGroup));
                 btInfo.setPosition(220, 0);
-                lbLabel.setSize(50, 20);
-                lbLabel.setBackgroundColor(Color.CYAN);
+                btInfo.setSize(50, 20);
+                btInfo.setBackgroundColor(Color.CYAN);
                 lineReceiptGroup.addView(btInfo);
 
                 listActions.addView(lineReceiptGroup);

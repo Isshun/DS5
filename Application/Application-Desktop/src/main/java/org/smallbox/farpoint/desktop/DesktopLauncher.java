@@ -3,7 +3,11 @@ package org.smallbox.farpoint.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
+import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -24,7 +28,13 @@ public class DesktopLauncher {
         new LwjglApplication(new GDXApplication(new GDXApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
-                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2));
+                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2), new GameManager.GameCreateListener() {
+                    @Override
+                    public void onGameCreate(Game game) {
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom();
+                        Application.moduleManager.getModule(ItemModule.class).addItem(Application.data.getItemInfo("base.cooker"), true, 2, 2, 1);
+                    }
+                });
             }
 
             @Override

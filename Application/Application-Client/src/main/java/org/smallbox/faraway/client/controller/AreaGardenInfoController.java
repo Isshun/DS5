@@ -15,7 +15,7 @@
 //    public void select(GardenAreaModel garden) {
 //        setVisible(true);
 //
-////        ApplicationClient.uiManager.findById("base.ui.panel_main").setVisible(false);
+////        ApplicationClient.uiManager.findById("base.ui.right_panel").setVisible(false);
 ////        ApplicationClient.uiManager.findById("base.ui.panel_areas").setVisible(false);
 //
 //        displayAcceptedItem(garden);

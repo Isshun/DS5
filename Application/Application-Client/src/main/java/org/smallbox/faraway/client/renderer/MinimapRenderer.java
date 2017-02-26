@@ -60,7 +60,7 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     public void onReloadUI() {
-        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel");
     }
 
     @Override
@@ -111,14 +111,14 @@ public class MinimapRenderer extends BaseRenderer {
             float ratioY = ((float)height / _height);
             int x = POS_X + (int)((Math.min(_width-38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
             int y = POS_Y + (int)((Math.min(_height-32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
-            renderer.draw(x, y, (int) (38 * ratioX), 1, COLOR_VIEW);
-            renderer.draw(x, y, 1, (int) (32 * ratioY), COLOR_VIEW);
-            renderer.draw(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1, COLOR_VIEW);
-            renderer.draw((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1, COLOR_VIEW);
+            renderer.drawPixel(x, y, (int) (38 * ratioX), 1, COLOR_VIEW);
+            renderer.drawPixel(x, y, 1, (int) (32 * ratioY), COLOR_VIEW);
+            renderer.drawPixel(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1, COLOR_VIEW);
+            renderer.drawPixel((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1, COLOR_VIEW);
 
             characterModule.getCharacters().stream()
                     .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
-                    .forEach(character -> renderer.draw((int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 3, 3, COLOR_CHARACTER
+                    .forEach(character -> renderer.drawPixel((int) (POS_X + (character.getParcel().x * ratioX)), (int) (POS_Y + (character.getParcel().y * ratioY)), 3, 3, COLOR_CHARACTER
                     ));
         }
     }

@@ -36,12 +36,12 @@ public class UIDropDown extends View {
 
     public void setCurrent(View current) {
         _current = current;
-        _currentIndex = _views.indexOf(current);
+//        _currentIndex = _views.indexOf(current);
     }
 
     public void setCurrentIndex(int index) {
         _currentIndex = index;
-        _current = _views.get(index);
+//        _current = _views.get(index);
     }
 
     @Override

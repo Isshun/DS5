@@ -121,7 +121,7 @@ public class MainRenderer implements GameClientObserver {
             e.printStackTrace();
         }
 
-//        _gameAction.draw(renderer);
+//        _gameAction.drawPixel(renderer);
         _frame++;
     }
 

@@ -54,7 +54,7 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onNewGameUpdate(Game game) {
         if (CollectionUtils.isNotEmpty(list)) {
             displayObjects();
         }

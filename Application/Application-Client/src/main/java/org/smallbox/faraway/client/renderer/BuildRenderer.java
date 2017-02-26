@@ -80,7 +80,7 @@ public class BuildRenderer extends BaseRenderer {
         }
 
 //        if (_cursorItem != null) {
-////            renderer.draw(Color.BLUE, _cursorParcelX + viewport.getPosX(), _cursorParcelY + viewport.getPosY(), 320, 320);
+////            renderer.drawPixel(Color.BLUE, _cursorParcelX + viewport.getPosX(), _cursorParcelY + viewport.getPosY(), 320, 320);
 //
 //            final UIFrame resEden = new UIFrame(null);
 //            resEden.setSize(32, 32);
@@ -95,14 +95,14 @@ public class BuildRenderer extends BaseRenderer {
 //            for (int y = startY; y <= toY; y++) {
 ////                Log.info("Draw cursor: %d x %d", x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
 //
-//                renderer.draw(resEden, x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
+//                renderer.drawPixel(resEden, x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
 //
 ////                onDraw(renderer, ModuleHelper.getWorldModule().getParcel(x, y, WorldHelper.getCurrentFloor()), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
 //            }
 //        }
 
-//            renderer.draw(resEden, _cursorParcelX - viewport.getPosX(), _cursorParcelY - viewport.getPosY());
-//            renderer.draw(resEden, 500, 500);
+//            renderer.drawPixel(resEden, _cursorParcelX - viewport.getPosX(), _cursorParcelY - viewport.getPosY());
+//            renderer.drawPixel(resEden, 500, 500);
 //            onDraw(renderer,
 //                    worldModule.getParcel(_cursorParcelX, _cursorParcelY, WorldHelper.getCurrentFloor()),
 //                    _cursorParcelX + viewport.getPosX(),

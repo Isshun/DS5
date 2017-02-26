@@ -169,14 +169,14 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         }
     }
 
-    public void addItem(ItemInfo itemInfo, int x, int y, int z) {
-        addItem(itemInfo, WorldHelper.getParcel(x, y, z));
+    public void addItem(ItemInfo itemInfo, boolean isComplete, int x, int y, int z) {
+        addItem(itemInfo, isComplete, WorldHelper.getParcel(x, y, z));
     }
 
-    public void addItem(ItemInfo itemInfo, ParcelModel parcel) {
+    public void addItem(ItemInfo itemInfo, boolean isComplete, ParcelModel parcel) {
         UsableItem item = new UsableItem(itemInfo);
         item.setParcel(parcel);
-        item.setBuildProgress(0);
+        item.setBuildProgress(isComplete ? itemInfo.cost : 0);
         item.init();
 
         _items.add(item);

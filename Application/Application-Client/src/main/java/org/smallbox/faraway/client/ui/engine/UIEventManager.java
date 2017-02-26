@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -159,6 +160,10 @@ public class UIEventManager {
         return false;
     }
 
+    public boolean hasClickListener(View view) {
+        return _onClickListeners.containsKey(view);
+    }
+
     public boolean keyRelease(GameEventListener.Key key) {
         boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onKeysListeners.keySet()) {
@@ -231,16 +236,8 @@ public class UIEventManager {
         _onMouseWheelUpListeners.clear();
     }
 
-    public void removeListeners(List<View> views) {
-        views.forEach(view -> {
-            _onRightClickListeners.remove(view);
-            _onRightClickListeners.remove(view);
-            _onClickListeners.remove(view);
-            _onFocusListeners.remove(view);
-            _onKeysListeners.remove(view);
-            _onMouseWheelDownListeners.remove(view);
-            _onMouseWheelUpListeners.remove(view);
-        });
+    public void removeListeners(Collection<View> views) {
+        views.forEach(this::removeListeners);
     }
     public void removeListeners(View view) {
         _onRightClickListeners.remove(view);

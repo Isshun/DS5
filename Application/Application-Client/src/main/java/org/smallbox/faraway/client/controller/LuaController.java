@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 25/04/2016.
@@ -12,7 +12,7 @@ public abstract class LuaController implements GameClientObserver {
 
     public void setRootView(View rootView) {
         if (rootView == null) {
-            Log.error("LuaController: Unable to find root view for controller: %s", getClass().getName());
+//            Log.error("LuaController: Unable to find root view for controller: %s", getClass().getName());
         }
 
         _rootView = rootView;
@@ -23,6 +23,15 @@ public abstract class LuaController implements GameClientObserver {
             getRootView().setVisible(visible);
         }
     }
+
+    @Override
+    public final void onGameUpdate(Game game) {
+        if (isVisible()) {
+            onNewGameUpdate(game);
+        }
+    }
+
+    protected abstract void onNewGameUpdate(Game game);
 
 //    public final void gameCreate(Game game) { onGameCreate(game); }
 //    public final void gameStart(Game game) { onGameStart(game); }

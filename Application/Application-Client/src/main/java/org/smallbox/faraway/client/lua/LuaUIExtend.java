@@ -1,31 +1,29 @@
 package org.smallbox.faraway.client.lua;
 
-import com.badlogic.gdx.Gdx;
+import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.CoerceLuaToJava;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.ui.RootView;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
-import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
-import java.util.Collection;
 
 /**
  * Created by Alex on 29/09/2015.
  */
 public class LuaUIExtend extends LuaExtend {
+
     @Override
     public boolean accept(String type) {
         switch (type) {
@@ -43,17 +41,43 @@ public class LuaUIExtend extends LuaExtend {
 
     @Override
     public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
-        boolean inGame = getBoolean(value, "in_game", true);
-        UIFrame frame = new UIFrame(module);
-        frame.setInGame(inGame);
+        String rootName =
+                StringUtils.isNotBlank(getString(value, "name", null)) ? getString(value, "name", null) :
+                        StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) : "";
 
-        View view = createView(module, globals, value, inGame, 0, frame);
+//        if (value.get("debug").isnil()) {
+//            return;
+//        }
 
-        frame.addView(view);
-        frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        frame.setLevel(getInt(value, "level", 0));
-        frame.setLayer(getInt(value, "layer", 0));
-        ApplicationClient.uiManager.addRootView(frame);
+        if (ApplicationClient.uiManager.getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
+            return;
+        }
+
+        if (ApplicationClient.uiManager.getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
+            return;
+        }
+
+//        boolean inGame = getBoolean(value, "in_game", true);
+//        UIFrame frame = new UIFrame(module);
+//        frame.setInGame(inGame);
+
+        View view = createView(module, globals, value, true, 0, null, rootName, 1);
+
+        RootView rootView = new RootView();
+        rootView.setView(view);
+
+//        frame.addView(view);
+//        frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        frame.setLevel(getInt(value, "level", 0));
+//        frame.setLayer(getInt(value, "layer", 0));
+//        frame.setName(view.getName());
+//        frame.setVisible(true);
+
+        if (value.get("parent").isnil()) {
+            ApplicationClient.uiManager.addRootView(rootView);
+        } else {
+            ApplicationClient.uiManager.addSubView(view, value.get("parent").tojstring());
+        }
     }
 
     private void customizeViewMandatory(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {
@@ -175,29 +199,29 @@ public class LuaUIExtend extends LuaExtend {
             });
         }
 
-        LuaValue adapter = value.get("adapter");
-        if (!adapter.isnil()) {
-            LuaValue onBind = adapter.get("on_bind");
-            LuaValue subview = adapter.get("view");
-            Collection data = (Collection) CoerceLuaToJava.coerce(adapter.get("data"), Collection.class);
-            final View finalView1 = view;
-            view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
-                @Override
-                public View onCreateView() {
-                    return createView(module, globals, subview, inGame, deep + 1, finalView1);
-                }
-
-                @Override
-                public void onBindView(View subview, ObjectModel data) {
-                    try {
-                        onBind.call(CoerceJavaToLua.coerce(subview), CoerceJavaToLua.coerce(data));
-                    } catch (LuaError e) {
-                        e.printStackTrace();
-                    }
-                }
-            }));
-            readInt(value, "padding", v -> view.setPadding(v, v));
-        }
+//        LuaValue adapter = value.get("adapter");
+//        if (!adapter.isnil()) {
+//            LuaValue onBind = adapter.get("on_bind");
+//            LuaValue subview = adapter.get("view");
+//            Collection data = (Collection) CoerceLuaToJava.coerce(adapter.get("data"), Collection.class);
+//            final View finalView1 = view;
+//            view.setAdapter(new UIAdapter(data, new UIAdapter.OnCreateView() {
+//                @Override
+//                public View onCreateView() {
+//                    return createView(module, globals, subview, inGame, deep + 1, finalView1);
+//                }
+//
+//                @Override
+//                public void onBindView(View subview, ObjectModel data) {
+//                    try {
+//                        onBind.call(CoerceJavaToLua.coerce(subview), CoerceJavaToLua.coerce(data));
+//                    } catch (LuaError e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }));
+//            readInt(value, "padding", v -> view.setPadding(v, v));
+//        }
 
         LuaValue onClick = value.get("on_click");
         if (!onClick.isnil()) {
@@ -253,10 +277,13 @@ public class LuaUIExtend extends LuaExtend {
 //        }
     }
 
-    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent) {
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, String path, int index) {
 
         // Create view for type
         View view = createViewFromType(module, value);
+
+        view.setPath(path);
+        view.setIndex(index);
 
         // Add mandatory value
         customizeViewMandatory(module, globals, value, inGame, deep, parent, view);
@@ -275,18 +302,18 @@ public class LuaUIExtend extends LuaExtend {
         if (!subViews.isnil()) {
             if (subViews.get("type").isnil()) {
                 for (int i = 1; i <= subViews.length(); i++) {
-                    view.addView(createView(module, globals, subViews.get(i), inGame, deep + 1, view));
+                    view.addView(createView(module, globals, subViews.get(i), inGame, deep + 1, view, path + "." + i, i));
                 }
             } else {
-                view.addView(createView(module, globals, subViews, inGame, deep + 1, view));
+                view.addView(createView(module, globals, subViews, inGame, deep + 1, view, path + "." + 1, 1));
             }
         }
 
         // Set controller
-        readString(value, "controller", v -> ApplicationClient.luaControllerManager.setControllerView(v, view));
+        readString(value, "controller", controllerName -> ApplicationClient.luaControllerManager.setControllerView(controllerName, view));
 
         // Add to ui manager
-        ApplicationClient.uiManager.addView(view);
+//        ApplicationClient.uiManager.addView(view);
 
         return view;
     }

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
  * Created by Alex on 26/09/2015.
  */
 public class UIList extends View implements AutoCloseable {
+
     public UIList(ModuleBase module) {
         super(module);
     }
@@ -17,10 +18,6 @@ public class UIList extends View implements AutoCloseable {
     @Override
     protected void onAddView(View view) {
         view.setDeep(_deep + 1);
-
-        _views.add(view);
-
-        view.setParent(this);
 
         int offset = 0;
         for (View subView : _views) {

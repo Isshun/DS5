@@ -5,7 +5,7 @@
 --            return false
 --        end,
 --        on_action = function()
---            ui:find("base.ui.panel_main"):setVisible(true)
+--            ui:find("base.ui.right_panel"):setVisible(true)
 --            ui:find("base.ui.panel_build"):setVisible(false)
 --            ui:find("base.ui.panel_areas"):setVisible(false)
 --            ui:find("base.ui.panel_crew"):setVisible(false)
@@ -13,30 +13,30 @@
 --        end},
 --
 --    {type = "binding", name = "base.binding.open_panel_build", label = "Open build panel",
---        on_check = function() return ui:isVisible("base.ui.panel_main") end,
+--        on_check = function() return ui:isVisible("base.ui.right_panel") end,
 --        on_action = function()
---            ui:find("base.ui.panel_main"):setVisible(false)
+--            ui:find("base.ui.right_panel"):setVisible(false)
 --            ui:find("base.ui.panel_build"):setVisible(true)
 --        end},
 --
 --    {type = "binding", name = "base.binding.open_panel_plan", label = "Open plan panel",
---        on_check = function() return ui:isVisible("base.ui.panel_main") end,
+--        on_check = function() return ui:isVisible("base.ui.right_panel") end,
 --        on_action = function()
---            ui:find("base.ui.panel_main"):setVisible(false)
+--            ui:find("base.ui.right_panel"):setVisible(false)
 --            ui:find("base.ui.panel_plan"):setVisible(true)
 --        end},
 --
 --    {type = "binding", name = "base.binding.open_panel_jobs", label = "Open jobs panel",
---        on_check = function() return ui:isVisible("base.ui.panel_main") end,
+--        on_check = function() return ui:isVisible("base.ui.right_panel") end,
 --        on_action = function()
---            ui:find("base.ui.panel_main"):setVisible(false)
+--            ui:find("base.ui.right_panel"):setVisible(false)
 --            ui:find("base.ui.panel_jobs"):setVisible(true)
 --        end},
 --
 --    {type = "binding", name = "base.binding.open_panel_crew", label = "Open crew panel",
---        on_check = function() return ui:isVisible("base.ui.panel_main") end,
+--        on_check = function() return ui:isVisible("base.ui.right_panel") end,
 --        on_action = function()
---            ui:find("base.ui.panel_main"):setVisible(false)
+--            ui:find("base.ui.right_panel"):setVisible(false)
 --            ui:find("base.ui.panel_crew"):setVisible(true)
 --        end},
 --

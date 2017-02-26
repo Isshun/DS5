@@ -2,45 +2,31 @@ package org.smallbox.faraway.client.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import static org.smallbox.faraway.core.engine.GameEventListener.*;
 
 public class UIManager {
 
     private Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
-
-    public void addRootView(View view) {
-        _rootViews.add(view);
-    }
-
-    public void addView(View view) {
-        _views.add(view);
-
-        String group = view.getGroup();
-        if (group != null) {
-            if (!_groups.containsKey(group)) {
-                _groups.put(group, new ArrayList<>());
-            }
-            _groups.get(group).add(view);
-        }
-    }
 
     public void clearViews() {
         _rootViews.clear();
@@ -50,9 +36,14 @@ public class UIManager {
         _dropsDowns.add(view);
     }
 
-    public Collection<View> getRootViews() {
+    public Collection<RootView> getRootViews() {
         return _rootViews;
     }
+
+    public Collection<View> getSubViews() {
+        return _subViews.keySet();
+    }
+
     public Collection<View> getViews() {
         return _views;
     }
@@ -86,7 +77,8 @@ public class UIManager {
     private long                        _lastLeftClick;
     private int                         _update;
     private UIFrame                     _context;
-    private Queue<View>                 _rootViews = new PriorityBlockingQueue<>(200, new Comparator<View>() {
+
+    private static class ViewComparator implements Comparator<View> {
         @Override
         public int compare(View v1, View v2) {
             return v1.getLayer() - v2.getLayer();
@@ -96,8 +88,11 @@ public class UIManager {
         public boolean equals(Object obj) {
             return false;
         }
-    });
-    private Queue<View>                 _views = new ConcurrentLinkedQueue<>();
+    }
+
+    private Queue<RootView>             _rootViews = new LinkedBlockingQueue<>();
+    private Map<View, String>           _subViews = new ConcurrentHashMap<>();
+    private Set<View>                   _views = new ConcurrentHashSet<>();
     private Queue<UIDropDown>           _dropsDowns = new ConcurrentLinkedQueue<>();
     private Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
     private Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
@@ -107,25 +102,83 @@ public class UIManager {
         _context.setVisible(false);
     }
 
-    public void reload() {
-        _visibleViews.clear();
-        _rootViews.stream()
-                .filter(view -> view.getViews() != null)
-                .forEach(view -> view.getViews().stream()
-                        .filter(View::isVisible)
-                        .forEach(subview -> _visibleViews.add(subview.getId())));
-        _rootViews.clear();
-        _dropsDowns.clear();
-        ApplicationClient.uiEventManager.clear();
+    public void addRootView(RootView rootView) {
+
+        _rootViews.add(rootView);
+
+        fixRootAndSubViews();
+
+//        if (_rootViews.stream().noneMatch(rootView -> rootView.getView().getName().equals(view.getName()))) {
+//
+//            addViewRecurse(rootView.getView());
+//        } else {
+//            Log.warning("rootview already exists: " + view.getName());
+//        }
+//
+//        _subViews.forEach((subView, parentName) -> {
+//            if (rootView.getName() != null && rootView.getName().equals(parentName)) {
+//                rootView.addView(subView);
+//            }
+//        });
     }
 
-    public void restore() {
-        _rootViews.stream()
-                .filter(view -> view.getViews() != null)
-                .forEach(view -> view.getViews().stream()
-                        .filter(subview -> _visibleViews.contains(subview.getId()))
-                        .forEach(subview -> subview.setVisible(true)));
+    private void fixRootAndSubViews() {
+        _subViews.forEach((subView, parentName) -> {
+            _rootViews.forEach(rootView -> {
+                if (rootView.getView().getName().equals(parentName)) {
+                    if (rootView.getView().getViews().stream().noneMatch(view -> subView == view)) {
+                        rootView.getView().addView(subView);
+                        subView.setParent(rootView.getView());
+                        rootView.getView().setSpecial(true);
+                    }
+                }
+            });
+        });
     }
+
+    private void addViewRecurse(View view) {
+        if (_views.stream().noneMatch(v -> v == view)) {
+            _views.add(view);
+
+            if (view.getViews() != null) {
+                view.getViews().forEach(this::addViewRecurse);
+            }
+        }
+    }
+
+    public void addSubView(View subViewToAdd, String parentName) {
+        if (_subViews.keySet().stream().noneMatch(subView -> subView.getName().equals(subViewToAdd.getName()))) {
+            _subViews.put(subViewToAdd, parentName);
+        }
+    }
+
+    public void addView(View view) {
+        if (CollectionUtils.notContains(_views, view)) {
+            if (view.getPath() != null && _views.stream().noneMatch(v -> view.getPath().equals(v.getPath()))) {
+                _views.add(view);
+            }
+        }
+    }
+
+//    public void reload() {
+//        _visibleViews.clear();
+//        _rootViews.stream()
+//                .filter(view -> view.getViews() != null)
+//                .forEach(view -> view.getViews().stream()
+//                        .filter(View::isVisible)
+//                        .forEach(subview -> _visibleViews.add(subview.getId())));
+//        _rootViews.clear();
+//        _dropsDowns.clear();
+//        ApplicationClient.uiEventManager.clear();
+//    }
+//
+//    public void restore() {
+//        _rootViews.stream()
+//                .filter(view -> view.getViews() != null)
+//                .forEach(view -> view.getViews().stream()
+//                        .filter(subview -> _visibleViews.contains(subview.getId()))
+//                        .forEach(subview -> subview.setVisible(true)));
+//    }
 
     public boolean onKeyEvent(Action action, Key key, Modifier modifier) {
 //        if (action == Action.RELEASED) {
@@ -267,11 +320,11 @@ public class UIManager {
 
         else {
             int resId = id.hashCode();
-            for (View view : _rootViews) {
-                if (view.getId() == resId) {
-                    return view;
-                }
-                View v = view.findById(resId);
+            for (RootView view : _rootViews) {
+//                if (view.getId() == resId) {
+//                    return view;
+//                }
+                View v = view.getView().findById(resId);
                 if (v != null) {
                     return v;
                 }

@@ -99,7 +99,7 @@ public class BuildableMapObject extends MapObjectModel {
         _components = components;
     }
     public void             setBuildJob(BuildJob job) { _buildJob = job; }
-    public void             setBuildProgress(int buildProgress) { _buildProgress = buildProgress; }
+    public void             setBuildProgress(int buildProgress) { _buildProgress = Math.min(buildProgress, _info.build.cost); }
 
     public int              getBuildProgress() { return _buildProgress; }
     public int              getBuildCost() { return _info.build.cost; }

@@ -17,9 +17,9 @@ public class JobRenderer extends BaseRenderer {
 //        int offsetY = viewport.getPosY();
 //        int floor = WorldHelper.getCurrentFloor();
 //        ModuleHelper.getJobModule().getJobs().stream().filter(job -> !job.isFinish()).forEach(job ->
-//                job.draw((x, y, z) -> {
+//                job.drawPixel((x, y, z) -> {
 //                    if (floor == z)
-//                        renderer.draw(job.getIconDrawable(), offsetX + x * Constant.TILE_WIDTH, offsetY + y * Constant.TILE_HEIGHT);
+//                        renderer.drawPixel(job.getIconDrawable(), offsetX + x * Constant.TILE_WIDTH, offsetY + y * Constant.TILE_HEIGHT);
 //                }));
     }
 

@@ -53,7 +53,8 @@ public class UIResource {
     @GET
     @Path("root")
     public Collection<View> root() {
-        return ApplicationClient.uiManager.getRootViews();
+//        return ApplicationClient.uiManager.getRootViews();
+        return null;
     }
 
     @GET

@@ -1,9 +1,11 @@
-package org.smallbox.faraway.client.controller;
+package org.smallbox.faraway.client.controller.character;
 
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 
@@ -74,5 +76,10 @@ public class CharacterHealthController extends LuaController {
                 .create(null)
                 .setText(check.getLabel())
                 .setSize(300, 22)));
+    }
+
+    @Override
+    protected void onNewGameUpdate(Game game) {
+
     }
 }

@@ -38,16 +38,16 @@ public class LuaCursorExtend extends LuaExtend {
 //            @Override
 //            protected void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
 //                if (isPressed) {
-//                    renderer.draw(odd ? resOdd : resEden, x, y);
+//                    renderer.drawPixel(odd ? resOdd : resEden, x, y);
 //
 //                    if (parcel != null && !luaOnParcel.isnil()) {
 //                        LuaValue ret = luaOnParcel.call(CoerceJavaToLua.coerce(parcel));
 //                        if (!ret.isnil() && ret.toboolean()) {
-//                            renderer.draw(resItem, x, y);
+//                            renderer.drawPixel(resItem, x, y);
 //                        }
 //                    }
 //                } else {
-//                    renderer.draw(resItem, x, y);
+//                    renderer.drawPixel(resItem, x, y);
 //                }
 //            }
 //        });

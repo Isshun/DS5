@@ -16,9 +16,9 @@
 --        bt_test:setBackgroundColor(0x349394)
 --        bt_test:setPadding(10)
 --        bt_test:setOnClickListener(function()
---            ui:find("base.ui.panel_main"):setVisible(false)
+--            ui:find("base.ui.right_panel"):setVisible(false)
 --            ui:find("panel_test"):setVisible(true)
 --        end)
---        ui:find("base.ui.panel_main"):findById("main_grid"):addView(bt_test)
+--        ui:find("base.ui.right_panel"):findById("main_grid"):addView(bt_test)
 --    end
 --})

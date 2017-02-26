@@ -4,11 +4,8 @@ ui:extend({
     type = "view",
     id = "base.ui.info_consumable",
     controller = "org.smallbox.faraway.client.controller.ConsumableInfoController",
-    style = "base.style.right_panel",
+    parent = "base.ui.right_panel",
     level = 10,
---    position = {1000, 200},
---    size = {372, 320},
---    background = 0xb51c1e,
     visible = false,
     views = {
         { type = "label", id = "lb_name", text = "name", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},

@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
@@ -47,22 +46,22 @@ public class UIGrid extends View {
 
                 @Override
                 public void onKeyRelease(View view, GameEventListener.Key key) {
-                    _views.get(_index).onExit();
-
-                    if (key == GameEventListener.Key.DOWN) {
-                        _index = Math.min(_count - 1, _index + _columns);
-                    }
-                    if (key == GameEventListener.Key.UP) {
-                        _index = Math.max(0, _index - _columns);
-                    }
-                    if (key == GameEventListener.Key.RIGHT) {
-                        _index = Math.min(_count - 1, _index + 1);
-                    }
-                    if (key == GameEventListener.Key.LEFT) {
-                        _index = Math.max(0, _index - 1);
-                    }
-//                    _views.get(_index).onClick();
-                    _views.get(_index).onEnter();
+//                    _views.get(_index).onExit();
+//
+//                    if (key == GameEventListener.Key.DOWN) {
+//                        _index = Math.min(_count - 1, _index + _columns);
+//                    }
+//                    if (key == GameEventListener.Key.UP) {
+//                        _index = Math.max(0, _index - _columns);
+//                    }
+//                    if (key == GameEventListener.Key.RIGHT) {
+//                        _index = Math.min(_count - 1, _index + 1);
+//                    }
+//                    if (key == GameEventListener.Key.LEFT) {
+//                        _index = Math.max(0, _index - 1);
+//                    }
+////                    _views.get(_index).onClick();
+//                    _views.get(_index).onEnter();
                 }
             });
         } else {
@@ -74,17 +73,15 @@ public class UIGrid extends View {
     protected void onAddView(View view) {
         view.setDeep(_deep + 1);
 
-        _views.add(view);
-        view.setParent(this);
         _count = _views.size();
 
-        if (_keepSorted) {
-            Collections.sort(_views, (o1, o2) -> {
-                if (o1.getString() == null) return -1;
-                if (o2.getString() == null) return 1;
-                return o1.getString().compareTo(o2.getString());
-            });
-        }
+//        if (_keepSorted) {
+//            Collections.sort(_views, (o1, o2) -> {
+//                if (o1.getString() == null) return -1;
+//                if (o2.getString() == null) return 1;
+//                return o1.getString().compareTo(o2.getString());
+//            });
+//        }
     }
 
 //    @Override

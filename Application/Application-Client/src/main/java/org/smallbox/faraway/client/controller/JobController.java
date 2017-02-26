@@ -30,7 +30,7 @@ public class JobController extends LuaController {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onNewGameUpdate(Game game) {
         listJobs.clear();
 
         jobModule.getJobs().forEach(job -> {
@@ -45,9 +45,9 @@ public class JobController extends LuaController {
     public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
         if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.T && modifier == GameEventListener.Modifier.NONE) {
             setVisible(!isVisible());
-            ApplicationClient.uiManager.findById("base.ui.panel_main").setVisible(!isVisible());
+            ApplicationClient.uiManager.findById("base.ui.right_panel").setVisible(!isVisible());
 
-            Log.info("jobModule: " + isVisible() + ", main: " + ApplicationClient.uiManager.findById("base.ui.panel_main").isVisible());
+            Log.info("jobModule: " + isVisible() + ", main: " + ApplicationClient.uiManager.findById("base.ui.right_panel").isVisible());
         }
     }
 }

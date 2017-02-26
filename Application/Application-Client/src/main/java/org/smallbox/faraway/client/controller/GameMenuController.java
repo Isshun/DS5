@@ -17,10 +17,10 @@ public class GameMenuController extends LuaController {
 
     @Override
     public boolean onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE && ApplicationClient.uiManager.findById("base.ui.panel_main").isVisible()) {
-            setVisible(!isVisible());
-            return true;
-        }
+//        if (key == GameEventListener.Key.ESCAPE && ApplicationClient.uiManager.findById("base.ui.right_panel").isVisible()) {
+//            setVisible(!isVisible());
+//            return true;
+//        }
         return false;
     }
 
@@ -51,9 +51,13 @@ public class GameMenuController extends LuaController {
 
     @BindLuaAction
     public void onQuit(View view) {
-        ApplicationClient.uiManager.findById("base.ui.menu_pause").setVisible(false);
-        ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
-        Application.gameManager.stopGame();
+//        ApplicationClient.uiManager.findById("base.ui.menu_pause").setVisible(false);
+//        ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
+//        Application.gameManager.stopGame();
     }
 
+    @Override
+    protected void onNewGameUpdate(Game game) {
+
+    }
 }

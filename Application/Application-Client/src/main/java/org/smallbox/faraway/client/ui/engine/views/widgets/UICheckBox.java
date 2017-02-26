@@ -221,10 +221,10 @@ public class UICheckBox extends View {
                 }
             }
 
-            renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]"
+            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]"
             );
 
-            renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string
+            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string
             );
         }
     }

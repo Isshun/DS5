@@ -18,7 +18,7 @@ public class UILabel extends View {
     private int _hash3;
     private int _hash4;
 
-    private String                              _string = "";
+    private String _text = "";
     private int                                 _textSize = 14;
     private com.badlogic.gdx.graphics.Color     _gdxTextColor = com.badlogic.gdx.graphics.Color.BLACK;
     private Color                               _textColor;
@@ -149,7 +149,7 @@ public class UILabel extends View {
                 string = string.substring(0, index) + '\n' + string.substring(index+1);
             }
         }
-        _string = string;
+        _text = string;
     }
 
     public UILabel setTextSize(int size) {
@@ -169,17 +169,17 @@ public class UILabel extends View {
     }
 
     public UILabel setDashedString(String label, String value, int nbColumns) {
-        _string = StringUtils.getDashedString(label, value, nbColumns);
+        _text = StringUtils.getDashedString(label, value, nbColumns);
         return this;
     }
 
     @Override
     public String getString() {
-        return _string;
+        return _text;
     }
 
     public String getText() {
-        return _string;
+        return _text;
     }
 
     @Override
@@ -206,26 +206,26 @@ public class UILabel extends View {
                 }
             }
 
-//            renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string);
+//            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
             renderer.drawFont((batch, font) -> {
                 int finalX = getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft;
                 int finalY = getAlignedY() + y + _offsetY + _paddingTop + _marginTop;
 
                 int tagOffsetX = 0;
 
-                if (_string.contains("{")) {
+                if (_text.contains("{")) {
 
                     boolean inTag = false;
                     boolean inTagMeta = false;
                     StringBuilder sb = new StringBuilder();
                     StringBuilder sbTag = new StringBuilder();
                     StringBuilder sbTagMeta = new StringBuilder();
-                    for (int i = 0; i < _string.length(); i++) {
-                        if (_string.charAt(i) == '{') {
+                    for (int i = 0; i < _text.length(); i++) {
+                        if (_text.charAt(i) == '{') {
                             inTagMeta = true;
                         }
 
-                        else if (_string.charAt(i) == '}') {
+                        else if (_text.charAt(i) == '}') {
                             inTag = false;
 
                             if (sbTagMeta.toString().contains("icon")) {
@@ -250,23 +250,23 @@ public class UILabel extends View {
                             }
                         }
 
-                        else if (inTagMeta && _string.charAt(i) == ';') {
+                        else if (inTagMeta && _text.charAt(i) == ';') {
                             inTag = true;
                             inTagMeta = false;
                             sbTag = new StringBuilder();
                         }
 
                         else if (inTagMeta) {
-                            sbTagMeta.append(_string.charAt(i));
+                            sbTagMeta.append(_text.charAt(i));
                         }
 
                         else if (inTag) {
                             sb.append(' ');
-                            sbTag.append(_string.charAt(i));
+                            sbTag.append(_text.charAt(i));
                         }
 
                         else {
-                            sb.append(_string.charAt(i));
+                            sb.append(_text.charAt(i));
                         }
                     }
 
@@ -276,7 +276,7 @@ public class UILabel extends View {
 
                 else {
                     font.setColor(_gdxTextColor);
-                    font.draw(batch, _string, finalX, finalY);
+                    font.draw(batch, _text, finalX, finalY);
                 }
             }, _textSize);
         }
@@ -292,17 +292,17 @@ public class UILabel extends View {
 
     @Override
     public int getContentWidth() {
-        if (_string != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).width;
-            return (int) (_string.length() * ApplicationClient.gdxRenderer.getFont(_textSize).getSpaceWidth());
+        if (_text != null) {
+//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_text).width;
+            return (int) (_text.length() * ApplicationClient.gdxRenderer.getFont(_textSize).getSpaceWidth());
         }
         return 0;
     }
 
     @Override
     public int getContentHeight() {
-        if (_string != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).height;
+        if (_text != null) {
+//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_text).height;
             return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight();
         }
         return 0;
@@ -311,4 +311,7 @@ public class UILabel extends View {
     public static UILabel create(ModuleBase module) {
         return new UILabel(module);
     }
+
+    @Override
+    public String toString() { return _text; }
 }

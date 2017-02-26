@@ -26,14 +26,14 @@ public class GDXRenderer {
     private OrthographicCamera    _camera;
     private OrthographicCamera    _cameraUI;
     private OrthographicCamera    _cameraWorld;
-    private ShapeRenderer               _shapeRenderer;
+    private ShapeRenderer           _drawPixelShapeRenderer;
     private int                         _zoom = Viewport.ZOOM_LEVELS.length - 1;
 
     public void init(SpriteBatch batch, BitmapFont[] fonts) {
         _fonts = fonts;
         _batch = batch;
-        _shapeRenderer = new ShapeRenderer();
-        _shapeRenderer.setProjectionMatrix(_batch.getProjectionMatrix());
+        _drawPixelShapeRenderer = new ShapeRenderer();
+        _drawPixelShapeRenderer.setProjectionMatrix(_batch.getProjectionMatrix());
         _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -64,8 +64,8 @@ public class GDXRenderer {
         }
     }
 
-    public void draw(org.smallbox.faraway.core.engine.Color color, int x, int y, int width, int height) {
-        draw(x, y, width, height, new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
+    public void drawPixel(org.smallbox.faraway.core.engine.Color color, int x, int y, int width, int height) {
+        drawPixel(x, y, width, height, new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f));
     }
 
     public void clear(Color color) {
@@ -110,7 +110,7 @@ public class GDXRenderer {
             _batch.begin();
             sprite.setPosition(x, y);
             sprite.draw(_batch);
-//            _batch.draw(sprite, x, y);
+//            _batch.drawPixel(sprite, x, y);
             _batch.end();
         }
     }
@@ -119,7 +119,7 @@ public class GDXRenderer {
         if (sprite != null) {
             _batch.begin();
 //            sprite.setPosition(x, y);
-//            sprite.draw(_batch);
+//            sprite.drawPixel(_batch);
             _batch.draw(sprite, x, y);
             _batch.end();
         }
@@ -162,7 +162,7 @@ public class GDXRenderer {
         _batch.end();
     }
 
-    public void draw(int x, int y, int textSize, Color color, String string) {
+    public void drawText(int x, int y, int textSize, Color color, String string) {
         textSize *= Application.APPLICATION_CONFIG.uiScale;
 
         if (string != null) {
@@ -176,16 +176,27 @@ public class GDXRenderer {
         }
     }
 
-    public void draw(int x, int y, int width, int height, Color color) {
+    public void drawPixel(int x, int y, int width, int height, Color color) {
         if (color != null) {
             _batch.begin();
             Gdx.gl.glEnable(GL20.GL_BLEND);
-            _shapeRenderer.setProjectionMatrix(_camera.combined);
-            _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            _shapeRenderer.setColor(color);
-            _shapeRenderer.rect(x, y, width, height);
-            _shapeRenderer.end();
+            _drawPixelShapeRenderer.setProjectionMatrix(_camera.combined);
+            _drawPixelShapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            _drawPixelShapeRenderer.setColor(color);
+            _drawPixelShapeRenderer.rect(x, y, width, height);
+            _drawPixelShapeRenderer.end();
             _batch.end();
+        }
+    }
+
+    public void drawRectangle(int x, int y, int width, int height, Color color, boolean filled) {
+        if (color != null) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            _drawPixelShapeRenderer.setProjectionMatrix(_camera.combined);
+            _drawPixelShapeRenderer.begin(filled ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
+            _drawPixelShapeRenderer.setColor(color);
+            _drawPixelShapeRenderer.rect(x, y, width, height);
+            _drawPixelShapeRenderer.end();
         }
     }
 
@@ -218,11 +229,11 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(int x, int y, Color color) {
-        draw(ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
+        drawPixel(ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
     }
 
     public void drawOnMap(int x, int y, String string, int size) {
-        draw(
+        drawText(
                 ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH),
                 ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT),
                 size,
@@ -231,7 +242,7 @@ public class GDXRenderer {
    }
 
     public void drawOnMap(int x, int y, String string, int size, Color color) {
-        draw(
+        drawText(
                 ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH),
                 ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT),
                 size,
@@ -240,7 +251,7 @@ public class GDXRenderer {
    }
 
     public void drawOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
-        draw(
+        drawText(
                 ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
                 ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
                 size,

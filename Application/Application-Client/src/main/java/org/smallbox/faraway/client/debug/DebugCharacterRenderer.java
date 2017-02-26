@@ -38,7 +38,7 @@ public class DebugCharacterRenderer extends BaseRenderer {
     @Override
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         _index = 0;
-        renderer.draw(0, 0, 2000, 2000, BG_COLOR);
+        renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
 
         if (_character != null) {
             drawDebug(renderer, "Name", _character.getPersonals() != null ? _character.getPersonals().getName() : "--");
@@ -69,9 +69,9 @@ public class DebugCharacterRenderer extends BaseRenderer {
     }
 
     private void drawDebug(GDXRenderer renderer, String label, Object object) {
-        renderer.draw(12, (_index * 20) + 12, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
-        renderer.draw(11, (_index * 20) + 11, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
-        renderer.draw(10, (_index * 20) + 10, 18, Color.WHITE, "[" + label.toUpperCase() + "] " + object);
+        renderer.drawText(12, (_index * 20) + 12, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
+        renderer.drawText(11, (_index * 20) + 11, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
+        renderer.drawText(10, (_index * 20) + 10, 18, Color.WHITE, "[" + label.toUpperCase() + "] " + object);
         _index++;
     }
 }

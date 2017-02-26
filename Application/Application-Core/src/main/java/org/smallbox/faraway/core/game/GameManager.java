@@ -55,7 +55,11 @@ public class GameManager implements GameObserver {
         }
     }
 
-    public void createGame(GameInfo gameInfo) {
+    public interface GameCreateListener {
+        void onGameCreate(Game game);
+    }
+
+    public void createGame(GameInfo gameInfo, GameCreateListener listener) {
         long time = System.currentTimeMillis();
 
         File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
@@ -71,6 +75,7 @@ public class GameManager implements GameObserver {
 
         Application.runOnMainThread(() -> {
             Application.notify(observer -> observer.onGameCreate(_game));
+            listener.onGameCreate(_game);
         });
 
 //        Application.gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
@@ -79,6 +84,7 @@ public class GameManager implements GameObserver {
         Application.runOnMainThread(() -> {
             Application.notify(observer -> observer.onGameStart(_game));
         });
+
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
 //        worldFactory.createLandSite(game);

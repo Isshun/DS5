@@ -23,7 +23,7 @@
 //                _effect.update(Gdx.graphics.getDeltaTime());
 //            }
 //            renderer.getBatch().begin();
-//            _effect.draw(renderer.getBatch());
+//            _effect.drawPixel(renderer.getBatch());
 //            renderer.getBatch().end();
 //            if (_effect.isComplete()) {
 //                _effect.reset();

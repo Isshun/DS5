@@ -94,22 +94,22 @@ public class GameActionExtra {
     }
 
     // TODO
-//    public void draw(GDXRenderer renderer) {
+//    public void drawPixel(GDXRenderer renderer) {
 //        if (_mouseOnMap && _cursor != null) {
 //            if (_keyLeftPressed) {
-//                _cursor.draw(renderer, _viewport,
+//                _cursor.drawPixel(renderer, _viewport,
 //                        Math.min(_keyPressPosX, _keyMovePosX),
 //                        Math.min(_keyPressPosY, _keyMovePosY),
 //                        Math.max(_keyPressPosX, _keyMovePosX),
 //                        Math.max(_keyPressPosY, _keyMovePosY),
 //                        true);
 //            } else {
-//                _cursor.draw(renderer, _viewport, _keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY, false);
+//                _cursor.drawPixel(renderer, _viewport, _keyMovePosX, _keyMovePosY, _keyMovePosX, _keyMovePosY, false);
 //            }
 //        }
 //
 //        if (_cursor == null) {
-//            renderer.draw(_selection, 100, 100);
+//            renderer.drawPixel(_selection, 100, 100);
 //        }
 //    }
 

@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.lua.BindLuaAction;
@@ -210,5 +211,10 @@ public class BuildController extends LuaController {
 
     public ItemInfo getCurrentItem() {
         return _currentItem;
+    }
+
+    @Override
+    protected void onNewGameUpdate(Game game) {
+
     }
 }

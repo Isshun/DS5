@@ -16,11 +16,11 @@ public class FactoryTest extends TestBase {
         launchApplication(new GDXApplication.GameTestCallback() {
             @Override
             public void onApplicationReady() {
-                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2));
-
-                Application.moduleManager.getModule(CharacterModule.class).addRandom();
-                Application.moduleManager.getModule(ItemModule.class).addItem(Application.data.getItemInfo("base.cooker"), 4, 4, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).create(Application.data.getItemInfo("base.vegetable"), 100, 0, 0, 1);
+                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2), game -> {
+                    Application.moduleManager.getModule(CharacterModule.class).addRandom();
+                    Application.moduleManager.getModule(ItemModule.class).addItem(Application.data.getItemInfo("base.cooker"), true, 4, 4, 1);
+                    Application.moduleManager.getModule(ConsumableModule.class).create(Application.data.getItemInfo("base.vegetable"), 100, 0, 0, 1);
+                });
             }
 
             @Override

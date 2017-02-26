@@ -1,9 +1,8 @@
 ui:extend({
     type = "view",
     id = "base.ui.info_character",
-    style = "base.style.right_panel",
-    group = "base.style.right_panel",
-    controller = "org.smallbox.faraway.client.controller.CharacterInfoController",
+    parent = "base.ui.right_panel",
+    controller = "org.smallbox.faraway.client.controller.character.CharacterInfoController",
     visible = false,
     views = {
         { type = "label", text = "Character", text_size = 12, position = {12, 8}},
@@ -31,7 +30,7 @@ ui:extend({
         {
             type = "list",
             id = "page_status",
-            controller = "org.smallbox.faraway.client.controller.CharacterStatusController",
+            controller = "org.smallbox.faraway.client.controller.character.CharacterStatusController",
             position = {12, 200},
             size = {400, 400},
             views = {
@@ -112,7 +111,7 @@ ui:extend({
         {
             type = "view",
             id = "page_health",
-            controller = "org.smallbox.faraway.client.controller.CharacterHealthController",
+            controller = "org.smallbox.faraway.client.controller.character.CharacterHealthController",
             position = {0, 200},
             size = {400, 400},
             visibility = false,

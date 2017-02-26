@@ -41,12 +41,12 @@ public class MiniMapModule extends GameClientModule {
 
     @Override
     public void onReloadUI() {
-        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel");
     }
 
     @Override
     public void onGameStart(Game game) {
-        _panelMain = ApplicationClient.uiManager.findById("base.ui.panel_main");
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel");
     }
 
     @Override

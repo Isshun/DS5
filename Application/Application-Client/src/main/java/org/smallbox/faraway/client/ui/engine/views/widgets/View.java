@@ -14,12 +14,11 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.util.CollectionUtils;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Alex on 27/05/2015.
@@ -28,6 +27,8 @@ public abstract class View implements Comparable<View> {
     protected int _originWidth;
     protected int _originHeight;
     private String _group;
+    private String _path;
+    private int _index;
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
@@ -43,6 +44,42 @@ public abstract class View implements Comparable<View> {
 
     public String getGroup() {
         return _group;
+    }
+
+    public boolean isLeaf() {
+        return _views.isEmpty();
+    }
+
+    public void setSpecial(boolean special) {
+        _special = special;
+    }
+
+    public void actionSpecial() {
+        _parent.setSpecialTop(this);
+    }
+
+    public boolean hasSpecial() {
+        return _special;
+    }
+
+    public void setSpecialTop(View specialTop) {
+        _specialTop = specialTop;
+    }
+
+    public void setPath(String path) {
+        _path = path;
+    }
+
+    public String getPath() {
+        return _path;
+    }
+
+    public void setIndex(int index) {
+        _index = index;
+    }
+
+    public int getIndex() {
+        return _index;
     }
 
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
@@ -74,9 +111,12 @@ public abstract class View implements Comparable<View> {
 
     protected final ModuleBase  _module;
 
-    protected List<View>        _views = new CopyOnWriteArrayList<>();
+//    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
+    protected List<View>        _views = new ArrayList<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
+    protected boolean           _special = false;
+    private View _specialTop;
     protected int               _finalX;
     protected int               _finalY;
     protected int               _marginTop;
@@ -132,12 +172,13 @@ public abstract class View implements Comparable<View> {
     }
 
     public boolean      isFocus() { return _isFocus; }
-    public boolean      isVisible() { return _isVisible; }
+    public boolean      isVisible() { return _isVisible && (_parent == null || _parent.isVisible()); }
+    //    public boolean      isVisible() { return _isVisible; }
     public boolean      isActive() { return _isActive; }
     public boolean      inGame() { return _inGame; }
 
-    public void         setId(int id) { _id = id; }
-    public void         setId(String id) { _id = id.hashCode(); }
+    public View         setId(int id) { _id = id; return this; }
+    public View         setId(String id) { _id = id.hashCode(); return this; }
     public void         setTextAlign(Align align) { _align = align; }
     public void         setFocus(boolean focus) { _isFocus = focus; }
     public void         setActive(boolean active) { _isActive = active; }
@@ -147,7 +188,7 @@ public abstract class View implements Comparable<View> {
     public void         setAdapter(UIAdapter adapter) {
         _adapter = adapter;
     }
-    public void         setName(String name) { _name = name; }
+    public View         setName(String name) { _name = name; return this; }
     public void         setInGame(boolean inGame) { _inGame = inGame; }
     public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
     public void         setLevel(int level) { _level = level; }
@@ -157,11 +198,16 @@ public abstract class View implements Comparable<View> {
     public void         toggleVisible() { setVisible(!isVisible()); }
     public void         setVisible(boolean visible) {
 
-        // Masque les vues appartenemt au même groupe
-        if (visible && _group != null) {
-            ApplicationClient.uiManager.getViews().stream()
-                    .filter(view -> view != this && _group.equals(view.getGroup()))
-                    .forEach(view -> view.setVisible(false));
+//        // Masque les vues appartenemt au même groupe
+//        if (visible && _group != null) {
+//            ApplicationClient.uiManager.getViews().stream()
+//                    .filter(view -> view != this && _group.equals(view.getGroup()))
+//                    .forEach(view -> view.setVisible(false));
+//        }
+
+        if (_parent != null && _parent._special) {
+            _parent.getViews().forEach(view -> view._isVisible = false);
+//            _parent.setVisible(false);
         }
 
         // Set current view visible
@@ -188,7 +234,7 @@ public abstract class View implements Comparable<View> {
     public int          getFocusBackground() { return _focusBackground; }
     public String       getName() { return _name; }
 
-    public List<View>   getViews() { return _views; }
+    public Collection<View> getViews() { return _views; }
     public ModuleBase   getModule() { return _module; }
     protected String    getString() { return null; }
     public int          getHeight() { return _height; }
@@ -215,32 +261,32 @@ public abstract class View implements Comparable<View> {
             _finalY = getAlignedY() + _marginTop + y;
 
             if (_backgroundFocusColor != null && _isFocus) {
-                renderer.draw(_backgroundFocusColor, _finalX, _finalY, _width, _height);
-            }
-            else if (_backgroundColor != null) {
-                renderer.draw(_backgroundColor, _finalX, _finalY, _width, _height);
+                renderer.drawPixel(_backgroundFocusColor, _finalX, _finalY, _width, _height);
             }
 
-            if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
-                removeAllViews();
-                _adapter.setRefresh();
-                Iterator<ObjectModel> iterator = _adapter.getData().iterator();
-                try {
-                    while (iterator.hasNext()) {
-                        ObjectModel data = iterator.next();
-                        View subview = _adapter.getCallback().onCreateView();
-                        subview.setObjectId(data.id);
-                        _adapter.getCallback().onBindView(subview, data);
-                        addView(subview);
-                    }
-                } catch (ConcurrentModificationException e) {
-                    e.printStackTrace();
-                }
+            else if (_backgroundColor != null) {
+                renderer.drawPixel(_backgroundColor, _finalX, _finalY, _width, _height);
             }
+
+//            if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
+//                removeAllViews();
+//                _adapter.setRefresh();
+//                Iterator<ObjectModel> iterator = _adapter.getData().iterator();
+//                try {
+//                    while (iterator.hasNext()) {
+//                        ObjectModel data = iterator.next();
+//                        View subview = _adapter.getCallback().onCreateView();
+//                        subview.setObjectId(data.id);
+//                        _adapter.getCallback().onBindView(subview, data);
+//                        addView(subview);
+//                    }
+//                } catch (ConcurrentModificationException e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
             if (Config.onDebugView) {
-                renderer.draw(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name
-                );
+                renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name);
             }
         }
     }
@@ -251,6 +297,12 @@ public abstract class View implements Comparable<View> {
     }
 
     public final void addView(View view) {
+        view.setParent(this);
+
+        if (CollectionUtils.notContains(_views, view)) {
+            _views.add(view);
+        }
+
         ApplicationClient.uiManager.addView(view);
 
         onAddView(view);
@@ -473,25 +525,55 @@ public abstract class View implements Comparable<View> {
     }
 
     protected int getAlignedX() {
-        if (_horizontalAlign == HorizontalAlign.CENTER) {
-            return (_parent.getWidth() / 2) - (_width / 2) + _x;
+
+        // Alignement par rapport au parent
+        if (_parent != null) {
+            if (_horizontalAlign == HorizontalAlign.CENTER) {
+                return (_parent.getWidth() / 2) - (_width / 2) + _x;
+            }
+            if (_horizontalAlign == HorizontalAlign.RIGHT) {
+                return _parent.getWidth() - _x;
+            }
         }
-        if (_horizontalAlign == HorizontalAlign.RIGHT) {
-            return _parent.getWidth() - _x;
+
+        // Alignement par rapport à l'écran
+        else {
+            if (_horizontalAlign == HorizontalAlign.CENTER) {
+                return (ApplicationClient.gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
+            }
+            if (_horizontalAlign == HorizontalAlign.RIGHT) {
+                return ApplicationClient.gdxRenderer.getWidth() - _x;
+            }
         }
+
         return _x;
     }
 
     protected int getAlignedY() {
-        if (_verticalAlign == VerticalAlign.CENTER) {
-            return (_parent.getHeight() / 2) - (_height / 2) + _y;
+
+        // Alignement par rapport au parent
+        if (_parent != null) {
+            if (_verticalAlign == VerticalAlign.CENTER) {
+                return (_parent.getHeight() / 2) - (_height / 2) + _y;
+            }
+            if (_verticalAlign == VerticalAlign.BOTTOM) {
+                return _parent.getHeight() - _y;
+            }
         }
-        if (_verticalAlign == VerticalAlign.BOTTOM) {
-            return _parent.getHeight() - _y;
+
+        // Alignement par rapport à l'écran
+        else {
+            if (_verticalAlign == VerticalAlign.CENTER) {
+                return (ApplicationClient.gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
+            }
+            if (_verticalAlign == VerticalAlign.BOTTOM) {
+                return ApplicationClient.gdxRenderer.getHeight() - _y;
+            }
         }
+
         return _y;
     }
 
     @Override
-    public String toString() { return "name: " + _name; }
+    public String toString() { return _path; }
 }

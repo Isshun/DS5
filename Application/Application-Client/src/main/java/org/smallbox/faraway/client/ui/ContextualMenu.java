@@ -84,7 +84,7 @@
 //
 //    public void onDraw(GDXRenderer renderer, Viewport viewport) {
 //        if (_subMenu != null) {
-//            _subMenu.draw(renderer, 0, 0);
+//            _subMenu.drawPixel(renderer, 0, 0);
 //        }
 //    }
 //

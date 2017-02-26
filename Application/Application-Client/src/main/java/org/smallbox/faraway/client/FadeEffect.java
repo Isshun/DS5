@@ -45,7 +45,7 @@ public class FadeEffect {
 //                _to.setAlpha(1f);
 //            }
 //            _to.setAlpha((1 - ((float) durationLeft / duration)) * 1f);
-//            renderer.draw(_to, x, y);
+//            renderer.drawPixel(_to, x, y);
         }
     }
 }

@@ -2,9 +2,8 @@ local item
 
 ui:extend({
     type = "view",
-    name = "ui-test",
-    style = "base.style.right_panel",
-    group = "base.style.right_panel",
+    name = "base.ui.info_factory_receipt",
+    parent = "base.ui.right_panel",
     controller = "org.smallbox.faraway.client.controller.ItemInfoReceiptController",
     visible = false,
     views = {

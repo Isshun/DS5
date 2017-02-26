@@ -1,6 +1,8 @@
-package org.smallbox.faraway.client.controller;
+package org.smallbox.faraway.client.controller.character;
 
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.controller.AbsInfoLuaController;
+import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -94,5 +96,10 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         pageHealth.setVisible(false);
         pageInfo.setVisible(false);
         page.setVisible(true);
+    }
+
+    @Override
+    public void onNewGameUpdate(Game game) {
+
     }
 }

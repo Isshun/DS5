@@ -15,9 +15,10 @@ public class CharacterModuleTest extends TestBase {
             @Override
             public void onApplicationReady() {
 
-                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2));
+                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2), game -> {
+                    Application.moduleManager.getModule(CharacterModule.class).addRandom();
+                });
 
-                Application.moduleManager.getModule(CharacterModule.class).addRandom();
             }
 
             @Override

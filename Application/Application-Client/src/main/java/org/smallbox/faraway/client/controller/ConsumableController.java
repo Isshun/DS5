@@ -30,7 +30,7 @@ public class ConsumableController extends LuaController {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onNewGameUpdate(Game game) {
         if (consumableList != null) {
             consumableList.clear();
 

@@ -75,7 +75,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
 
     public void dump() {
         if (_nbDraw != 0) {
-            Log.notice("Renderer: " + this.getClass().getSimpleName() + ",\tdraw: " + _nbDraw + ",\tavg time: " + _totalDrawDelay / _nbDraw);
+            Log.notice("Renderer: " + this.getClass().getSimpleName() + ",\tdrawPixel: " + _nbDraw + ",\tavg time: " + _totalDrawDelay / _nbDraw);
         }
     }
 

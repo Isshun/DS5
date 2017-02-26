@@ -1,10 +1,15 @@
-package org.smallbox.faraway.client.controller;
+package org.smallbox.faraway.client.controller.world;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.BindLuaController;
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.controller.TooltipController;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -12,17 +17,21 @@ import org.smallbox.faraway.modules.world.WorldModule;
 /**
  * Created by Alex on 26/04/2016.
  */
-public class ParcelInfoController extends LuaController {
+public class ParcelTooltipController extends LuaController {
 
     @BindLua private UILabel lbPosition;
     @BindLua private UILabel lbGroundInfo;
     @BindLua private UILabel lbRockInfo;
+    @BindLua private View content;
 
     @BindModule
     private WorldModule worldModule;
 
     @BindComponent
     private Viewport viewport;
+
+    @BindLuaController
+    private TooltipController tooltipController;
 
     @Override
     public void onMouseMove(GameEvent event) {
@@ -34,17 +43,25 @@ public class ParcelInfoController extends LuaController {
 
         // Display parcel information
         if (parcel != null) {
-            setVisible(true);
+//            setVisible(true);
 
             lbPosition.setText(worldX + " x " + worldY + " x " + worldZ);
             lbGroundInfo.setText(parcel.getGroundInfo() != null ? parcel.getGroundInfo().label : null);
             lbRockInfo.setText(parcel.getRockInfo() != null ? parcel.getRockInfo().label : null);
+
+            tooltipController.addSubView("parcel", getRootView());
         }
 
         // No parcel - hide view
         else {
-            setVisible(false);
+            tooltipController.removeSubView("parcel");
+//            setVisible(false);
         }
+
+    }
+
+    @Override
+    protected void onNewGameUpdate(Game game) {
 
     }
 }

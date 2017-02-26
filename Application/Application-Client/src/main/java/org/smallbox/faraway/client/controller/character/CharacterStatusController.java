@@ -1,5 +1,6 @@
-package org.smallbox.faraway.client.controller;
+package org.smallbox.faraway.client.controller.character;
 
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.game.Game;
@@ -21,7 +22,7 @@ public class CharacterStatusController extends LuaController {
     private CharacterModel _selected;
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onNewGameUpdate(Game game) {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);
         }

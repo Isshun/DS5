@@ -107,8 +107,8 @@ public class TestApplication extends ApplicationAdapter {
                 Log.info("cache " + i);
 //                        cache.addSubJob(sprite, x * 32, y * 32);
 //                        cache.addSubJob(textureRegion[i % 20], x * 32, y * 32);
-//                        batch.draw(textureRegion[x*y % 10], x * 32, y * 32);
-//                        batch.draw(textureRegion[(int)(Math.random() * 100)], x * 32, y * 32);
+//                        batch.drawPixel(textureRegion[x*y % 10], x * 32, y * 32);
+//                        batch.drawPixel(textureRegion[(int)(Math.random() * 100)], x * 32, y * 32);
             }
         }
         cacheId = cache.endCache();
@@ -132,24 +132,24 @@ public class TestApplication extends ApplicationAdapter {
 
         for (int x = 0; x < 60; x++) {
             for (int y = 0; y < 40; y++) {
-//                        batch.draw(textureRegion[x*y % 10], x * 32, y * 32);
+//                        batch.drawPixel(textureRegion[x*y % 10], x * 32, y * 32);
                 batch.draw(sprites[x * y % 20], x * 32, y * 32);
-//                        batch.draw(textureRegion[(int)(Math.random() * 100)], x * 32, y * 32);
+//                        batch.drawPixel(textureRegion[(int)(Math.random() * 100)], x * 32, y * 32);
             }
         }
 //                cache.begin();
 //                Gdx.gl.glEnable(GL20.GL_BLEND);
-//                cache.draw(cacheId);
+//                cache.drawPixel(cacheId);
 //                cache.end();
 
-//                batch.draw(sprite, 32, 32);
+//                batch.drawPixel(sprite, 32, 32);
 
         batch.end();
 
         logger.log();
 
 //                Log.info("bindings: " + GLProfiler.textureBindings);
-//                Log.info("draw calls: " + GLProfiler.drawCalls);
+//                Log.info("drawPixel calls: " + GLProfiler.drawCalls);
 //                Log.info("calls: " + GLProfiler.calls);
 //                Log.info("shader switches: " + GLProfiler.shaderSwitches);
 //                Log.info("vertices: " + GLProfiler.vertexCount.average);

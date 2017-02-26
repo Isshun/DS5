@@ -1,8 +1,10 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -33,7 +35,7 @@ public class CrewController extends LuaController {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onNewGameUpdate(Game game) {
         if (listCrew != null) {
             listCrew.clear();
             characterModule.getCharacters().forEach(character -> {
@@ -50,11 +52,11 @@ public class CrewController extends LuaController {
         }
     }
 
-    @Override
-    public void onKeyPressWithEvent(GameEvent event, GameEventListener.Key key) {
-        if (event.isAlive() && key == GameEventListener.Key.ESCAPE) {
-            setVisible(false);
+    @GameShortcut(key = GameEventListener.Key.BACKSPACE)
+    public void onEscape() {
+        if (isVisible()) {
             mainPanelController.setVisible(true);
         }
     }
+
 }

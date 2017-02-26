@@ -1,11 +1,12 @@
 package org.smallbox.faraway.client.controller;
 
 import com.sun.glass.ui.Cursor;
-import org.lwjgl.opengl.Display;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 
 /**
@@ -21,13 +22,16 @@ public class MainPanelController extends LuaController {
 
     private LuaController _currentPaneController;
 
-    @Override
-    public boolean onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE && !Display.isVisible()) {
-            Cursor.setVisible(true);
-            return true;
+    @GameShortcut(key = GameEventListener.Key.ESCAPE)
+    public void onEscape() {
+        if (!isVisible()) {
+            setVisible(true);
         }
-        return false;
+//        if (key == GameEventListener.Key.ESCAPE && !Display.isVisible()) {
+//            Cursor.setVisible(true);
+//            return true;
+//        }
+//        return false;
     }
 
     @Override
@@ -36,30 +40,26 @@ public class MainPanelController extends LuaController {
     }
 
     @Override
-    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (_currentPaneController != null && key == GameEventListener.Key.ESCAPE) {
-            _currentPaneController.setVisible(false);
-            _currentPaneController = null;
-        }
-    }
-
-    @Override
     public void onFloorChange(int floor) {
         this.floor.setText("Floor " + floor);
     }
 
     public void addShortcut(String label, LuaController controller) {
-        mainGrid.addView(UILabel.create(null)
-                .setText(label)
-                .setTextSize(18)
-                .setPadding(10)
-                .setSize(170, 40)
-                .setBackgroundColor(0x349394)
-                .setFocusBackgroundColor(0x25c9cb)
-                .setOnClickListener(event -> {
-                    _currentPaneController = controller;
-                    _currentPaneController.setVisible(true);
-                }));
+        if (mainGrid != null) {
+            mainGrid.addView(UILabel.create(null)
+                    .setText(label)
+                    .setTextSize(18)
+                    .setPadding(10)
+                    .setSize(170, 40)
+                    .setId(mainGrid.getName() + "." + label)
+                    .setName(mainGrid.getName() + "." + label)
+                    .setBackgroundColor(0x349394)
+                    .setFocusBackgroundColor(0x25c9cb)
+                    .setOnClickListener(event -> {
+                        _currentPaneController = controller;
+                        _currentPaneController.setVisible(true);
+                    }));
+        }
     }
 
     public void setCurrentController(LuaController controller) {
@@ -68,5 +68,10 @@ public class MainPanelController extends LuaController {
 
     public LuaController getCurrentController() {
         return _currentPaneController;
+    }
+
+    @Override
+    protected void onNewGameUpdate(Game game) {
+
     }
 }

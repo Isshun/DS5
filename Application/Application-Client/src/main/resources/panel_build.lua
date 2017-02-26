@@ -1,8 +1,7 @@
 ui:extend({
     type = "list",
-    id = "base.ui.panel_build",
-    style = "base.style.right_panel",
-    group = "base.style.right_panel",
+    id = "base.ui.right_panel.build",
+    parent = "base.ui.right_panel",
     controller = "org.smallbox.faraway.client.controller.BuildController",
     visible = false,
     views = {

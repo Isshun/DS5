@@ -122,7 +122,7 @@ public class CharacterRenderer extends BaseRenderer {
 //                } else {
 //                    c.getLabelDrawable().setBackgroundColor(COLOR_OK);
 //                }
-//                renderer.draw(c.getLabelDrawable(), posX - ((c.getLabelDrawable().getContentWidth() - 24) / 2), posY - 8);
+//                renderer.drawPixel(c.getLabelDrawable(), posX - ((c.getLabelDrawable().getContentWidth() - 24) / 2), posY - 8);
 
                 // Selection
                 if (character.isSelected()) {
@@ -159,11 +159,11 @@ public class CharacterRenderer extends BaseRenderer {
 //                        if (targetParcel.x < parcel.x) x -= 16;
 //                        if (targetParcel.x > parcel.x) x += 16;
 //                    }
-//                    renderer.draw(job.getActionDrawable(), x, y);
+//                    renderer.drawPixel(job.getActionDrawable(), x, y);
 //                }
 //
 //                if (c.isSleeping()) {
-//                    renderer.draw(c.getSleepDrawable(), posX + 16, posY - 16);
+//                    renderer.drawPixel(c.getSleepDrawable(), posX + 16, posY - 16);
 //                }
             }
 
