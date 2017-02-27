@@ -90,6 +90,10 @@ public class GameInfo {
         return gameInfo;
     }
 
+    public static GameInfo create(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors) {
+        return create(Application.data.getRegion(planetName, regionName), worldWidth, worldHeight, worldFloors);
+    }
+
     public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight, int worldFloors) {
         assert worldWidth <= Constant.MAX_WORLD_WIDTH;
         assert worldHeight <= Constant.MAX_WORLD_HEIGHT;

@@ -84,11 +84,11 @@ public class GDXRenderer {
     }
 
     public int getWidth() {
-        return Constant.WINDOW_WIDTH;
+        return Gdx.graphics.getWidth();
     }
 
     public int getHeight() {
-        return Constant.WINDOW_HEIGHT;
+        return Gdx.graphics.getHeight();
     }
 
     public void draw(int x, int y, View view) {
@@ -200,6 +200,19 @@ public class GDXRenderer {
         }
     }
 
+    public void drawRectangleOnMap(int x, int y, int width, int height, Color color, boolean filled, int offsetX, int offsetY) {
+        if (color != null) {
+            drawRectangle(
+                    ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
+                    ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                    width,
+                    height,
+                    color,
+                    filled
+            );
+        }
+    }
+
     public void draw(int x, int y, int cacheId, SpriteCache cache) {
         if (cache != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -221,7 +234,7 @@ public class GDXRenderer {
     }
 
     public BitmapFont getFont(int size) {
-        return _fonts[size];
+        return _fonts != null ? _fonts[size] : null;
     }
 
     public void drawOnMap(int x, int y, TextureRegion region) {
@@ -239,7 +252,7 @@ public class GDXRenderer {
                 size,
                 Color.BLACK,
                 string);
-   }
+    }
 
     public void drawOnMap(int x, int y, String string, int size, Color color) {
         drawText(
@@ -248,16 +261,16 @@ public class GDXRenderer {
                 size,
                 color,
                 string);
-   }
+    }
 
-    public void drawOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
+    public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
         drawText(
                 ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
                 ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
                 size,
                 color,
                 string);
-   }
+    }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
         draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.mainRenderer.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.mainRenderer.getViewport().getPosY(), itemSprite);

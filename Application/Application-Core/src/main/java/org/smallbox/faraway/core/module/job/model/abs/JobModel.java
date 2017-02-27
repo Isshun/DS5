@@ -104,6 +104,7 @@ public abstract class JobModel extends ObjectModel {
     protected OnActionListener _onActionListener;
     private boolean             _isCreate;
     protected boolean _isAuto;
+    protected String _mainLabel = "";
     protected OnCompleteListener _onCompleteListener;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
@@ -135,6 +136,7 @@ public abstract class JobModel extends ObjectModel {
 
     public String                   getMessage() { return _message; }
     public String                   getLabel() { return _label; }
+    public String                   getMainLabel() { return _mainLabel; }
     public int                      getId() { return _id; }
     public CharacterModel           getCharacter() { return _character; }
     public CharacterModel           getCharacterRequire() { return _characterRequire; }
@@ -329,47 +331,17 @@ public abstract class JobModel extends ObjectModel {
             _onActionListener.onAction();
         }
 
-
-
         // TODO: à conserver
         _status = JobStatus.RUNNING;
 
-        JobActionReturn ret;
+        JobActionReturn ret = JobActionReturn.COMPLETE;
 
         // TODO: à conserver
         // Retourne COMPLETE si plus aucune tache n'existe
-        if (_tasks.isEmpty()) {
+        while (!_tasks.isEmpty() && ret == JobActionReturn.COMPLETE) {
             _status = JobStatus.COMPLETE;
-            ret = JobActionReturn.COMPLETE;
+            ret = actionDo(character);
         }
-
-        // Execute la tache en tête de file et la retire si elle est terminée
-        else {
-            // TODO: à conserver
-            JobTask jobTask = _tasks.peek();
-            JobTaskReturn jobTaskReturn = jobTask.action.onExecuteTask(character);
-            _label = jobTask.label;
-
-            // TODO: à conserver
-            switch (jobTaskReturn) {
-
-                case CONTINUE:
-                    ret = JobActionReturn.CONTINUE;
-                    break;
-
-                case COMPLETE:
-                    _tasks.poll();
-                    ret = JobActionReturn.CONTINUE;
-                    break;
-
-                default:
-                case INVALID:
-                    ret = JobActionReturn.ABORT;
-                    break;
-            }
-        }
-
-//        JobActionReturn ret = onAction(character);
 
         if (ret == JobActionReturn.ABORT) {
             finish();
@@ -383,7 +355,32 @@ public abstract class JobModel extends ObjectModel {
             quit(_character);
         }
 
-        return ret;
+        return JobActionReturn.CONTINUE;
+    }
+
+    private JobActionReturn actionDo(CharacterModel character) {
+
+        // Execute la tache en tête de file et la retire si elle est terminée
+        // TODO: à conserver
+        JobTask jobTask = _tasks.peek();
+        JobTaskReturn jobTaskReturn = jobTask.action.onExecuteTask(character);
+        _label = jobTask.label;
+
+        // TODO: à conserver
+        switch (jobTaskReturn) {
+
+            case CONTINUE:
+                return JobActionReturn.CONTINUE;
+
+            case COMPLETE:
+                _tasks.poll();
+                return JobActionReturn.COMPLETE;
+
+            case INVALID:
+                return JobActionReturn.ABORT;
+        }
+
+        return JobActionReturn.COMPLETE;
     }
 
     public int getProgressPercent() {

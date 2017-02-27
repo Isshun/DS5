@@ -48,18 +48,24 @@ public class GameManager implements GameObserver {
 //        }
 //    }
 
-    @Override
-    public void onGameUpdate(Game game) {
-        if (!_paused) {
-            _game.update();
-        }
-    }
-
     public interface GameCreateListener {
         void onGameCreate(Game game);
     }
 
-    public void createGame(GameInfo gameInfo, GameCreateListener listener) {
+    public interface GameUpdateListener {
+        void onGameUpdate(Game game);
+    }
+
+    public interface GameListener {
+        void onGameCreate(Game game);
+        void onGameUpdate(Game game);
+    }
+
+    public void createGame(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors, GameListener listener) {
+        createGame(GameInfo.create(planetName, regionName, worldWidth, worldHeight, worldFloors), listener);
+    }
+
+    public void createGame(GameInfo gameInfo, GameListener listener) {
         long time = System.currentTimeMillis();
 
         File gameDirectory = FileUtils.getSaveDirectory(gameInfo.name);
@@ -75,7 +81,9 @@ public class GameManager implements GameObserver {
 
         Application.runOnMainThread(() -> {
             Application.notify(observer -> observer.onGameCreate(_game));
-            listener.onGameCreate(_game);
+            if (listener != null) {
+                listener.onGameCreate(_game);
+            }
         });
 
 //        Application.gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
@@ -87,6 +95,22 @@ public class GameManager implements GameObserver {
 
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
+
+        // Launch world thread
+        Application.taskManager.launchBackgroundThread(() -> {
+            try {
+                if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED && !_paused) {
+                    _game.update();
+                    Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
+                    if (listener != null) {
+                        listener.onGameUpdate(_game);
+                    }
+                }
+            } catch (Exception e) {
+                Log.error(e);
+            }
+        }, Application.APPLICATION_CONFIG.game.updateInterval);
+
 //        worldFactory.createLandSite(game);
 
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");

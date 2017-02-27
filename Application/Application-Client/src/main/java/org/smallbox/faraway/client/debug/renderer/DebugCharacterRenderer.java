@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.debug;
+package org.smallbox.faraway.client.debug.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@GameRenderer(level = 999)
+@GameRenderer(level = 999, visible = false)
 public class DebugCharacterRenderer extends BaseRenderer {
 
     @BindModule
@@ -29,11 +29,6 @@ public class DebugCharacterRenderer extends BaseRenderer {
     private int _index;
 
     private CharacterModel _character;
-
-    @Override
-    public void onGameCreate(Game game) {
-        setVisibility(false);
-    }
 
     @Override
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {

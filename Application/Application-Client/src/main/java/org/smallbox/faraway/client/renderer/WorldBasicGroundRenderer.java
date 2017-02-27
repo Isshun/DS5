@@ -12,7 +12,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@GameRenderer(level = MainRenderer.WORLD_GROUND_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.WORLD_GROUND_RENDERER_LEVEL, visible = true)
 public class WorldBasicGroundRenderer extends BaseRenderer {
 
     @BindModule

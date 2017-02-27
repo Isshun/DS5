@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by Alex on 31/07/2016.
  */
-@GameRenderer(level = MainRenderer.CONSUMABLE_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.CONSUMABLE_RENDERER_LEVEL, visible = true)
 public class ConsumableRenderer extends BaseRenderer {
 
     @BindModule
@@ -65,10 +65,13 @@ public class ConsumableRenderer extends BaseRenderer {
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         consumableModule.getConsumables().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
-                .forEach(consumable -> renderer.drawOnMap(consumable.getParcel(), getItemSprite(consumable)));
+                .forEach(consumable -> {
+                    renderer.drawOnMap(consumable.getParcel(), getItemSprite(consumable));
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getQuantity(), 12, Color.BLUE, 0, 0);
+                });
 
-        tags.removeIf(draw -> draw.frameLeft < 0);
-        tags.forEach(draw -> draw.onTagDraw(renderer, viewport));
+//        tags.removeIf(draw -> draw.frameLeft < 0);
+//        tags.forEach(draw -> draw.onTagDraw(renderer, viewport));
     }
 
     private Sprite getItemSprite(ConsumableItem consumable) {

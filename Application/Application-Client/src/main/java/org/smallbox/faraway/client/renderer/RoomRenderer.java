@@ -45,7 +45,7 @@
 //                        TextureRegion texture = _regions[0];
 ////                        TextureRegion texture = Application.userInterface.getSelector().getSelectedRoom() == parcel.getRoom() ? _regionsSelected[0] : _regions[0];
 //                        for (ParcelModel parcel : room.getParcels()) {
-//                            renderer.drawOnMap(texture, parcel.x, parcel.y);
+//                            renderer.drawTextOnMap(texture, parcel.x, parcel.y);
 //                        }
 //                    }
 //                }

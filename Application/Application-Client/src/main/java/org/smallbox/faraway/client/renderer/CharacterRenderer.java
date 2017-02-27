@@ -15,7 +15,7 @@ import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
 
-@GameRenderer(level = MainRenderer.CHARACTER_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.CHARACTER_RENDERER_LEVEL, visible = true)
 public class CharacterRenderer extends BaseRenderer {
 
     @BindModule

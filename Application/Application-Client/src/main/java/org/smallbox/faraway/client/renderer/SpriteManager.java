@@ -483,7 +483,7 @@ public class SpriteManager {
 
         Sprite sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
-            Texture texture = new Texture(c.getType().path);
+            Texture texture = new Texture(FileUtils.getFileHandle(c.getType().path));
 
             sprite = new Sprite(texture, 0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT);
             sprite.setFlip(false, true);

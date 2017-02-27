@@ -60,6 +60,10 @@ public class Log {
         logger.warning(message);
     }
 
+    public static void warning(Class cls, String message, Object... objects) {
+        logger.warning(cls.getName() + ": " + String.format(message, objects));
+    }
+
     public static void warning(String message, Object... objects) {
         warning(String.format(message, objects));
     }
@@ -138,7 +142,9 @@ public class Log {
     }
 
     public static void info(Class cls, String message, Object... args) {
-        info(cls.getSimpleName() + " - " + String.format(message, args));
+        if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
+            print(Level.INFO, "[" + cls.getSimpleName() + "] " + String.format(message, args));
+        }
     }
 
     public static void info(String message, Object... args) {

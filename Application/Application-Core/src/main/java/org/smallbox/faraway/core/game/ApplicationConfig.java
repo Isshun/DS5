@@ -19,11 +19,12 @@ public class ApplicationConfig {
         public int              environmentDistance = 5;
         public int              maxNearDistance = 32;
         public int              tickPerHour = 50;
-        public int              updateInterval = 500;
+        public int              updateInterval = 1000;
     }
 
     public ApplicationConfigScreenInfo screen = new ApplicationConfigScreenInfo();
     public ApplicationConfigGameInfo game = new ApplicationConfigGameInfo();
+    public boolean              launchGui = true;
     public double               uiScale = 1;
     public String               lang = "en";
 }

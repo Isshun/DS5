@@ -18,8 +18,8 @@ import org.smallbox.faraway.util.MoveListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
@@ -28,7 +28,7 @@ public abstract class CharacterModel extends MovableModel {
 //    private UILabel _label;
     private PathModel _path;
     private PathModel _lastPath;
-    private Map<ItemInfo, Integer> _inventory2 = new HashMap<>();
+    private Map<ItemInfo, Integer> _inventory2 = new ConcurrentHashMap<>();
 
 //    public UILabel getLabelDrawable() {
 //        if (_label == null) {
@@ -106,7 +106,14 @@ public abstract class CharacterModel extends MovableModel {
     public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableItem getInventory() { return _inventory; }
-    public int                          getInventoryQuantity(ItemInfo itemInfo) { return _inventory2.get(itemInfo); }
+    public int                          getInventoryQuantity(ItemInfo itemInfo) {
+        for (Map.Entry<ItemInfo, Integer> entry: _inventory2.entrySet()) {
+            if (entry.getKey().instanceOf(itemInfo)) {
+                return entry.getValue();
+            }
+        }
+        return 0;
+    }
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
     public abstract String[][]          getEquipmentViewIds();
     public abstract String              getEquipmentViewPath();
@@ -427,6 +434,10 @@ public abstract class CharacterModel extends MovableModel {
 
     public void apply(ItemInfo.ItemConsumeInfo consume) {
         getNeeds().use(consume.effects, consume.cost);
+    }
+
+    public void addInventory(String itemName, int quantity) {
+        addInventory(Application.data.getItemInfo(itemName), quantity);
     }
 
     public void addInventory(ItemInfo itemInfo, int quantity) {

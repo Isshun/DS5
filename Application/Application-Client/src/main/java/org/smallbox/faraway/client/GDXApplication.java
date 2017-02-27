@@ -8,17 +8,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.google.gson.Gson;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.game.ApplicationConfig;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.task.LoadTask;
-import org.smallbox.faraway.util.Log;
 
 import java.io.File;
-import java.io.FileReader;
 import java.util.function.Consumer;
 
 public class GDXApplication extends ApplicationAdapter {
@@ -35,25 +29,12 @@ public class GDXApplication extends ApplicationAdapter {
         _callback = callback;
     }
 
-    public static abstract class GameTestCallback {
-        public boolean _quit;
-
-        public abstract void onApplicationReady();
-        public abstract void onGameUpdate(long tick);
-        public void quit() {
-            _quit = true;
-        }
+    public interface GameTestCallback {
+        void onApplicationReady();
     }
 
     @Override
     public void create () {
-        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
-            Log.info("Load application APPLICATION_CONFIG");
-            try (FileReader fileReader = new FileReader(new File(Application.BASE_PATH, "data/config.json"))) {
-                return new Gson().fromJson(fileReader, ApplicationConfig.class);
-            }
-        });
-
         _batch = new SpriteBatch();
 
         _systemFont = new BitmapFont(
@@ -92,7 +73,8 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Load modules", false, () ->
                 Application.moduleManager.loadModules(null));
 
-        Application.taskManager.addLoadTask("Load server lua modules", false, Application.luaModuleManager::init);
+        Application.taskManager.addLoadTask("Load server lua modules", false, () -> Application.luaModuleManager.init(true));
+        Application.taskManager.addLoadTask("Load server lua modules", false, () -> ApplicationClient.luaModuleManager.init(true));
 
 //        Application.taskManager.addLoadTask("Load client lua modules", false, ApplicationClient.luaModuleManager::init);
 
@@ -127,20 +109,7 @@ public class GDXApplication extends ApplicationAdapter {
             Application.isLoaded = true;
         });
 
-        // Launch world thread
-        Application.taskManager.addLoadTask("Launch world thread", false, () ->
-                Application.taskManager.launchBackgroundThread(() -> {
-                    try {
-                        if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
-                            Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
-                            if (_callback != null) {
-                                _callback.onGameUpdate(Application.gameManager.getGame().getTick());
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.error(e);
-                    }
-                }, Application.APPLICATION_CONFIG.game.updateInterval));
+//        Application.taskManager.addLoadTask("Launch world thread", false, () ->
     }
 
     @Override

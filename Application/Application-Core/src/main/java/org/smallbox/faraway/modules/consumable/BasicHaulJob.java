@@ -89,6 +89,7 @@ public class BasicHaulJob extends JobModel {
     }
 
     public BasicHaulJob(ConsumableItem consumable, int haulingQuantity, ParcelModel targetParcel) {
+        _mainLabel = "Haul " + consumable.getInfo().label;
         _targetParcel = targetParcel;
         _consumable = consumable;
         _consumableInfo = consumable.getInfo();

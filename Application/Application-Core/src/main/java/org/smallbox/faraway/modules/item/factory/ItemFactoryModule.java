@@ -84,9 +84,11 @@ public class ItemFactoryModule extends GameModule {
     private void actionCheckComponents(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt()) {
             if (factory.getRunningReceipt().receiptInfo.inputs.stream().anyMatch(ReceiptInputInfo -> !hasEnoughConsumables(ReceiptInputInfo, item))) {
-                factory.setMessage("not enough component");
+                if (factory.getRunningReceipt().receiptInfo.inputs.stream().anyMatch(ReceiptInputInfo -> !hasEnoughConsumables(ReceiptInputInfo, item))) {
+                    factory.setMessage("not enough component");
 
-                actionClear(item, factory);
+                    actionClear(item, factory);
+                }
             }
         }
     }
@@ -171,6 +173,16 @@ public class ItemFactoryModule extends GameModule {
                 public boolean onCraft() {
                     // Incrémente la variable count de la recette (état d'avancement)
                     return factory.getRunningReceipt().decreaseCostRemaining() == 0;
+                }
+
+                @Override
+                public int getCost() {
+                    return factory.getRunningReceipt().getCost();
+                }
+
+                @Override
+                public int getCostRemaining() {
+                    return factory.getRunningReceipt().getCostRemaining();
                 }
             };
 

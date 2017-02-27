@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.structure.StructureModule;
 
-@GameRenderer(level = MainRenderer.STRUCTURE_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.STRUCTURE_RENDERER_LEVEL, visible = true)
 public class StructureTopRenderer extends BaseRenderer {
 
     @BindComponent

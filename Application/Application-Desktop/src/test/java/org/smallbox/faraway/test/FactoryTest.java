@@ -2,39 +2,41 @@ package org.smallbox.faraway.test;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 
 public class FactoryTest extends TestBase {
 
     @Test
     public void test1() throws InterruptedException {
-        launchApplication(new GDXApplication.GameTestCallback() {
-            @Override
-            public void onApplicationReady() {
-                Application.gameManager.createGame(GameInfo.create(Application.data.getRegion("base.planet.corrin", "mountain"), 12, 16, 2), game -> {
-                    Application.moduleManager.getModule(CharacterModule.class).addRandom();
-                    Application.moduleManager.getModule(ItemModule.class).addItem(Application.data.getItemInfo("base.cooker"), true, 4, 4, 1);
-                    Application.moduleManager.getModule(ConsumableModule.class).create(Application.data.getItemInfo("base.vegetable"), 100, 0, 0, 1);
-                });
-            }
+        launchApplication(() ->
 
-            @Override
-            public void onGameUpdate(long tick) {
-                System.out.println("Game update: " + tick);
+                Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
 
-                if (tick == 4000) {
-                    Assert.assertEquals(0, Application.moduleManager.getModule(ConsumableModule.class).getTotal(Application.data.getItemInfo("base.vegetable")));
-                    Assert.assertEquals(1, Application.moduleManager.getModule(ConsumableModule.class).getTotal(Application.data.getItemInfo("base.easy_meal")));
-                    quit();
-                }
-            }
-        });
+                    @Override
+                    public void onGameCreate(Game game) {
+                        characterModule.addRandom().addInventory("base.vegetable_rice", 10);
+                        itemModule.addItem("base.cooker", true, 4, 4, 1);
+                        consumableModule.addConsumable("base.vegetable_rice", 10, 2, 10, 1);
+                        consumableModule.addConsumable("base.vegetable_carrot", 10, 4, 10, 1);
+                    }
 
-        Thread.sleep(10000);
+                    @Override
+                    public void onGameUpdate(Game game) {
+                        if (game.getTick() == 100) {
+                            Assert.assertEquals(0, consumableModule.getTotal("base.vegetable_rice"));
+                            Assert.assertEquals(0, consumableModule.getTotal("base.vegetable_carrot"));
+                            Assert.assertEquals(20, consumableModule.getTotal("base.easy_meal"));
+                            complete();
+                        }
+                    }
+
+                }));
+
+//        Assert.assertEquals(20, consumableModule.getTotal("base.easy_meal"));
+
+        testComplete = true;
     }
+
 }

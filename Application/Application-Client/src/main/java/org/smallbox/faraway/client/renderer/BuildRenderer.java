@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
-@GameRenderer(level = MainRenderer.CHARACTER_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.CHARACTER_RENDERER_LEVEL, visible = true)
 public class BuildRenderer extends BaseRenderer {
 
     @BindLuaController

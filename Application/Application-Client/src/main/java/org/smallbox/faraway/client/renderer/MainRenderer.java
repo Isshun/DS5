@@ -99,11 +99,11 @@ public class MainRenderer implements GameClientObserver {
     @Override
     public void onGameRender(Game game) {
         // Draw
-        if (!Application.gameManager.isRunning()) {
+        if (Application.gameManager.isRunning()) {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        ApplicationClient.mainRenderer.onDraw(ApplicationClient.gdxRenderer, _viewport, _animationProgress);
+        ApplicationClient.mainRenderer.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress);
 
         if (game.isRunning()) {
             if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
@@ -131,7 +131,7 @@ public class MainRenderer implements GameClientObserver {
 //        ApplicationClient.uiManager.clearViews();
 //    }
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         long time = System.currentTimeMillis();
 
         //noinspection Convert2streamapi

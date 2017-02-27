@@ -60,6 +60,7 @@ public class FactoryReceiptModel {
     public List<FactoryShoppingItemModel>   getShoppingList() { return _shoppingList; }
     public boolean                          isFull() { return _isFull; }
     public int                              getCostRemaining() { return _costRemaining; }
+    public int                              getCost() { return receiptInfo.cost; }
     public int                              setCostRemaining(int costRemaining) { _costRemaining = costRemaining; return _costRemaining; }
     public int                              decreaseCostRemaining() { return --_costRemaining; }
 

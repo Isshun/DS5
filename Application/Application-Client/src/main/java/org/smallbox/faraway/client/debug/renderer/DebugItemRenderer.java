@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.debug;
+package org.smallbox.faraway.client.debug.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
@@ -9,14 +9,13 @@ import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModule;
 
 /**
  * Created by Alex on 31/07/2016.
  */
-@GameRenderer(level = MainRenderer.CONSUMABLE_RENDERER_LEVEL + 1)
+@GameRenderer(level = MainRenderer.CONSUMABLE_RENDERER_LEVEL + 1, visible = false)
 public class DebugItemRenderer extends BaseRenderer {
 
     @BindModule
@@ -24,11 +23,6 @@ public class DebugItemRenderer extends BaseRenderer {
 
     @BindModule
     private JobModule jobModule;
-
-    @Override
-    public void onGameCreate(Game game) {
-        setVisibility(true);
-    }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         itemModule.getItems()
@@ -41,12 +35,12 @@ public class DebugItemRenderer extends BaseRenderer {
                         }
                     }
 
-                    renderer.drawOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.BLACK, 1, 1);
+                    renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.BLACK, 1, 1);
                     renderer.drawOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.WHITE);
 
                     if (item.getFactory() != null) {
-                        renderer.drawOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.BLACK, 1, 17);
-                        renderer.drawOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.WHITE, 0, 16);
+                        renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.BLACK, 1, 17);
+                        renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.WHITE, 0, 16);
                     }
                 });
     }

@@ -135,20 +135,22 @@ public class DependencyInjector {
 
     // TODO: methode appelée plusieurs fois (2)
     private void injectShortcut(Object host) {
-        for (Method method: host.getClass().getDeclaredMethods()) {
-            method.setAccessible(true);
-            GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
-            if (gameShortcut != null && !_gameShortcut.contains(gameShortcut)) {
-                _gameShortcut.add(gameShortcut);
+        if (_clientInterface != null) {
+            for (Method method : host.getClass().getDeclaredMethods()) {
+                method.setAccessible(true);
+                GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
+                if (gameShortcut != null && !_gameShortcut.contains(gameShortcut)) {
+                    _gameShortcut.add(gameShortcut);
 
-                Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                _clientInterface.onShortcutBinding(host.getClass().getName() + method.getName(), gameShortcut.key(), () -> {
-                    try {
-                        method.invoke(host);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                });
+                    Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
+                    _clientInterface.onShortcutBinding(host.getClass().getName() + method.getName(), gameShortcut.key(), () -> {
+                        try {
+                            method.invoke(host);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
             }
         }
     }
@@ -198,11 +200,15 @@ public class DependencyInjector {
         T getModel() throws IOException;
     }
 
-    public <T> void registerModel(Class<T> cls, RegisterModelCallback callback) {
+    public <T> T registerModel(Class<T> cls, RegisterModelCallback<T> callback) {
         try {
-            _models.put(cls, callback.getModel());
+            T model = callback.getModel();
+            _models.put(cls, model);
+            return model;
         } catch (IOException e) {
             Log.error(e);
         }
+
+        return null;
     }
 }

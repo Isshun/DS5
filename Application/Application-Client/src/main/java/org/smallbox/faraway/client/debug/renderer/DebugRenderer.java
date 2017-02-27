@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.debug;
+package org.smallbox.faraway.client.debug.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.GameEvent;
@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@GameRenderer(level = 999)
+@GameRenderer(level = 999, visible = false)
 public class DebugRenderer extends BaseRenderer {
 
     @BindModule
@@ -42,11 +42,7 @@ public class DebugRenderer extends BaseRenderer {
     private int _index;
 
     private Map<String, String> _data = new HashMap<>();
-
-    @Override
-    public void onGameCreate(Game game) {
-        setVisibility(false);
-
+    {
         _data.put("Cursor screen position", "");
         _data.put("Cursor world position", "");
     }
@@ -115,10 +111,7 @@ public class DebugRenderer extends BaseRenderer {
     }
 
     private void drawDebugConsumableInfo(GDXRenderer renderer, ItemInfo itemInfo, int quantity) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(itemInfo.label).append(" x ").append(quantity);
-
-        drawDebug(renderer, "Consumable", sb.toString());
+        drawDebug(renderer, "Consumable", itemInfo.label + " x " + quantity);
     }
 
     private void drawDebugCharacter(GDXRenderer renderer, CharacterModel character) {
@@ -136,11 +129,6 @@ public class DebugRenderer extends BaseRenderer {
         _data.put("Cursor world position", ApplicationClient.mainRenderer.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.mainRenderer.getViewport().getWorldPosY(event.mouseEvent.y));
     }
 
-    @GameShortcut(key = GameEventListener.Key.F12)
-    public void onToggleVisibility() {
-        toggleVisibility();
-    }
-
     private void drawDebug(GDXRenderer renderer, String label, Object object) {
         renderer.drawText(12, (_index * 20) + 12, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
         renderer.drawText(11, (_index * 20) + 11, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
@@ -152,4 +140,10 @@ public class DebugRenderer extends BaseRenderer {
     public void onGameUpdate(Game game) {
         _lastUpdate = System.currentTimeMillis();
     }
+
+    @GameShortcut(key = GameEventListener.Key.F12)
+    public void onToggleVisibility() {
+        toggleVisibility();
+    }
+
 }

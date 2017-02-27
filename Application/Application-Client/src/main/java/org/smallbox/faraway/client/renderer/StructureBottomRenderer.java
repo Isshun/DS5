@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.modules.structure.StructureModule;
 
-@GameRenderer(level = MainRenderer.WORLD_TOP_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.WORLD_TOP_RENDERER_LEVEL, visible = true)
 public class StructureBottomRenderer extends BaseRenderer {
     @BindModule
     private StructureModule _structureModule;

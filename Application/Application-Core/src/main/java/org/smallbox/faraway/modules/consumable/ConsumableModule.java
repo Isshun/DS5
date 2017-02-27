@@ -45,6 +45,10 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     private Collection<ConsumableItem> _consumables;
 
+    public void addConsumable(String itemName, int quantity, int x, int y, int z) {
+        addConsumable(Application.data.getItemInfo(itemName), quantity, x, y, z);
+    }
+
     public void addConsumable(ItemInfo itemInfo, int quantity, int x, int y, int z) {
         ParcelModel parcel = WorldHelper.getParcel(x, y, z);
 
@@ -161,8 +165,10 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         if (consumable != null && consumable.getParcel() != null && consumable.getQuantity() > 0) {
 
+            // Retourne le consomable déjà existant s'il contient exactement la quantité demandée
             if (consumable.getQuantity() == desiredQuantity) {
                 ParcelModel parcel = consumable.getParcel();
+                consumable.setParcel(null);
                 _consumables.remove(consumable);
 
                  // TODO
@@ -175,6 +181,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 return consumable;
             }
 
+            // Sinon crée un nouveau consomable
             else {
                 int quantity = Math.min(desiredQuantity, consumable.getQuantity());
                 consumable.addQuantity(-quantity);
@@ -308,6 +315,10 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         if (parcel != null) {
             create(itemInfo, quantity, parcel);
         }
+    }
+
+    public int getTotal(String itemName) {
+        return getTotal(Application.data.getItemInfo(itemName));
     }
 
     public int getTotal(ItemInfo itemInfo) {

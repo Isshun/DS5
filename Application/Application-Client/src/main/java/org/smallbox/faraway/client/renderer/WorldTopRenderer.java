@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
 
-@GameRenderer(level = MainRenderer.WORLD_TOP_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.WORLD_TOP_RENDERER_LEVEL, visible = true)
 public class WorldTopRenderer extends BaseRenderer {
 
     @BindModule

@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.GameRenderer;
 /**
  * Created by Alex on 24/11/2016.
  */
-@GameRenderer(level = 1)
+@GameRenderer(level = 1, visible = true)
 public class UIRenderer extends BaseRenderer {
 
     @Override

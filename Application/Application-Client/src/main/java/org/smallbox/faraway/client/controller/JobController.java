@@ -35,7 +35,7 @@ public class JobController extends LuaController {
 
         jobModule.getJobs().forEach(job -> {
             UILabel lbJob = new UILabel(null);
-            lbJob.setDashedString(job.getLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 42);
+            lbJob.setDashedString(job.getMainLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 42);
             lbJob.setSize(300, 22);
             listJobs.addView(lbJob);
         });

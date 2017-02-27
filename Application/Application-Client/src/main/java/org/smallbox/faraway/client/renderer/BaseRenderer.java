@@ -29,11 +29,13 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
 
     public BaseRenderer() {
         _isThirdParty = false;
+        _isVisible = getClass().getAnnotation(GameRenderer.class).visible();
         Application.dependencyInjector.register(this);
     }
 
     public BaseRenderer(boolean isThirdParty) {
         _isThirdParty = isThirdParty;
+        _isVisible = getClass().getAnnotation(GameRenderer.class).visible();
         Application.dependencyInjector.register(this);
     }
 

@@ -38,7 +38,8 @@ public class LuaControllerManager implements GameObserver {
 
     @Override
     public void onGameStart(Game game) {
-        ApplicationClient.luaModuleManager.init();
+        // TODO ?
+//        ApplicationClient.luaModuleManager.init();
 
         // Invoke controllers
         _controllers = new Reflections("org.smallbox.faraway").getSubTypesOf(LuaController.class).stream()
@@ -113,7 +114,7 @@ public class LuaControllerManager implements GameObserver {
      * @param cls Controller to invoke
      */
     private LuaController invokeController(Class<? extends LuaController> cls) {
-        Log.info("LuaController: Invoke controller %s", cls.getName());
+        Log.info(LuaControllerManager.class, "Invoke controller %s", cls.getName());
         try {
             Constructor constructor = cls.getConstructor();
             constructor.setAccessible(true);

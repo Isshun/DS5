@@ -17,7 +17,7 @@ import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-@GameRenderer(level = MainRenderer.MINI_MAP_LEVEL)
+@GameRenderer(level = MainRenderer.MINI_MAP_LEVEL, visible = true)
 public class MinimapRenderer extends BaseRenderer {
     //    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
     private static final int    COLOR_ROCK = 0x60442dff;

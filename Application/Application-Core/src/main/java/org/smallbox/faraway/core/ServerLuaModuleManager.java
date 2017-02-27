@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
-import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 
@@ -28,7 +27,7 @@ public class ServerLuaModuleManager extends LuaModuleManager {
                 CoerceJavaToLua.coerce(new LuaDataModel() {
                     @Override
                     public void extend(LuaValue values) {
-                        Log.debug("Load lua data: " + values.get("name").toString());
+//                        Log.debug("Load lua data: " + values.get("name").toString());
                         if (!values.get("type").isnil()) {
                             extendLuaValue(module, values, globals, dataDirectory);
                         } else {

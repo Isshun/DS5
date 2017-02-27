@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@GameRenderer(level = MainRenderer.WORLD_GROUND_RENDERER_LEVEL)
+@GameRenderer(level = MainRenderer.WORLD_GROUND_RENDERER_LEVEL, visible = true)
 public class WorldGroundRenderer extends BaseRenderer {
     private static final int CHUNK_SIZE = 16;
     private static final int TOP_LEFT = 0b10000000;

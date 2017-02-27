@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.item;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -167,6 +168,10 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
             notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
         }
+    }
+
+    public void addItem(String itemName, boolean isComplete, int x, int y, int z) {
+        addItem(Application.data.getItemInfo(itemName), isComplete, x, y, z);
     }
 
     public void addItem(ItemInfo itemInfo, boolean isComplete, int x, int y, int z) {

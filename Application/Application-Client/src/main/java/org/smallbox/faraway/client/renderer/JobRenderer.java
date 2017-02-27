@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.core.GameRenderer;
 
-@GameRenderer(level = 2)
+@GameRenderer(level = 2, visible = true)
 public class JobRenderer extends BaseRenderer {
     private int[][]         _areas;
     private int             _floor;

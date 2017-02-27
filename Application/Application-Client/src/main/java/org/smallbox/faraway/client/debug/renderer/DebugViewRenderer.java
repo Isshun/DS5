@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.debug;
+package org.smallbox.faraway.client.debug.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
@@ -17,7 +17,7 @@ import org.smallbox.faraway.util.CollectionUtils;
 /**
  * Created by Alex on 31/07/2016.
  */
-@GameRenderer(level = 2)
+@GameRenderer(level = 2, visible = false)
 public class DebugViewRenderer extends BaseRenderer {
 
     @BindComponent
@@ -25,11 +25,6 @@ public class DebugViewRenderer extends BaseRenderer {
 
     @BindComponent
     private UIEventManager uiEventManager;
-
-    @Override
-    public void onGameCreate(Game game) {
-        setVisibility(false);
-    }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
         uiManager.getRootViews().forEach(rootView -> drawViewRecurse(renderer, rootView.getView()));

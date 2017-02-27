@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.item.factory;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
@@ -11,15 +12,30 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
  */
 public abstract class BasicCraftJob extends JobModel {
 
+    private long _startTick;
+    private long _endTick;
+
     public BasicCraftJob(ParcelModel targetParcel) {
+        _mainLabel = "Craft";
         _targetParcel = targetParcel;
 
         // Apporte les composants à la fabrique
         addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
-        addTask("Craft item", character -> onCraft() ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+        addTask("Craft item", character -> {
+            if (_startTick == 0) {
+                _startTick = Application.gameManager.getGame().getTick();
+                _endTick = Application.gameManager.getGame().getTick() + getCostRemaining();
+            }
+            return onCraft() ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+        });
     }
 
     public abstract boolean onCraft();
+    public abstract int getCost();
+    public abstract int getCostRemaining();
+
+    public long getStartTick() { return _startTick; }
+    public long getEndTick() { return _endTick; }
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {

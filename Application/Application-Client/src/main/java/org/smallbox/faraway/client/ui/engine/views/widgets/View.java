@@ -532,7 +532,7 @@ public abstract class View implements Comparable<View> {
                 return (_parent.getWidth() / 2) - (_width / 2) + _x;
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return _parent.getWidth() - _x;
+                return _parent.getWidth() - _width - _x;
             }
         }
 
@@ -542,7 +542,7 @@ public abstract class View implements Comparable<View> {
                 return (ApplicationClient.gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return ApplicationClient.gdxRenderer.getWidth() - _x;
+                return ApplicationClient.gdxRenderer.getWidth() - _width - _x;
             }
         }
 
