@@ -43,8 +43,6 @@ public class ParcelTooltipController extends LuaController {
 
         // Display parcel information
         if (parcel != null) {
-//            setVisible(true);
-
             lbPosition.setText(worldX + " x " + worldY + " x " + worldZ);
             lbGroundInfo.setText(parcel.getGroundInfo() != null ? parcel.getGroundInfo().label : null);
             lbRockInfo.setText(parcel.getRockInfo() != null ? parcel.getRockInfo().label : null);
@@ -55,7 +53,6 @@ public class ParcelTooltipController extends LuaController {
         // No parcel - hide view
         else {
             tooltipController.removeSubView("parcel");
-//            setVisible(false);
         }
 
     }

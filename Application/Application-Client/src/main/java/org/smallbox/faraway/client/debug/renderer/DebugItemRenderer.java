@@ -24,7 +24,7 @@ public class DebugItemRenderer extends BaseRenderer {
     @BindModule
     private JobModule jobModule;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getItems()
                 .stream()
                 .filter(item -> item.getParcel().z == viewport.getFloor())

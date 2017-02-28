@@ -306,6 +306,15 @@ public abstract class JobModel extends ObjectModel {
         _tasks.add(new JobTask(label, jobTaskAction));
     }
 
+    public void addTechnicalTask(String label, JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
+
+        if (_tasks.isEmpty()) {
+            _label = label;
+        }
+
+        _tasks.add(new JobTechnicalTask(label, jobTechnicalTaskAction));
+    }
+
     public JobActionReturn action(CharacterModel character) {
 
         // TODO: à supprimer

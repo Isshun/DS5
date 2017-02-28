@@ -101,7 +101,7 @@ public class WorldGroundRenderer extends BaseRenderer {
         _rockLayersUpToDate[parcel.x / CHUNK_SIZE][parcel.y / CHUNK_SIZE] = false;
     }
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = Math.max((int) ((-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale()), 0);
         int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale()), 0);
         int toX = Math.min(fromX + 50, Application.gameManager.getGame().getInfo().worldWidth);
@@ -126,10 +126,6 @@ public class WorldGroundRenderer extends BaseRenderer {
                 renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_WIDTH), viewportY + (row * CHUNK_SIZE * Constant.TILE_HEIGHT), _rockLayers[col][row]);
             }
         }
-    }
-
-    @Override
-    public void onRefresh(int frame) {
     }
 
     private boolean repeatTile(int x, int y, int z) {

@@ -60,11 +60,7 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     public void onReloadUI() {
-        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel");
-    }
-
-    @Override
-    public void onRefresh(int frame) {
+        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel.content");
     }
 
     @Override
@@ -93,7 +89,7 @@ public class MinimapRenderer extends BaseRenderer {
     protected void onGameUpdate() {
     }
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (_panelMain != null && _panelMain.isVisible()) {
             int width = (int) (FRAME_WIDTH * Application.APPLICATION_CONFIG.uiScale);
             int height = (int) (FRAME_HEIGHT * Application.APPLICATION_CONFIG.uiScale);

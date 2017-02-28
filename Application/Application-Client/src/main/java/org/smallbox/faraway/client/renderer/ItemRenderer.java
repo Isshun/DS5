@@ -22,9 +22,9 @@ public class ItemRenderer extends BaseRenderer {
 
     private int                 _frame;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getItems().stream()
-//                .filter(item -> viewport.hasParcel(item.getParcel()))
+                .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
                     ParcelModel parcel = item.getParcel();
 //                    item.getFactory().getRunningReceipt().getCostRemaining()
@@ -39,8 +39,8 @@ public class ItemRenderer extends BaseRenderer {
                         long tickTotal = endTick - startTick;
                         double progress = tickTotal > 0 ? (tickFromStart + 1) / (double)tickTotal : 0;
 
-                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (100 * progress), 6, Color.BLUE, true, 0, 0);
-                        renderer.drawRectangleOnMap(parcel.x, parcel.y, 100, 6, Color.CHARTREUSE, false, 0, 0);
+                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * progress), 6, Color.BLUE, true, 0, 0);
+                        renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 6, Color.CHARTREUSE, false, 0, 0);
                     }
 
                 });

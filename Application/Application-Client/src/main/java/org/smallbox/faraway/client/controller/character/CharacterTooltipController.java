@@ -52,11 +52,7 @@ public class CharacterTooltipController extends LuaController {
             CharacterModel character = characterModule.getCharacter(parcel);
 
             if (character != null) {
-
-//                setVisible(true);
-//
-//                lbName.setText(character.getName());
-
+                lbName.setText(character.getName());
                 tooltipController.addSubView("character", getRootView());
             }
 

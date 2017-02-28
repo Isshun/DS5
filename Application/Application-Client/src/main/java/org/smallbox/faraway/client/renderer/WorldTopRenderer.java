@@ -33,7 +33,7 @@ public class WorldTopRenderer extends BaseRenderer {
     protected void onGameUpdate() {
     }
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
         int fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
         int toX = Math.min(_width, fromX + 50);
@@ -62,10 +62,6 @@ public class WorldTopRenderer extends BaseRenderer {
                 }
             }
         }
-    }
-
-    @Override
-    public void onRefresh(int frame) {
     }
 
     public void onDrawSelected(GDXRenderer renderer, Viewport viewport, double animProgress) {

@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -31,7 +30,7 @@ public class DebugCharacterRenderer extends BaseRenderer {
     private CharacterModel _character;
 
     @Override
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
         renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
 

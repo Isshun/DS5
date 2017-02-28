@@ -62,7 +62,7 @@ public class ConsumableRenderer extends BaseRenderer {
         });
     }
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         consumableModule.getConsumables().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(consumable -> {

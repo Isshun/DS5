@@ -7,7 +7,7 @@ public class JobRenderer extends BaseRenderer {
     private int[][]         _areas;
     private int             _floor;
 
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         //TODO
 //        if (_areas == null) {
 //            _areas = new int[Application.gameManager.getGame().getInfo().worldWidth][Application.gameManager.getGame().getInfo().worldHeight];
@@ -23,10 +23,6 @@ public class JobRenderer extends BaseRenderer {
 //                }));
     }
 
-
-    @Override
-    public void onRefresh(int frame) {
-    }
 
     @Override
     public void onFloorChange(int floor) {

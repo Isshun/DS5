@@ -3,8 +3,10 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -21,9 +23,6 @@ public class TooltipController extends LuaController {
     @BindLua
     private UILabel lbName;
 
-    @BindLua
-    private View subView;
-
     @BindModule
     private WorldModule worldModule;
 
@@ -36,19 +35,51 @@ public class TooltipController extends LuaController {
     private Map<String, View> subViews = new ConcurrentHashMap<>();
 
     public void addSubView(String name, View view) {
-        subViews.forEach((s, view1) -> view1.setVisible(false));
         subViews.put(name, view);
-        view.setVisible(true);
 
-        StringBuilder sb = new StringBuilder();
-        subViews.entrySet().forEach(entry -> sb.append(entry.getKey() != null ? entry.getKey() : ""));
-        lbName.setText(sb.toString());
+        refreshLabels();
     }
 
     public void removeSubView(String name) {
-        View view = subViews.get(name);
-        if (view != null) {
-            view.setVisible(false);
+        subViews.remove(name);
+
+        for (View subView: subViews.values()) {
+            subView.setVisible(true);
+            break;
+        }
+
+        refreshLabels();
+    }
+
+    private void refreshLabels() {
+        StringBuilder sb = new StringBuilder();
+        subViews.entrySet().forEach(entry -> {
+            if (entry.getValue().isVisible()) {
+                sb.append("[").append(entry.getKey().toUpperCase()).append("] ");
+            } else {
+                sb.append(" ").append(entry.getKey()).append("  ");
+            }
+        });
+        lbName.setText(sb.toString());
+    }
+
+    @GameShortcut(key = GameEventListener.Key.TAB)
+    public void onNextView() {
+        boolean selectNext = false;
+        for (View view: subViews.values()) {
+            if (selectNext) {
+                view.setVisible(true);
+                refreshLabels();
+                return;
+            }
+            if (view.isVisible()) {
+                selectNext = true;
+            }
+        }
+        for (View view: subViews.values()) {
+            view.setVisible(true);
+            refreshLabels();
+            return;
         }
     }
 

@@ -18,7 +18,7 @@ public class MainPanelController extends LuaController {
     private UIGrid mainGrid;
 
     @BindLua
-    private UILabel floor;
+    private UILabel lbFloor;
 
     private LuaController _currentPaneController;
 
@@ -41,7 +41,7 @@ public class MainPanelController extends LuaController {
 
     @Override
     public void onFloorChange(int floor) {
-        this.floor.setText("Floor " + floor);
+        lbFloor.setText("Floor " + String.valueOf(floor));
     }
 
     public void addShortcut(String label, LuaController controller) {

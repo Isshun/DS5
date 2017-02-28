@@ -33,7 +33,7 @@ public class CharacterRenderer extends BaseRenderer {
 
     private long _lastUpdate;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
         _characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
     }

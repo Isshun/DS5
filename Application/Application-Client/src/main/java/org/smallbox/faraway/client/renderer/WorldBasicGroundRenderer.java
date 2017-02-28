@@ -27,7 +27,7 @@ public class WorldBasicGroundRenderer extends BaseRenderer {
 
     private int                     _frame;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getParcelList().stream()
                 .filter(viewport::hasParcel)
                 .forEach(parcel -> renderer.drawOnMap(parcel, getItemSprite(parcel)));
@@ -38,8 +38,7 @@ public class WorldBasicGroundRenderer extends BaseRenderer {
 
     private Sprite getItemSprite(ParcelModel parcel) {
         if (parcel.getRockInfo() != null) {
-            ItemInfo itemInfo = Application.data.getItemInfo("base.ground.granite");
-            Sprite sprite = ApplicationClient.spriteManager.getSprite(itemInfo, itemInfo.graphics.get(0), 0, 0, 255, false);
+            Sprite sprite = ApplicationClient.spriteManager.getSprite(parcel.getRockInfo(), parcel.getRockInfo().graphics.get(0), 0, 0, 255, false);
             sprite.setRegion(0, 0, 32, 32);
             sprite.setRegionWidth(32);
             sprite.setRegionHeight(32);

@@ -4,10 +4,13 @@ ui:extend({
     type = "view",
     name = "base.ui.game_info",
     size = {application.info.screen_width, 38},
+    controller = "org.smallbox.faraway.client.controller.SystemInfoController",
     background = 0x2b3036,
     level = 100,
     visible = true,
     views = {
+
+        -- Top left ressources icons
         { type = "view", id = "view_resource", size = {372, 34}, views = {
             { type = "grid", id = "grid_resource", columns = 8, column_width = 70, position = {0, 2}, views = {
                 { type = "view", size = {70, 32}, position = {0, 0}, views = {
@@ -29,14 +32,25 @@ ui:extend({
             }},
         }},
 
+        -- Top right speed icon
+        { type = "image", id = "ic_speed", align = {"top", "right"}, src = "[base]/graphics/ic_speed_1.png", size = {32, 32}, position = {372, 4}},
+
+        -- Top right tick
+        { type = "label", id = "lb_tick", align = {"top", "right"}, text_size = 16, padding = 15, position = {460, 0}, size = {32, 32}},
+
+        -- Top right system icons
         { type = "view", align = {"top", "right"}, position = {0, 0}, background = 0x203636, size = {372, 38}, views = {
+
+            -- Time and day
             { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2, 2}},
             { type = "label", id = "lb_time", text = "hr", text_size = 16, position = {28, 3}, padding = 10 },
             { type = "label", id = "lb_day", text = "day", text_size = 16, position = {63, 3}, padding = 10 },
-            --        { type = "label", id = "lb_light", text_size = 18, position = {200, 3}, padding = 10 },
+
+            -- Weather
             { type = "image", id = "img_weather", src = "[base]/graphics/icons/weather/regular.png", size = {32, 32}, position = {160, 3}},
             { type = "label", id = "lb_weather", text = "weather", text_size = 16, position = {188, 3}, padding = 10 },
-            --        { type = "image", src = "[base]/graphics/icons/menu.png", size = {32, 32}, position = {363, 3}},
+
+            -- Temperature
             { type = "label", id = "lb_temperature", text = "tmp", text_size = 16, position = {300, 3}, padding = 10 },
             { type = "image", id = "img_temperature", src = "[base]/graphics/icons/temperature_medium.png", size = {24, 24}, position = {350, 7}},
             { type = "image", id = "img_temperature_offset", size = {12, 24}, position = {383, 7}},

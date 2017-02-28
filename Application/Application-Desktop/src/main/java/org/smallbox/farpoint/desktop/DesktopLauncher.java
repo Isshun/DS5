@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -44,6 +45,9 @@ public class DesktopLauncher {
                         Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 2, 2, 1);
                         Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_rice", 10, 4, 4, 1);
                         Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_carrot", 10, 4, 6, 1);
+                        Application.moduleManager.getModule(WorldModule.class).getParcel(8, 8, 1).setRockName("base.granite");
+                        Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
+                        Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
                     }
 
                     @Override

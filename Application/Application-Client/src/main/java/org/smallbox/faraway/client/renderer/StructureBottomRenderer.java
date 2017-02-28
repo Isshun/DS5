@@ -42,11 +42,7 @@ public class StructureBottomRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
-    }
-
-    @Override
-    public void onRefresh(int frame) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
     }
 
     @Override

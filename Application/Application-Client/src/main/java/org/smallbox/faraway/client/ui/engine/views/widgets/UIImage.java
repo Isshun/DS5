@@ -83,16 +83,18 @@ public class UIImage extends View {
                 if (_textureHeight != 0) {
                     _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                     _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
-                    renderer.drawRegion(_x + x, _y + y, _sprite);
+                    renderer.drawRegion(_finalX, _finalY, _sprite);
+//                    renderer.drawRegion(_x + x, _y + y, _sprite);
                 }
 
                 else {
                     if (_effect != null && _effect._durationLeft > 0) {
                         _effect.draw(renderer, _x + x, _y + y);
                     } else if (_animation != null) {
-                        _animation.draw(renderer, _sprite, _x + x, _y + y);
+                        _animation.draw(renderer, _sprite, _finalX, _finalY);
                     } else {
-                        renderer.draw(_x + x, _y + y, _sprite);
+                        renderer.draw(_finalX, _finalY, _sprite);
+//                        renderer.draw(_x + x, _y + y, _sprite);
                     }
                 }
             }

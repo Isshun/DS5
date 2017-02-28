@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.CollectionUtils;
 
 /**
@@ -26,7 +25,7 @@ public class DebugViewRenderer extends BaseRenderer {
     @BindComponent
     private UIEventManager uiEventManager;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         uiManager.getRootViews().forEach(rootView -> drawViewRecurse(renderer, rootView.getView()));
 
 //        uiManager.getViews().stream()

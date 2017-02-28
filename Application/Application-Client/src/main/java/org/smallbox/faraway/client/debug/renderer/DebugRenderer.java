@@ -19,6 +19,7 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.job.JobModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,9 @@ public class DebugRenderer extends BaseRenderer {
 
     @BindModule
     private ItemModule itemModule;
+
+    @BindModule
+    private JobModule jobModule;
 
     @BindModule
     private ConsumableModule consumableModule;
@@ -48,7 +52,7 @@ public class DebugRenderer extends BaseRenderer {
     }
 
     @Override
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
         renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
 
@@ -85,6 +89,12 @@ public class DebugRenderer extends BaseRenderer {
             });
 
             consumables.entrySet().forEach(entry -> drawDebugConsumableInfo(renderer, entry.getKey(), entry.getValue()));
+        }
+
+        if (jobModule != null && jobModule.getJobs() != null) {
+            jobModule.getJobs().forEach(job -> {
+                drawDebug(renderer, "JOB", job.getMainLabel() + " " + job.getLabel() + " " + job.getProgress());
+            });
         }
 
         ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));

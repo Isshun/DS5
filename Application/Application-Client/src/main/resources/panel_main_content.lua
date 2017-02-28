@@ -14,7 +14,6 @@ ui:extend({
             { type = "view", id = "map_header", position = {0, 12}, size = {352, 34}, background = 0x203636, views = {
                 { type = "label", text = "Far Point", text_size = 16, padding = 10 },
                 { type = "label", text = "Arrakis / Desert", text_size = 16, position = {160, 0}, padding = 10 },
-                { type = "label", id = "lb_floor", text = "[0]", text_color = 0xffffff, text_size = 16, position = {312, 0}, padding = 10 },
             }},
             { type = "view", id = "map_container", size = {352, 230}, views = {
                 { type = "minimap"},
@@ -29,7 +28,7 @@ ui:extend({
                     { type = "label", text = "W", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_water", on_click = function(v) application:toggleDisplay("water") end},
                     { type = "label", text = "S", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_security", on_click = function(v) application:toggleDisplay("security") end},
                 }},
-                { type = "label", text = "Floor", id = "floor", text_size = 16, padding = 7, position = {250, 6} },
+                { type = "label", text = "Floor ", id = "lb_floor", text_size = 16, padding = 7, position = {250, 6} },
             }},
             { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true},
         }},

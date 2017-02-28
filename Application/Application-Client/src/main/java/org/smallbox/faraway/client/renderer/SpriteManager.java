@@ -84,6 +84,7 @@ public class SpriteManager {
                         if (file.exists()) {
                             _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
                         } else {
+                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(FileUtils.getFileHandle("data/graphics/missing.png")));
                             Log.warning("Impossible de trouver la texture de l'item: " + itemInfo.name);
                         }
                     });

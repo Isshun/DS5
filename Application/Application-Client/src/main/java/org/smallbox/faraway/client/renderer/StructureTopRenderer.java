@@ -42,7 +42,7 @@ public class StructureTopRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         Sprite buildSprite = spriteManager.getIcon("../Module-Structure/src/main/resources/ic_build.png", 32, 32);
         structureModule.getStructures().stream()
                 .filter(structure -> viewport.hasParcel(structure.getParcel()))

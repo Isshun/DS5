@@ -34,12 +34,6 @@ public class MainRenderer implements GameClientObserver {
     private Collection<BaseRenderer>        _renders;
     private Viewport                        _viewport;
 
-    public void onRefresh(int frame) {
-        if (_renders != null) {
-            _renders.forEach(render -> render.onRefresh(frame));
-        }
-    }
-
     public Viewport getViewport() { return _viewport; }
 
     @Override
@@ -103,7 +97,7 @@ public class MainRenderer implements GameClientObserver {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        ApplicationClient.mainRenderer.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress);
+        ApplicationClient.mainRenderer.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
 
         if (game.isRunning()) {
             if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
@@ -111,8 +105,6 @@ public class MainRenderer implements GameClientObserver {
             if (ApplicationClient.inputManager.getDirection()[2]) { _viewport.move(-20, 0); }
             if (ApplicationClient.inputManager.getDirection()[3]) { _viewport.move(0, -20); }
         }
-
-        ApplicationClient.mainRenderer.onRefresh(_frame);
 
         // TODO
         try {
@@ -131,15 +123,15 @@ public class MainRenderer implements GameClientObserver {
 //        ApplicationClient.uiManager.clearViews();
 //    }
 
-    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void draw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         long time = System.currentTimeMillis();
 
         //noinspection Convert2streamapi
         if (_renders != null) {
-            _renders.forEach(render -> render.draw(renderer, viewport, animProgress));
+            _renders.forEach(render -> render.draw(renderer, viewport, animProgress, frame));
         }
 
-        _frame++;
+        MainRenderer._frame++;
         _renderTime += System.currentTimeMillis() - time;
     }
 

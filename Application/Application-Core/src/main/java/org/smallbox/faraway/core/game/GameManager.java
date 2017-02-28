@@ -75,9 +75,10 @@ public class GameManager implements GameObserver {
         }
 
         _game = new Game(gameInfo);
-        _game.createModules();
 
         worldFactory.create(_game, gameInfo.region);
+
+        _game.createModules();
 
         Application.runOnMainThread(() -> {
             Application.notify(observer -> observer.onGameCreate(_game));
@@ -169,11 +170,21 @@ public class GameManager implements GameObserver {
     }
 
     @GameShortcut(key = GameEventListener.Key.F5)
-    public void quickSaveGame() {
+    public void actionQuickSaveGame() {
         Log.notice("quickSaveGame");
         Application.gameSaveManager.saveGame(
                 Application.gameManager.getGame(),
                 Application.gameManager.getGame().getInfo(),
                 GameInfo.Type.FAST);
+    }
+
+    @GameShortcut(key = GameEventListener.Key.SPACE)
+    public void actionPause() {
+        _paused = !_paused;
+        if (_paused) {
+            Application.notify(GameObserver::onGamePaused);
+        } else {
+            Application.notify(GameObserver::onGameResume);
+        }
     }
 }

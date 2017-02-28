@@ -359,4 +359,29 @@ public class WorldHelper {
 
         return parcelList;
     }
+
+    public enum SearchStrategy { FREE }
+
+    public static ParcelModel searchAround(ParcelModel originParcel, int maxDistance, SearchStrategy... strategies) {
+        for (int distance = 0; distance <= maxDistance; distance++) {
+            for (int x = originParcel.x - distance; x <= originParcel.x + distance; x++) {
+                for (int y = originParcel.y - distance; y <= originParcel.y + distance; y++) {
+                    ParcelModel parcel = getParcel(x, y, originParcel.z);
+                    if (parcel != null && searchAroundMatch(parcel, strategies)) {
+                        return parcel;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private static boolean searchAroundMatch(ParcelModel parcel, SearchStrategy... strategies) {
+        for (SearchStrategy strategy: strategies) {
+            if (strategy == SearchStrategy.FREE && !parcel.isWalkable()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

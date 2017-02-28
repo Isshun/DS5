@@ -59,7 +59,7 @@ public class BuildRenderer extends BaseRenderer {
 //        });
     }
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (buildController != null && buildController.getCurrentItem() != null) {
 
             if (ApplicationClient.inputManager.getTouchDrag()) {

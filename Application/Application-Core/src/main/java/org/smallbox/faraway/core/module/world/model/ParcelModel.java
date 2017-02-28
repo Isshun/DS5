@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.module.world.model;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
@@ -54,6 +55,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         _groundInfo = groundInfo;
     }
     public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; }
+    public void                     setRockName(String rockName) { _rockInfo = Application.data.getItemInfo(rockName); }
     public void                     setTile(int tile) { _tile = tile; }
     public void                     setDigJob(DigJob digJob) { _digJob = digJob; }
     public void                     setLiquidInfo(ItemInfo liquidInfo, double value) { _liquidInfo = liquidInfo; _liquidValue = value; }

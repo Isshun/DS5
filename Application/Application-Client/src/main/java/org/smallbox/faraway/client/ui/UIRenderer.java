@@ -14,7 +14,7 @@ import org.smallbox.faraway.core.GameRenderer;
 public class UIRenderer extends BaseRenderer {
 
     @Override
-    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         ApplicationClient.uiManager.draw(renderer, Application.gameManager.isLoaded());
     }
 }

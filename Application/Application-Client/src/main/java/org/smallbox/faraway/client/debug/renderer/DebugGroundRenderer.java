@@ -20,7 +20,7 @@ public class DebugGroundRenderer extends BaseRenderer {
     @BindModule
     private WorldModule worldModule;
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         worldModule.getParcelList().stream()
                 .filter(parcel -> parcel.z == viewport.getFloor())
                 .forEach(parcel -> {

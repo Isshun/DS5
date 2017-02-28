@@ -52,10 +52,9 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     }
 
     protected void onGameUpdate() {}
-    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {}
-    protected void onRefresh(int frame) {}
+    protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {}
 
-    public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (isVisible()) {
             //                if (render.isMandatory() || (game.hasDisplay(render.getClass().getName()))) {
 
@@ -67,7 +66,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
             _toX = Math.min(_width, _fromX + 50);
             _toY = Math.min(_height, _fromY + 40);
 
-            onDraw(renderer, viewport, animProgress);
+            onDraw(renderer, viewport, animProgress, frame);
 
             _lastDrawDelay = (System.currentTimeMillis() - time);
             _totalDrawDelay += _lastDrawDelay;

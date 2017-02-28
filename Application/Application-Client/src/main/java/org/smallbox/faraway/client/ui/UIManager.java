@@ -124,32 +124,34 @@ public class UIManager {
 
     private void fixRootAndSubViews() {
         _subViews.forEach((subView, parentName) -> {
-            _rootViews.forEach(rootView -> {
-                if (rootView.getView().getName().equals(parentName)) {
-                    if (rootView.getView().getViews().stream().noneMatch(view -> subView == view)) {
-                        rootView.getView().addView(subView);
-                        subView.setParent(rootView.getView());
-                        rootView.getView().setSpecial(true);
-                    }
-                }
-            });
+            _views.stream()
+                    .filter(view -> parentName.equals(view.getName()))
+                    .findAny()
+                    .ifPresent(view -> {
+                        if (view.getViews().stream().noneMatch(v -> subView == v)) {
+                            view.addView(subView);
+                            subView.setParent(view);
+                        }
+                    });
+            _rootViews.stream()
+                    .map(RootView::getView)
+                    .filter(view -> parentName.equals(view.getName()))
+                    .findAny()
+                    .ifPresent(view -> {
+                        if (view.getViews().stream().noneMatch(v -> subView == v)) {
+                            view.addView(subView);
+                            subView.setParent(view);
+                        }
+                    });
         });
-    }
-
-    private void addViewRecurse(View view) {
-        if (_views.stream().noneMatch(v -> v == view)) {
-            _views.add(view);
-
-            if (view.getViews() != null) {
-                view.getViews().forEach(this::addViewRecurse);
-            }
-        }
     }
 
     public void addSubView(View subViewToAdd, String parentName) {
         if (_subViews.keySet().stream().noneMatch(subView -> subView.getName().equals(subViewToAdd.getName()))) {
             _subViews.put(subViewToAdd, parentName);
         }
+
+        fixRootAndSubViews();
     }
 
     public void addView(View view) {

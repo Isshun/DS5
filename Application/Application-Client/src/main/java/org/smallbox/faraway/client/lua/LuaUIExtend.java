@@ -285,6 +285,11 @@ public class LuaUIExtend extends LuaExtend {
         view.setPath(path);
         view.setIndex(index);
 
+        if (!value.get("special").isnil()) {
+            view.setSpecial(value.get("special").toboolean());
+        }
+
+
         // Add mandatory value
         customizeViewMandatory(module, globals, value, inGame, deep, parent, view);
 
