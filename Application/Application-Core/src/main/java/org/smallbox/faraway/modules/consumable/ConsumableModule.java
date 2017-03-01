@@ -16,6 +16,7 @@ import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.Utils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -49,21 +50,33 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         addConsumable(Application.data.getItemInfo(itemName), quantity, x, y, z);
     }
 
+    public void addConsumable(ItemInfo itemInfo, int[] quantity, int x, int y, int z) {
+        addConsumable(itemInfo, Utils.getRandom(quantity), x, y, z);
+    }
+
+    public void addConsumable(ItemInfo itemInfo, int[] quantity, ParcelModel parcel) {
+        addConsumable(itemInfo, Utils.getRandom(quantity), parcel);
+    }
+
     public void addConsumable(ItemInfo itemInfo, int quantity, int x, int y, int z) {
-        ParcelModel parcel = WorldHelper.getParcel(x, y, z);
+        addConsumable(itemInfo, quantity, WorldHelper.getParcel(x, y, z));
+    }
 
-        Optional<ConsumableItem> optional = _consumables.stream().filter(c -> c.getParcel() == parcel).findAny();
+    public void addConsumable(ItemInfo itemInfo, int quantity, ParcelModel parcel) {
+        if (quantity > 0) {
+            Optional<ConsumableItem> optional = _consumables.stream().filter(c -> c.getParcel() == parcel).findAny();
 
-        // Ajout de la quantité à un consomable déjà existant
-        if (optional.isPresent()) {
-            optional.get().addQuantity(quantity);
-        }
+            // Ajout de la quantité à un consomable déjà existant
+            if (optional.isPresent()) {
+                optional.get().addQuantity(quantity);
+            }
 
-        // Ajout d'un nouveau consomable
-        else {
-            ConsumableItem consumable = new ConsumableItem(itemInfo, quantity);
-            consumable.setParcel(parcel);
-            _consumables.add(consumable);
+            // Ajout d'un nouveau consomable
+            else {
+                ConsumableItem consumable = new ConsumableItem(itemInfo, quantity);
+                consumable.setParcel(parcel);
+                _consumables.add(consumable);
+            }
         }
     }
 

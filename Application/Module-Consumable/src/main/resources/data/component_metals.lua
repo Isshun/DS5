@@ -3,6 +3,6 @@ data:extend({
         graphics = { path = "[module]/graphics/iron_plate.png"},
     },
     { label = "Copper plate", name = "base.copper_plate", category = "component", type = "consumable",
-        graphics = { path = "[module]/graphics/copper_plate.png"},
+        graphics = { path = "[module]/graphics/rpg_maker_vx_3.png", x = 0, y = 13 },
     },
 })

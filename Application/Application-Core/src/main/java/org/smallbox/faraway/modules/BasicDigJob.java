@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
@@ -21,17 +22,22 @@ public class BasicDigJob extends JobModel {
         BasicDigJob job = new BasicDigJob(parcel);
 
         ParcelModel targetParcel = WorldHelper.searchAround(parcel, 1, WorldHelper.SearchStrategy.FREE);
+        ItemInfo rockInfo = parcel.getRockInfo();
 
-        if (targetParcel != null) {
+        if (targetParcel != null && rockInfo != null) {
 
             // Déplace le personnage à l'emplacement des composants
             job.addTask("Move to rock", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
-            // Crée les gravats
-            job.addTechnicalTask("Create components", character -> consumableModule.addConsumable("base.granite_rubble", 10, 8, 7, 1));
-
             // Retire les rochers de la carte
             job.addTechnicalTask("Remove rock", character -> parcel.setRockInfo(null));
+
+            // Crée les gravats
+            job.addTechnicalTask("Create components", character ->
+                    rockInfo.actions.stream()
+                            .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
+                            .flatMap(action -> action.products.stream())
+                            .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, parcel)));
 
             return job;
         }
@@ -42,21 +48,7 @@ public class BasicDigJob extends JobModel {
     public BasicDigJob(ParcelModel targetParcel) {
         _mainLabel = "Dig";
         _targetParcel = targetParcel;
-
-//        // Apporte les composants à la fabrique
-//        addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
-//        addTask("Craft item", character -> {
-//            if (_startTick == 0) {
-//                _startTick = Application.gameManager.getGame().getTick();
-//                _endTick = Application.gameManager.getGame().getTick() + getCostRemaining();
-//            }
-//            return onCraft() ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
-//        });
     }
-
-//    public abstract boolean onCraft();
-//    public abstract int getCost();
-//    public abstract int getCostRemaining();
 
     public long getStartTick() { return _startTick; }
     public long getEndTick() { return _endTick; }

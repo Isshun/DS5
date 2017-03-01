@@ -38,17 +38,17 @@ public class CrewController extends LuaController {
     public void onNewGameUpdate(Game game) {
         if (listCrew != null) {
             listCrew.clear();
-            characterModule.getCharacters().forEach(character -> {
-                listCrew.addView(UILabel.create(null)
-                        .setText(character.getName() + " " + (character.getJob() != null ? character.getJob().getLabel() : ""))
-                        .setSize(300, 28)
-                        .setBackgroundColor(Color.CYAN)
-                        .setOnClickListener((GameEvent event) -> {
-                            characterModule.select(event, character);
-                            characterInfoController.display(character);
-                            setVisible(false);
-                        }));
-            });
+            characterModule.getCharacters().forEach(character ->
+                    listCrew.addView(UILabel.create(null)
+                            .setText(character.getName() + " " + (character.getJob() != null ? character.getJob().getLabel() : ""))
+                            .setTextColor(Color.WHITE)
+                            .setSize(300, 28)
+                            .setPadding(8)
+                            .setOnClickListener((GameEvent event) -> {
+                                characterModule.select(event, character);
+                                characterInfoController.display(character);
+                                characterInfoController.setVisible(true);
+                            })));
         }
     }
 

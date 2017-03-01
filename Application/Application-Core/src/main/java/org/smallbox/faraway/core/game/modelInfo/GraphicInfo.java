@@ -15,6 +15,8 @@ public class GraphicInfo {
     public int              y;
     public int              width;
     public int              height;
+    public int              tileWidth = 32;
+    public int              tileHeight = 32;
     public Type             type = Type.NONE;
     public Rectangle        textureRect;
 

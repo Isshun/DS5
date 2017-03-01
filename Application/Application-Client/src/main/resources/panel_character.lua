@@ -5,25 +5,15 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.character.CharacterInfoController",
     visible = false,
     views = {
-        { type = "label", text = "Character", text_size = 12, position = {12, 8}},
-        { type = "view", size = {380, 1}, background = 0xffbbbb, position = {12, 22}},
-        { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}},
+        { type = "label", text = "Character", text_color = 0x679B99, text_size = 12, position = {12, 8}},
+        { type = "view", size = {348, 1}, background = 0x679B99, position = {12, 22}},
+        { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}, text_color = 0xB4D4D3 },
 
-        { type = "grid", position = {12, 72}, columns = 2, column_width = 180, row_height = 60, views = {
-            { type = "label", id = "bt_status", action="onOpenStatus", text = "Status", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "label", id = "bt_inventory", action="onOpenInventory", text = "Inventory", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "label", id = "bt_info", action="onOpenInfo", text = "Info", text_size = 20, padding = 18, size = {170, 50}},
-            { type = "view", id = "bt_health", action="onOpenHealth", background = 0x5588bb, size = {170, 50}, views = {
-                { type = "label", text = "Health", text_size = 20, padding = 18 },
-                { type = "label", text = "!", id = "bt_health_warning", text_size = 26, padding = 9, size = {32, 32}, position = {138, 9} },
-            }},
---            { type = "label", id = "bt_status", text = "Status", text_size = 20, padding = 18, size = {170, 50}, on_click = function() open_page("bt_status", "page_status") end},
---            { type = "label", id = "bt_inventory", text = "Inventory", text_size = 20, padding = 18, size = {170, 50}, on_click = function() open_page("bt_inventory", "page_inventory") end},
---            { type = "label", id = "bt_info", text = "Info", text_size = 20, padding = 18, size = {170, 50}, on_click = function() open_page("bt_info", "page_info") end},
---            { type = "view", id = "bt_health", background = 0x5588bb, size = {170, 50}, on_click = function() open_page("bt_health", "page_health") end, views = {
---                { type = "label", text = "Health", text_size = 20, padding = 18 },
---                { type = "label", text = "!", id = "bt_health_warning", text_size = 26, padding = 9, size = {32, 32}, position = {138, 9} },
---            }},
+        { type = "grid", position = {12, 72}, columns = 10, column_width = 42, row_height = 42, views = {
+            { type = "image", action="onOpenStatus", src = "[base]/graphics/icons/character/ic_status.png", background = 0x5588bb, size = {32, 32}},
+            { type = "image", action="onOpenInventory", src = "[base]/graphics/icons/character/ic_inventory.png", background = 0x5588bb, size = {32, 32}},
+            { type = "image", action="onOpenInfo", src = "[base]/graphics/icons/character/ic_info.png", background = 0x5588bb, size = {32, 32}},
+            { type = "image", action="onOpenHealth", src = "[base]/graphics/icons/character/ic_health.png", background = 0x5588bb, size = {32, 32}},
         }},
 
         -- Status page
@@ -31,11 +21,13 @@ ui:extend({
             type = "list",
             id = "page_status",
             controller = "org.smallbox.faraway.client.controller.character.CharacterStatusController",
-            position = {12, 200},
+            position = {12, 122},
             size = {400, 400},
             views = {
-                { type = "label", text = "Current occupation", text_size = 28, position = {0, 5}},
-                { type = "label", id = "lb_job", text_size = 18, position = {0, 15}, size = {-1, 28}},
+                { type = "label", text = "Current occupation", text_color = 0x679B99, text_size = 24},
+                { type = "label", id = "lb_job", text_size = 18, text_color = 0xB4D4D3, position = {0, 15}, size = {-1, 28}},
+                { type = "image", id = "img_job", size = {32, 32}},
+                { type = "image", id = "img_job_out", size = {32, 32}},
                 { type = "label", id = "lb_job_detail", text_size = 14, position = {0, 12}, size = {-1, 40}},
                 { type = "label", id = "lb_job_from", text_size = 14, position = {0, 12}, size = {-1, 40}},
                 { type = "label", id = "lb_job_to", text_size = 14, position = {0, 12}, size = {-1, 40}},
@@ -47,13 +39,14 @@ ui:extend({
 
         -- Inventory page
         {
-            type = "view",
+            type = "list",
             id = "page_inventory",
-            position = {0, 200},
+            position = {12, 122},
             size = {400, 400},
             visibility = false,
             views = {
-                { type = "label", id = "lb_inventory", position = {0, 10}, text_size = 14},
+                { type = "label", text = "Inventory", text_color = 0x679B99, size = {0, 30}, text_size = 24},
+                { type = "label", id = "lb_inventory", position = {0, 10}, size = {0, 20}, text_size = 14},
                 { type = "grid", position = {0, 24}, columns = 10, column_width = 32, row_height = 32, views = {
                     { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
                     { type = "image", position = {0, 16}, src = "[base]/graphics/ic_blueprint.png", size = {32, 32}},
@@ -91,18 +84,18 @@ ui:extend({
         {
             type = "view",
             id = "page_info",
-            position = {0, 200},
+            controller = "org.smallbox.faraway.client.controller.character.CharacterInfoController",
+            position = {12, 122},
             size = {400, 400},
             visibility = false,
             views = {
-                { type = "list", position = {10, 16}, views = {
-                    { type = "label", text = "Talents", position = {0, 10}, text_size = 24},
-                    { type = "list", id = "list_talents", position = {0, 20}},
+                { type = "list", views = {
+                    { type = "label", text = "Personal records", text_color = 0x679B99, size = {0, 30}, text_size = 24},
+                    { type = "label", id = "lb_info_birth", text_color = 0xB4D4D3, size = {0, 20}, text_size = 14},
+                    { type = "label", id = "lb_info_enlisted", text_color = 0xB4D4D3, size = {0, 20}, text_size = 14},
 
-                    { type = "label", text = "Personal records", position = {0, 24}, text_size = 24},
-                    { type = "label", id = "lb_info_birth", position = {0, 30}, text_size = 14},
-                    { type = "label", id = "lb_info_enlisted", position = {0, 30}, text_size = 14},
-                    { type = "label", id = "lb_talents", position = {0, 30}, text_size = 14},
+                    { type = "label", text = "Talents", text_color = 0x679B99, position = {0, 12}, size = {0, 30}, text_size = 24},
+                    { type = "list", id = "list_talents", position = {0, 10}},
                 }},
             }
         },
@@ -112,63 +105,67 @@ ui:extend({
             type = "view",
             id = "page_health",
             controller = "org.smallbox.faraway.client.controller.character.CharacterHealthController",
-            position = {0, 200},
+            position = {12, 122},
             size = {400, 400},
             visibility = false,
             views = {
-                { type = "list", position = {10, 16}, views = {
+                { type = "list", views = {
 
                     -- Diseases
-                    { type = "label", text = "Diseases", position = {0, 10}, text_size = 24},
-                    { type = "list", id = "list_diseases", position = {0, 20}},
+                    { type = "label", text = "Diseases", text_color = 0x679B99, size = {0, 30}, text_size = 24},
+                    { type = "list", id = "list_diseases"},
 
                     -- Needs
-                    { type = "label", position = {0, 20}, text = "Needs", text_size = 28},
-                    { type = "grid", position = {0, 33}, columns = 2, column_width = 182, row_height = 44, views = {
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_food", text = "food", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_food", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                            --                        { type = "label", id = "lb_need_food_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_drink", text = "drink", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_drink", style = "base.style.gauge"},
-                            --                        { type = "label", id = "lb_need_drink_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_energy", text = "energy", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_energy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                            --                        { type = "label", id = "lb_need_energy_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_happiness", text = "energy", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_happiness", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_health", text = "energy", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_health", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_joy", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_joy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_relation", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "lb_need_oxygen", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
-                        }},
-                        { type = "view", size = {170, 44}, views = {
-                            { type = "label", id = "", text = "energy", text_size = 14, text_color = 0xb3d035},
-                            { type = "image", id = "", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                    { type = "view", position = {0, 14}, size = {0, 260}, views = {
+                        { type = "label", text = "Needs", text_color = 0x679B99, size = {0, 30}, text_size = 24},
+                        { type = "grid", columns = 2, column_width = 182, row_height = 44, position = {0, 30}, views = {
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_food", text = "food", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_food", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                                --                        { type = "label", id = "lb_need_food_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_drink", text = "drink", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_drink", style = "base.style.gauge"},
+                                --                        { type = "label", id = "lb_need_drink_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_energy", text = "energy", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_energy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                                --                        { type = "label", id = "lb_need_energy_offset", position = {158, 19}, text = "<<", text_size = 14, text_color = 0xb3d035},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_happiness", text = "energy", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_happiness", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_health", text = "energy", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_health", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_joy", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_joy", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_relation", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "lb_need_oxygen", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            }},
+                            { type = "view", size = {170, 44}, views = {
+                                { type = "label", id = "", text = "energy", text_size = 14, text_color = 0xb3d035},
+                                { type = "image", id = "", position = {0, 16}, src = "[base]/graphics/needbar.png", size = {100, 100}, texture_rect = {0, 0, 100, 16}},
+                            }},
                         }},
                     }},
 
                     -- Buffs
-                    { type = "label", position = {0, 70}, text = "Buffs", text_size = 28},
-                    { type = "list", id = "list_buffs", position = {0, 85}}
+                    { type = "view", position = {0, 14}, views = {
+                        { type = "label", text = "Buffs", text_color = 0x679B99, size = {0, 30}, text_size = 24},
+                        { type = "list", id = "list_buffs", position = {0, 85}}
+                    }},
 
                 }},
             }
@@ -176,68 +173,68 @@ ui:extend({
     },
 
     on_game_start = function()
---        open_page("bt_status", "page_status")
+        --        open_page("bt_status", "page_status")
     end,
 
     on_event = function(view, event, data)
---        if event == application.events.on_key_press and data == "ESCAPE" then
---            application.game:clearSelection();
---            view:setVisible(false)
---            character = nil
---        end
---
---        if event == application.events.on_deselect then
---            view:setVisible(false)
---            character = nil
---        end
---
---        if event == application.events.on_character_selected then
---            view:setVisible(true)
---            view:findById("lb_name"):setText(data:getName())
---
---            view:findById("lb_info_birth"):setDashedString("Birth", data:getPersonals():getEnlisted(), 47)
---            view:findById("lb_info_enlisted"):setDashedString("Enlisted", data:getPersonals():getEnlisted(), 47)
---            character = data;
---
---            display_talents(view)
---        end
+        --        if event == application.events.on_key_press and data == "ESCAPE" then
+        --            application.game:clearSelection();
+        --            view:setVisible(false)
+        --            character = nil
+        --        end
+        --
+        --        if event == application.events.on_deselect then
+        --            view:setVisible(false)
+        --            character = nil
+        --        end
+        --
+        --        if event == application.events.on_character_selected then
+        --            view:setVisible(true)
+        --            view:findById("lb_name"):setText(data:getName())
+        --
+        --            view:findById("lb_info_birth"):setDashedString("Birth", data:getPersonals():getEnlisted(), 47)
+        --            view:findById("lb_info_enlisted"):setDashedString("Enlisted", data:getPersonals():getEnlisted(), 47)
+        --            character = data;
+        --
+        --            display_talents(view)
+        --        end
     end,
 
     on_refresh = function(view)
---        if character ~= nil then
---            local job = character:getJob()
---            if job then
---                view:findById("lb_job"):setDashedString(job:getLabel(), math.floor(job:getProgress() * 100), 35)
---            else
---                view:findById("lb_job"):setText("No job")
---            end
---
---            --            if job and job:getMessage() then
---            --                view:findById("lb_job_detail"):setText(job:getMessage())
---            --                view:findById("lb_job_detail"):setVisible(true)
---            --            else
---            --                view:findById("lb_job_detail"):setVisible(false)
---            --            end
---
---            display_buffs(view, character)
---            display_diseases(view, character)
---
---            local needs = character:getNeeds()
---            displayNeed(view, "lb_need_energy", "gauge_energy", "Energy", character:getNeeds():get("energy"))
---            displayNeed(view, "lb_need_food", "gauge_food", "Food", character:getNeeds():get("food"))
---            displayNeed(view, "lb_need_drink", "gauge_drink", "Drink", needs:get("drink"))
---            displayNeed(view, "lb_need_happiness", "gauge_happiness", "Mood", character:getNeeds():get("happiness"))
---            displayNeed(view, "lb_need_health", "gauge_health", "Health", 0)
---            displayNeed(view, "lb_need_joy", "gauge_joy", "Entertainment", character:getNeeds():get("entertainment"))
---            displayNeed(view, "lb_need_relation", "gauge_relation", "Relation", character:getNeeds():get("relation"))
---            displayNeed(view, "lb_need_oxygen", "gauge_oxygen", "Oxygen", character:getNeeds():get("oxygen"))
---
---            if character:getInventory() then
---                view:findById("lb_inventory"):setText("Inventory: " .. character:getInventory():getInfo().label)
---            else
---                view:findById("lb_inventory"):setText("Inventory: empty")
---            end
---        end
+        --        if character ~= nil then
+        --            local job = character:getJob()
+        --            if job then
+        --                view:findById("lb_job"):setDashedString(job:getLabel(), math.floor(job:getProgress() * 100), 35)
+        --            else
+        --                view:findById("lb_job"):setText("No job")
+        --            end
+        --
+        --            --            if job and job:getMessage() then
+        --            --                view:findById("lb_job_detail"):setText(job:getMessage())
+        --            --                view:findById("lb_job_detail"):setVisible(true)
+        --            --            else
+        --            --                view:findById("lb_job_detail"):setVisible(false)
+        --            --            end
+        --
+        --            display_buffs(view, character)
+        --            display_diseases(view, character)
+        --
+        --            local needs = character:getNeeds()
+        --            displayNeed(view, "lb_need_energy", "gauge_energy", "Energy", character:getNeeds():get("energy"))
+        --            displayNeed(view, "lb_need_food", "gauge_food", "Food", character:getNeeds():get("food"))
+        --            displayNeed(view, "lb_need_drink", "gauge_drink", "Drink", needs:get("drink"))
+        --            displayNeed(view, "lb_need_happiness", "gauge_happiness", "Mood", character:getNeeds():get("happiness"))
+        --            displayNeed(view, "lb_need_health", "gauge_health", "Health", 0)
+        --            displayNeed(view, "lb_need_joy", "gauge_joy", "Entertainment", character:getNeeds():get("entertainment"))
+        --            displayNeed(view, "lb_need_relation", "gauge_relation", "Relation", character:getNeeds():get("relation"))
+        --            displayNeed(view, "lb_need_oxygen", "gauge_oxygen", "Oxygen", character:getNeeds():get("oxygen"))
+        --
+        --            if character:getInventory() then
+        --                view:findById("lb_inventory"):setText("Inventory: " .. character:getInventory():getInfo().label)
+        --            else
+        --                view:findById("lb_inventory"):setText("Inventory: empty")
+        --            end
+        --        end
     end
 })
 --

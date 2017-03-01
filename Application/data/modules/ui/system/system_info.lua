@@ -35,6 +35,9 @@ ui:extend({
         -- Top right speed icon
         { type = "image", id = "ic_speed", align = {"top", "right"}, src = "[base]/graphics/ic_speed_1.png", size = {32, 32}, position = {372, 4}},
 
+        -- Menu icon
+        { type = "image", src = "[base]/graphics/icons/menu.png", align = {"top", "right"}, position = {472, 4}, size = {32, 32}},
+
         -- Top right tick
         { type = "label", id = "lb_tick", align = {"top", "right"}, text_size = 16, padding = 15, position = {460, 0}, size = {32, 32}},
 

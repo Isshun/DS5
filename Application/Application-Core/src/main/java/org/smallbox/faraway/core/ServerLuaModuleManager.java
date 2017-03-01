@@ -19,6 +19,7 @@ import java.io.File;
 public class ServerLuaModuleManager extends LuaModuleManager {
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
+
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
         globals.get("main").call(

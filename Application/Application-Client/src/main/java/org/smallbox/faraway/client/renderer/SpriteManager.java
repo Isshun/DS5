@@ -21,9 +21,10 @@ import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -72,9 +73,11 @@ public class SpriteManager {
         _selectors[3] = new Sprite(itemSelector, 8, 8, 8, 8);
         _selectors[3].flip(false, true);
 
-        _textures = FileUtils.listRecursively("data/res").stream()
-                .filter(file -> file.getName().endsWith(".png"))
-                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
+        _textures = new ConcurrentHashMap<>();
+
+//        _textures = FileUtils.listRecursively("data/res").stream()
+//                .filter(file -> file.getName().endsWith(".png"))
+//                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
 
         if (CollectionUtils.isNotEmpty(Application.data.getItems())) {
             Application.data.getItems().forEach(itemInfo -> {
@@ -374,7 +377,7 @@ public class SpriteManager {
         if ("base".equals(graphicInfo.packageName)) {
             return FileUtils.getFile("data", graphicInfo.path);
         } else {
-            return new File(itemInfo.dataDirectory, graphicInfo.path);
+            return Paths.get(itemInfo.dataDirectory.getAbsolutePath(), "data", graphicInfo.path).toFile();
         }
     }
 
@@ -512,5 +515,49 @@ public class SpriteManager {
     public Texture getTexture(String path) {
         assert _textures.containsKey(path);
         return _textures.get(path);
+    }
+
+    public Sprite getNewSprite(GraphicInfo graphicInfo) {
+        assert graphicInfo != null;
+
+        if (graphicInfo.spriteId == -1) {
+            graphicInfo.spriteId = ++_spriteCount;
+        }
+
+        long sum = getSum(graphicInfo.spriteId, graphicInfo.x, graphicInfo.y, 0);
+
+//        long sum = graphicInfo.type == GraphicInfo.Type.WALL || graphicInfo.type == GraphicInfo.Type.DOOR ?
+//                getSum(graphicInfo.spriteId, 0, 0, 0) :
+//                getSum(graphicInfo.spriteId, 0, 0, 0);
+//
+        Sprite sprite = _sprites.get(sum);
+        if (sprite == null) {
+            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
+            if (texture != null) {
+
+                sprite = new Sprite(texture,
+                        graphicInfo.x * graphicInfo.tileWidth,
+                        graphicInfo.y * graphicInfo.tileHeight,
+                        graphicInfo.tileWidth,
+                        graphicInfo.tileHeight);
+                sprite.setFlip(false, true);
+                sprite.setColor(new Color(255, 255, 255, 1));
+//                if (isIcon) {
+//                    switch (Math.max(width/32, height/32)) {
+//                        case 2: sprite.setScale(0.85f, 0.85f); break;
+//                        case 3: sprite.setScale(0.55f, 0.55f); break;
+//                        case 4: sprite.setScale(0.35f, 0.35f); break;
+//                        case 5: sprite.setScale(0.32f, 0.32f); break;
+//                        case 6: sprite.setScale(0.3f, 0.3f); break;
+//                        case 7: sprite.setScale(0.25f, 0.25f); break;
+//                        case 8: sprite.setScale(0.2f, 0.2f); break;
+//                    }
+//                }
+
+                _sprites.put(sum, sprite);
+            }
+        }
+
+        return _sprites.get(sum);
     }
 }

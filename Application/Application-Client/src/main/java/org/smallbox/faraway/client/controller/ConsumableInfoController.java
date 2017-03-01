@@ -1,60 +1,48 @@
 package org.smallbox.faraway.client.controller;
 
-import com.sun.glass.ui.Cursor;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.consumable.ConsumableModuleObserver;
+
+import java.util.List;
 
 /**
  * Created by Alex on 26/04/2016.
  */
-public class ConsumableInfoController extends LuaController {
-    @BindLua private UILabel        lbName;
-    @BindLua private UILabel        lbQuantity;
-    @BindLua private UILabel        lbJob;
+public class ConsumableInfoController extends AbsInfoLuaController<ConsumableItem> {
 
     @BindModule
     private ConsumableModule consumableModule;
 
-//    @BindModule
-//    private WorldInteractionModule worldInteractionModule;
+    @BindLua
+    private UILabel lbLabel;
 
-    private ConsumableItem _consumable;
+    @BindLua
+    private UILabel lbQuantity;
 
-    @Override
-    public void onGameStart(Game game) {
-        consumableModule.addObserver(new ConsumableModuleObserver() {
-            @Override
-            public void onDeselectConsumable(ConsumableItem consumable) {
-                Cursor.setVisible(false);
-            }
+    @BindLua
+    private UILabel lbJob;
 
-            @Override
-            public void onSelectConsumable(ConsumableItem consumable) {
-                selectConsumable(consumable);
-            }
-        });
-    }
+    @BindLua
+    private UILabel lbName;
 
     @Override
-    public void onNewGameUpdate(Game game) {
-        refreshConsumable();
+    protected void onDisplayUnique(ConsumableItem consumableItem) {
+        lbLabel.setText(consumableItem.getLabel());
+        lbName.setText(consumableItem.getName());
+        lbQuantity.setText(String.valueOf(consumableItem.getQuantity()));
     }
 
-    private void refreshConsumable() {
-        if (_consumable != null) {
-            lbName.setText(_consumable.getLabel());
-            lbQuantity.setText("Quantity: " + _consumable.getQuantity());
-            lbJob.setText("Job: " + (_consumable.getJob() != null ? _consumable.getJob().getLabel() : "no job"));
-        }
+    @Override
+    protected void onDisplayMultiple(List<ConsumableItem> list) {
+        lbLabel.setText("MULTIPLE");
     }
 
-    private void selectConsumable(ConsumableItem consumable) {
-        Cursor.setVisible(true);
-        _consumable = consumable;
+    @Override
+    protected ConsumableItem getObjectOnParcel(ParcelModel parcel) {
+        return consumableModule.getConsumable(parcel);
     }
 }

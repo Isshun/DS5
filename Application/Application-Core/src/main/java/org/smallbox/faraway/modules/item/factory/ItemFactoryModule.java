@@ -168,7 +168,7 @@ public class ItemFactoryModule extends GameModule {
         if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() > 0 && factory.getCraftJob() == null) {
             factory.setMessage("{red,icon;" + factory.getRunningReceipt() + "}: crafting");
 
-            BasicCraftJob job = new BasicCraftJob(item.getParcel()) {
+            BasicCraftJob job = new BasicCraftJob(item.getParcel(), factory.getRunningReceipt().receiptInfo) {
                 @Override
                 public boolean onCraft() {
                     // Incrémente la variable count de la recette (état d'avancement)

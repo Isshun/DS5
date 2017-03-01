@@ -1,12 +1,14 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -14,7 +16,9 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
-import java.awt.*;
+import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DesktopLauncher {
 
@@ -31,7 +35,7 @@ public class DesktopLauncher {
         FileUtils.createRoamingDirectory();
 
         // Get native screen resolution
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        java.awt.GraphicsDevice gd = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
         double ratio = (double)width / height;
@@ -42,12 +46,16 @@ public class DesktopLauncher {
                     @Override
                     public void onGameCreate(Game game) {
                         Application.moduleManager.getModule(CharacterModule.class).addRandom();
-                        Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 2, 2, 1);
-                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_rice", 10, 4, 4, 1);
-                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_carrot", 10, 4, 6, 1);
-                        Application.moduleManager.getModule(WorldModule.class).getParcel(8, 8, 1).setRockName("base.granite");
-                        Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
-                        Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
+                        Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 8, 2, 1);
+//                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_rice", 10, 4, 4, 1);
+//                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_carrot", 10, 4, 6, 1);
+//                        Application.moduleManager.getModule(WorldModule.class).getParcel(8, 8, 1).setRockName("base.granite");
+//                        Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
+//                        Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
+
+                        List<ParcelModel> parcels = Application.moduleManager.getModule(WorldModule.class).getParcelList().stream().filter(parcel -> parcel.z == 1).collect(Collectors.toList());
+                        Application.data.consumables.forEach(itemInfo ->
+                                Application.moduleManager.getModule(ConsumableModule.class).addConsumable(itemInfo, 10, parcels.get(Application.data.consumables.indexOf(itemInfo))));
                     }
 
                     @Override

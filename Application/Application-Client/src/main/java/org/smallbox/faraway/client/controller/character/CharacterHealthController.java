@@ -40,6 +40,8 @@ public class CharacterHealthController extends LuaController {
 
     @BindLua private UIList listBuffs;
 
+    @BindLua private UIList listDiseases;
+
     private CharacterModel _selected;
 
     public void selectCharacter(CharacterModel character) {
@@ -55,17 +57,26 @@ public class CharacterHealthController extends LuaController {
         displayNeed(lbNeedOxygen, gaugeOxygen, "Oxygen", character.getNeeds().get("oxygen"));
 
         displayBuffs(character);
+
+        displayDiseases(character);
+    }
+
+    private void displayDiseases(CharacterModel character) {
+        listDiseases.clear();
+        listDiseases.addView(UILabel.create(null).setText("gg").setTextColor(new Color(0xB4D4D3)).setTextSize(14).setSize(0, 20));
+        listDiseases.addView(UILabel.create(null).setText("gg").setTextColor(new Color(0xB4D4D3)).setTextSize(14).setSize(0, 20));
+        listDiseases.addView(UILabel.create(null).setText("gg").setTextColor(new Color(0xB4D4D3)).setTextSize(14).setSize(0, 20));
     }
 
     private void displayNeed(UILabel label, UIImage gauge, String text, double value) {
         if (value > 80) {
-            label.setTextColor(Color.GREEN).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
+            label.setTextColor(0xb3d035).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
             gauge.setTextureRect(0, 80, (int) (Math.floor(value * 170 / 100 / 10) * 10), 16);
         } else if (value > 50) {
-            label.setTextColor(Color.YELLOW).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
+            label.setTextColor(0xfff54f).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
             gauge.setTextureRect(0, 32, (int) (Math.floor(value * 170 / 100 / 10) * 10), 16);
         } else {
-            label.setTextColor(Color.RED).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
+            label.setTextColor(0xf73939).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
             gauge.setTextureRect(0, 48, (int) (Math.floor(value * 170 / 100 / 10) * 10), 16);
         }
     }

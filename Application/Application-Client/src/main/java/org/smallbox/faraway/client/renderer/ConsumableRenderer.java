@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameRenderer;
@@ -30,8 +29,6 @@ public class ConsumableRenderer extends BaseRenderer {
         public int frameLeft = 100;
         public abstract void onTagDraw(GDXRenderer renderer, Viewport viewport);
     }
-
-    private int                     _frame;
 
     @Override
     public void onGameCreate(Game game) {
@@ -62,11 +59,11 @@ public class ConsumableRenderer extends BaseRenderer {
         });
     }
 
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         consumableModule.getConsumables().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(consumable -> {
-                    renderer.drawOnMap(consumable.getParcel(), getItemSprite(consumable));
+                    renderer.drawOnMap(consumable.getParcel(), ApplicationClient.spriteManager.getNewSprite(consumable.getGraphic()));
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getQuantity(), 12, Color.BLUE, 0, 0);
                 });
 
@@ -74,11 +71,7 @@ public class ConsumableRenderer extends BaseRenderer {
 //        tags.forEach(draw -> draw.onTagDraw(renderer, viewport));
     }
 
-    private Sprite getItemSprite(ConsumableItem consumable) {
-        return ApplicationClient.spriteManager.getSprite(consumable.getInfo(), consumable.getGraphic(), consumable.getInfo().height, 0, 255, false);
-    }
-
-    public void onRefresh(int frame) {
-        _frame = frame;
-    }
+//    private Sprite getItemSprite(ConsumableItem consumable) {
+////        return ApplicationClient.spriteManager.getSprite(consumable.getInfo(), consumable.getGraphic(), consumable.getInfo().height, 0, 255, false);
+//    }
 }

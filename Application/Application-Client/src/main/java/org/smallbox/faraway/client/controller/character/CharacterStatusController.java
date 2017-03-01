@@ -1,12 +1,18 @@
 package org.smallbox.faraway.client.controller.character;
 
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.item.factory.BasicCraftJob;
+import org.smallbox.faraway.util.CollectionUtils;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -18,6 +24,8 @@ public class CharacterStatusController extends LuaController {
     @BindLua private UILabel        lbJobTo;
     @BindLua private UILabel        lbJobProgress;
     @BindLua private UIImage        imgJobProgress;
+    @BindLua private UIImage        imgJob;
+    @BindLua private UIImage        imgJobOut;
 
     private CharacterModel _selected;
 
@@ -41,6 +49,25 @@ public class CharacterStatusController extends LuaController {
 //            lbJobTo.setText(Utils.getTimeStr(job.getEndTime()));
             lbJobProgress.setText(String.valueOf(job.getProgress()));
             imgJobProgress.setTextureRect(0, 80, (int) (Math.floor(job.getProgress() / 10) * 10), 16);
+
+            if (job instanceof BasicHaulJob) {
+                ItemInfo itemInfo = ((BasicHaulJob) job).getConsumableInfo();
+                if (itemInfo != null && CollectionUtils.isNotEmpty(itemInfo.graphics)) {
+                    imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(itemInfo.graphics.get(0)));
+                }
+            }
+
+            if (job instanceof BasicCraftJob) {
+                ReceiptGroupInfo.ReceiptInfo receiptInfo = ((BasicCraftJob) job).getReceiptInfo();
+                if (receiptInfo != null) {
+                    if (CollectionUtils.isNotEmpty(receiptInfo.inputs)) {
+                        imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(receiptInfo.inputs.get(0).item.graphics.get(0)));
+                    }
+                    if (CollectionUtils.isNotEmpty(receiptInfo.outputs)) {
+                        imgJobOut.setImage(ApplicationClient.spriteManager.getNewSprite(receiptInfo.outputs.get(0).item.graphics.get(0)));
+                    }
+                }
+            }
         }
     }
 }

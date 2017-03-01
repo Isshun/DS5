@@ -1,11 +1,12 @@
 package org.smallbox.faraway.client.controller.character;
 
-import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.lua.BindLuaAction;
@@ -14,7 +15,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 25/04/2016.
@@ -39,7 +39,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private UILabel            lbInfoEnlisted;
     @BindLua private UILabel            lbParcel;
 
-    @BindLua private UILabel            lbTalents;
+    @BindLua private UIList             listTalents;
 
     @Override
     protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
@@ -49,16 +49,20 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @Override
     protected void onDisplayUnique(CharacterModel character) {
         lbName.setText(character.getName());
-        lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 47);
-        lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 47);
+        lbInfoBirth.setDashedString("Birth", character.getPersonals().getEnlisted(), 43);
+        lbInfoEnlisted.setDashedString("Enlisted", character.getPersonals().getEnlisted(), 43);
         lbParcel.setText(character.getParcel().toString());
 
         // Info
-        lbTalents.setText(StringUtils.join(character.getTalents().getAll().stream().map(talentEntry -> talentEntry.name).collect(Collectors.toList()), ", "));
+//        lbTalents.setText(StringUtils.join(character.getTalents().getAll().stream().map(talentEntry -> talentEntry.name).collect(Collectors.toList()), ", "));
 
+        character.getTalents().getAll().forEach(talent ->
+                listTalents.addView(UILabel.create(null).setText(talent.name).setTextColor(new Color(0xB4D4D3)).setTextSize(14).setSize(0, 20)));
 
         characterStatusController.selectCharacter(character);
         characterHealthController.selectCharacter(character);
+
+        openPage(pageStatus);
     }
 
     @Override

@@ -320,6 +320,12 @@ public class LuaItemExtend extends LuaExtend {
         if (!luaGraphic.get("y").isnil()) {
             graphicInfo.y = luaGraphic.get("y").toint();
         }
+        if (!luaGraphic.get("tile_width").isnil()) {
+            graphicInfo.tileWidth = luaGraphic.get("tile_width").toint();
+        }
+        if (!luaGraphic.get("tile_height").isnil()) {
+            graphicInfo.tileHeight = luaGraphic.get("tile_height").toint();
+        }
 
         graphicInfo.width = itemInfo.width * 32;
         graphicInfo.height = itemInfo.height * 32;
