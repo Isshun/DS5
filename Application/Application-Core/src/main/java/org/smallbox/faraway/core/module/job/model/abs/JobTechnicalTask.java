@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.module.job.model.abs;
 
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobTask;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 

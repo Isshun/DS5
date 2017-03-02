@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.module.job.model.DigJob;
 import org.smallbox.faraway.core.module.job.model.GatherJob;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.PlantModel;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 
 /**
  * Created by Alex on 06/07/2015.
@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.module.world.model.PlantModel;
 public class JobHelper {
 
     public static JobModel createCutJob(int x, int y, int z) {
-        PlantModel res = WorldHelper.getResource(x, y, z);
+        PlantItem res = WorldHelper.getResource(x, y, z);
         if (res == null) {
             return null;
         }
@@ -23,7 +23,7 @@ public class JobHelper {
     }
 
     public static JobModel createGatherJob(int x, int y, int z) {
-        PlantModel res = WorldHelper.getResource(x, y, z);
+        PlantItem res = WorldHelper.getResource(x, y, z);
         if (res == null) {
             return null;
         }
@@ -71,7 +71,7 @@ public class JobHelper {
 //        }
     }
 
-    public static JobModel addGather(PlantModel resource, GatherJob.Mode mode) {
+    public static JobModel addGather(PlantItem resource, GatherJob.Mode mode) {
         throw new NotImplementedException("");
 
 //        if (resource == null) {

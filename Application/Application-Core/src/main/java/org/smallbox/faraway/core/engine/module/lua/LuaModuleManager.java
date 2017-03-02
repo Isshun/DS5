@@ -21,9 +21,10 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.module.area.model.AreaModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.*;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
@@ -57,7 +58,7 @@ public abstract class LuaModuleManager implements GameObserver {
             public boolean onSelectCharacter(CharacterModel character) { broadcastToLuaModules(LuaEventsModel.on_character_selected, character); return true; }
             public boolean onSelectParcel(ParcelModel parcel) { broadcastToLuaModules(LuaEventsModel.on_parcel_selected, parcel); return true; }
             public void onSelectRock(ItemInfo rockInfo) { broadcastToLuaModules(LuaEventsModel.on_rock_selected, rockInfo); }
-            public void onSelectPlant(PlantModel plant) { broadcastToLuaModules(LuaEventsModel.on_plant_selected, plant); }
+            public void onSelectPlant(PlantItem plant) { broadcastToLuaModules(LuaEventsModel.on_plant_selected, plant); }
             public void onSelectConsumable(ConsumableItem consumable) { broadcastToLuaModules(LuaEventsModel.on_consumable_selected, consumable); }
             public void onSelectStructure(StructureItem structure) { broadcastToLuaModules(LuaEventsModel.on_structure_selected, structure); }
             public void onSelectNetwork(NetworkItem network) { broadcastToLuaModules(LuaEventsModel.on_network_selected, network); }

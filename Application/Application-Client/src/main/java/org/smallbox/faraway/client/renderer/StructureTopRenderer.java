@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;

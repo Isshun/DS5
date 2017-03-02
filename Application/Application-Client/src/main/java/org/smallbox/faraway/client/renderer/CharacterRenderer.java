@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.renderer;
 
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
@@ -8,7 +9,7 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.util.Constant;
@@ -22,7 +23,7 @@ public class CharacterRenderer extends BaseRenderer {
     private CharacterModule _characterModule;
 
     @BindComponent
-    private SpriteManager           _spriteManager;
+    private SpriteManager _spriteManager;
 
     private int                     _frame;
     private int                     _floor;

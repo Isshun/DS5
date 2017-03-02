@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.PlantModel;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -221,7 +221,7 @@ public class WorldFactory extends GameModule implements IWorldFactory {
                     parcel.setRockInfo(resourceInfo);
                 }
                 if (resourceInfo.isPlant) {
-                    PlantModel resource = new PlantModel(resourceInfo);
+                    PlantItem resource = new PlantItem(resourceInfo);
                     parcel.setPlant(resource);
                     resource.setParcel(parcel);
                 }

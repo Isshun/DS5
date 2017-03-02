@@ -26,6 +26,7 @@ public class LuaItemExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {
         switch (type) {
+            case "plant":
             case "item":
             case "ground":
             case "liquid":

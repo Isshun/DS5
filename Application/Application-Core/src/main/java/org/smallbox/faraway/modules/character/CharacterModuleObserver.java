@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 /**
  * Created by Alex on 20/07/2016.

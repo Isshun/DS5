@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.engine.lua;
 
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterNeedsExtra;
-import org.smallbox.faraway.core.module.character.model.base.CharacterStatsExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 /**

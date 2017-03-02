@@ -1,16 +1,16 @@
-package org.smallbox.faraway.core.module.character.model.base;
+package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.character.model.*;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.*;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -45,10 +45,10 @@ public abstract class CharacterModel extends MovableModel {
 
     protected CharacterPersonalsExtra           _personals;
     protected CharacterStatsExtra               _stats;
-    protected CharacterTalentExtra              _talents;
+    protected CharacterTalentExtra _talents;
     protected CharacterNeedsExtra               _needs;
 
-    private TimeTableModel                      _timeTable;
+    private TimeTableModel _timeTable;
     protected boolean                           _isSelected;
     protected int                               _lag;
     protected RoomModel                         _quarter;

@@ -4,9 +4,9 @@
 //import org.smallbox.faraway.client.drawable.AnimDrawable;
 //import org.smallbox.faraway.client.drawable.IconDrawable;
 //import org.smallbox.faraway.core.game.helper.WorldHelper;
-//import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
+//import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 //import org.smallbox.faraway.core.module.character.model.PathModel;
-//import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+//import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 //import org.smallbox.faraway.core.module.path.PathManager;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;

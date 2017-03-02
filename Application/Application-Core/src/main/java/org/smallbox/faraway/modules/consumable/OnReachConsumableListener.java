@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.module.consumable;
 //
-//import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+//import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.util.MoveListener;

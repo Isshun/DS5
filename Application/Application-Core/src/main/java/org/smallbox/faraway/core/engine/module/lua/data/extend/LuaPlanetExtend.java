@@ -17,6 +17,7 @@ import java.util.List;
  * Created by Alex on 29/09/2015.
  */
 public class LuaPlanetExtend extends LuaExtend {
+
     @Override
     public boolean accept(String type) { return "planet".equals(type); }
 

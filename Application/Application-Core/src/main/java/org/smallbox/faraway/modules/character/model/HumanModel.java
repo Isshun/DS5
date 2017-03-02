@@ -1,9 +1,9 @@
-package org.smallbox.faraway.core.module.character.model;
+package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterPersonalsExtra;
-import org.smallbox.faraway.core.module.character.model.base.CharacterStatsExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 /**

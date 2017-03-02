@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.ArrayList;

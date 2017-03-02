@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.character.model;
+package org.smallbox.faraway.modules.character.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

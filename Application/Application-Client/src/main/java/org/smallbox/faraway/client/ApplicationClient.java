@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
-import org.smallbox.faraway.client.renderer.SpriteManager;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
@@ -136,6 +136,29 @@ public class ApplicationClient {
         // Passe l'evenement à l'ui manager
         if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
             return;
+        }
+
+        // Left click
+        if (action == GameEventListener.Action.RELEASED) {
+            if (!event.consumed) {
+                ApplicationClient.notify(obs -> obs.onMouseRelease(event));
+            }
+
+//            if (!event.consumed && _mouseEvent.x < 1500) {
+//                ApplicationClient.notify(obs -> obs.onClickOnMap(event));
+//            }
+        }
+
+        if (action == GameEventListener.Action.PRESSED) {
+            if (!event.consumed) {
+                ApplicationClient.notify(obs -> obs.onMousePress(event));
+            }
+        }
+
+        if (action == GameEventListener.Action.MOVE) {
+            if (!event.consumed) {
+                ApplicationClient.notify(observer -> observer.onMouseMove(event));
+            }
         }
 
 //        // Lance un evenement clickOnMap si le jeu est lancé

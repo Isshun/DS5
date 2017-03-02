@@ -275,7 +275,6 @@ public class InputManager implements InputProcessor {
                 ApplicationClient.mainRenderer.getViewport().update(x, y);
                 return true;
             }
-            return false;
 //        } else if (_lastMouseButton == Buttons.LEFT) {
 //            Log.debug("select: " + _touchDownX + "x" + _touchDownY);
 //            Log.debug("to: " + x + "x" + y );
@@ -284,8 +283,9 @@ public class InputManager implements InputProcessor {
 //
 //            return false;
 //        } else {
-//            ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
         }
+
+        ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
 
         return false;
     }

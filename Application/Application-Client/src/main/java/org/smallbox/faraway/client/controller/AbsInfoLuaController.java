@@ -46,8 +46,8 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
         if (CollectionUtils.isNotEmpty(list)) {
             mainPanelController.setCurrentController(this);
             displayObjects();
-        } else if (isVisible()) {
-            mainPanelController.setVisible(true);
+//        } else if (isVisible()) {
+//            mainPanelController.setVisible(true);
         }
 
         return CollectionUtils.isNotEmpty(list);

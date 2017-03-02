@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.character.model.base;
+package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.util.Strings;
 

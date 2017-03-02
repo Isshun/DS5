@@ -1,7 +1,6 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -16,7 +15,6 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 

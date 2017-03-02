@@ -1,12 +1,13 @@
-package org.smallbox.faraway.core.module.world.model;
+package org.smallbox.faraway.modules.flora.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
-public class PlantModel extends MapObjectModel {
+public class PlantItem extends MapObjectModel {
     private GrowingInfo             _growingInfo;
     private double                  _maturity;
     private GardenAreaModel         _garden;
@@ -15,11 +16,11 @@ public class PlantModel extends MapObjectModel {
     private int                     _tile;
     private JobModel                _job;
 
-    public PlantModel(ItemInfo info) {
+    public PlantItem(ItemInfo info) {
         super(info);
     }
 
-    public PlantModel(ItemInfo info, int id) {
+    public PlantItem(ItemInfo info, int id) {
         super(info, id);
     }
 
@@ -34,6 +35,7 @@ public class PlantModel extends MapObjectModel {
     public double       getMaturity() { return _maturity; }
     public double       getNourish() { return _nourish; }
     public GrowingInfo  getGrowingInfo() { return _growingInfo; }
+    public GardenAreaModel getGarden() { return _garden; }
     public int          getTile() { return _tile; }
     public JobModel     getJob() { return _job; }
 

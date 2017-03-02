@@ -1,10 +1,10 @@
-package org.smallbox.faraway.core.module.character.model;
+package org.smallbox.faraway.modules.character.model;
 
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.model.ObjectModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 /**
  * Created by Alex on 14/10/2015.

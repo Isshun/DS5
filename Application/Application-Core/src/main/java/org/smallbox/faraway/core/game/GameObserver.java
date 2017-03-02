@@ -19,7 +19,7 @@ public interface GameObserver {
 //    default void onRemoveItem(ParcelModel parcel, UsableItem item){}
 //    default void onRemoveConsumable(ConsumableItem consumable){}
 //    default void onRemoveStructure(ParcelModel parcel, StructureItem structure){}
-//    default void onRemovePlant(PlantModel plant){}
+//    default void onRemovePlant(PlantItem plant){}
     default void onRemoveRock(ParcelModel parcel){}
     default void onRefreshStructure(StructureItem structure) {}
     default void onHourChange(int hour){}

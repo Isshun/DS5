@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.math.Rectangle;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -16,7 +17,7 @@ public class WorldTopRenderer extends BaseRenderer {
     private WorldModule _worldModule;
 
     @BindComponent
-    protected SpriteManager     _spriteManager;
+    protected SpriteManager _spriteManager;
 
     protected MapObjectModel    _itemSelected;
     private int                 _floor;
@@ -114,7 +115,7 @@ public class WorldTopRenderer extends BaseRenderer {
 //    }
 //
 //    @Override
-//    public void onSelectPlant(PlantModel resource) {
+//    public void onSelectPlant(PlantItem resource) {
 //        _itemSelected = resource;
 //    }
 //

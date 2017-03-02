@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;

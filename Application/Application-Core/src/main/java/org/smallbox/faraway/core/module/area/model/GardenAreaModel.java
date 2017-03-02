@@ -48,7 +48,7 @@ public class GardenAreaModel extends AreaModel {
 
 //        // Put new resource on parcel
 //        if (parcel.getPlant() == null && _currentItem != null) {
-//            PlantModel plant = (PlantModel) ModuleHelper.getWorldModule().putObject(parcel, _currentItem, 0);
+//            PlantItem plant = (PlantItem) ModuleHelper.getWorldModule().putObject(parcel, _currentItem, 0);
 //            plant.setGarden(this);
 //            plant.setSeed(false);
 //        }

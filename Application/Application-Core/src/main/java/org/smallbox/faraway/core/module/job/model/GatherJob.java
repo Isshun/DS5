@@ -3,19 +3,19 @@ package org.smallbox.faraway.core.module.job.model;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.core.module.character.model.PathModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.PathModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.PlantModel;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 import org.smallbox.faraway.util.Log;
 
 public class GatherJob extends JobModel {
     public enum Mode {PLANT_SEED, NOURISH, HARVEST, CUT}
 
     private Mode                _mode;
-    private PlantModel          _plant;
+    private PlantItem _plant;
     private int                 _totalCost;
     private double              _current;
 
@@ -29,7 +29,7 @@ public class GatherJob extends JobModel {
 //        super(actionInfo, jobParcel, new IconDrawable("data/res/ic_gather.png", 0, 0, 32, 32), new AnimDrawable("data/res/action_gather.png", 0, 0, 32, 32, 7, 10));
     }
 
-    public static JobModel create(PlantModel plant, Mode mode) {
+    public static JobModel create(PlantItem plant, Mode mode) {
         assert plant != null;
 
         ItemInfo info = plant.getInfo();

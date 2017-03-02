@@ -39,6 +39,19 @@ public class LuaUIExtend extends LuaExtend {
         return false;
     }
 
+//    public RootView debug(Globals globals, LuaValue value) {
+//        String rootName =
+//                StringUtils.isNotBlank(getString(value, "name", null)) ? getString(value, "name", null) :
+//                        StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) : "";
+//
+//        View view = createView(null, globals, value, true, 0, null, rootName, 1);
+//
+//        RootView rootView = new RootView();
+//        rootView.setView(view);
+//
+//        return rootView;
+//    }
+
     @Override
     public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         String rootName =
@@ -176,7 +189,21 @@ public class LuaUIExtend extends LuaExtend {
             }
         });
 
-        readInt(value, "padding", v -> view.setPadding(v, v));
+        LuaValue paddingValue = value.get("padding");
+        if (!paddingValue.isnil()) {
+            if (paddingValue.istable()) {
+                switch (paddingValue.length()) {
+                    case 4:
+                        view.setPadding(paddingValue.get(1).toint(), paddingValue.get(2).toint(), paddingValue.get(3).toint(), paddingValue.get(4).toint());
+                        break;
+                    case 2:
+                        view.setPadding(paddingValue.get(1).toint(), paddingValue.get(2).toint());
+                        break;
+                }
+            } else {
+                readInt(value, "padding", v -> view.setPadding(v, v));
+            }
+        }
     }
 
     private void customizeViewListeners(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {

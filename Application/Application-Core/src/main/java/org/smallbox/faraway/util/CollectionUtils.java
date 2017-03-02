@@ -1,6 +1,9 @@
 package org.smallbox.faraway.util;
 
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,5 +28,9 @@ public class CollectionUtils {
 
     public static boolean notContains(Collection<?> collection, Object object) {
         return collection == null || !collection.contains(object);
+    }
+
+    public static boolean containsEquals(List<ParcelModel> c1, List<ParcelModel> c2) {
+        return c1 != null && c2 != null && c2.containsAll(c1) && c1.containsAll(c2);
     }
 }

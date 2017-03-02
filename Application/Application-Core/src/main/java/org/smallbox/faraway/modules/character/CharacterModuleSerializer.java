@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.character.model.HumanModel;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.HumanModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 

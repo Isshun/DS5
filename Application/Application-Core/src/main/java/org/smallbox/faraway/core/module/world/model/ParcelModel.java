@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.module.area.model.AreaModel;
 import org.smallbox.faraway.core.module.job.model.DigJob;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private ItemInfo                        _rockInfo;
     private ItemInfo                        _groundInfo;
 //    public ConsumableItem                  _consumable;
-    public PlantModel                       _plant;
+    public PlantItem _plant;
     public List<NetworkItem>         _networks;
     private ItemInfo                        _liquidInfo;
 
@@ -49,7 +50,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void                     setArea(AreaModel area) { _area = area; }
     public void                     setConnections(Array<Connection<ParcelModel>> connections) { _connections = connections; }
 
-    public void                     setPlant(PlantModel plant) { _plant = plant; }
+    public void                     setPlant(PlantItem plant) { _plant = plant; }
     public void                     setItem(MapObjectModel item) { _items.put(item.getClass(), item); }
     public void                     setGroundInfo(ItemInfo groundInfo) {
         _groundInfo = groundInfo;
@@ -77,7 +78,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ItemInfo                 getGroundInfo() { return _groundInfo; }
     public ItemInfo                 getLiquidInfo() { return _liquidInfo; }
     public DigJob                   getDigJob() { return _digJob; }
-    public PlantModel               getPlant() { return _plant; }
+    public PlantItem getPlant() { return _plant; }
 //    public ConsumableItem          getConsumable() { return _consumable; }
     public RoomModel                getRoom() { return _room; }
     public AreaModel                getArea() { return _area; }

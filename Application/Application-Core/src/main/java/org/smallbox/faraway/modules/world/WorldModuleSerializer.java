@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.core.module.world.model.PlantModel;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -54,7 +54,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                                 // Plant
                                 if (parcel.hasPlant()) {
-                                    PlantModel plant = parcel.getPlant();
+                                    PlantItem plant = parcel.getPlant();
                                     st.bind(6, plant.getId());
                                     stPlant.bind(1, plant.getId());
                                     stPlant.bind(2, plant.getInfo().name);
@@ -149,7 +149,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
                             int plantId = st.columnInt(5);
                             stPlant.bind(1, plantId);
                             if (stPlant.step()) {
-                                PlantModel plant = new PlantModel(Application.data.getItemInfo(stPlant.columnString(1)), plantId);
+                                PlantItem plant = new PlantItem(Application.data.getItemInfo(stPlant.columnString(1)), plantId);
                                 plant.setSeed(stPlant.columnInt(4) > 0);
                                 plant.setMaturity(stPlant.columnDouble(2));
                                 plant.setNourish(stPlant.columnDouble(3));

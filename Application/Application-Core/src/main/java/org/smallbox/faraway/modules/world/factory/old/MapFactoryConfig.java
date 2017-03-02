@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.world.factory.old;
+package org.smallbox.faraway.modules.world.factory.old;
 
 import java.util.ArrayList;
 import java.util.List;

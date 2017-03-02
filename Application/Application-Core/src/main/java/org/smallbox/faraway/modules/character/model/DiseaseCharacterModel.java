@@ -1,7 +1,7 @@
-package org.smallbox.faraway.core.module.character.model;
+package org.smallbox.faraway.modules.character.model;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.module.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 /**
  * Created by Alex on 26/10/2015.
