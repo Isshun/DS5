@@ -1,9 +1,10 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,11 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
 //        }
 
         _observers.add(observer);
+    }
+
+    @Override
+    public final void onGameCreateObserver(Game game) {
+
     }
 
     public void notifyObservers(Consumer<T> action) {

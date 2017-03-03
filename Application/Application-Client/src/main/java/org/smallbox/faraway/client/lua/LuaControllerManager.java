@@ -50,7 +50,7 @@ public class LuaControllerManager implements GameObserver {
         _controllers.values()
                 .forEach(controller ->
                         Stream.of(controller.getClass().getDeclaredMethods())
-                                .filter(method -> Arrays.asList("onGameCreate", "onGameStart").contains(method.getName()))
+                                .filter(method -> Arrays.asList("onGameCreateObserver", "onGameStart").contains(method.getName()))
                                 .forEach(method -> Log.warning("Method " + method.getName() + " cannot be used on LuaController " + controller.getClass().getName())));
 
 

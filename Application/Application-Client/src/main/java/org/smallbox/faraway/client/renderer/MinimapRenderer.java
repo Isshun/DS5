@@ -15,6 +15,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.flora.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameRenderer(level = MainRenderer.MINI_MAP_LEVEL, visible = true)
@@ -39,6 +40,9 @@ public class MinimapRenderer extends BaseRenderer {
     private int                         _height;
     private boolean                     _dirty;
     private Pixmap                      _pixmap;
+
+    @BindModule
+    private PlantModule plantModule;
 
     @BindModule
     private WorldModule worldModule;
@@ -87,6 +91,9 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     protected void onGameUpdate() {
+        if (Application.gameManager.getGame().getTick() % 100 == 0) {
+            _dirty = true;
+        }
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -127,6 +134,8 @@ public class MinimapRenderer extends BaseRenderer {
                 for (int y = 0; y < _height; y++) {
                     if (parcels[x][y][_floor].hasItem(StructureItem.class)) {
                         _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
+                    } else if (plantModule.getPlant(parcels[x][y][_floor]) != null) {
+                        _pixmap.drawPixel(x, y, COLOR_PLANT);
                     } else if (parcels[x][y][_floor].hasPlant()) {
                         _pixmap.drawPixel(x, y, COLOR_PLANT);
                     } else if (parcels[x][y][_floor].hasRock()) {

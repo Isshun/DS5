@@ -25,6 +25,7 @@ public class LuaWeatherExtend extends LuaExtend {
         if (weatherInfo == null) {
             weatherInfo = new WeatherInfo();
             Application.data.weathers.put(name, weatherInfo);
+            Application.data.add(name, weatherInfo);
         }
 
         readWeather(weatherInfo, value);

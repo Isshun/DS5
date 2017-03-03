@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.item.factory;
 
-import org.smallbox.faraway.core.ModuleInfo;
+import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Alex on 26/06/2015.
  */
-@ModuleInfo(name = "ItemFactoryModule")
+@ModuleInfoAnnotation(name = "ItemFactoryModule", updateInterval = 1)
 public class ItemFactoryModule extends GameModule {
 
     @BindModule
@@ -125,12 +125,12 @@ public class ItemFactoryModule extends GameModule {
                 if (currentQuantity < receiptInputInfo.quantity) {
 
                     // Compte le nombre de consomables qui seront rapportés par les jobs existants
-                    int quantityInJob = 0;
-                    for (BasicHaulJob job: factory.getHaulJobs()) {
-                        if (job.getHaulingConsumable().getInfo().instanceOf(receiptInputInfo.item)) {
-                            quantityInJob += job.getHaulingQuantity();
-                        }
-                    }
+                    int quantityInJob = jobModule.getJobs().stream()
+                            .filter(job -> job instanceof BasicHaulJob)
+                            .map(job -> (BasicHaulJob)job)
+                            .filter(job -> job.getFactory() == factory)
+                            .mapToInt(BasicHaulJob::getHaulingQuantity)
+                            .sum();
 
                     // Ajoute des jobs tant que la quantité de consomable présent dans l'usine et les jobs est inférieur à la quantité requise
                     while (currentQuantity + quantityInJob < receiptInputInfo.quantity) {
@@ -141,7 +141,6 @@ public class ItemFactoryModule extends GameModule {
                             Log.info("[Factory] %s -> launch hauling job for component: %s", item, receiptInputInfo);
 
                             quantityInJob += job.getHaulingQuantity();
-                            factory.addHaulJob(job);
                             jobModule.addJob(job);
                         }
 
@@ -223,8 +222,11 @@ public class ItemFactoryModule extends GameModule {
         // TODO: Libère les objets non consommés
 
         // Termine les jobs
-        factory.getHaulJobs().forEach(JobModel::cancel);
-        factory.getHaulJobs().clear();
+        jobModule.getJobs().stream()
+                .filter(job -> job instanceof BasicHaulJob)
+                .map(job -> (BasicHaulJob)job)
+                .filter(job -> job.getFactory() == factory)
+                .forEach(JobModel::cancel);
 
         // Retire la recette en cours
         factory.setRunningReceipt(null);
@@ -260,7 +262,10 @@ public class ItemFactoryModule extends GameModule {
                 .sum();
 
         // Check l'inventaire des personnages sur les hauling jobs de la fabrique
-        availableQuantity += item.getFactory().getHaulJobs().stream()
+        availableQuantity += jobModule.getJobs().stream()
+                .filter(job -> job instanceof BasicHaulJob)
+                .map(job -> (BasicHaulJob)job)
+                .filter(job -> job.getFactory() == item.getFactory())
                 .filter(job -> job.getCharacter() != null)
                 .mapToInt(job -> job.getCharacter().getInventoryQuantity(itemInfo))
                 .sum();

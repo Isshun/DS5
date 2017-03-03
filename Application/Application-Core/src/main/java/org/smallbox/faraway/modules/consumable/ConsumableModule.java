@@ -141,7 +141,12 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     @Override
     protected void onGameUpdate(Game game, int tick) {
         _consumables.forEach(ConsumableItem::fixPosition);
+
+        // Retire les consomables ayant comme quantité 0
         _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
+
+        // Retire les locks des jobs n'existant plus
+        _locks.removeIf(consumableJobLock -> !jobModule.hasJob(consumableJobLock.job));
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
@@ -357,8 +362,8 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 // Calcul le nombre d'élément de la pile déjà consomés par des jobs
                 int quantityInJob = 0;
                 for (JobModel job: jobModule.getJobs()) {
-                    if (job instanceof HaulJob && ((HaulJob)job).getConsumable() == consumable) {
-                        quantityInJob += ((HaulJob)job).getRealQuantity();
+                    if (job instanceof BasicHaulJob && ((BasicHaulJob)job).getHaulingConsumable() == consumable) {
+                        quantityInJob += ((BasicHaulJob)job).getHaulingQuantity();
                     }
                 }
 

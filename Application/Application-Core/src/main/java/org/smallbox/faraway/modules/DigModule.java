@@ -28,10 +28,6 @@ public class DigModule extends GameModule {
     private Map<ParcelModel, BasicDigJob> _parcels = new ConcurrentHashMap<>();
 
     @Override
-    public void onGameCreate(Game game) {
-    }
-
-    @Override
     public void onGameStart(Game game) {
         worldModule.getParcelList().stream()
                 .filter(parcel -> parcel.z == 1)

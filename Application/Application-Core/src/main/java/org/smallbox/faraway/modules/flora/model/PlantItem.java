@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.util.Utils;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
@@ -46,7 +47,7 @@ public class PlantItem extends MapObjectModel {
 
     public void grow() {
         if (_growingInfo != null) {
-            _maturity = Math.min(1, _maturity + (_info.plant.growing * _growingInfo.value));
+            _maturity = Utils.bound(0, 1, _maturity + (_info.plant.growing * _growingInfo.value));
         }
     }
 }

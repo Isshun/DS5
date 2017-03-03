@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.weather;
+package org.smallbox.faraway.modules.weather;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
@@ -10,12 +10,11 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
+import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -40,6 +39,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     private List<RegionInfo.RegionTemperature>  _temperatures;
     private double[]                            _temperatureByFloor;
     private double[]                            _temperatureTargetByFloor;
+    private double                              _temperature;
 
     @Override
     public void onGameStart(Game game) {
@@ -49,7 +49,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         _temperatureTargetByFloor = new double[_floors];
         _lightTarget = 1;
         _lightProgress = 1;
-        _weather = Application.data.getWeather(game.getInfo().region.weather.get(0).name);
+        _weather = game.getInfo().region.weather.get(0).info;
 
         // TODO
 //        ModuleHelper.getWorldModule().setLight(1);
@@ -72,6 +72,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         for (int floor = 0; floor < _floors; floor++) {
             for (RegionInfo.RegionTemperature regionTemperature: _temperatures) {
                 if (floor - _floors + 1 >= regionTemperature.fromFloor && floor - _floors + 1 <= regionTemperature.toFloor) {
+                    _temperature = regionTemperature.temperature[0];
                     _temperatureByFloor[floor] = regionTemperature.temperature[0];
                     _temperatureTargetByFloor[floor] = regionTemperature.temperature[0];
                 }
@@ -87,7 +88,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     }
 
     private void setHour(PlanetInfo.DayTime hourInfo) {
-        _lightChange = 1 / hourInfo.duration / Application.configurationManager.game.tickPerHour;
+        _lightChange = 1 / hourInfo.duration / Application.APPLICATION_CONFIG.game.tickPerHour;
         _lightProgress = 0;
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;
@@ -100,7 +101,8 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     }
 
     public WeatherInfo getWeather() { return _weather; }
-    public double getTemperature(int floor) { return _temperatureByFloor != null ? _temperatureByFloor[floor] : 0; }
+    public double getTemperature() { return _temperature; }
+    public double getTemperatureFloor(int floor) { return _temperatureByFloor != null ? _temperatureByFloor[floor] : 0; }
     public double getLight() { return 1; }
     public double getOxygen() { return 0.5; }
 
@@ -108,7 +110,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     protected void onGameUpdate(Game game, int tick) {
         if (_duration-- <= 0) {
             _duration = 2500;
-            loadRandomWeather();
+            loadWeather(getRandomWeather(Application.gameManager.getGame().getInfo().region.weather));
         }
 
         // Set light
@@ -141,16 +143,13 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         notifyObservers(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));
     }
 
-    private void loadRandomWeather() {
-        List<String> allowedWeathers = Application.gameManager.getGame().getInfo().region.weather.stream().map(weather -> weather.name).collect(Collectors.toList());
-        List<WeatherInfo> allWeathers = Application.data.weathers.values().stream().collect(Collectors.toList());
-        Collections.shuffle(allWeathers);
-        Optional<WeatherInfo> optionalWeather = allWeathers.stream().filter(weather -> allowedWeathers.contains(weather.name)).findFirst();
-        if (optionalWeather.isPresent()) {
-            loadWeather(optionalWeather.get());
-        } else {
-            loadWeather(Application.data.weathers.get("base.weather.regular"));
+    private WeatherInfo getRandomWeather(List<RegionInfo.RegionWeather> weatherList) {
+
+        if (CollectionUtils.isNotEmpty(weatherList)) {
+            Collections.shuffle(weatherList);
+            return weatherList.get(0).info;
         }
+        return Application.data.weathers.get("base.weather.regular");
     }
 
     private void loadWeather(WeatherInfo weather) {

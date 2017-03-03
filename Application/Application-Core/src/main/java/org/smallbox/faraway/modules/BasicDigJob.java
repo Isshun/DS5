@@ -15,9 +15,6 @@ import org.smallbox.faraway.modules.world.WorldModule;
  */
 public class BasicDigJob extends JobModel {
 
-    private long _startTick;
-    private long _endTick;
-
     public static BasicDigJob create(ConsumableModule consumableModule, WorldModule worldModule, ParcelModel parcel) {
         BasicDigJob job = new BasicDigJob(parcel);
 
@@ -49,9 +46,6 @@ public class BasicDigJob extends JobModel {
         _mainLabel = "Dig";
         _targetParcel = targetParcel;
     }
-
-    public long getStartTick() { return _startTick; }
-    public long getEndTick() { return _endTick; }
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {

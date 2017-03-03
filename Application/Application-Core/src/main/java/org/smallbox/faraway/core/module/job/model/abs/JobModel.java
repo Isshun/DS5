@@ -19,6 +19,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class JobModel extends ObjectModel {
 
+    private JobTaskReturn _lastReturn;
+
+    public JobTaskReturn getLastReturn() {
+        return _lastReturn;
+    }
+
     public List<JobModel> getSubJobs() {
         return _subJobs;
     }
@@ -131,7 +137,7 @@ public abstract class JobModel extends ObjectModel {
         _limit = -1;
         _label = "none";
 
-        Log.debug("Job #" + _id + " onGameCreate");
+        Log.debug("Job #" + _id + " onGameCreateObserver");
     }
 
     public String                   getMessage() { return _message; }
@@ -285,6 +291,7 @@ public abstract class JobModel extends ObjectModel {
 //        }
 
         if (ret == JobCheckReturn.ABORT) {
+            onAbort();
             finish();
         }
 
@@ -353,6 +360,7 @@ public abstract class JobModel extends ObjectModel {
         }
 
         if (ret == JobActionReturn.ABORT) {
+            onAbort();
             finish();
         }
 
@@ -367,12 +375,15 @@ public abstract class JobModel extends ObjectModel {
         return JobActionReturn.CONTINUE;
     }
 
+    protected void onAbort() {}
+
     private JobActionReturn actionDo(CharacterModel character) {
 
         // Execute la tache en tête de file et la retire si elle est terminée
         // TODO: à conserver
         JobTask jobTask = _tasks.peek();
         JobTaskReturn jobTaskReturn = jobTask.action.onExecuteTask(character);
+        _lastReturn = jobTaskReturn;
         _label = jobTask.label;
 
         // TODO: à conserver

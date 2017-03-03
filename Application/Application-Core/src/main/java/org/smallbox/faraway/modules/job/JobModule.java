@@ -1,12 +1,9 @@
 package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
@@ -14,6 +11,8 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -45,10 +44,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     @Override
-    public void onGameStart(Game game) {
-    }
-
-    @Override
     protected void onGameUpdate(Game game, int tick) {
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isFinish);
@@ -60,8 +55,15 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
     }
 
-    public Collection<JobModel> getJobs() { return _jobs; };
+    public Collection<JobModel> getJobs() { return _jobs; }
 
+//    public <T> Collection<T> getJobs(T cls) {
+//        return _jobs.stream()
+//                .filter(job -> job.getClass() == cls)
+//                .map(cls::cast)
+//                .collect(Collectors.toList());
+//    }
+//
     /**
      * Looking for best job to fit characters
      *
@@ -286,11 +288,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
         }
     }
 
-    public GameSerializer getSerializer() {
-        return null;
-//        return new JobModuleSerializer(this);
-    }
-
     public int getModulePriority() {
         return Constant.MODULE_JOB_PRIORITY;
     }
@@ -309,5 +306,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public void addJobs(List<JobModel> jobs) {
         jobs.forEach(this::addJob);
+    }
+
+    public boolean hasJob(JobModel job) {
+        return _jobs.contains(job);
     }
 }

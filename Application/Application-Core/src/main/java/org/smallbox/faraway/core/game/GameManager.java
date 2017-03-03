@@ -32,7 +32,7 @@ public class GameManager implements GameObserver {
         _game = new Game(gameInfo);
         _game.createModules();
 
-        Application.runOnMainThread(() -> Application.notify(observer -> observer.onGameCreate(_game)));
+        Application.runOnMainThread(() -> Application.notify(observer -> observer.onGameCreateObserver(_game)));
 
         Application.gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename,
                 () -> Application.runOnMainThread(() -> {
@@ -80,19 +80,19 @@ public class GameManager implements GameObserver {
 
         _game.createModules();
 
-        Application.runOnMainThread(() -> {
-            Application.notify(observer -> observer.onGameCreate(_game));
+//        Application.runOnMainThread(() -> {
+            Application.notify(observer -> observer.onGameCreateObserver(_game));
             if (listener != null) {
                 listener.onGameCreate(_game);
             }
-        });
+//        });
 
 //        Application.gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
 
         // TODO: qui à la rsp de l'envoi des events ?
-        Application.runOnMainThread(() -> {
+//        Application.runOnMainThread(() -> {
             Application.notify(observer -> observer.onGameStart(_game));
-        });
+//        });
 
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
@@ -110,7 +110,8 @@ public class GameManager implements GameObserver {
             } catch (Exception e) {
                 Log.error(e);
             }
-        }, Application.APPLICATION_CONFIG.game.updateInterval);
+        }, 10);
+//        }, Application.APPLICATION_CONFIG.game.updateInterval / 10);
 
 //        worldFactory.createLandSite(game);
 

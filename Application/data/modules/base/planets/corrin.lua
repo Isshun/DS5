@@ -41,6 +41,11 @@ data:extend({
         },
         weather = {
             {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.coldwave", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.snow", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.storm", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.lightrain", frequency = {2, 10}, duration = {1, 1}},
+            {name = "base.weather.thunderstorm", frequency = {2, 10}, duration = {1, 1}},
         },
     }}
 })

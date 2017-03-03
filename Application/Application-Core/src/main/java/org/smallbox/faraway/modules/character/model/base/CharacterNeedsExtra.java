@@ -114,7 +114,7 @@ public class CharacterNeedsExtra {
 //
 //        // Body heat
 //        // TODO
-////        double heatDifference = _character.getParcel().getTemperature() - (this.heat - _character.getType().thermolysis);
+////        double heatDifference = _character.getParcel().getTemperatureFloor() - (this.heat - _character.getType().thermolysis);
 //        double heatDifference = 0;
 //        double heatDifferenceReal = 0;
 ////        Log.info("heatDifference: " + heatDifference);

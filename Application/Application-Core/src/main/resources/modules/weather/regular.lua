@@ -2,7 +2,7 @@ data:extend({
     type = "weather",
     name = "base.weather.regular",
     icon = "[base]/graphics/icons/weather/regular.png";
-    label = "Regular",
+    label = "Sunny",
     sun = {
         dawn = 0xddc8b2,
         twilight = 0xE79651,

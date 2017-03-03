@@ -25,17 +25,19 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     private int             _nbUpdate;
     private long            _totalTime;
 
-//    public void onGameCreate(Game game) {}
+//    public void onGameCreateObserver(Game game) {}
     protected void onGameUpdate(Game game, int tick) {}
+
+    public void onGameCreate(Game game) {}
 
     public void createGame(Game game) {
         Log.info("[" + _info.name + "] Create game");
 //        if (runOnMainThread()) {
-//            onGameCreate(game);
+//            onGameCreateObserver(game);
 //            _isLoaded = true;
 //        } else {
 //            Application.moduleManager.getExecutor().execute(() -> {
-//                onGameCreate(game);
+//                onGameCreateObserver(game);
 //                _isLoaded = true;
 //            });
 //        }
@@ -58,10 +60,12 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
 
     public void updateGame(Game game, int tick) {
         if (_isStarted) {
-            if (runOnMainThread()) {
-                innerUpdate(game, tick);
-            } else {
-                Application.moduleManager.getExecutor().execute(() -> onGameUpdate(game, tick));
+            if (tick % _updateInterval == 0) {
+                if (runOnMainThread()) {
+                    innerUpdate(game, tick);
+                } else {
+                    Application.moduleManager.getExecutor().execute(() -> onGameUpdate(game, tick));
+                }
             }
         }
     }
@@ -85,4 +89,8 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     }
 
     public long         getModuleUpdateTime() { return _updateTime; }
+
+    public void setUpdateInterval(int updateInterval) {
+        _updateInterval = updateInterval;
+    }
 }

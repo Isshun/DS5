@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
@@ -71,20 +70,21 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
             }
         }
 
-        else if (CollectionUtils.isNotEmpty(factory.getHaulJobs())) {
-            lbFactoryJob.setText(StringUtils.join(factory.getHaulJobs().stream()
-                    .map(job -> {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Hauling ").append(job.getConsumableInfo().label);
-
-                        if (job.getCharacter() != null) {
-                            sb.append(" (").append(job.getCharacter().getName()).append(")");
-                        }
-
-                        return sb.toString();
-                    })
-                    .collect(Collectors.toList()), ", "));
-        }
+        // TODO
+//        else if (CollectionUtils.isNotEmpty(factory.getHaulJobs())) {
+//            lbFactoryJob.setText(StringUtils.join(factory.getHaulJobs().stream()
+//                    .map(job -> {
+//                        StringBuilder sb = new StringBuilder();
+//                        sb.append("Hauling ").append(job.getConsumableInfo().label);
+//
+//                        if (job.getCharacter() != null) {
+//                            sb.append(" (").append(job.getCharacter().getName()).append(")");
+//                        }
+//
+//                        return sb.toString();
+//                    })
+//                    .collect(Collectors.toList()), ", "));
+//        }
 
         else {
             lbFactoryJob.setText("No jobs");

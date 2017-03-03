@@ -38,7 +38,7 @@ public class MainRenderer implements GameClientObserver {
     public Viewport getViewport() { return _viewport; }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreateObserver(Game game) {
         // Find GameRenderer annotated class
         _renders = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseRenderer.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
@@ -59,7 +59,7 @@ public class MainRenderer implements GameClientObserver {
                 .sorted((o1, o2) -> o1.getLevel() - o2.getLevel())
                 .collect(Collectors.toList());
 
-        _renders.forEach(render -> render.onGameCreate(game));
+        _renders.forEach(render -> render.onGameCreateObserver(game));
     }
 
     @Override

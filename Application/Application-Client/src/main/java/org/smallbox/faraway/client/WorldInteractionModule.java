@@ -82,7 +82,7 @@ public class WorldInteractionModule extends GameClientModule<WorldInteractionMod
     }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreateObserver(Game game) {
         _selection = new UISelection();
 
         worldModule.addObserver(new WorldModuleObserver() {

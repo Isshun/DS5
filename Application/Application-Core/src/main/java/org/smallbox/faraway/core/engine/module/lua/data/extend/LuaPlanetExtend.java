@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -121,17 +122,17 @@ public class LuaPlanetExtend extends LuaExtend {
             regionInfo.weather = new ArrayList<>();
             for (int i = 1; i <= value.get("weather").length(); i++) {
                 LuaValue luaWeather = value.get("weather").get(i);
-                RegionInfo.RegionWeather weatherInfo = new RegionInfo.RegionWeather();
-                weatherInfo.name = getString(luaWeather, "name", null);
-                weatherInfo.frequency = new double[] {
+                RegionInfo.RegionWeather regionWeatherInfo = new RegionInfo.RegionWeather();
+                Application.data.getAsync(luaWeather.get("name").toString(), WeatherInfo.class, weatherInfo -> regionWeatherInfo.info = weatherInfo);
+                regionWeatherInfo.frequency = new double[] {
                         luaWeather.get("frequency").get(1).todouble(),
                         luaWeather.get("frequency").get(2).todouble(),
                 };
-                weatherInfo.duration = new double[] {
+                regionWeatherInfo.duration = new double[] {
                         luaWeather.get("duration").get(1).todouble(),
                         luaWeather.get("duration").get(2).todouble(),
                 };
-                regionInfo.weather.add(weatherInfo);
+                regionInfo.weather.add(regionWeatherInfo);
             }
         }
 

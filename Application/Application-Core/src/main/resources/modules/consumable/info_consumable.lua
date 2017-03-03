@@ -8,9 +8,9 @@ ui:extend({
     level = 10,
     visible = false,
     views = {
-        { type = "label", id = "lb_label", text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
-        { type = "label", text = "Consumable", text_size = 12, position = {10, 8}},
-        { type = "view", size = {380, 1}, background = 0xbbbbbb, position = {10, 22}},
+        { type = "label", text = "Consumable", text_color = 0x679B99, text_size = 22},
+
+        { type = "label", id = "lb_label", text_color = 0xB4D4D3, text_size = 16, position = {0, 24}, padding = 10, size = {100, 40}},
         { type = "list", position = {10, 70}, views = {
             { type = "label", id = "lb_name", text_size = 16},
             { type = "label", id = "lb_quantity", text_size = 16},

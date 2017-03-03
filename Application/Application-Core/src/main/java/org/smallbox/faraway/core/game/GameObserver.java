@@ -37,7 +37,7 @@ public interface GameObserver {
     default void onGamePaused() {}
     default void onGameResume() {}
     default void onGameStart(Game game) {}
-    default void onGameCreate(Game game) {}
+    default void onGameCreateObserver(Game game) {}
     default void onGameUpdate(Game game) {}
     default void onGameLoad(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo) {}
     default void onInjectDependency(Object object) {}

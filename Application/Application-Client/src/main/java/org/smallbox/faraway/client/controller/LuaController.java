@@ -33,11 +33,11 @@ public abstract class LuaController implements GameClientObserver {
 
     protected abstract void onNewGameUpdate(Game game);
 
-//    public final void gameCreate(Game game) { onGameCreate(game); }
+//    public final void gameCreate(Game game) { onGameCreateObserver(game); }
 //    public final void gameStart(Game game) { onGameStart(game); }
 //    public final void gameUpdate(Game game) { onGameUpdate(game); }
 //
-//    public void onGameCreate(Game game) {}
+//    public void onGameCreateObserver(Game game) {}
 //    public void onGameUpdate(Game game) {}
 
     public View getRootView() { return _rootView; }

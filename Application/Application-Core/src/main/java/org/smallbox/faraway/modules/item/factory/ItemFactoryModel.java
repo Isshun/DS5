@@ -5,13 +5,15 @@ import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
@@ -30,11 +32,8 @@ public class ItemFactoryModel {
     private final ItemInfoFactory _factoryInfo;
     private ParcelModel _storageParcel;
     private String _message;
-    private List<BasicHaulJob> _haulJobs = new LinkedList<>();
     private JobModel _craftJob;
     private int _costRemaining;
-
-    public List<BasicHaulJob> getHaulJobs() { return _haulJobs; }
 
     public JobModel getCraftJob() { return _craftJob; }
 
@@ -138,8 +137,6 @@ public class ItemFactoryModel {
             _runningReceipt.initComponents();
         }
     }
-
-    public void addHaulJob(BasicHaulJob job) { _haulJobs.add(job); }
 
     /**
      * Vérifie si la quantité de composants présent dans l'inventaire est suffisant pour lancer la construction

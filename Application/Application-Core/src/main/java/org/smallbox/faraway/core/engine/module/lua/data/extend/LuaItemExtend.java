@@ -420,15 +420,24 @@ public class LuaItemExtend extends LuaExtend {
         }
     }
 
-    private void readPlantValues(ItemInfo itemInfo, LuaValue value) {
+    private void readPlantValues(ItemInfo itemInfo, LuaValue plantValue) {
         itemInfo.isPlant = true;
         itemInfo.plant = new ItemInfo.ItemInfoPlant();
-        itemInfo.plant.growing = 1 / getDouble(value, "growing", 2000);
-        itemInfo.plant.nourish = 1 / getDouble(value, "nourish", 500);
-        itemInfo.plant.oxygen = getDouble(value, "oxygen", 0);
+//        itemInfo.plant.growing = 1 / getDouble(plantValue, "growing", 2000);
+//        itemInfo.plant.nourish = 1 / getDouble(plantValue, "nourish", 500);
+        itemInfo.plant.growing = getDouble(plantValue, "growing", 1);
+        itemInfo.plant.nourish = getDouble(plantValue, "nourish", 1);
+//        itemInfo.plant.oxygen = getDouble(value, "oxygen", 0);
 
-        if (!value.get("states").isnil()) {
-            readPlantStatesValues(itemInfo, value.get("states"));
+        if (!plantValue.get("temperature").isnil()) {
+            itemInfo.plant.temperature = new ItemInfo.ItemInfoPlant.PlantRangeInfo();
+            readInt(plantValue.get("temperature"), "min", value -> itemInfo.plant.temperature.min = value);
+            readInt(plantValue.get("temperature"), "best", value -> itemInfo.plant.temperature.best = value);
+            readInt(plantValue.get("temperature"), "max", value -> itemInfo.plant.temperature.max = value);
+        }
+
+        if (!plantValue.get("states").isnil()) {
+            readPlantStatesValues(itemInfo, plantValue.get("states"));
         }
     }
 
@@ -439,19 +448,10 @@ public class LuaItemExtend extends LuaExtend {
             growingInfo.name = getString(values.get(i), "name", null);
             growingInfo.value = getDouble(values.get(i), "value", 0);
 
-            if (!values.get(i).get("temperature").isnil()) {
-                growingInfo.temperature = new int[] {
-                        values.get(i).get("temperature").get(1).toint(),
-                        values.get(i).get("temperature").get(2).toint()
-                };
-            }
-
-            if (!values.get(i).get("light").isnil()) {
-                growingInfo.light = new int[] {
-                        values.get(i).get("light").get(1).toint(),
-                        values.get(i).get("light").get(2).toint()
-                };
-            }
+            readLua(values.get(i), "temperature", value -> growingInfo.temperature = new double[] { value.get(1).todouble(), value.get(2).todouble() });
+            readLua(values.get(i), "light", value -> growingInfo.light = new double[] { value.get(1).todouble(), value.get(2).todouble() });
+            readLua(values.get(i), "oxygen", value -> growingInfo.oxygen = new double[] { value.get(1).todouble(), value.get(2).todouble() });
+            readLua(values.get(i), "moisture", value -> growingInfo.moisture = new double[] { value.get(1).todouble(), value.get(2).todouble() });
 
             itemInfo.plant.states.add(growingInfo);
         }

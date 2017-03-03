@@ -31,7 +31,7 @@ public class ConsumableRenderer extends BaseRenderer {
     }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreateObserver(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {

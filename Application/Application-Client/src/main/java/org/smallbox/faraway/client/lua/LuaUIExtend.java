@@ -189,21 +189,28 @@ public class LuaUIExtend extends LuaExtend {
             }
         });
 
-        LuaValue paddingValue = value.get("padding");
-        if (!paddingValue.isnil()) {
-            if (paddingValue.istable()) {
-                switch (paddingValue.length()) {
-                    case 4:
-                        view.setPadding(paddingValue.get(1).toint(), paddingValue.get(2).toint(), paddingValue.get(3).toint(), paddingValue.get(4).toint());
-                        break;
-                    case 2:
-                        view.setPadding(paddingValue.get(1).toint(), paddingValue.get(2).toint());
-                        break;
-                }
-            } else {
-                readInt(value, "padding", v -> view.setPadding(v, v));
-            }
-        }
+        readLua(value, "padding", v -> {
+            if (!v.istable()) { view.setPadding(v.toint()); }
+            else if (v.length() == 4) { view.setPadding(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()); }
+            else if (v.length() == 2) { view.setPadding(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint()); }
+            else if (v.length() == 1) { view.setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
+        });
+
+//        LuaValue paddingValue = value.get("padding");
+//        if (!paddingValue.isnil()) {
+//            if (paddingValue.istable()) {
+//                switch (paddingValue.length()) {
+//                    case 4:
+//                        view.setPadding(paddingValue.get(1).toint(), paddingValue.get(2).toint(), paddingValue.get(3).toint(), paddingValue.get(4).toint());
+//                        break;
+//                    case 2:
+//                        view.setPadding(paddingValue.get(1).toint(), paddingValue.get(2).toint());
+//                        break;
+//                }
+//            } else {
+//                readInt(value, "padding", v -> view.setPadding(v, v));
+//            }
+//        }
     }
 
     private void customizeViewListeners(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {

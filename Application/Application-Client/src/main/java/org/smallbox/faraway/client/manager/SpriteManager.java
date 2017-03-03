@@ -518,13 +518,17 @@ public class SpriteManager {
     }
 
     public Sprite getNewSprite(GraphicInfo graphicInfo) {
+        return getNewSprite(graphicInfo, 0);
+    }
+
+    public Sprite getNewSprite(GraphicInfo graphicInfo, int tile) {
         assert graphicInfo != null;
 
         if (graphicInfo.spriteId == -1) {
             graphicInfo.spriteId = ++_spriteCount;
         }
 
-        long sum = getSum(graphicInfo.spriteId, graphicInfo.x, graphicInfo.y, 0);
+        long sum = getSum(graphicInfo.spriteId, graphicInfo.x, graphicInfo.y, tile);
 
 //        long sum = graphicInfo.type == GraphicInfo.Type.WALL || graphicInfo.type == GraphicInfo.Type.DOOR ?
 //                getSum(graphicInfo.spriteId, 0, 0, 0) :
@@ -536,7 +540,7 @@ public class SpriteManager {
             if (texture != null) {
 
                 sprite = new Sprite(texture,
-                        graphicInfo.x * graphicInfo.tileWidth,
+                        (graphicInfo.x + tile) * graphicInfo.tileWidth,
                         graphicInfo.y * graphicInfo.tileHeight,
                         graphicInfo.tileWidth,
                         graphicInfo.tileHeight);

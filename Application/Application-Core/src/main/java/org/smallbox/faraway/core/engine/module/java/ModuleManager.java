@@ -1,8 +1,9 @@
 package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.*;
 import org.smallbox.faraway.core.engine.module.*;
+import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -45,7 +46,7 @@ public class ModuleManager implements GameObserver {
 //        List<ThirdPartyModule> thirdPartyModules = new ArrayList<>();
 //        FileUtils.list("data/modules/").forEach(file -> {
 //            try {
-//                ModuleInfo info = ModuleInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(new File(file, "module.json").toPath()), StandardCharsets.UTF_8)));
+//                ModuleInfoAnnotation info = ModuleInfoAnnotation.fromJSON(new JSONObject(new String(Files.readAllBytes(new File(file, "module.json").toPath()), StandardCharsets.UTF_8)));
 //                if ("java".equals(info.type)) {
 //                    thirdPartyModules.addSubJob(new ThirdPartyModule(info, file));
 //                }
@@ -166,7 +167,13 @@ public class ModuleManager implements GameObserver {
                     try {
                         Log.info("Find game module: " + cls.getSimpleName());
                         AbsGameModule module = cls.getConstructor().newInstance();
-                        module.setInfo(ModuleInfo.fromName(module.getClass().getSimpleName()));
+
+                        if (cls.isAnnotationPresent(ModuleInfoAnnotation.class)) {
+                            Log.info("Find game module: " + cls.getAnnotation(ModuleInfoAnnotation.class).name());
+                            module.setUpdateInterval(cls.getAnnotation(ModuleInfoAnnotation.class).updateInterval());
+                        }
+
+                        module.setInfo(ModuleInfo.fromName(cls.getSimpleName()));
                         _gameModules.add(module);
                         _modules.add(module);
                     } catch (NoSuchMethodException e) {

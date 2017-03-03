@@ -6,19 +6,20 @@ data:extend({
         name = "base.plant.rice",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 0.0005,
+            temperature = { min = 3, best = 25, max = 30 },
             states = {
-                { name = "dying", value = 1 },
-                { name = "depleted", value = 1, temperature = {3, 10}, light = {0, 100}, moisture = {0, 100}, oxygen = {0, 100} },
-                { name = "regular", value = 1, temperature = {10, 20}, light = {50, 100}, moisture = {0, 100}, oxygen = {0, 100} },
-                { name = "good", value = 1, temperature = {20, 30}, light = {50, 100}, moisture = {0, 100}, oxygen = {0, 100} },
+                { name = "dying", value = -1 },
+                { name = "depleted", value = 0.75, temperature = {3, 10}, light = {0, 1}, moisture = {0, 1}, oxygen = {0, 1} },
+                { name = "regular", value = 1, temperature = {10, 20}, light = {0.5, 1}, moisture = {0, 1}, oxygen = {0, 1} },
+                { name = "good", value = 1.25, temperature = {20, 30}, light = {0.5, 1}, moisture = {0, 1}, oxygen = {0, 1} },
             }
         },
         actions = {
-            type = "gather", cost = 20, products = {{ item = "base.spice", quantity = {1, 1}, rate = 1 } }
+            type = "gather", cost = 20, products = {{ item = "base.vegetable_rice", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/consumables/vegetables.png", x = 13, y = 3, tile_width = 24, tile_height = 24 },
+            { path = "[module]/graphics/plants/rice.png", x = 0, y = 0 },
         }
     },
 

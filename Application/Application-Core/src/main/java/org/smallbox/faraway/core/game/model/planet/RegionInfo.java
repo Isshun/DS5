@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core.game.model.planet;
 
+import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
+
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public class RegionInfo {
     }
 
     public static class RegionWeather {
-        public String               name;
+        public WeatherInfo          info;
         public double[]             frequency;
         public double[]             duration;
     }

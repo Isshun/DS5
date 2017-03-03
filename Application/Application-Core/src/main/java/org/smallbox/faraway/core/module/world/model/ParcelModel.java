@@ -87,6 +87,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public double                   getLight() { return _room != null ? _room.getLight() : -1; }
     public double                   getTemperature() { return _room != null ? _room.getTemperature() : -1; }
     public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
+    public double                   getMoisture() { return 0.5; }
 
     @Override
     public String toString() {

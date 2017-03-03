@@ -17,6 +17,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.flora.PlantModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModule;
@@ -38,6 +39,9 @@ public class DebugRenderer extends BaseRenderer {
     private JobModule jobModule;
 
     @BindModule
+    private PlantModule plantModule;
+
+    @BindModule
     private ConsumableModule consumableModule;
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
@@ -46,6 +50,11 @@ public class DebugRenderer extends BaseRenderer {
     private int _index;
 
     private Map<String, String> _data = new HashMap<>();
+
+    private enum Mode { CONSUMABLE, ITEM, PLANT, RENDER, OTHER, CHARACTER, JOB }
+
+    private Mode _mode = Mode.OTHER;
+
     {
         _data.put("Cursor screen position", "");
         _data.put("Cursor world position", "");
@@ -56,48 +65,72 @@ public class DebugRenderer extends BaseRenderer {
         _index = 0;
         renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
 
-        drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.mainRenderer.getViewport().getFloor());
-        drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.mainRenderer.getViewport().getWidth() + " x " + ApplicationClient.mainRenderer.getViewport().getHeight());
+        switch (_mode) {
 
-        drawDebug(renderer, "WORLD", "Size: " + Application.gameManager.getGame().getInfo().worldWidth + " x " + Application.gameManager.getGame().getInfo().worldHeight + " x " + Application.gameManager.getGame().getInfo().worldFloors);
-        drawDebug(renderer, "WORLD", "Ground floor: " + Application.gameManager.getGame().getInfo().groundFloor);
+            // Display consumables
+            case CONSUMABLE:
+                if (consumableModule != null && consumableModule.getConsumables() != null) {
+                    Map<ItemInfo, Integer> consumables = new HashMap<>();
+                    consumableModule.getConsumables().forEach(consumable -> {
+                        int quantity = consumables.containsKey(consumable.getInfo()) ? consumables.get(consumable.getInfo()) : 0;
+                        consumables.put(consumable.getInfo(), quantity + consumable.getQuantity());
+                    });
 
-        _data.entrySet().forEach(entry -> drawDebug(renderer, "UI", entry.getKey() + ": " + entry.getValue()));
+                    consumables.entrySet().forEach(entry -> drawDebugConsumableInfo(renderer, entry.getKey(), entry.getValue()));
+                }
+                break;
 
-        // Display renders
-        if (ApplicationClient.mainRenderer != null) {
-            ApplicationClient.mainRenderer.getRenders()
-                    .forEach(render -> drawDebug(renderer, "Render", "[" + (render.isVisible() ? "X" : " ") + "] " + render.getClass().getSimpleName() + " (" + render.getLevel() + ")"));
+            // Display items
+            case ITEM:
+                if (itemModule != null && itemModule.getItems() != null) {
+                    itemModule.getItems().forEach(item -> drawDebugItem(renderer, item));
+                }
+                break;
+
+            case PLANT:
+                if (plantModule != null && plantModule.getPlants() != null) {
+                    plantModule.getPlants().forEach(plant -> {
+                        drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity());
+                    });
+                }
+                break;
+
+            // Display renders
+            case RENDER:
+                if (ApplicationClient.mainRenderer != null) {
+                    ApplicationClient.mainRenderer.getRenders()
+                            .forEach(render -> drawDebug(renderer, "Render", "[" + (render.isVisible() ? "X" : " ") + "] " + render.getClass().getSimpleName() + " (" + render.getLevel() + ")"));
+                }
+                break;
+
+            // Display jobs
+            case JOB:
+                if (jobModule != null && jobModule.getJobs() != null) {
+                    jobModule.getJobs().forEach(job -> {
+                        drawDebug(renderer, "JOB", job.getMainLabel() + " -> " + job.getLabel() + " -> " + job.getProgress() + " -> " + job.getLastReturn());
+                    });
+                }
+                break;
+
+            // Display characters
+            case CHARACTER:
+                if (characterModule != null && characterModule.getCharacters() != null) {
+                    characterModule.getCharacters().forEach(character -> drawDebugCharacter(renderer, character));
+                }
+                break;
+
+            case OTHER:
+                drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.mainRenderer.getViewport().getFloor());
+                drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.mainRenderer.getViewport().getWidth() + " x " + ApplicationClient.mainRenderer.getViewport().getHeight());
+
+                drawDebug(renderer, "WORLD", "Size: " + Application.gameManager.getGame().getInfo().worldWidth + " x " + Application.gameManager.getGame().getInfo().worldHeight + " x " + Application.gameManager.getGame().getInfo().worldFloors);
+                drawDebug(renderer, "WORLD", "Ground floor: " + Application.gameManager.getGame().getInfo().groundFloor);
+
+                _data.entrySet().forEach(entry -> drawDebug(renderer, "UI", entry.getKey() + ": " + entry.getValue()));
+
+                ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));
+                break;
         }
-
-        // Display characters
-        if (characterModule != null && characterModule.getCharacters() != null) {
-            characterModule.getCharacters().forEach(character -> drawDebugCharacter(renderer, character));
-        }
-
-        // Display items
-        if (itemModule != null && itemModule.getItems() != null) {
-            itemModule.getItems().forEach(item -> drawDebugItem(renderer, item));
-        }
-
-        // Display consumables
-        if (consumableModule != null && consumableModule.getConsumables() != null) {
-            Map<ItemInfo, Integer> consumables = new HashMap<>();
-            consumableModule.getConsumables().forEach(consumable -> {
-                int quantity = consumables.containsKey(consumable.getInfo()) ? consumables.get(consumable.getInfo()) : 0;
-                consumables.put(consumable.getInfo(), quantity + consumable.getQuantity());
-            });
-
-            consumables.entrySet().forEach(entry -> drawDebugConsumableInfo(renderer, entry.getKey(), entry.getValue()));
-        }
-
-        if (jobModule != null && jobModule.getJobs() != null) {
-            jobModule.getJobs().forEach(job -> {
-                drawDebug(renderer, "JOB", job.getMainLabel() + " " + job.getLabel() + " " + job.getProgress());
-            });
-        }
-
-        ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));
 
     }
 
@@ -154,6 +187,41 @@ public class DebugRenderer extends BaseRenderer {
     @GameShortcut(key = GameEventListener.Key.F12)
     public void onToggleVisibility() {
         toggleVisibility();
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_1)
+    public void onD1() {
+        _mode = Mode.OTHER;
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_2)
+    public void onD2() {
+        _mode = Mode.CONSUMABLE;
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_3)
+    public void onD3() {
+        _mode = Mode.ITEM;
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_4)
+    public void onD4() {
+        _mode = Mode.PLANT;
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_5)
+    public void onD5() {
+        _mode = Mode.RENDER;
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_6)
+    public void onD6() {
+        _mode = Mode.CHARACTER;
+    }
+
+    @GameShortcut(key = GameEventListener.Key.D_7)
+    public void onD7() {
+        _mode = Mode.JOB;
     }
 
 }

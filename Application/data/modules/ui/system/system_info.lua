@@ -46,15 +46,15 @@ ui:extend({
 
             -- Time and day
             { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2, 2}},
-            { type = "label", id = "lb_time", text = "hr", text_size = 16, position = {28, 3}, padding = 10 },
-            { type = "label", id = "lb_day", text = "day", text_size = 16, position = {63, 3}, padding = 10 },
+            { type = "label", id = "lb_time", text = "hr", text_color = 0xB4D4D3, text_size = 16, position = {28, 3}, padding = 10 },
+            { type = "label", id = "lb_day", text = "day", text_color = 0xB4D4D3, text_size = 16, position = {63, 3}, padding = 10 },
 
             -- Weather
             { type = "image", id = "img_weather", src = "[base]/graphics/icons/weather/regular.png", size = {32, 32}, position = {160, 3}},
-            { type = "label", id = "lb_weather", text = "weather", text_size = 16, position = {188, 3}, padding = 10 },
+            { type = "label", id = "lb_weather", text = "weather", text_color = 0xB4D4D3, text_size = 16, position = {188, 3}, padding = 10 },
 
             -- Temperature
-            { type = "label", id = "lb_temperature", text = "tmp", text_size = 16, position = {300, 3}, padding = 10 },
+            { type = "label", id = "lb_temperature", text = "tmp", text_color = 0xB4D4D3, text_size = 16, position = {300, 3}, padding = 10 },
             { type = "image", id = "img_temperature", src = "[base]/graphics/icons/temperature_medium.png", size = {24, 24}, position = {350, 7}},
             { type = "image", id = "img_temperature_offset", size = {12, 24}, position = {383, 7}},
         }}

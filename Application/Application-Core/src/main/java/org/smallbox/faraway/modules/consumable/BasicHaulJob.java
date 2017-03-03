@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.item.factory.ItemFactoryModel;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 
 /**
@@ -18,6 +19,7 @@ public class BasicHaulJob extends JobModel {
     private final ItemInfo _consumableInfo;
     private int _haulingQuantity;
     private ConsumableItem _consumable;
+    private ItemFactoryModel _factory;
 
     public int getHaulingQuantity() { return _haulingQuantity; }
     public ConsumableItem getHaulingConsumable() { return _consumable; }
@@ -25,10 +27,11 @@ public class BasicHaulJob extends JobModel {
 
     public static BasicHaulJob toFactory(ConsumableModule consumableModule, ConsumableItem targetConsumable, UsableItem item, int haulingQuantity) {
         BasicHaulJob job = new BasicHaulJob(targetConsumable, haulingQuantity, targetConsumable.getParcel());
+        job._factory = item.getFactory();
         ItemInfo itemInfo = targetConsumable.getInfo();
 
         // Réservation des composants au premier lancement de la tache
-        job.addTask("Lock " + targetConsumable.getLabel(), character -> Application.moduleManager.getModule(ConsumableModule.class).lock(job, targetConsumable, haulingQuantity) ? JobTaskReturn.COMPLETE : JobTaskReturn.INVALID);
+        job.addTask("Lock " + targetConsumable.getLabel(), character -> consumableModule.lock(job, targetConsumable, haulingQuantity) ? JobTaskReturn.COMPLETE : JobTaskReturn.INVALID);
 
         // Déplace le personnage à l'emplacement des composants
         job.addTask("Haul " + targetConsumable.getLabel(), character -> character.moveTo(targetConsumable.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
@@ -41,16 +44,13 @@ public class BasicHaulJob extends JobModel {
         });
 
         // Dévérouille les composants préalablement réservé
-        job.addTask("Unlock " + targetConsumable.getLabel(), character -> Application.moduleManager.getModule(ConsumableModule.class).unlock(job, targetConsumable) ? JobTaskReturn.COMPLETE : JobTaskReturn.INVALID);
+        job.addTechnicalTask("Unlock " + targetConsumable.getLabel(), character -> consumableModule.unlock(job, targetConsumable));
 
         // Apporte les composants à la fabrique
         job.addTask("Bring back " + targetConsumable.getLabel(), character -> character.moveTo(item.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
         // Charge les comnposants dans la fabrique
-        job.addTask("Load factory", character -> {
-            item.addInventory(character.getInventory(itemInfo, item.getFactory().getQuantityNeeded(itemInfo)));
-            return JobTaskReturn.COMPLETE;
-        });
+        job.addTechnicalTask("Load factory", character -> item.addInventory(character.getInventory(itemInfo, item.getFactory().getQuantityNeeded(itemInfo))));
 
         return job;
     }
@@ -112,10 +112,19 @@ public class BasicHaulJob extends JobModel {
     }
 
     @Override
+    protected void onAbort() {
+        _factory.clear();
+    }
+
+    @Override
     public String getLabel() {
         return _label;
     }
 
     @Override
     public String toString() { return "Haul " + _consumable + " to " + _targetParcel; }
+
+    public ItemFactoryModel getFactory() {
+        return _factory;
+    }
 }

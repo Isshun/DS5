@@ -76,14 +76,25 @@ public class ItemInfo extends ObjectInfo {
         public static class GrowingInfo {
             public String               name;
             public double               value;
-            public int[]                temperature;
-            public int[]                light;
+            public double[]             temperature;
+            public double[]             light;
+            public double[]             oxygen;
+            public double[]             moisture;
+        }
+        public static class PlantRangeInfo {
+            public int                  min;
+            public int                  best;
+            public int                  max;
         }
         public List<GrowingInfo>        states;
         public double                   growing;
         public boolean                  cutOnGathering = true;
         public double                   nourish;
-        public double                   oxygen;
+//        public double                   oxygen;
+        public PlantRangeInfo           temperature;
+        public PlantRangeInfo           oxygen;
+        public PlantRangeInfo           moisture;
+        public PlantRangeInfo           light;
     }
 
     public static class ItemInfoReceipt {

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.weather;
+package org.smallbox.faraway.modules.weather;
 
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;

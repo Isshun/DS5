@@ -82,14 +82,14 @@ public class Game {
     }
 
     /**
-     * Call game modules onGameCreate method and construct renders
+     * Call game modules onGameCreateObserver method and construct renders
      * createGame() is call before game onLoadModule or createGame
      * createGame() is call before startGame()
      */
     public void createModules() {
         Log.info("============ CREATE GAME ============");
 
-        // Call onGameCreate method to each modules
+        // Call onGameCreateObserver method to each modules
         _modules = Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
         _modules.forEach(module -> module.createGame(this));

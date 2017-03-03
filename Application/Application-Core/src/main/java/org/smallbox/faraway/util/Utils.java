@@ -64,4 +64,8 @@ public class Utils {
         int totalHours = (int)(time / Application.gameManager.getGame().getTickPerHour());
         return String.valueOf(totalHours % Application.gameManager.getGame().getHourPerDay()) + "h";
     }
+
+    public static double bound(double min, double max, double value) {
+        return Math.max(min, Math.min(max, value));
+    }
 }

@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ModuleInfo {
+public @interface ModuleInfoAnnotation {
     String name();
+    int updateInterval();
 }

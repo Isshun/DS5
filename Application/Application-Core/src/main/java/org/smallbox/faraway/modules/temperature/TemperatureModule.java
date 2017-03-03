@@ -1,18 +1,18 @@
-package org.smallbox.faraway.module.temperature;
+package org.smallbox.faraway.modules.temperature;
 
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.module.room.RoomModule;
 import org.smallbox.faraway.core.module.room.model.RoomConnectionModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.module.item.ItemModule;
-import org.smallbox.faraway.module.item.ItemModuleObserver;
-import org.smallbox.faraway.module.item.UsableItem;
-import org.smallbox.faraway.module.room.RoomModule;
-import org.smallbox.faraway.module.weather.WeatherModule;
-import org.smallbox.faraway.module.weather.WeatherModuleObserver;
-import org.smallbox.faraway.module.world.WorldModule;
+import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.item.ItemModuleObserver;
+import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.weather.WeatherModule;
+import org.smallbox.faraway.modules.weather.WeatherModuleObserver;
+import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.List;
  * Created by Alex on 13/06/2015.
  */
 public class TemperatureModule extends GameModule {
+
     @BindModule
     private WorldModule worldModule;
 
@@ -67,7 +68,7 @@ public class TemperatureModule extends GameModule {
         if (roomModule != null) {
             roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {
-                    room.setTemperature(weatherModule.getTemperature(room.getFloor()));
+                    room.setTemperature(weatherModule.getTemperatureFloor(room.getFloor()));
                 } else {
                     // Mix temperature with neighbors
                     for (RoomConnectionModel roomConnection: room.getConnections()) {
