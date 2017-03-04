@@ -34,7 +34,7 @@ public class ModuleManager implements GameObserver {
     private List<String>                _allowedModulesNames = Arrays.asList("WorldModule", "CharacterModule", "JobModule", "PathManager");
 
     public void loadModules(OnLoadModuleListener onLoad) {
-        assert _modules.isEmpty();
+        _modules = new ArrayList<>();
 
         loadApplicationModules(onLoad);
         loadGameModules(onLoad);

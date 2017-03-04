@@ -9,12 +9,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.NetworkItem;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
@@ -94,7 +95,7 @@ public class SpriteManager {
                 }
             });
         } else {
-            Log.error("Data collection should not be empty");
+            throw new GameException(SpriteManager.class, "Data collection should not be empty");
         }
     }
 
@@ -454,7 +455,7 @@ public class SpriteManager {
 
     private long getSum(int spriteId, int tile, int state, int extra) {
         if (spriteId > 4096 || tile > 4096 || extra > 4096 || state > 4096) {
-            Log.error("SpriteManager.getSum -> out of bounds values");
+            throw new GameException(SpriteManager.class, "SpriteManager.getSum -> out of bounds values");
         }
 
         long sum = spriteId;
@@ -515,6 +516,10 @@ public class SpriteManager {
     public Texture getTexture(String path) {
         assert _textures.containsKey(path);
         return _textures.get(path);
+    }
+
+    public Sprite getNewSprite(ItemInfo itemInfo) {
+        return itemInfo != null && CollectionUtils.isNotEmpty(itemInfo.graphics) ? getNewSprite(itemInfo.graphics.get(0), 0) : null;
     }
 
     public Sprite getNewSprite(GraphicInfo graphicInfo) {

@@ -4,12 +4,12 @@ import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.modules.character.model.PathModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -109,11 +109,11 @@ public class PathManager extends GameModule {
 
     private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
         if (fromParcel == null) {
-            Log.error("fromParcel is null");
+            throw new GameException(PathManager.class, "fromParcel is null");
         }
 
         if (toParcel == null) {
-            Log.error("toParcel is null");
+            throw new GameException(PathManager.class, "toParcel is null");
         }
 
         printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");

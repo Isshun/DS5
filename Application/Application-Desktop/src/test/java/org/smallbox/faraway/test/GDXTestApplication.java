@@ -1,6 +1,5 @@
 package org.smallbox.faraway.test;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 
@@ -18,7 +17,6 @@ public class GDXTestApplication extends GDXApplication {
 
     @Override
     public void create () {
-        _batch = new SpriteBatch();
 
         Application.taskManager.addLoadTask("Create server app", false, () ->
                 _application = new Application());

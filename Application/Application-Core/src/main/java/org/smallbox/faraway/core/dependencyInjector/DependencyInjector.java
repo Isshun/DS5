@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.dependencyInjector;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.handler.ComponentHandler;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -43,8 +44,7 @@ public class DependencyInjector {
                     try {
                         return (ComponentHandler) cls.newInstance();
                     } catch ( IllegalAccessException | InstantiationException e) {
-                        Log.error(e);
-                        throw new RuntimeException(e);
+                        throw new GameException(DependencyInjector.class, e);
                     }
                 }));
     }
@@ -75,7 +75,7 @@ public class DependencyInjector {
         _objectPool.add(component);
 
         if (_init) {
-//            Log.error(this.getClass(), "Cannot call register after init");
+//            throw new GameException(this.getClass(), "Cannot call register after init");
             injectDependencies(component);
         }
     }
@@ -94,7 +94,7 @@ public class DependencyInjector {
 
         _objectPool.forEach(host -> injectDependencies(host, component));
 //        } else {
-//            Log.error("injectDependencies should be called only once");
+//            throw new GameException("injectDependencies should be called only once");
 //        }
     }
 
@@ -123,11 +123,11 @@ public class DependencyInjector {
                             }
                         }
                         if (!hasBeenFound) {
-                            Log.error("DependencyInjector: cannot find module: " + field.getType());
+                            throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module: " + field.getType());
                         }
                     }
                 } catch (IllegalAccessException e) {
-                    Log.error(e);
+                    throw new GameException(DependencyInjector.class, e);
                 }
             }
         }
@@ -166,11 +166,11 @@ public class DependencyInjector {
                     if (module != null) {
                         field.set(host, module);
                     } else {
-                        Log.error("DependencyInjector: cannot find module: " + field.getType());
+                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module: " + field.getType());
                     }
                 }
             } catch (IllegalAccessException e) {
-                Log.error(e);
+                throw new GameException(DependencyInjector.class, e);
             }
         }
     }
@@ -206,9 +206,7 @@ public class DependencyInjector {
             _models.put(cls, model);
             return model;
         } catch (IOException e) {
-            Log.error(e);
+            throw new GameException(DependencyInjector.class, e);
         }
-
-        return null;
     }
 }

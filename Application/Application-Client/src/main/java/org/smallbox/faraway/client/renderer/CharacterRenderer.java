@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -9,9 +8,9 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
@@ -60,56 +59,56 @@ public class CharacterRenderer extends BaseRenderer {
                 int frame = 0;
                 int dirIndex = 0;
 
-                // Get offset based on current frame
-                if (character.isAlive()) {
-                    int offset = 0;
-                    if (direction != Direction.NONE) {
-                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / Application.APPLICATION_CONFIG.game.updateInterval);
-                        frame = character.getFrameIndex() / 20 % 4;
-                    }
-
-                    // Get exact position
-                    switch (direction) {
-                        case BOTTOM:
-                            posY += offset;
-                            dirIndex = 0;
-                            break;
-                        case LEFT:
-                            posX -= offset;
-                            dirIndex = 1;
-                            break;
-                        case RIGHT:
-                            posX += offset;
-                            dirIndex = 2;
-                            break;
-                        case TOP:
-                            posY -= offset;
-                            dirIndex = 3;
-                            break;
-                        case TOP_LEFT:
-                            posY -= offset;
-                            posX -= offset;
-                            dirIndex = 1;
-                            break;
-                        case TOP_RIGHT:
-                            posY -= offset;
-                            posX += offset;
-                            dirIndex = 2;
-                            break;
-                        case BOTTOM_LEFT:
-                            posY += offset;
-                            posX -= offset;
-                            dirIndex = 1;
-                            break;
-                        case BOTTOM_RIGHT:
-                            posY += offset;
-                            posX += offset;
-                            dirIndex = 2;
-                            break;
-                        default:
-                            break;
-                    }
-                }
+//                // Get offset based on current frame
+//                if (character.isAlive()) {
+//                    int offset = 0;
+//                    if (direction != Direction.NONE) {
+//                        offset = (int)((System.currentTimeMillis() - _lastUpdate) * Constant.TILE_WIDTH / Application.APPLICATION_CONFIG.game.updateInterval);
+//                        frame = character.getFrameIndex() / 20 % 4;
+//                    }
+//
+//                    // Get exact position
+//                    switch (direction) {
+//                        case BOTTOM:
+//                            posY += offset;
+//                            dirIndex = 0;
+//                            break;
+//                        case LEFT:
+//                            posX -= offset;
+//                            dirIndex = 1;
+//                            break;
+//                        case RIGHT:
+//                            posX += offset;
+//                            dirIndex = 2;
+//                            break;
+//                        case TOP:
+//                            posY -= offset;
+//                            dirIndex = 3;
+//                            break;
+//                        case TOP_LEFT:
+//                            posY -= offset;
+//                            posX -= offset;
+//                            dirIndex = 1;
+//                            break;
+//                        case TOP_RIGHT:
+//                            posY -= offset;
+//                            posX += offset;
+//                            dirIndex = 2;
+//                            break;
+//                        case BOTTOM_LEFT:
+//                            posY += offset;
+//                            posX -= offset;
+//                            dirIndex = 1;
+//                            break;
+//                        case BOTTOM_RIGHT:
+//                            posY += offset;
+//                            posX += offset;
+//                            dirIndex = 2;
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
 
                 // Draw characters
                 renderer.draw(posX, posY, _spriteManager.getCharacter(character, dirIndex, frame));
@@ -142,7 +141,7 @@ public class CharacterRenderer extends BaseRenderer {
                 if (character.getInventory2() != null) {
                     for (Map.Entry<ItemInfo, Integer> entry: character.getInventory2().entrySet()) {
                         if (entry.getValue() > 0) {
-                            renderer.draw(posX, posY + 2, _spriteManager.getIcon(entry.getKey()));
+                            renderer.draw(posX, posY + 2, _spriteManager.getNewSprite(entry.getKey()));
                         }
                     }
                 }

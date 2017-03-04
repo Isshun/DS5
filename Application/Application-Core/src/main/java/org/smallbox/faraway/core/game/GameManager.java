@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * Created by Alex on 20/10/2015.
  */
 public class GameManager implements GameObserver {
+
     private Game                _game;
 
     @BindModule
@@ -97,21 +98,8 @@ public class GameManager implements GameObserver {
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
 
-        // Launch world thread
-        Application.taskManager.launchBackgroundThread(() -> {
-            try {
-                if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED && !_paused) {
-                    _game.update();
-                    Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
-                    if (listener != null) {
-                        listener.onGameUpdate(_game);
-                    }
-                }
-            } catch (Exception e) {
-                Log.error(e);
-            }
-        }, 10);
-//        }, Application.APPLICATION_CONFIG.game.updateInterval / 10);
+        // Launch background thread
+        _game.launchBackgroundThread(listener);
 
 //        worldFactory.createLandSite(game);
 
@@ -137,6 +125,7 @@ public class GameManager implements GameObserver {
     }
 
     public void stopGame() {
+        _game.stop();
         _game = null;
     }
 

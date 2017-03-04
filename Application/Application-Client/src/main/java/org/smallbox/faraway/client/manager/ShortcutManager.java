@@ -47,7 +47,7 @@ public class ShortcutManager {
 //
 ////            // Le raccourci existe avec un identifiant différent
 ////            if (shortcutStrategies.stream().anyMatch(strategy -> strategy.key == key && !strategy.id.equals(id))) {
-////                Log.error("Add already existing shortcut");
+////                throw new GameException("Add already existing shortcut");
 ////            }
 ////
 ////            // Le raccourci existe avec le même identifiant

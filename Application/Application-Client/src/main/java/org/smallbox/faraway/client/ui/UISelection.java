@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
+import org.smallbox.faraway.core.Application;
 
 /**
  * Created by Alex on 21/07/2015.
@@ -20,7 +21,7 @@ public class UISelection extends GDXDrawable {
     private int                 _endZ;
 
     public UISelection() {
-        Gdx.app.postRunnable(() -> _shapeRenderer = new ShapeRenderer());
+        Application.runOnMainThread(() -> _shapeRenderer = new ShapeRenderer());
     }
 
     @Override

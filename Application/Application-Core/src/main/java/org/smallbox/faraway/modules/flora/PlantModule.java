@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -33,15 +34,15 @@ public class PlantModule extends GameModule {
 
     @Override
     public void onGameCreate(Game game) {
-        worldModule.getParcelList().stream()
-//                .filter(parcel -> parcel.x == 10 && parcel.y == 10 && parcel.z == 1)
-                .filter(parcel -> Math.random() > 0.95)
-                .forEach(parcel -> {
-                    PlantItem plant = new PlantItem(Application.data.getItemInfo("base.plant.rice"));
-                    plant.setParcel(parcel);
-                    plant.setMaturity(Math.random());
-                    _plants.add(plant);
-                });
+//        worldModule.getParcelList().stream()
+////                .filter(parcel -> parcel.x == 10 && parcel.y == 10 && parcel.z == 1)
+//                .filter(parcel -> Math.random() > 0.95)
+//                .forEach(parcel -> {
+//                    PlantItem plant = new PlantItem(Application.data.getItemInfo("base.plant.rice"));
+//                    plant.setParcel(parcel);
+//                    plant.setMaturity(Math.random());
+//                    _plants.add(plant);
+//                });
     }
 
     @Override
@@ -63,6 +64,13 @@ public class PlantModule extends GameModule {
 
         // TODO: ajout auto de la graine
         _plants.forEach(plant -> plant.setSeed(true));
+    }
+
+    public void addPlant(String plantName, int x, int y, int z) {
+        PlantItem plant = new PlantItem(Application.data.getItemInfo(plantName));
+        plant.setParcel(WorldHelper.getParcel(x, y, z));
+        plant.setMaturity(Math.random());
+        _plants.add(plant);
     }
 
     private boolean computeGrowingInfo(PlantItem plant) {

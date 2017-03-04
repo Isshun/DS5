@@ -17,7 +17,7 @@
 //            Application.dependencyInjector.register(renderer);
 ////            ApplicationClient.mainRenderer.add(renderer);
 //        } catch ( IllegalAccessException | InstantiationException e) {
-//            Log.error(e);
+//            throw new GameException(e);
 //        }
 //    }
 //}

@@ -1,10 +1,16 @@
 package org.smallbox.faraway.core.module.world.model;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.util.Log;
+
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Alex on 03/06/2015.
@@ -13,6 +19,7 @@ public class ConsumableItem extends MapObjectModel {
     private int             _quantity = 1;
     private int             _slots = 0;
     private JobModel        _job;
+    private Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
 
     public ConsumableItem(ItemInfo info) {
         super(info);
@@ -24,6 +31,9 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public void addQuantity(int quantity) {
+
+        Log.debug(ConsumableItem.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, _quantity, quantity);
+
         _quantity += quantity;
         _needRefresh = true;
     }
@@ -33,6 +43,9 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public void setQuantity(int quantity) {
+
+        Log.debug(ConsumableItem.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, _quantity, quantity);
+
         _quantity = quantity;
         _needRefresh = true;
     }
@@ -82,4 +95,32 @@ public class ConsumableItem extends MapObjectModel {
 
     @Override
     public String toString() { return _info.name + " at " + _parcel; }
+
+    public void removeQuantity(int quantity) {
+        _quantity = _quantity - quantity;
+
+        if (_quantity < 0) {
+            throw new GameException(ConsumableItem.class, "Quantity cannot be < 0");
+        }
+    }
+
+    public void addLock(ConsumableModule.ConsumableJobLock lock) {
+        _locks.add(lock);
+    }
+
+    public boolean hasLock() {
+        return !_locks.isEmpty();
+    }
+
+    public int getTotalQuantity() {
+        return _quantity + _locks.stream().mapToInt(lock -> lock.quantity).sum();
+    }
+
+    public void removeLock(ConsumableModule.ConsumableJobLock lock) {
+        if (!_locks.contains(lock)) {
+            throw new GameException(ConsumableItem.class, "RemoveLock: lock doesn't exists in consumable");
+        }
+
+        _locks.remove(lock);
+    }
 }

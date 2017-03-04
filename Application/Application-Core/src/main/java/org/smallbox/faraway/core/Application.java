@@ -64,7 +64,12 @@ public class Application {
 //    private long                                    _dataLastModified = Utils.getLastDataModified();
 
     public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
-    public static void          setRunning(boolean isRunning) { _isRunning = isRunning; if (!isRunning) Gdx.app.exit(); }
+    public static void          setRunning(boolean isRunning) {
+        _isRunning = isRunning;
+        if (!isRunning && Gdx.app != null) {
+            Gdx.app.exit();
+        };
+    }
     public boolean              isRunning() { return _isRunning; }
 
     public static void          addObserver(GameObserver observer) {

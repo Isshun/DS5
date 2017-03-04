@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
@@ -371,8 +372,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void createInventoryFromConsumable(ConsumableItem consumable, int quantity) {
         if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
-            Log.error("Character inventory has non-compatible item");
-            return;
+            throw new GameException(CharacterModel.class, "Character inventory has non-compatible item");
         }
 
         if (quantity == 0) {
@@ -447,16 +447,6 @@ public abstract class CharacterModel extends MovableModel {
         } else {
             _inventory2.remove(itemInfo);
         }
-    }
-
-    /**
-     * Ajoute une quantité d'objet à l'inventaire du personnage
-     *
-     * @param consumable
-     * @return true si la quantité à put être ajoutée
-     */
-    public void addInventory(ConsumableItem consumable) {
-        _inventory2.put(consumable.getInfo(), consumable.getQuantity());
     }
 
     public ConsumableItem getInventory(ItemInfo itemInfo, int needQuantity) {

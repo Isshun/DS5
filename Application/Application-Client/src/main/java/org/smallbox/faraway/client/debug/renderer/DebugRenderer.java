@@ -108,6 +108,7 @@ public class DebugRenderer extends BaseRenderer {
                 if (jobModule != null && jobModule.getJobs() != null) {
                     jobModule.getJobs().forEach(job -> {
                         drawDebug(renderer, "JOB", job.getMainLabel() + " -> " + job.getLabel() + " -> " + job.getProgress() + " -> " + job.getLastReturn());
+                        job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));
                     });
                 }
                 break;

@@ -2,14 +2,14 @@ package org.smallbox.faraway.core.game.helper;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.modules.character.model.PathModel;
+import org.smallbox.faraway.modules.flora.model.PlantItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -320,13 +320,11 @@ public class WorldHelper {
 
     public static int getApproxDistance(ParcelModel p1, ParcelModel p2) {
         if (p1 == null) {
-            Log.error("P1 cannot be null");
-            return -1;
+            throw new GameException(WorldHelper.class, "P1 cannot be null");
         }
 
         if (p2 == null) {
-            Log.error("P2 cannot be null");
-            return -1;
+            throw new GameException(WorldHelper.class, "P2 cannot be null");
         }
 
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);

@@ -4,6 +4,7 @@ import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.util.FileUtils;
@@ -87,7 +88,7 @@ public class GameSaveManager {
         try {
             FileUtils.write(new File(FileUtils.getSaveDirectory(gameInfo.name), "game.json"), gameInfo.toJSON().toString(4));
         } catch (IOException e) {
-            Log.error(e, "Unable to write game meta info");
+            throw new GameException(GameSaveManager.class, e, "Unable to write game meta info");
         }
 
         save(game, gameDirectory, filename);
@@ -138,7 +139,7 @@ public class GameSaveManager {
                 Log.notice("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
                 Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
-                Log.error(e, "Error during game save");
+                throw new GameException(GameSaveManager.class, e, "Error during game save");
             }
         });
     }

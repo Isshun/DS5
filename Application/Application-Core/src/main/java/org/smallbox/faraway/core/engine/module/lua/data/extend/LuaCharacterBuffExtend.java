@@ -4,6 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -11,7 +12,6 @@ import org.smallbox.faraway.modules.character.model.BuffCharacterModel;
 import org.smallbox.faraway.modules.character.model.BuffInfo;
 import org.smallbox.faraway.modules.character.model.DiseaseCharacterModel;
 import org.smallbox.faraway.modules.character.model.DiseaseInfo;
-import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 
@@ -129,7 +129,7 @@ public class LuaCharacterBuffExtend extends LuaExtend {
                                                     data.character.getDisease(diseaseName).luaData = effectData;
                                                 }
                                             } else {
-                                                Log.error("Unable to find disease: " + luaEffect.get("disease").toString());
+                                                throw new GameException(LuaCharacterBuffExtend.class, "Unable to find disease: " + luaEffect.get("disease").toString());
                                             }
                                         }
 

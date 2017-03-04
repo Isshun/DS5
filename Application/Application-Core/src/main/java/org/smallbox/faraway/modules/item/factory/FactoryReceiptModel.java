@@ -100,59 +100,6 @@ public class FactoryReceiptModel {
         _shoppingList.clear();
     }
 
-//    public void addComponent(ItemInfo itemInfo, int quantity) {
-//            // Add current components to component list
-//            for (FactoryComponentModel component: _components) {
-//                if (itemInfo.instanceOf(component.itemInfo)) {
-//                    component.currentQuantity += quantity;
-//                    break;
-//                }
-//            }
-//
-//            // Check if all components is present
-//            _isFull = true;
-//            for (FactoryComponentModel component: _components) {
-//                if (component.currentQuantity < component.totalQuantity) {
-//                    _isFull = false;
-//                }
-//            }
-//    }
-
-//    public void prepare(List<PotentialConsumable> potentials) {
-//        _isFull = true;
-//        _components = receiptInfo.inputs.stream()
-//                .map(receiptInputInfo -> new FactoryComponentModel(receiptInputInfo.item, receiptInputInfo.quantity))
-//                .collect(Collectors.toList());
-//
-////        // Fill consumables shopping list
-////        _shoppingList = new ArrayList<>();
-////        if (!_components.isEmpty()) {
-////            _isFull = false;
-////            receiptInfo.inputs.forEach(receiptInputInfo -> {
-////                int quantity = 0;
-////                for (PotentialConsumable potential: potentials) {
-////                    if (potential.itemInfo.instanceOf(receiptInputInfo.item) && quantity < receiptInputInfo.quantity) {
-////                        int neededQuantity = Math.min(receiptInputInfo.quantity - quantity, potential.consumable.getQuantity());
-////                        _shoppingList.add(new FactoryShoppingItemModel(potential.consumable, neededQuantity));
-////                        quantity += neededQuantity;
-////                    }
-////                }
-////            });
-////        }
-//    }
-
-    public boolean isComponentsAvailable(CraftJob job) {
-        for (FactoryShoppingItemModel shoppingItem: _shoppingList) {
-            if (shoppingItem.consumable.getJob() != null && shoppingItem.consumable.getJob() != job) {
-                return false;
-            }
-            if (shoppingItem.consumable.getQuantity() < shoppingItem.quantity) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public FactoryShoppingItemModel getNextInput() {
         return !_shoppingList.isEmpty() ? _shoppingList.get(0) : null;
     }

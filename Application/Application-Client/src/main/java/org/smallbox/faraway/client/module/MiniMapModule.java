@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.module;
 
-import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientModule;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
@@ -14,7 +13,8 @@ import org.smallbox.faraway.util.Constant;
 public class MiniMapModule extends GameClientModule {
     private static final int    FRAME_WIDTH = 352;
     private static final int    FRAME_HEIGHT = 220;
-    private static final int    POS_X = Gdx.graphics.getWidth() - FRAME_WIDTH - 10;
+//    private static final int    POS_X = Gdx.graphics.getWidth() - FRAME_WIDTH - 10;
+    private static final int    POS_X = 0;
     private static final int    POS_Y = 84;
 
     private View _panelMain;

@@ -33,7 +33,7 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
     protected void onDisplayUnique(ConsumableItem consumableItem) {
         lbLabel.setText(consumableItem.getLabel());
         lbName.setText(consumableItem.getName());
-        lbQuantity.setText(String.valueOf(consumableItem.getQuantity()));
+        lbQuantity.setText(String.valueOf(consumableItem.getTotalQuantity()));
     }
 
     @Override

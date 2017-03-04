@@ -94,7 +94,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _characters.removeIf(CharacterModel::isDead);
 
 //            _characters.forEach(this::updateNeeds);
-        _characters.forEach(this::updateJobs);
         _characters.forEach(this::updateBuffs);
         _characters.forEach(this::updatePosition);
     }
@@ -112,17 +111,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
         if (CollectionUtils.isEmpty(character.getBuffs())) {
             character.getBuffs().clear();
-        }
-    }
-
-    /**
-     *
-     * @param character CharacterModel
-     */
-    private void updateJobs(CharacterModel character) {
-        // Assign job
-        if (character.getJob() == null) {
-            jobModule.assign(character);
         }
     }
 
@@ -194,7 +182,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     }
 
     public CharacterModel addRandom(ParcelModel parcel) {
-        CharacterModel character = new HumanModel(Utils.getUUID(), parcel, null, null, 16);
+        CharacterModel character = new HumanModel(Utils.getUUID(), parcel, "rand", "rand", 16);
         add(character);
         return character;
     }

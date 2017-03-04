@@ -10,10 +10,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Game {
-    public enum GameModuleState {UNINITIALIZED, CREATED, STARTED}
+
+    public enum GameModuleState {UNINITIALIZED, CREATED, STOPPED, STARTED}
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
 
     // Update
@@ -34,6 +37,7 @@ public class Game {
     private int                             _lastSpeed = 1;
     private List<AbsGameModule>             _modules;
     private GameModuleState                 _state = GameModuleState.UNINITIALIZED;
+    private ExecutorService                 _executorService = Executors.newSingleThreadExecutor();
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
@@ -105,6 +109,10 @@ public class Game {
         _state = GameModuleState.STARTED;
     }
 
+    public void stop() {
+        _state = GameModuleState.STOPPED;
+    }
+
 //    public void                     clearCursor() { _gameAction.setCursor(null); }
 ////    public void                     clearSelection() { _selector.clear(); }
 //    public void                     setCursor(UICursor cursor) { _gameAction.setCursor(cursor); }
@@ -146,5 +154,27 @@ public class Game {
         _tickInterval = TICK_INTERVALS[Math.max(0, Math.min(4, speed))];
         _isRunning = _tickInterval > 0;
         Application.notify(observer -> observer.onSpeedChange(speed));
+    }
+
+    public void launchBackgroundThread(GameManager.GameListener listener) {
+        _executorService.submit(() -> {
+            while (_state != Game.GameModuleState.STOPPED) {
+                try {
+                    if (_state == Game.GameModuleState.STARTED && _isRunning) {
+                        update();
+
+                        Application.notify(observer -> observer.onGameUpdate(this));
+
+                        if (listener != null) {
+                            listener.onGameUpdate(this);
+                        }
+                    }
+
+                    Thread.sleep(Application.APPLICATION_CONFIG.game.updateInterval);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

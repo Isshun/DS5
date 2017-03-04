@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.task;
 
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.core.GameException;
 
 /**
  * Created by Alex on 29/11/2015.
@@ -28,7 +28,7 @@ public abstract class LoadTask implements Runnable {
                 throwable = t;
             }
         } else {
-            Log.error("Only task with RUNNING status can be run");
+            throw new GameException(LoadTask.class, "Only task with RUNNING status can be run");
         }
     }
 

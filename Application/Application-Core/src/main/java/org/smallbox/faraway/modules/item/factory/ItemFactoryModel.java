@@ -23,7 +23,6 @@ import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
  */
 public class ItemFactoryModel {
     private final UsableItem _item;
-    private Map<ItemInfoAction, CraftJob>           _craftJobs = new HashMap<>();
     private FactoryReceiptModel _runningReceipt;
     private List<FactoryReceiptGroupModel> _receiptGroups;
     private List<FactoryReceiptModel> _receipts;
@@ -73,23 +72,6 @@ public class ItemFactoryModel {
         }
     }
 
-    public void run(JobModule jobModule, ConsumableModule consumableModule) {
-        Log.info("Run factory for " + _item.getName());
-
-        // Create craft job from ItemInfo actions
-        _craftJobs.entrySet().stream()
-                .filter(entry -> entry.getValue() == null || entry.getValue().isFinish())
-                .forEach(entry -> {
-                    CraftJob craftJob = CraftJob.create(consumableModule, _item, entry.getKey());
-                    _craftJobs.put(entry.getKey(), craftJob);
-                    jobModule.addJob(craftJob);
-                    jobModule.addJobs(craftJob.getSubJobs());
-                });
-
-        // Run jobs
-        _craftJobs.values().forEach(JobModel::action);
-    }
-
     /**
      * En se basant sur la recette actuelle retourne la quantité restant à fournir pour le consomable passé en paramètre
      * @param itemInfo
@@ -124,10 +106,6 @@ public class ItemFactoryModel {
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
                 .mapToInt(ConsumableItem::getQuantity)
                 .sum();
-    }
-
-    public Map<ItemInfoAction, CraftJob> getCraftActions() {
-        return _craftJobs;
     }
 
     public void setRunningReceipt(FactoryReceiptModel receipt) {

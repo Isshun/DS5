@@ -140,17 +140,17 @@
 //    public JobActionReturn onAction(CharacterModel character) {
 //        // Wrong call
 //        if (_resource == null) {
-//            Log.error("Character: action cut on null job or null job's item");
+//            throw new GameException("Character: action cut on null job or null job's item");
 //            return JobActionReturn.ABORT;
 //        }
 //
 //        if (!_resource.isResource()) {
-//            Log.error("Character: action cut on non resource");
+//            throw new GameException("Character: action cut on non resource");
 //            return JobActionReturn.ABORT;
 //        }
 //
 //        if (!"cut".equals(_actionInfo.type)) {
-//            Log.error("Character: action cut on non cut-able item");
+//            throw new GameException("Character: action cut on non cut-able item");
 //            return JobActionReturn.ABORT;
 //        }
 //

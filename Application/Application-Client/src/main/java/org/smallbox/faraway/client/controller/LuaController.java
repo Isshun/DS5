@@ -12,7 +12,7 @@ public abstract class LuaController implements GameClientObserver {
 
     public void setRootView(View rootView) {
         if (rootView == null) {
-//            Log.error("LuaController: Unable to find root view for controller: %s", getClass().getName());
+//            throw new GameException("LuaController: Unable to find root view for controller: %s", getClass().getName());
         }
 
         _rootView = rootView;

@@ -9,6 +9,7 @@ import org.smallbox.faraway.client.controller.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.lua.BindLua;
@@ -95,7 +96,7 @@ public class LuaControllerManager implements GameObserver {
                         field.setAccessible(true);
                         field.set(object, controller);
                     } catch (IllegalAccessException e) {
-                        Log.error(e);
+                        throw new GameException(LuaControllerManager.class, e);
                     }
                     _injectLater.remove(object);
                 } else {
@@ -155,7 +156,7 @@ public class LuaControllerManager implements GameObserver {
                         }
                     }
                     if (field.get(controller) == null) {
-                        Log.error("Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
+                        throw new GameException(LuaControllerManager.class, "Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -211,7 +212,7 @@ public class LuaControllerManager implements GameObserver {
                             Log.info(LuaControllerManager.class, "View: %s", view.getName());
                             method.invoke(controller, view);
                         } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                            Log.error(e);
+                            throw new GameException(LuaControllerManager.class, e);
                         }
                     });
                 }

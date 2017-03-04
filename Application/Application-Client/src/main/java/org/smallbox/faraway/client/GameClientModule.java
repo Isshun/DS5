@@ -27,7 +27,7 @@ public class GameClientModule<T extends ModuleObserver> extends AbsGameModule im
     public void addObserver(T observer) {
         // TODO
 //        if (Application.gameManager.getGame().getState() != Game.GameModuleState.UNINITIALIZED) {
-//            Log.error("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
+//            throw new GameException("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
 //        }
 
         _observers.add(observer);

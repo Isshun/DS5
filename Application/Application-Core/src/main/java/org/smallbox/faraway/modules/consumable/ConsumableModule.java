@@ -1,15 +1,16 @@
 package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.*;
+import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
@@ -80,7 +81,11 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
-    private class ConsumableJobLock {
+    public Collection<ConsumableJobLock> getLocks() {
+        return _locks;
+    }
+
+    public static class ConsumableJobLock {
         public ConsumableItem consumable;
         public JobModel job;
         public int quantity;
@@ -89,6 +94,11 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             this.consumable = consumable;
             this.job = job;
             this.quantity = quantity;
+        }
+
+        @Override
+        public String toString() {
+            return job + " " + consumable;
         }
     }
 
@@ -143,10 +153,12 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         _consumables.forEach(ConsumableItem::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
-        _consumables.removeIf(consumable -> consumable.getQuantity() == 0);
+        _consumables.removeIf(consumable -> consumable.getQuantity() == 0 && !consumable.hasLock());
 
         // Retire les locks des jobs n'existant plus
-        _locks.removeIf(consumableJobLock -> !jobModule.hasJob(consumableJobLock.job));
+        _locks.stream()
+                .filter(lock -> lock.job.getStatus() != JobModel.JobStatus.NOT_IN_POOL && jobModule.hasJob(lock.job))
+                .forEach(this::unlock);
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
@@ -179,47 +191,26 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return null;
     }
 
-    public ConsumableItem removeConsumable(ConsumableItem consumable, int desiredQuantity) {
+    public ConsumableItem takeConsumable(ConsumableJobLock lock) {
 
-        if (consumable != null && consumable.getParcel() != null && consumable.getQuantity() > 0) {
+        Log.debug(ConsumableModule.class, "TakeConsumable: (lock: %s)", lock);
 
-            // Retourne le consomable déjà existant s'il contient exactement la quantité demandée
-            if (consumable.getQuantity() == desiredQuantity) {
-                ParcelModel parcel = consumable.getParcel();
-                consumable.setParcel(null);
-                _consumables.remove(consumable);
-
-                 // TODO
-                jobModule.getJobs().stream()
-                        .filter(job -> job instanceof HaulJob)
-                        .forEach(job -> ((HaulJob) job).removePotentialConsumable(consumable));
-
-                notifyObservers(observer -> observer.onRemoveConsumable(parcel, consumable));
-
-                return consumable;
-            }
-
-            // Sinon crée un nouveau consomable
-            else {
-                int quantity = Math.min(desiredQuantity, consumable.getQuantity());
-                consumable.addQuantity(-quantity);
-                return new ConsumableItem(consumable.getInfo(), quantity);
-            }
-
+        if (lock == null) {
+            throw new GameException(ConsumableModule.class, "TakeConsumable: no lock for this job / consumable");
         }
 
-        return null;
+        _locks.remove(lock);
+
+        return new ConsumableItem(lock.consumable.getInfo(), lock.quantity);
     }
 
     public void removeConsumable(ConsumableItem consumable) {
 
+        Log.debug(ConsumableModule.class, "RemoveConsumable: %s", consumable);
+
         if (consumable != null && consumable.getParcel() != null) {
             ParcelModel parcel = consumable.getParcel();
             _consumables.remove(consumable);
-
-            jobModule.getJobs().stream()
-                    .filter(job -> job instanceof HaulJob)
-                    .forEach(job -> ((HaulJob) job).removePotentialConsumable(consumable));
 
             notifyObservers(observer -> observer.onRemoveConsumable(parcel, consumable));
         }
@@ -244,10 +235,6 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 moveConsumableToParcel(finalParcel, consumable);
                 _consumables.add(consumable);
             }
-
-            jobModule.getJobs().stream()
-                    .filter(job -> job instanceof HaulJob)
-                    .forEach(job -> ((HaulJob) job).addPotentialConsumable(consumable));
 
             notifyObservers(observer -> observer.onAddConsumable(finalParcel, consumable));
 
@@ -356,23 +343,31 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     // TODO
     public BasicHaulJob createHaulJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
+        HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
+        int previewQuantity = 0;
+
         for (ConsumableItem consumable: _consumables) {
             if (consumable.getInfo().instanceOf(itemInfo)) {
 
                 // Calcul le nombre d'élément de la pile déjà consomés par des jobs
-                int quantityInJob = 0;
-                for (JobModel job: jobModule.getJobs()) {
-                    if (job instanceof BasicHaulJob && ((BasicHaulJob)job).getHaulingConsumable() == consumable) {
-                        quantityInJob += ((BasicHaulJob)job).getHaulingQuantity();
-                    }
-                }
+                int lockedQuantity = _locks.stream()
+                        .filter(lock -> lock.consumable == consumable)
+                        .mapToInt(lock -> lock.quantity)
+                        .sum();
 
-                // Si toute la pile n'est pas déjà consomée crée un nouveau HaulJob
-                if (quantityInJob < consumable.getQuantity()) {
-                    return BasicHaulJob.toFactory(this, consumable, item, Math.min(needQuantity, consumable.getQuantity() - quantityInJob));
+                // Si toute la pile n'est pas déjà consomée ajoute le consomable à la liste des preview
+                int jobQuantity = Math.min(needQuantity - previewQuantity, consumable.getQuantity() - lockedQuantity);
+                if (jobQuantity > 0) {
+                    previewConsumables.put(consumable, jobQuantity);
+                    previewQuantity += jobQuantity;
                 }
 
             }
+        }
+
+        // Si suffisament de composants sont disponible alors le job est créé
+        if (previewQuantity == needQuantity) {
+            return BasicHaulJob.toFactory(this, itemInfo, previewConsumables, item, previewQuantity);
         }
 
         return null;
@@ -389,31 +384,36 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
      * @param quantity
      * @return
      */
-    public boolean lock(JobModel job, ConsumableItem consumable, int quantity) {
+    public ConsumableJobLock lock(JobModel job, ConsumableItem consumable, int quantity) {
 
-        // Retourne false si le consomable n'a pas la quantité demandé de libre
-        if (consumable.getQuantity() - _locks.stream()
-                .filter(lock -> lock.consumable == consumable)
-                .mapToInt(lock -> lock.quantity)
-                .sum() < quantity) {
-            return false;
+        Log.warning(ConsumableModule.class, "Lock (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
+
+        if (_locks.stream().anyMatch(lock -> lock.job == job && lock.consumable == consumable)) {
+            throw new GameException(ConsumableModule.class, "Un lock existe déjà pour ce job et ce consumable", consumable, quantity, _locks);
         }
 
-        // Ajoute le lock pour le consomable
-        _locks.add(new ConsumableJobLock(consumable, job, quantity));
+        // Retourne false si le consomable n'a pas la quantité demandé de libre
+        if (consumable.getQuantity() < quantity) {
+            throw new GameException(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
+        }
 
-        return true;
+        // Retire la quantité demandée du consomable
+        consumable.removeQuantity(quantity);
+
+        // Ajoute le lock pour le consomable
+        ConsumableJobLock lock = new ConsumableJobLock(consumable, job, quantity);
+
+        consumable.addLock(lock);
+        _locks.add(lock);
+
+        Log.warning(ConsumableModule.class, "Lock ok (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
+
+        return lock;
     }
 
-    /**
-     * Retire la réservation créé par la methode lock
-     *
-     * @param job
-     * @param consumable
-     * @return true si la réservation existe
-     */
-    public boolean unlock(JobModel job, ConsumableItem consumable) {
-        return _locks.removeIf(lock -> lock.job == job && lock.consumable == consumable);
+    private void unlock(ConsumableJobLock lock) {
+        lock.consumable.removeLock(lock);
+        _locks.remove(lock);
     }
 
     /**

@@ -2,14 +2,14 @@ package org.smallbox.faraway.modules.consumable;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.modules.character.model.PathModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.PathModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.MoveListener;
 
 public class ConsumeJob extends JobModel {
@@ -51,9 +51,7 @@ public class ConsumeJob extends JobModel {
 
         // Missing item
         if (_consumable.getQuantity() <= 0) {
-            Log.error("ConsumeJob: item cannot be null, non consumable or empty");
-            _reason = JobAbortReason.INVALID;
-            return JobCheckReturn.ABORT;
+            throw new GameException(ConsumeJob.class, "ConsumeJob: item cannot be null, non consumable or empty");
         }
 
         // Item is no longer exists
@@ -109,7 +107,7 @@ public class ConsumeJob extends JobModel {
 
 //        // Wrong call
 //        if (character == null) {
-//            Log.error("wrong call");
+//            throw new GameException("wrong call");
 //            return JobActionReturn.ABORT;
 //        }
 //
@@ -122,7 +120,7 @@ public class ConsumeJob extends JobModel {
 //            _state = State.MOVE_TO_FREE_SPACE;
 //
 //            if (_consumable.getJob() != this) {
-//                Log.error("consumable is not locked for current job");
+//                throw new GameException("consumable is not locked for current job");
 //                return JobActionReturn.ABORT;
 //            }
 //

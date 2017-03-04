@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -124,7 +125,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
                 rendererList.add(renderer);
 //            }
         } catch ( IllegalAccessException | InstantiationException e) {
-            Log.error(e);
+            throw new GameException(BaseRenderer.class, e);
         }
         return rendererList;
     }

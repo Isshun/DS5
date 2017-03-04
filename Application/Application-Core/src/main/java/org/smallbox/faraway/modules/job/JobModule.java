@@ -1,6 +1,8 @@
 package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -11,6 +13,7 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobAbortReason;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobStatus;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
@@ -28,6 +31,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private List<CharacterCheck>        _joys;
     private List<CharacterCheck>        _priorities;
     private List<CharacterCheck>        _sleeps;
+
+    @BindModule
+    private CharacterModule characterModule;
 
     @Override
     public void onGameCreate(Game game) {
@@ -53,6 +59,12 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         // Run auto job
         _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
+
+        // Assign job to inactive character
+        characterModule.getCharacters().stream()
+                .filter(character -> character.getJob() == null)
+                .forEach(this::assign);
+
     }
 
     public Collection<JobModel> getJobs() { return _jobs; }
@@ -70,39 +82,44 @@ public class JobModule extends GameModule<JobModuleObserver> {
      * @param character
      */
     public void assign(CharacterModel character) {
-        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
+        _jobs.stream()
+                .filter(job -> job.getCharacter() == null)
+                .findFirst()
+                .ifPresent(job -> assign(character, job));
 
-        // Priority jobs
-        JobModel job = getBestPriority(character);
-
-        // Sleep jobs (sleep time)
-        if (job == null && timetable == 1) {
-            job = getBestSleep(character, true);
-        }
-
-        // Entertainment jobs (auto time)
-        if (job == null && timetable == 0) {
-            job = getBestEntertainment(character, false);
-        }
-
-        // Regular jobs (auto and work time)
-        if (job == null && (timetable == 0 || timetable == 3)) {
-            job = getBestRegular(character);
-        }
-
-        // Failed jobs (auto and work time)
-        if (job == null && (timetable == 0 || timetable == 3)) {
-            job = getFailedJob(character);
-        }
-
-        // Entertainment jobs (free time)
-        if (timetable == 2) {
-            job = getBestEntertainment(character, true);
-        }
-
-        if (job != null) {
-            assign(character, job);
-        }
+//        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
+//
+//        // Priority jobs
+//        JobModel job = getBestPriority(character);
+//
+//        // Sleep jobs (sleep time)
+//        if (job == null && timetable == 1) {
+//            job = getBestSleep(character, true);
+//        }
+//
+//        // Entertainment jobs (auto time)
+//        if (job == null && timetable == 0) {
+//            job = getBestEntertainment(character, false);
+//        }
+//
+//        // Regular jobs (auto and work time)
+//        if (job == null && (timetable == 0 || timetable == 3)) {
+//            job = getBestRegular(character);
+//        }
+//
+//        // Failed jobs (auto and work time)
+//        if (job == null && (timetable == 0 || timetable == 3)) {
+//            job = getFailedJob(character);
+//        }
+//
+//        // Entertainment jobs (free time)
+//        if (timetable == 2) {
+//            job = getBestEntertainment(character, true);
+//        }
+//
+//        if (job != null) {
+//            assign(character, job);
+//        }
     }
 
     private JobModel getBestSleep(CharacterModel character, boolean force) {
@@ -138,9 +155,15 @@ public class JobModule extends GameModule<JobModuleObserver> {
             return;
         }
 
+        if (job.getStatus() != JobStatus.NOT_IN_POOL) {
+            throw new GameException(JobModule.class, "Job status must be NOT_IN_POOL");
+        }
+
         printDebug("addSubJob job: " + job.getLabel());
 
         _jobs.add(job);
+
+        job.setStatus(JobStatus.WAITING);
 
         Application.notify(observer -> observer.onJobCreate(job));
     }

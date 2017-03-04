@@ -2,12 +2,10 @@ package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public abstract class ModuleBase implements GameObserver {
@@ -87,12 +85,12 @@ public abstract class ModuleBase implements GameObserver {
     protected void printDebug(String message) { Application.notify(observer -> observer.onLog(TAG, message)); }
 
     public boolean hasRequiredDependencies(List<? extends ModuleBase> modules) {
-        for (Field field: this.getClass().getDeclaredFields()) {
-            BindModule bindModule = field.getAnnotation(BindModule.class);
-            if (bindModule != null && !checkModuleDependency(modules, field.getType())) {
-                return false;
-            }
-        }
+//        for (Field field: this.getClass().getDeclaredFields()) {
+//            BindModule bindModule = field.getAnnotation(BindModule.class);
+//            if (bindModule != null && !checkModuleDependency(modules, field.getType())) {
+//                return false;
+//            }
+//        }
         return true;
     }
 

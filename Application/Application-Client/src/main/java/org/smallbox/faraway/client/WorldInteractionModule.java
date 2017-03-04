@@ -189,7 +189,7 @@ public class WorldInteractionModule extends GameClientModule<WorldInteractionMod
 //                    }
 //                } catch (Exception e) {
 //                     //TODO
-//                    Log.error(e.getMessage());
+//                    throw new GameException(e.getMessage());
 //                    e.printStackTrace();
 //                }
 //            }

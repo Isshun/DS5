@@ -53,15 +53,15 @@ public class Log {
     }
 
     public static void warning(Class cls, String message) {
-        logger.warning(cls.getName() + ": " + message);
+        print(Level.WARNING, cls.getName() + ": " + message);
     }
 
     public static void warning(String message) {
-        logger.warning(message);
+        print(Level.WARNING, message);
     }
 
     public static void warning(Class cls, String message, Object... objects) {
-        logger.warning(cls.getName() + ": " + String.format(message, objects));
+        print(Level.WARNING, cls.getName() + ": " + String.format(message, objects));
     }
 
     public static void warning(String message, Object... objects) {
@@ -157,6 +157,12 @@ public class Log {
     public static void debug(String message, Object... args) {
         if (inPackageList(debugPackages)) {
             print(Level.FINE, String.format(message, args));
+        }
+    }
+
+    public static void debug(Class cls, String message, Object... args) {
+        if (inPackageList(debugPackages)) {
+            print(Level.FINE, String.format("[" + cls.getSimpleName() + "]" + " " + message, args));
         }
     }
 

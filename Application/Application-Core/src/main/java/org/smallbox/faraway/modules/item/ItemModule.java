@@ -12,7 +12,6 @@ import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.consumable.HaulJob;
 import org.smallbox.faraway.modules.item.job.CheckJoyItem;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
@@ -102,10 +101,6 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        // Create hauling jobs
-        _items.stream().filter(item -> !item.isComplete())
-                .forEach(item -> item.getComponents().stream().filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-                        .forEach(component -> jobModule.addJob(new HaulJob(item, component))));
 
         // Create Build jobs
         _items.stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)

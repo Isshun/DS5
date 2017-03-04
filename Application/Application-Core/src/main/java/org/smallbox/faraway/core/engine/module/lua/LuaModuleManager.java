@@ -180,7 +180,7 @@ public abstract class LuaModuleManager implements GameObserver {
 ////                            loadLuaFiles(null, dataDirectory);
 ////                        }
 ////                    } catch (IOException e) {
-////                        Log.error(e);
+////                        throw new GameException(e);
 ////                    }
 //                });
 

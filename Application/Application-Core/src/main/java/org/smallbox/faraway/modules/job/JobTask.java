@@ -19,4 +19,9 @@ public class JobTask {
         this.action = action;
     }
 
+    @Override
+    public String toString() {
+        return this.label;
+    }
+
 }

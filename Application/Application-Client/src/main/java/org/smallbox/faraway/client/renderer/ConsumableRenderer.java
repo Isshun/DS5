@@ -64,7 +64,7 @@ public class ConsumableRenderer extends BaseRenderer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel(), ApplicationClient.spriteManager.getNewSprite(consumable.getGraphic()));
-                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getQuantity(), 12, Color.BLUE, 0, 0);
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getTotalQuantity(), 12, Color.BLUE, 0, 0);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);

@@ -16,11 +16,10 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
 public class BasicHarvestJob extends JobModel {
 
     public static BasicHarvestJob create(ConsumableModule consumableModule, PlantItem plant) {
-        BasicHarvestJob job = new BasicHarvestJob(plant.getParcel());
-
         ParcelModel targetParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
 
         if (targetParcel != null) {
+            BasicHarvestJob job = new BasicHarvestJob(plant.getParcel());
 
             // Déplace le personnage à l'emplacement des composants
             job.addTask("Move to plant", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);

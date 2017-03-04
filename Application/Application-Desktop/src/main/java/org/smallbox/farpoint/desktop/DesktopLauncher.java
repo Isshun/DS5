@@ -7,7 +7,9 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.flora.PlantModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -37,8 +39,16 @@ public class DesktopLauncher {
                 Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
                     @Override
                     public void onGameCreate(Game game) {
-                        Application.moduleManager.getModule(CharacterModule.class).addRandom();
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 4, 1));
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 5, 1));
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 6, 1));
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 7, 1));
                         Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 8, 2, 1);
+                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 5, 5, 1);
+                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 2, 5, 1);
+//                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 8, 6, 1);
+//                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 7, 6, 1);
+//                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 9, 6, 1);
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_rice", 10, 4, 4, 1);
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.vegetable_carrot", 10, 4, 6, 1);
 //                        Application.moduleManager.getModule(WorldModule.class).getParcel(8, 8, 1).setRockName("base.granite");

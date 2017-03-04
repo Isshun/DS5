@@ -1,17 +1,19 @@
 package org.smallbox.faraway.core.module.job.model.abs;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobTask;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -72,7 +74,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public enum JobStatus {
-        WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
+        NOT_IN_POOL, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
     }
 
     public enum JobAbortReason {
@@ -100,7 +102,7 @@ public abstract class JobModel extends ObjectModel {
     protected CharacterModel    _characterRequire;
     protected JobAbortReason    _reason;
     protected String            _label;
-    protected JobStatus         _status = JobStatus.WAITING;
+    protected JobStatus         _status = JobStatus.NOT_IN_POOL;
     //    private GDXDrawable         _iconDrawable;
 //    private GDXDrawable         _actionDrawable;
     protected String            _message;
@@ -133,11 +135,11 @@ public abstract class JobModel extends ObjectModel {
     private void init() {
         _id = ++_countInstance;
         _filter = null;
-        _status = JobStatus.WAITING;
+        _status = JobStatus.NOT_IN_POOL;
         _limit = -1;
         _label = "none";
 
-        Log.debug("Job #" + _id + " onGameCreateObserver");
+        Log.debug("Job #" + _id + " create new " + getClass().getSimpleName());
     }
 
     public String                   getMessage() { return _message; }
@@ -203,7 +205,7 @@ public abstract class JobModel extends ObjectModel {
 //        assert character.getJob() == null;
 
         if (_isAuto && character != null) {
-            Log.error("cannot assign character to auto job");
+            throw new GameException(JobModel.class, "cannot assign character to auto job");
         }
 
         // Remove job from old characters
@@ -258,6 +260,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void complete() {
+        _status = JobStatus.COMPLETE;
         onComplete();
         finish();
     }
@@ -304,6 +307,10 @@ public abstract class JobModel extends ObjectModel {
 
     private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
 
+    public Collection<JobTask> getTasks() {
+        return _tasks;
+    }
+
     public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
 
         if (_tasks.isEmpty()) {
@@ -326,7 +333,7 @@ public abstract class JobModel extends ObjectModel {
 
         // TODO: à supprimer
         if (isFinish()) {
-            Log.error("Cannot call action on finished job");
+            throw new GameException(JobModel.class, "Cannot call action on finished job");
         }
 
         // TODO: à supprimer
@@ -355,7 +362,6 @@ public abstract class JobModel extends ObjectModel {
         // TODO: à conserver
         // Retourne COMPLETE si plus aucune tache n'existe
         while (!_tasks.isEmpty() && ret == JobActionReturn.COMPLETE) {
-            _status = JobStatus.COMPLETE;
             ret = actionDo(character);
         }
 
@@ -365,6 +371,7 @@ public abstract class JobModel extends ObjectModel {
         }
 
         if (ret == JobActionReturn.COMPLETE) {
+            _status = JobStatus.COMPLETE;
             complete();
         }
 
@@ -397,6 +404,7 @@ public abstract class JobModel extends ObjectModel {
                 return JobActionReturn.COMPLETE;
 
             case INVALID:
+                Log.warning(JobModel.class, "action return invalid: " + jobTask.label);
                 return JobActionReturn.ABORT;
         }
 
@@ -405,5 +413,9 @@ public abstract class JobModel extends ObjectModel {
 
     public int getProgressPercent() {
         return (int)(_progress * 100);
+    }
+
+    public String toString() {
+        return "job (id: " + _id + ", cls: " + getClass().getSimpleName() + ", mainLabel: " + _mainLabel + ", taskLabel: " + _label + ")";
     }
 }

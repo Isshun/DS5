@@ -69,11 +69,11 @@ public class ItemFactoryModule extends GameModule {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-        _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
-        _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
-        _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
-        _items.forEach(item -> actionCraftJobs(item, item.getFactory()));
-        _items.forEach(item -> actionRelease(item, item.getFactory()));
+//        _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
+//        _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
+//        _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
+//        _items.forEach(item -> actionCraftJobs(item, item.getFactory()));
+//        _items.forEach(item -> actionRelease(item, item.getFactory()));
     }
 
     /**

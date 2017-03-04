@@ -10,7 +10,7 @@ import org.smallbox.faraway.modules.flora.model.PlantItem;
 /**
  * Created by Alex on 31/07/2016.
  */
-@GameRenderer(level = MainRenderer.CONSUMABLE_RENDERER_LEVEL, visible = true)
+@GameRenderer(level = MainRenderer.PLANT_RENDERER_LEVEL, visible = true)
 public class PlantRenderer extends BaseRenderer {
 
     @BindModule

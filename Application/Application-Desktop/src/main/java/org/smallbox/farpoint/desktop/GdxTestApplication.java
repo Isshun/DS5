@@ -131,7 +131,7 @@
 //                            }
 //                        }
 //                    } catch (Exception e) {
-//                        Log.error(e);
+//                        throw new GameException(e);
 //                    }
 //                }, Application.APPLICATION_CONFIG.game.updateInterval));
 //

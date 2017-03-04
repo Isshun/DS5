@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.debug;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.smallbox.faraway.client.debug.config.EntityFilteringApplication;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.core.GameException;
 
 import java.net.URI;
 
@@ -49,7 +49,7 @@ public class DebugServer {
 
             Thread.currentThread().join();
         } catch (Exception ex) {
-            Log.error(ex.getMessage(), ex);
+            throw new GameException(DebugServer.class, ex.getMessage(), ex);
         }
     }
 

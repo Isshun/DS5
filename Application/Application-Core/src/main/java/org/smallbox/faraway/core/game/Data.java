@@ -1,12 +1,12 @@
 package org.smallbox.faraway.core.game;
 
 import org.codehaus.groovy.runtime.metaclass.ConcurrentReaderHashMap;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.modules.character.model.BuffInfo;
 import org.smallbox.faraway.modules.character.model.DiseaseInfo;
-import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;
@@ -47,9 +47,7 @@ public class Data {
                 return object;
             }
         }
-        Log.error("Unable to find object: " + name);
-//        throw new RuntimeException("Unable to find object \"" + name + "\"");
-        return null;
+        throw new GameException(Data.class, "Unable to find object: " + name);
     }
 
     //    public UICursor         getCursor(String name) { return this.cursors.get(name); }

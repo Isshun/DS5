@@ -4,6 +4,7 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
@@ -17,8 +18,8 @@ public class MainRenderer implements GameClientObserver {
     public static final int                 MINI_MAP_LEVEL = 100;
     public static final int                 PARTICLE_RENDERER_LEVEL = -100;
     public static final int                 CONSUMABLE_RENDERER_LEVEL = -101;
-    public static final int                 PLANT_RENDERER_LEVEL = -101;
     public static final int                 CHARACTER_RENDERER_LEVEL = -102;
+    public static final int                 PLANT_RENDERER_LEVEL = -103;
     public static final int                 ITEM_RENDERER_LEVEL = -103;
     public static final int                 STRUCTURE_RENDERER_LEVEL = -104;
     public static final int                 WORLD_GROUND_RENDERER_LEVEL = -105;
@@ -51,9 +52,9 @@ public class MainRenderer implements GameClientObserver {
                         Application.addObserver(renderer);
                         return renderer;
                     } catch ( IllegalAccessException | InstantiationException e) {
-                        Log.error(e);
+                        throw new GameException(MainRenderer.class, e);
                     }
-                    return null;
+
                 })
                 .filter(renderer -> renderer != null)
                 .sorted((o1, o2) -> o1.getLevel() - o2.getLevel())
