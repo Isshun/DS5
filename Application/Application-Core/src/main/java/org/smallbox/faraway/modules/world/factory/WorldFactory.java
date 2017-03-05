@@ -3,15 +3,14 @@ package org.smallbox.faraway.modules.world.factory;
 import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.flora.model.PlantItem;
-import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.*;
@@ -19,10 +18,7 @@ import java.util.*;
 /**
  * Created by Alex on 06/07/2015.
  */
-public class WorldFactory extends GameModule implements IWorldFactory {
-
-    @BindModule
-    private WorldModule         _world;
+public class WorldFactory extends ApplicationModule implements IWorldFactory {
 
     private ParcelModel[][][]   _parcels;
     private int                 _floors;
@@ -30,7 +26,7 @@ public class WorldFactory extends GameModule implements IWorldFactory {
     private int                 _height;
 
     @Override
-    public void create(Game game, RegionInfo regionInfo) {
+    public void create(Game game, WorldModule worldModule, RegionInfo regionInfo) {
         ItemInfo defaultRockInfo = Application.data.getItemInfo("base.granite");
         ItemInfo defaultGroundInfo = Application.data.getItemInfo("base.ground.grass");
 
@@ -71,7 +67,7 @@ public class WorldFactory extends GameModule implements IWorldFactory {
             });
         }
 
-        _world.init(game, _parcels, parcelList);
+        worldModule.init(game, _parcels, parcelList);
 
 //        WorldHelper.init(game.getInfo(), _parcels);
 

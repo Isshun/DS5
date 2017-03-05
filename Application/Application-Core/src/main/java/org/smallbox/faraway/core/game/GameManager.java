@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.module.IWorldFactory;
+import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -25,6 +26,7 @@ public class GameManager implements GameObserver {
 
     @BindModule
     private IWorldFactory       worldFactory;
+
     private boolean _paused;
 
     @Override
@@ -76,8 +78,12 @@ public class GameManager implements GameObserver {
         }
 
         _game = new Game(gameInfo);
+        _game.loadModules();
 
-        worldFactory.create(_game, gameInfo.region);
+        worldFactory.create(
+                _game,
+                _game.getModule(WorldModule.class),
+                gameInfo.region);
 
         _game.createModules();
 

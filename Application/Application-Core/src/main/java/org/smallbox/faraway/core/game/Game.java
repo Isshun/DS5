@@ -1,20 +1,26 @@
 package org.smallbox.faraway.core.game;
 
+import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.util.Log;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class Game {
+
+    public <T> T getModule(Class<T> cls) {
+        return (T) _modules.stream().filter(module -> module.getClass() == cls).findAny().orElse(null);
+    }
 
     public enum GameModuleState {UNINITIALIZED, CREATED, STOPPED, STARTED}
     public static final int[]               TICK_INTERVALS = {-1, 320, 200, 75, 10};
@@ -35,7 +41,7 @@ public class Game {
     private Map<String, Boolean>            _displays;
     private int                             _speed = 1;
     private int                             _lastSpeed = 1;
-    private List<AbsGameModule>             _modules;
+    private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameModuleState                 _state = GameModuleState.UNINITIALIZED;
     private ExecutorService                 _executorService = Executors.newSingleThreadExecutor();
 
@@ -85,6 +91,58 @@ public class Game {
         _tick = 0;
     }
 
+    public void loadModules() {
+        Log.info("Load game modules");
+
+        // Find game modules
+        new Reflections("org.smallbox.faraway").getSubTypesOf(AbsGameModule.class).stream()
+                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+//                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
+                .forEach(cls -> {
+                    try {
+                        Log.info("Find game module: " + cls.getSimpleName());
+                        AbsGameModule module = cls.getConstructor().newInstance();
+
+                        if (cls.isAnnotationPresent(ModuleInfoAnnotation.class)) {
+                            Log.info("Find game module: " + cls.getAnnotation(ModuleInfoAnnotation.class).name());
+                            module.setUpdateInterval(cls.getAnnotation(ModuleInfoAnnotation.class).updateInterval());
+                        }
+
+                        module.setInfo(ModuleInfo.fromName(cls.getSimpleName()));
+                        _modules.add(module);
+                    } catch (NoSuchMethodException e) {
+                        Log.warning(ModuleManager.class, "Unable to instantiate " + cls.getName() + " - No default constructor");
+                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        // Load game modules
+        boolean moduleHasBeenLoaded;
+        do {
+            // Try to onLoadModule first module with required dependencies
+            moduleHasBeenLoaded = false;
+            for (AbsGameModule module: _modules) {
+                if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_modules)) {
+                    module.load();
+                    moduleHasBeenLoaded = true;
+                    break;
+                }
+            }
+        } while (moduleHasBeenLoaded);
+
+//        // Check all game modules has been loaded
+//        if (checkAllModulesHasBeenLoaded(_modules)) {
+//            System.out.println("All game modules has been loaded");
+//        } else {
+//            throw new RuntimeException("Some game modules could not be loaded");
+//        }
+
+        _modules.forEach(Application::addObserver);
+        _modules.forEach(Application.dependencyInjector::register);
+        _modules.forEach(ModuleBase::create);
+    }
+
     /**
      * Call game modules onGameCreateObserver method and construct renders
      * createGame() is call before game onLoadModule or createGame
@@ -94,7 +152,7 @@ public class Game {
         Log.info("============ CREATE GAME ============");
 
         // Call onGameCreateObserver method to each modules
-        _modules = Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
+//        _modules = Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
         _modules.forEach(module -> module.createGame(this));
 
