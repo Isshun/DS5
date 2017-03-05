@@ -7,16 +7,14 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.*;
+import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.FactoryOutputMode;
+import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoFactory;
 
 /**
  * Created by Alex on 15/10/2015.

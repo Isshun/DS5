@@ -360,6 +360,24 @@ public class WorldHelper {
 
     public enum SearchStrategy { FREE }
 
+    public interface SearchArroundCallback {
+        boolean check(ParcelModel parcel);
+    }
+
+    public static ParcelModel searchAround2(ParcelModel originParcel, int maxDistance, SearchArroundCallback callback) {
+        for (int distance = 0; distance <= maxDistance; distance++) {
+            for (int x = originParcel.x - distance; x <= originParcel.x + distance; x++) {
+                for (int y = originParcel.y - distance; y <= originParcel.y + distance; y++) {
+                    ParcelModel parcel = getParcel(x, y, originParcel.z);
+                    if (parcel != null && callback.check(parcel)) {
+                        return parcel;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static ParcelModel searchAround(ParcelModel originParcel, int maxDistance, SearchStrategy... strategies) {
         for (int distance = 0; distance <= maxDistance; distance++) {
             for (int x = originParcel.x - distance; x <= originParcel.x + distance; x++) {
@@ -381,5 +399,81 @@ public class WorldHelper {
             }
         }
         return true;
+    }
+
+    public interface GetParcelCallback {
+        boolean onParcel(ParcelModel parcel);
+    }
+
+    /**
+     * Parcours en spirale
+     *
+     * @param parcel    position initiale
+     * @param callback  condition d'arret
+     */
+    public static ParcelModel move(ParcelModel parcel, GetParcelCallback callback) {
+        return move(parcel.x, parcel.y, parcel.z, callback);
+    }
+
+    /**
+     * Parcours en spirale
+     *
+     * @param x0        position X initiale
+     * @param y0        position Y initiale
+     * @param z0        position Z initiale
+     * @param callback  condition d'arret
+     */
+    public static ParcelModel move(int x0, int y0, int z0, GetParcelCallback callback) {
+        // directions possibles: G=(-1,0) H=(0,-1) D=(1,0) B=(0,1)
+        int[] dx = new int[]{1, 0, -1, 0};
+        int[] dy = new int[]{0, 1, 0, -1};
+        int dirIndex = 0;
+        int distanceMax = 50;
+
+        // distance parcourue
+        int distance = 0;
+
+        // nombre de pas a faire
+        int stepToDo = 1;
+
+        // position courante
+        int x = x0, y = y0;
+        System.out.println("Initial position: " + x + "," + y);
+
+        while (true) {
+
+            // a faire 2 fois avec le meme nombre de pas (gauche+haut) ou (droite+bas)
+            for (int i = 0; i < 2; i++) {
+
+                // déplacement du nombre de pas
+                for (int j = 0; j < stepToDo; j++) {
+
+                    // condition de sortie
+                    ParcelModel parcel = getParcel(x, y, z0);
+                    if (parcel != null && callback.onParcel(parcel)) {
+                        return parcel;
+                    }
+
+                    // condition de sortie
+                    distance++;
+                    if (distance > distanceMax) {
+                        return null;
+                    }
+
+                    // déplacement
+                    x += dx[dirIndex];
+                    y += dy[dirIndex];
+
+                    System.out.println("Current position: " + x + "," + y + " distance=" + distance);
+                }
+
+                // tourne a droite
+                dirIndex = (dirIndex + 1) % 4;
+            }
+
+            // incrementer le nombre de pas a faire
+            stepToDo++;
+        }
+
     }
 }

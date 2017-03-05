@@ -2,25 +2,25 @@ data:extend({
 
     -- Vegetable
     { type = "consumable", label = "Vegetable", name = "base.vegetable", category = "organic" },
-    { type = "consumable", label = "Rice", name = "base.vegetable_rice", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Rice", name = "base.consumable.vegetable.rice", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 13, y = 3, tile_width = 24, tile_height = 24 },
     }},
-    { type = "consumable", label = "Carrot", name = "base.vegetable_carrot", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Carrot", name = "base.consumable.vegetable.carrot", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 10, y = 4, tile_width = 24, tile_height = 24 },
     }},
-    { type = "consumable", label = "Wheat", name = "base.vegetable_wheat", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Wheat", name = "base.consumable.vegetable.wheat", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 11, y = 3, tile_width = 24, tile_height = 24 },
     }},
-    { type = "consumable", label = "Corn", name = "base.vegetable_corn", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Corn", name = "base.consumable.vegetable.corn", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 9, y = 4, tile_width = 24, tile_height = 24 },
     }},
-    { type = "consumable", label = "Potato", name = "base.vegetable_potato", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Potato", name = "base.consumable.vegetable.potato", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 5, y = 4, tile_width = 24, tile_height = 24 },
     }},
-    { type = "consumable", label = "Pumpkin", name = "base.vegetable_pumpkin", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Pumpkin", name = "base.consumable.vegetable.pumpkin", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 14, y = 4, tile_width = 24, tile_height = 24 },
     }},
-    { type = "consumable", label = "Tomato", name = "base.vegetable_tomato", parent = "base.vegetable", graphics = {
+    { type = "consumable", label = "Tomato", name = "base.consumable.vegetable.tomato", parent = "base.vegetable", graphics = {
         { path = "[module]/graphics/consumables/vegetables.png", x = 12, y = 4, tile_width = 24, tile_height = 24 },
     }},
 

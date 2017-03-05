@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.GameEvent;
@@ -16,9 +17,7 @@ import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Alex on 27/05/2015.
@@ -112,7 +111,7 @@ public abstract class View implements Comparable<View> {
     protected final ModuleBase  _module;
 
 //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
-    protected List<View>        _views = new ArrayList<>();
+    protected Collection<View> _views = new ConcurrentArrayQueue<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
     protected boolean           _special = false;

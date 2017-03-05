@@ -34,10 +34,9 @@ public class DigModule extends GameModule {
                 .filter(parcel -> !_parcels.containsKey(parcel))
                 .filter(parcel -> parcel.getRockInfo() != null)
                 .forEach(parcel -> {
-                    BasicDigJob digJob = BasicDigJob.create(consumableModule, worldModule, parcel);
+                    BasicDigJob digJob = BasicDigJob.create(consumableModule, jobModule, worldModule, parcel);
                     if (digJob != null) {
                         _parcels.put(parcel, digJob);
-                        jobModule.addJob(digJob);
                     }
                 });
     }

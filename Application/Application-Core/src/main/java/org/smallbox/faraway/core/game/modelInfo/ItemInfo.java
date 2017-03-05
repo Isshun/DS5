@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ItemInfo extends ObjectInfo {
     public boolean isLiquid;
@@ -108,7 +109,7 @@ public class ItemInfo extends ObjectInfo {
     public enum FactoryOutputMode {GROUND, NETWORK};
 
     public static class ItemInfoFactory {
-        public List<ReceiptGroupInfo>   receiptGroups;
+        public Set<ReceiptGroupInfo>    receiptGroups;
         public int[]                    inputSlots;
         public int[]                    outputSlots;
     }

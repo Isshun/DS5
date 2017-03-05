@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
@@ -19,6 +20,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -163,8 +165,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         _jobs.add(job);
 
-        job.setStatus(JobStatus.WAITING);
-
         Application.notify(observer -> observer.onJobCreate(job));
     }
 
@@ -278,13 +278,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
         return null;
     }
 
-    public void addJob(JobModel job, CharacterModel character) {
-        addJob(job);
-        if (job != null) {
-            job.start(character);
-        }
-    }
-
     public void quitJob(JobModel job, JobAbortReason reason) {
         if (job != null) {
             printDebug("Job quit: " + job.getId());
@@ -327,11 +320,27 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _priorities.add(check);
     }
 
-    public void addJobs(List<JobModel> jobs) {
-        jobs.forEach(this::addJob);
-    }
-
     public boolean hasJob(JobModel job) {
         return _jobs.contains(job);
+    }
+
+    public <T extends JobModel> T createJob(Class<T> cls, ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
+        try {
+            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, ParcelModel.class).newInstance(itemInfoAction, parcelModel);
+            addJob(job);
+            return job;
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new GameException(JobModule.class, e, "Unable to create job");
+        }
+    }
+
+    public <T extends JobModel> T createJob(Class<T> cls, ParcelModel parcelModel) {
+        try {
+            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, ParcelModel.class).newInstance(null, parcelModel);
+            addJob(job);
+            return job;
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new GameException(JobModule.class, e, "Unable to create job");
+        }
     }
 }

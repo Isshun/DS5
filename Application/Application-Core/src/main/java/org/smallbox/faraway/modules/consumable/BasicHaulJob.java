@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.consumable;
 
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -10,6 +9,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.hauling.HaulingModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.item.factory.ItemFactoryModel;
+import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
@@ -21,8 +21,8 @@ import java.util.Map;
  */
 public class BasicHaulJob extends JobModel {
 
-    private final ItemInfo _consumableInfo;
-    private final Map<ConsumableItem, Integer> _targetConsumables;
+    private ItemInfo _consumableInfo;
+    private Map<ConsumableItem, Integer> _targetConsumables;
     private int _haulingQuantity;
     private ItemFactoryModel _factory;
 
@@ -38,17 +38,17 @@ public class BasicHaulJob extends JobModel {
      * Apporte les composants sur la parcel
      *
      * @param consumableModule ConsumableModule
-     * @param itemInfo ItemInfo
+     * @param jobModule
+     *@param itemInfo ItemInfo
      * @param targetConsumables Map<ConsumableItem, Integer>
      * @param targetParcel ParcelModel
-     * @param haulingQuantity int
-     * @return BasicHaulJob
+     * @param haulingQuantity int     @return BasicHaulJob
      */
-    public static BasicHaulJob toParcel(ConsumableModule consumableModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, ParcelModel targetParcel, int haulingQuantity) {
+    public static BasicHaulJob toParcel(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, ParcelModel targetParcel, int haulingQuantity) {
 
         Log.debug(BasicHaulJob.class, "ToParcel (item: %s, targetConsumables: %s, targetParcel: %s)", itemInfo.label, targetConsumables, targetParcel);
 
-        return create(consumableModule, itemInfo, targetConsumables, haulingQuantity, targetParcel, job -> {
+        return create(consumableModule, jobModule, itemInfo, targetConsumables, haulingQuantity, targetParcel, job -> {
 
             // Apporte les composants à la fabrique
             job.addTask("Move to storage", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
@@ -72,9 +72,9 @@ public class BasicHaulJob extends JobModel {
      * @param haulingQuantity int
      * @return BasicHaulJob
      */
-    public static BasicHaulJob toFactory(ConsumableModule consumableModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, UsableItem item, int haulingQuantity) {
+    public static BasicHaulJob toFactory(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, UsableItem item, int haulingQuantity) {
 
-        return create(consumableModule, itemInfo, targetConsumables, haulingQuantity, item.getParcel(), job -> {
+        return create(consumableModule, jobModule, itemInfo, targetConsumables, haulingQuantity, item.getParcel(), job -> {
 
             job._factory = item.getFactory();
 
@@ -87,12 +87,13 @@ public class BasicHaulJob extends JobModel {
         });
     }
 
-    private static BasicHaulJob create(ConsumableModule consumableModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, int haulingQuantity, ParcelModel targetParcel, EndJobStrategy endJobStrategy) {
+    private static BasicHaulJob create(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, int haulingQuantity, ParcelModel targetParcel, EndJobStrategy endJobStrategy) {
         if (CollectionUtils.isEmpty(targetConsumables)) {
             throw new RuntimeException("Collection cannot be empty");
         }
 
-        BasicHaulJob job = new BasicHaulJob(itemInfo, haulingQuantity, targetParcel, targetConsumables);
+        BasicHaulJob job = jobModule.createJob(BasicHaulJob.class, null, targetParcel);
+        job.init(itemInfo, haulingQuantity, targetParcel, targetConsumables);
 
         for (Map.Entry<ConsumableItem, Integer> entry: targetConsumables.entrySet()) {
             ConsumableItem consumable = entry.getKey();
@@ -101,9 +102,10 @@ public class BasicHaulJob extends JobModel {
             Log.warning(HaulingModule.class, "lock for consumable: " + consumable + " -> " + consumableModule.getLocks());
 
             ConsumableModule.ConsumableJobLock lock = consumableModule.lock(job, consumable, quantity);
-
             if (lock == null) {
-                throw new GameException(BasicHaulJob.class, "Certains composants n'ont pas pu être réservés");
+                Log.warning(BasicHaulJob.class, "Certains composants n'ont pas pu être réservés");
+                job.abort();
+                return null;
             }
 
             // Déplace le personnage à l'emplacement des composants
@@ -129,16 +131,22 @@ public class BasicHaulJob extends JobModel {
 
         endJobStrategy.execute(job);
 
+        job.ready();
+
         return job;
     }
 
-
-    public BasicHaulJob(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables) {
+    private void init(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables) {
         _mainLabel = "Haul " + itemInfo.label;
         _targetParcel = targetParcel;
         _consumableInfo = itemInfo;
         _haulingQuantity = haulingQuantity;
         _targetConsumables = targetConsumables;
+    }
+
+
+    public BasicHaulJob(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
+        super(itemInfoAction, parcelModel);
     }
 
     @Override
@@ -158,7 +166,9 @@ public class BasicHaulJob extends JobModel {
 
     @Override
     protected void onAbort() {
-        _factory.clear();
+        if (_factory != null) {
+            _factory.clear();
+        }
     }
 
     @Override

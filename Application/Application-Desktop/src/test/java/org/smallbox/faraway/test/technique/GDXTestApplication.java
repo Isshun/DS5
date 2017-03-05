@@ -1,4 +1,4 @@
-package org.smallbox.faraway.test;
+package org.smallbox.faraway.test.technique;
 
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;

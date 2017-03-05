@@ -7,6 +7,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -15,8 +16,8 @@ import org.smallbox.faraway.modules.world.WorldModule;
  */
 public class BasicDigJob extends JobModel {
 
-    public static BasicDigJob create(ConsumableModule consumableModule, WorldModule worldModule, ParcelModel parcel) {
-        BasicDigJob job = new BasicDigJob(parcel);
+    public static BasicDigJob create(ConsumableModule consumableModule, JobModule jobModule, WorldModule worldModule, ParcelModel parcel) {
+        BasicDigJob job = jobModule.createJob(BasicDigJob.class, parcel);
 
         ParcelModel targetParcel = WorldHelper.searchAround(parcel, 1, WorldHelper.SearchStrategy.FREE);
         ItemInfo rockInfo = parcel.getRockInfo();
@@ -36,9 +37,11 @@ public class BasicDigJob extends JobModel {
                             .flatMap(action -> action.products.stream())
                             .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, parcel)));
 
+            job.ready();
             return job;
         }
 
+        job.abort();
         return null;
     }
 

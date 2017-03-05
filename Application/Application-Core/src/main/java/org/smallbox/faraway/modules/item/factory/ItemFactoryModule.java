@@ -69,11 +69,11 @@ public class ItemFactoryModule extends GameModule {
 
     @Override
     protected void onGameUpdate(Game game, int tick) {
-//        _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
-//        _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
-//        _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
-//        _items.forEach(item -> actionCraftJobs(item, item.getFactory()));
-//        _items.forEach(item -> actionRelease(item, item.getFactory()));
+        _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
+        _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
+        _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
+        _items.forEach(item -> actionCraftJobs(item, item.getFactory()));
+        _items.forEach(item -> actionRelease(item, item.getFactory()));
     }
 
     /**
@@ -141,7 +141,6 @@ public class ItemFactoryModule extends GameModule {
                             Log.info("[Factory] %s -> launch hauling job for component: %s", item, receiptInputInfo);
 
                             quantityInJob += job.getHaulingQuantity();
-                            jobModule.addJob(job);
                         }
 
                         // Annule la construction s'il n'y à plus suffisament de consomable disponible
@@ -166,27 +165,7 @@ public class ItemFactoryModule extends GameModule {
     private void actionCraftJobs(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() > 0 && factory.getCraftJob() == null) {
             factory.setMessage("{red,icon;" + factory.getRunningReceipt() + "}: crafting");
-
-            BasicCraftJob job = new BasicCraftJob(item.getParcel(), factory.getRunningReceipt().receiptInfo) {
-                @Override
-                public boolean onCraft() {
-                    // Incrémente la variable count de la recette (état d'avancement)
-                    return factory.getRunningReceipt().decreaseCostRemaining() == 0;
-                }
-
-                @Override
-                public int getCost() {
-                    return factory.getRunningReceipt().getCost();
-                }
-
-                @Override
-                public int getCostRemaining() {
-                    return factory.getRunningReceipt().getCostRemaining();
-                }
-            };
-
-            factory.setCraftJob(job);
-            jobModule.addJob(job);
+            BasicCraftJob.create(jobModule, item.getParcel(), factory.getRunningReceipt().receiptInfo, factory);
         }
     }
 
@@ -261,13 +240,22 @@ public class ItemFactoryModule extends GameModule {
                 .mapToInt(ConsumableItem::getQuantity)
                 .sum();
 
-        // Check l'inventaire des personnages sur les hauling jobs de la fabrique
+//        // Check l'inventaire des personnages sur les hauling jobs de la fabrique
+//        availableQuantity += jobModule.getJobs().stream()
+//                .filter(job -> job instanceof BasicHaulJob)
+//                .map(job -> (BasicHaulJob)job)
+//                .filter(job -> job.getFactory() == item.getFactory())
+//                .filter(job -> job.getCharacter() != null)
+//                .mapToInt(job -> job.getCharacter().getInventoryQuantity(itemInfo))
+//                .sum();
+
+        // TODO: inutile avec le system de lock
+        // Check la quantité réservée par les job
         availableQuantity += jobModule.getJobs().stream()
                 .filter(job -> job instanceof BasicHaulJob)
                 .map(job -> (BasicHaulJob)job)
                 .filter(job -> job.getFactory() == item.getFactory())
-                .filter(job -> job.getCharacter() != null)
-                .mapToInt(job -> job.getCharacter().getInventoryQuantity(itemInfo))
+                .mapToInt(BasicHaulJob::getHaulingQuantity)
                 .sum();
 
         if (availableQuantity >= needQuantity) {

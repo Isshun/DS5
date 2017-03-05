@@ -31,6 +31,14 @@ public abstract class JobModel extends ObjectModel {
         return _subJobs;
     }
 
+    public void ready() {
+        _status = JobStatus.WAITING;
+    }
+
+    public void abort() {
+        _status = JobStatus.ABORTED;
+    }
+
     public interface OnStartListener {
         void onStart();
     }

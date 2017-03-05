@@ -105,6 +105,6 @@ public class FactoryReceiptModel {
     }
 
     @Override
-    public String toString() { return receiptInfo.label; }
+    public String toString() { return receiptInfo.label + receiptInfo.inputs; }
 
 }

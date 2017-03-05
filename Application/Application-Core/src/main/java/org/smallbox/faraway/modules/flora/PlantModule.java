@@ -56,11 +56,7 @@ public class PlantModule extends GameModule {
         _plants.stream()
                 .filter(plant -> plant.getJob() == null)
                 .filter(plant -> plant.getMaturity() >= 1)
-                .forEach(plant -> {
-                    BasicHarvestJob job = BasicHarvestJob.create(consumableModule, plant);
-                    plant.setJob(job);
-                    jobModule.addJob(job);
-                });
+                .forEach(plant -> BasicHarvestJob.create(consumableModule, jobModule, plant));
 
         // TODO: ajout auto de la graine
         _plants.forEach(plant -> plant.setSeed(true));

@@ -19,7 +19,7 @@ public class ApplicationConfig {
         public int              environmentDistance = 5;
         public int              maxNearDistance = 32;
         public int              tickPerHour = 50;
-        public int              updateInterval = 5;
+        public int              updateInterval = 10;
     }
 
     public ApplicationConfigScreenInfo screen = new ApplicationConfigScreenInfo();

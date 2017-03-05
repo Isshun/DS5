@@ -50,8 +50,8 @@ ui:extend({
 
             -- Actions
             { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, views = {
-                { type = "label", text = "Actions", text_size = 22, size = {400, 26}},
-                { type = "label", id = "current_action", size = {400, 20}},
+                { type = "label", text = "Actions", text_color = 0x679B99, text_size = 22, size = {400, 26}},
+                { type = "label", id = "current_action", text_color = 0xB4D4D3, size = {400, 20}},
                 { type = "list", id = "list_actions"},
             }},
 

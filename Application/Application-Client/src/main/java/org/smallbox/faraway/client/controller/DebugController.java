@@ -38,7 +38,7 @@ public class DebugController extends LuaController {
 
         if (listDebug != null) {
             listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> characterModule.addRandom()));
-            listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> consumableModule.addConsumable("base.vegetable_rice", 10, 5, 5, 1)));
+            listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 5, 5, 1)));
         }
     }
 

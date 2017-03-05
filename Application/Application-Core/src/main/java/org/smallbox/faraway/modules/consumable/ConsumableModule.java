@@ -63,21 +63,49 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         addConsumable(itemInfo, quantity, WorldHelper.getParcel(x, y, z));
     }
 
-    public void addConsumable(ItemInfo itemInfo, int quantity, ParcelModel parcel) {
-        if (quantity > 0) {
-            Optional<ConsumableItem> optional = _consumables.stream().filter(c -> c.getParcel() == parcel).findAny();
+    // TODO à clean et tester
+    public void addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel) {
+
+        if (quantity < 0) {
+            throw new GameException(ConsumableModule.class, "addConsumable: invalid quantity (%d)", quantity);
+        }
+
+        ParcelModel finalParcel = WorldHelper.move(targetParcel, parcel -> {
+            ConsumableItem consumable = getConsumable(parcel);
+
+            // La parcel ne contient pas le bon consomable
+            if (consumable != null && consumable.getInfo() != itemInfo) {
+                return false;
+            }
+
+            // La parcel contient le bon consomable mais il ne peux pas accepter la quantité à ajouter
+            if (consumable != null && consumable.getInfo() == itemInfo && consumable.getQuantity() + quantity > consumable.getInfo().stack) {
+                return false;
+            }
+
+            return true;
+        });
+
+        // Ajout du consomable à la parcel
+        if (finalParcel != null) {
+            ConsumableItem consumable = getConsumable(finalParcel);
 
             // Ajout de la quantité à un consomable déjà existant
-            if (optional.isPresent()) {
-                optional.get().addQuantity(quantity);
+            if (consumable != null) {
+                consumable.addQuantity(quantity);
             }
 
             // Ajout d'un nouveau consomable
             else {
-                ConsumableItem consumable = new ConsumableItem(itemInfo, quantity);
-                consumable.setParcel(parcel);
+                consumable = new ConsumableItem(itemInfo, quantity);
+                consumable.setParcel(finalParcel);
                 _consumables.add(consumable);
             }
+        }
+
+        // Aucune parcel n'a pu être trouvée
+        else {
+            Log.warning(ConsumableModule.class, "No parcel found to add consumable (item: %s parcel: %s)", itemInfo, targetParcel);
         }
     }
 
@@ -153,11 +181,11 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         _consumables.forEach(ConsumableItem::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
-        _consumables.removeIf(consumable -> consumable.getQuantity() == 0 && !consumable.hasLock());
+        _consumables.removeIf(consumable -> consumable.getTotalQuantity() == 0 && !consumable.hasLock());
 
         // Retire les locks des jobs n'existant plus
         _locks.stream()
-                .filter(lock -> lock.job.getStatus() != JobModel.JobStatus.NOT_IN_POOL && jobModule.hasJob(lock.job))
+                .filter(lock -> lock.job.getStatus() != JobModel.JobStatus.NOT_IN_POOL && !jobModule.hasJob(lock.job))
                 .forEach(this::unlock);
     }
 
@@ -182,7 +210,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             }
         }
         // Take first item at acceptable distance
-        for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
+        for (Map.Entry<MapObjectModel, Integer> entry : ObjectsMatchingFilter.entrySet()) {
             if (entry.getValue() <= bestDistance + Application.APPLICATION_CONFIG.game.maxNearDistance) {
                 return entry.getKey();
             }
@@ -199,6 +227,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             throw new GameException(ConsumableModule.class, "TakeConsumable: no lock for this job / consumable");
         }
 
+        lock.consumable.removeLock(lock);
         _locks.remove(lock);
 
         return new ConsumableItem(lock.consumable.getInfo(), lock.quantity);
@@ -346,17 +375,11 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
         int previewQuantity = 0;
 
-        for (ConsumableItem consumable: _consumables) {
+        for (ConsumableItem consumable : _consumables) {
             if (consumable.getInfo().instanceOf(itemInfo)) {
 
-                // Calcul le nombre d'élément de la pile déjà consomés par des jobs
-                int lockedQuantity = _locks.stream()
-                        .filter(lock -> lock.consumable == consumable)
-                        .mapToInt(lock -> lock.quantity)
-                        .sum();
-
-                // Si toute la pile n'est pas déjà consomée ajoute le consomable à la liste des preview
-                int jobQuantity = Math.min(needQuantity - previewQuantity, consumable.getQuantity() - lockedQuantity);
+                // Ajoute à la liste des preview le consomable et la quantité disponible
+                int jobQuantity = Math.min(needQuantity - previewQuantity, consumable.getQuantity());
                 if (jobQuantity > 0) {
                     previewConsumables.put(consumable, jobQuantity);
                     previewQuantity += jobQuantity;
@@ -367,14 +390,20 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         // Si suffisament de composants sont disponible alors le job est créé
         if (previewQuantity == needQuantity) {
-            return BasicHaulJob.toFactory(this, itemInfo, previewConsumables, item, previewQuantity);
+            return BasicHaulJob.toFactory(this, jobModule, itemInfo, previewConsumables, item, previewQuantity);
         }
 
         return null;
     }
 
     // TODO: perfs
-    public ConsumableItem getConsumable(ParcelModel parcel) { return _consumables.stream().filter(consumableItem -> consumableItem.getParcel() == parcel).findFirst().orElse(null); }
+    public ConsumableItem getConsumable(ParcelModel parcel) {
+        return _consumables.stream().filter(consumableItem -> consumableItem.getParcel() == parcel).findFirst().orElse(null);
+    }
+
+    public ConsumableItem getConsumable(int x, int y, int z) {
+        return getConsumable(WorldHelper.getParcel(x, y, z));
+    }
 
     /**
      * Reserve une certaine quantité sur un consomable
@@ -394,7 +423,8 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         // Retourne false si le consomable n'a pas la quantité demandé de libre
         if (consumable.getQuantity() < quantity) {
-            throw new GameException(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
+            Log.warning(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
+            return null;
         }
 
         // Retire la quantité demandée du consomable

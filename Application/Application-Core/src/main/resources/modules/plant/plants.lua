@@ -16,7 +16,7 @@ data:extend({
             }
         },
         actions = {
-            type = "gather", cost = 20, products = {{ item = "base.vegetable_rice", quantity = {1, 1}, rate = 1 } }
+            type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.rice", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
             { path = "[module]/graphics/plants/rice.png", x = 0, y = 0 },

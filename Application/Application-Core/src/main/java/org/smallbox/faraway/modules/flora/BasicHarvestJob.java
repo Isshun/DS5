@@ -8,6 +8,7 @@ import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 
 /**
@@ -15,11 +16,11 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
  */
 public class BasicHarvestJob extends JobModel {
 
-    public static BasicHarvestJob create(ConsumableModule consumableModule, PlantItem plant) {
+    public static BasicHarvestJob create(ConsumableModule consumableModule, JobModule jobModule, PlantItem plant) {
         ParcelModel targetParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
 
         if (targetParcel != null) {
-            BasicHarvestJob job = new BasicHarvestJob(plant.getParcel());
+            BasicHarvestJob job = jobModule.createJob(BasicHarvestJob.class, plant.getParcel());
 
             // Déplace le personnage à l'emplacement des composants
             job.addTask("Move to plant", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
@@ -38,13 +39,16 @@ public class BasicHarvestJob extends JobModel {
                 plant.setSeed(false);
             });
 
+            plant.setJob(job);
+
+            job.ready();
             return job;
         }
 
         return null;
     }
 
-    public BasicHarvestJob(ParcelModel targetParcel) {
+    public BasicHarvestJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
         _mainLabel = "Harvest";
         _targetParcel = targetParcel;
     }

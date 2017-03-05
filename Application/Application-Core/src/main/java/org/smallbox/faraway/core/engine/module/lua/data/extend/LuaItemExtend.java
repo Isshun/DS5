@@ -12,10 +12,7 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Alex on 29/09/2015.
@@ -252,7 +249,7 @@ public class LuaItemExtend extends LuaExtend {
         }
 
         if (!value.get("receipts").isnil()) {
-            itemInfo.factory.receiptGroups = new ArrayList<>();
+            itemInfo.factory.receiptGroups = new HashSet<>();
             for (int i = 1; i <= value.get("receipts").length(); i++) {
                 Application.data.getAsync(value.get("receipts").get(i).get("receipt").tojstring(), ReceiptGroupInfo.class,
                         receiptGroupInfo -> itemInfo.factory.receiptGroups.add(receiptGroupInfo));
