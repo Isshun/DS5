@@ -27,6 +27,9 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLuaController
     private CharacterHealthController   characterHealthController;
 
+    @BindLuaController
+    private CharacterInventoryController   characterInventoryController;
+
     @BindModule
     private CharacterModule characterModule;
 
@@ -61,6 +64,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
         characterStatusController.selectCharacter(character);
         characterHealthController.selectCharacter(character);
+        characterInventoryController.selectCharacter(character);
 
         openPage(pageStatus);
     }

@@ -34,7 +34,7 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
                                 stItem.bind(3, consumable.getParcel().y);
                                 stItem.bind(4, consumable.getParcel().z);
                                 stItem.bind(5, consumable.getInfo().name);
-                                stItem.bind(6, consumable.getQuantity());
+                                stItem.bind(6, consumable.getFreeQuantity());
                                 stItem.step();
                                 stItem.reset(false);
                             }

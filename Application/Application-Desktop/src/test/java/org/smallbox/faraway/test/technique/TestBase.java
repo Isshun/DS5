@@ -3,9 +3,9 @@ package org.smallbox.faraway.test.technique;
 import org.junit.After;
 import org.junit.Before;
 import org.smallbox.faraway.client.GDXApplication;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -22,20 +22,25 @@ public class TestBase {
         applicationConfig.launchGui = false;
     }
 
-    protected static CharacterModule characterModule;
-    protected static ItemModule itemModule;
-    protected static ConsumableModule consumableModule;
-
     protected boolean testComplete = false;
 
     protected static boolean initOk;
     protected static GDXApplication _application;
 
     protected void init() {
-        itemModule = Application.moduleManager.getModule(ItemModule.class);
-        characterModule = Application.moduleManager.getModule(CharacterModule.class);
-        consumableModule = Application.moduleManager.getModule(ConsumableModule.class);
         initOk = true;
+    }
+
+    public CharacterModule characterModule;
+    public ConsumableModule consumableModule;
+    public ItemModule itemModule;
+    public Game game;
+
+    public void injectModules(Game game) {
+        this.game = game;
+        this.itemModule = game.getModule(ItemModule.class);
+        this.characterModule = game.getModule(CharacterModule.class);
+        this.consumableModule = game.getModule(ConsumableModule.class);
     }
 
     @Before

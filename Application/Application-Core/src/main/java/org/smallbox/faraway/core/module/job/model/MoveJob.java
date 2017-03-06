@@ -28,7 +28,7 @@ public class MoveJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
+    protected void onClose() {
         Log.info("MoveJob: characters reach position");
     }
 

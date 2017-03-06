@@ -181,7 +181,7 @@
 //    }
 //
 //    @Override
-//    protected void onFinish() {
+//    protected void onClose() {
 //    }
 //
 //    protected void moveToIngredient(CharacterModel character, FactoryReceiptModel.FactoryShoppingItemModel input) {
@@ -195,10 +195,10 @@
 ////            public void onReach(CharacterModel character) {
 ////                consumable.setJob(null);
 ////
-////                int neededQuantity = Math.min(consumable.getQuantity(), input.quantity);
+////                int neededQuantity = Math.min(consumable.getFreeQuantity(), input.quantity);
 ////                if (neededQuantity > 0) {
 ////                    character.createInventoryFromConsumable(consumable, neededQuantity);
-////                    if (consumable.getQuantity() == 0) {
+////                    if (consumable.getFreeQuantity() == 0) {
 ////                        ModuleHelper.getWorldModule().removeConsumable(consumable);
 ////                    } else {
 ////                        consumable.setJob(null);
@@ -239,13 +239,13 @@
 ////            public void onReach(CharacterModel character) {
 ////                if (_receipt != null) {
 ////                    if (character.getInventory() != null) {
-////                        int quantityNeeded = Math.min(character.getInventory().getQuantity(), _receipt.getQuantityNeeded(character.getInventory().getInfo()));
+////                        int quantityNeeded = Math.min(character.getInventory().getFreeQuantity(), _receipt.getQuantityNeeded(character.getInventory().getInfo()));
 ////                        if (quantityNeeded > 0) {
 ////                            // Add components to factory
 ////                            _receipt.addComponent(character.getInventory().getInfo(), quantityNeeded);
 ////
 ////                            // Remove components from character's inventory
-////                            if (character.getInventory().getQuantity() > quantityNeeded) {
+////                            if (character.getInventory().getFreeQuantity() > quantityNeeded) {
 ////                                character.getInventory().addQuantity(-quantityNeeded);
 ////                            } else {
 ////                                character.setInventory(null);

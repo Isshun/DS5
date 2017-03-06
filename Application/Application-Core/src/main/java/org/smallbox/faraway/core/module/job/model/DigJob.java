@@ -135,7 +135,7 @@ public class DigJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
+    protected void onClose() {
         if (_jobParcel.getDigJob() == this) {
             _jobParcel.setDigJob(null);
         }

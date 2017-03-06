@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Alex on 03/06/2015.
  */
 public class ConsumableItem extends MapObjectModel {
-    private int             _quantity = 1;
+    private int _freeQuantity = 1;
     private int             _slots = 0;
     private JobModel        _job;
     private Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
@@ -27,26 +27,26 @@ public class ConsumableItem extends MapObjectModel {
 
     public ConsumableItem(ItemInfo info, int quantity) {
         super(info);
-        _quantity = quantity;
+        _freeQuantity = quantity;
     }
 
     public void addQuantity(int quantity) {
 
-        Log.debug(ConsumableItem.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, _quantity, quantity);
+        Log.debug(ConsumableItem.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, _freeQuantity, quantity);
 
-        _quantity += quantity;
+        _freeQuantity += quantity;
         _needRefresh = true;
     }
 
-    public int getQuantity() {
-        return _quantity;
+    public int getFreeQuantity() {
+        return _freeQuantity;
     }
 
     public void setQuantity(int quantity) {
 
-        Log.debug(ConsumableItem.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, _quantity, quantity);
+        Log.debug(ConsumableItem.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, _freeQuantity, quantity);
 
-        _quantity = quantity;
+        _freeQuantity = quantity;
         _needRefresh = true;
     }
 
@@ -65,12 +65,12 @@ public class ConsumableItem extends MapObjectModel {
         return false;
     }
 
-    public String getFullLabel() { return getLabel() + " (" + _quantity + ")"; }
-    public boolean isEmpty() { return _quantity <= 0; }
+    public String getFullLabel() { return getLabel() + " (" + _freeQuantity + ")"; }
+    public boolean isEmpty() { return _freeQuantity <= 0; }
     public void setJob(JobModel job) { _job = job; }
     public JobModel getJob() { return _job; }
     public boolean inValidStorage() { return _parcel.getArea() != null && _parcel.getArea().accept(_info); }
-    public boolean hasFreeSlot() { return _slots < _quantity; }
+    public boolean hasFreeSlot() { return _slots < _freeQuantity; }
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
@@ -97,9 +97,9 @@ public class ConsumableItem extends MapObjectModel {
     public String toString() { return _info.name + " at " + _parcel; }
 
     public void removeQuantity(int quantity) {
-        _quantity = _quantity - quantity;
+        _freeQuantity = _freeQuantity - quantity;
 
-        if (_quantity < 0) {
+        if (_freeQuantity < 0) {
             throw new GameException(ConsumableItem.class, "Quantity cannot be < 0");
         }
     }
@@ -113,7 +113,7 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public int getTotalQuantity() {
-        return _quantity + _locks.stream().mapToInt(lock -> lock.quantity).sum();
+        return _freeQuantity + _locks.stream().mapToInt(lock -> lock.quantity).sum();
     }
 
     public void removeLock(ConsumableModule.ConsumableJobLock lock) {

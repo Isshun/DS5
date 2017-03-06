@@ -70,7 +70,7 @@
 //    }
 //
 //    @Override
-//    protected void onFinish() {
+//    protected void onClose() {
 //    }
 //
 //    @Override

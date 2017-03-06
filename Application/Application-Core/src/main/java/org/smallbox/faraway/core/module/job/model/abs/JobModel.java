@@ -56,7 +56,7 @@ public abstract class JobModel extends ObjectModel {
 
     public void cancel() {
         onCancel();
-        finish();
+        close();
     }
 
     protected void onCancel() {}
@@ -82,7 +82,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public enum JobStatus {
-        NOT_IN_POOL, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
+        INITIALIZED, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
     }
 
     public enum JobAbortReason {
@@ -102,7 +102,7 @@ public abstract class JobModel extends ObjectModel {
     protected int               _durationLeft;
     protected long              _startTime;
     protected long              _endTime;
-    protected boolean           _isFinish;
+    protected boolean _isClose;
     protected double            _progress;
     protected ItemFilter        _filter;
     protected ItemInfoAction    _actionInfo;
@@ -110,7 +110,7 @@ public abstract class JobModel extends ObjectModel {
     protected CharacterModel    _characterRequire;
     protected JobAbortReason    _reason;
     protected String            _label;
-    protected JobStatus         _status = JobStatus.NOT_IN_POOL;
+    protected JobStatus         _status = JobStatus.INITIALIZED;
     //    private GDXDrawable         _iconDrawable;
 //    private GDXDrawable         _actionDrawable;
     protected String            _message;
@@ -143,7 +143,7 @@ public abstract class JobModel extends ObjectModel {
     private void init() {
         _id = ++_countInstance;
         _filter = null;
-        _status = JobStatus.NOT_IN_POOL;
+        _status = JobStatus.INITIALIZED;
         _limit = -1;
         _label = "none";
 
@@ -193,8 +193,8 @@ public abstract class JobModel extends ObjectModel {
     public boolean                  hasCharacter(CharacterModel character) { return _character != null && _character == character; }
     public boolean                  hasCharacter() { return _character != null; }
     public boolean                  isVisibleInUI() { return true; }
-    public boolean                  isFinish() { return _isFinish; }
-    public boolean                  isOpen() { return !_isFinish; }
+    public boolean                  isFinish() { return _isClose; }
+    public boolean                  isOpen() { return !_isClose; }
     public boolean                  isEntertainment() { return _isEntertainment; }
     public boolean                  isCreate() { return _isCreate; }
     public boolean                  isVisible() { return true; }
@@ -246,7 +246,7 @@ public abstract class JobModel extends ObjectModel {
     protected abstract JobActionReturn onAction(CharacterModel character);
     protected void onQuit(CharacterModel character) {}
     protected void onComplete() {}
-    protected void onFinish() {}
+    protected void onClose() {}
 
     public abstract CharacterTalentExtra.TalentType getTalentNeeded();
 
@@ -270,18 +270,18 @@ public abstract class JobModel extends ObjectModel {
     public void complete() {
         _status = JobStatus.COMPLETE;
         onComplete();
-        finish();
+        close();
     }
 
-    public void finish() {
-        _isFinish = true;
+    public void close() {
+        _isClose = true;
 
         if (_character != null) {
             Log.debug("Complete job " + this + " by " + _character.getName());
             quit(_character);
         }
 
-        onFinish();
+        onClose();
     }
 
     public boolean check(CharacterModel character) {
@@ -303,7 +303,7 @@ public abstract class JobModel extends ObjectModel {
 
         if (ret == JobCheckReturn.ABORT) {
             onAbort();
-            finish();
+            close();
         }
 
         return ret == JobCheckReturn.OK;
@@ -375,7 +375,7 @@ public abstract class JobModel extends ObjectModel {
 
         if (ret == JobActionReturn.ABORT) {
             onAbort();
-            finish();
+            close();
         }
 
         if (ret == JobActionReturn.COMPLETE) {

@@ -92,7 +92,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         listFactoryInventory.clear();
         item.getInventory().forEach(consumable -> {
             UILabel label = new UILabel(null);
-            label.setText(consumable.getInfo().label + " x " + consumable.getQuantity());
+            label.setText(consumable.getInfo().label + " x " + consumable.getFreeQuantity());
             listFactoryInventory.addView(label);
         });
     }

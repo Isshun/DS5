@@ -68,4 +68,8 @@ public class Utils {
     public static double bound(double min, double max, double value) {
         return Math.max(min, Math.min(max, value));
     }
+
+    public static int bound(int min, int max, int value) {
+        return Math.max(min, Math.min(max, value));
+    }
 }

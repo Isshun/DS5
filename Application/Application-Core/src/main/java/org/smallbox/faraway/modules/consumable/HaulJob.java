@@ -183,17 +183,17 @@
 //        character.moveTo(_consumable.getParcel(), new MoveListener<CharacterModel>() {
 //            @Override
 //            public void onReach(CharacterModel character) {
-//                if (consumable.getQuantity() <= _quantity) {
+//                if (consumable.getFreeQuantity() <= _quantity) {
 //                    consumable.setQuantity(0);
 //                    consumable.setParcel(null);
-//                    _currentQuantity += consumable.getQuantity();
+//                    _currentQuantity += consumable.getFreeQuantity();
 //                } else {
 //                    consumable.addQuantity(-_quantity);
 //                    _currentQuantity += _quantity;
 //                }
 //                consumable.setJob(null);
 //                character.addInventory(_itemInfo, _currentQuantity);
-////                character.createInventoryFromConsumable(_consumable, _consumable.getQuantity());
+////                character.createInventoryFromConsumable(_consumable, _consumable.getFreeQuantity());
 //
 //                moveToItem(character);
 //            }
@@ -217,7 +217,7 @@
 //                    _onCompleteListener.onComplete();
 //                }
 //
-//                finish();
+//                close();
 //                quit(character);
 //            }
 //
@@ -253,7 +253,7 @@
 //    }
 //
 //    @Override
-//    protected void onFinish() {
+//    protected void onClose() {
 //    }
 //
 //    private void moveToComponent(ConsumableItem currentConsumable) {
@@ -269,12 +269,12 @@
 //            public void onReach(CharacterModel character) {
 //                if (_targetParcel.getItem(ConsumableItem.class) == currentConsumable) {
 //                    int missingQuantity = (_component.neededQuantity - _component.currentQuantity);
-//                    if (currentConsumable.getQuantity() <= missingQuantity) {
-//                        _character.createInventoryFromConsumable(new ConsumableItem(currentConsumable.getInfo()), currentConsumable.getQuantity());
+//                    if (currentConsumable.getFreeQuantity() <= missingQuantity) {
+//                        _character.createInventoryFromConsumable(new ConsumableItem(currentConsumable.getInfo()), currentConsumable.getFreeQuantity());
 //                        currentConsumable.setQuantity(0);
 //                    } else {
 //                        _character.createInventoryFromConsumable(new ConsumableItem(currentConsumable.getInfo()), missingQuantity);
-//                        currentConsumable.setQuantity(currentConsumable.getQuantity() - missingQuantity);
+//                        currentConsumable.setQuantity(currentConsumable.getFreeQuantity() - missingQuantity);
 //                    }
 //                }
 //
@@ -346,7 +346,7 @@
 ////                _buildItem.addComponent(_character.getInventory());
 ////
 ////                // Clear inventory if consumable has been depleted
-////                if (_character.getInventory().getQuantity() == 0) {
+////                if (_character.getInventory().getFreeQuantity() == 0) {
 ////                    _character.setInventory(null);
 ////                }
 ////

@@ -97,15 +97,6 @@ public class LuaApplicationModel {
 //        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
 
-    public void stopGame() {
-        this.game = null;
-        Application.gameManager.stopGame();
-    }
-
-    public void resumeGame() {
-        Application.gameManager.setRunning(true);
-    }
-
     public void exit() {
         Application.setRunning(false);
     }

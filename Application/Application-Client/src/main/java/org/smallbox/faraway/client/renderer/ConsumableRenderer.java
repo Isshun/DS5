@@ -35,7 +35,7 @@ public class ConsumableRenderer extends BaseRenderer {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {
-                addTag("+" + consumable.getQuantity(), consumable.getParcel());
+                addTag("+" + consumable.getFreeQuantity(), consumable.getParcel());
             }
 
             @Override
@@ -64,7 +64,9 @@ public class ConsumableRenderer extends BaseRenderer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel(), ApplicationClient.spriteManager.getNewSprite(consumable.getGraphic()));
-                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getTotalQuantity(), 12, Color.BLUE, 0, 0);
+//                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getTotalQuantity(), 12, new Color(0x000000FF), 16, 16);
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getTotalQuantity(), 12, new Color(0x9de6e7FF), 15, 15);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);

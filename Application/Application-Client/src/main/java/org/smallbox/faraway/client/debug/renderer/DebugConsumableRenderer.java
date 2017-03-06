@@ -32,8 +32,8 @@ public class DebugConsumableRenderer extends BaseRenderer {
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, consumable.getLabel(), 14, Color.BLACK, 1, 1);
                     renderer.drawOnMap(consumable.getParcel().x, consumable.getParcel().y, consumable.getLabel(), 14, Color.WHITE);
 
-                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getQuantity(), 14, Color.BLACK, 1, 17);
-                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getQuantity(), 14, Color.WHITE, 0, 16);
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getFreeQuantity(), 14, Color.BLACK, 1, 17);
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getFreeQuantity(), 14, Color.WHITE, 0, 16);
                 });
     }
 

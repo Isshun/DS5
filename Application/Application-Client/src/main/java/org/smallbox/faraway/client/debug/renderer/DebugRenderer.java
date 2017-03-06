@@ -73,7 +73,7 @@ public class DebugRenderer extends BaseRenderer {
                     Map<ItemInfo, Integer> consumables = new HashMap<>();
                     consumableModule.getConsumables().forEach(consumable -> {
                         int quantity = consumables.containsKey(consumable.getInfo()) ? consumables.get(consumable.getInfo()) : 0;
-                        consumables.put(consumable.getInfo(), quantity + consumable.getQuantity());
+                        consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
                     });
 
                     consumables.entrySet().forEach(entry -> drawDebugConsumableInfo(renderer, entry.getKey(), entry.getValue()));
@@ -148,7 +148,7 @@ public class DebugRenderer extends BaseRenderer {
 
         if (item.getInventory() != null) {
             sb.append(" inventory: ");
-            item.getInventory().forEach(consumable -> sb.append(consumable.getLabel()).append("x").append(consumable.getQuantity()).append(" "));
+            item.getInventory().forEach(consumable -> sb.append(consumable.getLabel()).append("x").append(consumable.getFreeQuantity()).append(" "));
         }
 
         drawDebug(renderer, "Item", sb.toString());

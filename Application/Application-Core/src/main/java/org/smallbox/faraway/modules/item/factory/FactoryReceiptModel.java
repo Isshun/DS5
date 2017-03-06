@@ -84,7 +84,7 @@ public class FactoryReceiptModel {
 //            for (PotentialConsumable potential: potentials) {
 //                if (quantity < inputInfo.quantity) {
 //                    this.totalDistance += potential.distance;
-//                    quantity += potential.consumable.getQuantity();
+//                    quantity += potential.consumable.getFreeQuantity();
 //                }
 //            }
 //            if (quantity < inputInfo.quantity) {

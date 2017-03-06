@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
-import org.smallbox.faraway.core.*;
-import org.smallbox.faraway.core.engine.module.*;
+import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.module.ApplicationModule;
+import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
@@ -26,12 +26,10 @@ public class ModuleManager implements GameObserver {
     private final Executor              _executor = Executors.newFixedThreadPool(1);
     private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<ApplicationModule>     _applicationModules = new ArrayList<>();
-    private List<ModuleBase>            _modules = new ArrayList<>();
-    private List<String>                _allowedModulesNames = Arrays.asList("WorldModule", "CharacterModule", "JobModule", "PathManager");
+    private List<ModuleBase>            _modules;
 
     public void loadModules(OnLoadModuleListener onLoad) {
         _modules = new ArrayList<>();
-
         loadApplicationModules(onLoad);
         loadThirdPartyModules(onLoad);
     }
@@ -150,59 +148,6 @@ public class ModuleManager implements GameObserver {
         _applicationModules.forEach(ModuleBase::create);
     }
 
-    public void loadGameModules(OnLoadModuleListener onLoad) {
-//        Log.info("Load game modules");
-//
-//        // Find game modules
-//        new Reflections("org.smallbox.faraway").getSubTypesOf(AbsGameModule.class).stream()
-//                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-////                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
-//                .forEach(cls -> {
-//                    try {
-//                        Log.info("Find game module: " + cls.getSimpleName());
-//                        AbsGameModule module = cls.getConstructor().newInstance();
-//
-//                        if (cls.isAnnotationPresent(ModuleInfoAnnotation.class)) {
-//                            Log.info("Find game module: " + cls.getAnnotation(ModuleInfoAnnotation.class).name());
-//                            module.setUpdateInterval(cls.getAnnotation(ModuleInfoAnnotation.class).updateInterval());
-//                        }
-//
-//                        module.setInfo(ModuleInfo.fromName(cls.getSimpleName()));
-//                        _gameModules.add(module);
-//                        _modules.add(module);
-//                    } catch (NoSuchMethodException e) {
-//                        Log.warning(ModuleManager.class, "Unable to instantiate " + cls.getName() + " - No default constructor");
-//                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-//                        e.printStackTrace();
-//                    }
-//                });
-//
-//        // Load game modules
-//        boolean moduleHasBeenLoaded;
-//        do {
-//            // Try to onLoadModule first module with required dependencies
-//            moduleHasBeenLoaded = false;
-//            for (AbsGameModule module: _gameModules) {
-//                if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_gameModules)) {
-//                    module.load();
-//                    moduleHasBeenLoaded = true;
-//                    break;
-//                }
-//            }
-//        } while (moduleHasBeenLoaded);
-//
-//        // Check all game modules has been loaded
-//        if (checkAllModulesHasBeenLoaded(_gameModules)) {
-//            System.out.println("All game modules has been loaded");
-//        } else {
-//            throw new RuntimeException("Some game modules could not be loaded");
-//        }
-//
-//        _gameModules.forEach(Application::addObserver);
-//        _gameModules.forEach(Application.dependencyInjector::register);
-//        _gameModules.forEach(ModuleBase::create);
-    }
-
     // Check if all modules have been loaded
     private boolean checkAllModulesHasBeenLoaded(List<? extends ModuleBase> modules) {
         boolean allModulesHasBeenLoaded = true;
@@ -234,36 +179,9 @@ public class ModuleManager implements GameObserver {
     public ModuleBase                       getModule(String className) { return _modules.stream().filter(module -> module.getClass().getSimpleName().equals(className)).findFirst().get(); }
     public Collection<ModuleBase>           getModules() { return _modules; }
     public Collection<ModuleBase>           getModulesThird() { return _modulesThird; }
-    public Collection<AbsGameModule>        getGameModules() { return Application.gameManager.getGame().getModules(); }
     public List<ApplicationModule>          getApplicationModules() { return _applicationModules; }
-
-    public void unloadModule(Class<? extends ModuleBase> cls) { unloadModule(getModule(cls)); }
-    public void loadModule(Class<? extends ModuleBase> cls) { loadModule(getModule(cls)); }
-    public void toggleModule(Class<? extends ModuleBase> cls) { toggleModule(getModule(cls)); }
-
-    public void unloadModule(ModuleBase module) {
-        if (!module.isModuleMandatory()) {
-            module.unload();
-            Application.removeObserver(module);
-        }
-    }
-
-    public void loadModule(ModuleBase module) {
-        module.load();
-        Application.addObserver(module);
-    }
-
-    public void toggleModule(ModuleBase module) {
-        if (module.isLoaded()) { unloadModule(module); }
-        else { loadModule(module); }
-    }
 
     public Executor getExecutor() {
         return _executor;
-    }
-
-    @Override
-    public void onGameStart(Game game) {
-        game.getModules().stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(game));
     }
 }

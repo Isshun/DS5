@@ -185,8 +185,8 @@ public class InputManager implements InputProcessor {
             case Keys.HOME:
             case Keys.INSERT:
 //            case Input.Keys.DELETE:
-//            case Input.Keys.ADD: key = GameEventListener.Key.ADD; break;
-//            case Input.Keys.SUBTRACT: key = GameEventListener.Key.SUBTRACT; break;
+            case Keys.PLUS: key = GameEventListener.Key.PLUS; break;
+            case Keys.MINUS: key = GameEventListener.Key.MINUS; break;
 //            case Input.Keys.MULTIPLY:
 //            case Input.Keys.DIVIDE:
 //            case Input.Keys.NUMPAD0:

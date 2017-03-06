@@ -121,7 +121,7 @@
 //        Application.taskManager.addLoadTask("Launch world thread", false, () ->
 //                Application.taskManager.launchBackgroundThread(() -> {
 //                    try {
-//                        if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameModuleState.STARTED) {
+//                        if (Application.gameManager.getGame() != null && Application.gameManager.getGame().getState() == Game.GameStatus.STARTED) {
 //                            Application.notify(observer -> observer.onGameUpdate(Application.gameManager.getGame()));
 //
 //                            try {

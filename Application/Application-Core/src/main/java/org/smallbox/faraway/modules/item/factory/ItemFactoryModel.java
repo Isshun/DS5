@@ -102,7 +102,7 @@ public class ItemFactoryModel {
 
         return _item.getInventory().stream()
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
-                .mapToInt(ConsumableItem::getQuantity)
+                .mapToInt(ConsumableItem::getFreeQuantity)
                 .sum();
     }
 

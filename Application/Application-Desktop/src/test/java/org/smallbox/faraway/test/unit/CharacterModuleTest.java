@@ -11,7 +11,7 @@ public class CharacterModuleTest extends HeadlessTestBase {
     @Test
     public void addRandomCharacter() throws InterruptedException {
 
-        GameTestHelper.create()
+        GameTestHelper.create(this)
                 .runOnGameCreate(() -> characterModule.addRandom())
                 .runUntil(10);
 

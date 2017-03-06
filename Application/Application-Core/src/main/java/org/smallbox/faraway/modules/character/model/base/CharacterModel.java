@@ -106,7 +106,7 @@ public abstract class CharacterModel extends MovableModel {
     public RoomModel                    getQuarter() { return _quarter; }
     public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
-    public ConsumableItem getInventory() { return _inventory; }
+    public ConsumableItem               getInventory() { return _inventory; }
     public int                          getInventoryQuantity(ItemInfo itemInfo) {
         for (Map.Entry<ItemInfo, Integer> entry: _inventory2.entrySet()) {
             if (entry.getKey().instanceOf(itemInfo)) {
@@ -125,7 +125,7 @@ public abstract class CharacterModel extends MovableModel {
     public abstract String              getName();
     public double                       getMoveStep() { return _moveStep; }
     //    public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
-    public int                          getInventoryQuantity() { return _inventory != null ? _inventory.getQuantity() : 0; }
+    public int                          getInventoryQuantity() { return _inventory != null ? _inventory.getFreeQuantity() : 0; }
     public Collection<BuffCharacterModel>     getBuffs() { return _buffs; }
     public Collection<DiseaseCharacterModel>  getDiseases() { return _diseases; }
 
@@ -395,7 +395,9 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void clearJob(JobModel job) {
-        assert _job == job;
+        if (_job != job) {
+            throw new GameException(CharacterModel.class, "clearJob: job not match character current job", _job, job, this);
+        }
 
         _job = null;
         _moveListener = null;
@@ -449,7 +451,7 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public ConsumableItem getInventory(ItemInfo itemInfo, int needQuantity) {
+    public ConsumableItem takeInventory(ItemInfo itemInfo, int needQuantity) {
         int availableQuantity = getInventoryQuantity(itemInfo);
         int quantityToRemove = Math.min(needQuantity, availableQuantity);
 

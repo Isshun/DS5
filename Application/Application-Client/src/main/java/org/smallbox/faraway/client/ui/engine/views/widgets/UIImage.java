@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 
 public class UIImage extends View {
     protected int _textureX;
@@ -27,6 +28,12 @@ public class UIImage extends View {
     public void setImage(Sprite sprite) {
         _sprite = sprite;
         _dirty = true;
+    }
+
+    public UIImage setImage(GraphicInfo graphicInfo) {
+        _sprite = ApplicationClient.spriteManager.getNewSprite(graphicInfo);
+        _dirty = true;
+        return this;
     }
 
     public UIImage setImage(String path) {

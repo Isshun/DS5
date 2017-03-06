@@ -12,12 +12,18 @@ import java.util.Map;
  */
 public class GameTestHelper {
 
+    private final TestBase _testBase;
+
+    public GameTestHelper(TestBase testBase) {
+        _testBase = testBase;
+    }
+
     private Map<Long, Runnable> tickRunnable = new HashMap<>();
     private Runnable createRunnable;
     private long endTick;
 
-    public static GameTestHelper create() {
-        return new GameTestHelper();
+    public static GameTestHelper create(TestBase testBase) {
+        return new GameTestHelper(testBase);
     }
 
     public GameTestHelper runOnGameCreate(Runnable runnable) {
@@ -47,6 +53,9 @@ public class GameTestHelper {
 
             @Override
             public void onGameCreate(Game game) {
+                game.setSpeed(4);
+                _testBase.injectModules(game);
+
                 if (createRunnable != null) {
                     createRunnable.run();
                 }
@@ -55,7 +64,7 @@ public class GameTestHelper {
             @Override
             public void onGameUpdate(Game game) {
                 if (tickRunnable.containsKey(game.getTick())) {
-                    tickRunnable.get(game.getTick());
+                    tickRunnable.get(game.getTick()).run();
                 }
             }
 

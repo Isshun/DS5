@@ -113,7 +113,7 @@ public class GameManager implements GameObserver {
     }
 
     public boolean isLoaded() {
-        return _game != null && _game.getState() == Game.GameModuleState.STARTED;
+        return _game != null && _game.getState() == Game.GameStatus.STARTED;
     }
 
     public Game getGame() {
@@ -122,17 +122,6 @@ public class GameManager implements GameObserver {
 
     public boolean isRunning() {
         return _game != null && _game.isRunning();
-    }
-
-    public void setRunning(boolean pause) {
-        if (_game != null) {
-            _game.setRunning(pause);
-        }
-    }
-
-    public void stopGame() {
-        _game.stop();
-        _game = null;
     }
 
     private List<GameInfo> buildGameList() {
@@ -176,11 +165,17 @@ public class GameManager implements GameObserver {
 
     @GameShortcut(key = GameEventListener.Key.SPACE)
     public void actionPause() {
-        _paused = !_paused;
-        if (_paused) {
-            Application.notify(GameObserver::onGamePaused);
-        } else {
-            Application.notify(GameObserver::onGameResume);
-        }
+        _game.toggleRunning();
     }
+
+    @GameShortcut(key = GameEventListener.Key.PLUS)
+    public void actionSpeedUp() {
+        _game.setSpeed(_game.getSpeed() + 1);
+    }
+
+    @GameShortcut(key = GameEventListener.Key.MINUS)
+    public void actionSpeedDown() {
+        _game.setSpeed(_game.getSpeed() - 1);
+    }
+
 }

@@ -76,7 +76,9 @@ public abstract class LuaModuleManager implements GameObserver {
             public void onSpeedChange(int speed) { broadcastToLuaModules(LuaEventsModel.on_speed_change, speed);}
             public void onBindingPress(BindingInfo binding) { broadcastToLuaModules(LuaEventsModel.on_binding, binding);}
             public void onGamePaused() { broadcastToLuaModules(LuaEventsModel.on_game_paused);}
-            public void onGameResume() {broadcastToLuaModules(LuaEventsModel.on_game_resume); }
+            public void onGameResume() {
+                //broadcastToLuaModules(LuaEventsModel.on_game_resume);
+            }
             public void onFloorChange(int floor) {broadcastToLuaModules(LuaEventsModel.on_floor_change, floor); }
             public void onDisplayChange(String displayName, boolean isVisible) {broadcastToLuaModules(LuaEventsModel.on_display_change, displayName, isVisible); }
             public void onLog(String tag, String message) { broadcastToLuaModules(LuaEventsModel.on_log, message); }

@@ -53,16 +53,16 @@ public class BuildableMapObject extends MapObjectModel {
     @Override
     public int addComponent(ConsumableItem consumable) {
         _components.stream().filter(component -> component.info == consumable.getInfo()).forEach(component -> {
-            if (component.neededQuantity - component.currentQuantity > consumable.getQuantity()) {
-                component.currentQuantity += consumable.getQuantity();
+            if (component.neededQuantity - component.currentQuantity > consumable.getFreeQuantity()) {
+                component.currentQuantity += consumable.getFreeQuantity();
                 consumable.setQuantity(0);
             } else {
-                consumable.setQuantity(consumable.getQuantity() - (component.neededQuantity - component.currentQuantity));
+                consumable.setQuantity(consumable.getFreeQuantity() - (component.neededQuantity - component.currentQuantity));
                 component.currentQuantity = component.neededQuantity;
             }
         });
 
-        return consumable.getQuantity();
+        return consumable.getFreeQuantity();
     }
 
     public boolean hasAllComponents() {

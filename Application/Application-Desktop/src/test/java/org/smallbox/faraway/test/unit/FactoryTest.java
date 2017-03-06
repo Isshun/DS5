@@ -10,14 +10,14 @@ public class FactoryTest extends HeadlessTestBase {
     @Test
     public void createEasyMealFromRiceAndCarrot() throws InterruptedException {
 
-        GameTestHelper.create()
+        GameTestHelper.create(this)
                 .runOnGameCreate(() -> {
                     itemModule.addItem("base.cooker", true, 4, 4, 1);
                     consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 2, 10, 1);
                     consumableModule.addConsumable("base.consumable.vegetable.carrot", 10, 4, 10, 1);
                     characterModule.addRandom();
                 })
-                .runUntil(100);
+                .runUntil(200);
 
         Assert.assertEquals(0, consumableModule.getTotal("base.consumable.vegetable.rice"));
         Assert.assertEquals(0, consumableModule.getTotal("base.consumable.vegetable.carrot"));

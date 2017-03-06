@@ -82,7 +82,7 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
+    protected void onClose() {
         _buildItem.removeJob(this);
     }
 }

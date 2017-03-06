@@ -183,7 +183,7 @@ public class ItemFactoryModule extends GameModule {
             item.getInventory().clear();
 
             // Crée les objets de sorties
-            factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.putConsumable(item.getParcel(), output.item, output.quantity[0]));
+            factory.getRunningReceipt().receiptInfo.outputs.forEach(output -> consumableModule.addConsumable(output.item, output.quantity, item.getParcel()));
 
             factory.setMessage(factory.getRunningReceipt() + ": craft complete");
 
@@ -237,7 +237,7 @@ public class ItemFactoryModule extends GameModule {
         // Check l'inventaire de la fabrique
         availableQuantity += item.getInventory().stream()
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
-                .mapToInt(ConsumableItem::getQuantity)
+                .mapToInt(ConsumableItem::getFreeQuantity)
                 .sum();
 
 //        // Check l'inventaire des personnages sur les hauling jobs de la fabrique

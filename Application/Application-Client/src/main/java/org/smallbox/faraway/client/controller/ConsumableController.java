@@ -35,7 +35,7 @@ public class ConsumableController extends LuaController {
             consumableList.clear();
 
             Map<ItemInfo, Integer> quantities = new HashMap<>();
-            consumableModule.getConsumables().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getQuantity() + (quantities.containsKey(consumable.getInfo()) ? quantities.get(consumable.getInfo()) : 0)));
+            consumableModule.getConsumables().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getFreeQuantity() + (quantities.containsKey(consumable.getInfo()) ? quantities.get(consumable.getInfo()) : 0)));
 
             quantities.entrySet().forEach(entry -> consumableList.addView(UILabel.create(null).setText(entry.getKey().label + " x " + entry.getValue()).setSize(100, 20)));
         }

@@ -130,7 +130,7 @@ public class GDXApplication extends ApplicationAdapter {
         ApplicationClient.gdxRenderer.refresh();
 
         // Render game
-        if (Application.gameManager.isLoaded() && Application.gameManager.isRunning()) {
+        if (Application.gameManager.isLoaded()) {
             ApplicationClient.notify(observer -> observer.onGameRender(Application.gameManager.getGame()));
         }
 

@@ -207,7 +207,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     }
 
     public boolean accept(ConsumableItem consumable) {
-        return accept(consumable.getInfo(), consumable.getQuantity());
+        return accept(consumable.getInfo(), consumable.getFreeQuantity());
     }
 
     public boolean accept(ItemInfo itemInfo, int quantity) {
@@ -224,7 +224,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 //            return false;
 //        }
 //
-//        if (_consumable != null && _consumable.getQuantity() + quantity > Utils.getStorageMaxQuantity(itemInfo)) {
+//        if (_consumable != null && _consumable.getFreeQuantity() + quantity > Utils.getStorageMaxQuantity(itemInfo)) {
 //            return false;
 //        }
 
@@ -239,6 +239,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return _liquidValue;
     }
 
+    @Deprecated
     public <T> T getItem(Class<T> cls) { return (T) _items.get(cls); }
+
     public boolean hasItem(Class cls) { return _items.get(cls) != null; }
 }

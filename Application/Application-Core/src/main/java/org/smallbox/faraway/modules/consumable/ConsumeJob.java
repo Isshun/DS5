@@ -50,7 +50,7 @@ public class ConsumeJob extends JobModel {
         }
 
         // Missing item
-        if (_consumable.getQuantity() <= 0) {
+        if (_consumable.getFreeQuantity() <= 0) {
             throw new GameException(ConsumeJob.class, "ConsumeJob: item cannot be null, non consumable or empty");
         }
 
@@ -95,7 +95,7 @@ public class ConsumeJob extends JobModel {
 
             @Override
             public void onFail(CharacterModel movable) {
-                finish();
+                close();
             }
         });
     }
@@ -137,7 +137,7 @@ public class ConsumeJob extends JobModel {
 //            _consumable.setJob(null);
 //
 //            // Remove consumable if depleted
-//            if (_consumable.getQuantity() <= 0) {
+//            if (_consumable.getFreeQuantity() <= 0) {
 //                ModuleHelper.getWorldModule().removeConsumable(_consumable);
 //            }
 //
@@ -173,7 +173,7 @@ public class ConsumeJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
+    protected void onClose() {
         if (_consumable != null && _consumable.getJob() == this) {
             _consumable.setJob(null);
         }

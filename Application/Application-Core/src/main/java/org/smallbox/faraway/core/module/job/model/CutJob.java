@@ -126,7 +126,7 @@
 //    }
 //
 //    @Override
-//    protected void onFinish() {
+//    protected void onClose() {
 //        Log.info("Cut complete");
 //        ModuleHelper.getWorldModule().removeResource(_resource);
 //

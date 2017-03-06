@@ -157,8 +157,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
             return;
         }
 
-        if (job.getStatus() != JobStatus.NOT_IN_POOL) {
-            throw new GameException(JobModule.class, "Job status must be NOT_IN_POOL");
+        if (job.getStatus() != JobStatus.INITIALIZED) {
+            throw new GameException(JobModule.class, "Job status must be INITIALIZED");
         }
 
         printDebug("addSubJob job: " + job.getLabel());
@@ -342,5 +342,13 @@ public class JobModule extends GameModule<JobModuleObserver> {
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             throw new GameException(JobModule.class, e, "Unable to create job");
         }
+    }
+
+    public void removeJob(JobModel job) {
+        if (job.getCharacter() != null) {
+            job.cancel();
+        }
+        job.close();
+        _jobs.remove(job);
     }
 }

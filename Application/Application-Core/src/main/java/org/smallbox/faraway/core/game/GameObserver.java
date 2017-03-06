@@ -32,8 +32,8 @@ public interface GameObserver {
     default void onCustomEvent(String tag, Object object) {}
     default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
-    default void onSpeedChange(int speed) {}
     default void onBindingPress(BindingInfo binding) {}
+    default void onGameSpeedChange(int speed) {}
     default void onGamePaused() {}
     default void onGameResume() {}
     default void onGameStart(Game game) {}

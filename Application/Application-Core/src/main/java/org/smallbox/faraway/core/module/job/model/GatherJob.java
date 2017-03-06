@@ -158,7 +158,7 @@
 //    }
 //
 //    @Override
-//    protected void onFinish() {
+//    protected void onClose() {
 //        if (_plant != null && _plant.getJob() == this) {
 //            _plant.removeJob(this);
 //            _plant.setJob(null);

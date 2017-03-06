@@ -95,7 +95,7 @@ public class SleepJob extends JobModel {
     }
 
     @Override
-    protected void onFinish() {
+    protected void onClose() {
         if (_sleepItem != null && _slot != null) {
             _sleepItem.releaseSlot(_slot);
             _sleepItem.removeJob(this);
