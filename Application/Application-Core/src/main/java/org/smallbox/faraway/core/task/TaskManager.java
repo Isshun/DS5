@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 19/11/2016.
  */
 public class TaskManager {
-    private static int BACKGROUND_THREAD_LIMIT = 10;
+    private static int BACKGROUND_THREAD_LIMIT = 2;
 
     private LoaderThreadExecutor                _loadExecutor = new LoaderThreadExecutor();
     private ExecutorService                     _backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);

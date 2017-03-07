@@ -1,17 +1,19 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.area.model.AreaModel;
 import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -42,15 +44,6 @@ public class AreaModule extends GameModule {
     @Override
     public void onGameCreate(Game game) {
 
-        StorageAreaModel storageAreaModel = new StorageAreaModel();
-
-        storageAreaModel.addParcel(WorldHelper.getParcel(10, 10, 1));
-        storageAreaModel.addParcel(WorldHelper.getParcel(10, 11, 1));
-        storageAreaModel.addParcel(WorldHelper.getParcel(11, 10, 1));
-        storageAreaModel.addParcel(WorldHelper.getParcel(11, 11, 1));
-
-        _areas.add(storageAreaModel);
-
 //        consumableModule.addObserver(new ConsumableModuleObserver() {
 //            @Override
 //            public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {
@@ -67,6 +60,18 @@ public class AreaModule extends GameModule {
 
     public void init(List<StorageAreaModel> storageAreas, List<GardenAreaModel> gardenAreas) {
 
+    }
+
+    public <T extends AreaModel> T createArea(Class<T> cls, List<ParcelModel> parcels) {
+
+        try {
+            T area = cls.getConstructor().newInstance();
+            parcels.forEach(area::addParcel);
+            _areas.add(area);
+            return area;
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new GameException(JobModule.class, e, "Unable to create area");
+        }
     }
 
 //    @Override
@@ -157,7 +162,7 @@ public class AreaModule extends GameModule {
 //        // Create new area
 //        AreaModel area = createArea(type);
 //        area.setFloor(z);
-//        addArea(area);
+//        createArea(area);
 //        addParcelToArea(area, fromX, fromY, toX, toY, z);
 //    }
 //
@@ -245,7 +250,7 @@ public class AreaModule extends GameModule {
 //        return null;
 //    }
 //
-//    public void addArea(AreaModel area) {
+//    public void createArea(AreaModel area) {
 //        _areas.add(area);
 //
 //        if (area instanceof StorageAreaModel) {

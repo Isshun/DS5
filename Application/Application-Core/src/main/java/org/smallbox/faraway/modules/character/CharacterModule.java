@@ -81,7 +81,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     }
 
     @Override
-    public void onGameUpdate(Game game, int tick) {
+    public void onModuleUpdate(Game game) {
         // Add new born
         if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
             Log.info("Add new character");

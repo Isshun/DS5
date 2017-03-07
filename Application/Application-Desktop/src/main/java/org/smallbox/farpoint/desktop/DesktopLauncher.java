@@ -8,11 +8,15 @@ import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.flora.PlantModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
+
+import java.util.Arrays;
 
 public class DesktopLauncher {
 
@@ -46,6 +50,13 @@ public class DesktopLauncher {
                         Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 8, 2, 1);
                         Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 5, 5, 1);
                         Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 2, 5, 1);
+
+                        Application.moduleManager.getModule(AreaModule.class).createArea(StorageAreaModel.class, Arrays.asList(
+                                WorldHelper.getParcel(8, 10, 1),
+                                WorldHelper.getParcel(7, 10, 1),
+                                WorldHelper.getParcel(8, 11, 1),
+                                WorldHelper.getParcel(7, 11, 1)));
+
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 8, 6, 1);
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 7, 6, 1);
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 9, 6, 1);

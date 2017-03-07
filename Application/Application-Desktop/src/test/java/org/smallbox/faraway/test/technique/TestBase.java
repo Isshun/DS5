@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -33,6 +34,7 @@ public class TestBase {
 
     public CharacterModule characterModule;
     public ConsumableModule consumableModule;
+    public AreaModule areaModule;
     public ItemModule itemModule;
     public Game game;
 
@@ -41,6 +43,7 @@ public class TestBase {
         this.itemModule = game.getModule(ItemModule.class);
         this.characterModule = game.getModule(CharacterModule.class);
         this.consumableModule = game.getModule(ConsumableModule.class);
+        this.areaModule = game.getModule(AreaModule.class);
     }
 
     @Before

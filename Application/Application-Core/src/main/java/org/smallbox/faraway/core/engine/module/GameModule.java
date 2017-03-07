@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,14 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
     public final void onGameCreateObserver(Game game) {
 
     }
+
+    @Override
+    public void onGameUpdate(Game game) {
+        Log.info(getClass(), "Update module");
+        onModuleUpdate(game);
+    }
+
+    protected void onModuleUpdate(Game game) {}
 
     public void notifyObservers(Consumer<T> action) {
         try {

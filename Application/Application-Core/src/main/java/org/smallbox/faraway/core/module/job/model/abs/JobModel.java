@@ -83,7 +83,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public enum JobStatus {
-        INITIALIZED, WAITING_FIRST, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
+        INITIALIZED, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
     }
 
     public enum JobAbortReason {
@@ -210,7 +210,11 @@ public abstract class JobModel extends ObjectModel {
     public void start(CharacterModel character) {
         Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));
 
-        if (_status == JobStatus.WAITING_FIRST || _status == JobStatus.INITIALIZED) {
+        if (_isClose) {
+            throw new GameException(JobModel.class, "Job is close");
+        }
+
+        if (_status == JobStatus.INITIALIZED) {
             _status = JobStatus.WAITING;
             onNewStart();
         }
@@ -283,7 +287,6 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void close() {
-        _isClose = true;
 
         if (_character != null) {
             Log.debug("Complete job " + this + " by " + _character.getName());
@@ -291,6 +294,9 @@ public abstract class JobModel extends ObjectModel {
         }
 
         onClose();
+
+        _isClose = true;
+        _status = JobStatus.COMPLETE;
     }
 
     public boolean check(CharacterModel character) {

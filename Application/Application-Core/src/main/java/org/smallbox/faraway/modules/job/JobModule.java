@@ -52,7 +52,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     @Override
-    protected void onGameUpdate(Game game, int tick) {
+    protected void onModuleUpdate(Game game) {
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isFinish);
 
@@ -86,6 +86,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     public void assign(CharacterModel character) {
         _jobs.stream()
                 .filter(job -> job.getCharacter() == null)
+                .filter(job -> job.getStatus() == JobStatus.WAITING || job.getStatus() == JobStatus.INITIALIZED)
                 .findFirst()
                 .ifPresent(job -> assign(character, job));
 
@@ -344,6 +345,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     public void removeJob(JobModel job) {
+        Log.debug("Remove job " + job + ", status: " + job.getStatus());
+
         if (job.getCharacter() != null) {
             job.cancel();
         }

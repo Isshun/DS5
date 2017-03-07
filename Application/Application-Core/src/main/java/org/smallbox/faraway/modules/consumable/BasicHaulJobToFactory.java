@@ -43,7 +43,7 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
     public static BasicHaulJobToFactory toFactory(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, UsableItem item, int haulingQuantity) {
 
         return jobModule.createJob(BasicHaulJobToFactory.class, null, item.getParcel(), job -> {
-            job.initHaul(itemInfo, haulingQuantity, item.getParcel(), targetConsumables, item.getFactory(), item);
+            job.initHaul(itemInfo, haulingQuantity, item.getParcel(), targetConsumables, item.getFactory(), item, consumableModule);
             job.setMainLabel("Haul " + itemInfo.label + " to factory");
 
             return true;
@@ -77,7 +77,7 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
 
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + lock.consumable.getLabel() + " to inventory", character -> {
-                _consumableModule.cancelLock(lock);
+                _consumableModule.takeConsumable(lock);
                 character.addInventory(lock.consumable.getInfo(), lock.quantity);
                 return JobTaskReturn.COMPLETE;
             });
@@ -105,13 +105,14 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
         return _factory;
     }
 
-    public void initHaul(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ItemFactoryModel factory, UsableItem item) {
+    public void initHaul(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ItemFactoryModel factory, UsableItem item, ConsumableModule consumableModule) {
         _item = item;
         _factory = factory;
         _targetParcel = targetParcel;
         _consumableInfo = itemInfo;
         _haulingQuantity = haulingQuantity;
         _targetConsumables = targetConsumables;
+        _consumableModule = consumableModule;
     }
 
     @Override
