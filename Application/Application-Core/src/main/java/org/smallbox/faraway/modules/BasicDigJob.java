@@ -17,31 +17,30 @@ import org.smallbox.faraway.modules.world.WorldModule;
 public class BasicDigJob extends JobModel {
 
     public static BasicDigJob create(ConsumableModule consumableModule, JobModule jobModule, WorldModule worldModule, ParcelModel parcel) {
-        BasicDigJob job = jobModule.createJob(BasicDigJob.class, parcel);
 
         ParcelModel targetParcel = WorldHelper.searchAround(parcel, 1, WorldHelper.SearchStrategy.FREE);
         ItemInfo rockInfo = parcel.getRockInfo();
 
         if (targetParcel != null && rockInfo != null) {
+            return jobModule.createJob(BasicDigJob.class, null, parcel, job -> {
 
-            // Déplace le personnage à l'emplacement des composants
-            job.addTask("Move to rock", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                // Déplace le personnage à l'emplacement des composants
+                job.addTask("Move to rock", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
-            // Retire les rochers de la carte
-            job.addTechnicalTask("Remove rock", character -> parcel.setRockInfo(null));
+                // Retire les rochers de la carte
+                job.addTechnicalTask("Remove rock", character -> parcel.setRockInfo(null));
 
-            // Crée les gravats
-            job.addTechnicalTask("Create components", character ->
-                    rockInfo.actions.stream()
-                            .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
-                            .flatMap(action -> action.products.stream())
-                            .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, parcel)));
+                // Crée les gravats
+                job.addTechnicalTask("Create components", character ->
+                        rockInfo.actions.stream()
+                                .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
+                                .flatMap(action -> action.products.stream())
+                                .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, parcel)));
 
-            job.ready();
-            return job;
+                return true;
+            });
         }
 
-        job.abort();
         return null;
     }
 

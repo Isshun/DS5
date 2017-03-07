@@ -3,10 +3,14 @@ package org.smallbox.faraway.modules.consumable;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.hauling.HaulingModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.item.factory.ItemFactoryModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
+import org.smallbox.faraway.util.Log;
 
 import java.util.Map;
 
@@ -15,7 +19,16 @@ import java.util.Map;
  */
 public class BasicHaulJobToFactory extends BasicHaulJob {
 
-    private ItemFactoryModel _factory;
+    public ItemFactoryModel _factory;
+    private ItemInfo _consumableInfo;
+    private Map<ConsumableItem, Integer> _targetConsumables;
+    private int _haulingQuantity;
+    private ConsumableModule _consumableModule;
+    private UsableItem _item;
+
+    public int getHaulingQuantity() { return _haulingQuantity; }
+    public ItemInfo getConsumableInfo() { return _consumableInfo; }
+    public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
 
     /**
      * Apporte les composants à la factory
@@ -29,35 +42,59 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
      */
     public static BasicHaulJobToFactory toFactory(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, UsableItem item, int haulingQuantity) {
 
-        BasicHaulJobToFactory job = jobModule.createJob(BasicHaulJobToFactory.class, null, item.getParcel());
-        job.init(itemInfo, haulingQuantity, item.getParcel(), targetConsumables);
-        job.setMainLabel("Haul " + itemInfo.label + " to factory");
+        return jobModule.createJob(BasicHaulJobToFactory.class, null, item.getParcel(), job -> {
+            job.initHaul(itemInfo, haulingQuantity, item.getParcel(), targetConsumables, item.getFactory(), item);
+            job.setMainLabel("Haul " + itemInfo.label + " to factory");
 
-        if (job.create(consumableModule, jobModule, itemInfo, targetConsumables, haulingQuantity, item.getParcel())) {
+            return true;
+        });
 
-            job._factory = item.getFactory();
+    }
 
-            // Apporte les composants à la fabrique
-            job.addTask("Bring back to factory", character -> character.moveTo(item.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+    @Override
+    public boolean onNewInit() {
 
-            // Charge les comnposants dans la fabrique
-            job.addTechnicalTask("Load factory", character -> {
+        // Ajout des locks pour chaques consomables
+        for (Map.Entry<ConsumableItem, Integer> entry: _targetConsumables.entrySet()) {
+            ConsumableItem consumable = entry.getKey();
+            int quantity = entry.getValue();
 
-                targetConsumables.forEach((initialConsumable, quantity) -> {
-                    ConsumableItem consumable = character.takeInventory(initialConsumable.getInfo(), quantity);
-                    item.addInventory(consumable);
-                });
+            Log.warning(HaulingModule.class, "lock for consumable: " + consumable + " -> " + _consumableModule.getLocks());
 
+            ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, quantity);
+            if (lock == null) {
+                Log.warning(BasicHaulJob.class, "Certains composants n'ont pas pu être réservés");
+                return false;
+            }
+
+            // Déplace le personnage à l'emplacement des composants
+            addTask("Haul " + lock.consumable.getLabel(), character -> {
+                if (lock.consumable.getParcel() != null) {
+                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+                }
+                return JobTaskReturn.INVALID;
             });
 
-            job.ready();
+            // Ajoute les composants à l'inventaire du personnage
+            addTask("Add " + lock.consumable.getLabel() + " to inventory", character -> {
+                _consumableModule.cancelLock(lock);
+                character.addInventory(lock.consumable.getInfo(), lock.quantity);
+                return JobTaskReturn.COMPLETE;
+            });
         }
 
-        else {
-            job.abort();
-        }
+        // Apporte les composants à la fabrique
+        addTask("Bring back to factory", character ->
+                character.moveTo(_targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
-        return job;
+        // Charge les comnposants dans la fabrique
+        addTechnicalTask("Load factory", character ->
+                _targetConsumables.forEach((initialConsumable, quantity) -> {
+                    ConsumableItem consumable = character.takeInventory(initialConsumable.getInfo(), quantity);
+                    _item.addInventory(consumable);
+                }));
+
+        return true;
     }
 
     public BasicHaulJobToFactory(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
@@ -67,4 +104,46 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
     public ItemFactoryModel getFactory() {
         return _factory;
     }
+
+    public void initHaul(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ItemFactoryModel factory, UsableItem item) {
+        _item = item;
+        _factory = factory;
+        _targetParcel = targetParcel;
+        _consumableInfo = itemInfo;
+        _haulingQuantity = haulingQuantity;
+        _targetConsumables = targetConsumables;
+    }
+
+    @Override
+    protected JobCheckReturn onCheck(CharacterModel character) {
+        return JobCheckReturn.OK;
+    }
+
+    @Override
+    protected JobActionReturn onAction(CharacterModel character) {
+        return null;
+    }
+
+    @Override
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return CharacterTalentExtra.TalentType.BUILD;
+    }
+
+    @Override
+    protected void onAbort() {
+        if (_factory != null) {
+            _factory.clear();
+        }
+    }
+
+    @Override
+    public String getLabel() {
+        return _label;
+    }
+
+    @Override
+    protected void onClose() {
+        _locks.forEach(lock -> _consumableModule.cancelLock(lock));
+    }
+
 }

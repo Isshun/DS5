@@ -29,6 +29,10 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     private int                 _toY;
 
     public BaseRenderer() {
+        if (!getClass().isAnnotationPresent(GameRenderer.class)) {
+            throw new GameException(getClass(), "GameRenderer annotation is missing");
+        }
+
         _isThirdParty = false;
         _isVisible = getClass().getAnnotation(GameRenderer.class).visible();
         Application.dependencyInjector.register(this);

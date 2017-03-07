@@ -10,11 +10,7 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 02/03/2017.
@@ -30,8 +26,6 @@ public class HaulingModule extends GameModule {
     @BindModule
     private JobModule jobModule;
 
-    private Collection<BasicHaulJobToParcel> _jobs = new ConcurrentLinkedQueue<>();
-
     @Override
     public void onGameCreate(Game game) {
     }
@@ -40,32 +34,35 @@ public class HaulingModule extends GameModule {
     public void onGameUpdate(Game game) {
         ParcelModel storageParcel = worldModule.getParcel(10, 10, 1);
 
-        // Identifie les jobs ayants des consomables avec des resources libre (pour mutualisation)
-        List<BasicHaulJobToParcel> jobsToRemove = _jobs.stream()
-                .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED || job.getStatus() == JobModel.JobStatus.WAITING)
-                .filter(job -> job.getConsumables().entrySet().stream().anyMatch(entry -> entry.getKey().getFreeQuantity() > 0))
-                .collect(Collectors.toList());
+//        cancelDuplicateJobs();
 
-        // Supprime les jobs à mutualiser
-        jobsToRemove.forEach(job -> jobModule.removeJob(job));
-        _jobs.removeAll(jobsToRemove);
-
-        // Crée les hauling jobs
+        // Crée les hauling jobs pour les consomables hors d'une parcel de stockage
         consumableModule.getConsumables().stream()
                 .filter(consumable -> consumable.getFreeQuantity() > 0)
                 .filter(consumable -> consumable.getParcel() != storageParcel)
                 .forEach(consumable -> {
-                    BasicHaulJobToParcel job = BasicHaulJobToParcel.toParcel(
+                    BasicHaulJobToParcel.toParcel(
                             consumableModule,
                             jobModule,
                             consumable.getInfo(),
-                            Collections.singletonMap(consumable, consumable.getFreeQuantity()),
+                            Collections.singletonList(consumable),
                             storageParcel,
                             consumable.getFreeQuantity());
-                    if (job != null) {
-                        _jobs.add(job);
-                    }
                 });
+
+    }
+
+    /**
+     * Supprime les jobs n'ayants pas démarrés
+     */
+    private void cancelDuplicateJobs() {
+        // Supprime les jobs à mutualiser (jobs ayants des consomables avec des resources libre)
+        jobModule.getJobs().stream()
+                .filter(job -> job instanceof BasicHaulJobToParcel)
+                .map(job -> (BasicHaulJobToParcel)job)
+                .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED || job.getStatus() == JobModel.JobStatus.WAITING)
+                .filter(job -> job.getConsumables().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
+                .forEach(job -> jobModule.removeJob(job));
 
     }
 

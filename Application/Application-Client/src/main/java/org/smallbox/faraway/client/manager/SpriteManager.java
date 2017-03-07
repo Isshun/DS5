@@ -76,6 +76,8 @@ public class SpriteManager {
 
         _textures = new ConcurrentHashMap<>();
 
+        _textures.put("data/res/bg_area.png", new Texture(FileUtils.getFileHandle("data/res/bg_area.png")));
+
 //        _textures = FileUtils.listRecursively("data/res").stream()
 //                .filter(file -> file.getName().endsWith(".png"))
 //                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));

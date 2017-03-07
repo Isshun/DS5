@@ -136,7 +136,6 @@ public abstract class CharacterModel extends MovableModel {
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
     public void                         setInventory(ConsumableItem consumable) { _inventory = consumable; }
-    public void                         setInventoryQuantity(ItemInfo itemInfo, int quantity) { _inventory2.put(itemInfo, Math.max(0, quantity)); }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setId(int id) { _id = id; }
     public void                         setIsDead() {
@@ -445,6 +444,10 @@ public abstract class CharacterModel extends MovableModel {
     public void addInventory(ItemInfo itemInfo, int quantity) {
         int inventoryQuantity = _inventory2.containsKey(itemInfo) ? _inventory2.get(itemInfo) : 0;
         if (inventoryQuantity + quantity > 0) {
+            if (inventoryQuantity + quantity < 0) {
+                throw new GameException(CharacterModel.class, "Character inventory quantity cannot be < 0");
+            }
+
             _inventory2.put(itemInfo, inventoryQuantity + quantity);
         } else {
             _inventory2.remove(itemInfo);

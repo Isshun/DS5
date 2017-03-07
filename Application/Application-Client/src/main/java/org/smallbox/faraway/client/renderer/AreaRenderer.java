@@ -1,24 +1,29 @@
-package org.smallbox.faraway.module.area;
+package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.smallbox.faraway.core.dependencyInjector.BindManager;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.renderer.GameDisplay;
-import org.smallbox.faraway.client.renderer.SpriteManager;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.core.GameRenderer;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 13/06/2015.
  */
-public class AreaRenderer extends GameDisplay {
+@GameRenderer(level = 0, visible = true)
+public class AreaRenderer extends BaseRenderer {
 
-    @BindManager
+    @BindComponent
     private SpriteManager spriteManager;
 
-    private final TextureRegion[] _regions;
-    private final TextureRegion[] _regionsSelected;
+    @BindModule
+    private AreaModule areaModule;
+
+    private TextureRegion[] _regions;
+    private TextureRegion[] _regionsSelected;
 
     private Color[] COLORS = new Color[]{
             new Color(0.5f, 0.5f, 1f, 0.4f),
@@ -28,7 +33,8 @@ public class AreaRenderer extends GameDisplay {
             new Color(1, 0.5f, 0.5f, 0.4f)
     };
 
-    public AreaRenderer() {
+    @Override
+    public void onGameStart(Game game) {
         _regions = new TextureRegion[5];
         _regions[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);
         _regions[1] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
@@ -44,11 +50,18 @@ public class AreaRenderer extends GameDisplay {
     }
 
     @Override
-    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = -viewport.getPosX() / Constant.TILE_WIDTH;
         int fromY = -viewport.getPosY() / Constant.TILE_HEIGHT;
         int toX = fromX + viewport.getWidth() / Constant.TILE_WIDTH;
         int toY = fromY + viewport.getHeight() / Constant.TILE_HEIGHT;
+
+        areaModule.getAreas().forEach(area -> {
+            area.getParcels().forEach(parcel -> {
+//                renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 32, Color.BLUE, true, 0, 0);
+                renderer.drawOnMap(parcel.x, parcel.y, _regions[Math.min(parcel.getArea().getTypeIndex(), 4)]);
+            });
+        });
 
         // TODO
 //        WorldModule world = (WorldModule) Application.moduleManager.getModule(WorldModule.class);
@@ -64,15 +77,6 @@ public class AreaRenderer extends GameDisplay {
 //                }
 //            }
 //        }
-    }
-
-    @Override
-    public void onRefresh(int frame) {
-    }
-
-    @Override
-    public String getName() {
-        return "areas";
     }
 
     public boolean isMandatory() {

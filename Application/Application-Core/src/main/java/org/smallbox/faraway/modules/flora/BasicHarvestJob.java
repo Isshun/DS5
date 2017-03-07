@@ -20,29 +20,29 @@ public class BasicHarvestJob extends JobModel {
         ParcelModel targetParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
 
         if (targetParcel != null) {
-            BasicHarvestJob job = jobModule.createJob(BasicHarvestJob.class, plant.getParcel());
+            return jobModule.createJob(BasicHarvestJob.class, null, plant.getParcel(), job -> {
 
-            // Déplace le personnage à l'emplacement des composants
-            job.addTask("Move to plant", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                // Déplace le personnage à l'emplacement des composants
+                job.addTask("Move to plant", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
-            // Crée les composants
-            job.addTechnicalTask("Create components", character ->
-                    plant.getInfo().actions.stream()
-                            .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.GATHER)
-                            .flatMap(action -> action.products.stream())
-                            .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, targetParcel)));
+                // Crée les composants
+                job.addTechnicalTask("Create components", character ->
+                        plant.getInfo().actions.stream()
+                                .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.GATHER)
+                                .flatMap(action -> action.products.stream())
+                                .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, targetParcel)));
 
-            // Harvest
-            job.addTechnicalTask("Harvest", character -> {
-                plant.setJob(null);
-                plant.setMaturity(0);
-                plant.setSeed(false);
+                // Harvest
+                job.addTechnicalTask("Harvest", character -> {
+                    plant.setJob(null);
+                    plant.setMaturity(0);
+                    plant.setSeed(false);
+                });
+
+                plant.setJob(job);
+
+                return true;
             });
-
-            plant.setJob(job);
-
-            job.ready();
-            return job;
         }
 
         return null;

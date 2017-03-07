@@ -354,7 +354,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     // TODO
-    public BasicHaulJob createHaulJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
+    public BasicHaulJobToFactory createHaulToFactoryJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
         HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
         int previewQuantity = 0;
 
@@ -405,7 +405,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
 
         // Retourne false si le consomable n'a pas la quantité demandé de libre
-        if (consumable.getFreeQuantity() < quantity) {
+        if (consumable.getFreeQuantity() == 0 || consumable.getFreeQuantity() < quantity) {
             Log.warning(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
             return null;
         }

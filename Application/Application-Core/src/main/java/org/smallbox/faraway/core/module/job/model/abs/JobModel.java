@@ -31,10 +31,11 @@ public abstract class JobModel extends ObjectModel {
         return _subJobs;
     }
 
-    public void ready() {
-        _status = JobStatus.WAITING;
+    public void setMainLabel(String mainLabel) {
+        _mainLabel = mainLabel;
     }
 
+    // TODO: merge abort / cancel / close
     public void abort() {
         _status = JobStatus.ABORTED;
     }
@@ -82,7 +83,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public enum JobStatus {
-        INITIALIZED, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
+        INITIALIZED, WAITING_FIRST, WAITING, RUNNING, COMPLETE, BLOCKED, INVALID, MISSING_COMPONENT, ABORTED
     }
 
     public enum JobAbortReason {
@@ -209,7 +210,13 @@ public abstract class JobModel extends ObjectModel {
     public void start(CharacterModel character) {
         Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));
 
-//        assert character != null;
+        if (_status == JobStatus.WAITING_FIRST || _status == JobStatus.INITIALIZED) {
+            _status = JobStatus.WAITING;
+            onNewStart();
+        }
+
+
+        //        assert character != null;
 //        assert character.getJob() == null;
 
         if (_isAuto && character != null) {
@@ -232,6 +239,8 @@ public abstract class JobModel extends ObjectModel {
         }
 
         onStart(character);
+
+        _status = JobStatus.RUNNING;
     }
 
     public void draw(onDrawCallback callback) {
@@ -373,6 +382,10 @@ public abstract class JobModel extends ObjectModel {
             ret = actionDo(character);
         }
 
+        if (ret == JobActionReturn.CONTINUE) {
+            return JobActionReturn.CONTINUE;
+        }
+
         if (ret == JobActionReturn.ABORT) {
             onAbort();
             close();
@@ -387,7 +400,7 @@ public abstract class JobModel extends ObjectModel {
             quit(_character);
         }
 
-        return JobActionReturn.CONTINUE;
+        return JobActionReturn.COMPLETE;
     }
 
     protected void onAbort() {}
@@ -426,4 +439,7 @@ public abstract class JobModel extends ObjectModel {
     public String toString() {
         return "job (id: " + _id + ", cls: " + getClass().getSimpleName() + ", mainLabel: " + _mainLabel + ", taskLabel: " + _label + ")";
     }
+
+    public boolean onNewInit() { return true; }
+    public boolean onNewStart() { return true; }
 }

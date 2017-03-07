@@ -1,17 +1,16 @@
-package org.smallbox.faraway.module.area;
+package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.client.controller.BindLuaController;
-import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.UIPanelModule;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.module.mainPanel.MainPanelController;
 
 /**
  * Created by Alex on 26/04/2016.
  */
 public class AreaController extends LuaController {
+
     @BindModule
     private UIPanelModule       uiPanelModule;
 
@@ -77,5 +76,9 @@ public class AreaController extends LuaController {
 //        btRemoveGarden.setOnClickListener((GameEvent event) -> {
 //            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
 //        });
+    }
+
+    @Override
+    protected void onNewGameUpdate(Game game) {
     }
 }

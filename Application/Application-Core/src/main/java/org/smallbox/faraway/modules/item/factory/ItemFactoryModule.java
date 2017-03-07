@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.consumable.BasicHaulJobToFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.ItemModuleObserver;
@@ -126,15 +126,15 @@ public class ItemFactoryModule extends GameModule {
 
                     // Compte le nombre de consomables qui seront rapportés par les jobs existants
                     int quantityInJob = jobModule.getJobs().stream()
-                            .filter(job -> job instanceof BasicHaulJob)
-                            .map(job -> (BasicHaulJob)job)
+                            .filter(job -> job instanceof BasicHaulJobToFactory)
+                            .map(job -> (BasicHaulJobToFactory)job)
                             .filter(job -> job.getFactory() == factory)
-                            .mapToInt(BasicHaulJob::getHaulingQuantity)
+                            .mapToInt(BasicHaulJobToFactory::getHaulingQuantity)
                             .sum();
 
                     // Ajoute des jobs tant que la quantité de consomable présent dans l'usine et les jobs est inférieur à la quantité requise
                     while (currentQuantity + quantityInJob < receiptInputInfo.quantity) {
-                        BasicHaulJob job = consumableModule.createHaulJob(receiptInputInfo.item, item, receiptInputInfo.quantity - (currentQuantity + quantityInJob));
+                        BasicHaulJobToFactory job = consumableModule.createHaulToFactoryJob(receiptInputInfo.item, item, receiptInputInfo.quantity - (currentQuantity + quantityInJob));
 
                         // Ajoute la quantity de consomable ammené par ce nouveau job à la quantity existante
                         if (job != null) {
@@ -202,8 +202,8 @@ public class ItemFactoryModule extends GameModule {
 
         // Termine les jobs
         jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicHaulJob)
-                .map(job -> (BasicHaulJob)job)
+                .filter(job -> job instanceof BasicHaulJobToFactory)
+                .map(job -> (BasicHaulJobToFactory)job)
                 .filter(job -> job.getFactory() == factory)
                 .forEach(JobModel::cancel);
 
@@ -252,10 +252,10 @@ public class ItemFactoryModule extends GameModule {
         // TODO: inutile avec le system de lock
         // Check la quantité réservée par les job
         availableQuantity += jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicHaulJob)
-                .map(job -> (BasicHaulJob)job)
+                .filter(job -> job instanceof BasicHaulJobToFactory)
+                .map(job -> (BasicHaulJobToFactory)job)
                 .filter(job -> job.getFactory() == item.getFactory())
-                .mapToInt(BasicHaulJob::getHaulingQuantity)
+                .mapToInt(BasicHaulJobToFactory::getHaulingQuantity)
                 .sum();
 
         if (availableQuantity >= needQuantity) {

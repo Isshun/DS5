@@ -36,6 +36,10 @@ public class ConsumableItem extends MapObjectModel {
 
         _freeQuantity += quantity;
         _needRefresh = true;
+
+        if (_freeQuantity < 0) {
+            throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
+        }
     }
 
     public int getFreeQuantity() {
@@ -48,6 +52,10 @@ public class ConsumableItem extends MapObjectModel {
 
         _freeQuantity = quantity;
         _needRefresh = true;
+
+        if (_freeQuantity < 0) {
+            throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
+        }
     }
 
     @Override
@@ -100,7 +108,7 @@ public class ConsumableItem extends MapObjectModel {
         _freeQuantity = _freeQuantity - quantity;
 
         if (_freeQuantity < 0) {
-            throw new GameException(ConsumableItem.class, "Quantity cannot be < 0");
+            throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
         }
     }
 

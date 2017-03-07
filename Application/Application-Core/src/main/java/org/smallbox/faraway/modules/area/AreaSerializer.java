@@ -1,4 +1,4 @@
-package org.smallbox.faraway.module.area;
+package org.smallbox.faraway.modules.area;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
@@ -16,71 +16,72 @@ import java.util.List;
 import java.util.Map;
 
 public class AreaSerializer extends GameSerializer<AreaModule> {
+
     @Override
     public void onSave(AreaModule module, Game game) {
-        Application.sqlManager.post(db -> {
-            AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
-            try {
-                // Save areas
-                db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
-                SQLiteStatement stParcel = db.prepare("INSERT INTO area_parcel (x, y, z, area_id) VALUES (?, ?, ?, ?)");
-
-                db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER, priority INTEGER)");
-                SQLiteStatement stItem = db.prepare("INSERT INTO area_storage_item (item, area_id, priority) VALUES (?, ?, ?)");
-
-                try {
-                    // Save garden areas
-                    db.exec("CREATE TABLE area_garden (id INTEGER, plant TEXT)");
-                    SQLiteStatement stGarden = db.prepare("INSERT INTO area_garden (id, plant) VALUES (?, ?)");
-                    try {
-                        db.exec("begin transaction");
-                        areaModule.getGardens().forEach(garden -> {
-                            try {
-                                stGarden.bind(1, garden.getId());
-                                if (garden.getCurrent() != null) {
-                                    stGarden.bind(2, garden.getCurrent().name);
-                                } else {
-                                    stGarden.bindNull(2);
-                                }
-                                stGarden.step();
-                                stGarden.reset(false);
-                                insertAreaParcels(garden, stParcel);
-                            } catch (SQLiteException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        db.exec("end transaction");
-                    } finally {
-                        stGarden.dispose();
-                    }
-
-                    // Save storage areas
-                    db.exec("CREATE TABLE area_storage (id INTEGER, plant TEXT)");
-                    SQLiteStatement stStorage = db.prepare("INSERT INTO area_storage (id) VALUES (?)");
-                    try {
-                        db.exec("begin transaction");
-                        areaModule.getStorages().forEach(storage -> {
-                            try {
-                                stStorage.bind(1, storage.getId());
-                                stStorage.step();
-                                stStorage.reset(false);
-                                insertAreaParcels(storage, stParcel);
-                                insertStorageAreaItems(storage, stItem);
-                            } catch (SQLiteException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                        db.exec("end transaction");
-                    } finally {
-                        stStorage.dispose();
-                    }
-                } finally {
-                    stParcel.dispose();
-                }
-            } catch (SQLiteException e) {
-                e.printStackTrace();
-            }
-        });
+//        Application.sqlManager.post(db -> {
+//            AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
+//            try {
+//                // Save areas
+//                db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
+//                SQLiteStatement stParcel = db.prepare("INSERT INTO area_parcel (x, y, z, area_id) VALUES (?, ?, ?, ?)");
+//
+//                db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER, priority INTEGER)");
+//                SQLiteStatement stItem = db.prepare("INSERT INTO area_storage_item (item, area_id, priority) VALUES (?, ?, ?)");
+//
+//                try {
+//                    // Save garden areas
+//                    db.exec("CREATE TABLE area_garden (id INTEGER, plant TEXT)");
+//                    SQLiteStatement stGarden = db.prepare("INSERT INTO area_garden (id, plant) VALUES (?, ?)");
+//                    try {
+//                        db.exec("begin transaction");
+//                        areaModule.getGardens().forEach(garden -> {
+//                            try {
+//                                stGarden.bind(1, garden.getId());
+//                                if (garden.getCurrent() != null) {
+//                                    stGarden.bind(2, garden.getCurrent().name);
+//                                } else {
+//                                    stGarden.bindNull(2);
+//                                }
+//                                stGarden.step();
+//                                stGarden.reset(false);
+//                                insertAreaParcels(garden, stParcel);
+//                            } catch (SQLiteException e) {
+//                                e.printStackTrace();
+//                            }
+//                        });
+//                        db.exec("end transaction");
+//                    } finally {
+//                        stGarden.dispose();
+//                    }
+//
+//                    // Save storage areas
+//                    db.exec("CREATE TABLE area_storage (id INTEGER, plant TEXT)");
+//                    SQLiteStatement stStorage = db.prepare("INSERT INTO area_storage (id) VALUES (?)");
+//                    try {
+//                        db.exec("begin transaction");
+//                        areaModule.getStorages().forEach(storage -> {
+//                            try {
+//                                stStorage.bind(1, storage.getId());
+//                                stStorage.step();
+//                                stStorage.reset(false);
+//                                insertAreaParcels(storage, stParcel);
+//                                insertStorageAreaItems(storage, stItem);
+//                            } catch (SQLiteException e) {
+//                                e.printStackTrace();
+//                            }
+//                        });
+//                        db.exec("end transaction");
+//                    } finally {
+//                        stStorage.dispose();
+//                    }
+//                } finally {
+//                    stParcel.dispose();
+//                }
+//            } catch (SQLiteException e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     private void insertStorageAreaItems(StorageAreaModel storage, SQLiteStatement stItem) {

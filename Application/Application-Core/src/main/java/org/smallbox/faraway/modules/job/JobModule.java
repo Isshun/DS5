@@ -242,7 +242,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
      * @param character
      */
     private void assignJob(CharacterModel character, JobModel job) {
-        job.setStatus(JobStatus.RUNNING);
         job.start(character);
     }
 
@@ -324,19 +323,19 @@ public class JobModule extends GameModule<JobModuleObserver> {
         return _jobs.contains(job);
     }
 
-    public <T extends JobModel> T createJob(Class<T> cls, ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
-        try {
-            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, ParcelModel.class).newInstance(itemInfoAction, parcelModel);
-            addJob(job);
-            return job;
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-            throw new GameException(JobModule.class, e, "Unable to create job");
-        }
+    public interface JobInitCallback<T> {
+        boolean onInit(T job);
     }
 
-    public <T extends JobModel> T createJob(Class<T> cls, ParcelModel parcelModel) {
+    public <T extends JobModel> T createJob(Class<T> cls, ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel, JobInitCallback<T> jobInitCallback) {
         try {
-            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, ParcelModel.class).newInstance(null, parcelModel);
+            T job = cls.getConstructor(ItemInfo.ItemInfoAction.class, ParcelModel.class).newInstance(itemInfoAction, parcelModel);
+            boolean ret = jobInitCallback.onInit(job);
+            job.onNewInit();
+            if (!ret) {
+                job.abort();
+                return null;
+            }
             addJob(job);
             return job;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {

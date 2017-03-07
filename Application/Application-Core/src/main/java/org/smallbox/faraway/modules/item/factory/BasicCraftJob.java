@@ -67,29 +67,29 @@ public class BasicCraftJob extends JobModel {
     public String toString() { return "Craft"; }
 
     public static BasicCraftJob create(JobModule jobModule, ParcelModel targetParcel, ReceiptGroupInfo.ReceiptInfo receiptInfo, ItemFactoryModel factory) {
-        BasicCraftJob job = jobModule.createJob(BasicCraftJob.class, null, targetParcel);
+        return jobModule.createJob(BasicCraftJob.class, null, targetParcel, job -> {
 
-        job.factory = factory;
-        factory.setCraftJob(job);
+            job.factory = factory;
+            factory.setCraftJob(job);
 
-        job._receiptInfo = receiptInfo;
+            job._receiptInfo = receiptInfo;
 
-        job._mainLabel = "Craft";
-        job._targetParcel = targetParcel;
+            job._mainLabel = "Craft";
+            job._targetParcel = targetParcel;
 
-        // Apporte les composants à la fabrique
-        job.addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+            // Apporte les composants à la fabrique
+            job.addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
-        // Craft action
-        job.addTask("Craft item", character -> {
-            if (job._startTick == 0) {
-                job._startTick = Application.gameManager.getGame().getTick();
-                job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();
-            }
-            return job.onCraft() ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+            // Craft action
+            job.addTask("Craft item", character -> {
+                if (job._startTick == 0) {
+                    job._startTick = Application.gameManager.getGame().getTick();
+                    job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();
+                }
+                return job.onCraft() ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+            });
+
+            return true;
         });
-
-        job.ready();
-        return job;
     }
 }
