@@ -1,7 +1,12 @@
 package org.smallbox.faraway.util;
 
+import org.apache.commons.io.IOUtils;
 import org.smallbox.faraway.core.Application;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.*;
@@ -42,14 +47,31 @@ public class Log {
         logger.setUseParentHandlers(false);
     }
 
+    private static FileOutputStream fos;
+
     private static void print(Level level, String message) {
+        if (fos == null) {
+            try {
+                fos = new FileOutputStream(new File("W:\\projects\\desktop\\FarAway\\Application\\sysout.log"));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            IOUtils.write(message + "\n", fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (level == Level.INFO) {
             System.out.println(message);
         }
 
         if (level == Level.FINE) {
-            System.out.println(message);
+//            System.out.println(message);
         }
+
     }
 
     public static void warning(Class cls, String message) {
@@ -61,7 +83,7 @@ public class Log {
     }
 
     public static void warning(Class cls, String message, Object... objects) {
-        print(Level.WARNING, cls.getName() + ": " + String.format(message, objects));
+        print(Level.WARNING, cls.getSimpleName() + ": " + String.format(message, objects));
     }
 
     public static void warning(String message, Object... objects) {

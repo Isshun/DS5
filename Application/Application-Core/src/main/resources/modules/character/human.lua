@@ -9,9 +9,9 @@ data:extend({
             change = { work = -1, rest = -1, sleep = 2 },
         },
         food = {
-            warning = 75,
-            critical = 50,
-            change = { work = -1, rest = -1, sleep = -0.5 },
+            warning = 0.75,
+            critical = 0.50,
+            change = { work = -0.01, rest = -0.01, sleep = -0.005 },
         },
         water = {
             warning = 75,

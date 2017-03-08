@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.engine.module;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -25,7 +24,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     private int             _nbUpdate;
     private long            _totalTime;
 
-//    public void onGameCreateObserver(Game game) {}
+    //    public void onGameCreateObserver(Game game) {}
     protected void onGameUpdate(Game game, int tick) {}
 
     public void onGameCreate(Game game) {}
@@ -47,27 +46,33 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
 
     public void startGame(Game game) {
         Log.info("[" + _info.name + "] Start game");
-        if (runOnMainThread()) {
-            onGameStart(game);
-            _isStarted = true;
-        } else {
-            Application.moduleManager.getExecutor().execute(() -> {
-                onGameStart(game);
-                _isStarted = true;
-            });
-        }
+//        if (runOnMainThread()) {
+//            onGameStart(game);
+//            _isStarted = true;
+//        } else {
+//            Application.moduleManager.getExecutor().execute(() -> {
+//                onGameStart(game);
+//                _isStarted = true;
+//            });
+//        }
+        onGameStart(game);
+        _isStarted = true;
     }
 
+    protected void onModuleUpdate(Game game) {}
+
     public void updateGame(Game game, int tick) {
-        if (_isStarted) {
-            if (tick % _updateInterval == 0) {
-                if (runOnMainThread()) {
-                    innerUpdate(game, tick);
-                } else {
-                    Application.moduleManager.getExecutor().execute(() -> onGameUpdate(game, tick));
-                }
-            }
-        }
+        onModuleUpdate(game);
+//        if (_isStarted) {
+//            if (tick % _updateInterval == 0) {
+////                if (runOnMainThread()) {
+////                    innerUpdate(game, tick);
+////                } else {
+////                    Application.moduleManager.getExecutor().execute(() -> onGameUpdate(game, tick));
+////                }
+//
+//            }
+//        }
     }
 
     private void innerUpdate(Game game, int tick) {

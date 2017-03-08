@@ -23,7 +23,6 @@ public class ModuleManager implements GameObserver {
         void onLoadModule(String message);
     }
 
-    private final Executor              _executor = Executors.newFixedThreadPool(1);
     private List<ModuleBase>            _modulesThird = new ArrayList<>();
     private List<ApplicationModule>     _applicationModules = new ArrayList<>();
     private List<ModuleBase>            _modules;
@@ -180,8 +179,4 @@ public class ModuleManager implements GameObserver {
     public Collection<ModuleBase>           getModules() { return _modules; }
     public Collection<ModuleBase>           getModulesThird() { return _modulesThird; }
     public List<ApplicationModule>          getApplicationModules() { return _applicationModules; }
-
-    public Executor getExecutor() {
-        return _executor;
-    }
 }

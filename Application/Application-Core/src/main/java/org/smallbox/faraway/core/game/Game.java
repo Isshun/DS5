@@ -24,7 +24,7 @@ public class Game {
     }
 
     public enum GameStatus {UNINITIALIZED, CREATED, STOPPED, STARTED}
-    public static final int[]               TICK_INTERVALS = {-1, 200, 100, 50, 10};
+    public static final int[]               TICK_INTERVALS = {-1, 400, 200, 100, 1};
 
     // Update
     private long                            _nextUpdate;
@@ -183,7 +183,7 @@ public class Game {
 
         _tick += 1;
 
-        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.updateGame(this, _tick));
+        _modules.forEach(module -> module.updateGame(this, _tick));
 
         updateHour();
     }

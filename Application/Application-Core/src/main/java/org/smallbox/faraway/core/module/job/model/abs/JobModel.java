@@ -416,6 +416,8 @@ public abstract class JobModel extends ObjectModel {
         // Execute la tache en tête de file et la retire si elle est terminée
         // TODO: à conserver
         JobTask jobTask = _tasks.peek();
+        Log.debug(JobModel.class, "actionDo: (taks: %s, job: %s)", jobTask.label, this);
+
         JobTaskReturn jobTaskReturn = jobTask.action.onExecuteTask(character);
         _lastReturn = jobTaskReturn;
         _label = jobTask.label;
@@ -424,18 +426,20 @@ public abstract class JobModel extends ObjectModel {
         switch (jobTaskReturn) {
 
             case CONTINUE:
+                Log.debug(JobModel.class, "actionDo CONTINUE: (taks: %s, job: %s)", jobTask.label, this);
                 return JobActionReturn.CONTINUE;
 
             case COMPLETE:
                 _tasks.poll();
+                Log.debug(JobModel.class, "actionDo COMPLETE: (taks: %s, job: %s)", jobTask.label, this);
                 return JobActionReturn.COMPLETE;
 
             case INVALID:
-                Log.warning(JobModel.class, "action return invalid: " + jobTask.label);
+                Log.debug(JobModel.class, "actionDo ABORT: (taks: %s, job: %s)", jobTask.label, this);
                 return JobActionReturn.ABORT;
         }
 
-        return JobActionReturn.COMPLETE;
+        throw new GameException(JobModel.class, "JobTaskReturn not allowed");
     }
 
     public int getProgressPercent() {

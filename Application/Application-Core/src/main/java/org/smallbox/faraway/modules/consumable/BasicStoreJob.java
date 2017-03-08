@@ -44,7 +44,7 @@ public class BasicStoreJob extends JobModel {
             job.init(targetParcel, targetConsumables, consumableModule);
 
             targetConsumables.forEach((consumable, quantity) ->
-                    job.setMainLabel(String.format("Haul %s (x%d) to storage", consumable.getInfo().label, quantity)));
+                    job.setMainLabel(String.format("Store %s (x%d)", consumable.getInfo().label, quantity)));
 
             return true;
         });
@@ -60,18 +60,20 @@ public class BasicStoreJob extends JobModel {
     @Override
     public boolean onNewStart() {
 
-        for (Map.Entry<ConsumableItem, Integer> entry: _targetConsumables.entrySet()) {
+        // TODO: maj de la quantité
 
-            ConsumableModule.ConsumableJobLock consumableLock = _consumableModule.lock(this, entry.getKey(), entry.getValue());
-
-            // Certains composants n'ont pas pu être réservés (par ex un craft job lancé entre temps à déjà réservé les composants)
-            if (consumableLock == null) {
-                return false;
+        // Ajoute pour chaque composant un lock au job
+        _targetConsumables.forEach((consumable, quantity) -> {
+            ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, quantity);
+            if (lock != null) {
+                _locks.add(lock);
             }
+        });
 
-            // Ajoute le lock au job
-            _locks.add(consumableLock);
-
+        // Si certains composants n'ont pas pu être réservés annule les locks et le job
+        if (_locks.size() != _targetConsumables.size()) {
+            _locks.forEach(lock -> _consumableModule.cancelLock(lock));
+            return false;
         }
 
         // Déplace le personnage vers chaque consomable et l'ajoute à son inventaire

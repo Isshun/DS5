@@ -64,7 +64,8 @@ public class TemperatureModule extends GameModule {
         _updateInterval = 10;
     }
 
-    public void onGameUpdate(Game game, int tick) {
+    @Override
+    public void onModuleUpdate(Game game) {
         if (roomModule != null) {
             roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {

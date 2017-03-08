@@ -9,7 +9,7 @@ public class CharacterInfo extends ObjectInfo {
     }
 
     public static class ChangeInfo {
-        public double rest;
+        public double       rest;
         public double       work;
         public double       sleep;
         public double       sleepOnFloor;
@@ -17,8 +17,8 @@ public class CharacterInfo extends ObjectInfo {
 
     public static class NeedInfo {
         public double       optimal;
-        public int          warning;
-        public int          critical;
+        public double       warning;
+        public double       critical;
         public ChangeInfo   change = new ChangeInfo();
     }
 

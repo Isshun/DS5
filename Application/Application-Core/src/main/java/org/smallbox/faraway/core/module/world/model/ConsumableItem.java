@@ -113,6 +113,8 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public void addLock(ConsumableModule.ConsumableJobLock lock) {
+        Log.debug(ConsumableItem.class, "addLock: %s", lock);
+
         _locks.add(lock);
     }
 
@@ -125,6 +127,8 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public void removeLock(ConsumableModule.ConsumableJobLock lock) {
+        Log.debug(ConsumableItem.class, "removeLock: %s", lock);
+
         if (!_locks.contains(lock)) {
             throw new GameException(ConsumableItem.class, "RemoveLock: lock doesn't exists in consumable");
         }

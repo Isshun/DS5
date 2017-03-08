@@ -43,21 +43,6 @@ public abstract class ModuleBase implements GameObserver {
         onCreate();
     }
 
-    public final void unload() {
-        assert _isLoaded;
-
-        Log.info("[%s] Unload", _info);
-        if (runOnMainThread()) {
-            onUnload();
-            _isLoaded = false;
-        } else {
-            Application.moduleManager.getExecutor().execute(() -> {
-                onUnload();
-                _isLoaded = false;
-            });
-        }
-    }
-
     public boolean      runOnMainThread() { return false; }
     public boolean      isThirdParty() { return false; }
 

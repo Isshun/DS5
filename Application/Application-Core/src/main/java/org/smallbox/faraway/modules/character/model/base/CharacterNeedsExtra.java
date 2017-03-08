@@ -45,7 +45,7 @@ public class CharacterNeedsExtra {
         _data = Application.data;
         _character = character;
         _stats = stats;
-        _values.put(TAG_FOOD, Constant.CHARACTER_INIT_FOOD + (Math.random() * 100) % 40 - 20);
+        _values.put(TAG_FOOD, Constant.CHARACTER_INIT_FOOD);
         _values.put(TAG_OXYGEN, Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 40 - 20);
         _values.put(TAG_HAPPINESS, Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 40 - 20);
         _values.put(TAG_ENERGY, Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 40 - 20);
@@ -55,7 +55,7 @@ public class CharacterNeedsExtra {
 
         _values.put(TAG_ENERGY, 100.0);
         _values.put(TAG_DRINK, 100.0);
-        _values.put(TAG_FOOD, 100.0);
+//        _values.put(TAG_FOOD, 100.0);
         _values.put(TAG_OXYGEN, 100.0);
         _values.put(TAG_RELATION, 100.0);
         _values.put(TAG_ENTERTAINMENT, 100.0);
@@ -81,25 +81,25 @@ public class CharacterNeedsExtra {
 //        addValue(TAG_RELATION, ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
         addValue(TAG_HAPPINESS, happinessChange / 100);
 
-        // Oxygen
-        double oxygen = _values.get("oxygen");
-        if (_character.getParcel() != null) {
-            int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
-            if (oxygen < oxygenLevel || oxygen > oxygenLevel + 1) {
-                // Increase oxygen
-                if (oxygen < oxygenLevel) {
-                    oxygen += 1;
-                }
-                // Decrease oxygen, use resist
-                else {
-                    oxygen -= 1 * (1 - _stats.resist.oxygen / 100f);
-                }
-            }
-        }
-        _values.put(TAG_OXYGEN, oxygen);
+//        // Oxygen
+//        double oxygen = _values.get("oxygen");
+//        if (_character.getParcel() != null) {
+//            int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
+//            if (oxygen < oxygenLevel || oxygen > oxygenLevel + 1) {
+//                // Increase oxygen
+//                if (oxygen < oxygenLevel) {
+//                    oxygen += 1;
+//                }
+//                // Decrease oxygen, use resist
+//                else {
+//                    oxygen -= 1 * (1 - _stats.resist.oxygen / 100f);
+//                }
+//            }
+//        }
+//        _values.put(TAG_OXYGEN, oxygen);
 
         // Set needs bounds
-        _values.entrySet().forEach(entry -> entry.setValue(Math.max(0, Math.min(100, entry.getValue()))));
+        _values.entrySet().forEach(entry -> entry.setValue(Math.max(0, Math.min(1, entry.getValue()))));
     }
 
     public void addValue(String name, double value) {

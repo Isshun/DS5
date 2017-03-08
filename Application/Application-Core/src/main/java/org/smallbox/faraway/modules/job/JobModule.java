@@ -17,18 +17,19 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.flora.BasicHarvestJob;
+import org.smallbox.faraway.modules.item.factory.BasicCraftJob;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class JobModule extends GameModule<JobModuleObserver> {
+    private BlockingQueue<JobModel>     _unordonnedJobs = new LinkedBlockingQueue<>();
     private BlockingQueue<JobModel>     _jobs = new LinkedBlockingQueue<>();
     private List<CharacterCheck>        _joys;
     private List<CharacterCheck>        _priorities;
@@ -165,8 +166,26 @@ public class JobModule extends GameModule<JobModuleObserver> {
         printDebug("addSubJob job: " + job.getLabel());
 
         _jobs.add(job);
+        sortJobs();
 
         Application.notify(observer -> observer.onJobCreate(job));
+    }
+
+    private void sortJobs() {
+        _unordonnedJobs.clear();
+        _unordonnedJobs.addAll(_jobs);
+        _jobs.clear();
+
+        Arrays.asList(BasicCraftJob.class, BasicHarvestJob.class, BasicHaulJob.class)
+                .forEach(cls ->
+                        _unordonnedJobs.stream()
+                                .filter(job -> job.getClass() == cls)
+                                .forEach(job -> {
+                                    _jobs.add(job);
+                                    _unordonnedJobs.remove(job);
+                                }));
+
+        _jobs.addAll(_unordonnedJobs);
     }
 
     /**

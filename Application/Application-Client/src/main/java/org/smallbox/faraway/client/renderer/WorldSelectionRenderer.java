@@ -25,14 +25,12 @@ public class WorldSelectionRenderer extends BaseRenderer {
 
     @Override
     public void onMouseMove(GameEvent event) {
-        System.out.println("x: " + event.mouseEvent.x + ", y: " + event.mouseEvent.y);
         _endX = event.mouseEvent.x;
         _endY = event.mouseEvent.y;
     }
 
     @Override
     public void onMousePress(GameEvent event) {
-        System.out.println("press x: " + event.mouseEvent.x + ", y: " + event.mouseEvent.y);
         _isPressed = true;
         _startX = event.mouseEvent.x;
         _startY = event.mouseEvent.y;

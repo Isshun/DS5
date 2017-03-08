@@ -25,7 +25,7 @@ public class Constant {
     public static final int         TILE_HEIGHT                = 32;
     public static final int         CHAR_HEIGHT                = 32;
     public static final int         CHAR_WIDTH                = 32;
-    public static final int         CHARACTER_INIT_FOOD     = 80;
+    public static final double      CHARACTER_INIT_FOOD     = 0.8;
     public static final int         CHARACTER_INIT_OXYGEN     = 100;
     public static final int         CHARACTER_INIT_HAPPINESS =80;
     public static final int         CHARACTER_INIT_HEALTH     = 80;

@@ -46,7 +46,7 @@ public class PlantModule extends GameModule {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onModuleUpdate(Game game) {
         // Fait pousser les plantes
         _plants.stream()
                 .filter(plant -> plant.hasSeed() && computeGrowingInfo(plant))

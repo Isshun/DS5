@@ -83,7 +83,8 @@ public class RoomModule extends GameModule implements GameObserver {
 
     public Collection<RoomModel> getRooms() { return _rooms; }
 
-    protected void onGameUpdate(Game game, int tick) {
+    @Override
+    protected void onModuleUpdate(Game game) {
 
         // TODO
         _rooms.forEach(room -> room.setTemperature(weatherModule.getTemperature()));

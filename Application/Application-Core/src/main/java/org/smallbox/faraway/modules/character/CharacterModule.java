@@ -12,6 +12,8 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.job.*;
+import org.smallbox.faraway.modules.character.model.base.CharacterName;
+import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.*;
@@ -195,8 +197,13 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     public void addRandom(Class<? extends CharacterModel> cls) {
         try {
-            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, int.class, int.class, String.class, String.class, double.class);
-            CharacterModel character = constructor.newInstance(Utils.getUUID(), 10, 10, null, null, 16);
+            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, ParcelModel.class, String.class, String.class, double.class);
+            CharacterModel character = constructor.newInstance(
+                    Utils.getUUID(),
+                    WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true),
+                    CharacterName.getFirstname(CharacterPersonalsExtra.Gender.MALE),
+                    CharacterName.getLastName(),
+                    16);
             add(character);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();

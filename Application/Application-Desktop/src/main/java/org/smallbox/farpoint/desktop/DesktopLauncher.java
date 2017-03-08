@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.flora.PlantModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.util.FileUtils;
@@ -43,16 +44,19 @@ public class DesktopLauncher {
                 Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
                     @Override
                     public void onGameCreate(Game game) {
-                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 4, 1));
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                        Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 5, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 6, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 7, 1));
                         Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 8, 2, 1);
-                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 1, 5, 1);
-                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 2, 5, 1);
-                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 3, 5, 1);
-                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 4, 5, 1);
-                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 5, 5, 1);
+
+                        for (int i = 1; i <= 4; i++) {
+                            for (int j = 5; j <= 10; j++) {
+                                Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", i, j, 1);
+                            }
+                        }
 
                         Application.moduleManager.getModule(AreaModule.class).createArea(StorageAreaModel.class, Arrays.asList(
                                 WorldHelper.getParcel(8, 10, 1),

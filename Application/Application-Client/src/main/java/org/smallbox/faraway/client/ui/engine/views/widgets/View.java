@@ -111,7 +111,8 @@ public abstract class View implements Comparable<View> {
     protected final ModuleBase  _module;
 
 //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
-    protected Collection<View> _views = new ConcurrentArrayQueue<>();
+    protected Collection<View>  _views = new ConcurrentArrayQueue<>();
+    protected Collection<View>  _nextViews = new ConcurrentArrayQueue<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
     protected boolean           _special = false;
@@ -295,6 +296,16 @@ public abstract class View implements Comparable<View> {
         _isAlignTop = isAlignTop;
     }
 
+    public final void addNextView(View view) {
+        _nextViews.add(view);
+    }
+
+    public final void switchViews() {
+        _views.clear();
+        _views.addAll(_nextViews);
+        _nextViews.clear();
+    }
+
     public final void addView(View view) {
         view.setParent(this);
 
@@ -425,9 +436,10 @@ public abstract class View implements Comparable<View> {
         _paddingLeft = (int) (l * Application.APPLICATION_CONFIG.uiScale);
     }
 
-    public void setPadding(int t, int r) {
+    public View setPadding(int t, int r) {
         _paddingTop = _paddingBottom = (int) (t * Application.APPLICATION_CONFIG.uiScale);
         _paddingRight = _paddingLeft = (int) (r * Application.APPLICATION_CONFIG.uiScale);
+        return this;
     }
 
     public View setPadding(int padding) {

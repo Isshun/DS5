@@ -14,6 +14,7 @@ import java.io.File;
  * Created by Alex on 22/11/2015.
  */
 public class LuaCharacterExtend extends LuaExtend {
+
     @Override
     public boolean accept(String type) {
         return "character".equals(type);
@@ -43,8 +44,8 @@ public class LuaCharacterExtend extends LuaExtend {
 
     private void setNeed(CharacterInfo.NeedInfo need, LuaValue needValue) {
         if (!needValue.isnil()) {
-            need.warning = needValue.get("warning").optint(50);
-            need.critical = needValue.get("critical").optint(25);
+            need.warning = needValue.get("warning").optdouble(0.5);
+            need.critical = needValue.get("critical").optdouble(0.25);
 
             LuaValue change = needValue.get("change");
             need.change.work = !change.isnil() ? change.get("work").optdouble(0) : 0;
@@ -52,4 +53,5 @@ public class LuaCharacterExtend extends LuaExtend {
             need.change.rest = !change.isnil() ? change.get("rest").optdouble(0) : 0;
         }
     }
+
 }

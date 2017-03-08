@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.modules.consumable.BasicHaulJobToFactory;
+import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.BasicStoreJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.flora.BasicHarvestJob;
@@ -35,8 +35,8 @@ public class JobRenderer extends BaseRenderer {
                         renderer.drawOnMap(consumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png")));
             }
 
-            if (job instanceof BasicHaulJobToFactory) {
-                ((BasicHaulJobToFactory)job).getConsumables().keySet().forEach(consumable ->
+            if (job instanceof BasicHaulJob) {
+                ((BasicHaulJob)job).getConsumables().keySet().forEach(consumable ->
                         renderer.drawOnMap(consumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_haul.png")));
             }
 

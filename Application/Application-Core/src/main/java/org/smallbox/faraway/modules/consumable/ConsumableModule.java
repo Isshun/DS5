@@ -114,6 +114,8 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public void cancelLock(ConsumableJobLock lock) {
+        Log.debug(ConsumableModule.class, "CancelLock (lock: %s)", lock);
+
         if (lock.available && _locks.remove(lock)) {
             lock.consumable.removeLock(lock);
             lock.consumable.addQuantity(lock.quantity);
@@ -384,7 +386,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     // TODO
-    public BasicHaulJobToFactory createHaulToFactoryJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
+    public BasicHaulJob createHaulToFactoryJob(ItemInfo itemInfo, UsableItem item, int needQuantity) {
         HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
         int previewQuantity = 0;
 
@@ -403,7 +405,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         // Si suffisament de composants sont disponible alors le job est créé
         if (previewQuantity == needQuantity) {
-            return BasicHaulJobToFactory.toFactory(this, jobModule, previewConsumables, item);
+            return BasicHaulJob.toFactory(this, jobModule, previewConsumables, item);
         }
 
         return null;
@@ -455,6 +457,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     private void unlock(ConsumableJobLock lock) {
+        Log.debug(ConsumableModule.class, "Unlock (lock: %s)", lock);
         lock.consumable.removeLock(lock);
         _locks.remove(lock);
     }
