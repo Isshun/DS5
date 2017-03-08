@@ -2,15 +2,18 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.task.LoadTask;
+import org.smallbox.faraway.util.FileUtils;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -111,14 +114,16 @@ public class GDXApplication extends ApplicationAdapter {
 
     @Override
     public void render () {
-        if (Application.isLoaded) {
-            regularRender();
+        if (Application.gameManager != null && Application.gameManager.isRunning()) {
+            gameRender();
+        } else if (Application.isLoaded) {
+            menuRender();
         } else {
             minimalRender();
         }
     }
 
-    private void regularRender() {
+    private void gameRender() {
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -132,6 +137,45 @@ public class GDXApplication extends ApplicationAdapter {
         }
 
 //        fpsLogger.log();
+    }
+
+    private boolean _menuInit;
+    private Texture _bgMenu;
+    private BitmapFont _menuFont;
+
+    private void menuRender() {
+        if (!_menuInit) {
+            _bgMenu = new Texture(FileUtils.getFileHandle("data/graphics/planet-wallpaper-vortex-background-scenery-art-72060.jpg"));
+
+            _menuFont = new BitmapFont(
+                    new FileHandle(new File(Application.BASE_PATH, "data/font-32.fnt")),
+                    new FileHandle(new File(Application.BASE_PATH, "data/font-32.png")),
+                    false);
+
+            Gdx.input.setInputProcessor(new InputAdapter() {
+                public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+                    System.out.println(screenX + "x" + screenY);
+                    return false;
+                }
+            });
+        }
+
+        Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        _batch.begin();
+
+        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _batch.setProjectionMatrix(camera.combined);
+
+        _batch.draw(_bgMenu, 0, 0);
+
+        _menuFont.setColor(0.5f, 0.9f, 0.8f, 1);
+        _menuFont.draw(_batch, "New Game", 32, Gdx.graphics.getHeight() - 32);
+        _menuFont.draw(_batch, "Exit", 32, Gdx.graphics.getHeight() - 64);
+
+        _batch.end();
     }
 
     private void minimalRender() {

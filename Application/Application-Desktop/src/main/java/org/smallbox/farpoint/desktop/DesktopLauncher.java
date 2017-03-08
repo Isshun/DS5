@@ -8,10 +8,10 @@ import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.HumanModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
@@ -40,13 +40,17 @@ public class DesktopLauncher {
         double ratio = (double)width / height;
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
-        new LwjglApplication(new GDXApplication(() ->
-                Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
-                    @Override
-                    public void onGameCreate(Game game) {
-                        Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
-                        Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
-                        Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+        new LwjglApplication(new GDXApplication(() -> {}), LwjglConfig.from(applicationConfig));
+//        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
+    }
+
+    private static GDXApplication.GameTestCallback testGame() {
+        return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
+            @Override
+            public void onGameCreate(Game game) {
+                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 5, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 6, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 7, 1));
@@ -59,17 +63,17 @@ public class DesktopLauncher {
 //                            }
 //                        }
 
-                        Application.moduleManager.getModule(AreaModule.class).createArea(StorageArea.class, Arrays.asList(
-                                WorldHelper.getParcel(8, 10, 1),
-                                WorldHelper.getParcel(7, 10, 1),
-                                WorldHelper.getParcel(8, 11, 1),
-                                WorldHelper.getParcel(7, 11, 1)));
+                Application.moduleManager.getModule(AreaModule.class).createArea(StorageArea.class, Arrays.asList(
+                        WorldHelper.getParcel(8, 10, 1),
+                        WorldHelper.getParcel(7, 10, 1),
+                        WorldHelper.getParcel(8, 11, 1),
+                        WorldHelper.getParcel(7, 11, 1)));
 
-                        Application.moduleManager.getModule(AreaModule.class).createArea(GardenArea.class, Arrays.asList(
-                                WorldHelper.getParcel(2, 10, 1),
-                                WorldHelper.getParcel(3, 10, 1),
-                                WorldHelper.getParcel(2, 11, 1),
-                                WorldHelper.getParcel(3, 11, 1)));
+                Application.moduleManager.getModule(AreaModule.class).createArea(GardenArea.class, Arrays.asList(
+                        WorldHelper.getParcel(2, 10, 1),
+                        WorldHelper.getParcel(3, 10, 1),
+                        WorldHelper.getParcel(2, 11, 1),
+                        WorldHelper.getParcel(3, 11, 1)));
 
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 8, 6, 1);
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 7, 6, 1);
@@ -77,24 +81,24 @@ public class DesktopLauncher {
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.rice", 10, 4, 4, 1);
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.carrot", 10, 4, 6, 1);
 
-                        for (int i = 7; i <= 9; i++) {
-                            for (int j = 5; j <= 8; j++) {
-                                Application.moduleManager.getModule(WorldModule.class).getParcel(i, j, 1).setRockName("base.granite");
-                            }
-                        }
+                for (int i = 7; i <= 9; i++) {
+                    for (int j = 5; j <= 8; j++) {
+                        Application.moduleManager.getModule(WorldModule.class).getParcel(i, j, 1).setRockName("base.granite");
+                    }
+                }
 
-                        Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
-                        Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
+                Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
+                Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
 
 //                        List<ParcelModel> parcels = Application.moduleManager.getModule(WorldModule.class).getParcelList().stream().filter(parcel -> parcel.z == 1).collect(Collectors.toList());
 //                        Application.data.consumables.forEach(itemInfo ->
 //                                Application.moduleManager.getModule(ConsumableModule.class).addConsumable(itemInfo, 10, parcels.get(Application.data.consumables.indexOf(itemInfo))));
-                    }
+            }
 
-                    @Override
-                    public void onGameUpdate(Game game) {
-                    }
-                })), LwjglConfig.from(applicationConfig));
+            @Override
+            public void onGameUpdate(Game game) {
+            }
+        });
     }
 
 }
