@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
@@ -10,39 +11,40 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Job déplacant les consomables vers les zones de stockage
  */
-public class BasicHaulJobToParcel extends BasicHaulJob {
+public class BasicStoreJob extends JobModel {
 
-    private Collection<ConsumableItem> _targetConsumables;
-    private int _haulingQuantity;
-    private ConsumableModule _consumableModule;
+    protected Map<ConsumableItem, Integer> _targetConsumables;
     protected Collection<ConsumableModule.ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
+    private ConsumableModule _consumableModule;
+
+    public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
 
     /**
      * Apporte les composants sur la parcel
      *
      * @param consumableModule ConsumableModule
      * @param jobModule
-     * @param itemInfo ItemInfo
      * @param targetConsumables Map<ConsumableItem, Integer>
      * @param targetParcel ParcelModel
-     * @param haulingQuantity int     @return BasicHaulJob
      */
-    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Collection<ConsumableItem> targetConsumables, ParcelModel targetParcel, int haulingQuantity) {
+    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, ParcelModel targetParcel) {
 
         if (CollectionUtils.isEmpty(targetConsumables)) {
             throw new RuntimeException("Collection cannot be empty");
         }
 
-        jobModule.createJob(BasicHaulJobToParcel.class, null, targetParcel, job -> {
+        jobModule.createJob(BasicStoreJob.class, null, targetParcel, job -> {
 
-            job.init(itemInfo, haulingQuantity, targetParcel, targetConsumables, consumableModule);
-            job.setMainLabel(String.format("Haul %s (x%d) to storage", itemInfo.label, haulingQuantity));
+            job.init(targetParcel, targetConsumables, consumableModule);
 
+            targetConsumables.forEach((consumable, quantity) ->
+                    job.setMainLabel(String.format("Haul %s (x%d) to storage", consumable.getInfo().label, quantity)));
 
             return true;
         });
@@ -58,17 +60,17 @@ public class BasicHaulJobToParcel extends BasicHaulJob {
     @Override
     public boolean onNewStart() {
 
-        for (ConsumableItem consumable: _targetConsumables) {
+        for (Map.Entry<ConsumableItem, Integer> entry: _targetConsumables.entrySet()) {
 
-            ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, consumable.getFreeQuantity());
+            ConsumableModule.ConsumableJobLock consumableLock = _consumableModule.lock(this, entry.getKey(), entry.getValue());
 
             // Certains composants n'ont pas pu être réservés (par ex un craft job lancé entre temps à déjà réservé les composants)
-            if (lock == null) {
+            if (consumableLock == null) {
                 return false;
             }
 
             // Ajoute le lock au job
-            _locks.add(lock);
+            _locks.add(consumableLock);
 
         }
 
@@ -106,7 +108,7 @@ public class BasicHaulJobToParcel extends BasicHaulJob {
         return true;
     }
 
-    public BasicHaulJobToParcel(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
+    public BasicStoreJob(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
         super(itemInfoAction, parcelModel);
     }
 
@@ -125,16 +127,10 @@ public class BasicHaulJobToParcel extends BasicHaulJob {
         return CharacterTalentExtra.TalentType.GATHER;
     }
 
-    protected void init(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Collection<ConsumableItem> targetConsumables, ConsumableModule consumableModule) {
+    protected void init(ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ConsumableModule consumableModule) {
         _consumableModule = consumableModule;
         _targetParcel = targetParcel;
-        _consumableInfo = itemInfo;
-        _haulingQuantity = haulingQuantity;
         _targetConsumables = targetConsumables;
-    }
-
-    public Collection<ConsumableItem> getConsumables() {
-        return _targetConsumables;
     }
 
 }

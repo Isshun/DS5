@@ -77,6 +77,13 @@ public class SpriteManager {
         _textures = new ConcurrentHashMap<>();
 
         _textures.put("data/res/bg_area.png", new Texture(FileUtils.getFileHandle("data/res/bg_area.png")));
+//        _textures.put("data/graphics/jobs/ic_build.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_build.png")));
+//        _textures.put("data/graphics/jobs/ic_craft.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_craft.png")));
+//        _textures.put("data/graphics/jobs/ic_dump.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_dump.png")));
+//        _textures.put("data/graphics/jobs/ic_gather.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_gather.png")));
+//        _textures.put("data/graphics/jobs/ic_haul.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_haul.png")));
+//        _textures.put("data/graphics/jobs/ic_mining.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_mining.png")));
+//        _textures.put("data/graphics/jobs/ic_store.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_store.png")));
 
 //        _textures = FileUtils.listRecursively("data/res").stream()
 //                .filter(file -> file.getName().endsWith(".png"))
@@ -106,6 +113,7 @@ public class SpriteManager {
             File file = getFile(path);
             Texture texture = new Texture(new FileHandle(file));
             Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
+            sprite.flip(false, true);
             _icons.put(path, sprite);
         }
         return _icons.get(path);

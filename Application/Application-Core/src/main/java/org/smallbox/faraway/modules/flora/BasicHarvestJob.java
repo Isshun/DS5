@@ -17,20 +17,20 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
 public class BasicHarvestJob extends JobModel {
 
     public static BasicHarvestJob create(ConsumableModule consumableModule, JobModule jobModule, PlantItem plant) {
-        ParcelModel targetParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
+        ParcelModel consumableDropParcel = WorldHelper.searchAround(plant.getParcel(), 1, WorldHelper.SearchStrategy.FREE);
 
-        if (targetParcel != null) {
+        if (consumableDropParcel != null) {
             return jobModule.createJob(BasicHarvestJob.class, null, plant.getParcel(), job -> {
 
                 // Déplace le personnage à l'emplacement des composants
-                job.addTask("Move to plant", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                job.addTask("Move to plant", character -> character.moveTo(consumableDropParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
                 // Crée les composants
                 job.addTechnicalTask("Create components", character ->
                         plant.getInfo().actions.stream()
                                 .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.GATHER)
                                 .flatMap(action -> action.products.stream())
-                                .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, targetParcel)));
+                                .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, consumableDropParcel)));
 
                 // Harvest
                 job.addTechnicalTask("Harvest", character -> {

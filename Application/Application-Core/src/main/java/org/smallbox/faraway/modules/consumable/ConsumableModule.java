@@ -120,6 +120,17 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
+    public boolean parcelAcceptConsumable(ParcelModel parcel, ConsumableItem consumable) {
+        ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
+        if (consumableOnTargetParcel == null) {
+            return true;
+        }
+        if (consumableOnTargetParcel.getInfo() == consumable.getInfo() && consumableOnTargetParcel.getTotalQuantity() + consumable.getFreeQuantity() < consumable.getInfo().stack) {
+            return true;
+        }
+        return false;
+    }
+
     public static class ConsumableJobLock {
         public ConsumableItem consumable;
         public JobModel job;
@@ -127,6 +138,25 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         public boolean available;
 
         public ConsumableJobLock(ConsumableItem consumable, JobModel job, int quantity) {
+            this.consumable = consumable;
+            this.job = job;
+            this.quantity = quantity;
+            this.available = true;
+        }
+
+        @Override
+        public String toString() {
+            return job + " " + consumable;
+        }
+    }
+
+    public static class ParcelJobLock {
+        public ConsumableItem consumable;
+        public JobModel job;
+        public int quantity;
+        public boolean available;
+
+        public ParcelJobLock(ConsumableItem consumable, JobModel job, int quantity) {
             this.consumable = consumable;
             this.job = job;
             this.quantity = quantity;
@@ -373,7 +403,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         // Si suffisament de composants sont disponible alors le job est créé
         if (previewQuantity == needQuantity) {
-            return BasicHaulJobToFactory.toFactory(this, jobModule, itemInfo, previewConsumables, item, previewQuantity);
+            return BasicHaulJobToFactory.toFactory(this, jobModule, previewConsumables, item);
         }
 
         return null;

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
@@ -12,39 +13,40 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.Log;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Alex on 09/12/2016.
  */
-public class BasicHaulJobToFactory extends BasicHaulJob {
+public class BasicHaulJobToFactory extends JobModel {
 
     public ItemFactoryModel _factory;
-    private ItemInfo _consumableInfo;
-    private Map<ConsumableItem, Integer> _targetConsumables;
-    private int _haulingQuantity;
     private ConsumableModule _consumableModule;
     private UsableItem _item;
+    protected Map<ConsumableItem, Integer> _targetConsumables;
+    protected Collection<ConsumableModule.ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
 
-    public int getHaulingQuantity() { return _haulingQuantity; }
-    public ItemInfo getConsumableInfo() { return _consumableInfo; }
     public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
+
+    public int getHaulingQuantity() { return _targetConsumables.values().stream().mapToInt(Integer::intValue).sum(); }
 
     /**
      * Apporte les composants à la factory
      *
      * @param consumableModule ConsumableModule
-     * @param itemInfo ItemInfo
      * @param targetConsumables Map<ConsumableItem, Integer>
      * @param item UsableItem
-     * @param haulingQuantity int
      * @return BasicHaulJob
      */
-    public static BasicHaulJobToFactory toFactory(ConsumableModule consumableModule, JobModule jobModule, ItemInfo itemInfo, Map<ConsumableItem, Integer> targetConsumables, UsableItem item, int haulingQuantity) {
+    public static BasicHaulJobToFactory toFactory(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, UsableItem item) {
 
         return jobModule.createJob(BasicHaulJobToFactory.class, null, item.getParcel(), job -> {
-            job.initHaul(itemInfo, haulingQuantity, item.getParcel(), targetConsumables, item.getFactory(), item, consumableModule);
-            job.setMainLabel("Haul " + itemInfo.label + " to factory");
+            job.initHaul(item.getParcel(), targetConsumables, item.getFactory(), item, consumableModule);
+
+            targetConsumables.forEach((consumable, quantity) ->
+                    job.setMainLabel(String.format("Haul %s (x%d) to factory", consumable.getInfo().label, quantity)));
 
             return true;
         });
@@ -63,7 +65,7 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
 
             ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, quantity);
             if (lock == null) {
-                Log.warning(BasicHaulJob.class, "Certains composants n'ont pas pu être réservés");
+                Log.warning(BasicHaulJobToFactory.class, "Certains composants n'ont pas pu être réservés");
                 return false;
             }
 
@@ -105,12 +107,10 @@ public class BasicHaulJobToFactory extends BasicHaulJob {
         return _factory;
     }
 
-    public void initHaul(ItemInfo itemInfo, int haulingQuantity, ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ItemFactoryModel factory, UsableItem item, ConsumableModule consumableModule) {
+    public void initHaul(ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ItemFactoryModel factory, UsableItem item, ConsumableModule consumableModule) {
         _item = item;
         _factory = factory;
         _targetParcel = targetParcel;
-        _consumableInfo = itemInfo;
-        _haulingQuantity = haulingQuantity;
         _targetConsumables = targetConsumables;
         _consumableModule = consumableModule;
     }

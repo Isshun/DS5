@@ -6,7 +6,7 @@ data:extend({
         name = "base.plant.rice",
         plant = {
             mature = 5,
-            growing = 0.1,
+            growing = 0.005,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },

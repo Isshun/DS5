@@ -5,14 +5,17 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.core.module.path.PathManager;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.consumable.BasicHaulJobToParcel;
+import org.smallbox.faraway.modules.consumable.BasicStoreJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,9 @@ public class HaulingModule extends GameModule {
     @BindModule
     private AreaModule areaModule;
 
+    @BindModule
+    private PathManager pathManager;
+
     @Override
     public void onGameCreate(Game game) {
     }
@@ -40,10 +46,16 @@ public class HaulingModule extends GameModule {
     @Override
     public void onModuleUpdate(Game game) {
 
-        jobModule.getJobs().stream()
-                .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED)
-                .filter(job -> job instanceof BasicHaulJobToParcel)
-                .forEach(job -> jobModule.removeJob(job));
+//        jobModule.getJobs().stream()
+//                .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED)
+//                .filter(job -> job instanceof BasicStoreJob)
+//                .forEach(job -> jobModule.removeJob(job));
+
+        List<ConsumableItem> consumablesInStoreJob = jobModule.getJobs().stream()
+                .filter(job -> job instanceof BasicStoreJob)
+                .map(job -> (BasicStoreJob)job)
+                .flatMap(job -> job.getConsumables().keySet().stream())
+                .collect(Collectors.toList());
 
         List<ParcelModel> storageParcels = areaModule.getAreas().stream()
                 .filter(area -> area instanceof StorageAreaModel)
@@ -54,17 +66,20 @@ public class HaulingModule extends GameModule {
         // Crée les hauling jobs pour les consomables hors d'une parcel de stockage
         consumableModule.getConsumables().stream()
                 .filter(consumable -> consumable.getFreeQuantity() > 0)
+                .filter(consumable -> !consumablesInStoreJob.contains(consumable))
                 .filter(consumable -> !storageParcels.contains(consumable.getParcel()))
                 .forEach(consumable ->
-                        storageParcels.stream().filter(parcel -> consumableModule.getConsumable(parcel) == null).findAny().ifPresent(parcel -> {
-                            BasicHaulJobToParcel.toParcel(
-                                    consumableModule,
-                                    jobModule,
-                                    consumable.getInfo(),
-                                    Collections.singletonList(consumable),
-                                    parcel,
-                                    consumable.getFreeQuantity());
-                        }));
+
+                        storageParcels.stream()
+                                .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
+                                .sorted(Comparator.comparingInt(o -> pathManager.getDistance(o, consumable.getParcel())))
+                                .findFirst()
+                                .ifPresent(parcel ->
+                                        BasicStoreJob.toParcel(
+                                                consumableModule,
+                                                jobModule,
+                                                Collections.singletonMap(consumable, consumable.getFreeQuantity()),
+                                                parcel)));
 
     }
 
@@ -74,10 +89,10 @@ public class HaulingModule extends GameModule {
     private void cancelDuplicateJobs() {
         // Supprime les jobs à mutualiser (jobs ayants des consomables avec des resources libre)
         jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicHaulJobToParcel)
-                .map(job -> (BasicHaulJobToParcel)job)
+                .filter(job -> job instanceof BasicStoreJob)
+                .map(job -> (BasicStoreJob)job)
                 .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED || job.getStatus() == JobModel.JobStatus.WAITING)
-                .filter(job -> job.getConsumables().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
+                .filter(job -> job.getConsumables().keySet().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
                 .forEach(job -> jobModule.removeJob(job));
 
     }

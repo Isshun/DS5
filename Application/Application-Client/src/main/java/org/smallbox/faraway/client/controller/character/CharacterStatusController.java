@@ -5,12 +5,12 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.consumable.BasicHaulJobToFactory;
+import org.smallbox.faraway.modules.consumable.BasicStoreJob;
 import org.smallbox.faraway.modules.item.factory.BasicCraftJob;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -50,11 +50,20 @@ public class CharacterStatusController extends LuaController {
             lbJobProgress.setText(String.valueOf(job.getProgress()));
             imgJobProgress.setTextureRect(0, 80, (int) (Math.floor(job.getProgress() / 10) * 10), 16);
 
-            if (job instanceof BasicHaulJob) {
-                ItemInfo itemInfo = ((BasicHaulJob) job).getConsumableInfo();
-                if (itemInfo != null && CollectionUtils.isNotEmpty(itemInfo.graphics)) {
-                    imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(itemInfo.graphics.get(0)));
-                }
+            if (job instanceof BasicHaulJobToFactory) {
+                ((BasicHaulJobToFactory) job).getConsumables().forEach((consumable, quantity) -> {
+                    if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
+                        imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
+                    }
+                });
+            }
+
+            if (job instanceof BasicStoreJob) {
+                ((BasicStoreJob) job).getConsumables().forEach((consumable, quantity) -> {
+                    if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
+                        imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
+                    }
+                });
             }
 
             if (job instanceof BasicCraftJob) {

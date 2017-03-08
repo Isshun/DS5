@@ -48,8 +48,11 @@ public class DesktopLauncher {
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 6, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 7, 1));
                         Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 8, 2, 1);
-                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 5, 5, 1);
+                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 1, 5, 1);
                         Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 2, 5, 1);
+                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 3, 5, 1);
+                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 4, 5, 1);
+                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 5, 5, 1);
 
                         Application.moduleManager.getModule(AreaModule.class).createArea(StorageAreaModel.class, Arrays.asList(
                                 WorldHelper.getParcel(8, 10, 1),

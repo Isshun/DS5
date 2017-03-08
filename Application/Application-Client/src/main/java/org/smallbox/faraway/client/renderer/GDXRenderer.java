@@ -275,4 +275,9 @@ public class GDXRenderer {
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
         draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.mainRenderer.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.mainRenderer.getViewport().getPosY(), itemSprite);
     }
+
+//    public void drawOnMap(ParcelModel parcel, Texture texture) {
+//        _batch.draw(texture, x, y, 512, 512, 0, 0, 512, 512, false, true);
+//        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.mainRenderer.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.mainRenderer.getViewport().getPosY(), itemSprite);
+//    }
 }
