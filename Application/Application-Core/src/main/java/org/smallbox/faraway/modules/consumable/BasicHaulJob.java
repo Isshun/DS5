@@ -61,7 +61,7 @@ public class BasicHaulJob extends JobModel {
             ConsumableItem consumable = entry.getKey();
             int quantity = entry.getValue();
 
-            Log.warning(HaulingModule.class, "lock for consumable: " + consumable + " -> " + _consumableModule.getLocks());
+            Log.info(BasicHaulJob.class, "lock for consumable: " + consumable + " -> " + _consumableModule.getLocks());
 
             ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, quantity);
             if (lock == null) {

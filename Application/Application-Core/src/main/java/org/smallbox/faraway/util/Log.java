@@ -64,18 +64,22 @@ public class Log {
             e.printStackTrace();
         }
 
+        if (level == Level.WARNING) {
+            System.out.println("[WARNING] " + message);
+        }
+
         if (level == Level.INFO) {
-            System.out.println(message);
+            System.out.println("[INFO] " + message);
         }
 
         if (level == Level.FINE) {
-//            System.out.println(message);
+//            System.out.println("[DEBUG] " + message);
         }
 
     }
 
     public static void warning(Class cls, String message) {
-        print(Level.WARNING, cls.getName() + ": " + message);
+        print(Level.WARNING, cls.getSimpleName() + ": " + message);
     }
 
     public static void warning(String message) {

@@ -218,7 +218,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     @Override
-    protected void onGameUpdate(Game game, int tick) {
+    protected void onModuleUpdate(Game game) {
         _consumables.forEach(ConsumableItem::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
@@ -430,7 +430,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
      */
     public ConsumableJobLock lock(JobModel job, ConsumableItem consumable, int quantity) {
 
-        Log.warning(ConsumableModule.class, "Lock (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
+        Log.info(ConsumableModule.class, "Lock (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
 
         if (_locks.stream().anyMatch(lock -> lock.job == job && lock.consumable == consumable)) {
             throw new GameException(ConsumableModule.class, "Un lock existe déjà pour ce job et ce consumable", consumable, quantity, _locks);
@@ -451,7 +451,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         consumable.addLock(lock);
         _locks.add(lock);
 
-        Log.warning(ConsumableModule.class, "Lock ok (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
+        Log.debug(ConsumableModule.class, "Lock ok (job: %s, consumable: %s, quantity: %d)", job, consumable, quantity);
 
         return lock;
     }

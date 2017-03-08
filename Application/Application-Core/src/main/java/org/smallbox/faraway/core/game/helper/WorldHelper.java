@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -424,6 +425,8 @@ public class WorldHelper {
      * @param callback  condition d'arret
      */
     public static ParcelModel move(int x0, int y0, int z0, GetParcelCallback callback) {
+        Log.info(WorldHelper.class, "Search parcel (initial: %d x %d x %d)", x0, y0, z0);
+
         // directions possibles: G=(-1,0) H=(0,-1) D=(1,0) B=(0,1)
         int[] dx = new int[]{1, 0, -1, 0};
         int[] dy = new int[]{0, 1, 0, -1};
@@ -438,7 +441,6 @@ public class WorldHelper {
 
         // position courante
         int x = x0, y = y0;
-        System.out.println("Initial position: " + x + "," + y);
 
         while (true) {
 
@@ -451,20 +453,20 @@ public class WorldHelper {
                     // condition de sortie
                     ParcelModel parcel = getParcel(x, y, z0);
                     if (parcel != null && callback.onParcel(parcel)) {
+                        Log.info(WorldHelper.class, "Search parcel: found (final: %d x %d x %d)", x, y, z0);
                         return parcel;
                     }
 
                     // condition de sortie
                     distance++;
                     if (distance > distanceMax) {
+                        Log.info(WorldHelper.class, "Search parcel: unable to found parcel");
                         return null;
                     }
 
                     // déplacement
                     x += dx[dirIndex];
                     y += dy[dirIndex];
-
-                    System.out.println("Current position: " + x + "," + y + " distance=" + distance);
                 }
 
                 // tourne a droite

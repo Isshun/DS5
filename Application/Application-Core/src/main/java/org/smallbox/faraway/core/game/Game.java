@@ -179,7 +179,7 @@ public class Game {
      * Update
      */
     public void update() {
-        Log.info(Game.class, "Game update (tick: %d)", _tick + 1);
+        Log.debug(Game.class, "Game update (tick: %d)", _tick + 1);
 
         _tick += 1;
 
