@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.BasicStoreJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.dig.DigArea;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -41,6 +42,7 @@ public class HaulingModule extends GameModule {
 
     @Override
     public void onGameCreate(Game game) {
+        areaModule.addAreaType(DigArea.class);
     }
 
     @Override

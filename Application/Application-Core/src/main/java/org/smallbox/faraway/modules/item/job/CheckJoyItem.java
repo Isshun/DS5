@@ -1,10 +1,10 @@
 package org.smallbox.faraway.modules.item.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.ItemFinderModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 

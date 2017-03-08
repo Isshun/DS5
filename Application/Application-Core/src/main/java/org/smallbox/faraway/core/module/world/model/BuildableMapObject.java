@@ -5,9 +5,9 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.BuildJob;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.ArrayList;
 import java.util.List;

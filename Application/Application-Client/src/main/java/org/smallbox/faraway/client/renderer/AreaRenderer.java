@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
@@ -24,6 +25,13 @@ public class AreaRenderer extends BaseRenderer {
 
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
+    private int _mouseX;
+    private int _mouseY;
+
+    public enum Mode {NONE, ADD, SUB}
+
+    private Mode _mode;
+    private Class _cls;
 
     private Color[] COLORS = new Color[]{
             new Color(0.5f, 0.5f, 1f, 0.4f),
@@ -63,6 +71,10 @@ public class AreaRenderer extends BaseRenderer {
             });
         });
 
+        if (_mode == Mode.ADD || _mode == Mode.SUB) {
+            renderer.drawRectangle(_mouseX, _mouseY, 30, 30, Color.CHARTREUSE, true);
+        }
+
         // TODO
 //        WorldModule world = (WorldModule) Application.moduleManager.getModule(WorldModule.class);
 //        for (int x = fromX; x < toX; x++) {
@@ -79,7 +91,18 @@ public class AreaRenderer extends BaseRenderer {
 //        }
     }
 
+    @Override
+    public void onMouseMove(GameEvent event) {
+        _mouseX = event.mouseEvent.x;
+        _mouseY = event.mouseEvent.y;
+    }
+
     public boolean isMandatory() {
         return true;
+    }
+
+    public void setMode(Mode mode, Class cls) {
+        _mode = mode;
+        _cls = cls;
     }
 }

@@ -3,10 +3,10 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.GameObserverPriority;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
+import org.smallbox.faraway.core.game.GameObserverPriority;
 import org.smallbox.faraway.core.lua.BindLuaAction;
 
 /**

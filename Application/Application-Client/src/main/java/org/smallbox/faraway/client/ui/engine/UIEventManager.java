@@ -74,6 +74,16 @@ public class UIEventManager {
         }
     }
 
+    private OnSelectionListener _selectionListener;
+
+    public interface OnSelectionListener {
+        void onSelection(List<ParcelModel> parcels);
+    }
+
+    public void setSelectionListener(OnSelectionListener selectionListener) {
+        _selectionListener = selectionListener;
+    }
+
     public boolean click(GameEvent event, int x, int y) {
         View bestView = null;
         int bestDepth = -1;
@@ -110,6 +120,12 @@ public class UIEventManager {
                 List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
                 Log.info("Click on map for parcels: %s", parcelList);
                 if (parcelList != null) {
+
+                    if (_selectionListener != null) {
+                        _selectionListener.onSelection(parcelList);
+                        _selectionListener = null;
+                    }
+
                     ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
                 }
             }

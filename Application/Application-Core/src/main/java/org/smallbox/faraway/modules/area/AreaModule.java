@@ -17,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -36,6 +37,7 @@ public class AreaModule extends GameModule {
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
     private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
     private Collection<StorageAreaModel> _storageAreas = new LinkedBlockingQueue<>();
+    private Collection<Class<? extends AreaModel>> _areaTypes = new LinkedBlockingQueue<>();
 
     public AreaModule() {
         _updateInterval = 10;
@@ -72,6 +74,40 @@ public class AreaModule extends GameModule {
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             throw new GameException(JobModule.class, e, "Unable to create area");
         }
+    }
+
+    public List<ParcelModel> getParcels(Class<? extends AreaModel> cls) {
+        return _areas.stream()
+                .filter(area -> area.getClass().isInstance(cls))
+                .flatMap(area -> area.getParcels().stream())
+                .collect(Collectors.toList());
+    }
+
+    public <T extends AreaModel> List<T> getAreas(Class<T> cls) {
+        return _areas.stream()
+                .filter(cls::isInstance)
+                .map(area -> (T)area)
+                .collect(Collectors.toList());
+    }
+
+    public void addAreaType(Class<? extends AreaModel> cls) {
+        _areaTypes.add(cls);
+    }
+
+    public <T extends AreaModel> T addArea(Class<T> cls, Collection<ParcelModel> parcels) {
+        try {
+            T area = cls.getConstructor().newInstance();
+            parcels.forEach(area::addParcel);
+            _areas.add(area);
+            return area;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Collection<Class<? extends AreaModel>> getAreaTypes() {
+        return _areaTypes;
     }
 
 //    @Override

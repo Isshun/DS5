@@ -1,11 +1,11 @@
 package org.smallbox.faraway.modules.character.job;
 
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.item.job.UseJob;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.item.job.UseJob;
 
 /**
  * Created by Alex on 17/06/2015.

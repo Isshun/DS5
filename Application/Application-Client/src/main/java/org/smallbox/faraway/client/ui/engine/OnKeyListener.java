@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.engine;
 
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.engine.GameEventListener;
 
 /**
  * Created by Alex on 14/11/2015.

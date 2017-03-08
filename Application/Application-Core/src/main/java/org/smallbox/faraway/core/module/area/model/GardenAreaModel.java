@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.module.area.model;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.area.AreaTypeInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 03/07/2015.
  */
+@AreaTypeInfo(label = "Garden")
 public class GardenAreaModel extends AreaModel {
     private Collection<ItemInfo>    _potentialItem;
     private ItemInfo                _currentItem;

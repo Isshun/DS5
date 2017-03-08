@@ -1,11 +1,11 @@
-package org.smallbox.faraway.modules;
+package org.smallbox.faraway.modules.dig;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.core.module.job.model.abs.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
@@ -16,26 +16,30 @@ import org.smallbox.faraway.modules.world.WorldModule;
  */
 public class BasicDigJob extends JobModel {
 
-    public static BasicDigJob create(ConsumableModule consumableModule, JobModule jobModule, WorldModule worldModule, ParcelModel parcel) {
+    private ParcelModel _digParcel;
 
-        ParcelModel targetParcel = WorldHelper.searchAround(parcel, 1, WorldHelper.SearchStrategy.FREE);
-        ItemInfo rockInfo = parcel.getRockInfo();
+    public static BasicDigJob create(ConsumableModule consumableModule, JobModule jobModule, WorldModule worldModule, ParcelModel digParcel) {
+
+        ParcelModel targetParcel = WorldHelper.searchAround(digParcel, 1, WorldHelper.SearchStrategy.FREE);
+        ItemInfo rockInfo = digParcel.getRockInfo();
 
         if (targetParcel != null && rockInfo != null) {
-            return jobModule.createJob(BasicDigJob.class, null, parcel, job -> {
+            return jobModule.createJob(BasicDigJob.class, null, targetParcel, job -> {
+
+                job.setDigParcel(digParcel);
 
                 // Déplace le personnage à l'emplacement des composants
                 job.addTask("Move to rock", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
 
                 // Retire les rochers de la carte
-                job.addTechnicalTask("Remove rock", character -> parcel.setRockInfo(null));
+                job.addTechnicalTask("Remove rock", character -> digParcel.setRockInfo(null));
 
                 // Crée les gravats
                 job.addTechnicalTask("Create components", character ->
                         rockInfo.actions.stream()
                                 .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
                                 .flatMap(action -> action.products.stream())
-                                .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, parcel)));
+                                .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, digParcel)));
 
                 return true;
             });
@@ -44,7 +48,16 @@ public class BasicDigJob extends JobModel {
         return null;
     }
 
-    public BasicDigJob(ParcelModel targetParcel) {
+    private void setDigParcel(ParcelModel digParcel) {
+        _digParcel = digParcel;
+    }
+
+    public ParcelModel getDigParcel() {
+        return _digParcel;
+    }
+
+    public BasicDigJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
+        super(actionInfo, targetParcel);
         _mainLabel = "Dig";
         _targetParcel = targetParcel;
     }

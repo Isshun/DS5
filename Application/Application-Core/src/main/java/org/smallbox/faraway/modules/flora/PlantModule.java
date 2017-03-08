@@ -6,7 +6,9 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.flora.model.PlantItem;
 import org.smallbox.faraway.modules.job.JobModule;
@@ -30,19 +32,14 @@ public class PlantModule extends GameModule {
     @BindModule
     private JobModule jobModule;
 
+    @BindModule
+    private AreaModule areaModule;
+
     private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onGameCreate(Game game) {
-//        worldModule.getParcelList().stream()
-////                .filter(parcel -> parcel.x == 10 && parcel.y == 10 && parcel.z == 1)
-//                .filter(parcel -> Math.random() > 0.95)
-//                .forEach(parcel -> {
-//                    PlantItem plant = new PlantItem(Application.data.getItemInfo("base.plant.rice"));
-//                    plant.setParcel(parcel);
-//                    plant.setMaturity(Math.random());
-//                    _plants.add(plant);
-//                });
+        areaModule.addAreaType(GardenAreaModel.class);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.module.area.model;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.area.AreaTypeInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 13/06/2015.
  */
+@AreaTypeInfo(label = "Storage")
 public class StorageAreaModel extends AreaModel {
     private static int                  _count;
     private int                         _index;

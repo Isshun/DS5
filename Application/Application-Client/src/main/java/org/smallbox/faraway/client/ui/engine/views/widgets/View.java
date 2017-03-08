@@ -216,7 +216,7 @@ public abstract class View implements Comparable<View> {
 
     public void         setGroup(String group) { _group = group; }
     public void         setEffect(FadeEffect effect) { _effect = effect; }
-    public void         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; }
+    public View         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; return this; }
     public View         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; return this; }
     public void         setActionName(String actionName) { _actionName = actionName; }
     public void         setLayer(int layer) { _layer = layer; }

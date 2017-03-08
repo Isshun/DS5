@@ -27,7 +27,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 @ModuleSerializer(ConsumableSerializer.class)
-//@ModuleRenderer(ConsumableRenderer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @BindModule
@@ -38,12 +37,6 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @BindModule
     private StructureModule structureModule;
-
-//    @BindModule
-//    private CharacterModule characterModule;
-
-//    @BindModule
-//    private WorldInteractionModule worldInteractionModule;
 
     private Collection<ConsumableItem> _consumables;
 

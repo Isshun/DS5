@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.ui;
 
-import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.GameEventListener;
 
 import java.util.ArrayList;
 import java.util.List;

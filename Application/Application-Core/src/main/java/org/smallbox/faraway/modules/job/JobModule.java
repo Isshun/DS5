@@ -27,6 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 public class JobModule extends GameModule<JobModuleObserver> {
     private BlockingQueue<JobModel>     _unordonnedJobs = new LinkedBlockingQueue<>();
@@ -341,6 +342,13 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public boolean hasJob(JobModel job) {
         return _jobs.contains(job);
+    }
+
+    public <T extends JobModel> List<T> getJobs(Class<T> cls) {
+        return _jobs.stream()
+                .filter(cls::isInstance)
+                .map(job -> (T)job)
+                .collect(Collectors.toList());
     }
 
     public interface JobInitCallback<T> {

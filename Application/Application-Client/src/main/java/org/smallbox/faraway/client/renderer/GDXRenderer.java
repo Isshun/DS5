@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 /**
  * Created by Alex on 04/06/2015.

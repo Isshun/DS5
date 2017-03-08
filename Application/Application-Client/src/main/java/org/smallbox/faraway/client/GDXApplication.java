@@ -63,10 +63,7 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Create renderer", true, () ->
                 ApplicationClient.gdxRenderer.init(_batch, _fonts));
 
-
-
         // Server
-
         Application.taskManager.addLoadTask("Launch DB thread", false, () ->
                 Application.taskManager.launchBackgroundThread(Application.sqlManager::update, 16));
 

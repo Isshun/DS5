@@ -260,6 +260,7 @@ public class InputManager implements InputProcessor {
             }
 
             ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
+
         }
         return false;
     }

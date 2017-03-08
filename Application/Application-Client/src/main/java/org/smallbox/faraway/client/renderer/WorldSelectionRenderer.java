@@ -11,6 +11,7 @@ public class WorldSelectionRenderer extends BaseRenderer {
 
     @BindModule
     private WorldModule worldModule;
+
     private int _startX;
     private int _startY;
     private int _endX;
