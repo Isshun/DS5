@@ -7,10 +7,9 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.area.model.AreaModel;
-import org.smallbox.faraway.core.module.job.model.DigJob;
+import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private final int                       _index;
     private int                             _tile;
     private double _liquidValue;
-    private DigJob                          _digJob;
     private ItemInfo                        _rockInfo;
     private ItemInfo                        _groundInfo;
 //    public ConsumableItem                  _consumable;
@@ -58,7 +56,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; }
     public void                     setRockName(String rockName) { _rockInfo = Application.data.getItemInfo(rockName); }
     public void                     setTile(int tile) { _tile = tile; }
-    public void                     setDigJob(DigJob digJob) { _digJob = digJob; }
     public void                     setLiquidInfo(ItemInfo liquidInfo, double value) { _liquidInfo = liquidInfo; _liquidValue = value; }
 
     public void                     removeItem(MapObjectModel item) { _items.remove(item); }
@@ -70,14 +67,12 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  hasGround() { return _groundInfo != null; }
     public boolean                  hasLiquid() { return _liquidInfo != null; }
     public boolean                  hasRock() { return _rockInfo != null; }
-    public boolean                  hasDigJob() { return _digJob != null; }
     public boolean                  hasRoom() { return _room != null; }
 
     public List<NetworkItem>        getNetworkObjects() { return _networks; }
     public ItemInfo                 getRockInfo() { return _rockInfo; }
     public ItemInfo                 getGroundInfo() { return _groundInfo; }
     public ItemInfo                 getLiquidInfo() { return _liquidInfo; }
-    public DigJob                   getDigJob() { return _digJob; }
     public PlantItem getPlant() { return _plant; }
 //    public ConsumableItem          getConsumable() { return _consumable; }
     public RoomModel                getRoom() { return _room; }

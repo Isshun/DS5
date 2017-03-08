@@ -3,11 +3,11 @@ package org.smallbox.faraway.client.ui;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.area.model.AreaModel;
+import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 /**
  * Created by Alex on 28/06/2015.

@@ -3,8 +3,8 @@ package org.smallbox.faraway.modules.hauling;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -60,8 +60,8 @@ public class HaulingModule extends GameModule {
                 .collect(Collectors.toList());
 
         List<ParcelModel> storageParcels = areaModule.getAreas().stream()
-                .filter(area -> area instanceof StorageAreaModel)
-                .map(area -> (StorageAreaModel)area)
+                .filter(area -> area instanceof StorageArea)
+                .map(area -> (StorageArea)area)
                 .flatMap(area -> area.getParcels().stream())
                 .collect(Collectors.toList());
 

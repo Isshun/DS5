@@ -4,11 +4,11 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.item.factory.ItemFactoryModel;
+import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;

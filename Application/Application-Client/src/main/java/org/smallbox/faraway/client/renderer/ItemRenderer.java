@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.item.factory.BasicCraftJob;
+import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 
 @GameRenderer(level = MainRenderer.ITEM_RENDERER_LEVEL, visible = true)
 public class ItemRenderer extends BaseRenderer {

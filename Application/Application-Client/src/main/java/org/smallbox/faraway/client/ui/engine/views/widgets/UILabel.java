@@ -36,6 +36,11 @@ public class UILabel extends View {
         return super.setSize(width, height != -1 ? height : 18);
     }
 
+    @Override
+    public int hashCode() {
+        return _text.hashCode();
+    }
+
     public UILabel setText(String string) {
         if (string == null) {
             setStringValue("");

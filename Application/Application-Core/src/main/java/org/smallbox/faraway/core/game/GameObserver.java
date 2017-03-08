@@ -3,9 +3,8 @@ package org.smallbox.faraway.core.game;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.area.model.AreaType;
-import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
@@ -26,11 +25,9 @@ public interface GameObserver {
     default void onDayChange(int day) {}
     default void onYearChange(int year) {}
     default void onLog(String tag, String message) {}
-    default void onAddArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
-    default void onRemoveArea(AreaType type, int fromX, int fromY, int toX, int toY, int floor) {}
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
-    default void onStorageRulesChanged(StorageAreaModel storageAreaModel) {}
+    default void onStorageRulesChanged(StorageArea storageAreaModel) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
     default void onBindingPress(BindingInfo binding) {}
     default void onGameSpeedChange(int speed) {}

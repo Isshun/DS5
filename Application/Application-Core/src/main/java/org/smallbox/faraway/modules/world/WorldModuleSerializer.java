@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 

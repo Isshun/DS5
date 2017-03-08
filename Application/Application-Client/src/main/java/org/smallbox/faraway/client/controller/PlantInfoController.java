@@ -5,8 +5,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.flora.PlantModule;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.PlantModule;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 import java.util.List;
 

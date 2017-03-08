@@ -4,8 +4,8 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.modules.flora.PlantModule;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.PlantModule;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 /**
  * Created by Alex on 31/07/2016.

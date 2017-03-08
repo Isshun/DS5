@@ -4,15 +4,15 @@
 //import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 //import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 //import org.smallbox.faraway.core.lua.BindLua;
-//import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
+//import org.smallbox.faraway.core.module.area.model.GardenArea;
 //
 ///**
 // * Created by Alex on 26/04/2016.
 // */
-//public class AreaGardenInfoController extends LuaController {
+//public class AreaInfoGardenController extends LuaController {
 //    @BindLua private UIList             listAcceptedPlant;
 //
-//    public void select(GardenAreaModel garden) {
+//    public void select(GardenArea garden) {
 //        setVisible(true);
 //
 ////        ApplicationClient.uiManager.findById("base.ui.right_panel").setVisible(false);
@@ -21,7 +21,7 @@
 //        displayAcceptedItem(garden);
 //    }
 //
-//    private void displayAcceptedItem(GardenAreaModel garden) {
+//    private void displayAcceptedItem(GardenArea garden) {
 //        listAcceptedPlant.clear();
 //        garden.getPotentials().forEach(itemInfo -> {
 //            UILabel label = new UILabel(null);

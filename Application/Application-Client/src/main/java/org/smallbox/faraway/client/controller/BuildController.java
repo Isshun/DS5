@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.WorldInteractionModule;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -22,9 +21,6 @@ import java.util.List;
  * Created by Alex on 22/07/2016.
  */
 public class BuildController extends LuaController {
-
-    @BindModule
-    private WorldInteractionModule worldInteractionModule;
 
     @BindModule
     private WorldModule worldModule;
@@ -194,18 +190,18 @@ public class BuildController extends LuaController {
         _currentItem = itemInfo;
 
         if (itemInfo != null) {
-            worldInteractionModule.setOnClickListener(parcelList -> {
-                parcelList.forEach(parcel -> {
-                    if (itemInfo.isUserItem) {
-                        itemModule.addPattern(parcel, itemInfo);
-                    }
-                    if (itemInfo.isStructure) {
-                        structureModule.addPattern(parcel, itemInfo);
-                    }
-                });
-                _currentItem = null;
-                return true;
-            });
+//            worldInteractionModule.setOnClickListener(parcelList -> {
+//                parcelList.forEach(parcel -> {
+//                    if (itemInfo.isUserItem) {
+//                        itemModule.addPattern(parcel, itemInfo);
+//                    }
+//                    if (itemInfo.isStructure) {
+//                        structureModule.addPattern(parcel, itemInfo);
+//                    }
+//                });
+//                _currentItem = null;
+//                return true;
+//            });
         }
     }
 

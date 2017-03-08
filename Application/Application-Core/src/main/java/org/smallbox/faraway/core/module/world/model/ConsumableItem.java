@@ -3,8 +3,8 @@ package org.smallbox.faraway.core.module.world.model;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.util.Log;
@@ -89,8 +89,8 @@ public class ConsumableItem extends MapObjectModel {
         }
     }
 
-    public StorageAreaModel getStorage() {
-        return _parcel != null && _parcel.getArea() != null && _parcel.getArea().isStorage() ? (StorageAreaModel) _parcel.getArea() : null;
+    public StorageArea getStorage() {
+        return _parcel != null && _parcel.getArea() != null && _parcel.getArea().isStorage() ? (StorageArea) _parcel.getArea() : null;
     }
 
 //    public void setStoreJob(StoreJob job) { _storeJob = job; }

@@ -2,7 +2,7 @@ ui:extend({
     type = "view",
     id = "base.ui.right_panel.areas",
     parent = "base.ui.right_panel",
-    controller = "org.smallbox.faraway.client.controller.AreaController",
+    controller = "org.smallbox.faraway.client.controller.area.AreaPanelController",
     visible = false,
     views = {
         { type = "label", text = "Areas", text_color = 0x679B99, text_size = 28, position = {12, 16}},

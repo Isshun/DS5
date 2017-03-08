@@ -7,11 +7,11 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.BasicStoreJob;
-import org.smallbox.faraway.modules.item.factory.BasicCraftJob;
+import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.util.CollectionUtils;
 
 /**

@@ -6,9 +6,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.area.model.AreaModel;
-import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
-import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -84,7 +83,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
 //        });
     }
 
-    private void insertStorageAreaItems(StorageAreaModel storage, SQLiteStatement stItem) {
+    private void insertStorageAreaItems(StorageArea storage, SQLiteStatement stItem) {
         storage.getItemsAccepts().entrySet().stream().filter(Map.Entry::getValue).forEach(itemEntry -> {
             try {
                 stItem.bind(1, itemEntry.getKey().name).bind(2, storage.getId()).bind(3, storage.getPriority());
@@ -113,11 +112,11 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
             try {
                 SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");
 
-                List<GardenAreaModel> gardenAreas = new ArrayList<>();
+                List<GardenArea> gardenAreas = new ArrayList<>();
                 SQLiteStatement stGarden = db.prepare("SELECT id, plant FROM area_garden");
                 try {
                     while (stGarden.step()) {
-                        GardenAreaModel garden = new GardenAreaModel();
+                        GardenArea garden = new GardenArea();
                         garden.setAccept(Application.data.getItemInfo(stGarden.columnString(1)), true);
                         getAreaParcels(garden, stParcel, stGarden.columnInt(0));
                         gardenAreas.add(garden);
@@ -126,12 +125,12 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
                     stGarden.dispose();
                 }
 
-                List<StorageAreaModel> storageAreas = new ArrayList<>();
+                List<StorageArea> storageAreas = new ArrayList<>();
                 SQLiteStatement stStorage = db.prepare("SELECT id FROM area_storage");
                 SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id, priority FROM area_storage_item where area_id = ?");
                 try {
                     while (stStorage.step()) {
-                        StorageAreaModel storage = new StorageAreaModel();
+                        StorageArea storage = new StorageArea();
                         getAreaParcels(storage, stParcel, stStorage.columnInt(0));
                         getAreaStorageItems(storage, stStorageItem, stStorage.columnInt(0));
                         storageAreas.add(storage);
@@ -148,7 +147,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
         });
     }
 
-    private void getAreaStorageItems(StorageAreaModel storage, SQLiteStatement stItem, int areaId) throws SQLiteException {
+    private void getAreaStorageItems(StorageArea storage, SQLiteStatement stItem, int areaId) throws SQLiteException {
         stItem.bind(1, areaId);
         while (stItem.step()) {
             storage.setAccept(Application.data.getItemInfo(stItem.columnString(0)), true);

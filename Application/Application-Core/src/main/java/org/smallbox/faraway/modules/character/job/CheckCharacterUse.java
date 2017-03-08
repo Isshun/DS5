@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.job;
 
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 /**

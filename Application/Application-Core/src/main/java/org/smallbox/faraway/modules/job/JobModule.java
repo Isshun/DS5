@@ -7,19 +7,17 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.job.check.joy.CheckJoyWalk;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.module.job.model.BuildJob;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobAbortReason;
-import org.smallbox.faraway.core.module.job.model.abs.JobModel.JobStatus;
+import org.smallbox.faraway.modules.item.BuildJob;
+import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
+import org.smallbox.faraway.modules.job.JobModel.JobStatus;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.flora.BasicHarvestJob;
-import org.smallbox.faraway.modules.item.factory.BasicCraftJob;
+import org.smallbox.faraway.modules.plant.BasicHarvestJob;
+import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -47,7 +45,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         _joys = new ArrayList<>();
 //        _joys.addSubJob(new CheckEntertainmentTalk());
-        _joys.add(new CheckJoyWalk());
+//        _joys.add(new CheckJoyWalk());
 //        _joys.addSubJob(new CheckEntertainmentSleep());
 
         _sleeps = new ArrayList<>();

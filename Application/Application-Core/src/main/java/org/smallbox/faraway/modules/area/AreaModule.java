@@ -5,9 +5,8 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.core.module.area.model.AreaModel;
-import org.smallbox.faraway.core.module.area.model.GardenAreaModel;
-import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
@@ -35,8 +34,8 @@ public class AreaModule extends GameModule {
     private WorldModule worldModule;
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
-    private Collection<GardenAreaModel> _gardens = new LinkedBlockingQueue<>();
-    private Collection<StorageAreaModel> _storageAreas = new LinkedBlockingQueue<>();
+    private Collection<GardenArea> _gardens = new LinkedBlockingQueue<>();
+    private Collection<StorageArea> _storageAreas = new LinkedBlockingQueue<>();
     private Collection<Class<? extends AreaModel>> _areaTypes = new LinkedBlockingQueue<>();
 
     public AreaModule() {
@@ -60,7 +59,7 @@ public class AreaModule extends GameModule {
         return _areas;
     }
 
-    public void init(List<StorageAreaModel> storageAreas, List<GardenAreaModel> gardenAreas) {
+    public void init(List<StorageArea> storageAreas, List<GardenArea> gardenAreas) {
 
     }
 
@@ -110,6 +109,13 @@ public class AreaModule extends GameModule {
         return _areaTypes;
     }
 
+    public AreaModel getArea(ParcelModel parcel) {
+        return _areas.stream()
+                .filter(area -> area.getParcels().contains(parcel))
+                .findFirst()
+                .orElse(null);
+    }
+
 //    @Override
 //    protected void onGameUpdate(Game game, int tick) {
 //        // Create store jobs
@@ -119,7 +125,7 @@ public class AreaModule extends GameModule {
 //                .forEach(this::storeConsumable);
 //    }
 //
-//    public void init(List<StorageAreaModel> storageAreas, List<GardenAreaModel> gardenAreas) {
+//    public void init(List<StorageAreaModel> storageAreas, List<GardenArea> gardenAreas) {
 //        _areas.clear();
 //        _areas.addAll(storageAreas);
 //        _areas.addAll(gardenAreas);
@@ -236,8 +242,8 @@ public class AreaModule extends GameModule {
 //    public static AreaModel createArea(AreaType type) {
 //        switch (type) {
 //            case STORAGE: return new StorageAreaModel();
-//            case GARDEN: return new GardenAreaModel();
-//            case HOME: return new HomeAreaModel();
+//            case GARDEN: return new GardenArea();
+//            case HOME: return new HomeArea();
 //            default: return null;
 //        }
 //    }
@@ -274,7 +280,7 @@ public class AreaModule extends GameModule {
 //    }
 //
 //    public Collection<AreaModel> getAreas() { return _areas; }
-//    public Collection<GardenAreaModel> getGardens() { return _gardens; }
+//    public Collection<GardenArea> getGardens() { return _gardens; }
 //    public Collection<StorageAreaModel> getStorages() { return _storageAreas; }
 //
 //    public AreaModel getArea(int x, int y, int z) {
@@ -292,8 +298,8 @@ public class AreaModule extends GameModule {
 //        if (area instanceof StorageAreaModel) {
 //            _storageAreas.add((StorageAreaModel)area);
 //        }
-//        if (area instanceof GardenAreaModel) {
-//            _gardens.add((GardenAreaModel)area);
+//        if (area instanceof GardenArea) {
+//            _gardens.add((GardenArea)area);
 //        }
 //    }
 //
@@ -305,7 +311,7 @@ public class AreaModule extends GameModule {
 //            if (area instanceof StorageAreaModel) {
 //                _storageAreas.remove(area);
 //            }
-//            if (area instanceof GardenAreaModel) {
+//            if (area instanceof GardenArea) {
 //                _gardens.remove(area);
 //            }
 //        }

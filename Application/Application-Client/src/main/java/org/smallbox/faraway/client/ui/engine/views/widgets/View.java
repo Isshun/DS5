@@ -18,6 +18,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Created by Alex on 27/05/2015.
@@ -28,6 +29,7 @@ public abstract class View implements Comparable<View> {
     private String _group;
     private String _path;
     private int _index;
+    private boolean _sorted;
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
@@ -93,8 +95,15 @@ public abstract class View implements Comparable<View> {
         _animation = animation;
     }
 
-    public void setFocusable(boolean focusable) {
-        _focusable = focusable;
+    public void setFocusable(boolean focusable) { _focusable = focusable; }
+    public void setSorted(boolean sorted) {
+        _sorted = sorted;
+
+        if (sorted) {
+            Collection<View> views = _views;
+             _views = new PriorityBlockingQueue<>(10, View::compareTo);
+             _views.addAll(views);
+        }
     }
 
     public void click(GameEvent event) {

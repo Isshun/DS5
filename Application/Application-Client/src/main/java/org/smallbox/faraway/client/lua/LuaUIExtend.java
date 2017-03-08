@@ -10,7 +10,7 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.ui.RootView;
+import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -98,6 +98,7 @@ public class LuaUIExtend extends LuaExtend {
         view.setDeep(deep);
         view.setInGame(inGame);
         view.setFocusable(getBoolean(value, "focusable", false));
+        view.setSorted(getBoolean(value, "sorted", false));
         view.setActive(getBoolean(value, "active", true));
 
         readString(value, "id", v -> {

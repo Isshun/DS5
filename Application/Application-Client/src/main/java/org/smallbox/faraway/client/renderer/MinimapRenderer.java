@@ -15,7 +15,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.flora.PlantModule;
+import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameRenderer(level = MainRenderer.MINI_MAP_LEVEL, visible = true)

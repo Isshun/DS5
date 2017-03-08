@@ -30,7 +30,7 @@ ui:extend({
                 }},
                 { type = "label", text = "Floor ", id = "lb_floor", text_size = 16, padding = 7, position = {250, 6} },
             }},
-            { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true},
+            { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true, sorted = true},
         }},
         {
             type = "view",

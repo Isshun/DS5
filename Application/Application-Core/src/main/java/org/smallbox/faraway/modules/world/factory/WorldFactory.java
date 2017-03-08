@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.*;

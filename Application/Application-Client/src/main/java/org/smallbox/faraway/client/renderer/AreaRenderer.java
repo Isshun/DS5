@@ -8,7 +8,9 @@ import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
+import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -31,7 +33,7 @@ public class AreaRenderer extends BaseRenderer {
     public enum Mode {NONE, ADD, SUB}
 
     private Mode _mode;
-    private Class _cls;
+    private Class<? extends AreaModel> _cls;
 
     private Color[] COLORS = new Color[]{
             new Color(0.5f, 0.5f, 1f, 0.4f),
@@ -67,12 +69,12 @@ public class AreaRenderer extends BaseRenderer {
         areaModule.getAreas().forEach(area -> {
             area.getParcels().forEach(parcel -> {
 //                renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 32, Color.BLUE, true, 0, 0);
-                renderer.drawOnMap(parcel.x, parcel.y, _regions[Math.min(parcel.getArea().getTypeIndex(), 4)]);
+                renderer.drawOnMap(parcel.x, parcel.y, _regions[0]);
             });
         });
 
         if (_mode == Mode.ADD || _mode == Mode.SUB) {
-            renderer.drawRectangle(_mouseX, _mouseY, 30, 30, Color.CHARTREUSE, true);
+            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
         }
 
         // TODO

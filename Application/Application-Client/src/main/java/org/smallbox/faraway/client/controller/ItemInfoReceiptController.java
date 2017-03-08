@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.item.factory.ItemFactoryModel;
+import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;

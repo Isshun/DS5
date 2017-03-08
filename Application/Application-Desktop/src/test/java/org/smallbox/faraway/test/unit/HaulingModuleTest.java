@@ -3,7 +3,7 @@ package org.smallbox.faraway.test.unit;
 import org.junit.Assert;
 import org.junit.Test;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.area.model.StorageAreaModel;
+import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.test.technique.GameTestHelper;
 import org.smallbox.faraway.test.technique.GuiTestBase;
 
@@ -16,7 +16,7 @@ public class HaulingModuleTest extends GuiTestBase {
 
         GameTestHelper.create(this)
                 .runOnGameCreate(() -> {
-                    areaModule.createArea(StorageAreaModel.class, Arrays.asList(
+                    areaModule.createArea(StorageArea.class, Arrays.asList(
                             WorldHelper.getParcel(8, 10, 1),
                             WorldHelper.getParcel(7, 10, 1),
                             WorldHelper.getParcel(8, 11, 1),

@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.model.PathModel;
-import org.smallbox.faraway.modules.flora.model.PlantItem;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
