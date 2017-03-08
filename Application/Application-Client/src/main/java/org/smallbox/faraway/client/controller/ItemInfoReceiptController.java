@@ -1,10 +1,11 @@
 package org.smallbox.faraway.client.controller;
 
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -20,7 +21,8 @@ public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryM
 
     @BindLua private UIList listActions;
 
-    @BindLuaController private ItemInfoController itemInfoController;
+    @BindLuaController
+    private ItemInfoController itemInfoController;
 
     @Override
     public boolean onKeyPress(GameEventListener.Key key) {

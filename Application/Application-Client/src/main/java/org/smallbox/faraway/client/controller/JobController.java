@@ -1,12 +1,13 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.Log;
 

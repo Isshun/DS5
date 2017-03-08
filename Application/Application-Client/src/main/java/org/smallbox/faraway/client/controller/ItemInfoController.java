@@ -1,9 +1,10 @@
 package org.smallbox.faraway.client.controller;
 
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.CollectionUtils;
 

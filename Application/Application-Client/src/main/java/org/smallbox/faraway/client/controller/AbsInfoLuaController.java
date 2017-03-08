@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

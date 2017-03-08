@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller.area;
 
 import org.smallbox.faraway.GameEvent;
-import org.smallbox.faraway.client.controller.BindLuaController;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.renderer.AreaRenderer;
@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.util.Log;

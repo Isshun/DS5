@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameObserverPriority;
-import org.smallbox.faraway.core.lua.BindLuaAction;
+import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 
 /**
  * Created by Alex on 04/12/2016.

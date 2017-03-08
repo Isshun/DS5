@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
-import org.smallbox.faraway.core.lua.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.temperature.TemperatureModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 

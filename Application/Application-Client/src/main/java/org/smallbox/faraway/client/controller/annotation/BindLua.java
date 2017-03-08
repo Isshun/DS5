@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.lua;
+package org.smallbox.faraway.client.controller.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

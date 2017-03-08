@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.controller.BindLuaController;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.BuildController;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;

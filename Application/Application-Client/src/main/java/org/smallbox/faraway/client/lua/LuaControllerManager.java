@@ -5,15 +5,15 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.controller.BindLuaController;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.lua.BindLua;
-import org.smallbox.faraway.core.lua.BindLuaAction;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.*;
