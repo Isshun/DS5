@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
+import org.smallbox.faraway.modules.plant.PlantModule;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @BindModule
     private AreaModule areaModule;
+
+    @BindModule
+    private PlantModule plantModule;
 
     @BindLua
     private UIList listPlants;
@@ -40,7 +44,9 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
                                 .setText(item.label)
                                 .setTextSize(14)
                                 .setTextColor(0xB4D4D3)
-                                .setSize(200, 20)));
+                                .setSize(200, 20)
+                                .setOnClickListener(event ->
+                                        area.getParcels().forEach(parcel -> plantModule.addPlant(item, parcel)))));
     }
 
     @Override

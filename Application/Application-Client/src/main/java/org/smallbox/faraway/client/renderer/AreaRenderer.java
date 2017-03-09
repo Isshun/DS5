@@ -16,7 +16,7 @@ import org.smallbox.faraway.util.Constant;
 /**
  * Created by Alex on 13/06/2015.
  */
-@GameRenderer(level = 0, visible = true)
+@GameRenderer(level = MainRenderer.AREA_RENDERER_LEVEL, visible = true)
 public class AreaRenderer extends BaseRenderer {
 
     @BindComponent
@@ -35,7 +35,7 @@ public class AreaRenderer extends BaseRenderer {
     private Mode _mode;
     private Class<? extends AreaModel> _cls;
 
-    private Color[] COLORS = new Color[]{
+    private Color[] COLORS = new Color[] {
             new Color(0.5f, 0.5f, 1f, 0.4f),
             new Color(1, 1, 0, 0.4f),
             new Color(1, 0, 1, 0.4f),

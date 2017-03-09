@@ -4,10 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
@@ -90,9 +87,9 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Calling dependency injector", false,
                 Application.dependencyInjector::injectDependencies);
 
-        // Init input processor
-        Application.taskManager.addLoadTask("Init input processor", false, () ->
-                Gdx.input.setInputProcessor(ApplicationClient.inputManager));
+//        // Init input processor
+//        Application.taskManager.addLoadTask("Init input processor", false, () ->
+//                Gdx.input.setInputProcessor(ApplicationClient.inputManager));
 
         // Resume game
         Application.taskManager.addLoadTask("Resume game", false, () -> {
@@ -124,6 +121,7 @@ public class GDXApplication extends ApplicationAdapter {
     }
 
     private void gameRender() {
+        Gdx.input.setInputProcessor(ApplicationClient.inputManager);
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -141,20 +139,30 @@ public class GDXApplication extends ApplicationAdapter {
 
     private boolean _menuInit;
     private Texture _bgMenu;
+    private Texture _bgMenu2;
     private BitmapFont _menuFont;
 
     private void menuRender() {
         if (!_menuInit) {
-            _bgMenu = new Texture(FileUtils.getFileHandle("data/graphics/planet-wallpaper-vortex-background-scenery-art-72060.jpg"));
+            _menuInit = true;
+            _bgMenu = new Texture(FileUtils.getFileHandle("data/graphics/menu_bg.jpg"));
+            _bgMenu2 = new Texture(FileUtils.getFileHandle("data/graphics/menu_bg.png"));
 
             _menuFont = new BitmapFont(
                     new FileHandle(new File(Application.BASE_PATH, "data/font-32.fnt")),
                     new FileHandle(new File(Application.BASE_PATH, "data/font-32.png")),
                     false);
+            _menuFont.setColor(new Color(0x80ced6ff));
 
             Gdx.input.setInputProcessor(new InputAdapter() {
                 public boolean touchUp (int screenX, int screenY, int pointer, int button) {
                     System.out.println(screenX + "x" + screenY);
+                    if (screenY > 20 && screenY < 60) {
+                        Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, null);
+                    }
+                    if (screenY > 70 && screenY < 110) {
+                        Gdx.app.exit();
+                    }
                     return false;
                 }
             });
@@ -170,10 +178,10 @@ public class GDXApplication extends ApplicationAdapter {
         _batch.setProjectionMatrix(camera.combined);
 
         _batch.draw(_bgMenu, 0, 0);
+        _batch.draw(_bgMenu2, 0, 0);
 
-        _menuFont.setColor(0.5f, 0.9f, 0.8f, 1);
         _menuFont.draw(_batch, "New Game", 32, Gdx.graphics.getHeight() - 32);
-        _menuFont.draw(_batch, "Exit", 32, Gdx.graphics.getHeight() - 64);
+        _menuFont.draw(_batch, "Exit", 32, Gdx.graphics.getHeight() - 80);
 
         _batch.end();
     }

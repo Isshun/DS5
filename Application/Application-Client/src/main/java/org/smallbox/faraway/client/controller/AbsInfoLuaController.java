@@ -23,7 +23,6 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
 
     public void display(T object) {
         list = Collections.singletonList(object);
-        mainPanelController.setCurrentController(this);
         displayObjects();
     }
 
@@ -45,10 +44,8 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
                 .collect(Collectors.toList());
 
         if (CollectionUtils.isNotEmpty(list)) {
-            mainPanelController.setCurrentController(this);
+            setVisible(true);
             displayObjects();
-//        } else if (isVisible()) {
-//            mainPanelController.setVisible(true);
         }
 
         return CollectionUtils.isNotEmpty(list);
@@ -62,9 +59,7 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     }
 
     private void displayObjects() {
-        if (mainPanelController.getCurrentController() == this) {
-            setVisible(true);
-
+        if (isVisible()) {
             if (list.size() == 1) {
                 onDisplayUnique(list.get(0));
             } else {

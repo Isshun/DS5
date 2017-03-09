@@ -21,7 +21,7 @@ data:extend({
         { path = "[module]/graphics/consumables/vegetables.png", x = 14, y = 4, tile_width = 24, tile_height = 24 },
     }},
     { type = "consumable", label = "Tomato", name = "base.consumable.vegetable.tomato", parent = "base.vegetable", graphics = {
-        { path = "[module]/graphics/consumables/vegetables.png", x = 12, y = 4, tile_width = 24, tile_height = 24 },
+        { path = "[module]/graphics/plants/tomato.png", x = 4, y = 0 },
     }},
 
     -- Seaweed

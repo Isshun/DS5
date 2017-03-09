@@ -62,14 +62,6 @@ public class MainPanelController extends LuaController {
         }
     }
 
-    public void setCurrentController(LuaController controller) {
-        _currentPaneController = controller;
-    }
-
-    public LuaController getCurrentController() {
-        return _currentPaneController;
-    }
-
     @Override
     protected void onNewGameUpdate(Game game) {
 

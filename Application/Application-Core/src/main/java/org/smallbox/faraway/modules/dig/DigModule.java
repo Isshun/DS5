@@ -3,7 +3,6 @@ package org.smallbox.faraway.modules.dig;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -38,7 +37,7 @@ public class DigModule extends GameModule {
     @Override
     public void onGameCreate(Game game) {
 
-        areaModule.addAreaType(StorageArea.class);
+        areaModule.addAreaType(DigArea.class);
 
 //        worldModule.getParcelList().stream()
 //                .filter(parcel -> parcel.z == 1)

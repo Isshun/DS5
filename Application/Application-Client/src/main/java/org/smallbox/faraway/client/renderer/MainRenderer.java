@@ -22,8 +22,9 @@ public class MainRenderer implements GameClientObserver {
     public static final int                 PLANT_RENDERER_LEVEL = -103;
     public static final int                 ITEM_RENDERER_LEVEL = -103;
     public static final int                 STRUCTURE_RENDERER_LEVEL = -104;
-    public static final int                 WORLD_GROUND_RENDERER_LEVEL = -105;
-    public static final int                 WORLD_TOP_RENDERER_LEVEL = -106;
+    public static final int                 AREA_RENDERER_LEVEL = -105;
+    public static final int                 WORLD_GROUND_RENDERER_LEVEL = -106;
+    public static final int                 WORLD_TOP_RENDERER_LEVEL = -107;
 //    public static final int                 JOB_RENDERER_LEVEL = -96;
 
     private static long                     _renderTime;

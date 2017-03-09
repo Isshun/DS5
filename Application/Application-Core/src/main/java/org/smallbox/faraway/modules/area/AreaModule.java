@@ -77,7 +77,7 @@ public class AreaModule extends GameModule {
 
     public List<ParcelModel> getParcels(Class<? extends AreaModel> cls) {
         return _areas.stream()
-                .filter(area -> area.getClass().isInstance(cls))
+                .filter(cls::isInstance)
                 .flatMap(area -> area.getParcels().stream())
                 .collect(Collectors.toList());
     }

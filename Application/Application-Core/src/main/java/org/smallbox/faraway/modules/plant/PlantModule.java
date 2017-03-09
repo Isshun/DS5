@@ -9,8 +9,8 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.Collection;
@@ -58,10 +58,25 @@ public class PlantModule extends GameModule {
         _plants.forEach(plant -> plant.setSeed(true));
     }
 
-    public void addPlant(String plantName, int x, int y, int z) {
-        PlantItem plant = new PlantItem(Application.data.getItemInfo(plantName));
-        plant.setParcel(WorldHelper.getParcel(x, y, z));
-        plant.setMaturity(Math.random());
+    public void addPlant(String plantName, int x, int y, int z) { addPlant(Application.data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }
+    public void addPlant(ItemInfo item, int x, int y, int z) { addPlant(item, WorldHelper.getParcel(x, y, z)); }
+    public void addPlant(String plantName, ParcelModel parcel) { addPlant(plantName, parcel); }
+
+    /**
+     * Add plant on parcel
+     *
+     * @param item ItemInfo
+     * @param parcel ParcelModel
+     */
+    public void addPlant(ItemInfo item, ParcelModel parcel) {
+
+        // Remove existing plant
+        _plants.removeIf(plant -> plant.getParcel() == parcel);
+
+        // Add new one
+        PlantItem plant = new PlantItem(item);
+        plant.setParcel(parcel);
+        plant.setMaturity(0);
         _plants.add(plant);
     }
 
@@ -97,43 +112,6 @@ public class PlantModule extends GameModule {
     public PlantItem getPlant(ParcelModel parcel) {
         Optional<PlantItem> optional = _plants.stream().filter(plant -> plant.getParcel() == parcel).findAny();
         return optional.isPresent() ? optional.get() : null;
-    }
-
-    private PlantItem putPlant(ParcelModel parcel, ItemInfo itemInfo, int matterSupply) {
-        // Put item on floor
-        PlantItem plant = new PlantItem(itemInfo);
-        for (int i = 0; i < plant.getWidth(); i++) {
-            for (int j = 0; j < plant.getHeight(); j++) {
-                parcel.setPlant(plant);
-                plant.setParcel(parcel);
-            }
-        }
-        _plants.add(plant);
-
-        Application.pathManager.resetAround(parcel);
-
-//        notifyObservers(observer -> observer.onAddPlant(plant));
-
-        return plant;
-    }
-
-    public void removePlant(PlantItem plant) {
-        if (plant != null) {
-            if (plant.getParcel().getPlant() == plant) {
-                plant.getParcel().setPlant(null);
-            }
-
-            // TODO ?
-            if (plant.getInfo().plant != null) {
-                _plants.remove(plant);
-            }
-
-            _plants.remove(plant);
-
-            Application.pathManager.resetAround(plant.getParcel());
-
-//            notifyObservers(observer -> observer.onRemovePlant(plant));
-        }
     }
 
 }
