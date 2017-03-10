@@ -34,6 +34,8 @@ public class DependencyInjector {
     private HashMap<Class<?>, Object> _models = new HashMap<>();
     private ApplicationClientInterface _clientInterface;
 
+    public Collection<Object> getObjects() { return _objectPool; }
+
     public static DependencyInjector getInstance() { return _self; }
 
     public DependencyInjector() {

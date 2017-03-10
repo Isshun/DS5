@@ -33,6 +33,8 @@ public class GameManager implements GameObserver {
     public void onGameLoad(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo) {
 //        Application.notify(GameObserver::onReloadUI);
         _game = new Game(gameInfo);
+        Application.dependencyInjector.register(_game);
+
         _game.createModules();
 
         Application.runOnMainThread(() -> Application.notify(observer -> observer.onGameCreateObserver(_game)));
@@ -78,6 +80,8 @@ public class GameManager implements GameObserver {
         }
 
         _game = new Game(gameInfo);
+        Application.dependencyInjector.register(_game);
+
         _game.loadModules();
 
         worldFactory.create(

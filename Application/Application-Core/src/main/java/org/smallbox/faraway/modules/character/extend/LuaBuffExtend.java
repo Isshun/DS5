@@ -1,8 +1,7 @@
 package org.smallbox.faraway.modules.character.extend;
 
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.*;
+import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -11,6 +10,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.modules.buff.BuffHandler;
 import org.smallbox.faraway.modules.character.model.BuffInfo;
 import org.smallbox.faraway.modules.character.model.BuffModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 import org.smallbox.faraway.util.Log;
 
@@ -169,36 +169,82 @@ public class LuaBuffExtend extends LuaExtend {
             return;
         }
 
-        try {
-            buff.handler = (BuffHandler) Class.forName(value.get("class").tojstring()).newInstance();
-            Application.dependencyInjector.register(buff.handler);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            Log.error(e);
+        if (!value.get("class").isnil()) {
+            try {
+                buff.handler = (BuffHandler) Class.forName(value.get("class").tojstring()).newInstance();
+                Application.dependencyInjector.register(buff.handler);
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                Log.error(e);
+            }
         }
 
-        LuaValue luaLevels = value.get("levels");
-        if (!luaLevels.isnil()) {
-            for (int i = 1; i <= luaLevels.length(); i++) {
-                LuaValue luaLevel = luaLevels.get(i);
-                BuffInfo.BuffLevelInfo levelInfo = new BuffInfo.BuffLevelInfo();
-                levelInfo.level = i;
-                levelInfo.message = luaLevel.get("message").tojstring();
-                levelInfo.mood = luaLevel.get("mood").toint();
+        if (!value.get("on_get_level").isnil()) {
+            buff.onGetLevel = new BuffInfo.OnGetLevel() {
 
-                LuaValue luaEffects = luaLevel.get("effects");
-                if (!luaEffects.isnil()) {
-                    for (int j = 1; j <= luaEffects.length(); j++) {
-                        LuaValue luaEffect = luaEffects.get(j);
-                        BuffInfo.BuffEffectInfo effectInfo = new BuffInfo.BuffEffectInfo();
-                        if (!luaEffect.get("disease").isnil()) {
-                            Application.data.getAsync(luaEffect.get("disease").tojstring(), DiseaseInfo.class, disease -> effectInfo.disease = disease);
+                private Varargs varargs;
+
+                @Override
+                public int getLevel(CharacterModel character) {
+
+                    if (varargs == null) {
+                        LocVars[] locVars = ((LuaClosure)value.get("on_get_level")).p.locvars;
+                        LuaValue[] args = new LuaValue[locVars.length];
+                        for (int i = 0; i < locVars.length; i++) {
+                            String argName = locVars[i].varname.tojstring().toLowerCase();
+                            Log.info("Inject: " + argName);
+
+                            // Inject le personnage ayant le buff
+                            if ("character".equals(argName)) {
+                                args[i] = CoerceJavaToLua.coerce(character);
+                            }
+
+                            // Récupère un objet depuis l'injecteur de dependance
+                            else {
+                                Object object = Application.dependencyInjector.getObjects().stream()
+                                        .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
+                                        .findAny().orElse(null);
+                                if (object == null) {
+                                    throw new GameException(LuaBuffExtend.class, "on_get_level DI error");
+                                }
+
+                                args[i] = CoerceJavaToLua.coerce(object);
+                            }
                         }
-                        effectInfo.rate = luaEffect.get("rate").todouble();
-                        levelInfo.effects.add(effectInfo);
+                        varargs = LuaValue.varargsOf(args);
                     }
-                }
 
-                buff.levels.add(levelInfo);
+                    Varargs ret = value.get("on_get_level").invoke(varargs);
+
+                    return ret.toint(1);
+                }
+            };
+        }
+
+        if (!value.get("levels").isnil()) {
+            LuaValue luaLevels = value.get("levels");
+            if (!luaLevels.isnil()) {
+                for (int i = 1; i <= luaLevels.length(); i++) {
+                    LuaValue luaLevel = luaLevels.get(i);
+                    BuffInfo.BuffLevelInfo levelInfo = new BuffInfo.BuffLevelInfo();
+                    levelInfo.level = i;
+                    levelInfo.message = luaLevel.get("message").tojstring();
+                    levelInfo.mood = luaLevel.get("mood").toint();
+
+                    LuaValue luaEffects = luaLevel.get("effects");
+                    if (!luaEffects.isnil()) {
+                        for (int j = 1; j <= luaEffects.length(); j++) {
+                            LuaValue luaEffect = luaEffects.get(j);
+                            BuffInfo.BuffEffectInfo effectInfo = new BuffInfo.BuffEffectInfo();
+                            if (!luaEffect.get("disease").isnil()) {
+                                Application.data.getAsync(luaEffect.get("disease").tojstring(), DiseaseInfo.class, disease -> effectInfo.disease = disease);
+                            }
+                            effectInfo.rate = luaEffect.get("rate").todouble();
+                            levelInfo.effects.add(effectInfo);
+                        }
+                    }
+
+                    buff.levels.add(levelInfo);
+                }
             }
         }
 

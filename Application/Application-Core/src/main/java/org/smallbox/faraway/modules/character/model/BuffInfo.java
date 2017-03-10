@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
 import org.smallbox.faraway.modules.buff.BuffHandler;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 
 import java.util.Collection;
@@ -13,6 +14,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Alex on 02/07/2015.
  */
 public class BuffInfo extends ObjectInfo {
+
+    public interface OnGetLevel {
+        int getLevel(CharacterModel character);
+    }
+
+    public OnGetLevel onGetLevel;
 
     public interface BuffListener {
         void onStart(BuffModel data);

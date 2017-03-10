@@ -85,10 +85,20 @@ public class BuffModule extends GameModule {
     }
 
     private BuffInfo.BuffLevelInfo getMaxLevel(CharacterModel character, BuffInfo buffInfo) {
-        int level = buffInfo.handler.getLevel(character);
-        for (BuffInfo.BuffLevelInfo levelInfo: buffInfo.levels) {
-            if (levelInfo.level == level) {
-                return levelInfo;
+        if (buffInfo.handler != null) {
+            int level = buffInfo.handler.getLevel(character);
+            for (BuffInfo.BuffLevelInfo levelInfo : buffInfo.levels) {
+                if (levelInfo.level == level) {
+                    return levelInfo;
+                }
+            }
+        }
+        if (buffInfo.onGetLevel != null) {
+            int level = buffInfo.onGetLevel.getLevel(character);
+            for (BuffInfo.BuffLevelInfo levelInfo : buffInfo.levels) {
+                if (levelInfo.level == level) {
+                    return levelInfo;
+                }
             }
         }
         return null;
