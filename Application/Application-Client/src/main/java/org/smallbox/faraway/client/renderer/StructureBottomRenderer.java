@@ -37,7 +37,7 @@ public class StructureBottomRenderer extends BaseRenderer {
 //                        isOpen = true;
 //                    }
 //                }
-                structure.setTile(isOpen ? 1 : 0);
+//                structure.setTile(isOpen ? 1 : 0);
             }
         });
     }

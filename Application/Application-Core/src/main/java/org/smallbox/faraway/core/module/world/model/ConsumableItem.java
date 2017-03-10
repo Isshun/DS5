@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.module.world.model;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Log;
@@ -33,7 +32,6 @@ public class ConsumableItem extends MapObjectModel {
         Log.debug(ConsumableItem.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, _freeQuantity, quantity);
 
         _freeQuantity += quantity;
-        _needRefresh = true;
 
         if (_freeQuantity < 0) {
             throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
@@ -49,7 +47,6 @@ public class ConsumableItem extends MapObjectModel {
         Log.debug(ConsumableItem.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, _freeQuantity, quantity);
 
         _freeQuantity = quantity;
-        _needRefresh = true;
 
         if (_freeQuantity < 0) {
             throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);

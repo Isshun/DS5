@@ -87,9 +87,8 @@ public class UIEventManager {
     public boolean click(GameEvent event, int x, int y) {
         View bestView = null;
         int bestDepth = -1;
-        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onClickListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
+            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                 bestDepth = view.getDeep();
                 bestView = view;
             }
@@ -144,9 +143,8 @@ public class UIEventManager {
     }
 
     public boolean rightClick(GameEvent event, int x, int y) {
-        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onRightClickListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onRightClickListeners.get(view).onClick(event);
                 return true;
             }
@@ -155,9 +153,8 @@ public class UIEventManager {
     }
 
     public boolean mouseWheelUp(GameEvent event, int x, int y) {
-        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onMouseWheelUpListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onMouseWheelUpListeners.get(view).onClick(event);
                 return true;
             }
@@ -166,9 +163,8 @@ public class UIEventManager {
     }
 
     public boolean mouseWheelDown(GameEvent event, int x, int y) {
-        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onMouseWheelDownListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && view.contains(x, y)) {
+            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
                 _onMouseWheelDownListeners.get(view).onClick(event);
                 return true;
             }
@@ -181,9 +177,8 @@ public class UIEventManager {
     }
 
     public boolean keyRelease(GameEventListener.Key key) {
-        boolean gameRunning = Application.gameManager.isLoaded();
         for (View view: _onKeysListeners.keySet()) {
-            if (view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view) && hasFocus(view)) {
+            if (view.isActive() && hasVisibleHierarchy(view) && hasFocus(view)) {
                 _onKeysListeners.get(view).onKeyRelease(view, key);
                 return true;
             }
@@ -196,10 +191,8 @@ public class UIEventManager {
     }
 
     public void onMouseMove(int x, int y) {
-        boolean gameRunning = Application.gameManager.isLoaded();
-
         ApplicationClient.uiManager.getViews().stream()
-                .filter(view -> view.isVisible() && view.isActive() && (gameRunning || !view.inGame()) && hasVisibleHierarchy(view))
+                .filter(view -> view.isVisible() && view.isActive() && hasVisibleHierarchy(view))
                 .forEach(view -> {
                     if (hasVisibleHierarchy(view) && view.contains(x, y)) {
                         view.onEnter();

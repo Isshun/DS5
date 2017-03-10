@@ -16,12 +16,51 @@ import java.util.List;
  * Created by Alex on 14/07/2015.
  */
 public class BuildableMapObject extends MapObjectModel {
+
+    private int                 _matter;
+    private int                 _health;
+    private int                 _width;
+    private int                 _height;
+    private double              _progress;
+
     public BuildableMapObject(ItemInfo info) {
         super(info);
     }
 
     public BuildableMapObject(ItemInfo info, int id) {
         super(info, id);
+    }
+
+    @Override
+    protected void init(ItemInfo info, int id) {
+        super.init(info, id);
+
+        _health = info.health / 2;
+
+        // Default values
+        _width = 1;
+        _height = 1;
+        _matter = 1;
+
+        _width = info.width;
+        _height = info.height;
+    }
+
+    public int              getWidth() { return _width; }
+    public int              getHeight() { return _height; }
+    public int              getHealth() { return _health; }
+    public int              getMaxHealth() { return _info.health; }
+
+    public void setHealth(int health) {
+        _health = health;
+    }
+
+    public void addHealth(int health) {
+        _health = _health + health;
+    }
+
+    public void addProgress(double value) {
+        _progress += value;
     }
 
     public static class ComponentModel extends ObjectModel {
@@ -50,7 +89,6 @@ public class BuildableMapObject extends MapObjectModel {
     private BuildJob                    _buildJob;
     private List<ComponentModel>        _components = new ArrayList<>();
 
-    @Override
     public int addComponent(ConsumableItem consumable) {
         _components.stream().filter(component -> component.info == consumable.getInfo()).forEach(component -> {
             if (component.neededQuantity - component.currentQuantity > consumable.getFreeQuantity()) {
@@ -122,7 +160,6 @@ public class BuildableMapObject extends MapObjectModel {
 //        _components = receipt.components.stream().map(componentInfo -> new ComponentModel(componentInfo.item, componentInfo.quantity)).collect(Collectors.toList());
     }
 
-    @Override
     public List<ComponentModel>     getComponents() {
         return _components;
     }

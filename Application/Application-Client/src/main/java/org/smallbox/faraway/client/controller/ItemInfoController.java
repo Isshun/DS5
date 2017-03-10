@@ -1,17 +1,18 @@
 package org.smallbox.faraway.client.controller;
 
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         lbName.setText(item.getLabel());
         refreshActions(item);
         refreshBuilding(item);
-        refreshWorkers(item.getJobs());
+        refreshJobs(item.getJobs());
         refreshInventory(item);
 
         if (item.getFactory() != null) {
@@ -176,7 +177,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         }
     }
 
-    private void refreshWorkers(List<JobModel> jobs) {
+    private void refreshJobs(Collection<JobModel> jobs) {
         if (CollectionUtils.isNotEmpty(jobs)) {
             frameWorkers.setVisible(true);
 

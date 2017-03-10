@@ -2,12 +2,13 @@ package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
+import org.smallbox.faraway.modules.job.JobModel;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -54,6 +55,15 @@ public class UsableItem extends BuildableMapObject {
     public void                         setTargetTemperature(int targetTemperature) { _targetTemperature = targetTemperature; }
     public void                         setFunctional(boolean isFunctional) { _isFunctional = isFunctional; }
     public void                         setPotencyUse(int potencyUse) { _potencyUse = potencyUse; }
+
+    public void use(CharacterModel character, int durationLeft) {
+        // Add buffEffect on characters
+//        if (CollectionUtils.isNotEmpty(_info.actions)) {
+//            _info.actions.stream()
+//                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.USE)
+//                    .forEach(character::apply);
+//        }
+    }
 
     // TODO: this method must only be used by world serializer, createGame pack/unpack method for in-game use
     @Override
