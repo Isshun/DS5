@@ -21,7 +21,7 @@ public class FactoryTest extends HeadlessTestBase {
 
         Assert.assertEquals(0, consumableModule.getTotal("base.consumable.vegetable.rice"));
         Assert.assertEquals(0, consumableModule.getTotal("base.consumable.vegetable.carrot"));
-        Assert.assertEquals(20, consumableModule.getTotal("base.easy_meal"));
+        Assert.assertEquals(20, consumableModule.getTotal("base.consumable.easy_meal"));
     }
 
 }

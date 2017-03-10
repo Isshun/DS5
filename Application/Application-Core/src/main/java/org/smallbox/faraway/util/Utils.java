@@ -72,4 +72,8 @@ public class Utils {
     public static int bound(int min, int max, int value) {
         return Math.max(min, Math.min(max, value));
     }
+
+    public static int round(double value, int round) {
+        return (int) (Math.floor(value / round) * round);
+    }
 }

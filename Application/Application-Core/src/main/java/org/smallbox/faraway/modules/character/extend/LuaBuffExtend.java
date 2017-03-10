@@ -11,6 +11,7 @@ import org.smallbox.faraway.modules.buff.BuffHandler;
 import org.smallbox.faraway.modules.character.model.BuffInfo;
 import org.smallbox.faraway.modules.character.model.BuffModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 import org.smallbox.faraway.util.Log;
 
@@ -148,7 +149,7 @@ public class LuaBuffExtend extends LuaExtend {
                                 }
                             }
 
-                            data.character.getNeeds().happinessChange += data.mood;
+                            data.character.getExtra(CharacterNeedsExtra.class).happinessChange += data.mood;
                         }
                     }
                 } else {

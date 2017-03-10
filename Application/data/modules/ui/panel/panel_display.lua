@@ -32,7 +32,7 @@ ui:extend({
 function setDisplay(view, display)
     local iterator = view:getParent():getViews():iterator()
     while iterator:hasNext() do
-        iterator:next():setBackgroundColor(0x121c1e)
+        iterator:next():setBackgroundColor(color3)
     end
     view:setBackgroundColor(0x25c9cb)
     application:setDisplay(display)

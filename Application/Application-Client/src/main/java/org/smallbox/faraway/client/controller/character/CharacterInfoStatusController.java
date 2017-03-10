@@ -6,16 +6,19 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.modules.buff.BuffModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.BasicStoreJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.CollectionUtils;
+import org.smallbox.faraway.util.Utils;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -25,6 +28,7 @@ public class CharacterInfoStatusController extends LuaController {
     @BindModule
     private BuffModule buffModule;
 
+    @BindLua private View frameJob;
     @BindLua private UILabel lbJob;
     @BindLua private UIImage imgJob;
 
@@ -62,12 +66,12 @@ public class CharacterInfoStatusController extends LuaController {
 
         displayJob(character);
 
-        displayNeed(lbNeedFood,     gaugeFood,      "Food",     character.getNeeds().get("food"));
-        displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",    character.getNeeds().get("drink"));
-        displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",   character.getNeeds().get("energy"));
-        displayNeed(lbNeedJoy,      gaugeJoy,       "Joy",      character.getNeeds().get("entertainment"));
-        displayNeed(lbNeedRelation, gaugeRelation,  "Relation", character.getNeeds().get("relation"));
-        displayNeed(lbNeedOxygen,   gaugeOxygen,    "Oxygen",   character.getNeeds().get("oxygen"));
+        displayNeed(lbNeedFood,     gaugeFood,      "Food",     character.getExtra(CharacterNeedsExtra.class).get(CharacterNeedsExtra.TAG_FOOD));
+        displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",    character.getExtra(CharacterNeedsExtra.class).get(CharacterNeedsExtra.TAG_DRINK));
+        displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",   character.getExtra(CharacterNeedsExtra.class).get(CharacterNeedsExtra.TAG_ENERGY));
+        displayNeed(lbNeedJoy,      gaugeJoy,       "Joy",      character.getExtra(CharacterNeedsExtra.class).get(CharacterNeedsExtra.TAG_ENTERTAINMENT));
+        displayNeed(lbNeedRelation, gaugeRelation,  "Relation", character.getExtra(CharacterNeedsExtra.class).get(CharacterNeedsExtra.TAG_RELATION));
+        displayNeed(lbNeedOxygen,   gaugeOxygen,    "Oxygen",   character.getExtra(CharacterNeedsExtra.class).get(CharacterNeedsExtra.TAG_OXYGEN));
 
         displayBuffs(character);
     }
@@ -75,6 +79,7 @@ public class CharacterInfoStatusController extends LuaController {
     private void displayJob(CharacterModel character) {
         JobModel job = character.getJob();
         if (job != null) {
+            frameJob.setVisible(true);
             lbJob.setText(job.getMainLabel());
 
             if (job instanceof BasicHaulJob) {
@@ -104,19 +109,21 @@ public class CharacterInfoStatusController extends LuaController {
                     }
                 }
             }
+        } else {
+            frameJob.setVisible(false);
         }
     }
 
     private void displayNeed(UILabel label, UIImage gauge, String text, double value) {
-        if (value > 80) {
-            label.setTextColor(0xb3d035).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
-            gauge.setTextureRect(0, 80, (int) (Math.floor(value * 170 / 100 / 10) * 10), 8);
-        } else if (value > 50) {
-            label.setTextColor(0xfff54f).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
-            gauge.setTextureRect(0, 32, (int) (Math.floor(value * 170 / 100 / 10) * 10), 8);
+        if (value > 0.8) {
+            label.setTextColor(0xb3d035).setDashedString(text, String.valueOf((int) Math.floor(value * 100)), 21);
+            gauge.setTextureRect(0, 80, Utils.round(value * 170, 10), 8);
+        } else if (value > 0.5) {
+            label.setTextColor(0xfff54f).setDashedString(text, String.valueOf((int) Math.floor(value * 100)), 21);
+            gauge.setTextureRect(0, 32, Utils.round(value * 170, 10), 8);
         } else {
-            label.setTextColor(0xf73939).setDashedString(text, String.valueOf((int) Math.floor(value)), 21);
-            gauge.setTextureRect(0, 48, Math.max(10, (int) (Math.floor(value * 170 / 100 / 10) * 10)), 8);
+            label.setTextColor(0xf73939).setDashedString(text, String.valueOf((int) Math.floor(value * 100)), 21);
+            gauge.setTextureRect(0, 48, Math.max(10, Utils.round(value * 170, 10)), 8);
         }
     }
 

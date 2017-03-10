@@ -30,6 +30,7 @@ public abstract class View implements Comparable<View> {
     private String _path;
     private int _index;
     private boolean _sorted;
+    private Color _borderColor;
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
@@ -81,6 +82,11 @@ public abstract class View implements Comparable<View> {
 
     public int getIndex() {
         return _index;
+    }
+
+    public View setBorderColor(long color) {
+        _borderColor = new Color(color);
+        return this;
     }
 
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
@@ -277,6 +283,10 @@ public abstract class View implements Comparable<View> {
                 renderer.drawPixel(_backgroundColor, _finalX, _finalY, _width, _height);
             }
 
+            if (_borderColor != null) {
+                renderer.drawRectangle(_finalX, _finalY, _width, _height, _borderColor, false);
+            }
+
 //            if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
 //                removeAllViews();
 //                _adapter.setRefresh();
@@ -345,11 +355,16 @@ public abstract class View implements Comparable<View> {
         return (_finalX <= x && _finalX + _width >= x && _finalY <= y && _finalY + _height >= y);
     }
 
-    public void setMargin(int top, int right, int bottom, int left) {
+    public View setMargin(int top, int right, int bottom, int left) {
         _marginTop = (int) (top * Application.APPLICATION_CONFIG.uiScale);
         _marginRight = (int) (right * Application.APPLICATION_CONFIG.uiScale);
         _marginBottom = (int) (bottom * Application.APPLICATION_CONFIG.uiScale);
         _marginLeft = (int) (left * Application.APPLICATION_CONFIG.uiScale);
+        return this;
+    }
+
+    public View setMargin(int top, int right) {
+        return setMargin(top, right, top, right);
     }
 
     public UIAdapter getAdapter() {

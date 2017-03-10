@@ -12,7 +12,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 public class LuaCharacterModel extends ObjectModel {
 //    public final int                id;
     public final String             name;
-    public final CharacterNeedsExtra needs;
     public final CharacterStatsExtra stats;
     public final CharacterModel     character;
     public final ParcelModel        parcel;
@@ -23,7 +22,6 @@ public class LuaCharacterModel extends ObjectModel {
 //        this.id = org.smallbox.faraway.core.module.room.model.getId();
         this.name = character.getPersonals().getName();
         this.faction = "fremen";
-        this.needs = character.getNeeds();
         this.stats = character.getStats();
         this.character = character;
         this.parcel = character.getParcel();

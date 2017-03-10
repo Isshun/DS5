@@ -7,11 +7,9 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -49,8 +47,6 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private UIImage btDetails;
     @BindLua private UIImage btHealth;
 
-    @BindLua private UIList  listTalents;
-
     @Override
     protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
         return characterModule.getCharacter(parcel);
@@ -64,9 +60,6 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
         // Info
 //        lbTalents.setText(StringUtils.join(character.getTalents().getAll().stream().map(talentEntry -> talentEntry.name).collect(Collectors.toList()), ", "));
-
-        character.getTalents().getAll().forEach(talent ->
-                listTalents.addView(UILabel.create(null).setText(talent.name).setTextColor(new Color(0xB4D4D3)).setTextSize(14).setSize(0, 20)));
 
         characterInfoStatusController.selectCharacter(character);
         characterInfoDetailsController.selectCharacter(character);

@@ -44,6 +44,10 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         addConsumable(Application.data.getItemInfo(itemName), quantity, x, y, z);
     }
 
+    public void addConsumable(String itemName, int quantity, ParcelModel parcel) {
+        addConsumable(Application.data.getItemInfo(itemName), quantity, parcel);
+    }
+
     public void addConsumable(ItemInfo itemInfo, int[] quantity, int x, int y, int z) {
         addConsumable(itemInfo, Utils.getRandom(quantity), x, y, z);
     }

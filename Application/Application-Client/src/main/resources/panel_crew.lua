@@ -6,7 +6,7 @@ ui:extend({
     visible = false,
     debug = true,
     views = {
-        { type = "label", text = "Crew", text_color = 0x679B99, text_size = 28, position = {12, 16}},
+        { type = "label", text = "Crew", text_color = color1, text_size = 28, position = {12, 16}},
 --        { type = "image", src = "[base]/graphics/needs/lb_food.png", size = {12, 32}, position = {282, 16}},
 --        { type = "image", src = "[base]/graphics/needs/lb_food.png", size = {12, 32}, position = {282 + 20, 16}},
 --        { type = "image", src = "[base]/graphics/needs/lb_food.png", size = {12, 32}, position = {282 + 40, 16}},

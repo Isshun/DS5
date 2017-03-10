@@ -8,16 +8,17 @@ import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.dig.DigArea;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 import org.smallbox.faraway.modules.disease.DiseaseModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
-import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -56,6 +57,9 @@ public class DesktopLauncher {
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
                 character.addInventory("base.consumable.vegetable.rice", 10);
                 character.addInventory("base.consumable.vegetable.carrot", 10);
+
+                ParcelModel mealParcel = WorldHelper.getParcel(2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 10, mealParcel);
 
                 DiseaseInfo diseaseInfo = new DiseaseInfo();
                 diseaseInfo.label = "di test";
@@ -99,14 +103,14 @@ public class DesktopLauncher {
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.rice", 10, 4, 4, 1);
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.carrot", 10, 4, 6, 1);
 
-                for (int i = 7; i <= 9; i++) {
-                    for (int j = 5; j <= 8; j++) {
-                        Application.moduleManager.getModule(WorldModule.class).getParcel(i, j, 1).setRockName("base.granite");
-                    }
-                }
-
-                Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
-                Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
+//                for (int i = 7; i <= 9; i++) {
+//                    for (int j = 5; j <= 8; j++) {
+//                        Application.moduleManager.getModule(WorldModule.class).getParcel(i, j, 1).setRockName("base.granite");
+//                    }
+//                }
+//
+//                Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
+//                Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");
 
 //                        List<ParcelModel> parcels = Application.moduleManager.getModule(WorldModule.class).getParcelList().stream().filter(parcel -> parcel.z == 1).collect(Collectors.toList());
 //                        Application.data.consumables.forEach(itemInfo ->

@@ -22,6 +22,7 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     protected List<T> list;
 
     public void display(T object) {
+        setVisible(true);
         list = Collections.singletonList(object);
         displayObjects();
     }

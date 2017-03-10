@@ -1,16 +1,11 @@
 package org.smallbox.faraway.modules.consumable;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.MoveListener;
+import org.smallbox.faraway.modules.job.JobModel;
 
 public class ConsumeJob extends JobModel {
 
@@ -24,86 +19,86 @@ public class ConsumeJob extends JobModel {
     private ItemInfo            _itemInfo;
     private double              _current;
 
-    private ConsumeJob(ParcelModel parcel) {
-        super(null, parcel);
-//        super(null, parcel, null, new AnimDrawable("data/res/action_consume.png", 0, 0, 32, 32, 2, 10));
+    public ConsumeJob(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
+        super(itemInfoAction, parcelModel);
+        setMainLabel("Consume");
     }
 
-    public static ConsumeJob create(CharacterModel character, ConsumableItem consumable) {
-        assert consumable != null;
-        assert character != null;
-        assert character.getInventory() == null;
-
-        ConsumeJob job = character.getInventory() == consumable ? new ConsumeJob(character.getParcel()) : new ConsumeJob(consumable.getParcel());
-        job.setCharacterRequire(character);
-        job._cost = consumable.getInfo().consume.cost;
-        job._consumable = consumable;
-        job._itemInfo = consumable.getInfo();
-
-        return job;
-    }
+//    public static ConsumeJob create(CharacterModel character, ConsumableItem consumable) {
+//        assert consumable != null;
+//        assert character != null;
+//        assert character.getInventory() == null;
+//
+//        ConsumeJob job = character.getInventory() == consumable ? new ConsumeJob(character.getParcel()) : new ConsumeJob(consumable.getParcel());
+//        job.setCharacterRequire(character);
+//        job._cost = consumable.getInfo().consume.cost;
+//        job._consumable = consumable;
+//        job._itemInfo = consumable.getInfo();
+//
+//        return job;
+//    }
 
     @Override
     public JobCheckReturn onCheck(CharacterModel character) {
-        if (_character.getInventory() != null && _character.getInventory().getInfo() != _itemInfo) {
-            return JobCheckReturn.ABORT;
-        }
-
-        // Missing item
-        if (_consumable.getFreeQuantity() <= 0) {
-            throw new GameException(ConsumeJob.class, "ConsumeJob: item cannot be null, non consumable or empty");
-        }
-
-        // Item is no longer exists
-        if (_consumable != _character.getInventory() && _consumable.getParcel().getItem(ConsumableItem.class) != _consumable) {
-//            _reason = JobAbortReason.ABORT;
-            return JobCheckReturn.ABORT;
-        }
-
-        // Consumable has been locked by another job
-        if (_consumable.getJob() != null && _consumable.getJob() != this) {
-            return JobCheckReturn.ABORT;
-        }
-
-        // Path exists
-        if (Application.pathManager.hasPath(character.getParcel(), _consumable.getParcel(), true, false)) {
-            return JobCheckReturn.ABORT;
-        }
-
+//        if (_character.getInventory() != null && _character.getInventory().getInfo() != _itemInfo) {
+//            return JobCheckReturn.ABORT;
+//        }
+//
+//        // Missing item
+//        if (_consumable.getFreeQuantity() <= 0) {
+//            throw new GameException(ConsumeJob.class, "ConsumeJob: item cannot be null, non consumable or empty");
+//        }
+//
+//        // Item is no longer exists
+//        if (_consumable != _character.getInventory() && _consumable.getParcel().getItem(ConsumableItem.class) != _consumable) {
+////            _reason = JobAbortReason.ABORT;
+//            return JobCheckReturn.ABORT;
+//        }
+//
+//        // Consumable has been locked by another job
+//        if (_consumable.getJob() != null && _consumable.getJob() != this) {
+//            return JobCheckReturn.ABORT;
+//        }
+//
+//        // Path exists
+//        if (Application.pathManager.hasPath(character.getParcel(), _consumable.getParcel(), true, false)) {
+//            return JobCheckReturn.ABORT;
+//        }
+//
         return JobCheckReturn.OK;
     }
 
     @Override
     protected void onStart(CharacterModel character) {
-        if (_consumable.getJob() != null && _consumable.getJob() != this) {
-            _status = JobStatus.ABORTED;
-            return;
-        }
-
-        PathModel path = Application.pathManager.getPath(character.getParcel(), _consumable.getParcel(), true, false);
-        if (path == null) {
-            _status = JobStatus.ABORTED;
-            return;
-        }
-
-        _consumable.setJob(this);
-        _targetParcel = path.getLastParcel();
-        character.move(path, new MoveListener<CharacterModel>() {
-            @Override
-            public void onReach(CharacterModel movable) {
-            }
-
-            @Override
-            public void onFail(CharacterModel movable) {
-                close();
-            }
-        });
+//        if (_consumable.getJob() != null && _consumable.getJob() != this) {
+//            _status = JobStatus.ABORTED;
+//            return;
+//        }
+//
+//        PathModel path = Application.pathManager.getPath(character.getParcel(), _consumable.getParcel(), true, false);
+//        if (path == null) {
+//            _status = JobStatus.ABORTED;
+//            return;
+//        }
+//
+//        _consumable.setJob(this);
+//        _targetParcel = path.getLastParcel();
+//        character.move(path, new MoveListener<CharacterModel>() {
+//            @Override
+//            public void onReach(CharacterModel movable) {
+//            }
+//
+//            @Override
+//            public void onFail(CharacterModel movable) {
+//                close();
+//            }
+//        });
     }
 
     // TODO: make objects stats table instead switch
     @Override
     public JobActionReturn onAction(CharacterModel character) {
-        throw new NotImplementedException("");
+//        throw new NotImplementedException("");
 
 //        // Wrong call
 //        if (character == null) {
@@ -162,29 +157,30 @@ public class ConsumeJob extends JobModel {
 //            _character.setInventory(null);
 //        }
 //
-//        return JobActionReturn.COMPLETE;
+        return JobActionReturn.COMPLETE;
     }
 
     @Override
     public void onQuit(CharacterModel character) {
-        if (_consumable != null && _consumable.getJob() == this) {
-            _consumable.setJob(null);
-        }
+//        if (_consumable != null && _consumable.getJob() == this) {
+//            _consumable.setJob(null);
+//        }
     }
 
     @Override
     protected void onClose() {
-        if (_consumable != null && _consumable.getJob() == this) {
-            _consumable.setJob(null);
-        }
+//        if (_consumable != null && _consumable.getJob() == this) {
+//            _consumable.setJob(null);
+//        }
     }
 
     @Override
     public String getLabel() {
-        if (_actionInfo != null && _actionInfo.label != null) {
-            return _actionInfo.label;
-        }
-        return "use " + _consumable.getLabel();
+//        if (_actionInfo != null && _actionInfo.label != null) {
+//            return _actionInfo.label;
+//        }
+//        return "use " + _consumable.getLabel();
+        return "consume job";
     }
 
     @Override

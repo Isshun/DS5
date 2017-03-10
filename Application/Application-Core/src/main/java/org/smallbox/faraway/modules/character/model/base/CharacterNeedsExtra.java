@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.HashMap;
@@ -160,5 +161,9 @@ public class CharacterNeedsExtra {
 
     public void setSleeping(boolean isSleeping) {
         this.isSleeping = isSleeping;
+    }
+
+    public void consume(ConsumableItem consumable) {
+        use(consumable.getInfo().consume.effects, 1);
     }
 }

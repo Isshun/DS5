@@ -28,7 +28,7 @@ public class Game {
 
     // Update
     private long                            _nextUpdate;
-    private int                             _tickInterval = TICK_INTERVALS[3];
+    private int                             _tickInterval = TICK_INTERVALS[1];
 
     private boolean                         _isRunning;
     private final GameInfo                  _info;

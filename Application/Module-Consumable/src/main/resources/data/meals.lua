@@ -3,7 +3,7 @@ data:extend({
         consume = { cost = 20, effects = {{type = "food", quantity = 100}}},
         graphics = { path = "[module]/graphics/military_ration.png" },
     },
-    { label = "Easy meal", name = "base.easy_meal", type = "consumable", category = "food",
+    { label = "Easy meal", name = "base.consumable.easy_meal", type = "consumable", category = "food",
         consume = { cost = 5, effects = {{type = "food", quantity = 100}}},
         graphics = { path = "[module]/graphics/rpg_maker_vx_2.png", x = 6, y = 0 },
     },

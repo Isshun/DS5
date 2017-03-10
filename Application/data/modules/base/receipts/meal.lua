@@ -5,11 +5,11 @@ data:extend({
         type = "receipt",
         cost = 6,
         receipts = {
-            {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.vegetable", quantity = 10}}},
-            {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.seaweed", quantity = 10}}},
-            {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.seafood", quantity = 10}}},
-            {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.insect_meat", quantity = 100}}},
-            {outputs = {{ name = "base.easy_meal", quantity = 10}}, inputs = {{ name = "base.meat", quantity = 10}}},
+            {outputs = {{ name = "base.consumable.easy_meal", quantity = 10}}, inputs = {{ name = "base.vegetable", quantity = 10}}},
+            {outputs = {{ name = "base.consumable.easy_meal", quantity = 10}}, inputs = {{ name = "base.seaweed", quantity = 10}}},
+            {outputs = {{ name = "base.consumable.easy_meal", quantity = 10}}, inputs = {{ name = "base.seafood", quantity = 10}}},
+            {outputs = {{ name = "base.consumable.easy_meal", quantity = 10}}, inputs = {{ name = "base.insect_meat", quantity = 100}}},
+            {outputs = {{ name = "base.consumable.easy_meal", quantity = 10}}, inputs = {{ name = "base.meat", quantity = 10}}},
         }
     },
     {

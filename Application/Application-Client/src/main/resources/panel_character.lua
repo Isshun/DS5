@@ -5,9 +5,9 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.character.CharacterInfoController",
     visible = false,
     views = {
-        { type = "label", text = "Character", text_color = 0x679B99, text_size = 12, position = {12, 8}},
-        { type = "view", size = {348, 1}, background = 0x679B99, position = {12, 22}},
-        { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}, text_color = 0xB4D4D3 },
+        { type = "label", text = "Character", text_color = color1, text_size = 12, position = {12, 8}},
+        { type = "view", size = {348, 1}, background = color1, position = {12, 22}},
+        { type = "label", id = "lb_name", text = "name", text_size = 28, position = {12, 37}, size = {100, 40}, text_color = color2 },
 
         { type = "grid", position = {12, 72}, columns = 10, column_width = 42, row_height = 42, views = {
             { type = "image", id = "btStatus", action="onOpenStatus", src = "[base]/graphics/icons/character/ic_status.png", background = 0x5588bb, size = {32, 32}},

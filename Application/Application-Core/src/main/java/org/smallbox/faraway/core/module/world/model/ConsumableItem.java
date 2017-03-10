@@ -3,10 +3,9 @@ package org.smallbox.faraway.core.module.world.model;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.consumable.StorageArea;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
@@ -17,7 +16,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class ConsumableItem extends MapObjectModel {
     private int _freeQuantity = 1;
-    private int             _slots = 0;
     private JobModel        _job;
     private Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
 
@@ -73,12 +71,9 @@ public class ConsumableItem extends MapObjectModel {
         return false;
     }
 
-    public String getFullLabel() { return getLabel() + " (" + _freeQuantity + ")"; }
     public boolean isEmpty() { return _freeQuantity <= 0; }
     public void setJob(JobModel job) { _job = job; }
     public JobModel getJob() { return _job; }
-    public boolean inValidStorage() { return _parcel.getArea() != null && _parcel.getArea().accept(_info); }
-    public boolean hasFreeSlot() { return _slots < _freeQuantity; }
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
@@ -87,18 +82,6 @@ public class ConsumableItem extends MapObjectModel {
                 _parcel = parcel;
             }
         }
-    }
-
-    public StorageArea getStorage() {
-        return _parcel != null && _parcel.getArea() != null && _parcel.getArea().isStorage() ? (StorageArea) _parcel.getArea() : null;
-    }
-
-//    public void setStoreJob(StoreJob job) { _storeJob = job; }
-//    public StoreJob getStoreJob() { return _storeJob; }
-
-    public void consume(CharacterModel character, int durationLeft) {
-        // Add buffEffect on characters
-        character.apply(_info.consume);
     }
 
     @Override

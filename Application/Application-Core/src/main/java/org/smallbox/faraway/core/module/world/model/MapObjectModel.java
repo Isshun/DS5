@@ -121,11 +121,11 @@ public abstract class MapObjectModel extends ObjectModel {
 
     public void use(CharacterModel character, int durationLeft) {
         // Add buffEffect on characters
-        if (CollectionUtils.isNotEmpty(_info.actions)) {
-            _info.actions.stream()
-                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.USE)
-                    .forEach(character::apply);
-        }
+//        if (CollectionUtils.isNotEmpty(_info.actions)) {
+//            _info.actions.stream()
+//                    .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.USE)
+//                    .forEach(character::apply);
+//        }
 
         // Play animation
         if (_animFrame++ % _animFrameInterval == 0) {

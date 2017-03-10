@@ -21,7 +21,7 @@ data:extend({
                 cost = 25,
                 auto = true,
                 label = "Craft easy meal",
-                products = {item = "base.easy_meal", quantity = 1},
+                products = {item = "base.consumable.easy_meal", quantity = 1},
                 inputs = {item = "base.vegetable", quantity = 1},
             },
             {

@@ -49,6 +49,7 @@ public abstract class CharacterModel extends MovableModel {
     private Collection<CharacterCheck>          _needsCheck;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
+    private Map<Class, Object>                  _extra = new ConcurrentHashMap<>();
 
     public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterInfo type) {
         super(id, parcel);
@@ -82,6 +83,7 @@ public abstract class CharacterModel extends MovableModel {
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
+    public <T> T                        getExtra(Class<T> cls) { return (T) _extra.get(cls); }
     public CharacterNeedsExtra          getNeeds() { return _needs; }
     public CharacterTalentExtra         getTalents() { return _talents; }
     public CharacterStatsExtra          getStats() { return _stats; }
@@ -352,14 +354,6 @@ public abstract class CharacterModel extends MovableModel {
         return _needsCheck;
     }
 
-    public void apply(ItemInfo.ItemInfoAction action) {
-        getNeeds().use(action.effects, action.cost);
-    }
-
-    public void apply(ItemInfo.ItemConsumeInfo consume) {
-        getNeeds().use(consume.effects, consume.cost);
-    }
-
     public void addInventory(String itemName, int quantity) {
         addInventory(Application.data.getItemInfo(itemName), quantity);
     }
@@ -392,5 +386,9 @@ public abstract class CharacterModel extends MovableModel {
         }
 
         return new ConsumableItem(itemInfo, quantityToRemove);
+    }
+
+    public void addExtra(Object extra) {
+        _extra.put(extra.getClass(), extra);
     }
 }

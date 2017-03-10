@@ -3,7 +3,7 @@
 --    id = "panel_test",
 --    position = {1200, 65},
 --    size = {400, 800},
---    background = 0x121c1e,
+--    background = color3,
 --    visible = false,
 --    views = {
 --        { type = "label", id = "lb_name", text = "name", text_size = 28, padding = 10, size = {100, 40}},

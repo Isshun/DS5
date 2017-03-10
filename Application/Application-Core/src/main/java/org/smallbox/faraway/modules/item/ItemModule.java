@@ -7,11 +7,10 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.item.job.CheckJoyItem;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.structure.StructureModule;
@@ -88,7 +87,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
             }
         });
 
-        jobModule.addJoyCheck(new CheckJoyItem());
+//        jobModule.addJoyCheck(new CheckJoyItem());
     }
 
     @Override

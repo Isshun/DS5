@@ -7,11 +7,6 @@ data:extend({
         { message = "Really pleasant environment", mood = 10 },
     },
     on_get_level = function (characterModule, weatherModule, game)
-        print("level")
-        print("level")
-        print(game:getHour())
-        print(characterModule:getCharacters():size())
-        print(weatherModule:getTemperature())
         return 1
     end,
 })

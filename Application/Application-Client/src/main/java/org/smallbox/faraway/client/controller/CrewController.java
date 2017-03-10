@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -65,7 +66,7 @@ public class CrewController extends LuaController {
                             .setPadding(8, 0));
                 }
 
-                CharacterNeedsExtra need = characterNeedModule.getNeed(character);
+                CharacterNeedsExtra need = character.getExtra(CharacterNeedsExtra.class);
                 if (need != null) {
                     view.addView(createGaugeView("[base]/graphics/needs/ic_food.png", need.get(TAG_FOOD)).setPosition(270, 10));
                     view.addView(createGaugeView("[base]/graphics/needs/ic_health.png", 0.50).setPosition(270 + 20, 10));
@@ -74,9 +75,8 @@ public class CrewController extends LuaController {
                 }
 
                 view.setOnClickListener((GameEvent event) -> {
-                    characterModule.select(event, character);
+                    ApplicationClient.notify(obs -> obs.onSelectCharacter(character));
                     characterInfoController.display(character);
-                    characterInfoController.setVisible(true);
                 });
 
                 listCrew.addNextView(view);

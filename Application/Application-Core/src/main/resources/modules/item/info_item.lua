@@ -14,10 +14,10 @@ ui:extend({
         { type = "label", id = "bt_info", text = "[INFO]", text_size = 18, background = 0xbb9966, position = {300, 5}, size = {60, 18}, on_click = function()
             application.events:send("encyclopedia.open_item", item)
         end},
-        { type = "label", id = "lb_name", text = "name", text_color = 0xB4D4D3, text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
+        { type = "label", id = "lb_name", text = "name", text_color = color2, text_size = 28, position = {0, 24}, padding = 10, size = {100, 40}},
         { type = "view", position = {310, 30}, size = {80, 25}, background = 0x3e4b0b, views = {
             { type = "view", id = "progress_health", size = {50, 25}, background = 0x89ab00 },
-            { type = "label", id = "lb_health", text = "80/120", text_color = 0xB4D4D3, text_size = 16, padding = 7 },
+            { type = "label", id = "lb_health", text = "80/120", text_color = color2, text_size = 16, padding = 7 },
         }},
 
         -- Detailled informations
@@ -50,8 +50,8 @@ ui:extend({
 
             -- Actions
             { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, views = {
-                { type = "label", text = "Actions", text_color = 0x679B99, text_size = 22, size = {400, 26}},
-                { type = "label", id = "current_action", text_color = 0xB4D4D3, size = {400, 20}},
+                { type = "label", text = "Actions", text_color = color1, text_size = 22, size = {400, 26}},
+                { type = "label", id = "current_action", text_color = color2, size = {400, 20}},
                 { type = "list", id = "list_actions"},
             }},
 

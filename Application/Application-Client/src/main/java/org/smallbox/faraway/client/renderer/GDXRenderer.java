@@ -189,6 +189,10 @@ public class GDXRenderer {
         }
     }
 
+    public void drawRectangle(int x, int y, int width, int height, org.smallbox.faraway.core.engine.Color color, boolean filled) {
+        drawRectangle(x, y, width, height, new Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f), filled);
+    }
+
     public void drawRectangle(int x, int y, int width, int height, Color color, boolean filled) {
         if (color != null) {
             Gdx.gl.glEnable(GL20.GL_BLEND);

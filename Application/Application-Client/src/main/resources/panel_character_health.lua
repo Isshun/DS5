@@ -7,7 +7,7 @@ ui:extend({
         { type = "list", views = {
 
             -- Diseases
-            { type = "label", text = "Diseases", text_color = 0x679B99, size = {0, 30}, text_size = 24},
+            { type = "label", text = "Diseases", text_color = color1, size = {0, 30}, text_size = 24},
             { type = "list", id = "list_diseases"},
 
         }},

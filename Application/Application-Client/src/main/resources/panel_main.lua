@@ -7,7 +7,7 @@ ui:extend({
     --    group = "base.style.right_panel",
     align = {"top", "right"},
     position = {0, 38},
-    background = 0x121c1e,
+    background = color3,
     size = {372, 800},
 
     special = true,

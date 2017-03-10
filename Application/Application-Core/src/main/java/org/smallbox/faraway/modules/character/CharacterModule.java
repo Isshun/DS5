@@ -1,20 +1,22 @@
 package org.smallbox.faraway.modules.character;
 
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.job.*;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterName;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.*;
 
@@ -33,8 +35,14 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 //    @BindModule
 //    private WorldInteractionModule worldInteractionModule;
 
+    @BindComponent
+    private Data data;
+
     @BindModule
     private JobModule jobModule;
+
+    @BindModule
+    private ConsumableModule consumableModule;
 
     @BindModule
     private ItemModule itemModule;
@@ -55,27 +63,13 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     public int                            getCount() { return _count; }
 
     @Override
-    public void onGameCreate(Game game) {
-//        _characters.add(new HumanModel(2, Application.moduleManager.getModule(WorldModule.class).getParcel(0, 0, Config.FLOOR), "gg", "gg", 12));
-
-//        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
-//            @Override
-//            public void onSelect(GameEvent event, Collection<ParcelModel> parcels) {
-//                _characters.stream()
-//                        .filter(character -> parcels.contains(character.getParcel()))
-//                        .forEach(character -> notifyObservers(obs -> obs.onSelectCharacter(event, character)));
-//            }
-//        });
-    }
-
-    @Override
     public void onGameStart(Game game) {
-        jobModule.addPriorityCheck(new CheckCharacterEnergyCritical());
-        jobModule.addPriorityCheck(new CheckCharacterWaterWarning());
-        jobModule.addPriorityCheck(new CheckCharacterFoodWarning());
-        jobModule.addPriorityCheck(new CheckCharacterEnergyWarning());
-        jobModule.addSleepCheck(new CheckCharacterTimetableSleep());
-        jobModule.addSleepCheck(new CheckJoySleep(itemModule));
+//        jobModule.addPriorityCheck(new CheckCharacterEnergyCritical());
+//        jobModule.addPriorityCheck(new CheckCharacterWaterWarning());
+//        jobModule.addPriorityCheck(new CheckCharacterFoodWarning());
+//        jobModule.addPriorityCheck(new CheckCharacterEnergyWarning());
+//        jobModule.addSleepCheck(new CheckCharacterTimetableSleep());
+//        jobModule.addSleepCheck(new CheckJoySleep(itemModule));
     }
 
     public void addVisitor() {
@@ -95,7 +89,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _characters.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
         _characters.removeIf(CharacterModel::isDead);
 
-//            _characters.forEach(this::updateNeeds);
+        _characters.forEach(this::updateNeeds);
         _characters.forEach(this::updateBuffs);
         _characters.forEach(this::updatePosition);
     }
@@ -122,7 +116,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
      */
     private void updateNeeds(CharacterModel character) {
         // Update needs
-        character.getNeeds().update();
+//        character.getNeeds().update();
+
+
     }
 
     /**
@@ -235,7 +231,4 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         return false;
     }
 
-    public void select(GameEvent event, CharacterModel character) {
-        notifyObservers(obs -> obs.onSelectCharacter(event, character));
-    }
 }
