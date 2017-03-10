@@ -37,7 +37,7 @@ public class DigModule extends GameModule {
     @Override
     public void onGameCreate(Game game) {
 
-        areaModule.addAreaType(DigArea.class);
+        areaModule.addAreaClass(DigArea.class);
 
 //        worldModule.getParcelList().stream()
 //                .filter(parcel -> parcel.z == 1)
@@ -57,7 +57,7 @@ public class DigModule extends GameModule {
                 .filter(job -> job instanceof BasicDigJob)
                 .map(job -> ((BasicDigJob)job).getDigParcel())
                 .collect(Collectors.toList());
-        List<ParcelModel> parcelInDigArea = areaModule.getParcels(DigArea.class);
+        List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
 
         // Create missing dig job
         worldModule.getParcelList().stream()

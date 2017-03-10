@@ -13,6 +13,9 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.util.Constant;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created by Alex on 13/06/2015.
  */
@@ -25,6 +28,7 @@ public class AreaRenderer extends BaseRenderer {
     @BindModule
     private AreaModule areaModule;
 
+    private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
     private int _mouseX;
@@ -66,31 +70,28 @@ public class AreaRenderer extends BaseRenderer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_WIDTH;
         int toY = fromY + viewport.getHeight() / Constant.TILE_HEIGHT;
 
-        areaModule.getAreas().forEach(area -> {
-            area.getParcels().forEach(parcel -> {
-//                renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 32, Color.BLUE, true, 0, 0);
-                renderer.drawOnMap(parcel.x, parcel.y, _regions[0]);
-            });
-        });
+        areaModule.getAreas().forEach(area ->
+                area.getParcels().forEach(parcel ->
+                        renderer.drawOnMap(parcel.x, parcel.y, getTexture(area.getClass()))));
 
-        if (_mode == Mode.ADD || _mode == Mode.SUB) {
+        if (_mode == Mode.ADD) {
             renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
         }
 
-        // TODO
-//        WorldModule world = (WorldModule) Application.moduleManager.getModule(WorldModule.class);
-//        for (int x = fromX; x < toX; x++) {
-//            for (int y = fromY; y < toY; y++) {
-//                ParcelModel parcel = world.getParcel(x, y, WorldHelper.getCurrentFloor());
-//                if (parcel != null && parcel.getArea() != null) {
-//                    if (Application.gameManager.getGame().getSelector().getSelectedArea() == parcel.getArea()) {
-//                        renderer.drawOnMap(_regionsSelected[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);
-//                    } else {
-//                        renderer.drawOnMap(_regions[Math.min(parcel.getArea().getTypeIndex(), 4)], x, y);
-//                    }
-//                }
-//            }
-//        }
+        if (_mode == Mode.SUB) {
+            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
+        }
+    }
+
+    private TextureRegion getTexture(Class<? extends AreaModel> cls) {
+        TextureRegion region = _textureByClass.get(cls);
+        if (region != null) {
+            return region;
+        }
+
+        region = _regions[Math.min(_textureByClass.size(), 4)];
+        _textureByClass.put(cls, region);
+        return region;
     }
 
     @Override

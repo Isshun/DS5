@@ -32,43 +32,43 @@ ui:extend({
             }},
             { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true, sorted = true},
         }},
-        {
-            type = "view",
-            position = {0, application.info.screen_height - 150},
-            views = {
-                { type = "label", id = "lb_ground", text_size = 14},
-                { type = "grid", columns = 10, column_width = 58, row_height = 100, position = {10, 10}, views = {
-                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
-                        { type = "image", id = "thumb_o2", src = "[base]/graphics/icons/thumb_o2.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
-                        { type = "label", id = "lb_oxygen", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
-                    }},
-
-                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
-                        { type = "image", id = "thumb_walkable", src = "[base]/graphics/icons/thumb_walkable.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
-                        { type = "label", id = "lb_walkable", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
-                    }},
-
-                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
-                        { type = "image", id = "thumb_water", src = "[base]/graphics/icons/thumb_water.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
-                        { type = "label", id = "lb_water", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
-                    }},
-
-                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
-                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_temperature.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
-                        { type = "label", id = "lb_temperature", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
-                    }},
-
-                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
-                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_light.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
-                        { type = "label", id = "lb_light", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
-                    }},
-
-                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
-                        { type = "image", id = "thumb_inside", src = "[base]/graphics/icons/thumb_home.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
-                        { type = "label", id = "lb_inside", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
-                    }},
-                }}
-            }}
+--        {
+--            type = "view",
+--            position = {0, application.info.screen_height - 150},
+--            views = {
+--                { type = "label", id = "lb_ground", text_size = 14},
+--                { type = "grid", columns = 10, column_width = 58, row_height = 100, position = {10, 10}, views = {
+--                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
+--                        { type = "image", id = "thumb_o2", src = "[base]/graphics/icons/thumb_o2.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                        { type = "label", id = "lb_oxygen", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
+--                    }},
+--
+--                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
+--                        { type = "image", id = "thumb_walkable", src = "[base]/graphics/icons/thumb_walkable.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                        { type = "label", id = "lb_walkable", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
+--                    }},
+--
+--                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
+--                        { type = "image", id = "thumb_water", src = "[base]/graphics/icons/thumb_water.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                        { type = "label", id = "lb_water", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
+--                    }},
+--
+--                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
+--                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_temperature.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                        { type = "label", id = "lb_temperature", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
+--                    }},
+--
+--                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
+--                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_light.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                        { type = "label", id = "lb_light", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
+--                    }},
+--
+--                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
+--                        { type = "image", id = "thumb_inside", src = "[base]/graphics/icons/thumb_home.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                        { type = "label", id = "lb_inside", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
+--                    }},
+--                }}
+--            }}
     },
 
     on_game_start = function(view)

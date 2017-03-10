@@ -195,7 +195,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         return character;
     }
 
-    public void addRandom(Class<? extends CharacterModel> cls) {
+    public CharacterModel addRandom(Class<? extends CharacterModel> cls) {
         try {
             Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, ParcelModel.class, String.class, String.class, double.class);
             CharacterModel character = constructor.newInstance(
@@ -205,9 +205,11 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
                     CharacterName.getLastName(),
                     16);
             add(character);
+            return character;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public boolean havePeopleOnProximity(CharacterModel character) {

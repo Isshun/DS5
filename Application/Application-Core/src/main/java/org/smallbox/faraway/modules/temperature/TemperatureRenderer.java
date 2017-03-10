@@ -28,7 +28,7 @@
 //                int maxY = Integer.MIN_VALUE;
 //                float offset = (float) (Math.max(-50, Math.min(50, 21 - room.getTemperatureInfo().temperature)) / 50f);
 //                Color color = offset > 0 ? new Color(1f - offset, 1f - offset, 1f, 0.8f) : new Color(1f, 1f - offset, 1f - offset, 0.8f);
-//                for (ParcelModel parcel : room.getParcels()) {
+//                for (ParcelModel parcel : room.getParcelsByType()) {
 //                    renderer.draw(color,
 //                            parcel.x * Constant.TILE_WIDTH + viewport.getPosX(),
 //                            parcel.y * Constant.TILE_HEIGHT + viewport.getPosY(),

@@ -27,7 +27,7 @@ import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
 // TODO: injection des field sur les superclass
 public class DependencyInjector {
     private final Map<Class<?>, ComponentHandler> _handlers;
-    private final Collection<GameShortcut> _gameShortcut = new LinkedBlockingQueue<>();
+    private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
     private Set<Object> _objectPool = new HashSet<>();
     private boolean _init = false;
     private static final DependencyInjector _self = new DependencyInjector();
@@ -136,20 +136,22 @@ public class DependencyInjector {
     // TODO: methode appelée plusieurs fois (2)
     private void injectShortcut(Object host) {
         if (_clientInterface != null) {
-            for (Method method : host.getClass().getDeclaredMethods()) {
-                method.setAccessible(true);
-                GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
-                if (gameShortcut != null && !_gameShortcut.contains(gameShortcut)) {
-                    _gameShortcut.add(gameShortcut);
+            if (!_gameShortcut.contains(host)) {
+                _gameShortcut.add(host);
+                for (Method method : host.getClass().getDeclaredMethods()) {
+                    method.setAccessible(true);
+                    GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
+                    if (gameShortcut != null) {
 
-                    Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                    _clientInterface.onShortcutBinding(host.getClass().getName() + method.getName(), gameShortcut.key(), () -> {
-                        try {
-                            method.invoke(host);
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                        Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
+                        _clientInterface.onShortcutBinding(host.getClass().getName() + method.getName(), gameShortcut.key(), () -> {
+                            try {
+                                method.invoke(host);
+                            } catch (IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
                 }
             }
         }

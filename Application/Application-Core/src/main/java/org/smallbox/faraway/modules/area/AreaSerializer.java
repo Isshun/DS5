@@ -139,8 +139,6 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
                     stStorage.dispose();
                 }
 
-                AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
-                areaModule.init(storageAreas, gardenAreas);
             } catch (SQLiteException e) {
                 Log.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());
             }

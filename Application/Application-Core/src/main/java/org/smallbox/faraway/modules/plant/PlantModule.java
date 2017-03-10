@@ -38,7 +38,7 @@ public class PlantModule extends GameModule {
 
     @Override
     public void onGameCreate(Game game) {
-        areaModule.addAreaType(GardenArea.class);
+        areaModule.addAreaClass(GardenArea.class);
     }
 
     @Override

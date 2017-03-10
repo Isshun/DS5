@@ -46,7 +46,7 @@ public class AreaPanelController extends LuaController {
 
         mainPanelController.addShortcut("Areas", this);
 
-        areaModule.getAreaTypes().stream()
+        areaModule.getAreaClasses().stream()
                 .sorted(Comparator.comparing(o -> o.getAnnotation(AreaTypeInfo.class).label()))
                 .forEach(cls -> {
 
@@ -81,6 +81,7 @@ public class AreaPanelController extends LuaController {
                                 uiEventManager.setSelectionListener(parcels -> {
                                     Log.warning(AreaPanelController.class, "HELLO");
                                     areaRenderer.setMode(AreaRenderer.Mode.NONE, cls);
+                                    areaModule.removeArea(parcels);
                                 });
                                 //            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
                             })

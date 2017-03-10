@@ -11,7 +11,7 @@
 // */
 //public class LuaMapModel {
 //    public LuaValue getDropLocation() {
-//        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcels();
+//        ParcelModel[][][] parcels = ModuleHelper.getWorldModule().getParcelsByType();
 //        int width = Application.gameManager.getGame().getInfo().worldWidth;
 //        int height = Application.gameManager.getGame().getInfo().worldHeight;
 //

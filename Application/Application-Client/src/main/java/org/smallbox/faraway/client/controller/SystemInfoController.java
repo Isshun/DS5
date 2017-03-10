@@ -22,9 +22,6 @@ public class SystemInfoController extends LuaController {
     private UILabel lbDay;
 
     @BindLua
-    private UILabel lbTick;
-
-    @BindLua
     private UILabel lbWeather;
 
     @BindLua
@@ -45,9 +42,7 @@ public class SystemInfoController extends LuaController {
     @Override
     protected void onNewGameUpdate(Game game) {
         lbTime.setText(game.getHour() + "H");
-        lbDay.setText("Jour " + game.getDay());
-
-        lbTick.setText("Tick " + game.getTick());
+        lbDay.setText("J-" + (game.getDay() + 1));
 
         icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
 

@@ -124,9 +124,9 @@ public class UIEventManager {
                     if (_selectionListener != null) {
                         _selectionListener.onSelection(parcelList);
                         _selectionListener = null;
+                    } else {
+                        ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
                     }
-
-                    ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
                 }
             }
 

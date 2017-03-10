@@ -19,7 +19,7 @@
 //        List<Room> rooms = Game.getRoomManager().getRoomList();
 //        for (Room room: rooms) {
 //            if (room.isGarden()) {
-//                List<WorldArea> areas = room.getParcels();
+//                List<WorldArea> areas = room.getParcelsByType();
 //                for (WorldArea model: areas) {
 //                    WorldResource res = model.getResource();
 //                    if (res != null && res.isMature() && res.hasNoJob()) {

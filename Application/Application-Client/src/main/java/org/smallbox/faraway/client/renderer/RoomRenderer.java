@@ -41,10 +41,10 @@
 //        synchronized (_roomList) {
 //            _roomList.stream().forEach(room -> {
 //                if (!room.isExterior() && room.getFloor() == WorldHelper.getCurrentFloor()) {
-//                    synchronized (room.getParcels()) {
+//                    synchronized (room.getParcelsByType()) {
 //                        TextureRegion texture = _regions[0];
 ////                        TextureRegion texture = Application.userInterface.getSelector().getSelectedRoom() == parcel.getRoom() ? _regionsSelected[0] : _regions[0];
-//                        for (ParcelModel parcel : room.getParcels()) {
+//                        for (ParcelModel parcel : room.getParcelsByType()) {
 //                            renderer.drawTextOnMap(texture, parcel.x, parcel.y);
 //                        }
 //                    }

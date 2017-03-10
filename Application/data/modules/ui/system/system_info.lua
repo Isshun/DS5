@@ -38,9 +38,6 @@ ui:extend({
         -- Menu icon
         { type = "image", src = "[base]/graphics/icons/menu.png", align = {"top", "right"}, position = {472, 4}, size = {32, 32}},
 
-        -- Top right tick
-        { type = "label", id = "lb_tick", align = {"top", "right"}, text_size = 16, padding = 15, position = {460, 0}, size = {32, 32}},
-
         -- Top right system icons
         { type = "view", align = {"top", "right"}, position = {0, 0}, background = 0x203636, size = {372, 38}, views = {
 

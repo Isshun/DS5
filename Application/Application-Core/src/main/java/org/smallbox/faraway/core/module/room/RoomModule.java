@@ -118,7 +118,7 @@ public class RoomModule extends GameModule implements GameObserver {
 //        Log.info("org.smallbox.faraway.module.room.RoomModule: onDisplayMultiple floor " + floor);
 //        long time = System.currentTimeMillis();
 //
-//        ParcelModel[][][] parcels = worldModule.getParcels();
+//        ParcelModel[][][] parcels = worldModule.getParcelsByType();
 //        int width = Application.gameManager.getGame().getInfo().worldWidth;
 //        int height = Application.gameManager.getGame().getInfo().worldHeight;
 //
@@ -143,7 +143,7 @@ public class RoomModule extends GameModule implements GameObserver {
 //                        newRooms.add(room);
 //                    } else {
 //                        parcel.setRoom(exteriorRoom);
-//                        exteriorRoom.getParcels().add(parcel);
+//                        exteriorRoom.getParcelsByType().add(parcel);
 //                    }
 //                }
 //            }
@@ -172,7 +172,7 @@ public class RoomModule extends GameModule implements GameObserver {
 //                nbParcel++;
 //
 //                parcel.setRoom(room);
-//                room.getParcels().add(parcel);
+//                room.getParcelsByType().add(parcel);
 //                for (Connection<ParcelModel> connection: parcel.getConnections()) {
 //                    ParcelModel toParcel = connection.getToNode();
 //                    if (parcel.z == toParcel.z && !closeList.contains(toParcel)) {
@@ -181,7 +181,7 @@ public class RoomModule extends GameModule implements GameObserver {
 //                            openList.add(connection.getToNode());
 //                        } else {
 //                            connection.getToNode().setRoom(exteriorRoom);
-//                            exteriorRoom.getParcels().add(connection.getToNode());
+//                            exteriorRoom.getParcelsByType().add(connection.getToNode());
 //                        }
 //                    }
 //                }
@@ -195,7 +195,7 @@ public class RoomModule extends GameModule implements GameObserver {
 //
 //    private void checkRoof(RoomModel room) {
 //        printInfo("[org.smallbox.faraway.module.room.RoomModule] Check roof: " + room.getName());
-//        for (ParcelModel parcel: room.getParcels()) {
+//        for (ParcelModel parcel: room.getParcelsByType()) {
 //            boolean isRoofSupported = false;
 //            for (int x = parcel.x - ROOF_MAX_DISTANCE; x <= parcel.x + ROOF_MAX_DISTANCE; x++) {
 //                for (int y = parcel.y - ROOF_MAX_DISTANCE; y <= parcel.y + ROOF_MAX_DISTANCE; y++) {
@@ -225,7 +225,7 @@ public class RoomModule extends GameModule implements GameObserver {
 //        RoomConnectionModel exteriorConnection = new RoomConnectionModel(exteriorRoom);
 //
 //        // Get all neighbor parcels
-//        for (ParcelModel parcel: room.getParcels()) {
+//        for (ParcelModel parcel: room.getParcelsByType()) {
 //            checkAndAddNeighbor(worldModule, neighborhood, room, exteriorRoom, exteriorConnection, parcel, -1, 0);
 //            checkAndAddNeighbor(worldModule, neighborhood, room, exteriorRoom, exteriorConnection, parcel, +1, 0);
 //            checkAndAddNeighbor(worldModule, neighborhood, room, exteriorRoom, exteriorConnection, parcel, 0, -1);

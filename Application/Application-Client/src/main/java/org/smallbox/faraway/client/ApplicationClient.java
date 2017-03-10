@@ -129,10 +129,6 @@ public class ApplicationClient {
     public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
         GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
 
-        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
-            return;
-        }
-
         // Passe l'evenement à l'ui manager
         if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
             return;

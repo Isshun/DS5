@@ -10,7 +10,7 @@ import org.smallbox.faraway.util.CollectionUtils;
 /**
  * Created by Alex on 06/03/2017.
  */
-public class CharacterInventoryController extends LuaController {
+public class CharacterInfoInventoryController extends LuaController {
 
     @BindLua
     private UIList listInventory;

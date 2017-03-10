@@ -16,7 +16,7 @@ public class HaulingModuleTest extends GuiTestBase {
 
         GameTestHelper.create(this)
                 .runOnGameCreate(() -> {
-                    areaModule.createArea(StorageArea.class, Arrays.asList(
+                    areaModule.addArea(StorageArea.class, Arrays.asList(
                             WorldHelper.getParcel(8, 10, 1),
                             WorldHelper.getParcel(7, 10, 1),
                             WorldHelper.getParcel(8, 11, 1),

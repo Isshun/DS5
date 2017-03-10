@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.HumanModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -48,9 +49,12 @@ public class DesktopLauncher {
         return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
-                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
-                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
-                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                character.addInventory("base.consumable.vegetable.rice", 10);
+                character.addInventory("base.consumable.vegetable.carrot", 10);
+
+//                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+//                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 5, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 6, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 7, 1));
@@ -63,13 +67,13 @@ public class DesktopLauncher {
 //                            }
 //                        }
 
-                Application.moduleManager.getModule(AreaModule.class).createArea(StorageArea.class, Arrays.asList(
+                Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
                         WorldHelper.getParcel(8, 10, 1),
                         WorldHelper.getParcel(7, 10, 1),
                         WorldHelper.getParcel(8, 11, 1),
                         WorldHelper.getParcel(7, 11, 1)));
 
-                Application.moduleManager.getModule(AreaModule.class).createArea(GardenArea.class, Arrays.asList(
+                Application.moduleManager.getModule(AreaModule.class).addArea(GardenArea.class, Arrays.asList(
                         WorldHelper.getParcel(2, 10, 1),
                         WorldHelper.getParcel(3, 10, 1),
                         WorldHelper.getParcel(2, 11, 1),

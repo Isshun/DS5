@@ -41,7 +41,7 @@ public class HaulingModule extends GameModule {
 
     @Override
     public void onGameCreate(Game game) {
-        areaModule.addAreaType(StorageArea.class);
+        areaModule.addAreaClass(StorageArea.class);
     }
 
     @Override

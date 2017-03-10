@@ -40,7 +40,7 @@
 ////        // LF org.smallbox.faraway.core.module.room.model
 ////        _area = null;
 ////        int bestDistance = Integer.MAX_VALUE;
-////        for (AreaModel area: ((AreaModule) Application.moduleManager.getModule(AreaModule.class)).getAreas()) {
+////        for (AreaModel area: ((AreaModule) Application.moduleManager.getModule(AreaModule.class)).getAreasByType()) {
 ////            if (area.isHome()) {
 ////                int distance = Math.abs(character.getParcel().x - area.getX()) + Math.abs(character.getParcel().y - area.getY());
 ////                if (bestDistance > distance) {
@@ -53,10 +53,10 @@
 ////        // LF parcel
 ////        if (_area != null) {
 ////            _parcel = null;
-////            int size = _area.getParcels().size();
+////            int size = _area.getParcelsByType().size();
 ////            int r = (int)(Math.random() * size);
 ////            int i = 0;
-////            for (ParcelModel parcel: _area.getParcels()) {
+////            for (ParcelModel parcel: _area.getParcelsByType()) {
 ////                if (parcel.isWalkable() && parcel.getItem() == null && (i++ < r || _parcel == null)) {
 ////                    _parcel = parcel;
 ////                }
