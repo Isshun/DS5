@@ -13,6 +13,9 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.dig.DigArea;
+import org.smallbox.faraway.modules.disease.DiseaseInfo;
+import org.smallbox.faraway.modules.disease.DiseaseModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
@@ -49,9 +52,14 @@ public class DesktopLauncher {
         return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
+
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
                 character.addInventory("base.consumable.vegetable.rice", 10);
                 character.addInventory("base.consumable.vegetable.carrot", 10);
+
+                DiseaseInfo diseaseInfo = new DiseaseInfo();
+                diseaseInfo.label = "di test";
+                Application.moduleManager.getModule(DiseaseModule.class).addDisease(diseaseInfo, character);
 
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
@@ -66,6 +74,12 @@ public class DesktopLauncher {
 //                                Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", i, j, 1);
 //                            }
 //                        }
+
+                Application.moduleManager.getModule(AreaModule.class).addArea(DigArea.class, Arrays.asList(
+                        WorldHelper.getParcel(8, 6, 1),
+                        WorldHelper.getParcel(7, 6, 1),
+                        WorldHelper.getParcel(8, 7, 1),
+                        WorldHelper.getParcel(7, 7, 1)));
 
                 Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
                         WorldHelper.getParcel(8, 10, 1),

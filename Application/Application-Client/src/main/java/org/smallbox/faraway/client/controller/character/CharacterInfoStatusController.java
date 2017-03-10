@@ -6,8 +6,10 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.modules.buff.BuffModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.BasicStoreJob;
@@ -19,6 +21,9 @@ import org.smallbox.faraway.util.CollectionUtils;
  * Created by Alex on 26/04/2016.
  */
 public class CharacterInfoStatusController extends LuaController {
+
+    @BindModule
+    private BuffModule buffModule;
 
     @BindLua private UILabel lbJob;
     @BindLua private UIImage imgJob;
@@ -117,10 +122,17 @@ public class CharacterInfoStatusController extends LuaController {
 
     private void displayBuffs(CharacterModel character) {
         listBuffs.clear();
-        character.getChecks().forEach(check -> listBuffs.addView(UILabel
-                .create(null)
-                .setText(check.getLabel())
-                .setSize(300, 22)));
+
+        buffModule.getBuffs(character)
+                .stream()
+                .sorted((o1, o2) -> o2.mood - o1.mood)
+                .forEach(buff ->
+                listBuffs.addView(UILabel
+                        .create(null)
+                        .setText("[" + (buff.mood > 0 ? "+" : "") + buff.mood  + "] " + buff.message)
+                        .setTextSize(14)
+                        .setTextColor(buff.mood > 0 ? 0x33bb88 : 0xbb5555)
+                        .setSize(300, 22)));
     }
 
 }

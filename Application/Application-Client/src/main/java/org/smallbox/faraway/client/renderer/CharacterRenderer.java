@@ -134,11 +134,6 @@ public class CharacterRenderer extends BaseRenderer {
                 }
 
                 // Draw inventory
-                if (character.getInventory() != null) {
-                    renderer.draw(posX, posY + 2, _spriteManager.getItem(character.getInventory()));
-                }
-
-                // Draw inventory 2
                 if (character.getInventory2() != null) {
                     for (Map.Entry<ItemInfo, Integer> entry: character.getInventory2().entrySet()) {
                         if (entry.getValue() > 0) {

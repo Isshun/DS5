@@ -5,32 +5,9 @@ ui:extend({
     name = "base.ui.game_info",
     size = {application.info.screen_width, 38},
     controller = "org.smallbox.faraway.client.controller.SystemInfoController",
-    background = 0x2b3036,
     level = 100,
     visible = true,
     views = {
-
-        -- Top left ressources icons
-        { type = "view", id = "view_resource", size = {372, 34}, views = {
-            { type = "grid", id = "grid_resource", columns = 8, column_width = 70, position = {0, 2}, views = {
-                { type = "view", size = {70, 32}, position = {0, 0}, views = {
-                    { type = "image", src = "[base]/graphics/icons/food.png", size = {32, 32}},
-                    { type = "label", id = "lb_resource_food", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
-                }},
-                { type = "view", size = {70, 32}, position = {0, 0}, views = {
-                    { type = "image", src = "[base]/graphics/icons/water.png", size = {32, 32}},
-                    { type = "label", id = "lb_resource_water", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
-                }},
-                { type = "view", size = {70, 32}, views = {
-                    { type = "image", src = "[base]/graphics/icons/wood.png", size = {32, 32}},
-                    { type = "label", id = "lb_resource_wood", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
-                }},
-                { type = "view", size = {70, 32}, views = {
-                    { type = "image", src = "[base]/graphics/icons/wood.png", size = {32, 32}},
-                    { type = "label", id = "lb_resource_granite", text = "-1", text_size = 16, padding = 10, position = {24, 0}, size = {32, 32}},
-                }},
-            }},
-        }},
 
         -- Top right speed icon
         { type = "image", id = "ic_speed", align = {"top", "right"}, src = "[base]/graphics/ic_speed_1.png", size = {32, 32}, position = {372, 4}},

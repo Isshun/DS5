@@ -38,18 +38,4 @@ public class AndroidModel extends CharacterModel {
     @Override
     public String        getName() { return _personals.getFirstName(); }
 
-    @Override
-    public String[][]   getEquipmentViewIds() {
-        return EQUIPMENT_VIEW_IDS;
-    }
-
-    @Override
-    public String       getEquipmentViewPath() {
-        return "data/ui/panels/view_equipment_android.yml";
-    }
-
-    @Override
-    public String       getNeedViewPath() {
-        return "data/ui/panels/view_need_android.yml";
-    }
 }

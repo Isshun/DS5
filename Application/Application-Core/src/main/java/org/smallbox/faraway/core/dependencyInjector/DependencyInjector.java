@@ -176,7 +176,7 @@ public class DependencyInjector {
                     } else if (applicationModule != null) {
                         field.set(host, applicationModule);
                     } else {
-                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module", field.getType(), host.getClass().getSimpleName());
+//                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module", field.getType(), host.getClass().getSimpleName());
                     }
                 }
             } catch (IllegalAccessException e) {

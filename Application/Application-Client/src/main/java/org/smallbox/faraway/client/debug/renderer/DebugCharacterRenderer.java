@@ -38,7 +38,6 @@ public class DebugCharacterRenderer extends BaseRenderer {
             drawDebug(renderer, "Name", _character.getPersonals() != null ? _character.getPersonals().getName() : "--");
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
-            drawDebug(renderer, "Inventory", _character.getInventory() != null ? _character.getInventory() : "--");
             drawDebug(renderer, "Inventory2", _character.getInventory2() == null ? "--" :
                     String.join(", ", _character.getInventory2().entrySet().stream()
                             .map(entry -> entry.getKey().label + "x" + entry.getValue())

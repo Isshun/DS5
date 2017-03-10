@@ -33,26 +33,6 @@ public class DroidModel extends CharacterModel {
     }
 
     @Override
-    public String[][] getEquipmentViewIds() {
-        return EQUIPMENT_VIEW_IDS;
-    }
-
-    @Override
-    public String getEquipmentViewPath() {
-        return "data/ui/panels/view_equipment_droid.yml";
-    }
-
-    @Override
-    public String getNeedViewPath() {
-        return "data/ui/panels/view_need_droid.yml";
-    }
-
-    @Override
-    public String getTypeName() {
-        return "droid";
-    }
-
-    @Override
     public String getName() {
         return "B5";
     }

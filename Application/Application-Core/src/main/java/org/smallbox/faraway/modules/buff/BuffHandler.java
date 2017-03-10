@@ -1,0 +1,16 @@
+package org.smallbox.faraway.modules.buff;
+
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+
+/**
+ * Created by Alex on 10/03/2017.
+ */
+public abstract class BuffHandler {
+
+    public int getLevel(CharacterModel character) {
+        return OnGetLevel(character);
+    }
+
+    protected abstract int OnGetLevel(CharacterModel character);
+
+}

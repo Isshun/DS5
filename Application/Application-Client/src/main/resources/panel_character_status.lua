@@ -42,7 +42,7 @@ ui:extend({
         -- Buffs
         { type = "view", position = {0, 14}, views = {
             { type = "label", text = "Buffs", text_color = 0x679B99, size = {0, 30}, text_size = 24},
-            { type = "list", id = "list_buffs", position = {0, 85}}
+            { type = "list", id = "list_buffs", position = {0, 35}}
         }},
     }
 

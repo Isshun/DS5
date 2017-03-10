@@ -37,21 +37,6 @@ public class HumanModel extends CharacterModel {
     }
 
     @Override
-    public String[][] getEquipmentViewIds() {
-        return EQUIPMENT_VIEW_IDS;
-    }
-
-    @Override
-    public String getEquipmentViewPath() {
-        return "data/ui/panels/view_equipment_human.yml";
-    }
-
-    @Override
-    public String getNeedViewPath() {
-        return "data/ui/panels/view_need_human.yml";
-    }
-
-    @Override
     public String getName() {
         return _personals.getFirstName() + " " + _personals.getLastName();
     }

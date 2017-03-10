@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.task.LoadTask;
 import org.smallbox.faraway.util.FileUtils;
 
@@ -111,7 +112,7 @@ public class GDXApplication extends ApplicationAdapter {
 
     @Override
     public void render () {
-        if (Application.gameManager != null && Application.gameManager.isRunning()) {
+        if (Application.gameManager != null && Application.gameManager.getGameStatus() == Game.GameStatus.STARTED) {
             gameRender();
         } else if (Application.isLoaded) {
             menuRender();

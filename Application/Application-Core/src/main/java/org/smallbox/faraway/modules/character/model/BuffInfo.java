@@ -1,18 +1,36 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
+import org.smallbox.faraway.modules.buff.BuffHandler;
+import org.smallbox.faraway.modules.disease.DiseaseInfo;
 
+import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Alex on 02/07/2015.
  */
 public class BuffInfo extends ObjectInfo {
+
     public interface BuffListener {
-        void onStart(BuffCharacterModel data);
-        void onCheck(BuffCharacterModel data, int tick);
-        void onUpdate(BuffCharacterModel data, int update);
-        void onUpdateHourly(BuffCharacterModel data, int update);
+        void onStart(BuffModel data);
+        void onCheck(BuffModel data, int tick);
+        void onUpdate(BuffModel data, int update);
+        void onUpdateHourly(BuffModel data, int update);
+    }
+
+    public static class BuffLevelInfo {
+        public String message;
+        public int level;
+        public int mood;
+        public Collection<BuffEffectInfo> effects = new ConcurrentLinkedQueue<>();
+    }
+
+    public static class BuffEffectInfo {
+        public DiseaseInfo disease;
+        public double rate;
     }
 
     final public int id = UUID.randomUUID().toString().hashCode();
@@ -23,6 +41,8 @@ public class BuffInfo extends ObjectInfo {
     private boolean         _visible;
     private int             _duration;
     private String          _name;
+    public BuffHandler handler;
+    public final Collection<BuffLevelInfo> levels = new CopyOnWriteArrayList<>();
 
     public void setListener(BuffListener listener) { _listener = listener; }
     public void setLevel(int level) { _level = level; }
@@ -36,8 +56,8 @@ public class BuffInfo extends ObjectInfo {
     public int      getDuration() { return _duration; }
     public String   getName() { return _name; }
 
-    public void start(BuffCharacterModel data) { _listener.onStart(data); }
-    public void check(BuffCharacterModel data, int tick) { _listener.onCheck(data, tick); }
-    public void update(BuffCharacterModel data, int tick) { _listener.onUpdate(data, tick); }
-    public void updateHourly(BuffCharacterModel data, int tick) { _listener.onUpdateHourly(data, tick); }
+    public void start(BuffModel data) { _listener.onStart(data); }
+    public void check(BuffModel data, int tick) { _listener.onCheck(data, tick); }
+    public void update(BuffModel data, int tick) { _listener.onUpdate(data, tick); }
+    public void updateHourly(BuffModel data, int tick) { _listener.onUpdateHourly(data, tick); }
 }

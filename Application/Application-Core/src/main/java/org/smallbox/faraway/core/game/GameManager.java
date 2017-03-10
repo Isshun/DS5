@@ -112,8 +112,19 @@ public class GameManager implements GameObserver {
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
+    /**
+     * @return true si une partie existe
+     */
+    @Deprecated
     public boolean isLoaded() {
         return _game != null && _game.getState() == Game.GameStatus.STARTED;
+    }
+
+    /**
+     * @return État de la partie si celle-ci existe
+     */
+    public Game.GameStatus getGameStatus() {
+        return _game != null ? _game.getState() : null;
     }
 
     public Game getGame() {

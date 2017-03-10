@@ -7,17 +7,20 @@ import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.model.*;
+import org.smallbox.faraway.modules.character.model.BuffModel;
+import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.PathModel;
+import org.smallbox.faraway.modules.character.model.TimeTableModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,43 +28,26 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
-    //    private GDXDrawable _sleepDrawable = new AnimDrawable("data/res/ic_sleep.png", 0, 0, 32, 32, 6, 10);
-//    private UILabel _label;
     private PathModel _path;
-    private PathModel _lastPath;
     private Map<ItemInfo, Integer> _inventory2 = new ConcurrentHashMap<>();
-
-//    public UILabel getLabelDrawable() {
-//        if (_label == null) {
-//            _label = new UILabel(null);
-//            _label.setSize(_personals.getFirstName().trim().length() * 6 + 1, 13);
-//            _label.setText(_personals.getFirstName().trim());
-//            _label.setTextSize(10);
-//            _label.setTextColor(Color.YELLOW);
-//            _label.setBackgroundColor(Color.BLUE);
-//            _label.setTextAlign(View.Align.CENTER);
-//        }
-//        return _label;
-//    }
 
     protected CharacterPersonalsExtra           _personals;
     protected CharacterStatsExtra               _stats;
-    protected CharacterTalentExtra _talents;
+    protected CharacterTalentExtra              _talents;
     protected CharacterNeedsExtra               _needs;
 
-    private TimeTableModel _timeTable;
+    private TimeTableModel                      _timeTable;
     protected boolean                           _isSelected;
     protected int                               _lag;
     protected RoomModel                         _quarter;
     protected boolean                           _needRefresh;
-    protected ConsumableItem _inventory;
+    protected ConsumableItem                    _inventory;
     protected MoveListener                      _moveListener;
     protected boolean                           _isFaint;
     private double                              _moveStep;
-    private Collection<BuffCharacterModel>      _buffs;
+    private Collection<BuffModel>      _buffs;
     private Collection<CharacterCheck>          _needsCheck;
-    public Collection<DiseaseCharacterModel>    _diseases;
-    protected CharacterInfo _type;
+    protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
 
     public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterInfo type) {
@@ -72,7 +58,6 @@ public abstract class CharacterModel extends MovableModel {
         _type = type;
         _buffs = new ConcurrentLinkedQueue<>();
         _needsCheck = new ConcurrentLinkedQueue<>();
-        _diseases = new ArrayList<>();
         _timeTable = new TimeTableModel(Application.gameManager.getGame().getPlanet().getInfo().dayDuration);
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
@@ -106,7 +91,9 @@ public abstract class CharacterModel extends MovableModel {
     public RoomModel                    getQuarter() { return _quarter; }
     public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
-    public ConsumableItem               getInventory() { return _inventory; }
+    public ConsumableItem               getInventory() {
+        throw new NotImplementedException();
+    }
     public int                          getInventoryQuantity(ItemInfo itemInfo) {
         for (Map.Entry<ItemInfo, Integer> entry: _inventory2.entrySet()) {
             if (entry.getKey().instanceOf(itemInfo)) {
@@ -116,38 +103,26 @@ public abstract class CharacterModel extends MovableModel {
         return 0;
     }
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
-    public abstract String[][]          getEquipmentViewIds();
-    public abstract String              getEquipmentViewPath();
-    public abstract String              getNeedViewPath();
     public CharacterInfo                getType() { return _type; }
-    public String                       getTypeName() { return _type.name; }
     public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();
-    public double                       getMoveStep() { return _moveStep; }
-    //    public GDXDrawable                  getSleepDrawable() { return _sleepDrawable; }
-    public int                          getInventoryQuantity() { return _inventory != null ? _inventory.getFreeQuantity() : 0; }
-    public Collection<BuffCharacterModel>     getBuffs() { return _buffs; }
-    public Collection<DiseaseCharacterModel>  getDiseases() { return _diseases; }
+    public Collection<BuffModel>     getBuffs() { return _buffs; }
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);
-    public void                         addDisease(DiseaseCharacterModel disease) { _diseases.add(disease); }
-    public void                         addBuff(BuffCharacterModel buff) { _buffs.add(buff); }
+    public void                         addBuff(BuffModel buff) { _buffs.add(buff); }
 
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
-    public void                         setInventory(ConsumableItem consumable) { _inventory = consumable; }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setId(int id) { _id = id; }
     public void                         setIsDead() {
         _stats.isAlive = false;
     }
     public void                         setParcel(ParcelModel parcel) {
-        assert parcel != null;
-
-        _parcel = parcel;
-        if (_inventory != null) {
-            _inventory.setParcel(parcel);
+        if (parcel == null) {
+            throw new GameException(CharacterModel.class, "setParcel: cannot be null");
         }
+        _parcel = parcel;
     }
 
     public boolean                      isSelected() { return _isSelected; }
@@ -156,33 +131,6 @@ public abstract class CharacterModel extends MovableModel {
     public boolean                      isSleeping() { return _isSleeping; }
     //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
-
-    public DiseaseCharacterModel getDisease(String name) {
-        for (DiseaseCharacterModel disease: _diseases) {
-            if (disease.disease.name.equals(name)) {
-                return disease;
-            }
-        }
-        return null;
-    }
-
-    public boolean hasDisease(String name) {
-        for (DiseaseCharacterModel disease: _diseases) {
-            if (disease.disease.name.equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasDisease(DiseaseInfo diseaseInfo) {
-        for (DiseaseCharacterModel disease: _diseases) {
-            if (disease.disease == diseaseInfo) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
         PathModel path = Application.pathManager.getPath(_parcel, targetParcel, true, false);
@@ -347,7 +295,6 @@ public abstract class CharacterModel extends MovableModel {
                 // Move state, set path to null and call listener
                 else {
                     Log.info(getName() + " Move state (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
-                    _lastPath = _path;
                     _path = null;
 
                     if (_moveListener != null) {
@@ -369,26 +316,6 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void createInventoryFromConsumable(ConsumableItem consumable, int quantity) {
-        if (_inventory != null && _inventory.getInfo() != consumable.getInfo()) {
-            throw new GameException(CharacterModel.class, "Character inventory has non-compatible item");
-        }
-
-        if (quantity == 0) {
-            return;
-        }
-
-        // Create inventory item if empty
-        if (_inventory == null) {
-            _inventory = new ConsumableItem(consumable.getInfo());
-            _inventory.setQuantity(0);
-        }
-
-        // Add quantity
-        _inventory.addQuantity(quantity);
-        consumable.addQuantity(-quantity);
-    }
-
     public void setSleeping(boolean isSleeping) {
         _isSleeping = isSleeping;
     }
@@ -401,10 +328,6 @@ public abstract class CharacterModel extends MovableModel {
         _job = null;
         _moveListener = null;
         _path = null;
-    }
-
-    public void cancelMove() {
-        _moveListener = null;
     }
 
     public String toString() {
