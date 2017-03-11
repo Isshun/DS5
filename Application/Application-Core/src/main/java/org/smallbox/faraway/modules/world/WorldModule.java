@@ -37,6 +37,10 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public void onGameStart(Game game) { }
 
     @Override
+    public void onModuleUpdate(Game game) {
+    }
+
+    @Override
     public boolean onSelectParcel(ParcelModel parcel) {
 //        _infoParcel2Controller.select(parcel);
         return false;
@@ -229,20 +233,6 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
         return value;
     }
 
-//    private void moveItemToParcel(ParcelModel parcel, UsableItem item) {
-//        parcel.setItem(item);
-//        if (item != null) {
-//            item.setParcel(parcel);
-//            for (int i = 0; i < item.getWidth(); i++) {
-//                for (int j = 0; j < item.getHeight(); j++) {
-//                    if (WorldHelper.inMapBounds(parcel.x + i, parcel.y + j, parcel.z)) {
-//                        _parcels[parcel.x + i][parcel.y + j][parcel.z].setItem(item);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     @Override
     public int getModulePriority() {
         return Constant.MODULE_WORLD_PRIORITY;
@@ -252,24 +242,5 @@ public class WorldModule extends GameModule<WorldModuleObserver> {
     public boolean isModuleMandatory() {
         return true;
     }
-//
-//    @Override
-//    public void onFloorUp() {
-//        if (_floor < _floors - 1) {
-//            _floor++;
-//            ApplicationClient.mainRenderer.getViewport().setFloor(_floor);
-//            WorldHelper.setCurrentFloor(_floor);
-//            Application.notify(observer -> observer.onFloorChange(_floor));
-//        }
-//    }
-//
-//    @Override
-//    public void onFloorDown() {
-//        if (_floor > 0) {
-//            _floor--;
-//            ApplicationClient.mainRenderer.getViewport().setFloor(_floor);
-//            WorldHelper.setCurrentFloor(_floor);
-//            Application.notify(observer -> observer.onFloorChange(_floor));
-//        }
-//    }
+
 }

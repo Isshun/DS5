@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.job.*;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterName;
@@ -89,9 +88,13 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _characters.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
         _characters.removeIf(CharacterModel::isDead);
 
-        _characters.forEach(this::updateNeeds);
-        _characters.forEach(this::updateBuffs);
-        _characters.forEach(this::updatePosition);
+        // Execute action
+        _characters.forEach(character -> {
+            character.setDirection(MovableModel.Direction.NONE);
+            character.action();
+            character.move();
+            character.fixPosition();
+        });
     }
 
     /**
@@ -108,37 +111,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         if (CollectionUtils.isEmpty(character.getBuffs())) {
             character.getBuffs().clear();
         }
-    }
-
-    /**
-     *
-     * @param character CharacterModel
-     */
-    private void updateNeeds(CharacterModel character) {
-        // Update needs
-//        character.getNeeds().update();
-
-
-    }
-
-    /**
-     *
-     * @param character CharacterModel
-     */
-    private void updateBuffs(CharacterModel character) {
-        // Update characters (buffs, stats)
-        character.update();
-    }
-
-    /**
-     *
-     * @param character CharacterModel
-     */
-    private void updatePosition(CharacterModel character) {
-        character.setDirection(MovableModel.Direction.NONE);
-        character.action();
-        character.move();
-        character.fixPosition();
     }
 
     public CharacterModel add(CharacterModel character) {

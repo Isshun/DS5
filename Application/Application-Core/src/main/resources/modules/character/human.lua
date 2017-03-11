@@ -13,12 +13,12 @@ data:extend({
             critical = 0.20,
             change = { work = -0.1, rest = -0.075, sleep = -0.025 },
         },
-        water = {
+        drink = {
             warning = 0.75,
             critical = 0.50,
             change = { work = -0.1, rest = -0.075, sleep = -0.025 },
         },
-        joy = {
+        entertainment = {
             warning = 0.75,
             critical = 0.50,
             change = { work = -0.1, rest = -0.1, sleep = -0.05 },

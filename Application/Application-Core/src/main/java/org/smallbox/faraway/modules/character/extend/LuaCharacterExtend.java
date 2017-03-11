@@ -35,10 +35,10 @@ public class LuaCharacterExtend extends LuaExtend {
         if (!needs.isnil()) {
             setNeed(characterInfo.needs.energy, needs.get("energy"));
             setNeed(characterInfo.needs.food, needs.get("food"));
-            setNeed(characterInfo.needs.water, needs.get("water"));
+            setNeed(characterInfo.needs.drink, needs.get("drink"));
             setNeed(characterInfo.needs.oxygen, needs.get("oxygen"));
             setNeed(characterInfo.needs.relation, needs.get("relation"));
-            setNeed(characterInfo.needs.joy, needs.get("joy"));
+            setNeed(characterInfo.needs.entertainment, needs.get("entertainment"));
         }
     }
 

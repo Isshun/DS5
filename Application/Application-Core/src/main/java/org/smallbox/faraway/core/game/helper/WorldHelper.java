@@ -37,8 +37,6 @@ public class WorldHelper {
 
     public static ConsumableItem    getConsumable(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(ConsumableItem.class) : null; }
     public static StructureItem     getStructure(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getItem(StructureItem.class) : null; }
-    public static PlantItem getResource(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getPlant() : null; }
-    public static ItemInfo          getPlantInfo(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null ? _parcels[x][y][z].getPlant().getInfo() : null; }
     public static ItemInfo          getGroundInfo(int x, int y, int z) { return inMapBounds(x, y, z) ? _parcels[x][y][z].getGroundInfo() : null; }
     public static int               getCurrentFloor() { return _currentFloor; }
     public static int               getGroundFloor() { return _groundFloor; }
@@ -49,7 +47,7 @@ public class WorldHelper {
     public static boolean           hasRock(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getRockInfo() != null; }
     public static boolean           hasWall(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isWall; }
     public static boolean           hasDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && _parcels[x][y][z].getItem(StructureItem.class).getInfo().isDoor; }
-    public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].getPlant() != null; }
+    public static boolean           hasPlant(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(PlantItem.class); }
     public static boolean           hasStructure(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class); }
     public static boolean           hasWallOrDoor(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasItem(StructureItem.class) && hasWallOrDoor(_parcels[x][y][z]); }
     public static boolean           hasLiquid(int x, int y, int z) { return inMapBounds(x, y, z) && _parcels[x][y][z].hasLiquid(); }
@@ -107,7 +105,7 @@ public class WorldHelper {
             return false;
         }
 
-        if (parcel.hasPlant()) {
+        if (parcel.hasItem(PlantItem.class)) {
             return false;
         }
 
@@ -225,7 +223,7 @@ public class WorldHelper {
         if (_parcels[x][y][z].hasItem(StructureItem.class) && !_parcels[x][y][z].getItem(StructureItem.class).isWalkable()) {
             return false;
         }
-        if (_parcels[x][y][z].hasPlant()) {
+        if (_parcels[x][y][z].hasItem(PlantItem.class)) {
             return false;
         }
         // TODO

@@ -50,7 +50,12 @@ public abstract class MapObjectModel extends ObjectModel {
     // Sets
     public void             setId(int id) { _id = id; }
     public void             setMode(int mode) { _mode = mode; }
-    public void             setParcel(ParcelModel parcel) { _parcel = parcel; }
+    public void             setParcel(ParcelModel parcel) {
+        if (_parcel != parcel) {
+            _parcel = parcel;
+            _parcel.setItem(this);
+        }
+    }
 
     // Gets
     public int              getId() { return _id; }

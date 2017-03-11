@@ -22,13 +22,13 @@ public class CharacterInfo extends ObjectInfo {
         public ChangeInfo   change = new ChangeInfo();
     }
 
-    public static class Needs {
-        public NeedInfo     water = new NeedInfo();
+    public static class NeedsInfo {
         public NeedInfo     food = new NeedInfo();
+        public NeedInfo     drink = new NeedInfo();
         public NeedInfo     energy = new NeedInfo();
         public NeedInfo     oxygen = new NeedInfo();
         public NeedInfo     relation = new NeedInfo();
-        public NeedInfo     joy = new NeedInfo();
+        public NeedInfo     entertainment = new NeedInfo();
         public NeedInfo     happiness = new NeedInfo();
         public NeedInfo     heat = new NeedInfo();
     }
@@ -37,5 +37,5 @@ public class CharacterInfo extends ObjectInfo {
     public int              index;
     public String           path;
     public int              thermolysis;
-    public Needs            needs = new Needs();
+    public NeedsInfo needs = new NeedsInfo();
 }

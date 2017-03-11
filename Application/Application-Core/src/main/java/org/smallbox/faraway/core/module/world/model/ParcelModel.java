@@ -7,11 +7,11 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
-import org.smallbox.faraway.modules.plant.model.PlantItem;
+import org.smallbox.faraway.modules.area.AreaModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,18 +21,17 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public final int                        y;
     public final int                        z;
 
+    private int                             _environmentScore;
     private ParcelEnvironment               _environment;
     private RoomModel                       _room;
     private AreaModel                       _area;
     private Array<Connection<ParcelModel>>  _connections;
     private final int                       _index;
     private int                             _tile;
-    private double _liquidValue;
+    private double                          _liquidValue;
     private ItemInfo                        _rockInfo;
     private ItemInfo                        _groundInfo;
-//    public ConsumableItem                  _consumable;
-    public PlantItem _plant;
-    public List<NetworkItem>         _networks;
+    public List<NetworkItem>                _networks;
     private ItemInfo                        _liquidInfo;
 
     private Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
@@ -48,8 +47,14 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public void                     setArea(AreaModel area) { _area = area; }
     public void                     setConnections(Array<Connection<ParcelModel>> connections) { _connections = connections; }
 
-    public void                     setPlant(PlantItem plant) { _plant = plant; }
-    public void                     setItem(MapObjectModel item) { _items.put(item.getClass(), item); }
+    public void                     setItem(MapObjectModel item) {
+        if (!_items.containsValue(item)) {
+            _items.put(item.getClass(), item);
+            _environmentScore = _items.values().stream().mapToInt(i -> i.getInfo().environment).sum();
+            item.setParcel(this);
+        }
+    }
+
     public void                     setGroundInfo(ItemInfo groundInfo) {
         _groundInfo = groundInfo;
     }
@@ -63,7 +68,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public boolean                  isExterior() { return _room == null || _room.isExterior(); }
     public boolean                  canSupportRoof() { return (hasItem(StructureItem.class) && getItem(StructureItem.class).getInfo().canSupportRoof) || _rockInfo != null; }
     public boolean                  hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
-    public boolean                  hasPlant() { return _plant != null; }
     public boolean                  hasGround() { return _groundInfo != null; }
     public boolean                  hasLiquid() { return _liquidInfo != null; }
     public boolean                  hasRock() { return _rockInfo != null; }
@@ -73,8 +77,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ItemInfo                 getRockInfo() { return _rockInfo; }
     public ItemInfo                 getGroundInfo() { return _groundInfo; }
     public ItemInfo                 getLiquidInfo() { return _liquidInfo; }
-    public PlantItem getPlant() { return _plant; }
-//    public ConsumableItem          getConsumable() { return _consumable; }
     public RoomModel                getRoom() { return _room; }
     public AreaModel                getArea() { return _area; }
     public int                      getTile() { return _tile; }
@@ -147,11 +149,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 //            return false;
 //        }
 
-        // Check resource
-        if (_plant != null && !_plant.getInfo().isWalkable) {
-            return false;
-        }
-
         return true;
     }
 
@@ -190,6 +187,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         if (_environment != null) {
             score += _environment.getScore();
         }
+
 //        if (_item != null) {
 //            score += _item.getValue();
 //        }
@@ -234,8 +232,11 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         return _liquidValue;
     }
 
-    @Deprecated
     public <T> T getItem(Class<T> cls) { return (T) _items.get(cls); }
 
     public boolean hasItem(Class cls) { return _items.get(cls) != null; }
+
+    public Collection<MapObjectModel> getItems() {
+        return _items.values();
+    }
 }

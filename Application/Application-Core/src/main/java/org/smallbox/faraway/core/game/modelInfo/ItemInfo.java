@@ -245,6 +245,7 @@ public class ItemInfo extends ObjectInfo {
     public boolean                      isNetworkItem;
     public ItemBuildInfo                build;
     public int                          health = 1;
+    public int                          environment;
     public int                          power;
     public double                       permeability;
     public boolean                      isLive;

@@ -52,7 +52,7 @@ public class CharacterNeedModule extends GameModule {
 
             // Ajoute les besoins au personnage si manquants
             if (needs == null) {
-                needs = character.addExtra(new CharacterNeedsExtra(character, null));
+                needs = character.addExtra(new CharacterNeedsExtra(character.getType().needs));
             }
 
             decreaseNeeds(character, needs);
@@ -67,12 +67,11 @@ public class CharacterNeedModule extends GameModule {
      * @param needs CharacterNeedsExtra
      */
     private void decreaseNeeds(CharacterModel character, CharacterNeedsExtra needs) {
-        boolean isSleeping = false;
-        CharacterInfo.Needs needsInfo = character.getType().needs;
-        needs.addValue(TAG_FOOD, isSleeping ? needsInfo.food.change.sleep : needsInfo.food.change.rest);
-        needs.addValue(TAG_DRINK, isSleeping ? needsInfo.water.change.sleep : needsInfo.water.change.rest);
-        needs.addValue(TAG_ENERGY, isSleeping ? needsInfo.energy.change.sleep : needsInfo.energy.change.rest);
-        needs.addValue(TAG_ENTERTAINMENT, isSleeping ? needsInfo.joy.change.sleep : needsInfo.joy.change.rest);
+        CharacterInfo.NeedsInfo needsInfo = character.getType().needs;
+        needs.addValue(TAG_FOOD, character.isSleeping() ? needsInfo.food.change.sleep : needsInfo.food.change.rest);
+        needs.addValue(TAG_DRINK, character.isSleeping() ? needsInfo.drink.change.sleep : needsInfo.drink.change.rest);
+        needs.addValue(TAG_ENERGY, character.isSleeping() ? needsInfo.energy.change.sleep : needsInfo.energy.change.rest);
+        needs.addValue(TAG_ENTERTAINMENT, character.isSleeping() ? needsInfo.entertainment.change.sleep : needsInfo.entertainment.change.rest);
         needs.addValue(TAG_HAPPINESS, buffModule.getMood(character) / 100.0);
         needs.addValue(TAG_RELATION, characterRelationModule.getScore(character) / 100.0);
     }

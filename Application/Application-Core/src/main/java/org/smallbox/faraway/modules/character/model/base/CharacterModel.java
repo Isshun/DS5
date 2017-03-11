@@ -78,7 +78,7 @@ public abstract class CharacterModel extends MovableModel {
         _stats = new CharacterStatsExtra();
         _stats.speed = 1;
 
-        _needs = new CharacterNeedsExtra(this, _stats);
+        _needs = new CharacterNeedsExtra(_type.needs);
 
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
@@ -230,12 +230,6 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void update() {
-        _needs.environment = _parcel.getEnvironmentScore();
-        //TODO
-//        _needs.light = ((RoomModule) Application.moduleManager.getModule(RoomModule.class)).getLight(_posX, _posY);
-    }
-
     public void    setJob(JobModel job) {
         assert _job == null;
         assert job != null;
@@ -259,7 +253,7 @@ public abstract class CharacterModel extends MovableModel {
     public void        move() {
         if (_path != null) {
             // Character is sleeping
-            if (_needs.isSleeping()) {
+            if (_isSleeping) {
                 Log.debug("Character #" + _id + ": sleeping . move canceled");
                 return;
             }
