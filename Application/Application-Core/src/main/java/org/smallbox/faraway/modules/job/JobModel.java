@@ -19,6 +19,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class JobModel extends ObjectModel {
 
+    private Object _data;
+
+    public void setData(Object data) {
+        _data = data;
+    }
+
+    public Object getData() {
+        return _data;
+    }
+
     private JobTaskReturn _lastReturn;
 
     public JobTaskReturn getLastReturn() {

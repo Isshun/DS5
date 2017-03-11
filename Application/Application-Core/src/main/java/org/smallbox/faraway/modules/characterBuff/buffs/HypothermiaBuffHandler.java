@@ -1,7 +1,7 @@
-package org.smallbox.faraway.modules.buff.buffs;
+package org.smallbox.faraway.modules.characterBuff.buffs;
 
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.modules.buff.BuffHandler;
+import org.smallbox.faraway.modules.characterBuff.BuffHandler;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 

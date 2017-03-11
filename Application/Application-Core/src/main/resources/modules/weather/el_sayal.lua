@@ -2,7 +2,9 @@ data:extend({
     type = "weather",
     name = "base.weather.el_sayal",
     label = "El Sayal",
-    icon = "[base]/graphics/icons/weather/sand.png";
+    icon = "[base]/graphics/icons/weather/sand.png",
+    color1 = 0x734c09,
+    color2 = 0xf0b54e,
     particle = "sand",
     sun = {
         dawn = 0xddc8b2,

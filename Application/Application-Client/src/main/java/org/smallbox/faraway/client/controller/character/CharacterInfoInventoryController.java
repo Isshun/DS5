@@ -19,7 +19,7 @@ public class CharacterInfoInventoryController extends LuaController {
 
     @Override
     protected void onNewGameUpdate(Game game) {
-        listInventory.clear();
+        listInventory.removeAllViews();
 
         if (_character != null) {
             _character.getInventory2().forEach((itemInfo, quantity) -> {

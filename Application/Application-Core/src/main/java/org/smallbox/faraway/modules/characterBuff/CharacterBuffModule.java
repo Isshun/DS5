@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.buff;
+package org.smallbox.faraway.modules.characterBuff;
 
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -6,9 +6,11 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.CharacterNeedModule;
 import org.smallbox.faraway.modules.character.model.BuffInfo;
 import org.smallbox.faraway.modules.character.model.BuffModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 
 import java.util.Collection;
 import java.util.Map;
@@ -17,13 +19,16 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Alex on 16/06/2015.
  */
-public class BuffModule extends GameModule {
+public class CharacterBuffModule extends GameModule {
 
     @BindComponent
     private Data data;
 
     @BindModule
     private CharacterModule characterModule;
+
+    @BindModule
+    private CharacterNeedModule characterNeedModule;
 
     private Map<CharacterModel, Map<BuffInfo, BuffModel>> _characters = new ConcurrentHashMap<>();
 
@@ -40,23 +45,7 @@ public class BuffModule extends GameModule {
         // Check les buffs de chaque personnage
         _characters.forEach(this::addMissingBuffs);
         _characters.forEach(this::updateBuffs);
-    }
-
-    /**
-     * Fait progresser chaque buff jusqu'à son niveau max
-     *
-     * @param character CharacterModel
-     * @param buffs Map
-     */
-    private void updateBuffs(CharacterModel character, Map<BuffInfo, BuffModel> buffs) {
-        buffs.forEach((buffInfo, buff) -> {
-            BuffInfo.BuffLevelInfo maxLevel = getMaxLevel(character, buffInfo);
-            if (maxLevel != null) {
-                buff.level = maxLevel.level;
-                buff.message = maxLevel.message;
-                buff.mood = maxLevel.mood;
-            }
-        });
+        _characters.forEach(this::applyBuffsEffects);
     }
 
     /**
@@ -84,6 +73,44 @@ public class BuffModule extends GameModule {
         });
     }
 
+    /**
+     * Fait progresser chaque buff jusqu'à son niveau max
+     *
+     * @param character CharacterModel
+     * @param buffs Map
+     */
+    private void updateBuffs(CharacterModel character, Map<BuffInfo, BuffModel> buffs) {
+        buffs.forEach((buffInfo, buff) -> {
+            BuffInfo.BuffLevelInfo maxLevel = getMaxLevel(character, buffInfo);
+            if (maxLevel != null) {
+                buff.levelInfo = maxLevel;
+                buff.level = maxLevel.level;
+                buff.message = maxLevel.message;
+                buff.mood = maxLevel.mood;
+            }
+        });
+    }
+
+    /**
+     * Applique au personnage les effets des buffs présents
+     *
+     * @param character CharacterModel
+     * @param buffs Map
+     */
+    private void applyBuffsEffects(CharacterModel character, Map<BuffInfo, BuffModel> buffs) {
+        buffs.forEach((info, buff) -> {
+            buff.levelInfo.effects.forEach(effect -> {
+
+                // Apply need effect
+                CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
+                if (needs != null) {
+                    effect.needs.forEach(needs::addValue);
+                }
+
+            });
+        });
+    }
+
     private BuffInfo.BuffLevelInfo getMaxLevel(CharacterModel character, BuffInfo buffInfo) {
         if (buffInfo.handler != null) {
             int level = buffInfo.handler.getLevel(character);
@@ -105,6 +132,10 @@ public class BuffModule extends GameModule {
     }
 
     public Collection<BuffModel> getBuffs(CharacterModel character) {
-        return _characters.get(character).values();
+        return _characters.computeIfAbsent(character, k -> new ConcurrentHashMap<>()).values();
+    }
+
+    public int getMood(CharacterModel character) {
+        return getBuffs(character).stream().mapToInt(buff -> buff.mood).sum();
     }
 }

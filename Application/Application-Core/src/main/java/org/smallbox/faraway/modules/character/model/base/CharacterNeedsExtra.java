@@ -2,7 +2,6 @@ package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
@@ -27,13 +26,8 @@ public class CharacterNeedsExtra {
     private int    _eating;
 
     // Stats
-    private Map<String, Double> _values = new HashMap<>();
+    private Map<String, NeedEntry> _values = new HashMap<>();
     public double     socialize;
-    public double   happinessChange;
-    public double     health;
-    public double     sickness;
-    public double     injuries;
-    public double     heat;
     public double   heatDifferenceReal;
     public int         environment;
     public int         light;
@@ -46,105 +40,27 @@ public class CharacterNeedsExtra {
         _data = Application.data;
         _character = character;
         _stats = stats;
-        _values.put(TAG_FOOD, Constant.CHARACTER_INIT_FOOD);
-        _values.put(TAG_OXYGEN, Constant.CHARACTER_INIT_OXYGEN + (Math.random() * 100) % 40 - 20);
-        _values.put(TAG_HAPPINESS, Constant.CHARACTER_INIT_HAPPINESS + (Math.random() * 100) % 40 - 20);
-        _values.put(TAG_ENERGY, Constant.CHARACTER_INIT_ENERGY + (Math.random() * 100) % 40 - 20);
-        _values.put(TAG_ENTERTAINMENT, 0.0);
-        _values.put(TAG_RELATION, 0.0);
-        _values.put("security", 0.0);
 
-        _values.put(TAG_ENERGY, 100.0);
-        _values.put(TAG_DRINK, 100.0);
-//        _values.put(TAG_FOOD, 100.0);
-        _values.put(TAG_OXYGEN, 100.0);
-        _values.put(TAG_RELATION, 100.0);
-        _values.put(TAG_ENTERTAINMENT, 100.0);
-
-        health = (float) (Constant.CHARACTER_INIT_HEALTH + (Math.random() * 100) % 20 - 10);
-        heat = character.getType().needs.heat.optimal;
-        injuries = 0;
-        sickness = 0;
+        _values.put(TAG_FOOD, new NeedEntry(TAG_FOOD, Constant.CHARACTER_INIT_FOOD, character.getType().needs.food));
+        _values.put(TAG_DRINK, new NeedEntry(TAG_DRINK, Constant.CHARACTER_INIT_DRINK, character.getType().needs.food));
+        _values.put(TAG_ENERGY, new NeedEntry(TAG_ENERGY, Constant.CHARACTER_INIT_ENERGY, character.getType().needs.food));
+        _values.put(TAG_OXYGEN, new NeedEntry(TAG_OXYGEN, Constant.CHARACTER_INIT_OXYGEN, character.getType().needs.food));
+        _values.put(TAG_HAPPINESS, new NeedEntry(TAG_HAPPINESS, Constant.CHARACTER_INIT_HAPPINESS, character.getType().needs.food));
+        _values.put(TAG_ENTERTAINMENT, new NeedEntry(TAG_ENTERTAINMENT, Constant.CHARACTER_INIT_ENTERTAINMENT, character.getType().needs.food));
+        _values.put(TAG_RELATION, new NeedEntry(TAG_RELATION, Constant.CHARACTER_INIT_RELATION, character.getType().needs.food));
     }
 
-    public double   get(String name) { return _values.containsKey(name) ? _values.get(name) : -1; }
+    public NeedEntry get(String name) { return _values.get(name); }
+    public Map<String, NeedEntry> getAll() { return _values; }
 
     public boolean    isSleeping() { return isSleeping; }
 
-    public void    update() {
-        CharacterInfo.Needs needs = _character.getType().needs;
-
-        addValue(TAG_ENERGY, isSleeping ? needs.energy.change.sleep : needs.energy.change.rest);
-        addValue(TAG_FOOD, isSleeping ? needs.food.change.sleep : needs.food.change.rest);
-        addValue(TAG_DRINK, isSleeping ? needs.water.change.sleep : needs.water.change.rest);
-        addValue(TAG_ENTERTAINMENT, isSleeping ? needs.joy.change.sleep : needs.joy.change.rest);
-        // TODO
-//        addValue(TAG_RELATION, ModuleHelper.getCharacterModule().havePeopleOnProximity(_character) ? 1 : -0.25);
-        addValue(TAG_HAPPINESS, happinessChange / 100);
-
-//        // Oxygen
-//        double oxygen = _values.get("oxygen");
-//        if (_character.getParcel() != null) {
-//            int oxygenLevel = (int)(_character.getParcel().getOxygen() * 100);
-//            if (oxygen < oxygenLevel || oxygen > oxygenLevel + 1) {
-//                // Increase oxygen
-//                if (oxygen < oxygenLevel) {
-//                    oxygen += 1;
-//                }
-//                // Decrease oxygen, use resist
-//                else {
-//                    oxygen -= 1 * (1 - _stats.resist.oxygen / 100f);
-//                }
-//            }
-//        }
-//        _values.put(TAG_OXYGEN, oxygen);
-
-        // Set needs bounds
-        _values.entrySet().forEach(entry -> entry.setValue(Math.max(0, Math.min(1, entry.getValue()))));
-    }
-
     public void addValue(String name, double value) {
-        _values.put(name, Math.max(0, Math.min(100, (_values.containsKey(name) ? _values.get(name) : 0) + value)));
+        _values.get(name).addValue(value);
     }
 
-    public void setValue(String name, double value) {
-        _values.put(name, Math.max(0, Math.min(100, value)));
-    }
-
-    public void updateNeeds(CharacterInfo.Needs needs) {
-//
-//        // Body heat
-//        // TODO
-////        double heatDifference = _character.getParcel().getTemperatureFloor() - (this.heat - _character.getType().thermolysis);
-//        double heatDifference = 0;
-//        double heatDifferenceReal = 0;
-////        Log.info("heatDifference: " + heatDifference);
-//
-//        if (heatDifference < 0) {
-//            heatDifferenceReal = Math.min(0, heatDifference + _stats.buff.heat);
-//        } else if (heatDifference > 0) {
-//            heatDifferenceReal = Math.max(0, heatDifference - _stats.buff.cold);
-//        }
-//
-//        this.heatDifferenceReal = heatDifferenceReal;
-//
-////        Log.info("heatDifferenceReal: " + heatDifferenceReal);
-//
-//        if (heatDifferenceReal < 0) {
-//            this.heat += heatDifferenceReal * (1 - _stats.resist.cold / 100f) / 100f;
-//        } else if (heatDifferenceReal > 0) {
-//            this.heat += heatDifferenceReal * (1 - _stats.resist.heat / 100f) / 100f;
-//        } else {
-//            if (this.heat > _character.getType().needs.heat.optimal + 0.25) {
-//                this.heat += (heatDifference - _stats.buff.cold) / 1000f;
-//            } else if (this.heat < _character.getType().needs.heat.optimal - 0.25) {
-//                this.heat += (heatDifference + _stats.buff.heat) / 1000f;
-//            } else {
-//                this.heat = _character.getType().needs.heat.optimal;
-//            }
-//        }
-
-//        Log.info("bodyHeat: " + this.heat);
+    public void use(ConsumableItem consumable) {
+        use(consumable.getInfo().consume.effects, 1);
     }
 
     public void use(ItemInfo.ItemInfoEffects effects, int cost) {
@@ -155,15 +71,31 @@ public class CharacterNeedsExtra {
             addValue("entertainment", (double)effects.entertainment / cost);
             addValue("relation", (double)effects.relation / cost);
             addValue("happiness", (double)effects.happiness / cost);
-            health = Math.min(health + (double)effects.health / cost, 100);
         }
     }
 
-    public void setSleeping(boolean isSleeping) {
-        this.isSleeping = isSleeping;
+    public boolean hasEffect(NeedEntry need, ConsumableItem consumable) {
+        return hasEffect(need, consumable.getInfo().consume.effects);
     }
 
-    public void consume(ConsumableItem consumable) {
-        use(consumable.getInfo().consume.effects, 1);
+    private boolean hasEffect(NeedEntry need, ItemInfo.ItemInfoEffects effects) {
+        if (effects != null) {
+            switch (need.name) {
+                case "energy":
+                    return effects.energy > 0;
+                case "food":
+                    return effects.food > 0;
+                case "drink":
+                    return effects.drink > 0;
+                case "entertainment":
+                    return effects.entertainment > 0;
+                case "relation":
+                    return effects.relation > 0;
+                case "happiness":
+                    return effects.happiness > 0;
+            }
+        }
+        return false;
     }
+
 }

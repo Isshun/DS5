@@ -157,13 +157,13 @@ public class GDXRenderer {
 
     public void drawFont(DrawFontCallback callback, int fontSize) {
         _batch.begin();
-        fontSize *= Application.APPLICATION_CONFIG.uiScale;
+        fontSize *= Application.config.uiScale;
         callback.onDraw(_batch, _fonts[fontSize]);
         _batch.end();
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        textSize *= Application.APPLICATION_CONFIG.uiScale;
+        textSize *= Application.config.uiScale;
 
         if (string != null) {
             _batch.begin();

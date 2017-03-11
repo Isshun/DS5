@@ -1,12 +1,14 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
-import org.smallbox.faraway.modules.buff.BuffHandler;
+import org.smallbox.faraway.modules.characterBuff.BuffHandler;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -37,6 +39,7 @@ public class BuffInfo extends ObjectInfo {
 
     public static class BuffEffectInfo {
         public DiseaseInfo disease;
+        public Map<String, Double> needs = new ConcurrentHashMap<>();
         public double rate;
     }
 

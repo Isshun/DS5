@@ -14,7 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Alex on 03/06/2015.
  */
 public class ConsumableItem extends MapObjectModel {
-    private int _freeQuantity = 1;
+    private int _freeQuantity;
+    private int _totalQuantity;
     private JobModel        _job;
     private Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
 
@@ -24,7 +25,7 @@ public class ConsumableItem extends MapObjectModel {
 
     public ConsumableItem(ItemInfo info, int quantity) {
         super(info);
-        _freeQuantity = quantity;
+        _totalQuantity = _freeQuantity = quantity;
     }
 
     public void addQuantity(int quantity) {
@@ -32,6 +33,7 @@ public class ConsumableItem extends MapObjectModel {
         Log.debug(ConsumableItem.class, "AddQuantity (consumable: %s, quantity: %d, quantity to add: %d)", this, _freeQuantity, quantity);
 
         _freeQuantity += quantity;
+        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
 
         if (_freeQuantity < 0) {
             throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
@@ -47,6 +49,7 @@ public class ConsumableItem extends MapObjectModel {
         Log.debug(ConsumableItem.class, "SetQuantity (consumable: %s, quantity: %d, quantity to set: %d)", this, _freeQuantity, quantity);
 
         _freeQuantity = quantity;
+        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
 
         if (_freeQuantity < 0) {
             throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
@@ -96,6 +99,7 @@ public class ConsumableItem extends MapObjectModel {
         Log.debug(ConsumableItem.class, "addLock: %s", lock);
 
         _locks.add(lock);
+        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
     }
 
     public boolean hasLock() {
@@ -103,7 +107,7 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public int getTotalQuantity() {
-        return _freeQuantity + _locks.stream().mapToInt(lock -> lock.quantity).sum();
+        return _totalQuantity;
     }
 
     public void removeLock(ConsumableModule.ConsumableJobLock lock) {
@@ -114,5 +118,6 @@ public class ConsumableItem extends MapObjectModel {
         }
 
         _locks.remove(lock);
+        _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
     }
 }

@@ -30,7 +30,7 @@ public class CharacterInfoHealthController extends LuaController {
     }
 
     private void displayDiseases(CharacterModel character) {
-        listDiseases.clear();
+        listDiseases.removeAllViews();
 
         diseaseModule.getDiseases(character).forEach(disease ->
                 listDiseases.addView(UILabel.create(null)

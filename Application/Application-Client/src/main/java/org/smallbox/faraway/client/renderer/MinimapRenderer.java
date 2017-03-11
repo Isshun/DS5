@@ -52,8 +52,8 @@ public class MinimapRenderer extends BaseRenderer {
 
     @Override
     public void onGameStart(Game game) {
-        POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.APPLICATION_CONFIG.uiScale - 10 * Application.APPLICATION_CONFIG.uiScale);
-        POS_Y = (int) (84 * Application.APPLICATION_CONFIG.uiScale);
+        POS_X = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.config.uiScale - 10 * Application.config.uiScale);
+        POS_Y = (int) (84 * Application.config.uiScale);
 
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
@@ -98,8 +98,8 @@ public class MinimapRenderer extends BaseRenderer {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (_panelMain != null && _panelMain.isVisible()) {
-            int width = (int) (FRAME_WIDTH * Application.APPLICATION_CONFIG.uiScale);
-            int height = (int) (FRAME_HEIGHT * Application.APPLICATION_CONFIG.uiScale);
+            int width = (int) (FRAME_WIDTH * Application.config.uiScale);
+            int height = (int) (FRAME_HEIGHT * Application.config.uiScale);
 
             if (_dirty || _spriteMap == null) {
                 _dirty = false;

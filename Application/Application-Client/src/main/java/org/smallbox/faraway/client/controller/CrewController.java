@@ -68,7 +68,7 @@ public class CrewController extends LuaController {
 
                 CharacterNeedsExtra need = character.getExtra(CharacterNeedsExtra.class);
                 if (need != null) {
-                    view.addView(createGaugeView("[base]/graphics/needs/ic_food.png", need.get(TAG_FOOD)).setPosition(270, 10));
+                    view.addView(createGaugeView("[base]/graphics/needs/ic_food.png", need.get(TAG_FOOD).value()).setPosition(270, 10));
                     view.addView(createGaugeView("[base]/graphics/needs/ic_health.png", 0.50).setPosition(270 + 20, 10));
                     view.addView(createGaugeView("[base]/graphics/needs/ic_social.png", 0.75).setPosition(270 + 40, 10));
                     view.addView(createGaugeView("[base]/graphics/needs/ic_entertainment.png", 0.75).setPosition(270 + 60, 10));

@@ -32,7 +32,7 @@ public class JobController extends LuaController {
 
     @Override
     public void onNewGameUpdate(Game game) {
-        listJobs.clear();
+        listJobs.removeAllViews();
 
         jobModule.getJobs().forEach(job -> {
             UILabel lbJob = new UILabel(null);

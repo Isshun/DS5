@@ -50,11 +50,12 @@ public class UIImage extends View {
         _scaleY = scaleY;
     }
 
-    public void setTextureRect(int textureX, int textureY, int textureWidth, int textureHeight) {
+    public UIImage setTextureRect(int textureX, int textureY, int textureWidth, int textureHeight) {
         _textureX = textureX;
         _textureY = textureY;
         _textureWidth = textureWidth;
         _textureHeight = textureHeight;
+        return this;
     }
 
     @Override
@@ -72,8 +73,8 @@ public class UIImage extends View {
                         _sprite.setRegion(0, 0, _originWidth, _originHeight);
                         _sprite.setSize(_originWidth, _originHeight);
                         _sprite.setScale(
-                                (float)Application.APPLICATION_CONFIG.uiScale,
-                                (float)Application.APPLICATION_CONFIG.uiScale);
+                                (float)Application.config.uiScale,
+                                (float)Application.config.uiScale);
                         _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();

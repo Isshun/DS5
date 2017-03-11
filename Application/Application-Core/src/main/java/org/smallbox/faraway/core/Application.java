@@ -39,7 +39,7 @@ public class Application {
     public static final GameSaveManager         gameSaveManager;
 
     // Both
-    public static final ApplicationConfig APPLICATION_CONFIG;
+    public static final ApplicationConfig config;
 
     public static boolean isLoaded = false;
 
@@ -56,7 +56,7 @@ public class Application {
         data = dependencyInjector.create(Data.class);
 
         // Create APPLICATION_CONFIG
-        APPLICATION_CONFIG = dependencyInjector.create(ApplicationConfig.class);
+        config = dependencyInjector.create(ApplicationConfig.class);
     }
 
     private static boolean                          _isRunning = true;
@@ -79,7 +79,7 @@ public class Application {
     }
 
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ApplicationConfig getConfig() { return APPLICATION_CONFIG; }
+    public ApplicationConfig getConfig() { return config; }
 
 //    public void update() {
 //        if (Application.gameManager.isLoaded()) {

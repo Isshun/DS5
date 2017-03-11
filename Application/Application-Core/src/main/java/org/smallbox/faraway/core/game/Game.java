@@ -33,12 +33,12 @@ public class Game {
     private boolean                         _isRunning;
     private final GameInfo                  _info;
     private PlanetModel                     _planet;
-    private int                             _hour = 5;
+    private int                             _hour = 7;
     private int                             _day;
     private int                             _year;
     private static int                      _tick;
     private Map<String, Boolean>            _displays;
-    private int                             _speed = 3;
+    private int                             _speed = 1;
     private int                             _lastSpeed = 1;
     private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
@@ -67,7 +67,7 @@ public class Game {
     public int                              getHour() { return _hour; }
     public int                              getDay() { return _day; }
     public int                              getYear() { return _year; }
-    public int                              getTickPerHour() { return Application.APPLICATION_CONFIG.game.tickPerHour; }
+    public int                              getTickPerHour() { return Application.config.game.tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
@@ -192,7 +192,7 @@ public class Game {
      * Update hour
      */
     private void updateHour() {
-        if (_tick % Application.APPLICATION_CONFIG.game.tickPerHour == 0) {
+        if (_tick % Application.config.game.tickPerHour == 0) {
             if (++_hour >= _planet.getInfo().dayDuration) {
                 _hour = 0;
                 if (++_day >= _planet.getInfo().yearDuration) {
@@ -234,7 +234,8 @@ public class Game {
                     }
 
                     Thread.sleep(_tickInterval);
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
+                    _status = GameStatus.STOPPED;
                     e.printStackTrace();
                 }
             }

@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.HumanModel;
@@ -58,8 +57,8 @@ public class DesktopLauncher {
                 character.addInventory("base.consumable.vegetable.rice", 10);
                 character.addInventory("base.consumable.vegetable.carrot", 10);
 
-                ParcelModel mealParcel = WorldHelper.getParcel(2, 2, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 10, mealParcel);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 1000, 2, 2, 1);
 
                 DiseaseInfo diseaseInfo = new DiseaseInfo();
                 diseaseInfo.label = "di test";

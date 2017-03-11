@@ -142,7 +142,7 @@ public class UILabel extends View {
         return this;
     }
 
-    public UILabel setTextColor(int color) {
+    public UILabel setTextColor(long color) {
         _textColor = new Color(color);
         _gdxTextColor = new com.badlogic.gdx.graphics.Color(_textColor.r / 255f, _textColor.g / 255f, _textColor.b / 255f, _textColor.a / 255f);
         return this;

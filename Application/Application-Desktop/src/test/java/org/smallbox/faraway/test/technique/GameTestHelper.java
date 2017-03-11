@@ -79,7 +79,7 @@ public class GameTestHelper {
 
     public GameTestHelper setUpdateInterval(int updateInterval) {
 
-        Application.APPLICATION_CONFIG.game.updateInterval = Math.max(1, updateInterval);
+        Application.config.game.updateInterval = Math.max(1, updateInterval);
 
         return this;
     }

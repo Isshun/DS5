@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UIEventManager {
+    private Map<View, OnDragListener>      _onDragListeners;
     private Map<View, OnClickListener>      _onClickListeners;
     private Map<View, OnClickListener>      _onRightClickListeners;
     private Map<View, OnClickListener>      _onMouseWheelUpListeners;
@@ -24,14 +25,17 @@ public class UIEventManager {
     private Map<View, OnFocusListener>      _onFocusListeners;
     private Map<View, OnKeyListener>        _onKeysListeners;
     private UIDropDown                      _currentDropDown;
+    private Map<View, Object>               _dropViews;
 
     public UIEventManager() {
+        _onDragListeners = new ConcurrentSkipListMap<>();
         _onClickListeners = new ConcurrentSkipListMap<>();
         _onRightClickListeners = new ConcurrentSkipListMap<>();
         _onFocusListeners = new ConcurrentSkipListMap<>();
         _onKeysListeners = new ConcurrentSkipListMap<>();
         _onMouseWheelUpListeners = new ConcurrentSkipListMap<>();
         _onMouseWheelDownListeners = new ConcurrentSkipListMap<>();
+        _dropViews = new ConcurrentSkipListMap<>();
     }
 
     public void setOnFocusListener(View view, OnFocusListener onFocusListener) {
@@ -47,6 +51,14 @@ public class UIEventManager {
             _onClickListeners.remove(view);
         } else {
             _onClickListeners.put(view, onClickListener);
+        }
+    }
+
+    public void setOnDragListener(View view, OnDragListener onClickListener) {
+        if (onClickListener == null) {
+            _onDragListeners.remove(view);
+        } else {
+            _onDragListeners.put(view, onClickListener);
         }
     }
 
@@ -76,12 +88,39 @@ public class UIEventManager {
 
     private OnSelectionListener _selectionListener;
 
+    public void addDropZone(View view) {
+        _dropViews.put(view, view);
+    }
+
+    public Map<View, Object> getDropViews() {
+        return _dropViews;
+    }
+
     public interface OnSelectionListener {
         void onSelection(List<ParcelModel> parcels);
     }
 
     public void setSelectionListener(OnSelectionListener selectionListener) {
         _selectionListener = selectionListener;
+    }
+
+    public abstract static class OnDragListener {
+        public View hoverView;
+
+        public abstract void onDrag(GameEvent event);
+        public abstract void onDrop(GameEvent event, View dropView);
+        public abstract void onHover(GameEvent event, View dropView);
+        public abstract void onHoverExit(GameEvent event, View dropView);
+    }
+
+    public OnDragListener drag(GameEvent event, int x, int y) {
+        for (Map.Entry<View, OnDragListener> entry: _onDragListeners.entrySet()) {
+            if (entry.getKey().contains(x, y)) {
+                entry.getValue().onDrag(event);
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     public boolean click(GameEvent event, int x, int y) {
@@ -248,7 +287,10 @@ public class UIEventManager {
     public void removeListeners(Collection<View> views) {
         views.forEach(this::removeListeners);
     }
+
     public void removeListeners(View view) {
+        _dropViews.remove(view);
+        _onDragListeners.remove(view);
         _onRightClickListeners.remove(view);
         _onRightClickListeners.remove(view);
         _onClickListeners.remove(view);

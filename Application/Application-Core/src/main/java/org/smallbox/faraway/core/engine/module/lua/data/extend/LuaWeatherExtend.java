@@ -40,6 +40,8 @@ public class LuaWeatherExtend extends LuaExtend {
         weatherInfo.particle = getString(value, "particle", null);
         weatherInfo.duration = getIntInterval(value, "duration", null);
         weatherInfo.temperatureChange = getIntInterval(value, "temperatureChange", null);
+        weatherInfo.color1 = getInt(value, "color1", 0);
+        weatherInfo.color2 = getInt(value, "color2", 0);
 
         if (!value.get("conditions").isnil()) {
             weatherInfo.condition = new WeatherInfo.WeatherCondition();

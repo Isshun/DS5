@@ -33,7 +33,7 @@ public class ConsumableController extends LuaController {
     @Override
     public void onNewGameUpdate(Game game) {
         if (consumableList != null) {
-            consumableList.clear();
+            consumableList.removeAllViews();
 
             Map<ItemInfo, Integer> quantities = new HashMap<>();
             consumableModule.getConsumables().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getFreeQuantity() + (quantities.containsKey(consumable.getInfo()) ? quantities.get(consumable.getInfo()) : 0)));

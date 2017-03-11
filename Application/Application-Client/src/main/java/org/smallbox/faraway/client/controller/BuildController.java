@@ -84,7 +84,7 @@ public class BuildController extends LuaController {
     private void onOpenItems(View view) {
         contentLabel.setText("Build Items");
 
-        content.clear();
+        content.removeAllViews();
 
         UIGrid itemGrid = new UIGrid(null);
         itemGrid.setColumns(1);
@@ -117,7 +117,7 @@ public class BuildController extends LuaController {
     private void onOpenStructures(View view) {
         contentLabel.setText("Build Structures");
 
-        content.clear();
+        content.removeAllViews();
 
         UIList materialList = new UIList(null);
         materialList.setPosition(100, 0);
@@ -133,7 +133,7 @@ public class BuildController extends LuaController {
                         .setPadding(10)
                         .setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo))));
 //                    .setOnClickListener(() -> {
-//                        materialList.clear();
+//                        materialList.removeAllViews();
 //                        for (ItemInfo itemInfo: Application.data.items) {
 //                            if (itemInfo.receiptGroups != null && !itemInfo.receiptGroups.isEmpty() && parentName.equals(itemInfo.parentName)) {
 //                                UIFrame viewMaterial = new UIFrame(null);
@@ -159,7 +159,7 @@ public class BuildController extends LuaController {
     private void onOpenNetworks(View view) {
         contentLabel.setText("Build Networks");
 
-        content.clear();
+        content.removeAllViews();
 
         UIGrid itemGrid = new UIGrid(null);
         itemGrid.setColumns(1);

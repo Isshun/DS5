@@ -88,7 +88,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     }
 
     private void setHour(PlanetInfo.DayTime hourInfo) {
-        _lightChange = 1 / hourInfo.duration / Application.APPLICATION_CONFIG.game.tickPerHour;
+        _lightChange = 1 / hourInfo.duration / Application.config.game.tickPerHour;
         _lightProgress = 0;
         _previousLight = _lightTarget;
         _lightTarget = hourInfo.light;

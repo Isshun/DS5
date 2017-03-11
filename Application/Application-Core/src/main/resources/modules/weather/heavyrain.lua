@@ -3,6 +3,8 @@ data:extend({
     name = "base.weather.heavyrain",
     label = "Heavyrain",
     icon = "[base]/graphics/icons/weather/rain.png";
+    color1 = 0x383e44,
+    color2 = 0x969ea6,
     particle = "rain",
     sun = {
         dawn = 0xddc8b2,

@@ -21,6 +21,7 @@ ui:extend({
             -- Time and day
             { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2, 2}},
             { type = "label", id = "lb_time", text = "hr", text_color = color2, text_size = 16, position = {28, 3}, padding = 10 },
+            { type = "view", id = "frame_time", position = {34, 28}, size = {1, 1}, background = color2},
             { type = "label", id = "lb_day", text = "day", text_color = color2, text_size = 16, position = {63, 3}, padding = 10 },
 
             -- Weather

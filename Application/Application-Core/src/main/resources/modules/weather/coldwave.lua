@@ -2,7 +2,9 @@ data:extend({
     type = "weather",
     name = "base.weather.coldwave",
     label = "Coldwave",
-    icon = "[base]/graphics/icons/weather/snow.png";
+    icon = "[base]/graphics/icons/weather/snow.png",
+    color1 = 0x206161,
+    color2 = 0x7bd3d3,
     unique = false,
     sun = {
         dawn = 0xddc8b2,

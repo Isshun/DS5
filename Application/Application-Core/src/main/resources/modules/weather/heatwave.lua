@@ -2,7 +2,9 @@ data:extend({
     type = "weather",
     name = "base.weather.heatwave",
     label = "Heatwave",
-    icon = "[base]/graphics/icons/weather/heat.png";
+    icon = "[base]/graphics/icons/weather/heat.png",
+    color1 = 0x750909,
+    color2 = 0xf04e4e,
     unique = false,
     sun = {
         dawn = 0xddc8b2,

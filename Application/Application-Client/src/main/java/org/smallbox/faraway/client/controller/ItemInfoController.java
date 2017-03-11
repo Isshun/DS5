@@ -91,7 +91,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     private void refreshInventory(UsableItem item) {
-        listFactoryInventory.clear();
+        listFactoryInventory.removeAllViews();
         item.getInventory().forEach(consumable -> {
             UILabel label = new UILabel(null);
             label.setText(consumable.getInfo().label + " x " + consumable.getFreeQuantity());
@@ -109,7 +109,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     private void refreshActions(UsableItem item) {
-        listActions.clear();
+        listActions.removeAllViews();
 
         if (item.getFactory() != null) {
             item.getFactory().getReceiptGroups().forEach(receiptGroup -> {
@@ -146,7 +146,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 //            });
 //        }
 //
-//        listFactoryInventory.clear();
+//        listFactoryInventory.removeAllViews();
 //        if (item.getFactory() != null) {
 //            item.getFactory().getInventory().forEach(consumableStack ->
 //                    listFactoryInventory.addView(UILabel.create(null)
@@ -167,7 +167,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
             if (CollectionUtils.isNotEmpty(item.getInfo().components)) {
                 frameComponents.setVisible(true);
-                listComponents.clear();
+                listComponents.removeAllViews();
                 item.getInfo().components.forEach(component -> listComponents.addView(UILabel.create(null).setText(component.item.name).setSize(100, 22)));
             } else {
                 frameComponents.setVisible(false);
@@ -181,7 +181,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         if (CollectionUtils.isNotEmpty(jobs)) {
             frameWorkers.setVisible(true);
 
-            listWorkers.clear();
+            listWorkers.removeAllViews();
             jobs.forEach(job -> listWorkers.addView(UILabel.create(null).setText(job.getCharacter().getName()).setSize(300, 22)));
         } else {
             frameWorkers.setVisible(false);

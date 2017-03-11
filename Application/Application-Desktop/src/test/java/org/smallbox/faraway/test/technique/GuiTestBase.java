@@ -37,7 +37,7 @@ public class GuiTestBase extends TestBase {
         double ratio = (double)width / height;
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
-        new LwjglApplication(new GDXApplication(this::init), LwjglConfig.from(Application.APPLICATION_CONFIG));
+        new LwjglApplication(new GDXApplication(this::init), LwjglConfig.from(Application.config));
 
         while (!initOk) {
             Thread.sleep(100);

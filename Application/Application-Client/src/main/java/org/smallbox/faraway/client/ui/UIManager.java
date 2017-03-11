@@ -8,6 +8,7 @@ import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
@@ -28,6 +29,7 @@ import static org.smallbox.faraway.core.engine.GameEventListener.*;
 public class UIManager {
 
     private Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
+    private UIEventManager.OnDragListener _dragListener;
 
     public void clearViews() {
         _rootViews.clear();
@@ -164,15 +166,15 @@ public class UIManager {
     }
 
 //    public void reload() {
-//        _visibleViews.clear();
+//        _visibleViews.removeAllViews();
 //        _rootViews.stream()
 //                .filter(view -> view.getViews() != null)
 //                .forEach(view -> view.getViews().stream()
 //                        .filter(View::isVisible)
 //                        .forEach(subview -> _visibleViews.add(subview.getId())));
-//        _rootViews.clear();
-//        _dropsDowns.clear();
-//        ApplicationClient.uiEventManager.clear();
+//        _rootViews.removeAllViews();
+//        _dropsDowns.removeAllViews();
+//        ApplicationClient.uiEventManager.removeAllViews();
 //    }
 //
 //    public void restore() {
@@ -210,12 +212,48 @@ public class UIManager {
             }
         }
 
+        // On drag hover
+        if (!event.consumed && action == Action.MOVE && _dragListener != null) {
+            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
+                    .filter(entry -> entry.getKey().contains(event.mouseEvent.x, event.mouseEvent.y))
+                    .findAny().orElse(null);
+            if (dropViewEntry != null) {
+                if (_dragListener.hoverView != null) {
+                    _dragListener.onHoverExit(event, _dragListener.hoverView);
+                }
+                _dragListener.hoverView = dropViewEntry.getKey();
+                _dragListener.onHover(event, dropViewEntry.getKey());
+            } else if (_dragListener.hoverView != null) {
+                _dragListener.onHoverExit(event, _dragListener.hoverView);
+                _dragListener.hoverView = null;
+            }
+            return false;
+        }
+
         if (!event.consumed && action == Action.MOVE) {
             ApplicationClient.uiEventManager.onMouseMove(x, y);
             return false;
         }
 
         if (!event.consumed && action == Action.PRESSED && ApplicationClient.uiEventManager.has(x, y)) {
+            return true;
+        }
+
+        if (!event.consumed && action == Action.PRESSED && button == MouseButton.LEFT) {
+            _dragListener = ApplicationClient.uiEventManager.drag(event, x, y);
+            return true;
+        }
+
+        // On drag drop
+        if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && _dragListener != null) {
+            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
+                    .filter(entry -> entry.getKey().contains(event.mouseEvent.x, event.mouseEvent.y))
+                    .findAny().orElse(null);
+            if (dropViewEntry != null) {
+                _dragListener.onHoverExit(event, dropViewEntry.getKey());
+                _dragListener.onDrop(event, dropViewEntry.getKey());
+            }
+            _dragListener = null;
             return true;
         }
 

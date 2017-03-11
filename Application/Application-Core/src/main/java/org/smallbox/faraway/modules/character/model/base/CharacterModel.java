@@ -84,14 +84,10 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public <T> T                        getExtra(Class<T> cls) { return (T) _extra.get(cls); }
-    public CharacterNeedsExtra          getNeeds() { return _needs; }
     public CharacterTalentExtra         getTalents() { return _talents; }
     public CharacterStatsExtra          getStats() { return _stats; }
     public CharacterPersonalsExtra      getPersonals() { return _personals; }
     public JobModel                     getJob() { return _job; }
-    public int                          getLag() { return _lag; }
-    public RoomModel                    getQuarter() { return _quarter; }
-    public double                       getBodyHeat() { return _needs.heat; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableItem               getInventory() {
         throw new NotImplementedException();
@@ -388,7 +384,8 @@ public abstract class CharacterModel extends MovableModel {
         return new ConsumableItem(itemInfo, quantityToRemove);
     }
 
-    public void addExtra(Object extra) {
+    public <T> T addExtra(T extra) {
         _extra.put(extra.getClass(), extra);
+        return extra;
     }
 }

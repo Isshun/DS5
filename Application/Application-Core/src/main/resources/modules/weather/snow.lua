@@ -1,7 +1,9 @@
 data:extend({
     type = "weather",
     name = "base.weather.snow",
-    icon = "[base]/graphics/icons/weather/snow.png";
+    icon = "[base]/graphics/icons/weather/snow.png",
+    color1 = 0x206161,
+    color2 = 0x7bd3d3,
     label = "Snow",
     particle = "snow",
     sun = {

@@ -65,8 +65,9 @@ public class ConsumableRenderer extends BaseRenderer {
                 .forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel(), ApplicationClient.spriteManager.getNewSprite(consumable.getGraphic()));
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);
-                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getTotalQuantity(), 12, new Color(0x000000FF), 16, 16);
-                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, "x" + consumable.getTotalQuantity(), 12, new Color(0x9de6e7FF), 15, 15);
+                    String stringQuantity = consumable.getTotalQuantity() >= 1000 ? consumable.getTotalQuantity() / 1000 + "k" : String.valueOf(consumable.getTotalQuantity());
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x000000FF), 16, 16);
+                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x9de6e7FF), 15, 15);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);

@@ -36,7 +36,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
     protected void onDisplayUnique(AreaModel area) {
         setVisible(true);
 
-        listPlants.clear();
+        listPlants.removeAllViews();
         data.items.stream()
                 .filter(item -> "plant".equals(item.type))
                 .forEach(item ->

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.buff;
+package org.smallbox.faraway.modules.characterBuff;
 
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 

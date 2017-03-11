@@ -16,6 +16,7 @@ public class BuffModel extends ObjectModel {
     public LuaValue         luaData;
     public String           message;
     public int              level;
+    public BuffInfo.BuffLevelInfo levelInfo;
     public int              mood;
     public long             startTick;
     public boolean          active;
@@ -37,7 +38,7 @@ public class BuffModel extends ObjectModel {
         if (this.character.isAlive()) {
             this.info.update(this, tick);
         }
-        if (tick % Application.APPLICATION_CONFIG.game.tickPerHour == 0) {
+        if (tick % Application.config.game.tickPerHour == 0) {
             this.info.updateHourly(this, tick);
         }
     }

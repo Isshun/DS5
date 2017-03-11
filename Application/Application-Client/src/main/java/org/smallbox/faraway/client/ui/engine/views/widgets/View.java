@@ -10,6 +10,7 @@ import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
@@ -37,10 +38,13 @@ public abstract class View implements Comparable<View> {
         _horizontalAlign = horizontalAlign;
     }
 
-    public void clear() {
-        ApplicationClient.uiEventManager.removeListeners(_views);
-
-        _views.forEach(View::clear);
+    public final void removeAllViews() {
+        _views.forEach(view -> {
+            ApplicationClient.uiManager.removeView(view);
+            ApplicationClient.uiEventManager.removeListeners(view);
+            view.removeAllViews();
+            onRemoveView(view);
+        });
         _views.clear();
     }
 
@@ -158,7 +162,8 @@ public abstract class View implements Comparable<View> {
     protected int               _paddingRight;
     protected int               _paddingTop;
     protected View              _parent;
-    protected OnClickListener _onClickListener;
+    protected OnClickListener   _onClickListener;
+    protected UIEventManager.OnDragListener _onDragListener;
     protected OnClickListener   _onRightClickListener;
     protected OnClickListener   _onMouseWheelUpListener;
     protected OnClickListener   _onMouseWheelDownListener;
@@ -320,7 +325,7 @@ public abstract class View implements Comparable<View> {
     }
 
     public final void switchViews() {
-        _views.clear();
+        removeAllViews();
         _views.addAll(_nextViews);
         _nextViews.clear();
     }
@@ -339,16 +344,6 @@ public abstract class View implements Comparable<View> {
 
     protected abstract void onAddView(View view);
 
-    public final void removeAllViews() {
-        _views.forEach(view -> {
-            ApplicationClient.uiManager.removeView(view);
-            ApplicationClient.uiEventManager.removeListeners(view);
-            view.removeAllViews();
-            onRemoveView(view);
-        });
-        _views.clear();
-    }
-
     protected abstract void onRemoveView(View view);
 
     public boolean contains(int x, int y) {
@@ -356,10 +351,10 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setMargin(int top, int right, int bottom, int left) {
-        _marginTop = (int) (top * Application.APPLICATION_CONFIG.uiScale);
-        _marginRight = (int) (right * Application.APPLICATION_CONFIG.uiScale);
-        _marginBottom = (int) (bottom * Application.APPLICATION_CONFIG.uiScale);
-        _marginLeft = (int) (left * Application.APPLICATION_CONFIG.uiScale);
+        _marginTop = (int) (top * Application.config.uiScale);
+        _marginRight = (int) (right * Application.config.uiScale);
+        _marginBottom = (int) (bottom * Application.config.uiScale);
+        _marginLeft = (int) (left * Application.config.uiScale);
         return this;
     }
 
@@ -385,6 +380,12 @@ public abstract class View implements Comparable<View> {
 
     public View setBackgroundFocusColor(long color) {
         _backgroundFocusColor = new Color(color);
+        return this;
+    }
+
+    public View setOnDragListener(UIEventManager.OnDragListener onDragListener) {
+        _onDragListener = onDragListener;
+        ApplicationClient.uiEventManager.setOnDragListener(this, _onDragListener);
         return this;
     }
 
@@ -454,45 +455,62 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = (int) (t * Application.APPLICATION_CONFIG.uiScale);
-        _paddingRight = (int) (r * Application.APPLICATION_CONFIG.uiScale);
-        _paddingBottom = (int) (b * Application.APPLICATION_CONFIG.uiScale);
-        _paddingLeft = (int) (l * Application.APPLICATION_CONFIG.uiScale);
+        _paddingTop = (int) (t * Application.config.uiScale);
+        _paddingRight = (int) (r * Application.config.uiScale);
+        _paddingBottom = (int) (b * Application.config.uiScale);
+        _paddingLeft = (int) (l * Application.config.uiScale);
     }
 
     public View setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = (int) (t * Application.APPLICATION_CONFIG.uiScale);
-        _paddingRight = _paddingLeft = (int) (r * Application.APPLICATION_CONFIG.uiScale);
+        _paddingTop = _paddingBottom = (int) (t * Application.config.uiScale);
+        _paddingRight = _paddingLeft = (int) (r * Application.config.uiScale);
         return this;
     }
 
     public View setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.APPLICATION_CONFIG.uiScale);
+        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.config.uiScale);
         return this;
     }
 
     public View setFixedSize(int width, int height) {
-        _fixedWidth = (int) (width * Application.APPLICATION_CONFIG.uiScale);
-        _fixedHeight = (int) (height * Application.APPLICATION_CONFIG.uiScale);
+        _fixedWidth = (int) (width * Application.config.uiScale);
+        _fixedHeight = (int) (height * Application.config.uiScale);
         return this;
     }
 
     public View setSize(int width, int height) {
-        _width = (int) (width * Application.APPLICATION_CONFIG.uiScale);
-        _height = (int) (height * Application.APPLICATION_CONFIG.uiScale);
+        _width = (int) (width * Application.config.uiScale);
+        _height = (int) (height * Application.config.uiScale);
         _originWidth = width;
         _originHeight = height;
         return this;
     }
 
-    public View setPosition(int x, int y) {
-//        x = (int) (x * Application.APPLICATION_CONFIG.uiScale);
-//        y = (int) (y * Application.APPLICATION_CONFIG.uiScale);
-//        _x = _horizontalAlign == HorizontalAlign.LEFT ? x : Application.APPLICATION_CONFIG.screen.resolution[0] - x;
-//        _y = _verticalAlign == VerticalAlign.TOP ? y : Application.APPLICATION_CONFIG.screen.resolution[1] - y;
-        _x = (int) (x * Application.APPLICATION_CONFIG.uiScale);
-        _y = (int) (y * Application.APPLICATION_CONFIG.uiScale);
+    public View setWidth(int width) {
+        _width = (int) (width * Application.config.uiScale);
+        _originWidth = width;
+        return this;
+    }
 
+    public View setHeight(int height) {
+        _height = (int) (height * Application.config.uiScale);
+        _originHeight = height;
+        return this;
+    }
+
+    public View setPositionX(int x) {
+        _x = (int) (x * Application.config.uiScale);
+        return this;
+    }
+
+    public View setPositionY(int y) {
+        _y = (int) (y * Application.config.uiScale);
+        return this;
+    }
+
+    public View setPosition(int x, int y) {
+        _x = (int) (x * Application.config.uiScale);
+        _y = (int) (y * Application.config.uiScale);
         return this;
     }
 
@@ -514,8 +532,9 @@ public abstract class View implements Comparable<View> {
         return _data;
     }
 
-    public void setData(Object data) {
+    public View setData(Object data) {
         _data = data;
+        return this;
     }
 
     protected void remove() {

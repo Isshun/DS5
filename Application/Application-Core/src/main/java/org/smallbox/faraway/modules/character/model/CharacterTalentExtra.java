@@ -1,9 +1,7 @@
 package org.smallbox.faraway.modules.character.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Alex on 31/10/2015.
@@ -16,10 +14,10 @@ public class CharacterTalentExtra {
         public double               level;
         public double               learnCoef;
 
-        public TalentEntry(TalentType type, String name) {
+        public TalentEntry(TalentType type, String name, double level) {
             this.type = type;
             this.name = name;
-            this.level = 1;
+            this.level = level;
             this.learnCoef = 1;
         }
 
@@ -45,39 +43,42 @@ public class CharacterTalentExtra {
     }
 
     private static final TalentEntry[] TALENTS = new TalentEntry[] {
-            new TalentEntry(TalentType.HEAL,    "Heal"),
-            new TalentEntry(TalentType.CRAFT,   "Craft"),
-            new TalentEntry(TalentType.COOK,    "Cook"),
-            new TalentEntry(TalentType.GATHER,  "Gather"),
-            new TalentEntry(TalentType.CUT,     "Cut"),
-            new TalentEntry(TalentType.MINE,    "Mine"),
-            new TalentEntry(TalentType.CLEAN,   "Clean"),
-            new TalentEntry(TalentType.BUILD,   "Build"),
-            new TalentEntry(TalentType.STORE,   "Store"),
+            new TalentEntry(TalentType.HEAL,    "Heal",     1),
+            new TalentEntry(TalentType.CRAFT,   "Craft",    3),
+            new TalentEntry(TalentType.COOK,    "Cook",     5),
+            new TalentEntry(TalentType.GATHER,  "Gather",   2),
+            new TalentEntry(TalentType.CUT,     "Cut",      1),
+            new TalentEntry(TalentType.MINE,    "Mine",     1),
+            new TalentEntry(TalentType.CLEAN,   "Clean",    1),
+            new TalentEntry(TalentType.BUILD,   "Build",    2),
+            new TalentEntry(TalentType.STORE,   "Store",    3),
     };
 
     private HashMap<TalentType, TalentEntry>    _talentsMap;
-    private List<TalentEntry>                   _talents;
+    private Queue<TalentEntry> _talents;
 
     public CharacterTalentExtra() {
         _talentsMap = new HashMap<>();
-        _talents = new ArrayList<>();
+        _talents = new ConcurrentLinkedQueue<>();
         for (TalentEntry talent: TALENTS) {
+            talent.index = _talents.size();
             _talents.add(talent);
             _talentsMap.put(talent.type, talent);
-            talent.index = _talents.indexOf(talent);
         }
     }
 
-    public List<TalentEntry>            getAll() { return _talents; }
+    public Collection<TalentEntry>      getAll() { return _talents; }
     public TalentEntry                  get(TalentType type) { return _talentsMap.get(type); }
 
-    public void moveTalent(TalentEntry talent, int offset) {
-        Optional<TalentEntry> optionalEntry = _talents.stream().filter(entry -> entry == talent).findFirst();
-        if (optionalEntry.isPresent()) {
-            int position = _talents.indexOf(optionalEntry.get()) + offset;
-            _talents.remove(optionalEntry.get());
-            _talents.add(Math.min(Math.max(position, 0), _talents.size()), optionalEntry.get());
+    public void moveTalent(TalentEntry talentToMove, int index) {
+        if (talentToMove.index != index) {
+            List<TalentEntry> tmpList = new ArrayList<>(_talents);
+            tmpList.remove(talentToMove);
+            tmpList.add(index, talentToMove);
+            tmpList.forEach(talent -> talent.index = tmpList.indexOf(talent));
+
+            _talents.clear();
+            _talents.addAll(tmpList);
         }
     }
 

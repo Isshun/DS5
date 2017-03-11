@@ -5,9 +5,9 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.character.CharacterInfoStatusController",
     views = {
         { type = "label", text = "Current occupation", text_color = color1, text_size = 24},
-        { type = "view", id = "frame_job", size = {200, 40}, views = {
+        { type = "view", size = {200, 40}, views = {
             { type = "label", id = "lb_job", text_size = 18, text_color = color2, padding = {10, 0}},
-            { type = "image", id = "img_job", size = {32, 32}},
+            { type = "image", id = "img_job", size = {32, 32}, position = {280, 0}},
         }},
 
         -- Needs
