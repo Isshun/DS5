@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.*;
-import org.smallbox.faraway.modules.character.model.BuffInfo;
+import org.smallbox.faraway.modules.characterBuff.BuffInfo;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 import org.smallbox.faraway.util.Log;
 

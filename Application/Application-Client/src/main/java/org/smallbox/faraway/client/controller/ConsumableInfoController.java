@@ -30,10 +30,14 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
     private UILabel lbName;
 
     @Override
-    protected void onDisplayUnique(ConsumableItem consumableItem) {
-        lbLabel.setText(consumableItem.getLabel());
-        lbName.setText(consumableItem.getName());
-        lbQuantity.setText(String.valueOf(consumableItem.getTotalQuantity()));
+    protected void onDisplayUnique(ConsumableItem consumable) {
+        if (consumable.getTotalQuantity() <= 0) {
+            closePanel();
+        }
+
+        lbLabel.setText(consumable.getLabel() + " x" + consumable.getTotalQuantity());
+//        lbName.setText(consumableItem.getName());
+//        lbQuantity.setText(String.valueOf(consumableItem.getTotalQuantity()));
     }
 
     @Override

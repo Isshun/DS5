@@ -56,7 +56,14 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     public void onNewGameUpdate(Game game) {
         if (CollectionUtils.isNotEmpty(list)) {
             displayObjects();
+        } else {
+            mainPanelController.setVisible(true);
         }
+    }
+
+    protected void closePanel() {
+        list = null;
+        mainPanelController.setVisible(true);
     }
 
     private void displayObjects() {

@@ -6,7 +6,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -52,20 +51,20 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
                                 // Rock
                                 st.bind(5, parcel.hasRock() ? parcel.getRockInfo().name : null);
 
-                                // Plant
-                                if (parcel.hasPlant()) {
-                                    PlantItem plant = parcel.getPlant();
-                                    st.bind(6, plant.getId());
-                                    stPlant.bind(1, plant.getId());
-                                    stPlant.bind(2, plant.getInfo().name);
-                                    stPlant.bind(3, plant.getMaturity());
-                                    stPlant.bind(4, plant.getNourish());
-                                    stPlant.bind(5, plant.hasSeed() ? 1 : 0);
-                                    stPlant.step();
-                                    stPlant.reset(false);
-                                } else {
-                                    st.bindNull(6);
-                                }
+//                                // Plant
+//                                if (parcel.hasPlant()) {
+//                                    PlantItem plant = parcel.getPlant();
+//                                    st.bind(6, plant.getId());
+//                                    stPlant.bind(1, plant.getId());
+//                                    stPlant.bind(2, plant.getInfo().name);
+//                                    stPlant.bind(3, plant.getMaturity());
+//                                    stPlant.bind(4, plant.getNourish());
+//                                    stPlant.bind(5, plant.hasSeed() ? 1 : 0);
+//                                    stPlant.step();
+//                                    stPlant.reset(false);
+//                                } else {
+//                                    st.bindNull(6);
+//                                }
 
 //                                // Structure
 //                                if (parcel.hasStructure()) {
@@ -144,20 +143,20 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
                             parcel.setRockInfo(Application.data.getItemInfo(st.columnString(4)));
                         }
 
-                        // Plant
-                        if (!st.columnNull(5)) {
-                            int plantId = st.columnInt(5);
-                            stPlant.bind(1, plantId);
-                            if (stPlant.step()) {
-                                PlantItem plant = new PlantItem(Application.data.getItemInfo(stPlant.columnString(1)), plantId);
-                                plant.setSeed(stPlant.columnInt(4) > 0);
-                                plant.setMaturity(stPlant.columnDouble(2));
-                                plant.setNourish(stPlant.columnDouble(3));
-                                plant.setParcel(parcel);
-                                parcel.setPlant(plant);
-                            }
-                            stPlant.reset(false);
-                        }
+//                        // Plant
+//                        if (!st.columnNull(5)) {
+//                            int plantId = st.columnInt(5);
+//                            stPlant.bind(1, plantId);
+//                            if (stPlant.step()) {
+//                                PlantItem plant = new PlantItem(Application.data.getItemInfo(stPlant.columnString(1)), plantId);
+//                                plant.setSeed(stPlant.columnInt(4) > 0);
+//                                plant.setMaturity(stPlant.columnDouble(2));
+//                                plant.setNourish(stPlant.columnDouble(3));
+//                                plant.setParcel(parcel);
+//                                parcel.setPlant(plant);
+//                            }
+//                            stPlant.reset(false);
+//                        }
 
                         // Liquid
                         if (!st.columnNull(9)) {

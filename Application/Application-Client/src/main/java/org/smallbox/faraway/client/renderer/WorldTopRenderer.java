@@ -47,9 +47,6 @@ public class WorldTopRenderer extends BaseRenderer {
         for (int x = toX-1; x >= fromX; x--) {
             for (int y = toY-1; y >= fromY; y--) {
                 ParcelModel parcel = parcels[x][y][_floor];
-                if (parcel.hasPlant()) {
-                    renderer.draw((x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY, _spriteManager.getItem(parcel.getPlant().getGraphic(), parcel.getTile(), parcel.getPlant().getTile()));
-                }
                 if (parcel.hasItem(StructureItem.class)) {
                     renderer.draw((x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY, _spriteManager.getItem(parcel.getItem(StructureItem.class)));
                 }

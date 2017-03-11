@@ -41,10 +41,12 @@ public class ItemInfo extends ObjectInfo {
         public int[]                    crafts;
     }
 
-    public static class ItemConsumeInfo {
+    public static class ItemActionInfo {
+        public String                   type;
         public int                      cost;
         public int                      count;
         public ItemInfoEffects          effects;
+        public int                      duration;
     }
 
     public static class ItemMaterialInfo {
@@ -259,7 +261,8 @@ public class ItemInfo extends ObjectInfo {
     public boolean                      canSupportRoof;
     public List<NetworkItemInfo>        networks;
     public NetworkInfo                  network;
-    public ItemConsumeInfo              consume;
+    public ItemActionInfo               consume;
+    public ItemActionInfo               use;
     public boolean                      isRamp;
     public boolean                      isGround;
     public boolean                      isLinkDown;

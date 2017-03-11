@@ -136,8 +136,6 @@ public class MinimapRenderer extends BaseRenderer {
                         _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
                     } else if (plantModule.getPlant(parcels[x][y][_floor]) != null) {
                         _pixmap.drawPixel(x, y, COLOR_PLANT);
-                    } else if (parcels[x][y][_floor].hasPlant()) {
-                        _pixmap.drawPixel(x, y, COLOR_PLANT);
                     } else if (parcels[x][y][_floor].hasRock()) {
                         _pixmap.drawPixel(x, y, COLOR_ROCK);
                     } else if (parcels[x][y][_floor].hasGround()) {

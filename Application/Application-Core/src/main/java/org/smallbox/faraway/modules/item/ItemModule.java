@@ -163,23 +163,25 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
         }
     }
 
-    public void addItem(String itemName, boolean isComplete, int x, int y, int z) {
-        addItem(Application.data.getItemInfo(itemName), isComplete, x, y, z);
+    public UsableItem addItem(String itemName, boolean isComplete, int x, int y, int z) {
+        return addItem(Application.data.getItemInfo(itemName), isComplete, x, y, z);
     }
 
-    public void addItem(ItemInfo itemInfo, boolean isComplete, int x, int y, int z) {
-        addItem(itemInfo, isComplete, WorldHelper.getParcel(x, y, z));
+    public UsableItem addItem(ItemInfo itemInfo, boolean isComplete, int x, int y, int z) {
+        return addItem(itemInfo, isComplete, WorldHelper.getParcel(x, y, z));
     }
 
-    public void addItem(ItemInfo itemInfo, boolean isComplete, ParcelModel parcel) {
+    public UsableItem addItem(ItemInfo itemInfo, boolean isComplete, ParcelModel parcel) {
         UsableItem item = new UsableItem(itemInfo);
         item.setParcel(parcel);
-        item.setBuildProgress(isComplete ? itemInfo.cost : 0);
+        item.setBuildProgress(isComplete ? itemInfo.build.cost : 0);
         item.init();
 
         _items.add(item);
 
         notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
+
+        return item;
     }
 
     public UsableItem getItem(ParcelModel parcel) {

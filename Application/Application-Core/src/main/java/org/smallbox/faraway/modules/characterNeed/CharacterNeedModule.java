@@ -1,21 +1,28 @@
-package org.smallbox.faraway.modules.character;
+package org.smallbox.faraway.modules.characterNeed;
 
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.CharacterModuleSerializer;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
+import org.smallbox.faraway.modules.character.model.base.NeedEntry;
 import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
+import org.smallbox.faraway.modules.characterNeed.strategy.ConsumeStrategy;
+import org.smallbox.faraway.modules.characterNeed.strategy.NeedRestoreStrategy;
+import org.smallbox.faraway.modules.characterNeed.strategy.UseItemStrategy;
+import org.smallbox.faraway.modules.characterRelation.CharacterRelationModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.consumable.ConsumeJob;
+import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.*;
 
@@ -40,6 +47,11 @@ public class CharacterNeedModule extends GameModule {
     @BindModule
     private ConsumableModule consumableModule;
 
+    @BindModule
+    private ItemModule itemModule;
+
+    private Map<NeedEntry, NeedRestoreStrategy> _strategies = new ConcurrentHashMap<>();
+
     @Override
     public boolean isModuleMandatory() {
         return true;
@@ -61,7 +73,7 @@ public class CharacterNeedModule extends GameModule {
     }
 
     /**
-     * Mise à jour les besoins
+     * Mise à jour des besoins
      *
      * @param character CharacterModel
      * @param needs CharacterNeedsExtra
@@ -85,37 +97,21 @@ public class CharacterNeedModule extends GameModule {
     private void tryToRestoreNeeds(CharacterModel character, CharacterNeedsExtra needs) {
 
         // Ajoute les jobs consume
-        needs.getAll().forEach((name, need) -> {
-            if (need.value() < need.warning) {
+        needs.getAll().stream()
+                .filter(need -> need.value() < need.warning)
+                .filter(need -> !_strategies.containsKey(need) || _strategies.get(need).done())
+                .forEach(need -> {
 
-                String jobData = "characterNeedModule-consume-" + name + "-character-" + character.getId();
-                if (jobModule.getJobs().stream().noneMatch(job -> jobData.equals(job.getData()))) {
-
-                    // Find best item
-                    ConsumableItem bestConsumable = consumableModule.getConsumables().stream()
-                            .filter(consumable -> consumable.getFreeQuantity() > 0)
-                            .filter(consumable -> needs.hasEffect(need, consumable))
-                            .findAny().orElse(null);
-
-                    // Create consume job
-                    if (bestConsumable != null) {
-
-                        jobModule.createJob(ConsumeJob.class, null, bestConsumable.getParcel(), job -> {
-                            job.setData(jobData);
-                            ConsumableModule.ConsumableJobLock lock = consumableModule.lock(job, bestConsumable, 1);
-                            job.addTask("Move", c -> c.moveTo(WorldHelper.getParcel(2, 2, 1)) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
-                            job.addTask("Drink", c -> {
-                                needs.use(consumableModule.takeConsumable(lock));
-                                return JobTaskReturn.COMPLETE;
-                            });
-                            return true;
-                        });
-
+                    ConsumeStrategy consumeStrategy = new ConsumeStrategy();
+                    if (consumeStrategy.ok(character, need, jobModule, consumableModule, itemModule)) {
+                        _strategies.put(need, consumeStrategy);
                     }
 
-                }
+                    UseItemStrategy useItemStrategy = new UseItemStrategy();
+                    if (useItemStrategy.ok(character, need, jobModule, consumableModule, itemModule)) {
+                        _strategies.put(need, useItemStrategy);
+                    }
 
-            }
-        });
+                });
     }
 }

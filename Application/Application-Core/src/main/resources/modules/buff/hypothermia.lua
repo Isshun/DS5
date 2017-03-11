@@ -1,7 +1,7 @@
 data:extend({
     label = "Hypothermia",
     name = "base.buff.hypothermia",
-    class = "org.smallbox.faraway.modules.characterBuff.buffs.HypothermiaBuffHandler",
+    class = "org.smallbox.faraway.modules.characterBuff.handler.HypothermiaBuffHandler",
     type = "buff",
     levels = {
         { message = "I'm cold", mood = -5 },

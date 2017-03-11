@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Cooker",
-        name = "base.cooker",
+        name = "base.item.cooker",
         type = "item",
         category = "kitchen",
         graphics = { path = "[base]/graphics/items/workshop/cooker.png" },

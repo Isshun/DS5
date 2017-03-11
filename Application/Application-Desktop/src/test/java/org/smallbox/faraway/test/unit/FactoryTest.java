@@ -12,7 +12,7 @@ public class FactoryTest extends HeadlessTestBase {
 
         GameTestHelper.create(this)
                 .runOnGameCreate(() -> {
-                    itemModule.addItem("base.cooker", true, 4, 4, 1);
+                    itemModule.addItem("base.item.cooker", true, 4, 4, 1);
                     consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 2, 10, 1);
                     consumableModule.addConsumable("base.consumable.vegetable.carrot", 10, 4, 10, 1);
                     characterModule.addRandom();

@@ -21,9 +21,9 @@ public class ParcelConnection implements Connection<ParcelModel> {
         //        if (_toParcel.getItem() != null) {
 //            return 10;
 //        }
-        if (_toParcel.hasPlant()) {
-            return 5;
-        }
+//        if (_toParcel.hasPlant()) {
+//            return 5;
+//        }
 
         return _fromParcel.x == _toParcel.x || _fromParcel.y == _toParcel.y ? 1 : 3;
     }

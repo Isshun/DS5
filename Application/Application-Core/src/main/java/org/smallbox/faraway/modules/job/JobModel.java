@@ -48,6 +48,10 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.ABORTED;
     }
 
+    public void setProgress(int current, int total) {
+        _progress = total != 0 ? (double)current / total : 0;
+    }
+
     public interface OnStartListener {
         void onStart();
     }

@@ -21,6 +21,8 @@ import java.util.List;
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @BindLua private UILabel        lbName;
+    @BindLua private UILabel        lbHealth;
+    @BindLua private View           progressHealth;
 
     @BindLua private View           frameContent;
     @BindLua private View           frameBuild;
@@ -50,6 +52,9 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         getRootView().setVisible(true);
 
         lbName.setText(item.getLabel());
+        lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
+        progressHealth.setWidth(80 * item.getHealth() / item.getMaxHealth());
+
         refreshActions(item);
         refreshBuilding(item);
         refreshJobs(item.getJobs());

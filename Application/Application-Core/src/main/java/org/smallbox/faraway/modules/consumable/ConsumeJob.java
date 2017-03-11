@@ -180,7 +180,7 @@ public class ConsumeJob extends JobModel {
 //            return _actionInfo.label;
 //        }
 //        return "use " + _consumable.getLabel();
-        return "consume job";
+        return _mainLabel;
     }
 
     @Override

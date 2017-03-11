@@ -7,6 +7,7 @@ ui:extend({
         { type = "label", text = "Current occupation", text_color = color1, text_size = 24},
         { type = "view", size = {200, 40}, views = {
             { type = "label", id = "lb_job", text_size = 18, text_color = color2, padding = {10, 0}},
+            { type = "view", id = "frame_job", background = color2, postion = {0, 20}, size = {0, 1}},
             { type = "image", id = "img_job", size = {32, 32}, position = {280, 0}},
         }},
 

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.util.Utils;
 
 /**
@@ -27,5 +28,25 @@ public class NeedEntry {
 
     public void addValue(double value) {
         this.value = Utils.bound(0, 1, this.value + value);
+    }
+
+    public boolean hasEffect(ItemInfo.ItemActionInfo action) {
+        if (action != null && action.effects != null) {
+            switch (name) {
+                case "energy":
+                    return action.effects.energy > 0;
+                case "food":
+                    return action.effects.food > 0;
+                case "drink":
+                    return action.effects.drink > 0;
+                case "entertainment":
+                    return action.effects.entertainment > 0;
+                case "relation":
+                    return action.effects.relation > 0;
+                case "happiness":
+                    return action.effects.happiness > 0;
+            }
+        }
+        return false;
     }
 }

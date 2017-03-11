@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.character.model;
+package org.smallbox.faraway.modules.characterRelation;
 
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;

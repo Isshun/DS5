@@ -17,6 +17,7 @@ import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.dig.DigArea;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 import org.smallbox.faraway.modules.disease.DiseaseModule;
+import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -70,7 +71,9 @@ public class DesktopLauncher {
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 6, 1));
 //                        Application.moduleManager.getModule(CharacterModule.class).addRandom(WorldHelper.getParcel(4, 7, 1));
 
-//                        Application.moduleManager.getModule(ItemModule.class).addItem("base.cooker", true, 8, 2, 1);
+//                        Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 8, 2, 1);
+                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.bed.wood", true, 8, 2, 1)
+                        .setHealth(25);
 
 //                        for (int i = 1; i <= 4; i++) {
 //                            for (int j = 5; j <= 10; j++) {

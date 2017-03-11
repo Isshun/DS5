@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.character.model;
+package org.smallbox.faraway.modules.characterStuff;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 

@@ -1,8 +1,8 @@
-package org.smallbox.faraway.modules.character.model;
+package org.smallbox.faraway.modules.characterBuff;
 
 import org.smallbox.faraway.core.game.modelInfo.ObjectInfo;
-import org.smallbox.faraway.modules.characterBuff.BuffHandler;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.characterBuff.handler.BuffHandler;
 import org.smallbox.faraway.modules.disease.DiseaseInfo;
 
 import java.util.Collection;

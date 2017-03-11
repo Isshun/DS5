@@ -57,7 +57,7 @@ public class ItemResource {
     @GET
     @Path("test")
     public ItemInfo test() {
-        return Application.data.getItemInfo("base.cooker");
+        return Application.data.getItemInfo("base.item.cooker");
     }
 
     @GET

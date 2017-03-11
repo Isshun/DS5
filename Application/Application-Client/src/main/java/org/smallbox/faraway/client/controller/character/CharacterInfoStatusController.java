@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
@@ -29,6 +30,7 @@ public class CharacterInfoStatusController extends LuaController {
     private CharacterBuffModule buffModule;
 
     @BindLua private UILabel lbJob;
+    @BindLua private UIFrame frameJob;
     @BindLua private UIImage imgJob;
 
     @BindLua private UILabel lbNeedFood;
@@ -84,6 +86,9 @@ public class CharacterInfoStatusController extends LuaController {
             lbJob.setVisible(true);
             lbJob.setText(job.getMainLabel());
 
+            frameJob.setVisible(true);
+            frameJob.setWidth((int) (job.getProgress() * 300));
+
             if (job instanceof BasicHaulJob) {
                 ((BasicHaulJob) job).getConsumables().forEach((consumable, quantity) -> {
                     if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
@@ -116,6 +121,7 @@ public class CharacterInfoStatusController extends LuaController {
             }
         } else {
             lbJob.setVisible(false);
+            frameJob.setVisible(false);
             imgJob.setVisible(false);
         }
     }

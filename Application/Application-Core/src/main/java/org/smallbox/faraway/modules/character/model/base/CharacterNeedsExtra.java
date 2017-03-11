@@ -2,9 +2,9 @@ package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,51 +34,29 @@ public class CharacterNeedsExtra {
         return _values.get(name);
     }
 
-    public Map<String, NeedEntry> getAll() {
-        return _values;
+    public Collection<NeedEntry> getAll() {
+        return _values.values();
     }
 
     public void addValue(String name, double value) {
         _values.get(name).addValue(value);
     }
 
-    public void use(ConsumableItem consumable) {
-        use(consumable.getInfo().consume.effects, 1);
-    }
-
-    public void use(ItemInfo.ItemInfoEffects effects, int cost) {
-        if (effects != null) {
-            addValue("energy", (double)effects.energy / cost);
-            addValue("food", (double)effects.food / cost);
-            addValue("drink", (double)effects.drink / cost);
-            addValue("entertainment", (double)effects.entertainment / cost);
-            addValue("relation", (double)effects.relation / cost);
-            addValue("happiness", (double)effects.happiness / cost);
+    public void use(ItemInfo.ItemActionInfo action) {
+        if (action != null && action.effects != null) {
+            use(action.effects, action.duration);
         }
     }
 
-    public boolean hasEffect(NeedEntry need, ConsumableItem consumable) {
-        return hasEffect(need, consumable.getInfo().consume.effects);
-    }
-
-    private boolean hasEffect(NeedEntry need, ItemInfo.ItemInfoEffects effects) {
-        if (effects != null) {
-            switch (need.name) {
-                case "energy":
-                    return effects.energy > 0;
-                case "food":
-                    return effects.food > 0;
-                case "drink":
-                    return effects.drink > 0;
-                case "entertainment":
-                    return effects.entertainment > 0;
-                case "relation":
-                    return effects.relation > 0;
-                case "happiness":
-                    return effects.happiness > 0;
-            }
+    public void use(ItemInfo.ItemInfoEffects effects, int duration) {
+        if (effects != null && duration != 0) {
+            addValue("energy", (double)effects.energy / duration);
+            addValue("food", (double)effects.food / duration);
+            addValue("drink", (double)effects.drink / duration);
+            addValue("entertainment", (double)effects.entertainment / duration);
+            addValue("relation", (double)effects.relation / duration);
+            addValue("happiness", (double)effects.happiness / duration);
         }
-        return false;
     }
 
 }

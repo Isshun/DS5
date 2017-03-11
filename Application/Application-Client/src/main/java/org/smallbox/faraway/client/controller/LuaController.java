@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 
 /**
@@ -20,6 +21,11 @@ public abstract class LuaController implements GameClientObserver {
 
     public void setVisible(boolean visible) {
         if (getRootView() != null) {
+
+            if (!getRootView().isVisible() && visible) {
+                onNewGameUpdate(Application.gameManager.getGame());
+            }
+
             getRootView().setVisible(visible);
         }
     }

@@ -173,11 +173,24 @@ public class LuaItemExtend extends LuaExtend {
 
         // Effects on consumable
         if (!value.get("consume").isnil()) {
-            itemInfo.consume = new ItemInfo.ItemConsumeInfo();
+            itemInfo.consume = new ItemInfo.ItemActionInfo();
+            itemInfo.consume.type = "consume";
             itemInfo.consume.cost = getInt(value.get("consume"), "cost", 10);
+            itemInfo.consume.duration = (int) Math.max(1, value.get("consume").get("duration").optdouble(0) * Application.config.game.tickPerHour);
             itemInfo.consume.count = getInt(value.get("consume"), "count", 1);
             itemInfo.consume.effects = new ItemInfo.ItemInfoEffects();
             readEffectValues(itemInfo.consume.effects, value.get("consume").get("effects"));
+        }
+
+        // Effects on item
+        if (!value.get("use").isnil()) {
+            itemInfo.use = new ItemInfo.ItemActionInfo();
+            itemInfo.use.type = "use";
+            itemInfo.use.cost = getInt(value.get("use"), "cost", 10);
+            itemInfo.use.duration = (int) Math.max(1, value.get("use").get("duration").optdouble(0) * Application.config.game.tickPerHour);
+            itemInfo.use.count = getInt(value.get("use"), "count", 1);
+            itemInfo.use.effects = new ItemInfo.ItemInfoEffects();
+            readEffectValues(itemInfo.use.effects, value.get("use").get("effects"));
         }
 
         // Read passive effects

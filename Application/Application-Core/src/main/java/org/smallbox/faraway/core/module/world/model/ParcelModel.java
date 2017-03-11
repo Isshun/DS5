@@ -79,8 +79,8 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public ItemInfo                 getLiquidInfo() { return _liquidInfo; }
     public RoomModel                getRoom() { return _room; }
     public AreaModel                getArea() { return _area; }
+    public int                      getEnvironmentScore() { return _environmentScore; }
     public int                      getTile() { return _tile; }
-    public ParcelEnvironment        getEnvironment() { return _environment; }
     public double                   getLight() { return _room != null ? _room.getLight() : -1; }
     public double                   getTemperature() { return _room != null ? _room.getTemperature() : -1; }
     public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
@@ -179,20 +179,6 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     @Override
     public Array<Connection<ParcelModel>> getConnections() {
         return _connections;
-    }
-
-    public int getEnvironmentScore() {
-        int score = 0;
-
-        if (_environment != null) {
-            score += _environment.getScore();
-        }
-
-//        if (_item != null) {
-//            score += _item.getValue();
-//        }
-
-        return score;
     }
 
     public boolean equals(int x, int y, int z) {

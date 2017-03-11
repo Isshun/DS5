@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.character.extend;
+package org.smallbox.faraway.modules.character;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;

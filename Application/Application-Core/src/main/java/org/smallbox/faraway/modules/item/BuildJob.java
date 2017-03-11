@@ -58,7 +58,7 @@ public class BuildJob extends JobModel {
     protected void onStart(CharacterModel character) {
         _message = "Building";
 
-        _buildItem.addJob(this);
+//        _buildItem.addJob(this);
 
         PathModel path = Application.pathManager.getPath(character.getParcel(), _jobParcel, true, false);
         if (path != null) {

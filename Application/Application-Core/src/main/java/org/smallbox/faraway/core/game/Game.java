@@ -24,7 +24,7 @@ public class Game {
     }
 
     public enum GameStatus {UNINITIALIZED, CREATED, STOPPED, STARTED}
-    public static final int[]               TICK_INTERVALS = {-1, 400, 200, 100, 1};
+    public static final int[]               TICK_INTERVALS = {-1, 400, 200, 100, 50, 25, 10, 1};
 
     // Update
     private long                            _nextUpdate;
@@ -210,7 +210,7 @@ public class Game {
 
     public void setSpeed(int speed) {
         _lastSpeed = _speed;
-        _speed = Utils.bound(1, 4, speed);
+        _speed = Utils.bound(1, TICK_INTERVALS.length, speed);
         if (_speed != _lastSpeed) {
             _tickInterval = TICK_INTERVALS[_speed];
             _isRunning = speed > 0;

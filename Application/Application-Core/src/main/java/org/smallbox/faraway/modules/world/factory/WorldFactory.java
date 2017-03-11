@@ -5,15 +5,14 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 06/07/2015.
@@ -216,11 +215,11 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
                 if (resourceInfo.isRock) {
                     parcel.setRockInfo(resourceInfo);
                 }
-                if (resourceInfo.isPlant) {
-                    PlantItem resource = new PlantItem(resourceInfo);
-                    parcel.setPlant(resource);
-                    resource.setParcel(parcel);
-                }
+//                if (resourceInfo.isPlant) {
+//                    PlantItem resource = new PlantItem(resourceInfo);
+//                    parcel.setPlant(resource);
+//                    resource.setParcel(parcel);
+//                }
 //                if (resource.isRock()) {
 //                    resource.getRock().setQuantity(terrain.quantity != null ? Utils.getRandom(terrain.quantity) : 10);
 //                }
@@ -228,20 +227,20 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
         }
     }
 
-    public Queue<ParcelModel> getFreeParcels(ParcelModel startParcel) {
-        List<ParcelModel> freeParcels = new ArrayList<>();
-        for (int x = startParcel.x - 5; x < startParcel.x + 5; x++) {
-            for (int y = startParcel.y - 5; y < startParcel.y + 5; y++) {
-                ParcelModel parcel = WorldHelper.getParcel(x, y, startParcel.z);
-                if (parcel != null && parcel.isWalkable() && !parcel.hasPlant()) {
-                    freeParcels.add(parcel);
-                }
-            }
-        }
-        Collections.shuffle(freeParcels);
-
-        return new LinkedList<>(freeParcels);
-    }
+//    public Queue<ParcelModel> getFreeParcels(ParcelModel startParcel) {
+//        List<ParcelModel> freeParcels = new ArrayList<>();
+//        for (int x = startParcel.x - 5; x < startParcel.x + 5; x++) {
+//            for (int y = startParcel.y - 5; y < startParcel.y + 5; y++) {
+//                ParcelModel parcel = WorldHelper.getParcel(x, y, startParcel.z);
+//                if (parcel != null && parcel.isWalkable() && !parcel.hasPlant()) {
+//                    freeParcels.add(parcel);
+//                }
+//            }
+//        }
+//        Collections.shuffle(freeParcels);
+//
+//        return new LinkedList<>(freeParcels);
+//    }
 
     public void createLandSite(Game game) {
         throw new NotImplementedException("");
