@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
@@ -16,7 +15,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ConsumableItem extends MapObjectModel {
     private int _freeQuantity;
     private int _totalQuantity;
-    private JobModel        _job;
     private Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
 
     public ConsumableItem(ItemInfo info) {
@@ -72,8 +70,6 @@ public class ConsumableItem extends MapObjectModel {
     }
 
     public boolean isEmpty() { return _freeQuantity <= 0; }
-    public void setJob(JobModel job) { _job = job; }
-    public JobModel getJob() { return _job; }
 
     public void fixPosition() {
         if (_parcel != null && !_parcel.isWalkable()) {
@@ -104,6 +100,10 @@ public class ConsumableItem extends MapObjectModel {
 
     public boolean hasLock() {
         return !_locks.isEmpty();
+    }
+
+    public boolean hasLock(ConsumableModule.ConsumableJobLock lock) {
+        return _locks.contains(lock);
     }
 
     public int getTotalQuantity() {

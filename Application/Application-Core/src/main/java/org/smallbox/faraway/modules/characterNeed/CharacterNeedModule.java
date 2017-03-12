@@ -6,19 +6,22 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterModuleSerializer;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
 import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
-import org.smallbox.faraway.modules.characterNeed.strategy.ConsumeStrategy;
-import org.smallbox.faraway.modules.characterNeed.strategy.NeedRestoreStrategy;
-import org.smallbox.faraway.modules.characterNeed.strategy.UseItemStrategy;
 import org.smallbox.faraway.modules.characterRelation.CharacterRelationModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.consumable.ConsumeJob;
 import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.item.job.UseJob;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 
 import java.util.Map;
@@ -50,7 +53,7 @@ public class CharacterNeedModule extends GameModule {
     @BindModule
     private ItemModule itemModule;
 
-    private Map<NeedEntry, NeedRestoreStrategy> _strategies = new ConcurrentHashMap<>();
+    private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
     public boolean isModuleMandatory() {
@@ -99,19 +102,63 @@ public class CharacterNeedModule extends GameModule {
         // Ajoute les jobs consume
         needs.getAll().stream()
                 .filter(need -> need.value() < need.warning)
-                .filter(need -> !_strategies.containsKey(need) || _strategies.get(need).done())
+                .filter(need -> !_jobs.containsKey(need) || _jobs.get(need).isClose())
                 .forEach(need -> {
 
-                    ConsumeStrategy consumeStrategy = new ConsumeStrategy();
-                    if (consumeStrategy.ok(character, need, jobModule, consumableModule, itemModule)) {
-                        _strategies.put(need, consumeStrategy);
+                    if (tryToRestoreNeedWithItem(character, need)) {
+                        return;
                     }
 
-                    UseItemStrategy useItemStrategy = new UseItemStrategy();
-                    if (useItemStrategy.ok(character, need, jobModule, consumableModule, itemModule)) {
-                        _strategies.put(need, useItemStrategy);
+                    if (tryToRestoreNeedWithConsumable(character, need)) {
+                        return;
                     }
 
                 });
+    }
+
+    private boolean tryToRestoreNeedWithItem(CharacterModel character, NeedEntry need) {
+
+        // Find best item
+        UsableItem bestItem = itemModule.getItems().stream()
+                .filter(item -> need.hasEffect(item.getInfo().use))
+                .findAny().orElse(null);
+        if (bestItem == null) {
+            return false;
+        }
+
+        // Create use job
+        UseJob job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) -> {
+            character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use);
+        });
+        if (job == null) {
+            return false;
+        }
+
+        _jobs.put(need, job);
+        return true;
+    }
+
+    private boolean tryToRestoreNeedWithConsumable(CharacterModel character, NeedEntry need) {
+
+        // Find best consumable
+        ConsumableItem bestConsumable = consumableModule.getConsumables().stream()
+                .filter(consumable -> consumable.getFreeQuantity() > 0)
+                .filter(item -> need.hasEffect(item.getInfo().consume))
+                .findAny().orElse(null);
+        if (bestConsumable == null) {
+            return false;
+        }
+
+        // Create consume job
+        ConsumeJob job = consumableModule.createConsumeJob(bestConsumable, bestConsumable.getInfo().consume.duration, (consumable, durationLeft) -> {
+            ItemInfo itemInfo = bestConsumable.getInfo();
+            character.getExtra(CharacterNeedsExtra.class).use(itemInfo.consume);
+        });
+        if (job == null) {
+            return false;
+        }
+
+        _jobs.put(need, job);
+        return true;
     }
 }

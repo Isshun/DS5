@@ -8,16 +8,16 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.modules.item.BuildJob;
-import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
-import org.smallbox.faraway.modules.job.JobModel.JobStatus;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.plant.BasicHarvestJob;
+import org.smallbox.faraway.modules.item.BuildJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
+import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
+import org.smallbox.faraway.modules.job.JobModel.JobStatus;
+import org.smallbox.faraway.modules.plant.BasicHarvestJob;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -344,6 +344,11 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public interface JobInitCallback<T> {
         boolean onInit(T job);
+    }
+
+    public <T extends JobModel> T createJob(T job) {
+        addJob(job);
+        return job;
     }
 
     public <T extends JobModel> T createJob(Class<T> cls, ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel, JobInitCallback<T> jobInitCallback) {

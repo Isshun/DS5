@@ -8,7 +8,7 @@ data:extend({
         health = 75,
         graphics = { path = "[base]/graphics/items/bed.png" },
         receipts = {label = "Wood", icon = "[base]/graphics/icons/material/wood.png", components = { item = "base.consumable.wood_log", quantity = 10}},
-        use = { effects = {{type = "energy", quantity = 1}} }
+        use = { duration = 6, effects = {{type = "energy", quantity = 1}} }
     },
     { label = "Wood Bed",
         name = "base.item.bed.wood",
@@ -19,7 +19,7 @@ data:extend({
         health = 75,
         graphics = { path = "[base]/graphics/items/bed_wood.png" },
         receipts = {label = "Wood", icon = "[base]/graphics/icons/material/wood.png", components = { item = "base.consumable.wood_log", quantity = 10}},
-        use = { effects = {{type = "energy", quantity = 1}} }
+        use = { duration = 6, effects = {{type = "energy", quantity = 1}} }
     },
     { label = "Sandstone Bed",
         name = "base.item.bed.sandstone",
@@ -30,6 +30,6 @@ data:extend({
         health = 75,
         graphics = { path = "[base]/graphics/items/bed_sandstone.png" },
         receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/sandstone.png", components = { item = "base.sandstone_brick", quantity = 10}},
-        use = { effects = {{type = "energy", quantity = 1}} }
+        use = { duration = 6, effects = {{type = "energy", quantity = 1}} }
     },
 })

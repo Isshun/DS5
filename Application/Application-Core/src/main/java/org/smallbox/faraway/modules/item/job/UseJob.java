@@ -1,63 +1,48 @@
 package org.smallbox.faraway.modules.item.job;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.item.ItemSlot;
-import org.smallbox.faraway.modules.item.NetworkConnectionModel;
+import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.job.JobTaskReturn;
 
 public class UseJob extends JobModel {
-    private int         _current;
-    private UsableItem _item;
-    private ItemSlot _slot;
 
-    @Override
-    public CharacterTalentExtra.TalentType getTalentNeeded() {
-        return null;
+    private final ItemModule _itemModule;
+    private final UsableItem _item;
+
+    public int _duration;
+
+    public interface OnUseCallback {
+        /**
+         * Methode appelée à chaque tick tant que l'action n'est pas terminée
+         * @param item l'item
+         * @param durationLeft la durée restante
+         */
+        void onUse(UsableItem item, int durationLeft);
     }
 
-    private UseJob() {
-        super();
-    }
+    public UseJob(ItemModule itemModule, UsableItem item, int totalDuration, OnUseCallback callback) {
+        _itemModule = itemModule;
+        _item = item;
 
-    public static UseJob create(UsableItem item) {
-        assert item != null;
+        setMainLabel("Consume " + item.getInfo().label);
 
-        if (!item.hasFreeSlot()) {
-            return null;
-        }
+        addTask("Move", character -> character.moveTo(item.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addTask("Consume", character -> {
+            int durationLeft = totalDuration - ++_duration;
+            callback.onUse(item, durationLeft);
+            setProgress(_duration, totalDuration);
 
-        UseJob job = new UseJob();
-        job._item = item;
+            if (durationLeft > 0) {
+                return JobTaskReturn.TASK_CONTINUE;
+            }
 
-        if (CollectionUtils.isNotEmpty(item.getInfo().actions)) {
-            ItemInfo.ItemInfoAction infoAction = item.getInfo().actions.get(0);
-            job.setAction(infoAction);
-            job.setCost(infoAction.cost);
-        } else {
-            Log.warning("No action for item");
-        }
+            return JobTaskReturn.TASK_COMPLETE;
+        });
 
-        return job;
-    }
-
-    public static UseJob create(CharacterModel character, UsableItem item) {
-        if (character == null) {
-            Log.warning("Cannot createGame job with null character");
-            return null;
-        }
-
-        UseJob job = create(item);
-        if (job != null) {
-            job.setCharacterRequire(character);
-        }
-
-        return job;
     }
 
     @Override
@@ -78,16 +63,14 @@ public class UseJob extends JobModel {
 
     @Override
     protected void onQuit(CharacterModel character) {
-        if (_item != null && _slot != null) {
-            _item.releaseSlot(_slot);
-        }
+//        if (_item != null && _slot != null) {
+//            _item.releaseSlot(_slot);
+//        }
     }
 
     @Override
-    public String getLabel() {
-        if (_actionInfo != null && _actionInfo.label != null) {
-            return _actionInfo.label;
-        }
-        return "use " + _item.getLabel();
+    public CharacterTalentExtra.TalentType getTalentNeeded() {
+        return null;
     }
+
 }
