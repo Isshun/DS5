@@ -42,7 +42,7 @@ public class CharacterInfoDetailsController extends LuaController {
         _selected.getTalents().getAll().forEach(talent -> {
 
             View view = new UIFrame(null)
-                    .setBackgroundColor(0x1a3647)
+                    .setBackgroundColor(talent.available ? 0x1a3647 : 0x0f1f29)
                     .setBorderColor(0x359f9f)
                     .setMargin(8, 0)
                     .setSize(320, 28);
@@ -90,7 +90,9 @@ public class CharacterInfoDetailsController extends LuaController {
                 }
             });
 
-            ApplicationClient.uiEventManager.addDropZone(view);
+            if (talent.available) {
+                ApplicationClient.uiEventManager.addDropZone(view);
+            }
 
             listTalents.addNextView(view);
 
