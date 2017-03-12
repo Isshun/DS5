@@ -8,11 +8,12 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -130,6 +131,38 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return false;
     }
 
+    public interface onConsumeCallback {
+        void onConsume(ConsumableItem consumable, int durationLeft);
+    }
+
+    public ConsumeJob createConsumeJob(ConsumableItem bestConsumable, int totalDuration, onConsumeCallback callback) {
+        return jobModule.createJob(ConsumeJob.class, null, bestConsumable.getParcel(), job -> {
+
+            job.setMainLabel("Consume " + bestConsumable.getInfo().label);
+
+            ConsumableModule.ConsumableJobLock lock = lock(job, bestConsumable, 1);
+            job.addTask("Move", c -> c.moveTo(bestConsumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Consume", c -> {
+                if (lock.available) {
+                    int durationLeft = totalDuration - ++job._duration;
+                    callback.onConsume(bestConsumable, durationLeft);
+                    job.setProgress(job._duration, totalDuration);
+
+                    if (durationLeft > 0) {
+                        return JobTaskReturn.TASK_CONTINUE;
+                    }
+
+                    // Retire le lock si l'action est terminée
+                    takeConsumable(lock);
+                    return JobTaskReturn.TASK_COMPLETE;
+                }
+                return JobTaskReturn.TASK_ERROR;
+            });
+
+            return true;
+        });
+    }
+
     public static class ConsumableJobLock {
         public ConsumableItem consumable;
         public JobModel job;
@@ -223,7 +256,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         // Retire les locks des jobs n'existant plus
         _locks.stream()
-                .filter(lock -> lock.job.getStatus() != JobModel.JobStatus.INITIALIZED && !jobModule.hasJob(lock.job))
+                .filter(lock -> lock.job.getStatus() != JobModel.JobStatus.JOB_INITIALIZED && !jobModule.hasJob(lock.job))
                 .forEach(this::unlock);
     }
 

@@ -137,26 +137,26 @@
 //    }
 //
 //    @Override
-//    public JobActionReturn onAction(CharacterModel character) {
+//    public JobReturn onAction(CharacterModel character) {
 //        // Wrong call
 //        if (_resource == null) {
 //            throw new GameException("Character: action cut on null job or null job's item");
-//            return JobActionReturn.ABORT;
+//            return JobReturn.ABORT;
 //        }
 //
 //        if (!_resource.isResource()) {
 //            throw new GameException("Character: action cut on non resource");
-//            return JobActionReturn.ABORT;
+//            return JobReturn.ABORT;
 //        }
 //
 //        if (!"cut".equals(_actionInfo.type)) {
 //            throw new GameException("Character: action cut on non cut-able item");
-//            return JobActionReturn.ABORT;
+//            return JobReturn.ABORT;
 //        }
 //
 //        _progress += character.getTalents().get(CharacterTalentExtra.TalentType.CUT).work();
 //        if (_progress < _cost) {
-//            return JobActionReturn.CONTINUE;
+//            return JobReturn.CONTINUE;
 //        }
 //
 //        // Remove a single unit
@@ -164,11 +164,11 @@
 //
 ////        // Check if resource is depleted
 ////        if (!_resource.isDepleted()) {
-////            return JobActionReturn.CONTINUE;
+////            return JobReturn.CONTINUE;
 ////        }
 ////
-////        return JobActionReturn.COMPLETE;
-//        return JobActionReturn.COMPLETE;
+////        return JobReturn.COMPLETE;
+//        return JobReturn.COMPLETE;
 //    }
 //
 //    @Override

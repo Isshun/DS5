@@ -71,22 +71,22 @@ public class BasicHaulJob extends JobModel {
             // Déplace le personnage à l'emplacement des composants
             addTask("Haul " + lock.consumable.getLabel(), character -> {
                 if (lock.consumable.getParcel() != null) {
-                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
                 }
-                return JobTaskReturn.INVALID;
+                return JobTaskReturn.TASK_ERROR;
             });
 
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + lock.consumable.getLabel() + " to inventory", character -> {
                 _consumableModule.takeConsumable(lock);
                 character.addInventory(lock.consumable.getInfo(), lock.quantity);
-                return JobTaskReturn.COMPLETE;
+                return JobTaskReturn.TASK_COMPLETE;
             });
         }
 
         // Apporte les composants à la fabrique
         addTask("Bring back to factory", character ->
-                character.moveTo(_targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                character.moveTo(_targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
         // Charge les comnposants dans la fabrique
         addTechnicalTask("Load factory", character ->
@@ -120,20 +120,8 @@ public class BasicHaulJob extends JobModel {
     }
 
     @Override
-    protected JobActionReturn onAction(CharacterModel character) {
-        return null;
-    }
-
-    @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return CharacterTalentExtra.TalentType.BUILD;
-    }
-
-    @Override
-    protected void onAbort() {
-        if (_factory != null) {
-            _factory.clear();
-        }
     }
 
     @Override
@@ -143,6 +131,9 @@ public class BasicHaulJob extends JobModel {
 
     @Override
     protected void onClose() {
+        if (_factory != null) {
+            _factory.clear();
+        }
         _locks.forEach(lock -> _consumableModule.cancelLock(lock));
     }
 

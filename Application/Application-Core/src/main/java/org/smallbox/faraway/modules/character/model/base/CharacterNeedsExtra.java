@@ -50,12 +50,12 @@ public class CharacterNeedsExtra {
 
     public void use(ItemInfo.ItemInfoEffects effects, int duration) {
         if (effects != null && duration != 0) {
-            addValue("energy", (double)effects.energy / duration);
-            addValue("food", (double)effects.food / duration);
-            addValue("drink", (double)effects.drink / duration);
-            addValue("entertainment", (double)effects.entertainment / duration);
-            addValue("relation", (double)effects.relation / duration);
-            addValue("happiness", (double)effects.happiness / duration);
+            addValue("energy", effects.energy / duration);
+            addValue("food", effects.food / duration);
+            addValue("drink", effects.drink / duration);
+            addValue("entertainment", effects.entertainment / duration);
+            addValue("relation", effects.relation / duration);
+            addValue("happiness", effects.happiness / duration);
         }
     }
 

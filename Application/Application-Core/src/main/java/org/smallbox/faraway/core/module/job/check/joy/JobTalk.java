@@ -74,10 +74,10 @@
 //    }
 //
 //    @Override
-//    public JobActionReturn onAction(CharacterModel character) {
+//    public JobReturn onAction(CharacterModel character) {
 //        if (_progress++ < _cost) {
-//            return JobActionReturn.CONTINUE;
+//            return JobReturn.CONTINUE;
 //        }
-//        return JobActionReturn.COMPLETE;
+//        return JobReturn.COMPLETE;
 //    }
 //}

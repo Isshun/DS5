@@ -8,17 +8,17 @@ import org.smallbox.faraway.modules.consumable.ConsumeJob;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
 
 /**
  * Created by Alex on 11/03/2017.
  */
 public class UseItemStrategy implements NeedRestoreStrategy {
 
-    private boolean _done;
+    private ConsumeJob _job;
 
     @Override
     public boolean ok(CharacterModel character, NeedEntry need, JobModule jobModule, ConsumableModule consumableModule, ItemModule itemModule) {
+
         // Find best item
         UsableItem bestItem = itemModule.getItems().stream()
                 .filter(item -> need.hasEffect(item.getInfo().use))
@@ -27,17 +27,11 @@ public class UseItemStrategy implements NeedRestoreStrategy {
         // Create use job
         if (bestItem != null) {
 
-            jobModule.createJob(ConsumeJob.class, null, bestItem.getParcel(), job -> {
-                job.addTask("Move", c -> c.moveTo(bestItem.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
-                job.addTask("Use", c -> {
-                    character.getExtra(CharacterNeedsExtra.class).use(bestItem.getInfo().use);
-                    return JobTaskReturn.COMPLETE;
-                });
-                job.addTechnicalTask("Done", c -> _done = true);
-
-                return true;
+            _job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) -> {
+                character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use);
             });
 
+            return true;
         }
 
         return false;
@@ -45,7 +39,7 @@ public class UseItemStrategy implements NeedRestoreStrategy {
 
     @Override
     public boolean done() {
-        return _done;
+        return _job == null || _job.isClose();
     }
 
 }

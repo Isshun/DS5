@@ -40,7 +40,7 @@
 //        // TODO
 //        //        // Item is no longer exists
 ////        if (_item != _item.getParcel().getItem() && _item != _item.getParcel().getStructure()) {
-////            _reason = JobAbortReason.INVALID;
+////            _reason = JobAbortReason.JOB_INVALID;
 ////            return JobCheckReturn.ABORT;
 ////        }
 //
@@ -68,12 +68,12 @@
 //    }
 //
 //    @Override
-//    public JobActionReturn onAction(CharacterModel character) {
+//    public JobReturn onAction(CharacterModel character) {
 //        if (_current++ < _cost) {
 //            _progress = _current / _cost;
-//            return JobActionReturn.CONTINUE;
+//            return JobReturn.CONTINUE;
 //        }
-//        return JobActionReturn.COMPLETE;
+//        return JobReturn.COMPLETE;
 //    }
 //
 //    @Override

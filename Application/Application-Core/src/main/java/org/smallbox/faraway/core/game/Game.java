@@ -210,7 +210,7 @@ public class Game {
 
     public void setSpeed(int speed) {
         _lastSpeed = _speed;
-        _speed = Utils.bound(1, TICK_INTERVALS.length, speed);
+        _speed = Utils.bound(1, TICK_INTERVALS.length - 1, speed);
         if (_speed != _lastSpeed) {
             _tickInterval = TICK_INTERVALS[_speed];
             _isRunning = speed > 0;

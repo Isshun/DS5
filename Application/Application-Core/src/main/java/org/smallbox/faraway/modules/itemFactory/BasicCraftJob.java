@@ -54,11 +54,6 @@ public class BasicCraftJob extends JobModel {
     }
 
     @Override
-    protected JobActionReturn onAction(CharacterModel character) {
-        return null;
-    }
-
-    @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return CharacterTalentExtra.TalentType.BUILD;
     }
@@ -78,7 +73,7 @@ public class BasicCraftJob extends JobModel {
             job._targetParcel = targetParcel;
 
             // Apporte les composants à la fabrique
-            job.addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+            job.addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
             // Craft action
             job.addTask("Craft item", character -> {
@@ -86,7 +81,7 @@ public class BasicCraftJob extends JobModel {
                     job._startTick = Application.gameManager.getGame().getTick();
                     job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();
                 }
-                return job.onCraft() ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+                return job.onCraft() ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
             });
 
             return true;

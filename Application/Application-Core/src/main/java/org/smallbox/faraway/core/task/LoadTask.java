@@ -28,7 +28,7 @@ public abstract class LoadTask implements Runnable {
                 throwable = t;
             }
         } else {
-            throw new GameException(LoadTask.class, "Only task with RUNNING status can be run");
+            throw new GameException(LoadTask.class, "Only task with JOB_RUNNING status can be run");
         }
     }
 

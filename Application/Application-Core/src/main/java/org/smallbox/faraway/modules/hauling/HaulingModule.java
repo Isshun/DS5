@@ -48,7 +48,7 @@ public class HaulingModule extends GameModule {
     public void onModuleUpdate(Game game) {
 
 //        jobModule.getJobs().stream()
-//                .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED)
+//                .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED)
 //                .filter(job -> job instanceof BasicStoreJob)
 //                .forEach(job -> jobModule.removeJob(job));
 
@@ -92,7 +92,7 @@ public class HaulingModule extends GameModule {
         jobModule.getJobs().stream()
                 .filter(job -> job instanceof BasicStoreJob)
                 .map(job -> (BasicStoreJob)job)
-                .filter(job -> job.getStatus() == JobModel.JobStatus.INITIALIZED || job.getStatus() == JobModel.JobStatus.WAITING)
+                .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED || job.getStatus() == JobModel.JobStatus.JOB_WAITING)
                 .filter(job -> job.getConsumables().keySet().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
                 .forEach(job -> jobModule.removeJob(job));
 

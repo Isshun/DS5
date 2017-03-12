@@ -104,25 +104,25 @@
 //    }
 //
 //    @Override
-//    public JobActionReturn onAction(CharacterModel character) {
+//    public JobReturn onAction(CharacterModel character) {
 //        // Wrong call
 //        if (_plant == null) {
 //            throw new GameException("Character: actionGather on null job or null job's item");
-//            return JobActionReturn.ABORT;
+//            return JobReturn.ABORT;
 //        }
 //
 //        if (_plant.getInfo().actions.get(0) == null) {
 //            throw new GameException("Character: actionGather on non gatherable item");
-//            return JobActionReturn.ABORT;
+//            return JobReturn.ABORT;
 //        }
 //
 //        _current += character.getTalents().get(CharacterTalentExtra.TalentType.GATHER).work();
 //        _progress = _current / _totalCost;
 //        if (_current < _totalCost) {
-//            return JobActionReturn.CONTINUE;
+//            return JobReturn.CONTINUE;
 //        }
 //
-//        return JobActionReturn.COMPLETE;
+//        return JobReturn.COMPLETE;
 //    }
 //
 //    @Override

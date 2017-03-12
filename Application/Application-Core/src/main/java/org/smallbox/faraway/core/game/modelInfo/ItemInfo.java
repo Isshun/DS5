@@ -188,22 +188,22 @@ public class ItemInfo extends ObjectInfo {
     }
 
     public static class ItemInfoEffects {
-        public int                      food;
-        public int                      drink;
-        public int                      energy;
-        public int                      happiness;
-        public int                      health;
-        public int                      relation;
-        public int                      entertainment;
+        public double                   food;
+        public double                   drink;
+        public double                   energy;
+        public double                   happiness;
+        public double                   health;
+        public double                   relation;
+        public double                   entertainment;
         public double                   oxygen;
-        public int                      pressure;
-        public int                      security;
-        public int                      heat;
-        public int                      heatPotency;
-        public int                      cold;
-        public int                      coldPotency;
-        public int                      temperature;
-        public int                      temperaturePotency;
+        public double                   pressure;
+        public double                   security;
+        public double                   heat;
+        public double                   heatPotency;
+        public double                   cold;
+        public double                   coldPotency;
+        public double                   temperature;
+        public double                   temperaturePotency;
     }
 
     public String                       desc;

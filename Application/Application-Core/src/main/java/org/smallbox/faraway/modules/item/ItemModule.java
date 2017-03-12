@@ -7,12 +7,15 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.consumable.ConsumeJob;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
+import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
@@ -46,6 +49,32 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
 
     public Collection<UsableItem> getItems() {
         return _items;
+    }
+
+    public interface onUseCallback {
+        void onUse(UsableItem item, int durationLeft);
+    }
+
+    public ConsumeJob createUseJob(UsableItem item, int totalDuration, onUseCallback callback) {
+        return jobModule.createJob(ConsumeJob.class, null, item.getParcel(), job -> {
+
+            job.setMainLabel("Consume " + item.getInfo().label);
+
+            job.addTask("Move", c -> c.moveTo(item.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Consume", c -> {
+                int durationLeft = totalDuration - ++job._duration;
+                callback.onUse(item, durationLeft);
+                job.setProgress(job._duration, totalDuration);
+
+                if (durationLeft > 0) {
+                    return JobTaskReturn.TASK_CONTINUE;
+                }
+
+                return JobTaskReturn.TASK_COMPLETE;
+            });
+
+            return true;
+        });
     }
 
     @Override

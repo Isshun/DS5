@@ -41,7 +41,9 @@ public class BasicStoreJob extends JobModel {
 
         jobModule.createJob(BasicStoreJob.class, null, targetParcel, job -> {
 
-            job.init(targetParcel, targetConsumables, consumableModule);
+            job._consumableModule = consumableModule;
+            job._targetParcel = targetParcel;
+            job._targetConsumables = targetConsumables;
 
             targetConsumables.forEach((consumable, quantity) ->
                     job.setMainLabel(String.format("Store %s (x%d)", consumable.getInfo().label, quantity)));
@@ -58,7 +60,7 @@ public class BasicStoreJob extends JobModel {
      * @return true
      */
     @Override
-    public boolean onNewStart() {
+    public boolean onFirstStart() {
 
         // TODO: maj de la quantité
 
@@ -82,23 +84,23 @@ public class BasicStoreJob extends JobModel {
             // Déplace le personnage à l'emplacement des composants
             addTask("Haul " + lock.consumable.getLabel(), character -> {
                 if (lock.consumable.getParcel() != null) {
-                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE;
+                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
                 }
-                return JobTaskReturn.INVALID;
+                return JobTaskReturn.TASK_ERROR;
             });
 
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + lock.consumable.getLabel() + " to inventory", character -> {
                 _consumableModule.takeConsumable(lock);
                 character.addInventory(lock.consumable.getInfo(), lock.quantity);
-                return JobTaskReturn.COMPLETE;
+                return JobTaskReturn.TASK_COMPLETE;
             });
 
         });
 
         // Apporte les composants à la zone de stockage
         addTask("Move to storage", character2 ->
-                character2.moveTo(_targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                character2.moveTo(_targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
         // Ajoute les composants à la zone de stockage
         addTechnicalTask("Drop consumable to storage", character2 ->
@@ -120,19 +122,8 @@ public class BasicStoreJob extends JobModel {
     }
 
     @Override
-    protected JobActionReturn onAction(CharacterModel character) {
-        return null;
-    }
-
-    @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
-        return CharacterTalentExtra.TalentType.GATHER;
-    }
-
-    protected void init(ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ConsumableModule consumableModule) {
-        _consumableModule = consumableModule;
-        _targetParcel = targetParcel;
-        _targetConsumables = targetConsumables;
+        return CharacterTalentExtra.TalentType.STORE;
     }
 
 }

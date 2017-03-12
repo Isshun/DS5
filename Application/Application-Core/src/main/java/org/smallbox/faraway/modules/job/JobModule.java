@@ -54,10 +54,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     @Override
     protected void onModuleUpdate(Game game) {
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
-        _jobs.removeIf(JobModel::isFinish);
-
-        // Create new job
-        _jobs.stream().filter(job -> !job.isCreate()).forEach(JobModel::create);
+        _jobs.removeIf(JobModel::isClose);
 
         // Run auto job
         _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
@@ -86,7 +83,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     public void assign(CharacterModel character) {
         _jobs.stream()
                 .filter(job -> job.getCharacter() == null)
-                .filter(job -> job.getStatus() == JobStatus.WAITING || job.getStatus() == JobStatus.INITIALIZED)
+                .filter(job -> job.getStatus() == JobStatus.JOB_WAITING || job.getStatus() == JobStatus.JOB_INITIALIZED)
                 .findFirst()
                 .ifPresent(job -> assign(character, job));
 
@@ -158,8 +155,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
             return;
         }
 
-        if (job.getStatus() != JobStatus.INITIALIZED) {
-            throw new GameException(JobModule.class, "Job status must be INITIALIZED");
+        if (job.getStatus() != JobStatus.JOB_INITIALIZED) {
+            throw new GameException(JobModule.class, "Job status must be JOB_INITIALIZED");
         }
 
         printDebug("addSubJob job: " + job.getLabel());
@@ -233,10 +230,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
             JobModel bestJob = null;
 
             for (JobModel job: _jobs) {
-                if (job.isActive() && !job.isAuto()) {
+                if (!job.isAuto()) {
                     Log.debug("Check best regular: " + job.getLabel());
                     ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                    if (talent.type == job.getTalentNeeded() && !job.isFinish() && job.getCharacter() == null && job.getFail() <= 0) {
+                    if (talent.type == job.getTalentNeeded() && !job.isClose() && job.getCharacter() == null && job.getFail() <= 0) {
                         int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
                         if (distance < bestDistance && job.check(character)) {
                             bestJob = job;
@@ -305,21 +302,17 @@ public class JobModule extends GameModule<JobModuleObserver> {
         }
     }
 
+    // TODO: utile ?
     @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
-        for (JobModel job : _jobs) {
-            if (job.isOpen()) {
-                if (object == null && job.getJobParcel() == parcel) {
-                    job.cancel();
-                }
-//                if (object != null && job instanceof HaulJob && ((HaulJob) job).getBuildItem() == object) {
-//                    job.cancel();
-//                }
-                if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
-                    job.cancel();
-                }
+        _jobs.stream().filter(JobModel::isOpen).forEach(job -> {
+            if (object == null && job.getJobParcel() == parcel) {
+                job.close();
             }
-        }
+            if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
+                job.close();
+            }
+        });
     }
 
     public int getModulePriority() {
@@ -373,7 +366,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
         Log.debug("Remove job " + job + ", status: " + job.getStatus());
 
         if (job.getCharacter() != null) {
-            job.cancel();
+            job.close();
         }
         job.close();
         _jobs.remove(job);

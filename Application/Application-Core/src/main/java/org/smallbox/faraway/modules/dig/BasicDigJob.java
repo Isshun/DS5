@@ -29,7 +29,7 @@ public class BasicDigJob extends JobModel {
                 job.setDigParcel(digParcel);
 
                 // Déplace le personnage à l'emplacement des composants
-                job.addTask("Move to rock", character -> character.moveTo(targetParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                job.addTask("Move to rock", character -> character.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
                 // Retire les rochers de la carte
                 job.addTechnicalTask("Remove rock", character -> digParcel.setRockInfo(null));
@@ -65,11 +65,6 @@ public class BasicDigJob extends JobModel {
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {
         return JobCheckReturn.OK;
-    }
-
-    @Override
-    protected JobActionReturn onAction(CharacterModel character) {
-        return null;
     }
 
     @Override

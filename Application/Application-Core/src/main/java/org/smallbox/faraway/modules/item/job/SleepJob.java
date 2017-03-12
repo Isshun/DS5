@@ -82,16 +82,16 @@
 //    }
 //
 //    @Override
-//    public JobActionReturn onAction(CharacterModel character) {
+//    public JobReturn onAction(CharacterModel character) {
 //        if (Application.gameManager.getGame().getTick() < _endTime) {
 //            character.setSleeping(true);
 //            character.getNeeds().isSleeping = true;
 //            _progress = (double)(Application.gameManager.getGame().getTick() - _startTime) / (_endTime - _startTime);
-//            return JobActionReturn.CONTINUE;
+//            return JobReturn.CONTINUE;
 //        }
 //
 //        character.setSleeping(false);
-//        return JobActionReturn.COMPLETE;
+//        return JobReturn.COMPLETE;
 //    }
 //
 //    @Override

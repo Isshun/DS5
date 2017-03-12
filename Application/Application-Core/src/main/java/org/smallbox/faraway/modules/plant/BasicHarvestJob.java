@@ -23,7 +23,7 @@ public class BasicHarvestJob extends JobModel {
             return jobModule.createJob(BasicHarvestJob.class, null, plant.getParcel(), job -> {
 
                 // Déplace le personnage à l'emplacement des composants
-                job.addTask("Move to plant", character -> character.moveTo(consumableDropParcel) ? JobTaskReturn.COMPLETE : JobTaskReturn.CONTINUE);
+                job.addTask("Move to plant", character -> character.moveTo(consumableDropParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
                 // Crée les composants
                 job.addTechnicalTask("Create components", character ->
@@ -56,11 +56,6 @@ public class BasicHarvestJob extends JobModel {
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {
         return JobCheckReturn.OK;
-    }
-
-    @Override
-    protected JobActionReturn onAction(CharacterModel character) {
-        return null;
     }
 
     @Override

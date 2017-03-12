@@ -65,7 +65,7 @@ public class UseJob extends JobModel {
         // TODO
 //        // Item is no longer exists
 //        if (_item != _item.getParcel().getItem()) {
-//            _reason = JobAbortReason.INVALID;
+//            _reason = JobAbortReason.TASK_ERROR;
 //            return JobCheckReturn.ABORT;
 //        }
 
@@ -74,64 +74,6 @@ public class UseJob extends JobModel {
         }
 
         return JobCheckReturn.OK;
-    }
-
-    @Override
-    protected void onStart(CharacterModel character) {
-        assert _character != null;
-
-        _slot = _item.takeSlot(this);
-        _targetParcel = _slot != null ? _slot.getParcel() : _item.getParcel();
-        character.moveTo(_targetParcel, null);
-    }
-
-    @Override
-    public JobActionReturn onAction(CharacterModel character) {
-        assert _item != null;
-        assert _character != null;
-
-        // Item not reached
-        if (character.getParcel() != _targetParcel) {
-            return JobActionReturn.ABORT;
-        }
-
-        Log.debug("Character #" + character.getName() + ": actionUse");
-
-        // Character using item
-        _current++;
-        _progress = (double)_current / _cost;
-        _item.use(_character, 0);
-        if (_current < _cost) {
-            return JobActionReturn.CONTINUE;
-        }
-
-        // Use consumable if isJobNeeded by action
-        if (_actionInfo != null && _actionInfo.inputs != null) {
-            for (ItemInfo.ActionInputInfo inputInfo: _actionInfo.inputs) {
-                // TODO
-                // Action isJobNeeded consumable
-                if (inputInfo.item != null) {
-                }
-
-                // Action isJobNeeded consumable through network
-                if (inputInfo.network != null && _item.getNetworkConnections() != null) {
-                    for (NetworkConnectionModel networkConnection: _item.getNetworkConnections()) {
-                        if (networkConnection.getNetwork() != null && networkConnection.getNetwork().getInfo() == inputInfo.network) {
-                            networkConnection.getNetwork().removeQuantity(inputInfo.quantity);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-//        // Set characters direction
-//        if (_item.getX() > _targetParcel.x) { character.setDirection(Direction.RIGHT); }
-//        if (_item.getX() < _targetParcel.x) { character.setDirection(Direction.LEFT); }
-//        if (_item.getY() > _targetParcel.y) { character.setDirection(Direction.TOP); }
-//        if (_item.getY() < _targetParcel.y) { character.setDirection(Direction.BOTTOM); }
-
-        return JobActionReturn.COMPLETE;
     }
 
     @Override

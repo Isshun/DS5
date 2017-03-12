@@ -33,14 +33,14 @@
 //    }
 //
 //    @Override
-//    public JobActionReturn onAction(CharacterModel character) {
+//    public JobReturn onAction(CharacterModel character) {
 //
 //        // Job is done
 //        if (character.getParcel() != _targetParcel) {
-//            return JobActionReturn.CONTINUE;
+//            return JobReturn.CONTINUE;
 //        }
 //
-//        return JobActionReturn.COMPLETE;
+//        return JobReturn.COMPLETE;
 //    }
 //
 //    @Override

@@ -17,7 +17,7 @@ public class JobTechnicalTask extends JobTask {
     public JobTechnicalTask(String label, JobTechnicalTaskAction action) {
         super(label, character -> {
             action.onExecuteTask(character);
-            return JobTaskReturn.COMPLETE;
+            return JobTaskReturn.TASK_COMPLETE;
         });
         this.label = label;
         this.action = action;

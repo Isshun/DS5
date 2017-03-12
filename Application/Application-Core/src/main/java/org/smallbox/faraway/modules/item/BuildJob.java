@@ -2,13 +2,10 @@ package org.smallbox.faraway.modules.item;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
-import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.modules.job.JobModel;
 
 /**
  * Created by Alex on 09/10/2015.
@@ -29,14 +26,6 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    public void onCancel() {
-        throw new NotImplementedException("");
-
-//        _buildItem.getComponents().forEach(component -> ModuleHelper.getWorldModule().putConsumable(_jobParcel, component.info, component.currentQuantity));
-//        _buildItem.getComponents().clear();
-    }
-
-    @Override
     public CharacterTalentExtra.TalentType getTalentNeeded() {
         return CharacterTalentExtra.TalentType.BUILD;
     }
@@ -52,33 +41,6 @@ public class BuildJob extends JobModel {
         }
 
         return JobCheckReturn.OK;
-    }
-
-    @Override
-    protected void onStart(CharacterModel character) {
-        _message = "Building";
-
-//        _buildItem.addJob(this);
-
-        PathModel path = Application.pathManager.getPath(character.getParcel(), _jobParcel, true, false);
-        if (path != null) {
-            _targetParcel = path.getLastParcel();
-            Log.info("best path to: " + _targetParcel.x + "x" + _targetParcel.y + " (" + character.getPersonals().getFirstName() + ")");
-            character.move(path);
-        }
-    }
-
-    @Override
-    public JobActionReturn onAction(CharacterModel character) {
-        if (WorldHelper.getApproxDistance(_character.getParcel(), _buildItem.getParcel()) <= 2) {
-            if (_buildItem.build()) {
-                _buildItem.setBuildJob(null);
-                Application.notify(observer -> observer.onObjectComplete(_buildItem));
-                return JobActionReturn.COMPLETE;
-            }
-            _progress = (double)_buildItem.getBuildProgress() / _buildItem.getBuildCost();
-        }
-        return JobActionReturn.CONTINUE;
     }
 
     @Override

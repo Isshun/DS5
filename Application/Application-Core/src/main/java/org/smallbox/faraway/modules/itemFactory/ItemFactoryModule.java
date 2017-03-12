@@ -205,7 +205,7 @@ public class ItemFactoryModule extends GameModule {
                 .filter(job -> job instanceof BasicHaulJob)
                 .map(job -> (BasicHaulJob)job)
                 .filter(job -> job.getFactory() == factory)
-                .forEach(JobModel::cancel);
+                .forEach(JobModel::close);
 
         // Retire la recette en cours
         factory.setRunningReceipt(null);
