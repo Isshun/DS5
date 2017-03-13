@@ -7,7 +7,7 @@ ui:extend({
         { type = "list", views = {
 
             -- Talent
-            { type = "label", text = "Talents", text_color = color1, size = {0, 30}, text_size = 24},
+            { type = "label", text = "Competences", text_color = color1, size = {0, 30}, text_size = 24},
             { type = "list", id = "list_talents"},
 
         }},
