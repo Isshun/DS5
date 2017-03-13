@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.room.model;
+package org.smallbox.faraway.modules.room.model;
 
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 

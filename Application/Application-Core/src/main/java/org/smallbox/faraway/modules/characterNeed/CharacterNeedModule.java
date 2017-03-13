@@ -73,7 +73,8 @@ public class CharacterNeedModule extends GameModule {
 
     /**
      * Envoi le personnage se coucher en fonction de son emploi du temps
-     *  @param game Game
+     *
+     * @param game Game
      * @param character CharacterModel
      * @param needs CharacterNeedsExtra
      */

@@ -14,6 +14,7 @@ public class ApplicationConfig {
     }
 
     public static class ApplicationConfigGameInfo {
+        public int              roofMaxDistance = 6;
         public int              inventoryMaxQuantity = 100;
         public int              storageMaxQuantity = 100;
         public int              environmentDistance = 5;

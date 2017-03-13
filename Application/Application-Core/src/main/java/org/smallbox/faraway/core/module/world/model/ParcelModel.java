@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 
 import java.util.ArrayList;

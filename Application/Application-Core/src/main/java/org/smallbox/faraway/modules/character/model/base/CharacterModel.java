@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;

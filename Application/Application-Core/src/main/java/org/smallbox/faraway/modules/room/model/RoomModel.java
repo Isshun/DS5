@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.room.model;
+package org.smallbox.faraway.modules.room.model;
 
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
@@ -37,6 +37,14 @@ public class RoomModel {
     private double                      _targetOxygen;
     private double                      _pressure;
 
+    public boolean hasParcel(ParcelModel parcel) {
+        return _parcels.contains(parcel);
+    }
+
+    public RoomTypeInfo getInfo() {
+        return getClass().getAnnotation(RoomTypeInfo.class);
+    }
+
     public enum RoomType {
         NONE,
         QUARTER,
@@ -71,6 +79,10 @@ public class RoomModel {
 
 //        _autoName = type.toString();
         _autoName = "Room " + _id;
+    }
+
+    public void removeParcel(ParcelModel parcel) {
+        _parcels.remove(parcel);
     }
 
     public void setOxygen(double oxygen) {

@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -84,14 +84,11 @@ public class AreaRenderer extends BaseRenderer {
     }
 
     private TextureRegion getTexture(Class<? extends AreaModel> cls) {
-        TextureRegion region = _textureByClass.get(cls);
-        if (region != null) {
-            return region;
+        if (!_textureByClass.containsKey(cls)) {
+            _textureByClass.put(cls, _regions[Math.min(_textureByClass.size(), 4)]);
         }
 
-        region = _regions[Math.min(_textureByClass.size(), 4)];
-        _textureByClass.put(cls, region);
-        return region;
+        return _textureByClass.get(cls);
     }
 
     @Override

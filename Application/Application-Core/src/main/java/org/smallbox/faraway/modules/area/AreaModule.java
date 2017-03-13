@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * Created by Alex on 13/06/2015.
  */
 @ModuleSerializer(AreaSerializer.class)
+@SuppressWarnings("Duplicates")
 public class AreaModule extends GameModule {
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
@@ -83,4 +84,5 @@ public class AreaModule extends GameModule {
         _areas.forEach(area -> parcels.forEach(area::removeParcel));
         _areas.removeIf(area -> area.getParcels().isEmpty());
     }
+
 }

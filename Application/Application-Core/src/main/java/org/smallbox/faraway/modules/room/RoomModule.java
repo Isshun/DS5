@@ -1,37 +1,36 @@
-package org.smallbox.faraway.core.module.room;
+package org.smallbox.faraway.modules.room;
 
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.room.model.RoomModel;
+import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.modules.room.model.*;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.AsyncTask;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class RoomModule extends GameModule implements GameObserver {
+@ModuleSerializer(RoomSerializer.class)
+@SuppressWarnings("Duplicates")
+public class RoomModule extends GameModule {
 
-//    @BindModule
-//    private StructureModule _structureModule;
-//
     @BindModule
     private WorldModule worldModule;
 
     @BindModule
     private WeatherModule weatherModule;
 
-    private static final int                                    ROOF_MAX_DISTANCE = 6;
-
     private final List<RoomModel>                               _exteriorRooms = new ArrayList<>();
     private final Collection<RoomModel>                         _rooms = new ConcurrentLinkedQueue<>();
+    private Collection<Class<? extends RoomModel>>              _roomClasses = new LinkedBlockingQueue<>();
     private boolean                                             _needRefresh;
     private AsyncTask<List<RoomModel>>                          _task;
     private boolean[]                                           _refresh;
@@ -39,34 +38,26 @@ public class RoomModule extends GameModule implements GameObserver {
 
     public boolean runOnMainThread() { return false; }
 
+    public void addRoomClass(Class<? extends RoomModel> cls) {
+        _roomClasses.add(cls);
+    }
+
+    public Collection<Class<? extends RoomModel>> getRoomClasses() {
+        return _roomClasses;
+    }
+
     @Override
     public void onGameCreate(Game game) {
-        RoomModel roomModel = new RoomModel(RoomModel.RoomType.WORLD, 1, WorldHelper.getParcel(0, 0, 1));
-        roomModel.addParcels(worldModule.getParcelList());
-        _rooms.add(roomModel);
-//        _structureModule.addObserver(new StructureModuleObserver() {
-//            @Override
-//            public void onAddStructure(StructureItem structure) {
-//                if (structure.isComplete()) {
-//                    plantRefresh(structure.getParcel().z);
-//                }
-//            }
-//
-//            @Override
-//            public void onRemoveStructure(ParcelModel parcel, StructureItem structure) {
-//                if (structure.isComplete()) {
-//                    plantRefresh(structure.getParcel().z);
-//                }
-//            }
-//
-//            @Override
-//            public void onStructureComplete(StructureItem structure) {
-//            }
-//        });
+        addRoomClass(QuarterRoom.class);
+        addRoomClass(SickbayRoom.class);
+        addRoomClass(CommonRoom.class);
+        addRoomClass(CellRoom.class);
+        addRoomClass(TechnicalRoom.class);
     }
 
     @Override
     public void onGameStart(Game game) {
+
 //        _updateInterval = 10;
 //
 //        _needRefresh = true;
@@ -113,7 +104,42 @@ public class RoomModule extends GameModule implements GameObserver {
 //            _task = null;
 //        }
     }
-//
+
+    public <T extends RoomModel> T addRoom(Class<T> cls, Collection<ParcelModel> parcels) {
+        T existingArea = _rooms.stream()
+                .filter(cls::isInstance)
+                .filter(area -> area.getParcels().stream().anyMatch(parcels::contains))
+                .map(cls::cast)
+                .findAny().orElse(null);
+
+        // Add parcel to existing room
+        if (existingArea != null) {
+            parcels.forEach(existingArea::addParcel);
+            return existingArea;
+        }
+
+        // Create new room
+        try {
+            T room = cls.getConstructor().newInstance();
+            parcels.forEach(room::addParcel);
+            _rooms.add(room);
+            return room;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void removeArea(List<ParcelModel> parcels) {
+        _rooms.forEach(room -> parcels.forEach(room::removeParcel));
+        _rooms.removeIf(area -> area.getParcels().isEmpty());
+    }
+
+    public RoomModel getRoom(ParcelModel parcel) {
+        return _rooms.stream().filter(room -> room.hasParcel(parcel)).findFirst().orElse(null);
+    }
+
 //    public void refreshRooms(int floor) {
 //        Log.info("org.smallbox.faraway.module.room.RoomModule: onDisplayMultiple floor " + floor);
 //        long time = System.currentTimeMillis();
