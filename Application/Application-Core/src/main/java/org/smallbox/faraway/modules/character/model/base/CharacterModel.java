@@ -11,7 +11,7 @@ import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.characterBuff.BuffModel;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -65,7 +65,7 @@ public abstract class CharacterModel extends MovableModel {
 
         _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(_type.needs));
         _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra());
-        _extra.put(CharacterTalentExtra.class, new CharacterTalentExtra());
+        _extra.put(CharacterSkillExtra.class, new CharacterSkillExtra());
         _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra());
         _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(name, lastName, old));
 

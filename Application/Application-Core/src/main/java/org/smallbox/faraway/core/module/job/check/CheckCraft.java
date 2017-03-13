@@ -8,7 +8,7 @@
 ///**
 // * Created by Alex on 01/06/2015.
 // */
-//public class CheckCraft extends TalentCheck {
+//public class CheckCraft extends SkillCheck {
 //
 //    @Override
 //    public boolean onGameInit(JobModule jobManager) {

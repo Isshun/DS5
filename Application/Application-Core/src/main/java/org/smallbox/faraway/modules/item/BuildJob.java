@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.item;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 
@@ -26,8 +26,8 @@ public class BuildJob extends JobModel {
     }
 
     @Override
-    public CharacterTalentExtra.TalentType getTalentNeeded() {
-        return CharacterTalentExtra.TalentType.BUILD;
+    public CharacterSkillExtra.SkillType getSkillNeeded() {
+        return CharacterSkillExtra.SkillType.BUILD;
     }
 
     @Override

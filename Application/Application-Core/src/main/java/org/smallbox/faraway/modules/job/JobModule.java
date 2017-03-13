@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.item.BuildJob;
@@ -225,7 +225,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private JobModel getBestRegular(CharacterModel character) {
 
         // Regular jobs
-        for (CharacterTalentExtra.TalentEntry talent: character.getExtra(CharacterTalentExtra.class).getAll()) {
+        for (CharacterSkillExtra.SkillEntry skill: character.getExtra(CharacterSkillExtra.class).getAll()) {
             int bestDistance = Integer.MAX_VALUE;
             JobModel bestJob = null;
 
@@ -233,7 +233,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
                 if (!job.isAuto()) {
                     Log.debug("Check best regular: " + job.getLabel());
                     ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                    if (talent.type == job.getTalentNeeded() && !job.isClose() && job.getCharacter() == null && job.getFail() <= 0) {
+                    if (skill.type == job.getSkillNeeded() && !job.isClose() && job.getCharacter() == null && job.getFail() <= 0) {
                         int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
                         if (distance < bestDistance && job.check(character)) {
                             bestJob = job;

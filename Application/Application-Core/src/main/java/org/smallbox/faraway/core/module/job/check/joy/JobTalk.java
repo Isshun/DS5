@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.core.module.job.check.joy;
 //
-//import org.smallbox.faraway.core.module.character.model.CharacterTalentExtra;
+//import org.smallbox.faraway.core.module.character.model.CharacterSkillExtra;
 //import org.smallbox.faraway.modules.character.model.PathModel;
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.job.JobModel;
@@ -55,7 +55,7 @@
 //    }
 //
 //    @Override
-//    public CharacterTalentExtra.TalentType getTalentNeeded() {
+//    public CharacterSkillExtra.SkillType getSkillNeeded() {
 //        return null;
 //    }
 //

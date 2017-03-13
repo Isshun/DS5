@@ -40,12 +40,16 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLuaController
     private CharacterInfoTimetableController characterInfoTimetableController;
 
+    @BindLuaController
+    private CharacterInfoSkillsController characterInfoSkillsController;
+
     @BindLua private UILabel lbName;
 
     @BindLua private View bgStatus;
     @BindLua private View bgInventory;
     @BindLua private View bgDetails;
     @BindLua private View bgHealth;
+    @BindLua private View bgSkills;
     @BindLua private View bgTimetable;
 
     @Override
@@ -58,13 +62,14 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         lbName.setText(character.getName());
 
         // Info
-//        lbTalents.setText(StringUtils.join(character.getTalents().getAll().stream().map(talentEntry -> talentEntry.name).collect(Collectors.toList()), ", "));
+//        lbSkills.setText(StringUtils.join(character.getSkills().getAll().stream().map(skillEntry -> skillEntry.name).collect(Collectors.toList()), ", "));
 
         characterInfoStatusController.selectCharacter(character);
         characterInfoDetailsController.selectCharacter(character);
         characterInfoHealthController.selectCharacter(character);
         characterInfoInventoryController.selectCharacter(character);
         characterInfoTimetableController.selectCharacter(character);
+        characterInfoSkillsController.selectCharacter(character);
 
         openPage(characterInfoStatusController, bgStatus);
     }
@@ -94,6 +99,11 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     @BindLuaAction
+    public void onOpenSkill(View view) {
+        openPage(characterInfoSkillsController, bgSkills);
+    }
+
+    @BindLuaAction
     public void onOpenHealth(View view) {
         openPage(characterInfoHealthController, bgHealth);
     }
@@ -109,6 +119,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         bgHealth.setBackgroundColor(0xff132733);
         bgDetails.setBackgroundColor(0xff132733);
         bgTimetable.setBackgroundColor(0xff132733);
+        bgSkills.setBackgroundColor(0xff132733);
         controller.setVisible(true);
         bg.setBackgroundColor(0x359f9f);
     }
@@ -125,6 +136,8 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         } else if (characterInfoInventoryController.isVisible()) {
             openPage(characterInfoDetailsController, bgDetails);
         } else if (characterInfoDetailsController.isVisible()) {
+            openPage(characterInfoSkillsController, bgSkills);
+        } else if (characterInfoSkillsController.isVisible()) {
             openPage(characterInfoHealthController, bgHealth);
         } else if (characterInfoHealthController.isVisible()) {
             openPage(characterInfoTimetableController, bgTimetable);

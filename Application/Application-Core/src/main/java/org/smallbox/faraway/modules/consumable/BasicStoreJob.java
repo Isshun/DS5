@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
@@ -122,8 +122,8 @@ public class BasicStoreJob extends JobModel {
     }
 
     @Override
-    public CharacterTalentExtra.TalentType getTalentNeeded() {
-        return CharacterTalentExtra.TalentType.STORE;
+    public CharacterSkillExtra.SkillType getSkillNeeded() {
+        return CharacterSkillExtra.SkillType.STORE;
     }
 
 }

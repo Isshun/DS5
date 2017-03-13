@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 //import org.smallbox.faraway.modules.job.JobModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
-//import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+//import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.item.ItemSlot;
 //import org.smallbox.faraway.modules.item.UsableItem;
@@ -108,7 +108,7 @@
 //    }
 //
 //    @Override
-//    public CharacterTalentExtra.TalentType getTalentNeeded() {
+//    public CharacterSkillExtra.SkillType getSkillNeeded() {
 //        return null;
 //    }
 //

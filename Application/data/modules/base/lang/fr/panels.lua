@@ -51,7 +51,7 @@ ui:extend({
         {"Entertainment", "Divertissement"},
         {"Mood", "Morale"},
 
-        -- Talents
+        -- Skills
         {"Healing", "Soin"},
         {"Crafting", "Artisanat"},
         {"Cooking", "Cuisine"},

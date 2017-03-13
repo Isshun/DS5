@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.client.drawable.AnimDrawable;
 //import org.smallbox.faraway.client.drawable.IconDrawable;
 //import org.smallbox.faraway.core.game.helper.WorldHelper;
-//import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+//import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 //import org.smallbox.faraway.core.module.character.model.PathModel;
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.job.JobModel;
@@ -154,7 +154,7 @@
 //            return JobReturn.ABORT;
 //        }
 //
-//        _progress += character.getTalents().get(CharacterTalentExtra.TalentType.CUT).work();
+//        _progress += character.getSkills().get(CharacterSkillExtra.SkillType.CUT).work();
 //        if (_progress < _cost) {
 //            return JobReturn.CONTINUE;
 //        }
@@ -182,8 +182,8 @@
 //    }
 //
 //    @Override
-//    public CharacterTalentExtra.TalentType getTalentNeeded() {
-//        return CharacterTalentExtra.TalentType.CUT;
+//    public CharacterSkillExtra.SkillType getSkillNeeded() {
+//        return CharacterSkillExtra.SkillType.CUT;
 //    }
 //
 //    @Override

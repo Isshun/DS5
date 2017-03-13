@@ -3,7 +3,7 @@
 //import org.apache.commons.lang3.NotImplementedException;
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-//import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
+//import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 //import org.smallbox.faraway.modules.character.model.PathModel;
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.job.JobModel;
@@ -20,8 +20,8 @@
 //    private double              _current;
 //
 //    @Override
-//    public CharacterTalentExtra.TalentType getTalentNeeded() {
-//        return CharacterTalentExtra.TalentType.GATHER;
+//    public CharacterSkillExtra.SkillType getSkillNeeded() {
+//        return CharacterSkillExtra.SkillType.GATHER;
 //    }
 //
 //    private GatherJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel jobParcel) {
@@ -116,7 +116,7 @@
 //            return JobReturn.ABORT;
 //        }
 //
-//        _current += character.getTalents().get(CharacterTalentExtra.TalentType.GATHER).work();
+//        _current += character.getSkills().get(CharacterSkillExtra.SkillType.GATHER).work();
 //        _progress = _current / _totalCost;
 //        if (_current < _totalCost) {
 //            return JobReturn.CONTINUE;
