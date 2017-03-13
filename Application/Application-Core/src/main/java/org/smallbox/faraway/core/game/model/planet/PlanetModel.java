@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game.model.planet;
 
 import org.smallbox.faraway.util.Constant;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,4 +77,12 @@ public class PlanetModel {
     public PlanetInfo       getInfo() { return _info; }
     public double           getOxygen() { return _oxygen; }
     public PlanetAreaModel  getAreas(int x, int y) { return _areas[x][y]; }
+
+    public PlanetInfo.DayTime getDayTime(int hour) {
+        return _info.dayTimes.stream().filter(day -> day.hour == hour).findFirst().orElse(null);
+    }
+
+    public Collection<PlanetInfo.DayTime> getDayTimes() {
+        return _info.dayTimes;
+    }
 }

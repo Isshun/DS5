@@ -2,7 +2,7 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.InputManager;

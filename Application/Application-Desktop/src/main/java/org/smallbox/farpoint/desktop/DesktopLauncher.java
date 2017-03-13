@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -57,6 +58,14 @@ public class DesktopLauncher {
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
                 character.addInventory("base.consumable.vegetable.rice", 10);
                 character.addInventory("base.consumable.vegetable.carrot", 10);
+
+                for (int i = 0; i < 6; i++) {
+                    character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
+                }
+
+                for (int i = 21; i < 24; i++) {
+                    character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
+                }
 
                 Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
                 Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 1000, 2, 2, 1);

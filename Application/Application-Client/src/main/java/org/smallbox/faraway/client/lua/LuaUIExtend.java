@@ -5,7 +5,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;

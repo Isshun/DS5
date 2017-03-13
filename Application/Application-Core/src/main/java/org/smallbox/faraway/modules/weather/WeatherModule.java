@@ -54,16 +54,16 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         // TODO
 //        ModuleHelper.getWorldModule().setLight(1);
 
-        int hour = Application.gameManager.getGame().getHour();
-        PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
-        if (planetInfo.dayTimes != null) {
-            for (PlanetInfo.DayTime hourInfo: planetInfo.dayTimes) {
-                if (hour < hourInfo.hour) {
-                    setHour(hourInfo);
-                    return;
-                }
-            }
-        }
+//        int hour = Application.gameManager.getGame().getHour();
+//        PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
+//        if (planetInfo.dayTimes != null) {
+//            for (PlanetInfo.DayTime hourInfo: planetInfo.dayTimes) {
+//                if (hour < hourInfo.hour) {
+//                    setHour(hourInfo);
+//                    return;
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -81,17 +81,17 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 
         PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
         if (planetInfo.dayTimes != null) {
-            planetInfo.dayTimes.stream().filter(hourInfo -> hourInfo.hour == hour).forEach(this::setHour);
+            planetInfo.dayTimes.stream().filter(dayTime -> dayTime.hour == hour).forEach(this::setHour);
         }
 
         notifyObservers(observer -> observer.onTemperatureChange(Math.random() * 40));
     }
 
     private void setHour(PlanetInfo.DayTime hourInfo) {
-        _lightChange = 1 / hourInfo.duration / Application.config.game.tickPerHour;
-        _lightProgress = 0;
-        _previousLight = _lightTarget;
-        _lightTarget = hourInfo.light;
+//        _lightChange = 1 / hourInfo.duration / Application.config.game.tickPerHour;
+//        _lightProgress = 0;
+//        _previousLight = _lightTarget;
+//        _lightTarget = hourInfo.light;
 
         if (_weather != null && _weather.sun != null) {
             switchSunColor(_weather.sun, _dayTime);

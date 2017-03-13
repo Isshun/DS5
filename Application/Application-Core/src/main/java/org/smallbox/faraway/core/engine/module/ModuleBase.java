@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.engine.module;
 
-import org.smallbox.faraway.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -54,10 +53,6 @@ public abstract class ModuleBase implements GameObserver {
     public ModuleInfo   getInfo() { return _info; }
 
     public void         setInfo(ModuleInfo info) { _info = info; }
-
-    public boolean onKey(GameEvent event, GameEventListener.Key key) {
-        return false;
-    }
 
     public boolean onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y) {
         return false;

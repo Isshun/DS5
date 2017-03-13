@@ -1,7 +1,6 @@
 package org.smallbox.faraway.modules.characterRelation;
 
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterRelation;
 
 import java.util.ArrayList;
@@ -50,10 +49,10 @@ public class CharacterRelationModel {
             return;
         }
 
-        // Update lastName
-        if (character.getPersonals().getGender() == CharacterPersonalsExtra.Gender.FEMALE && mate.getPersonals().getGender() == CharacterPersonalsExtra.Gender.MALE) {
-            character.getPersonals().setLastName(mate.getPersonals().getLastName());
-        }
+//        // Update lastName
+//        if (character.getPersonals().getGender() == CharacterPersonalsExtra.Gender.FEMALE && mate.getPersonals().getGender() == CharacterPersonalsExtra.Gender.MALE) {
+//            character.getPersonals().setLastName(mate.getPersonals().getLastName());
+//        }
 
 //        // Break up
 //        if (_mate != null) {

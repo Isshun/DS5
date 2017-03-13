@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.controller.character;
 
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.TooltipController;

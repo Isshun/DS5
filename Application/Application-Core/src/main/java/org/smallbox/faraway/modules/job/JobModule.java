@@ -137,7 +137,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
             if (character.getJob() == null || character.getJob() != job) {
                 printError("Fail to assign job");
             } else {
-                printDebug("assign job (" + character.getPersonals().getName() + " -> " + character.getJob().getLabel() + ")");
+//                printDebug("assign job (" + character.getPersonals().getName() + " -> " + character.getJob().getLabel() + ")");
             }
         } else {
             printError("Try to assign null job");
@@ -225,7 +225,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private JobModel getBestRegular(CharacterModel character) {
 
         // Regular jobs
-        for (CharacterTalentExtra.TalentEntry talent: character.getTalents().getAll()) {
+        for (CharacterTalentExtra.TalentEntry talent: character.getExtra(CharacterTalentExtra.class).getAll()) {
             int bestDistance = Integer.MAX_VALUE;
             JobModel bestJob = null;
 

@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -29,8 +30,8 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                         st.bind(2, character.getParcel().x);
                         st.bind(3, character.getParcel().y);
                         st.bind(4, character.getParcel().z);
-                        st.bind(5, character.getPersonals().getFirstName());
-                        st.bind(6, character.getPersonals().getLastName());
+                        st.bind(5, character.getExtra(CharacterPersonalsExtra.class).getFirstName());
+                        st.bind(6, character.getExtra(CharacterPersonalsExtra.class).getLastName());
                         st.step();
                         st.reset(false);
                     }

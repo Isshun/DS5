@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
@@ -118,6 +118,7 @@ public abstract class View implements Comparable<View> {
 
     public void click(GameEvent event) {
         assert _onClickListener != null;
+        event.view = this;
         _onClickListener.onClick(event);
 
         if (_parent != null && _parent instanceof UIDropDown) {

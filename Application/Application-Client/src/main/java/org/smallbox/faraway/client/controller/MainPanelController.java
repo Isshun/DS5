@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.sun.glass.ui.Cursor;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;

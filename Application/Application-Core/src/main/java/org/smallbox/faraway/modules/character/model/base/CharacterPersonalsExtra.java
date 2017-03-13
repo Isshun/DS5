@@ -23,7 +23,8 @@ public class CharacterPersonalsExtra {
     protected Color             _color;
     protected double            _old;
 
-    public CharacterPersonalsExtra(String name, String lastName) {
+    public CharacterPersonalsExtra(String name, String lastName, double old) {
+        _old = old;
         _firstName = name;
         _isGay = (int)(Math.random() * 100) % 10 == 0;
         _lastName = lastName;

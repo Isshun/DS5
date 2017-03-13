@@ -1,4 +1,4 @@
-tab_width = 340 / 4
+tab_width = 340 / 5
 
 ui:extend({
     type = "list",
@@ -27,6 +27,10 @@ ui:extend({
                 { type = "view", action="onOpenHealth", background = 0x359f9f, size = {tab_width, 40}, views = {
                     { type = "view", id = "bgHealth", position = {0, 1}, size = {tab_width-1, 39}, background = color3 },
                     { type = "image", src = "[base]/graphics/icons/character/ic_health.png", size = {32, 32}, position = {tab_width / 2 - 16, 5}},
+                }},
+                { type = "view", action="onOpenTimetable", background = 0x359f9f, size = {tab_width, 40}, views = {
+                    { type = "view", id = "bgTimetable", position = {0, 1}, size = {tab_width-1, 39}, background = color3 },
+                    { type = "image", src = "[base]/graphics/icons/character/ic_clock.png", size = {32, 32}, position = {tab_width / 2 - 16, 5}},
                 }},
             }},
         }},

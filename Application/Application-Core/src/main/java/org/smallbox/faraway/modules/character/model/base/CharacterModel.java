@@ -10,13 +10,12 @@ import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.characterBuff.BuffModel;
+import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.CharacterTalentExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
-import org.smallbox.faraway.modules.character.model.TimeTableModel;
+import org.smallbox.faraway.modules.characterBuff.BuffModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -31,12 +30,6 @@ public abstract class CharacterModel extends MovableModel {
     private PathModel _path;
     private Map<ItemInfo, Integer> _inventory2 = new ConcurrentHashMap<>();
 
-    protected CharacterPersonalsExtra           _personals;
-    protected CharacterStatsExtra               _stats;
-    protected CharacterTalentExtra              _talents;
-    protected CharacterNeedsExtra               _needs;
-
-    private TimeTableModel                      _timeTable;
     protected boolean                           _isSelected;
     protected int                               _lag;
     protected RoomModel                         _quarter;
@@ -59,14 +52,9 @@ public abstract class CharacterModel extends MovableModel {
         _type = type;
         _buffs = new ConcurrentLinkedQueue<>();
         _needsCheck = new ConcurrentLinkedQueue<>();
-        _timeTable = new TimeTableModel(Application.gameManager.getGame().getPlanet().getInfo().dayDuration);
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
         _direction = Direction.NONE;
-        _personals = new CharacterPersonalsExtra(name, lastName);
-        _personals.setOld(old);
-
-        _talents = new CharacterTalentExtra();
 
 //        _equipments = new ArrayList<>();
 //        _equipments.addSubJob(Application.data.getEquipment("base.equipments.regular_shirt"));
@@ -75,18 +63,16 @@ public abstract class CharacterModel extends MovableModel {
 //        _equipments.addSubJob(Application.data.getEquipment("base.equipments.oxygen_bottle"));
 //        _equipments.addSubJob(Application.data.getEquipment("base.equipments.fremen_body"));
 
-        _stats = new CharacterStatsExtra();
-        _stats.speed = 1;
-
-        _needs = new CharacterNeedsExtra(_type.needs);
+        _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(_type.needs));
+        _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra());
+        _extra.put(CharacterTalentExtra.class, new CharacterTalentExtra());
+        _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra());
+        _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(name, lastName, old));
 
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
     public <T> T                        getExtra(Class<T> cls) { return (T) _extra.get(cls); }
-    public CharacterTalentExtra         getTalents() { return _talents; }
-    public CharacterStatsExtra          getStats() { return _stats; }
-    public CharacterPersonalsExtra      getPersonals() { return _personals; }
     public JobModel                     getJob() { return _job; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableItem               getInventory() {
@@ -102,7 +88,6 @@ public abstract class CharacterModel extends MovableModel {
     }
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
     public CharacterInfo                getType() { return _type; }
-    public TimeTableModel               getTimetable() { return _timeTable; }
     public abstract String              getName();
     public Collection<BuffModel>     getBuffs() { return _buffs; }
 
@@ -114,7 +99,7 @@ public abstract class CharacterModel extends MovableModel {
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setId(int id) { _id = id; }
     public void                         setIsDead() {
-        _stats.isAlive = false;
+        getExtra(CharacterStatsExtra.class).isAlive = false;
     }
     public void                         setParcel(ParcelModel parcel) {
         if (parcel == null) {
@@ -124,8 +109,8 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public boolean                      isSelected() { return _isSelected; }
-    public boolean                      isAlive() { return _stats.isAlive; }
-    public boolean                      isDead() { return !_stats.isAlive; }
+    public boolean                      isAlive() { return getExtra(CharacterStatsExtra.class).isAlive; }
+    public boolean                      isDead() { return !getExtra(CharacterStatsExtra.class).isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
     //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
@@ -237,19 +222,6 @@ public abstract class CharacterModel extends MovableModel {
         _job = job;
     }
 
-    public void  longUpdate() {
-        _personals.setOld(_personals.getOld() + Constant.CHARACTER_GROW_PER_UPDATE * Constant.SLOW_UPDATE_INTERVAL);
-
-        if (_personals.getOld()> Constant.CHARACTER_MAX_OLD) {
-            _stats.isAlive = false;
-        }
-
-//        // Find quarter
-//        if (_quarter == null) {
-//            Game.getRoomManager().take(this, Room.Type.QUARTER);
-//        }
-    }
-
     public void        move() {
         if (_path != null) {
             // Character is sleeping
@@ -259,7 +231,7 @@ public abstract class CharacterModel extends MovableModel {
             }
 
             // Increase move progress
-            _moveStep = 1 * _stats.speed * (_job != null ? _job.getSpeedModifier() : 1);
+            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
             _moveProgress += _moveStep;
 
             // Character has reach next parcel
@@ -323,7 +295,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public String toString() {
-        return _personals.getFirstName() + " " + _personals.getLastName();
+        return getExtra(CharacterPersonalsExtra.class).getFirstName() + " " + getExtra(CharacterPersonalsExtra.class).getLastName();
     }
 
     public void addNeed(CharacterCheck check) {
@@ -378,8 +350,4 @@ public abstract class CharacterModel extends MovableModel {
         return new ConsumableItem(itemInfo, quantityToRemove);
     }
 
-    public <T> T addExtra(T extra) {
-        _extra.put(extra.getClass(), extra);
-        return extra;
-    }
 }

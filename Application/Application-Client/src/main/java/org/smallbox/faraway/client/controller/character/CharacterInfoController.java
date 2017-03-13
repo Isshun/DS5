@@ -37,12 +37,16 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLuaController
     private CharacterInfoInventoryController characterInfoInventoryController;
 
+    @BindLuaController
+    private CharacterInfoTimetableController characterInfoTimetableController;
+
     @BindLua private UILabel lbName;
 
     @BindLua private View bgStatus;
     @BindLua private View bgInventory;
     @BindLua private View bgDetails;
     @BindLua private View bgHealth;
+    @BindLua private View bgTimetable;
 
     @Override
     protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
@@ -60,6 +64,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         characterInfoDetailsController.selectCharacter(character);
         characterInfoHealthController.selectCharacter(character);
         characterInfoInventoryController.selectCharacter(character);
+        characterInfoTimetableController.selectCharacter(character);
 
         openPage(characterInfoStatusController, bgStatus);
     }
@@ -93,11 +98,17 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         openPage(characterInfoHealthController, bgHealth);
     }
 
+    @BindLuaAction
+    public void onOpenTimetable(View view) {
+        openPage(characterInfoTimetableController, bgTimetable);
+    }
+
     private void openPage(LuaController controller, View bg) {
         bgStatus.setBackgroundColor(0xff132733);
         bgInventory.setBackgroundColor(0xff132733);
         bgHealth.setBackgroundColor(0xff132733);
         bgDetails.setBackgroundColor(0xff132733);
+        bgTimetable.setBackgroundColor(0xff132733);
         controller.setVisible(true);
         bg.setBackgroundColor(0x359f9f);
     }
@@ -116,6 +127,8 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
         } else if (characterInfoDetailsController.isVisible()) {
             openPage(characterInfoHealthController, bgHealth);
         } else if (characterInfoHealthController.isVisible()) {
+            openPage(characterInfoTimetableController, bgTimetable);
+        } else if (characterInfoTimetableController.isVisible()) {
             openPage(characterInfoStatusController, bgStatus);
         }
     }

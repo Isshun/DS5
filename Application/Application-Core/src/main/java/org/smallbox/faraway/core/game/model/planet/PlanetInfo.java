@@ -41,9 +41,14 @@ public class PlanetInfo extends ObjectInfo {
 
     public static class DayTime {
         public int                      hour;
-        public int                      duration;
-        public double                   light;
-        public String                   sun;
+        public long                     color;
+        public String                   name;
+
+        public DayTime(int hour, long color, String name) {
+            this.name = name;
+            this.hour = hour;
+            this.color = color;
+        }
     }
 
     public List<DayTime>                dayTimes;

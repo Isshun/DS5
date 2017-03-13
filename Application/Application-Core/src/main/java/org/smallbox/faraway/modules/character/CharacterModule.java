@@ -124,7 +124,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     public void remove(CharacterModel c) {
         c.setIsDead();
-        c.getPersonals().setName(Strings.LB_DECEADED);
+        c.getExtra(CharacterPersonalsExtra.class).setName(Strings.LB_DECEADED);
     }
 
     public CharacterModel getCharacter(int characterId) {

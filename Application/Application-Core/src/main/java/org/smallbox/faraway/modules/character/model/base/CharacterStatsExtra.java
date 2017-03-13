@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Alex on 16/06/2015.
  */
 public class CharacterStatsExtra {
-    public double       speed;
+    public double       speed = 1;
     public boolean      isAlive = true;
     public boolean      isFaint = false;
 

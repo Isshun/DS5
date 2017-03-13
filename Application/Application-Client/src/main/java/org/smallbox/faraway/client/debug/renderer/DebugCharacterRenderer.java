@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +36,7 @@ public class DebugCharacterRenderer extends BaseRenderer {
         renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
 
         if (_character != null) {
-            drawDebug(renderer, "Name", _character.getPersonals() != null ? _character.getPersonals().getName() : "--");
+            drawDebug(renderer, "Name", _character.getExtra(CharacterPersonalsExtra.class).getName());
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
             drawDebug(renderer, "Inventory2", _character.getInventory2() == null ? "--" :

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.renderer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.GDXRenderer;

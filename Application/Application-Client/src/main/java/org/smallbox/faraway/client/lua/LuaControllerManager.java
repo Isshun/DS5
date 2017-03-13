@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.lua;
 
 import com.google.common.base.CaseFormat;
 import org.reflections.Reflections;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;

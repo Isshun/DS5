@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.controller.character;
 
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -39,7 +39,7 @@ public class CharacterInfoDetailsController extends LuaController {
 
     private void refreshTalents() {
 
-        _selected.getTalents().getAll().forEach(talent -> {
+        _selected.getExtra(CharacterTalentExtra.class).getAll().forEach(talent -> {
 
             View view = new UIFrame(null)
                     .setBackgroundColor(talent.available ? 0x1a3647 : 0x0f1f29)
@@ -75,7 +75,7 @@ public class CharacterInfoDetailsController extends LuaController {
                     Log.info("drop on " + dropView);
                     Log.info("drop on " + dropView.getData());
 
-                    _selected.getTalents().moveTalent(talent, ((CharacterTalentExtra.TalentEntry)dropView.getData()).index);
+                    _selected.getExtra(CharacterTalentExtra.class).moveTalent(talent, ((CharacterTalentExtra.TalentEntry)dropView.getData()).index);
                     refreshTalents();
                 }
 

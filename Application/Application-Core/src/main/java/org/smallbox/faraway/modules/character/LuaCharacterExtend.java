@@ -46,6 +46,7 @@ public class LuaCharacterExtend extends LuaExtend {
         if (!needValue.isnil()) {
             need.warning = needValue.get("warning").optdouble(0.5);
             need.critical = needValue.get("critical").optdouble(0.25);
+            need.optimal = needValue.get("optimal").optdouble(1);
 
             LuaValue change = needValue.get("change");
             need.change.work = !change.isnil() ? change.get("work").optdouble(0) / Application.config.game.tickPerHour : 0;

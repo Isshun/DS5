@@ -27,7 +27,7 @@ public class HumanModel extends CharacterModel {
 
     public HumanModel(int id, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel, name, lastName, old, Application.data.characters.get("base.character.human"));
-        _personals.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE);
+//        _personals.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class HumanModel extends CharacterModel {
 
     @Override
     public String getName() {
-        return _personals.getFirstName() + " " + _personals.getLastName();
+        return getExtra(CharacterPersonalsExtra.class).getFirstName() + " " + getExtra(CharacterPersonalsExtra.class).getLastName();
     }
 }

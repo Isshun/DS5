@@ -58,7 +58,7 @@ public class LuaPlanetExtend extends LuaExtend {
         if (!value.get("day_times").isnil()) {
             planetInfo.dayTimes = new ArrayList<>();
             for (int i = 1; i <= value.get("day_times").length(); i++) {
-                readHour(planetInfo.dayTimes, value.get("day_times").get(i));
+                readDayTime(planetInfo.dayTimes, value.get("day_times").get(i));
             }
         }
 
@@ -154,13 +154,12 @@ public class LuaPlanetExtend extends LuaExtend {
         planetInfo.regions.add(regionInfo);
     }
 
-    private void readHour(List<PlanetInfo.DayTime> dayTimes, LuaValue value) {
-        PlanetInfo.DayTime hour = new PlanetInfo.DayTime();
-        hour.sun = getString(value, "sun", "noon");
-        hour.duration = getInt(value, "duration", 1);
-        hour.light = getDouble(value, "light", 1);
-        hour.hour = getInt(value, "hour", 0);
-        dayTimes.add(hour);
+    private void readDayTime(List<PlanetInfo.DayTime> dayTimes, LuaValue value) {
+        dayTimes.add(new PlanetInfo.DayTime(
+                value.get("hour").toint(),
+                value.get("color").optlong(0),
+                value.get("name").tojstring()
+        ));
     }
 
     private void readStats(PlanetInfo planetInfo, LuaValue value) {

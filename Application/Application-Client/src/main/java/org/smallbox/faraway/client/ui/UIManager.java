@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
@@ -312,16 +312,6 @@ public class UIManager {
                 .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
                 .forEach(view -> view.draw(renderer, 0, 0));
         _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
-    }
-
-    public boolean checkKeyboard(GameEvent event, Key key) {
-        for (ModuleBase module: Application.moduleManager.getModules()) {
-            if (module.isLoaded() && module.onKey(event, key)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void openContextMenu(ContextEntry[] entries, int x, int y) {

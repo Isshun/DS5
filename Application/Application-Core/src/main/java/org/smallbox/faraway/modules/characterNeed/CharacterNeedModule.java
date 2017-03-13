@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterModuleSerializer;
+import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
@@ -64,15 +65,51 @@ public class CharacterNeedModule extends GameModule {
     public void onModuleUpdate(Game game) {
         characterModule.getCharacters().forEach(character -> {
             CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
-
-            // Ajoute les besoins au personnage si manquants
-            if (needs == null) {
-                needs = character.addExtra(new CharacterNeedsExtra(character.getType().needs));
-            }
-
             decreaseNeeds(character, needs);
+            checkRegularSleep(game, character, needs);
             tryToRestoreNeeds(character, needs);
         });
+    }
+
+    /**
+     * Envoi le personnage se coucher en fonction de son emploi du temps
+     *  @param game Game
+     * @param character CharacterModel
+     * @param needs CharacterNeedsExtra
+     */
+    private void checkRegularSleep(Game game, CharacterModel character, CharacterNeedsExtra needs) {
+
+        // Récupère le besoin
+        NeedEntry sleepNeed = needs.get(TAG_ENERGY);
+
+        // Récupère le job
+        JobModel sleepJob = _jobs.get(sleepNeed);
+        boolean hasSleepJob = (sleepJob != null && !sleepJob.isClose());
+
+        // Récupère l'emploi du temps
+        CharacterTimetableExtra.State state = character.getExtra(CharacterTimetableExtra.class).getState(game.getHour());
+
+        // Check: le personnage est en période SLEEP mais le job n'est pas lancé
+        // Envoi le personnage ne coucher
+        if (state == CharacterTimetableExtra.State.SLEEP && !hasSleepJob) {
+            tryToRestoreNeedWithItem(character, needs.get(TAG_ENERGY));
+            return;
+        }
+
+        // Check: le personnage est en période WORK et un job est lancé
+        // Arrêt du job uniquement si le personnage à son énergie au minimum à la moitier du niveau warning
+        double workWakeUpThreshold  = (sleepNeed.critical + (sleepNeed.warning - sleepNeed.critical) / 2);
+        if (state == CharacterTimetableExtra.State.WORK && hasSleepJob && sleepNeed.value() >= workWakeUpThreshold) {
+            sleepJob.close();
+            return;
+        }
+
+        // Check: le personnage est en période FREE et un job est lancé
+        // Arrêt du job uniquement si le personnage à son énergie au minimum du niveau optimal
+        if (state == CharacterTimetableExtra.State.FREE && hasSleepJob && sleepNeed.value() >= sleepNeed.optimal) {
+            sleepJob.close();
+        }
+
     }
 
     /**

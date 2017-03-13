@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
-import org.smallbox.faraway.GameEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;

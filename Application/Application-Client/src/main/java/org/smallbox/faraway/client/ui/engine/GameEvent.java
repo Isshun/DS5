@@ -1,5 +1,7 @@
-package org.smallbox.faraway;
+package org.smallbox.faraway.client.ui.engine;
 
+import org.smallbox.faraway.MouseEvent;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.GameEventListener;
 
 /**
@@ -8,6 +10,7 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 public class GameEvent {
     public MouseEvent mouseEvent;
     public boolean consumed;
+    public View view;
 
     public GameEvent(MouseEvent mouseEvent) {
         this.mouseEvent = mouseEvent;

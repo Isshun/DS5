@@ -1,7 +1,6 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
@@ -23,7 +22,7 @@ public class DroidModel extends CharacterModel {
 
     public DroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel, name, lastName, old, Application.data.characters.get("droid"));
-        _personals.setColor(new Color(0xf1f1f1));
+//        _personals.setColor(new Color(0xf1f1f1));
     }
 
     @Override
