@@ -27,6 +27,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     private int                 _fromY;
     private int                 _toX;
     private int                 _toY;
+    protected int                 _frame;
 
     public BaseRenderer() {
         if (!getClass().isAnnotationPresent(GameRenderer.class)) {
@@ -65,6 +66,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
 
             long time = System.currentTimeMillis();
 
+            _frame++;
             _floor = viewport.getFloor();
             _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
             _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());

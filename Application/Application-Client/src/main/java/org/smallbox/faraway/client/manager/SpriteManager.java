@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.manager;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -49,9 +50,11 @@ public class SpriteManager {
     private Map<String, Texture>            _textures;
 
     private int _spriteCount;
+    private AssetManager _manager;
 
     public SpriteManager() {
         _icons = new HashMap<>();
+        _manager = new AssetManager();
 
         _sprites = new HashMap<>();
         _spritesCharacters = new HashMap<>();
@@ -63,6 +66,7 @@ public class SpriteManager {
     }
 
     public void init() {
+
         Texture itemSelector = new Texture(FileUtils.getFileHandle("data/res/item_selector.png"));
         _selectors = new Sprite[NB_SELECTOR_TILE];
         _selectors[0] = new Sprite(itemSelector, 0, 0, 8, 8);
@@ -93,6 +97,7 @@ public class SpriteManager {
             Application.data.getItems().forEach(itemInfo -> {
                 if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
                     itemInfo.graphics.forEach(graphicInfo -> {
+                        _manager.load("data" + graphicInfo.path, Texture.class);
                         File file = getFile(itemInfo, graphicInfo);
                         if (file.exists()) {
                             _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
@@ -180,7 +185,7 @@ public class SpriteManager {
 
         Sprite sprite = _sprites.get(getSum(graphicInfo.spriteId, tile, 0, 0));
         if (sprite == null) {
-            Texture txTerrain = _textures.get(graphicInfo.packageName + graphicInfo.path);
+            Texture txTerrain = _manager.get(graphicInfo.path);
             if (txTerrain != null) {
                 Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
 
@@ -537,6 +542,8 @@ public class SpriteManager {
     }
 
     public Sprite getNewSprite(GraphicInfo graphicInfo, int tile) {
+        _manager.finishLoading();
+
         assert graphicInfo != null;
 
         if (graphicInfo.spriteId == -1) {
@@ -551,7 +558,8 @@ public class SpriteManager {
 //
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
-            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
+//            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
+            Texture texture = _manager.get("data" + graphicInfo.path, Texture.class);
             if (texture != null) {
 
                 sprite = new Sprite(texture,

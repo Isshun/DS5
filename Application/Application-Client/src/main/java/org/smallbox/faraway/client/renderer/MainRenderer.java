@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 public class MainRenderer implements GameClientObserver {
     public static final int                 MINI_MAP_LEVEL = 100;
     public static final int                 PARTICLE_RENDERER_LEVEL = -100;
-    public static final int                 CONSUMABLE_RENDERER_LEVEL = -101;
-    public static final int                 CHARACTER_RENDERER_LEVEL = -102;
+    public static final int                 CHARACTER_RENDERER_LEVEL = -101;
+    public static final int                 CONSUMABLE_RENDERER_LEVEL = -102;
     public static final int                 PLANT_RENDERER_LEVEL = -103;
     public static final int                 ITEM_RENDERER_LEVEL = -103;
     public static final int                 STRUCTURE_RENDERER_LEVEL = -104;
@@ -96,6 +96,7 @@ public class MainRenderer implements GameClientObserver {
 
     @Override
     public void onGameRender(Game game) {
+
         // Draw
         if (Application.gameManager.isRunning()) {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());

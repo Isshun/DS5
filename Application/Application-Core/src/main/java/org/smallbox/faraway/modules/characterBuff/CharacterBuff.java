@@ -9,7 +9,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 /**
  * Created by Alex on 14/10/2015.
  */
-public class BuffModel extends ObjectModel {
+public class CharacterBuff extends ObjectModel {
     public BuffInfo info;
     public CharacterModel   character;
     public LuaValue         luaCharacter;
@@ -21,7 +21,7 @@ public class BuffModel extends ObjectModel {
     public long             startTick;
     public boolean          active;
 
-    public BuffModel(BuffInfo buffInfo, CharacterModel character) {
+    public CharacterBuff(BuffInfo buffInfo, CharacterModel character) {
         this.info = buffInfo;
         this.luaData = new LuaTable();
         this.luaCharacter = null;

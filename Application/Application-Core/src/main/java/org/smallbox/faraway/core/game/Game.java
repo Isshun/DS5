@@ -19,6 +19,8 @@ import java.util.concurrent.Executors;
 
 public class Game {
 
+    private long _nextTick;
+
     public <T> T getModule(Class<T> cls) {
         return (T) _modules.stream().filter(module -> module.getClass() == cls).findAny().orElse(null);
     }
@@ -40,6 +42,7 @@ public class Game {
     private Map<String, Boolean>            _displays;
     private int                             _speed = 1;
     private int                             _lastSpeed = 1;
+    private double                          _avance;
     private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private ExecutorService                 _executorService = Executors.newSingleThreadExecutor();
@@ -71,6 +74,7 @@ public class Game {
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
+    public long                             getNextTick() { return _nextTick; }
     public int                              getSpeed() { return _speed; }
     public int                              getLastSpeed() { return _lastSpeed; }
     public Collection<AbsGameModule>        getModules() { return _modules; }
@@ -223,6 +227,8 @@ public class Game {
             Log.notice("launchBackgroundThread");
             while (_status != GameStatus.STOPPED) {
                 try {
+                    long time = System.currentTimeMillis();
+
                     if (_status == GameStatus.STARTED && _isRunning) {
                         update();
 
@@ -231,8 +237,13 @@ public class Game {
                         if (listener != null) {
                             listener.onGameUpdate(this);
                         }
+
+                        _avance = 0;
                     }
 
+                    long length = System.currentTimeMillis() - time;
+                    _nextTick = System.currentTimeMillis() + _tickInterval - length;
+//                    Thread.sleep(_tickInterval - length);
                     Thread.sleep(_tickInterval);
                 } catch (Exception e) {
                     _status = GameStatus.STOPPED;

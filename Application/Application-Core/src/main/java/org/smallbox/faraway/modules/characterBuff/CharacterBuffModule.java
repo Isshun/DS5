@@ -28,7 +28,7 @@ public class CharacterBuffModule extends GameModule {
     @BindModule
     private CharacterNeedModule characterNeedModule;
 
-    private Map<CharacterModel, Map<BuffInfo, BuffModel>> _characters = new ConcurrentHashMap<>();
+    private Map<CharacterModel, Map<BuffInfo, CharacterBuff>> _characters = new ConcurrentHashMap<>();
 
     @Override
     protected void onModuleUpdate(Game game) {
@@ -52,7 +52,7 @@ public class CharacterBuffModule extends GameModule {
      * @param character CharacterModel
      * @param buffs Map
      */
-    private void addMissingBuffs(CharacterModel character, Map<BuffInfo, BuffModel> buffs) {
+    private void addMissingBuffs(CharacterModel character, Map<BuffInfo, CharacterBuff> buffs) {
         data.buffs.forEach(buffInfo -> {
 
             // Test le niveau max pour ce personnage
@@ -60,7 +60,7 @@ public class CharacterBuffModule extends GameModule {
 
             // Ajout le buff si le niveau max existe mais que le personnage n'a pas encore le buff
             if (maxLevelInfo != null && !buffs.containsKey(buffInfo)) {
-                buffs.put(buffInfo, new BuffModel(buffInfo, character));
+                buffs.put(buffInfo, new CharacterBuff(buffInfo, character));
             }
 
             // Supprime le buff si le niveau max n'existe pas et que le personnage l'a
@@ -77,7 +77,7 @@ public class CharacterBuffModule extends GameModule {
      * @param character CharacterModel
      * @param buffs Map
      */
-    private void updateBuffs(CharacterModel character, Map<BuffInfo, BuffModel> buffs) {
+    private void updateBuffs(CharacterModel character, Map<BuffInfo, CharacterBuff> buffs) {
         buffs.forEach((buffInfo, buff) -> {
             BuffInfo.BuffLevelInfo maxLevel = getMaxLevel(character, buffInfo);
             if (maxLevel != null) {
@@ -95,7 +95,7 @@ public class CharacterBuffModule extends GameModule {
      * @param character CharacterModel
      * @param buffs Map
      */
-    private void applyBuffsEffects(CharacterModel character, Map<BuffInfo, BuffModel> buffs) {
+    private void applyBuffsEffects(CharacterModel character, Map<BuffInfo, CharacterBuff> buffs) {
         buffs.forEach((info, buff) -> {
             buff.levelInfo.effects.forEach(effect -> {
 
@@ -129,7 +129,7 @@ public class CharacterBuffModule extends GameModule {
         return null;
     }
 
-    public Collection<BuffModel> getBuffs(CharacterModel character) {
+    public Collection<CharacterBuff> getBuffs(CharacterModel character) {
         return _characters.computeIfAbsent(character, k -> new ConcurrentHashMap<>()).values();
     }
 

@@ -76,4 +76,8 @@ public class Utils {
     public static int round(double value, int round) {
         return (int) (Math.floor(value / round) * round);
     }
+
+    public static double progress(int from, int to, int current) {
+        return (double)(current - from) / (to - from);
+    }
 }

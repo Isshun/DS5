@@ -55,11 +55,14 @@ public class DesktopLauncher {
             @Override
             public void onGameCreate(Game game) {
 
-                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+//                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
                 character.addInventory("base.consumable.vegetable.rice", 10);
                 character.addInventory("base.consumable.vegetable.carrot", 10);
+                character.setParcel(WorldHelper.getParcel(1, 1, 1));
+//                character.moveTo(WorldHelper.getParcel(5, 3, 1));
+                character.moveTo(WorldHelper.getParcel(8, 4, 1));
 
                 for (int i = 0; i < 6; i++) {
                     character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);

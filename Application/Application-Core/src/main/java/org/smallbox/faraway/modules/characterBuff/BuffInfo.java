@@ -24,10 +24,10 @@ public class BuffInfo extends ObjectInfo {
     public OnGetLevel onGetLevel;
 
     public interface BuffListener {
-        void onStart(BuffModel data);
-        void onCheck(BuffModel data, int tick);
-        void onUpdate(BuffModel data, int update);
-        void onUpdateHourly(BuffModel data, int update);
+        void onStart(CharacterBuff data);
+        void onCheck(CharacterBuff data, int tick);
+        void onUpdate(CharacterBuff data, int update);
+        void onUpdateHourly(CharacterBuff data, int update);
     }
 
     public static class BuffLevelInfo {
@@ -66,8 +66,8 @@ public class BuffInfo extends ObjectInfo {
     public int      getDuration() { return _duration; }
     public String   getName() { return _name; }
 
-    public void start(BuffModel data) { _listener.onStart(data); }
-    public void check(BuffModel data, int tick) { _listener.onCheck(data, tick); }
-    public void update(BuffModel data, int tick) { _listener.onUpdate(data, tick); }
-    public void updateHourly(BuffModel data, int tick) { _listener.onUpdateHourly(data, tick); }
+    public void start(CharacterBuff data) { _listener.onStart(data); }
+    public void check(CharacterBuff data, int tick) { _listener.onCheck(data, tick); }
+    public void update(CharacterBuff data, int tick) { _listener.onUpdate(data, tick); }
+    public void updateHourly(CharacterBuff data, int tick) { _listener.onUpdateHourly(data, tick); }
 }

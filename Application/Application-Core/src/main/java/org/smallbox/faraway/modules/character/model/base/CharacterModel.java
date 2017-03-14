@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
-import org.smallbox.faraway.modules.characterBuff.BuffModel;
+import org.smallbox.faraway.modules.characterBuff.CharacterBuff;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -37,7 +37,7 @@ public abstract class CharacterModel extends MovableModel {
     protected MoveListener                      _moveListener;
     protected boolean                           _isFaint;
     private double                              _moveStep;
-    private Collection<BuffModel>      _buffs;
+    private Collection<CharacterBuff>      _buffs;
     private Collection<CharacterCheck>          _needsCheck;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
@@ -89,10 +89,10 @@ public abstract class CharacterModel extends MovableModel {
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();
-    public Collection<BuffModel>     getBuffs() { return _buffs; }
+    public Collection<CharacterBuff>     getBuffs() { return _buffs; }
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);
-    public void                         addBuff(BuffModel buff) { _buffs.add(buff); }
+    public void                         addBuff(CharacterBuff buff) { _buffs.add(buff); }
 
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
@@ -112,6 +112,7 @@ public abstract class CharacterModel extends MovableModel {
     public boolean                      isAlive() { return getExtra(CharacterStatsExtra.class).isAlive; }
     public boolean                      isDead() { return !getExtra(CharacterStatsExtra.class).isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
+    public boolean                      isFree() { return getJob() == null && _path == null; }
     //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
 
@@ -152,6 +153,7 @@ public abstract class CharacterModel extends MovableModel {
             }
 
             _path = path;
+            _moveProgress = 0;
             _moveListener = listener;
         }
     }
@@ -216,13 +218,12 @@ public abstract class CharacterModel extends MovableModel {
             }
 
             // Increase move progress
-            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
-            _moveProgress += _moveStep;
+            _moveStep = 1;
+//            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
 
             // Character has reach next parcel
             if (_moveProgress >= 1 && _path.getCurrentParcel() != null) {
                 _moveProgress = 0;
-                setParcel(_path.getCurrentParcel());
 
                 // Move continue, set next parcel + direction
                 if (_path.next()) {
@@ -239,6 +240,8 @@ public abstract class CharacterModel extends MovableModel {
                     else if (toY > fromY) _direction = Direction.BOTTOM;
                     else if (toY < fromY) _direction = Direction.TOP;
                     else _direction = Direction.NONE;
+
+                    setParcel(_path.getCurrentParcel());
                 }
 
                 // Move state, set path to null and call listener
@@ -255,7 +258,7 @@ public abstract class CharacterModel extends MovableModel {
                 }
             }
 
-
+            _moveProgress += _moveStep;
         }
     }
 
@@ -335,4 +338,7 @@ public abstract class CharacterModel extends MovableModel {
         return new ConsumableItem(itemInfo, quantityToRemove);
     }
 
+    public PathModel getPath() {
+        return _path;
+    }
 }

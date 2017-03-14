@@ -65,7 +65,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         // Assign job to inactive character
         characterModule.getCharacters().stream()
-                .filter(character -> character.getJob() == null)
+                .filter(CharacterModel::isFree)
                 .forEach(this::assign);
 
     }

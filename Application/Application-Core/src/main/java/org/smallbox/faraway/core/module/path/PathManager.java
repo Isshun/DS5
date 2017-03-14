@@ -3,7 +3,9 @@ package org.smallbox.faraway.core.module.path;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import com.badlogic.gdx.ai.pfa.Heuristic;
+import com.badlogic.gdx.ai.pfa.SmoothableGraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -160,9 +162,23 @@ public class PathManager extends GameModule {
 
         // Find path to target parcel
         try {
-            GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
+            SmoothableGraphPath<ParcelModel, Vector2> nodes = new MyGraphPath();
+//            GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
             if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
                 printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
+
+//                new PathSmoother(new RaycastCollisionDetector() {
+//                    @Override
+//                    public boolean collides(Ray ray) {
+//                        return false;
+//                    }
+//
+//                    @Override
+//                    public boolean findCollision(Collision outputCollision, Ray inputRay) {
+//                        return false;
+//                    }
+//                }).smoothPath(nodes);
+
                 return nodes;
             }
         } catch (Exception e) {
