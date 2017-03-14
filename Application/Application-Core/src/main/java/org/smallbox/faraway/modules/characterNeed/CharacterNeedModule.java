@@ -125,8 +125,8 @@ public class CharacterNeedModule extends GameModule {
         needs.addValue(TAG_DRINK, character.isSleeping() ? needsInfo.drink.change.sleep : needsInfo.drink.change.rest);
         needs.addValue(TAG_ENERGY, character.isSleeping() ? needsInfo.energy.change.sleep : needsInfo.energy.change.rest);
         needs.addValue(TAG_ENTERTAINMENT, character.isSleeping() ? needsInfo.entertainment.change.sleep : needsInfo.entertainment.change.rest);
-        needs.addValue(TAG_HAPPINESS, buffModule.getMood(character) / 100.0);
-        needs.addValue(TAG_RELATION, characterRelationModule.getScore(character) / 100.0);
+        needs.addValue(TAG_HAPPINESS, buffModule.getMood(character));
+        needs.addValue(TAG_RELATION, characterRelationModule.getScore(character));
     }
 
     /**

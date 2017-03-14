@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public abstract class JobModel extends ObjectModel {
 
     private Object _data;
+    private boolean _visible = true;
 
     public void setData(Object data) {
         _data = data;
@@ -59,7 +60,7 @@ public abstract class JobModel extends ObjectModel {
 
     public enum JobAbortReason {
         NO_COMPONENTS, INTERRUPT, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
-    };
+    }
 
     private static int          _countInstance;
 
@@ -133,12 +134,13 @@ public abstract class JobModel extends ObjectModel {
     public void                     setQuantity(int quantity) { _progress = quantity; }
     public void                     setCost(int quantityTotal) { _cost = quantityTotal; }
     public void                     setCharacterRequire(CharacterModel character) { _characterRequire = character; }
+    public void                     setVisible(boolean visible) { _visible = visible; }
 
     public boolean                  isClose() { return _isClose; }
     public boolean                  isOpen() { return !_isClose; }
     public boolean                  isEntertainment() { return _isEntertainment; }
-    public boolean                  isVisible() { return true; }
     public boolean                  isAuto() { return _isAuto; }
+    public boolean                  isVisible() { return _visible; }
 
     public void start(CharacterModel character) {
         Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));

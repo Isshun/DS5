@@ -26,7 +26,7 @@ data:extend({
         relation = {
             warning = 0.75,
             critical = 0.50,
-            change = { work = -0.1, rest = -0.1, sleep = -0.05 },
+            change = { work = -0.01, rest = -0.01, sleep = -0.005 },
         },
         oxygen = {
             warning = 0.75,

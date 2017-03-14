@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.disease;
+package org.smallbox.faraway.modules.characterDisease;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
@@ -11,8 +11,8 @@ public class DiseaseInfo extends ObjectInfo {
     private DiseaseListener _listener;
 
     public interface DiseaseListener {
-        void onStart(DiseaseModel data);
-        void onUpdate(DiseaseModel data, int update);
+        void onStart(CharacterDisease data);
+        void onUpdate(CharacterDisease data, int update);
     }
 
     public String       label;
@@ -25,6 +25,6 @@ public class DiseaseInfo extends ObjectInfo {
     public void setListener(DiseaseListener listener) { _listener = listener; }
     public void setVisible(boolean visible) { _visible = visible; }
 
-    public void start(DiseaseModel data) { _listener.onStart(data); }
-    public void update(DiseaseModel data, int update) { _listener.onUpdate(data, update); }
+    public void start(CharacterDisease data) { _listener.onStart(data); }
+    public void update(CharacterDisease data, int update) { _listener.onUpdate(data, update); }
 }

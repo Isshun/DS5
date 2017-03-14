@@ -48,9 +48,6 @@ public class CharacterInfoStatusController extends LuaController {
     @BindLua private UILabel lbNeedRelation;
     @BindLua private UIImage gaugeRelation;
 
-    @BindLua private UILabel lbNeedOxygen;
-    @BindLua private UIImage gaugeOxygen;
-
     @BindLua private UIList listBuffs;
 
     private CharacterModel _selected;
@@ -72,12 +69,11 @@ public class CharacterInfoStatusController extends LuaController {
 
     private void displayNeeds(CharacterModel character) {
         CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
-        displayNeed(lbNeedFood,     gaugeFood,      "Food",     needs.get(CharacterNeedsExtra.TAG_FOOD));
-        displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",    needs.get(CharacterNeedsExtra.TAG_DRINK));
-        displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",   needs.get(CharacterNeedsExtra.TAG_ENERGY));
-        displayNeed(lbNeedJoy,      gaugeJoy,       "Joy",      needs.get(CharacterNeedsExtra.TAG_ENTERTAINMENT));
-        displayNeed(lbNeedRelation, gaugeRelation,  "Relation", needs.get(CharacterNeedsExtra.TAG_RELATION));
-        displayNeed(lbNeedOxygen,   gaugeOxygen,    "Oxygen",   needs.get(CharacterNeedsExtra.TAG_OXYGEN));
+        displayNeed(lbNeedFood,     gaugeFood,      "Food",         needs.get(CharacterNeedsExtra.TAG_FOOD));
+        displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",        needs.get(CharacterNeedsExtra.TAG_DRINK));
+        displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",       needs.get(CharacterNeedsExtra.TAG_ENERGY));
+        displayNeed(lbNeedJoy,      gaugeJoy,       "Entertainment",needs.get(CharacterNeedsExtra.TAG_ENTERTAINMENT));
+        displayNeed(lbNeedRelation, gaugeRelation,  "Relation",     needs.get(CharacterNeedsExtra.TAG_RELATION));
     }
 
     private void displayJob(CharacterModel character) {

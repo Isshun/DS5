@@ -133,7 +133,7 @@ public class CharacterBuffModule extends GameModule {
         return _characters.computeIfAbsent(character, k -> new ConcurrentHashMap<>()).values();
     }
 
-    public int getMood(CharacterModel character) {
-        return getBuffs(character).stream().mapToInt(buff -> buff.mood).sum();
+    public double getMood(CharacterModel character) {
+        return getBuffs(character).stream().mapToInt(buff -> buff.mood).sum() / 100.0;
     }
 }

@@ -2,12 +2,10 @@ package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
-import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
@@ -15,6 +13,7 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.characterBuff.BuffModel;
 import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
@@ -68,6 +67,7 @@ public abstract class CharacterModel extends MovableModel {
         _extra.put(CharacterSkillExtra.class, new CharacterSkillExtra());
         _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra());
         _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(name, lastName, old));
+        _extra.put(CharacterDiseasesExtra.class, new CharacterDiseasesExtra());
 
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
@@ -198,21 +198,6 @@ public abstract class CharacterModel extends MovableModel {
         }
 
         return false;
-    }
-
-    public void fixPosition() {
-        if (_parcel != null && !_parcel.isWalkable()) {
-            Log.warning(getName() + " is stuck !");
-            setParcel(WorldHelper.getNearestWalkable(_parcel, 1, 20));
-            if (_path != null) {
-                _path = null;
-                _moveListener = null;
-            }
-            if (_job != null) {
-                _job.quit(this);
-                _job = null;
-            }
-        }
     }
 
     public void    setJob(JobModel job) {

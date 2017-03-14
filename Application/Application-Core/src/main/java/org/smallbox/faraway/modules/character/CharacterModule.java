@@ -77,6 +77,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onModuleUpdate(Game game) {
+
+        fixCharacterPosition();
+
         // Add new born
         if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
             Log.info("Add new character");
@@ -93,8 +96,20 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             character.setDirection(MovableModel.Direction.NONE);
             character.action();
             character.move();
-            character.fixPosition();
         });
+    }
+
+    private void fixCharacterPosition() {
+        _characters.stream()
+                .filter(character -> character.getParcel() != null && !character.getParcel().isWalkable())
+                .forEach(character -> {
+                    Log.warning(getName() + " is stuck !");
+                    character.setParcel(WorldHelper.getNearestWalkable(character.getParcel(), 1, 20));
+                    if (character.getJob() != null) {
+                        character.getJob().quit(character);
+                        character.clearJob(character.getJob());
+                    }
+                });
     }
 
     /**

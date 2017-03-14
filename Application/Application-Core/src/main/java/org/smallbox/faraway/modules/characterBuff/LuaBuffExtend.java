@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.characterBuff.handler.BuffHandler;
-import org.smallbox.faraway.modules.disease.DiseaseInfo;
+import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;

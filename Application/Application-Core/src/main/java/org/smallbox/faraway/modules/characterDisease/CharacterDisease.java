@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.disease;
+package org.smallbox.faraway.modules.characterDisease;
 
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -6,7 +6,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 /**
  * Created by Alex on 26/10/2015.
  */
-public class DiseaseModel {
+public class CharacterDisease {
     public DiseaseInfo      info;
     public CharacterModel   character;
     public LuaValue         luaCharacter;
@@ -14,7 +14,7 @@ public class DiseaseModel {
     public String           message;
     public int              level;
 
-    public DiseaseModel(DiseaseInfo info, CharacterModel character) {
+    public CharacterDisease(DiseaseInfo info, CharacterModel character) {
         this.info = info;
         this.character = character;
     }

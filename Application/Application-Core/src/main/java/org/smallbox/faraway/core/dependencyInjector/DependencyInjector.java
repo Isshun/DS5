@@ -1,10 +1,8 @@
 package org.smallbox.faraway.core.dependencyInjector;
 
-import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.handler.ComponentHandler;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -14,10 +12,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
 
 import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
 
@@ -26,7 +25,6 @@ import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
  */
 // TODO: injection des field sur les superclass
 public class DependencyInjector {
-    private final Map<Class<?>, ComponentHandler> _handlers;
     private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
     private Set<Object> _objectPool = new HashSet<>();
     private boolean _init = false;
@@ -37,19 +35,6 @@ public class DependencyInjector {
     public Collection<Object> getObjects() { return _objectPool; }
 
     public static DependencyInjector getInstance() { return _self; }
-
-    public DependencyInjector() {
-        // Find and create handlers
-        _handlers = new Reflections("org.smallbox.faraway").getSubTypesOf(ComponentHandler.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .collect(Collectors.toMap(cls -> cls, cls -> {
-                    try {
-                        return (ComponentHandler) cls.newInstance();
-                    } catch ( IllegalAccessException | InstantiationException e) {
-                        throw new GameException(DependencyInjector.class, e);
-                    }
-                }));
-    }
 
     public <T> T create(Class<T> cls) {
         try {
@@ -103,10 +88,24 @@ public class DependencyInjector {
     private void injectDependencies(Object host, Object component) {
         Log.verbose("Inject dependency to: " + host.getClass().getName());
         injectComponents(host, component);
+        injectConfig(host);
         injectModules(host);
         injectShortcut(host);
 
         Application.notify(observer -> observer.onInjectDependency(object));
+    }
+
+    private void injectConfig(Object host) {
+        for (Field field: host.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(BindConfig.class) && field.get(host) == null) {
+                    field.set(host, field.getType().newInstance());
+                }
+            } catch (IllegalAccessException | InstantiationException e) {
+                throw new GameException(DependencyInjector.class, e);
+            }
+        }
     }
 
     private void injectComponents(Object host, Object component) {
@@ -146,7 +145,7 @@ public class DependencyInjector {
                     if (gameShortcut != null) {
 
                         Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                        _clientInterface.onShortcutBinding(host.getClass().getName() + method.getName(), gameShortcut.key(), () -> {
+                        _clientInterface.onShortcutBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
                             try {
                                 method.invoke(host);
                             } catch (IllegalAccessException | InvocationTargetException e) {

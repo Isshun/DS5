@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
@@ -34,9 +35,13 @@ public class JobController extends LuaController {
     public void onNewGameUpdate(Game game) {
         listJobs.removeAllViews();
 
-        jobModule.getJobs().forEach(job -> {
+        jobModule.getJobs().stream().filter(JobModel::isVisible).forEach(job -> {
             UILabel lbJob = new UILabel(null);
-            lbJob.setDashedString(job.getMainLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 42);
+            if (job.getCharacter() != null) {
+                lbJob.setDashedString(job.getMainLabel(), job.getCharacter().getName(), 42);
+            } else {
+                lbJob.setDashedString(job.getMainLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 42);
+            }
             lbJob.setTextColor(0xB4D4D3);
             lbJob.setSize(300, 22);
             listJobs.addView(lbJob);

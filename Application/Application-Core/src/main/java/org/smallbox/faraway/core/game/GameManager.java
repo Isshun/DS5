@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -154,7 +155,7 @@ public class GameManager implements GameObserver {
                     }
                     return null;
                 })
-                .filter(gameInfo -> gameInfo != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

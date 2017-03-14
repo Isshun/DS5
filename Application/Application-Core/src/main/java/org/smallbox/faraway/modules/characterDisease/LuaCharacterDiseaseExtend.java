@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.disease;
+package org.smallbox.faraway.modules.characterDisease;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
@@ -31,14 +31,14 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
         LuaValue onUpdate = value.get("on_update");
         disease.setListener(new DiseaseInfo.DiseaseListener() {
             @Override
-            public void onStart(DiseaseModel data) {
+            public void onStart(CharacterDisease data) {
                 if (!onStart.isnil()) {
                     onStart.call(data.luaData, data.luaCharacter);
                 }
             }
 
             @Override
-            public void onUpdate(DiseaseModel data, int update) {
+            public void onUpdate(CharacterDisease data, int update) {
                 if (!onUpdate.isnil()) {
                     LuaValue ret = onUpdate.call(data.luaData, data.luaCharacter);
                     if (!ret.isnil()) {
@@ -54,7 +54,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
 //                            for (int j = 0; j < luaEffects.length(); j++) {
 //                                if (Math.random() <= luaEffects.get(j + 1).get(2).todouble()) {
 //                                    printNotice("apply buff effect: " + luaEffects.get(j + 1).get(1).toString() + " (" + buff.message + ")");
-//                                    ((DiseaseModule) Application.moduleManager.getModule(DiseaseModule.class)).apply(
+//                                    ((CharacterDiseaseModule) Application.moduleManager.getModule(CharacterDiseaseModule.class)).apply(
 //                                            org.smallbox.faraway.core.module.room.model,
 //                                            luaEffects.get(j + 1).get(1).toString(),
 //                                            luaEffects.get(j + 1).get(3));

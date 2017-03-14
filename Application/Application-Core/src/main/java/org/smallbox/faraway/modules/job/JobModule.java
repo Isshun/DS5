@@ -13,6 +13,7 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.BuildJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
@@ -36,6 +37,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     @BindModule
     private CharacterModule characterModule;
+
+    @BindModule
+    private ConsumableModule consumableModule;
 
     @Override
     public void onGameCreate(Game game) {
@@ -81,11 +85,19 @@ public class JobModule extends GameModule<JobModuleObserver> {
      * @param character
      */
     public void assign(CharacterModel character) {
+
+        fixCharacterInventory();
+
         _jobs.stream()
                 .filter(job -> job.getCharacter() == null)
                 .filter(job -> job.getStatus() == JobStatus.JOB_WAITING || job.getStatus() == JobStatus.JOB_INITIALIZED)
                 .findFirst()
                 .ifPresent(job -> assign(character, job));
+
+        // Assign freetime job
+        if (character.getJob() == null) {
+            assign(character, createJob(new WalkJob(character)));
+        }
 
 //        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
 //
@@ -120,6 +132,17 @@ public class JobModule extends GameModule<JobModuleObserver> {
 //        if (job != null) {
 //            assign(character, job);
 //        }
+    }
+
+    private void fixCharacterInventory() {
+        characterModule.getCharacters().stream()
+                .filter(character -> character.getJob() == null && !character.getInventory2().isEmpty())
+                .forEach(character -> {
+                    Log.warning(getName() + " have item in inventory without job");
+                    character.getInventory2().forEach((itemInfo, quantity) ->
+                            consumableModule.addConsumable(itemInfo, quantity, character.getParcel()));
+                    character.getInventory2().clear();
+                });
     }
 
     private JobModel getBestSleep(CharacterModel character, boolean force) {

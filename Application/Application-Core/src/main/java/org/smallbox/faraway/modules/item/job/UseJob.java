@@ -28,10 +28,10 @@ public class UseJob extends JobModel {
         _itemModule = itemModule;
         _item = item;
 
-        setMainLabel("Consume " + item.getInfo().label);
+        setMainLabel("Use " + item.getInfo().label);
 
         addTask("Move", character -> character.moveTo(item.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
-        addTask("Consume", character -> {
+        addTask("Use", character -> {
             int durationLeft = totalDuration - ++_duration;
             callback.onUse(item, durationLeft);
             setProgress(_duration, totalDuration);

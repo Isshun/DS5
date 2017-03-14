@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.disease.DiseaseModule;
+import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
 
 /**
  * Created by Alex on 11/12/2016.
@@ -16,7 +16,7 @@ import org.smallbox.faraway.modules.disease.DiseaseModule;
 public class CharacterInfoHealthController extends LuaController {
 
     @BindModule
-    private DiseaseModule diseaseModule;
+    private CharacterDiseaseModule diseaseModule;
 
     @BindLua
     private UIList listDiseases;
@@ -42,6 +42,6 @@ public class CharacterInfoHealthController extends LuaController {
 
     @Override
     protected void onNewGameUpdate(Game game) {
-
     }
+
 }

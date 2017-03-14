@@ -35,10 +35,6 @@ ui:extend({
                     { type = "label", id = "lb_need_relation", text_size = 14, text_color = 0xb3d035},
                     { type = "image", id = "gauge_relation", position = {0, 16}, src = "[base]/graphics/needbar.png"},
                 }},
-                { type = "view", size = {170, 44}, views = {
-                    { type = "label", id = "lb_need_oxygen", text_size = 14, text_color = 0xb3d035},
-                    { type = "image", id = "gauge_oxygen", position = {0, 16}, src = "[base]/graphics/needbar.png"},
-                }},
             }},
         }},
 

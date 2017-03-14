@@ -37,7 +37,7 @@ public class LuaWeatherExtend extends LuaExtend {
         weatherInfo.name = getString(value, "name", null);
         weatherInfo.label = getString(value, "label", null);
         weatherInfo.icon = getString(value, "icon", null);
-        weatherInfo.particle = getString(value, "particle", null);
+        weatherInfo.particle = value.get("particle").optjstring(null);
         weatherInfo.duration = getIntInterval(value, "duration", null);
         weatherInfo.temperatureChange = getIntInterval(value, "temperatureChange", null);
         weatherInfo.color1 = getInt(value, "color1", 0);

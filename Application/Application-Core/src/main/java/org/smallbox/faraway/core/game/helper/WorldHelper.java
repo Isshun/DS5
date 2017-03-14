@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -355,6 +356,12 @@ public class WorldHelper {
         }
 
         return parcelList;
+    }
+
+    public static ParcelModel getRandomParcel(ParcelModel initailParcel, int maxDistance) {
+        int x = Utils.bound(0, _width - 1, (int)(initailParcel.x + (Math.random() * maxDistance) - maxDistance / 2));
+        int y = Utils.bound(0, _height - 1, (int)(initailParcel.y + (Math.random() * maxDistance) - maxDistance / 2));
+        return _parcels[x][y][initailParcel.z];
     }
 
     public enum SearchStrategy { FREE }
