@@ -39,33 +39,33 @@ public class JobController extends LuaController {
 
     @Override
     public void onNewGameUpdate(Game game) {
-        jobModule.getJobs().stream().filter(JobModel::isVisible).forEach(job -> {
-            View view = new UIFrame(null);
-            view.setSize(300, 28);
-
-            view.addView(UIImage.create(null)
-                    .setImage(getImagePath(job))
-                    .setPosition(-19, -19)
-                    .setSize(30, 30));
-
-            UILabel lbJob = new UILabel(null);
-            if (job.getCharacter() != null) {
-                if (job.getProgress() > 0) {
-                    lbJob.setDashedString(job.getMainLabel(), String.format("%3d%%", (int)(job.getProgress() * 100)), 40);
-                } else {
-                    lbJob.setDashedString(job.getMainLabel(), job.getCharacter().getName(), 40);
-                }
-            } else {
-                lbJob.setDashedString(job.getMainLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 40);
-            }
-            lbJob.setTextColor(job.getCharacter() != null ? 0x9afbff : 0xB4D4D3);
-            lbJob.setSize(300, 22);
-            lbJob.setPosition(24, 0);
-            view.addView(lbJob);
-
-            listJobs.addNextView(view);
-        });
+        jobModule.getJobs().stream().filter(JobModel::isVisible).forEach(job ->
+                listJobs.addNextView(new UIFrame(null)
+                        .setSize(300, 28)
+                        .addView(UIImage.create(null)
+                                .setImage(getImagePath(job))
+                                .setPosition(-19, -19)
+                                .setSize(30, 30))
+                        .addView(UILabel.create(null)
+                                .setDashedString(job.getMainLabel(), getJobStatus(job), 40)
+                                .setTextColor(job.getCharacter() != null ? 0x9afbff : 0xB4D4D3)
+                                .setSize(300, 22)
+                                .setPosition(24, 0))
+                )
+        );
         listJobs.switchViews();
+    }
+
+    private String getJobStatus(JobModel job) {
+        if (job.getProgress() > 0) {
+            return String.format("%3d%%", (int)(job.getProgress() * 100));
+        }
+
+        if (job.getCharacter() != null) {
+            return job.getCharacter().getName();
+        }
+
+        return job.getStatus().name();
     }
 
     private String getImagePath(JobModel job) {

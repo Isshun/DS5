@@ -331,7 +331,7 @@ public abstract class View implements Comparable<View> {
         _nextViews.clear();
     }
 
-    public final void addView(View view) {
+    public final View addView(View view) {
         view.setParent(this);
 
         if (CollectionUtils.notContains(_views, view)) {
@@ -341,6 +341,8 @@ public abstract class View implements Comparable<View> {
         ApplicationClient.uiManager.addView(view);
 
         onAddView(view);
+
+        return this;
     }
 
     protected abstract void onAddView(View view);
