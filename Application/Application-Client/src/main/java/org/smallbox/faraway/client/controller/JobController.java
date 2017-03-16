@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
@@ -80,8 +81,8 @@ public class JobController extends LuaController {
     }
 
     @Override
-    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.T && modifier == GameEventListener.Modifier.NONE) {
+    public void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
+        if (action == GameEventListener.Action.RELEASED && key == Input.Keys.T && modifier == GameEventListener.Modifier.NONE) {
             setVisible(!isVisible());
             ApplicationClient.uiManager.findById("base.ui.right_panel").setVisible(!isVisible());
 

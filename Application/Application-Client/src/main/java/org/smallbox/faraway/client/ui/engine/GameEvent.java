@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.ui.engine;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -17,7 +18,7 @@ public class GameEvent {
         this.consumed = false;
     }
 
-    public GameEvent(GameEventListener.Key key) {
+    public GameEvent(int key) {
         this.consumed = false;
     }
 

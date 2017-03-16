@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
@@ -185,7 +185,7 @@ public class UIManager {
 //                        .forEach(subview -> subview.setVisible(true)));
 //    }
 
-    public boolean onKeyEvent(Action action, Key key, Modifier modifier) {
+    public boolean onKeyEvent(Action action, int key, Modifier modifier) {
 //        if (action == Action.RELEASED) {
 //            if (checkKeyboard(new GameEvent(key), key)) {
 //                return false;

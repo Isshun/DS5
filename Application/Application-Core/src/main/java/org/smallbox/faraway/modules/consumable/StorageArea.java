@@ -2,10 +2,10 @@ package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.area.AreaTypeInfo;
-import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.area.AreaModel;
+import org.smallbox.faraway.modules.area.AreaTypeInfo;
 
 import java.util.Map;
 import java.util.stream.Collectors;

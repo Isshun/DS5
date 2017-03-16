@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.manager;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.util.Log;
 
@@ -13,10 +14,10 @@ public class ShortcutManager {
 
     public static class ShortcutStrategy {
         public final String label;
-        public final GameEventListener.Key key;
+        public final int key;
         public final Runnable runnable;
 
-        ShortcutStrategy(String label, GameEventListener.Key key, Runnable runnable) {
+        ShortcutStrategy(String label, int key, Runnable runnable) {
             this.label = label;
             this.key = key;
             this.runnable = runnable;
@@ -25,7 +26,7 @@ public class ShortcutManager {
 
     public static Collection<ShortcutStrategy> shortcutStrategies = new LinkedBlockingQueue<>();
 
-    public void addBinding(String label, GameEventListener.Key key, Runnable runnable) {
+    public void addBinding(String label, int key, Runnable runnable) {
         shortcutStrategies.add(new ShortcutStrategy(label, key, runnable));
     }
 
@@ -33,7 +34,7 @@ public class ShortcutManager {
         return shortcutStrategies;
     }
 
-    public void action(GameEventListener.Key key) {
+    public void action(int key) {
         shortcutStrategies.stream()
                 .filter(strategy -> strategy.key == key)
                 .forEach(strategy -> {

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -28,8 +28,8 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     }
 
     @Override
-    public boolean onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE && CollectionUtils.isNotEmpty(list)) {
+    public boolean onKeyPress(int key) {
+        if (key == Input.Keys.ESCAPE && CollectionUtils.isNotEmpty(list)) {
             mainPanelController.setVisible(true);
             list = null;
             return true;

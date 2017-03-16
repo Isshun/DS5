@@ -1,10 +1,10 @@
 package org.smallbox.faraway.core.game;
 
+import com.badlogic.gdx.Input;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
@@ -173,7 +173,7 @@ public class GameManager implements GameObserver {
                 });
     }
 
-    @GameShortcut(key = GameEventListener.Key.F5)
+    @GameShortcut(key = Input.Keys.F5)
     public void actionQuickSaveGame() {
         Log.notice("quickSaveGame");
         Application.gameSaveManager.saveGame(
@@ -182,17 +182,17 @@ public class GameManager implements GameObserver {
                 GameInfo.Type.FAST);
     }
 
-    @GameShortcut(key = GameEventListener.Key.SPACE)
+    @GameShortcut(key = Input.Keys.SPACE)
     public void actionPause() {
         _game.toggleRunning();
     }
 
-    @GameShortcut(key = GameEventListener.Key.PLUS)
+    @GameShortcut(key = Input.Keys.PLUS)
     public void actionSpeedUp() {
         _game.setSpeed(_game.getSpeed() + 1);
     }
 
-    @GameShortcut(key = GameEventListener.Key.MINUS)
+    @GameShortcut(key = Input.Keys.MINUS)
     public void actionSpeedDown() {
         _game.setSpeed(_game.getSpeed() - 1);
     }

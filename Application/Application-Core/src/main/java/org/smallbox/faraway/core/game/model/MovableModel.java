@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game.model;
 
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Utils;
 
 public abstract class MovableModel extends ObjectModel {

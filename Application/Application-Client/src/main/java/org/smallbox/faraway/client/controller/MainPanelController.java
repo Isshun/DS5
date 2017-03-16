@@ -1,13 +1,13 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import com.sun.glass.ui.Cursor;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
 
 /**
  * Created by Alex on 15/08/2016.
@@ -22,12 +22,12 @@ public class MainPanelController extends LuaController {
 
     private LuaController _currentPaneController;
 
-    @GameShortcut(key = GameEventListener.Key.ESCAPE)
+    @GameShortcut(key = Input.Keys.ESCAPE)
     public void onEscape() {
         if (!isVisible()) {
             setVisible(true);
         }
-//        if (key == GameEventListener.Key.ESCAPE && !Display.isVisible()) {
+//        if (key == Input.Keys.ESCAPE && !Display.isVisible()) {
 //            Cursor.setVisible(true);
 //            return true;
 //        }

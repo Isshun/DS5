@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnKeyListener;
@@ -41,23 +42,23 @@ public class UIGrid extends View {
         if (_focusable) {
             ApplicationClient.uiEventManager.setOnKeyListener(this, new OnKeyListener() {
                 @Override
-                public void onKeyPress(View view, GameEventListener.Key key) {
+                public void onKeyPress(View view, int key) {
                 }
 
                 @Override
-                public void onKeyRelease(View view, GameEventListener.Key key) {
+                public void onKeyRelease(View view, int key) {
 //                    _views.get(_index).onExit();
 //
-//                    if (key == GameEventListener.Key.DOWN) {
+//                    if (key == Input.Keys.DOWN) {
 //                        _index = Math.min(_count - 1, _index + _columns);
 //                    }
-//                    if (key == GameEventListener.Key.UP) {
+//                    if (key == Input.Keys.UP) {
 //                        _index = Math.max(0, _index - _columns);
 //                    }
-//                    if (key == GameEventListener.Key.RIGHT) {
+//                    if (key == Input.Keys.RIGHT) {
 //                        _index = Math.min(_count - 1, _index + 1);
 //                    }
-//                    if (key == GameEventListener.Key.LEFT) {
+//                    if (key == Input.Keys.LEFT) {
 //                        _index = Math.max(0, _index - 1);
 //                    }
 ////                    _views.get(_index).onClick();

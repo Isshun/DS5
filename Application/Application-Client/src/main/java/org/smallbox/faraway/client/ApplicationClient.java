@@ -64,7 +64,7 @@ public class ApplicationClient {
         // Application client interface
         dependencyInjector.setClientInterface(new DependencyInjector.ApplicationClientInterface() {
             @Override
-            public void onShortcutBinding(String label, GameEventListener.Key key, Runnable runnable) {
+            public void onShortcutBinding(String label, int key, Runnable runnable) {
                 shortcutManager.addBinding(label, key, runnable);
             }
         });
@@ -102,7 +102,7 @@ public class ApplicationClient {
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
     public ApplicationConfig getConfig() { return APPLICATION_CONFIG; }
 
-    public static void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
+    public static void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);
 
         if (ApplicationClient.uiManager.onKeyEvent(action, key, modifier)) {

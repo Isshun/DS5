@@ -1,14 +1,14 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -63,7 +63,7 @@ public class TooltipController extends LuaController {
         lbName.setText(sb.toString());
     }
 
-    @GameShortcut(key = GameEventListener.Key.TAB)
+    @GameShortcut(key = Input.Keys.TAB)
     public void onNextView() {
         boolean selectNext = false;
         for (View view: subViews.values()) {

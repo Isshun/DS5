@@ -4,7 +4,6 @@ import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.engine.GameEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public abstract class MenuBase {
     public void onKeyEnter() {
     }
 
-    public boolean checkKey(GameEventListener.Key key) {
+    public boolean checkKey(int key) {
         return false;
     }
 

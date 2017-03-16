@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.model.base;
 
-import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
 import org.smallbox.faraway.modules.characterDisease.CharacterDisease;
+import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
 
 import java.util.Collection;
 import java.util.Map;

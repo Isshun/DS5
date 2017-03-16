@@ -1,7 +1,5 @@
 package org.smallbox.faraway.core;
 
-import org.smallbox.faraway.core.engine.GameEventListener;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,5 +11,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface GameShortcut {
-    GameEventListener.Key key();
+    int key();
 }

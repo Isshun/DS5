@@ -1,26 +1,26 @@
 package org.smallbox.faraway.client.debug.renderer;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.plant.PlantModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -185,42 +185,42 @@ public class DebugRenderer extends BaseRenderer {
         _lastUpdate = System.currentTimeMillis();
     }
 
-    @GameShortcut(key = GameEventListener.Key.F12)
+    @GameShortcut(key = Input.Keys.F12)
     public void onToggleVisibility() {
         toggleVisibility();
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_1)
+    @GameShortcut(key = Input.Keys.NUM_1)
     public void onD1() {
         _mode = Mode.OTHER;
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_2)
+    @GameShortcut(key = Input.Keys.NUM_2)
     public void onD2() {
         _mode = Mode.CONSUMABLE;
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_3)
+    @GameShortcut(key = Input.Keys.NUM_3)
     public void onD3() {
         _mode = Mode.ITEM;
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_4)
+    @GameShortcut(key = Input.Keys.NUM_4)
     public void onD4() {
         _mode = Mode.PLANT;
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_5)
+    @GameShortcut(key = Input.Keys.NUM_5)
     public void onD5() {
         _mode = Mode.RENDER;
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_6)
+    @GameShortcut(key = Input.Keys.NUM_6)
     public void onD6() {
         _mode = Mode.CHARACTER;
     }
 
-    @GameShortcut(key = GameEventListener.Key.D_7)
+    @GameShortcut(key = Input.Keys.NUM_7)
     public void onD7() {
         _mode = Mode.JOB;
     }

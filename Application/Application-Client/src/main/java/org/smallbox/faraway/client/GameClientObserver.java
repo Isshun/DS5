@@ -4,8 +4,8 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.List;
@@ -21,13 +21,13 @@ public interface GameClientObserver extends GameObserver {
     default void onSelectArea(AreaModel area) {}
     default boolean onSelectCharacter(CharacterModel character) {return false;}
     default boolean onSelectParcel(ParcelModel parcel) {return false;}
-    default void onKeyPressWithEvent(GameEvent event, GameEventListener.Key key) {
+    default void onKeyPressWithEvent(GameEvent event, int key) {
         if (!event.consumed && onKeyPress(key)) {
             event.consume();
         }
     }
-    default boolean onKeyPress(GameEventListener.Key key) { return false; }
-    default void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {}
+    default boolean onKeyPress(int key) { return false; }
+    default void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {}
 
     default void onGameRender(Game game) {}
     default void onFloorUp() {}

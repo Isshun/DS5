@@ -16,8 +16,8 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 public class GameMenuController extends LuaController {
 
     @Override
-    public boolean onKeyPress(GameEventListener.Key key) {
-//        if (key == GameEventListener.Key.ESCAPE && ApplicationClient.uiManager.findById("base.ui.right_panel").isVisible()) {
+    public boolean onKeyPress(int key) {
+//        if (key == Input.Keys.ESCAPE && ApplicationClient.uiManager.findById("base.ui.right_panel").isVisible()) {
 //            setVisible(!isVisible());
 //            return true;
 //        }

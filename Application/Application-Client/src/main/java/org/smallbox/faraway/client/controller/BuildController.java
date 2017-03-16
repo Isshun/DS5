@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
@@ -79,8 +80,8 @@ public class BuildController extends LuaController {
 //    }
 
     @Override
-    public boolean onKeyPress(GameEventListener.Key key) {
-        if (key == GameEventListener.Key.ESCAPE && _currentItem != null) {
+    public boolean onKeyPress(int key) {
+        if (key == Input.Keys.ESCAPE && _currentItem != null) {
             _currentItem = null;
             return true;
         }

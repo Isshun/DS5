@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.debug.renderer;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.renderer.BaseRenderer;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
@@ -8,7 +9,6 @@ import org.smallbox.faraway.client.renderer.Viewport;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 /**
@@ -37,7 +37,7 @@ public class DebugGroundRenderer extends BaseRenderer {
                 });
     }
 
-    @GameShortcut(key = GameEventListener.Key.F9)
+    @GameShortcut(key = Input.Keys.F9)
     public void onToggleVisibility() {
         toggleVisibility();
     }

@@ -4,7 +4,6 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Log;
@@ -219,7 +218,7 @@ public class UIEventManager {
         return _onClickListeners.containsKey(view);
     }
 
-    public boolean keyRelease(GameEventListener.Key key) {
+    public boolean keyRelease(int key) {
         for (View view: _onKeysListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && hasFocus(view)) {
                 _onKeysListeners.get(view).onKeyRelease(view, key);

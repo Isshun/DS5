@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
+import com.badlogic.gdx.Input;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
@@ -27,7 +28,7 @@ public class LuaBindingsExtend extends LuaExtend {
             BindingInfo bindingInfo = new BindingInfo();
 
             if (!value.get("key").isnil()) {
-                bindingInfo.key = GameEventListener.Key.valueOf(getString(value, "key", null));
+                bindingInfo.key = Input.Keys.valueOf(getString(value, "key", null));
             }
 
             if (!value.get("modifier").isnil()) {

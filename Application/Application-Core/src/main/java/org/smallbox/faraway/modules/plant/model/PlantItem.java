@@ -1,9 +1,9 @@
 package org.smallbox.faraway.modules.plant.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.plant.GardenArea;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.util.Utils;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;

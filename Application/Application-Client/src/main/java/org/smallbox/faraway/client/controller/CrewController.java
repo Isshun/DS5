@@ -1,18 +1,18 @@
 package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.client.ui.engine.GameEvent;
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
+import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
 
 import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.TAG_FOOD;
 
@@ -106,7 +106,7 @@ public class CrewController extends LuaController {
         return view;
     }
 
-    @GameShortcut(key = GameEventListener.Key.BACKSPACE)
+    @GameShortcut(key = Input.Keys.BACKSPACE)
     public void onEscape() {
         if (isVisible()) {
             mainPanelController.setVisible(true);

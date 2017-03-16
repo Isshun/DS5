@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.dependencyInjector;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -200,7 +199,7 @@ public class DependencyInjector {
     }
 
     public interface ApplicationClientInterface {
-        void onShortcutBinding(String label, GameEventListener.Key key, Runnable runnable);
+        void onShortcutBinding(String label, int key, Runnable runnable);
     }
 
     public void setClientInterface(ApplicationClientInterface clientInterface) {

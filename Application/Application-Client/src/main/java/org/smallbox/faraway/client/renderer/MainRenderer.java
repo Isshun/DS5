@@ -1,12 +1,12 @@
 package org.smallbox.faraway.client.renderer;
 
+import com.badlogic.gdx.Input;
 import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 
@@ -156,12 +156,12 @@ public class MainRenderer implements GameClientObserver {
         }
     }
 
-    @GameShortcut(key = GameEventListener.Key.PAGEUP)
+    @GameShortcut(key = Input.Keys.PAGE_UP)
     public void onFloorUp() {
         _viewport.setFloor(_viewport.getFloor() + 1);
     }
 
-    @GameShortcut(key = GameEventListener.Key.PAGEDOWN)
+    @GameShortcut(key = Input.Keys.PAGE_DOWN)
     public void onFloorDown() {
         _viewport.setFloor(_viewport.getFloor() - 1);
     }

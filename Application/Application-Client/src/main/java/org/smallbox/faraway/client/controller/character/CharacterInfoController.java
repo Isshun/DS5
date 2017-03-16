@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller.character;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -129,7 +129,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     }
 
-    @GameShortcut(key = GameEventListener.Key.TAB)
+    @GameShortcut(key = Input.Keys.TAB)
     public void onNextTab() {
         if (characterInfoStatusController.isVisible()) {
             openPage(characterInfoInventoryController, bgInventory);

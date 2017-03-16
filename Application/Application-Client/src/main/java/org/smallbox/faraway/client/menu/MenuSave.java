@@ -60,7 +60,7 @@
 //    }
 //
 //    @Override
-//    public boolean checkKey(GameEventListener.Key key) {
+//    public boolean checkKey(int key) {
 //        switch (key) {
 //            case A: _saveName += "a"; return true;
 //            case B: _saveName += "b"; return true;

@@ -6,9 +6,9 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
+import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
 
 import java.util.Collection;
 import java.util.Map;

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
@@ -44,8 +45,8 @@ public class DebugController extends LuaController {
     }
 
     @Override
-    public void onKeyPressWithEvent(GameEvent event, GameEventListener.Key key) {
-        if (event.isAlive() && key == GameEventListener.Key.ESCAPE) {
+    public void onKeyPressWithEvent(GameEvent event, int key) {
+        if (event.isAlive() && key == Input.Keys.ESCAPE) {
             setVisible(false);
             mainPanelController.setVisible(true);
         }

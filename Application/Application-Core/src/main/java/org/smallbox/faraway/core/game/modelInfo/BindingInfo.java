@@ -14,7 +14,7 @@ public class BindingInfo extends ObjectInfo {
         void onAction();
     }
 
-    public GameEventListener.Key        key;
+    public int key;
     public GameEventListener.Modifier   modifier = GameEventListener.Modifier.NONE;
     public String                       label;
     public BindingCheckInterface        check;

@@ -3,10 +3,8 @@ package org.smallbox.faraway.modules.characterDisease;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterModuleObserver;
-import org.smallbox.faraway.modules.character.CharacterModuleSerializer;
 import org.smallbox.faraway.modules.character.model.base.CharacterDiseasesExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
