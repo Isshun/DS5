@@ -94,7 +94,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     public long getLastDrawDelay() { return _lastDrawDelay; }
 
     public final void gameStart(Game game) {
-        Log.info("[BaseRender] gameStart: " + getClass().getSimpleName());
+        Log.debug(getClass(), "start rendere");
 
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;

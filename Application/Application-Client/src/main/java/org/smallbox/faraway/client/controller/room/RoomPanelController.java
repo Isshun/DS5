@@ -64,6 +64,7 @@ public class RoomPanelController extends LuaController {
                                     Log.warning(RoomPanelController.class, "HELLO");
                                     roomRenderer.setMode(RoomRenderer.Mode.NONE, cls);
                                     roomModule.addRoom(cls, parcels);
+                                    return true;
                                 });
                             })
                     );
@@ -82,6 +83,7 @@ public class RoomPanelController extends LuaController {
                                     Log.warning(RoomPanelController.class, "HELLO");
                                     roomRenderer.setMode(RoomRenderer.Mode.NONE, cls);
                                     roomModule.removeArea(parcels);
+                                    return true;
                                 });
                                 //            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
                             })

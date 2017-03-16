@@ -205,6 +205,12 @@ public class InputManager implements InputProcessor {
 //            case Input.Keys.PAUSE: key = GameEventListener.Key.UNKNOWN; break;
         }
 
+        // Cleat UiEventManager selection listener when escape key is pushed
+        if (key == GameEventListener.Key.ESCAPE && ApplicationClient.uiEventManager.getSelectionListener() != null) {
+            ApplicationClient.uiEventManager.setSelectionListener(null);
+            return false;
+        }
+
         ApplicationClient.onKeyEvent(GameEventListener.Action.RELEASED, key, _modifier);
 
         return false;

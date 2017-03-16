@@ -27,11 +27,11 @@ public class DebugGroundRenderer extends BaseRenderer {
                     if (parcel.getGroundInfo() != null) {
                         renderer.drawOnMap(parcel.x, parcel.y, Color.CORAL);
 
-                        renderer.drawTextOnMap(parcel.x, parcel.y, parcel.getGroundInfo().label, 14, Color.BLACK, 1, 1);
-                        renderer.drawOnMap(parcel.x, parcel.y, parcel.getGroundInfo().label, 14, Color.WHITE);
+                        renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, 14, Color.BLACK, 1, 1);
+                        renderer.drawTextOnMap(parcel, parcel.getGroundInfo().label, 14, Color.WHITE);
 
-                        renderer.drawTextOnMap(parcel.x, parcel.y, String.valueOf(parcel.z), 14, Color.BLACK, 1, 17);
-                        renderer.drawTextOnMap(parcel.x, parcel.y, String.valueOf(parcel.z), 14, Color.WHITE, 0, 16);
+                        renderer.drawTextOnMap(parcel, String.valueOf(parcel.z), 14, Color.BLACK, 1, 17);
+                        renderer.drawTextOnMap(parcel, String.valueOf(parcel.z), 14, Color.WHITE, 0, 16);
                     }
 
                 });

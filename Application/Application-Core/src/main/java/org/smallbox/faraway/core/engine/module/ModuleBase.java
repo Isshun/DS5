@@ -21,7 +21,7 @@ public abstract class ModuleBase implements GameObserver {
     public final void load() {
         assert !_isLoaded;
 
-        Log.info("[%s] Load", _info);
+        Log.debug(getClass(), "Load module");
         onLoad();
         _isLoaded = true;
 
@@ -38,7 +38,7 @@ public abstract class ModuleBase implements GameObserver {
     }
 
     public final void create() {
-        Log.info("[%s] createGame", _info);
+        Log.debug(getClass(), "Create module");
         onCreate();
     }
 

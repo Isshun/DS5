@@ -36,7 +36,7 @@ public class DebugItemRenderer extends BaseRenderer {
                     }
 
                     renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.BLACK, 1, 1);
-                    renderer.drawOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.WHITE);
+                    renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, "[" + item.getId() + "] " + item.getLabel(), 14, Color.WHITE);
 
                     if (item.getFactory() != null) {
                         renderer.drawTextOnMap(item.getParcel().x, item.getParcel().y, item.getFactory().getMessage(), 14, Color.BLACK, 1, 17);

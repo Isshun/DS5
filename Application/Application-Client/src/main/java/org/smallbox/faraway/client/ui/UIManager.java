@@ -259,6 +259,11 @@ public class UIManager {
             return true;
         }
 
+        // Cleat UiEventManager selection listener when right button is clicked
+        if (action == Action.RELEASED && button == MouseButton.RIGHT && ApplicationClient.uiEventManager.getSelectionListener() != null) {
+            ApplicationClient.uiEventManager.setSelectionListener(null);
+        }
+
         if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && ApplicationClient.uiEventManager.click(event, x, y)) {
             return true;
         }

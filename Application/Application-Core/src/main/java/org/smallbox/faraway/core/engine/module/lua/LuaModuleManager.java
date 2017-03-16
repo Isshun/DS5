@@ -144,7 +144,7 @@ public abstract class LuaModuleManager implements GameObserver {
                 .filter(file -> file.getName().endsWith(".lua"))
                 .forEach(file -> {
                     try {
-                        Log.info(LuaModuleManager.class, "Load lua file: %s", file.getAbsolutePath());
+                        Log.debug(LuaModuleManager.class, "Load lua file: %s", file.getAbsolutePath());
                         globals.load(new FileReader(file), file.getName()).call();
                     } catch (FileNotFoundException | LuaError e) {
                         e.printStackTrace();
@@ -189,7 +189,7 @@ public abstract class LuaModuleManager implements GameObserver {
         FileUtils.listRecursively(dataDirectory).stream()
                 .filter(f -> f.getName().endsWith(".lua"))
                 .forEach(f -> {
-                    Log.info(LuaModuleManager.class, "Load lua file: %s", f.getAbsolutePath());
+                    Log.debug(LuaModuleManager.class, "Load lua file: %s", f.getAbsolutePath());
                     try (FileReader fileReader = new FileReader(f)) {
                         globals.load(fileReader, f.getName()).call();
                     } catch (LuaError | IOException e) {
@@ -240,7 +240,7 @@ public abstract class LuaModuleManager implements GameObserver {
                 .findAny();
 
         if (optional.isPresent()) {
-            Log.info(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
+            Log.debug(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
             try {
                 optional.get().extend(module, globals, value, dataDirectory);
             } catch (DataExtendException e) {

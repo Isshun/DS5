@@ -249,22 +249,16 @@ public class GDXRenderer {
         drawPixel(ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
     }
 
-    public void drawOnMap(int x, int y, String string, int size) {
-        drawText(
-                ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH),
-                ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT),
-                size,
-                Color.BLACK,
-                string);
+    public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color) {
+        drawTextOnMap(parcel.x, parcel.y, string, size, color, 0, 0);
     }
 
-    public void drawOnMap(int x, int y, String string, int size, Color color) {
-        drawText(
-                ApplicationClient.mainRenderer.getViewport().getPosX() + (x * Constant.TILE_WIDTH),
-                ApplicationClient.mainRenderer.getViewport().getPosY() + (y * Constant.TILE_HEIGHT),
-                size,
-                color,
-                string);
+    public void drawTextOnMap(int x, int y, String string, int size, Color color) {
+        drawTextOnMap(x, y, string, size, color, 0, 0);
+    }
+
+    public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color, int offsetX, int offsetY) {
+        drawTextOnMap(parcel.x, parcel.y, string, size, color, offsetX, offsetY);
     }
 
     public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {

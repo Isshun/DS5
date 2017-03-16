@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.renderer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.GameRenderer;
@@ -44,10 +45,22 @@ public class StructureTopRenderer extends BaseRenderer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        Sprite buildSprite = spriteManager.getIcon("../Module-Structure/src/main/resources/ic_build.png", 32, 32);
         structureModule.getStructures().stream()
                 .filter(structure -> viewport.hasParcel(structure.getParcel()))
-                .forEach(structure -> renderer.drawOnMap(structure.getParcel(), structure.isBuildComplete() ? getSprite(structure) : buildSprite));
+                .forEach(structure -> {
+
+                    renderer.drawOnMap(structure.getParcel(), getSprite(structure));
+
+                    if (structure.getHealth() < structure.getMaxHealth()) {
+                        renderer.drawTextOnMap(structure.getParcel(), structure.getHealth() + "/" + structure.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
+                    }
+
+                    if (!structure.isBuildComplete()) {
+                        renderer.drawTextOnMap(structure.getParcel(), "to build", 14, Color.CHARTREUSE, 0, 0);
+                    }
+
+                });
+
     }
 
     private Sprite getSprite(StructureItem structure) {

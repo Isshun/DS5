@@ -68,75 +68,48 @@ public class BuildRenderer extends BaseRenderer {
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
 
-        if (_itemInfo != null) {
+        if (ApplicationClient.uiEventManager.getSelectionListener() != null) {
 
-            if (_mouseDownX != -1 && _mouseDownY != -1) {
-                int fromMapX = Math.min(viewport.getWorldPosX(_mouseX), viewport.getWorldPosX(_mouseDownX));
-                int fromMapY = Math.min(viewport.getWorldPosY(_mouseY), viewport.getWorldPosY(_mouseDownY));
-                int toMapX = Math.max(viewport.getWorldPosX(_mouseX), viewport.getWorldPosX(_mouseDownX));
-                int toMapY = Math.max(viewport.getWorldPosY(_mouseY), viewport.getWorldPosY(_mouseDownY));
-                for (int mapX = fromMapX; mapX <= toMapX; mapX++) {
-                    for (int mapY = fromMapY; mapY <= toMapY; mapY++) {
-                        renderer.drawRectangleOnMap(mapX, mapY, 32, 32, com.badlogic.gdx.graphics.Color.BROWN, true, 0, 0);
+            if (_itemInfo != null) {
+
+                if (_mouseDownX != -1 && _mouseDownY != -1) {
+                    int fromMapX = Math.min(viewport.getWorldPosX(_mouseX), viewport.getWorldPosX(_mouseDownX));
+                    int fromMapY = Math.min(viewport.getWorldPosY(_mouseY), viewport.getWorldPosY(_mouseDownY));
+                    int toMapX = Math.max(viewport.getWorldPosX(_mouseX), viewport.getWorldPosX(_mouseDownX));
+                    int toMapY = Math.max(viewport.getWorldPosY(_mouseY), viewport.getWorldPosY(_mouseDownY));
+                    for (int mapX = fromMapX; mapX <= toMapX; mapX++) {
+                        for (int mapY = fromMapY; mapY <= toMapY; mapY++) {
+                            renderer.drawRectangleOnMap(mapX, mapY, 32, 32, com.badlogic.gdx.graphics.Color.BROWN, true, 0, 0);
+                        }
                     }
+                } else {
+                    renderer.drawRectangleOnMap(viewport.getWorldPosX(_mouseX), viewport.getWorldPosY(_mouseY), 32, 32, com.badlogic.gdx.graphics.Color.BROWN, true, 0, 0);
                 }
-            } else {
-                renderer.drawRectangleOnMap(viewport.getWorldPosX(_mouseX), viewport.getWorldPosY(_mouseY), 32, 32, com.badlogic.gdx.graphics.Color.BROWN, true, 0, 0);
+
+                renderer.drawText(_mouseX - 20, _mouseY - 20, 16, com.badlogic.gdx.graphics.Color.CHARTREUSE, "Build " + _itemInfo.label);
             }
 
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, com.badlogic.gdx.graphics.Color.CHARTREUSE, "Build " + _itemInfo.label);
-        }
+            if (buildController != null && buildController.getCurrentItem() != null) {
 
-        if (buildController != null && buildController.getCurrentItem() != null) {
+                if (ApplicationClient.inputManager.getTouchDrag()) {
+                    InputManager inputManager = ApplicationClient.inputManager;
+                    WorldHelper.getParcelInRect(
+                            viewport.getWorldPosX(inputManager.getTouchDownX()),
+                            viewport.getWorldPosY(inputManager.getTouchDownY()),
+                            viewport.getWorldPosX(inputManager.getTouchDragX()),
+                            viewport.getWorldPosY(inputManager.getTouchDragY()),
+                            viewport.getFloor())
+                            .forEach(parcel -> renderer.draw(viewport.getScreenPosX(parcel.x), viewport.getScreenPosY(parcel.y), resEden2));
+                } else {
+                    renderer.draw(ApplicationClient.inputManager.getMouseX(), ApplicationClient.inputManager.getMouseY(), resEden);
 
-            if (ApplicationClient.inputManager.getTouchDrag()) {
-                InputManager inputManager = ApplicationClient.inputManager;
-                WorldHelper.getParcelInRect(
-                        viewport.getWorldPosX(inputManager.getTouchDownX()),
-                        viewport.getWorldPosY(inputManager.getTouchDownY()),
-                        viewport.getWorldPosX(inputManager.getTouchDragX()),
-                        viewport.getWorldPosY(inputManager.getTouchDragY()),
-                        viewport.getFloor())
-                .forEach(parcel -> renderer.draw(viewport.getScreenPosX(parcel.x), viewport.getScreenPosY(parcel.y), resEden2));
-            } else {
-                renderer.draw(ApplicationClient.inputManager.getMouseX(), ApplicationClient.inputManager.getMouseY(), resEden);
-
-                Sprite sprite = ApplicationClient.spriteManager.getIcon(buildController.getCurrentItem());
-                renderer.draw(ApplicationClient.inputManager.getMouseX(), ApplicationClient.inputManager.getMouseY(), sprite);
+                    Sprite sprite = ApplicationClient.spriteManager.getIcon(buildController.getCurrentItem());
+                    renderer.draw(ApplicationClient.inputManager.getMouseX(), ApplicationClient.inputManager.getMouseY(), sprite);
+                }
             }
+
         }
 
-//        if (_cursorItem != null) {
-////            renderer.drawPixel(Color.BLUE, _cursorParcelX + viewport.getPosX(), _cursorParcelY + viewport.getPosY(), 320, 320);
-//
-//            final UIFrame resEden = new UIFrame(null);
-//            resEden.setSize(32, 32);
-//            resEden.setBackgroundColor(Color.BLUE);
-//
-//            int startX = Math.max(_cursorParcelX, 0);
-//            int startY = Math.max(_cursorParcelY, 0);
-//            int toX = Math.min(_cursorParcelX, Application.gameManager.getGame().getInfo().worldWidth);
-//            int toY = Math.min(_cursorParcelY, Application.gameManager.getGame().getInfo().worldHeight);
-//
-//        for (int x = startX; x <= toX; x++) {
-//            for (int y = startY; y <= toY; y++) {
-////                Log.info("Draw cursor: %d x %d", x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
-//
-//                renderer.drawPixel(resEden, x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY());
-//
-////                onDraw(renderer, ModuleHelper.getWorldModule().getParcel(x, y, WorldHelper.getCurrentFloor()), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
-//            }
-//        }
-
-//            renderer.drawPixel(resEden, _cursorParcelX - viewport.getPosX(), _cursorParcelY - viewport.getPosY());
-//            renderer.drawPixel(resEden, 500, 500);
-//            onDraw(renderer,
-//                    worldModule.getParcel(_cursorParcelX, _cursorParcelY, WorldHelper.getCurrentFloor()),
-//                    _cursorParcelX + viewport.getPosX(),
-//                    _cursorParcelY * 32 + viewport.getPosY(),
-//                    false,
-//                    false);
-//        }
     }
 
     public void onRefresh(int frame) {

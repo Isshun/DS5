@@ -44,6 +44,14 @@ public class ItemRenderer extends BaseRenderer {
                         renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 6, Color.CHARTREUSE, false, 0, 0);
                     }
 
+                    if (item.getHealth() < item.getMaxHealth()) {
+                        renderer.drawTextOnMap(parcel.x, parcel.y, item.getHealth() + "/" + item.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
+                    }
+
+                    if (!item.isBuildComplete()) {
+                        renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
+                    }
+
                 });
     }
 

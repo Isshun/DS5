@@ -95,8 +95,12 @@ public class UIEventManager {
         return _dropViews;
     }
 
+    public OnSelectionListener getSelectionListener() {
+        return _selectionListener;
+    }
+
     public interface OnSelectionListener {
-        void onSelection(List<ParcelModel> parcels);
+        boolean onSelection(List<ParcelModel> parcels);
     }
 
     public void setSelectionListener(OnSelectionListener selectionListener) {
@@ -159,8 +163,9 @@ public class UIEventManager {
                 if (parcelList != null) {
 
                     if (_selectionListener != null) {
-                        _selectionListener.onSelection(parcelList);
-                        _selectionListener = null;
+                        if (_selectionListener.onSelection(parcelList)) {
+                            _selectionListener = null;
+                        }
                     } else {
                         ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
                     }

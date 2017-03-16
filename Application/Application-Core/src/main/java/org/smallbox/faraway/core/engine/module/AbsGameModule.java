@@ -30,7 +30,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     public void onGameCreate(Game game) {}
 
     public void createGame(Game game) {
-        Log.info("[" + _info.name + "] Create game");
+        Log.debug(getClass(), "Create game");
 //        if (runOnMainThread()) {
 //            onGameCreateObserver(game);
 //            _isLoaded = true;
@@ -45,7 +45,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     }
 
     public void startGame(Game game) {
-        Log.info("[" + _info.name + "] Start game");
+        Log.debug(getClass(), "Start game");
 //        if (runOnMainThread()) {
 //            onGameStart(game);
 //            _isStarted = true;
