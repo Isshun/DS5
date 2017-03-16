@@ -129,17 +129,17 @@ public class LuaItemExtend extends LuaExtend {
 
         itemInfo.build = new ItemInfo.ItemBuildInfo();
         if (!value.get("build").isnil()) {
-            itemInfo.build.cost = getInt(value.get("build"), "cost", 0);
+            itemInfo.build.cost = value.get("build").get("cost").optdouble(0) * Application.config.game.tickPerHour;
 
-            LuaValue componentsValue = value.get("components");
+            LuaValue componentsValue = value.get("build").get("components");
             if (!componentsValue.isnil()) {
                 for (int i = 1; i <= componentsValue.length(); i++) {
                     ItemInfo.ItemBuildInfo.ItemBuildComponentInfo componentInfo = new ItemInfo.ItemBuildInfo.ItemBuildComponentInfo();
-                    Application.data.getAsync(componentsValue.get(i).get("id").toString(), ItemInfo.class, component -> componentInfo.component = component);
-                    componentInfo.count = componentsValue.get(i).get("count").toint();
+                    Application.data.getAsync(componentsValue.get(i).get("item").toString(), ItemInfo.class, component -> componentInfo.component = component);
+                    componentInfo.quantity = componentsValue.get(i).get("quantity").toint();
                     itemInfo.build.components.add(componentInfo);
 
-                    itemInfo.slots.add(new int[] {value.get("slots").get(i).get(1).toint(), value.get("slots").get(i).get(2).toint()});
+//                    itemInfo.slots.add(new int[] {value.get("slots").get(i).get(1).toint(), value.get("slots").get(i).get(2).toint()});
                 }
             }
         }

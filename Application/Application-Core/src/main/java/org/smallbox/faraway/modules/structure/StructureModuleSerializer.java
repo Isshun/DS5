@@ -34,7 +34,7 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
                                 stItem.bind(3, structure.getParcel().y);
                                 stItem.bind(4, structure.getParcel().z);
                                 stItem.bind(5, structure.getInfo().name);
-                                stItem.bind(6, structure.getBuildProgress());
+                                stItem.bind(6, structure.getBuildValue());
                                 stItem.step();
                                 stItem.reset(false);
                             }

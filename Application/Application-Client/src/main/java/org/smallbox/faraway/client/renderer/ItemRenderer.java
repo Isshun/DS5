@@ -48,7 +48,7 @@ public class ItemRenderer extends BaseRenderer {
     }
 
     private Sprite getItemSprite(UsableItem item) {
-        return spriteManager.getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false);
+        return spriteManager.getSprite(item.getInfo(), item.getGraphic(), item.isBuildComplete() ? item.getInfo().height : 0, 0, 255, false);
     }
 
     public void onRefresh(int frame) {

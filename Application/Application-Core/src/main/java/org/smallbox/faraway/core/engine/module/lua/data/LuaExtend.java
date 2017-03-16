@@ -99,4 +99,8 @@ public abstract class LuaExtend {
         }
     }
 
+    protected static double byHour(double value) {
+        return value / Application.config.game.tickPerHour;
+    }
+
 }

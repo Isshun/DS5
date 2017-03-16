@@ -84,10 +84,11 @@ public class ConsumableItem extends MapObjectModel {
     public String toString() { return _info.name + " at " + _parcel; }
 
     public void removeQuantity(int quantity) {
-        _freeQuantity = _freeQuantity - quantity;
+        _freeQuantity -= quantity;
+        _totalQuantity -= quantity;
 
-        if (_freeQuantity < 0) {
-            throw new GameException(ConsumableItem.class, "freeQuantity cannot be < 0", this, _freeQuantity);
+        if (_freeQuantity < 0 || _totalQuantity < 0) {
+            throw new GameException(ConsumableItem.class, "quantity cannot be < 0", this, _freeQuantity, _totalQuantity);
         }
     }
 

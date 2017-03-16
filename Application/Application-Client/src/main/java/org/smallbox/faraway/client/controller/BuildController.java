@@ -1,16 +1,18 @@
 package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.renderer.BuildRenderer;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
@@ -41,6 +43,9 @@ public class BuildController extends LuaController {
     @BindLua
     private UILabel contentLabel;
 
+    @BindComponent
+    private BuildRenderer buildRenderer;
+
     private ItemInfo _currentItem;
 
     @Override
@@ -60,6 +65,8 @@ public class BuildController extends LuaController {
         }
 
         _currentItem = null;
+
+        buildRenderer.setItemInfo(null);
 
         return false;
     }
@@ -191,6 +198,7 @@ public class BuildController extends LuaController {
         _currentItem = itemInfo;
 
         if (itemInfo != null) {
+            buildRenderer.setItemInfo(itemInfo);
 //            worldInteractionModule.setOnClickListener(parcelList -> {
 //                parcelList.forEach(parcel -> {
 //                    if (itemInfo.isUserItem) {

@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ public class WorldModule extends GameModule {
 
     @BindModule
     private JobModule jobModule;
+
+    @BindModule
+    private WeatherModule weatherModule;
 
     private ParcelModel[][][]                   _parcels;
     private List<ParcelModel>                   _parcelList;
@@ -119,6 +123,20 @@ public class WorldModule extends GameModule {
     @Override
     public boolean isModuleMandatory() {
         return true;
+    }
+
+    public double getTemperature(ParcelModel parcel) {
+        if (parcel.getRoom() != null) {
+            return parcel.getRoom().getTemperature();
+        }
+        return weatherModule.getTemperature();
+    }
+
+    public double getLight(ParcelModel parcel) {
+        if (parcel.getRoom() != null) {
+            return parcel.getRoom().getLight();
+        }
+        return weatherModule.getLight();
     }
 
 }

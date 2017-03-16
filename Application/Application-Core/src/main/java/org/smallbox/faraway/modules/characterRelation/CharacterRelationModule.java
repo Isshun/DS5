@@ -4,12 +4,9 @@ import org.smallbox.faraway.core.dependencyInjector.BindConfig;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.CharacterModuleSerializer;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-@ModuleSerializer(CharacterModuleSerializer.class)
 public class CharacterRelationModule extends GameModule {
 
     @BindConfig

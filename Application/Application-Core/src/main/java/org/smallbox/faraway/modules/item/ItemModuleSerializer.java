@@ -22,9 +22,9 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
     public void onSave(ItemModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                db.exec("CREATE TABLE WorldModule_item (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
+                db.exec("CREATE TABLE WorldModule_item (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER, health REAL)");
 
-                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)");
+                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, x, y, z, name, buildProgress, health) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
                     module.getItems().forEach(item -> {
@@ -35,7 +35,8 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                                 stItem.bind(3, item.getParcel().y);
                                 stItem.bind(4, item.getParcel().z);
                                 stItem.bind(5, item.getInfo().name);
-                                stItem.bind(6, item.getBuildProgress());
+                                stItem.bind(6, item.getBuildValue());
+                                stItem.bind(7, item.getHealth());
                                 stItem.step();
                                 stItem.reset(false);
                             }
@@ -56,7 +57,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
     public void onLoad(ItemModule itemModule, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress FROM WorldModule_item");
+                SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress, health FROM WorldModule_item");
                 try {
                     while (stItem.step()) {
                         ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));
@@ -64,6 +65,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                             UsableItem item = new UsableItem(itemInfo, stItem.columnInt(0));
                             item.setParcel(WorldHelper.getParcel(stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3)));
                             item.setBuildProgress(stItem.columnInt(5));
+                            item.setHealth(stItem.columnInt(6));
                             item.init();
                             itemModule.addItem(item);
                         }

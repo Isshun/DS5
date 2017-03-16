@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.consumable.BasicStoreJob;
+import org.smallbox.faraway.modules.storing.BasicStoreJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.plant.BasicHarvestJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;

@@ -1,20 +1,23 @@
 package org.smallbox.faraway.modules.structure;
 
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.modules.item.BuildJob;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
+import org.smallbox.faraway.modules.BuildItemModule;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -24,7 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 @ModuleSerializer(StructureModuleSerializer.class)
 //@ModuleRenderer({StructureBottomRenderer.class, StructureTopRenderer.class})
-public class StructureModule extends GameModule<StructureModuleObserver> {
+public class StructureModule extends BuildItemModule<StructureModuleObserver> {
 
     @BindModule
     private PathManager pathManager;
@@ -34,6 +37,12 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
 
     @BindModule
     private JobModule jobModule;
+
+    @BindModule
+    private ConsumableModule consumableModule;
+
+    @BindComponent
+    private Data data;
 
 //    @BindModule
 //    private WorldInteractionModule worldInteractionModule;
@@ -84,25 +93,12 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
 
     @Override
     public void onGameStart(Game game) {
-        _structures.stream()
-                .filter(item -> item.getBuildProgress() < item.getBuildCost())
-                .forEach(this::launchBuild);
     }
 
     @Override
-    protected void onGameUpdate(Game game, int tick) {
-// TODO
-        //            // Create hauling jobs
-//            _structures.stream().filter(structure -> !structure.isComplete())
-//                    .forEach(item -> item.getComponents().stream()
-//                            .filter(component -> component.currentQuantity < component.neededQuantity && component.job == null)
-//                            .forEach(component -> jobModule.addHaulJob(new HaulJob(item, component))));
-
-        // Create Build jobs
-        _structures.stream()
-                .filter(structure -> !structure.isComplete())
-                .filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                .forEach(item -> jobModule.addJob(new BuildJob(item)));
+    protected void onModuleUpdate(Game game) {
+        createBuildJobs(jobModule, consumableModule, _structures);
+        createRepairJobs(jobModule, _structures);
     }
 
     public void removeStructure(StructureItem structure) {
@@ -127,7 +123,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
     @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
         StructureItem structure = parcel.getItem(StructureItem.class);
-        if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {
+        if (structure != null && !structure.isBuildComplete() && (object == null || object instanceof StructureItem)) {
             parcel.removeItem(structure);
             notifyObservers(observer -> observer.onRemoveStructure(parcel, structure));
         }
@@ -176,9 +172,7 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
      * @param structure to build
      */
     private void launchBuild(StructureItem structure) {
-        BuildJob job = new BuildJob(structure);
-        structure.setBuildJob(job);
-        jobModule.addJob(job);
+        throw new NotImplementedException();
     }
 
     public void addPattern(ParcelModel parcel, ItemInfo itemInfo) {
@@ -193,12 +187,17 @@ public class StructureModule extends GameModule<StructureModuleObserver> {
         launchBuild(structure);
     }
 
-    public void addStructure(StructureItem structure, int x, int y, int z) {
+    public StructureItem addStructure(String itemName, int x, int y, int z) {
+        return addStructure(new StructureItem(data.getItemInfo(itemName)), x, y, z);
+    }
+
+    public StructureItem addStructure(StructureItem structure, int x, int y, int z) {
         ParcelModel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
             structure.setParcel(parcel);
             _structures.add(structure);
         }
+        return structure;
     }
 
     public StructureItem getStructure(ParcelModel parcel) {

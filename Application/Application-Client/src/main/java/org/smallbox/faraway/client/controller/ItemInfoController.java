@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -40,9 +41,13 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UIList         listWorkers;
     @BindLua private UIList         listComponents;
     @BindLua private UIList         listFactoryInventory;
+    @BindLua private UIList         listInventory;
 
     @BindLuaController
     private ItemInfoReceiptController itemInfoReceiptController;
+
+    @BindLuaController
+    private ItemInfoFactoryComponentsController itemInfoFactoryComponentsController;
 
     @BindModule
     private ItemModule itemModule;
@@ -61,7 +66,18 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         refreshInventory(item);
 
         if (item.getFactory() != null) {
+            itemInfoFactoryComponentsController.setItem(item);
             refreshFactory(item.getFactory());
+        }
+
+        if (item.getInventory() != null) {
+            item.getInventory().forEach(consumable ->
+                    listInventory.addNextView(UILabel.create(null)
+                            .setText(consumable.getInfo().label)
+                            .setTextColor(0x9afbff)
+                            .setSize(100, 20))
+            );
+            listInventory.switchViews();
         }
     }
 
@@ -162,13 +178,13 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     // Refresh building frame
     private void refreshBuilding(UsableItem item) {
-        if (!item.isComplete()) {
+        if (!item.isBuildComplete()) {
             frameBuild.setVisible(true);
 
-            imgBuildProgress.setTextureRect(0, 80, (int) (Math.floor(item.getBuildProgress() * 352 / item.getBuildCost() / 10) * 10), 16);
+            imgBuildProgress.setTextureRect(0, 80, (int) (Math.floor(item.getBuildValue() * 352 / item.getBuildCost() / 10) * 10), 16);
 //            lbBuildProgress.setDashedString("Building", item.getBuildProgress() + "/" + item.getBuildCost(), 30);
             lbBuildProgress.setText("Building");
-            lbBuildCost.setText(item.getBuildProgress() + "/" + item.getBuildCost());
+            lbBuildCost.setText(item.getBuildValue() + "/" + item.getBuildCost());
 
             if (CollectionUtils.isNotEmpty(item.getInfo().components)) {
                 frameComponents.setVisible(true);
@@ -191,5 +207,10 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         } else {
             frameWorkers.setVisible(false);
         }
+    }
+
+    @BindLuaAction
+    private void onOpenComponents(View view) {
+        itemInfoFactoryComponentsController.setVisible(true);
     }
 }

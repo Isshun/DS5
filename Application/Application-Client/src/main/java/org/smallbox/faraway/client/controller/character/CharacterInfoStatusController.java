@@ -15,7 +15,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.consumable.BasicStoreJob;
+import org.smallbox.faraway.modules.storing.BasicStoreJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.CollectionUtils;

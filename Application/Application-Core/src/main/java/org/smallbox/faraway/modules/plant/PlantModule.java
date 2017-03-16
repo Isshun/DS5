@@ -85,7 +85,7 @@ public class PlantModule extends GameModule {
         plant.setGrowingInfo(null);
         double bestValue = -1;
         for (ItemInfo.ItemInfoPlant.GrowingInfo growingInfo: plant.getInfo().plant.states) {
-            if (growingInfo.value > bestValue && canGrow(growingInfo, parcel.getLight(), parcel.getTemperature())) {
+            if (growingInfo.value > bestValue && canGrow(growingInfo, parcel.getLight(), worldModule.getTemperature(parcel))) {
                 plant.setGrowingInfo(growingInfo);
                 bestValue = growingInfo.value;
             }

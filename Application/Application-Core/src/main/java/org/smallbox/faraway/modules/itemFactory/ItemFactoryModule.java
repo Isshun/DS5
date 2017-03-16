@@ -6,21 +6,15 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.item.ItemModuleObserver;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Log;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Alex on 26/06/2015.
@@ -46,34 +40,17 @@ public class ItemFactoryModule extends GameModule {
     @BindModule
     private ItemModule itemModule;
 
-    private List<UsableItem> _items;
-
-    @Override
-    public void onGameCreate(Game game) {
-        _items = new LinkedList<>();
-
-        itemModule.addObserver(new ItemModuleObserver() {
-            @Override
-            public void onAddItem(ParcelModel parcel, UsableItem item) {
-                if (item.hasFactory() && !_items.contains(item)) {
-                    _items.add(item);
-                }
-            }
-
-            @Override
-            public void onRemoveItem(ParcelModel parcel, UsableItem item) {
-                _items.remove(item);
-            }
-        });
-    }
-
     @Override
     protected void onModuleUpdate(Game game) {
-        _items.forEach(item -> actionCheckComponents(item, item.getFactory()));
-        _items.forEach(item -> actionFindBestReceipt(item, item.getFactory()));
-        _items.forEach(item -> actionHaulingJobs(item, item.getFactory()));
-        _items.forEach(item -> actionCraftJobs(item, item.getFactory()));
-        _items.forEach(item -> actionRelease(item, item.getFactory()));
+        itemModule.getItems().stream()
+                .filter(item -> item.getFactory() != null)
+                .forEach(item -> {
+                    actionCheckComponents(item, item.getFactory());
+                    actionFindBestReceipt(item, item.getFactory());
+                    actionHaulingJobs(item, item.getFactory());
+                    actionCraftJobs(item, item.getFactory());
+                    actionRelease(item, item.getFactory());
+                });
     }
 
     /**
@@ -123,33 +100,9 @@ public class ItemFactoryModule extends GameModule {
             for (ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo receiptInputInfo: factory.getRunningReceipt().receiptInfo.inputs) {
                 int currentQuantity = factory.getCurrentQuantity(receiptInputInfo.item);
                 if (currentQuantity < receiptInputInfo.quantity) {
-
-                    // Compte le nombre de consomables qui seront rapportés par les jobs existants
-                    int quantityInJob = jobModule.getJobs().stream()
-                            .filter(job -> job instanceof BasicHaulJob)
-                            .map(job -> (BasicHaulJob)job)
-                            .filter(job -> job.getFactory() == factory)
-                            .mapToInt(BasicHaulJob::getHaulingQuantity)
-                            .sum();
-
-                    // Ajoute des jobs tant que la quantité de consomable présent dans l'usine et les jobs est inférieur à la quantité requise
-                    while (currentQuantity + quantityInJob < receiptInputInfo.quantity) {
-                        BasicHaulJob job = consumableModule.createHaulToFactoryJob(receiptInputInfo.item, item, receiptInputInfo.quantity - (currentQuantity + quantityInJob));
-
-                        // Ajoute la quantity de consomable ammené par ce nouveau job à la quantity existante
-                        if (job != null) {
-                            Log.info("[Factory] %s -> launch hauling job for component: %s", item, receiptInputInfo);
-
-                            quantityInJob += job.getHaulingQuantity();
-                        }
-
+                    if (!consumableModule.createHaulToFactoryJobs(item, receiptInputInfo.item, receiptInputInfo.quantity - currentQuantity)) {
                         // Annule la construction s'il n'y à plus suffisament de consomable disponible
-                        else {
-                            Log.debug("[Factory] %s -> not enough component: %s", item, receiptInputInfo);
-
-                            actionClear(item, factory);
-                            return;
-                        }
+                        actionClear(item, factory);
                     }
                 }
             }
@@ -204,7 +157,7 @@ public class ItemFactoryModule extends GameModule {
         jobModule.getJobs().stream()
                 .filter(job -> job instanceof BasicHaulJob)
                 .map(job -> (BasicHaulJob)job)
-                .filter(job -> job.getFactory() == factory)
+                .filter(job -> job.getItem() == item)
                 .forEach(JobModel::close);
 
         // Retire la recette en cours
@@ -254,7 +207,7 @@ public class ItemFactoryModule extends GameModule {
         availableQuantity += jobModule.getJobs().stream()
                 .filter(job -> job instanceof BasicHaulJob)
                 .map(job -> (BasicHaulJob)job)
-                .filter(job -> job.getFactory() == item.getFactory())
+                .filter(job -> job.getItem() == item)
                 .mapToInt(BasicHaulJob::getHaulingQuantity)
                 .sum();
 

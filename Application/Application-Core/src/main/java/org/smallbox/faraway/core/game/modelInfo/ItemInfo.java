@@ -174,10 +174,10 @@ public class ItemInfo extends ObjectInfo {
     public static class ItemBuildInfo {
         public static class ItemBuildComponentInfo {
             public ItemInfo    component;
-            public int         count;
+            public int quantity;
         }
 
-        public int                          cost;
+        public double cost;
         public List<ItemBuildComponentInfo> components = new ArrayList<>();
     }
 

@@ -7,6 +7,7 @@ import org.smallbox.faraway.modules.job.JobModel;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class MapObjectModel extends ObjectModel {
@@ -20,6 +21,34 @@ public abstract class MapObjectModel extends ObjectModel {
     protected ParcelModel       _parcel;
     private Set<JobModel>       _jobs;
     private GraphicInfo         _graphic;
+    private Collection<ConsumableItem>      _inventory = new ConcurrentLinkedQueue<>();
+
+    public void removeInventory(ItemInfo itemInfo, int quantity) {
+        _inventory.forEach(consumable -> {
+            if (consumable.getInfo().instanceOf(itemInfo)) {
+                consumable.removeQuantity(quantity);
+            }
+        });
+        _inventory.removeIf(consumable -> consumable.getTotalQuantity() == 0);
+    }
+
+    private ConsumableItem getInventory(ItemInfo itemInfo) {
+        for (ConsumableItem consumable: _inventory) {
+            if (consumable.getInfo().instanceOf(itemInfo)) {
+                return consumable;
+            }
+        }
+        return null;
+    }
+
+    public int getInventoryQuantity(ItemInfo itemInfo) {
+        for (ConsumableItem consumable: _inventory) {
+            if (consumable.getInfo().instanceOf(itemInfo)) {
+                return consumable.getTotalQuantity();
+            }
+        }
+        return 0;
+    }
 
     public MapObjectModel(ItemInfo info) {
         init(info, ++_maxId);
@@ -30,6 +59,18 @@ public abstract class MapObjectModel extends ObjectModel {
             _maxId = id;
         }
         init(info, id);
+    }
+
+    public void addInventory(ItemInfo itemInfo, int quantity) {
+        _inventory.add(new ConsumableItem(itemInfo, quantity));
+    }
+
+    public void addInventory(ConsumableItem consumable) {
+        _inventory.add(consumable);
+    }
+
+    public Collection<ConsumableItem> getInventory() {
+        return _inventory;
     }
 
     protected void init(ItemInfo info, int id) {

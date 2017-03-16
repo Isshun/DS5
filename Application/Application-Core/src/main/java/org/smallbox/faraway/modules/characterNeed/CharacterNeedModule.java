@@ -7,10 +7,8 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.CharacterModuleSerializer;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
@@ -30,7 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.*;
 
-@ModuleSerializer(CharacterModuleSerializer.class)
 public class CharacterNeedModule extends GameModule {
 
     @BindComponent

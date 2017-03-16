@@ -136,7 +136,7 @@ public class SpriteManager {
     }
 
     public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
-    public Sprite getItem(StructureItem structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
+    public Sprite getItem(StructureItem structure) { return structure.isBuildComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
 
     private Sprite getBluePrint() {
         long sum = getSum(-1, 0, 0, 0);

@@ -81,7 +81,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     public AreaModel                getArea() { return _area; }
     public int                      getEnvironmentScore() { return _environmentScore; }
     public int                      getTile() { return _tile; }
-    public double                   getLight() { return _room != null ? _room.getLight() : -1; }
+    public double                   getLight() { return _room != null ? _room.getLight() : 1; }
     public double                   getTemperature() { return _room != null ? _room.getTemperature() : -1; }
     public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
     public double                   getMoisture() { return 0.5; }
@@ -139,7 +139,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
         // Check structure (wall, closed door)
         StructureItem structure = getItem(StructureItem.class);
-        if (structure != null && !structure.getInfo().isWalkable && structure.isComplete()) {
+        if (structure != null && !structure.getInfo().isWalkable && structure.isBuildComplete()) {
             return false;
         }
 

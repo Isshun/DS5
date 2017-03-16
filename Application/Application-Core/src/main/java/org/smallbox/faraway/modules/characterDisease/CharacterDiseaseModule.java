@@ -12,7 +12,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.Collection;
 
-@ModuleSerializer(CharacterModuleSerializer.class)
 public class CharacterDiseaseModule extends GameModule<CharacterModuleObserver> {
 
     @BindModule

@@ -3,17 +3,14 @@ package org.smallbox.faraway.modules.item;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.modules.job.JobModel;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class UsableItem extends BuildableMapObject {
@@ -27,7 +24,6 @@ public class UsableItem extends BuildableMapObject {
     private ItemFactoryModel                _factory;
     private int[]                           _storageSlot;
     private List<NetworkConnectionModel>    _networkConnections;
-    private Collection<ConsumableItem>      _inventory = new ConcurrentLinkedQueue<>();
 
     public UsableItem(ItemInfo info, int id) {
         super(info, id);
@@ -148,7 +144,7 @@ public class UsableItem extends BuildableMapObject {
                 return false;
             }
 
-            if (!isComplete()) {
+            if (!isBuildComplete()) {
                 return false;
             }
 
@@ -211,17 +207,5 @@ public class UsableItem extends BuildableMapObject {
 
     @Override
     public String toString() { return _info + " at " + _parcel; }
-
-    public Collection<ConsumableItem> getInventory() {
-        return _inventory;
-    }
-
-    public void addInventory(ItemInfo itemInfo, int quantity) {
-        _inventory.add(new ConsumableItem(itemInfo, quantity));
-    }
-
-    public void addInventory(ConsumableItem consumable) {
-        _inventory.add(consumable);
-    }
 
 }

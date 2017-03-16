@@ -223,7 +223,7 @@ public abstract class CharacterModel extends MovableModel {
 
             // Character has reach next parcel
             if (_moveProgress >= 1 && _path.getCurrentParcel() != null) {
-                _moveProgress = 0;
+                    _moveProgress = 0;
 
                 // Move continue, set next parcel + direction
                 if (_path.next()) {

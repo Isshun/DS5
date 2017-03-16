@@ -2,13 +2,13 @@ package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.BuildItemModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.job.UseJob;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -17,6 +17,7 @@ import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 @ModuleSerializer(ItemModuleSerializer.class)
-public class ItemModule extends GameModule<ItemModuleObserver> {
+public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
     @BindModule
     private WorldModule worldModule;
@@ -79,20 +80,14 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
     @Override
     public void onGameStart(Game game) {
         _items.stream()
-                .filter(item -> item.getBuildProgress() < item.getBuildCost())
+                .filter(item -> item.getBuildValue() < item.getBuildCost())
                 .forEach(this::launchBuild);
     }
 
     @Override
-    protected void onGameUpdate(Game game, int tick) {
-
-        // Create Build jobs
-        _items.stream().filter(item -> !item.isComplete()).filter(item -> item.hasAllComponents() && item.getBuildJob() == null)
-                .forEach(item -> jobModule.addJob(new BuildJob(item)));
-
-////             Create craft jobs
-//            _items.stream().filter(item -> item.isFactory() && item.getFactory().getJob() == null && item.getFactory().scan(_consumableModel))
-//                    .forEach(item -> jobModule.addHaulJob(new CraftJob(item)));
+    protected void onModuleUpdate(Game game) {
+        createBuildJobs(jobModule, consumableModule, _items);
+        createRepairJobs(jobModule, _items);
     }
 
     @Override
@@ -136,9 +131,7 @@ public class ItemModule extends GameModule<ItemModuleObserver> {
      * @param item to build
      */
     private void launchBuild(UsableItem item) {
-        BuildJob job = new BuildJob(item);
-        item.setBuildJob(job);
-        jobModule.addJob(job);
+        throw new NotImplementedException();
     }
 
     public void addItem(UsableItem item) {

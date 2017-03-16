@@ -12,6 +12,9 @@ public class StringUtils {
         StringBuilder sb = new StringBuilder();
         sb.append(label);
 
+        int valueHash = value.hashCode();
+        value = Application.data != null && Application.data.hasString(valueHash) ? Application.data.getString(valueHash) : value;
+
         for (int i = columns - label.replace("_", "").length() - value.length(); i > 0; i--) {
             sb.append('.');
         }

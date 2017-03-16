@@ -47,11 +47,11 @@ public class StructureTopRenderer extends BaseRenderer {
         Sprite buildSprite = spriteManager.getIcon("../Module-Structure/src/main/resources/ic_build.png", 32, 32);
         structureModule.getStructures().stream()
                 .filter(structure -> viewport.hasParcel(structure.getParcel()))
-                .forEach(structure -> renderer.drawOnMap(structure.getParcel(), structure.isComplete() ? getSprite(structure) : buildSprite));
+                .forEach(structure -> renderer.drawOnMap(structure.getParcel(), structure.isBuildComplete() ? getSprite(structure) : buildSprite));
     }
 
     private Sprite getSprite(StructureItem structure) {
-        return spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
+        return spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isBuildComplete() ? structure.getInfo().height : 0, 0, 255, false);
     }
 
     @Override

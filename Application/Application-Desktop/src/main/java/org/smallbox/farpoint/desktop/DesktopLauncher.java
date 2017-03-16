@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
@@ -20,6 +21,7 @@ import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
 import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
+import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -47,7 +49,14 @@ public class DesktopLauncher {
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
 //        new LwjglApplication(new GDXApplication(() -> {}), LwjglConfig.from(applicationConfig));
-        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
+//        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
+        new LwjglApplication(new GDXApplication(loadGame()), LwjglConfig.from(applicationConfig));
+    }
+
+    private static GDXApplication.GameTestCallback loadGame() {
+//        C:\Users\Alex\AppData\Roaming\FarAway\saves\83ade0a0-2c38-4e38-a5b7-f04921e53317\2017-03-16-06-06-33-57.db
+
+        return () -> Application.gameManager.loadLastGame();
     }
 
     private static GDXApplication.GameTestCallback testGame() {
@@ -58,8 +67,8 @@ public class DesktopLauncher {
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
-                character.addInventory("base.consumable.vegetable.rice", 10);
-                character.addInventory("base.consumable.vegetable.carrot", 10);
+//                character.addInventory("base.consumable.vegetable.rice", 10);
+//                character.addInventory("base.consumable.vegetable.carrot", 10);
                 character.setParcel(WorldHelper.getParcel(1, 1, 1));
 //                character.moveTo(WorldHelper.getParcel(5, 3, 1));
                 character.moveTo(WorldHelper.getParcel(8, 4, 1));
@@ -72,8 +81,13 @@ public class DesktopLauncher {
                     character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
                 }
 
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 1000, 2, 2, 1);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 1000, 2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.wood_log", 1000, 4, 2, 1);
+                StructureItem structureItem = Application.moduleManager.getModule(StructureModule.class).addStructure("base.wood_wall", 6, 2, 1);
+                structureItem.setBuildProgress(0);
+                structureItem.setHealth(200);
+                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1);
 
                 DiseaseInfo diseaseInfo = new DiseaseInfo();
                 diseaseInfo.label = "di test";

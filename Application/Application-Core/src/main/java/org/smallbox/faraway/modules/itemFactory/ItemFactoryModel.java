@@ -1,16 +1,19 @@
 package org.smallbox.faraway.modules.itemFactory;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Log;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.FactoryOutputMode;
@@ -31,6 +34,11 @@ public class ItemFactoryModel {
     private String _message;
     private JobModel _craftJob;
     private int _costRemaining;
+    private Map<ItemInfo, Boolean> acceptedComponents = new ConcurrentHashMap<>();
+
+    public Map<ItemInfo, Boolean> getAcceptedComponents() {
+        return acceptedComponents;
+    }
 
     public JobModel getCraftJob() { return _craftJob; }
 
@@ -67,6 +75,17 @@ public class ItemFactoryModel {
             _receipts = _receiptGroups.stream()
                     .flatMap(receiptGroup -> receiptGroup.receiptGroupInfo.receipts.stream().map(receiptInfo -> new FactoryReceiptModel(receiptGroup, receiptInfo)))
                     .collect(Collectors.toList());
+
+            List<ItemInfo> acceptedItems = _receipts.stream()
+                    .flatMap(receipt -> receipt.receiptInfo.inputs.stream())
+                    .map(receiptInputInfo -> receiptInputInfo.item)
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            Application.data.consumables.stream()
+                    .filter(itemInfo -> acceptedItems.stream().anyMatch(itemInfo::instanceOf))
+                    .forEach(itemInfo -> acceptedComponents.put(itemInfo, true));
+
         }
     }
 
@@ -131,6 +150,10 @@ public class ItemFactoryModel {
         }
 
         return true;
+    }
+
+    public void setAcceptedComponents(ItemInfo itemInfo, boolean accepted) {
+        acceptedComponents.put(itemInfo, accepted);
     }
 
     public static class FactoryReceiptGroupModel {

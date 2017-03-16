@@ -34,13 +34,14 @@ public class UICheckBox extends View {
         void onCheck(Value checked);
     }
 
-    public void setChecked(Value checked) { _checked = checked; }
+    public UICheckBox setChecked(Value checked) { _checked = checked; return this; }
 
-    public void setOnCheckListener(OnCheckListener onCheckListener) {
+    public UICheckBox setOnCheckListener(OnCheckListener onCheckListener) {
         setOnClickListener(event -> {
             _checked = _checked == Value.TRUE ? Value.FALSE : Value.TRUE;
             onCheckListener.onCheck(_checked);
         });
+        return this;
     }
 
     public void setMaxLength(int maxLength) {
@@ -152,9 +153,10 @@ public class UICheckBox extends View {
         return this;
     }
 
-    public void setTextColor(int color) {
+    public UICheckBox setTextColor(int color) {
         _textColor = new Color(color);
         _gdxTextColor = new com.badlogic.gdx.graphics.Color(_textColor.r / 255f, _textColor.g / 255f, _textColor.b / 255f, _textColor.a / 255f);
+        return this;
     }
 
     public void setStringValue(String string) {

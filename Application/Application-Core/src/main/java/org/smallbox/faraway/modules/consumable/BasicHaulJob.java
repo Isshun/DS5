@@ -1,13 +1,13 @@
 package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.Log;
@@ -21,9 +21,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class BasicHaulJob extends JobModel {
 
-    public ItemFactoryModel _factory;
     private ConsumableModule _consumableModule;
-    private UsableItem _item;
+    private MapObjectModel _item;
     protected Map<ConsumableItem, Integer> _targetConsumables;
     protected Collection<ConsumableModule.ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
 
@@ -39,13 +38,13 @@ public class BasicHaulJob extends JobModel {
      * @param item UsableItem
      * @return BasicHaulJob
      */
-    public static BasicHaulJob toFactory(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, UsableItem item) {
+    public static BasicHaulJob toFactory(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, MapObjectModel item) {
 
         return jobModule.createJob(BasicHaulJob.class, null, item.getParcel(), job -> {
-            job.initHaul(item.getParcel(), targetConsumables, item.getFactory(), item, consumableModule);
+            job.initHaul(item.getParcel(), targetConsumables, item, consumableModule);
 
             targetConsumables.forEach((consumable, quantity) ->
-                    job.setMainLabel(String.format("Haul %s (x%d) to factory", consumable.getInfo().label, quantity)));
+                    job.setMainLabel(String.format("Haul %s to %s", consumable.getInfo().label, item.getInfo().label)));
 
             return true;
         });
@@ -102,13 +101,12 @@ public class BasicHaulJob extends JobModel {
         super(itemInfoAction, parcelModel);
     }
 
-    public ItemFactoryModel getFactory() {
-        return _factory;
+    public MapObjectModel getItem() {
+        return _item;
     }
 
-    public void initHaul(ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, ItemFactoryModel factory, UsableItem item, ConsumableModule consumableModule) {
+    public void initHaul(ParcelModel targetParcel, Map<ConsumableItem, Integer> targetConsumables, MapObjectModel item, ConsumableModule consumableModule) {
         _item = item;
-        _factory = factory;
         _targetParcel = targetParcel;
         _targetConsumables = targetConsumables;
         _consumableModule = consumableModule;
@@ -131,8 +129,8 @@ public class BasicHaulJob extends JobModel {
 
     @Override
     protected void onClose() {
-        if (_factory != null) {
-            _factory.clear();
+        if (_item instanceof UsableItem && ((UsableItem) _item).getFactory() != null) {
+            ((UsableItem)_item).getFactory().clear();
         }
         _locks.forEach(lock -> _consumableModule.cancelLock(lock));
     }

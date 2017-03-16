@@ -97,5 +97,16 @@ ui:extend({
         {"priority", "priorité"},
 
         {"storage_content", "Inventaire"},
+
+        {"BUILD_IN_PROGRESS", "En construction"},
+
+        {"JOB_INITIALIZED", "waiting"},
+        {"JOB_WAITING", "waiting"},
+        {"JOB_RUNNING", "running"},
+        {"JOB_COMPLETE", "complete"},
+        {"JOB_BLOCKED", "blocked"},
+        {"JOB_INVALID", "invalid"},
+        {"JOB_MISSING_COMPONENT", "invalid"},
+        {"JOB_ABORTED", "invalid"},
     }
 })

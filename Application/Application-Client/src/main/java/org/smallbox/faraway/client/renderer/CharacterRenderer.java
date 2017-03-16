@@ -70,7 +70,7 @@ public class CharacterRenderer extends BaseRenderer {
 
                 double rest = Application.gameManager.getGame().getNextTick() - System.currentTimeMillis();
                 double ratio = 1.0 - rest / Application.gameManager.getGame().getTickInterval();
-                System.out.println("ratio: " + ratio);
+//                System.out.println("ratio: " + ratio);
 
                 // Get exact position
 //                switch (direction) {
@@ -107,17 +107,23 @@ public class CharacterRenderer extends BaseRenderer {
 //                }
 //                }
 
-                drawCharacter(renderer, character, posX, posY);
-                drawLabel(renderer, character, posX, posY);
-                drawSelection(renderer, character, posX, posY);
-                drawInventory(renderer, character, posX, posY);
-                drawJob(renderer, character, posX, posY);
+                doDraw(renderer, character, posX, posY);
             }
 
-            // Is dead
-            else {
-                renderer.draw(posX, posY, _spriteManager.getIcon("[base]/res/ic_dead.png"));
-            }
+        }
+    }
+
+    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+        if (character.isAlive()) {
+            drawCharacter(renderer, character, posX, posY);
+            drawLabel(renderer, character, posX, posY);
+            drawSelection(renderer, character, posX, posY);
+            drawInventory(renderer, character, posX, posY);
+            drawJob(renderer, character, posX, posY);
+        }
+
+        else {
+            renderer.draw(posX, posY, _spriteManager.getIcon("[base]/res/ic_dead.png"));
         }
     }
 
@@ -220,7 +226,7 @@ public class CharacterRenderer extends BaseRenderer {
 
         if (path.getStartTime() == 0) {
             path.setStartTime(System.currentTimeMillis());
-            System.out.println("start index: " + path.getIndex());
+//            System.out.println("start index: " + path.getIndex());
         }
 
         int tickInterval = Application.gameManager.getGame().getTickInterval();
@@ -303,17 +309,17 @@ public class CharacterRenderer extends BaseRenderer {
 //            character.getPath().getSections().poll();
 //        }
 
-            renderer.draw(
+            doDraw(renderer, character,
                     (int) (viewPortX + (parcel.x * 32) + (dirX * 32 * decimal)),
-                    (int) (viewPortY + (parcel.y * 32) + (dirY * 32 * decimal)),
-                    _spriteManager.getCharacter(character, 0, 0));
+                    (int) (viewPortY + (parcel.y * 32) + (dirY * 32 * decimal))
+            );
         }
 
         else {
-            renderer.draw(
+            doDraw(renderer, character,
                     (int) (viewPortX + (character.getParcel().x * 32)),
-                    (int) (viewPortY + (character.getParcel().y * 32)),
-                    _spriteManager.getCharacter(character, 0, 0));
+                    (int) (viewPortY + (character.getParcel().y * 32))
+            );
         }
 
         //        renderer.draw(

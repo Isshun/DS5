@@ -42,8 +42,8 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.JOB_ABORTED;
     }
 
-    public void setProgress(int current, int total) {
-        _progress = total != 0 ? (double)current / total : 0;
+    public void setProgress(double current, double  total) {
+        _progress = total != 0 ? current / total : 0;
     }
 
     public enum JobCheckReturn {

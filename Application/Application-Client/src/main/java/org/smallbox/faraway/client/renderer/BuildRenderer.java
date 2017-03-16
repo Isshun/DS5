@@ -2,9 +2,10 @@ package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.BuildController;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.manager.InputManager;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.engine.Color;
@@ -24,12 +25,18 @@ public class BuildRenderer extends BaseRenderer {
     private int                     _cursorParcelX;
     private int                     _cursorParcelY;
 
+    private int _mouseX;
+    private int _mouseY;
+    private int _mouseDownX;
+    private int _mouseDownY;
+
     private static Color COLOR_CRITICAL = new Color(0xbb0000);
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
 
     private UIFrame resEden;
     private UIFrame resEden2;
+    private ItemInfo _itemInfo;
 
     {
         resEden = new UIFrame(null);
@@ -60,6 +67,26 @@ public class BuildRenderer extends BaseRenderer {
     }
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+
+        if (_itemInfo != null) {
+
+            if (_mouseDownX != -1 && _mouseDownY != -1) {
+                int fromMapX = Math.min(viewport.getWorldPosX(_mouseX), viewport.getWorldPosX(_mouseDownX));
+                int fromMapY = Math.min(viewport.getWorldPosY(_mouseY), viewport.getWorldPosY(_mouseDownY));
+                int toMapX = Math.max(viewport.getWorldPosX(_mouseX), viewport.getWorldPosX(_mouseDownX));
+                int toMapY = Math.max(viewport.getWorldPosY(_mouseY), viewport.getWorldPosY(_mouseDownY));
+                for (int mapX = fromMapX; mapX <= toMapX; mapX++) {
+                    for (int mapY = fromMapY; mapY <= toMapY; mapY++) {
+                        renderer.drawRectangleOnMap(mapX, mapY, 32, 32, com.badlogic.gdx.graphics.Color.BROWN, true, 0, 0);
+                    }
+                }
+            } else {
+                renderer.drawRectangleOnMap(viewport.getWorldPosX(_mouseX), viewport.getWorldPosY(_mouseY), 32, 32, com.badlogic.gdx.graphics.Color.BROWN, true, 0, 0);
+            }
+
+            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, com.badlogic.gdx.graphics.Color.CHARTREUSE, "Build " + _itemInfo.label);
+        }
+
         if (buildController != null && buildController.getCurrentItem() != null) {
 
             if (ApplicationClient.inputManager.getTouchDrag()) {
@@ -127,7 +154,25 @@ public class BuildRenderer extends BaseRenderer {
         _cursorParcelY = parcelY;
     }
 
+    @Override
+    public void onMouseMove(GameEvent event) {
+        _mouseX = event.mouseEvent.x;
+        _mouseY = event.mouseEvent.y;
+    }
+
+    @Override
+    public void onMousePress(GameEvent event) {
+        _mouseDownX = event.mouseEvent.x;
+        _mouseDownY = event.mouseEvent.y;
+    }
+
     public void dismissCursor() {
         _cursorItem = null;
+    }
+
+    public void setItemInfo(ItemInfo itemInfo) {
+        _itemInfo = itemInfo;
+        _mouseDownX = -1;
+        _mouseDownY = -1;
     }
 }

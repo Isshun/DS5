@@ -7,11 +7,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.consumable.StorageArea;
-import org.smallbox.faraway.modules.plant.GardenArea;
-import org.smallbox.faraway.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class AreaSerializer extends GameSerializer<AreaModule> {
@@ -108,41 +104,41 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
     }
 
     public void onLoad(AreaModule module, Game game) {
-        Application.sqlManager.post(db -> {
-            try {
-                SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");
-
-                List<GardenArea> gardenAreas = new ArrayList<>();
-                SQLiteStatement stGarden = db.prepare("SELECT id, plant FROM area_garden");
-                try {
-                    while (stGarden.step()) {
-                        GardenArea garden = new GardenArea();
-                        garden.setAccept(Application.data.getItemInfo(stGarden.columnString(1)), true);
-                        getAreaParcels(garden, stParcel, stGarden.columnInt(0));
-                        gardenAreas.add(garden);
-                    }
-                } finally {
-                    stGarden.dispose();
-                }
-
-                List<StorageArea> storageAreas = new ArrayList<>();
-                SQLiteStatement stStorage = db.prepare("SELECT id FROM area_storage");
-                SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id, priority FROM area_storage_item where area_id = ?");
-                try {
-                    while (stStorage.step()) {
-                        StorageArea storage = new StorageArea();
-                        getAreaParcels(storage, stParcel, stStorage.columnInt(0));
-                        getAreaStorageItems(storage, stStorageItem, stStorage.columnInt(0));
-                        storageAreas.add(storage);
-                    }
-                } finally {
-                    stStorage.dispose();
-                }
-
-            } catch (SQLiteException e) {
-                Log.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());
-            }
-        });
+//        Application.sqlManager.post(db -> {
+//            try {
+//                SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");
+//
+//                List<GardenArea> gardenAreas = new ArrayList<>();
+//                SQLiteStatement stGarden = db.prepare("SELECT id, plant FROM area_garden");
+//                try {
+//                    while (stGarden.step()) {
+//                        GardenArea garden = new GardenArea();
+//                        garden.setAccept(Application.data.getItemInfo(stGarden.columnString(1)), true);
+//                        getAreaParcels(garden, stParcel, stGarden.columnInt(0));
+//                        gardenAreas.add(garden);
+//                    }
+//                } finally {
+//                    stGarden.dispose();
+//                }
+//
+//                List<StorageArea> storageAreas = new ArrayList<>();
+//                SQLiteStatement stStorage = db.prepare("SELECT id FROM area_storage");
+//                SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id, priority FROM area_storage_item where area_id = ?");
+//                try {
+//                    while (stStorage.step()) {
+//                        StorageArea storage = new StorageArea();
+//                        getAreaParcels(storage, stParcel, stStorage.columnInt(0));
+//                        getAreaStorageItems(storage, stStorageItem, stStorage.columnInt(0));
+//                        storageAreas.add(storage);
+//                    }
+//                } finally {
+//                    stStorage.dispose();
+//                }
+//
+//            } catch (SQLiteException e) {
+//                Log.warning("Unable to read area_parcel or area_storage table: " + e.getMessage());
+//            }
+//        });
     }
 
     private void getAreaStorageItems(StorageArea storage, SQLiteStatement stItem, int areaId) throws SQLiteException {

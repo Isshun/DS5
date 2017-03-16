@@ -241,7 +241,9 @@ public class UIManager {
 
         if (!event.consumed && action == Action.PRESSED && button == MouseButton.LEFT) {
             _dragListener = ApplicationClient.uiEventManager.drag(event, x, y);
-            return true;
+            if (_dragListener != null) {
+                return true;
+            }
         }
 
         // On drag drop

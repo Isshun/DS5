@@ -28,32 +28,6 @@ public class GameManager implements GameObserver {
     @BindModule
     private IWorldFactory       worldFactory;
 
-    private boolean _paused;
-
-    @Override
-    public void onGameLoad(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo) {
-//        Application.notify(GameObserver::onReloadUI);
-        _game = new Game(gameInfo);
-        Application.dependencyInjector.register(_game);
-
-        _game.createModules();
-
-        Application.runOnMainThread(() -> Application.notify(observer -> observer.onGameCreateObserver(_game)));
-
-        Application.gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename,
-                () -> Application.runOnMainThread(() -> {
-                    Application.notify(observer -> observer.onGameStart(_game));
-                    _game.start();
-                }));
-    }
-
-//    @Override
-//    public void onKeyEvent(GameEventListener.Action action, GameEventListener.Key key, GameEventListener.Modifier modifier) {
-//        if (action == GameEventListener.Action.RELEASED && key == GameEventListener.Key.P) {
-//            _paused = !_paused;
-//        }
-//    }
-
     public interface GameCreateListener {
         void onGameCreate(Game game);
     }
@@ -117,6 +91,35 @@ public class GameManager implements GameObserver {
         Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
+    public void loadGame(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo, GameListener listener) {
+        long time = System.currentTimeMillis();
+
+        _game = new Game(gameInfo);
+        Application.dependencyInjector.register(_game);
+
+        _game.loadModules();
+        _game.createModules();
+
+        Application.notify(observer -> observer.onGameCreateObserver(_game));
+        if (listener != null) {
+            listener.onGameCreate(_game);
+        }
+
+        Application.gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
+
+            Application.notify(observer -> observer.onGameStart(_game));
+
+            _game.start();
+            _game.getModules().forEach(module -> module.startGame(_game));
+
+            // Launch background thread
+            _game.launchBackgroundThread(listener);
+
+            Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+
+        });
+    }
+
     /**
      * @return true si une partie existe
      */
@@ -166,7 +169,7 @@ public class GameManager implements GameObserver {
                 .findFirst()
                 .ifPresent(saveInfo -> {
                     Log.info("Load save: " + saveInfo);
-                    Application.notify(observer -> observer.onGameLoad(saveInfo.game, saveInfo));
+                    loadGame(saveInfo.game, saveInfo, null);
                 });
     }
 

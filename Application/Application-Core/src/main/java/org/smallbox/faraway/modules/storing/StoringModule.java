@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.hauling;
+package org.smallbox.faraway.modules.storing;
 
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.consumable.BasicStoreJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 02/03/2017.
  */
-public class HaulingModule extends GameModule {
+public class StoringModule extends GameModule {
 
     @BindModule
     private WorldModule worldModule;

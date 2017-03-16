@@ -14,7 +14,6 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.item.BuildJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.modules.job.JobModel.JobStatus;
@@ -332,9 +331,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
             if (object == null && job.getJobParcel() == parcel) {
                 job.close();
             }
-            if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
-                job.close();
-            }
+//            if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
+//                job.close();
+//            }
         });
     }
 
