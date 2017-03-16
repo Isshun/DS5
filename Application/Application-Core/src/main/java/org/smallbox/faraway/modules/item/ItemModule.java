@@ -121,8 +121,6 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
         item.init();
         item.setBuildProgress(0);
         _items.add(item);
-
-        launchBuild(item);
     }
 
     /**

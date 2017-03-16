@@ -1,15 +1,21 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.modules.building.BasicBuildJob;
+import org.smallbox.faraway.modules.building.BasicRepairJob;
+import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.dig.BasicDigJob;
+import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.plant.BasicHarvestJob;
+import org.smallbox.faraway.modules.storing.BasicStoreJob;
 import org.smallbox.faraway.util.Log;
 
 /**
@@ -33,19 +39,44 @@ public class JobController extends LuaController {
 
     @Override
     public void onNewGameUpdate(Game game) {
-        listJobs.removeAllViews();
-
         jobModule.getJobs().stream().filter(JobModel::isVisible).forEach(job -> {
+            View view = new UIFrame(null);
+            view.setSize(300, 28);
+
+            view.addView(UIImage.create(null)
+                    .setImage(getImagePath(job))
+                    .setPosition(-19, -19)
+                    .setSize(30, 30));
+
             UILabel lbJob = new UILabel(null);
             if (job.getCharacter() != null) {
-                lbJob.setDashedString(job.getMainLabel(), job.getCharacter().getName(), 42);
+                if (job.getProgress() > 0) {
+                    lbJob.setDashedString(job.getMainLabel(), String.format("%3d%%", (int)(job.getProgress() * 100)), 40);
+                } else {
+                    lbJob.setDashedString(job.getMainLabel(), job.getCharacter().getName(), 40);
+                }
             } else {
-                lbJob.setDashedString(job.getMainLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 42);
+                lbJob.setDashedString(job.getMainLabel(), job.getProgress() > 0 ? String.valueOf((int)(job.getProgress() * 100)) : job.getStatus().name(), 40);
             }
-            lbJob.setTextColor(0xB4D4D3);
+            lbJob.setTextColor(job.getCharacter() != null ? 0x9afbff : 0xB4D4D3);
             lbJob.setSize(300, 22);
-            listJobs.addView(lbJob);
+            lbJob.setPosition(24, 0);
+            view.addView(lbJob);
+
+            listJobs.addNextView(view);
         });
+        listJobs.switchViews();
+    }
+
+    private String getImagePath(JobModel job) {
+        if (job instanceof BasicDigJob) return "[base]/graphics/jobs/ic_mining.png";
+        if (job instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
+        if (job instanceof BasicStoreJob) return "[base]/graphics/jobs/ic_store.png";
+        if (job instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
+        if (job instanceof BasicBuildJob) return "[base]/graphics/jobs/ic_build.png";
+        if (job instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
+        if (job instanceof BasicHarvestJob) return "[base]/graphics/jobs/ic_gather.png";
+        return null;
     }
 
     @Override

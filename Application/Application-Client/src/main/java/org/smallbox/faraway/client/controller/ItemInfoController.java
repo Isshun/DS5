@@ -26,7 +26,6 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private View           progressHealth;
 
     @BindLua private View           frameContent;
-    @BindLua private View           frameBuild;
     @BindLua private View           frameWorkers;
     @BindLua private View           frameComponents;
     @BindLua private UILabel        lbBuildCost;
@@ -42,6 +41,10 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UIList         listComponents;
     @BindLua private UIList         listFactoryInventory;
     @BindLua private UIList         listInventory;
+
+    @BindLua private View frameBuild;
+    @BindLua private UILabel progressBuild;
+    @BindLua private UIList listBuildComponents;
 
     @BindLuaController
     private ItemInfoReceiptController itemInfoReceiptController;
@@ -59,6 +62,14 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         lbName.setText(item.getLabel());
         lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
         progressHealth.setWidth(80 * item.getHealth() / item.getMaxHealth());
+
+        if (!item.isBuildComplete()) {
+            frameBuild.setVisible(true);
+            displayBuildPane(item);
+            return;
+        } else {
+            frameBuild.setVisible(false);
+        }
 
         refreshActions(item);
         refreshBuilding(item);
@@ -79,6 +90,17 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
             );
             listInventory.switchViews();
         }
+    }
+
+    private void displayBuildPane(UsableItem item) {
+        progressBuild.setText(String.format("%3d%%", (int)(item.getBuildProgress() * 100)));
+
+        item.getInfo().build.components.forEach(componentInfo ->
+                listBuildComponents.addNextView(UILabel.create(null)
+                        .setDashedString(componentInfo.component.label, item.getInventoryQuantity(componentInfo.component) + " / " + componentInfo.quantity, 42)
+                        .setTextColor(item.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xababab : 0x9afbff)
+                        .setSize(100, 20)));
+        listBuildComponents.switchViews();
     }
 
     private void refreshFactory(ItemFactoryModel factory) {

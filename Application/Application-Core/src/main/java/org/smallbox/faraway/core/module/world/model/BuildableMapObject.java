@@ -55,7 +55,7 @@ public class BuildableMapObject extends MapObjectModel {
     protected void init(ItemInfo info, int id) {
         super.init(info, id);
 
-        _health = info.health / 2;
+        _health = info.health;
 
         if (info.build != null && info.build.components != null) {
             components = info.build.components.stream().collect(Collectors.toConcurrentMap(i -> i.component, i -> new BuildableMapObjectComponent(i.quantity, 0)));

@@ -183,12 +183,12 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
         structure.setBuildProgress(0);
         structure.setParcel(parcel);
         _structures.add(structure);
-
-        launchBuild(structure);
     }
 
     public StructureItem addStructure(String itemName, int x, int y, int z) {
-        return addStructure(new StructureItem(data.getItemInfo(itemName)), x, y, z);
+        ItemInfo itemInfo = data.getItemInfo(itemName);
+        StructureItem structure = new StructureItem(itemInfo);
+        return addStructure(structure, x, y, z);
     }
 
     public StructureItem addStructure(StructureItem structure, int x, int y, int z) {

@@ -20,6 +20,14 @@ ui:extend({
 
             { type = "list", id = "list_inventory" },
 
+            { type = "list", id = "frame_build", size = {300, 300}, views = {
+                { type = "view", size = {0, 30}, views = {
+                    { type = "label", text = "BUILD_IN_PROGRESS", text_size = 22, text_color = color2 },
+                    { type = "label", id = "progress_build", text_size = 22, text_color = color2, position = {285, 0} },
+                }},
+                { type = "list", id = "list_build_components" },
+            }},
+
             { type = "label", text = "onOpenComponents", size = {50, 30}, action = "onOpenComponents" },
             { type = "view", id = "base.ui.panel_item_info.details_content", special = true },
 

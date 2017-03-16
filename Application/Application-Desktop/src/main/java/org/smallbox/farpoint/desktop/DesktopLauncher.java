@@ -49,14 +49,12 @@ public class DesktopLauncher {
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
 //        new LwjglApplication(new GDXApplication(() -> {}), LwjglConfig.from(applicationConfig));
-//        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
-        new LwjglApplication(new GDXApplication(loadGame()), LwjglConfig.from(applicationConfig));
+        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
+//        new LwjglApplication(new GDXApplication(loadGame()), LwjglConfig.from(applicationConfig));
     }
 
     private static GDXApplication.GameTestCallback loadGame() {
-//        C:\Users\Alex\AppData\Roaming\FarAway\saves\83ade0a0-2c38-4e38-a5b7-f04921e53317\2017-03-16-06-06-33-57.db
-
-        return () -> Application.gameManager.loadLastGame();
+        return Application.gameManager::loadLastGame;
     }
 
     private static GDXApplication.GameTestCallback testGame() {
@@ -87,7 +85,7 @@ public class DesktopLauncher {
                 StructureItem structureItem = Application.moduleManager.getModule(StructureModule.class).addStructure("base.wood_wall", 6, 2, 1);
                 structureItem.setBuildProgress(0);
                 structureItem.setHealth(200);
-                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1);
+                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1).setHealth(50);
 
                 DiseaseInfo diseaseInfo = new DiseaseInfo();
                 diseaseInfo.label = "di test";
