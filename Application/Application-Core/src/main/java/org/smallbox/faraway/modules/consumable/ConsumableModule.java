@@ -75,11 +75,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             }
 
             // La parcel contient le bon consomable mais il ne peux pas accepter la quantité à ajouter
-            if (consumable != null && consumable.getInfo() == itemInfo && consumable.getFreeQuantity() + quantity > consumable.getInfo().stack) {
-                return false;
-            }
-
-            return true;
+            return !(consumable != null && consumable.getInfo() == itemInfo && consumable.getFreeQuantity() + quantity > consumable.getInfo().stack);
         });
 
         // Ajout du consomable à la parcel
@@ -123,10 +119,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         if (consumableOnTargetParcel == null) {
             return true;
         }
-        if (consumableOnTargetParcel.getInfo() == consumable.getInfo() && consumableOnTargetParcel.getTotalQuantity() + consumable.getFreeQuantity() < consumable.getInfo().stack) {
-            return true;
-        }
-        return false;
+        return consumableOnTargetParcel.getInfo() == consumable.getInfo() && consumableOnTargetParcel.getTotalQuantity() + consumable.getFreeQuantity() < consumable.getInfo().stack;
     }
 
     /**

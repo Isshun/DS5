@@ -14,7 +14,7 @@ public interface TileBasedMap {
      *
      * @return The number of tiles across the old
      */
-    public int getWidthInTiles();
+    int getWidthInTiles();
 
     /**
      * Get the height of the tile old. The slightly odd name is used
@@ -22,7 +22,7 @@ public interface TileBasedMap {
      *
      * @return The number of tiles down the old
      */
-    public int getHeightInTiles();
+    int getHeightInTiles();
 
     /**
      * Notification that the path finder visited a given tile. This is
@@ -31,7 +31,7 @@ public interface TileBasedMap {
      * @param x The x coordinate of the tile that was visited
      * @param y The y coordinate of the tile that was visited
      */
-    public void pathFinderVisited(int x, int y);
+    void pathFinderVisited(int x, int y);
 
     /**
      * Check if the given location is blocked, i.e. blocks movement of
@@ -42,7 +42,7 @@ public interface TileBasedMap {
      * @param ty The y coordinate of the tile we're moving to
      * @return True if the location is blocked
      */
-    public boolean blocked(PathFindingContext context, int tx, int ty);
+    boolean blocked(PathFindingContext context, int tx, int ty);
 
     /**
      * Get the cost of moving through the given tile. This can be used to
@@ -54,5 +54,5 @@ public interface TileBasedMap {
      * @param ty The y coordinate of the tile we're moving to
      * @return The relative cost of moving across the given tile
      */
-    public float getCost(PathFindingContext context, int tx, int ty);
+    float getCost(PathFindingContext context, int tx, int ty);
 }

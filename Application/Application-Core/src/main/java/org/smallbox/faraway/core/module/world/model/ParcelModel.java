@@ -98,10 +98,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
         if (_connections == null || _connections.size == 0) {
             return false;
         }
-        if (hasItem(StructureItem.class) && getItem(StructureItem.class).getInfo().isDoor) {
-            return false;
-        }
-        return true;
+        return !(hasItem(StructureItem.class) && getItem(StructureItem.class).getInfo().isDoor);
     }
 
     public void addNetwork(NetworkItem network) {
@@ -207,11 +204,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 //            return false;
 //        }
 
-        if (_area != null && !_area.accept(itemInfo)) {
-            return false;
-        }
-
-        return true;
+        return !(_area != null && !_area.accept(itemInfo));
     }
 
     public double getLiquidValue() {

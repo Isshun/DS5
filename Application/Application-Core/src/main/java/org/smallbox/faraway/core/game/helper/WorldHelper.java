@@ -124,11 +124,7 @@ public class WorldHelper {
 //        }
 
         ConsumableItem consumable = parcel.getItem(ConsumableItem.class);
-        if (consumable != null && (consumable.getInfo() != info || consumable.getFreeQuantity() + quantity > Math.max(Application.config.game.storageMaxQuantity, consumable.getInfo().stack))) {
-            return false;
-        }
-
-        return true;
+        return !(consumable != null && (consumable.getInfo() != info || consumable.getFreeQuantity() + quantity > Math.max(Application.config.game.storageMaxQuantity, consumable.getInfo().stack)));
     }
 
     /**
@@ -232,11 +228,7 @@ public class WorldHelper {
 //            return false;
 //        }
 
-        if (_parcels[x][y][z].hasItem(ConsumableItem.class)) {
-            return false;
-        }
-
-        return true;
+        return !_parcels[x][y][z].hasItem(ConsumableItem.class);
     }
 
     public static ParcelModel getNearestWalkable(ParcelModel parcel, int minDistance, int maxDistance) {
@@ -300,8 +292,7 @@ public class WorldHelper {
         if (isFreePath(x, y + 1, z)) return false;
         if (isFreePath(x, y - 1, z)) return false;
         if (isFreePath(x, y, z + 1)) return false;
-        if (isFreePath(x, y, z - 1)) return false;
-        return true;
+        return !isFreePath(x, y, z - 1);
     }
 
     public static ParcelModel getParcel(int x, int y, int z) {

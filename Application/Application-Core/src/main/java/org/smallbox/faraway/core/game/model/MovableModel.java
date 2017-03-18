@@ -15,7 +15,7 @@ public abstract class MovableModel extends ObjectModel {
         TOP_RIGHT,
         TOP_LEFT,
         NONE
-    };
+    }
 
     protected int                       _id;
     protected int                       _frameIndex;

@@ -108,7 +108,6 @@ Drupal.compactForms.fixSafari = function () {
 }
 
 })(jQuery);
-;
 (function ($) {
 
 Drupal.behaviors.openid = {
@@ -158,7 +157,6 @@ Drupal.behaviors.openid = {
 };
 
 })(jQuery);
-;
 (function ($) {
   $(function() {
     $('body').delegate('[data-fid]', 'mouseup', function() {
@@ -174,4 +172,4 @@ Drupal.behaviors.openid = {
       return true;
     });
   });
-})(jQuery);;
+})(jQuery);

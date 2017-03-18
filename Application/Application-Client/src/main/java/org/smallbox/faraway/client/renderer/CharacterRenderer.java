@@ -317,8 +317,8 @@ public class CharacterRenderer extends BaseRenderer {
 
         else {
             doDraw(renderer, character,
-                    (int) (viewPortX + (character.getParcel().x * 32)),
-                    (int) (viewPortY + (character.getParcel().y * 32))
+                    viewPortX + (character.getParcel().x * 32),
+                    viewPortY + (character.getParcel().y * 32)
             );
         }
 

@@ -93,7 +93,7 @@ public class ItemInfo extends ObjectInfo {
         public List<ItemProductInfo>    products;
     }
 
-    public enum FactoryOutputMode {GROUND, NETWORK};
+    public enum FactoryOutputMode {GROUND, NETWORK}
 
     public static class ItemInfoFactory {
         public Set<ReceiptGroupInfo>    receiptGroups;

@@ -179,7 +179,7 @@ public class RoomModel {
         case 5: return RoomType.HOLODECK;
         case 6: return RoomType.STORAGE;
         case 7: return RoomType.GARDEN;
-        };
+        }
         return null;
     }
 

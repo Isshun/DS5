@@ -98,11 +98,7 @@ public class PlantModule extends GameModule {
             return false;
         }
 
-        if (infoEntry.temperature != null && (temperature < infoEntry.temperature[0] || temperature > infoEntry.temperature[1])) {
-            return false;
-        }
-
-        return true;
+        return !(infoEntry.temperature != null && (temperature < infoEntry.temperature[0] || temperature > infoEntry.temperature[1]));
     }
 
     public Collection<PlantItem> getPlants() {

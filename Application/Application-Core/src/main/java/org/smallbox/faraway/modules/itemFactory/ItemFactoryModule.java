@@ -221,11 +221,8 @@ public class ItemFactoryModule extends GameModule {
         }
 
         // Pas assez de composants accessible
-        if (consumableModule.getTotalAccessible(itemInfo, item.getParcel()) + availableQuantity >= needQuantity) {
-            return true;
-        }
+        return consumableModule.getTotalAccessible(itemInfo, item.getParcel()) + availableQuantity >= needQuantity;
 
-        return false;
     }
 
 }

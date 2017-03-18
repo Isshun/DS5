@@ -126,7 +126,7 @@ public abstract class View implements Comparable<View> {
         }
     }
 
-    public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT };
+    public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT }
 
     protected final ModuleBase  _module;
 

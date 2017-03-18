@@ -26,9 +26,11 @@ public interface GameEventListener {
 //            return _text;
 //        }
 //    }
-    enum Action {PRESSED, RELEASED, MOVE, EXIT};
-    enum MouseButton {LEFT, MIDDLE, WHEEL_UP, WHEEL_DOWN, RIGHT};
-    enum Modifier {NONE, CONTROL, ALT, SHIFT};
+    enum Action {PRESSED, RELEASED, MOVE, EXIT}
+
+    enum MouseButton {LEFT, MIDDLE, WHEEL_UP, WHEEL_DOWN, RIGHT}
+
+    enum Modifier {NONE, CONTROL, ALT, SHIFT}
 
 //    void onKeyEvent(Action action, Key key, Modifier modifier);
 //    void onMouseEvent(Action action, MouseButton button, int x, int y, boolean b);

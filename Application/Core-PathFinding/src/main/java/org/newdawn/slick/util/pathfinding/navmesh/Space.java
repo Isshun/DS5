@@ -203,11 +203,8 @@ public class Space {
         if ((x == other.x) && (width == other.width)) {
             return true;
         }
-        if ((y == other.y) && (height == other.height)) {
-            return true;
-        }
+        return (y == other.y) && (height == other.height);
 
-        return false;
     }
 
     /**

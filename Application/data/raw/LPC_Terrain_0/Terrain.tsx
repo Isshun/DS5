@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"; encoding="UTF-8"?>
 <tileset name="Terrain" tilewidth="32" tileheight="32">
  <image source="terrain.png" width="1024" height="1024"/>
  <terraintypes>
@@ -430,4 +430,4 @@
  <tile id="707" terrain=",17,,"/>
  <tile id="708" terrain="17,17,,"/>
  <tile id="709" terrain="17,,,"/>
-</tileset>
+</tileset>;

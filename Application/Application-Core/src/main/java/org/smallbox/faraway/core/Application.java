@@ -68,7 +68,7 @@ public class Application {
         _isRunning = isRunning;
         if (!isRunning && Gdx.app != null) {
             Gdx.app.exit();
-        };
+        }
     }
     public boolean              isRunning() { return _isRunning; }
 

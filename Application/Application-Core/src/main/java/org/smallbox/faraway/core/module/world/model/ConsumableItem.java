@@ -63,8 +63,7 @@ public class ConsumableItem extends MapObjectModel {
             if (filter.effectEntertainment && _info.consume.effects.entertainment == 0) return false;
             if (filter.effectHappiness && _info.consume.effects.happiness == 0) return false;
             if (filter.effectHealth && _info.consume.effects.health == 0) return false;
-            if (filter.effectRelation && _info.consume.effects.relation == 0) return false;
-            return true;
+            return !(filter.effectRelation && _info.consume.effects.relation == 0);
         }
         return false;
     }
