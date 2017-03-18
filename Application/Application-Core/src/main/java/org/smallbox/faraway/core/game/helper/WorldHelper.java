@@ -282,11 +282,11 @@ public class WorldHelper {
         return null;
     }
 
-    public static boolean isBlocked(int x, int y, int z) {
+    public static boolean isFreePath(int x, int y, int z) {
         if (inMapBounds(x, y, z)) {
-            return _parcels[x][y][z] != null && !_parcels[x][y][z].isWalkable();
+            return _parcels[x][y][z] == null || _parcels[x][y][z].isWalkable();
         }
-        return true;
+        return false;
     }
 
 
@@ -295,12 +295,12 @@ public class WorldHelper {
     }
 
     public static boolean isSurroundedByBlocked(int x, int y, int z) {
-        if (!isBlocked(x + 1, y, z)) return false;
-        if (!isBlocked(x - 1, y, z)) return false;
-        if (!isBlocked(x, y + 1, z)) return false;
-        if (!isBlocked(x, y - 1, z)) return false;
-        if (!isBlocked(x, y, z + 1)) return false;
-        if (!isBlocked(x, y, z - 1)) return false;
+        if (isFreePath(x + 1, y, z)) return false;
+        if (isFreePath(x - 1, y, z)) return false;
+        if (isFreePath(x, y + 1, z)) return false;
+        if (isFreePath(x, y - 1, z)) return false;
+        if (isFreePath(x, y, z + 1)) return false;
+        if (isFreePath(x, y, z - 1)) return false;
         return true;
     }
 

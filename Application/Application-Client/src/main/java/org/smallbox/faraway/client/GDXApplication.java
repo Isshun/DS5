@@ -157,7 +157,6 @@ public class GDXApplication extends ApplicationAdapter {
 
             Gdx.input.setInputProcessor(new InputAdapter() {
                 public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-                    System.out.println(screenX + "x" + screenY);
                     if (screenY > 20 && screenY < 60) {
                         Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, null);
                     }

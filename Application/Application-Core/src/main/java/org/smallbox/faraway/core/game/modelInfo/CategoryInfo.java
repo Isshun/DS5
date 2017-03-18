@@ -11,7 +11,7 @@ public class CategoryInfo extends ObjectInfo {
     public String             labelWithoutShortcut;
 
     public CategoryInfo(String name, String label) {
-        this.items = new ArrayList<ItemInfo>();
+        this.items = new ArrayList<>();
         this.name = name;
         this.label = label;
     }

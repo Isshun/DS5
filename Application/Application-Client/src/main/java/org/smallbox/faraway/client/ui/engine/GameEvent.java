@@ -1,9 +1,7 @@
 package org.smallbox.faraway.client.ui.engine;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.engine.GameEventListener;
 
 /**
  * Created by Alex on 16/08/2016.

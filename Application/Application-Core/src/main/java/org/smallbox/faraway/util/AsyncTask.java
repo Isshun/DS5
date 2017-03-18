@@ -12,9 +12,7 @@ public abstract class AsyncTask<T_RETURN> {
 
     public void start() {
         onStart();
-        new Thread(() -> {
-            _data = onBackground();
-        }).start();
+        new Thread(() -> _data = onBackground()).start();
     }
 
     public void complete() {

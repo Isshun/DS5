@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.GameException;
 /**
  * Created by Alex on 29/11/2015.
  */
-public abstract class LoadTask implements Runnable {
+public abstract class LoadTask implements Task {
     public enum State {NONE, WAITING, RUNNING, COMPLETE}
 
     public final boolean    onMainThread;

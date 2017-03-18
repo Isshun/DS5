@@ -96,17 +96,15 @@ public class CharacterBuffModule extends GameModule {
      * @param buffs Map
      */
     private void applyBuffsEffects(CharacterModel character, Map<BuffInfo, CharacterBuff> buffs) {
-        buffs.forEach((info, buff) -> {
-            buff.levelInfo.effects.forEach(effect -> {
+        buffs.forEach((info, buff) -> buff.levelInfo.effects.forEach(effect -> {
 
-                // Apply need effect
-                CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
-                if (needs != null) {
-                    effect.needs.forEach(needs::addValue);
-                }
+            // Apply need effect
+            CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
+            if (needs != null) {
+                effect.needs.forEach(needs::addValue);
+            }
 
-            });
-        });
+        }));
     }
 
     private BuffInfo.BuffLevelInfo getMaxLevel(CharacterModel character, BuffInfo buffInfo) {

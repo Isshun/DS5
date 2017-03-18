@@ -13,21 +13,6 @@ public class ItemInfo extends ObjectInfo {
     public ItemInfo surface;
     public File dataDirectory;
 
-    public boolean hasCraftAction() {
-        if (actions != null) {
-            for (ItemInfoAction action : actions) {
-                if (action.type == ItemInfoAction.ActionType.CRAFT || action.type == ItemInfoAction.ActionType.COOK) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean hasTemperatureEffect() {
-        return effects != null && (effects.coldPotency != 0 || effects.heatPotency != 0);
-    }
-
     public boolean instanceOf(ItemInfo inputInfo) {
         return this == inputInfo || this.parent == inputInfo;
     }

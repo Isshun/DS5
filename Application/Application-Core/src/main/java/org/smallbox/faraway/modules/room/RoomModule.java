@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.room;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -125,10 +126,8 @@ public class RoomModule extends GameModule {
             _rooms.add(room);
             return room;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new GameException(RoomModule.class, "Cannot create room: " + cls.getSimpleName());
         }
-
-        return null;
     }
 
     public void removeArea(List<ParcelModel> parcels) {

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.character;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -190,9 +191,8 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             add(character);
             return character;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
+            throw new GameException(CharacterModule.class, "Unable to create character with class: " + cls.getSimpleName());
         }
-        return null;
     }
 
     public boolean havePeopleOnProximity(CharacterModel character) {

@@ -81,18 +81,6 @@ public class UIManager {
     private int                         _update;
     private UIFrame                     _context;
 
-    private static class ViewComparator implements Comparator<View> {
-        @Override
-        public int compare(View v1, View v2) {
-            return v1.getLayer() - v2.getLayer();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return false;
-        }
-    }
-
     private Queue<RootView>             _rootViews = new LinkedBlockingQueue<>();
     private Map<View, String>           _subViews = new ConcurrentHashMap<>();
     private Set<View>                   _views = new ConcurrentHashSet<>();

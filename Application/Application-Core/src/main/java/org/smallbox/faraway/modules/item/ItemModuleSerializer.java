@@ -3,12 +3,12 @@ package org.smallbox.faraway.modules.item;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 21/07/2016.
@@ -27,29 +27,25 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, x, y, z, name, buildProgress, health) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    module.getItems().forEach(item -> {
-                        try {
-                            if (item.getParcel() != null) {
-                                stItem.bind(1, item.getId());
-                                stItem.bind(2, item.getParcel().x);
-                                stItem.bind(3, item.getParcel().y);
-                                stItem.bind(4, item.getParcel().z);
-                                stItem.bind(5, item.getInfo().name);
-                                stItem.bind(6, item.getBuildValue());
-                                stItem.bind(7, item.getHealth());
-                                stItem.step();
-                                stItem.reset(false);
-                            }
-                        } catch (SQLiteException e) {
-                            e.printStackTrace();
+                    for (UsableItem item: module.getItems()) {
+                        if (item.getParcel() != null) {
+                            stItem.bind(1, item.getId());
+                            stItem.bind(2, item.getParcel().x);
+                            stItem.bind(3, item.getParcel().y);
+                            stItem.bind(4, item.getParcel().z);
+                            stItem.bind(5, item.getInfo().name);
+                            stItem.bind(6, item.getBuildValue());
+                            stItem.bind(7, item.getHealth());
+                            stItem.step();
+                            stItem.reset(false);
                         }
-                    });
+                    }
                     db.exec("end transaction");
                 } finally {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                e.printStackTrace();
+                throw new GameException(ItemModuleSerializer.class, "Error during save");
             }
         });
     }
@@ -74,7 +70,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                Log.warning("Unable to read WorldModule_item table: " + e.getMessage());
+                throw new GameException(ItemModuleSerializer.class, "Error during load");
             }
         });
     }

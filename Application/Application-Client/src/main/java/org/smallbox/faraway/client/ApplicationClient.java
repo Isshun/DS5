@@ -2,7 +2,6 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.InputManager;
@@ -11,8 +10,10 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.renderer.MainRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ApplicationConfig;
@@ -45,8 +46,6 @@ public class ApplicationClient {
     public static final GDXRenderer             gdxRenderer;
     public static final MainRenderer            mainRenderer;
 
-    public static boolean isLoaded = false;
-
     public static final ShortcutManager shortcutManager;
 
     static {
@@ -78,10 +77,13 @@ public class ApplicationClient {
 
     private static ApplicationConfig loadConfig() {
         Log.info("Load application APPLICATION_CONFIG");
-        try (FileReader fileReader = new FileReader(new File(Application.BASE_PATH, "data/config.json"))) {
-            return new Gson().fromJson(fileReader, ApplicationConfig.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        File configFile = new File(Application.BASE_PATH, "data/config.json");
+        if (configFile.exists()) {
+            try (FileReader fileReader = new FileReader(configFile)) {
+                return new Gson().fromJson(fileReader, ApplicationConfig.class);
+            } catch (IOException e) {
+                throw new GameException(ApplicationClient.class, e, "Unable to read config file");
+            }
         }
         return null;
     }
@@ -189,7 +191,7 @@ public class ApplicationClient {
             _observers.forEach(action);
         } catch (Error | RuntimeException e) {
             setRunning(false);
-            e.printStackTrace();
+            throw new GameException(ApplicationClient.class, e, "Error during notify");
         }
     }
 

@@ -1,11 +1,9 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnKeyListener;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;

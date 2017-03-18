@@ -162,9 +162,7 @@ public class CharacterNeedModule extends GameModule {
         }
 
         // Create use job
-        UseJob job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) -> {
-            character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use);
-        });
+        UseJob job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) -> character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use));
         if (job == null) {
             return false;
         }

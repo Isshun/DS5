@@ -95,8 +95,8 @@ public class NavMesh {
             return null;
         }
 
-        for (int i=0;i<spaces.size();i++) {
-            ((Space) spaces.get(i)).clearCost();
+        for (Object space : spaces) {
+            ((Space) space).clearCost();
         }
         target.fill(source,tx, ty, 0);
         if (target.getCost() == Float.MAX_VALUE) {

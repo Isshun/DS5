@@ -12,7 +12,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.item.ItemModule;

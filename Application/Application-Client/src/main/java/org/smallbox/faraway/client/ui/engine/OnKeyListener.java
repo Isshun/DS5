@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.ui.engine;
 
-import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
 /**

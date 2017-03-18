@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.model.planet;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Collection;
@@ -41,7 +42,7 @@ public class PlanetModel {
 
             // Check regions exists for latitude
             if (regions.isEmpty()) {
-                throw new RuntimeException("No regions for latitude: " + latitude);
+                throw new GameException(PlanetModel.class, "No regions for latitude: " + latitude);
             }
 
             // Put regions on old
@@ -56,7 +57,7 @@ public class PlanetModel {
 
                 // Check region exists for org.smallbox.faraway.core.module.room.model
                 if (_areas[x][y].region == null) {
-                    throw new RuntimeException("No region for org.smallbox.faraway.core.module.room.model: " + x + "x" + y);
+                    throw new GameException(PlanetModel.class, "No regions for area: " + x + "x" + y);
                 }
             }
         }

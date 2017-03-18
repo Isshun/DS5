@@ -1,7 +1,5 @@
 package org.smallbox.faraway.client.manager;
 
-import com.badlogic.gdx.Input;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;

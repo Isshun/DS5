@@ -31,13 +31,11 @@ public class DesktopLauncher {
 
     public static void main (String[] arg) {
 
-        ApplicationConfig applicationConfig = DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
-            return new ApplicationConfig();
-//            Log.info("Load application APPLICATION_CONFIG");
+        //            Log.info("Load application APPLICATION_CONFIG");
 //            try (FileReader fileReader = new FileReader(FileUtils.getFile("data/config.json"))) {
 //                return new Gson().fromJson(fileReader, ApplicationConfig.class);
 //            }
-        });
+        ApplicationConfig applicationConfig = DependencyInjector.getInstance().registerModel(ApplicationConfig.class, ApplicationConfig::new);
 
         FileUtils.createRoamingDirectory();
 

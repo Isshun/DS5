@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.character;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -10,7 +11,6 @@ import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
 
@@ -40,7 +40,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                     st.dispose();
                 }
             } catch (SQLiteException e) {
-                e.printStackTrace();
+                throw new GameException(CharacterModuleSerializer.class, "Error during save");
             }
         });
     }
@@ -64,7 +64,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                     st.dispose();
                 }
             } catch (SQLiteException e) {
-                Log.warning("Unable to read characters table: " + e.getMessage());
+                throw new GameException(CharacterModuleSerializer.class, "Error during load");
             }
         });
     }

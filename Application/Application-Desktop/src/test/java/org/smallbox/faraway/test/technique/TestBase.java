@@ -25,8 +25,8 @@ public class TestBase {
 
     protected boolean testComplete = false;
 
-    protected static boolean initOk;
-    protected static GDXApplication _application;
+    protected boolean initOk;
+    protected GDXApplication _application;
 
     protected void init() {
         initOk = true;

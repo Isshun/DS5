@@ -44,11 +44,11 @@ public class TaskManager {
         Application.runOnMainThread(() -> runLoadTask(task));
     }
 
-    public void addLoadTask(String label, boolean onMainThread, Runnable runnable) {
+    public void addLoadTask(String label, boolean onMainThread, Task task) {
         _loadTasks.add(new LoadTask(label, true) {
             @Override
             protected void onRun() {
-                runnable.run();
+                task.run();
             }
         });
     }
@@ -80,7 +80,7 @@ public class TaskManager {
         return _loadTasks;
     }
 
-    public void launchBackgroundThread(Runnable runnable, int timeInterval) {
+    public void launchBackgroundThread(Task task, int timeInterval) {
         if (_backgroundThreadCount++ < BACKGROUND_THREAD_LIMIT) {
 
             Log.info("Launch background thread");
@@ -88,12 +88,10 @@ public class TaskManager {
             _backgroundExecutor.submit(() -> {
                 while (_running) {
                     try {
-//                         TODO: no bg thread during early dev
-                        Application.runOnMainThread(runnable);
-//                        runnable.run();
+                        task.run();
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Log.error(e);
                     }
                 }
 

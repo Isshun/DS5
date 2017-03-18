@@ -89,9 +89,7 @@ public class DebugRenderer extends BaseRenderer {
 
             case PLANT:
                 if (plantModule != null && plantModule.getPlants() != null) {
-                    plantModule.getPlants().forEach(plant -> {
-                        drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity());
-                    });
+                    plantModule.getPlants().forEach(plant -> drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity()));
                 }
                 break;
 

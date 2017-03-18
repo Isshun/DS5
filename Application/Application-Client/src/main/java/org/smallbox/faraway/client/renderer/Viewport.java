@@ -10,8 +10,8 @@ import org.smallbox.faraway.util.Log;
  * Created by Alex on 04/06/2015.
  */
 public class Viewport {
-    private static final int    ANIM_FRAME = 10;
-    public static float[]       ZOOM_LEVELS = new float[] {
+    private final static int    ANIM_FRAME = 10;
+    final static float[]       ZOOM_LEVELS = new float[] {
             0.1f,
             0.25f,
             0.5f,
@@ -72,16 +72,13 @@ public class Viewport {
     public int  getWidth() { return _width; }
     public int  getHeight() { return _height; }
 
-    public int  getWorldPosX() { return (int) ((-getPosX()) / getScale() / Constant.TILE_WIDTH); }
+    public int  getWorldPosX() { return getWorldPosX(0); }
     public int  getWorldPosX(int x) { return (int) ((-getPosX() + x) / getScale() / Constant.TILE_WIDTH); }
-    public int  getWorldPosY() { return (int) ((-getPosY()) / getScale() / Constant.TILE_HEIGHT); }
+    public int  getWorldPosY() { return getWorldPosY(0); }
     public int  getWorldPosY(int y) { return (int) ((-getPosY() + y) / getScale() / Constant.TILE_HEIGHT); }
 
     public int  getScreenPosX(int parcelX) { return parcelX * Constant.TILE_WIDTH + getPosX(); }
     public int  getScreenPosY(int parcelY) { return parcelY * Constant.TILE_HEIGHT + getPosY(); }
-
-    public void setScale(int delta, int x, int y) {
-    }
 
     public void setZoom(int zoom) {
         setPosition(

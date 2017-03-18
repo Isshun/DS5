@@ -38,7 +38,7 @@ public class Game {
     private int                             _hour = 7;
     private int                             _day;
     private int                             _year;
-    private static int                      _tick;
+    private int                             _tick;
     private Map<String, Boolean>            _displays;
     private int                             _speed = 1;
     private int                             _lastSpeed = 1;

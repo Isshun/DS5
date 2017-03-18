@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
@@ -118,7 +119,7 @@ public class ModuleManager implements GameObserver {
                         _applicationModules.add(module);
                         _modules.add(module);
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        throw new GameException(ModuleManager.class, "Cannot create application module: " + cls.getSimpleName());
                     }
                 });
 

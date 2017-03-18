@@ -5,16 +5,16 @@ package org.smallbox.faraway.core;
  */
 public class GameException extends RuntimeException {
 
-    public GameException(Class cls, Exception e) {
-        super(cls.getSimpleName(), e);
+    public GameException(Class cls, Throwable throwable) {
+        super(cls.getSimpleName(), throwable);
     }
 
     public GameException(Class cls, String message, Object... args) {
         super(formatMessage(cls, message, args));
     }
 
-    public GameException(Class cls, Exception e, String message) {
-        super(cls.getSimpleName() + " " + message, e);
+    public GameException(Class cls, Throwable throwable, String message) {
+        super(cls.getSimpleName() + " " + message, throwable);
     }
 
     private static String formatMessage(Class cls, String message, Object... args) {

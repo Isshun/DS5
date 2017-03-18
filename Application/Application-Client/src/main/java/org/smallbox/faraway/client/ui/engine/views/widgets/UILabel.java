@@ -41,6 +41,11 @@ public class UILabel extends View {
         return _text.hashCode();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        return _text.equals(object);
+    }
+
     public UILabel setText(String string) {
         if (string == null) {
             setStringValue("");
@@ -201,15 +206,13 @@ public class UILabel extends View {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
-            if (true) {
-                if (_align == Align.CENTER) {
-                    _offsetX = (_width - getContentWidth()) / 2;
-                    _offsetY = (_height - getContentHeight()) / 2;
-                }
+            if (_align == Align.CENTER) {
+                _offsetX = (_width - getContentWidth()) / 2;
+                _offsetY = (_height - getContentHeight()) / 2;
+            }
 
-                if (_align == Align.CENTER_VERTICAL) {
-                    _offsetY = (_height - getContentHeight()) / 2;
-                }
+            if (_align == Align.CENTER_VERTICAL) {
+                _offsetY = (_height - getContentHeight()) / 2;
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);

@@ -212,15 +212,13 @@ public class UICheckBox extends View {
         super.draw(renderer, x, y);
 
         if (_isVisible) {
-            if (true) {
-                if (_align == Align.CENTER) {
-                    _offsetX = (_width - getContentWidth()) / 2;
-                    _offsetY = (_height - getContentHeight()) / 2;
-                }
+            if (_align == Align.CENTER) {
+                _offsetX = (_width - getContentWidth()) / 2;
+                _offsetY = (_height - getContentHeight()) / 2;
+            }
 
-                if (_align == Align.CENTER_VERTICAL) {
-                    _offsetY = (_height - getContentHeight()) / 2;
-                }
+            if (_align == Align.CENTER_VERTICAL) {
+                _offsetY = (_height - getContentHeight()) / 2;
             }
 
             renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]"

@@ -86,9 +86,7 @@ public class RoomModel {
     }
 
     public void setOxygen(double oxygen) {
-        if (_oxygen != oxygen) {
-            _oxygen = oxygen;
-        }
+        _oxygen = oxygen;
     }
 
     public double                       getOxygen() { return _oxygen; }

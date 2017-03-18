@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module.lua.luaModel;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
@@ -62,12 +63,12 @@ public class LuaApplicationModel {
     }
 
     public void setPlan(String plan) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException("");
 //        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
     }
 
     public void destroy(MapObjectModel object) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException("");
 //        Application.gameManager.getGame().getInteraction().planDestroy(object.getParcel());
     }
 
@@ -82,17 +83,17 @@ public class LuaApplicationModel {
     }
 
     public void setArea(String area) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException("");
 //        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void removeArea(String area) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException("");
 //        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void setBuild(ItemInfo itemInfo) {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException("");
 //        Log.info("Set build from lua: " + itemInfo.name);
 //        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
@@ -102,7 +103,7 @@ public class LuaApplicationModel {
     }
 
     public void clearAction() {
-        throw new RuntimeException("Not implemented");
+        throw new NotImplementedException("");
 //        Application.gameManager.getGame().getInteraction().clear();
     }
 

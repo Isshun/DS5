@@ -7,6 +7,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
@@ -99,13 +100,12 @@ public abstract class LuaModuleManager implements GameObserver {
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
                 .filter(cls -> initGui || !cls.getSimpleName().equals("LuaUIExtend"))
                 .map(cls -> {
+                    Log.info("Find extend class: " + cls.getSimpleName());
                     try {
-                        Log.info("Find extend class: " + cls.getSimpleName());
                         return cls.getConstructor().newInstance();
                     } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
+                        throw new GameException(LuaModuleManager.class, "Unable to create extend cls: " + cls.getSimpleName());
                     }
-                    return null;
                 })
                 .collect(Collectors.toList());
 
@@ -147,7 +147,7 @@ public abstract class LuaModuleManager implements GameObserver {
                         Log.debug(LuaModuleManager.class, "Load lua file: %s", file.getAbsolutePath());
                         globals.load(new FileReader(file), file.getName()).call();
                     } catch (FileNotFoundException | LuaError e) {
-                        e.printStackTrace();
+                        throw new GameException(LuaModuleManager.class, "Error for reading lua file: " + file.getAbsolutePath());
                     }
                 });
 

@@ -133,11 +133,9 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         // Set temperature
         for (int floor = 0; floor < _floors; floor++) {
             double change = ((_temperatureTargetByFloor[floor] + _temperatureOffset) - _temperatureByFloor[floor]) / 100;
-            if (change != 0) {
-                if (change > -0.001 && change < 0.001) _temperatureByFloor[floor] += _temperatureOffset;
-                else if (change > -0.01 && change < 0.01) _temperatureByFloor[floor] += change < 0 ? -0.01 : 0.01;
-                else _temperatureByFloor[floor] += change;
-            }
+            if (change > -0.001 && change < 0.001) _temperatureByFloor[floor] += _temperatureOffset;
+            else if (change > -0.01 && change < 0.01) _temperatureByFloor[floor] += change < 0 ? -0.01 : 0.01;
+            else _temperatureByFloor[floor] += change;
         }
 
         notifyObservers(observer -> observer.onTemperatureChange(_temperatureByFloor[WorldHelper.getGroundFloor()]));

@@ -43,7 +43,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public void setProgress(double current, double  total) {
-        _progress = total != 0 ? current / total : 0;
+        _progress = current / total;
     }
 
     public enum JobCheckReturn {

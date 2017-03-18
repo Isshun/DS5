@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.util.Log;
@@ -24,8 +25,7 @@ public abstract class GameSerializer<T_MODULE> {
         try {
             return cls.newInstance();
         } catch ( IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            throw new GameException(GameSerializer.class, e, "Unable to create serializer for " + cls.getSimpleName());
         }
-        return null;
     }
 }

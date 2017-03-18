@@ -188,7 +188,7 @@ public class Log {
 
     public static void debug(Class cls, String message, Object... args) {
         if (inPackageList(debugPackages)) {
-            print(Level.FINE, String.format("[" + cls.getSimpleName() + "]" + " " + message, args));
+            print(Level.FINE, "[" + cls.getSimpleName() + "] " + String.format(message, args));
         }
     }
 

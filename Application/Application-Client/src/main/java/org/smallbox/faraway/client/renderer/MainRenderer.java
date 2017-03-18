@@ -12,6 +12,8 @@ import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Modifier;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MainRenderer implements GameClientObserver {
@@ -28,8 +30,8 @@ public class MainRenderer implements GameClientObserver {
     public static final int                 WORLD_TOP_RENDERER_LEVEL = -107;
 //    public static final int                 JOB_RENDERER_LEVEL = -96;
 
-    private static long                     _renderTime;
-    private static int                      _frame;
+    private long                            _renderTime;
+    private int                             _frame;
 
     // Render
 //    private int                             _frame;
@@ -58,8 +60,8 @@ public class MainRenderer implements GameClientObserver {
                     }
 
                 })
-                .filter(renderer -> renderer != null)
-                .sorted((o1, o2) -> o1.getLevel() - o2.getLevel())
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparingInt(BaseRenderer::getLevel))
                 .collect(Collectors.toList());
 
         _renders.forEach(render -> render.onGameCreateObserver(game));
@@ -111,12 +113,7 @@ public class MainRenderer implements GameClientObserver {
             if (ApplicationClient.inputManager.getDirection()[3]) { _viewport.move(0, -20); }
         }
 
-        // TODO
-        try {
-            ApplicationClient.uiManager.onRefresh(_frame);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ApplicationClient.uiManager.onRefresh(_frame);
 
 //        _gameAction.drawPixel(renderer);
         _frame++;
@@ -136,13 +133,13 @@ public class MainRenderer implements GameClientObserver {
             _renders.forEach(render -> render.draw(renderer, viewport, animProgress, frame));
         }
 
-        MainRenderer._frame++;
+        _frame++;
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public static int getFrame() { return _frame; }
+    public int getFrame() { return _frame; }
 
-    public static long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
+    public long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
 
     public Collection<BaseRenderer> getRenders() {
         return _renders;

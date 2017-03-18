@@ -3,11 +3,11 @@ package org.smallbox.faraway.modules.world;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +107,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
                     st.dispose();
                 }
             } catch (SQLiteException e) {
-                e.printStackTrace();
+                throw new GameException(WorldModuleSerializer.class, "Error during save");
             }
         });
     }
@@ -172,8 +172,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                 worldModule.init(game, parcels, parcelsList);
             } catch (SQLiteException e) {
-                Log.warning("Unable to read WorldModule_parcel or WorldModule_plant table: " + e.getMessage());
-                e.printStackTrace();
+                throw new GameException(WorldModuleSerializer.class, "Error during load");
             }
         });
     }

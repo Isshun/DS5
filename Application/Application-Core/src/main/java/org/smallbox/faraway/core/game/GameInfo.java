@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.util.Constant;
@@ -81,7 +82,7 @@ public class GameInfo {
                     saveInfo.date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.ENGLISH).parse(jsonSave.getString("date"));
                     saveInfo.label = new SimpleDateFormat("dd/MM/YYYY - HH:mm:ss", Locale.ENGLISH).format(saveInfo.date);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    throw new GameException(GameInfo.class, "Cannot read GameInfo json");
                 }
                 gameInfo.saveFiles.add(saveInfo);
             }

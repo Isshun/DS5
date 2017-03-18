@@ -3,11 +3,11 @@ package org.smallbox.faraway.modules.structure;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 21/07/2016.
@@ -26,28 +26,24 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_structure (id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    module.getStructures().forEach(structure -> {
-                        try {
-                            if (structure.getParcel() != null) {
-                                stItem.bind(1, structure.getId());
-                                stItem.bind(2, structure.getParcel().x);
-                                stItem.bind(3, structure.getParcel().y);
-                                stItem.bind(4, structure.getParcel().z);
-                                stItem.bind(5, structure.getInfo().name);
-                                stItem.bind(6, structure.getBuildValue());
-                                stItem.step();
-                                stItem.reset(false);
-                            }
-                        } catch (SQLiteException e) {
-                            e.printStackTrace();
+                    for (StructureItem structure: module.getStructures()) {
+                        if (structure.getParcel() != null) {
+                            stItem.bind(1, structure.getId());
+                            stItem.bind(2, structure.getParcel().x);
+                            stItem.bind(3, structure.getParcel().y);
+                            stItem.bind(4, structure.getParcel().z);
+                            stItem.bind(5, structure.getInfo().name);
+                            stItem.bind(6, structure.getBuildValue());
+                            stItem.step();
+                            stItem.reset(false);
                         }
-                    });
+                    }
                     db.exec("end transaction");
                 } finally {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                e.printStackTrace();
+                throw new GameException(StructureModuleSerializer.class, "Error during save");
             }
         });
     }
@@ -66,7 +62,7 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
                     stItem.dispose();
                 }
             } catch (SQLiteException e) {
-                Log.warning("Unable to read WorldModule_structure table: " + e.getMessage());
+                throw new GameException(StructureModuleSerializer.class, "Error during load");
             }
         });
     }

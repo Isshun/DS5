@@ -52,9 +52,8 @@ public class DependencyInjector {
             register(object);
             return object;
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+            throw new GameException(DependencyInjector.class, "Cannot create dependency: " + cls.getSimpleName());
         }
-        return null;
     }
 
     public void register(Object component) {

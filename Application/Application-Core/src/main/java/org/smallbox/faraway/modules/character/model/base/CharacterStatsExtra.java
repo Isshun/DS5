@@ -32,10 +32,10 @@ public class CharacterStatsExtra {
 
         character.addBodyStats(this);
 
-        this.resist.cold = Math.min(100, Math.max(0, Math.log(this.resist.coldScore * 10))) / 10;
-        this.resist.heat = Math.min(100, Math.max(0, Math.log(this.resist.heatScore * 10))) / 10;
+        this.resist.cold = Math.min(100, Math.max(0, Math.log(this.resist.coldScore * 10.0))) / 10;
+        this.resist.heat = Math.min(100, Math.max(0, Math.log(this.resist.heatScore * 10.0))) / 10;
 
-        this.resist.oxygen = Math.min(100, Math.max(0, Math.log(this.resist.oxygenScore * 10))) / 10;
+        this.resist.oxygen = Math.min(100, Math.max(0, Math.log(this.resist.oxygenScore * 10.0))) / 10;
 
         this.buff.cold = this.buff.coldScore;
         this.buff.heat = this.buff.heatScore;
