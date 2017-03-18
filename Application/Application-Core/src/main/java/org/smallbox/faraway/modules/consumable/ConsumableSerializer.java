@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.modules.structure.StructureModuleSerializer;
 import org.smallbox.faraway.util.Constant;
 
 /**

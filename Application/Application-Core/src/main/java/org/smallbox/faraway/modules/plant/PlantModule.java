@@ -1,8 +1,9 @@
 package org.smallbox.faraway.modules.plant;
 
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -21,6 +22,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Alex on 02/03/2017.
  */
 public class PlantModule extends GameModule {
+
+    @BindComponent
+    private Data data;
 
     @BindModule
     private WorldModule worldModule;
@@ -58,9 +62,9 @@ public class PlantModule extends GameModule {
         _plants.forEach(plant -> plant.setSeed(true));
     }
 
-    public void addPlant(String plantName, int x, int y, int z) { addPlant(Application.data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }
+    public void addPlant(String plantName, int x, int y, int z) { addPlant(data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }
     public void addPlant(ItemInfo item, int x, int y, int z) { addPlant(item, WorldHelper.getParcel(x, y, z)); }
-    public void addPlant(String plantName, ParcelModel parcel) { addPlant(plantName, parcel); }
+    public void addPlant(String plantName, ParcelModel parcel) { addPlant(data.getItemInfo(plantName), parcel); }
 
     /**
      * Add plant on parcel
