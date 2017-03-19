@@ -43,6 +43,8 @@ public class GDXApplication extends ApplicationAdapter {
                 new FileHandle(new File(Application.BASE_PATH, "data/font-14.png")),
                 false);
 
+        _application = new Application();
+
         Application.taskManager.addLoadTask("Generate fonts", true, () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
             _fonts = new BitmapFont[50];
@@ -51,9 +53,6 @@ public class GDXApplication extends ApplicationAdapter {
                 _fonts[i].getData().flipped = true;
             }
         });
-
-        Application.taskManager.addLoadTask("Create server app", false, () ->
-                _application = new Application());
 
         Application.taskManager.addLoadTask("Create client app", false, () ->
                 _client = new ApplicationClient());

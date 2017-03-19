@@ -17,10 +17,11 @@ public class Utils {
         return ++_uuid;
     }
 
-    public static void useUUID(int usedId) {
+    public static int getUUID(int usedId) {
         if (_uuid < usedId + 1) {
             _uuid = usedId + 1;
         }
+        return usedId;
     }
 
     public static long getLastDataModified() {

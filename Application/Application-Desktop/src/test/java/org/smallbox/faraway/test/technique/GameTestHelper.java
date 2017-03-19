@@ -19,15 +19,19 @@ public class GameTestHelper {
     }
 
     private Map<Long, Runnable> tickRunnable = new HashMap<>();
-    private Runnable createRunnable;
+    private GameTestCreateCallback createCallback;
     private long endTick;
+
+    public interface GameTestCreateCallback {
+        void onGameTestCreate();
+    }
 
     public static GameTestHelper create(TestBase testBase) {
         return new GameTestHelper(testBase);
     }
 
-    public GameTestHelper runOnGameCreate(Runnable runnable) {
-        createRunnable = runnable;
+    public GameTestHelper runOnGameCreate(GameTestCreateCallback createCallback) {
+        this.createCallback = createCallback;
         return this;
     }
 
@@ -56,8 +60,8 @@ public class GameTestHelper {
                 game.setSpeed(4);
                 _testBase.injectModules(game);
 
-                if (createRunnable != null) {
-                    createRunnable.run();
+                if (createCallback != null) {
+                    createCallback.onGameTestCreate();
                 }
             }
 

@@ -16,11 +16,11 @@ import java.util.logging.*;
  */
 public class Log {
     private final static boolean EXIT_ON_ERROR = true;
-    private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final static Logger logger = Logger.getLogger("FarAway");
     private final static Level level = Level.ALL;
+    private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    private static final ConsoleHandler consoleHandler;
+    private final ConsoleHandler consoleHandler;
 
     private static final String[] debugPackages = {
             "org.smallbox.faraway.core.engine",
@@ -31,7 +31,7 @@ public class Log {
     private static final String[] infoPackages = {
     };
 
-    static {
+    {
         logger.setLevel(level);
         consoleHandler = new ConsoleHandler();
         consoleHandler.setLevel(level);
@@ -211,7 +211,7 @@ public class Log {
         info(message);
     }
 
-    public static void setLevel(String levelName) {
+    public void setLevel(String levelName) {
         switch (levelName) {
             case "info":
                 logger.setLevel(Level.INFO);

@@ -62,9 +62,6 @@ public abstract class JobModel extends ObjectModel {
         NO_COMPONENTS, INTERRUPT, BLOCKED, NO_LEFT_CARRY, INVALID, DIED, NO_BUILD_RESOURCES
     }
 
-    private static int          _countInstance;
-
-    protected int               _id;
     protected int               _limit;
     protected int               _currentLimit;
     protected int               _fail;
@@ -102,7 +99,6 @@ public abstract class JobModel extends ObjectModel {
     }
 
     private void init() {
-        _id = ++_countInstance;
         _filter = null;
         _status = JobStatus.JOB_INITIALIZED;
         _limit = -1;
@@ -324,7 +320,7 @@ public abstract class JobModel extends ObjectModel {
     }
 
     public String toString() {
-        return "job (id: " + _id + ", cls: " + getClass().getSimpleName() + ", mainLabel: " + _mainLabel + ", taskLabel: " + _label + ")";
+        return "job (_id: " + _id + ", cls: " + getClass().getSimpleName() + ", mainLabel: " + _mainLabel + ", taskLabel: " + _label + ")";
     }
 
     public boolean onNewInit() { return true; }

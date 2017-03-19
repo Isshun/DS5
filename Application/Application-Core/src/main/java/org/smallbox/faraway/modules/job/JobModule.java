@@ -102,6 +102,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 //
 //        // Priority jobs
 //        JobModel job = getBestPriority(character);
+//        JobModel job = getBestPriority(character);
 //
 //        // Sleep jobs (sleep time)
 //        if (job == null && timetable == 1) {

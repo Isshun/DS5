@@ -22,9 +22,9 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
     public void onSave(ConsumableModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
+                db.exec("CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
 
-                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (id, x, y, z, name, quantity) VALUES (?, ?, ?, ?, ?, ?)");
+                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (_id, x, y, z, name, quantity) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
                     for (ConsumableItem consumable: module.getConsumables()) {
@@ -52,7 +52,7 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
     public void onLoad(ConsumableModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, quantity FROM WorldModule_consumable");
+                SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, quantity FROM WorldModule_consumable");
                 try {
                     while (stItem.step()) {
                         ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));

@@ -21,8 +21,8 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
     public void onSave(CharacterModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                db.exec("CREATE TABLE characters (id INTEGER, x INTEGER, y INTEGER, z INTEGER, firstname TEXT, lastname TEXT)");
-                SQLiteStatement st = db.prepare("INSERT INTO characters (id, x, y, z, firstname, lastname) VALUES (?, ?, ?, ?, ?, ?)");
+                db.exec("CREATE TABLE characters (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, firstname TEXT, lastname TEXT)");
+                SQLiteStatement st = db.prepare("INSERT INTO characters (_id, x, y, z, firstname, lastname) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
                     for (CharacterModel character: module.getCharacters()) {
@@ -48,7 +48,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
     public void onLoad(CharacterModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                SQLiteStatement st = db.prepare("SELECT id, x, y, z, firstname, lastname FROM characters");
+                SQLiteStatement st = db.prepare("SELECT _id, x, y, z, firstname, lastname FROM characters");
                 try {
                     while (st.step()) {
                         int id = st.columnInt(0);

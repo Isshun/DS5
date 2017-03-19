@@ -15,7 +15,6 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application {
-    public static final DependencyInjector dependencyInjector;
     public static final String BASE_PATH = "W:\\projects\\desktop\\FarAway\\Application";
     private static Queue<GameObserver> _observers = new PriorityBlockingQueue<>(200, (o1, o2) -> {
         GameObserverPriority.Priority p1 = o1.getClass().isAnnotationPresent(GameObserverPriority.class)
@@ -27,23 +26,25 @@ public class Application {
         return p1.compareTo(p2);
     });
 
+    public static DependencyInjector dependencyInjector;
+
     // Server
-    public static final GameManager             gameManager;
-    public static final ModuleManager           moduleManager;
-    public static final LuaModuleManager        luaModuleManager;
-    public static final PathManager             pathManager;
-    public static final TaskManager             taskManager;
-    public static final SQLManager              sqlManager;
-    public static final Data                    data;
-    public static final GroovyManager           groovyManager;
-    public static final GameSaveManager         gameSaveManager;
+    public static GameManager             gameManager;
+    public static ModuleManager           moduleManager;
+    public static LuaModuleManager        luaModuleManager;
+    public static PathManager             pathManager;
+    public static TaskManager             taskManager;
+    public static SQLManager              sqlManager;
+    public static Data                    data;
+    public static GroovyManager           groovyManager;
+    public static GameSaveManager         gameSaveManager;
 
     // Both
-    public static final ApplicationConfig config;
+    public static ApplicationConfig config;
 
     public static boolean isLoaded = false;
 
-    static {
+    public Application() {
         dependencyInjector = DependencyInjector.getInstance();
         gameManager = dependencyInjector.create(GameManager.class);
         pathManager = dependencyInjector.create(PathManager.class);

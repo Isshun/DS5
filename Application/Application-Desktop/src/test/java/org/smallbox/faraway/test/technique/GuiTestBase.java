@@ -3,7 +3,6 @@ package org.smallbox.faraway.test.technique;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import org.junit.Before;
 import org.smallbox.faraway.client.GDXApplication;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.util.FileUtils;
@@ -22,11 +21,10 @@ public class GuiTestBase extends TestBase {
         initOk = false;
         testComplete = false;
 
-        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
-            ApplicationConfig applicationConfig = new ApplicationConfig();
-            applicationConfig.game.updateInterval = 10;
-            return applicationConfig;
-        });
+        ApplicationConfig applicationConfig = new ApplicationConfig();
+        applicationConfig.game.updateInterval = 10;
+
+        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> applicationConfig);
 
         FileUtils.createRoamingDirectory();
 
@@ -37,7 +35,7 @@ public class GuiTestBase extends TestBase {
         double ratio = (double)width / height;
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
-        new LwjglApplication(new GDXApplication(this::init), LwjglConfig.from(Application.config));
+        new LwjglApplication(new GDXApplication(this::init), LwjglConfig.from(applicationConfig));
 
         while (!initOk) {
             Thread.sleep(100);

@@ -21,9 +21,9 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
     public void onSave(StructureModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                db.exec("CREATE TABLE WorldModule_structure (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
+                db.exec("CREATE TABLE WorldModule_structure (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
 
-                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_structure (id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)");
+                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_structure (_id, x, y, z, name, buildProgress) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
                     for (StructureItem structure: module.getStructures()) {
@@ -51,7 +51,7 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
     public void onLoad(StructureModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress FROM WorldModule_structure");
+                SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, buildProgress FROM WorldModule_structure");
                 try {
                     while (stItem.step()) {
                         StructureItem structure = new StructureItem(Application.data.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));

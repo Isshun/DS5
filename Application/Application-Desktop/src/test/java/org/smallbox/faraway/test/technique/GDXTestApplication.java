@@ -18,15 +18,13 @@ public class GDXTestApplication extends GDXApplication {
     @Override
     public void create () {
 
-        Application.taskManager.addLoadTask("Create server app", false, () ->
-                _application = new Application());
+        _application = new Application();
 
         Application.taskManager.addLoadTask("Init groovy manager", false,
                 Application.groovyManager::init);
 
 
         // Server
-
         Application.taskManager.addLoadTask("Launch DB thread", false, () ->
                 Application.taskManager.launchBackgroundThread(Application.sqlManager::update, 16));
 

@@ -2,9 +2,9 @@ package org.smallbox.faraway.core.game.model;
 
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.util.Utils;
 
 public abstract class MovableModel extends ObjectModel {
+
     public enum Direction {
         BOTTOM,
         LEFT,
@@ -17,7 +17,6 @@ public abstract class MovableModel extends ObjectModel {
         NONE
     }
 
-    protected int                       _id;
     protected int                       _frameIndex;
     protected Direction                 _direction;
     protected JobModel                  _job;
@@ -25,10 +24,8 @@ public abstract class MovableModel extends ObjectModel {
     protected ParcelModel               _parcel;
 
     public MovableModel(int id, ParcelModel parcel) {
-        assert parcel != null;
+        super(id);
 
-        Utils.useUUID(id);
-        _id = id;
         _parcel = parcel;
         _frameIndex = (int) (Math.random() * 1000 % 20);
     }

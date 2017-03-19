@@ -28,12 +28,12 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
             try {
                 db.exec("CREATE TABLE WorldModule_parcel (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant INTEGER, item INTEGER, structure INTEGER, consumable INTEGER, liquid TEXT, liquid_value REAL)");
 //                db.exec("CREATE TABLE WorldModule_structure (id INTEGER, name TEXT, buildProgress INTEGER)");
-                db.exec("CREATE TABLE WorldModule_plant (id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
+                db.exec("CREATE TABLE WorldModule_plant (_id INTEGER, name TEXT, maturity REAL, nourish REAL, seed INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_consumable (id INTEGER, name TEXT, quantity INTEGER)");
 //                db.exec("CREATE TABLE WorldModule_network (x INTEGER, y INTEGER, z INTEGER, ground TEXT, rock TEXT, plant TEXT, item TEXT, structure TEXT)");
                 SQLiteStatement st = db.prepare("INSERT INTO WorldModule_parcel (x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 //                SQLiteStatement stStructure = db.prepare("INSERT INTO WorldModule_structure (id, name, buildProgress) VALUES (?, ?, ?)");
-                SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (id, name, maturity, nourish, seed) VALUES (?, ?, ?, ?, ?)");
+                SQLiteStatement stPlant = db.prepare("INSERT INTO WorldModule_plant (_id, name, maturity, nourish, seed) VALUES (?, ?, ?, ?, ?)");
 //                SQLiteStatement stConsumable = db.prepare("INSERT INTO WorldModule_consumable (id, name, quantity) VALUES (?, ?, ?)");
                 try {
                     db.exec("begin transaction");
@@ -122,7 +122,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
             try {
                 SQLiteStatement st = db.prepare("SELECT x, y, z, ground, rock, plant, item, structure, consumable, liquid, liquid_value FROM WorldModule_parcel");
-                SQLiteStatement stPlant = db.prepare("SELECT id, name, maturity, nourish, seed FROM WorldModule_plant WHERE id = ?");
+                SQLiteStatement stPlant = db.prepare("SELECT _id, name, maturity, nourish, seed FROM WorldModule_plant WHERE _id = ?");
                 try {
                     while (st.step()) {
                         int x = st.columnInt(0);

@@ -22,9 +22,9 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
     public void onSave(ItemModule module, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                db.exec("CREATE TABLE WorldModule_item (id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER, health REAL)");
+                db.exec("CREATE TABLE WorldModule_item (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER, health REAL)");
 
-                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (id, x, y, z, name, buildProgress, health) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (_id, x, y, z, name, buildProgress, health) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
                     for (UsableItem item: module.getItems()) {
@@ -53,7 +53,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
     public void onLoad(ItemModule itemModule, Game game) {
         Application.sqlManager.post(db -> {
             try {
-                SQLiteStatement stItem = db.prepare("SELECT id, x, y, z, name, buildProgress, health FROM WorldModule_item");
+                SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, buildProgress, health FROM WorldModule_item");
                 try {
                     while (stItem.step()) {
                         ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));

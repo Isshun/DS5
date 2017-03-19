@@ -52,8 +52,8 @@ public class BuildableMapObject extends MapObjectModel {
     }
 
     @Override
-    protected void init(ItemInfo info, int id) {
-        super.init(info, id);
+    protected void init(ItemInfo info) {
+        super.init(info);
 
         _health = info.health;
 

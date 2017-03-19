@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class MapObjectModel extends ObjectModel {
-    private static int          _maxId;
-    private int                 _id;
+
     private String              _name;
     private int                 _mode;
     private int                 _light;
@@ -51,14 +50,12 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     public MapObjectModel(ItemInfo info) {
-        init(info, ++_maxId);
+        init(info);
     }
 
     public MapObjectModel(ItemInfo info, int id) {
-        if (_maxId < id) {
-            _maxId = id;
-        }
-        init(info, id);
+        super(id);
+        init(info);
     }
 
     public void addInventory(ItemInfo itemInfo, int quantity) {
@@ -73,9 +70,9 @@ public abstract class MapObjectModel extends ObjectModel {
         return _inventory;
     }
 
-    protected void init(ItemInfo info, int id) {
+    protected void init(ItemInfo info) {
+
         // Init
-        _id = id;
         _name = null;
         _info = info;
         _jobs = new ConcurrentSkipListSet<>();
@@ -89,7 +86,6 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     // Sets
-    public void             setId(int id) { _id = id; }
     public void             setMode(int mode) { _mode = mode; }
     public void             setParcel(ParcelModel parcel) {
         if (_parcel != parcel) {

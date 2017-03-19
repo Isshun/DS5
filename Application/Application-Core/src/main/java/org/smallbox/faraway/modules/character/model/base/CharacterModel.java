@@ -97,7 +97,6 @@ public abstract class CharacterModel extends MovableModel {
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
-    public void                         setId(int id) { _id = id; }
     public void                         setIsDead() {
         getExtra(CharacterStatsExtra.class).isAlive = false;
     }

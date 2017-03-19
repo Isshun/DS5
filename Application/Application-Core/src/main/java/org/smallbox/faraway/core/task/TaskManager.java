@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.task;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Arrays;
@@ -87,11 +88,12 @@ public class TaskManager {
 
             _backgroundExecutor.submit(() -> {
                 while (_running) {
+                    task.run();
                     try {
-                        task.run();
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
-                        Log.error(e);
+                        exitWithError(e);
+                        throw new RuntimeException(e);
                     }
                 }
 
@@ -99,7 +101,7 @@ public class TaskManager {
             });
 
         } else {
-            throw new Error("BACKGROUND_THREAD_LIMIT exceeded");
+            throw new GameException(TaskManager.class, "BACKGROUND_THREAD_LIMIT exceeded");
         }
     }
 
