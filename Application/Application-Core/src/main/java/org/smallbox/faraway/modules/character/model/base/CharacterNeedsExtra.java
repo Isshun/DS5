@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.character.model.base;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.util.Constant;
@@ -48,14 +49,14 @@ public class CharacterNeedsExtra {
         }
     }
 
-    public void use(ItemInfo.ItemInfoEffects effects, int duration) {
+    public void use(ItemInfo.ItemInfoEffects effects, double duration) {
         if (effects != null && duration != 0) {
-            addValue("energy", effects.energy / duration);
-            addValue("food", effects.food / duration);
-            addValue("drink", effects.drink / duration);
-            addValue("entertainment", effects.entertainment / duration);
-            addValue("relation", effects.relation / duration);
-            addValue("happiness", effects.happiness / duration);
+            addValue("energy", effects.energy / (duration / Application.gameManager.getGame().getTickPerHour()));
+            addValue("food", effects.food / (duration / Application.gameManager.getGame().getTickPerHour()));
+            addValue("drink", effects.drink / (duration / Application.gameManager.getGame().getTickPerHour()));
+            addValue("entertainment", effects.entertainment / (duration / Application.gameManager.getGame().getTickPerHour()));
+            addValue("relation", effects.relation / (duration / Application.gameManager.getGame().getTickPerHour()));
+            addValue("happiness", effects.happiness / (duration / Application.gameManager.getGame().getTickPerHour()));
         }
     }
 

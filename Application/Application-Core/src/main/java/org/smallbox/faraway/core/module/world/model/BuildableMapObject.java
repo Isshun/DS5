@@ -15,11 +15,16 @@ import java.util.stream.Collectors;
 public class BuildableMapObject extends MapObjectModel {
 
     private int                 _matter;
-    private int                 _health;
+    private double              _health;
     private int                 _width;
     private int                 _height;
     private double              _progress;
 
+    /**
+     * Fait progresser la construction de l'objet
+     *
+     * @param value valeur à ajouter
+     */
     public void actionBuild(double value) {
         if (_buildValue < _info.build.cost) {
             _buildValue += value;
@@ -41,7 +46,7 @@ public class BuildableMapObject extends MapObjectModel {
         }
     }
 
-    public Map<ItemInfo, BuildableMapObjectComponent> components;
+    public Map<ItemInfo, BuildableMapObjectComponent> _components;
 
     public BuildableMapObject(ItemInfo info) {
         super(info);
@@ -58,7 +63,7 @@ public class BuildableMapObject extends MapObjectModel {
         _health = info.health;
 
         if (info.build != null && info.build.components != null) {
-            components = info.build.components.stream().collect(Collectors.toConcurrentMap(i -> i.component, i -> new BuildableMapObjectComponent(i.quantity, 0)));
+            _components = info.build.components.stream().collect(Collectors.toConcurrentMap(i -> i.component, i -> new BuildableMapObjectComponent(i.quantity, 0)));
         }
 
         // Default values
@@ -72,63 +77,21 @@ public class BuildableMapObject extends MapObjectModel {
 
     public int              getWidth() { return _width; }
     public int              getHeight() { return _height; }
-    public int              getHealth() { return _health; }
+    public int              getHealth() { return (int) _health; }
     public int              getMaxHealth() { return _info.health; }
 
-    public void setHealth(int health) {
-        _health = health;
-    }
-
-    public void addHealth(int health) {
-        _health = _health + health;
-    }
+    public void setHealth(double health) { _health = health; }
+    public void addHealth(double health) { _health = _health + health; }
 
     public void addProgress(double value) {
         _progress += value;
     }
 
-//    public static class ComponentModel extends ObjectModel {
-//        public ItemInfo         info;
-//        public int              currentQuantity;
-//        public int              neededQuantity;
-//        public JobModel         job;
-//
-//        public ComponentModel(ItemInfo itemInfo) {
-//            this.info = itemInfo;
-//        }
-//
-//        public ComponentModel(ItemInfo itemInfo, int neededQuantity) {
-//            this.info = itemInfo;
-//            this.neededQuantity = neededQuantity;
-//        }
-//
-//        public ComponentModel(ItemInfo itemInfo, int neededQuantity, int currentQuantity) {
-//            this.info = itemInfo;
-//            this.neededQuantity = neededQuantity;
-//            this.currentQuantity = currentQuantity;
-//        }
-//    }
-
     private double _buildValue;
     private BasicBuildJob _buildJob;
-//    private List<ComponentModel>        _components = new ArrayList<>();
-
-//    public int addComponent(ConsumableItem consumable) {
-//        _components.stream().filter(component -> component.info == consumable.getInfo()).forEach(component -> {
-//            if (component.neededQuantity - component.currentQuantity > consumable.getFreeQuantity()) {
-//                component.currentQuantity += consumable.getFreeQuantity();
-//                consumable.setQuantity(0);
-//            } else {
-//                consumable.setQuantity(consumable.getFreeQuantity() - (component.neededQuantity - component.currentQuantity));
-//                component.currentQuantity = component.neededQuantity;
-//            }
-//        });
-//
-//        return consumable.getFreeQuantity();
-//    }
 
     public boolean hasAllComponents() {
-        for (Map.Entry<ItemInfo, BuildableMapObjectComponent> entry: components.entrySet()) {
+        for (Map.Entry<ItemInfo, BuildableMapObjectComponent> entry: _components.entrySet()) {
             if (getInventoryQuantity(entry.getKey()) < entry.getValue().neededQuantity) {
                 return false;
             }

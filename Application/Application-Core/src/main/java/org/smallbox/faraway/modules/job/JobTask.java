@@ -8,7 +8,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 public class JobTask {
 
     public interface JobTaskAction {
-        JobTaskReturn onExecuteTask(CharacterModel character);
+        JobTaskReturn onExecuteTask(CharacterModel character, double hourInterval);
     }
 
     public String label;

@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -53,7 +52,7 @@ public class CharacterInfoStatusController extends LuaController {
     private CharacterModel _selected;
 
     @Override
-    public void onNewGameUpdate(Game game) {
+    public void onControllerUpdate() {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);
         }

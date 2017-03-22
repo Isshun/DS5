@@ -38,7 +38,7 @@ public class CharacterBuff extends ObjectModel {
         if (this.character.isAlive()) {
             this.info.update(this, tick);
         }
-        if (tick % Application.config.game.tickPerHour == 0) {
+        if (tick % Application.gameManager.getGame().getTickPerHour() == 0) {
             this.info.updateHourly(this, tick);
         }
     }

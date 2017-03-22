@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -53,7 +52,7 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
     }
 
     @Override
-    public void onNewGameUpdate(Game game) {
+    public void onControllerUpdate() {
         if (CollectionUtils.isNotEmpty(list)) {
             displayObjects();
         } else {

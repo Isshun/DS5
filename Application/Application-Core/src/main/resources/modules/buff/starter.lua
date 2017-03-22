@@ -11,8 +11,8 @@ data:extend({
         { message = "Excited by new colony", mood = 15 },
     },
     on_get_level = function (game)
-        if game:getDay() < 10 then return 2 end
-        if game:getDay() < 20 then return 1 end
+        if game:getTime():getDay() < 10 then return 2 end
+        if game:getTime():getDay() < 20 then return 1 end
         return 0
     end,
 })

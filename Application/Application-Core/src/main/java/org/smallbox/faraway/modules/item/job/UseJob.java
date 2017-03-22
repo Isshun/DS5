@@ -13,7 +13,7 @@ public class UseJob extends JobModel {
     private final ItemModule _itemModule;
     private final UsableItem _item;
 
-    public int _duration;
+    public double _duration;
 
     public interface OnUseCallback {
         /**
@@ -21,18 +21,19 @@ public class UseJob extends JobModel {
          * @param item l'item
          * @param durationLeft la durée restante
          */
-        void onUse(UsableItem item, int durationLeft);
+        void onUse(UsableItem item, double durationLeft);
     }
 
-    public UseJob(ItemModule itemModule, UsableItem item, int totalDuration, OnUseCallback callback) {
+    public UseJob(ItemModule itemModule, UsableItem item, double totalDuration, OnUseCallback callback) {
         _itemModule = itemModule;
         _item = item;
 
         setMainLabel("Use " + item.getInfo().label);
 
-        addTask("Move", character -> character.moveTo(item.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
-        addTask("Use", character -> {
-            int durationLeft = totalDuration - ++_duration;
+        addTask("Move", (character, hourInterval) -> character.moveTo(item.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addTask("Use", (character, hourInterval) -> {
+            _duration += 1 / Application.gameManager.getGame().getTickPerHour();
+            double durationLeft = totalDuration - _duration;
             callback.onUse(item, durationLeft);
             setProgress(_duration, totalDuration);
 

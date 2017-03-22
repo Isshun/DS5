@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.characterNeed;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -85,7 +86,7 @@ public class CharacterNeedModule extends GameModule {
         boolean hasSleepJob = (sleepJob != null && !sleepJob.isClose());
 
         // Récupère l'emploi du temps
-        CharacterTimetableExtra.State state = character.getExtra(CharacterTimetableExtra.class).getState(game.getHour());
+        CharacterTimetableExtra.State state = character.getExtra(CharacterTimetableExtra.class).getState(game.getTime().getHour());
 
         // Check: le personnage est en période SLEEP mais le job n'est pas lancé
         // Envoi le personnage ne coucher
@@ -118,12 +119,17 @@ public class CharacterNeedModule extends GameModule {
      */
     private void decreaseNeeds(CharacterModel character, CharacterNeedsExtra needs) {
         CharacterInfo.NeedsInfo needsInfo = character.getType().needs;
-        needs.addValue(TAG_FOOD, character.isSleeping() ? needsInfo.food.change.sleep : needsInfo.food.change.rest);
-        needs.addValue(TAG_DRINK, character.isSleeping() ? needsInfo.drink.change.sleep : needsInfo.drink.change.rest);
-        needs.addValue(TAG_ENERGY, character.isSleeping() ? needsInfo.energy.change.sleep : needsInfo.energy.change.rest);
-        needs.addValue(TAG_ENTERTAINMENT, character.isSleeping() ? needsInfo.entertainment.change.sleep : needsInfo.entertainment.change.rest);
+        needs.addValue(TAG_FOOD, byHour(character.isSleeping() ? needsInfo.food.change.sleep : needsInfo.food.change.rest));
+        needs.addValue(TAG_DRINK, byHour(character.isSleeping() ? needsInfo.drink.change.sleep : needsInfo.drink.change.rest));
+        needs.addValue(TAG_ENERGY, byHour(character.isSleeping() ? needsInfo.energy.change.sleep : needsInfo.energy.change.rest));
+        needs.addValue(TAG_ENTERTAINMENT, byHour(character.isSleeping() ? needsInfo.entertainment.change.sleep : needsInfo.entertainment.change.rest));
         needs.addValue(TAG_HAPPINESS, buffModule.getMood(character));
         needs.addValue(TAG_RELATION, characterRelationModule.getScore(character));
+    }
+
+    private double byHour(double value) {
+        long ticksBetweenUpdate = getTick() - getLastTick();
+        return value * (ticksBetweenUpdate / Application.gameManager.getGame().getTickPerHour());
     }
 
     /**

@@ -33,6 +33,7 @@ public class LuaControllerManager implements GameObserver {
     private Map<String, LuaController>      _controllers = new HashMap<>();
     private Map<String, View>               _viewByControllerName = new HashMap<>();
     private List<Object>                    _injectLater = new CopyOnWriteArrayList<>();
+    private long                            _lastUpdate;
 
     public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
     public Map<String, LuaController> getControllers() { return _controllers; }
@@ -45,7 +46,7 @@ public class LuaControllerManager implements GameObserver {
         // Invoke controllers
         _controllers = new Reflections("org.smallbox.faraway").getSubTypesOf(LuaController.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .collect(Collectors.toMap(Class::getCanonicalName, this::invokeController));
+                .collect(Collectors.toConcurrentMap(Class::getCanonicalName, this::invokeController));
 
         // Check observer
         _controllers.values()
@@ -73,6 +74,14 @@ public class LuaControllerManager implements GameObserver {
         _controllers.values().forEach(ApplicationClient.dependencyInjector::register);
 
         ApplicationClient.notify(GameClientObserver::onReloadUI);
+    }
+
+    @Override
+    public void onGameUpdate(Game game) {
+        if (System.currentTimeMillis() - _lastUpdate > 100) {
+            _lastUpdate = System.currentTimeMillis();
+            _controllers.forEach((clsName, controller) -> controller.controllerUpdate());
+        }
     }
 
     @Override

@@ -6,7 +6,7 @@ data:extend({
         name = "base.plant.rice",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },
@@ -26,7 +26,7 @@ data:extend({
     { type = "plant", label = "Carrot", name = "base.plant.carrot",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },
@@ -46,7 +46,7 @@ data:extend({
     { type = "plant", label = "Wheat", name = "base.plant.wheat",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },
@@ -86,7 +86,7 @@ data:extend({
     { type = "plant", label = "Potato", name = "base.plant.potato",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },
@@ -106,7 +106,7 @@ data:extend({
     { type = "plant", label = "Pumpkin", name = "base.plant.pumpkin",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },
@@ -126,7 +126,7 @@ data:extend({
     { type = "plant", label = "Tomato", name = "base.plant.tomato",
         plant = {
             mature = 5,
-            growing = 0.005,
+            growing = 20 * 7,
             temperature = { min = 3, best = 25, max = 30 },
             states = {
                 { name = "dying", value = -1 },
@@ -136,7 +136,7 @@ data:extend({
             }
         },
         actions = {
-            type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.tomato", quantity = {1, 1}, rate = 1 } }
+            type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.tomato", quantity = {4, 6}, rate = 1 } }
         },
         graphics = {
             { path = "[module]/graphics/plants/tomato.png" },

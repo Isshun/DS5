@@ -2,14 +2,13 @@ package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 25/04/2016.
  */
 public abstract class LuaController implements GameClientObserver {
     private View _rootView;
+    private long _lastUpdate;
 
     public void setRootView(View rootView) {
         if (rootView == null) {
@@ -23,28 +22,20 @@ public abstract class LuaController implements GameClientObserver {
         if (getRootView() != null) {
 
             if (!getRootView().isVisible() && visible) {
-                onNewGameUpdate(Application.gameManager.getGame());
+                onControllerUpdate();
             }
 
             getRootView().setVisible(visible);
         }
     }
 
-    @Override
-    public final void onGameUpdate(Game game) {
+    public void controllerUpdate() {
         if (isVisible()) {
-            onNewGameUpdate(game);
+            onControllerUpdate();
         }
     }
 
-    protected abstract void onNewGameUpdate(Game game);
-
-//    public final void gameCreate(Game game) { onGameCreateObserver(game); }
-//    public final void gameStart(Game game) { onGameStart(game); }
-//    public final void gameUpdate(Game game) { onGameUpdate(game); }
-//
-//    public void onGameCreateObserver(Game game) {}
-//    public void onGameUpdate(Game game) {}
+    protected abstract void onControllerUpdate();
 
     public View getRootView() { return _rootView; }
     public boolean isVisible() { return getRootView() != null && getRootView().isVisible(); }

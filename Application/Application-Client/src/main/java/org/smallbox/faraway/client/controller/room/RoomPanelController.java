@@ -11,7 +11,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.RoomTypeInfo;
 import org.smallbox.faraway.util.Log;
@@ -94,7 +93,7 @@ public class RoomPanelController extends LuaController {
     }
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
     }
 
     @Override

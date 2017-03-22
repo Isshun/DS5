@@ -45,9 +45,9 @@ public class LuaCharacterExtend extends LuaExtend {
             need.optimal = needValue.get("optimal").optdouble(1);
 
             LuaValue change = needValue.get("change");
-            need.change.work = !change.isnil() ? change.get("work").optdouble(0) / Application.config.game.tickPerHour : 0;
-            need.change.sleep = !change.isnil() ? change.get("sleep").optdouble(0) / Application.config.game.tickPerHour : 0;
-            need.change.rest = !change.isnil() ? change.get("rest").optdouble(0) / Application.config.game.tickPerHour : 0;
+            need.change.work = !change.isnil() ? change.get("work").optdouble(0) : 0;
+            need.change.sleep = !change.isnil() ? change.get("sleep").optdouble(0) : 0;
+            need.change.rest = !change.isnil() ? change.get("rest").optdouble(0) : 0;
         }
     }
 

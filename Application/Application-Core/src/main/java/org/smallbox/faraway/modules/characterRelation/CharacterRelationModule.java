@@ -30,9 +30,9 @@ public class CharacterRelationModule extends GameModule {
 
     public double getScore(CharacterModel character) {
         if (characterModule.havePeopleOnProximity(character)) {
-            return config.havePeopleOnProximity;
+            return config.hourlyRelationChangeWithPeopleAtProximity;
         }
-        return config.regularChange;
+        return config.hourlyRelationChange;
     }
 
 //    public void meet(CharacterModel c1, CharacterModel c2) {

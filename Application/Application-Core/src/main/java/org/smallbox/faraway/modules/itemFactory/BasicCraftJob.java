@@ -73,10 +73,10 @@ public class BasicCraftJob extends JobModel {
             job._targetParcel = targetParcel;
 
             // Apporte les composants à la fabrique
-            job.addTask("Go to factory", character -> character.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Go to factory", (character, hourInterval) -> character.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
             // Craft action
-            job.addTask("Craft item", character -> {
+            job.addTask("Craft item", (character, hourInterval) -> {
                 if (job._startTick == 0) {
                     job._startTick = Application.gameManager.getGame().getTick();
                     job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();

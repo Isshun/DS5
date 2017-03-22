@@ -50,7 +50,7 @@ public class PlantModule extends GameModule {
         // Fait pousser les plantes
         _plants.stream()
                 .filter(plant -> plant.hasSeed() && computeGrowingInfo(plant))
-                .forEach(PlantItem::grow);
+                .forEach(plant -> plant.grow(getHourInterval()));
 
         // Récolte les plantes arrivées à maturité
         _plants.stream()
@@ -98,11 +98,19 @@ public class PlantModule extends GameModule {
     }
 
     private boolean canGrow(ItemInfo.ItemInfoPlant.GrowingInfo infoEntry, double light, double temperature) {
+
+        // Check light
         if (infoEntry.light != null && (light < infoEntry.light[0] || light > infoEntry.light[1])) {
             return false;
         }
 
-        return !(infoEntry.temperature != null && (temperature < infoEntry.temperature[0] || temperature > infoEntry.temperature[1]));
+        // Check temperature
+        if (infoEntry.temperature != null && (temperature < infoEntry.temperature[0] || temperature > infoEntry.temperature[1])) {
+            return false;
+        }
+
+        // Return true if all checks pass
+        return true;
     }
 
     public Collection<PlantItem> getPlants() {

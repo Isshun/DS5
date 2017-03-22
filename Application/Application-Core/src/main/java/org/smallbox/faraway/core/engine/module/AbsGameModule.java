@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module;
 
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -18,11 +19,21 @@ import java.util.List;
  * Unload
  */
 public abstract class AbsGameModule extends ModuleBase implements GameObserver {
+
+    @BindComponent
+    private Game game;
+
     protected int           _updateInterval = 1;
     private List<Long>      _updateTimeHistory = new ArrayList<>();
     private long            _updateTime;
     private int             _nbUpdate;
     private long            _totalTime;
+    private long            _lastTick;
+    private long            _tick;
+    private long            _lastTime;
+    private long            _cumulateTime;
+    private long            _tickInterval;
+    private double          _hourInterval;
 
     //    public void onGameCreateObserver(Game game) {}
     protected void onGameUpdate(Game game, int tick) {}
@@ -61,8 +72,15 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
 
     protected void onModuleUpdate(Game game) {}
 
-    public void updateGame(Game game, int tick) {
+    public void updateGame(Game game) {
+        long time = System.nanoTime() / 1000;
+        _tick = game.getTick();
+        _tickInterval = _tick - _lastTick;
+        _hourInterval = _tickInterval / game.getTickPerHour();
         onModuleUpdate(game);
+        _lastTick = game.getTick();
+        _lastTime = System.nanoTime() / 1000 - time;
+        _cumulateTime += _lastTime;
 //        if (_isStarted) {
 //            if (tick % _updateInterval == 0) {
 ////                if (runOnMainThread()) {
@@ -94,6 +112,12 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     }
 
     public long         getModuleUpdateTime() { return _updateTime; }
+    public long         getLastTime() { return _lastTime; }
+    public long         getCumulateTime() { return _cumulateTime; }
+    public long         getLastTick() { return _lastTick; }
+    public long         getTick() { return _tick; }
+    public long         getTickInterval() { return _tickInterval; }
+    public double       getHourInterval() { return _hourInterval; }
 
     public void setUpdateInterval(int updateInterval) {
         _updateInterval = updateInterval;

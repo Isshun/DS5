@@ -27,22 +27,6 @@ public class StructureBottomRenderer extends BaseRenderer {
     }
 
     @Override
-    protected void onGameUpdate() {
-        _structureModule.getStructures().forEach(structure -> {
-            if (structure.isDoor()) {
-                boolean isOpen = false;
-                // TODO
-//                for (CharacterModel character: ModuleHelper.getCharacterModule().getCharacters()) {
-//                    if (Math.abs(character.getParcel().x - structure.getParcel().x) <= 1 && Math.abs(character.getParcel().y - structure.getParcel().y) <= 1) {
-//                        isOpen = true;
-//                    }
-//                }
-//                structure.setTile(isOpen ? 1 : 0);
-            }
-        });
-    }
-
-    @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
     }
 

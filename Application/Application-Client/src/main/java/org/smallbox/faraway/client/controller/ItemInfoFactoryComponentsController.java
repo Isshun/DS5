@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.item.UsableItem;
 
 /**
@@ -23,7 +22,7 @@ public class ItemInfoFactoryComponentsController extends LuaController {
     private UIList listComponents;
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
     }
 
     public void setItem(UsableItem item) {

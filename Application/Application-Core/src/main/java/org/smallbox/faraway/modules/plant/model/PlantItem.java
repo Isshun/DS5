@@ -36,7 +36,7 @@ public class PlantItem extends MapObjectModel {
     public double       getMaturity() { return _maturity; }
     public double       getNourish() { return _nourish; }
     public GrowingInfo  getGrowingInfo() { return _growingInfo; }
-    public GardenArea getGarden() { return _garden; }
+    public GardenArea   getGarden() { return _garden; }
     public int          getTile() { return _tile; }
     public JobModel     getJob() { return _job; }
 
@@ -45,9 +45,10 @@ public class PlantItem extends MapObjectModel {
     public boolean      hasSeed() { return _hasSeed; }
     public boolean      hasGrowingInfo() { return _growingInfo != null; }
 
-    public void grow() {
+    public void grow(double hourInterval) {
         if (_growingInfo != null) {
-            _maturity = Utils.bound(0, 1, _maturity + (_info.plant.growing * _growingInfo.value));
+            double growingAddValue = hourInterval / _info.plant.growing;
+            _maturity = Utils.bound(0, 1, _maturity + (growingAddValue * _growingInfo.value));
         }
     }
 }

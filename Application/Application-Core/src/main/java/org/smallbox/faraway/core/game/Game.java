@@ -14,38 +14,39 @@ import org.smallbox.faraway.util.Utils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Game {
 
-    private long _nextTick;
+    private double _tickPerHour;
 
     public <T> T getModule(Class<T> cls) {
         return (T) _modules.stream().filter(module -> module.getClass() == cls).findAny().orElse(null);
     }
 
     public enum GameStatus {UNINITIALIZED, CREATED, STOPPED, STARTED}
-    public static final int[]               TICK_INTERVALS = {-1, 400, 200, 100, 50, 25, 10, 1};
 
     // Update
     private long                            _nextUpdate;
-    private int                             _tickInterval = TICK_INTERVALS[1];
+    private int                             _tickInterval;
 
     private boolean                         _isRunning;
     private final GameInfo                  _info;
     private PlanetModel                     _planet;
-    private int                             _hour = 7;
-    private int                             _day;
-    private int                             _year;
+    private GameTime                        _gameTime;
     private int                             _tick;
     private Map<String, Boolean>            _displays;
-    private int                             _speed = 1;
-    private int                             _lastSpeed = 1;
-    private double                          _avance;
+    private int                             _speed;
+    private int                             _lastSpeed;
     private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
-    private ExecutorService                 _executorService = Executors.newSingleThreadExecutor();
+    private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
+
+    public ScheduledExecutorService getScheduler() {
+        return _moduleScheduler;
+    }
 
     public void setDisplay(String displayName, boolean isActive) {
         _displays.put(displayName, isActive);
@@ -67,23 +68,24 @@ public class Game {
 
     public void                             toggleSpeed0() { setSpeed(_speed == 0 ? _lastSpeed : 0); }
 
-    public int                              getHour() { return _hour; }
-    public int                              getDay() { return _day; }
-    public int                              getYear() { return _year; }
-    public int                              getTickPerHour() { return Application.config.game.tickPerHour; }
+    public GameTime                         getTime() { return _gameTime; }
+    public double                           getTickPerHour() { return _tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public PlanetModel                      getPlanet() { return _planet; }
     public long                             getTick() { return _tick; }
-    public long                             getNextTick() { return _nextTick; }
     public int                              getSpeed() { return _speed; }
     public int                              getLastSpeed() { return _lastSpeed; }
     public Collection<AbsGameModule>        getModules() { return _modules; }
-    public GameStatus getState() { return _status; }
+    public GameStatus                       getState() { return _status; }
     public long                             getNextUpdate() { return _nextUpdate; }
     public int                              getTickInterval() { return _tickInterval; }
 
     public Game(GameInfo info) {
-//        Application.APPLICATION_CONFIG.game.updateInterval
+        _speed = Application.config.game.startSpeed;
+        _lastSpeed = Application.config.game.startSpeed;
+        _tickInterval = Application.config.game.tickInterval;
+        _gameTime = new GameTime(Application.config.game.startGameTime);
+        _tickPerHour = Application.config.game.ticksPerHour[_speed];
 
         _info = info;
         _isRunning = true;
@@ -167,89 +169,75 @@ public class Game {
     public void start() {
         _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
 
-        Application.notify(observer -> observer.onHourChange(_hour));
-        Application.notify(observer -> observer.onDayChange(_day));
-        Application.notify(observer -> observer.onYearChange(_year));
-        Application.notify(observer -> observer.onGameSpeedChange(_speed));
+//        Application.notify(observer -> observer.onHourChange(_hour));
+//        Application.notify(observer -> observer.onDayChange(_day));
+//        Application.notify(observer -> observer.onYearChange(_year));
+//        Application.notify(observer -> observer.onGameSpeedChange(_speed));
 
         _status = GameStatus.STARTED;
     }
 
     public void stop() {
         _status = GameStatus.STOPPED;
+        _moduleScheduler.shutdown();
     }
-
-    /**
-     * Update
-     */
-    public void update() {
-        Log.debug(Game.class, "Game update (tick: %d)", _tick + 1);
-
-        _tick += 1;
-
-        _modules.forEach(module -> module.updateGame(this, _tick));
-
-        updateHour();
-    }
-
-    /**
-     * Update hour
-     */
-    private void updateHour() {
-        if (_tick % Application.config.game.tickPerHour == 0) {
-            if (++_hour >= _planet.getInfo().dayDuration) {
-                _hour = 0;
-                if (++_day >= _planet.getInfo().yearDuration) {
-                    _day = 1;
-                    _year++;
-                    Application.notify(observer -> observer.onYearChange(_year));
-                }
-                Application.notify(observer -> observer.onDayChange(_day));
-            }
-            Application.notify(observer -> observer.onHourChange(_hour));
-        }
-    }
+//
+//    /**
+//     * Update hour
+//     */
+//    private void updateHour() {
+//        if (_tick % _tickPerHour == 0) {
+//            if (++_hour >= _planet.getInfo().dayDuration) {
+//                _hour = 0;
+//                if (++_day >= _planet.getInfo().yearDuration) {
+//                    _day = 1;
+//                    _year++;
+//                    Application.notify(observer -> observer.onYearChange(_year));
+//                }
+//                Application.notify(observer -> observer.onDayChange(_day));
+//            }
+//            Application.notify(observer -> observer.onHourChange(_hour));
+//        }
+//    }
 
     public GameInfo getInfo() { return _info; }
 
     public void setSpeed(int speed) {
         _lastSpeed = _speed;
-        _speed = Utils.bound(1, TICK_INTERVALS.length - 1, speed);
+        _speed = Utils.bound(1, Application.config.game.ticksPerHour.length - 1, speed);
         if (_speed != _lastSpeed) {
-            _tickInterval = TICK_INTERVALS[_speed];
+//            _tickInterval = Application.config.game.ticksIntervals[_speed];
+            _tickPerHour = Application.config.game.ticksPerHour[_speed];
             _isRunning = speed > 0;
             Application.notify(observer -> observer.onGameSpeedChange(_speed));
         }
     }
 
+    public void runBackground(Runnable runnable) {
+        if (_status == GameStatus.STARTED && _isRunning) {
+            runnable.run();
+        }
+        _moduleScheduler.schedule(() -> runBackground(runnable), _tickInterval, TimeUnit.MILLISECONDS);
+    }
+
     public void launchBackgroundThread(GameManager.GameListener listener) {
-        _executorService.submit(() -> {
-            Log.notice("launchBackgroundThread");
-            while (_status != GameStatus.STOPPED) {
-                try {
-                    long time = System.currentTimeMillis();
 
-                    if (_status == GameStatus.STARTED && _isRunning) {
-                        update();
+        _moduleScheduler.scheduleAtFixedRate(() -> {
+            try {
+                _tick += 1;
+                _gameTime.add(1 / _tickPerHour);
 
-                        Application.notify(observer -> observer.onGameUpdate(this));
+                _modules.forEach(module -> module.updateGame(Game.this));
 
-                        if (listener != null) {
-                            listener.onGameUpdate(this);
-                        }
+                Application.notify(gameObserver -> gameObserver.onGameUpdate(Game.this));
 
-                        _avance = 0;
-                    }
-
-                    long length = System.currentTimeMillis() - time;
-                    _nextTick = System.currentTimeMillis() + _tickInterval - length;
-//                    Thread.sleep(_tickInterval - length);
-                    Thread.sleep(_tickInterval);
-                } catch (Exception e) {
-                    _status = GameStatus.STOPPED;
-                    e.printStackTrace();
+                if (listener != null) {
+                    listener.onGameUpdate(this);
                 }
+            } catch (Exception e) {
+                Log.error(e);
             }
-        });
+        }, 0, 10, TimeUnit.MILLISECONDS);
+
     }
 }

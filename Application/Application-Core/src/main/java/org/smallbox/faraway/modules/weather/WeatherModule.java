@@ -66,8 +66,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 //        }
     }
 
-    @Override
-    public void onHourChange(int hour) {
+    public void updateFloorTemperature(Game game) {
         // Set temperature for all floors
         for (int floor = 0; floor < _floors; floor++) {
             for (RegionInfo.RegionTemperature regionTemperature: _temperatures) {
@@ -81,7 +80,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 
         PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
         if (planetInfo.dayTimes != null) {
-            planetInfo.dayTimes.stream().filter(dayTime -> dayTime.hour == hour).forEach(this::setHour);
+            planetInfo.dayTimes.stream().filter(dayTime -> dayTime.hour == game.getTime().getHour()).forEach(this::setHour);
         }
 
         notifyObservers(observer -> observer.onTemperatureChange(Math.random() * 40));
@@ -131,6 +130,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         }
 
         // Set temperature
+        updateFloorTemperature(game);
         for (int floor = 0; floor < _floors; floor++) {
             double change = ((_temperatureTargetByFloor[floor] + _temperatureOffset) - _temperatureByFloor[floor]) / 100;
             if (change > -0.001 && change < 0.001) _temperatureByFloor[floor] += _temperatureOffset;

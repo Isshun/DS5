@@ -31,7 +31,7 @@ public class ItemInfo extends ObjectInfo {
         public int                      cost;
         public int                      count;
         public ItemInfoEffects          effects;
-        public int                      duration;
+        public double                   duration;
     }
 
     public static class ItemMaterialInfo {
@@ -158,11 +158,14 @@ public class ItemInfo extends ObjectInfo {
 
     public static class ItemBuildInfo {
         public static class ItemBuildComponentInfo {
-            public ItemInfo    component;
+            public ItemInfo component;
             public int quantity;
         }
 
+        // Durée de construction en heure
         public double cost;
+
+        // Liste des composants (+ quantité) necessaires à la construction
         public List<ItemBuildComponentInfo> components = new ArrayList<>();
     }
 

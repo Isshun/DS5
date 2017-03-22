@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
@@ -15,6 +16,9 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
  * Created by Alex on 27/02/2017.
  */
 public class SystemInfoController extends LuaController {
+
+    @BindComponent
+    private Game game;
 
     @BindLua
     private UILabel lbTime;
@@ -44,13 +48,12 @@ public class SystemInfoController extends LuaController {
     private TemperatureModule temperatureModule;
 
     @Override
-    protected void onNewGameUpdate(Game game) {
-        lbTime.setText(game.getHour() + "H");
-        double ratio = (game.getTick() % game.getTickPerHour()) / (double)game.getTickPerHour();
-        frameTime.setHeight((int)(ratio * 20));
+    protected void onControllerUpdate() {
+        lbTime.setText(game.getTime().getHour() + "H");
+        frameTime.setHeight(game.getTime().getMinute() * 20 / 60);
         frameTime.setPositionY(28 - frameTime.getHeight());
 
-        lbDay.setText("J-" + (game.getDay() + 1));
+        lbDay.setText("J-" + (game.getTime().getDay() + 1));
 
         icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
 

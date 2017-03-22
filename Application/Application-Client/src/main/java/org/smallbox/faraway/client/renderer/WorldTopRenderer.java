@@ -30,10 +30,6 @@ public class WorldTopRenderer extends BaseRenderer {
         _height = game.getInfo().worldHeight;
     }
 
-    @Override
-    protected void onGameUpdate() {
-    }
-
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
         int fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());

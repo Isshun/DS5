@@ -24,7 +24,7 @@ public class CharacterInfoTimetableController extends LuaController {
     private CharacterModel _selected;
 
     @Override
-    public void onNewGameUpdate(Game game) {
+    public void onControllerUpdate() {
         if (isVisible() && _selected != null) {
             selectCharacter(_selected);
         }

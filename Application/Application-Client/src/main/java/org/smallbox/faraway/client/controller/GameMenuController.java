@@ -56,7 +56,7 @@ public class GameMenuController extends LuaController {
     }
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
 
     }
 }

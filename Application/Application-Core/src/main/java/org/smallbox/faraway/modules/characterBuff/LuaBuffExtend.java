@@ -131,7 +131,7 @@ public class LuaBuffExtend extends LuaExtend {
         switch (luaEffect.get("type").tojstring()) {
 
             case "need":
-                effectInfo.needs.put(luaEffect.get("name").tojstring(), luaEffect.get("value").todouble() / Application.config.game.tickPerHour);
+                effectInfo.needs.put(luaEffect.get("name").tojstring(), luaEffect.get("value").todouble());
                 break;
 
             case "disease":

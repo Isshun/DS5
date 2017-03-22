@@ -15,7 +15,7 @@ public class JobTechnicalTask extends JobTask {
     public JobTechnicalTaskAction action;
 
     public JobTechnicalTask(String label, JobTechnicalTaskAction action) {
-        super(label, character -> {
+        super(label, (character, hourInterval) -> {
             action.onExecuteTask(character);
             return JobTaskReturn.TASK_COMPLETE;
         });

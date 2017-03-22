@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.building;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -31,12 +32,18 @@ public class BasicRepairJob extends JobModel {
             job._mapObject = mapObject;
             job._targetParcel = mapObject.getParcel();
 
-            job.addTask("Move to object", character -> character.moveTo(mapObject.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
-            job.addTask("Repair", character -> {
-                mapObject.setHealth(mapObject.getHealth() + 1);
+            job.addTask("Move to object", (character, hourInterval) -> character.moveTo(mapObject.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Repair", (character, hourInterval) -> {
+                mapObject.addHealth(Application.config.game.repairByHour / hourInterval * mapObject.getMaxHealth());
                 job.setProgress(mapObject.getHealth(), mapObject.getMaxHealth());
                 return mapObject.getHealth() >= mapObject.getMaxHealth() ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
             });
+
+//            job.addTaskAsync(character -> {
+//                mapObject.setHealth(mapObject.getMaxHealth());
+//                job.setProgress(mapObject.getHealth(), mapObject.getMaxHealth());
+//                return JobTaskReturn.TASK_COMPLETE;
+//            });
 
             return true;
         });

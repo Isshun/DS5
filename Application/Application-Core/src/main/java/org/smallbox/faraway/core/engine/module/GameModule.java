@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule implements GameObserver {
+
     private List<T> _observers = new ArrayList<>();
 
     public boolean onSelectParcel(ParcelModel parcel) {
@@ -33,11 +35,6 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
     @Override
     public final void onGameCreateObserver(Game game) {
 
-    }
-
-    @Override
-    public void onGameUpdate(Game game) {
-//        Log.info(getClass(), "Update module");
     }
 
     public void notifyObservers(Consumer<T> action) {

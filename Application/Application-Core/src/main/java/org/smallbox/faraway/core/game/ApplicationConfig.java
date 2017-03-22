@@ -14,13 +14,17 @@ public class ApplicationConfig {
     }
 
     public static class ApplicationConfigGameInfo {
+        public int[]            ticksPerHour = {-1, 1000, 500, 250, 100, 50, 20, 1};
+        public int              tickInterval = 10;
+        public double           startGameTime = 7;
+        public int              startSpeed = 1;
         public int              roofMaxDistance = 6;
         public int              inventoryMaxQuantity = 100;
         public int              storageMaxQuantity = 100;
         public int              environmentDistance = 5;
         public int              maxNearDistance = 32;
-        public int              tickPerHour = 50;
-        public int              updateInterval = 10;
+        public double           characterSpeed = 100;
+        public double           repairByHour = 1;
     }
 
     public ApplicationConfigScreenInfo screen = new ApplicationConfigScreenInfo();

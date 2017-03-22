@@ -10,7 +10,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.modules.area.AreaModule;
@@ -94,7 +93,7 @@ public class AreaPanelController extends LuaController {
     }
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
     }
 
     @Override

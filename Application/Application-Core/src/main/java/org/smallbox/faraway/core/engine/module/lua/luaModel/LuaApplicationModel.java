@@ -44,9 +44,9 @@ public class LuaApplicationModel {
     public void update() {
         this.game = Application.gameManager.getGame();
         this.tick = game.getTick();
-        this.hour = game.getHour();
-        this.day = game.getDay();
-        this.year = game.getYear();
+        this.hour = game.getTime().getHour();
+        this.day = game.getTime().getDay();
+        this.year = game.getTime().getYear();
     }
 
     public ModuleBase getModule(String name) {

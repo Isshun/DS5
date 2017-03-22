@@ -33,8 +33,8 @@ public class BasicBuildJob extends JobModel {
             job._mapObject = mapObject;
             job._targetParcel = mapObject.getParcel();
 
-            job.addTask("Move to object", character -> character.moveTo(mapObject.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
-            job.addTask("Build", character -> {
+            job.addTask("Move to object", (character, hourInterval) -> character.moveTo(mapObject.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Build", (character, hourInterval) -> {
                 mapObject.actionBuild(1);
                 job.setProgress(mapObject.getBuildValue(), mapObject.getBuildCost());
                 return mapObject.isBuildComplete() ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;

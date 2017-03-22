@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -34,7 +33,6 @@ public class CharacterRenderer extends BaseRenderer {
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
 
-    private long _lastUpdate;
     private double _value;
     private long _startTime;
 
@@ -44,20 +42,15 @@ public class CharacterRenderer extends BaseRenderer {
         _characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
     }
 
-    @Override
-    public void onGameUpdate(Game game) {
-        _lastUpdate = System.currentTimeMillis();
-    }
-
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
         int viewPortX = viewport.getPosX();
         int viewPortY = viewport.getPosY();
         double viewPortScale = viewport.getScale();
 
-        if (character.getPath() != null) {
-            drawPath(character, viewport, renderer);
-            return;
-        }
+//        if (character.getPath() != null) {
+//            drawPath(character, viewport, renderer);
+//            return;
+//        }
 
         ParcelModel parcel = character.getParcel();
         if (parcel.z == _floor) {
@@ -68,8 +61,8 @@ public class CharacterRenderer extends BaseRenderer {
                 // Get game position and direction
                 Direction direction = character.getDirection();
 
-                double rest = Application.gameManager.getGame().getNextTick() - System.currentTimeMillis();
-                double ratio = 1.0 - rest / Application.gameManager.getGame().getTickInterval();
+//                double rest = Application.gameManager.getGame().getNextTick() - System.currentTimeMillis();
+//                double ratio = 1.0 - rest / Application.gameManager.getGame().getTickInterval();
 //                System.out.println("ratio: " + ratio);
 
                 // Get exact position
@@ -132,25 +125,18 @@ public class CharacterRenderer extends BaseRenderer {
      */
     private void drawJob(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
         JobModel job = character.getJob();
-        if (job != null && job.getProgress() > 0) {
-            renderer.drawRectangle(posX, posY, 32, 6, Color.CYAN, true);
-            renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, Color.BLUE, true);
-            renderer.drawRectangle(posX, posY, 32, 6, Color.YELLOW, false);
-//            int x = posX;
-//            int y = posY;
-//            ParcelModel targetParcel = job.getTargetParcel();
-//            if (targetParcel != null) {
-//                if (targetParcel.y < parcel.y) y -= 16;
-//                if (targetParcel.y > parcel.y) y += 16;
-//                if (targetParcel.x < parcel.x) x -= 16;
-//                if (targetParcel.x > parcel.x) x += 16;
-//            }
-//            renderer.drawPixel(job.getActionDrawable(), x, y);
-        }
+        if (job != null) {
 
-//        if (character.isSleeping()) {
-//            renderer.drawPixel(character.getSleepDrawable(), posX + 16, posY - 16);
-//        }
+            if (job.getProgress() > 0) {
+                renderer.drawRectangle(posX, posY, 32, 6, Color.CYAN, true);
+                renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, Color.BLUE, true);
+                renderer.drawRectangle(posX, posY, 32, 6, Color.YELLOW, false);
+            }
+
+            if (job.getMainLabel() != null) {
+                renderer.drawText(posX, posY + 16, 12, com.badlogic.gdx.graphics.Color.YELLOW, job.getMainLabel());
+            }
+        }
     }
 
     /**

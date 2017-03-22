@@ -10,8 +10,10 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
+import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -22,12 +24,16 @@ import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 @GameRenderer(level = 999, visible = false)
 public class DebugRenderer extends BaseRenderer {
+
+    @BindComponent
+    private Game game;
 
     @BindModule
     private CharacterModule characterModule;
@@ -51,7 +57,7 @@ public class DebugRenderer extends BaseRenderer {
 
     private Map<String, String> _data = new HashMap<>();
 
-    private enum Mode { CONSUMABLE, ITEM, PLANT, RENDER, OTHER, CHARACTER, JOB }
+    private enum Mode { CONSUMABLE, ITEM, PLANT, RENDER, OTHER, CHARACTER, JOB, MODULE}
 
     private Mode _mode = Mode.OTHER;
 
@@ -116,6 +122,17 @@ public class DebugRenderer extends BaseRenderer {
                 if (characterModule != null && characterModule.getCharacters() != null) {
                     characterModule.getCharacters().forEach(character -> drawDebugCharacter(renderer, character));
                 }
+                break;
+
+            // Display characters
+            case MODULE:
+                game.getModules().stream()
+                        .sorted(Comparator.comparingLong(AbsGameModule::getCumulateTime).reversed())
+                        .forEach(module -> drawDebug(renderer, "MODULE",
+                                String.format("%-32s total: %-5d med: %.2f",
+                                        module.getName(),
+                                        module.getCumulateTime() / 1000,
+                                        module.getCumulateTime() / 1000 / (double)game.getTick())));
                 break;
 
             case OTHER:
@@ -221,6 +238,11 @@ public class DebugRenderer extends BaseRenderer {
     @GameShortcut(key = Input.Keys.NUM_7)
     public void onD7() {
         _mode = Mode.JOB;
+    }
+
+    @GameShortcut(key = Input.Keys.NUM_8)
+    public void onD8() {
+        _mode = Mode.MODULE;
     }
 
 }

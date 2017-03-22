@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -84,7 +83,7 @@ public class TooltipController extends LuaController {
     }
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
 
     }
 }

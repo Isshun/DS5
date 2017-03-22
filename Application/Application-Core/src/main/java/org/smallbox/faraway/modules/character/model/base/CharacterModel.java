@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
-import org.smallbox.faraway.modules.characterBuff.CharacterBuff;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -26,18 +25,15 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
-    private PathModel _path;
-    private Map<ItemInfo, Integer> _inventory2 = new ConcurrentHashMap<>();
-
+    private PathModel                           _path;
+    private Map<ItemInfo, Integer>              _inventory;
     protected boolean                           _isSelected;
     protected int                               _lag;
     protected RoomModel                         _quarter;
     protected boolean                           _needRefresh;
-    protected ConsumableItem                    _inventory;
     protected MoveListener                      _moveListener;
     protected boolean                           _isFaint;
     private double                              _moveStep;
-    private Collection<CharacterBuff>      _buffs;
     private Collection<CharacterCheck>          _needsCheck;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
@@ -48,8 +44,8 @@ public abstract class CharacterModel extends MovableModel {
 
         Log.info("Character #" + id);
 
+        _inventory = new ConcurrentHashMap<>();
         _type = type;
-        _buffs = new ConcurrentLinkedQueue<>();
         _needsCheck = new ConcurrentLinkedQueue<>();
         _lag = (int)(Math.random() * 10);
         _isSelected = false;
@@ -79,20 +75,18 @@ public abstract class CharacterModel extends MovableModel {
         throw new NotImplementedException();
     }
     public int                          getInventoryQuantity(ItemInfo itemInfo) {
-        for (Map.Entry<ItemInfo, Integer> entry: _inventory2.entrySet()) {
+        for (Map.Entry<ItemInfo, Integer> entry: _inventory.entrySet()) {
             if (entry.getKey().instanceOf(itemInfo)) {
                 return entry.getValue();
             }
         }
         return 0;
     }
-    public Map<ItemInfo, Integer>       getInventory2() { return _inventory2; }
+    public Map<ItemInfo, Integer>       getInventory2() { return _inventory; }
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();
-    public Collection<CharacterBuff>     getBuffs() { return _buffs; }
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);
-    public void                         addBuff(CharacterBuff buff) { _buffs.add(buff); }
 
     public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
@@ -115,47 +109,47 @@ public abstract class CharacterModel extends MovableModel {
     //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
 
-    public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
-        PathModel path = Application.pathManager.getPath(_parcel, targetParcel, true, false);
-
-        // No path to target parcel
-        if (path == null) {
-            if (listener != null) {
-                listener.onFail(this);
-            }
-            return null;
-        }
-
-        // Move character to target parcel
-        move(path, listener);
-        return path.getLastParcel();
-    }
-
-    public void move(PathModel path) {
-        move(path, null);
-    }
-
-    public void move(PathModel path, MoveListener<CharacterModel> listener) {
-        if (_moveListener != null) {
-            Log.debug("[" + getName() + "] Cancel previous move listener");
-            _moveListener.onFail(this);
-            _moveListener = null;
-        }
-
-        if (path != null) {
-            // Already on position
-            if (path.getLength() == 0) {
-                if (listener != null) {
-                    listener.onReach(this);
-                }
-                return;
-            }
-
-            _path = path;
-            _moveProgress = 0;
-            _moveListener = listener;
-        }
-    }
+//    public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
+//        PathModel path = Application.pathManager.getPath(_parcel, targetParcel, true, false);
+//
+//        // No path to target parcel
+//        if (path == null) {
+//            if (listener != null) {
+//                listener.onFail(this);
+//            }
+//            return null;
+//        }
+//
+//        // Move character to target parcel
+//        move(path, listener);
+//        return path.getLastParcel();
+//    }
+//
+//    public void move(PathModel path) {
+//        move(path, null);
+//    }
+//
+//    public void move(PathModel path, MoveListener<CharacterModel> listener) {
+//        if (_moveListener != null) {
+//            Log.debug("[" + getName() + "] Cancel previous move listener");
+//            _moveListener.onFail(this);
+//            _moveListener = null;
+//        }
+//
+//        if (path != null) {
+//            // Already on position
+//            if (path.getLength() == 0) {
+//                if (listener != null) {
+//                    listener.onReach(this);
+//                }
+//                return;
+//            }
+//
+//            _path = path;
+//            _moveProgress = 0;
+//            _moveListener = listener;
+//        }
+//    }
 
     /**
      * Déplace le personnage à la position demandée
@@ -217,12 +211,12 @@ public abstract class CharacterModel extends MovableModel {
             }
 
             // Increase move progress
-            _moveStep = 1;
+            _moveStep = Application.config.game.characterSpeed / Application.gameManager.getGame().getTickPerHour();
 //            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
 
             // Character has reach next parcel
             if (_moveProgress >= 1 && _path.getCurrentParcel() != null) {
-                    _moveProgress = 0;
+                _moveProgress = 0;
 
                 // Move continue, set next parcel + direction
                 if (_path.next()) {
@@ -230,15 +224,7 @@ public abstract class CharacterModel extends MovableModel {
                     int fromY = _parcel.y;
                     int toX = _path.getCurrentParcel().x;
                     int toY = _path.getCurrentParcel().y;
-                    if (toX > fromX && toY > fromY) _direction = Direction.BOTTOM_RIGHT;
-                    else if (toX < fromX && toY > fromY) _direction = Direction.BOTTOM_LEFT;
-                    else if (toX > fromX && toY < fromY) _direction = Direction.TOP_RIGHT;
-                    else if (toX < fromX && toY < fromY) _direction = Direction.TOP_LEFT;
-                    else if (toX > fromX) _direction = Direction.RIGHT;
-                    else if (toX < fromX) _direction = Direction.LEFT;
-                    else if (toY > fromY) _direction = Direction.BOTTOM;
-                    else if (toY < fromY) _direction = Direction.TOP;
-                    else _direction = Direction.NONE;
+                    _direction = getDirection(fromX, fromY, toX, toY);
 
                     setParcel(_path.getCurrentParcel());
                 }
@@ -261,9 +247,21 @@ public abstract class CharacterModel extends MovableModel {
         }
     }
 
-    public void            action() {
+    private Direction getDirection(int fromX, int fromY, int toX, int toY) {
+        if (toX > fromX && toY > fromY) return Direction.BOTTOM_RIGHT;
+        if (toX < fromX && toY > fromY) return Direction.BOTTOM_LEFT;
+        if (toX > fromX && toY < fromY) return Direction.TOP_RIGHT;
+        if (toX < fromX && toY < fromY) return Direction.TOP_LEFT;
+        if (toX > fromX) return Direction.RIGHT;
+        if (toX < fromX) return Direction.LEFT;
+        if (toY > fromY) return Direction.BOTTOM;
+        if (toY < fromY) return Direction.TOP;
+        return Direction.NONE;
+    }
+
+    public void            action(double hourInterval) {
         if (_job != null) {
-            _job.action(this);
+            _job.action(this, hourInterval);
         }
     }
 
@@ -308,15 +306,15 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void addInventory(ItemInfo itemInfo, int quantity) {
-        int inventoryQuantity = _inventory2.containsKey(itemInfo) ? _inventory2.get(itemInfo) : 0;
+        int inventoryQuantity = _inventory.containsKey(itemInfo) ? _inventory.get(itemInfo) : 0;
         if (inventoryQuantity + quantity > 0) {
             if (inventoryQuantity + quantity < 0) {
                 throw new GameException(CharacterModel.class, "Character inventory quantity cannot be < 0");
             }
 
-            _inventory2.put(itemInfo, inventoryQuantity + quantity);
+            _inventory.put(itemInfo, inventoryQuantity + quantity);
         } else {
-            _inventory2.remove(itemInfo);
+            _inventory.remove(itemInfo);
         }
     }
 
@@ -326,12 +324,12 @@ public abstract class CharacterModel extends MovableModel {
 
         // Delete consumable from character inventory
         if (needQuantity == availableQuantity) {
-            _inventory2.remove(itemInfo);
+            _inventory.remove(itemInfo);
         }
 
         // Or update quantity
         else {
-            _inventory2.put(itemInfo, availableQuantity - needQuantity);
+            _inventory.put(itemInfo, availableQuantity - needQuantity);
         }
 
         return new ConsumableItem(itemInfo, quantityToRemove);

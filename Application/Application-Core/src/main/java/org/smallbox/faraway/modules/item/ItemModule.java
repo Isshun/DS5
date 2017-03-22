@@ -54,7 +54,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
      * @param callback
      * @return
      */
-    public UseJob createUseJob(UsableItem item, int totalDuration, UseJob.OnUseCallback callback) {
+    public UseJob createUseJob(UsableItem item, double totalDuration, UseJob.OnUseCallback callback) {
         return jobModule.createJob(new UseJob(this, item, totalDuration, callback));
     }
 

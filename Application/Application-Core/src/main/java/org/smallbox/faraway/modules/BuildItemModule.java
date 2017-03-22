@@ -30,7 +30,7 @@ public abstract class BuildItemModule<T extends ModuleObserver> extends GameModu
                 .filter(mapObject -> !mapObject.isBuildComplete())
                 .filter(mapObject -> !mapObject.hasAllComponents())
                 .forEach(mapObject ->
-                        mapObject.components.forEach((itemInfo, pair) -> {
+                        mapObject._components.forEach((itemInfo, pair) -> {
                             if (pair.availableQuantity < pair.neededQuantity) {
                                 consumableModule.createHaulToFactoryJobs(mapObject, itemInfo, pair.neededQuantity - pair.availableQuantity);
                             }

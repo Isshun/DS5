@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.job;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -13,6 +14,8 @@ import org.smallbox.faraway.util.Log;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public abstract class JobModel extends ObjectModel {
 
@@ -236,6 +239,19 @@ public abstract class JobModel extends ObjectModel {
         return _tasks;
     }
 
+    public void addTaskAsync(JobTask.JobTaskAction task) {
+
+        ScheduledFuture<?> future = Application.gameManager.getGame().getScheduler().scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+            }
+        }, 0, 10, TimeUnit.MILLISECONDS);
+
+        future.cancel(false);
+
+//        _tasks.add(new JobTask());
+    }
+
     public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
 
         if (_tasks.isEmpty()) {
@@ -260,7 +276,7 @@ public abstract class JobModel extends ObjectModel {
      * @param character CharacterModel
      * @return CONTINUE / COMPLETE / ABORT
      */
-    public JobReturn action(CharacterModel character) {
+    public JobReturn action(CharacterModel character, double hourInterval) {
 
         if (isClose()) {
             throw new GameException(JobModel.class, "Cannot call action on finished job");
@@ -273,7 +289,7 @@ public abstract class JobModel extends ObjectModel {
         // Execute les taches à la suite tant que le retour est TASK_COMPLETE
         while (!_tasks.isEmpty()) {
 
-            switch (actionTask(character, _tasks.peek())) {
+            switch (actionTask(character, _tasks.peek(), hourInterval)) {
 
                 case TASK_CONTINUE:
                     return JobReturn.CONTINUE;
@@ -308,10 +324,10 @@ public abstract class JobModel extends ObjectModel {
      * @param task JobTask
      * @return JobTaskReturn
      */
-    private JobTaskReturn actionTask(CharacterModel character, JobTask task) {
+    private JobTaskReturn actionTask(CharacterModel character, JobTask task, double hourInterval) {
         Log.debug(JobModel.class, "actionTask: (taks: %s, job: %s)", task.label, this);
 
-        _lastTaskReturn = task.action.onExecuteTask(character);
+        _lastTaskReturn = task.action.onExecuteTask(character, hourInterval);
         _label = task.label;
 
         Log.debug(JobModel.class, "actionTask return: %s", _lastTaskReturn);

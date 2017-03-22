@@ -26,6 +26,10 @@ public class CollectionUtils {
         return map != null && !map.isEmpty();
     }
 
+    public static <T> boolean contains(Collection<T> collection, T object) {
+        return collection != null || collection.contains(object);
+    }
+
     public static <T> boolean notContains(Collection<T> collection, T object) {
         return collection == null || !collection.contains(object);
     }

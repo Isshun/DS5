@@ -23,7 +23,7 @@ public class BasicHarvestJob extends JobModel {
             return jobModule.createJob(BasicHarvestJob.class, null, plant.getParcel(), job -> {
 
                 // Déplace le personnage à l'emplacement des composants
-                job.addTask("Move to plant", character -> character.moveTo(consumableDropParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+                job.addTask("Move to plant", (character, hourInterval) -> character.moveTo(consumableDropParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
                 // Crée les composants
                 job.addTechnicalTask("Create components", character ->

@@ -53,16 +53,15 @@ public class DigModule extends GameModule {
 
     @Override
     protected void onModuleUpdate(Game game) {
+        List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
         List<ParcelModel> parcelInDigJob = jobModule.getJobs().stream()
                 .filter(job -> job instanceof BasicDigJob)
                 .map(job -> ((BasicDigJob)job).getDigParcel())
                 .collect(Collectors.toList());
-        List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
 
         // Create missing dig job
-        worldModule.getParcelList().stream()
+        parcelInDigArea.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
-                .filter(parcelInDigArea::contains)
                 .filter(parcel -> CollectionUtils.notContains(parcelInDigJob, parcel))
                 .forEach(this::createMissingJob);
     }

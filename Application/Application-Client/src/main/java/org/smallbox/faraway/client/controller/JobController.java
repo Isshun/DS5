@@ -7,7 +7,6 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.building.BasicRepairJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -39,7 +38,7 @@ public class JobController extends LuaController {
     }
 
     @Override
-    public void onNewGameUpdate(Game game) {
+    public void onControllerUpdate() {
         jobModule.getJobs().stream().filter(JobModel::isVisible).forEach(job ->
                 listJobs.addNextView(new UIFrame(null)
                         .setSize(300, 28)

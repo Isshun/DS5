@@ -68,7 +68,7 @@ public class BasicHaulJob extends JobModel {
             }
 
             // Déplace le personnage à l'emplacement des composants
-            addTask("Haul " + lock.consumable.getLabel(), character -> {
+            addTask("Haul " + lock.consumable.getLabel(), (character, hourInterval) -> {
                 if (lock.consumable.getParcel() != null) {
                     return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
                 }
@@ -76,7 +76,7 @@ public class BasicHaulJob extends JobModel {
             });
 
             // Ajoute les composants à l'inventaire du personnage
-            addTask("Add " + lock.consumable.getLabel() + " to inventory", character -> {
+            addTask("Add " + lock.consumable.getLabel() + " to inventory", (character, hourInterval) -> {
                 _consumableModule.takeConsumable(lock);
                 character.addInventory(lock.consumable.getInfo(), lock.quantity);
                 return JobTaskReturn.TASK_COMPLETE;
@@ -84,7 +84,7 @@ public class BasicHaulJob extends JobModel {
         }
 
         // Apporte les composants à la fabrique
-        addTask("Bring back to factory", character ->
+        addTask("Bring back to factory", (character, hourInterval) ->
                 character.moveTo(_targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
         // Charge les comnposants dans la fabrique

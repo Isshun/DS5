@@ -125,7 +125,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     @Override
-    public void onNewGameUpdate(Game game) {
+    public void onControllerUpdate() {
 
     }
 

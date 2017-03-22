@@ -57,7 +57,7 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
         }
     }
 
-    protected void onGameUpdate() {}
+//    protected void onRenderUpdate() {}
     protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {}
 
     public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -102,10 +102,6 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
         onGameStart(game);
 
         _isLoaded = true;
-    }
-
-    public final void gameUpdate() {
-        onGameUpdate();
     }
 
     public void unload() {

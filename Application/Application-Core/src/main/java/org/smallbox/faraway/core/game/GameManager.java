@@ -28,14 +28,6 @@ public class GameManager implements GameObserver {
     @BindModule
     private IWorldFactory       worldFactory;
 
-    public interface GameCreateListener {
-        void onGameCreate(Game game);
-    }
-
-    public interface GameUpdateListener {
-        void onGameUpdate(Game game);
-    }
-
     public interface GameListener {
         void onGameCreate(Game game);
         void onGameUpdate(Game game);

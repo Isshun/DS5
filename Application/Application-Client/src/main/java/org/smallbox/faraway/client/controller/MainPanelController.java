@@ -7,7 +7,6 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 15/08/2016.
@@ -63,7 +62,7 @@ public class MainPanelController extends LuaController {
     }
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
 
     }
 }

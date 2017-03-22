@@ -26,14 +26,9 @@ public class ParticleRenderer extends BaseRenderer {
     private Game game;
 
     @Override
-    public void onGameUpdate(Game game) {
-        if (!StringUtils.equals(weatherModule.getWeather().particle, _name)) {
-            loadEffect(weatherModule.getWeather().particle);
-        }
-    }
-
-    @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+        loadEffect(weatherModule.getWeather().particle);
+
         if (_effect != null) {
             renderer.getBatch().begin();
             _effect.draw(renderer.getBatch());

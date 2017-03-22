@@ -84,9 +84,8 @@ public class PathModel {
                 length++;
             }
         }
-        _smooth.add(new PathSection(p1, _lastParcel, length));
 
-        System.out.println("ok");
+        _smooth.add(new PathSection(p1, _lastParcel, length));
     }
 
     private int dirY(int dir) {

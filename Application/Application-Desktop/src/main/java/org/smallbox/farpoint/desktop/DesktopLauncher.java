@@ -56,7 +56,7 @@ public class DesktopLauncher {
     }
 
     private static GDXApplication.GameTestCallback testGame() {
-        return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
+        return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 16, 16, 2, new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
 

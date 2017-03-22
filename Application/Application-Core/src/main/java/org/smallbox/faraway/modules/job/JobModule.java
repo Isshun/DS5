@@ -60,7 +60,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _jobs.removeIf(JobModel::isClose);
 
         // Run auto job
-        _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null));
+        double hourInterval = getTickInterval() * game.getTickPerHour();
+        _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null, hourInterval));
 
         // Assign job to inactive character
         characterModule.getCharacters().stream()

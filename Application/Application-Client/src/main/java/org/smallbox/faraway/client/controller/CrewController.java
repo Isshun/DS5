@@ -9,7 +9,6 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
@@ -42,7 +41,7 @@ public class CrewController extends LuaController {
     }
 
     @Override
-    public void onNewGameUpdate(Game game) {
+    public void onControllerUpdate() {
         if (listCrew != null) {
             characterModule.getCharacters().forEach(character -> {
 

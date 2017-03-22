@@ -130,7 +130,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
      * @param callback
      * @return Le job créé
      */
-    public ConsumeJob createConsumeJob(ConsumableItem consumable, int totalDuration, ConsumeJob.OnConsumeCallback callback) {
+    public ConsumeJob createConsumeJob(ConsumableItem consumable, double totalDuration, ConsumeJob.OnConsumeCallback callback) {
         return jobModule.createJob(new ConsumeJob(this, consumable, totalDuration, callback));
     }
 

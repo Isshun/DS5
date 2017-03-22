@@ -60,6 +60,7 @@ data:extend({
             { ground = "base.ground.sand", liquid = "base.liquid.water", pattern = "ground_large", condition = "ground" },
         },
         weather = {
+--            {name = "base.weather.sandwhirl", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.coldwave", frequency = {2, 10}, duration = {1, 1}},
             {name = "base.weather.snow", frequency = {2, 10}, duration = {1, 1}},

@@ -89,13 +89,6 @@ public class MinimapRenderer extends BaseRenderer {
         _dirty = true;
     }
 
-    @Override
-    protected void onGameUpdate() {
-        if (Application.gameManager.getGame().getTick() % 100 == 0) {
-            _dirty = true;
-        }
-    }
-
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (_panelMain != null && _panelMain.isVisible()) {
             int width = (int) (FRAME_WIDTH * Application.config.uiScale);

@@ -93,9 +93,10 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _characters.removeIf(CharacterModel::isDead);
 
         // Execute action
+        double hourInterval = getTickInterval() * game.getTickPerHour();
         _characters.forEach(character -> {
             character.setDirection(MovableModel.Direction.NONE);
-            character.action();
+            character.action(hourInterval);
             character.move();
         });
     }
@@ -122,10 +123,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         // Cancel job
         if (character.getJob() != null) {
             jobModule.quitJob(character.getJob(), JobModel.JobAbortReason.DIED);
-        }
-
-        if (CollectionUtils.isEmpty(character.getBuffs())) {
-            character.getBuffs().clear();
         }
     }
 

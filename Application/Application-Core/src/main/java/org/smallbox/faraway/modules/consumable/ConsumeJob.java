@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.consumable;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -20,20 +21,21 @@ public class ConsumeJob extends JobModel {
          * @param consumable le consomable
          * @param durationLeft la durée restante
          */
-        void onConsume(ConsumableItem consumable, int durationLeft);
+        void onConsume(ConsumableItem consumable, double durationLeft);
     }
 
-    public ConsumeJob(ConsumableModule consumableModule, ConsumableItem consumable, int totalDuration, OnConsumeCallback callback) {
+    public ConsumeJob(ConsumableModule consumableModule, ConsumableItem consumable, double totalDuration, OnConsumeCallback callback) {
         _consumableModule = consumableModule;
         _consumable = consumable;
         _lock = consumableModule.lock(this, consumable, 1);
 
         setMainLabel("Consume " + consumable.getInfo().label);
 
-        addTask("Move", character -> character.moveTo(consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
-        addTask("Consume", character -> {
+        addTask("Move", (character, hourInterval) -> character.moveTo(consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addTask("Consume", (character, hourInterval) -> {
             if (_lock.available) {
-                int durationLeft = totalDuration - ++_duration;
+                _duration += 1 / Application.gameManager.getGame().getTickPerHour();
+                double durationLeft = totalDuration - _duration;
                 callback.onConsume(consumable, durationLeft);
                 setProgress(_duration, totalDuration);
 

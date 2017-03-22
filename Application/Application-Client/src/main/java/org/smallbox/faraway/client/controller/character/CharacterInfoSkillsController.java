@@ -7,7 +7,6 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
@@ -29,7 +28,7 @@ public class CharacterInfoSkillsController extends LuaController {
     }
 
     @Override
-    protected void onNewGameUpdate(Game game) {
+    protected void onControllerUpdate() {
 
         if (_selected != null && listSkills.getViews().isEmpty()) {
             refreshSkills();

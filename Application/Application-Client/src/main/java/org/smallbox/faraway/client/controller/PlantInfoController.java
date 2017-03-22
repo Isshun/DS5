@@ -78,7 +78,7 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     @Override
     protected void onDisplayUnique(PlantItem plant) {
         lbLabel.setText("Type: " + plant.getLabel());
-        lbMaturity.setText("Maturity: " + (int)(plant.getMaturity() * 100));
+        lbMaturity.setText("Maturity: " + (int)(plant.getMaturity() * 100) + "%");
         lbGarden.setText("Garden: " + plant.getGarden());
         lbSeed.setText("Seed: " + plant.hasSeed());
         lbNourish.setText("Nourish: " + plant.getNourish());

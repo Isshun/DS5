@@ -90,13 +90,6 @@ public class MainRenderer implements GameClientObserver {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
-        if (_renders != null) {
-            _renders.stream().filter(BaseRenderer::isLoaded).forEach(BaseRenderer::gameUpdate);
-        }
-    }
-
-    @Override
     public void onGameRender(Game game) {
 
         // Draw
