@@ -29,11 +29,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public class ApplicationClient {
-    public static final DependencyInjector dependencyInjector;
     private static Collection<GameClientObserver>     _observers = new LinkedBlockingQueue<>();
 
+    public static final DependencyInjector      dependencyInjector;
+
     // Both
-    public static final ApplicationConfig APPLICATION_CONFIG;
+    public static final ApplicationConfig       applicationConfig;
 
     // Client
     public static final UIManager               uiManager;
@@ -43,8 +44,8 @@ public class ApplicationClient {
     public static final LuaControllerManager    luaControllerManager;
 
     public static final SpriteManager           spriteManager;
-    public static final GDXRenderer GDX_LAYER;
-    public static final LayerManager LAYER_MANAGER;
+    public static final GDXRenderer             gdxRenderer;
+    public static final LayerManager            layerManager;
 
     public static final ShortcutManager shortcutManager;
 
@@ -55,8 +56,8 @@ public class ApplicationClient {
         uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
-        GDX_LAYER = dependencyInjector.create(GDXRenderer.class);
-        LAYER_MANAGER = dependencyInjector.create(LayerManager.class);
+        gdxRenderer = dependencyInjector.create(GDXRenderer.class);
+        layerManager = dependencyInjector.create(LayerManager.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
 
@@ -68,15 +69,15 @@ public class ApplicationClient {
             }
         });
 
-        // Create APPLICATION_CONFIG
-        APPLICATION_CONFIG = loadConfig();
+        // Create applicationConfig
+        applicationConfig = loadConfig();
 
         // Create input processor
         inputManager = new InputManager();
     }
 
     private static ApplicationConfig loadConfig() {
-        Log.info("Load application APPLICATION_CONFIG");
+        Log.info("Load application applicationConfig");
         File configFile = new File(Application.BASE_PATH, "data/config.json");
         if (configFile.exists()) {
             try (FileReader fileReader = new FileReader(configFile)) {
@@ -102,7 +103,7 @@ public class ApplicationClient {
     }
 
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ApplicationConfig getConfig() { return APPLICATION_CONFIG; }
+    public ApplicationConfig getConfig() { return applicationConfig; }
 
     public static void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);
@@ -165,7 +166,7 @@ public class ApplicationClient {
 //            if (action == GameEventListener.Action.RELEASED) {
 //                System.out.println("Click on map at pixel: " + x + " x " + y);
 //
-//                Viewport viewport = ApplicationClient.LAYER_MANAGER.getViewport();
+//                Viewport viewport = ApplicationClient.layerManager.getViewport();
 //                ParcelModel parcel = WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor());
 //                if (parcel != null) {
 //                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);

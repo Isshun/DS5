@@ -49,21 +49,19 @@ public class MainPanelController extends LuaController {
     }
 
     public void addShortcut(String label, LuaController controller) {
-        if (mainGrid != null) {
-            mainGrid.addView(UILabel.create(null)
-                    .setText(label)
-                    .setTextSize(18)
-                    .setPadding(10)
-                    .setSize(170, 40)
-                    .setId(mainGrid.getName() + "." + label)
-                    .setName(mainGrid.getName() + "." + label)
-                    .setBackgroundColor(0x349394)
-                    .setFocusBackgroundColor(0x25c9cb)
-                    .setOnClickListener(event -> {
-                        _currentPaneController = controller;
-                        _currentPaneController.setVisible(true);
-                    }));
-        }
+        mainGrid.addView(UILabel.create(null)
+                .setText(label)
+                .setTextSize(18)
+                .setPadding(10)
+                .setSize(170, 40)
+                .setId(mainGrid.getName() + "." + label)
+                .setName(mainGrid.getName() + "." + label)
+                .setBackgroundColor(0x349394)
+                .setFocusBackgroundColor(0x25c9cb)
+                .setOnClickListener(event -> {
+                    _currentPaneController = controller;
+                    _currentPaneController.setVisible(true);
+                }));
     }
 
 }

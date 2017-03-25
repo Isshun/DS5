@@ -171,7 +171,7 @@ public class InputManager implements InputProcessor {
 
         if (_lastMouseButton == Buttons.RIGHT) {
             if (Application.gameManager.isLoaded()) {
-                ApplicationClient.LAYER_MANAGER.getViewport().update(x, y);
+                ApplicationClient.layerManager.getViewport().update(x, y);
                 return true;
             }
 //        } else if (_lastMouseButton == Buttons.LEFT) {

@@ -62,7 +62,7 @@ public class GDXApplication extends ApplicationAdapter {
                 Application.groovyManager::init);
 
         Application.taskManager.addLoadTask("Create layer", true, () ->
-                ApplicationClient.GDX_LAYER.init(_batch, _fonts));
+                ApplicationClient.gdxRenderer.init(_batch, _fonts));
 
         // Server
         Application.taskManager.addLoadTask("Launch DB thread", false, () ->
@@ -127,8 +127,8 @@ public class GDXApplication extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render application
-        ApplicationClient.GDX_LAYER.clear();
-        ApplicationClient.GDX_LAYER.refresh();
+        ApplicationClient.gdxRenderer.clear();
+        ApplicationClient.gdxRenderer.refresh();
 
         // Render game
         if (Application.gameManager.isLoaded()) {

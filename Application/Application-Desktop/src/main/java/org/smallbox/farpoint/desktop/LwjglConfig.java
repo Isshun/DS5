@@ -10,7 +10,7 @@ import org.smallbox.faraway.util.Constant;
 public class LwjglConfig {
     public static LwjglApplicationConfiguration from(ApplicationConfig config) {
         LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();
-//        APPLICATION_CONFIG.samples = 2;
+//        applicationConfig.samples = 2;
 
         lwjglConfig.foregroundFPS = config.screen.foregroundFPS;
         lwjglConfig.backgroundFPS = config.screen.backgroundFPS;
@@ -22,7 +22,7 @@ public class LwjglConfig {
         lwjglConfig.fullscreen = "fullscreen".equals(config.screen.mode);
         lwjglConfig.resizable = false;
         lwjglConfig.vSyncEnabled = false;
-//        APPLICATION_CONFIG.useGL30 = true;
+//        applicationConfig.useGL30 = true;
         lwjglConfig.title = Constant.NAME + " " + Constant.VERSION;
 
         if ("borderless".equals(config.screen.mode)) {

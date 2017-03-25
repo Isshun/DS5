@@ -133,7 +133,7 @@
 //                    } catch (Exception e) {
 //                        throw new GameException(e);
 //                    }
-//                }, Application.APPLICATION_CONFIG.game.updateInterval));
+//                }, Application.applicationConfig.game.updateInterval));
 //
 ////        Application.taskManager.addLoadTask("Launch world thread", false, callback::onApplicationReady);
 //

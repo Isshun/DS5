@@ -102,8 +102,8 @@ public class DebugLayer extends BaseLayer {
 
             // Display renders
             case RENDER:
-                if (ApplicationClient.LAYER_MANAGER != null) {
-                    ApplicationClient.LAYER_MANAGER.getRenders().stream()
+                if (ApplicationClient.layerManager != null) {
+                    ApplicationClient.layerManager.getRenders().stream()
                             .sorted((o1, o2) -> (int)(o2.getCumulateTime() - o1.getCumulateTime()))
                             .forEach(render -> drawDebug(renderer, "Render",
                                     String.format("%-32s visible: %-5s, total: %-5d med: %.2f",
@@ -154,8 +154,8 @@ public class DebugLayer extends BaseLayer {
                 break;
 
             case UI:
-                drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.LAYER_MANAGER.getViewport().getFloor());
-                drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.LAYER_MANAGER.getViewport().getWidth() + " x " + ApplicationClient.LAYER_MANAGER.getViewport().getHeight());
+                drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.layerManager.getViewport().getFloor());
+                drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.layerManager.getViewport().getWidth() + " x " + ApplicationClient.layerManager.getViewport().getHeight());
 
                 drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
                 drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
@@ -201,7 +201,7 @@ public class DebugLayer extends BaseLayer {
     @Override
     public void onMouseMove(GameEvent event) {
         _data.put("Cursor screen position", event.mouseEvent.x + " x " + event.mouseEvent.y);
-        _data.put("Cursor world position", ApplicationClient.LAYER_MANAGER.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.LAYER_MANAGER.getViewport().getWorldPosY(event.mouseEvent.y));
+        _data.put("Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(event.mouseEvent.y));
     }
 
     private void drawHeaders(GDXRenderer renderer) {

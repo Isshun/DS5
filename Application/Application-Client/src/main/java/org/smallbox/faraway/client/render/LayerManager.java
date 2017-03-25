@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 
 public class LayerManager implements GameClientObserver {
     public static final int                 MINI_MAP_LEVEL = 100;
-    public static final int                 PARTICLE_LAYER_LEVEL = -100;
+    public static final int                 PARTICLE_LAYER_LEVEL = -99;
+    public static final int                 JOB_LAYER_LEVEL = -100;
     public static final int                 CHARACTER_LAYER_LEVEL = -101;
     public static final int                 CONSUMABLE_LAYER_LEVEL = -102;
     public static final int                 PLANT_LAYER_LEVEL = -103;
@@ -30,16 +31,14 @@ public class LayerManager implements GameClientObserver {
     public static final int                 ROOM_LAYER_LEVEL = -105;
     public static final int                 WORLD_GROUND_LAYER_LEVEL = -106;
     public static final int                 WORLD_TOP_LAYER_LEVEL = -107;
-//    public static final int                 JOB_LAYER_LEVEL = -96;
 
     private long                            _renderTime;
     private int                             _frame;
 
     // Render
-//    private int                             _frame;
     private double                          _animationProgress;
 
-    private Collection<BaseLayer>        _renders;
+    private Collection<BaseLayer>           _renders;
     private Viewport                        _viewport;
 
     public Viewport getViewport() { return _viewport; }
@@ -99,7 +98,7 @@ public class LayerManager implements GameClientObserver {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        ApplicationClient.LAYER_MANAGER.draw(ApplicationClient.GDX_LAYER, _viewport, _animationProgress, _frame);
+        ApplicationClient.layerManager.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
 
         if (game.isRunning()) {
             if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
@@ -110,15 +109,8 @@ public class LayerManager implements GameClientObserver {
 
         ApplicationClient.uiManager.onRefresh(_frame);
 
-//        _gameAction.drawPixel(layer);
         _frame++;
     }
-
-//    @Override
-//    public void onReloadUI() {
-//        ApplicationClient.uiEventManager.clear();
-//        ApplicationClient.uiManager.clearViews();
-//    }
 
     public void draw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         long time = System.currentTimeMillis();

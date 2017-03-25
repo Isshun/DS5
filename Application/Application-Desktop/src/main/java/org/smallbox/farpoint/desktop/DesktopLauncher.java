@@ -32,7 +32,7 @@ public class DesktopLauncher {
 
     public static void main (String[] arg) {
 
-        //            Log.info("Load application APPLICATION_CONFIG");
+        //            Log.info("Load application applicationConfig");
 //            try (FileReader fileReader = new FileReader(FileUtils.getFile("data/config.json"))) {
 //                return new Gson().fromJson(fileReader, ApplicationConfig.class);
 //            }

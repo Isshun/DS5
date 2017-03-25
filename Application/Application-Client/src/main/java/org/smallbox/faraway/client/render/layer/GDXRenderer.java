@@ -98,12 +98,12 @@ public class GDXRenderer {
 
     public void zoomUp() {
         _zoom = Math.max(0, _zoom - 1);
-        ApplicationClient.LAYER_MANAGER.getViewport().setZoom(_zoom);
+        ApplicationClient.layerManager.getViewport().setZoom(_zoom);
     }
 
     public void zoomDown() {
         _zoom = Math.min(Viewport.ZOOM_LEVELS.length - 1, _zoom + 1);
-        ApplicationClient.LAYER_MANAGER.getViewport().setZoom(_zoom);
+        ApplicationClient.layerManager.getViewport().setZoom(_zoom);
     }
 
     public void draw(int x, int y, Sprite sprite) {
@@ -204,8 +204,8 @@ public class GDXRenderer {
     public void drawRectangleOnMap(int x, int y, int width, int height, Color color, boolean filled, int offsetX, int offsetY) {
         if (color != null) {
             drawRectangle(
-                    ApplicationClient.LAYER_MANAGER.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
-                    ApplicationClient.LAYER_MANAGER.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                    ApplicationClient.layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
+                    ApplicationClient.layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
                     width,
                     height,
                     color,
@@ -219,7 +219,7 @@ public class GDXRenderer {
             Gdx.gl.glEnable(GL20.GL_BLEND);
 
             Matrix4 matrix = new Matrix4();
-            matrix.translate(x * ApplicationClient.LAYER_MANAGER.getViewport().getScale(), y * ApplicationClient.LAYER_MANAGER.getViewport().getScale(), 0);
+            matrix.translate(x * ApplicationClient.layerManager.getViewport().getScale(), y * ApplicationClient.layerManager.getViewport().getScale(), 0);
 //            matrix.scale(Application.gameManager.getGame().getViewport().getScale(), Application.gameManager.getGame().getViewport().getScale(), 1f);
 
             cache.setProjectionMatrix(_cameraWorld.combined);
@@ -239,11 +239,11 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(int x, int y, TextureRegion region) {
-        draw(ApplicationClient.LAYER_MANAGER.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.LAYER_MANAGER.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), region);
+        draw(ApplicationClient.layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), region);
     }
 
     public void drawOnMap(int x, int y, Color color) {
-        drawPixel(ApplicationClient.LAYER_MANAGER.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.LAYER_MANAGER.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
+        drawPixel(ApplicationClient.layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
     }
 
     public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color) {
@@ -260,19 +260,19 @@ public class GDXRenderer {
 
     public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
         drawText(
-                ApplicationClient.LAYER_MANAGER.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
-                ApplicationClient.LAYER_MANAGER.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                ApplicationClient.layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
+                ApplicationClient.layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
                 size,
                 color,
                 string);
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.LAYER_MANAGER.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.LAYER_MANAGER.getViewport().getPosY(), itemSprite);
+        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.layerManager.getViewport().getPosY(), itemSprite);
     }
 
 //    public void drawOnMap(ParcelModel parcel, Texture texture) {
 //        _batch.draw(texture, x, y, 512, 512, 0, 0, 512, 512, false, true);
-//        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.LAYER_MANAGER.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.LAYER_MANAGER.getViewport().getPosY(), itemSprite);
+//        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.layerManager.getViewport().getPosY(), itemSprite);
 //    }
 }

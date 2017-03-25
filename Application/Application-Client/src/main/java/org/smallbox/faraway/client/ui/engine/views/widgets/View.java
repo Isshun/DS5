@@ -599,10 +599,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (ApplicationClient.GDX_LAYER.getWidth() / 2) - (_width / 2) + _x;
+                return (ApplicationClient.gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return ApplicationClient.GDX_LAYER.getWidth() - _width - _x;
+                return ApplicationClient.gdxRenderer.getWidth() - _width - _x;
             }
         }
 
@@ -624,10 +624,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_verticalAlign == VerticalAlign.CENTER) {
-                return (ApplicationClient.GDX_LAYER.getHeight() / 2) - (_width / 2) + _y;
+                return (ApplicationClient.gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
             }
             if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return ApplicationClient.GDX_LAYER.getHeight() - _y;
+                return ApplicationClient.gdxRenderer.getHeight() - _y;
             }
         }
 
