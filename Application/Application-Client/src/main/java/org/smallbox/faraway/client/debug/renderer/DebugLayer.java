@@ -119,7 +119,14 @@ public class DebugLayer extends BaseLayer {
             case JOB:
                 if (jobModule != null && jobModule.getJobs() != null) {
                     jobModule.getJobs().forEach(job -> {
-                        drawDebug(renderer, "JOB", job.getMainLabel() + " -> " + job.getLabel() + " -> " + job.getProgress() + " -> " + job.getLastReturn());
+                        drawDebug(renderer, "JOB",
+                                String.format("%s, %s, %.2f, %s",
+                                        job.getMainLabel(),
+                                        job.getLabel(),
+                                        job.getProgress(),
+                                        job.getLastReturn()
+                                )
+                        );
                         job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));
                     });
                 }

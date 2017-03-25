@@ -1,11 +1,12 @@
 ui:extend({
     type = "list",
     name = "base.ui.system_log",
+    controller = "org.smallbox.faraway.client.controller.LogController",
     size = {application.info.screen_width, 38},
     align = {"top", "left"},
     position = {0, 40},
     level = 100,
-    visible = true,
+    visible = false,
     views = {
         { type = "label", id = "lb_log_1", text = "log", text_size = 16, padding = 10, size = {100, 22}},
         { type = "label", id = "lb_log_2", text = "log", text_size = 16, padding = 10, size = {100, 22}},

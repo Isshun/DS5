@@ -76,10 +76,13 @@ public class BasicCraftJob extends JobModel {
                     job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();
                 }
 
-                // Incrémente la variable count de la recette (état d'avancement)
-                return job.factory.getRunningReceipt().craft(1 / Application.config.game.craftTime * hourInterval) < 0
-                        ? JobTaskReturn.TASK_COMPLETE
-                        : JobTaskReturn.TASK_CONTINUE;
+                // Incrémente la variable count de la recette (état d'avancement) et return TASK_CONTINUE si la valeur retournée n'est pas 0
+                if (job.factory.getRunningReceipt().craft(1 / Application.config.game.craftTime * hourInterval) > 0) {
+                    return JobTaskReturn.TASK_CONTINUE;
+                }
+
+                // Sinon retourn TASK_COMPLETE
+                return JobTaskReturn.TASK_COMPLETE;
             });
 
             return true;

@@ -14,7 +14,7 @@ public class ApplicationConfig {
     }
 
     public static class ApplicationConfigGameInfo {
-        public int[]            ticksPerHour = {-1, 5000, 2000, 1000, 100, 50, 20, 10};
+        public int[]            ticksPerHour = {-1, 5000, 2000, 1000, 100, 50, 20, 10, 1};
         public int              tickInterval = 10;
         public double           startGameTime = GameTime.fromHour(7);
         public int              startSpeed = 1;

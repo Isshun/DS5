@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.*;
 
 /**
@@ -18,6 +20,8 @@ public class Log {
     private final static boolean EXIT_ON_ERROR = true;
     private final static Logger logger = Logger.getLogger("FarAway");
     private final static Level level = Level.ALL;
+    public static Queue<String> _historyDebug = new ConcurrentLinkedQueue<>();
+    public static Queue<String> _history = new ConcurrentLinkedQueue<>();
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final ConsoleHandler consoleHandler;
@@ -50,6 +54,19 @@ public class Log {
     private static FileOutputStream fos;
 
     private static void print(Level level, String message) {
+
+        while (_history.size() > 4) {
+            _history.poll();
+        }
+        while (_historyDebug.size() > 4) {
+            _historyDebug.poll();
+        }
+        if (level == Level.FINE) {
+            _historyDebug.add(message);
+        } else {
+            _history.add(message);
+        }
+
         if (fos == null) {
             try {
                 fos = new FileOutputStream(new File("W:\\projects\\desktop\\FarAway\\Application\\sysout.log"));

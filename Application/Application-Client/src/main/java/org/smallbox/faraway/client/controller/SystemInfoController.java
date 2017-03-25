@@ -3,11 +3,11 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.modules.temperature.TemperatureModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -24,10 +24,7 @@ public class SystemInfoController extends LuaController {
     private UILabel lbTime;
 
     @BindLua
-    private View frameTime;
-
-    @BindLua
-    private UILabel lbDay;
+    private UILabel lbDate;
 
     @BindLua
     private UILabel lbWeather;
@@ -41,6 +38,9 @@ public class SystemInfoController extends LuaController {
     @BindLua
     private UIImage icSpeed;
 
+    @BindLua
+    private UILabel lbSpeed;
+
     @BindModule
     private WeatherModule weatherModule;
 
@@ -49,22 +49,29 @@ public class SystemInfoController extends LuaController {
 
     @Override
     protected void onControllerUpdate() {
-        lbTime.setText(game.getTime().getHour() + "H");
-        frameTime.setHeight(game.getTime().getMinute() * 20 / 60);
-        frameTime.setPositionY(28 - frameTime.getHeight());
+        GameTime time = game.getTime();
+        lbTime.setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
+        lbDate.setText(String.format("%02d/%02d/%d", time.getDay(), time.getMonth(), time.getYear()));
 
-        lbDay.setText("J-" + (game.getTime().getDay() + 1));
-
-        icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
+        if (game.getSpeed() <= 3) {
+            icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
+            icSpeed.setVisible(true);
+            lbSpeed.setVisible(false);
+        } else {
+            icSpeed.setVisible(false);
+            lbSpeed.setVisible(true);
+            lbSpeed.setText("x" + game.getSpeed());
+        }
 
         WeatherInfo weatherInfo = weatherModule.getWeather();
         if (weatherInfo != null) {
             lbWeather.setText(weatherInfo.label);
             lbWeather.setTextColor(weatherInfo.color2);
             imgWeather.setImage(weatherInfo.icon);
+            lbTemperature.setText(String.format("%.1f° / %.1fhp", weatherModule.getTemperature(), 12.7));
+            lbTemperature.setTextColor(weatherInfo.color2);
         }
 
-        lbTemperature.setText(String.valueOf(weatherModule.getTemperature()));
     }
 
     @Override
