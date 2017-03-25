@@ -50,7 +50,7 @@ public class CharacterDebugLayer extends BaseLayer {
         for (float t = 0; t < 1; t += 0.001) {
             Vector2 out = new Vector2();
             path.myCatmull.valueAt(out, t);
-            renderer.drawRectangle(viewPortX + (int) (out.x * 32), viewPortY + (int) (out.y * 32), 2, 2, ColorUtils.RED, true);
+            renderer.drawRectangle(viewPortX + (int) (out.x * 32), viewPortY + (int) (out.y * 32), 2, 2, Color.RED, true);
         }
     }
 
@@ -78,7 +78,7 @@ public class CharacterDebugLayer extends BaseLayer {
 //            int posX = viewPortX + (int)(first.x + (second.x - first.x) * t);
 //            int posY = viewPortY + (int)(first.y + (second.y - first.y) * t);
 
-        renderer.drawRectangle(posX, posY, 50, 12, ColorUtils.BLACK, true);
+        renderer.drawRectangle(posX, posY, 50, 12, Color.BLACK, true);
         renderer.drawText(posX + 2, posY + 2, 10, com.badlogic.gdx.graphics.Color.YELLOW, String.format("%.2f", character.getMoveProgress2()));
     }
 
@@ -86,7 +86,7 @@ public class CharacterDebugLayer extends BaseLayer {
         path._nodes.forEach(node -> {
             int posX = viewPortX + node.x * 32;
             int posY = viewPortY + node.y * 32;
-            renderer.drawRectangle(posX, posY, 4, 4, ColorUtils.BLUE, true);
+            renderer.drawRectangle(posX, posY, 4, 4, Color.BLUE, true);
             renderer.drawText(posX + 4, posY + 4, 12, com.badlogic.gdx.graphics.Color.BLUE, node.x + "x" + node.y);
         });
     }

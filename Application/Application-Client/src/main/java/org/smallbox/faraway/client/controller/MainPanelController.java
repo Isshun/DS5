@@ -3,18 +3,27 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import com.sun.glass.ui.Cursor;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 15/08/2016.
  */
 public class MainPanelController extends LuaController {
 
+    @BindComponent
+    private LayerManager layerManager;
+
     @BindLua
     private UIGrid mainGrid;
+
+    @BindLua
+    private UILabel lbPlanet;
 
     @BindLua
     private UILabel lbFloor;
@@ -34,13 +43,14 @@ public class MainPanelController extends LuaController {
     }
 
     @Override
-    public void onClickOnMap(GameEvent mouseEvent) {
-        Cursor.setVisible(true);
+    public void onGameUpdate(Game game) {
+        lbPlanet.setText(game.getPlanetInfo().label + " / " + game.getRegionInfo().label);
+        lbFloor.setText("Floor " + layerManager.getViewport().getFloor());
     }
 
     @Override
-    public void onFloorChange(int floor) {
-        lbFloor.setText("Floor " + String.valueOf(floor));
+    public void onClickOnMap(GameEvent mouseEvent) {
+        Cursor.setVisible(true);
     }
 
     public void addShortcut(String label, LuaController controller) {

@@ -5,7 +5,9 @@ ui:extend({
     controller = "org.smallbox.faraway.client.controller.character.CharacterInfoTimetableController",
     views = {
         { type = "label", text = "Timetable", text_color = color1, text_size = 24},
-        { type = "list", id = "list_timetable", size = {200, 40}, views = {
+        { type = "view", views = {
+            { type = "list", id = "list_timetable", size = {200, 40}},
+            { type = "view", id = "marker", size = {300, 1}, background = 0x88ff5868},
         }},
     }
 

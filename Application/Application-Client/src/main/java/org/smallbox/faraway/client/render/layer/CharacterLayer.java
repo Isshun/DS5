@@ -81,9 +81,9 @@ public class CharacterLayer extends BaseLayer {
         if (job != null) {
 
             if (job.getProgress() > 0) {
-                renderer.drawRectangle(posX, posY, 32, 6, ColorUtils.CYAN, true);
-                renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, ColorUtils.BLUE, true);
-                renderer.drawRectangle(posX, posY, 32, 6, ColorUtils.YELLOW, false);
+                renderer.drawRectangle(posX, posY, 32, 6, Color.CYAN, true);
+                renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, Color.BLUE, true);
+                renderer.drawRectangle(posX, posY, 32, 6, Color.YELLOW, false);
             }
 
             if (job.getMainLabel() != null) {

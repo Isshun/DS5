@@ -6,13 +6,10 @@ import com.badlogic.gdx.graphics.Color;
  * Created by Alex on 27/05/2015.
  */
 public class ColorUtils {
-    public static final Color CYAN = ColorUtils.fromHex(0, 255, 255);
-    public static final Color GREEN = ColorUtils.fromHex(0, 255, 0);
-    public static final Color BLACK = ColorUtils.fromHex(0, 0, 0);
-    public static final Color BLUE = ColorUtils.fromHex(0, 0, 255);
-    public static final Color WHITE = ColorUtils.fromHex(255, 255, 255);
-    public static final Color RED = ColorUtils.fromHex(255, 0, 0);
-    public static final Color YELLOW = ColorUtils.fromHex(255, 255, 0);
+
+    public static Color COLOR1 = fromHex(0x2ab8ba);
+    public static Color COLOR2 = fromHex(0x9afbff);
+    public static Color COLOR3 = fromHex(0x132733);
 
     public static Color fromHex(long rgb) {
         int a = rgb > 0xffffff || rgb < 0 ? (int) ((rgb >> 24) & 0xFF) : 255;

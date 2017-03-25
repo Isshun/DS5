@@ -7,7 +7,9 @@ import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
+import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -43,6 +45,8 @@ public class Game {
     private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
+    private final PlanetInfo _planetInfo;
+    private final RegionInfo _regionInfo;
 
     public ScheduledExecutorService getScheduler() {
         return _moduleScheduler;
@@ -72,6 +76,8 @@ public class Game {
     public double                           getTickPerHour() { return _tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public PlanetModel                      getPlanet() { return _planet; }
+    public PlanetInfo                       getPlanetInfo() { return _planetInfo; }
+    public RegionInfo                       getRegionInfo() { return _regionInfo; }
     public long                             getTick() { return _tick; }
     public int                              getSpeed() { return _speed; }
     public int                              getLastSpeed() { return _lastSpeed; }
@@ -86,6 +92,8 @@ public class Game {
         _tickInterval = Application.config.game.tickInterval;
         _gameTime = new GameTime(Application.config.game.startGameTime);
         _tickPerHour = Application.config.game.ticksPerHour[_speed];
+        _planetInfo = info.planet;
+        _regionInfo = info.region;
 
         _info = info;
         _isRunning = true;
