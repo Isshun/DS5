@@ -70,7 +70,7 @@ public abstract class JobModel extends ObjectModel {
     protected int               _fail;
     protected int               _blocked;
     protected int               _cost = 1;
-    protected boolean _isClose;
+    protected boolean           _isClose;
     protected double            _progress;
     protected ItemFilter        _filter;
     protected ItemInfoAction    _actionInfo;

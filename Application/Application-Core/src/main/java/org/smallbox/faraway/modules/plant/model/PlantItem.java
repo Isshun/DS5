@@ -9,13 +9,13 @@ import org.smallbox.faraway.util.Utils;
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 public class PlantItem extends MapObjectModel {
-    private GrowingInfo             _growingInfo;
-    private double                  _maturity;
-    private GardenArea _garden;
-    private boolean                 _hasSeed = true;
-    private double                  _nourish;
-    private int                     _tile;
-    private JobModel                _job;
+    private GrowingInfo         _growingInfo;
+    private double              _maturity;
+    private GardenArea          _garden;
+    private boolean             _hasSeed = true;
+    private double              _nourish;
+    private int                 _tile;
+    private JobModel            _job;
 
     public PlantItem(ItemInfo info) {
         super(info);
@@ -25,25 +25,25 @@ public class PlantItem extends MapObjectModel {
         super(info, id);
     }
 
-    public void         setGrowingInfo(GrowingInfo growState) { _growingInfo = growState; }
-    public void         setMaturity(double maturity) { _maturity = maturity; }
-    public void         setGarden(GardenArea garden) { _garden = garden; }
-    public void         setSeed(boolean hasSeed) { _hasSeed = hasSeed; }
-    public void         setNourish(double nourish) { _nourish = nourish; }
-    public void         setTile(int tile) { _tile = tile; }
-    public void         setJob(JobModel job) { _job = job; }
+    public void                 setGrowingInfo(GrowingInfo growState) { _growingInfo = growState; }
+    public void                 setMaturity(double maturity) { _maturity = maturity; }
+    public void                 setGarden(GardenArea garden) { _garden = garden; }
+    public void                 setSeed(boolean hasSeed) { _hasSeed = hasSeed; }
+    public void                 setNourish(double nourish) { _nourish = nourish; }
+    public void                 setTile(int tile) { _tile = tile; }
+    public void                 setJob(JobModel job) { _job = job; }
 
-    public double       getMaturity() { return _maturity; }
-    public double       getNourish() { return _nourish; }
-    public GrowingInfo  getGrowingInfo() { return _growingInfo; }
-    public GardenArea   getGarden() { return _garden; }
-    public int          getTile() { return _tile; }
-    public JobModel     getJob() { return _job; }
+    public double               getMaturity() { return _maturity; }
+    public double               getNourish() { return _nourish; }
+    public GrowingInfo          getGrowingInfo() { return _growingInfo; }
+    public GardenArea           getGarden() { return _garden; }
+    public int                  getTile() { return _tile; }
+    public JobModel             getJob() { return _job; }
 
-    public boolean      isMature() { return _maturity >= 1; }
-    public boolean      inGarden() { return _garden != null; }
-    public boolean      hasSeed() { return _hasSeed; }
-    public boolean      hasGrowingInfo() { return _growingInfo != null; }
+    public boolean              isMature() { return _maturity >= 1; }
+    public boolean              inGarden() { return _garden != null; }
+    public boolean              hasSeed() { return _hasSeed; }
+    public boolean              hasGrowingInfo() { return _growingInfo != null; }
 
     public void grow(double hourInterval) {
         if (_growingInfo != null) {

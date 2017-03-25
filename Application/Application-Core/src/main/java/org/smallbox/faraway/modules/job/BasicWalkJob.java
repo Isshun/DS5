@@ -8,9 +8,9 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 /**
  * Created by Alex on 14/03/2017.
  */
-public class WalkJob extends JobModel {
+public class BasicWalkJob extends JobModel {
 
-    public WalkJob(CharacterModel character) {
+    public BasicWalkJob(CharacterModel character) {
         setMainLabel("Walk");
         setVisible(false);
         ParcelModel targetParcel = WorldHelper.getRandomParcel(character.getParcel(), 32);

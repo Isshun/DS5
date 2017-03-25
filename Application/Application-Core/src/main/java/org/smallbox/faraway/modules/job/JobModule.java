@@ -96,7 +96,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         // Assign freetime job
         if (character.getJob() == null) {
-            assign(character, createJob(new WalkJob(character)));
+            assign(character, createJob(new BasicWalkJob(character)));
         }
 
 //        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
