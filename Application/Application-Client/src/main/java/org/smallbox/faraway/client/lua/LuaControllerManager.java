@@ -132,9 +132,8 @@ public class LuaControllerManager implements GameObserver {
             controller.setRootView(_viewByControllerName.get(cls.getCanonicalName()));
             return controller;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            e.printStackTrace();
+            throw new GameException(LuaControllerManager.class, e);
         }
-        return null;
     }
 
     /**
@@ -168,7 +167,7 @@ public class LuaControllerManager implements GameObserver {
                         throw new GameException(LuaControllerManager.class, "Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
                     }
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    throw new GameException(LuaControllerManager.class, e);
                 }
             }
         }
@@ -193,7 +192,7 @@ public class LuaControllerManager implements GameObserver {
                                     Log.debug(LuaControllerManager.class, "LuaController: Bind sub controller %s", subController.getClass().getSimpleName());
                                     field.set(controller, subController);
                                 } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
+                                    throw new GameException(LuaControllerManager.class, e);
                                 }
                             });
                 }

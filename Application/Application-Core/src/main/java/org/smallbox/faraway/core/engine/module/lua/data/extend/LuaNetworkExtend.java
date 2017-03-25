@@ -2,10 +2,10 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 
@@ -22,15 +22,15 @@ public class LuaNetworkExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
 
         NetworkInfo networkInfo;
-        if (Application.data.hasNetwork(name)) {
-            networkInfo = Application.data.getNetwork(name);
+        if (data.hasNetwork(name)) {
+            networkInfo = data.getNetwork(name);
         } else {
             networkInfo = new NetworkInfo();
-            Application.data.networks.add(networkInfo);
+            data.networks.add(networkInfo);
         }
 
         networkInfo.name = getString(value, "name", null);
@@ -39,7 +39,7 @@ public class LuaNetworkExtend extends LuaExtend {
         if (!value.get("items").isnil()) {
             networkInfo.items = new ArrayList<>();
             for (int i = 1; i <= value.get("items").length(); i++) {
-                Application.data.getAsync(value.get("items").get(i).toString(), ItemInfo.class, itemInfo -> networkInfo.items.add(itemInfo));
+                data.getAsync(value.get("items").get(i).toString(), ItemInfo.class, itemInfo -> networkInfo.items.add(itemInfo));
             }
         }
     }

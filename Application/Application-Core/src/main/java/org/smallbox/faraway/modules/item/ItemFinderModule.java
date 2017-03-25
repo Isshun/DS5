@@ -1,9 +1,11 @@
 package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -16,6 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemFinderModule extends GameModule {
+
+    @BindComponent
+    private PathManager pathManager;
+
     @BindModule
     private ItemModule _items;
 
@@ -27,7 +33,7 @@ public class ItemFinderModule extends GameModule {
             UsableItem bestItem = null;
             for (UsableItem item: _items.getItems()) {
                 if (item.matchFilter(filter)) {
-                    PathModel path = Application.pathManager.getPath(character.getParcel(), item.getParcel(), true, false);
+                    PathModel path = pathManager.getPath(character.getParcel(), item.getParcel(), true, false);
                     if (path != null && path.getLength() < bestDistance) {
                         bestDistance = path.getLength();
                         bestItem = item;
@@ -75,7 +81,7 @@ public class ItemFinderModule extends GameModule {
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = Application.pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
+                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {

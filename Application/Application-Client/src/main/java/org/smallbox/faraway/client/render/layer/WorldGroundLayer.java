@@ -11,6 +11,7 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -38,6 +39,9 @@ public class WorldGroundLayer extends BaseLayer {
 
     @BindModule
     private WorldModule _worldModule;
+
+    @BindComponent
+    private Game game;
 
     private ExecutorService         _executor = Executors.newSingleThreadExecutor();
     private Texture[][]             _groundLayers;
@@ -105,8 +109,8 @@ public class WorldGroundLayer extends BaseLayer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         int fromX = Math.max((int) ((-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale()), 0);
         int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale()), 0);
-        int toX = Math.min(fromX + 50, Application.gameManager.getGame().getInfo().worldWidth);
-        int toY = Math.min(fromY + 40, Application.gameManager.getGame().getInfo().worldHeight);
+        int toX = Math.min(fromX + 50, game.getInfo().worldWidth);
+        int toY = Math.min(fromY + 40, game.getInfo().worldHeight);
 
         int fromCol = Math.max(fromX / CHUNK_SIZE, 0);
         int fromRow = Math.max(fromY / CHUNK_SIZE, 0);
@@ -138,8 +142,8 @@ public class WorldGroundLayer extends BaseLayer {
         _executor.submit(() -> {
             final int fromX = Math.max(col * CHUNK_SIZE, 0);
             final int fromY = Math.max(row * CHUNK_SIZE, 0);
-            final int toX = Math.min(col * CHUNK_SIZE + CHUNK_SIZE, Application.gameManager.getGame().getInfo().worldWidth);
-            final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, Application.gameManager.getGame().getInfo().worldHeight);
+            final int toX = Math.min(col * CHUNK_SIZE + CHUNK_SIZE, game.getInfo().worldWidth);
+            final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, game.getInfo().worldHeight);
 
             _worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, _floor, _floor, parcels -> {
                 SpriteManager spriteManager = ApplicationClient.spriteManager;

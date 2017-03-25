@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -36,9 +37,9 @@ public class GameClientModule<T extends ModuleObserver> extends AbsGameModule im
     public void notifyObservers(Consumer<T> action) {
         try {
             _observers.forEach(action);
-        } catch (Error | RuntimeException e) {
+        } catch (Exception e) {
             Application.setRunning(false);
-            e.printStackTrace();
+            throw new GameException(ApplicationClient.class, e, "Error during notify");
         }
     }
 }

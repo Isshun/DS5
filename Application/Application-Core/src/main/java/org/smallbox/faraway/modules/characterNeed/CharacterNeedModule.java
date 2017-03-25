@@ -32,6 +32,9 @@ import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsEx
 public class CharacterNeedModule extends GameModule {
 
     @BindComponent
+    private Game game;
+
+    @BindComponent
     private Data data;
 
     @BindModule
@@ -168,7 +171,8 @@ public class CharacterNeedModule extends GameModule {
         }
 
         // Create use job
-        UseJob job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) -> character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use));
+        UseJob job = itemModule.createUseJob(bestItem, bestItem.getInfo().use.duration, (consumable, durationLeft) ->
+                character.getExtra(CharacterNeedsExtra.class).use(consumable.getInfo().use, game.getTickPerHour()));
         if (job == null) {
             return false;
         }
@@ -191,7 +195,7 @@ public class CharacterNeedModule extends GameModule {
         // Create consume job
         ConsumeJob job = consumableModule.createConsumeJob(bestConsumable, bestConsumable.getInfo().consume.duration, (consumable, durationLeft) -> {
             ItemInfo itemInfo = bestConsumable.getInfo();
-            character.getExtra(CharacterNeedsExtra.class).use(itemInfo.consume);
+            character.getExtra(CharacterNeedsExtra.class).use(itemInfo.consume, game.getTickPerHour());
         });
         if (job == null) {
             return false;

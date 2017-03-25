@@ -44,7 +44,7 @@ public class FactoryReceiptModel {
 //    private List<FactoryComponentModel>         _components;
     private List<FactoryShoppingItemModel>      _shoppingList;
     private boolean                             _isFull;
-    private int                                 _costRemaining;
+    private double                              _costRemaining;
 
     public final ItemFactoryModel.FactoryReceiptGroupModel receiptGroup;
     public final ReceiptGroupInfo.ReceiptInfo   receiptInfo;
@@ -59,11 +59,11 @@ public class FactoryReceiptModel {
 //    public List<FactoryComponentModel>      getComponents() { return _components; }
     public List<FactoryShoppingItemModel>   getShoppingList() { return _shoppingList; }
     public boolean                          isFull() { return _isFull; }
-    public int                              getCostRemaining() { return _costRemaining; }
+    public double                           getCostRemaining() { return _costRemaining; }
     public int                              getCost() { return receiptInfo.cost; }
-    public int                              setCostRemaining(int costRemaining) { _costRemaining = costRemaining; return _costRemaining; }
+    public double                           setCostRemaining(int costRemaining) { _costRemaining = costRemaining; return _costRemaining; }
 
-    public int craft(double value) {
+    public double craft(double value) {
         return _costRemaining -= value;
     }
 

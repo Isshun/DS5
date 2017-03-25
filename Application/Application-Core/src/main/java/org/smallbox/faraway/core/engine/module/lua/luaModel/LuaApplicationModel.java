@@ -38,9 +38,6 @@ public class LuaApplicationModel {
         moduleThirds = Application.moduleManager.getModulesThird();
     }
 
-    public void startGame(Game game) {
-    }
-
     public void update() {
         this.game = Application.gameManager.getGame();
         this.tick = game.getTick();
@@ -55,21 +52,21 @@ public class LuaApplicationModel {
     }
 
     public void setDisplay(String display) {
-        Application.gameManager.getGame().setDisplay(display, true);
+        game.setDisplay(display, true);
     }
 
     public void toggleDisplay(String display) {
-        Application.gameManager.getGame().toggleDisplay(display);
+        game.toggleDisplay(display);
     }
 
     public void setPlan(String plan) {
         throw new NotImplementedException("");
-//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
+//        game.getInteraction().set(GameActionExtra.Action.SET_PLAN, plan);
     }
 
     public void destroy(MapObjectModel object) {
         throw new NotImplementedException("");
-//        Application.gameManager.getGame().getInteraction().planDestroy(object.getParcel());
+//        game.getInteraction().planDestroy(object.getParcel());
     }
 
     public void cancel(MapObjectModel object) {
@@ -78,24 +75,24 @@ public class LuaApplicationModel {
 
     public void setSpeed(int speed) {
         if (Application.gameManager.isLoaded()) {
-            Application.gameManager.getGame().setSpeed(speed);
+            game.setSpeed(speed);
         }
     }
 
     public void setArea(String area) {
         throw new NotImplementedException("");
-//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
+//        game.getInteraction().set(GameActionExtra.Action.SET_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void removeArea(String area) {
         throw new NotImplementedException("");
-//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
+//        game.getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.valueOf(area.toUpperCase()));
     }
 
     public void setBuild(ItemInfo itemInfo) {
         throw new NotImplementedException("");
 //        Log.info("Set build from lua: " + itemInfo.name);
-//        Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
+//        game.getInteraction().set(GameActionExtra.Action.BUILD_ITEM, itemInfo);
     }
 
     public void exit() {
@@ -104,7 +101,7 @@ public class LuaApplicationModel {
 
     public void clearAction() {
         throw new NotImplementedException("");
-//        Application.gameManager.getGame().getInteraction().clear();
+//        game.getInteraction().clear();
     }
 
     public void sendEvent(String tag) {

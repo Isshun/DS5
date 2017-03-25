@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.item.job;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -27,6 +28,7 @@ public class UseJob extends JobModel {
     public UseJob(ItemModule itemModule, UsableItem item, double totalDuration, OnUseCallback callback) {
         _itemModule = itemModule;
         _item = item;
+        _startParcel = _targetParcel = item.getParcel();
 
         setMainLabel("Use " + item.getInfo().label);
 
@@ -55,7 +57,7 @@ public class UseJob extends JobModel {
 //            return JobCheckReturn.ABORT;
 //        }
 
-        if (!Application.pathManager.hasPath(character.getParcel(), _item.getParcel())) {
+        if (!Application.dependencyInjector.getObject(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 

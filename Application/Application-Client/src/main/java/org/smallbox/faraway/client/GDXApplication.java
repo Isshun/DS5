@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.task.LoadTask;
 import org.smallbox.faraway.util.FileUtils;
 
@@ -225,6 +226,6 @@ public class GDXApplication extends ApplicationAdapter {
 
     @Override
     public void dispose () {
-        Application.pathManager.close();
+        Application.dependencyInjector.getObject(PathManager.class).close();
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -23,10 +24,13 @@ import java.util.stream.Collectors;
  */
 public class GameManager implements GameObserver {
 
-    private Game                _game;
-
     @BindModule
-    private IWorldFactory       worldFactory;
+    private IWorldFactory worldFactory;
+
+    @BindComponent
+    private GameSaveManager gameSaveManager;
+
+    private Game _game;
 
     public interface GameListener {
         void onGameCreate(Game game);
@@ -52,6 +56,7 @@ public class GameManager implements GameObserver {
         _game.loadModules();
 
         worldFactory.create(
+                Application.data,
                 _game,
                 _game.getModule(WorldModule.class),
                 gameInfo.region);
@@ -65,7 +70,7 @@ public class GameManager implements GameObserver {
             }
 //        });
 
-//        Application.gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
+//        gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
 
         // TODO: qui à la rsp de l'envoi des events ?
 //        Application.runOnMainThread(() -> {
@@ -97,7 +102,7 @@ public class GameManager implements GameObserver {
             listener.onGameCreate(_game);
         }
 
-        Application.gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
+        gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
 
             Application.notify(observer -> observer.onGameStart(_game));
 
@@ -168,7 +173,7 @@ public class GameManager implements GameObserver {
     @GameShortcut(key = Input.Keys.F5)
     public void actionQuickSaveGame() {
         Log.notice("quickSaveGame");
-        Application.gameSaveManager.saveGame(
+        gameSaveManager.saveGame(
                 Application.gameManager.getGame(),
                 Application.gameManager.getGame().getInfo(),
                 GameInfo.Type.FAST);

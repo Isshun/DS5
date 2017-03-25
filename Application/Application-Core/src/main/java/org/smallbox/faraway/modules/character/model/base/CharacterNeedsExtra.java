@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.character.model.base;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.util.Constant;
@@ -43,20 +42,20 @@ public class CharacterNeedsExtra {
         _values.get(name).addValue(value);
     }
 
-    public void use(ItemInfo.ItemActionInfo action) {
+    public void use(ItemInfo.ItemActionInfo action, double tickPerHour) {
         if (action != null && action.effects != null) {
-            use(action.effects, action.duration);
+            use(action.effects, action.duration, tickPerHour);
         }
     }
 
-    public void use(ItemInfo.ItemInfoEffects effects, double duration) {
+    public void use(ItemInfo.ItemInfoEffects effects, double duration, double tickPerHour) {
         if (effects != null && duration != 0) {
-            addValue("energy", effects.energy / (duration / Application.gameManager.getGame().getTickPerHour()));
-            addValue("food", effects.food / (duration / Application.gameManager.getGame().getTickPerHour()));
-            addValue("drink", effects.drink / (duration / Application.gameManager.getGame().getTickPerHour()));
-            addValue("entertainment", effects.entertainment / (duration / Application.gameManager.getGame().getTickPerHour()));
-            addValue("relation", effects.relation / (duration / Application.gameManager.getGame().getTickPerHour()));
-            addValue("happiness", effects.happiness / (duration / Application.gameManager.getGame().getTickPerHour()));
+            addValue("energy", effects.energy / (duration / tickPerHour));
+            addValue("food", effects.food / (duration / tickPerHour));
+            addValue("drink", effects.drink / (duration / tickPerHour));
+            addValue("entertainment", effects.entertainment / (duration / tickPerHour));
+            addValue("relation", effects.relation / (duration / tickPerHour));
+            addValue("happiness", effects.happiness / (duration / tickPerHour));
         }
     }
 

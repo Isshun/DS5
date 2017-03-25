@@ -4,6 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
@@ -12,7 +13,7 @@ import java.io.File;
  */
 public abstract class LuaExtend {
     public abstract boolean accept(String type);
-    public abstract void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException;
+    public abstract void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException;
 
     protected static boolean getBoolean(LuaValue value, String key, boolean defaultValue) {
         return !value.get(key).isnil() ? value.get(key).toboolean() : defaultValue;

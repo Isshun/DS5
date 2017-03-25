@@ -1,12 +1,14 @@
 package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameObserverPriority;
-import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
+import org.smallbox.faraway.core.game.GameSaveManager;
 
 /**
  * Created by Alex on 04/12/2016.
@@ -14,9 +16,15 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 @GameObserverPriority(GameObserverPriority.Priority.LOW)
 public class GameMenuController extends LuaController {
 
+    @BindComponent
+    private GameSaveManager gameSaveManager;
+
+    @BindComponent
+    private UIManager uiManager;
+
     @Override
     public boolean onKeyPress(int key) {
-//        if (key == Input.Keys.ESCAPE && ApplicationClient.uiManager.findById("base.ui.right_panel").isVisible()) {
+//        if (key == Input.Keys.ESCAPE && uiManager.findById("base.ui.right_panel").isVisible()) {
 //            setVisible(!isVisible());
 //            return true;
 //        }
@@ -29,29 +37,29 @@ public class GameMenuController extends LuaController {
 
     @BindLuaAction
     public void onSave(View view) {
-        ApplicationClient.uiManager.findById("base.ui.menu_pause").setVisible(false);
-//        ApplicationClient.uiManager.findById("base.ui.menu_save").setVisible(true);
+        uiManager.findById("base.ui.menu_pause").setVisible(false);
+//        uiManager.findById("base.ui.menu_save").setVisible(true);
 
         Game game = Application.gameManager.getGame();
-        Application.gameSaveManager.saveGame(game, game.getInfo(), GameInfo.Type.FAST);
+        gameSaveManager.saveGame(game, game.getInfo(), GameInfo.Type.FAST);
     }
 
     @BindLuaAction
     public void onLoad(View view) {
-        ApplicationClient.uiManager.findById("base.ui.menu_pause").setVisible(false);
-        ApplicationClient.uiManager.findById("base.ui.menu_load").setVisible(true);
+        uiManager.findById("base.ui.menu_pause").setVisible(false);
+        uiManager.findById("base.ui.menu_load").setVisible(true);
     }
 
     @BindLuaAction
     public void onSettings(View view) {
-        ApplicationClient.uiManager.findById("base.ui.menu_pause").setVisible(false);
-        ApplicationClient.uiManager.findById("base.ui.menu_settings").setVisible(true);
+        uiManager.findById("base.ui.menu_pause").setVisible(false);
+        uiManager.findById("base.ui.menu_settings").setVisible(true);
     }
 
     @BindLuaAction
     public void onQuit(View view) {
-//        ApplicationClient.uiManager.findById("base.ui.menu_pause").setVisible(false);
-//        ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
+//        uiManager.findById("base.ui.menu_pause").setVisible(false);
+//        uiManager.findById("base.ui.menu_main").setVisible(true);
 //        Application.gameManager.stopGame();
     }
 

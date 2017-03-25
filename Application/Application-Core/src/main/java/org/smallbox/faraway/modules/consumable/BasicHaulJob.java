@@ -42,6 +42,7 @@ public class BasicHaulJob extends JobModel {
 
         return jobModule.createJob(BasicHaulJob.class, null, item.getParcel(), job -> {
             job.initHaul(item.getParcel(), targetConsumables, item, consumableModule);
+            job._startParcel = targetConsumables.keySet().stream().findFirst().get().getParcel();
 
             targetConsumables.forEach((consumable, quantity) ->
                     job.setMainLabel(String.format("Haul %s to %s", consumable.getInfo().label, item.getInfo().label)));

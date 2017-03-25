@@ -2,10 +2,10 @@ package org.smallbox.faraway.modules.characterDisease;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
@@ -20,7 +20,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         DiseaseInfo disease = new DiseaseInfo();
 
         disease.label = value.get("label").toString();
@@ -31,19 +31,19 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
         LuaValue onUpdate = value.get("on_update");
         disease.setListener(new DiseaseInfo.DiseaseListener() {
             @Override
-            public void onStart(CharacterDisease data) {
+            public void onStart(CharacterDisease disease) {
                 if (!onStart.isnil()) {
-                    onStart.call(data.luaData, data.luaCharacter);
+                    onStart.call(disease.luaData, disease.luaCharacter);
                 }
             }
 
             @Override
-            public void onUpdate(CharacterDisease data, int update) {
+            public void onUpdate(CharacterDisease disease, int update) {
                 if (!onUpdate.isnil()) {
-                    LuaValue ret = onUpdate.call(data.luaData, data.luaCharacter);
+                    LuaValue ret = onUpdate.call(disease.luaData, disease.luaCharacter);
                     if (!ret.isnil()) {
-                        data.message = ret.get("message").toString();
-                        data.level = ret.get("level").toint();
+                        disease.message = ret.get("message").toString();
+                        disease.level = ret.get("level").toint();
 
 //                        if (!ret.get("on_click").isnil()) {
 //                            buff.onClickListener = view -> ret.get("on_click").call();
@@ -63,12 +63,12 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
 //                        }
 
                     } else {
-                        data.level = 0;
+                        disease.level = 0;
                     }
                 }
             }
         });
 
-        Application.data.diseases.add(disease);
+        data.diseases.add(disease);
     }
 }

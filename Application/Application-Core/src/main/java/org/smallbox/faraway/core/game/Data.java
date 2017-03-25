@@ -59,7 +59,7 @@ public class Data {
     public ItemInfo         getEquipment(String receiptName) { return (ItemInfo) getObject(equipments, receiptName); }
     public BindingInfo      getBinding(String bindingId) { return (BindingInfo) getObject(bindings, bindingId); }
     public String           getString(int hash) { return strings.get(hash); }
-    public String           getString(String str) { return strings.containsKey(str.hashCode()) ? strings.get(str.hashCode()) : str; }
+    public String           getString(String str) { return strings.getOrDefault(str.hashCode(), str); }
     public PlanetInfo       getPlanet(String planetName) { return (PlanetInfo) getObject(planets, planetName); }
     public Collection<ItemInfo> getItems() { return items; }
 

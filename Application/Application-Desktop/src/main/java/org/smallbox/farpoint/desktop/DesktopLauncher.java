@@ -64,8 +64,8 @@ public class DesktopLauncher {
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
-//                character.addInventory("base.consumable.vegetable.rice", 10);
-//                character.addInventory("base.consumable.vegetable.carrot", 10);
+                character.addInventory("base.consumable.vegetable.rice", 10);
+                character.addInventory("base.consumable.vegetable.carrot", 10);
 
                 for (int i = 0; i < 6; i++) {
                     character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
@@ -80,8 +80,8 @@ public class DesktopLauncher {
                 Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.wood_log", 1000, 4, 2, 1);
                 StructureItem structureItem = Application.moduleManager.getModule(StructureModule.class).addStructure("base.wood_wall", 6, 2, 1);
                 structureItem.setBuildProgress(0);
-                structureItem.setHealth(200);
-                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1).setHealth(50);
+                structureItem.setHealth(5000);
+                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1).setHealth(5000);
 
                 DiseaseInfo diseaseInfo = new DiseaseInfo();
                 diseaseInfo.label = "di test";
@@ -95,7 +95,7 @@ public class DesktopLauncher {
 
 //                        Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 8, 2, 1);
                 Application.moduleManager.getModule(ItemModule.class).addItem("base.item.bed.wood", true, 8, 2, 1)
-                        .setHealth(25);
+                        .setHealth(5000);
 
 //                        for (int i = 1; i <= 4; i++) {
 //                            for (int j = 5; j <= 10; j++) {

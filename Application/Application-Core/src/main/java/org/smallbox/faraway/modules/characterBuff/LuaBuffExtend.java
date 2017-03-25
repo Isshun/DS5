@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.characterBuff.handler.BuffHandler;
 import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
@@ -25,13 +26,13 @@ public class LuaBuffExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
         if (name == null) {
             return;
         }
 
-        for (BuffInfo buff: Application.data.buffs) {
+        for (BuffInfo buff: data.buffs) {
             if (name.equals(buff.getName())) {
                 return;
             }
@@ -112,7 +113,7 @@ public class LuaBuffExtend extends LuaExtend {
                     LuaValue luaEffects = luaLevel.get("effects");
                     if (!luaEffects.isnil()) {
                         for (int j = 1; j <= luaEffects.length(); j++) {
-                            levelInfo.effects.add(readBuffEffect(luaEffects.get(j)));
+                            levelInfo.effects.add(readBuffEffect(data, luaEffects.get(j)));
                         }
                     }
 
@@ -121,10 +122,10 @@ public class LuaBuffExtend extends LuaExtend {
             }
         }
 
-        Application.data.buffs.add(buff);
+        data.buffs.add(buff);
     }
 
-    private BuffInfo.BuffEffectInfo readBuffEffect(LuaValue luaEffect) {
+    private BuffInfo.BuffEffectInfo readBuffEffect(Data data, LuaValue luaEffect) {
         BuffInfo.BuffEffectInfo effectInfo = new BuffInfo.BuffEffectInfo();
 
         // Add type
@@ -135,7 +136,7 @@ public class LuaBuffExtend extends LuaExtend {
                 break;
 
             case "disease":
-                Application.data.getAsync(luaEffect.get("disease").tojstring(), DiseaseInfo.class, disease -> effectInfo.disease = disease);
+                data.getAsync(luaEffect.get("disease").tojstring(), DiseaseInfo.class, disease -> effectInfo.disease = disease);
                 break;
 
         }

@@ -3,11 +3,10 @@ package org.smallbox.faraway.client.debug.renderer;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
@@ -158,10 +157,10 @@ public class DebugLayer extends BaseLayer {
                 drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.LAYER_MANAGER.getViewport().getFloor());
                 drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.LAYER_MANAGER.getViewport().getWidth() + " x " + ApplicationClient.LAYER_MANAGER.getViewport().getHeight());
 
-                drawDebug(renderer, "WORLD", "Size: " + Application.gameManager.getGame().getInfo().worldWidth + " x " + Application.gameManager.getGame().getInfo().worldHeight + " x " + Application.gameManager.getGame().getInfo().worldFloors);
-                drawDebug(renderer, "WORLD", "Ground floor: " + Application.gameManager.getGame().getInfo().groundFloor);
+                drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
+                drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
 
-                _data.entrySet().forEach(entry -> drawDebug(renderer, "UI", entry.getKey() + ": " + entry.getValue()));
+                _data.forEach((key, value) -> drawDebug(renderer, "UI", key + ": " + value));
                 break;
         }
 

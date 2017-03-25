@@ -1,12 +1,14 @@
 package org.smallbox.faraway.modules.world;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -17,6 +19,9 @@ import java.util.List;
 
 @ModuleSerializer(WorldModuleSerializer.class)
 public class WorldModule extends GameModule {
+
+    @BindComponent
+    private PathManager pathManager;
 
     @BindModule
     private JobModule jobModule;
@@ -56,7 +61,7 @@ public class WorldModule extends GameModule {
         _parcels = parcels;
         _parcelList = parcelList;
 
-        Application.pathManager.init(parcelList);
+        pathManager.init(parcelList);
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }

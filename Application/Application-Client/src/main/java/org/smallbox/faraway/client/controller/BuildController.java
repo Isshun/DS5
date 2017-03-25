@@ -12,6 +12,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
@@ -21,6 +22,9 @@ import org.smallbox.faraway.modules.world.WorldModule;
  * Created by Alex on 22/07/2016.
  */
 public class BuildController extends LuaController {
+
+    @BindComponent
+    private Data data;
 
     @BindComponent
     private UIEventManager uiEventManager;
@@ -99,7 +103,7 @@ public class BuildController extends LuaController {
         listStructures.setVisible(false);
         listNetworks.setVisible(false);
 
-        Application.data.getItems().stream()
+        data.getItems().stream()
                 .filter(item -> item.isUserItem)
                 .forEach(itemInfo -> {
                     UIFrame frame = new UIFrame(null);
@@ -129,7 +133,7 @@ public class BuildController extends LuaController {
         listStructures.setVisible(!listStructures.isVisible());
         listNetworks.setVisible(false);
 
-        Application.data.getItems().stream()
+        data.getItems().stream()
                 .filter(itemInfo -> itemInfo.isStructure)
                 .forEach(itemInfo -> listStructures.addNextView(UILabel.create(null)
                         .setText(itemInfo.label)

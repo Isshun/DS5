@@ -2,9 +2,7 @@ package org.smallbox.faraway.core.engine.module.lua;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
-import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
@@ -242,7 +240,7 @@ public abstract class LuaModuleManager implements GameObserver {
         if (optional.isPresent()) {
             Log.debug(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
             try {
-                optional.get().extend(module, globals, value, dataDirectory);
+                optional.get().extend(Application.data, module, globals, value, dataDirectory);
             } catch (DataExtendException e) {
                 if (!value.get("name").isnil()) {
                     Log.info("Error during extend " + value.get("name").toString());

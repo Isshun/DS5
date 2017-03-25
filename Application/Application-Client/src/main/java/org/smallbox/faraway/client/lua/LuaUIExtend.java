@@ -5,16 +5,18 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
-import org.smallbox.faraway.client.ui.engine.views.RootView;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
+import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
@@ -53,7 +55,7 @@ public class LuaUIExtend extends LuaExtend {
 //    }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
+    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         String rootName =
                 StringUtils.isNotBlank(getString(value, "name", null)) ? getString(value, "name", null) :
                         StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) : "";
@@ -370,7 +372,7 @@ public class LuaUIExtend extends LuaExtend {
             case "label": return new UILabel(module);
         }
 
-        throw new RuntimeException("Unknown view type");
+        throw new GameException(LuaUIExtend.class, "Unknown view type");
     }
 
     private View createDropDownView(ModuleBase module, LuaValue value) {

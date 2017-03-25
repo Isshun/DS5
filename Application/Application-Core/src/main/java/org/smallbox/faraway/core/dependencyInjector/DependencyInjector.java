@@ -11,10 +11,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
@@ -26,12 +24,15 @@ import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
 public class DependencyInjector {
     private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
     private Set<Object> _objectPool = new HashSet<>();
+    private Map<Class, Object> _objectPoolByClass = new ConcurrentHashMap<>();
     private boolean _init = false;
     private static final DependencyInjector _self = new DependencyInjector();
     private HashMap<Class<?>, Object> _models = new HashMap<>();
     private ApplicationClientInterface _clientInterface;
 
     public Collection<Object> getObjects() { return _objectPool; }
+
+    public <T> T getObject(Class<T> cls) { return (T) _objectPoolByClass.get(cls); }
 
     public static DependencyInjector getInstance() { return _self; }
 
@@ -58,6 +59,7 @@ public class DependencyInjector {
 
     public void register(Object component) {
         _objectPool.add(component);
+        _objectPoolByClass.put(component.getClass(), component);
 
         if (_init) {
 //            throw new GameException(this.getClass(), "Cannot call register after init");

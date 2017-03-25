@@ -32,18 +32,19 @@ public class BasicStoreJob extends JobModel {
      * @param consumableModule ConsumableModule
      * @param jobModule
      * @param targetConsumables Map<ConsumableItem, Integer>
-     * @param targetParcel ParcelModel
+     * @param storingParcel ParcelModel
      */
-    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, ParcelModel targetParcel) {
+    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, ParcelModel storingParcel) {
 
         if (CollectionUtils.isEmpty(targetConsumables)) {
             throw new RuntimeException("Collection cannot be empty");
         }
 
-        jobModule.createJob(BasicStoreJob.class, null, targetParcel, job -> {
+        jobModule.createJob(BasicStoreJob.class, null, storingParcel, job -> {
 
             job._consumableModule = consumableModule;
-            job._targetParcel = targetParcel;
+            job._targetParcel = storingParcel;
+            job._startParcel = targetConsumables.keySet().stream().findFirst().get().getParcel();
             job._targetConsumables = targetConsumables;
 
             targetConsumables.forEach((consumable, quantity) ->

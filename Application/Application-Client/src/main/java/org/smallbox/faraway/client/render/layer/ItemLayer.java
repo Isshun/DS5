@@ -5,14 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 
 @GameLayer(level = LayerManager.ITEM_LAYER_LEVEL, visible = true)
 public class ItemLayer extends BaseLayer {
@@ -34,15 +32,7 @@ public class ItemLayer extends BaseLayer {
                     renderer.drawOnMap(item.getParcel(), getItemSprite(item));
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {
-                        long tick = Application.gameManager.getGame().getTick();
-                        long startTick = ((BasicCraftJob)item.getFactory().getCraftJob()).getStartTick();
-                        long endTick = ((BasicCraftJob)item.getFactory().getCraftJob()).getEndTick();
-
-                        long tickFromStart = tick - startTick;
-                        long tickTotal = endTick - startTick;
-                        double progress = tickTotal > 0 ? (tickFromStart + 1) / (double)tickTotal : 0;
-
-                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * progress), 6, Color.BLUE, true, 0, 0);
+                        renderer.drawRectangleOnMap(parcel.x, parcel.y, (int) (32 * item.getFactory().getCraftJob().getProgress()), 6, Color.BLUE, true, 0, 0);
                         renderer.drawRectangleOnMap(parcel.x, parcel.y, 32, 6, Color.CHARTREUSE, false, 0, 0);
                     }
 

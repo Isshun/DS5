@@ -13,7 +13,7 @@ public class ConsumeJob extends JobModel {
     private final ConsumableItem _consumable;
     private final ConsumableModule.ConsumableJobLock _lock;
 
-    public int _duration;
+    public double _duration;
 
     public interface OnConsumeCallback {
         /**
@@ -28,6 +28,9 @@ public class ConsumeJob extends JobModel {
         _consumableModule = consumableModule;
         _consumable = consumable;
         _lock = consumableModule.lock(this, consumable, 1);
+
+        _startParcel = _targetParcel = consumable.getParcel();
+
 
         setMainLabel("Consume " + consumable.getInfo().label);
 

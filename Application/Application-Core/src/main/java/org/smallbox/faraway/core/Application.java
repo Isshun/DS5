@@ -32,12 +32,10 @@ public class Application {
     public static GameManager             gameManager;
     public static ModuleManager           moduleManager;
     public static LuaModuleManager        luaModuleManager;
-    public static PathManager             pathManager;
     public static TaskManager             taskManager;
     public static SQLManager              sqlManager;
     public static Data                    data;
     public static GroovyManager           groovyManager;
-    public static GameSaveManager         gameSaveManager;
 
     // Both
     public static ApplicationConfig config;
@@ -47,13 +45,13 @@ public class Application {
     public Application() {
         dependencyInjector = DependencyInjector.getInstance();
         gameManager = dependencyInjector.create(GameManager.class);
-        pathManager = dependencyInjector.create(PathManager.class);
+        dependencyInjector.create(PathManager.class);
         taskManager = dependencyInjector.create(TaskManager.class);
         sqlManager = dependencyInjector.create(SQLManager.class);
         moduleManager = dependencyInjector.create(ModuleManager.class);
         luaModuleManager = dependencyInjector.create(ServerLuaModuleManager.class);
         groovyManager = dependencyInjector.create(GroovyManager.class);
-        gameSaveManager = dependencyInjector.create(GameSaveManager.class);
+        dependencyInjector.create(GameSaveManager.class);
         data = dependencyInjector.create(Data.class);
 
         // Create APPLICATION_CONFIG

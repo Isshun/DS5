@@ -3,11 +3,11 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -16,6 +16,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
@@ -25,6 +26,7 @@ import java.util.concurrent.PriorityBlockingQueue;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View implements Comparable<View> {
+    protected Data _applicationData = Application.data;
     protected int _originWidth;
     protected int _originHeight;
     private String _group;

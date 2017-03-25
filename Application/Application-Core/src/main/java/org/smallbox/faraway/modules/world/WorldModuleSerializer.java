@@ -20,9 +20,9 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
     @Override
     public void onSave(WorldModule module, Game game) {
         Application.sqlManager.post(db -> {
-            int width = Application.gameManager.getGame().getInfo().worldWidth;
-            int height = Application.gameManager.getGame().getInfo().worldHeight;
-            int floors = Application.gameManager.getGame().getInfo().worldFloors;
+            int width = game.getInfo().worldWidth;
+            int height = game.getInfo().worldHeight;
+            int floors = game.getInfo().worldFloors;
             ParcelModel[][][] parcels = module.getParcels();
 
             try {

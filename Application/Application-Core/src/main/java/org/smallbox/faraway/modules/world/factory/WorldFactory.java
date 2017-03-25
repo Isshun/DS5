@@ -2,8 +2,8 @@ package org.smallbox.faraway.modules.world.factory;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -25,9 +25,9 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
     private int                 _height;
 
     @Override
-    public void create(Game game, WorldModule worldModule, RegionInfo regionInfo) {
-        ItemInfo defaultRockInfo = Application.data.getItemInfo("base.granite");
-        ItemInfo defaultGroundInfo = Application.data.getItemInfo("base.ground.grass");
+    public void create(Data data, Game game, WorldModule worldModule, RegionInfo regionInfo) {
+        ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
+        ItemInfo defaultGroundInfo = data.getItemInfo("base.ground.grass");
 
         List<ParcelModel> parcelList = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
 
         // Add region elements
         if (regionInfo != null) {
-            ItemInfo regionGroundInfo = Application.data.getItemInfo(regionInfo.terrains.get(0).ground);
+            ItemInfo regionGroundInfo = data.getItemInfo(regionInfo.terrains.get(0).ground);
 
             parcelList.forEach(parcel -> {
                 if (parcel.z < _floors - 1) {
@@ -95,7 +95,7 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
 //        }
 //
 //        // Add underground rock
-//        ItemInfo graniteInfo = Application.data.getItemInfo("base.granite");
+//        ItemInfo graniteInfo = data.getItemInfo("base.granite");
 //        for (int z = 0; z < _floors - 1; z++) {
 //            for (int y = 0; y < _height; y++) {
 //                for (int x = 0; x < _width; x++) {
@@ -179,7 +179,7 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
         return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : parcels[x][y][z];
     }
 
-    private void applyToParcel(RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
+    private void applyToParcel(Data data, RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
         if (terrain.condition == null
                 || ("rock".equals(terrain.condition) && parcel.hasRock())
                 || ("ground".equals(terrain.condition) && !parcel.hasRock() && parcel.hasGround())) {
@@ -187,14 +187,14 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
             // Set liquid
             if (terrain.liquid != null) {
                 if (parcel.z == _floors - 1) {
-                    ItemInfo liquidInfo = Application.data.getItemInfo(terrain.liquid);
+                    ItemInfo liquidInfo = data.getItemInfo(terrain.liquid);
 
                     // Replace ground on current parcel by liquid surface
                     parcel.setGroundInfo(liquidInfo.surface);
 
                     // Put ground on z-1 parcel
                     if (terrain.ground != null) {
-                        _parcels[parcel.x][parcel.y][parcel.z - 1].setGroundInfo(Application.data.getItemInfo(terrain.ground));
+                        _parcels[parcel.x][parcel.y][parcel.z - 1].setGroundInfo(data.getItemInfo(terrain.ground));
                         _parcels[parcel.x][parcel.y][parcel.z - 1].setRockInfo(null);
                     }
 
@@ -206,12 +206,12 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
 
             // Set ground
             if (terrain.ground != null) {
-                parcel.setGroundInfo(Application.data.getItemInfo(terrain.ground));
+                parcel.setGroundInfo(data.getItemInfo(terrain.ground));
             }
 
             // Add resource
             if (terrain.resource != null) {
-                ItemInfo resourceInfo = Application.data.getItemInfo(terrain.resource);
+                ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
                 if (resourceInfo.isRock) {
                     parcel.setRockInfo(resourceInfo);
                 }

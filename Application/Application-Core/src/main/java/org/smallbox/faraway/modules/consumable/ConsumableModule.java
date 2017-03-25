@@ -2,12 +2,15 @@ package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -28,6 +31,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleSerializer(ConsumableSerializer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
+    @BindComponent
+    private PathManager pathManager;
+
+    @BindComponent
+    private Data data;
+
     @BindModule
     private WorldModule worldModule;
 
@@ -40,11 +49,11 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     private Collection<ConsumableItem> _consumables;
 
     public void addConsumable(String itemName, int quantity, int x, int y, int z) {
-        addConsumable(Application.data.getItemInfo(itemName), quantity, x, y, z);
+        addConsumable(data.getItemInfo(itemName), quantity, x, y, z);
     }
 
     public void addConsumable(String itemName, int quantity, ParcelModel parcel) {
-        addConsumable(Application.data.getItemInfo(itemName), quantity, parcel);
+        addConsumable(data.getItemInfo(itemName), quantity, parcel);
     }
 
     public void addConsumable(ItemInfo itemInfo, int[] quantity, int x, int y, int z) {
@@ -274,7 +283,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = Application.pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
+                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {
@@ -400,7 +409,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public int getTotal(String itemName) {
-        return getTotal(Application.data.getItemInfo(itemName));
+        return getTotal(data.getItemInfo(itemName));
     }
 
     public int getTotal(ItemInfo itemInfo) {

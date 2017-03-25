@@ -129,7 +129,7 @@ public class ItemFactoryModule extends GameModule {
      * @param factory
      */
     private void actionRelease(UsableItem item, ItemFactoryModel factory) {
-        if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() == 0) {
+        if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() <= 0) {
             // TODO: consomme tous l'inventaire, y compris les objets non utilisés dans la recette
             // Consomme les objets d'entrés
             item.getInventory().forEach(consumable -> consumableModule.removeConsumable(consumable));

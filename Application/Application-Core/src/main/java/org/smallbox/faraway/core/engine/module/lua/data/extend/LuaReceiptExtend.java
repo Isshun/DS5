@@ -2,10 +2,10 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 
@@ -22,12 +22,12 @@ public class LuaReceiptExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
         ReceiptGroupInfo receiptGroupInfo = new ReceiptGroupInfo();
 
-        Application.data.add(name, receiptGroupInfo);
-        Application.data.receipts.add(receiptGroupInfo);
+        data.add(name, receiptGroupInfo);
+        data.receipts.add(receiptGroupInfo);
 
         readString(value, "name", v -> receiptGroupInfo.name = v);
         readString(value, "label", v -> receiptGroupInfo.label = v);

@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
@@ -322,7 +323,7 @@ public class WorldHelper {
     }
 
     public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        PathModel path = Application.pathManager.getPath(p1, p2, true, false);
+        PathModel path = Application.dependencyInjector.getObject(PathManager.class).getPath(p1, p2, true, false);
         if (path != null) {
             return path.getLength();
         }

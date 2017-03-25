@@ -189,7 +189,7 @@ public class ApplicationClient {
 
         try {
             _observers.forEach(action);
-        } catch (Error | RuntimeException e) {
+        } catch (Exception e) {
             setRunning(false);
             throw new GameException(ApplicationClient.class, e, "Error during notify");
         }

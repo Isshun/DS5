@@ -59,6 +59,7 @@ public class BasicDigJob extends JobModel {
 
     private void setDigParcel(ParcelModel digParcel) {
         _digParcel = digParcel;
+        _startParcel = digParcel;
     }
 
     public ParcelModel getDigParcel() {

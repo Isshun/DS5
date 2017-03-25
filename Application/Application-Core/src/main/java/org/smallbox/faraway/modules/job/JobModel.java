@@ -82,6 +82,7 @@ public abstract class JobModel extends ObjectModel {
     protected String            _message;
     protected ParcelModel       _jobParcel;
     protected ParcelModel       _targetParcel;
+    protected ParcelModel       _startParcel;
     private boolean             _isEntertainment;
     protected boolean _isAuto;
     protected String _mainLabel = "";
@@ -124,6 +125,7 @@ public abstract class JobModel extends ObjectModel {
     public JobStatus                getStatus() { return _status; }
     public double                   getSpeedModifier() { return 1; }
     public ParcelModel              getTargetParcel() { return _targetParcel; }
+    public ParcelModel              getStartParcel() { return _startParcel; }
     public ParcelModel              getJobParcel() { return _jobParcel; }
     public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
 
@@ -241,10 +243,7 @@ public abstract class JobModel extends ObjectModel {
 
     public void addTaskAsync(JobTask.JobTaskAction task) {
 
-        ScheduledFuture<?> future = Application.gameManager.getGame().getScheduler().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-            }
+        ScheduledFuture<?> future = Application.gameManager.getGame().getScheduler().scheduleAtFixedRate(() -> {
         }, 0, 10, TimeUnit.MILLISECONDS);
 
         future.cancel(false);

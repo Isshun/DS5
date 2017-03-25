@@ -52,11 +52,11 @@ public class TooltipController extends LuaController {
 
     private void refreshLabels() {
         StringBuilder sb = new StringBuilder();
-        subViews.entrySet().forEach(entry -> {
-            if (entry.getValue().isVisible()) {
-                sb.append("[").append(entry.getKey().toUpperCase()).append("] ");
+        subViews.forEach((key, value) -> {
+            if (value.isVisible()) {
+                sb.append("[").append(key.toUpperCase()).append("] ");
             } else {
-                sb.append(" ").append(entry.getKey()).append("  ");
+                sb.append(" ").append(key).append("  ");
             }
         });
         lbName.setText(sb.toString());

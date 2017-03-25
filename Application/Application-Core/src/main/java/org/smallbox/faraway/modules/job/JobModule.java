@@ -24,15 +24,17 @@ import org.smallbox.faraway.util.Log;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 public class JobModule extends GameModule<JobModuleObserver> {
-    private BlockingQueue<JobModel>     _unordonnedJobs = new LinkedBlockingQueue<>();
-    private BlockingQueue<JobModel>     _jobs = new LinkedBlockingQueue<>();
-    private List<CharacterCheck>        _joys;
-    private List<CharacterCheck>        _priorities;
-    private List<CharacterCheck>        _sleeps;
+    private BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
+    private BlockingQueue<JobModel>         _jobs = new LinkedBlockingQueue<>();
+    private List<CharacterCheck>            _joys;
+    private List<CharacterCheck>            _priorities;
+    private List<CharacterCheck>            _sleeps;
+    private Map<CharacterModel, Integer>    _characterInnactiveDuration = new ConcurrentHashMap<>();
 
     @BindModule
     private CharacterModule characterModule;
@@ -91,12 +93,18 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _jobs.stream()
                 .filter(job -> job.getCharacter() == null)
                 .filter(job -> job.getStatus() == JobStatus.JOB_WAITING || job.getStatus() == JobStatus.JOB_INITIALIZED)
+                .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))
                 .findFirst()
                 .ifPresent(job -> assign(character, job));
 
-        // Assign freetime job
+        // Aucun job n'a pu être assigné
         if (character.getJob() == null) {
-            assign(character, createJob(new BasicWalkJob(character)));
+            _characterInnactiveDuration.put(character, _characterInnactiveDuration.getOrDefault(character, 0) + 1);
+
+            // Assign freetime job
+            if (_characterInnactiveDuration.get(character) > 10) {
+                assign(character, createJob(new BasicWalkJob(character)));
+            }
         }
 
 //        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
@@ -157,6 +165,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     private void assign(CharacterModel character, JobModel job) {
         if (job != null) {
+            _characterInnactiveDuration.put(character, 0);
             assignJob(character, job);
             if (character.getJob() == null || character.getJob() != job) {
                 printError("Fail to assign job");
@@ -384,6 +393,15 @@ public class JobModule extends GameModule<JobModuleObserver> {
                 job.abort();
                 return null;
             }
+
+            if (job.getStartParcel() == null) {
+                throw new GameException(JobModule.class, "Job startParcel cannot be null", job);
+            }
+
+            if (job.getTargetParcel() == null) {
+                throw new GameException(JobModule.class, "Job targetParcel cannot be null", job);
+            }
+
             addJob(job);
             return job;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {

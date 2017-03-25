@@ -21,6 +21,8 @@ public class BasicHarvestJob extends JobModel {
         if (consumableDropParcel != null) {
             return jobModule.createJob(BasicHarvestJob.class, null, plant.getParcel(), job -> {
 
+                job._startParcel = job._targetParcel = plant.getParcel();
+
                 // Déplace le personnage à l'emplacement des composants
                 job.addMoveTask("Move to plant", consumableDropParcel);
 

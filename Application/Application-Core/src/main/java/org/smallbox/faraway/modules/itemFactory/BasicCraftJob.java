@@ -16,20 +16,12 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
 public class BasicCraftJob extends JobModel {
 
     private ReceiptGroupInfo.ReceiptInfo _receiptInfo;
-    private long _startTick;
-    private long _endTick;
     private ItemFactoryModel factory;
 
     public BasicCraftJob(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
         super(actionInfo, targetParcel);
     }
 
-//    public abstract boolean onCraft();
-//    public abstract int getCost();
-//    public abstract int getCostRemaining();
-
-    public long getStartTick() { return _startTick; }
-    public long getEndTick() { return _endTick; }
     public ReceiptGroupInfo.ReceiptInfo getReceiptInfo() { return _receiptInfo; }
 
     //    @Override
@@ -38,7 +30,7 @@ public class BasicCraftJob extends JobModel {
     }
 
     //    @Override
-    public int getCostRemaining() {
+    public double getCostRemaining() {
         return factory.getRunningReceipt().getCostRemaining();
     }
 
@@ -55,8 +47,8 @@ public class BasicCraftJob extends JobModel {
     @Override
     public String toString() { return "Craft"; }
 
-    public static BasicCraftJob create(JobModule jobModule, ParcelModel targetParcel, ReceiptGroupInfo.ReceiptInfo receiptInfo, ItemFactoryModel factory) {
-        return jobModule.createJob(BasicCraftJob.class, null, targetParcel, job -> {
+    public static BasicCraftJob create(JobModule jobModule, ParcelModel factoryParcel, ReceiptGroupInfo.ReceiptInfo receiptInfo, ItemFactoryModel factory) {
+        return jobModule.createJob(BasicCraftJob.class, null, factoryParcel, job -> {
 
             job.factory = factory;
             factory.setCraftJob(job);
@@ -64,24 +56,25 @@ public class BasicCraftJob extends JobModel {
             job._receiptInfo = receiptInfo;
 
             job._mainLabel = "Craft";
-            job._targetParcel = targetParcel;
+            job._targetParcel = factoryParcel;
+            job._startParcel = factoryParcel;
 
             // Apporte les composants à la fabrique
-            job.addTask("Go to factory", (character, hourInterval) -> character.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Go to factory", (character, hourInterval) -> character.moveTo(factoryParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
             // Craft action
             job.addTask("Craft item", (character, hourInterval) -> {
-                if (job._startTick == 0) {
-                    job._startTick = Application.gameManager.getGame().getTick();
-                    job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();
-                }
+                FactoryReceiptModel receipt = job.factory.getRunningReceipt();
+                job.setProgress(receipt.getCost() - receipt.getCostRemaining(), receipt.getCost());
 
                 // Incrémente la variable count de la recette (état d'avancement) et return TASK_CONTINUE si la valeur retournée n'est pas 0
-                if (job.factory.getRunningReceipt().craft(1 / Application.config.game.craftTime * hourInterval) > 0) {
+                if (receipt.craft(1 / Application.config.game.craftTime * hourInterval) > 0) {
                     return JobTaskReturn.TASK_CONTINUE;
                 }
 
-                // Sinon retourn TASK_COMPLETE
+                // Sinon crée les consomables et retourne TASK_COMPLETE
+                // TODO: fait par la factory
+//                job.factory.getRunningReceipt().receiptInfo.outputs.forEach(receiptOutputInfo -> receiptOutputInfo.item);
                 return JobTaskReturn.TASK_COMPLETE;
             });
 

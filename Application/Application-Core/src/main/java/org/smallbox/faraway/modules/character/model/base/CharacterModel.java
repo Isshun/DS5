@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
@@ -143,7 +144,7 @@ public abstract class CharacterModel extends MovableModel {
             _moveListener = null;
         }
 
-        _path = Application.pathManager.getPath(_parcel, parcel, false, false);
+        _path = Application.dependencyInjector.getObject(PathManager.class).getPath(_parcel, parcel, false, false);
         _moveProgress2 = 0;
         if (_path != null) {
             _moveListener = listener;
@@ -266,7 +267,7 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public void addInventory(ItemInfo itemInfo, int quantity) {
-        int inventoryQuantity = _inventory.containsKey(itemInfo) ? _inventory.get(itemInfo) : 0;
+        int inventoryQuantity = _inventory.getOrDefault(itemInfo, 0);
         if (inventoryQuantity + quantity > 0) {
             if (inventoryQuantity + quantity < 0) {
                 throw new GameException(CharacterModel.class, "Character inventory quantity cannot be < 0");

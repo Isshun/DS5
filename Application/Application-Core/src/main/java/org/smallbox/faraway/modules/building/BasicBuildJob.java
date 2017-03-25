@@ -33,6 +33,7 @@ public class BasicBuildJob extends JobModel {
 
             job._mapObject = mapObject;
             job._targetParcel = mapObject.getParcel();
+            job._startParcel = mapObject.getParcel();
 
             job.addMoveTask("Move to object", mapObject.getParcel());
             job.addTask("Build", (character, hourInterval) -> {
