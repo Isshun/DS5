@@ -78,7 +78,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
             }
         }
 
-        PlanetInfo planetInfo = Application.gameManager.getGame().getPlanet().getInfo();
+        PlanetInfo planetInfo = game.getPlanet().getInfo();
         if (planetInfo.dayTimes != null) {
             planetInfo.dayTimes.stream().filter(dayTime -> dayTime.hour == game.getTime().getHour()).forEach(this::setHour);
         }
@@ -109,7 +109,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     protected void onModuleUpdate(Game game) {
         if (_duration-- <= 0) {
             _duration = 2500;
-            loadWeather(getRandomWeather(Application.gameManager.getGame().getInfo().region.weather));
+            loadWeather(getRandomWeather(game.getInfo().region.weather));
         }
 
         // Set light

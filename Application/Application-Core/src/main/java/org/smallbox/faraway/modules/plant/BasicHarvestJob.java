@@ -8,7 +8,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 /**
@@ -23,7 +22,7 @@ public class BasicHarvestJob extends JobModel {
             return jobModule.createJob(BasicHarvestJob.class, null, plant.getParcel(), job -> {
 
                 // Déplace le personnage à l'emplacement des composants
-                job.addTask("Move to plant", (character, hourInterval) -> character.moveTo(consumableDropParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+                job.addMoveTask("Move to plant", consumableDropParcel);
 
                 // Crée les composants
                 job.addTechnicalTask("Create components", character ->

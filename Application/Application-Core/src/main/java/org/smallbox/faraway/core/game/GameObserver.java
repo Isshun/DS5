@@ -21,16 +21,12 @@ public interface GameObserver {
 //    default void onRemovePlant(PlantItem plant){}
     default void onRemoveRock(ParcelModel parcel){}
     default void onRefreshStructure(StructureItem structure) {}
-    default void onHourChange(int hour){}
-    default void onDayChange(int day) {}
-    default void onYearChange(int year) {}
     default void onLog(String tag, String message) {}
     default void onJobCreate(JobModel job) {}
     default void onCustomEvent(String tag, Object object) {}
     default void onStorageRulesChanged(StorageArea storageAreaModel) {}
     default void onDayTimeChange(PlanetInfo.DayTime dayTime) {}
     default void onBindingPress(BindingInfo binding) {}
-    default void onGameSpeedChange(int speed) {}
     default void onGamePaused() {}
     default void onGameResume() {}
     default void onGameStart(Game game) {}

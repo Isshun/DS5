@@ -1,20 +1,19 @@
 package org.smallbox.faraway.client.renderer;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameRenderer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.Color;
-import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
 
@@ -33,9 +32,6 @@ public class CharacterRenderer extends BaseRenderer {
     private static Color    COLOR_WARNING = new Color(0xbbbb00);
     private static Color    COLOR_OK = new Color(0x448800);
 
-    private double _value;
-    private long _startTime;
-
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
@@ -45,64 +41,18 @@ public class CharacterRenderer extends BaseRenderer {
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
         int viewPortX = viewport.getPosX();
         int viewPortY = viewport.getPosY();
-        double viewPortScale = viewport.getScale();
 
-//        if (character.getPath() != null) {
-//            drawPath(character, viewport, renderer);
-//            return;
-//        }
-
-        ParcelModel parcel = character.getParcel();
-        if (parcel.z == _floor) {
-            int posX = parcel.x * Constant.TILE_WIDTH + viewPortX;
-            int posY = parcel.y * Constant.TILE_HEIGHT + viewPortY;
-
-            if (character.isAlive()) {
-                // Get game position and direction
-                Direction direction = character.getDirection();
-
-//                double rest = Application.gameManager.getGame().getNextTick() - System.currentTimeMillis();
-//                double ratio = 1.0 - rest / Application.gameManager.getGame().getTickInterval();
-//                System.out.println("ratio: " + ratio);
-
-                // Get exact position
-//                switch (direction) {
-//                    case BOTTOM:
-//                        posY += 32 * ratio;
-//                        break;
-//                    case LEFT:
-//                        posX -= 32 * ratio;
-//                        break;
-//                    case RIGHT:
-//                        posX += 32 * ratio;
-//                        break;
-//                    case TOP:
-//                        posY -= 32 * ratio;
-//                        break;
-//                    case TOP_LEFT:
-//                        posY -= 32 * ratio;
-//                        posX -= 32 * ratio;
-//                        break;
-//                    case TOP_RIGHT:
-//                        posY -= 32 * ratio;
-//                        posX += 32 * ratio;
-//                        break;
-//                    case BOTTOM_LEFT:
-//                        posY += 32 * ratio;
-//                        posX -= 32 * ratio;
-//                        break;
-//                    case BOTTOM_RIGHT:
-//                        posY += 32 * ratio;
-//                        posX += 32 * ratio;
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                }
-
-                doDraw(renderer, character, posX, posY);
-            }
-
+        PathModel path = character.getPath();
+        if (path != null && path._curve != null) {
+            Vector2 out = new Vector2();
+            path.myCatmull.valueAt(out, (float) character.getMoveProgress2() / path.getLength());
+            doDraw(renderer, character,
+                    (int) (viewPortX + out.x * 32),
+                    (int) (viewPortY + out.y * 32));
+        } else {
+            doDraw(renderer, character,
+                    viewPortX + character.getParcel().x * 32,
+                    viewPortY + character.getParcel().y * 32);
         }
     }
 

@@ -14,14 +14,15 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
+import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.dig.DigArea;
-import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
-import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.modules.structure.StructureModule;
+import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -56,7 +57,7 @@ public class DesktopLauncher {
     }
 
     private static GDXApplication.GameTestCallback testGame() {
-        return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 16, 16, 2, new GameManager.GameListener() {
+        return () -> Application.gameManager.createGame("base.planet.corrin", "mountain", 14, 20, 2, new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
 
@@ -65,9 +66,6 @@ public class DesktopLauncher {
                 CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 //                character.addInventory("base.consumable.vegetable.rice", 10);
 //                character.addInventory("base.consumable.vegetable.carrot", 10);
-                character.setParcel(WorldHelper.getParcel(1, 1, 1));
-//                character.moveTo(WorldHelper.getParcel(5, 3, 1));
-                character.moveTo(WorldHelper.getParcel(8, 4, 1));
 
                 for (int i = 0; i < 6; i++) {
                     character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
@@ -129,11 +127,15 @@ public class DesktopLauncher {
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.rice", 10, 4, 4, 1);
 //                        Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.carrot", 10, 4, 6, 1);
 
-//                for (int i = 7; i <= 9; i++) {
-//                    for (int j = 5; j <= 8; j++) {
-//                        Application.moduleManager.getModule(WorldModule.class).getParcel(i, j, 1).setRockName("base.granite");
-//                    }
-//                }
+                for (int i = 7; i <= 9; i++) {
+                    for (int j = 5; j <= 8; j++) {
+                        Application.moduleManager.getModule(WorldModule.class).getParcel(i, j, 1).setRockName("base.granite");
+                    }
+                }
+
+                character.setParcel(WorldHelper.getParcel(1, 1, 1));
+                character.moveTo(WorldHelper.getParcel(8, 12, 1));
+
 //
 //                Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
 //                Application.moduleManager.getModule(WorldModule.class).getParcel(10, 8, 1).setRockName("base.sandstone");

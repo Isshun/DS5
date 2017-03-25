@@ -169,11 +169,6 @@ public class Game {
     public void start() {
         _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
 
-//        Application.notify(observer -> observer.onHourChange(_hour));
-//        Application.notify(observer -> observer.onDayChange(_day));
-//        Application.notify(observer -> observer.onYearChange(_year));
-//        Application.notify(observer -> observer.onGameSpeedChange(_speed));
-
         _status = GameStatus.STARTED;
     }
 
@@ -209,7 +204,6 @@ public class Game {
 //            _tickInterval = Application.config.game.ticksIntervals[_speed];
             _tickPerHour = Application.config.game.ticksPerHour[_speed];
             _isRunning = speed > 0;
-            Application.notify(observer -> observer.onGameSpeedChange(_speed));
         }
     }
 

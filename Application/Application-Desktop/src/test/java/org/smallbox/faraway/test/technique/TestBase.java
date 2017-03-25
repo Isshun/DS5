@@ -10,6 +10,7 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.job.JobModule;
 
 /**
  * Created by Alex on 18/02/2017.
@@ -19,7 +20,7 @@ public class TestBase {
     protected static ApplicationConfig applicationConfig = new ApplicationConfig();
 
     static {
-        applicationConfig.game.tickPerHour = 500;
+        applicationConfig.game.startSpeed = 4;
         applicationConfig.launchGui = false;
     }
 
@@ -34,6 +35,7 @@ public class TestBase {
 
     public CharacterModule characterModule;
     public ConsumableModule consumableModule;
+    public JobModule jobModule;
     public AreaModule areaModule;
     public ItemModule itemModule;
     public Game game;
@@ -44,6 +46,7 @@ public class TestBase {
         this.characterModule = game.getModule(CharacterModule.class);
         this.consumableModule = game.getModule(ConsumableModule.class);
         this.areaModule = game.getModule(AreaModule.class);
+        this.jobModule = game.getModule(JobModule.class);
     }
 
     @Before
@@ -53,7 +56,7 @@ public class TestBase {
 
         DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
             ApplicationConfig applicationConfig = new ApplicationConfig();
-            applicationConfig.game.updateInterval = 10;
+            applicationConfig.game.startSpeed = 4;
             return applicationConfig;
         });
 

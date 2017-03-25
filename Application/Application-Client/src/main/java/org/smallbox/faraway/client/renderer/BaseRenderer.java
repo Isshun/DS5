@@ -27,7 +27,10 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
     private int                 _fromY;
     private int                 _toX;
     private int                 _toY;
-    protected int                 _frame;
+    protected int               _frame;
+
+    private long                _lastTime;
+    private long                _cumulateTime;
 
     public BaseRenderer() {
         if (!getClass().isAnnotationPresent(GameRenderer.class)) {
@@ -62,6 +65,8 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
 
     public final void draw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (isVisible()) {
+            long time2 = System.nanoTime() / 1000;
+
             //                if (render.isMandatory() || (game.hasDisplay(render.getClass().getName()))) {
 
             long time = System.currentTimeMillis();
@@ -78,8 +83,14 @@ public abstract class BaseRenderer<T> implements GameObserver, GameClientObserve
             _lastDrawDelay = (System.currentTimeMillis() - time);
             _totalDrawDelay += _lastDrawDelay;
             _nbDraw++;
+
+            _lastTime = System.nanoTime() / 1000 - time2;
+            _cumulateTime += _lastTime;
         }
     }
+
+    public long         getLastTime() { return _lastTime; }
+    public long         getCumulateTime() { return _cumulateTime; }
 
     public void dump() {
         if (_nbDraw != 0) {

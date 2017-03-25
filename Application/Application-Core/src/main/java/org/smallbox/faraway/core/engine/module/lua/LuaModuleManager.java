@@ -300,37 +300,6 @@ public abstract class LuaModuleManager implements GameObserver {
         _luaLoadListeners.add(luaLoadListener);
     }
 
-    private void broadcastToLuaModules(int eventId) {
-        if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, null)) {
-            return;
-        }
-        if (Application.gameManager.isLoaded()) {
-            broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, null);
-        }
-    }
-
-    private void broadcastToLuaModules(int eventId, Object data) {
-        LuaValue value = CoerceJavaToLua.coerce(data);
-        if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, value)) {
-            return;
-        }
-        if (Application.gameManager.isLoaded()) {
-            broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, value);
-        }
-    }
-
-    private void broadcastToLuaModules(int eventId, Object data1, Object data2) {
-        LuaValue value = new LuaTable();
-        value.set(1, CoerceJavaToLua.coerce(data1));
-        value.set(2, CoerceJavaToLua.coerce(data2));
-        if (broadcast(_luaEventListeners, eventId, LuaValue.NIL, value)) {
-            return;
-        }
-        if (Application.gameManager.isLoaded()) {
-            broadcast(_luaEventInGameListeners, eventId, LuaValue.NIL, value);
-        }
-    }
-
     private boolean broadcast(Collection<LuaEventListener> listeners, int eventId, LuaValue tag, LuaValue value) {
         for (LuaEventListener listener: listeners) {
             if (listener.onEvent(eventId, tag, value)) {

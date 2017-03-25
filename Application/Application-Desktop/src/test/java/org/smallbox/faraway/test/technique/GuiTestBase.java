@@ -22,7 +22,7 @@ public class GuiTestBase extends TestBase {
         testComplete = false;
 
         ApplicationConfig applicationConfig = new ApplicationConfig();
-        applicationConfig.game.updateInterval = 10;
+        applicationConfig.game.startGameTime = 4;
 
         DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> applicationConfig);
 

@@ -21,6 +21,7 @@ public abstract class MovableModel extends ObjectModel {
     protected Direction                 _direction;
     protected JobModel                  _job;
     protected double                    _moveProgress;
+    protected double                    _moveProgress2;
     protected ParcelModel               _parcel;
 
     public MovableModel(int id, ParcelModel parcel) {
@@ -34,6 +35,7 @@ public abstract class MovableModel extends ObjectModel {
     public ParcelModel      getParcel() { return _parcel; }
     public Direction        getDirection() { return _direction; }
     public int              getFrameIndex() { return _frameIndex++; }
+    public double           getMoveProgress2() { return _moveProgress2; }
 
     public void             setParcel(ParcelModel parcel) {
         assert parcel != null;

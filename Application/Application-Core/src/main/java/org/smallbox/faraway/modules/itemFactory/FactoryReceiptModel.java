@@ -62,7 +62,10 @@ public class FactoryReceiptModel {
     public int                              getCostRemaining() { return _costRemaining; }
     public int                              getCost() { return receiptInfo.cost; }
     public int                              setCostRemaining(int costRemaining) { _costRemaining = costRemaining; return _costRemaining; }
-    public int                              decreaseCostRemaining() { return --_costRemaining; }
+
+    public int craft(double value) {
+        return _costRemaining -= value;
+    }
 
     public void initComponents() {
         _costRemaining = receiptInfo.cost;

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.dig;
 
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -17,6 +18,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 public class BasicDigJob extends JobModel {
 
     private ParcelModel _digParcel;
+    private double _time;
 
     public static BasicDigJob create(ConsumableModule consumableModule, JobModule jobModule, WorldModule worldModule, ParcelModel digParcel) {
 
@@ -29,7 +31,14 @@ public class BasicDigJob extends JobModel {
                 job.setDigParcel(digParcel);
 
                 // Déplace le personnage à l'emplacement des composants
-                job.addTask("Move to rock", (character, hourInterval) -> character.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+                job.addMoveTask("Move to rock", targetParcel);
+
+                // Déplace le personnage à l'emplacement des composants
+                job.addTask("Dig", (character, hourInterval) -> {
+                    job._time += hourInterval;
+                    job.setProgress(job._time, Application.config.game.digTime);
+                    return job._time >= Application.config.game.digTime ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+                });
 
                 // Retire les rochers de la carte
                 job.addTechnicalTask("Remove rock", character -> digParcel.setRockInfo(null));

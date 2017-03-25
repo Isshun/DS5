@@ -30,7 +30,7 @@ public class UseJob extends JobModel {
 
         setMainLabel("Use " + item.getInfo().label);
 
-        addTask("Move", (character, hourInterval) -> character.moveTo(item.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addMoveTask("Move", item.getParcel());
         addTask("Use", (character, hourInterval) -> {
             _duration += 1 / Application.gameManager.getGame().getTickPerHour();
             double durationLeft = totalDuration - _duration;

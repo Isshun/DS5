@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.manager.SpriteManager;
@@ -233,21 +231,21 @@ public class WorldGroundRenderer extends BaseRenderer {
 //                        if (pxRock != null) {
 //                            pxOut.drawPixmap(pxRock, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
 //                        } else {
-                        Gdx.app.postRunnable(() -> {
-                            if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
-                                Sprite sprite = spriteManager.getRock(parcel.getRockInfo().graphics.get(0), parcel.getTile());
-                                if (sprite != null) {
-                                    TextureData textureData = sprite.getTexture().getTextureData();
-                                    if (!textureData.isPrepared()) {
-                                        textureData.prepare();
-                                    }
-                                    Pixmap pxRockDo = textureData.consumePixmap();
-                                    _pxRocks.put(parcel.getRockInfo(), pxRockDo);
-                                    textureData.disposePixmap();
-                                    pxOut.drawPixmap(pxRockDo, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
-                                }
-                            }
-                        });
+//                        Gdx.app.postRunnable(() -> {
+//                            if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
+//                                Sprite sprite = spriteManager.getRock(parcel.getRockInfo().graphics.get(0), parcel.getTile());
+//                                if (sprite != null) {
+//                                    TextureData textureData = sprite.getTexture().getTextureData();
+//                                    if (!textureData.isPrepared()) {
+//                                        textureData.prepare();
+//                                    }
+//                                    Pixmap pxRockDo = textureData.consumePixmap();
+//                                    _pxRocks.put(parcel.getRockInfo(), pxRockDo);
+//                                    textureData.disposePixmap();
+//                                    pxOut.drawPixmap(pxRockDo, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
+//                                }
+//                            }
+//                        });
 //                        }
                     }
 

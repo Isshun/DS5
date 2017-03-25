@@ -4,8 +4,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Alex on 05/03/2017.
@@ -18,7 +18,12 @@ public class GameTestHelper {
         _testBase = testBase;
     }
 
-    private Map<Long, Runnable> tickRunnable = new HashMap<>();
+    public static class RunnableAtTick {
+        public Runnable runnable;
+        public long tick;
+    }
+
+    private Collection<RunnableAtTick> tickRunnable = new ArrayList<>();
     private GameTestCreateCallback createCallback;
     private long endTick;
 
@@ -36,10 +41,15 @@ public class GameTestHelper {
     }
 
     public GameTestHelper runOnGameTick(long tick, Runnable runnable) {
-        tickRunnable.put(tick, runnable);
+        RunnableAtTick runnableAtTick = new RunnableAtTick();
+        runnableAtTick.tick = tick;
+        runnableAtTick.runnable = runnable;
+        tickRunnable.add(runnableAtTick);
+
         if (endTick < tick) {
             endTick = tick;
         }
+
         return this;
     }
 
@@ -67,9 +77,9 @@ public class GameTestHelper {
 
             @Override
             public void onGameUpdate(Game game) {
-                if (tickRunnable.containsKey(game.getTick())) {
-                    tickRunnable.get(game.getTick()).run();
-                }
+                tickRunnable.stream()
+                        .filter(runnableAtTick -> runnableAtTick.tick == game.getTick())
+                        .forEach(runnableAtTick -> runnableAtTick.runnable.run());
             }
 
         });
@@ -81,10 +91,4 @@ public class GameTestHelper {
         System.out.println("end");
     }
 
-    public GameTestHelper setUpdateInterval(int updateInterval) {
-
-        Application.config.game.updateInterval = Math.max(1, updateInterval);
-
-        return this;
-    }
 }

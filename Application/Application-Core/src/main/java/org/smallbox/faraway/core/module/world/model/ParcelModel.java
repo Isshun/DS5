@@ -26,6 +26,7 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
     private RoomModel                       _room;
     private AreaModel                       _area;
     private Array<Connection<ParcelModel>>  _connections;
+    private static Array<Connection<ParcelModel>>  _emptyConnections = new Array<>();
     private final int                       _index;
     private int                             _tile;
     private double                          _liquidValue;
@@ -175,6 +176,10 @@ public class ParcelModel implements IndexedNode<ParcelModel> {
 
     @Override
     public Array<Connection<ParcelModel>> getConnections() {
+        if (!isWalkable()) {
+            return _emptyConnections;
+        }
+
         return _connections;
     }
 

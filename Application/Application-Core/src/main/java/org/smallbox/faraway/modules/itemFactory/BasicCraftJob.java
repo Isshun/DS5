@@ -32,18 +32,12 @@ public class BasicCraftJob extends JobModel {
     public long getEndTick() { return _endTick; }
     public ReceiptGroupInfo.ReceiptInfo getReceiptInfo() { return _receiptInfo; }
 
-//    @Override
-    public boolean onCraft() {
-        // Incrémente la variable count de la recette (état d'avancement)
-        return factory.getRunningReceipt().decreaseCostRemaining() == 0;
-    }
-
-//    @Override
+    //    @Override
     public int getCost() {
         return factory.getRunningReceipt().getCost();
     }
 
-//    @Override
+    //    @Override
     public int getCostRemaining() {
         return factory.getRunningReceipt().getCostRemaining();
     }
@@ -81,7 +75,11 @@ public class BasicCraftJob extends JobModel {
                     job._startTick = Application.gameManager.getGame().getTick();
                     job._endTick = Application.gameManager.getGame().getTick() + job.getCostRemaining();
                 }
-                return job.onCraft() ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+
+                // Incrémente la variable count de la recette (état d'avancement)
+                return job.factory.getRunningReceipt().craft(1 / Application.config.game.craftTime * hourInterval) < 0
+                        ? JobTaskReturn.TASK_COMPLETE
+                        : JobTaskReturn.TASK_CONTINUE;
             });
 
             return true;

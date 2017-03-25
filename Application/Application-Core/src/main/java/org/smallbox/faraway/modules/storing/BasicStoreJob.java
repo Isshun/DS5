@@ -100,8 +100,7 @@ public class BasicStoreJob extends JobModel {
         });
 
         // Apporte les composants à la zone de stockage
-        addTask("Move to storage", (character2, ticks) ->
-                character2.moveTo(_targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addMoveTask("Move to storage", _targetParcel);
 
         // Ajoute les composants à la zone de stockage
         addTechnicalTask("Drop consumable to storage", character2 ->

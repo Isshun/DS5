@@ -14,7 +14,7 @@ public class WalkJob extends JobModel {
         setMainLabel("Walk");
         setVisible(false);
         ParcelModel targetParcel = WorldHelper.getRandomParcel(character.getParcel(), 32);
-        addTask("move 1", (c, ticks) -> c.moveTo(targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addMoveTask("move 1", targetParcel);
     }
 
     @Override

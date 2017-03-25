@@ -93,7 +93,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         _characters.removeIf(CharacterModel::isDead);
 
         // Execute action
-        double hourInterval = getTickInterval() * game.getTickPerHour();
+        double hourInterval = getTickInterval() / game.getTickPerHour();
         _characters.forEach(character -> {
             character.setDirection(MovableModel.Direction.NONE);
             character.action(hourInterval);

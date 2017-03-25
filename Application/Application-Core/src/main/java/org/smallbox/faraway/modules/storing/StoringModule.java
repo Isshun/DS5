@@ -63,7 +63,7 @@ public class StoringModule extends GameModule {
                 .flatMap(area -> area.getParcels().stream())
                 .collect(Collectors.toList());
 
-        // Crée les hauling jobs pour les consomables hors d'une parcel de stockage
+        // Crée les storing jobs pour les consomables hors d'une parcel de stockage
         consumableModule.getConsumables().stream()
                 .filter(consumable -> consumable.getFreeQuantity() > 0)
                 .filter(consumable -> !consumablesInStoreJob.contains(consumable))

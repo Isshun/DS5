@@ -109,48 +109,6 @@ public abstract class CharacterModel extends MovableModel {
     //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
     public boolean                      needRefresh() { return _needRefresh; }
 
-//    public ParcelModel moveApprox(ParcelModel targetParcel, MoveListener<CharacterModel> listener) {
-//        PathModel path = Application.pathManager.getPath(_parcel, targetParcel, true, false);
-//
-//        // No path to target parcel
-//        if (path == null) {
-//            if (listener != null) {
-//                listener.onFail(this);
-//            }
-//            return null;
-//        }
-//
-//        // Move character to target parcel
-//        move(path, listener);
-//        return path.getLastParcel();
-//    }
-//
-//    public void move(PathModel path) {
-//        move(path, null);
-//    }
-//
-//    public void move(PathModel path, MoveListener<CharacterModel> listener) {
-//        if (_moveListener != null) {
-//            Log.debug("[" + getName() + "] Cancel previous move listener");
-//            _moveListener.onFail(this);
-//            _moveListener = null;
-//        }
-//
-//        if (path != null) {
-//            // Already on position
-//            if (path.getLength() == 0) {
-//                if (listener != null) {
-//                    listener.onReach(this);
-//                }
-//                return;
-//            }
-//
-//            _path = path;
-//            _moveProgress = 0;
-//            _moveListener = listener;
-//        }
-//    }
-
     /**
      * Déplace le personnage à la position demandée
      *
@@ -166,17 +124,17 @@ public abstract class CharacterModel extends MovableModel {
     public boolean moveTo(ParcelModel parcel, MoveListener<CharacterModel> listener) {
         assert parcel != null;
 
+        // Déjà entrain de se déplacer vers la postion
+        if (_path != null && _path.getLastParcel() == parcel) {
+            return false;
+        }
+
         // Déjà à la position désirée
-        if (parcel == _parcel) {
+        if (_path == null && parcel == _parcel) {
             if (listener != null) {
                 listener.onReach(this);
             }
             return true;
-        }
-
-        // Déjà entrain de se déplacer vers la postion
-        if (_path != null && _path.getLastParcel() == parcel) {
-            return false;
         }
 
         if (_moveListener != null) {
@@ -186,6 +144,7 @@ public abstract class CharacterModel extends MovableModel {
         }
 
         _path = Application.pathManager.getPath(_parcel, parcel, false, false);
+        _moveProgress2 = 0;
         if (_path != null) {
             _moveListener = listener;
         } else if (listener != null) {
@@ -244,6 +203,7 @@ public abstract class CharacterModel extends MovableModel {
             }
 
             _moveProgress += _moveStep;
+            _moveProgress2 += _moveStep;
         }
     }
 

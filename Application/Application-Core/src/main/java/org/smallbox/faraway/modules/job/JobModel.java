@@ -261,6 +261,23 @@ public abstract class JobModel extends ObjectModel {
         _tasks.add(new JobTask(label, jobTaskAction));
     }
 
+    public void addMoveTask(String label, ParcelModel parcel) {
+
+        if (_tasks.isEmpty()) {
+            _label = label;
+        }
+
+        _tasks.add(new JobTask(label, (character, hourInterval) -> {
+            if (character.moveTo(parcel)) {
+                return JobTaskReturn.TASK_COMPLETE;
+            }
+            if (character.getPath() != null && character.getPath().getLastParcel() == parcel) {
+                return JobTaskReturn.TASK_CONTINUE;
+            }
+            return JobTaskReturn.TASK_ERROR;
+        }));
+    }
+
     public void addTechnicalTask(String label, JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
 
         if (_tasks.isEmpty()) {

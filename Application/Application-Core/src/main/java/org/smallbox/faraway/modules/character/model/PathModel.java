@@ -1,9 +1,13 @@
 package org.smallbox.faraway.modules.character.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import com.badlogic.gdx.math.*;
+import org.smallbox.faraway.core.module.path.spline.BezierPath;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -12,6 +16,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class PathModel {
 
+//    public final double[] _spline;
+//    public final double[] _c;
+    public final List<Vector3> _curve;
+    public Path<Vector2> myCatmull;
     private long _startTime;
 
     public void setStartTime(long startTime) {
@@ -45,7 +53,7 @@ public class PathModel {
     private ParcelModel                 _lastParcel;
     private int                         _length;
     private int                         _index;
-    private GraphPath<ParcelModel>      _nodes;
+    public GraphPath<ParcelModel>      _nodes;
     private final Queue<PathSection>    _smooth = new ConcurrentLinkedQueue<>();
 
     public static PathModel create(GraphPath<ParcelModel> nodes) {
@@ -61,6 +69,46 @@ public class PathModel {
 
     private PathModel(GraphPath<ParcelModel> nodes) {
         _nodes = nodes;
+
+        List<Vector3> vector3List = new ArrayList<>();
+        nodes.forEach(parcel -> vector3List.add(new Vector3(parcel.x, parcel.y, 0)));
+        BezierPath bezierPath = new BezierPath();
+        bezierPath.SetControlPoints(vector3List);
+        _curve = bezierPath.GetDrawingPoints1();
+
+
+//        Vector2 out = new Vector2();
+//        Vector2 tmp = new Vector2();
+//        Vector2[] dataSet = new Vector2[nodes.getCount()];
+//
+//        /* fill dataSet with path points */
+//        CatmullRomSpline.calculate(out, t, dataSet, continuous, tmp);// stores in the vector out the point of the catmullRom path of the dataSet in the time t. Uses tmp as a temporary vector. if continuous is true, the path is a loop.
+//        CatmullRomSpline.derivative(out, t, dataSet, continuous, tmp); // the same as above, but stores the derivative of the time t in the vector out
+
+        int count = nodes.getCount();
+        Vector2[] vector2List = new Vector2[count + 2];
+        vector2List[0] = new Vector2(nodes.get(0).x, nodes.get(0).y);
+        for (int i = 0; i < count; i++) {
+            vector2List[i + 1] = new Vector2(nodes.get(i).x, nodes.get(i).y);
+            vector2List[i + 2] = vector2List[i + 1];
+        }
+
+        myCatmull = new CatmullRomSpline<>(vector2List, false);
+//        myCatmull = new BSpline<>(vector2List, 0, false);
+//        myCatmull = new Bezier<>(vector2List, 5, 4);
+
+//        int x1 = nodes.get(0).x;
+//        int y1 = nodes.get(0).y;
+//        double[] c = new double[Math.max(4, nodes.getCount()) * 3];
+//        for (int i = 0; i < nodes.getCount(); i++) {
+//            ParcelModel parcel = nodes.get(i);
+//            c[i * 3]  =   parcel.x - x1;
+//            c[i * 3 + 1]  =   parcel.y - y1;
+//            c[i * 3 + 2]  =   0.0;
+//        }
+//        _c = c;
+//        _spline = SplineFactory.createBezier (c,     32);
+
         _currentParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _firstParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _lastParcel = nodes.getCount() > 0 ? nodes.get(nodes.getCount()-1) : null;

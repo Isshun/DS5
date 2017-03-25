@@ -57,9 +57,9 @@ public class DebugRenderer extends BaseRenderer {
 
     private Map<String, String> _data = new HashMap<>();
 
-    private enum Mode { CONSUMABLE, ITEM, PLANT, RENDER, OTHER, CHARACTER, JOB, MODULE}
+    private enum Mode { UI, CONSUMABLE, ITEM, PLANT, RENDER, SHORTCUTS, CHARACTER, JOB, MODULE}
 
-    private Mode _mode = Mode.OTHER;
+    private Mode _mode = Mode.SHORTCUTS;
 
     {
         _data.put("Cursor screen position", "");
@@ -68,8 +68,10 @@ public class DebugRenderer extends BaseRenderer {
 
     @Override
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        _index = 0;
+        _index = 2;
         renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
+
+        drawHeaders(renderer);
 
         switch (_mode) {
 
@@ -102,8 +104,14 @@ public class DebugRenderer extends BaseRenderer {
             // Display renders
             case RENDER:
                 if (ApplicationClient.mainRenderer != null) {
-                    ApplicationClient.mainRenderer.getRenders()
-                            .forEach(render -> drawDebug(renderer, "Render", "[" + (render.isVisible() ? "X" : " ") + "] " + render.getClass().getSimpleName() + " (" + render.getLevel() + ")"));
+                    ApplicationClient.mainRenderer.getRenders().stream()
+                            .sorted((o1, o2) -> (int)(o2.getCumulateTime() - o1.getCumulateTime()))
+                            .forEach(render -> drawDebug(renderer, "Render",
+                                    String.format("%-32s visible: %-5s, total: %-5d med: %.2f",
+                                            render.getClass().getSimpleName(),
+                                            render.isVisible() ? "x" : " ",
+                                            render.getCumulateTime() / 1000,
+                                            render.getCumulateTime() / 1000 / (double)game.getTick())));
                 }
                 break;
 
@@ -135,7 +143,11 @@ public class DebugRenderer extends BaseRenderer {
                                         module.getCumulateTime() / 1000 / (double)game.getTick())));
                 break;
 
-            case OTHER:
+            case SHORTCUTS:
+                ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));
+                break;
+
+            case UI:
                 drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.mainRenderer.getViewport().getFloor());
                 drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.mainRenderer.getViewport().getWidth() + " x " + ApplicationClient.mainRenderer.getViewport().getHeight());
 
@@ -143,8 +155,6 @@ public class DebugRenderer extends BaseRenderer {
                 drawDebug(renderer, "WORLD", "Ground floor: " + Application.gameManager.getGame().getInfo().groundFloor);
 
                 _data.entrySet().forEach(entry -> drawDebug(renderer, "UI", entry.getKey() + ": " + entry.getValue()));
-
-                ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));
                 break;
         }
 
@@ -188,11 +198,29 @@ public class DebugRenderer extends BaseRenderer {
         _data.put("Cursor world position", ApplicationClient.mainRenderer.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.mainRenderer.getViewport().getWorldPosY(event.mouseEvent.y));
     }
 
+    private void drawHeaders(GDXRenderer renderer) {
+        int index = 0;
+        int offset = 0;
+        for (Mode mode: Mode.values()) {
+            renderer.drawText((offset * 10) + 12, 12, 18, Color.BLACK, (index + 1) + ") [" + mode.name().toUpperCase() + "] ");
+            renderer.drawText((offset * 10) + 11, 11, 18, Color.BLACK, (index + 1) + ") [" + mode.name().toUpperCase() + "] ");
+            renderer.drawText((offset * 10) + 10, 10, 18, _mode == mode ? Color.CORAL : Color.WHITE, (index + 1) + ") [" + mode.name().toUpperCase() + "] ");
+            offset += mode.name().length() + 8;
+            index++;
+        }
+    }
+
     private void drawDebug(GDXRenderer renderer, String label, Object object) {
         renderer.drawText(12, (_index * 20) + 12, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
         renderer.drawText(11, (_index * 20) + 11, 18, Color.BLACK, "[" + label.toUpperCase() + "] " + object);
         renderer.drawText(10, (_index * 20) + 10, 18, Color.WHITE, "[" + label.toUpperCase() + "] " + object);
         _index++;
+    }
+
+    private void setModeIndex(int index) {
+        if (index - 1 < Mode.values().length) {
+            _mode = Mode.values()[index - 1];
+        }
     }
 
     @Override
@@ -206,43 +234,30 @@ public class DebugRenderer extends BaseRenderer {
     }
 
     @GameShortcut(key = Input.Keys.NUM_1)
-    public void onD1() {
-        _mode = Mode.OTHER;
-    }
+    public void onD1() { setModeIndex(1); }
 
     @GameShortcut(key = Input.Keys.NUM_2)
-    public void onD2() {
-        _mode = Mode.CONSUMABLE;
-    }
+    public void onD2() { setModeIndex(2); }
 
     @GameShortcut(key = Input.Keys.NUM_3)
-    public void onD3() {
-        _mode = Mode.ITEM;
-    }
+    public void onD3() { setModeIndex(3); }
 
     @GameShortcut(key = Input.Keys.NUM_4)
-    public void onD4() {
-        _mode = Mode.PLANT;
-    }
+    public void onD4() { setModeIndex(4); }
 
     @GameShortcut(key = Input.Keys.NUM_5)
-    public void onD5() {
-        _mode = Mode.RENDER;
-    }
+    public void onD5() { setModeIndex(5); }
 
     @GameShortcut(key = Input.Keys.NUM_6)
-    public void onD6() {
-        _mode = Mode.CHARACTER;
-    }
+    public void onD6() { setModeIndex(6); }
 
     @GameShortcut(key = Input.Keys.NUM_7)
-    public void onD7() {
-        _mode = Mode.JOB;
-    }
+    public void onD7() { setModeIndex(7); }
 
     @GameShortcut(key = Input.Keys.NUM_8)
-    public void onD8() {
-        _mode = Mode.MODULE;
-    }
+    public void onD8() { setModeIndex(8); }
+
+    @GameShortcut(key = Input.Keys.NUM_9)
+    public void onD9() { setModeIndex(9); }
 
 }

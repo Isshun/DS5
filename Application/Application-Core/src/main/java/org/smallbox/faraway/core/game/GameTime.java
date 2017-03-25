@@ -30,4 +30,12 @@ public class GameTime {
         _day = (int) (totalMinutes / 60 / 24 % 365);
         _year = (int) (totalMinutes / 60 / 24 / 365);
     }
+
+    public static double fromMinute(double value) {
+        return value / 60;
+    }
+
+    public static double fromHour(double value) {
+        return value;
+    }
 }

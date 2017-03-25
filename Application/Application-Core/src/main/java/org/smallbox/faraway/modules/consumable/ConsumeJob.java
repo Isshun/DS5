@@ -31,7 +31,7 @@ public class ConsumeJob extends JobModel {
 
         setMainLabel("Consume " + consumable.getInfo().label);
 
-        addTask("Move", (character, hourInterval) -> character.moveTo(consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addMoveTask("Move", consumable.getParcel());
         addTask("Consume", (character, hourInterval) -> {
             if (_lock.available) {
                 _duration += 1 / Application.gameManager.getGame().getTickPerHour();
