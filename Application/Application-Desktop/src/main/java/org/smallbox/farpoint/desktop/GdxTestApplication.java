@@ -65,8 +65,8 @@
 //                Application.groovyManager::init);
 //
 //        if (HAS_GDX) {
-//            Application.taskManager.addLoadTask("Create renderer", true, () ->
-//                    ApplicationClient.gdxRenderer.init(_batch, _fonts));
+//            Application.taskManager.addLoadTask("Create layer", true, () ->
+//                    ApplicationClient.gdxLayer.init(_batch, _fonts));
 //        }
 //
 //        // Server

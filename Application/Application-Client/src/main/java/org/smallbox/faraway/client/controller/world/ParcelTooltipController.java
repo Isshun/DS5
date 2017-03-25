@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.TooltipController;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;

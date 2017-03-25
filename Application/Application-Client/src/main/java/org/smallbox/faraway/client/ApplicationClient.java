@@ -7,8 +7,8 @@ import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.renderer.MainRenderer;
+import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -43,8 +43,8 @@ public class ApplicationClient {
     public static final LuaControllerManager    luaControllerManager;
 
     public static final SpriteManager           spriteManager;
-    public static final GDXRenderer             gdxRenderer;
-    public static final MainRenderer            mainRenderer;
+    public static final GDXRenderer GDX_LAYER;
+    public static final LayerManager LAYER_MANAGER;
 
     public static final ShortcutManager shortcutManager;
 
@@ -55,8 +55,8 @@ public class ApplicationClient {
         uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
-        gdxRenderer = dependencyInjector.create(GDXRenderer.class);
-        mainRenderer = dependencyInjector.create(MainRenderer.class);
+        GDX_LAYER = dependencyInjector.create(GDXRenderer.class);
+        LAYER_MANAGER = dependencyInjector.create(LayerManager.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
 
@@ -165,7 +165,7 @@ public class ApplicationClient {
 //            if (action == GameEventListener.Action.RELEASED) {
 //                System.out.println("Click on map at pixel: " + x + " x " + y);
 //
-//                Viewport viewport = ApplicationClient.mainRenderer.getViewport();
+//                Viewport viewport = ApplicationClient.LAYER_MANAGER.getViewport();
 //                ParcelModel parcel = WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor());
 //                if (parcel != null) {
 //                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);

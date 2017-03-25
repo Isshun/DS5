@@ -29,7 +29,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @ModuleSerializer(CharacterModuleSerializer.class)
-//@ModuleRenderer(CharacterRenderer.class)
+//@ModuleLayer(CharacterLayer.class)
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
 //    @BindModule

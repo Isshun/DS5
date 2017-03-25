@@ -1,8 +1,8 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 /**

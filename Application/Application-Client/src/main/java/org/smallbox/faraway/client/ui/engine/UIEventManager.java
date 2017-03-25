@@ -150,14 +150,14 @@ public class UIEventManager {
         // Click on map
         if (Application.gameManager.isRunning()) {
 
-            int fromMapX = ApplicationClient.mainRenderer.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX());
-            int fromMapY = ApplicationClient.mainRenderer.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY());
-            int toMapX = ApplicationClient.mainRenderer.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX());
-            int toMapY = ApplicationClient.mainRenderer.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY());
+            int fromMapX = ApplicationClient.LAYER_MANAGER.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX());
+            int fromMapY = ApplicationClient.LAYER_MANAGER.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY());
+            int toMapX = ApplicationClient.LAYER_MANAGER.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX());
+            int toMapY = ApplicationClient.LAYER_MANAGER.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY());
 
             // Square selection
             if (fromMapX != toMapX || fromMapY != toMapY) {
-                List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
+                List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.LAYER_MANAGER.getViewport().getFloor());
                 Log.info("Click on map for parcels: %s", parcelList);
                 if (parcelList != null) {
 
@@ -173,7 +173,7 @@ public class UIEventManager {
 
             // Unique parcel
             else {
-                ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.mainRenderer.getViewport().getFloor());
+                ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.LAYER_MANAGER.getViewport().getFloor());
                 Log.info("Click on map at parcel: %s", parcel);
                 if (parcel != null) {
                     ApplicationClient.notify(obs -> obs.onClickOnParcel(Collections.singletonList(parcel)));

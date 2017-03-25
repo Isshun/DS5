@@ -223,7 +223,7 @@ public abstract class JobModel extends ObjectModel {
 
 //        // TODO
 //        if (ret == JobCheckReturn.JOB_BLOCKED) {
-//            _fail = MainRenderer.getFrame();
+//            _fail = MainLayer.getFrame();
 //        }
 
         if (ret == JobCheckReturn.ABORT) {

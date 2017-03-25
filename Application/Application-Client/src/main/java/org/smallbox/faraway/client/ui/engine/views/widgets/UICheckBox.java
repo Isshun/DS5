@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -172,7 +172,7 @@ public class UICheckBox extends View {
     public UICheckBox setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
-            _height = (int)(ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
+            _height = (int)(ApplicationClient.GDX_LAYER.getFont(_textSize).getLineHeight() * 1.2);
         }
         return this;
     }
@@ -240,8 +240,8 @@ public class UICheckBox extends View {
     @Override
     public int getContentWidth() {
         if (_string != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).width;
-            return (int) (_string.length() * ApplicationClient.gdxRenderer.getFont(_textSize).getSpaceWidth());
+//            return (int) ApplicationClient.GDX_LAYER.getFont(_textSize).getBounds(_string).width;
+            return (int) (_string.length() * ApplicationClient.GDX_LAYER.getFont(_textSize).getSpaceWidth());
         }
         return 0;
     }
@@ -249,8 +249,8 @@ public class UICheckBox extends View {
     @Override
     public int getContentHeight() {
         if (_string != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).height;
-            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight();
+//            return (int) ApplicationClient.GDX_LAYER.getFont(_textSize).getBounds(_string).height;
+            return (int) ApplicationClient.GDX_LAYER.getFont(_textSize).getLineHeight();
         }
         return 0;
     }

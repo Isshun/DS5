@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.engine;
 
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
@@ -29,7 +29,7 @@ public abstract class UICursor {
 
 //        for (int x = startX; x <= toX; x++) {
 //            for (int y = startY; y <= toY; y++) {
-//                onDraw(renderer, ModuleHelper.getWorldModule().getParcel(x, y, WorldHelper.getCurrentFloor()), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
+//                onDraw(layer, ModuleHelper.getWorldModule().getParcel(x, y, WorldHelper.getCurrentFloor()), x * 32 + viewport.getPosX(), y * 32 + viewport.getPosY(), (x + y) % 2 == 0, isPressed);
 //            }
 //        }
     }

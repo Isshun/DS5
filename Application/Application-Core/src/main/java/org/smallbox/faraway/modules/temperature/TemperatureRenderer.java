@@ -1,9 +1,9 @@
 //package org.smallbox.faraway.modules.temperature;
 //
 //import com.badlogic.gdx.graphics.Color;
-//import org.smallbox.faraway.client.renderer.GDXRenderer;
-//import org.smallbox.faraway.client.renderer.GameDisplay;
-//import org.smallbox.faraway.client.renderer.Viewport;
+//import org.smallbox.faraway.client.layer.GDXLayer;
+//import org.smallbox.faraway.client.layer.GameDisplay;
+//import org.smallbox.faraway.client.layer.Viewport;
 //import org.smallbox.faraway.core.dependencyInjector.BindModule;
 //import org.smallbox.faraway.core.module.room.model.RoomModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -13,13 +13,13 @@
 ///**
 // * Created by Alex on 14/06/2015.
 // */
-//public class TemperatureRenderer extends GameDisplay {
+//public class TemperatureLayer extends GameDisplay {
 //
 //    @BindModule
 //    private RoomModule roomModule;
 //
 //    @Override
-//    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress) {
+//    public void onDraw(GDXLayer layer, Viewport viewport, double animProgress) {
 //        for (RoomModel room: roomModule.getRooms()) {
 //            if (!room.isExterior()) {
 //                int minX = Integer.MAX_VALUE;
@@ -41,7 +41,7 @@
 //                }
 //
 //                String text = (int)Math.round(room.getTemperatureInfo().temperature) + "°";
-////                BitmapFont.TextBounds bounds = renderer.getFont(24).getWrappedBounds(text, 0);
+////                BitmapFont.TextBounds bounds = layer.getFont(24).getWrappedBounds(text, 0);
 //                renderer.draw(text, 24,
 //                        (minX + (maxX - minX) / 2) * Constant.TILE_WIDTH + viewport.getPosX(),
 //                        (minY + (maxY - minY) / 2) * Constant.TILE_HEIGHT + viewport.getPosY(),

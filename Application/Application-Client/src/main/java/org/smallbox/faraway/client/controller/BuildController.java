@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.renderer.BuildRenderer;
+import org.smallbox.faraway.client.render.layer.BuildLayer;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -50,7 +50,7 @@ public class BuildController extends LuaController {
     private UILabel contentLabel;
 
     @BindComponent
-    private BuildRenderer buildRenderer;
+    private BuildLayer buildLayer;
 
     private ItemInfo _currentItem;
 
@@ -72,7 +72,7 @@ public class BuildController extends LuaController {
 //
 //        _currentItem = null;
 //
-//        buildRenderer.setItemInfo(null);
+//        buildLayer.setItemInfo(null);
 //
 //        return false;
 //    }
@@ -196,7 +196,7 @@ public class BuildController extends LuaController {
         _currentItem = itemInfo;
 
         if (itemInfo != null) {
-            buildRenderer.setItemInfo(itemInfo);
+            buildLayer.setItemInfo(itemInfo);
 
             uiEventManager.setSelectionListener(parcels -> {
                 if (_currentItem != null) {
@@ -208,7 +208,7 @@ public class BuildController extends LuaController {
                     }
                 }
 
-                buildRenderer.setItemInfo(_currentItem);
+                buildLayer.setItemInfo(_currentItem);
                 return false;
             });
 

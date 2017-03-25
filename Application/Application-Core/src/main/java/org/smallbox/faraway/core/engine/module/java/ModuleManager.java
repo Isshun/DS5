@@ -81,10 +81,10 @@ public class ModuleManager implements GameObserver {
 //                                e.printStackTrace();
 //                            }
 //                        }
-//                        if (BaseRenderer.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
+//                        if (BaseLayer.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
 //                            Log.info("Discover third party render: " + cls.getSimpleName());
 //                            try {
-//                                _rendersThird.addSubJob(cls.asSubclass(BaseRenderer.class).getConstructor().newInstance());
+//                                _rendersThird.addSubJob(cls.asSubclass(BaseLayer.class).getConstructor().newInstance());
 //                            } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 //                                e.printStackTrace();
 //                            }

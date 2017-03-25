@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;

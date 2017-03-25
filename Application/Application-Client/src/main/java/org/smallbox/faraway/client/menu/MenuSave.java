@@ -2,8 +2,8 @@
 //
 //import org.smallbox.faraway.core.engine.Color;
 //import org.smallbox.faraway.core.engine.GameEventListener;
-//import org.smallbox.faraway.client.renderer.GDXRenderer;
-//import org.smallbox.faraway.client.renderer.Viewport;
+//import org.smallbox.faraway.client.layer.GDXLayer;
+//import org.smallbox.faraway.client.layer.Viewport;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.util.Constant;
 //import UIFrame;
@@ -104,7 +104,7 @@
 //    }
 //
 //    @Override
-//    public void onDraw(GDXRenderer renderer, Viewport viewport) {
+//    public void onDraw(GDXLayer layer, Viewport viewport) {
 //        int i = 0;
 //        for (UILabel lbFile: _lbFiles) {
 //            lbFile.setTextColor(i++ == _index ? Color.YELLOW : Color.WHITE);

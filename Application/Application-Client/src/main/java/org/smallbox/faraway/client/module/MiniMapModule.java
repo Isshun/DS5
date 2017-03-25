@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.util.Constant;
 //
-////@ModuleRenderer(MinimapRenderer.class)
+////@ModuleLayer(MinimapLayer.class)
 //public class MiniMapModule extends GameClientModule {
 //    private static final int    FRAME_WIDTH = 352;
 //    private static final int    FRAME_HEIGHT = 220;
@@ -31,7 +31,7 @@
 //            }
 //            if ((action == GameEventListener.Action.RELEASED && button == GameEventListener.MouseButton.LEFT) ||
 //                    (action == GameEventListener.Action.MOVE && _isPressed)) {
-//                ApplicationClient.mainRenderer.getViewport().setPosition(-((x - 19 - POS_X) * Application.gameManager.getGame().getInfo().worldWidth / FRAME_WIDTH) * Constant.TILE_WIDTH, -((y - 16 - POS_Y) * Application.gameManager.getGame().getInfo().worldHeight / FRAME_HEIGHT) * Constant.TILE_HEIGHT);
+//                ApplicationClient.mainLayer.getViewport().setPosition(-((x - 19 - POS_X) * Application.gameManager.getGame().getInfo().worldWidth / FRAME_WIDTH) * Constant.TILE_WIDTH, -((y - 16 - POS_Y) * Application.gameManager.getGame().getInfo().worldHeight / FRAME_HEIGHT) * Constant.TILE_HEIGHT);
 //                return true;
 //            }
 //        }

@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.ui;
 
-import org.smallbox.faraway.client.ModuleRenderer;
+import org.smallbox.faraway.client.ModuleLayer;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 
-@ModuleRenderer(UIRenderer.class)
+@ModuleLayer(UILayer.class)
 public class UIPanelModule extends GameModule {
 
     @Override

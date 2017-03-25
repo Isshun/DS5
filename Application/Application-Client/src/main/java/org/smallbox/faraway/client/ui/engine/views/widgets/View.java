@@ -3,11 +3,11 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -596,10 +596,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (ApplicationClient.gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
+                return (ApplicationClient.GDX_LAYER.getWidth() / 2) - (_width / 2) + _x;
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return ApplicationClient.gdxRenderer.getWidth() - _width - _x;
+                return ApplicationClient.GDX_LAYER.getWidth() - _width - _x;
             }
         }
 
@@ -621,10 +621,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_verticalAlign == VerticalAlign.CENTER) {
-                return (ApplicationClient.gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
+                return (ApplicationClient.GDX_LAYER.getHeight() / 2) - (_width / 2) + _y;
             }
             if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return ApplicationClient.gdxRenderer.getHeight() - _y;
+                return ApplicationClient.GDX_LAYER.getHeight() - _y;
             }
         }
 

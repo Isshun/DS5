@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.menu;
 
-import org.smallbox.faraway.client.renderer.GDXRenderer;
-import org.smallbox.faraway.client.renderer.Viewport;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.Color;
 

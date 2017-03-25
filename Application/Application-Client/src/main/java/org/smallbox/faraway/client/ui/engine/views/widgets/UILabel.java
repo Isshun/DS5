@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.renderer.GDXRenderer;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.Color;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -166,7 +166,7 @@ public class UILabel extends View {
     public UILabel setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
-            _height = (int)(ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
+            _height = (int)(ApplicationClient.GDX_LAYER.getFont(_textSize).getLineHeight() * 1.2);
         }
         return this;
     }
@@ -302,8 +302,8 @@ public class UILabel extends View {
     @Override
     public int getContentWidth() {
         if (_text != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_text).width;
-            return (int) (_text.length() * ApplicationClient.gdxRenderer.getFont(_textSize).getSpaceWidth());
+//            return (int) ApplicationClient.GDX_LAYER.getFont(_textSize).getBounds(_text).width;
+            return (int) (_text.length() * ApplicationClient.GDX_LAYER.getFont(_textSize).getSpaceWidth());
         }
         return 0;
     }
@@ -311,8 +311,8 @@ public class UILabel extends View {
     @Override
     public int getContentHeight() {
         if (_text != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_text).height;
-            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight();
+//            return (int) ApplicationClient.GDX_LAYER.getFont(_textSize).getBounds(_text).height;
+            return (int) ApplicationClient.GDX_LAYER.getFont(_textSize).getLineHeight();
         }
         return 0;
     }

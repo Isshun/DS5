@@ -36,7 +36,7 @@ public class LuaCursorExtend extends LuaExtend {
 // TODO
         //        Application.data.cursors.put(value.get("id").toString(), new UICursor() {
 //            @Override
-//            protected void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
+//            protected void onDraw(GDXLayer layer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed) {
 //                if (isPressed) {
 //                    renderer.drawPixel(odd ? resOdd : resEden, x, y);
 //

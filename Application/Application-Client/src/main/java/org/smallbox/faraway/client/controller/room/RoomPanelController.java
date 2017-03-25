@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.renderer.RoomRenderer;
+import org.smallbox.faraway.client.render.layer.RoomLayer;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
@@ -38,7 +38,7 @@ public class RoomPanelController extends LuaController {
     private MainPanelController mainPanelController;
 
     @BindComponent
-    private RoomRenderer roomRenderer;
+    private RoomLayer roomLayer;
 
     @Override
     public void onReloadUI() {
@@ -58,10 +58,10 @@ public class RoomPanelController extends LuaController {
                             .setFocusBackgroundColor(0x25c9cb)
                             .setRegularBackgroundColor(0x121c1e)
                             .setOnClickListener(event -> {
-                                roomRenderer.setMode(RoomRenderer.Mode.ADD, cls);
+                                roomLayer.setMode(RoomLayer.Mode.ADD, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
-                                    roomRenderer.setMode(RoomRenderer.Mode.NONE, cls);
+                                    roomLayer.setMode(RoomLayer.Mode.NONE, cls);
                                     roomModule.addRoom(cls, parcels);
                                     return true;
                                 });
@@ -77,10 +77,10 @@ public class RoomPanelController extends LuaController {
                             .setFocusBackgroundColor(0x25c9cb)
                             .setRegularBackgroundColor(0x121c1e)
                             .setOnClickListener(event -> {
-                                roomRenderer.setMode(RoomRenderer.Mode.SUB, cls);
+                                roomLayer.setMode(RoomLayer.Mode.SUB, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
-                                    roomRenderer.setMode(RoomRenderer.Mode.NONE, cls);
+                                    roomLayer.setMode(RoomLayer.Mode.NONE, cls);
                                     roomModule.removeArea(parcels);
                                     return true;
                                 });

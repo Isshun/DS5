@@ -26,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 @ModuleSerializer(StructureModuleSerializer.class)
-//@ModuleRenderer({StructureBottomRenderer.class, StructureTopRenderer.class})
+//@ModuleLayer({StructureBottomLayer.class, StructureTopLayer.class})
 public class StructureModule extends BuildItemModule<StructureModuleObserver> {
 
     @BindModule

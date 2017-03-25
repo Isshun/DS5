@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
-import org.smallbox.faraway.client.renderer.AreaRenderer;
+import org.smallbox.faraway.client.render.layer.AreaLayer;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
@@ -38,7 +38,7 @@ public class AreaPanelController extends LuaController {
     private MainPanelController mainPanelController;
 
     @BindComponent
-    private AreaRenderer areaRenderer;
+    private AreaLayer areaLayer;
 
     @Override
     public void onReloadUI() {
@@ -58,10 +58,10 @@ public class AreaPanelController extends LuaController {
                             .setFocusBackgroundColor(0x25c9cb)
                             .setRegularBackgroundColor(0x121c1e)
                             .setOnClickListener(event -> {
-                                areaRenderer.setMode(AreaRenderer.Mode.ADD, cls);
+                                areaLayer.setMode(AreaLayer.Mode.ADD, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
                                     Log.warning(AreaPanelController.class, "HELLO");
-                                    areaRenderer.setMode(AreaRenderer.Mode.NONE, cls);
+                                    areaLayer.setMode(AreaLayer.Mode.NONE, cls);
                                     areaModule.addArea(cls, parcels);
                                     return true;
                                 });
@@ -77,10 +77,10 @@ public class AreaPanelController extends LuaController {
                             .setFocusBackgroundColor(0x25c9cb)
                             .setRegularBackgroundColor(0x121c1e)
                             .setOnClickListener(event -> {
-                                areaRenderer.setMode(AreaRenderer.Mode.SUB, cls);
+                                areaLayer.setMode(AreaLayer.Mode.SUB, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
                                     Log.warning(AreaPanelController.class, "HELLO");
-                                    areaRenderer.setMode(AreaRenderer.Mode.NONE, cls);
+                                    areaLayer.setMode(AreaLayer.Mode.NONE, cls);
                                     areaModule.removeArea(parcels);
                                     return true;
                                 });

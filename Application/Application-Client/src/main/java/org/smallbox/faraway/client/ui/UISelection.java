@@ -4,7 +4,7 @@
 //import com.badlogic.gdx.graphics.Color;
 //import com.badlogic.gdx.graphics.GL20;
 //import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-//import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+//import com.badlogic.gdx.graphics.glutils.ShapeLayer;
 //import org.smallbox.faraway.client.drawable.GDXDrawable;
 //import org.smallbox.faraway.core.Application;
 //
@@ -12,7 +12,7 @@
 // * Created by Alex on 21/07/2015.
 // */
 //public class UISelection extends GDXDrawable {
-//    private ShapeRenderer       _shapeRenderer;
+//    private ShapeLayer       _shapeLayer;
 //    private int                 _startX;
 //    private int                 _startY;
 //    private int                 _startZ;
@@ -21,39 +21,39 @@
 //    private int                 _endZ;
 //
 //    public UISelection() {
-//        Application.runOnMainThread(() -> _shapeRenderer = new ShapeRenderer());
+//        Application.runOnMainThread(() -> _shapeLayer = new ShapeLayer());
 //    }
 //
 //    @Override
 //    public void draw(SpriteBatch batch, int x, int y) {
 //        if (_startX != -1) {
 //            Gdx.gl.glEnable(GL20.GL_BLEND);
-//            _shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
+//            _shapeLayer.setProjectionMatrix(batch.getProjectionMatrix());
 //
 //            x = Math.min(_startX, _endX);
 //            y = Math.min(_startY, _endY);
 //            int width = Math.abs(_startX - _endX);
 //            int height = Math.abs(_startY - _endY);
 //
-//            _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            _shapeRenderer.setColor(Color.BLUE);
-//            _shapeRenderer.rect(x, y, 1, height);
-//            _shapeRenderer.end();
+//            _shapeLayer.begin(ShapeLayer.ShapeType.Filled);
+//            _shapeLayer.setColor(Color.BLUE);
+//            _shapeLayer.rect(x, y, 1, height);
+//            _shapeLayer.end();
 //
-//            _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            _shapeRenderer.setColor(Color.BLUE);
-//            _shapeRenderer.rect(x, y, width, 1);
-//            _shapeRenderer.end();
+//            _shapeLayer.begin(ShapeLayer.ShapeType.Filled);
+//            _shapeLayer.setColor(Color.BLUE);
+//            _shapeLayer.rect(x, y, width, 1);
+//            _shapeLayer.end();
 //
-//            _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            _shapeRenderer.setColor(Color.BLUE);
-//            _shapeRenderer.rect(x + width, y, 1, height);
-//            _shapeRenderer.end();
+//            _shapeLayer.begin(ShapeLayer.ShapeType.Filled);
+//            _shapeLayer.setColor(Color.BLUE);
+//            _shapeLayer.rect(x + width, y, 1, height);
+//            _shapeLayer.end();
 //
-//            _shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//            _shapeRenderer.setColor(Color.BLUE);
-//            _shapeRenderer.rect(x, y + height, width, 1);
-//            _shapeRenderer.end();
+//            _shapeLayer.begin(ShapeLayer.ShapeType.Filled);
+//            _shapeLayer.setColor(Color.BLUE);
+//            _shapeLayer.rect(x, y + height, width, 1);
+//            _shapeLayer.end();
 //        }
 //    }
 //
