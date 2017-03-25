@@ -11,7 +11,8 @@ import org.smallbox.faraway.test.TestHelper;
 import org.smallbox.faraway.test.technique.GameTestHelper;
 import org.smallbox.faraway.test.technique.HeadlessTestBase;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
 
 public class StoringTest extends HeadlessTestBase {
 

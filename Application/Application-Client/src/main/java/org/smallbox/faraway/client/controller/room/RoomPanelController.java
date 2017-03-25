@@ -93,10 +93,6 @@ public class RoomPanelController extends LuaController {
     }
 
     @Override
-    protected void onControllerUpdate() {
-    }
-
-    @Override
     public void onRefreshUI(int frame) {
 
     }

@@ -19,8 +19,4 @@ public class CharacterInfoDetailsController extends LuaController {
         _selected = character;
     }
 
-    @Override
-    protected void onControllerUpdate() {
-    }
-
 }

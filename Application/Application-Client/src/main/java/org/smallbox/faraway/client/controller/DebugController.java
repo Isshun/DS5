@@ -50,8 +50,4 @@ public class DebugController extends LuaController {
         }
     }
 
-    @Override
-    protected void onControllerUpdate() {
-
-    }
 }

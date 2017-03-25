@@ -35,11 +35,6 @@ public class MainPanelController extends LuaController {
         if (!isVisible()) {
             setVisible(true);
         }
-//        if (key == Input.Keys.ESCAPE && !Display.isVisible()) {
-//            Cursor.setVisible(true);
-//            return true;
-//        }
-//        return false;
     }
 
     @Override
@@ -71,8 +66,4 @@ public class MainPanelController extends LuaController {
         }
     }
 
-    @Override
-    protected void onControllerUpdate() {
-
-    }
 }

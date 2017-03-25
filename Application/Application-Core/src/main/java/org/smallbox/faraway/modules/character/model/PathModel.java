@@ -1,7 +1,10 @@
 package org.smallbox.faraway.modules.character.model;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.CatmullRomSpline;
+import com.badlogic.gdx.math.Path;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import org.smallbox.faraway.core.module.path.spline.BezierPath;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Utils;

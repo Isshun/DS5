@@ -35,7 +35,7 @@ public abstract class LuaController implements GameClientObserver {
         }
     }
 
-    protected abstract void onControllerUpdate();
+    protected void onControllerUpdate() {}
 
     public View getRootView() { return _rootView; }
     public boolean isVisible() { return getRootView() != null && getRootView().isVisible(); }

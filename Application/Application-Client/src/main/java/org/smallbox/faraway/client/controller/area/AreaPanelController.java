@@ -1,18 +1,18 @@
 package org.smallbox.faraway.client.controller.area;
 
-import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
+import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.render.layer.AreaLayer;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.modules.area.AreaModule;
+import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Comparator;
@@ -90,10 +90,6 @@ public class AreaPanelController extends LuaController {
 
                 });
 
-    }
-
-    @Override
-    protected void onControllerUpdate() {
     }
 
     @Override

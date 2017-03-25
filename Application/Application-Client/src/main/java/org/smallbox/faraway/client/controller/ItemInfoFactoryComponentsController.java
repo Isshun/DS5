@@ -21,10 +21,6 @@ public class ItemInfoFactoryComponentsController extends LuaController {
     @BindLua
     private UIList listComponents;
 
-    @Override
-    protected void onControllerUpdate() {
-    }
-
     public void setItem(UsableItem item) {
 
         item.getFactory().getAcceptedComponents()

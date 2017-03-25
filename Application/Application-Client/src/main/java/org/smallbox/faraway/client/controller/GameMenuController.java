@@ -63,8 +63,4 @@ public class GameMenuController extends LuaController {
 //        Application.gameManager.stopGame();
     }
 
-    @Override
-    protected void onControllerUpdate() {
-
-    }
 }

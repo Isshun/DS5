@@ -39,8 +39,4 @@ public class CharacterInfoHealthController extends LuaController {
                         .setSize(0, 20)));
     }
 
-    @Override
-    protected void onControllerUpdate() {
-    }
-
 }

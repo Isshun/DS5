@@ -235,8 +235,4 @@ public class BuildController extends LuaController {
         return _currentItem;
     }
 
-    @Override
-    protected void onControllerUpdate() {
-
-    }
 }

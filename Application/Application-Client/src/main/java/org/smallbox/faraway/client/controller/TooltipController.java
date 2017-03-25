@@ -82,8 +82,4 @@ public class TooltipController extends LuaController {
         }
     }
 
-    @Override
-    protected void onControllerUpdate() {
-
-    }
 }

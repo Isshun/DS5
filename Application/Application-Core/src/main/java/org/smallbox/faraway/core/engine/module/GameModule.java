@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
