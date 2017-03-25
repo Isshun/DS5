@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -54,7 +55,7 @@ public class ConsumableLayer extends BaseLayer {
                 UILabel.create(null)
                         .setText(text)
                         .setTextSize(12)
-                        .setTextColor(org.smallbox.faraway.core.engine.Color.CYAN)
+                        .setTextColor(ColorUtils.CYAN)
                         .draw(renderer, viewport.getScreenPosX(parcel.x), viewport.getScreenPosY(parcel.y));
                 frameLeft--;
             }

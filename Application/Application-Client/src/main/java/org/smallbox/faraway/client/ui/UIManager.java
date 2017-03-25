@@ -15,7 +15,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -313,7 +313,7 @@ public class UIManager {
         _context.setVisible(true);
         _context.removeAllViews();
         _context.setPosition(x + 16, y + 16);
-        _context.setBackgroundColor(Color.BLUE);
+        _context.setBackgroundColor(ColorUtils.BLUE);
 
         int index = 0;
         for (ContextEntry entry: entries) {

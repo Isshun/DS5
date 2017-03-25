@@ -1,7 +1,8 @@
 package org.smallbox.faraway.modules.weather;
 
+import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -173,20 +174,20 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 
         switch (dayTime) {
             case "dawn":
-                _previousLightColor = new Color(sun.midnight);
-                _nextLightColor = new Color(sun.dawn);
+                _previousLightColor = ColorUtils.fromHex(sun.midnight);
+                _nextLightColor = ColorUtils.fromHex(sun.dawn);
                 break;
             case "twilight":
-                _previousLightColor = new Color(sun.noon);
-                _nextLightColor = new Color(sun.twilight);
+                _previousLightColor = ColorUtils.fromHex(sun.noon);
+                _nextLightColor = ColorUtils.fromHex(sun.twilight);
                 break;
             case "midnight":
-                _previousLightColor = new Color(sun.twilight);
-                _nextLightColor = new Color(sun.midnight);
+                _previousLightColor = ColorUtils.fromHex(sun.twilight);
+                _nextLightColor = ColorUtils.fromHex(sun.midnight);
                 break;
             default:
-                _previousLightColor = new Color(sun.dawn);
-                _nextLightColor = new Color(sun.noon);
+                _previousLightColor = ColorUtils.fromHex(sun.dawn);
+                _nextLightColor = ColorUtils.fromHex(sun.noon);
                 break;
         }
     }

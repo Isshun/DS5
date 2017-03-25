@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
@@ -170,7 +170,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
                 btInfo.setOnClickListener(event -> itemInfoReceiptController.display(receiptGroup));
                 btInfo.setPosition(220, 0);
                 btInfo.setSize(50, 20);
-                btInfo.setBackgroundColor(Color.CYAN);
+                btInfo.setBackgroundColor(ColorUtils.CYAN);
                 lineReceiptGroup.addView(btInfo);
 
                 listActions.addView(lineReceiptGroup);

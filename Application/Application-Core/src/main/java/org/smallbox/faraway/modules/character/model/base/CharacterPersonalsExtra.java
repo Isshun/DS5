@@ -1,13 +1,14 @@
 package org.smallbox.faraway.modules.character.model.base;
 
-import org.smallbox.faraway.core.engine.Color;
+import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 
 /**
  * Created by Alex on 24/06/2015.
  */
 public class CharacterPersonalsExtra {
-    private static final Color COLOR_FEMALE = new Color(255, 180, 220);
-    private static final Color COLOR_MALE = new Color(110, 200, 255);
+    private static final Color COLOR_FEMALE = ColorUtils.fromHex(255, 180, 220);
+    private static final Color COLOR_MALE = ColorUtils.fromHex(110, 200, 255);
 
     public enum Gender {
         NONE,
@@ -20,7 +21,7 @@ public class CharacterPersonalsExtra {
     protected boolean           _isGay;
     protected String            _lastName;
     protected String            _birthName;
-    protected Color             _color;
+    protected Color _color;
     protected double            _old;
 
     public CharacterPersonalsExtra(String name, String lastName, double old) {

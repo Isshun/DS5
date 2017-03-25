@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.render.layer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
@@ -7,7 +8,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -23,9 +24,9 @@ public class CharacterDebugLayer extends BaseLayer {
 
     private int                     _floor;
 
-    private static Color    COLOR_CRITICAL = new Color(0xbb0000);
-    private static Color    COLOR_WARNING = new Color(0xbbbb00);
-    private static Color    COLOR_OK = new Color(0x448800);
+    private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000);
+    private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00);
+    private static Color COLOR_OK = ColorUtils.fromHex(0x448800);
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -49,7 +50,7 @@ public class CharacterDebugLayer extends BaseLayer {
         for (float t = 0; t < 1; t += 0.001) {
             Vector2 out = new Vector2();
             path.myCatmull.valueAt(out, t);
-            renderer.drawRectangle(viewPortX + (int) (out.x * 32), viewPortY + (int) (out.y * 32), 2, 2, Color.RED, true);
+            renderer.drawRectangle(viewPortX + (int) (out.x * 32), viewPortY + (int) (out.y * 32), 2, 2, ColorUtils.RED, true);
         }
     }
 
@@ -77,7 +78,7 @@ public class CharacterDebugLayer extends BaseLayer {
 //            int posX = viewPortX + (int)(first.x + (second.x - first.x) * t);
 //            int posY = viewPortY + (int)(first.y + (second.y - first.y) * t);
 
-        renderer.drawRectangle(posX, posY, 50, 12, Color.BLACK, true);
+        renderer.drawRectangle(posX, posY, 50, 12, ColorUtils.BLACK, true);
         renderer.drawText(posX + 2, posY + 2, 10, com.badlogic.gdx.graphics.Color.YELLOW, String.format("%.2f", character.getMoveProgress2()));
     }
 
@@ -85,7 +86,7 @@ public class CharacterDebugLayer extends BaseLayer {
         path._nodes.forEach(node -> {
             int posX = viewPortX + node.x * 32;
             int posY = viewPortY + node.y * 32;
-            renderer.drawRectangle(posX, posY, 4, 4, Color.BLUE, true);
+            renderer.drawRectangle(posX, posY, 4, 4, ColorUtils.BLUE, true);
             renderer.drawText(posX + 4, posY + 4, 12, com.badlogic.gdx.graphics.Color.BLUE, node.x + "x" + node.y);
         });
     }

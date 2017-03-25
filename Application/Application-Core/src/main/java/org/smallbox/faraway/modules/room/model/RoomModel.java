@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.room.model;
 
-import org.smallbox.faraway.core.engine.Color;
+import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -63,7 +64,7 @@ public class RoomModel {
     }
 
     private void init(int id, RoomType type, int floor) {
-        _color = new Color((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
+        _color = ColorUtils.fromHex((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
         _parcels = new HashSet<>();
         _id = id;
         _floor = floor;

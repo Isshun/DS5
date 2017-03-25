@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.render.layer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.BuildController;
@@ -10,7 +11,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -32,9 +33,9 @@ public class BuildLayer extends BaseLayer {
     private int _mouseDownX;
     private int _mouseDownY;
 
-    private static Color COLOR_CRITICAL = new Color(0xbb0000);
-    private static Color    COLOR_WARNING = new Color(0xbbbb00);
-    private static Color    COLOR_OK = new Color(0x448800);
+    private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000);
+    private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00);
+    private static Color COLOR_OK = ColorUtils.fromHex(0x448800);
 
     private UIFrame resEden;
     private UIFrame resEden2;

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.menu;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public abstract class MenuBase {
     private final int   _height;
     private List<View>  _views;
     private boolean     _isVisible;
-    private Color       _backgroundColor;
+    private ColorUtils _backgroundColor;
 
     public MenuBase(int width, int height) {
         _views = new ArrayList<>();
@@ -40,7 +40,7 @@ public abstract class MenuBase {
         _views.add(view);
     }
 
-    protected void setBackgroundColor(Color color) {
+    protected void setBackgroundColor(ColorUtils color) {
         _backgroundColor = color;
     }
 

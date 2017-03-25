@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 public abstract class UICursor {
@@ -14,10 +14,10 @@ public abstract class UICursor {
     public UICursor() {
         RES_ODD = new UIFrame(null);
         RES_ODD.setSize(32, 32);
-        RES_ODD.setBackgroundColor(new Color(100, 255, 100, 20));
+        RES_ODD.setBackgroundColor(ColorUtils.fromHex(100, 255, 100, 20));
         RES_EDEN = new UIFrame(null);
         RES_EDEN.setSize(32, 32);
-        RES_EDEN.setBackgroundColor(new Color(100, 255, 100, 40));
+        RES_EDEN.setBackgroundColor(ColorUtils.fromHex(100, 255, 100, 40));
     }
 
 

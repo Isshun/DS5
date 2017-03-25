@@ -1,8 +1,9 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
 
@@ -16,12 +17,11 @@ public class UICheckBox extends View {
     private int _hash3;
     private int _hash4;
 
-    private String                              _string;
-    private int                                 _textSize = 14;
-    private com.badlogic.gdx.graphics.Color     _gdxTextColor;
-    private Color                               _textColor;
-    private int                                 _maxLength;
-    private Value                               _checked = Value.FALSE;
+    private String      _string;
+    private int         _textSize = 14;
+    private Color       _textColor;
+    private int         _maxLength;
+    private Value       _checked = Value.FALSE;
 
     public enum Value { FALSE, TRUE, PARTIAL }
 
@@ -145,16 +145,12 @@ public class UICheckBox extends View {
 //    }
 
     public UICheckBox setTextColor(Color color) {
-        if (color != null && _textColor != color) {
-            _gdxTextColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
-        }
         _textColor = color;
         return this;
     }
 
     public UICheckBox setTextColor(int color) {
-        _textColor = new Color(color);
-        _gdxTextColor = new com.badlogic.gdx.graphics.Color(_textColor.r / 255f, _textColor.g / 255f, _textColor.b / 255f, _textColor.a / 255f);
+        _textColor = ColorUtils.fromHex(color);
         return this;
     }
 
@@ -220,11 +216,8 @@ public class UICheckBox extends View {
                 _offsetY = (_height - getContentHeight()) / 2;
             }
 
-            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]"
-            );
-
-            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _string
-            );
+            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]");
+            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _string);
         }
     }
 

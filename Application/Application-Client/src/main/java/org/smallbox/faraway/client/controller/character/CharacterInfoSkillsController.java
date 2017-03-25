@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
@@ -48,7 +48,7 @@ public class CharacterInfoSkillsController extends LuaController {
 
             view.addView(UILabel.create(null)
                     .setText(skill.name)
-                    .setTextColor(new Color(0x359f9f))
+                    .setTextColor(ColorUtils.fromHex(0x359f9f))
                     .setTextSize(16)
                     .setPosition(8, 16)
                     .setSize(320, 28));

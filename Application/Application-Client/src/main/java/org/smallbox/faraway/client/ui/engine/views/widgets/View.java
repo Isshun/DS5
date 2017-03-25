@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import com.badlogic.gdx.graphics.Color;
 import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -14,7 +15,7 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -91,7 +92,7 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setBorderColor(long color) {
-        _borderColor = new Color(color);
+        _borderColor = ColorUtils.fromHex(color);
         return this;
     }
 
@@ -215,7 +216,7 @@ public abstract class View implements Comparable<View> {
     public void         setInGame(boolean inGame) { _inGame = inGame; }
     public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
     public void         setLevel(int level) { _level = level; }
-    public View         setBackgroundColor(long color) { _backgroundColor = new Color(color); return this; }
+    public View         setBackgroundColor(long color) { _backgroundColor = ColorUtils.fromHex(color); return this; }
     public View         setBackgroundColor(Color color) { _backgroundColor = color; return this; }
 
     public void         toggleVisible() { setVisible(!isVisible()); }
@@ -384,7 +385,7 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setBackgroundFocusColor(long color) {
-        _backgroundFocusColor = new Color(color);
+        _backgroundFocusColor = ColorUtils.fromHex(color);
         return this;
     }
 

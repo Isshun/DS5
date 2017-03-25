@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
 
@@ -34,7 +34,7 @@ public class CharacterInfoHealthController extends LuaController {
         diseaseModule.getDiseases(character).forEach(disease ->
                 listDiseases.addView(UILabel.create(null)
                         .setText(disease.info.label)
-                        .setTextColor(new Color(0xB4D4D3))
+                        .setTextColor(ColorUtils.fromHex(0xB4D4D3))
                         .setTextSize(14)
                         .setSize(0, 20)));
     }

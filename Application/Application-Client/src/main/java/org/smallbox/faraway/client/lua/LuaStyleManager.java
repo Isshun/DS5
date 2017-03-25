@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.lua;
 import com.steadystate.css.dom.CSSValueImpl;
 import com.steadystate.css.dom.RGBColorImpl;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class LuaStyleManager {
                 int r = Integer.valueOf(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getRed().toString());
                 int g = Integer.valueOf(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getGreen().toString());
                 int b = Integer.valueOf(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getBlue().toString());
-                view.setBackgroundColor(new Color(r, g, b));
+                view.setBackgroundColor(ColorUtils.fromHex(r, g, b));
             }
         }
     }

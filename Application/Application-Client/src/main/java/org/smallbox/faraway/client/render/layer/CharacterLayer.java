@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.render.layer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
@@ -9,7 +10,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -30,9 +31,9 @@ public class CharacterLayer extends BaseLayer {
 
     private int                     _floor;
 
-    private static Color    COLOR_CRITICAL = new Color(0xbb0000);
-    private static Color    COLOR_WARNING = new Color(0xbbbb00);
-    private static Color    COLOR_OK = new Color(0x448800);
+    private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000);
+    private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00);
+    private static Color COLOR_OK = ColorUtils.fromHex(0x448800);
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -80,9 +81,9 @@ public class CharacterLayer extends BaseLayer {
         if (job != null) {
 
             if (job.getProgress() > 0) {
-                renderer.drawRectangle(posX, posY, 32, 6, Color.CYAN, true);
-                renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, Color.BLUE, true);
-                renderer.drawRectangle(posX, posY, 32, 6, Color.YELLOW, false);
+                renderer.drawRectangle(posX, posY, 32, 6, ColorUtils.CYAN, true);
+                renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, ColorUtils.BLUE, true);
+                renderer.drawRectangle(posX, posY, 32, 6, ColorUtils.YELLOW, false);
             }
 
             if (job.getMainLabel() != null) {

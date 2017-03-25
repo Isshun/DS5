@@ -1,9 +1,10 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.engine.Color;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
 
@@ -17,11 +18,10 @@ public class UILabel extends View {
     private int _hash3;
     private int _hash4;
 
-    private String _text = "";
-    private int                                 _textSize = 14;
-    private com.badlogic.gdx.graphics.Color     _gdxTextColor = com.badlogic.gdx.graphics.Color.BLACK;
-    private Color                               _textColor;
-    private int                                 _maxLength;
+    private String      _text = "";
+    private int         _textSize = 14;
+    private Color       _textColor = Color.BLACK;
+    private int         _maxLength;
 
     public UILabel(ModuleBase module) {
         super(module);
@@ -139,16 +139,12 @@ public class UILabel extends View {
 //    }
 
     public UILabel setTextColor(Color color) {
-        if (color != null && _textColor != color) {
-            _gdxTextColor = new com.badlogic.gdx.graphics.Color(color.r / 255f, color.g / 255f, color.b / 255f, color.a / 255f);
-        }
         _textColor = color;
         return this;
     }
 
     public UILabel setTextColor(long color) {
-        _textColor = new Color(color);
-        _gdxTextColor = new com.badlogic.gdx.graphics.Color(_textColor.r / 255f, _textColor.g / 255f, _textColor.b / 255f, _textColor.a / 255f);
+        _textColor = ColorUtils.fromHex(color);
         return this;
     }
 
@@ -278,12 +274,12 @@ public class UILabel extends View {
                         }
                     }
 
-                    font.setColor(_gdxTextColor);
+                    font.setColor(_textColor);
                     font.draw(batch, sb.toString(), finalX, finalY);
                 }
 
                 else {
-                    font.setColor(_gdxTextColor);
+                    font.setColor(_textColor);
                     font.draw(batch, _text, finalX, finalY);
                 }
             }, _textSize);
