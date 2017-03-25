@@ -28,6 +28,10 @@ public class Game {
         return (T) _modules.stream().filter(module -> module.getClass() == cls).findAny().orElse(null);
     }
 
+    public double byTick(double value) {
+        return value / _tickPerHour;
+    }
+
     public enum GameStatus {UNINITIALIZED, CREATED, STOPPED, STARTED}
 
     // Update
@@ -45,8 +49,8 @@ public class Game {
     private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
-    private final PlanetInfo _planetInfo;
-    private final RegionInfo _regionInfo;
+    private final PlanetInfo                _planetInfo;
+    private final RegionInfo                _regionInfo;
 
     public ScheduledExecutorService getScheduler() {
         return _moduleScheduler;
@@ -70,8 +74,6 @@ public class Game {
         Application.notify(_isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
     }
 
-    public void                             toggleSpeed0() { setSpeed(_speed == 0 ? _lastSpeed : 0); }
-
     public GameTime                         getTime() { return _gameTime; }
     public double                           getTickPerHour() { return _tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
@@ -80,7 +82,6 @@ public class Game {
     public RegionInfo                       getRegionInfo() { return _regionInfo; }
     public long                             getTick() { return _tick; }
     public int                              getSpeed() { return _speed; }
-    public int                              getLastSpeed() { return _lastSpeed; }
     public Collection<AbsGameModule>        getModules() { return _modules; }
     public GameStatus                       getState() { return _status; }
     public long                             getNextUpdate() { return _nextUpdate; }
@@ -184,24 +185,6 @@ public class Game {
         _status = GameStatus.STOPPED;
         _moduleScheduler.shutdown();
     }
-//
-//    /**
-//     * Update hour
-//     */
-//    private void updateHour() {
-//        if (_tick % _tickPerHour == 0) {
-//            if (++_hour >= _planet.getInfo().dayDuration) {
-//                _hour = 0;
-//                if (++_day >= _planet.getInfo().yearDuration) {
-//                    _day = 1;
-//                    _year++;
-//                    Application.notify(observer -> observer.onYearChange(_year));
-//                }
-//                Application.notify(observer -> observer.onDayChange(_day));
-//            }
-//            Application.notify(observer -> observer.onHourChange(_hour));
-//        }
-//    }
 
     public GameInfo getInfo() { return _info; }
 
@@ -213,13 +196,6 @@ public class Game {
             _tickPerHour = Application.config.game.ticksPerHour[_speed];
             _isRunning = speed > 0;
         }
-    }
-
-    public void runBackground(Runnable runnable) {
-        if (_status == GameStatus.STARTED && _isRunning) {
-            runnable.run();
-        }
-        _moduleScheduler.schedule(() -> runBackground(runnable), _tickInterval, TimeUnit.MILLISECONDS);
     }
 
     public void launchBackgroundThread(GameManager.GameListener listener) {

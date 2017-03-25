@@ -50,12 +50,12 @@ public class CharacterNeedsExtra {
 
     public void use(ItemInfo.ItemInfoEffects effects, double duration, double tickPerHour) {
         if (effects != null && duration != 0) {
-            addValue("energy", effects.energy / (duration / tickPerHour));
-            addValue("food", effects.food / (duration / tickPerHour));
-            addValue("drink", effects.drink / (duration / tickPerHour));
-            addValue("entertainment", effects.entertainment / (duration / tickPerHour));
-            addValue("relation", effects.relation / (duration / tickPerHour));
-            addValue("happiness", effects.happiness / (duration / tickPerHour));
+            addValue("energy", effects.energy / (tickPerHour * duration));
+            addValue("food", effects.food / (tickPerHour * duration));
+            addValue("drink", effects.drink / (tickPerHour * duration));
+            addValue("entertainment", effects.entertainment / (tickPerHour * duration));
+            addValue("relation", effects.relation / (tickPerHour * duration));
+            addValue("happiness", effects.happiness / (tickPerHour * duration));
         }
     }
 

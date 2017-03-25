@@ -2,10 +2,12 @@ package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -21,6 +23,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
 public class ConsumableLayer extends BaseLayer {
+
+    @BindComponent
+    private SpriteManager spriteManager;
 
     @BindModule
     private ConsumableModule consumableModule;
@@ -70,6 +75,8 @@ public class ConsumableLayer extends BaseLayer {
                     String stringQuantity = consumable.getTotalQuantity() >= 1000 ? consumable.getTotalQuantity() / 1000 + "k" : String.valueOf(consumable.getTotalQuantity());
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x000000FF), 16, 16);
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x9de6e7FF), 15, 15);
+
+                    drawSelectionOnMap(renderer, spriteManager, viewport, consumable, consumable.getParcel().x, consumable.getParcel().y);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);

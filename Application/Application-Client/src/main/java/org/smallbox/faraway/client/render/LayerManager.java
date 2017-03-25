@@ -72,22 +72,13 @@ public class LayerManager implements GameClientObserver {
     public void onGameStart(Game game) {
         _frame = 0;
 
-//        // Sort renders by level and addSubJob them to observers
-//        _renders = game.getModules().stream()
-//                .filter(module -> module.getClass().isAnnotationPresent(ModuleLayer.class))
-//                .flatMap(module -> BaseLayer.createLayer(module).stream())
-//                .sorted(Comparator.comparingInt(BaseLayer::getLevel))
-//                .peek(Application::addObserver)
-//                .collect(Collectors.toList());
-
-        _renders.forEach(render -> render.gameStart(game));
-
+        // Create viewport
         _viewport = new Viewport(400, 300);
         _viewport.setPosition(0, 0, game.getInfo().groundFloor);
-
         ApplicationClient.dependencyInjector.register(_viewport);
 
-        ApplicationClient.notify(observer -> observer.onFloorChange(game.getInfo().groundFloor));
+        // Call gameStart on each layer
+        _renders.forEach(render -> render.gameStart(game));
     }
 
     @Override
@@ -100,6 +91,7 @@ public class LayerManager implements GameClientObserver {
 
         ApplicationClient.layerManager.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
 
+        // Move viewport
         if (game.isRunning()) {
             if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
             if (ApplicationClient.inputManager.getDirection()[1]) { _viewport.move(0, 20); }

@@ -4,7 +4,7 @@ data:extend({
     type = "buff",
     levels = {
         { message = "Heat 1", effects = {
-            {type = "need", name = "drink", value = -0.2},
+            {type = "need", name = "drink", value = -0.01},
         }},
         { message = "Heat 2" },
         { message = "Heat 3", effect = {

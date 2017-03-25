@@ -2,17 +2,16 @@ package org.smallbox.faraway.modules.room.model;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.Utils;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
-public class RoomModel {
-    int                                 _id;
+public class RoomModel extends ObjectModel {
     int                                 _zoneId;
     List<MapObjectModel>                _doors;
     private RoomType                    _type;
@@ -60,13 +59,12 @@ public class RoomModel {
 
     public RoomModel(RoomType type, int floor, ParcelModel baseParcel) {
         _baseParcel = baseParcel;
-        init(Utils.getUUID(), type, floor);
+        init(type, floor);
     }
 
-    private void init(int id, RoomType type, int floor) {
+    private void init(RoomType type, int floor) {
         _color = ColorUtils.fromHex((int)(Math.random() * 200), (int)(Math.random() * 200), (int)(Math.random() * 200));
         _parcels = new HashSet<>();
-        _id = id;
         _floor = floor;
         _isCommon = true;
         _maxX = Integer.MIN_VALUE;

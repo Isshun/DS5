@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.itemFactory;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -156,7 +157,7 @@ public class ItemFactoryModel {
         acceptedComponents.put(itemInfo, accepted);
     }
 
-    public static class FactoryReceiptGroupModel {
+    public static class FactoryReceiptGroupModel extends ObjectModel {
         public final ReceiptGroupInfo   receiptGroupInfo;
         public final FactoryOutputMode  outputMode;
         public final boolean            auto;

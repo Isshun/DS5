@@ -21,7 +21,7 @@ public class ItemLayer extends BaseLayer {
     @BindComponent
     private SpriteManager spriteManager;
 
-    private int                 _frame;
+    private int _frame;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getItems().stream()
@@ -44,6 +44,7 @@ public class ItemLayer extends BaseLayer {
                         renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
                     }
 
+                    drawSelectionOnMap(renderer, spriteManager, viewport, item, item.getParcel().x, item.getParcel().y);
                 });
     }
 

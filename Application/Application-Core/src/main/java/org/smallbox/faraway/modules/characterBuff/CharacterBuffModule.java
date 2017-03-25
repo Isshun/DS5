@@ -20,6 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CharacterBuffModule extends GameModule {
 
     @BindComponent
+    private Game game;
+
+    @BindComponent
     private Data data;
 
     @BindModule
@@ -101,7 +104,7 @@ public class CharacterBuffModule extends GameModule {
             // Apply need effect
             CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
             if (needs != null) {
-                effect.needs.forEach(needs::addValue);
+                effect.needs.forEach((name, value) -> needs.addValue(name, game.byTick(value)));
             }
 
         }));

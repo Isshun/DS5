@@ -131,8 +131,7 @@ public class CharacterNeedModule extends GameModule {
     }
 
     private double byHour(double value) {
-        long ticksBetweenUpdate = getTick() - getLastTick();
-        return value * (ticksBetweenUpdate / Application.gameManager.getGame().getTickPerHour());
+        return value / Application.gameManager.getGame().getTickPerHour();
     }
 
     /**

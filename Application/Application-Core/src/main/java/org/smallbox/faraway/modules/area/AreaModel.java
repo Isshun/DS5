@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Utils;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
-public abstract class AreaModel {
+public abstract class AreaModel extends ObjectModel {
     protected final List<ParcelModel>   _parcels = new ArrayList<>();
     private final int                   _id;
     private int                         _x;

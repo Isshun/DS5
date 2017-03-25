@@ -27,9 +27,6 @@ public class GameSelectionExtra {
     public void clear() {
         ApplicationClient.notify(GameClientObserver::onDeselect);
 
-        if (_selectedCharacter != null) {
-            _selectedCharacter.setSelected(false);
-        }
         _selectedCharacter = null;
 
 //        if (_selectedItem != null) {

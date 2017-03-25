@@ -1,7 +1,9 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 03/12/2016.
  */
-public abstract class AbsInfoLuaController<T> extends LuaController {
+public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaController {
 
     @BindLuaController
     private MainPanelController mainPanelController;
@@ -72,6 +74,9 @@ public abstract class AbsInfoLuaController<T> extends LuaController {
             } else {
                 onDisplayMultiple(list);
             }
+            ApplicationClient.selected = list;
+        } else {
+            ApplicationClient.selected = null;
         }
     }
 

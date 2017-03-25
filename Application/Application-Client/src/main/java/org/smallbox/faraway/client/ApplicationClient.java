@@ -18,6 +18,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -46,6 +47,7 @@ public class ApplicationClient {
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
     public static final LayerManager            layerManager;
+    public static Collection<? extends ObjectModel> selected;
 
     public static final ShortcutManager shortcutManager;
 

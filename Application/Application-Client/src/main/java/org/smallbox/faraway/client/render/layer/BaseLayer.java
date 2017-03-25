@@ -1,12 +1,15 @@
 package org.smallbox.faraway.client.render.layer;
 
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -47,6 +50,19 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
         _isThirdParty = isThirdParty;
         _isVisible = getClass().getAnnotation(GameLayer.class).visible();
         Application.dependencyInjector.register(this);
+    }
+
+    protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY) {
+        if (ApplicationClient.selected != null && ApplicationClient.selected.contains(object)) {
+            renderer.draw(posX, posY + -4, spriteManager.getSelectorCorner(0));
+            renderer.draw(posX + 24, posY + -4, spriteManager.getSelectorCorner(1));
+            renderer.draw(posX, posY + 28, spriteManager.getSelectorCorner(2));
+            renderer.draw(posX + 24, posY + 28, spriteManager.getSelectorCorner(3));
+        }
+    }
+
+    protected void drawSelectionOnMap(GDXRenderer renderer, SpriteManager spriteManager, Viewport viewport, ObjectModel object, int mapX, int mapY) {
+        drawSelection(renderer, spriteManager, object, viewport.getPosX() + (mapX * 32), viewport.getPosY() + (mapY * 32));
     }
 
     public void toggleVisibility() { _isVisible = !_isVisible; }

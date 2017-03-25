@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UIEventManager {
-    private Map<View, OnDragListener>      _onDragListeners;
+    private Map<View, OnDragListener>       _onDragListeners;
     private Map<View, OnClickListener>      _onClickListeners;
     private Map<View, OnClickListener>      _onRightClickListeners;
     private Map<View, OnClickListener>      _onMouseWheelUpListeners;

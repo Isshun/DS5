@@ -28,7 +28,6 @@ public abstract class CharacterModel extends MovableModel {
 
     private PathModel                           _path;
     private Map<ItemInfo, Integer>              _inventory;
-    protected boolean                           _isSelected;
     protected int                               _lag;
     protected RoomModel                         _quarter;
     protected boolean                           _needRefresh;
@@ -49,7 +48,6 @@ public abstract class CharacterModel extends MovableModel {
         _type = type;
         _needsCheck = new ConcurrentLinkedQueue<>();
         _lag = (int)(Math.random() * 10);
-        _isSelected = false;
         _direction = Direction.NONE;
 
 //        _equipments = new ArrayList<>();
@@ -89,7 +87,6 @@ public abstract class CharacterModel extends MovableModel {
 
     public abstract void                addBodyStats(CharacterStatsExtra stats);
 
-    public void                         setSelected(boolean selected) { _isSelected = selected; }
     public void                         setIsFaint() { _isFaint = true; }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
     public void                         setIsDead() {
@@ -102,7 +99,6 @@ public abstract class CharacterModel extends MovableModel {
         _parcel = parcel;
     }
 
-    public boolean                      isSelected() { return _isSelected; }
     public boolean                      isAlive() { return getExtra(CharacterStatsExtra.class).isAlive; }
     public boolean                      isDead() { return !getExtra(CharacterStatsExtra.class).isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }

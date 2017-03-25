@@ -27,7 +27,7 @@ public class CharacterLayer extends BaseLayer {
     private CharacterModule _characterModule;
 
     @BindComponent
-    private SpriteManager _spriteManager;
+    private SpriteManager spriteManager;
 
     private int                     _floor;
 
@@ -63,13 +63,13 @@ public class CharacterLayer extends BaseLayer {
         if (character.isAlive()) {
             drawCharacter(renderer, character, posX, posY);
             drawLabel(renderer, character, posX, posY);
-            drawSelection(renderer, character, posX, posY);
+            drawSelection(renderer, spriteManager, character, posX, posY);
             drawInventory(renderer, character, posX, posY);
             drawJob(renderer, character, posX, posY);
         }
 
         else {
-            renderer.draw(posX, posY, _spriteManager.getIcon("[base]/res/ic_dead.png"));
+            renderer.draw(posX, posY, spriteManager.getIcon("[base]/res/ic_dead.png"));
         }
     }
 
@@ -103,19 +103,7 @@ public class CharacterLayer extends BaseLayer {
      * Draw characters
      */
     private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
-        renderer.draw(posX, posY, _spriteManager.getCharacter(character, 0, 0));
-    }
-
-    /**
-     * Draw selection
-     */
-    private void drawSelection(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
-        if (character.isSelected()) {
-            renderer.draw(posX, posY + -4, _spriteManager.getSelectorCorner(0));
-            renderer.draw(posX + 24, posY + -4, _spriteManager.getSelectorCorner(1));
-            renderer.draw(posX, posY + 28, _spriteManager.getSelectorCorner(2));
-            renderer.draw(posX + 24, posY + 28, _spriteManager.getSelectorCorner(3));
-        }
+        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
     }
 
     /**
@@ -125,7 +113,7 @@ public class CharacterLayer extends BaseLayer {
         if (character.getInventory2() != null) {
             for (Map.Entry<ItemInfo, Integer> entry: character.getInventory2().entrySet()) {
                 if (entry.getValue() > 0) {
-                    renderer.draw(posX, posY + 2, _spriteManager.getNewSprite(entry.getKey()));
+                    renderer.draw(posX, posY + 2, spriteManager.getNewSprite(entry.getKey()));
                 }
             }
         }
@@ -157,9 +145,9 @@ public class CharacterLayer extends BaseLayer {
 //        renderer.draw(
 //                (int)(viewPortX + posX + progress * xPerFrame),
 //                (int)(viewPortY + posY + progress * yPerFrame),
-//                _spriteManager.getCharacter(character, 0, 0));
+//                spriteManager.getCharacter(character, 0, 0));
 
-//        renderer.draw((int) (posX + _frame * 32 / character.getPath().getLength()), posY, _spriteManager.getCharacter(character, 0, 0));
+//        renderer.draw((int) (posX + _frame * 32 / character.getPath().getLength()), posY, spriteManager.getCharacter(character, 0, 0));
 
         PathModel path = character.getPath();
 
@@ -264,7 +252,7 @@ public class CharacterLayer extends BaseLayer {
         //        renderer.draw(
 //                (int) (viewPortX + (section.p1.x * 32) + (alpha * section.length * 32 * section.dirX)),
 //                (int) (viewPortY + (section.p1.y * 32) + (alpha * section.length * 32 * section.dirY)),
-//                _spriteManager.getCharacter(character, 0, 0));
+//                spriteManager.getCharacter(character, 0, 0));
     }
 
     @Override
