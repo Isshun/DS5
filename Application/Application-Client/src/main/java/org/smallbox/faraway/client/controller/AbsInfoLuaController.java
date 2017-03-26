@@ -39,6 +39,12 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     }
 
     @Override
+    public void onClickOnParcelPre() {
+        mainPanelController.setVisible(true);
+        list = null;
+    }
+
+    @Override
     public boolean onClickOnParcel(List<ParcelModel> parcels) {
         list = parcels.stream()
                 .map(this::getObjectOnParcel)

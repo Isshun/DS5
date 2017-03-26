@@ -63,7 +63,7 @@ public class CharacterLayer extends BaseLayer {
         if (character.isAlive()) {
             drawCharacter(renderer, character, posX, posY);
             drawLabel(renderer, character, posX, posY);
-            drawSelection(renderer, spriteManager, character, posX, posY);
+            drawSelection(renderer, spriteManager, character, posX, posY, 32, 36);
             drawInventory(renderer, character, posX, posY);
             drawJob(renderer, character, posX, posY);
         }

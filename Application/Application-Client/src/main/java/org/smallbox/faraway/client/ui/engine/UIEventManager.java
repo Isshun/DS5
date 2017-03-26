@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.ui.engine;
 
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
@@ -166,6 +167,8 @@ public class UIEventManager {
                             _selectionListener = null;
                         }
                     } else {
+                        ApplicationClient.selected = null;
+                        ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
                         ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
                     }
                 }
@@ -176,6 +179,8 @@ public class UIEventManager {
                 ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.layerManager.getViewport().getFloor());
                 Log.info("Click on map at parcel: %s", parcel);
                 if (parcel != null) {
+                    ApplicationClient.selected = null;
+                    ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
                     ApplicationClient.notify(obs -> obs.onClickOnParcel(Collections.singletonList(parcel)));
                 }
             }

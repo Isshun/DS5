@@ -81,6 +81,7 @@ public abstract class CharacterModel extends MovableModel {
         }
         return 0;
     }
+
     public Map<ItemInfo, Integer>       getInventory2() { return _inventory; }
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();

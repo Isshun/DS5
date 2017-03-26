@@ -7,15 +7,16 @@ import com.badlogic.gdx.ai.pfa.SmoothableGraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
+import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +24,9 @@ import java.util.concurrent.Executors;
 
 public class PathManager extends GameModule {
     private static final int                    THREAD_POOL_SIZE = 1;
+
+    @BindModule
+    private WorldModule worldModule;
 
     final private ArrayList<Runnable>           _runnable;
     final private ExecutorService               _threadPool;
@@ -34,15 +38,6 @@ public class PathManager extends GameModule {
     public PathManager() {
         _threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
         _runnable = new ArrayList<>();
-    }
-
-    public void init(Collection<ParcelModel> parcels) {
-        _graph = new IndexedGraph(parcels);
-        _finder = new IndexedAStarPathFinder<>(_graph);
-        _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
-
-        // Create cache
-        _cache = new HashMap<>();
     }
 
     @Override
@@ -150,6 +145,15 @@ public class PathManager extends GameModule {
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
         assert fromParcel != null;
         assert toParcel != null;
+
+        if (_finder == null) {
+            _graph = new IndexedGraph(worldModule.getParcelList());
+            _finder = new IndexedAStarPathFinder<>(_graph);
+            _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
+
+            // Create cache
+            _cache = new HashMap<>();
+        }
 
         printDebug("Find path from " + fromParcel + " to " + toParcel);
 

@@ -20,9 +20,6 @@ import java.util.List;
 @ModuleSerializer(WorldModuleSerializer.class)
 public class WorldModule extends GameModule {
 
-    @BindComponent
-    private PathManager pathManager;
-
     @BindModule
     private JobModule jobModule;
 
@@ -60,8 +57,6 @@ public class WorldModule extends GameModule {
 
         _parcels = parcels;
         _parcelList = parcelList;
-
-        pathManager.init(parcelList);
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
