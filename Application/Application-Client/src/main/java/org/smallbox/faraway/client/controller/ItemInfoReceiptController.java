@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 11/12/2016.
@@ -26,9 +26,9 @@ public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryM
 
     @Override
     public boolean onKeyPress(int key) {
-        if (key == Input.Keys.ESCAPE && CollectionUtils.isNotEmpty(list)) {
+        if (key == Input.Keys.ESCAPE && CollectionUtils.isNotEmpty(listSelected)) {
             itemInfoController.setVisible(true);
-            list = null;
+            listSelected.clear();
             return true;
         }
         return false;
@@ -53,12 +53,12 @@ public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryM
     }
 
     @Override
-    protected void onDisplayMultiple(List<ItemFactoryModel.FactoryReceiptGroupModel> list) {
+    protected void onDisplayMultiple(Queue<ItemFactoryModel.FactoryReceiptGroupModel> objects) {
 
     }
 
     @Override
-    protected ItemFactoryModel.FactoryReceiptGroupModel getObjectOnParcel(ParcelModel parcel) {
+    public ItemFactoryModel.FactoryReceiptGroupModel getObjectOnParcel(ParcelModel parcel) {
         return null;
     }
 }

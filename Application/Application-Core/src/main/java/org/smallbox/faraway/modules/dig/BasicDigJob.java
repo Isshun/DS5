@@ -41,7 +41,10 @@ public class BasicDigJob extends JobModel {
                 });
 
                 // Retire les rochers de la carte
-                job.addTechnicalTask("Remove rock", character -> digParcel.setRockInfo(null));
+                job.addTechnicalTask("Remove rock", character -> {
+                    digParcel.setRockInfo(null);
+                    digParcel.resetAround();
+                });
 
                 // Crée les gravats
                 job.addTechnicalTask("Create components", character ->

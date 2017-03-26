@@ -1,18 +1,23 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
  */
 public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
+
+    @BindComponent
+    private UIEventManager uiEventManager;
 
     @BindLua
     private UILabel lbLabel;
@@ -30,6 +35,11 @@ public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
     private UILabel lbProduct;
 
     @Override
+    public void onReloadUI() {
+        uiEventManager.registerSelection(this);
+    }
+
+    @Override
     protected void onDisplayUnique(ParcelModel parcel) {
         if (parcel.getRockInfo() != null) {
             lbLabel.setText(parcel.getRockInfo().label);
@@ -43,9 +53,9 @@ public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<ParcelModel> list) {
+    protected void onDisplayMultiple(Queue<ParcelModel> objects) {
         Map<ItemInfo, Integer> items = new HashMap<>();
-        list.stream()
+        objects.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
                 .forEach(parcel -> items.put(parcel.getRockInfo(), items.getOrDefault(parcel.getRockInfo(), 0) + 1));
 
@@ -67,7 +77,7 @@ public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
     }
 
     @Override
-    protected ParcelModel getObjectOnParcel(ParcelModel parcel) {
+    public ParcelModel getObjectOnParcel(ParcelModel parcel) {
         return parcel.getRockInfo() != null ? parcel : null;
     }
 }

@@ -6,21 +6,26 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 25/04/2016.
  */
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
+
+    @BindComponent
+    private UIEventManager uiEventManager;
 
     @BindModule
     private CharacterModule characterModule;
@@ -53,7 +58,12 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private View bgTimetable;
 
     @Override
-    protected CharacterModel getObjectOnParcel(ParcelModel parcel) {
+    public void onReloadUI() {
+        uiEventManager.registerSelection(this);
+    }
+
+    @Override
+    public CharacterModel getObjectOnParcel(ParcelModel parcel) {
         return characterModule.getCharacter(parcel);
     }
 
@@ -75,7 +85,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     @Override
-    protected void onDisplayMultiple(List<CharacterModel> characterList) {
+    protected void onDisplayMultiple(Queue<CharacterModel> characterList) {
     }
 
     @Override

@@ -48,7 +48,5 @@ public interface GameClientObserver extends GameObserver {
      */
     default boolean onClickOnParcel(List<ParcelModel> parcels) { return false; }
 
-    default void onClickOnParcelPre() {}
-
     default void onClick(int x, int y) {}
 }

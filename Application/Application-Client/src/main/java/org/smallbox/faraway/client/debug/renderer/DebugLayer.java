@@ -14,7 +14,9 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -63,6 +65,7 @@ public class DebugLayer extends BaseLayer {
     {
         _data.put("Cursor screen position", "");
         _data.put("Cursor world position", "");
+        _data.put("Parcel isWalkable", "");
     }
 
     @Override
@@ -202,6 +205,12 @@ public class DebugLayer extends BaseLayer {
     public void onMouseMove(GameEvent event) {
         _data.put("Cursor screen position", event.mouseEvent.x + " x " + event.mouseEvent.y);
         _data.put("Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(event.mouseEvent.y));
+
+        ParcelModel parcel = WorldHelper.getParcel(
+                ApplicationClient.layerManager.getViewport().getWorldPosX(event.mouseEvent.x),
+                ApplicationClient.layerManager.getViewport().getWorldPosY(event.mouseEvent.y),
+                ApplicationClient.layerManager.getViewport().getFloor());
+        _data.put("Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
     }
 
     private void drawHeaders(GDXRenderer renderer) {

@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -14,12 +16,15 @@ import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
  */
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
+
+    @BindComponent
+    private UIEventManager uiEventManager;
 
     @BindLua private UILabel        lbName;
     @BindLua private UILabel        lbHealth;
@@ -54,6 +59,11 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @BindModule
     private ItemModule itemModule;
+
+    @Override
+    public void onReloadUI() {
+        uiEventManager.registerSelection(this);
+    }
 
     @Override
     protected void onDisplayUnique(UsableItem item) {
@@ -143,11 +153,11 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<UsableItem> list) {
+    protected void onDisplayMultiple(Queue<UsableItem> objects) {
     }
 
     @Override
-    protected UsableItem getObjectOnParcel(ParcelModel parcel) {
+    public UsableItem getObjectOnParcel(ParcelModel parcel) {
         return itemModule.getItem(parcel);
     }
 

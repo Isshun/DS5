@@ -5,6 +5,7 @@ import com.sun.glass.ui.Cursor;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
@@ -15,6 +16,9 @@ import org.smallbox.faraway.core.game.Game;
  * Created by Alex on 15/08/2016.
  */
 public class MainPanelController extends LuaController {
+
+    @BindComponent
+    private UIEventManager uiEventManager;
 
     @BindComponent
     private LayerManager layerManager;
@@ -35,6 +39,11 @@ public class MainPanelController extends LuaController {
         if (!isVisible()) {
             setVisible(true);
         }
+    }
+
+    @Override
+    public void onReloadUI() {
+        uiEventManager.registerSelectionPre(this);
     }
 
     @Override

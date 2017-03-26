@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -142,12 +142,12 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<PlantItem> list) {
+    protected void onDisplayMultiple(Queue<PlantItem> objects) {
         lbLabel.setText("MULTIPLE");
     }
 
     @Override
-    protected PlantItem getObjectOnParcel(ParcelModel parcel) {
+    public PlantItem getObjectOnParcel(ParcelModel parcel) {
         return plantModule.getPlant(parcel);
     }
 }

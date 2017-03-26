@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -36,12 +36,12 @@ public class RoomInfoController extends AbsInfoLuaController<RoomModel> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<RoomModel> list) {
+    protected void onDisplayMultiple(Queue<RoomModel> objects) {
         lbLabel.setText("MULTIPLE");
     }
 
     @Override
-    protected RoomModel getObjectOnParcel(ParcelModel parcel) {
+    public RoomModel getObjectOnParcel(ParcelModel parcel) {
         return roomModule.getRoom(parcel);
     }
 }

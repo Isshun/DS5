@@ -13,7 +13,7 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.modules.plant.PlantModule;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -50,11 +50,11 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<AreaModel> list) {
+    protected void onDisplayMultiple(Queue<AreaModel> objects) {
     }
 
     @Override
-    protected AreaModel getObjectOnParcel(ParcelModel parcel) {
+    public AreaModel getObjectOnParcel(ParcelModel parcel) {
         AreaModel area = areaModule.getArea(parcel);
         return area instanceof GardenArea ? area : null;
     }

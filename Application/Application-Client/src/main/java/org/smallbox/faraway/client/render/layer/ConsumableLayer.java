@@ -76,7 +76,7 @@ public class ConsumableLayer extends BaseLayer {
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x000000FF), 16, 16);
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x9de6e7FF), 15, 15);
 
-                    drawSelectionOnMap(renderer, spriteManager, viewport, consumable, consumable.getParcel().x, consumable.getParcel().y, 32, 32);
+                    drawSelectionOnMap(renderer, spriteManager, viewport, consumable, consumable.getParcel().x, consumable.getParcel().y, 20, 20, 6, 6);
                 });
 
 //        tags.removeIf(draw -> draw.frameLeft < 0);

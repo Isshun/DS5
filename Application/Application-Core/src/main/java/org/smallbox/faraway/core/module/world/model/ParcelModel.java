@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
+import org.smallbox.faraway.core.module.path.ParcelConnection;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 
@@ -37,6 +38,7 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
     private ItemInfo                        _liquidInfo;
 
     private Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
+    private boolean _connectionDirty;
 
     public ParcelModel(int index, int x, int y, int z) {
         this.x = x;
@@ -60,7 +62,7 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
     public void                     setGroundInfo(ItemInfo groundInfo) {
         _groundInfo = groundInfo;
     }
-    public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; }
+    public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; _connectionDirty = true; }
     public void                     setRockName(String rockName) { _rockInfo = Application.data.getItemInfo(rockName); }
     public void                     setTile(int tile) { _tile = tile; }
     public void                     setLiquidInfo(ItemInfo liquidInfo, double value) { _liquidInfo = liquidInfo; _liquidValue = value; }
@@ -68,6 +70,7 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
     public void                     removeItem(MapObjectModel item) { _items.remove(item); }
 
     public boolean                  isExterior() { return _room == null || _room.isExterior(); }
+    public boolean                  isConnectionDirty() { return _connectionDirty; }
     public boolean                  canSupportRoof() { return (hasItem(StructureItem.class) && getItem(StructureItem.class).getInfo().canSupportRoof) || _rockInfo != null; }
     public boolean                  hasNetwork(NetworkInfo networkInfo) { return getNetworkObject(networkInfo) != null; }
     public boolean                  hasGround() { return _groundInfo != null; }
@@ -87,6 +90,50 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
     public double                   getTemperature() { return _room != null ? _room.getTemperature() : -1; }
     public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
     public double                   getMoisture() { return 0.5; }
+
+    public static void addParcelToConnections(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y, int z) {
+        ParcelModel toParcel = WorldHelper.getParcel(x, y, z);
+        if (toParcel != null) {
+            if (parcel.isWalkable() && toParcel.isWalkable()) {
+                if (parcel.z == toParcel.z
+                        || (toParcel.z == parcel.z - 1 && (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown) && toParcel.hasItem(StructureItem.class) && toParcel.getItem(StructureItem.class).getInfo().isRamp)
+                        || (toParcel.z == parcel.z + 1 && (!toParcel.hasGround() || toParcel.getGroundInfo().isLinkDown) && parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isRamp)) {
+                    array.add(new ParcelConnection(parcel, toParcel));
+                }
+            }
+        }
+    }
+
+    public void resetConnection() {
+        resetConnection(this);
+    }
+
+    public static void resetConnection(ParcelModel parcel) {
+        if (parcel != null) {
+            Array<Connection<ParcelModel>> connections = new Array<>(6);
+            addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y, parcel.z);
+            addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y, parcel.z);
+            addParcelToConnections(connections, parcel, parcel.x, parcel.y + 1, parcel.z);
+            addParcelToConnections(connections, parcel, parcel.x, parcel.y - 1, parcel.z);
+            addParcelToConnections(connections, parcel, parcel.x, parcel.y, parcel.z + 1);
+            addParcelToConnections(connections, parcel, parcel.x, parcel.y, parcel.z - 1);
+            parcel.setConnections(connections);
+        }
+    }
+
+    public void resetAround() {
+        resetAround(this);
+    }
+
+    public static void resetAround(ParcelModel parcel) {
+        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y, parcel.z));
+        resetConnection(WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z));
+        resetConnection(WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z));
+        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z));
+        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z));
+        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1));
+        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1));
+    }
 
     @Override
     public String toString() {
@@ -223,5 +270,9 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
 
     public Collection<MapObjectModel> getItems() {
         return _items.values();
+    }
+
+    public void setConnectionDirty(boolean connectionDirty) {
+        _connectionDirty = connectionDirty;
     }
 }

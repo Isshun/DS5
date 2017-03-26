@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
+import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.HumanModel;
@@ -17,11 +18,14 @@ import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
 import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.dig.DigArea;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
+
+import java.util.Arrays;
 
 public class DesktopLauncher {
 
@@ -102,11 +106,11 @@ public class DesktopLauncher {
 //                            }
 //                        }
 
-//                Application.moduleManager.getModule(AreaModule.class).addArea(DigArea.class, Arrays.asList(
-//                        WorldHelper.getParcel(8, 6, 1),
-//                        WorldHelper.getParcel(7, 6, 1),
-//                        WorldHelper.getParcel(8, 7, 1),
-//                        WorldHelper.getParcel(7, 7, 1)));
+                Application.moduleManager.getModule(AreaModule.class).addArea(DigArea.class, Arrays.asList(
+                        WorldHelper.getParcel(8, 6, 1),
+                        WorldHelper.getParcel(7, 6, 1),
+                        WorldHelper.getParcel(8, 7, 1),
+                        WorldHelper.getParcel(7, 7, 1)));
 //
 //                Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
 //                        WorldHelper.getParcel(8, 10, 1),

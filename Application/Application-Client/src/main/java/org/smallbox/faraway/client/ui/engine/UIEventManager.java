@@ -1,21 +1,22 @@
 package org.smallbox.faraway.client.ui.engine;
 
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.controller.AbsInfoLuaController;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 public class UIEventManager {
+
     private Map<View, OnDragListener>       _onDragListeners;
     private Map<View, OnClickListener>      _onClickListeners;
     private Map<View, OnClickListener>      _onRightClickListeners;
@@ -25,8 +26,14 @@ public class UIEventManager {
     private Map<View, OnKeyListener>        _onKeysListeners;
     private UIDropDown                      _currentDropDown;
     private Map<View, Object>               _dropViews;
+    private Collection<AbsInfoLuaController<?>> _infoControllers;
+    private ParcelModel                     _lastParcel;
+    private Queue<AbsInfoLuaController<?>>  _lastControllers;
+    private LuaController                   _selectionPreController;
 
     public UIEventManager() {
+        _lastControllers = new ConcurrentLinkedQueue<>();
+        _infoControllers = new ConcurrentLinkedQueue<>();
         _onDragListeners = new ConcurrentSkipListMap<>();
         _onClickListeners = new ConcurrentSkipListMap<>();
         _onRightClickListeners = new ConcurrentSkipListMap<>();
@@ -97,6 +104,14 @@ public class UIEventManager {
 
     public OnSelectionListener getSelectionListener() {
         return _selectionListener;
+    }
+
+    public void registerSelection(AbsInfoLuaController<?> controller) {
+        _infoControllers.add(controller);
+    }
+
+    public void registerSelectionPre(LuaController controller) {
+        _selectionPreController = controller;
     }
 
     public interface OnSelectionListener {
@@ -170,8 +185,7 @@ public class UIEventManager {
 
                     else {
                         ApplicationClient.selected = null;
-                        ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
-                        ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
+                        doSelectionMultiple(parcelList);
                     }
                 }
             }
@@ -190,14 +204,53 @@ public class UIEventManager {
 
                     else {
                         ApplicationClient.selected = null;
-                        ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
-                        ApplicationClient.notify(obs -> obs.onClickOnParcel(Collections.singletonList(parcel)));
+                        doSelectionUnique(parcel);
                     }
                 }
             }
         }
 
         return false;
+    }
+
+    private void doSelectionUnique(ParcelModel parcel) {
+        if (_selectionPreController != null) {
+            _selectionPreController.setVisible(true);
+        }
+
+        // Click sur nouvelle parcel
+        if (_lastParcel != parcel) {
+            _lastParcel = parcel;
+
+            _lastControllers.clear();
+            _infoControllers.stream()
+                    .filter(controller -> controller.getObjectOnParcel(parcel) != null)
+                    .forEach(controller -> _lastControllers.add(controller));
+
+            if (CollectionUtils.isNotEmpty(_lastControllers)) {
+                _lastControllers.peek().displayToto(Collections.singletonList(parcel));
+            }
+        }
+
+        // Click sur la même parcel que précédement
+        else {
+            if (CollectionUtils.isNotEmpty(_lastControllers)) {
+                _lastControllers.add(_lastControllers.poll());
+                _lastControllers.peek().displayToto(Collections.singletonList(parcel));
+            }
+        }
+
+    }
+
+    private void doSelectionMultiple(List<ParcelModel> parcelList) {
+        if (_selectionPreController != null) {
+            _selectionPreController.setVisible(true);
+        }
+
+        _infoControllers.stream()
+                .filter(controller -> parcelList.stream().anyMatch(parcel -> controller.getObjectOnParcel(parcel) != null))
+                .findFirst()
+                .ifPresent(controller -> controller.displayToto(parcelList));
     }
 
     public boolean rightClick(GameEvent event, int x, int y) {

@@ -107,7 +107,7 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
             moveStructureToParcel(parcel, null);
 
             jobModule.onCancelJobs(structure.getParcel(), structure);
-            pathManager.resetAround(structure.getParcel());
+            structure.getParcel().resetAround();
 
             notifyObservers(observer -> observer.onRemoveStructure(parcel, structure));
         }
@@ -156,7 +156,7 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
             moveStructureToParcel(parcel, structure);
             _structures.add(structure);
 
-            pathManager.resetAround(structure.getParcel());
+            structure.getParcel().resetAround();
 
             notifyObservers(observer -> observer.onAddStructure(structure));
 

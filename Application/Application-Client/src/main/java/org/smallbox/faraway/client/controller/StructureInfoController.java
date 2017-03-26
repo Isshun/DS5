@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.structure.StructureModule;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -66,11 +66,11 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
     }
 
     @Override
-    protected void onDisplayMultiple(List<StructureItem> list) {
+    protected void onDisplayMultiple(Queue<StructureItem> objects) {
     }
 
     @Override
-    protected StructureItem getObjectOnParcel(ParcelModel parcel) {
+    public StructureItem getObjectOnParcel(ParcelModel parcel) {
         return structureModule.getStructure(parcel);
     }
 }

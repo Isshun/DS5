@@ -54,7 +54,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
         Application.dependencyInjector.register(this);
     }
 
-    protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height) {
+    protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
         if (ApplicationClient.selected != null && ApplicationClient.selected.contains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
@@ -63,15 +63,15 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
             }
             _selectionOffset += _selectionChange;
             int index = (int)_selectionOffset;
-            renderer.draw(-4 + posX - index,            -4 + posY - index,              spriteManager.getSelectorCorner(0));
-            renderer.draw(-4 + posX + width + index,    -4 + posY - index,              spriteManager.getSelectorCorner(1));
-            renderer.draw(-4 + posX - index,            -4 + posY + height + index,     spriteManager.getSelectorCorner(2));
-            renderer.draw(-4 + posX + width + index,    -4 + posY + height + index,     spriteManager.getSelectorCorner(3));
+            renderer.draw(offsetX - 4 + posX - index,            offsetY - 4 + posY - index,              spriteManager.getSelectorCorner(0));
+            renderer.draw(offsetX - 4 + posX + width + index,    offsetY - 4 + posY - index,              spriteManager.getSelectorCorner(1));
+            renderer.draw(offsetX - 4 + posX - index,            offsetY - 4 + posY + height + index,     spriteManager.getSelectorCorner(2));
+            renderer.draw(offsetX - 4 + posX + width + index,    offsetY - 4 + posY + height + index,     spriteManager.getSelectorCorner(3));
         }
     }
 
-    protected void drawSelectionOnMap(GDXRenderer renderer, SpriteManager spriteManager, Viewport viewport, ObjectModel object, int mapX, int mapY, int width, int height) {
-        drawSelection(renderer, spriteManager, object, viewport.getPosX() + (mapX * 32), viewport.getPosY() + (mapY * 32), width, height);
+    protected void drawSelectionOnMap(GDXRenderer renderer, SpriteManager spriteManager, Viewport viewport, ObjectModel object, int mapX, int mapY, int width, int height, int offsetX, int offsetY) {
+        drawSelection(renderer, spriteManager, object, viewport.getPosX() + (mapX * 32), viewport.getPosY() + (mapY * 32), width, height, offsetX, offsetY);
     }
 
     public void toggleVisibility() { _isVisible = !_isVisible; }

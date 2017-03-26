@@ -15,7 +15,7 @@ import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.QuarterRoom;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -55,11 +55,11 @@ public class RoomInfoQuarterController extends AbsInfoLuaController<RoomModel> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<RoomModel> list) {
+    protected void onDisplayMultiple(Queue<RoomModel> objects) {
     }
 
     @Override
-    protected RoomModel getObjectOnParcel(ParcelModel parcel) {
+    public RoomModel getObjectOnParcel(ParcelModel parcel) {
         RoomModel room = roomModule.getRoom(parcel);
         return room instanceof QuarterRoom ? room : null;
     }
@@ -73,7 +73,7 @@ public class RoomInfoQuarterController extends AbsInfoLuaController<RoomModel> {
                 .setTextColor(0x5588bb)
                 .setSize(100, 20)
                 .setOnClickListener(event -> {
-                    list.forEach(room -> room.setOwner(character));
+                    listSelected.forEach(room -> room.setOwner(character));
                     listCharacters.setVisible(false);
                 })));
 

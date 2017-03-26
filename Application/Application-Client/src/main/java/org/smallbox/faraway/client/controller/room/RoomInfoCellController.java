@@ -9,7 +9,7 @@ import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.CellRoom;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 
-import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Alex on 26/04/2016.
@@ -28,11 +28,11 @@ public class RoomInfoCellController extends AbsInfoLuaController<RoomModel> {
     }
 
     @Override
-    protected void onDisplayMultiple(List<RoomModel> list) {
+    protected void onDisplayMultiple(Queue<RoomModel> objects) {
     }
 
     @Override
-    protected RoomModel getObjectOnParcel(ParcelModel parcel) {
+    public RoomModel getObjectOnParcel(ParcelModel parcel) {
         RoomModel room = roomModule.getRoom(parcel);
         return room instanceof CellRoom ? room : null;
     }

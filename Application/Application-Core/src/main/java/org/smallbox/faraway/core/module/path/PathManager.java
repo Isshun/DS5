@@ -215,18 +215,6 @@ public class PathManager extends GameModule {
     }
 
     // TODO
-//    @Override
-//    public void onStructureComplete(StructureItem structure) { _graph.resetAround(structure.getParcel()); }
-
-    public void resetAround(ParcelModel parcel) { _graph.resetAround(parcel); }
-
-    @Override
-    public void onRemoveRock(ParcelModel parcel) { _graph.resetAround(parcel); }
-
-    @Override
-    public void onChangeGround(ParcelModel parcel) { _graph.resetAround(parcel); }
-
-    // TODO
     public int getDistance(ParcelModel p1, ParcelModel p2) {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y) + Math.abs(p1.z - p2.z);
     }
