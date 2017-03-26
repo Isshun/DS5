@@ -21,14 +21,11 @@ public class ItemLayer extends BaseLayer {
     @BindComponent
     private SpriteManager spriteManager;
 
-    private int _frame;
-
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         itemModule.getItems().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
                     ParcelModel parcel = item.getParcel();
-//                    item.getFactory().getRunningReceipt().getCostRemaining()
                     renderer.drawOnMap(item.getParcel(), getItemSprite(item));
 
                     if (item.getFactory() != null && item.getFactory().getCraftJob() != null) {
@@ -46,13 +43,11 @@ public class ItemLayer extends BaseLayer {
 
                     drawSelectionOnMap(renderer, spriteManager, viewport, item, item.getParcel().x, item.getParcel().y, item.getWidth() * 32, item.getHeight() * 32);
                 });
+
     }
 
     private Sprite getItemSprite(UsableItem item) {
         return spriteManager.getSprite(item.getInfo(), item.getGraphic(), item.isBuildComplete() ? item.getInfo().height : 0, 0, 255, false);
     }
 
-    public void onRefresh(int frame) {
-        _frame = frame;
-    }
 }

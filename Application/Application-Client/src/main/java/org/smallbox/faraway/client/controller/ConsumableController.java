@@ -2,11 +2,12 @@ package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,13 +32,30 @@ public class ConsumableController extends LuaController {
 
     @Override
     public void onControllerUpdate() {
-        if (consumableList != null) {
-            consumableList.removeAllViews();
+        consumableList.removeAllViews();
 
-            Map<ItemInfo, Integer> quantities = new HashMap<>();
-            consumableModule.getConsumables().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getFreeQuantity() + (quantities.getOrDefault(consumable.getInfo(), 0))));
+        Map<ItemInfo, Integer> quantities = new HashMap<>();
+        consumableModule.getConsumables().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getTotalQuantity() + (quantities.getOrDefault(consumable.getInfo(), 0))));
 
-            quantities.forEach((key, value) -> consumableList.addView(UILabel.create(null).setText(key.label + " x " + value).setSize(100, 20)));
-        }
+        quantities.forEach((itemInfo, quantity) -> {
+
+            View view = new UIFrame(null).setSize(100, 30);
+
+            view.addView(UILabel.create(null)
+                    .setDashedString(itemInfo.label, " x " + quantity, 38)
+                    .setTextColor(ColorUtils.COLOR2)
+                    .setTextSize(14)
+                    .setPadding(12)
+                    .setPosition(25, 0));
+
+            if (CollectionUtils.isNotEmpty(itemInfo.graphics)) {
+                view.addView(UIImage.create(null)
+                        .setImage(itemInfo.graphics.get(0)));
+            }
+
+            consumableList.addNextView(view);
+        });
+
+        consumableList.switchViews();
     }
 }

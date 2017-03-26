@@ -71,8 +71,10 @@ public class DesktopLauncher {
                     character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
                 }
 
-//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
-//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 1000, 2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 800, 2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.carrot", 50, 2, 2, 1);
+                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.rice", 40, 2, 2, 1);
                 Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.wood_log", 1000, 4, 2, 1);
                 StructureItem structureItem = Application.moduleManager.getModule(StructureModule.class).addStructure("base.wood_wall", 6, 2, 1);
                 structureItem.setBuildProgress(0);

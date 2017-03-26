@@ -166,7 +166,9 @@ public class UIEventManager {
                         if (_selectionListener.onSelection(parcelList)) {
                             _selectionListener = null;
                         }
-                    } else {
+                    }
+
+                    else {
                         ApplicationClient.selected = null;
                         ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
                         ApplicationClient.notify(obs -> obs.onClickOnParcel(parcelList));
@@ -179,9 +181,18 @@ public class UIEventManager {
                 ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.layerManager.getViewport().getFloor());
                 Log.info("Click on map at parcel: %s", parcel);
                 if (parcel != null) {
-                    ApplicationClient.selected = null;
-                    ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
-                    ApplicationClient.notify(obs -> obs.onClickOnParcel(Collections.singletonList(parcel)));
+
+                    if (_selectionListener != null) {
+                        if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
+                            _selectionListener = null;
+                        }
+                    }
+
+                    else {
+                        ApplicationClient.selected = null;
+                        ApplicationClient.notify(GameClientObserver::onClickOnParcelPre);
+                        ApplicationClient.notify(obs -> obs.onClickOnParcel(Collections.singletonList(parcel)));
+                    }
                 }
             }
         }

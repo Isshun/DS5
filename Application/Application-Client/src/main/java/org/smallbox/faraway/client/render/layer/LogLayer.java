@@ -17,9 +17,9 @@ public class LogLayer extends BaseLayer {
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         _index = 0;
         Log._history.forEach(message -> {
-            renderer.drawText(12, Gdx.graphics.getHeight() - 100 + (_index * 20) + 12, 18, Color.BLACK, message);
-            renderer.drawText(11, Gdx.graphics.getHeight() - 100 + (_index * 20) + 11, 18, Color.BLACK, message);
-            renderer.drawText(10, Gdx.graphics.getHeight() - 100 + (_index * 20) + 10, 18, Color.WHITE, message);
+            renderer.drawText(12, Gdx.graphics.getHeight() - 100 + (_index * 20) + 12, 18, Color.BLACK, message.substring(0, Math.min(100, message.length())));
+            renderer.drawText(11, Gdx.graphics.getHeight() - 100 + (_index * 20) + 11, 18, Color.BLACK, message.substring(0, Math.min(100, message.length())));
+            renderer.drawText(10, Gdx.graphics.getHeight() - 100 + (_index * 20) + 10, 18, Color.WHITE, message.substring(0, Math.min(100, message.length())));
             _index++;
         });
     }

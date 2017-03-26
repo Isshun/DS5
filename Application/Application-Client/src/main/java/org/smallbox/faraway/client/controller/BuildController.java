@@ -142,26 +142,6 @@ public class BuildController extends LuaController {
                         .setBackgroundFocusColor(0x25c9cb)
                         .setPadding(10)
                         .setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo))));
-//                    .setOnClickListener(() -> {
-//                        materialList.removeAllViews();
-//                        for (ItemInfo itemInfo: Application.data.items) {
-//                            if (itemInfo.receiptGroups != null && !itemInfo.receiptGroups.isEmpty() && parentName.equals(itemInfo.parentName)) {
-//                                UIFrame viewMaterial = new UIFrame(null);
-//                                viewMaterial.setSize(200, 32);
-//
-//                                View icMaterial = UIImage.createGame(null).setImage(itemInfo.receiptGroups.get(0).icon).setSize(32, 32);
-//                                icMaterial.setOnClickListener(() -> _currentItem = itemInfo);
-//                                viewMaterial.addView(icMaterial);
-//
-//                                viewMaterial.addView(UILabel.createGame(null).setText(itemInfo.receiptGroups.get(0).label).setSize(100, 22).setPadding(5).setPosition(32, 0));
-//
-//                                materialList.addView(viewMaterial);
-//                            }
-//                            if (itemInfo == _currentItem) {
-////                                listEntry.setBackgroundColor(0x349394);
-//                            }
-//                        }
-//                    }));
 
         listStructures.setHeight(listStructures.getViews().size() * 32);
         listStructures.switchViews();
@@ -216,18 +196,6 @@ public class BuildController extends LuaController {
                 return false;
             });
 
-//            worldInteractionModule.setOnClickListener(parcelList -> {
-//                parcelList.forEach(parcel -> {
-//                    if (itemInfo.isUserItem) {
-//                        itemModule.addPattern(parcel, itemInfo);
-//                    }
-//                    if (itemInfo.isStructure) {
-//                        structureModule.addPattern(parcel, itemInfo);
-//                    }
-//                });
-//                _currentItem = null;
-//                return true;
-//            });
         }
     }
 
