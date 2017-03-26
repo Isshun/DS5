@@ -275,4 +275,13 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
     public void setConnectionDirty(boolean connectionDirty) {
         _connectionDirty = connectionDirty;
     }
+
+    public boolean hasConnection(ParcelModel parcel) {
+        for (Connection<ParcelModel> connection: _connections) {
+            if (connection.getFromNode() == this && connection.getToNode() == parcel) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
