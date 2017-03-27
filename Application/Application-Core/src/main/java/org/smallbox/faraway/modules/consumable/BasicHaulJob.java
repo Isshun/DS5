@@ -12,7 +12,9 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.Log;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -56,25 +58,23 @@ public class BasicHaulJob extends JobModel {
     public boolean onNewInit() {
 
         // Ajout des locks pour chaques consomables
+        List<ConsumableModule.ConsumableJobLock> locks = new ArrayList<>();
         for (Map.Entry<ConsumableItem, Integer> entry: _targetConsumables.entrySet()) {
-            ConsumableItem consumable = entry.getKey();
-            int quantity = entry.getValue();
+            Log.info(BasicHaulJob.class, "lock for consumable: " + entry.getKey() + " -> " + _consumableModule.getLocks());
+            locks.add(_consumableModule.lock(this, entry.getKey(), entry.getValue()));
+        }
+        if (locks.contains(null)) {
+            Log.warning(BasicHaulJob.class, "Certains composants n'ont pas pu être réservés");
+            return false;
+        }
 
-            Log.info(BasicHaulJob.class, "lock for consumable: " + consumable + " -> " + _consumableModule.getLocks());
-
-            ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, quantity);
-            if (lock == null) {
-                Log.warning(BasicHaulJob.class, "Certains composants n'ont pas pu être réservés");
-                return false;
-            }
+        // Traite chaque composant
+        locks.forEach(lock -> {
 
             // Déplace le personnage à l'emplacement des composants
-            addTask("Haul " + lock.consumable.getLabel(), (character, hourInterval) -> {
-                if (lock.consumable.getParcel() != null) {
-                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
-                }
-                return JobTaskReturn.TASK_ERROR;
-            });
+            if (lock.consumable.getParcel() != null) {
+                addMoveTask("Move to consumable", lock.consumable.getParcel());
+            }
 
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + lock.consumable.getLabel() + " to inventory", (character, hourInterval) -> {
@@ -82,11 +82,11 @@ public class BasicHaulJob extends JobModel {
                 character.addInventory(lock.consumable.getInfo(), lock.quantity);
                 return JobTaskReturn.TASK_COMPLETE;
             });
-        }
+
+        });
 
         // Apporte les composants à la fabrique
-        addTask("Bring back to factory", (character, hourInterval) ->
-                character.moveTo(_targetParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addMoveTask("Bring back to factory", _targetParcel);
 
         // Charge les comnposants dans la fabrique
         addTechnicalTask("Load factory", character ->
