@@ -31,6 +31,8 @@ ui:extend({
             { type = "label", text = "onOpenComponents", size = {50, 30}, action = "onOpenComponents" },
             { type = "view", id = "base.ui.panel_item_info.details_content", special = true },
 
+            { type = "view", id = "base.ui.panel_item_info.actions_content", special = true },
+
         }},
     },
 })

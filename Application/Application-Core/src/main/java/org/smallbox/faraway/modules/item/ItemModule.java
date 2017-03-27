@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.BuildItemModule;
+import org.smallbox.faraway.modules.building.BasicDumpJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.job.UseJob;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -169,5 +170,11 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
         }
 
         return null;
+    }
+
+    public void dumpItem(UsableItem item) {
+        if (jobModule.getJobs().stream().noneMatch(job -> job instanceof BasicDumpJob && ((BasicDumpJob)job).getObject() == item)) {
+            jobModule.addJob(new BasicDumpJob(this, item));
+        }
     }
 }

@@ -48,6 +48,8 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UIList         listInventory;
 
     @BindLua private View frameBuild;
+    @BindLua private View buildingActions;
+    @BindLua private View regularActions;
     @BindLua private UILabel progressBuild;
     @BindLua private UIList listBuildComponents;
 
@@ -75,10 +77,14 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
         if (!item.isBuildComplete()) {
             frameBuild.setVisible(true);
+            buildingActions.setVisible(true);
+            regularActions.setVisible(false);
             displayBuildPane(item);
             return;
         } else {
             frameBuild.setVisible(false);
+            buildingActions.setVisible(false);
+            regularActions.setVisible(true);
         }
 
         refreshActions(item);
@@ -244,5 +250,19 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLuaAction
     private void onOpenComponents(View view) {
         itemInfoFactoryComponentsController.setVisible(true);
+    }
+
+    @BindLuaAction
+    public void onDumpItem(View view) {
+        if (listSelected.size() == 1) {
+            itemModule.dumpItem(listSelected.peek());
+        }
+    }
+
+    @BindLuaAction
+    public void onCancelBuild(View view) {
+        if (listSelected.size() == 1) {
+            itemModule.removeObject(listSelected.peek());
+        }
     }
 }
