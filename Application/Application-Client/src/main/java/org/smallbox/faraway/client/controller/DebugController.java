@@ -5,10 +5,14 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
+import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 
@@ -32,6 +36,9 @@ public class DebugController extends LuaController {
     @BindLuaController
     private CharacterInfoController characterInfoController;
 
+    @BindComponent
+    private LayerManager layerManager;
+
     @Override
     public void onReloadUI() {
         mainPanelController.addShortcut("Debug", this);
@@ -39,6 +46,14 @@ public class DebugController extends LuaController {
         if (listDebug != null) {
             listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> characterModule.addRandom()));
             listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 5, 5, 1)));
+
+            layerManager.getLayers().forEach(layer ->
+                    listDebug.addView(UICheckBox.create(null)
+                            .setText("Layer: " + layer.getClass().getSimpleName())
+                            .setTextColor(ColorUtils.COLOR2)
+                            .setOnCheckListener(checked -> layer.setVisibility(checked == UICheckBox.Value.TRUE))
+                            .setChecked(layer.isVisible() ? UICheckBox.Value.TRUE : UICheckBox.Value.FALSE)
+                            .setSize(200, 22)));
         }
     }
 

@@ -38,7 +38,7 @@ public class LayerManager implements GameClientObserver {
     // Render
     private double                          _animationProgress;
 
-    private Collection<BaseLayer>           _renders;
+    private Collection<BaseLayer>           _layers;
     private Viewport                        _viewport;
 
     public Viewport getViewport() { return _viewport; }
@@ -46,7 +46,7 @@ public class LayerManager implements GameClientObserver {
     @Override
     public void onGameCreateObserver(Game game) {
         // Find GameLayer annotated class
-        _renders = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
+        _layers = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
                 .map(cls -> {
                     Log.info("Find game layer: " + cls.getSimpleName());
@@ -65,7 +65,7 @@ public class LayerManager implements GameClientObserver {
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
 
-        _renders.forEach(render -> render.onGameCreateObserver(game));
+        _layers.forEach(render -> render.onGameCreateObserver(game));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class LayerManager implements GameClientObserver {
         ApplicationClient.dependencyInjector.register(_viewport);
 
         // Call gameStart on each layer
-        _renders.forEach(render -> render.gameStart(game));
+        _layers.forEach(render -> render.gameStart(game));
     }
 
     @Override
@@ -108,8 +108,8 @@ public class LayerManager implements GameClientObserver {
         long time = System.currentTimeMillis();
 
         //noinspection Convert2streamapi
-        if (_renders != null) {
-            _renders.forEach(render -> render.draw(renderer, viewport, animProgress, frame));
+        if (_layers != null) {
+            _layers.forEach(render -> render.draw(renderer, viewport, animProgress, frame));
         }
 
         _frame++;
@@ -120,8 +120,8 @@ public class LayerManager implements GameClientObserver {
 
     public long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
 
-    public Collection<BaseLayer> getRenders() {
-        return _renders;
+    public Collection<BaseLayer> getLayers() {
+        return _layers;
     }
 
     public void toggleRender(BaseLayer render) {

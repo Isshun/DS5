@@ -90,21 +90,31 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         fixCharacterInventory();
 
-        _jobs.stream()
-                .filter(job -> job.getCharacter() == null)
-                .filter(job -> job.getStatus() == JobStatus.JOB_WAITING || job.getStatus() == JobStatus.JOB_INITIALIZED)
-                .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))
-                .findFirst()
-                .ifPresent(job -> assign(character, job));
+        // La valeur "innactive duration" sert à temporiser un certain nombre de tick avant l'assignation d'un nouveau
+        // job afin de laisser le temps aux autres modules d'effectuer leur update et de peut-être créer des job plus
+        // adapté pour le personnage.
+        // Par exemple: si le personnage vient de terminer un craft le StorageModule va lancer un BasicStoreJob sur le
+        // consomable nouvellement créé, job qui aura des chances d'être assigné à ce personnage car étant le plus proche.
+        if (_characterInnactiveDuration.getOrDefault(character, 0) > 10) {
+            _characterInnactiveDuration.put(character, 0);
 
-        // Aucun job n'a pu être assigné
-        if (character.getJob() == null) {
-            _characterInnactiveDuration.put(character, _characterInnactiveDuration.getOrDefault(character, 0) + 1);
+            _jobs.stream()
+                    .filter(job -> job.getCharacter() == null)
+                    .filter(job -> job.getStatus() == JobStatus.JOB_WAITING || job.getStatus() == JobStatus.JOB_INITIALIZED)
+                    .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))
+                    .findFirst()
+                    .ifPresent(job -> assign(character, job));
 
+            // Aucun job n'a pu être assigné
             // Assign freetime job
-            if (_characterInnactiveDuration.get(character) > 10) {
+            if (character.getJob() == null) {
                 assign(character, createJob(new BasicWalkJob(character)));
             }
+
+        }
+
+        if (character.getJob() == null) {
+            _characterInnactiveDuration.put(character, _characterInnactiveDuration.getOrDefault(character, 0) + 1);
         }
 
 //        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());

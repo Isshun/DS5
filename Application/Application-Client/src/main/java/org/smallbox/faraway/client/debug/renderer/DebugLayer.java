@@ -106,7 +106,7 @@ public class DebugLayer extends BaseLayer {
             // Display renders
             case RENDER:
                 if (ApplicationClient.layerManager != null) {
-                    ApplicationClient.layerManager.getRenders().stream()
+                    ApplicationClient.layerManager.getLayers().stream()
                             .sorted((o1, o2) -> (int)(o2.getCumulateTime() - o1.getCumulateTime()))
                             .forEach(render -> drawDebug(renderer, "Render",
                                     String.format("%-32s visible: %-5s, total: %-5d med: %.2f",
