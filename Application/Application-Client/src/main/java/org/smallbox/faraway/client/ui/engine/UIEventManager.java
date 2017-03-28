@@ -12,6 +12,7 @@ import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -27,12 +28,14 @@ public class UIEventManager {
     private UIDropDown                      _currentDropDown;
     private Map<View, Object>               _dropViews;
     private Collection<AbsInfoLuaController<?>> _infoControllers;
+    private Map<AbsInfoLuaController<?>, AbsInfoLuaController<?>> _infoSubControllers;
     private ParcelModel                     _lastParcel;
     private Queue<AbsInfoLuaController<?>>  _lastControllers;
     private LuaController                   _selectionPreController;
 
     public UIEventManager() {
         _lastControllers = new ConcurrentLinkedQueue<>();
+        _infoSubControllers = new ConcurrentHashMap<>();
         _infoControllers = new ConcurrentLinkedQueue<>();
         _onDragListeners = new ConcurrentSkipListMap<>();
         _onClickListeners = new ConcurrentSkipListMap<>();
@@ -108,6 +111,10 @@ public class UIEventManager {
 
     public void registerSelection(AbsInfoLuaController<?> controller) {
         _infoControllers.add(controller);
+    }
+
+    public void registerSelection(AbsInfoLuaController<?> controller, AbsInfoLuaController<?> parent) {
+        _infoSubControllers.put(controller, parent);
     }
 
     public void registerSelectionPre(LuaController controller) {
@@ -228,7 +235,7 @@ public class UIEventManager {
                     .forEach(controller -> _lastControllers.add(controller));
 
             if (CollectionUtils.isNotEmpty(_lastControllers)) {
-                _lastControllers.peek().displayToto(Collections.singletonList(parcel));
+                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
             }
         }
 
@@ -236,7 +243,7 @@ public class UIEventManager {
         else {
             if (CollectionUtils.isNotEmpty(_lastControllers)) {
                 _lastControllers.add(_lastControllers.poll());
-                _lastControllers.peek().displayToto(Collections.singletonList(parcel));
+                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
             }
         }
 
@@ -250,7 +257,22 @@ public class UIEventManager {
         _infoControllers.stream()
                 .filter(controller -> parcelList.stream().anyMatch(parcel -> controller.getObjectOnParcel(parcel) != null))
                 .findFirst()
-                .ifPresent(controller -> controller.displayToto(parcelList));
+                .ifPresent(controller -> displayController(controller, parcelList));
+    }
+
+    private void displayController(AbsInfoLuaController<?> controller, Collection<ParcelModel> parcels) {
+
+        // Display sub controller
+        _infoSubControllers.entrySet().stream()
+                .filter(entry -> entry.getValue() == controller)
+                .peek(entry -> entry.getKey().setVisible(false))
+                .filter(entry -> parcels.stream().anyMatch(parcel -> entry.getKey().getObjectOnParcel(parcel) != null))
+                .findFirst()
+                .ifPresent(entry -> entry.getKey().displayToto(parcels));
+
+        // Display controller
+        controller.displayToto(parcels);
+
     }
 
     public boolean rightClick(GameEvent event, int x, int y) {

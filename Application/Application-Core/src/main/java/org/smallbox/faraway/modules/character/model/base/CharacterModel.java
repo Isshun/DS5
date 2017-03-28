@@ -9,8 +9,6 @@ import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
-import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.room.model.RoomModel;
@@ -37,7 +35,7 @@ public abstract class CharacterModel extends MovableModel {
     private Collection<CharacterCheck>          _needsCheck;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
-    private Map<Class, Object>                  _extra = new ConcurrentHashMap<>();
+    protected Map<Class, Object>                _extra = new ConcurrentHashMap<>();
 
     public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterInfo type) {
         super(id, parcel);
@@ -56,13 +54,6 @@ public abstract class CharacterModel extends MovableModel {
 //        _equipments.addSubJob(Application.data.getEquipment("base.equipments.regular_shoes"));
 //        _equipments.addSubJob(Application.data.getEquipment("base.equipments.oxygen_bottle"));
 //        _equipments.addSubJob(Application.data.getEquipment("base.equipments.fremen_body"));
-
-        _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(_type.needs));
-        _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra());
-        _extra.put(CharacterSkillExtra.class, new CharacterSkillExtra());
-        _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra());
-        _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(name, lastName, old));
-        _extra.put(CharacterDiseasesExtra.class, new CharacterDiseasesExtra());
 
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
@@ -295,5 +286,9 @@ public abstract class CharacterModel extends MovableModel {
 
     public PathModel getPath() {
         return _path;
+    }
+
+    public boolean hasExtra(Class<?> cls) {
+        return _extra.containsKey(cls);
     }
 }

@@ -1,0 +1,7 @@
+Regle de stockage des StorageArea
+Priorité des StorageArea
+Priorité des job
+Talents utilisé pour les jobs assign
+Talents prise en compte lors des job action (et générification de ceux ci ?)
+RoomModule: création des salles
+Lien roomModule / WeatherModule

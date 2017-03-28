@@ -27,6 +27,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
         displayObjects();
     }
 
+    // TODO: verifier que la liste des parcel contient au moins un item affichable
     public void displayToto(Collection<ParcelModel> parcelList) {
         setVisible(true);
         listSelected.clear();

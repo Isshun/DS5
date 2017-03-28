@@ -1,9 +1,11 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
@@ -16,6 +18,9 @@ import java.util.Queue;
  */
 public class StructureInfoController extends AbsInfoLuaController<StructureItem> {
 
+    @BindComponent
+    private UIEventManager uiEventManager;
+
     @BindModule
     private StructureModule structureModule;
 
@@ -27,6 +32,11 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
     @BindLua private View frameBuild;
     @BindLua private UILabel progressBuild;
     @BindLua private UIList listBuildComponents;
+
+    @Override
+    public void onReloadUI() {
+        uiEventManager.registerSelection(this);
+    }
 
     @Override
     protected void onDisplayUnique(StructureItem structure) {

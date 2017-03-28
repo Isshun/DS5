@@ -2,6 +2,8 @@ package org.smallbox.faraway.client.controller.area;
 
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
@@ -20,6 +22,9 @@ import java.util.Queue;
  */
 public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
+    @BindComponent
+    private UIEventManager uiEventManager;
+
     @BindModule
     private AreaModule areaModule;
 
@@ -31,6 +36,14 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @BindComponent
     private Data data;
+
+    @BindLuaController
+    private AreaInfoController areaInfoController;
+
+    @Override
+    public void onReloadUI() {
+        uiEventManager.registerSelection(this, areaInfoController);
+    }
 
     @Override
     protected void onDisplayUnique(AreaModel area) {
