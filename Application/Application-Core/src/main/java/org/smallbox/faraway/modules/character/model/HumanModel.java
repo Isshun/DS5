@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.character.model;
 
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.*;
@@ -8,6 +8,7 @@ import org.smallbox.faraway.modules.character.model.base.*;
 /**
  * Created by Alex on 17/06/2015.
  */
+@CharacterInfoAnnotation("base.character.human")
 public class HumanModel extends CharacterModel {
     public static final double     BODY_COLD_ABSORB = 32;
     public static final double     BODY_COLD_RESIST = 0.25;
@@ -24,8 +25,8 @@ public class HumanModel extends CharacterModel {
             new String[] {"bt_tool_3", "tool"}
     };
 
-    public HumanModel(int id, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, parcel, name, lastName, old, Application.data.characters.get("base.character.human"));
+    public HumanModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
+        super(id, characterInfo, parcel, name, lastName, old);
 
         _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(_type.needs));
         _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra());

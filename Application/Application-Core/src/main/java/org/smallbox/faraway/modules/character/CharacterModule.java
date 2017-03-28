@@ -8,8 +8,10 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterInfoAnnotation;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterName;
@@ -70,10 +72,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 //        jobModule.addPriorityCheck(new CheckCharacterEnergyWarning());
 //        jobModule.addSleepCheck(new CheckCharacterTimetableSleep());
 //        jobModule.addSleepCheck(new CheckJoySleep(itemModule));
-    }
-
-    public void addVisitor() {
-        _visitors.add(new HumanModel(Utils.getUUID(), WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true), "plop", "plop", 0));
     }
 
     @Override
@@ -160,29 +158,17 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         return null;
     }
 
-    public CharacterModel addRandom(int x, int y, int z) {
-        CharacterModel character = new HumanModel(Utils.getUUID(), WorldHelper.getParcel(x, y, z), null, null, 16);
-        add(character);
-        return character;
-    }
-
-    public CharacterModel addRandom(ParcelModel parcel) {
-        CharacterModel character = new HumanModel(Utils.getUUID(), parcel, "rand", "rand", 16);
-        add(character);
-        return character;
-    }
-
     public CharacterModel addRandom() {
-        CharacterModel character = new HumanModel(Utils.getUUID(), WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true), "rand", "rand", 16);
-        add(character);
-        return character;
+        return addRandom(HumanModel.class);
     }
 
     public CharacterModel addRandom(Class<? extends CharacterModel> cls) {
         try {
-            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, ParcelModel.class, String.class, String.class, double.class);
+            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, CharacterInfo.class, ParcelModel.class, String.class, String.class, double.class);
+            CharacterInfo characterInfo = data.characters.get(cls.getAnnotation(CharacterInfoAnnotation.class).value());
             CharacterModel character = constructor.newInstance(
                     Utils.getUUID(),
+                    characterInfo,
                     WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true),
                     CharacterName.getFirstname(CharacterPersonalsExtra.Gender.MALE),
                     CharacterName.getLastName(),

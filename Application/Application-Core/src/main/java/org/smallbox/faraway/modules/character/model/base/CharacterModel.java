@@ -38,13 +38,13 @@ public abstract class CharacterModel extends MovableModel {
     private boolean                             _isSleeping;
     protected Map<Class, Object>                _extra = new ConcurrentHashMap<>();
 
-    public CharacterModel(int id, ParcelModel parcel, String name, String lastName, double old, CharacterInfo type) {
+    public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel);
 
         Log.info("Character #" + id);
 
         _inventory = new ConcurrentHashMap<>();
-        _type = type;
+        _type = characterInfo;
         _needsCheck = new ConcurrentLinkedQueue<>();
         _lag = (int)(Math.random() * 10);
         _direction = Direction.NONE;

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.character.model;
 
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
@@ -8,6 +8,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 /**
  * Created by Alex on 17/06/2015.
  */
+@CharacterInfoAnnotation("base.character.android")
 public class AndroidModel extends CharacterModel {
     private static final double     BODY_COLD_ABSORB = 64;
     private static final double     BODY_COLD_RESIST = 0.5;
@@ -23,8 +24,8 @@ public class AndroidModel extends CharacterModel {
             new String[] {"bt_tool_3",  "tool"}
     };
 
-    public AndroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, parcel, name, lastName, old, Application.data.characters.get("base.character.android"));
+    public AndroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
+        super(id, characterInfo, parcel, name, lastName, old);
 //        _personals.setColor(new Color(0xc57de6));
     }
 

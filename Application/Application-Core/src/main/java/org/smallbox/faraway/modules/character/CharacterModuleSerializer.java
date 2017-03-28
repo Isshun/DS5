@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
@@ -58,7 +59,8 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                         String firstname = st.columnString(4);
                         String lastname =  st.columnString(5);
 
-                        module.addCharacter(new HumanModel(id, WorldHelper.getParcel(x, y, z), firstname, lastname, 10));
+                        CharacterInfo characterInfo = Application.data.characters.get("base.character.human");
+                        module.addCharacter(new HumanModel(id, characterInfo, WorldHelper.getParcel(x, y, z), firstname, lastname, 10));
                     }
                 } finally {
                     st.dispose();
