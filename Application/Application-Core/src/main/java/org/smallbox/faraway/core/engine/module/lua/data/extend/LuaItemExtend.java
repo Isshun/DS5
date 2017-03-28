@@ -72,7 +72,8 @@ public class LuaItemExtend extends LuaExtend {
     private void readItem(Data data, ItemInfo itemInfo, LuaValue value) throws DataExtendException {
         itemInfo.name = getString(value, "name", null);
         itemInfo.label = getString(value, "label", null);
-        itemInfo.category = getString(value, "category", null);
+        itemInfo.category = value.get("category").optjstring(null);
+        itemInfo.subCategory = value.get("sub_category").optjstring(null);
         itemInfo.type = getString(value, "type", null);
 
         if (!value.get("size").isnil()) {

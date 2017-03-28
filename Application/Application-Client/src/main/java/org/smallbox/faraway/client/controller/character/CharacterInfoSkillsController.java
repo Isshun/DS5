@@ -39,7 +39,7 @@ public class CharacterInfoSkillsController extends LuaController {
     private void refreshSkills() {
 
         if (_selected.hasExtra(CharacterSkillExtra.class)) {
-            _selected.getExtra2(CharacterSkillExtra.class).getAll().forEach(skill -> {
+            _selected.getExtra(CharacterSkillExtra.class).getAll().forEach(skill -> {
 
                 View view = new UIFrame(null)
                         .setBackgroundColor(skill.available ? 0x1a3647 : 0x0f1f29)
@@ -75,7 +75,7 @@ public class CharacterInfoSkillsController extends LuaController {
                         Log.info("drop on " + dropView);
                         Log.info("drop on " + dropView.getData());
 
-                        _selected.getExtra2(CharacterSkillExtra.class).moveSkill(skill, ((CharacterSkillExtra.SkillEntry) dropView.getData()).index);
+                        _selected.getExtra(CharacterSkillExtra.class).moveSkill(skill, ((CharacterSkillExtra.SkillEntry) dropView.getData()).index);
                         refreshSkills();
                     }
 

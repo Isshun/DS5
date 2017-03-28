@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.*;
+import org.smallbox.faraway.modules.job.freeTimeJobs.BasicWalkJob;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -28,12 +29,16 @@ public class HumanModel extends CharacterModel {
     public HumanModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
         super(id, characterInfo, parcel, name, lastName, old);
 
-        _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(_type.needs));
-        _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra());
-        _extra.put(CharacterSkillExtra.class, new CharacterSkillExtra());
-        _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra());
-        _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(name, lastName, old));
-        _extra.put(CharacterDiseasesExtra.class, new CharacterDiseasesExtra());
+        _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(this, _type.needs));
+        _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra(this));
+        _extra.put(CharacterSkillExtra.class, new CharacterSkillExtra(this));
+        _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra(this));
+        _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(this, name, lastName, old));
+        _extra.put(CharacterDiseasesExtra.class, new CharacterDiseasesExtra(this));
+
+        CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);
+        characterFreeTimeExtra.addType(BasicWalkJob.class);
+        _extra.put(CharacterFreeTimeExtra.class, characterFreeTimeExtra);
 
 //        _personals.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE);
     }

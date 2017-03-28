@@ -10,12 +10,20 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Alex on 24/06/2015.
  */
-public class CharacterDiseasesExtra {
+public class CharacterDiseasesExtra extends CharacterExtra {
 
     private Map<DiseaseInfo, CharacterDisease> _diseases = new ConcurrentHashMap<>();
 
+    public CharacterDiseasesExtra(CharacterModel character) {
+        super(character);
+    }
+
     public void addDisease(CharacterDisease disease) {
         _diseases.put(disease.info, disease);
+    }
+
+    public void addDisease(DiseaseInfo diseaseInfo) {
+        addDisease(new CharacterDisease(diseaseInfo, _character));
     }
 
     public Collection<CharacterDisease> getAll() {

@@ -36,7 +36,7 @@ public abstract class CharacterModel extends MovableModel {
     private Collection<CharacterCheck>          _needsCheck;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
-    protected Map<Class, Object>                _extra = new ConcurrentHashMap<>();
+    protected Map<Class<? extends CharacterExtra>, CharacterExtra>  _extra = new ConcurrentHashMap<>();
 
     public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
         super(id, parcel);
@@ -59,8 +59,7 @@ public abstract class CharacterModel extends MovableModel {
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
-    public <T> T                        getExtra2(Class<T> cls) { return (T) _extra.get(cls); }
-    public <T> T                        getExtra(Class<T> cls) { return (T) _extra.get(cls); }
+    public <T extends CharacterExtra> T getExtra(Class<T> cls) { return (T) _extra.get(cls); }
     public JobModel                     getJob() { return _job; }
     public ParcelModel                  getParcel() { return _parcel; }
     public ConsumableItem               getInventory() {
@@ -230,7 +229,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public String toString() {
         if (hasExtra(CharacterPersonalsExtra.class)) {
-            return getExtra2(CharacterPersonalsExtra.class).getFirstName() + " " + getExtra2(CharacterPersonalsExtra.class).getLastName();
+            return getExtra(CharacterPersonalsExtra.class).getFirstName() + " " + getExtra(CharacterPersonalsExtra.class).getLastName();
         }
         return "no name";
     }

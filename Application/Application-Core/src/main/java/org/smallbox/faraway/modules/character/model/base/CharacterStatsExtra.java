@@ -7,9 +7,13 @@ import java.util.List;
 /**
  * Created by Alex on 16/06/2015.
  */
-public class CharacterStatsExtra {
+public class CharacterStatsExtra extends CharacterExtra {
     public double       speed = 1;
     public boolean      isFaint = false;
+
+    public CharacterStatsExtra(CharacterModel character) {
+        super(character);
+    }
 
     public static class CharacterStatsValues {
         public double   cold;

@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CharacterNeedsExtra {
+public class CharacterNeedsExtra extends CharacterExtra {
     public final static String TAG_ENERGY = "energy";
     public final static String TAG_OXYGEN = "oxygen";
     public final static String TAG_FOOD = "food";
@@ -19,7 +19,9 @@ public class CharacterNeedsExtra {
 
     private Map<String, NeedEntry> _values = new HashMap<>();
 
-    public CharacterNeedsExtra(CharacterInfo.NeedsInfo needsInfo) {
+    public CharacterNeedsExtra(CharacterModel character, CharacterInfo.NeedsInfo needsInfo) {
+        super(character);
+
         // TODO: add each need to lua file
         _values.put(TAG_FOOD, new NeedEntry(TAG_FOOD, Constant.CHARACTER_INIT_FOOD, needsInfo.food));
         _values.put(TAG_DRINK, new NeedEntry(TAG_DRINK, Constant.CHARACTER_INIT_DRINK, needsInfo.drink));

@@ -44,8 +44,8 @@ public class DebugViewLayer extends BaseLayer {
         if (view.isVisible()) {
             renderer.drawRectangle(view.getFinalX(), view.getFinalY(), view.getWidth(), view.getHeight(), uiEventManager.hasClickListener(view) ? Color.YELLOW : Color.RED, false);
             renderer.drawText(view.getFinalX(), view.getFinalY(), 12, Color.RED, view.getName());
-            renderer.drawText(view.getFinalX(), view.getFinalY() + 10, 12, Color.RED, view.getPath());
-            renderer.drawText(view.getFinalX(), view.getFinalY() + 20, 12, Color.RED, "size: " + view.getViews().size());
+//            renderer.drawText(view.getFinalX(), view.getFinalY() + 10, 12, Color.RED, view.getPath());
+//            renderer.drawText(view.getFinalX(), view.getFinalY() + 20, 12, Color.RED, "size: " + view.getViews().size());
 
             if (CollectionUtils.isNotEmpty(view.getViews())) {
                 view.getViews().forEach(v -> drawViewRecurse(renderer, v));

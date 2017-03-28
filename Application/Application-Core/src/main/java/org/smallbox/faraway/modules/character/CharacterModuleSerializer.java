@@ -31,8 +31,8 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                         st.bind(2, character.getParcel().x);
                         st.bind(3, character.getParcel().y);
                         st.bind(4, character.getParcel().z);
-                        st.bind(5, character.getExtra2(CharacterPersonalsExtra.class).getFirstName());
-                        st.bind(6, character.getExtra2(CharacterPersonalsExtra.class).getLastName());
+                        st.bind(5, character.getExtra(CharacterPersonalsExtra.class).getFirstName());
+                        st.bind(6, character.getExtra(CharacterPersonalsExtra.class).getLastName());
                         st.step();
                         st.reset(false);
                     }

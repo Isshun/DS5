@@ -68,7 +68,7 @@ public class CharacterInfoStatusController extends LuaController {
 
     private void displayNeeds(CharacterModel character) {
         if (character.hasExtra(CharacterNeedsExtra.class)) {
-            CharacterNeedsExtra needs = character.getExtra2(CharacterNeedsExtra.class);
+            CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
             displayNeed(lbNeedFood,     gaugeFood,      "Food",         needs.get(CharacterNeedsExtra.TAG_FOOD));
             displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",        needs.get(CharacterNeedsExtra.TAG_DRINK));
             displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",       needs.get(CharacterNeedsExtra.TAG_ENERGY));

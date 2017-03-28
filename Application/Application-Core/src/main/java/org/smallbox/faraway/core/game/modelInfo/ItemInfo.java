@@ -199,6 +199,7 @@ public class ItemInfo extends ObjectInfo {
     public String                       label;
     public String                       labelChild;
     public String                       category;
+    public String                       subCategory;
     public String                       type;
     public ItemInfoStorage              storage;
     public List<int[]>                  slots;

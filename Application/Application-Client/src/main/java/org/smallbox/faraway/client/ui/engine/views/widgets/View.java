@@ -203,7 +203,7 @@ public abstract class View implements Comparable<View> {
 
     public View         setId(int id) { _id = id; return this; }
     public View         setId(String id) { _id = id.hashCode(); return this; }
-    public void         setTextAlign(Align align) { _align = align; }
+    public View         setTextAlign(Align align) { _align = align; return this; }
     public void         setFocus(boolean focus) { _isFocus = focus; }
     public void         setActive(boolean active) { _isActive = active; }
     public void         setParent(View parent) {

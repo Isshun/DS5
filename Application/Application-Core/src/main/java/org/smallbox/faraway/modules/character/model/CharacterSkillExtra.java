@@ -1,12 +1,15 @@
 package org.smallbox.faraway.modules.character.model;
 
+import org.smallbox.faraway.modules.character.model.base.CharacterExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Alex on 31/10/2015.
  */
-public class CharacterSkillExtra {
+public class CharacterSkillExtra extends CharacterExtra {
     public static class SkillEntry {
         public final String         name;
         public final SkillType     type;
@@ -47,7 +50,9 @@ public class CharacterSkillExtra {
     private HashMap<SkillType, SkillEntry>    _skillsMap;
     private Queue<SkillEntry> _skills;
 
-    public CharacterSkillExtra() {
+    public CharacterSkillExtra(CharacterModel character) {
+        super(character);
+
         _skillsMap = new HashMap<>();
         _skillsMap.put(SkillType.HEAL, new SkillEntry(SkillType.HEAL,    "Heal",     1,  true));
         _skillsMap.put(SkillType.CRAFT, new SkillEntry(SkillType.CRAFT,   "Craft",    3,  true));

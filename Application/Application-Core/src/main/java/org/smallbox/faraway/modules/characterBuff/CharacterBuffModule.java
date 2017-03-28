@@ -103,7 +103,7 @@ public class CharacterBuffModule extends GameModule {
 
             // Apply need effect
             if (character.hasExtra(CharacterNeedsExtra.class)) {
-                CharacterNeedsExtra needs = character.getExtra2(CharacterNeedsExtra.class);
+                CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
                 if (needs != null) {
                     effect.needs.forEach((name, value) -> needs.addValue(name, game.byTick(value)));
                 }

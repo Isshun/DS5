@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.engine.ColorUtils;
 /**
  * Created by Alex on 24/06/2015.
  */
-public class CharacterPersonalsExtra {
+public class CharacterPersonalsExtra extends CharacterExtra {
     private static final Color COLOR_FEMALE = ColorUtils.fromHex(255, 180, 220);
     private static final Color COLOR_MALE = ColorUtils.fromHex(110, 200, 255);
 
@@ -24,7 +24,9 @@ public class CharacterPersonalsExtra {
     protected Color _color;
     protected double            _old;
 
-    public CharacterPersonalsExtra(String name, String lastName, double old) {
+    public CharacterPersonalsExtra(CharacterModel character, String name, String lastName, double old) {
+        super(character);
+
         _old = old;
         _firstName = name;
         _isGay = (int)(Math.random() * 100) % 10 == 0;

@@ -1,12 +1,19 @@
 package org.smallbox.faraway.modules.character;
 
+import org.smallbox.faraway.modules.character.model.base.CharacterExtra;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Alex on 12/03/2017.
  */
-public class CharacterTimetableExtra {
+public class CharacterTimetableExtra extends CharacterExtra {
+
+    public CharacterTimetableExtra(CharacterModel character) {
+        super(character);
+    }
 
     public enum State { FREE, WORK, SLEEP }
 

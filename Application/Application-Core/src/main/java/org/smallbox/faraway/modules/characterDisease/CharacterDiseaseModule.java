@@ -21,13 +21,13 @@ public class CharacterDiseaseModule extends GameModule<CharacterModuleObserver> 
 
     public void addDisease(DiseaseInfo info, CharacterModel character) {
         if (character.hasExtra(CharacterDiseasesExtra.class)) {
-            character.getExtra2(CharacterDiseasesExtra.class).addDisease(new CharacterDisease(info, character));
+            character.getExtra(CharacterDiseasesExtra.class).addDisease(new CharacterDisease(info, character));
         }
     }
 
     public Collection<CharacterDisease> getDiseases(CharacterModel character) {
         if (character.hasExtra(CharacterDiseasesExtra.class)) {
-            return character.getExtra2(CharacterDiseasesExtra.class).getAll();
+            return character.getExtra(CharacterDiseasesExtra.class).getAll();
         }
         return null;
     }

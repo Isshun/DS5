@@ -8,17 +8,12 @@ import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.AndroidModel;
+import org.smallbox.faraway.modules.character.model.DebugBotModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
-import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
-import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.plant.GardenArea;
-import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -60,7 +55,7 @@ public class DesktopLauncher {
 
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 
-                CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(AndroidModel.class);
+                CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(DebugBotModel.class);
 //                character.getExtra(CharacterNeedsExtra.class).addValue(CharacterNeedsExtra.TAG_DRINK, -0.5);
 //                character.addInventory("base.consumable.vegetable.rice", 10);
 //                character.addInventory("base.consumable.vegetable.carrot", 10);
@@ -73,20 +68,20 @@ public class DesktopLauncher {
 //                    character.getExtra(CharacterTimetableExtra.class).setState(i, CharacterTimetableExtra.State.SLEEP);
 //                }
 
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 800, 2, 2, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.carrot", 50, 2, 2, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.rice", 40, 2, 2, 1);
-                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.wood_log", 1000, 4, 2, 1);
-                StructureItem structureItem = Application.moduleManager.getModule(StructureModule.class).addStructure("base.wood_wall", 6, 2, 1);
-                structureItem.setBuildProgress(0);
-                structureItem.setHealth(5000);
-                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1).setHealth(5000);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.easy_meal", 1000, 2, 2, 1);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.drink.water", 800, 2, 2, 1);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.carrot", 50, 2, 2, 1);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.vegetable.rice", 40, 2, 2, 1);
+//                Application.moduleManager.getModule(ConsumableModule.class).addConsumable("base.consumable.wood_log", 1000, 4, 2, 1);
+//                StructureItem structureItem = Application.moduleManager.getModule(StructureModule.class).addStructure("base.wood_wall", 6, 2, 1);
+//                structureItem.setBuildProgress(0);
+//                structureItem.setHealth(5000);
+//                Application.moduleManager.getModule(ItemModule.class).addItem("base.item.cooker", true, 2, 6, 1).setHealth(5000);
 //                Application.moduleManager.getModule(ItemModule.class).addItem("base.fountain", true, 2, 8, 1).setHealth(5000);
 
-                DiseaseInfo diseaseInfo = new DiseaseInfo();
-                diseaseInfo.label = "di test";
-                Application.moduleManager.getModule(CharacterDiseaseModule.class).addDisease(diseaseInfo, character);
+//                DiseaseInfo diseaseInfo = new DiseaseInfo();
+//                diseaseInfo.label = "di test";
+//                character.getExtra(CharacterDiseasesExtra.class).addDisease(diseaseInfo);
 
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 //                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
@@ -110,17 +105,17 @@ public class DesktopLauncher {
 //                        WorldHelper.getParcel(8, 7, 1),
 //                        WorldHelper.getParcel(7, 7, 1)));
 //
-//                Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
-//                        WorldHelper.getParcel(8, 10, 1),
-//                        WorldHelper.getParcel(7, 10, 1),
-//                        WorldHelper.getParcel(8, 11, 1),
-//                        WorldHelper.getParcel(7, 11, 1)));
+                Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
+                        WorldHelper.getParcel(8, 10, 1),
+                        WorldHelper.getParcel(7, 10, 1),
+                        WorldHelper.getParcel(8, 11, 1),
+                        WorldHelper.getParcel(7, 11, 1)));
 //
-                Application.moduleManager.getModule(AreaModule.class).addArea(GardenArea.class, Arrays.asList(
-                        WorldHelper.getParcel(2, 10, 1),
-                        WorldHelper.getParcel(3, 10, 1),
-                        WorldHelper.getParcel(2, 11, 1),
-                        WorldHelper.getParcel(3, 11, 1)));
+//                Application.moduleManager.getModule(AreaModule.class).addArea(GardenArea.class, Arrays.asList(
+//                        WorldHelper.getParcel(2, 10, 1),
+//                        WorldHelper.getParcel(3, 10, 1),
+//                        WorldHelper.getParcel(2, 11, 1),
+//                        WorldHelper.getParcel(3, 11, 1)));
 
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 8, 6, 1);
 //                        Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.rice", 7, 6, 1);

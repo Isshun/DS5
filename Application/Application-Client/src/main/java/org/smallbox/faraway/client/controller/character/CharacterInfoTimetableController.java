@@ -42,7 +42,7 @@ public class CharacterInfoTimetableController extends LuaController {
 
     private void displayTimetable(CharacterModel character) {
         if (character.hasExtra(CharacterTimetableExtra.class)) {
-            CharacterTimetableExtra timetable = character.getExtra2(CharacterTimetableExtra.class);
+            CharacterTimetableExtra timetable = character.getExtra(CharacterTimetableExtra.class);
 
             if (listTimetable.getViews().isEmpty()) {
                 game.getPlanet().getDayTimes().forEach(dayTime -> {

@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -107,8 +108,14 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
             // Aucun job n'a pu être assigné
             // Assign freetime job
-            if (character.getJob() == null) {
-                assign(character, createJob(new BasicWalkJob(character)));
+            if (character.getJob() == null && character.hasExtra(CharacterFreeTimeExtra.class)) {
+                character.getExtra(CharacterFreeTimeExtra.class).getTypes().stream().findAny().ifPresent(type -> {
+                    try {
+                        assign(character, createJob(type.getConstructor(CharacterModel.class).newInstance(character)));
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                        Log.error(e);
+                    }
+                });
             }
 
         }
