@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class CharacterModel extends MovableModel {
 
+    public boolean                              _isAlive = true;
     private PathModel                           _path;
     private Map<ItemInfo, Integer>              _inventory;
     protected int                               _lag;
@@ -58,6 +59,7 @@ public abstract class CharacterModel extends MovableModel {
 //        Log.info("Character done: " + _info.getName() + " (" + x + ", " + y + ")");
     }
 
+    public <T> T                        getExtra2(Class<T> cls) { return (T) _extra.get(cls); }
     public <T> T                        getExtra(Class<T> cls) { return (T) _extra.get(cls); }
     public JobModel                     getJob() { return _job; }
     public ParcelModel                  getParcel() { return _parcel; }
@@ -81,9 +83,7 @@ public abstract class CharacterModel extends MovableModel {
 
     public void                         setIsFaint() { _isFaint = true; }
     public void                         setQuarter(RoomModel quarter) { _quarter = quarter; }
-    public void                         setIsDead() {
-        getExtra(CharacterStatsExtra.class).isAlive = false;
-    }
+    public void                         setIsDead() { _isAlive = false; }
     public void                         setParcel(ParcelModel parcel) {
         if (parcel == null) {
             throw new GameException(CharacterModel.class, "setParcel: cannot be null");
@@ -91,8 +91,8 @@ public abstract class CharacterModel extends MovableModel {
         _parcel = parcel;
     }
 
-    public boolean                      isAlive() { return getExtra(CharacterStatsExtra.class).isAlive; }
-    public boolean                      isDead() { return !getExtra(CharacterStatsExtra.class).isAlive; }
+    public boolean                      isAlive() { return _isAlive; }
+    public boolean                      isDead() { return !_isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
     public boolean                      isFree() { return getJob() == null && _path == null; }
     //    public boolean                      isSleeping() { return _job != null && _job instanceof SleepJob && _job.getTargetParcel() == _parcel; }
@@ -229,7 +229,10 @@ public abstract class CharacterModel extends MovableModel {
     }
 
     public String toString() {
-        return getExtra(CharacterPersonalsExtra.class).getFirstName() + " " + getExtra(CharacterPersonalsExtra.class).getLastName();
+        if (hasExtra(CharacterPersonalsExtra.class)) {
+            return getExtra2(CharacterPersonalsExtra.class).getFirstName() + " " + getExtra2(CharacterPersonalsExtra.class).getLastName();
+        }
+        return "no name";
     }
 
     public void addNeed(CharacterCheck check) {

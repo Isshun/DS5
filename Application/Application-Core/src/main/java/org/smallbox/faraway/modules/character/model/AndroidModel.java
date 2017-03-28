@@ -24,7 +24,7 @@ public class AndroidModel extends CharacterModel {
     };
 
     public AndroidModel(int id, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, parcel, name, lastName, old, Application.data.characters.get("android"));
+        super(id, parcel, name, lastName, old, Application.data.characters.get("base.character.android"));
 //        _personals.setColor(new Color(0xc57de6));
     }
 
@@ -35,6 +35,6 @@ public class AndroidModel extends CharacterModel {
     }
 
     @Override
-    public String        getName() { return "no name"; }
+    public String        getName() { return "android"; }
 
 }

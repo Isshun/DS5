@@ -268,26 +268,28 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private JobModel getBestRegular(CharacterModel character) {
 
         // Regular jobs
-        for (CharacterSkillExtra.SkillEntry skill: character.getExtra(CharacterSkillExtra.class).getAll()) {
-            int bestDistance = Integer.MAX_VALUE;
-            JobModel bestJob = null;
+        if (character.hasExtra(CharacterSkillExtra.class)) {
+            for (CharacterSkillExtra.SkillEntry skill : character.getExtra(CharacterSkillExtra.class).getAll()) {
+                int bestDistance = Integer.MAX_VALUE;
+                JobModel bestJob = null;
 
-            for (JobModel job: _jobs) {
-                if (!job.isAuto()) {
-                    Log.debug("Check best regular: " + job.getLabel());
-                    ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                    if (skill.type == job.getSkillNeeded() && !job.isClose() && job.getCharacter() == null && job.getFail() <= 0) {
-                        int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
-                        if (distance < bestDistance && job.check(character)) {
-                            bestJob = job;
-                            bestDistance = distance;
+                for (JobModel job : _jobs) {
+                    if (!job.isAuto()) {
+                        Log.debug("Check best regular: " + job.getLabel());
+                        ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
+                        if (skill.type == job.getSkillNeeded() && !job.isClose() && job.getCharacter() == null && job.getFail() <= 0) {
+                            int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
+                            if (distance < bestDistance && job.check(character)) {
+                                bestJob = job;
+                                bestDistance = distance;
+                            }
                         }
                     }
                 }
-            }
 
-            if (bestJob != null) {
-                return bestJob;
+                if (bestJob != null) {
+                    return bestJob;
+                }
             }
         }
 

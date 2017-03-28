@@ -67,12 +67,14 @@ public class CharacterInfoStatusController extends LuaController {
     }
 
     private void displayNeeds(CharacterModel character) {
-        CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
-        displayNeed(lbNeedFood,     gaugeFood,      "Food",         needs.get(CharacterNeedsExtra.TAG_FOOD));
-        displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",        needs.get(CharacterNeedsExtra.TAG_DRINK));
-        displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",       needs.get(CharacterNeedsExtra.TAG_ENERGY));
-        displayNeed(lbNeedJoy,      gaugeJoy,       "Entertainment",needs.get(CharacterNeedsExtra.TAG_ENTERTAINMENT));
-        displayNeed(lbNeedRelation, gaugeRelation,  "Relation",     needs.get(CharacterNeedsExtra.TAG_RELATION));
+        if (character.hasExtra(CharacterNeedsExtra.class)) {
+            CharacterNeedsExtra needs = character.getExtra2(CharacterNeedsExtra.class);
+            displayNeed(lbNeedFood,     gaugeFood,      "Food",         needs.get(CharacterNeedsExtra.TAG_FOOD));
+            displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",        needs.get(CharacterNeedsExtra.TAG_DRINK));
+            displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",       needs.get(CharacterNeedsExtra.TAG_ENERGY));
+            displayNeed(lbNeedJoy,      gaugeJoy,       "Entertainment",needs.get(CharacterNeedsExtra.TAG_ENTERTAINMENT));
+            displayNeed(lbNeedRelation, gaugeRelation,  "Relation",     needs.get(CharacterNeedsExtra.TAG_RELATION));
+        }
     }
 
     private void displayJob(CharacterModel character) {

@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class CharacterStatsExtra {
     public double       speed = 1;
-    public boolean      isAlive = true;
     public boolean      isFaint = false;
 
     public static class CharacterStatsValues {

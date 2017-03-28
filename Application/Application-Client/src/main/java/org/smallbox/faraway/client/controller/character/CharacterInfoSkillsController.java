@@ -38,64 +38,66 @@ public class CharacterInfoSkillsController extends LuaController {
 
     private void refreshSkills() {
 
-        _selected.getExtra(CharacterSkillExtra.class).getAll().forEach(skill -> {
+        if (_selected.hasExtra(CharacterSkillExtra.class)) {
+            _selected.getExtra2(CharacterSkillExtra.class).getAll().forEach(skill -> {
 
-            View view = new UIFrame(null)
-                    .setBackgroundColor(skill.available ? 0x1a3647 : 0x0f1f29)
-                    .setBorderColor(0x359f9f)
-                    .setMargin(8, 0)
-                    .setSize(320, 28);
+                View view = new UIFrame(null)
+                        .setBackgroundColor(skill.available ? 0x1a3647 : 0x0f1f29)
+                        .setBorderColor(0x359f9f)
+                        .setMargin(8, 0)
+                        .setSize(320, 28);
 
-            view.addView(UILabel.create(null)
-                    .setText(skill.name)
-                    .setTextColor(ColorUtils.fromHex(0x359f9f))
-                    .setTextSize(16)
-                    .setPosition(8, 16)
-                    .setSize(320, 28));
+                view.addView(UILabel.create(null)
+                        .setText(skill.name)
+                        .setTextColor(ColorUtils.fromHex(0x359f9f))
+                        .setTextSize(16)
+                        .setPosition(8, 16)
+                        .setSize(320, 28));
 
-            int width = Utils.round(skill.level * 10, 10);
-            view.addView(UIImage.create(null)
-                    .setImage("[base]/graphics/needbar.png")
-                    .setTextureRect(0, 0, width, 8)
-                    .setPosition(314 - width, 18));
+                int width = Utils.round(skill.level * 10, 10);
+                view.addView(UIImage.create(null)
+                        .setImage("[base]/graphics/needbar.png")
+                        .setTextureRect(0, 0, width, 8)
+                        .setPosition(314 - width, 18));
 
-            view.setData(skill);
+                view.setData(skill);
 
-            view.setOnDragListener(new UIEventManager.OnDragListener() {
-                @Override
-                public void onDrag(GameEvent event) {
-                    Log.info("drag at " + event.mouseEvent.x + " x " + event.mouseEvent.y);
-                    Log.info("drag on " + skill);
+                view.setOnDragListener(new UIEventManager.OnDragListener() {
+                    @Override
+                    public void onDrag(GameEvent event) {
+                        Log.info("drag at " + event.mouseEvent.x + " x " + event.mouseEvent.y);
+                        Log.info("drag on " + skill);
+                    }
+
+                    @Override
+                    public void onDrop(GameEvent event, View dropView) {
+                        Log.info("drop at " + event.mouseEvent.x + " x " + event.mouseEvent.y);
+                        Log.info("drop on " + dropView);
+                        Log.info("drop on " + dropView.getData());
+
+                        _selected.getExtra2(CharacterSkillExtra.class).moveSkill(skill, ((CharacterSkillExtra.SkillEntry) dropView.getData()).index);
+                        refreshSkills();
+                    }
+
+                    @Override
+                    public void onHover(GameEvent event, View dropView) {
+                        dropView.setBackgroundColor(0xbb3647);
+                    }
+
+                    @Override
+                    public void onHoverExit(GameEvent event, View dropView) {
+                        dropView.setBackgroundColor(0x1a3647);
+                    }
+                });
+
+                if (skill.available) {
+                    ApplicationClient.uiEventManager.addDropZone(view);
                 }
 
-                @Override
-                public void onDrop(GameEvent event, View dropView) {
-                    Log.info("drop at " + event.mouseEvent.x + " x " + event.mouseEvent.y);
-                    Log.info("drop on " + dropView);
-                    Log.info("drop on " + dropView.getData());
+                listSkills.addNextView(view);
 
-                    _selected.getExtra(CharacterSkillExtra.class).moveSkill(skill, ((CharacterSkillExtra.SkillEntry)dropView.getData()).index);
-                    refreshSkills();
-                }
-
-                @Override
-                public void onHover(GameEvent event, View dropView) {
-                    dropView.setBackgroundColor(0xbb3647);
-                }
-
-                @Override
-                public void onHoverExit(GameEvent event, View dropView) {
-                    dropView.setBackgroundColor(0x1a3647);
-                }
             });
-
-            if (skill.available) {
-                ApplicationClient.uiEventManager.addDropZone(view);
-            }
-
-            listSkills.addNextView(view);
-
-        });
+        }
 
         listSkills.switchViews();
     }

@@ -41,20 +41,21 @@ public class CharacterInfoTimetableController extends LuaController {
     }
 
     private void displayTimetable(CharacterModel character) {
-        CharacterTimetableExtra timetable = character.getExtra(CharacterTimetableExtra.class);
+        if (character.hasExtra(CharacterTimetableExtra.class)) {
+            CharacterTimetableExtra timetable = character.getExtra2(CharacterTimetableExtra.class);
 
-        if (listTimetable.getViews().isEmpty()) {
-            game.getPlanet().getDayTimes().forEach(dayTime -> {
-                View view = new UIFrame(null)
-                        .setSize(32, 22);
+            if (listTimetable.getViews().isEmpty()) {
+                game.getPlanet().getDayTimes().forEach(dayTime -> {
+                    View view = new UIFrame(null)
+                            .setSize(32, 22);
 
-                view.addView(new UIFrame(null)
-                        .setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)))
-                        .setSize(300, 21)
-                        .setOnClickListener(event -> {
-                            timetable.nextState(dayTime.hour);
-                            event.view.setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
-                        }));
+                    view.addView(new UIFrame(null)
+                            .setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)))
+                            .setSize(300, 21)
+                            .setOnClickListener(event -> {
+                                timetable.nextState(dayTime.hour);
+                                event.view.setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
+                            }));
 
 //                view.addView(new UIFrame(null)
 //                        .setSize(4, 16)
@@ -62,11 +63,11 @@ public class CharacterInfoTimetableController extends LuaController {
 //                        .setMargin(2, 0)
 //                        .setBackgroundColor(dayTime.color));
 //
-                view.addView(new UILabel(null)
-                        .setText(dayTime.hour + "h")
-                        .setTextColor(ColorUtils.COLOR2)
-                        .setTextSize(14)
-                        .setPadding(6));
+                    view.addView(new UILabel(null)
+                            .setText(dayTime.hour + "h")
+                            .setTextColor(ColorUtils.COLOR2)
+                            .setTextSize(14)
+                            .setPadding(6));
 //
 //                view.addView(new UIFrame(null)
 //                        .setSize(32, 14)
@@ -79,11 +80,12 @@ public class CharacterInfoTimetableController extends LuaController {
 //                            event.view.setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
 //                        }));
 
-                listTimetable.addView(view);
-            });
-        }
+                    listTimetable.addView(view);
+                });
+            }
 
-        marker.setPositionY((22 * 24) * (game.getTime().getHour() * 60 + game.getTime().getMinute()) / (24 * 60));
+            marker.setPositionY((22 * 24) * (game.getTime().getHour() * 60 + game.getTime().getMinute()) / (24 * 60));
+        }
     }
 
     private long getStateColor(CharacterTimetableExtra.State state) {

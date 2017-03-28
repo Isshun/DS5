@@ -102,9 +102,11 @@ public class CharacterBuffModule extends GameModule {
         buffs.forEach((info, buff) -> buff.levelInfo.effects.forEach(effect -> {
 
             // Apply need effect
-            CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
-            if (needs != null) {
-                effect.needs.forEach((name, value) -> needs.addValue(name, game.byTick(value)));
+            if (character.hasExtra(CharacterNeedsExtra.class)) {
+                CharacterNeedsExtra needs = character.getExtra2(CharacterNeedsExtra.class);
+                if (needs != null) {
+                    effect.needs.forEach((name, value) -> needs.addValue(name, game.byTick(value)));
+                }
             }
 
         }));

@@ -36,7 +36,9 @@ public class DebugCharacterLayer extends BaseLayer {
         renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
 
         if (_character != null) {
-            drawDebug(renderer, "Name", _character.getExtra(CharacterPersonalsExtra.class).getName());
+            if (_character.hasExtra(CharacterPersonalsExtra.class)) {
+                drawDebug(renderer, "Name", _character.getExtra(CharacterPersonalsExtra.class).getName());
+            }
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
             drawDebug(renderer, "Inventory2", _character.getInventory2() == null ? "--" :
