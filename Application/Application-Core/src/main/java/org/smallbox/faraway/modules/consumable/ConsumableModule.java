@@ -365,6 +365,16 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return new ConsumableItem(targetLock.consumable.getInfo(), targetLock.quantity);
     }
 
+    public int getLockQuantity(JobModel job, ConsumableItem consumable) {
+        ConsumableJobLock result = _locks.stream()
+                .filter(lock -> lock.job == job)
+                .filter(lock -> lock.consumable == consumable)
+                .findFirst()
+                .orElse(null);
+
+        return result != null ? result.quantity : 0;
+    }
+
     public void removeConsumable(ConsumableItem consumable) {
 
         Log.debug(ConsumableModule.class, "RemoveConsumable: %s", consumable);

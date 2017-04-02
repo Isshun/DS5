@@ -129,7 +129,7 @@ public class ModuleManager implements GameObserver {
             // Try to onLoadModule first module with required dependencies
             moduleHasBeenLoaded = false;
             for (ApplicationModule module: _applicationModules) {
-                if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_applicationModules)) {
+                if (module.isActivate() && !module.isLoaded()) {
                     module.load();
                     moduleHasBeenLoaded = true;
                     break;

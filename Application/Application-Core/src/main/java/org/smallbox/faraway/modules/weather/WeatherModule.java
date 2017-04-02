@@ -11,7 +11,9 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.util.CollectionUtils;
+import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.Collections;
@@ -154,7 +156,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     private void loadWeather(WeatherInfo weather) {
         _weather = weather;
 
-        printInfo("Start weather: " + _weather.name);
+        Log.info(WeatherModule.class, "Start weather: " + _weather.name);
         notifyObservers(observer -> observer.onWeatherChange(weather));
 
         // Sun color

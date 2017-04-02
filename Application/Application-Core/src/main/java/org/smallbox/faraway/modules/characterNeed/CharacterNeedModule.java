@@ -58,11 +58,6 @@ public class CharacterNeedModule extends GameModule {
     private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
-    public boolean isModuleMandatory() {
-        return true;
-    }
-
-    @Override
     public void onModuleUpdate(Game game) {
         characterModule.getCharacters().forEach(character -> {
             if (character.hasExtra(CharacterNeedsExtra.class)) {

@@ -217,6 +217,14 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.JOB_COMPLETE;
     }
 
+    public void check() {
+        if (!_isClose && !onCheck()) {
+            close();
+        }
+    }
+
+    protected boolean onCheck() { return true; }
+
     public boolean check(CharacterModel character) {
         if (_isAuto && character != null) {
             return false;

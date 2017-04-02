@@ -16,11 +16,6 @@ public class CharacterRelationModule extends GameModule {
     private CharacterModule characterModule;
 
     @Override
-    public boolean isModuleMandatory() {
-        return true;
-    }
-
-    @Override
     public void onModuleUpdate(Game game) {
         characterModule.getCharacters().forEach(this::updateCharacter);
     }

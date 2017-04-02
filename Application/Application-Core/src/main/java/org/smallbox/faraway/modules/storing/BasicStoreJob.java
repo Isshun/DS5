@@ -23,6 +23,7 @@ public class BasicStoreJob extends JobModel {
 
     protected Map<ConsumableItem, Integer> _targetConsumables;
     private ConsumableModule _consumableModule;
+    private boolean _started;
 
     public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
 
@@ -84,9 +85,10 @@ public class BasicStoreJob extends JobModel {
                 // Si certains composants n'ont pas pu être réservés annule les locks et le job
                 _consumableModule.cancelLock(this);
                 return false;
-
             }
         }
+
+        _started = true;
 
         // Déplace le personnage vers chaque consomable et l'ajoute à son inventaire
         _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
@@ -170,6 +172,22 @@ public class BasicStoreJob extends JobModel {
     @Override
     public CharacterSkillExtra.SkillType getSkillType() {
         return CharacterSkillExtra.SkillType.STORE;
+    }
+
+    protected boolean onCheck() {
+
+        if (!_started) {
+
+            // Le check echoue si pour chaque consomable, la quantité présent dans le job est différent de la quantité présent sur le dit consomable
+            for (Map.Entry<ConsumableItem, Integer> entry : _targetConsumables.entrySet()) {
+                if (entry.getKey().getFreeQuantity() != entry.getValue()) {
+                    return false;
+                }
+            }
+
+        }
+
+        return true;
     }
 
 }

@@ -347,9 +347,6 @@ public class UIManager {
         else {
             int resId = id.hashCode();
             for (RootView view : _rootViews) {
-//                if (view.getId() == resId) {
-//                    return view;
-//                }
                 View v = view.getView().findById(resId);
                 if (v != null) {
                     return v;

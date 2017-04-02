@@ -10,7 +10,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
-import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -43,6 +42,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     @Override
     protected void onModuleUpdate(Game game) {
+
+        // Check all jobs
+        _jobs.forEach(JobModel::check);
+
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isClose);
 
@@ -69,8 +72,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
      * @param character
      */
     public void assign(CharacterModel character) {
-
-        fixCharacterInventory();
 
         // La valeur "innactive duration" sert à temporiser un certain nombre de tick avant l'assignation d'un nouveau
         // job afin de laisser le temps aux autres modules d'effectuer leur update et de peut-être créer des job plus
@@ -118,40 +119,23 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     }
 
-    private void fixCharacterInventory() {
-        characterModule.getCharacters().stream()
-                .filter(character -> character.hasExtra(CharacterInventoryExtra.class))
-                .filter(character -> character.getJob() == null && !character.getExtra(CharacterInventoryExtra.class).getAll().isEmpty())
-                .forEach(character -> {
-                    Log.warning(getName() + " have item in inventory without job");
-                    character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) ->
-                            consumableModule.addConsumable(itemInfo, quantity, character.getParcel()));
-                    character.getExtra(CharacterInventoryExtra.class).getAll().clear();
-                });
-    }
-
     private void assign(CharacterModel character, JobModel job) {
         if (job != null) {
             _characterInnactiveDuration.put(character, 0);
             job.start(character);
             if (character.getJob() == null || character.getJob() != job) {
-                printError("Fail to assign job");
+                Log.error(JobModule.class, "Fail to assign job");
             } else {
 //                printDebug("assign job (" + character.getPersonals().getName() + " -> " + character.getJob().getLabel() + ")");
             }
         } else {
-            printError("Try to assign null job");
+            Log.error(JobModule.class, "Try to assign null job");
         }
-    }
-
-    @Override
-    public boolean isModuleMandatory() {
-        return true;
     }
 
     public void    addJob(JobModel job) {
         if (job == null || _jobs.contains(job)) {
-            printError("Trying to addSubJob null or already existing job to JobModule");
+            Log.error(JobModule.class, "Trying to addSubJob null or already existing job to JobModule");
             return;
         }
 
@@ -159,7 +143,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
             throw new GameException(JobModule.class, "Job status must be JOB_INITIALIZED");
         }
 
-        printDebug("addSubJob job: " + job.getLabel());
+        Log.debug(JobModule.class, "addSubJob job: " + job.getLabel());
 
         _jobs.add(job);
         sortJobs();
@@ -186,7 +170,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public void quitJob(JobModel job, JobAbortReason reason) {
         if (job != null) {
-            printDebug("Job quit: " + job.getId());
+            Log.debug(JobModule.class, "Job quit: " + job.getId());
 
         } else {
             Log.info("[ERROR] Quit null job");

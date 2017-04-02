@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
+import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
 
@@ -114,7 +115,7 @@ public class PathManager extends GameModule {
             throw new GameException(PathManager.class, "toParcel is null");
         }
 
-        printDebug("GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
+        Log.debug(PathManager.class, "GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
         // Non walkable origin / target parcel
         if (!fromParcel.isWalkable() || !toParcel.isWalkable()) {
@@ -155,13 +156,13 @@ public class PathManager extends GameModule {
             _cache = new HashMap<>();
         }
 
-        printDebug("Find path from " + fromParcel + " to " + toParcel);
+        Log.debug(PathManager.class, "Find path from " + fromParcel + " to " + toParcel);
 
         long time = System.currentTimeMillis();
 
         // Check if target parcel is not surrounded by non-walkable org.smallbox.faraway.core.module.room.model
         if (WorldHelper.isSurroundedByBlocked(toParcel)) {
-            printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
+            Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
             return null;
         }
 
@@ -170,7 +171,7 @@ public class PathManager extends GameModule {
             SmoothableGraphPath<ParcelModel, Vector2> nodes = new MyGraphPath();
 //            GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
             if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
-                printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
+                Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
 
 //                new PathSmoother(new RaycastCollisionDetector() {
 //                    @Override
@@ -191,7 +192,7 @@ public class PathManager extends GameModule {
         }
 
         // No path found
-        printDebug("Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
+        Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
         return null;
     }
 

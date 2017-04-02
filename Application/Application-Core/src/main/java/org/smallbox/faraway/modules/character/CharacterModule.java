@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterInfoAnnotation;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
@@ -53,30 +54,16 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     private List<CharacterModel>                _visitors = new ArrayList<>();
     private int                                 _count;
 
-    @Override
-    public boolean isModuleMandatory() {
-        return true;
-    }
-
     public void addCharacter(CharacterModel character) { _characters.add(character); }
     public Collection<CharacterModel>     getCharacters() { return _characters; }
     public Collection<CharacterModel>     getVisitors() { return _visitors; }
     public int                            getCount() { return _count; }
 
     @Override
-    public void onGameStart(Game game) {
-//        jobModule.addPriorityCheck(new CheckCharacterEnergyCritical());
-//        jobModule.addPriorityCheck(new CheckCharacterWaterWarning());
-//        jobModule.addPriorityCheck(new CheckCharacterFoodWarning());
-//        jobModule.addPriorityCheck(new CheckCharacterEnergyWarning());
-//        jobModule.addSleepCheck(new CheckCharacterTimetableSleep());
-//        jobModule.addSleepCheck(new CheckJoySleep(itemModule));
-    }
-
-    @Override
     public void onModuleUpdate(Game game) {
 
         fixCharacterPosition();
+        fixCharacterInventory();
 
         // Add new born
         if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
@@ -197,6 +184,18 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             }
         }
         return false;
+    }
+
+    private void fixCharacterInventory() {
+        _characters.stream()
+                .filter(character -> character.hasExtra(CharacterInventoryExtra.class))
+                .filter(character -> character.getJob() == null && !character.getExtra(CharacterInventoryExtra.class).getAll().isEmpty())
+                .forEach(character -> {
+                    Log.warning(getName() + " have item in inventory without job");
+                    character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) ->
+                            consumableModule.addConsumable(itemInfo, quantity, character.getParcel()));
+                    character.getExtra(CharacterInventoryExtra.class).getAll().clear();
+                });
     }
 
 }

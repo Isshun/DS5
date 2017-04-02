@@ -1,14 +1,12 @@
 package org.smallbox.faraway.modules.world;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -118,11 +116,6 @@ public class WorldModule extends GameModule {
     @Override
     public int getModulePriority() {
         return Constant.MODULE_WORLD_PRIORITY;
-    }
-
-    @Override
-    public boolean isModuleMandatory() {
-        return true;
     }
 
     public double getTemperature(ParcelModel parcel) {

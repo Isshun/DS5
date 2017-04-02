@@ -139,7 +139,7 @@ public class Game {
             // Try to onLoadModule first module with required dependencies
             moduleHasBeenLoaded = false;
             for (AbsGameModule module: _modules) {
-                if (module.isActivate() && !module.isLoaded() && module.hasRequiredDependencies(_modules)) {
+                if (module.isActivate() && !module.isLoaded()) {
                     module.load();
                     moduleHasBeenLoaded = true;
                     break;
