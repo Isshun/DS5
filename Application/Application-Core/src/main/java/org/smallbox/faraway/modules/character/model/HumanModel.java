@@ -26,22 +26,23 @@ public class HumanModel extends CharacterModel {
             new String[] {"bt_tool_3", "tool"}
     };
 
-    public HumanModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
+    public HumanModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
         super(id, characterInfo, parcel);
 
         _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(this, _type.needs));
         _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra(this));
         _extra.put(CharacterSkillExtra.class, new CharacterSkillExtra(this));
         _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra(this));
-        _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(this, name, lastName, old));
+
         _extra.put(CharacterDiseasesExtra.class, new CharacterDiseasesExtra(this));
         _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
+
+        CharacterPersonalsExtra.Gender gender = (int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE;
+        _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(this, CharacterName.getFirstname(gender), CharacterName.getLastName(), 16, gender));
 
         CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);
         characterFreeTimeExtra.addType(BasicWalkJob.class);
         _extra.put(CharacterFreeTimeExtra.class, characterFreeTimeExtra);
-
-//        _personals.setGender((int) (Math.random() * 1000) % 2 == 0 ? CharacterPersonalsExtra.Gender.MALE : CharacterPersonalsExtra.Gender.FEMALE);
     }
 
     @Override

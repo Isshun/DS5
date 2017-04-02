@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterInfoAnnotation;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterName;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -164,15 +163,12 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     public CharacterModel addRandom(Class<? extends CharacterModel> cls) {
         try {
-            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, CharacterInfo.class, ParcelModel.class, String.class, String.class, double.class);
+            Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, CharacterInfo.class, ParcelModel.class);
             CharacterInfo characterInfo = data.characters.get(cls.getAnnotation(CharacterInfoAnnotation.class).value());
             CharacterModel character = constructor.newInstance(
                     Utils.getUUID(),
                     characterInfo,
-                    WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true),
-                    CharacterName.getFirstname(CharacterPersonalsExtra.Gender.MALE),
-                    CharacterName.getLastName(),
-                    16);
+                    WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true));
             add(character);
             return character;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

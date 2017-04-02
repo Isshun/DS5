@@ -24,10 +24,11 @@ public class CharacterPersonalsExtra extends CharacterExtra {
     protected Color             _color;
     protected double            _old;
 
-    public CharacterPersonalsExtra(CharacterModel character, String name, String lastName, double old) {
+    public CharacterPersonalsExtra(CharacterModel character, String name, String lastName, double old, Gender gender) {
         super(character);
 
         _old = old;
+        _gender = gender;
         _firstName = name;
         _isGay = (int)(Math.random() * 100) % 10 == 0;
         _lastName = lastName;
