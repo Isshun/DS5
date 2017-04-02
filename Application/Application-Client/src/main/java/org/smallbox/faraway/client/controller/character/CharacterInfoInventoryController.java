@@ -21,7 +21,7 @@ public class CharacterInfoInventoryController extends LuaController {
         listInventory.removeAllViews();
 
         if (_character != null) {
-            _character.getInventory2().forEach((itemInfo, quantity) -> {
+            _character.getInventory().forEach((itemInfo, quantity) -> {
                 View view = new UIFrame(null);
                 view.setSize(300, 32);
 

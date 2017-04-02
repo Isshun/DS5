@@ -41,8 +41,8 @@ public class DebugCharacterLayer extends BaseLayer {
             }
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
-            drawDebug(renderer, "Inventory2", _character.getInventory2() == null ? "--" :
-                    String.join(", ", _character.getInventory2().entrySet().stream()
+            drawDebug(renderer, "Inventory2", _character.getInventory() == null ? "--" :
+                    String.join(", ", _character.getInventory().entrySet().stream()
                             .map(entry -> entry.getKey().label + "x" + entry.getValue())
                             .collect(Collectors.toList())));
         }

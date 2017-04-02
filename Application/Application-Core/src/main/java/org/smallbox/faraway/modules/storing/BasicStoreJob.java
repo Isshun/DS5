@@ -127,8 +127,8 @@ public class BasicStoreJob extends JobModel {
         _consumableModule.cancelLock(this);
 
         if (_character != null) {
-            _character.getInventory2().forEach((itemInfo, quantity) -> _consumableModule.addConsumable(itemInfo, quantity, _character.getParcel()));
-            _character.getInventory2().clear();
+            _character.getInventory().forEach((itemInfo, quantity) -> _consumableModule.addConsumable(itemInfo, quantity, _character.getParcel()));
+            _character.getInventory().clear();
         }
     }
 

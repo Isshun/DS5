@@ -15,7 +15,6 @@ import org.smallbox.faraway.modules.room.model.RoomModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.MoveListener;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 import java.util.Map;
@@ -62,9 +61,6 @@ public abstract class CharacterModel extends MovableModel {
     public <T extends CharacterExtra> T getExtra(Class<T> cls) { return (T) _extra.get(cls); }
     public JobModel                     getJob() { return _job; }
     public ParcelModel                  getParcel() { return _parcel; }
-    public ConsumableItem               getInventory() {
-        throw new NotImplementedException();
-    }
     public int                          getInventoryQuantity(ItemInfo itemInfo) {
         for (Map.Entry<ItemInfo, Integer> entry: _inventory.entrySet()) {
             if (entry.getKey().instanceOf(itemInfo)) {
@@ -74,7 +70,7 @@ public abstract class CharacterModel extends MovableModel {
         return 0;
     }
 
-    public Map<ItemInfo, Integer>       getInventory2() { return _inventory; }
+    public Map<ItemInfo, Integer>       getInventory() { return _inventory; }
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();
 

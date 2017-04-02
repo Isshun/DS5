@@ -166,12 +166,12 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     private void fixCharacterInventory() {
         characterModule.getCharacters().stream()
-                .filter(character -> character.getJob() == null && !character.getInventory2().isEmpty())
+                .filter(character -> character.getJob() == null && !character.getInventory().isEmpty())
                 .forEach(character -> {
                     Log.warning(getName() + " have item in inventory without job");
-                    character.getInventory2().forEach((itemInfo, quantity) ->
+                    character.getInventory().forEach((itemInfo, quantity) ->
                             consumableModule.addConsumable(itemInfo, quantity, character.getParcel()));
-                    character.getInventory2().clear();
+                    character.getInventory().clear();
                 });
     }
 
