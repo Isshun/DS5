@@ -45,8 +45,8 @@ public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryM
                     cbReceipt.setText(receipt.receiptInfo.inputs.toString());
                     cbReceipt.setSize(100, 20);
                     cbReceipt.setPosition(20, 0);
-                    cbReceipt.setChecked(receipt.isActive ? UICheckBox.Value.TRUE : UICheckBox.Value.FALSE);
-                    cbReceipt.setOnCheckListener(checked -> receipt.isActive = checked == UICheckBox.Value.TRUE);
+                    cbReceipt.setChecked(receipt.isActive);
+                    cbReceipt.setOnCheckListener((checked, clickOnBox) ->receipt.isActive = checked);
                     listActions.addView(cbReceipt);
                 });
 

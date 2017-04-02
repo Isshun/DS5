@@ -8,8 +8,6 @@ import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 
-import java.util.Map;
-
 public class AreaSerializer extends GameSerializer<AreaModule> {
 
     @Override
@@ -77,30 +75,6 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
 //                e.printStackTrace();
 //            }
 //        });
-    }
-
-    private void insertStorageAreaItems(StorageArea storage, SQLiteStatement stItem) {
-        storage.getItemsAccepts().entrySet().stream().filter(Map.Entry::getValue).forEach(itemEntry -> {
-            try {
-                stItem.bind(1, itemEntry.getKey().name).bind(2, storage.getId()).bind(3, storage.getPriority());
-                stItem.step();
-                stItem.reset(false);
-            } catch (SQLiteException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private void insertAreaParcels(AreaModel area, SQLiteStatement stParcel) {
-        area.getParcels().forEach(parcel -> {
-            try {
-                stParcel.bind(1, parcel.x).bind(2, parcel.y).bind(3, parcel.z).bind(4, area.getId());
-                stParcel.step();
-                stParcel.reset(false);
-            } catch (SQLiteException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     public void onLoad(AreaModule module, Game game) {

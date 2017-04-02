@@ -1,14 +1,14 @@
 package org.smallbox.faraway.modules.consumable;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -18,28 +18,30 @@ public class StorageArea extends AreaModel {
     private static int                  _count;
     private int                         _index;
     private int                         _priority = 1;
-    protected Map<ItemInfo, Boolean>    _items;
+    protected Set<ItemInfo>             _items;
 
     public StorageArea() {
         _index = ++_count;
-        _items = Application.data.consumables.stream().collect(Collectors.toMap(item -> item, b -> false));
+        _items = new HashSet<>();
     }
 
     @Override
     public void setAccept(ItemInfo itemInfo, boolean isAccepted) {
-        _items.put(itemInfo, isAccepted);
-        Application.notify(observer -> observer.onStorageRulesChanged(this));
+        if (isAccepted) {
+            _items.add(itemInfo);
+        } else {
+            _items.remove(itemInfo);
+        }
     }
 
-    public Map<ItemInfo, Boolean>   getItemsAccepts() { return _items; }
+    public Collection<ItemInfo>   getItemsAccepts() { return _items; }
 
-    public boolean accept(ItemInfo itemInfo) {
-        for (Map.Entry<ItemInfo, Boolean> entry: _items.entrySet()) {
-            if (itemInfo.instanceOf(entry.getKey()) && entry.getValue()) {
-                return true;
-            }
-        }
-        return false;
+    public boolean isAccepted(ItemInfo itemInfo) {
+        return _items.stream().anyMatch(itemInfo::instanceOf);
+    }
+
+    public boolean isAccepted(Collection<ConsumableItem> consumables) {
+        return consumables.stream().allMatch(consumable -> isAccepted(consumable.getInfo()));
     }
 
 //    public ParcelModel getFreeParcel(ConsumableItem consumable) {

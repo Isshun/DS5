@@ -74,7 +74,7 @@ public class GardenArea extends AreaModel {
         _currentItem = plantInfo;
     }
 
-    public boolean accept(ItemInfo plantInfo) {
+    public boolean isAccepted(ItemInfo plantInfo) {
         return _currentItem == plantInfo;
     }
 

@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JobModule extends GameModule<JobModuleObserver> {
     private BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
@@ -74,6 +74,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     public Collection<JobModel> getJobs() { return _jobs; }
+
+    public <T extends JobModel> Stream<T> getJobs(Class<T> cls) {
+        return _jobs.stream().filter(cls::isInstance).map(cls::cast);
+    }
 
 //    public <T> Collection<T> getJobs(T cls) {
 //        return _jobs.stream()
@@ -387,12 +391,12 @@ public class JobModule extends GameModule<JobModuleObserver> {
         return _jobs.contains(job);
     }
 
-    public <T extends JobModel> List<T> getJobs(Class<T> cls) {
-        return _jobs.stream()
-                .filter(cls::isInstance)
-                .map(job -> (T)job)
-                .collect(Collectors.toList());
-    }
+//    public <T extends JobModel> List<T> getJobs(Class<T> cls) {
+//        return _jobs.stream()
+//                .filter(cls::isInstance)
+//                .map(job -> (T)job)
+//                .collect(Collectors.toList());
+//    }
 
     public interface JobInitCallback<T> {
         boolean onInit(T job);

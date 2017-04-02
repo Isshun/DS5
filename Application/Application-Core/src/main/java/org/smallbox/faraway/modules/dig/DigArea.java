@@ -11,7 +11,7 @@ import org.smallbox.faraway.modules.area.AreaTypeInfo;
 public class DigArea extends AreaModel {
 
     @Override
-    public boolean accept(ItemInfo itemInfo) {
+    public boolean isAccepted(ItemInfo itemInfo) {
         return false;
     }
 

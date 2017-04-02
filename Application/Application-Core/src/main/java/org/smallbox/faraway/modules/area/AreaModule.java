@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Alex on 13/06/2015.
@@ -25,6 +26,19 @@ public class AreaModule extends GameModule {
         return _areas;
     }
 
+    public <T extends AreaModel> Stream<T> getAreas(Class<T> cls) {
+        return _areas.stream()
+                .filter(cls::isInstance)
+                .map(cls::cast);
+    }
+
+    public Stream<ParcelModel> getAreasParcels(Class<? extends AreaModel> cls) {
+        return _areas.stream()
+                .filter(cls::isInstance)
+                .map(cls::cast)
+                .flatMap(area -> area.getParcels().stream());
+    }
+
     public List<ParcelModel> getParcelsByType(Class<? extends AreaModel> cls) {
         return _areas.stream()
                 .filter(cls::isInstance)
@@ -35,7 +49,7 @@ public class AreaModule extends GameModule {
     public <T extends AreaModel> List<T> getAreasByType(Class<T> cls) {
         return _areas.stream()
                 .filter(cls::isInstance)
-                .map(area -> (T)area)
+                .map(cls::cast)
                 .collect(Collectors.toList());
     }
 
@@ -78,6 +92,11 @@ public class AreaModule extends GameModule {
                 .filter(area -> area.getParcels().contains(parcel))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public <T extends AreaModel> T getArea(Class<T> cls, ParcelModel parcel) {
+        AreaModel area = getArea(parcel);
+        return cls.isInstance(area) ? cls.cast(area) : null;
     }
 
     public void removeArea(List<ParcelModel> parcels) {

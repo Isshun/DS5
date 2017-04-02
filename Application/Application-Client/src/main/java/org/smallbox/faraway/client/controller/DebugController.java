@@ -51,8 +51,8 @@ public class DebugController extends LuaController {
                     listDebug.addView(UICheckBox.create(null)
                             .setText("Layer: " + layer.getClass().getSimpleName())
                             .setTextColor(ColorUtils.COLOR2)
-                            .setOnCheckListener(checked -> layer.setVisibility(checked == UICheckBox.Value.TRUE))
-                            .setChecked(layer.isVisible() ? UICheckBox.Value.TRUE : UICheckBox.Value.FALSE)
+                            .setOnCheckListener((checked, clickOnBox) ->layer.setVisibility(checked))
+                            .setChecked(layer.isVisible())
                             .setSize(200, 22)));
         }
     }

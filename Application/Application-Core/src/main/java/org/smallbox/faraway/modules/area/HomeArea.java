@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 public class HomeArea extends AreaModel {
 
     @Override
-    public boolean accept(ItemInfo itemInfo) {
+    public boolean isAccepted(ItemInfo itemInfo) {
         return false;
     }
 

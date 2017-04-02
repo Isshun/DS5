@@ -46,21 +46,13 @@ public class StoringModule extends GameModule {
     @Override
     public void onModuleUpdate(Game game) {
 
-//        jobModule.getJobs().stream()
-//                .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED)
-//                .filter(job -> job instanceof BasicStoreJob)
-//                .forEach(job -> jobModule.removeJob(job));
-
-        List<ConsumableItem> consumablesInStoreJob = jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicStoreJob)
-                .map(job -> (BasicStoreJob)job)
+        // Récupère tous les consomables déjà concernés par des StoreJob
+        List<ConsumableItem> consumablesInStoreJob = jobModule.getJobs(BasicStoreJob.class)
                 .flatMap(job -> job.getConsumables().keySet().stream())
                 .collect(Collectors.toList());
 
-        List<ParcelModel> storageParcels = areaModule.getAreas().stream()
-                .filter(area -> area instanceof StorageArea)
-                .map(area -> (StorageArea)area)
-                .flatMap(area -> area.getParcels().stream())
+        // Récupère tous les consomables déjà concernés par des StoreJob
+        List<ParcelModel> storageParcels = areaModule.getAreasParcels(StorageArea.class)
                 .collect(Collectors.toList());
 
         // Crée les storing jobs pour les consomables hors d'une parcel de stockage
@@ -68,18 +60,24 @@ public class StoringModule extends GameModule {
                 .filter(consumable -> consumable.getFreeQuantity() > 0)
                 .filter(consumable -> !consumablesInStoreJob.contains(consumable))
                 .filter(consumable -> !storageParcels.contains(consumable.getParcel()))
-                .forEach(consumable ->
+                .forEach(consumable -> {
 
-                        storageParcels.stream()
-                                .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
-                                .sorted(Comparator.comparingInt(o -> pathManager.getDistance(o, consumable.getParcel())))
-                                .findFirst()
-                                .ifPresent(parcel ->
-                                        BasicStoreJob.toParcel(
-                                                consumableModule,
-                                                jobModule,
-                                                Collections.singletonMap(consumable, consumable.getFreeQuantity()),
-                                                parcel)));
+                    areaModule.getAreas().stream()
+                            .filter(area -> area instanceof StorageArea)
+                            .map(area -> (StorageArea)area)
+                            .filter(area -> area.isAccepted(consumable.getInfo()))
+                            .flatMap(area -> area.getParcels().stream())
+                            .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
+                            .sorted(Comparator.comparingInt(o -> pathManager.getDistance(o, consumable.getParcel())))
+                            .findFirst()
+                            .ifPresent(parcel ->
+                                    BasicStoreJob.toParcel(
+                                            consumableModule,
+                                            jobModule,
+                                            Collections.singletonMap(consumable, consumable.getFreeQuantity()),
+                                            parcel));
+
+                });
 
     }
 
@@ -97,4 +95,16 @@ public class StoringModule extends GameModule {
 
     }
 
+    /**
+     *
+     * @param area
+     */
+    public void notifyRulesChange(StorageArea area) {
+
+        // Annule les jobs contenant des consumables non compatible avec les zone de stockage
+        jobModule.getJobs(BasicStoreJob.class)
+                .filter(job -> area.getParcels().contains(job.getTargetParcel()))
+                .filter(job -> !area.isAccepted(job.getConsumables().keySet()))
+                .forEach(job -> jobModule.removeJob(job));
+    }
 }

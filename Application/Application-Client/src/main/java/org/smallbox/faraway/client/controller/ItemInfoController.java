@@ -175,9 +175,9 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
                 UIFrame lineReceiptGroup = new UIFrame(null);
                 lineReceiptGroup.setSize(100, 20);
 
-                UICheckBox lbLabel = UICheckBox.create(null);
+                UIMultiCheckBox lbLabel = UIMultiCheckBox.create(null);
                 lbLabel.setText(receiptGroup.receiptGroupInfo.label);
-                lbLabel.setChecked(UICheckBox.Value.PARTIAL);
+                lbLabel.setChecked(UIMultiCheckBox.Value.PARTIAL);
                 lbLabel.setSize(220, 20);
                 lineReceiptGroup.addView(lbLabel);
 

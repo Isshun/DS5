@@ -257,7 +257,7 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
 //            return false;
 //        }
 
-        return !(_area != null && !_area.accept(itemInfo));
+        return !(_area != null && !_area.isAccepted(itemInfo));
     }
 
     public double getLiquidValue() {

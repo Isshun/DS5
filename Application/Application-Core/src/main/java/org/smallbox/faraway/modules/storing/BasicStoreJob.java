@@ -104,9 +104,9 @@ public class BasicStoreJob extends JobModel {
         addMoveTask("Move to storage", _targetParcel);
 
         // Ajoute les composants à la zone de stockage
-        addTechnicalTask("Drop consumable to storage", character2 ->
+        addTechnicalTask("Drop consumable to storage", character ->
                 _locks.forEach(lock -> {
-                    ConsumableItem consumable = character2.takeInventory(lock.consumable.getInfo(), lock.quantity);
+                    ConsumableItem consumable = character.takeInventory(lock.consumable.getInfo(), lock.quantity);
                     _consumableModule.addConsumable(consumable.getInfo(), consumable.getFreeQuantity(), _targetParcel);
                 }));
 
@@ -125,6 +125,11 @@ public class BasicStoreJob extends JobModel {
     @Override
     public CharacterSkillExtra.SkillType getSkillNeeded() {
         return CharacterSkillExtra.SkillType.STORE;
+    }
+
+    @Override
+    public void onClose() {
+
     }
 
 }

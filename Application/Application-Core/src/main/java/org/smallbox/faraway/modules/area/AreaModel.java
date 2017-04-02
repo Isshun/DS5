@@ -48,7 +48,7 @@ public abstract class AreaModel extends ObjectModel {
         return !_parcels.isEmpty() ? _parcels.get(0) : null;
     }
 
-    public abstract boolean         accept(ItemInfo itemInfo);
+    public abstract boolean isAccepted(ItemInfo itemInfo);
     public abstract void            setAccept(ItemInfo itemInfo, boolean isAccepted);
     public void                     setFloor(int floor) { _z = floor; }
 

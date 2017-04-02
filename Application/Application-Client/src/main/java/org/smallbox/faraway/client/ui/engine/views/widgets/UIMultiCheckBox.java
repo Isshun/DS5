@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
 
-public class UICheckBox extends View {
+public class UIMultiCheckBox extends View {
     public static final int    REGULAR = 0;
     public static final int    BOLD = 1;
     public static final int    ITALIC = 2;
@@ -21,21 +21,23 @@ public class UICheckBox extends View {
     private int         _textSize = 14;
     private Color       _textColor;
     private int         _maxLength;
-    private boolean     _checked;
+    private Value       _checked = Value.FALSE;
 
-    public UICheckBox(ModuleBase module) {
+    public enum Value { FALSE, TRUE, PARTIAL }
+
+    public UIMultiCheckBox(ModuleBase module) {
         super(module);
     }
 
     public interface OnCheckListener {
-        void onCheck(boolean checked, boolean clickOnBox);
+        void onCheck(Value checked, boolean clickOnBox);
     }
 
-    public UICheckBox setChecked(boolean checked) { _checked = checked; return this; }
+    public UIMultiCheckBox setChecked(Value checked) { _checked = checked; return this; }
 
-    public UICheckBox setOnCheckListener(OnCheckListener onCheckListener) {
+    public UIMultiCheckBox setOnCheckListener(OnCheckListener onCheckListener) {
         setOnClickListener(event -> {
-            _checked = !_checked;
+            _checked = _checked == Value.TRUE ? Value.FALSE : Value.TRUE;
             onCheckListener.onCheck(_checked, event.mouseEvent.x < _finalX + 32);
         });
         return this;
@@ -49,7 +51,7 @@ public class UICheckBox extends View {
         return super.setSize(width, height != -1 ? height : 18);
     }
 
-    public UICheckBox setText(String string) {
+    public UIMultiCheckBox setText(String string) {
         if (string == null) {
             setStringValue("");
             return this;
@@ -142,12 +144,12 @@ public class UICheckBox extends View {
 ////        }
 //    }
 
-    public UICheckBox setTextColor(Color color) {
+    public UIMultiCheckBox setTextColor(Color color) {
         _textColor = color;
         return this;
     }
 
-    public UICheckBox setTextColor(int color) {
+    public UIMultiCheckBox setTextColor(int color) {
         _textColor = ColorUtils.fromHex(color);
         return this;
     }
@@ -162,7 +164,7 @@ public class UICheckBox extends View {
         _string = string;
     }
 
-    public UICheckBox setTextSize(int size) {
+    public UIMultiCheckBox setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
             _height = (int)(ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
@@ -178,7 +180,7 @@ public class UICheckBox extends View {
         return _textColor;
     }
 
-    public UICheckBox setDashedString(String label, String value, int nbColumns) {
+    public UIMultiCheckBox setDashedString(String label, String value, int nbColumns) {
         _string = StringUtils.getDashedString(label, value, nbColumns);
         return this;
     }
@@ -214,7 +216,7 @@ public class UICheckBox extends View {
                 _offsetY = (_height - getContentHeight()) / 2;
             }
 
-            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _checked ? "[x]" : "[ ]");
+            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _checked == Value.TRUE ? "[x]" : _checked == Value.FALSE ? "[ ]" : "[.]");
             renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _string);
         }
     }
@@ -245,7 +247,7 @@ public class UICheckBox extends View {
         return 0;
     }
 
-    public static UICheckBox create(ModuleBase module) {
-        return new UICheckBox(module);
+    public static UIMultiCheckBox create(ModuleBase module) {
+        return new UIMultiCheckBox(module);
     }
 }

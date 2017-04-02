@@ -4,7 +4,6 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
-import org.smallbox.faraway.modules.job.freeTimeJobs.BasicAndroidSelfCheckJob;
 
 /**
  * Created by Alex on 17/06/2015.
@@ -27,12 +26,6 @@ public class DebugBotModel extends CharacterModel {
 
     public DebugBotModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
         super(id, characterInfo, parcel, name, lastName, old);
-
-        CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);
-        characterFreeTimeExtra.addType(BasicAndroidSelfCheckJob.class);
-        _extra.put(CharacterFreeTimeExtra.class, characterFreeTimeExtra);
-
-//        _personals.setColor(new Color(0xc57de6));
     }
 
     @Override
