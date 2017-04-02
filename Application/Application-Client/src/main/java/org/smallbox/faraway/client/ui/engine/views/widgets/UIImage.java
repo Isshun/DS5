@@ -130,5 +130,11 @@ public class UIImage extends View {
     public static UIImage create(ModuleBase module) {
         return new UIImage(module);
     }
+
+    public static View createFast(String image, int width, int height) {
+        return create(null)
+                .setImage(image)
+                .setSize(width, height);
+    }
 }
 

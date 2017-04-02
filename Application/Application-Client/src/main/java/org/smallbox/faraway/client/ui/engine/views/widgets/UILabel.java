@@ -316,6 +316,13 @@ public class UILabel extends View {
         return new UILabel(module);
     }
 
+    public static View createFast(String text, Color textColor) {
+        return create(null)
+                .setText(text)
+                .setTextColor(textColor);
+    }
+
     @Override
     public String toString() { return _text; }
+
 }
