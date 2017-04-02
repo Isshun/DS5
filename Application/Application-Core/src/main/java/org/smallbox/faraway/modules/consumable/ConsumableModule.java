@@ -123,6 +123,20 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
+    public void cancelLock(JobModel job) {
+        Log.debug(ConsumableModule.class, "CancelLock (job: %s)", job);
+
+        _locks.stream()
+                .filter(lock -> lock.available && lock.job == job)
+                .forEach(lock -> {
+                    lock.available = false;
+                    lock.consumable.removeLock(lock);
+                    lock.consumable.addQuantity(lock.quantity);
+                });
+
+        _locks.removeIf(lock -> !lock.available);
+    }
+
     public boolean parcelAcceptConsumable(ParcelModel parcel, ConsumableItem consumable) {
         ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
         if (consumableOnTargetParcel == null) {
@@ -302,7 +316,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return null;
     }
 
-    public ConsumableItem takeConsumable(ConsumableJobLock lock) {
+    public ConsumableItem createConsumableFromLock(ConsumableJobLock lock) {
 
         Log.debug(ConsumableModule.class, "TakeConsumable: (lock: %s)", lock);
 
@@ -315,6 +329,32 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         _locks.remove(lock);
 
         return new ConsumableItem(lock.consumable.getInfo(), lock.quantity);
+    }
+
+    /**
+     * Crée un consomable depuis un lock existant (trouve le lock depuis le consomable d'origine)
+     *
+     * @param consumable Consomable d'origine
+     * @return Consomable nouvellement créé
+     */
+    public ConsumableItem createConsumableFromLock(JobModel job, ConsumableItem consumable) {
+
+        Log.debug(ConsumableModule.class, "TakeConsumable: (consumable: %s)", consumable);
+
+        ConsumableJobLock targetLock = _locks.stream()
+                .filter(lock -> lock.job == job && lock.consumable == consumable)
+                .findFirst()
+                .orElse(null);
+
+        if (targetLock == null) {
+            throw new GameException(ConsumableModule.class, "TakeConsumable: no lock for this job / consumable");
+        }
+
+        targetLock.available = false;
+        targetLock.consumable.removeLock(targetLock);
+        _locks.remove(targetLock);
+
+        return new ConsumableItem(targetLock.consumable.getInfo(), targetLock.quantity);
     }
 
     public void removeConsumable(ConsumableItem consumable) {

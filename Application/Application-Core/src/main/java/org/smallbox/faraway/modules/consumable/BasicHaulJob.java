@@ -78,7 +78,7 @@ public class BasicHaulJob extends JobModel {
 
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + lock.consumable.getLabel() + " to inventory", (character, hourInterval) -> {
-                _consumableModule.takeConsumable(lock);
+                _consumableModule.createConsumableFromLock(lock);
                 character.addInventory(lock.consumable.getInfo(), lock.quantity);
                 return JobTaskReturn.TASK_COMPLETE;
             });

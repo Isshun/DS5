@@ -47,7 +47,7 @@ public class ConsumeJob extends JobModel {
                 }
 
                 // Retire le lock si l'action est terminée
-                consumableModule.takeConsumable(_lock);
+                consumableModule.createConsumableFromLock(_lock);
                 return JobTaskReturn.TASK_COMPLETE;
             }
             return JobTaskReturn.TASK_ERROR;

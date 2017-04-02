@@ -11,9 +11,7 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 
-import java.util.Collection;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Job déplacant les consomables vers les zones de stockage
@@ -21,7 +19,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class BasicStoreJob extends JobModel {
 
     protected Map<ConsumableItem, Integer> _targetConsumables;
-    protected Collection<ConsumableModule.ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
     private ConsumableModule _consumableModule;
 
     public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
@@ -67,34 +64,31 @@ public class BasicStoreJob extends JobModel {
         // TODO: maj de la quantité
 
         // Ajoute pour chaque composant un lock au job
-        _targetConsumables.forEach((consumable, quantity) -> {
-            ConsumableModule.ConsumableJobLock lock = _consumableModule.lock(this, consumable, quantity);
-            if (lock != null) {
-                _locks.add(lock);
-            }
-        });
+        for (Map.Entry<ConsumableItem, Integer> entry: _targetConsumables.entrySet()) {
+            if (_consumableModule.lock(this, entry.getKey(), entry.getValue()) == null) {
 
-        // Si certains composants n'ont pas pu être réservés annule les locks et le job
-        if (_locks.size() != _targetConsumables.size()) {
-            _locks.forEach(lock -> _consumableModule.cancelLock(lock));
-            return false;
+                // Si certains composants n'ont pas pu être réservés annule les locks et le job
+                _consumableModule.cancelLock(this);
+                return false;
+
+            }
         }
 
         // Déplace le personnage vers chaque consomable et l'ajoute à son inventaire
-        _locks.forEach(lock -> {
+        _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
 
             // Déplace le personnage à l'emplacement des composants
-            addTask("Haul " + lock.consumable.getLabel(), (character, hourInterval) -> {
-                if (lock.consumable.getParcel() != null) {
-                    return character.moveTo(lock.consumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+            addTask("Haul " + targetConsumable.getLabel(), (character, hourInterval) -> {
+                if (targetConsumable.getParcel() != null) {
+                    return character.moveTo(targetConsumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
                 }
                 return JobTaskReturn.TASK_ERROR;
             });
 
             // Ajoute les composants à l'inventaire du personnage
-            addTask("Add " + lock.consumable.getLabel() + " to inventory", (character, hourInterval) -> {
-                _consumableModule.takeConsumable(lock);
-                character.addInventory(lock.consumable.getInfo(), lock.quantity);
+            addTask("Add " + targetConsumable.getLabel() + " to inventory", (character, hourInterval) -> {
+                ConsumableItem inventoryConsumable = _consumableModule.createConsumableFromLock(this, targetConsumable);
+                character.addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
                 return JobTaskReturn.TASK_COMPLETE;
             });
 
@@ -105,10 +99,11 @@ public class BasicStoreJob extends JobModel {
 
         // Ajoute les composants à la zone de stockage
         addTechnicalTask("Drop consumable to storage", character ->
-                _locks.forEach(lock -> {
-                    ConsumableItem consumable = character.takeInventory(lock.consumable.getInfo(), lock.quantity);
+                _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
+                    ConsumableItem consumable = character.takeInventory(targetConsumable.getInfo(), targetQuantity);
                     _consumableModule.addConsumable(consumable.getInfo(), consumable.getFreeQuantity(), _targetParcel);
-                }));
+                })
+        );
 
         return true;
     }
@@ -129,7 +124,12 @@ public class BasicStoreJob extends JobModel {
 
     @Override
     public void onClose() {
+        _consumableModule.cancelLock(this);
 
+        if (_character != null) {
+            _character.getInventory2().forEach((itemInfo, quantity) -> _consumableModule.addConsumable(itemInfo, quantity, _character.getParcel()));
+            _character.getInventory2().clear();
+        }
     }
 
 }

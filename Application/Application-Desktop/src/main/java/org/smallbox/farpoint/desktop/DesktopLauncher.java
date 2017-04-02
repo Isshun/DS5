@@ -131,7 +131,7 @@ public class DesktopLauncher {
                 }
 
                 character.setParcel(WorldHelper.getParcel(1, 1, 1));
-                character.moveTo(WorldHelper.getParcel(8, 12, 1));
+//                character.moveTo(WorldHelper.getParcel(8, 12, 1));
 
 //
 //                Application.moduleManager.getModule(WorldModule.class).getParcel(9, 8, 1).setRockName("base.calcite");
