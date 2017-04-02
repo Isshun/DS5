@@ -284,4 +284,8 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
         }
         return false;
     }
+
+    public boolean hasItems() {
+        return !_items.isEmpty();
+    }
 }

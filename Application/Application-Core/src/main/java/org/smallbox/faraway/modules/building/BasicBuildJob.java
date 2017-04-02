@@ -73,4 +73,9 @@ public class BasicBuildJob extends JobModel {
         return _mapObject;
     }
 
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.BUILD;
+    }
+
 }

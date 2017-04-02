@@ -23,13 +23,11 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JobModule extends GameModule<JobModuleObserver> {
@@ -82,12 +80,23 @@ public class JobModule extends GameModule<JobModuleObserver> {
         if (_characterInnactiveDuration.getOrDefault(character, 0) > 10) {
             _characterInnactiveDuration.put(character, 0);
 
-            _jobs.stream()
+            List<JobModel> availableJobs = _jobs.stream()
                     .filter(job -> job.getCharacter() == null)
                     .filter(job -> job.getStatus() == JobStatus.JOB_WAITING || job.getStatus() == JobStatus.JOB_INITIALIZED)
                     .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))
-                    .findFirst()
-                    .ifPresent(job -> assign(character, job));
+                    .collect(Collectors.toList());
+
+            // Assign regular job
+            if (character.hasExtra(CharacterSkillExtra.class)) {
+                for (CharacterSkillExtra.SkillEntry skill: character.getExtra(CharacterSkillExtra.class).getAll()) {
+                    for (JobModel job: availableJobs) {
+                        if ((job.getSkillType() == null || job.getSkillType() == skill.type) && job.checkCharacterAccepted(character)) {
+                            assign(character, job);
+                            return;
+                        }
+                    }
+                }
+            }
 
             // Aucun job n'a pu être assigné
             // Assign freetime job
@@ -124,7 +133,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private void assign(CharacterModel character, JobModel job) {
         if (job != null) {
             _characterInnactiveDuration.put(character, 0);
-            assignJob(character, job);
+            job.start(character);
             if (character.getJob() == null || character.getJob() != job) {
                 printError("Fail to assign job");
             } else {
@@ -173,85 +182,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
                                 }));
 
         _jobs.addAll(_unordonnedJobs);
-    }
-
-    /**
-     * Retourne la meilleur tache disponible pour le personnage
-     *
-     * @param character
-     */
-    // TODO: one pass + onCheck profession
-    private JobModel getBestRegular(CharacterModel character) {
-
-        // Regular jobs
-        if (character.hasExtra(CharacterSkillExtra.class)) {
-            for (CharacterSkillExtra.SkillEntry skill : character.getExtra(CharacterSkillExtra.class).getAll()) {
-                int bestDistance = Integer.MAX_VALUE;
-                JobModel bestJob = null;
-
-                for (JobModel job : _jobs) {
-                    if (!job.isAuto() && !job.isClose() && job.getCharacter() == null && job.checkCharacterAccepted(character)) {
-                        Log.debug("Check best regular: " + job.getLabel());
-                        ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                        if (job.getFail() <= 0) {
-                            int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
-                            if (distance < bestDistance && job.check(character)) {
-                                bestJob = job;
-                                bestDistance = distance;
-                            }
-                        }
-                    }
-                }
-
-                if (bestJob != null) {
-                    return bestJob;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Assign and start job for designed characters
-     *
-     * @param job
-     * @param character
-     */
-    private void assignJob(CharacterModel character, JobModel job) {
-        job.start(character);
-    }
-
-    /**
-     * Assign failed job
-     *
-     * @param character
-     * @return
-     */
-    private JobModel getFailedJob(CharacterModel character) {
-        if (character.getParcel() != null) {
-            int x = character.getParcel().x;
-            int y = character.getParcel().y;
-            int bestDistance = Integer.MAX_VALUE;
-            JobModel bestJob = null;
-
-            for (JobModel job : _jobs) {
-                if (job.getCharacter() == null && job.getFail() > 0) {
-                    if (job.getReason() == JobAbortReason.BLOCKED && job.getBlocked() < Application.gameManager.getGame().getTick() + Constant.DELAY_TO_RESTART_BLOCKED_JOB) {
-                        continue;
-                    }
-
-                    int distance = Math.abs(x - job.getTargetParcel().x) + Math.abs(y - job.getTargetParcel().y);
-                    if (distance < bestDistance && job.check(character)) {
-                        bestJob = job;
-                        bestDistance = distance;
-                    }
-                }
-            }
-
-            return bestJob;
-        }
-        return null;
     }
 
     public void quitJob(JobModel job, JobAbortReason reason) {

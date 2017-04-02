@@ -122,9 +122,8 @@ public class DebugLayer extends BaseLayer {
                 if (jobModule != null && jobModule.getJobs() != null) {
                     jobModule.getJobs().forEach(job -> {
                         drawDebug(renderer, "JOB",
-                                String.format("%s, %s, %.2f, %s",
+                                String.format("%s, %.2f, %s",
                                         job.getMainLabel(),
-                                        job.getLabel(),
                                         job.getProgress(),
                                         job.getLastReturn()
                                 )

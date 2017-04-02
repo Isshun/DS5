@@ -92,7 +92,12 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setBorderColor(long color) {
-        _borderColor = ColorUtils.fromHex(color);
+        _borderColor = color == 0 ? null : ColorUtils.fromHex(color);
+        return this;
+    }
+
+    public View setBorderColor(Color color) {
+        _borderColor = color;
         return this;
     }
 

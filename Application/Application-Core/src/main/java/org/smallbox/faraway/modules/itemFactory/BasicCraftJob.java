@@ -89,4 +89,10 @@ public class BasicCraftJob extends JobModel {
             return true;
         });
     }
+
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.CRAFT;
+    }
+
 }

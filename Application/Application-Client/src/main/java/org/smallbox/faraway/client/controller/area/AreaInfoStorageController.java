@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
@@ -47,6 +48,24 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     @BindLua
     private UIList listStorage;
+
+    @BindLua
+    private UILabel btPriority1;
+
+    @BindLua
+    private UILabel btPriority2;
+
+    @BindLua
+    private UILabel btPriority3;
+
+    @BindLua
+    private UILabel btPriority4;
+
+    @BindLua
+    private UILabel btPriority5;
+
+    @BindLua
+    private UILabel lbSpace;
 
     private Collection<CategoryContainer> _tree;
     private StorageArea _area;
@@ -98,6 +117,24 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .map(CategoryContainer::new)
                 .collect(Collectors.toList());
 
+        btPriority1.setOnClickListener(event -> setPriority(event, 1));
+        btPriority2.setOnClickListener(event -> setPriority(event, 2));
+        btPriority3.setOnClickListener(event -> setPriority(event, 3));
+        btPriority4.setOnClickListener(event -> setPriority(event, 4));
+        btPriority5.setOnClickListener(event -> setPriority(event, 5));
+    }
+
+    private void setPriority(GameEvent event, int priority) {
+        _area.setPriority(priority);
+        displayPriority(_area.getPriority());
+    }
+
+    private void displayPriority(int priority) {
+        btPriority1.setBorderColor(priority == 1 ? ColorUtils.COLOR1 : null);
+        btPriority2.setBorderColor(priority == 2 ? ColorUtils.COLOR1 : null);
+        btPriority3.setBorderColor(priority == 3 ? ColorUtils.COLOR1 : null);
+        btPriority4.setBorderColor(priority == 4 ? ColorUtils.COLOR1 : null);
+        btPriority5.setBorderColor(priority == 5 ? ColorUtils.COLOR1 : null);
     }
 
     private void displayTree() {
@@ -213,7 +250,16 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
         if (_area != area) {
             _area = (StorageArea) area;
             displayTree();
+            displayPriority(_area.getPriority());
         }
+        displaySpace(_area.getParcels().stream()
+                .filter(parcel -> !parcel.hasItems())
+                .mapToInt(parcel -> 1)
+                .sum());
+    }
+
+    private void displaySpace(int space) {
+        lbSpace.setText(space + "/" + _area.getParcels().size());
     }
 
     @Override

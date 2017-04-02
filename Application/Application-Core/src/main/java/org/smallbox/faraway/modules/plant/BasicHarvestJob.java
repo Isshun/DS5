@@ -75,4 +75,9 @@ public class BasicHarvestJob extends JobModel {
     @Override
     public String toString() { return "Harvest"; }
 
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.GATHER;
+    }
+
 }

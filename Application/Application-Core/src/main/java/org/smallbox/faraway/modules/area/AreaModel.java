@@ -70,4 +70,8 @@ public abstract class AreaModel extends ObjectModel {
     public AreaTypeInfo getInfo() {
         return getClass().getAnnotation(AreaTypeInfo.class);
     }
+
+    public boolean haveParcel(ParcelModel parcel) {
+        return _parcels.contains(parcel);
+    }
 }

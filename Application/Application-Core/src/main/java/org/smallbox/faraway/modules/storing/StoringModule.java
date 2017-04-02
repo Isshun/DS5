@@ -3,9 +3,9 @@ package org.smallbox.faraway.modules.storing;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
@@ -13,10 +13,9 @@ import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by Alex on 02/03/2017.
@@ -38,6 +37,8 @@ public class StoringModule extends GameModule {
     @BindModule
     private PathManager pathManager;
 
+    private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
+
     @Override
     public void onGameCreate(Game game) {
         areaModule.addAreaClass(StorageArea.class);
@@ -46,39 +47,69 @@ public class StoringModule extends GameModule {
     @Override
     public void onModuleUpdate(Game game) {
 
-        // Récupère tous les consomables déjà concernés par des StoreJob
-        List<ConsumableItem> consumablesInStoreJob = jobModule.getJobs(BasicStoreJob.class)
-                .flatMap(job -> job.getConsumables().keySet().stream())
-                .collect(Collectors.toList());
+        if (_checkQueue.isEmpty()) {
+            _checkQueue.addAll(consumableModule.getConsumables());
+        }
 
-        // Récupère tous les consomables déjà concernés par des StoreJob
-        List<ParcelModel> storageParcels = areaModule.getAreasParcels(StorageArea.class)
-                .collect(Collectors.toList());
+        ConsumableItem consumable = _checkQueue.poll();
+        if (consumable != null && consumable.getFreeQuantity() > 0) {
 
-        // Crée les storing jobs pour les consomables hors d'une parcel de stockage
-        consumableModule.getConsumables().stream()
-                .filter(consumable -> consumable.getFreeQuantity() > 0)
-                .filter(consumable -> !consumablesInStoreJob.contains(consumable))
-                .filter(consumable -> !storageParcels.contains(consumable.getParcel()))
-                .forEach(consumable -> {
+            BasicStoreJob storeJob = jobModule.getJobs(BasicStoreJob.class)
+                    .filter(job -> job.haveConsumable(consumable))
+                    .findFirst().orElse(null);
 
-                    areaModule.getAreas().stream()
-                            .filter(area -> area instanceof StorageArea)
-                            .map(area -> (StorageArea)area)
-                            .filter(area -> area.isAccepted(consumable.getInfo()))
-                            .flatMap(area -> area.getParcels().stream())
-                            .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
-                            .sorted(Comparator.comparingInt(o -> pathManager.getDistance(o, consumable.getParcel())))
-                            .findFirst()
-                            .ifPresent(parcel ->
-                                    BasicStoreJob.toParcel(
-                                            consumableModule,
-                                            jobModule,
-                                            Collections.singletonMap(consumable, consumable.getFreeQuantity()),
-                                            parcel));
+            StorageArea storageArea = areaModule.getArea(StorageArea.class)
+                    .filter(area -> area.haveParcel(storeJob != null ? storeJob.getTargetParcel() : consumable.getParcel()))
+                    .findFirst().orElse(null);
 
-                });
+            StorageArea bestArea = getBestArea(consumable.getInfo(), consumable.getFreeQuantity());
 
+            // Le consomable n'a pas de zone de stockage ni de StoreJob
+            // -> Crée un StoreJob
+            if (storageArea == null) {
+                createStoreJob(bestArea, consumable);
+            }
+
+            // Le consomable est déjà dans un zone de stockage ou dans un StoreJob.
+            // -> Trouve la meilleur zone de stockage possible et vérifie qu'elle corresponde à la zone actuelle
+            // -> Crée un StoreJob
+            else if (bestArea != null && bestArea.getPriority() > storageArea.getPriority()) {
+
+                if (storeJob != null) {
+                    jobModule.removeJob(storeJob);
+                }
+
+                createStoreJob(bestArea, consumable);
+            }
+
+        }
+
+    }
+
+    private void createStoreJob(StorageArea storageArea, ConsumableItem consumable) {
+
+        // Crée le job sur la première parcel disponible
+        if (storageArea != null) {
+            storageArea.getParcels().stream()
+                    .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
+                    .findFirst()
+                    .ifPresent(parcel -> BasicStoreJob.toParcel(consumableModule, jobModule, consumable, parcel, storageArea));
+        }
+    }
+
+    private StorageArea getBestArea(ItemInfo itemInfo, int quantity) {
+        return areaModule.getAreas(StorageArea.class)
+
+                // Trie les zone de stockage par priorité
+                .sorted(Comparator.comparingInt(StorageArea::getPriority).reversed())
+
+                // Filtre pour ne garder que les zones de stockage qui accepte l'objet
+                .filter(area -> area.isAccepted(itemInfo))
+
+                // Filtre pour ne garder que les zones de stockage ayant suffisament de place
+                .filter(area -> area.hasFreeSpace(consumableModule, itemInfo, quantity))
+
+                .findFirst().orElse(null);
     }
 
     /**

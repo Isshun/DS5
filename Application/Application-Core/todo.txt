@@ -1,4 +1,3 @@
-Regle de stockage des StorageArea
 Priorité des StorageArea
 Priorité des job
 Talents utilisé pour les jobs assign

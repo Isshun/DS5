@@ -7,11 +7,13 @@ import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -26,13 +28,24 @@ public class BasicStoreJob extends JobModel {
 
     /**
      * Apporte les composants sur la parcel
-     *
-     * @param consumableModule ConsumableModule
-     * @param jobModule
-     * @param targetConsumables Map<ConsumableItem, Integer>
-     * @param storingParcel ParcelModel
+     *  @param consumableModule Consumable module
+     * @param jobModule Job module
+     * @param targetConsumable consomable à déplacer
+     * @param storingParcel parcel ou stocker le consomable
      */
-    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, ParcelModel storingParcel) {
+    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, ConsumableItem targetConsumable, ParcelModel storingParcel, StorageArea storageArea) {
+        toParcel(consumableModule, jobModule, Collections.singletonMap(targetConsumable, targetConsumable.getFreeQuantity()), storingParcel, storageArea);
+    }
+
+    /**
+     * Apporte les composants sur la parcel
+     *
+     * @param consumableModule Consumable module
+     * @param jobModule Job module
+     * @param targetConsumables consomables à déplacer
+     * @param storingParcel parcel ou stocker les consomables
+     */
+    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, ParcelModel storingParcel, StorageArea storageArea) {
 
         if (CollectionUtils.isEmpty(targetConsumables)) {
             throw new RuntimeException("Collection cannot be empty");
@@ -46,7 +59,7 @@ public class BasicStoreJob extends JobModel {
             job._targetConsumables = targetConsumables;
 
             targetConsumables.forEach((consumable, quantity) ->
-                    job.setMainLabel(String.format("Store %s (x%d)", consumable.getInfo().label, quantity)));
+                    job.setMainLabel(String.format("Store %s x%d to %s (%dx%d)", consumable.getInfo().label, quantity, storageArea.getName(), storingParcel.x, storingParcel.y)));
 
             return true;
         });
@@ -148,6 +161,15 @@ public class BasicStoreJob extends JobModel {
             _character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) -> _consumableModule.addConsumable(itemInfo, quantity, _character.getParcel()));
             _character.getExtra(CharacterInventoryExtra.class).clear();
         }
+    }
+
+    public boolean haveConsumable(ConsumableItem consumable) {
+        return _targetConsumables.containsKey(consumable);
+    }
+
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.STORE;
     }
 
 }

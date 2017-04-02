@@ -96,4 +96,9 @@ public class BasicDigJob extends JobModel {
     @Override
     public String toString() { return "Dig"; }
 
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.DIG;
+    }
+
 }

@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
 
@@ -180,6 +181,7 @@ public abstract class JobModel extends ObjectModel {
     protected void onClose() {}
 
     public abstract boolean checkCharacterAccepted(CharacterModel character);
+    public abstract CharacterSkillExtra.SkillType getSkillType();
 
     /**
      * Retire le personnage de la tache, mais celle-ci continue

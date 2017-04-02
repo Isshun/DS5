@@ -145,6 +145,14 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return consumableOnTargetParcel.getInfo() == consumable.getInfo() && consumableOnTargetParcel.getTotalQuantity() + consumable.getFreeQuantity() < consumable.getInfo().stack;
     }
 
+    public boolean parcelAcceptConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
+        ConsumableItem consumableOnTargetParcel = getConsumable(parcel);
+        if (consumableOnTargetParcel == null) {
+            return true;
+        }
+        return consumableOnTargetParcel.getInfo() == itemInfo && consumableOnTargetParcel.getTotalQuantity() + quantity < itemInfo.stack;
+    }
+
     /**
      * Crée un ConsumeJob
      *

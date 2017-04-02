@@ -114,6 +114,10 @@ public class StorageArea extends AreaModel {
     public int getPriority() { return _priority; }
     public void setPriority(int priority) { _priority = priority; }
 
+    public boolean hasFreeSpace(ConsumableModule consumableModule, ItemInfo itemInfo, int quantity) {
+        return _parcels.stream().anyMatch(parcel -> consumableModule.parcelAcceptConsumable(parcel, itemInfo, quantity));
+    }
+
 //    public boolean hasFreeSpace(ItemInfo info, int quantity) {
 //        for (ParcelModel parcel: _parcels) {
 //            if (!parcel.hasConsumable() || info.stack - parcel.getItem(ConsumableItem.class).getQuantity() >= quantity) {

@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.item.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.path.PathManager;
+import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
@@ -73,6 +74,11 @@ public class UseJob extends JobModel {
     @Override
     public boolean checkCharacterAccepted(CharacterModel character) {
         return true;
+    }
+
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return null;
     }
 
 }

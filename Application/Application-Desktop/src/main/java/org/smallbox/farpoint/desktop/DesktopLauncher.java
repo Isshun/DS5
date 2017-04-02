@@ -10,8 +10,7 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.DebugBotModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -24,7 +23,6 @@ import java.util.Arrays;
 public class DesktopLauncher {
 
     public static void main (String[] arg) {
-
         //            Log.info("Load application applicationConfig");
 //            try (FileReader fileReader = new FileReader(FileUtils.getFile("data/config.json"))) {
 //                return new Gson().fromJson(fileReader, ApplicationConfig.class);
@@ -54,9 +52,9 @@ public class DesktopLauncher {
             @Override
             public void onGameCreate(Game game) {
 
-//                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
+                Application.moduleManager.getModule(CharacterModule.class).addRandom(HumanModel.class);
 
-                CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(DebugBotModel.class);
+//                CharacterModel character = Application.moduleManager.getModule(CharacterModule.class).addRandom(DebugBotModel.class);
 //                character.getExtra(CharacterNeedsExtra.class).addValue(CharacterNeedsExtra.TAG_DRINK, -0.5);
 //                character.addInventory("base.consumable.vegetable.rice", 10);
 //                character.addInventory("base.consumable.vegetable.carrot", 10);
@@ -108,9 +106,15 @@ public class DesktopLauncher {
 //
                 Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
                         WorldHelper.getParcel(8, 10, 1),
-                        WorldHelper.getParcel(7, 10, 1),
+                        WorldHelper.getParcel(9, 10, 1),
                         WorldHelper.getParcel(8, 11, 1),
-                        WorldHelper.getParcel(7, 11, 1)));
+                        WorldHelper.getParcel(9, 11, 1))).setPriority(4);
+
+                Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
+                        WorldHelper.getParcel(5, 10, 1),
+                        WorldHelper.getParcel(6, 10, 1),
+                        WorldHelper.getParcel(5, 11, 1),
+                        WorldHelper.getParcel(6, 11, 1))).setPriority(3);
 //
 //                Application.moduleManager.getModule(AreaModule.class).addArea(GardenArea.class, Arrays.asList(
 //                        WorldHelper.getParcel(2, 10, 1),
@@ -130,7 +134,7 @@ public class DesktopLauncher {
                     }
                 }
 
-                character.setParcel(WorldHelper.getParcel(1, 1, 1));
+//                character.setParcel(WorldHelper.getParcel(1, 1, 1));
 //                character.moveTo(WorldHelper.getParcel(8, 12, 1));
 
 //

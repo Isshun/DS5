@@ -142,6 +142,11 @@ public class BasicHaulJob extends JobModel {
     }
 
     @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.CRAFT;
+    }
+
+    @Override
     public String getLabel() {
         return _label;
     }

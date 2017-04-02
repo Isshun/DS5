@@ -60,4 +60,9 @@ public class BasicDumpJob extends JobModel {
         return _mapObject;
     }
 
+    @Override
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return CharacterSkillExtra.SkillType.BUILD;
+    }
+
 }

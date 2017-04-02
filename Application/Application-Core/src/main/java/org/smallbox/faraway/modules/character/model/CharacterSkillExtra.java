@@ -57,10 +57,10 @@ public class CharacterSkillExtra extends CharacterExtra {
         _skillsMap = new HashMap<>();
         _skillsMap.put(SkillType.HEAL, new SkillEntry(SkillType.HEAL,    "Heal",     1,  true));
         _skillsMap.put(SkillType.CRAFT, new SkillEntry(SkillType.CRAFT,   "Craft",    3,  true));
-        _skillsMap.put(SkillType.COOK, new SkillEntry(SkillType.COOK,    "Cook",     5,  true));
+        _skillsMap.put(SkillType.COOK, new SkillEntry(SkillType.COOK,       "Cook",     5,  true));
         _skillsMap.put(SkillType.GATHER, new SkillEntry(SkillType.GATHER,  "Gather",   2,  true));
-        _skillsMap.put(SkillType.CUT, new SkillEntry(SkillType.CUT,     "Cut",      1,  true));
-        _skillsMap.put(SkillType.DIG, new SkillEntry(SkillType.DIG,    "Mine",     0,  false));
+        _skillsMap.put(SkillType.CUT, new SkillEntry(SkillType.CUT,         "Cut",      1,  true));
+        _skillsMap.put(SkillType.DIG, new SkillEntry(SkillType.DIG,         "Mine",     5,  true));
         _skillsMap.put(SkillType.CLEAN, new SkillEntry(SkillType.CLEAN,   "Clean",    0,  false));
         _skillsMap.put(SkillType.BUILD, new SkillEntry(SkillType.BUILD,   "Build",    2,  true));
         _skillsMap.put(SkillType.STORE, new SkillEntry(SkillType.STORE,   "Store",    3,  true));

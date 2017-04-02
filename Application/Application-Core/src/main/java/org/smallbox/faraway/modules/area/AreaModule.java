@@ -94,6 +94,12 @@ public class AreaModule extends GameModule {
                 .orElse(null);
     }
 
+    public <T extends AreaModel> Stream<T> getArea(Class<T> cls) {
+        return _areas.stream()
+                .filter(cls::isInstance)
+                .map(cls::cast);
+    }
+
     public <T extends AreaModel> T getArea(Class<T> cls, ParcelModel parcel) {
         AreaModel area = getArea(parcel);
         return cls.isInstance(area) ? cls.cast(area) : null;
