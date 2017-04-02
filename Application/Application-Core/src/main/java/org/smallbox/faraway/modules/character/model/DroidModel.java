@@ -21,8 +21,8 @@ public class DroidModel extends CharacterModel {
             new String[] {"bt_tool_3", "tool"}
     };
 
-    public DroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, characterInfo, parcel, name, lastName, old);
+    public DroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+        super(id, characterInfo, parcel);
 //        _personals.setColor(new Color(0xf1f1f1));
     }
 

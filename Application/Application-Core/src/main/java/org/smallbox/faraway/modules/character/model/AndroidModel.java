@@ -25,8 +25,8 @@ public class AndroidModel extends CharacterModel {
             new String[] {"bt_tool_3",  "tool"}
     };
 
-    public AndroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, characterInfo, parcel, name, lastName, old);
+    public AndroidModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+        super(id, characterInfo, parcel);
 
         CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);
         characterFreeTimeExtra.addType(BasicAndroidSelfCheckJob.class);

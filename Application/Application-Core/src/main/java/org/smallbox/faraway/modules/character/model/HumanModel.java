@@ -27,7 +27,7 @@ public class HumanModel extends CharacterModel {
     };
 
     public HumanModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, characterInfo, parcel, name, lastName, old);
+        super(id, characterInfo, parcel);
 
         _extra.put(CharacterNeedsExtra.class, new CharacterNeedsExtra(this, _type.needs));
         _extra.put(CharacterTimetableExtra.class, new CharacterTimetableExtra(this));

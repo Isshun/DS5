@@ -21,7 +21,7 @@ public class CharacterPersonalsExtra extends CharacterExtra {
     protected boolean           _isGay;
     protected String            _lastName;
     protected String            _birthName;
-    protected Color _color;
+    protected Color             _color;
     protected double            _old;
 
     public CharacterPersonalsExtra(CharacterModel character, String name, String lastName, double old) {

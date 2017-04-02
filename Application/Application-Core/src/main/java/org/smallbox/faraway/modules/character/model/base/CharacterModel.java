@@ -25,7 +25,7 @@ public abstract class CharacterModel extends MovableModel {
     private boolean                             _isSleeping;
     protected Map<Class<? extends CharacterExtra>, CharacterExtra>  _extra = new ConcurrentHashMap<>();
 
-    public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
+    public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
         super(id, parcel);
 
         Log.info("Character #" + id);
@@ -38,7 +38,6 @@ public abstract class CharacterModel extends MovableModel {
     public <T extends CharacterExtra> T getExtra(Class<T> cls) { return (T) _extra.get(cls); }
     public JobModel                     getJob() { return _job; }
     public ParcelModel                  getParcel() { return _parcel; }
-
     public CharacterInfo                getType() { return _type; }
     public abstract String              getName();
 

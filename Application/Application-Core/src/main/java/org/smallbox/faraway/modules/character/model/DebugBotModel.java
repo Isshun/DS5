@@ -24,8 +24,8 @@ public class DebugBotModel extends CharacterModel {
             new String[] {"bt_tool_3",  "tool"}
     };
 
-    public DebugBotModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
-        super(id, characterInfo, parcel, name, lastName, old);
+    public DebugBotModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
+        super(id, characterInfo, parcel);
 
         _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
 
