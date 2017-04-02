@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -20,8 +21,8 @@ public class CharacterInfoInventoryController extends LuaController {
     protected void onControllerUpdate() {
         listInventory.removeAllViews();
 
-        if (_character != null) {
-            _character.getInventory().forEach((itemInfo, quantity) -> {
+        if (_character != null && _character.hasExtra(CharacterInventoryExtra.class)) {
+            _character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) -> {
                 View view = new UIFrame(null);
                 view.setSize(300, 32);
 

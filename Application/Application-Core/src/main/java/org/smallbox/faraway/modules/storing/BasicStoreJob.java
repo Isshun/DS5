@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.storing;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -88,7 +89,7 @@ public class BasicStoreJob extends JobModel {
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + targetConsumable.getLabel() + " to inventory", (character, hourInterval) -> {
                 ConsumableItem inventoryConsumable = _consumableModule.createConsumableFromLock(this, targetConsumable);
-                character.addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
+                character.getExtra(CharacterInventoryExtra.class).addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
                 return JobTaskReturn.TASK_COMPLETE;
             });
 
@@ -100,7 +101,7 @@ public class BasicStoreJob extends JobModel {
         // Ajoute les composants à la zone de stockage
         addTechnicalTask("Drop consumable to storage", character ->
                 _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
-                    ConsumableItem consumable = character.takeInventory(targetConsumable.getInfo(), targetQuantity);
+                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo(), targetQuantity);
                     _consumableModule.addConsumable(consumable.getInfo(), consumable.getFreeQuantity(), _targetParcel);
                 })
         );
@@ -114,12 +115,29 @@ public class BasicStoreJob extends JobModel {
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {
+        if (!character.hasExtra(CharacterInventoryExtra.class)) {
+            return JobCheckReturn.ABORT;
+        }
+
         return JobCheckReturn.OK;
     }
 
     @Override
-    public CharacterSkillExtra.SkillType getSkillNeeded() {
-        return CharacterSkillExtra.SkillType.STORE;
+    public boolean checkCharacterAccepted(CharacterModel character) {
+
+        // Character have no skill
+        if (!character.hasExtra(CharacterSkillExtra.class) || !character.getExtra(CharacterSkillExtra.class).hasSkill(CharacterSkillExtra.SkillType.STORE)) {
+            return false;
+        }
+
+        // Character have no inventory
+        if (!character.hasExtra(CharacterInventoryExtra.class)) {
+            return false;
+        }
+
+        // Character is qualified for job
+        return true;
+
     }
 
     @Override
@@ -127,8 +145,8 @@ public class BasicStoreJob extends JobModel {
         _consumableModule.cancelLock(this);
 
         if (_character != null) {
-            _character.getInventory().forEach((itemInfo, quantity) -> _consumableModule.addConsumable(itemInfo, quantity, _character.getParcel()));
-            _character.getInventory().clear();
+            _character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) -> _consumableModule.addConsumable(itemInfo, quantity, _character.getParcel()));
+            _character.getExtra(CharacterInventoryExtra.class).clear();
         }
     }
 

@@ -60,8 +60,16 @@ public class BasicHarvestJob extends JobModel {
     }
 
     @Override
-    public CharacterSkillExtra.SkillType getSkillNeeded() {
-        return CharacterSkillExtra.SkillType.GATHER;
+    public boolean checkCharacterAccepted(CharacterModel character) {
+
+        // Character have no skill
+        if (!character.hasExtra(CharacterSkillExtra.class) || !character.getExtra(CharacterSkillExtra.class).hasSkill(CharacterSkillExtra.SkillType.GATHER)) {
+            return false;
+        }
+
+        // Character is qualified for job
+        return true;
+
     }
 
     @Override

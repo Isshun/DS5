@@ -57,8 +57,16 @@ public class BasicBuildJob extends JobModel {
     }
 
     @Override
-    public CharacterSkillExtra.SkillType getSkillNeeded() {
-        return CharacterSkillExtra.SkillType.STORE;
+    public boolean checkCharacterAccepted(CharacterModel character) {
+
+        // Character have no skill
+        if (!character.hasExtra(CharacterSkillExtra.class) || !character.getExtra(CharacterSkillExtra.class).hasSkill(CharacterSkillExtra.SkillType.BUILD)) {
+            return false;
+        }
+
+        // Character is qualified for job
+        return true;
+
     }
 
     public MapObjectModel getObject() {

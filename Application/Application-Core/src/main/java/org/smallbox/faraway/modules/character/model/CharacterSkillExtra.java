@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Alex on 31/10/2015.
  */
 public class CharacterSkillExtra extends CharacterExtra {
+
     public static class SkillEntry {
         public final String         name;
         public final SkillType     type;
@@ -40,7 +41,7 @@ public class CharacterSkillExtra extends CharacterExtra {
         CRAFT,
         COOK,
         GATHER,
-        MINE,
+        DIG,
         STORE,
         BUILD,
         CUT,
@@ -59,7 +60,7 @@ public class CharacterSkillExtra extends CharacterExtra {
         _skillsMap.put(SkillType.COOK, new SkillEntry(SkillType.COOK,    "Cook",     5,  true));
         _skillsMap.put(SkillType.GATHER, new SkillEntry(SkillType.GATHER,  "Gather",   2,  true));
         _skillsMap.put(SkillType.CUT, new SkillEntry(SkillType.CUT,     "Cut",      1,  true));
-        _skillsMap.put(SkillType.MINE, new SkillEntry(SkillType.MINE,    "Mine",     0,  false));
+        _skillsMap.put(SkillType.DIG, new SkillEntry(SkillType.DIG,    "Mine",     0,  false));
         _skillsMap.put(SkillType.CLEAN, new SkillEntry(SkillType.CLEAN,   "Clean",    0,  false));
         _skillsMap.put(SkillType.BUILD, new SkillEntry(SkillType.BUILD,   "Build",    2,  true));
         _skillsMap.put(SkillType.STORE, new SkillEntry(SkillType.STORE,   "Store",    3,  true));
@@ -77,6 +78,10 @@ public class CharacterSkillExtra extends CharacterExtra {
 
     public Collection<SkillEntry>      getAll() { return _skills; }
     public SkillEntry                  get(SkillType type) { return _skillsMap.get(type); }
+
+    public boolean hasSkill(SkillType skill) {
+        return _skillsMap.containsKey(skill) && _skillsMap.get(skill).available;
+    }
 
     public void moveSkill(SkillEntry skillToMove, int index) {
         if (skillToMove.index != index) {

@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -110,8 +111,8 @@ public class CharacterLayer extends BaseLayer {
      * Draw inventory
      */
     private void drawInventory(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
-        if (character.getInventory() != null) {
-            for (Map.Entry<ItemInfo, Integer> entry: character.getInventory().entrySet()) {
+        if (character.hasExtra(CharacterInventoryExtra.class)) {
+            for (Map.Entry<ItemInfo, Integer> entry: character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
                 if (entry.getValue() > 0) {
                     renderer.draw(posX, posY + 2, spriteManager.getNewSprite(entry.getKey()));
                 }

@@ -7,10 +7,10 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.job.check.old.CharacterCheck;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -23,7 +23,10 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -32,9 +35,6 @@ import java.util.stream.Stream;
 public class JobModule extends GameModule<JobModuleObserver> {
     private BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
     private BlockingQueue<JobModel>         _jobs = new LinkedBlockingQueue<>();
-    private List<CharacterCheck>            _joys;
-    private List<CharacterCheck>            _priorities;
-    private List<CharacterCheck>            _sleeps;
     private Map<CharacterModel, Integer>    _characterInnactiveDuration = new ConcurrentHashMap<>();
 
     @BindModule
@@ -42,20 +42,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     @BindModule
     private ConsumableModule consumableModule;
-
-    @Override
-    public void onGameCreate(Game game) {
-        _priorities = new ArrayList<>();
-//        _priorities.addSubJob(new CheckCharacterEntertainmentDepleted());
-
-
-        _joys = new ArrayList<>();
-//        _joys.addSubJob(new CheckEntertainmentTalk());
-//        _joys.add(new CheckJoyWalk());
-//        _joys.addSubJob(new CheckEntertainmentSleep());
-
-        _sleeps = new ArrayList<>();
-    }
 
     @Override
     protected void onModuleUpdate(Game game) {
@@ -79,13 +65,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
         return _jobs.stream().filter(cls::isInstance).map(cls::cast);
     }
 
-//    public <T> Collection<T> getJobs(T cls) {
-//        return _jobs.stream()
-//                .filter(job -> job.getClass() == cls)
-//                .map(cls::cast)
-//                .collect(Collectors.toList());
-//    }
-//
     /**
      * Looking for best job to fit characters
      *
@@ -128,60 +107,18 @@ public class JobModule extends GameModule<JobModuleObserver> {
             _characterInnactiveDuration.put(character, _characterInnactiveDuration.getOrDefault(character, 0) + 1);
         }
 
-//        int timetable = character.getTimetable().get(Application.gameManager.getGame().getHour());
-//
-//        // Priority jobs
-//        JobModel job = getBestPriority(character);
-//        JobModel job = getBestPriority(character);
-//
-//        // Sleep jobs (sleep time)
-//        if (job == null && timetable == 1) {
-//            job = getBestSleep(character, true);
-//        }
-//
-//        // Entertainment jobs (auto time)
-//        if (job == null && timetable == 0) {
-//            job = getBestEntertainment(character, false);
-//        }
-//
-//        // Regular jobs (auto and work time)
-//        if (job == null && (timetable == 0 || timetable == 3)) {
-//            job = getBestRegular(character);
-//        }
-//
-//        // Failed jobs (auto and work time)
-//        if (job == null && (timetable == 0 || timetable == 3)) {
-//            job = getFailedJob(character);
-//        }
-//
-//        // Entertainment jobs (free time)
-//        if (timetable == 2) {
-//            job = getBestEntertainment(character, true);
-//        }
-//
-//        if (job != null) {
-//            assign(character, job);
-//        }
     }
 
     private void fixCharacterInventory() {
         characterModule.getCharacters().stream()
-                .filter(character -> character.getJob() == null && !character.getInventory().isEmpty())
+                .filter(character -> character.hasExtra(CharacterInventoryExtra.class))
+                .filter(character -> character.getJob() == null && !character.getExtra(CharacterInventoryExtra.class).getAll().isEmpty())
                 .forEach(character -> {
                     Log.warning(getName() + " have item in inventory without job");
-                    character.getInventory().forEach((itemInfo, quantity) ->
+                    character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) ->
                             consumableModule.addConsumable(itemInfo, quantity, character.getParcel()));
-                    character.getInventory().clear();
+                    character.getExtra(CharacterInventoryExtra.class).getAll().clear();
                 });
-    }
-
-    private JobModel getBestSleep(CharacterModel character, boolean force) {
-        for (CharacterCheck check: _sleeps) {
-            if ((force || check.checkJobNeeded(character)) && check.checkJobLaunchable(character)) {
-                return check.createJob(character);
-            }
-        }
-        return null;
     }
 
     private void assign(CharacterModel character, JobModel job) {
@@ -239,38 +176,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     /**
-     * Create entertainment job for list
-     *
-     * @param character
-     * @return
-     */
-    private JobModel getBestEntertainment(CharacterModel character, boolean force) {
-        Collections.shuffle(_joys);
-        for (CharacterCheck check: _joys) {
-            if ((force || check.checkJobNeeded(character)) && check.checkJobLaunchable(character)) {
-                return check.createJob(character);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Create priority job for list (eat / sleep / getRoom oxygen / move to temperate org.smallbox.faraway.core.module.room.model)
-     *
-     * @param character
-     * @return
-     */
-    private JobModel getBestPriority(CharacterModel character) {
-        JobModel job = null;
-        for (CharacterCheck jobCheck: _priorities) {
-            if (job == null && jobCheck.checkJobNeeded(character) && jobCheck.checkJobLaunchable(character)) {
-                job = jobCheck.createJob(character);
-            }
-        }
-        return job;
-    }
-
-    /**
      * Retourne la meilleur tache disponible pour le personnage
      *
      * @param character
@@ -285,10 +190,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
                 JobModel bestJob = null;
 
                 for (JobModel job : _jobs) {
-                    if (!job.isAuto()) {
+                    if (!job.isAuto() && !job.isClose() && job.getCharacter() == null && job.checkCharacterAccepted(character)) {
                         Log.debug("Check best regular: " + job.getLabel());
                         ParcelModel parcel = job.getTargetParcel() != null ? job.getTargetParcel() : job.getJobParcel();
-                        if (skill.type == job.getSkillNeeded() && !job.isClose() && job.getCharacter() == null && job.getFail() <= 0) {
+                        if (job.getFail() <= 0) {
                             int distance = WorldHelper.getApproxDistance(character.getParcel(), parcel);
                             if (distance < bestDistance && job.check(character)) {
                                 bestJob = job;
@@ -365,9 +270,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
             if (object == null && job.getJobParcel() == parcel) {
                 job.close();
             }
-//            if (object != null && job instanceof BuildJob && ((BuildJob) job).getBuildItem() == object) {
-//                job.close();
-//            }
         });
     }
 
@@ -375,28 +277,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
         return Constant.MODULE_JOB_PRIORITY;
     }
 
-    public void addPriorityCheck(CharacterCheck check) {
-        _priorities.add(check);
-    }
-
-    public void addJoyCheck(CharacterCheck check) {
-        _joys.add(check);
-    }
-
-    public void addSleepCheck(CharacterCheck check) {
-        _priorities.add(check);
-    }
-
     public boolean hasJob(JobModel job) {
         return _jobs.contains(job);
     }
-
-//    public <T extends JobModel> List<T> getJobs(Class<T> cls) {
-//        return _jobs.stream()
-//                .filter(cls::isInstance)
-//                .map(job -> (T)job)
-//                .collect(Collectors.toList());
-//    }
 
     public interface JobInitCallback<T> {
         boolean onInit(T job);
@@ -435,9 +318,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
     public void removeJob(JobModel job) {
         Log.debug("Remove job " + job + ", status: " + job.getStatus());
 
-        if (job.getCharacter() != null) {
-            job.close();
-        }
         job.close();
         _jobs.remove(job);
     }

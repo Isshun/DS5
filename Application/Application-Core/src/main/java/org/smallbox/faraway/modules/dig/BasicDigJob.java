@@ -81,8 +81,16 @@ public class BasicDigJob extends JobModel {
     }
 
     @Override
-    public CharacterSkillExtra.SkillType getSkillNeeded() {
-        return CharacterSkillExtra.SkillType.BUILD;
+    public boolean checkCharacterAccepted(CharacterModel character) {
+
+        // Character have no skill
+        if (!character.hasExtra(CharacterSkillExtra.class) || !character.getExtra(CharacterSkillExtra.class).hasSkill(CharacterSkillExtra.SkillType.DIG)) {
+            return false;
+        }
+
+        // Character is qualified for job
+        return true;
+
     }
 
     @Override

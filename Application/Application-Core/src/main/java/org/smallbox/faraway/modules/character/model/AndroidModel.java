@@ -31,6 +31,7 @@ public class AndroidModel extends CharacterModel {
         CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);
         characterFreeTimeExtra.addType(BasicAndroidSelfCheckJob.class);
         _extra.put(CharacterFreeTimeExtra.class, characterFreeTimeExtra);
+        _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
 
 //        _personals.setColor(new Color(0xc57de6));
     }

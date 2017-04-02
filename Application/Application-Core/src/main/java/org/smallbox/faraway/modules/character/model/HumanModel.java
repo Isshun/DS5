@@ -35,6 +35,7 @@ public class HumanModel extends CharacterModel {
         _extra.put(CharacterStatsExtra.class, new CharacterStatsExtra(this));
         _extra.put(CharacterPersonalsExtra.class, new CharacterPersonalsExtra(this, name, lastName, old));
         _extra.put(CharacterDiseasesExtra.class, new CharacterDiseasesExtra(this));
+        _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
 
         CharacterFreeTimeExtra characterFreeTimeExtra = new CharacterFreeTimeExtra(this);
         characterFreeTimeExtra.addType(BasicWalkJob.class);

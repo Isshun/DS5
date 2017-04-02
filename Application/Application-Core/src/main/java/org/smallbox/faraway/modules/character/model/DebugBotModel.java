@@ -26,6 +26,10 @@ public class DebugBotModel extends CharacterModel {
 
     public DebugBotModel(int id, CharacterInfo characterInfo, ParcelModel parcel, String name, String lastName, double old) {
         super(id, characterInfo, parcel, name, lastName, old);
+
+        _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
+
+//        _personals.setColor(new Color(0xc57de6));
     }
 
     @Override

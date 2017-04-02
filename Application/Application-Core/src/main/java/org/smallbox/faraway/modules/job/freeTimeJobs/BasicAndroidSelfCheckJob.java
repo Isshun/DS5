@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.job.freeTimeJobs;
 
-import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
+import org.smallbox.faraway.modules.character.model.AndroidModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
@@ -25,8 +25,8 @@ public class BasicAndroidSelfCheckJob extends JobModel {
     }
 
     @Override
-    public CharacterSkillExtra.SkillType getSkillNeeded() {
-        return null;
+    public boolean checkCharacterAccepted(CharacterModel character) {
+        return character instanceof AndroidModel;
     }
 
 }

@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.UsableItem;
@@ -79,7 +80,7 @@ public class BasicHaulJob extends JobModel {
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + lock.consumable.getLabel() + " to inventory", (character, hourInterval) -> {
                 _consumableModule.createConsumableFromLock(lock);
-                character.addInventory(lock.consumable.getInfo(), lock.quantity);
+                character.getExtra(CharacterInventoryExtra.class).addInventory(lock.consumable.getInfo(), lock.quantity);
                 return JobTaskReturn.TASK_COMPLETE;
             });
 
@@ -91,7 +92,7 @@ public class BasicHaulJob extends JobModel {
         // Charge les comnposants dans la fabrique
         addTechnicalTask("Load factory", character ->
                 _targetConsumables.forEach((initialConsumable, quantity) -> {
-                    ConsumableItem consumable = character.takeInventory(initialConsumable.getInfo(), quantity);
+                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(initialConsumable.getInfo(), quantity);
                     _item.addInventory(consumable);
                 }));
 
@@ -115,12 +116,29 @@ public class BasicHaulJob extends JobModel {
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {
+        if (!character.hasExtra(CharacterInventoryExtra.class)) {
+            return JobCheckReturn.ABORT;
+        }
+
         return JobCheckReturn.OK;
     }
 
     @Override
-    public CharacterSkillExtra.SkillType getSkillNeeded() {
-        return CharacterSkillExtra.SkillType.BUILD;
+    public boolean checkCharacterAccepted(CharacterModel character) {
+
+        // Character have no skill
+        if (!character.hasExtra(CharacterSkillExtra.class) || !character.getExtra(CharacterSkillExtra.class).hasSkill(CharacterSkillExtra.SkillType.CRAFT)) {
+            return false;
+        }
+
+        // Character have no inventory
+        if (!character.hasExtra(CharacterInventoryExtra.class)) {
+            return false;
+        }
+
+        // Character is qualified for job
+        return true;
+
     }
 
     @Override

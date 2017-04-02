@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.debug.renderer;
+package org.smallbox.faraway.client.debug.layer;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;

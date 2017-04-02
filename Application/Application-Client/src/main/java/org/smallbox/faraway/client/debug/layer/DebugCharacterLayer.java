@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.dependencyInjector.Component;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
 
@@ -41,8 +42,8 @@ public class DebugCharacterLayer extends BaseLayer {
             }
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
-            drawDebug(renderer, "Inventory2", _character.getInventory() == null ? "--" :
-                    String.join(", ", _character.getInventory().entrySet().stream()
+            drawDebug(renderer, "Inventory2", _character.hasExtra(CharacterInventoryExtra.class) ? "--" :
+                    String.join(", ", _character.getExtra(CharacterInventoryExtra.class).getAll().entrySet().stream()
                             .map(entry -> entry.getKey().label + "x" + entry.getValue())
                             .collect(Collectors.toList())));
         }
