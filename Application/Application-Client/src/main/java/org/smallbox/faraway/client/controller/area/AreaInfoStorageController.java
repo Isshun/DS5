@@ -6,7 +6,10 @@ import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -18,7 +21,8 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.storing.StoringModule;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -44,18 +48,13 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     @BindLua
     private UIList listStorage;
 
-//    @BindLua
-//    private UIGrid gridCategory;
-
-    private String _subCategory;
-    private String _category;
-    //    private Map<String, Collection<ItemInfo>> _itemBySubCategory;
     private Collection<CategoryContainer> _tree;
     private StorageArea _area;
 
     private class CategoryContainer {
         public final String categoryName;
         public Collection<SubCategoryContainer> subCategories;
+        public Collection<ItemInfo> items;
         public boolean isOpen;
 
         public CategoryContainer(String categoryName) {
@@ -64,7 +63,12 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                     .filter(consumable -> StringUtils.equals(categoryName, consumable.category))
                     .map(consumable -> consumable.subCategory)
                     .distinct()
+                    .filter(StringUtils::isNotEmpty)
                     .map(subCategoryName -> new SubCategoryContainer(categoryName, subCategoryName))
+                    .collect(Collectors.toList());
+            this.items = data.consumables.stream()
+                    .filter(itemInfo -> StringUtils.equals(categoryName, itemInfo.category))
+                    .filter(itemInfo -> itemInfo.subCategory == null)
                     .collect(Collectors.toList());
         }
     }
@@ -94,15 +98,6 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .map(CategoryContainer::new)
                 .collect(Collectors.toList());
 
-//        // Creation d'une map contenant toutes les sous-categorie
-//        _itemBySubCategory = data.consumables.stream()
-//                .map(itemInfo -> itemInfo.category + "/" + itemInfo.subCategory)
-//                .distinct()
-//                .collect(Collectors.toMap(subCategory -> subCategory, itemInfo -> new ArrayList<>()));
-//
-//        // Pour chaque sous-categorie ajout des consomables associés
-//        data.consumables.forEach(itemInfo -> _itemBySubCategory.get(itemInfo.category + "/" + itemInfo.subCategory).add(itemInfo));
-
     }
 
     private void displayTree() {
@@ -118,7 +113,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                         displayTree();
                     })
                     .addView(UILabel.createFast(categoryContainer.categoryName, ColorUtils.COLOR1).setPadding(5))
-                    .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName, null), 16, 16)
+                    .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName), 16, 16)
                             .setPosition(300, 0)
                             .setOnClickListener(event -> {
                                 clickOnBox(categoryContainer.categoryName, null);
@@ -137,7 +132,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                                 subCategoryContainer.isOpen = !subCategoryContainer.isOpen;
                                 displayTree();
                             })
-                            .addView(UILabel.createFast(subCategoryContainer.subCategoryName, ColorUtils.COLOR2).setPadding(5).setMargin(0, 20))
+                            .addView(UILabel.createFast((subCategoryContainer.isOpen ? " + " : " - ") + subCategoryContainer.subCategoryName, ColorUtils.COLOR2).setPadding(5).setMargin(0, 0))
                             .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName, subCategoryContainer.subCategoryName), 16, 16)
                                     .setPosition(300, 0)
                                     .setOnClickListener(event -> {
@@ -149,30 +144,35 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
                     // Display items
                     if (subCategoryContainer.isOpen) {
-                        subCategoryContainer.items.forEach(itemInfo -> {
-
-                            listStorage.addView(new UIFrame(null)
-                                    .setSize(200, 20)
-                                    .setOnClickListener(event -> {
-                                        _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
-                                        displayTree();
-                                    })
-                                    .addView(UILabel.createFast(itemInfo.label, Color.WHITE).setPadding(5).setMargin(0, 40))
-                                    .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
-                                            .setPosition(300, 0)
-                                            .setOnClickListener(event -> {
-                                                _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
-                                                storingModule.notifyRulesChange(_area);
-                                                displayTree();
-                                            }))
-                            );
-
-                        });
+                        displayConsumables(subCategoryContainer.items);
                     }
                 });
+
+                // Display items with no sub-cateogry
+                displayConsumables(categoryContainer.items);
             }
         });
 
+    }
+
+    private void displayConsumables(Collection<ItemInfo> items) {
+        items.forEach(itemInfo -> {
+            listStorage.addView(new UIFrame(null)
+                    .setSize(200, 20)
+                    .setOnClickListener(event -> {
+                        _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
+                        displayTree();
+                    })
+                    .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).setPadding(5).setMargin(0, 0))
+                    .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
+                            .setPosition(300, 0)
+                            .setOnClickListener(event -> {
+                                _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
+                                storingModule.notifyRulesChange(_area);
+                                displayTree();
+                            }))
+            );
+        });
     }
 
     private void clickOnBox(String categoryName, String subCategoryName) {
@@ -191,10 +191,18 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 : "[base]/graphics/icons/ic_no.png";
     }
 
+    private String getContainerImage(String categoryName) {
+        return data.consumables.stream()
+                .filter(itemInfo -> StringUtils.equals(categoryName, itemInfo.category))
+                .allMatch(itemInfo -> _area.isAccepted(itemInfo))
+                ? "[base]/graphics/icons/ic_ok.png"
+                : "[base]/graphics/icons/ic_no.png";
+    }
+
     private String getContainerImage(String categoryName, String subCategoryName) {
         return data.consumables.stream()
                 .filter(itemInfo -> StringUtils.equals(categoryName, itemInfo.category))
-                .filter(itemInfo -> StringUtils.equals(subCategoryName, itemInfo.subCategory) || subCategoryName == null)
+                .filter(itemInfo -> StringUtils.equals(subCategoryName, itemInfo.subCategory))
                 .allMatch(itemInfo -> _area.isAccepted(itemInfo))
                 ? "[base]/graphics/icons/ic_ok.png"
                 : "[base]/graphics/icons/ic_no.png";
@@ -206,106 +214,6 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
             _area = (StorageArea) area;
             displayTree();
         }
-    }
-
-    private void displayCategories() {
-//        gridCategory.removeAllViews();
-//        data.consumables.stream()
-//                .map(itemInfo -> itemInfo.category)
-//                .distinct()
-//                .forEach(category -> gridCategory.addView(
-//                        UILabel.create(null)
-//                                .setText(category)
-//                                .setTextSize(14)
-//                                .setTextColor(ColorUtils.COLOR2)
-//                                .setTextAlign(View.Align.CENTER)
-//                                .setSize(80, 20)
-//                                .setOnClickListener(event -> displayCategory(category))
-//                ));
-    }
-
-    private void refresh() {
-        displayCategory(_category);
-    }
-
-    private void displayCategory(String category) {
-        _category = category;
-
-        List<String> subCategories = data.consumables.stream()
-                .filter(itemInfo -> StringUtils.equals(itemInfo.category, category))
-                .map(itemInfo -> itemInfo.subCategory)
-                .distinct()
-                .collect(Collectors.toList());
-
-        listStorage.removeAllViews();
-
-        subCategories.forEach(subCategory -> displaySubCategory(category, subCategory));
-    }
-
-    private void displaySubCategory(String category, String subCategory) {
-        _category = category;
-
-        boolean allItemsAreAccepted = data.consumables.stream()
-                .filter(itemInfo -> StringUtils.equals(itemInfo.category, category))
-                .filter(itemInfo -> StringUtils.equals(itemInfo.subCategory, subCategory))
-                .allMatch(itemInfo -> _area.isAccepted(itemInfo));
-
-        // Display sub category header
-        listStorage.addView(new UIFrame(null)
-                .setSize(300, 27)
-                .addView(UIImage.create(null)
-                        .setImage("[base]/graphics/bg_button_left.png")
-                        .setPositionY(5)
-                        .setSize(300, 22))
-                .addView(UICheckBox.create(null)
-                        .setText(subCategory)
-                        .setTextSize(14)
-                        .setTextColor(ColorUtils.COLOR2)
-                        .setChecked(allItemsAreAccepted)
-                        .setOnCheckListener((checked, clickOnBox) -> {
-                            if (clickOnBox) {
-                                data.consumables.stream()
-                                        .filter(itemInfo -> StringUtils.equals(itemInfo.category, category))
-                                        .filter(itemInfo -> StringUtils.equals(itemInfo.subCategory, subCategory))
-                                        .forEach(itemInfo -> _area.setAccept(itemInfo, checked));
-                                storingModule.notifyRulesChange(_area);
-                                displayCategory(category);
-                            } else {
-                                toggleSubCategory(category, subCategory);
-                            }
-                        })
-                        .setPadding(11, 8)
-                        .setSize(300, 22))
-        );
-
-        // Display sub category consumables
-        if (StringUtils.equals(_subCategory, subCategory)) {
-            data.consumables.stream()
-                    .filter(itemInfo -> StringUtils.equals(itemInfo.category, _category))
-                    .filter(itemInfo -> StringUtils.equals(itemInfo.subCategory, _subCategory))
-                    .forEach(this::displayConsumable);
-        }
-
-    }
-
-    private void displayConsumable(ItemInfo itemInfo) {
-        listStorage.addView(UICheckBox.create(null)
-                .setOnCheckListener((checked, clickOnBox) -> {
-                    _area.setAccept(itemInfo, checked);
-                    storingModule.notifyRulesChange(_area);
-                    refresh();
-                })
-                .setChecked(_area.isAccepted(itemInfo))
-                .setText(itemInfo.label)
-                .setTextSize(12)
-                .setTextColor(ColorUtils.COLOR2)
-                .setPadding(8, 5)
-                .setSize(100, 22));
-    }
-
-    private void toggleSubCategory(String category, String subCategory) {
-        _subCategory = !StringUtils.equals(_subCategory, subCategory) ? subCategory : null;
-        displayCategory(category);
     }
 
     @Override
