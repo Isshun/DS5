@@ -43,7 +43,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     @Override
     public boolean onKeyPress(int key) {
         if (key == Input.Keys.ESCAPE && CollectionUtils.isNotEmpty(listSelected)) {
-            mainPanelController.setVisible(true);
+//            mainPanelController.setVisible(true);
             listSelected.clear();
             return true;
         }

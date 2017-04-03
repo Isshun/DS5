@@ -7,12 +7,13 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class ColorUtils {
 
-    public static Color COLOR1 = fromHex(0x2ab8ba);
-    public static Color COLOR2 = fromHex(0x9afbff);
-    public static Color COLOR3 = fromHex(0x132733);
+    public static Color COLOR1 = fromHex(0xff2ab8ba);
+    public static Color COLOR2 = fromHex(0xff9afbff);
+    public static Color COLOR3 = fromHex(0xff132733);
 
     public static Color fromHex(long rgb) {
-        int a = rgb > 0xffffff || rgb < 0 ? (int) ((rgb >> 24) & 0xFF) : 255;
+//        int a = rgb > 0xffffff || rgb < 0 ? (int) ((rgb >> 24) & 0xFF) : 255;
+        int a = (int) ((rgb >> 24) & 0xFF);
         int r = (int) ((rgb >> 16) & 0xFF);
         int g = (int) ((rgb >> 8) & 0xFF);
         int b = (int) (rgb & 0xFF);

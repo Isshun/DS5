@@ -51,7 +51,7 @@ public class JobController extends LuaController {
                                 .setSize(30, 30))
                         .addView(UILabel.create(null)
                                 .setDashedString(job.getMainLabel(), getJobStatus(job), 40)
-                                .setTextColor(job.getCharacter() != null ? 0x9afbff : 0xB4D4D3)
+                                .setTextColor(job.getCharacter() != null ? 0x9afbff : 0xffB4D4D3)
                                 .setSize(300, 22)
                                 .setPosition(24, 0))
                 )

@@ -76,7 +76,7 @@ public class LuaPlanetExtend extends LuaExtend {
         regionInfo.planet = planetInfo;
         regionInfo.name = getString(value, "name", null);
         regionInfo.label = getString(value, "label", regionInfo.name);
-        regionInfo.color = getInt(value, "color", 0x000000);
+        regionInfo.color = getInt(value, "color", 0xff000000);
 
         if (!value.get("temperatures").isnil()) {
             regionInfo.temperatures = new ArrayList<>();

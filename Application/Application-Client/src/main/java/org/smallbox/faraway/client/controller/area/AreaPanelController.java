@@ -51,12 +51,12 @@ public class AreaPanelController extends LuaController {
 
                     listAreasAdd.addView(UILabel.create(null)
                             .setText(" + " + cls.getAnnotation(AreaTypeInfo.class).label())
-                            .setTextColor(0xB4D4D3)
+                            .setTextColor(0xffB4D4D3)
                             .setTextSize(18)
                             .setPadding(10)
                             .setSize(160, 40)
-                            .setFocusBackgroundColor(0x25c9cb)
-                            .setRegularBackgroundColor(0x121c1e)
+                            .setFocusBackgroundColor(0xff25c9cb)
+                            .setRegularBackgroundColor(0xff121c1e)
                             .setOnClickListener(event -> {
                                 areaLayer.setMode(AreaLayer.Mode.ADD, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
@@ -70,12 +70,12 @@ public class AreaPanelController extends LuaController {
 
                     listAreasSub.addView(UILabel.create(null)
                             .setText(" - " + cls.getAnnotation(AreaTypeInfo.class).label())
-                            .setTextColor(0xB4D4D3)
+                            .setTextColor(0xffB4D4D3)
                             .setTextSize(18)
                             .setPadding(10)
                             .setSize(160, 40)
-                            .setFocusBackgroundColor(0x25c9cb)
-                            .setRegularBackgroundColor(0x121c1e)
+                            .setFocusBackgroundColor(0xff25c9cb)
+                            .setRegularBackgroundColor(0xff121c1e)
                             .setOnClickListener(event -> {
                                 areaLayer.setMode(AreaLayer.Mode.SUB, cls);
                                 uiEventManager.setSelectionListener(parcels -> {

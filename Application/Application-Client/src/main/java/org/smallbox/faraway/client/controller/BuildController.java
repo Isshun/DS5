@@ -139,7 +139,7 @@ public class BuildController extends LuaController {
                         .setText(itemInfo.label)
                         .setTextColor(0x9afbff)
                         .setSize(100, 32)
-                        .setBackgroundFocusColor(0x25c9cb)
+                        .setBackgroundFocusColor(0xff25c9cb)
                         .setPadding(10)
                         .setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo))));
 

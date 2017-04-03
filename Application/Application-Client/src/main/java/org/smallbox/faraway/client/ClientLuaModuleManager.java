@@ -25,9 +25,9 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "application = a\n" +
                         "data = d\n" +
                         "ui = u\n" +
-                        "color1 = 0x2ab8ba\n" +
-                        "color2 = 0x9afbff\n" +
-                        "color3 = 0x132733\n" +
+                        "color1 = 0xff2ab8ba\n" +
+                        "color2 = 0xff9afbff\n" +
+                        "color3 = 0xff132733\n" +
                         "math.round = function(num, idp)\n" +
                         "local mult = 10^(idp or 0)\n" +
                         "return math.floor(num * mult + 0.5) / mult\n" +

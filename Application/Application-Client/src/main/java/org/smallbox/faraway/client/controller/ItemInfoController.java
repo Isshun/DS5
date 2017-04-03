@@ -114,7 +114,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         item.getInfo().build.components.forEach(componentInfo ->
                 listBuildComponents.addNextView(UILabel.create(null)
                         .setDashedString(componentInfo.component.label, item.getInventoryQuantity(componentInfo.component) + " / " + componentInfo.quantity, 42)
-                        .setTextColor(item.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xababab : 0x9afbff)
+                        .setTextColor(item.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xffababab : 0x9afbff)
                         .setSize(100, 20)));
         listBuildComponents.switchViews();
     }

@@ -33,7 +33,7 @@ public class AndroidModel extends CharacterModel {
         _extra.put(CharacterFreeTimeExtra.class, characterFreeTimeExtra);
         _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
 
-//        _personals.setColor(new Color(0xc57de6));
+//        _personals.setColor(new Color(0xffc57de6));
     }
 
     @Override

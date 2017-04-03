@@ -33,7 +33,7 @@ public class CharacterInfoInventoryController extends LuaController {
                 }
                 view.addView(UILabel.create(null)
                         .setDashedString(itemInfo.label, String.valueOf(quantity), 38)
-                        .setTextColor(0xB4D4D3)
+                        .setTextColor(0xffB4D4D3)
                         .setPosition(36, 7)
                         .setSize(100, 20));
 

@@ -29,7 +29,7 @@ public class DebugBotModel extends CharacterModel {
 
         _extra.put(CharacterInventoryExtra.class, new CharacterInventoryExtra(this));
 
-//        _personals.setColor(new Color(0xc57de6));
+//        _personals.setColor(new Color(0xffc57de6));
     }
 
     @Override

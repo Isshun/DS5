@@ -153,7 +153,7 @@ public class CharacterInfoStatusController extends LuaController {
                         .create(null)
                         .setText("[" + (buff.mood > 0 ? "+" : "") + buff.mood  + "] " + buff.message)
                         .setTextSize(14)
-                        .setTextColor(buff.mood > 0 ? 0x33bb88 : 0xbb5555)
+                        .setTextColor(buff.mood > 0 ? 0xff33bb88 : 0xffbb5555)
                         .setSize(300, 22)));
 
         listBuffs.switchViews();

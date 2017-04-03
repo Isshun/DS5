@@ -138,7 +138,7 @@ public class MinimapLayer extends BaseLayer {
                     } else if (parcels[x][y][_floor].hasLiquid()) {
                         _pixmap.drawPixel(x, y, parcels[x][y][_floor].getLiquidInfo().color);
                     } else {
-                        _pixmap.drawPixel(x, y, 0x000000);
+                        _pixmap.drawPixel(x, y, 0xff000000);
                     }
                 }
             }
