@@ -1,6 +1,7 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -104,11 +105,15 @@ public class DesktopLauncher {
 //                        WorldHelper.getParcel(8, 7, 1),
 //                        WorldHelper.getParcel(7, 7, 1)));
 //
-                Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
+                StorageArea storageArea = Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
                         WorldHelper.getParcel(8, 10, 1),
                         WorldHelper.getParcel(9, 10, 1),
                         WorldHelper.getParcel(8, 11, 1),
-                        WorldHelper.getParcel(9, 11, 1))).setPriority(4);
+                        WorldHelper.getParcel(9, 11, 1)));
+                storageArea.setPriority(4);
+                Application.data.consumables.stream()
+                        .filter(consumable -> StringUtils.equals(consumable.category, "food"))
+                        .forEach(consumable -> storageArea.setAccept(consumable, true));
 
                 Application.moduleManager.getModule(AreaModule.class).addArea(StorageArea.class, Arrays.asList(
                         WorldHelper.getParcel(5, 10, 1),

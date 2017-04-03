@@ -13,23 +13,36 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 /**
- * Job déplacant les consomables vers les zones de stockage
+ * Job storing consomables to storage area
  */
 public class BasicStoreJob extends JobModel {
 
+    /**
+     * Consumables to store
+     */
     protected Map<ConsumableItem, Integer> _targetConsumables;
-    private ConsumableModule _consumableModule;
-    private boolean _started;
 
-    public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
+    /**
+     * Consumable module
+     */
+    private ConsumableModule _consumableModule;
+
+    /**
+     * True if all consumables has been locked succefully (set during onFirstStart)
+     */
+    private boolean _isAllConsumablesLocked;
+
+    public Collection<ConsumableItem> getConsumables() { return _targetConsumables.keySet(); }
 
     /**
      * Apporte les composants sur la parcel
-     *  @param consumableModule Consumable module
+     *
+     * @param consumableModule Consumable module
      * @param jobModule Job module
      * @param targetConsumable consomable à déplacer
      * @param storingParcel parcel ou stocker le consomable
@@ -88,7 +101,7 @@ public class BasicStoreJob extends JobModel {
             }
         }
 
-        _started = true;
+        _isAllConsumablesLocked = true;
 
         // Déplace le personnage vers chaque consomable et l'ajoute à son inventaire
         _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
@@ -176,7 +189,7 @@ public class BasicStoreJob extends JobModel {
 
     protected boolean onCheck() {
 
-        if (!_started) {
+        if (!_isAllConsumablesLocked) {
 
             // Le check echoue si pour chaque consomable, la quantité présent dans le job est différent de la quantité présent sur le dit consomable
             for (Map.Entry<ConsumableItem, Integer> entry : _targetConsumables.entrySet()) {

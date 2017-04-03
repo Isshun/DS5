@@ -96,7 +96,7 @@ public class CharacterInfoStatusController extends LuaController {
             }
 
             if (job instanceof BasicStoreJob) {
-                ((BasicStoreJob) job).getConsumables().forEach((consumable, quantity) -> {
+                ((BasicStoreJob) job).getConsumables().forEach(consumable -> {
                     if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
                         imgJob.setVisible(true);
                         imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));

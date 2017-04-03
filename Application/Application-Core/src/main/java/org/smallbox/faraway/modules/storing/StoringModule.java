@@ -121,7 +121,7 @@ public class StoringModule extends GameModule {
                 .filter(job -> job instanceof BasicStoreJob)
                 .map(job -> (BasicStoreJob)job)
                 .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED || job.getStatus() == JobModel.JobStatus.JOB_WAITING)
-                .filter(job -> job.getConsumables().keySet().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
+                .filter(job -> job.getConsumables().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
                 .forEach(job -> jobModule.removeJob(job));
 
     }
@@ -135,7 +135,7 @@ public class StoringModule extends GameModule {
         // Annule les jobs contenant des consumables non compatible avec les zone de stockage
         jobModule.getJobs(BasicStoreJob.class)
                 .filter(job -> area.getParcels().contains(job.getTargetParcel()))
-                .filter(job -> !area.isAccepted(job.getConsumables().keySet()))
+                .filter(job -> !area.isAccepted(job.getConsumables()))
                 .forEach(job -> jobModule.removeJob(job));
     }
 }

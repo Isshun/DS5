@@ -26,7 +26,7 @@ public class JobLayer extends BaseLayer {
         jobModule.getJobs().forEach(job -> {
 
             if (job instanceof BasicStoreJob) {
-                ((BasicStoreJob)job).getConsumables().keySet().forEach(consumable ->
+                ((BasicStoreJob)job).getConsumables().forEach(consumable ->
                         renderer.drawOnMap(consumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png")));
             }
 
