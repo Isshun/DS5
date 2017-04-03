@@ -15,7 +15,6 @@ import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 
 /**
  * Job storing consomables to storage area
@@ -25,7 +24,7 @@ public class BasicStoreJob extends JobModel {
     /**
      * Consumables to store
      */
-    protected Map<ConsumableItem, Integer> _targetConsumables;
+    protected Collection<ConsumableItem> _targetConsumables;
 
     /**
      * Consumable module
@@ -37,7 +36,9 @@ public class BasicStoreJob extends JobModel {
      */
     private boolean _isAllConsumablesLocked;
 
-    public Collection<ConsumableItem> getConsumables() { return _targetConsumables.keySet(); }
+    private StorageArea _storageArea;
+
+    public Collection<ConsumableItem> getConsumables() { return _targetConsumables; }
 
     /**
      * Apporte les composants sur la parcel
@@ -48,7 +49,7 @@ public class BasicStoreJob extends JobModel {
      * @param storingParcel parcel ou stocker le consomable
      */
     public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, ConsumableItem targetConsumable, ParcelModel storingParcel, StorageArea storageArea) {
-        toParcel(consumableModule, jobModule, Collections.singletonMap(targetConsumable, targetConsumable.getFreeQuantity()), storingParcel, storageArea);
+        toParcel(consumableModule, jobModule, Collections.singleton(targetConsumable), storingParcel, storageArea);
     }
 
     /**
@@ -59,7 +60,7 @@ public class BasicStoreJob extends JobModel {
      * @param targetConsumables consomables à déplacer
      * @param storingParcel parcel ou stocker les consomables
      */
-    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Map<ConsumableItem, Integer> targetConsumables, ParcelModel storingParcel, StorageArea storageArea) {
+    public static void toParcel(ConsumableModule consumableModule, JobModule jobModule, Collection<ConsumableItem> targetConsumables, ParcelModel storingParcel, StorageArea storageArea) {
 
         if (CollectionUtils.isEmpty(targetConsumables)) {
             throw new RuntimeException("Collection cannot be empty");
@@ -69,11 +70,9 @@ public class BasicStoreJob extends JobModel {
 
             job._consumableModule = consumableModule;
             job._targetParcel = storingParcel;
-            job._startParcel = targetConsumables.keySet().stream().findFirst().get().getParcel();
+            job._storageArea = storageArea;
+            job._startParcel = targetConsumables.stream().findFirst().get().getParcel();
             job._targetConsumables = targetConsumables;
-
-            targetConsumables.forEach((consumable, quantity) ->
-                    job.setMainLabel(String.format("Store %s x%d to %s (%dx%d)", consumable.getInfo().label, quantity, storageArea.getName(), storingParcel.x, storingParcel.y)));
 
             return true;
         });
@@ -92,8 +91,8 @@ public class BasicStoreJob extends JobModel {
         // TODO: maj de la quantité
 
         // Ajoute pour chaque composant un lock au job
-        for (Map.Entry<ConsumableItem, Integer> entry: _targetConsumables.entrySet()) {
-            if (_consumableModule.lock(this, entry.getKey(), entry.getValue()) == null) {
+        for (ConsumableItem consumable: _targetConsumables) {
+            if (_consumableModule.lock(this, consumable, consumable.getFreeQuantity()) == null) {
 
                 // Si certains composants n'ont pas pu être réservés annule les locks et le job
                 _consumableModule.cancelLock(this);
@@ -104,7 +103,7 @@ public class BasicStoreJob extends JobModel {
         _isAllConsumablesLocked = true;
 
         // Déplace le personnage vers chaque consomable et l'ajoute à son inventaire
-        _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
+        _targetConsumables.forEach(targetConsumable -> {
 
             // Déplace le personnage à l'emplacement des composants
             addTask("Haul " + targetConsumable.getLabel(), (character, hourInterval) -> {
@@ -116,6 +115,9 @@ public class BasicStoreJob extends JobModel {
 
             // Ajoute les composants à l'inventaire du personnage
             addTask("Add " + targetConsumable.getLabel() + " to inventory", (character, hourInterval) -> {
+                // Update lock to take all consumables
+                _targetConsumables.forEach(consumable -> _consumableModule.addToLock(this, consumable, consumable.getFreeQuantity()));
+
                 ConsumableItem inventoryConsumable = _consumableModule.createConsumableFromLock(this, targetConsumable);
                 character.getExtra(CharacterInventoryExtra.class).addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
                 return JobTaskReturn.TASK_COMPLETE;
@@ -128,13 +130,22 @@ public class BasicStoreJob extends JobModel {
 
         // Ajoute les composants à la zone de stockage
         addTechnicalTask("Drop consumable to storage", character ->
-                _targetConsumables.forEach((targetConsumable, targetQuantity) -> {
-                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo(), targetQuantity);
+                _targetConsumables.forEach(targetConsumable -> {
+                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo());
                     _consumableModule.addConsumable(consumable.getInfo(), consumable.getFreeQuantity(), _targetParcel);
                 })
         );
 
         return true;
+    }
+
+    @Override
+    protected void onUpdate() {
+        StringBuilder sb = new StringBuilder();
+        _targetConsumables.forEach(consumable ->
+                sb.append(String.format("Store %s to %s", consumable.getInfo().label, _storageArea.getName()))
+        );
+        setMainLabel(sb.toString());
     }
 
     public BasicStoreJob(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
@@ -179,7 +190,7 @@ public class BasicStoreJob extends JobModel {
     }
 
     public boolean haveConsumable(ConsumableItem consumable) {
-        return _targetConsumables.containsKey(consumable);
+        return _targetConsumables.contains(consumable);
     }
 
     @Override
@@ -188,18 +199,6 @@ public class BasicStoreJob extends JobModel {
     }
 
     protected boolean onCheck() {
-
-        if (!_isAllConsumablesLocked) {
-
-            // Le check echoue si pour chaque consomable, la quantité présent dans le job est différent de la quantité présent sur le dit consomable
-            for (Map.Entry<ConsumableItem, Integer> entry : _targetConsumables.entrySet()) {
-                if (entry.getKey().getFreeQuantity() != entry.getValue()) {
-                    return false;
-                }
-            }
-
-        }
-
         return true;
     }
 

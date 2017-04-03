@@ -197,6 +197,29 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         return true;
     }
 
+    public void addToLock(JobModel job, ConsumableItem consumable, int quantity) {
+
+        // Le consomable n'a pas la quantité demandé de libre
+        if (consumable.getFreeQuantity() == 0 || consumable.getFreeQuantity() < quantity) {
+            Log.warning(ConsumableModule.class, "Not enough quantity to lock", consumable, quantity, _locks);
+            return;
+        }
+
+        ConsumableJobLock lock = getLock(job, consumable);
+
+        // Le lock n'existe pas
+        if (lock == null) {
+            Log.warning(ConsumableModule.class, "Lock doesn't exists", consumable, quantity, _locks);
+            return;
+        }
+
+        // Retire la quantité demandée du consomable
+        consumable.removeQuantity(quantity);
+
+        // Ajoute la quantité au lock
+        lock.quantity += quantity;
+    }
+
     public static class ConsumableJobLock {
         public ConsumableItem consumable;
         public JobModel job;
@@ -366,13 +389,16 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public int getLockQuantity(JobModel job, ConsumableItem consumable) {
-        ConsumableJobLock result = _locks.stream()
+        ConsumableJobLock lock = getLock(job, consumable);
+        return lock != null ? lock.quantity : 0;
+    }
+
+    public ConsumableJobLock getLock(JobModel job, ConsumableItem consumable) {
+        return _locks.stream()
                 .filter(lock -> lock.job == job)
                 .filter(lock -> lock.consumable == consumable)
                 .findFirst()
                 .orElse(null);
-
-        return result != null ? result.quantity : 0;
     }
 
     public void removeConsumable(ConsumableItem consumable) {

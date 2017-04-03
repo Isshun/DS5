@@ -45,6 +45,10 @@ public class CharacterInventoryExtra extends CharacterExtra {
         }
     }
 
+    public ConsumableItem takeInventory(ItemInfo itemInfo) {
+        return takeInventory(itemInfo, getInventoryQuantity(itemInfo));
+    }
+
     public ConsumableItem takeInventory(ItemInfo itemInfo, int needQuantity) {
         int availableQuantity = getInventoryQuantity(itemInfo);
         int quantityToRemove = Math.min(needQuantity, availableQuantity);

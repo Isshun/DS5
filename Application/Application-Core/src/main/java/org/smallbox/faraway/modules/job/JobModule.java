@@ -45,6 +45,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         // Check all jobs
         _jobs.forEach(JobModel::check);
+        _jobs.forEach(JobModel::update);
 
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isClose);

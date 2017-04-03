@@ -176,6 +176,7 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.JOB_RUNNING;
     }
 
+    protected void onUpdate() {}
     protected abstract JobCheckReturn onCheck(CharacterModel character);
     protected void onQuit(CharacterModel character) {}
     protected void onClose() {}
@@ -221,6 +222,10 @@ public abstract class JobModel extends ObjectModel {
         if (!_isClose && !onCheck()) {
             close();
         }
+    }
+
+    public void update() {
+        onUpdate();
     }
 
     protected boolean onCheck() { return true; }
