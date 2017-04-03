@@ -4,7 +4,7 @@
 --    style = {
 --        align = {"top", "right"},
 --        position = {0, 38},
---        background = 0x882233,
+--        background = 0xff882233,
 ----        background = color3,
 --        size = {372, 800},
 --    }

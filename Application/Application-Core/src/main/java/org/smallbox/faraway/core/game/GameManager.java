@@ -117,6 +117,10 @@ public class GameManager implements GameObserver {
         });
     }
 
+    public void closeGame() {
+        _game = null;
+    }
+
     /**
      * @return true si une partie existe
      */
@@ -177,21 +181,6 @@ public class GameManager implements GameObserver {
                 Application.gameManager.getGame(),
                 Application.gameManager.getGame().getInfo(),
                 GameInfo.Type.FAST);
-    }
-
-    @GameShortcut(key = Input.Keys.SPACE)
-    public void actionPause() {
-        _game.toggleRunning();
-    }
-
-    @GameShortcut(key = Input.Keys.PLUS)
-    public void actionSpeedUp() {
-        _game.setSpeed(_game.getSpeed() + 1);
-    }
-
-    @GameShortcut(key = Input.Keys.MINUS)
-    public void actionSpeedDown() {
-        _game.setSpeed(_game.getSpeed() - 1);
     }
 
 }

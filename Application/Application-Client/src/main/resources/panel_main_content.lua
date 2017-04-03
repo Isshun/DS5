@@ -11,7 +11,7 @@ ui:extend({
         position = {10, 0},
         id = "content_list",
         views = {
-            { type = "view", id = "map_header", position = {0, 12}, size = {352, 34}, background = 0x203636, views = {
+            { type = "view", id = "map_header", position = {0, 12}, size = {352, 34}, background = 0xff203636, views = {
                 { type = "label", id = "lb_planet", text_size = 16, text_color = color2, padding = 10 },
                 { type = "label", id = "lb_floor", text_size = 16, text_color = color2, padding = 10, position = {250, 0} },
             }},
@@ -20,7 +20,7 @@ ui:extend({
                 { type = "image", id = "img_speed", position = {316, 205}, size = {32, 32}},
             }},
             { type = "view", id = "map_footer", size = {352, 38}, views = {
-                { type = "grid", columns = 20, column_width = 30, row_height = 38, background = 0x203636, size = {352, 34}, views = {
+                { type = "grid", columns = 20, column_width = 30, row_height = 38, background = 0xff203636, size = {352, 34}, views = {
                     { type = "label", text = "A", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_areas", on_click = function(v) application:toggleDisplay("areas") end},
                     { type = "label", text = "R", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_rooms", on_click = function(v) application:toggleDisplay("rooms") end},
                     { type = "label", text = "T", text_size = 16, padding = 7, position = {4, 6}, size = {24, 24}, background = {regular = 0x203636, focus = 0x203636}, id = "lb_display_temperature", on_click = function(v) application:toggleDisplay("temperature") end},
@@ -37,33 +37,33 @@ ui:extend({
 --            views = {
 --                { type = "label", id = "lb_ground", text_size = 14},
 --                { type = "grid", columns = 10, column_width = 58, row_height = 100, position = {10, 10}, views = {
---                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
---                        { type = "image", id = "thumb_o2", src = "[base]/graphics/icons/thumb_o2.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                    { type = "view", size = {50, 66}, background = 0xff424c4e, views = {
+--                        { type = "image", id = "thumb_o2", src = "[base]/graphics/icons/thumb_o2.png", size = {48, 64}, position = {1, 1}, background = 0xffb3d035},
 --                        { type = "label", id = "lb_oxygen", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
 --                    }},
 --
---                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
---                        { type = "image", id = "thumb_walkable", src = "[base]/graphics/icons/thumb_walkable.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                    { type = "view", size = {50, 66}, background = 0xff424c4e, views = {
+--                        { type = "image", id = "thumb_walkable", src = "[base]/graphics/icons/thumb_walkable.png", size = {48, 64}, position = {1, 1}, background = 0xffb3d035},
 --                        { type = "label", id = "lb_walkable", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
 --                    }},
 --
---                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
---                        { type = "image", id = "thumb_water", src = "[base]/graphics/icons/thumb_water.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                    { type = "view", size = {50, 66}, background = 0xff424c4e, views = {
+--                        { type = "image", id = "thumb_water", src = "[base]/graphics/icons/thumb_water.png", size = {48, 64}, position = {1, 1}, background = 0xffb3d035},
 --                        { type = "label", id = "lb_water", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
 --                    }},
 --
---                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
---                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_temperature.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                    { type = "view", size = {50, 66}, background = 0xff424c4e, views = {
+--                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_temperature.png", size = {48, 64}, position = {1, 1}, background = 0xffb3d035},
 --                        { type = "label", id = "lb_temperature", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
 --                    }},
 --
---                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
---                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_light.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                    { type = "view", size = {50, 66}, background = 0xff424c4e, views = {
+--                        { type = "image", id = "thumb_temperature", src = "[base]/graphics/icons/thumb_light.png", size = {48, 64}, position = {1, 1}, background = 0xffb3d035},
 --                        { type = "label", id = "lb_light", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
 --                    }},
 --
---                    { type = "view", size = {50, 66}, background = 0x424c4e, views = {
---                        { type = "image", id = "thumb_inside", src = "[base]/graphics/icons/thumb_home.png", size = {48, 64}, position = {1, 1}, background = 0xb3d035},
+--                    { type = "view", size = {50, 66}, background = 0xff424c4e, views = {
+--                        { type = "image", id = "thumb_inside", src = "[base]/graphics/icons/thumb_home.png", size = {48, 64}, position = {1, 1}, background = 0xffb3d035},
 --                        { type = "label", id = "lb_inside", text_size = 14, position = {10, 46}, text_color = 0xb3d035},
 --                    }},
 --                }}

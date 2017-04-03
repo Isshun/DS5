@@ -22,7 +22,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameLayer(level = LayerManager.MINI_MAP_LEVEL, visible = true)
 public class MinimapLayer extends BaseLayer {
-    //    private static final int    COLOR_BACKGROUND = 0xfff9bdff;
+    //    private static final int    COLOR_background = 0xfffff9bdff;
     private static final int    COLOR_ROCK = 0x60442dff;
     private static final int    COLOR_PLANT = 0x9bcd4dff;
     private static final int    COLOR_STRUCTURE = 0x333333ff;

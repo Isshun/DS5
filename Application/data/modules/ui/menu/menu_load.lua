@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.menu_load",
-    background = 0xdd121c1e,
+    background = 0xffdd121c1e,
     in_game = false,
     visible = false,
     views = {

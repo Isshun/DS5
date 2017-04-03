@@ -168,9 +168,11 @@ public class LuaUIExtend extends LuaExtend {
 
         readLua(value, "position", v -> view.setPosition(v.get(1).toint(), v.get(2).toint()));
 
+        readInt(value, "border", view::setBorderColor);
+
         readLua(value, "background", v -> {
             if (v.istable()) {
-                readInt(v, "regular", view::setRegularBackgroundColor, -1);
+                readLong(v, "regular", view::setRegularBackgroundColor, -1);
                 if (view.getRegularBackground() != -1) {
                     view.setBackgroundColor(view.getRegularBackground());
                 }

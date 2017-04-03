@@ -2,7 +2,7 @@ ui:extend({
     type = "view",
     id = "base.ui.menu_new_planet_region",
     size = {300, -1},
-    background = 0xdd121c1e,
+    background = 0xffdd121c1e,
     in_game = false,
     visible = false,
     views = {

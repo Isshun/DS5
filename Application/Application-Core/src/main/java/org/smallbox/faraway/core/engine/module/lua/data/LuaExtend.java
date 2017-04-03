@@ -61,6 +61,15 @@ public abstract class LuaExtend {
         }
     }
 
+    protected void readLong(LuaValue value, String key, ReadCallback<Long> callback, long... def) {
+        LuaValue v = value.get(key);
+        if (!v.isnil()) {
+            callback.onReadCallback(v.tolong());
+        } else if (def.length > 0) {
+            callback.onReadCallback(def[0]);
+        }
+    }
+
     protected void readDouble(LuaValue value, String key, ReadCallback<Double> callback, double... def) {
         LuaValue v = value.get(key);
         if (!v.isnil()) {

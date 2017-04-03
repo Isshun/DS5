@@ -93,18 +93,18 @@ ui:extend({
     type = "view",
     id = "base.ui.menu_settings",
     size = {application.info.screen_width, application.info.screen_height},
-    background = 0x000000,
+    background = 0xff000000,
     in_game = false,
     visible = false,
     views = {
-        { type = "list", size = {800, 600}, background = 0xdd121c1e, position = {application.info.screen_width / 2 - 800 / 2, application.info.screen_height / 2 - 200}, views = {
+        { type = "list", size = {800, 600}, background = 0xffdd121c1e, position = {application.info.screen_width / 2 - 800 / 2, application.info.screen_height / 2 - 200}, views = {
             { type = "grid", id = "grid_settings_sections", columns = 4, column_width = 200, row_height = 50, background = color3, size = {800, 50}, views = {
-                { type = "label", text = "Graphic", text_size = 28, padding = 16, size = {200, 50}, padding = 14, background = 0x25c9cb, on_click = function(v) open_settings_menu(v, "graphic_sub_menu") end},
+                { type = "label", text = "Graphic", text_size = 28, padding = 16, size = {200, 50}, padding = 14, background = 0xff25c9cb, on_click = function(v) open_settings_menu(v, "graphic_sub_menu") end},
                 { type = "label", text = "Sound", text_size = 28, padding = 16, size = {200, 50}, padding = 14, on_click = function(v) open_settings_menu(v, "sound_sub_menu") end},
                 { type = "label", text = "Bindings", text_size = 28, padding = 16, size = {200, 50}, padding = 14, on_click = function(v) open_settings_menu(v, "bindings_sub_menu") end},
                 { type = "label", text = "Gameplay", text_size = 28, padding = 16, size = {200, 50}, padding = 14, on_click = function(v) open_settings_menu(v, "gameplay_sub_menu") end},
             }},
-            { type = "list", background = 0x25c9cb, size = {800, 4}},
+            { type = "list", background = 0xff25c9cb, size = {800, 4}},
             { type = "list", id = "graphic_sub_menu", visible = true, position = {0, 2}, size = {800, 490}, views = {
                 { type = "view", size = {100, 26}, views = {
                     { type = "label", text = "Resolution", text_size = 20, padding = 10},

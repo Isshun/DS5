@@ -5,7 +5,7 @@ ui:extend(
             name = "encyclopedia-resource",
             position = {400, 200},
             size = {800, 600},
-            background = 0x62bcbe,
+            background = 0xff62bcbe,
             visible = false,
             views = {
                 type = "view",
@@ -15,7 +15,7 @@ ui:extend(
                 views = {
                     { type = "label", id = "lb_name", text = "name", text_size = 32, padding = 18},
                     { type = "label", id = "lb_content", text = "name", text_size = 16, position = {0, 40}, padding = 18},
-                    { type = "label", id = "bt_close", text = "[close]", text_size = 22, position = {650, 10}, background = 0x885566, size = {80, 32}, padding = 10, on_click = function()
+                    { type = "label", id = "bt_close", text = "[close]", text_size = 22, position = {650, 10}, background = 0xff885566, size = {80, 32}, padding = 10, on_click = function()
                         application.events:send("encyclopedia.close")
                     end},
 

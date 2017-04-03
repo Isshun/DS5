@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.menu_main",
-    background = 0xdd121c1e,
+    background = 0xffdd121c1e,
     in_game = false,
     visible = false,
     views = {
@@ -10,7 +10,7 @@ ui:extend({
             { type = "label", text = "Continue", text_size = 22, padding = 16, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, size = {280, 48}, margin = {10, 0, 0, 10}, on_click = function()
                 application:sendEvent("load_game.last_game")
             end},
-            { type = "view", background = 0x55ffffff, size = {280, 1}, margin = {10, 0, 0, 10}},
+            { type = "view", background = 0xff55ffffff, size = {280, 1}, margin = {10, 0, 0, 10}},
             { type = "label", text = "New game", text_size = 22, padding = 16, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, size = {280, 48}, margin = {10, 0, 0, 10}, on_click = function() open_main_menu("base.ui.menu_new_planet") end},
             { type = "label", text = "Load game", text_size = 22, padding = 16, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, size = {280, 48}, margin = {10, 0, 0, 10}, on_click = function() open_main_menu("base.ui.menu_load") end},
             { type = "label", text = "Settings", text_size = 22, padding = 16, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, size = {280, 48}, margin = {10, 0, 0, 10}, on_click = function() open_main_menu("base.ui.menu_settings") end},

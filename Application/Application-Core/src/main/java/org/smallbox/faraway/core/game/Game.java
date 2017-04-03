@@ -74,6 +74,11 @@ public class Game {
         Application.notify(_isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
     }
 
+    public void                             setRunning(boolean running) {
+        _isRunning = running;
+        Application.notify(_isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
+    }
+
     public GameTime                         getTime() { return _gameTime; }
     public double                           getTickPerHour() { return _tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
@@ -202,15 +207,17 @@ public class Game {
 
         _moduleScheduler.scheduleAtFixedRate(() -> {
             try {
-                _tick += 1;
-                _gameTime.add(1 / _tickPerHour);
+                if (_isRunning) {
+                    _tick += 1;
+                    _gameTime.add(1 / _tickPerHour);
 
-                _modules.forEach(module -> module.updateGame(Game.this));
+                    _modules.forEach(module -> module.updateGame(Game.this));
 
-                Application.notify(gameObserver -> gameObserver.onGameUpdate(Game.this));
+                    Application.notify(gameObserver -> gameObserver.onGameUpdate(Game.this));
 
-                if (listener != null) {
-                    listener.onGameUpdate(this);
+                    if (listener != null) {
+                        listener.onGameUpdate(this);
+                    }
                 }
             } catch (Exception e) {
                 Log.error(e);

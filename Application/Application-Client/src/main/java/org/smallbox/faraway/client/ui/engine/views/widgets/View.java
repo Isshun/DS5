@@ -106,7 +106,7 @@ public abstract class View implements Comparable<View> {
 
     protected RotateAnimation _animation;
     protected boolean _focusable;
-    private int _regularBackground;
+    private long _regularBackground;
     private int _focusBackground;
 
     public void setAnimation(RotateAnimation animation) {
@@ -245,7 +245,7 @@ public abstract class View implements Comparable<View> {
 
     public void         setGroup(String group) { _group = group; }
     public void         setEffect(FadeEffect effect) { _effect = effect; }
-    public View         setRegularBackgroundColor(int regularBackground) { _regularBackground = regularBackground; return this; }
+    public View         setRegularBackgroundColor(long regularBackground) { _regularBackground = regularBackground; return this; }
     public View         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; return this; }
     public void         setActionName(String actionName) { _actionName = actionName; }
     public void         setLayer(int layer) { _layer = layer; }
@@ -259,7 +259,7 @@ public abstract class View implements Comparable<View> {
     public int          getFinalY() { return _finalY; }
     public int          getDeep() { return _deep; }
     public int          getLevel() { return _level; }
-    public int          getRegularBackground() { return _regularBackground; }
+    public long         getRegularBackground() { return _regularBackground; }
     public int          getFocusBackground() { return _focusBackground; }
     public String       getName() { return _name; }
 

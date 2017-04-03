@@ -6,20 +6,20 @@ ui:extend(
             id = "system-ui-modules",
             position = {400, 100},
             size = {400, 800},
-            background = 0x2b3036,
+            background = 0xff2b3036,
             visible = false,
             views = {
                 type = "list",
                 views = {
-                    { type = "label", text = "Modules", text_size = 16, size = {400, 24}, padding = 5, background = 0x55000000 },
+                    { type = "label", text = "Modules", text_size = 16, size = {400, 24}, padding = 5, background = 0xff55000000 },
                     { type = "view", size = {400, 32}, views = {
-                        { type = "label", text = "Base", text_size = 16, size = {150, 24}, position = {0, 0}, padding = 5, background = 0x55000000, on_click = function()
+                        { type = "label", text = "Base", text_size = 16, size = {150, 24}, position = {0, 0}, padding = 5, background = 0xff55000000, on_click = function()
                             ui:find("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.modules)
                         end},
-                        { type = "label", text = "Third", text_size = 16, size = {150, 24}, position = {150, 0}, padding = 5, background = 0x55000000, on_click = function()
+                        { type = "label", text = "Third", text_size = 16, size = {150, 24}, position = {150, 0}, padding = 5, background = 0xff55000000, on_click = function()
                             ui:find("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.moduleThirds)
                         end},
-                        { type = "label", text = "Lua", text_size = 16, size = {150, 24}, position = {300, 0}, padding = 5, background = 0x55000000, on_click = function()
+                        { type = "label", text = "Lua", text_size = 16, size = {150, 24}, position = {300, 0}, padding = 5, background = 0xff55000000, on_click = function()
                             ui:find("system-ui-modules"):findById("list_modules"):getAdapter():setData(application.luaModules)
                         end},
                     }},

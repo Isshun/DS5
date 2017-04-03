@@ -10,9 +10,9 @@ ui:extend({
         end},
         { type = "label", text = "Stats", text_size = 28, padding = 10, position = {40, 0}},
         { type = "list", position = {0, 40}, views = {
-            { type = "label", size = {180, 40}, background = 0x8b9076, text = "Mine", text_size = 18, padding = 10, on_click = "application:setPlan('mining')"},
-            { type = "label", size = {180, 40}, background = 0x8b9076, text = "Gather", text_size = 18, padding = 10, on_click = "application:setPlan('gather')"},
-            { type = "label", size = {180, 40}, background = 0x8b9076, text = "Cut", text_size = 18, padding = 10, on_click = "application:setPlan('cut')"},
+            { type = "label", size = {180, 40}, background = 0xff8b9076, text = "Mine", text_size = 18, padding = 10, on_click = "application:setPlan('mining')"},
+            { type = "label", size = {180, 40}, background = 0xff8b9076, text = "Gather", text_size = 18, padding = 10, on_click = "application:setPlan('gather')"},
+            { type = "label", size = {180, 40}, background = 0xff8b9076, text = "Cut", text_size = 18, padding = 10, on_click = "application:setPlan('cut')"},
         }},
     },
 --    on_event = function(view, event , data)

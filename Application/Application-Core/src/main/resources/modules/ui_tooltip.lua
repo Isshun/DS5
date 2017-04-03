@@ -3,7 +3,7 @@ ui:extend({
     name = "base.ui.tooltip",
     controller = "org.smallbox.faraway.client.controller.TooltipController",
     visible = true,
-    background = 0x55000000,
+    background = 0xff55000000,
     size = {360, 120},
     align = {"bottom", "right"},
     position = {400, 130},

@@ -26,28 +26,28 @@ ui:extend({
                 { type = "label", text = "Temperature", text_color = color1, text_size = 16 },
                 { type = "image", src = "[base]/graphics/icons/plant_cursor.png", size = {128, 8}, position = {0, 18} },
                 { type = "label", id = "lb_current_temperature", text_color = color1, text_size = 12 },
-                { type = "view", id = "img_temperature", size = {6, 12}, background = 0xffffff }
+                { type = "view", id = "img_temperature", size = {6, 12}, background = 0xffffffff }
             }},
 
             { type = "view", position = {200, 15}, views = {
                 { type = "label", text = "Light", text_color = color1, text_size = 16 },
                 { type = "image", src = "[base]/graphics/icons/plant_cursor_light.png", size = {128, 8}, position = {0, 18} },
                 { type = "label", id = "lb_current_light", text_color = color1, text_size = 12 },
-                { type = "view", id = "img_light", size = {6, 12}, background = 0xffffff},
+                { type = "view", id = "img_light", size = {6, 12}, background = 0xffffffff},
             }},
 
             { type = "view", position = {10, 60}, views = {
                 { type = "label", text = "Moisture", text_color = color1, text_size = 16 },
                 { type = "image", src = "[base]/graphics/icons/plant_cursor_moisture.png", size = {128, 8}, position = {0, 18} },
                 { type = "label", id = "lb_current_moisture", text_color = color1, text_size = 12 },
-                { type = "view", id = "img_moisture", size = {6, 12}, background = 0xffffff },
+                { type = "view", id = "img_moisture", size = {6, 12}, background = 0xffffffff },
             }},
 
             { type = "view", position = {200, 60}, views = {
                 { type = "label", text = "Oxygen", text_color = color1, text_size = 16 },
                 { type = "image", src = "[base]/graphics/icons/plant_cursor_oxygen.png", size = {128, 8}, position = {0, 18} },
                 { type = "label", id = "lb_current_oxygen", text_color = color1, text_size = 12 },
-                { type = "view", id = "img_oxygen", size = {6, 12}, background = 0xffffff },
+                { type = "view", id = "img_oxygen", size = {6, 12}, background = 0xffffffff },
             }},
 
         }},

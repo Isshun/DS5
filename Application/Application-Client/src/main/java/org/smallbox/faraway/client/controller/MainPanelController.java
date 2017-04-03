@@ -21,6 +21,9 @@ public class MainPanelController extends LuaController {
     private UIEventManager uiEventManager;
 
     @BindComponent
+    private Game game;
+
+    @BindComponent
     private LayerManager layerManager;
 
     @BindLua
@@ -38,6 +41,8 @@ public class MainPanelController extends LuaController {
     public void onEscape() {
         if (!isVisible()) {
             setVisible(true);
+        } else {
+            game.toggleRunning();
         }
     }
 

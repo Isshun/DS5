@@ -1,12 +1,10 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
@@ -43,26 +41,16 @@ public class DebugController extends LuaController {
     public void onReloadUI() {
         mainPanelController.addShortcut("Debug", this);
 
-        if (listDebug != null) {
-            listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> characterModule.addRandom()));
-            listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 5, 5, 1)));
+        listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> characterModule.addRandom()));
+        listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 5, 5, 1)));
 
-            layerManager.getLayers().forEach(layer ->
-                    listDebug.addView(UICheckBox.create(null)
-                            .setText("Layer: " + layer.getClass().getSimpleName())
-                            .setTextColor(ColorUtils.COLOR2)
-                            .setOnCheckListener((checked, clickOnBox) ->layer.setVisibility(checked))
-                            .setChecked(layer.isVisible())
-                            .setSize(200, 22)));
-        }
-    }
-
-    @Override
-    public void onKeyPressWithEvent(GameEvent event, int key) {
-        if (event.isAlive() && key == Input.Keys.ESCAPE) {
-            setVisible(false);
-            mainPanelController.setVisible(true);
-        }
+        layerManager.getLayers().forEach(layer ->
+                listDebug.addView(UICheckBox.create(null)
+                        .setText("Layer: " + layer.getClass().getSimpleName())
+                        .setTextColor(ColorUtils.COLOR2)
+                        .setOnCheckListener((checked, clickOnBox) ->layer.setVisibility(checked))
+                        .setChecked(layer.isVisible())
+                        .setSize(200, 22)));
     }
 
 }
