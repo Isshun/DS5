@@ -134,7 +134,6 @@ public class GDXApplication extends ApplicationAdapter {
         if (Application.gameManager.isLoaded()) {
             ApplicationClient.notify(observer -> observer.onGameRender(Application.gameManager.getGame()));
         }
-
 //        fpsLogger.log();
     }
 

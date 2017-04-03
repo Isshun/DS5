@@ -47,6 +47,7 @@ public class ApplicationClient {
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
     public static final LayerManager            layerManager;
+
     public static Collection<? extends ObjectModel> selected;
 
     public static final ShortcutManager shortcutManager;
