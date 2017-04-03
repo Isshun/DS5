@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.job;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -14,51 +13,18 @@ import org.smallbox.faraway.util.Log;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * Base class for job
+ */
 public abstract class JobModel extends ObjectModel {
-
-    private Object _data;
-    private boolean _visible = true;
-
-    public void setData(Object data) {
-        _data = data;
-    }
-
-    public Object getData() {
-        return _data;
-    }
-
-    private JobTaskReturn _lastTaskReturn;
-
-    public JobTaskReturn getLastReturn() {
-        return _lastTaskReturn;
-    }
-
-    public void setMainLabel(String mainLabel) {
-        _mainLabel = mainLabel;
-    }
-
-    // TODO: merge abort / cancel / close
-    public void abort() {
-        _status = JobStatus.JOB_ABORTED;
-    }
-
-    public void setProgress(double current, double  total) {
-        _progress = current / total;
-    }
 
     public enum JobCheckReturn {
         OK, STAND_BY, ABORT, BLOCKED
     }
 
-    public enum JobReturn {
-        CONTINUE, QUIT, COMPLETE, ABORT, BLOCKED
-    }
-
     public enum JobStatus {
-        JOB_INITIALIZED, JOB_WAITING, JOB_RUNNING, JOB_COMPLETE, JOB_BLOCKED, JOB_INVALID, JOB_MISSING_COMPONENT, JOB_ABORTED
+        JOB_INITIALIZED, JOB_WAITING, JOB_RUNNING, JOB_COMPLETE, JOB_BLOCKED, JOB_INVALID, JOB_MISSING_COMPONENT
     }
 
     public enum JobAbortReason {
@@ -66,7 +32,6 @@ public abstract class JobModel extends ObjectModel {
     }
 
     protected int               _limit;
-    protected int               _currentLimit;
     protected int               _fail;
     protected int               _blocked;
     protected int               _cost = 1;
@@ -83,9 +48,12 @@ public abstract class JobModel extends ObjectModel {
     protected ParcelModel       _jobParcel;
     protected ParcelModel       _targetParcel;
     protected ParcelModel       _startParcel;
-    private boolean             _isEntertainment;
-    protected boolean _isAuto;
-    protected String _mainLabel = "";
+    protected boolean           _isEntertainment;
+    protected boolean           _isAuto;
+    protected String            _mainLabel = "";
+    protected Object            _data;
+    protected boolean           _visible = true;
+    protected JobTaskReturn     _lastTaskReturn;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
         init();
@@ -128,6 +96,8 @@ public abstract class JobModel extends ObjectModel {
     public ParcelModel              getStartParcel() { return _startParcel; }
     public ParcelModel              getJobParcel() { return _jobParcel; }
     public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
+    public Object                   getData() { return _data; }
+    public JobTaskReturn            getLastReturn() { return _lastTaskReturn; }
 
     public void                     setEntertainment(boolean isEntertainment) { _isEntertainment = isEntertainment; }
     public void                     setAction(ItemInfo.ItemInfoAction action) { _actionInfo = action; _cost = action.cost; _isAuto = _actionInfo.auto; }
@@ -136,12 +106,22 @@ public abstract class JobModel extends ObjectModel {
     public void                     setCost(int quantityTotal) { _cost = quantityTotal; }
     public void                     setCharacterRequire(CharacterModel character) { _characterRequire = character; }
     public void                     setVisible(boolean visible) { _visible = visible; }
+    public void                     setData(Object data) { _data = data; }
+    public void                     setMainLabel(String mainLabel) { _mainLabel = mainLabel; }
+    public void                     setProgress(double current, double  total) { _progress = current / total; }
 
     public boolean                  isClose() { return _isClose; }
     public boolean                  isOpen() { return !_isClose; }
     public boolean                  isEntertainment() { return _isEntertainment; }
     public boolean                  isAuto() { return _isAuto; }
     public boolean                  isVisible() { return _visible; }
+
+    protected boolean onNewInit() { return true; }
+    protected boolean onFirstStart() { return true; }
+    protected JobCheckReturn onCheck(CharacterModel character) { return JobCheckReturn.OK; }
+    protected void onUpdate() {}
+    protected void onQuit(CharacterModel character) {}
+    protected void onClose() {}
 
     public void start(CharacterModel character) {
         Log.debug("Start job " + this + " by " + (character != null ? character.getName() : "auto"));
@@ -175,11 +155,6 @@ public abstract class JobModel extends ObjectModel {
 
         _status = JobStatus.JOB_RUNNING;
     }
-
-    protected void onUpdate() {}
-    protected abstract JobCheckReturn onCheck(CharacterModel character);
-    protected void onQuit(CharacterModel character) {}
-    protected void onClose() {}
 
     public abstract boolean checkCharacterAccepted(CharacterModel character);
     public abstract CharacterSkillExtra.SkillType getSkillType();
@@ -255,16 +230,12 @@ public abstract class JobModel extends ObjectModel {
         return _tasks;
     }
 
-    public void addTaskAsync(JobTask.JobTaskAction task) {
-
-        ScheduledFuture<?> future = Application.gameManager.getGame().getScheduler().scheduleAtFixedRate(() -> {
-        }, 0, 10, TimeUnit.MILLISECONDS);
-
-        future.cancel(false);
-
-//        _tasks.add(new JobTask());
-    }
-
+    /**
+     * Add custom task action
+     *
+     * @param label Label
+     * @param jobTaskAction Action
+     */
     public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
 
         if (_tasks.isEmpty()) {
@@ -274,6 +245,12 @@ public abstract class JobModel extends ObjectModel {
         _tasks.add(new JobTask(label, jobTaskAction));
     }
 
+    /**
+     * Add move task
+     *
+     * @param label Label
+     * @param parcel Parcel to move
+     */
     public void addMoveTask(String label, ParcelModel parcel) {
 
         if (_tasks.isEmpty()) {
@@ -281,16 +258,23 @@ public abstract class JobModel extends ObjectModel {
         }
 
         _tasks.add(new JobTask(label, (character, hourInterval) -> {
-            if (character.moveTo(parcel)) {
+            if (parcel != null && character.moveTo(parcel)) {
                 return JobTaskReturn.TASK_COMPLETE;
             }
-            if (character.getPath() != null && character.getPath().getLastParcel() == parcel) {
+            if (parcel != null && character.getPath() != null && character.getPath().getLastParcel() == parcel) {
                 return JobTaskReturn.TASK_CONTINUE;
             }
             return JobTaskReturn.TASK_ERROR;
         }));
     }
 
+    /**
+     * Add technical task
+     * Technical task are basically a standard task with no return status
+     *
+     * @param label Label
+     * @param jobTechnicalTaskAction Action
+     */
     public void addTechnicalTask(String label, JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
 
         if (_tasks.isEmpty()) {
@@ -304,9 +288,8 @@ public abstract class JobModel extends ObjectModel {
      * Execute les taches présentes dans le job
      *
      * @param character CharacterModel
-     * @return CONTINUE / COMPLETE / ABORT
      */
-    public JobReturn action(CharacterModel character, double hourInterval) {
+    public void action(CharacterModel character, double hourInterval) {
 
         if (isClose()) {
             throw new GameException(JobModel.class, "Cannot call action on finished job");
@@ -321,34 +304,30 @@ public abstract class JobModel extends ObjectModel {
 
             switch (actionTask(character, _tasks.peek(), hourInterval)) {
 
+                // Task isn't complete
                 case TASK_CONTINUE:
-                    return JobReturn.CONTINUE;
+                    return;
 
+                // Task is complete, take next task
                 case TASK_COMPLETE:
                     _tasks.poll();
                     break;
 
+                // Task return TASK_ERROR, immediatly close job
                 case TASK_ERROR:
                     close();
-                    return JobReturn.ABORT;
+                    return;
 
-//                case BLOCKED:
-//                    return JobReturn.BLOCKED;
-//
-//                case QUIT:
-//                    quit(_character);
-//                    return JobReturn.QUIT;
             }
 
         }
 
-        // Toutes les taches sont terminées
+        // All tasks has been executed
         close();
-        return JobReturn.COMPLETE;
     }
 
     /**
-     * Execute la tache et la retire de la file si elle est terminée
+     * Execute la tache passé en paramètre
      *
      * @param character CharacterModel
      * @param task JobTask
@@ -365,10 +344,4 @@ public abstract class JobModel extends ObjectModel {
         return _lastTaskReturn;
     }
 
-    public String toString() {
-        return "job (_id: " + _id + ", cls: " + getClass().getSimpleName() + ", mainLabel: " + _mainLabel + ", taskLabel: " + _label + ")";
-    }
-
-    public boolean onNewInit() { return true; }
-    public boolean onFirstStart() { return true; }
 }

@@ -1,4 +1,3 @@
-Priorité des StorageArea
 Priorité des job
 Talents utilisé pour les jobs assign
 Talents prise en compte lors des job action (et générification de ceux ci ?)

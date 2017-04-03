@@ -10,7 +10,6 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.job.JobTaskReturn;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
@@ -32,13 +31,9 @@ public class BasicStoreJob extends JobModel {
     private ConsumableModule _consumableModule;
 
     /**
-     * True if all consumables has been locked succefully (set during onFirstStart)
+     * Area to store consumables
      */
-    private boolean _isAllConsumablesLocked;
-
     private StorageArea _storageArea;
-
-    public Collection<ConsumableItem> getConsumables() { return _targetConsumables; }
 
     /**
      * Apporte les composants sur la parcel
@@ -67,12 +62,15 @@ public class BasicStoreJob extends JobModel {
         }
 
         jobModule.createJob(BasicStoreJob.class, null, storingParcel, job -> {
-
             job._consumableModule = consumableModule;
             job._targetParcel = storingParcel;
             job._storageArea = storageArea;
             job._startParcel = targetConsumables.stream().findFirst().get().getParcel();
             job._targetConsumables = targetConsumables;
+
+            StringBuilder sb = new StringBuilder("Store ");
+            job._targetConsumables.forEach(consumable -> sb.append("[").append(consumable.getInfo().label).append("] "));
+            job.setMainLabel(sb.toString());
 
             return true;
         });
@@ -100,27 +98,19 @@ public class BasicStoreJob extends JobModel {
             }
         }
 
-        _isAllConsumablesLocked = true;
-
         // Déplace le personnage vers chaque consomable et l'ajoute à son inventaire
         _targetConsumables.forEach(targetConsumable -> {
 
             // Déplace le personnage à l'emplacement des composants
-            addTask("Haul " + targetConsumable.getLabel(), (character, hourInterval) -> {
-                if (targetConsumable.getParcel() != null) {
-                    return character.moveTo(targetConsumable.getParcel()) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
-                }
-                return JobTaskReturn.TASK_ERROR;
-            });
+            addMoveTask("Move to consumable", targetConsumable.getParcel());
 
-            // Ajoute les composants à l'inventaire du personnage
-            addTask("Add " + targetConsumable.getLabel() + " to inventory", (character, hourInterval) -> {
+            addTechnicalTask("Add consumable to inventory", character -> {
                 // Update lock to take all consumables
                 _targetConsumables.forEach(consumable -> _consumableModule.addToLock(this, consumable, consumable.getFreeQuantity()));
 
+                // Ajoute les composants à l'inventaire du personnage
                 ConsumableItem inventoryConsumable = _consumableModule.createConsumableFromLock(this, targetConsumable);
                 character.getExtra(CharacterInventoryExtra.class).addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
-                return JobTaskReturn.TASK_COMPLETE;
             });
 
         });
@@ -137,15 +127,6 @@ public class BasicStoreJob extends JobModel {
         );
 
         return true;
-    }
-
-    @Override
-    protected void onUpdate() {
-        StringBuilder sb = new StringBuilder();
-        _targetConsumables.forEach(consumable ->
-                sb.append(String.format("Store %s to %s", consumable.getInfo().label, _storageArea.getName()))
-        );
-        setMainLabel(sb.toString());
     }
 
     public BasicStoreJob(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
@@ -198,8 +179,6 @@ public class BasicStoreJob extends JobModel {
         return CharacterSkillExtra.SkillType.STORE;
     }
 
-    protected boolean onCheck() {
-        return true;
-    }
+    public Collection<ConsumableItem> getConsumables() { return _targetConsumables; }
 
 }

@@ -211,7 +211,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
             boolean ret = jobInitCallback.onInit(job);
             job.onNewInit();
             if (!ret) {
-                job.abort();
+                job.close();
                 return null;
             }
 
