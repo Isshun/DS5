@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    id = "base.ui.menu_load",
+    id = "base.ui.menu.load",
     background = 0xffdd121c1e,
     in_game = false,
     visible = false,

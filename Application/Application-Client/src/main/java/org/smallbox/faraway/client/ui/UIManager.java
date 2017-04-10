@@ -47,6 +47,10 @@ public class UIManager {
         return _subViews.keySet();
     }
 
+    public Map<String, RootView> getMenuViews() {
+        return _menuViews;
+    }
+
     public Collection<View> getViews() {
         return _views;
     }
@@ -67,6 +71,10 @@ public class UIManager {
         return _styles.get(id);
     }
 
+    public void addMenuView(RootView view) {
+        _menuViews.put(view.getName(), view);
+    }
+
     private static class ContextEntry {
         public String                   label;
         public OnClickListener listener;
@@ -81,6 +89,7 @@ public class UIManager {
     private int                         _update;
     private UIFrame                     _context;
 
+    private Map<String, RootView>       _menuViews = new ConcurrentHashMap<>();
     private Queue<RootView>             _rootViews = new LinkedBlockingQueue<>();
     private Map<View, String>           _subViews = new ConcurrentHashMap<>();
     private Set<View>                   _views = new ConcurrentHashSet<>();

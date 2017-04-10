@@ -4,7 +4,6 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -154,7 +153,7 @@ public class UIEventManager {
         int bestDepth = -1;
 
         for (View view: _onClickListeners.keySet()) {
-            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
+            if (view.isGameView() && view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                 bestDepth = view.getDeep();
                 bestView = view;
             }

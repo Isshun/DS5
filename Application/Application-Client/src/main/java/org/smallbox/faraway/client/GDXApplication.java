@@ -3,12 +3,17 @@ package org.smallbox.faraway.client;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
+import org.smallbox.faraway.MouseEvent;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.task.LoadTask;
@@ -26,6 +31,12 @@ public class GDXApplication extends ApplicationAdapter {
     protected ApplicationClient                   _client;
     protected BitmapFont[]                        _fonts;
     protected BitmapFont                          _systemFont;
+    private InputProcessor _menuInputAdapter = new InputAdapter() {
+        public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+            ApplicationClient.uiManager.getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
+            return false;
+        }
+    };
 
     public GDXApplication(GameTestCallback callback) {
         _callback = callback;
@@ -153,36 +164,57 @@ public class GDXApplication extends ApplicationAdapter {
                     new FileHandle(new File(Application.BASE_PATH, "data/font-32.png")),
                     false);
             _menuFont.setColor(new Color(0x80ced6ff));
-
-            Gdx.input.setInputProcessor(new InputAdapter() {
-                public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-                    if (screenY > 20 && screenY < 60) {
-                        Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, null);
-                    }
-                    if (screenY > 70 && screenY < 110) {
-                        Gdx.app.exit();
-                    }
-                    return false;
-                }
-            });
         }
 
+        Gdx.input.setInputProcessor(_menuInputAdapter);
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//
+//        _batch.begin();
+//
+//        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        _batch.setProjectionMatrix(camera.combined);
+//
+//        _batch.draw(_bgMenu, 0, 0);
+//        _batch.draw(_bgMenu2, 0, 0);
+//
+//        _menuFont.draw(_batch, "New Game", 32, Gdx.graphics.getHeight() - 32);
+//        _menuFont.draw(_batch, "Exit", 32, Gdx.graphics.getHeight() - 80);
+//
 
-        _batch.begin();
+        MenuManager menuManager = new MenuManager();
+        menuManager.display("base.ui.menu.main");
 
-        OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _batch.setProjectionMatrix(camera.combined);
+        // Render application
+        ApplicationClient.gdxRenderer.clear();
+        ApplicationClient.gdxRenderer.refresh();
+        ApplicationClient.uiManager.getMenuViews().forEach((name, view) -> view.draw(ApplicationClient.gdxRenderer, 0, 0));
+//
+//        _batch.end();
+    }
 
-        _batch.draw(_bgMenu, 0, 0);
-        _batch.draw(_bgMenu2, 0, 0);
+    private void clickOn(View view, int screenX, int screenY) {
+        if (view.hasClickListener() && view.isVisible() && hasHeriarchieVisible(view)
+                && screenX > view.getFinalX()
+                && screenX < view.getFinalX() + view.getWidth()
+                && screenY > view.getFinalY()
+                && screenY < view.getFinalY() + view.getHeight()) {
+            MouseEvent mouseEvent = new MouseEvent(screenX, screenY, GameEventListener.MouseButton.LEFT, GameEventListener.Action.RELEASED);
+            GameEvent gameEvent = new GameEvent(mouseEvent);
+            view.click(gameEvent);
+        }
 
-        _menuFont.draw(_batch, "New Game", 32, Gdx.graphics.getHeight() - 32);
-        _menuFont.draw(_batch, "Exit", 32, Gdx.graphics.getHeight() - 80);
+        if (view.getViews() != null) {
+            view.getViews().forEach(subView -> clickOn(subView, screenX, screenY));
+        }
+    }
 
-        _batch.end();
+    private boolean hasHeriarchieVisible(View view) {
+        if (view.getParent() != null) {
+            return hasHeriarchieVisible(view.getParent());
+        }
+        return view.isVisible();
     }
 
     private void minimalRender() {

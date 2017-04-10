@@ -118,6 +118,7 @@ public class GameManager implements GameObserver {
     }
 
     public void closeGame() {
+        _game.stop();
         _game = null;
     }
 

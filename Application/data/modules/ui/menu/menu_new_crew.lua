@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    id = "base.ui.menu_new_crew",
+    id = "base.ui.menu.new_crew",
     size = {300, -1},
     background = 0xffdd121c1e,
     in_game = false,

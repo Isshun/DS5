@@ -91,7 +91,7 @@ end
 
 ui:extend({
     type = "view",
-    id = "base.ui.menu_settings",
+    id = "base.ui.menu.settings",
     size = {application.info.screen_width, application.info.screen_height},
     background = 0xff000000,
     in_game = false,

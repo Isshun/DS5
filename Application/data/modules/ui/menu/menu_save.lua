@@ -1,6 +1,6 @@
 ui:extend({
     type = "list",
-    id = "base.ui.menu_save",
+    id = "base.ui.menu.save",
     position = {500, 400},
     size = {300, -1},
     background = 0xffdd121c1e,

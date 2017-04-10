@@ -7,6 +7,7 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
+import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
@@ -35,6 +36,8 @@ public abstract class View implements Comparable<View> {
     private int _index;
     private boolean _sorted;
     private Color _borderColor;
+    private LuaController _controller;
+    private boolean _isGameView;
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
@@ -99,6 +102,26 @@ public abstract class View implements Comparable<View> {
     public View setBorderColor(Color color) {
         _borderColor = color;
         return this;
+    }
+
+    public void setController(LuaController controller) {
+        _controller = controller;
+    }
+
+    public LuaController getController() {
+        return _controller;
+    }
+
+    public boolean hasClickListener() {
+        return _onClickListener != null;
+    }
+
+    public boolean isGameView() {
+        return _isGameView;
+    }
+
+    public void setGameView(boolean isGameView) {
+        _isGameView = isGameView;
     }
 
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
@@ -404,6 +427,12 @@ public abstract class View implements Comparable<View> {
         assert onClickListener != null;
         _onClickListener = onClickListener;
         ApplicationClient.uiEventManager.setOnClickListener(this, onClickListener);
+        return this;
+    }
+
+    public View setOnClickListener2(OnClickListener onClickListener) {
+        assert onClickListener != null;
+        _onClickListener = onClickListener;
         return this;
     }
 

@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    id = "base.ui.menu_new_planet",
+    id = "base.ui.menu.new_planet",
     background = 0xffdd121c1e,
     in_game = false,
     visible = false,

@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    id = "base.ui.menu_pause",
+    id = "base.ui.menu.pause",
     controller = "org.smallbox.faraway.client.controller.GameMenuController",
     size = {application.info.screen_width, application.info.screen_height},
     background = 0xff000000,

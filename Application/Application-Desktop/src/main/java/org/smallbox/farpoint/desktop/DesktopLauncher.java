@@ -39,8 +39,8 @@ public class DesktopLauncher {
         double ratio = (double)width / height;
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
-//        new LwjglApplication(new GDXApplication(() -> {}), LwjglConfig.from(applicationConfig));
-        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
+        new LwjglApplication(new GDXApplication(() -> {}), LwjglConfig.from(applicationConfig));
+//        new LwjglApplication(new GDXApplication(testGame()), LwjglConfig.from(applicationConfig));
 //        new LwjglApplication(new GDXApplication(loadGame()), LwjglConfig.from(applicationConfig));
     }
 

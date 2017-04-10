@@ -38,4 +38,8 @@ public class RootView {
     public String toString() {
         return _view.getName();
     }
+
+    public String getName() {
+        return _view.getName();
+    }
 }
