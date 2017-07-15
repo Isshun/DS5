@@ -350,6 +350,34 @@ public class WorldHelper {
         return parcelList;
     }
 
+    public interface ParcelCallback {
+        void onCallback(ParcelModel parcelModel);
+    }
+
+    public static void getParcelArround(ParcelModel source, int range, ParcelCallback callback) {
+        getParcelArround(source.x, source.y, source.z, range, callback);
+    }
+
+    public static void getParcelArround(int x1, int y1, int z1, int range, ParcelCallback callback) {
+        int fromX = Math.min(x1, x1 - range);
+        int fromY = Math.min(y1, y1 - range);
+        int fromZ = Math.min(z1, z1 - range);
+        int toX = Math.max(x1, x1 + range);
+        int toY = Math.max(y1, y1 + range);
+        int toZ = Math.max(z1, z1 + range);
+
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = fromY; y <= toY; y++) {
+                for (int z = fromZ; z <= toZ; z++) {
+                    ParcelModel parcel = WorldHelper.getParcel(x, y, z);
+                    if (parcel != null) {
+                        callback.onCallback(parcel);
+                    }
+                }
+            }
+        }
+    }
+
     public static ParcelModel getRandomParcel(ParcelModel initailParcel, int maxDistance) {
         int x = Utils.bound(0, _width - 1, (int)(initailParcel.x + (Math.random() * maxDistance) - maxDistance / 2));
         int y = Utils.bound(0, _height - 1, (int)(initailParcel.y + (Math.random() * maxDistance) - maxDistance / 2));

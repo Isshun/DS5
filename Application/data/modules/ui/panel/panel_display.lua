@@ -10,7 +10,7 @@ ui:extend({
         end},
         { type = "label", text = "Displays", text_size = 28, padding = 10, position = {46, 0}},
         { type = "list", id = "list_displays", position = {10, 40}, views = {
-            { type = "label", text = "Regular", text_size = 18, size = {400, 32}, padding = 10, on_click = function(v) setDisplay(v, "regular") end, background = 0xff25c9cb},
+            { type = "label", text = "Regular", text_size = 18, size = {400, 32}, padding = 10, on_click = function(v) setDisplay(v, "regular") end, background = 0x25c9cbff},
             { type = "label", text = "Areas", text_size = 18, size = {400, 32}, padding = 10, on_click = function(v) setDisplay(v, "areas") end},
             { type = "label", text = "Rooms", text_size = 18, size = {400, 32}, padding = 10, on_click = function(v) setDisplay(v, "rooms") end},
             { type = "label", text = "Temperature", text_size = 18, size = {400, 32}, padding = 10, on_click = function(v) setDisplay(v, "temperature") end},
@@ -34,6 +34,6 @@ function setDisplay(view, display)
     while iterator:hasNext() do
         iterator:next():setBackgroundColor(color3)
     end
-    view:setBackgroundColor(0x25c9cb)
+    view:setBackgroundColor(0x25c9cbff)
     application:setDisplay(display)
 end

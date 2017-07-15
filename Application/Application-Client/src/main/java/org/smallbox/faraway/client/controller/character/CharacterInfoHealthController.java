@@ -36,7 +36,7 @@ public class CharacterInfoHealthController extends LuaController {
             character.getExtra(CharacterDiseasesExtra.class).getAll().forEach(disease ->
                     listDiseases.addView(UILabel.create(null)
                             .setText(disease.info.label)
-                            .setTextColor(ColorUtils.fromHex(0xffB4D4D3))
+                            .setTextColor(ColorUtils.fromHex(0xB4D4D3ff))
                             .setTextSize(14)
                             .setSize(0, 20)));
         }

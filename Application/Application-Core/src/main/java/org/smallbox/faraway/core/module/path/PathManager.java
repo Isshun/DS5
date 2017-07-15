@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
-import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Log;
 
@@ -218,5 +217,23 @@ public class PathManager extends GameModule {
     // TODO
     public int getDistance(ParcelModel p1, ParcelModel p2) {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y) + Math.abs(p1.z - p2.z);
+    }
+
+    public void refreshConnections(ParcelModel source) {
+        source.getConnections().clear();
+
+        WorldHelper.getParcelArround(source, 1, target -> {
+            if (source.isWalkable()) {
+                target.addConnection(source);
+            } else {
+                target.removeConnection(source);
+            }
+
+            if (target.isWalkable()) {
+                source.addConnection(target);
+            } else {
+                source.removeConnection(target);
+            }
+        });
     }
 }

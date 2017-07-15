@@ -142,7 +142,7 @@ public class LuaUIExtend extends LuaExtend {
             readString(value, "text", label::setText);
             readInt(value, "text_size", label::setTextSize);
             readInt(value, "text_color", label::setTextColor);
-            readString(value, "text_align", v -> label.setTextAlign(View.Align.CENTER));
+            readString(value, "text_align", label::setTextAlign);
 //            label.setTextAlign(View.Align.valueOf(value.get("text_align").optjstring("LEFT").toUpperCase()));
         }
 

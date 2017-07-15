@@ -13,7 +13,7 @@
 --        bt_test:setText("Test")
 --        bt_test:setTextSize(18)
 --        bt_test:setSize(170, 40)
---        bt_test:setBackgroundColor(0x349394)
+--        bt_test:setBackgroundColor(0x349394ff)
 --        bt_test:setPadding(10)
 --        bt_test:setOnClickListener(function()
 --            ui:find("base.ui.right_panel"):setVisible(false)

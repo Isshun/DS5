@@ -37,6 +37,10 @@ public class ItemLayer extends BaseLayer {
                         renderer.drawTextOnMap(parcel.x, parcel.y, item.getHealth() + "/" + item.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
                     }
 
+                    if (!item.isBuildComplete() && item.isBuildComplete()) {
+                        renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
+                    }
+
                     if (!item.isBuildComplete()) {
                         renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
                     }

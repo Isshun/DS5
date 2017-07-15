@@ -32,9 +32,9 @@ public class CharacterLayer extends BaseLayer {
 
     private int                     _floor;
 
-    private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xffbb0000);
-    private static Color COLOR_WARNING = ColorUtils.fromHex(0xffbbbb00);
-    private static Color COLOR_OK = ColorUtils.fromHex(0xff448800);
+    private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
+    private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00ff);
+    private static Color COLOR_OK = ColorUtils.fromHex(0x448800ff);
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

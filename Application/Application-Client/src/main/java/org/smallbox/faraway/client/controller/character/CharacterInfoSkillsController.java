@@ -42,14 +42,14 @@ public class CharacterInfoSkillsController extends LuaController {
             _selected.getExtra(CharacterSkillExtra.class).getAll().forEach(skill -> {
 
                 View view = new UIFrame(null)
-                        .setBackgroundColor(skill.available ? 0xff1a3647 : 0x0f1f29)
-                        .setBorderColor(0x359f9f)
+                        .setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff)
+                        .setBorderColor(0x359f9fff)
                         .setMargin(8, 0)
                         .setSize(320, 28);
 
                 view.addView(UILabel.create(null)
                         .setText(skill.name)
-                        .setTextColor(ColorUtils.fromHex(0x359f9f))
+                        .setTextColor(ColorUtils.fromHex(0x359f9fff))
                         .setTextSize(16)
                         .setPosition(8, 16)
                         .setSize(320, 28));
@@ -81,12 +81,12 @@ public class CharacterInfoSkillsController extends LuaController {
 
                     @Override
                     public void onHover(GameEvent event, View dropView) {
-                        dropView.setBackgroundColor(0xffbb3647);
+                        dropView.setBackgroundColor(0xbb3647ff);
                     }
 
                     @Override
                     public void onHoverExit(GameEvent event, View dropView) {
-                        dropView.setBackgroundColor(0xff1a3647);
+                        dropView.setBackgroundColor(0x1a3647ff);
                     }
                 });
 

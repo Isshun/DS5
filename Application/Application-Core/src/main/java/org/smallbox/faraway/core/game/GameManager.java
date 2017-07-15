@@ -37,6 +37,10 @@ public class GameManager implements GameObserver {
         void onGameUpdate(Game game);
     }
 
+    public GameFactory createGameNew() {
+        return new GameFactory();
+    }
+
     public void createGame(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors, GameListener listener) {
         createGame(GameInfo.create(planetName, regionName, worldWidth, worldHeight, worldFloors), listener);
     }
@@ -89,32 +93,36 @@ public class GameManager implements GameObserver {
     }
 
     public void loadGame(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo, GameListener listener) {
-        long time = System.currentTimeMillis();
+        try {
+            long time = System.currentTimeMillis();
 
-        _game = new Game(gameInfo);
-        Application.dependencyInjector.register(_game);
+            _game = new Game(gameInfo);
+            Application.dependencyInjector.register(_game);
 
-        _game.loadModules();
-        _game.createModules();
+            _game.loadModules();
+            _game.createModules();
 
-        Application.notify(observer -> observer.onGameCreateObserver(_game));
-        if (listener != null) {
-            listener.onGameCreate(_game);
+            Application.notify(observer -> observer.onGameCreateObserver(_game));
+            if (listener != null) {
+                listener.onGameCreate(_game);
+            }
+
+            gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
+
+                Application.notify(observer -> observer.onGameStart(_game));
+
+                _game.start();
+                _game.getModules().forEach(module -> module.startGame(_game));
+
+                // Launch background thread
+                _game.launchBackgroundThread(listener);
+
+                Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+
+            });
+        } catch (Exception e) {
+            Log.error(e);
         }
-
-        gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
-
-            Application.notify(observer -> observer.onGameStart(_game));
-
-            _game.start();
-            _game.getModules().forEach(module -> module.startGame(_game));
-
-            // Launch background thread
-            _game.launchBackgroundThread(listener);
-
-            Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
-
-        });
     }
 
     public void closeGame() {

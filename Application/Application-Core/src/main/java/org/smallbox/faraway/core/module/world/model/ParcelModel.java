@@ -91,48 +91,22 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
     public double                   getOxygen() { return _room != null ? _room.getOxygen() : -1; }
     public double                   getMoisture() { return 0.5; }
 
-    public static void addParcelToConnections(Array<Connection<ParcelModel>> array, ParcelModel parcel, int x, int y, int z) {
-        ParcelModel toParcel = WorldHelper.getParcel(x, y, z);
+    public void addParcelToConnections(Array<Connection<ParcelModel>> connections, ParcelModel toParcel) {
         if (toParcel != null) {
-            if (parcel.isWalkable() && toParcel.isWalkable()) {
-                if (parcel.z == toParcel.z
-                        || (toParcel.z == parcel.z - 1 && (!parcel.hasGround() || parcel.getGroundInfo().isLinkDown) && toParcel.hasItem(StructureItem.class) && toParcel.getItem(StructureItem.class).getInfo().isRamp)
-                        || (toParcel.z == parcel.z + 1 && (!toParcel.hasGround() || toParcel.getGroundInfo().isLinkDown) && parcel.hasItem(StructureItem.class) && parcel.getItem(StructureItem.class).getInfo().isRamp)) {
-                    array.add(new ParcelConnection(parcel, toParcel));
+            if (isWalkable() && toParcel.isWalkable()) {
+                if (z == toParcel.z
+                        || (toParcel.z == z - 1 && (!hasGround() || getGroundInfo().isLinkDown) && toParcel.hasItem(StructureItem.class) && toParcel.getItem(StructureItem.class).getInfo().isRamp)
+                        || (toParcel.z == z + 1 && (!toParcel.hasGround() || toParcel.getGroundInfo().isLinkDown) && hasItem(StructureItem.class) && getItem(StructureItem.class).getInfo().isRamp)) {
+                    connections.add(new ParcelConnection(this, toParcel));
                 }
             }
         }
     }
 
     public void resetConnection() {
-        resetConnection(this);
-    }
-
-    public static void resetConnection(ParcelModel parcel) {
-        if (parcel != null) {
-            Array<Connection<ParcelModel>> connections = new Array<>(6);
-            addParcelToConnections(connections, parcel, parcel.x + 1, parcel.y, parcel.z);
-            addParcelToConnections(connections, parcel, parcel.x - 1, parcel.y, parcel.z);
-            addParcelToConnections(connections, parcel, parcel.x, parcel.y + 1, parcel.z);
-            addParcelToConnections(connections, parcel, parcel.x, parcel.y - 1, parcel.z);
-            addParcelToConnections(connections, parcel, parcel.x, parcel.y, parcel.z + 1);
-            addParcelToConnections(connections, parcel, parcel.x, parcel.y, parcel.z - 1);
-            parcel.setConnections(connections);
-        }
-    }
-
-    public void resetAround() {
-        resetAround(this);
-    }
-
-    public static void resetAround(ParcelModel parcel) {
-        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y, parcel.z));
-        resetConnection(WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z));
-        resetConnection(WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z));
-        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z));
-        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z));
-        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y, parcel.z + 1));
-        resetConnection(WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1));
+        Array<Connection<ParcelModel>> connections = new Array<>(6);
+        WorldHelper.getParcelArround(this, 1, toParcel -> addParcelToConnections(connections, toParcel));
+        setConnections(connections);
     }
 
     @Override
@@ -272,10 +246,6 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
         return _items.values();
     }
 
-    public void setConnectionDirty(boolean connectionDirty) {
-        _connectionDirty = connectionDirty;
-    }
-
     public boolean hasConnection(ParcelModel parcel) {
         for (Connection<ParcelModel> connection: _connections) {
             if (connection.getFromNode() == this && connection.getToNode() == parcel) {
@@ -287,5 +257,26 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
 
     public boolean hasItems() {
         return !_items.isEmpty();
+    }
+
+    public void addConnection(ParcelModel toParcel) {
+
+        // Don't add connection if already exists
+        for (int i = 0; i < _connections.size; i++) {
+            if (_connections.get(i).getToNode() == toParcel) {
+                return;
+            }
+        }
+
+        _connections.add(new ParcelConnection(this, toParcel));
+    }
+
+    public void removeConnection(ParcelModel toParcel) {
+        for (int i = 0; i < _connections.size; i++) {
+            if (_connections.get(i).getToNode() == toParcel) {
+                _connections.removeIndex(i);
+                return;
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
@@ -8,6 +9,7 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -51,6 +53,11 @@ public class DebugController extends LuaController {
                         .setOnCheckListener((checked, clickOnBox) ->layer.setVisibility(checked))
                         .setChecked(layer.isVisible())
                         .setSize(200, 22)));
+    }
+
+    @GameShortcut(key = Input.Keys.D)
+    public void onPressT() {
+        setVisible(true);
     }
 
 }

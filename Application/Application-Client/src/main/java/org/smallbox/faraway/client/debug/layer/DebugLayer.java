@@ -58,7 +58,7 @@ public class DebugLayer extends BaseLayer {
 
     private Map<String, String> _data = new HashMap<>();
 
-    private enum Mode { UI, CONSUMABLE, ITEM, PLANT, RENDER, SHORTCUTS, CHARACTER, JOB, MODULE}
+    private enum Mode { UI, CONSUMABLE, ITEM, PLANT, LAYER, SHORTCUTS, CHARACTER, JOB, MODULE}
 
     private Mode _mode = Mode.SHORTCUTS;
 
@@ -104,12 +104,12 @@ public class DebugLayer extends BaseLayer {
                 break;
 
             // Display renders
-            case RENDER:
+            case LAYER:
                 if (ApplicationClient.layerManager != null) {
                     ApplicationClient.layerManager.getLayers().stream()
                             .sorted((o1, o2) -> (int)(o2.getCumulateTime() - o1.getCumulateTime()))
                             .forEach(render -> drawDebug(renderer, "Render",
-                                    String.format("%-32s visible: %-5s, total: %-5d med: %.2f",
+                                    String.format("%-32s visible: %-5s total: %-5d med: %.2f",
                                             render.getClass().getSimpleName(),
                                             render.isVisible() ? "x" : " ",
                                             render.getCumulateTime() / 1000,

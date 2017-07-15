@@ -73,7 +73,7 @@ public class CharacterInfoTimetableController extends LuaController {
 //                        .setSize(32, 14)
 //                        .setMargin(2, 0)
 //                        .setPosition(38, 1)
-//                        .setBorderColor(dayTime.hour == game.getTime().getHour() ? 0xff0000 : 0xff88aadd)
+//                        .setBorderColor(dayTime.hour == game.getTime().getHour() ? 0xff0000ff : 0xff88aadd)
 //                        .setBackgroundColor()
 //                        .setOnClickListener(event -> {
 //                            timetable.nextState(dayTime.hour);

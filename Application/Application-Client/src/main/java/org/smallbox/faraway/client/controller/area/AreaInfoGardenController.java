@@ -56,7 +56,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
                         listPlants.addView(UILabel.create(null)
                                 .setText(item.label)
                                 .setTextSize(14)
-                                .setTextColor(0xffB4D4D3)
+                                .setTextColor(0xB4D4D3FF)
                                 .setSize(200, 20)
                                 .setOnClickListener(event ->
                                         area.getParcels().forEach(parcel -> plantModule.addPlant(item, parcel)))));

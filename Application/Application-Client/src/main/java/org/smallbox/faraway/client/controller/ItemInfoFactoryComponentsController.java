@@ -32,7 +32,7 @@ public class ItemInfoFactoryComponentsController extends LuaController {
 
                     view.addView(UICheckBox.create(null)
                             .setText(itemInfo.label)
-                            .setTextColor(0x9afbff)
+                            .setTextColor(0x9afbffff)
                             .setChecked(accepted)
                             .setOnCheckListener((checked, clickOnBox) ->item.getFactory().setAcceptedComponents(itemInfo, checked))
                             .setSize(100, 20));

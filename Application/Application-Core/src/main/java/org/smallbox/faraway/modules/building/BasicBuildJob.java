@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.building;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
@@ -39,7 +40,14 @@ public class BasicBuildJob extends JobModel {
             job.addTask("Build", (character, hourInterval) -> {
                 mapObject.actionBuild(1 / Application.config.game.buildTime * hourInterval);
                 job.setProgress(mapObject.getBuildValue(), mapObject.getBuildCost());
-                return mapObject.isBuildComplete() ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+
+                if (!mapObject.isBuildComplete()) {
+                    return JobTaskReturn.TASK_CONTINUE;
+                }
+
+                Application.moduleManager.getModule(PathManager.class).refreshConnections(job.getJobParcel());
+
+                return JobTaskReturn.TASK_COMPLETE;
             });
 
             return true;

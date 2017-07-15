@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -232,6 +233,7 @@ public abstract class View implements Comparable<View> {
     public View         setId(int id) { _id = id; return this; }
     public View         setId(String id) { _id = id.hashCode(); return this; }
     public View         setTextAlign(Align align) { _align = align; return this; }
+    public View         setTextAlign(String align) { _align = View.Align.valueOf(StringUtils.upperCase(align)); return this; }
     public void         setFocus(boolean focus) { _isFocus = focus; }
     public void         setActive(boolean active) { _isActive = active; }
     public void         setParent(View parent) {
@@ -424,14 +426,12 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setOnClickListener(OnClickListener onClickListener) {
-        assert onClickListener != null;
         _onClickListener = onClickListener;
         ApplicationClient.uiEventManager.setOnClickListener(this, onClickListener);
         return this;
     }
 
     public View setOnClickListener2(OnClickListener onClickListener) {
-        assert onClickListener != null;
         _onClickListener = onClickListener;
         return this;
     }

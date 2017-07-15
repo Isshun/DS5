@@ -153,7 +153,7 @@ public class UIEventManager {
         int bestDepth = -1;
 
         for (View view: _onClickListeners.keySet()) {
-            if (view.isGameView() && view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
+            if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y) && view.getDeep() > bestDepth) {
                 bestDepth = view.getDeep();
                 bestView = view;
             }

@@ -70,7 +70,7 @@ public class RoomInfoQuarterController extends AbsInfoLuaController<RoomModel> {
 
         characterModule.getCharacters().forEach(character -> listCharacters.addView(UILabel.create(null)
                 .setText(character.getName())
-                .setTextColor(0xff5588bb)
+                .setTextColor(0x5588bbff)
                 .setSize(100, 20)
                 .setOnClickListener(event -> {
                     listSelected.forEach(room -> room.setOwner(character));

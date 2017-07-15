@@ -101,7 +101,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
             item.getInventory().forEach(consumable ->
                     listInventory.addNextView(UILabel.create(null)
                             .setText(consumable.getInfo().label)
-                            .setTextColor(0x9afbff)
+                            .setTextColor(0x9afbffff)
                             .setSize(100, 20))
             );
             listInventory.switchViews();
@@ -114,7 +114,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         item.getInfo().build.components.forEach(componentInfo ->
                 listBuildComponents.addNextView(UILabel.create(null)
                         .setDashedString(componentInfo.component.label, item.getInventoryQuantity(componentInfo.component) + " / " + componentInfo.quantity, 42)
-                        .setTextColor(item.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xffababab : 0x9afbff)
+                        .setTextColor(item.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xabababff : 0x9afbffff)
                         .setSize(100, 20)));
         listBuildComponents.switchViews();
     }

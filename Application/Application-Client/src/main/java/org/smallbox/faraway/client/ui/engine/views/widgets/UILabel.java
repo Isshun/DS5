@@ -206,6 +206,10 @@ public class UILabel extends View {
                 _offsetY = (_height - getContentHeight()) / 2;
             }
 
+            if (_align == Align.RIGHT) {
+                _offsetX = (_width - getContentWidth());
+            }
+
             if (_align == Align.CENTER_VERTICAL) {
                 _offsetY = (_height - getContentHeight()) / 2;
             }
@@ -313,7 +317,9 @@ public class UILabel extends View {
     }
 
     public static UILabel create(ModuleBase module) {
-        return new UILabel(module);
+        UILabel label = new UILabel(module);
+        label.setSize(100, 32);
+        return label;
     }
 
     public static View createFast(String text, Color textColor) {

@@ -3,13 +3,13 @@ data:extend({
     name = "base.weather.hurricane",
     label = "Hurricane",
     icon = "[base]/graphics/icons/weather/rain.png";
-    color1 = 0x383e44,
-    color2 = 0x969ea6,
+    color1 = 0x383e44ff,
+    color2 = 0x969ea6ff,
     particle = "rain",
     sun = {
-        dawn = 0xddc8b2,
-        twilight = 0xE79651,
-        midnight = 0x181819,
-        noon = 0xffffff
+        dawn = 0xddc8b2ff,
+        twilight = 0xE79651ff,
+        midnight = 0x181819ff,
+        noon = 0xffffffff
     },
 })

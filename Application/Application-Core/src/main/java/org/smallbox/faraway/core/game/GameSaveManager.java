@@ -67,7 +67,7 @@ public class GameSaveManager {
                 Application.notify(observer -> observer.onCustomEvent("load_game.complete", null));
             });
         } catch (IOException | ArchiveException e) {
-            e.printStackTrace();
+            Log.error(e);
         }
     }
 

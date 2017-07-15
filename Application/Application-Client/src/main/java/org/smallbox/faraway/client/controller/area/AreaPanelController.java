@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller.area;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -9,6 +10,7 @@ import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.modules.area.AreaModule;
@@ -51,12 +53,12 @@ public class AreaPanelController extends LuaController {
 
                     listAreasAdd.addView(UILabel.create(null)
                             .setText(" + " + cls.getAnnotation(AreaTypeInfo.class).label())
-                            .setTextColor(0xffB4D4D3)
+                            .setTextColor(0xB4D4D3ff)
                             .setTextSize(18)
                             .setPadding(10)
                             .setSize(160, 40)
-                            .setFocusBackgroundColor(0xff25c9cb)
-                            .setRegularBackgroundColor(0xff121c1e)
+                            .setFocusBackgroundColor(0x25c9cbff)
+                            .setRegularBackgroundColor(0x121c1eff)
                             .setOnClickListener(event -> {
                                 areaLayer.setMode(AreaLayer.Mode.ADD, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
@@ -70,12 +72,12 @@ public class AreaPanelController extends LuaController {
 
                     listAreasSub.addView(UILabel.create(null)
                             .setText(" - " + cls.getAnnotation(AreaTypeInfo.class).label())
-                            .setTextColor(0xffB4D4D3)
+                            .setTextColor(0xB4D4D3ff)
                             .setTextSize(18)
                             .setPadding(10)
                             .setSize(160, 40)
-                            .setFocusBackgroundColor(0xff25c9cb)
-                            .setRegularBackgroundColor(0xff121c1e)
+                            .setFocusBackgroundColor(0x25c9cbff)
+                            .setRegularBackgroundColor(0x121c1eff)
                             .setOnClickListener(event -> {
                                 areaLayer.setMode(AreaLayer.Mode.SUB, cls);
                                 uiEventManager.setSelectionListener(parcels -> {
@@ -99,5 +101,10 @@ public class AreaPanelController extends LuaController {
 
     @Override
     public void onMouseMove(GameEvent event) {
+    }
+
+    @GameShortcut(key = Input.Keys.A)
+    public void onPressT() {
+        setVisible(true);
     }
 }

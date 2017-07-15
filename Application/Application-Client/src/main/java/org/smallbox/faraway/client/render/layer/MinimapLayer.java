@@ -26,7 +26,7 @@ public class MinimapLayer extends BaseLayer {
     private static final int    COLOR_ROCK = 0x60442dff;
     private static final int    COLOR_PLANT = 0x9bcd4dff;
     private static final int    COLOR_STRUCTURE = 0x333333ff;
-    private static final Color  COLOR_CHARACTER = new Color(0xff3c59ff);
+    private static final Color  COLOR_CHARACTER = new Color(0x3c59ffff);
     private static final Color  COLOR_VIEW = new Color(0x349394ff);
     private static final Color  COLOR_WATER = new Color(0x006d7c1d);
 
@@ -138,7 +138,7 @@ public class MinimapLayer extends BaseLayer {
                     } else if (parcels[x][y][_floor].hasLiquid()) {
                         _pixmap.drawPixel(x, y, parcels[x][y][_floor].getLiquidInfo().color);
                     } else {
-                        _pixmap.drawPixel(x, y, 0xff000000);
+                        _pixmap.drawPixel(x, y, 0x000000ff);
                     }
                 }
             }

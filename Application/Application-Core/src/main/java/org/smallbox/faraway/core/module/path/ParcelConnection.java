@@ -37,4 +37,9 @@ public class ParcelConnection implements Connection<ParcelModel> {
     public ParcelModel getToNode() {
         return _toParcel;
     }
+
+    @Override
+    public String toString() {
+        return _fromParcel + " -> " + _toParcel;
+    }
 }

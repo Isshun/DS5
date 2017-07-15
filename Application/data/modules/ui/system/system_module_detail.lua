@@ -5,12 +5,12 @@ ui:extend(
             name = "system-ui-modules",
             position = {820, 100},
             size = {600, 400},
-            background = 0xff2b3036,
+            background = 0x2b3036ff,
             visible = false,
             views = {
                 type = "list",
                 views = {
-                    { type = "label", text = "Modules", text_size = 16, size = {600, 24}, padding = 5, background = 0xff55000000 },
+                    { type = "label", text = "Modules", text_size = 16, size = {600, 24}, padding = 5, background = 0x00000055 },
                     { type = "label", id = "lb_name", text_size = 14, size = {400, 24}, padding = 5 },
                     { type = "label", id = "lb_desc", text_size = 14, size = {400, 24}, padding = 5 },
                 },

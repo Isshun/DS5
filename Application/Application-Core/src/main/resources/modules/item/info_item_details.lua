@@ -54,10 +54,10 @@ ui:extend({
             }},
 
             -- Action buttons
-            { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
+            { type = "label", id = "bt_dump", text = "Dump", background = {regular = 0x349394ff, focus = 0x25c9cbff}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
                 application:destroy(item)
             end},
-            { type = "label", id = "bt_cancel", text = "Cancel", background = {regular = 0x349394, focus = 0x25c9cb}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
+            { type = "label", id = "bt_cancel", text = "Cancel", background = {regular = 0x349394ff, focus = 0x25c9cbff}, text_size = 16, padding = 10, position = {10, 380}, size = {350, 32}, on_click = function()
                 application:cancel(item)
             end},
         }},

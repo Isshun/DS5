@@ -70,8 +70,8 @@ public class MainPanelController extends LuaController {
                 .setSize(170, 40)
                 .setId(mainGrid.getName() + "." + label)
                 .setName(mainGrid.getName() + "." + label)
-                .setBackgroundColor(0xff349394)
-                .setFocusBackgroundColor(0xff25c9cb)
+                .setBackgroundColor(0x349394ff)
+                .setFocusBackgroundColor(0x25c9cbff)
                 .setOnClickListener(event -> {
                     _currentPaneController = controller;
                     _currentPaneController.setVisible(true);

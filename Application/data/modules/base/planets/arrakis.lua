@@ -26,7 +26,7 @@ data:extend({
     regions = {{
         name = "mountain",
         label = "mountain",
-        color = 0x804f15,
+        color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {20, 20}},
             {floors = {0, 0}, value = {30, 40}},
@@ -54,7 +54,7 @@ data:extend({
     }, {
         name = "valley",
         label = "Valley",
-        color = 0xa06f35,
+        color = 0xa06f35ff,
         temperatures = {
             {floors = {-99, -1}, value = {20, 20}},
             {floors = {0, 0}, value = {30, 40}},
@@ -84,7 +84,7 @@ data:extend({
     }, {
         name = "desert",
         label = "Desert",
-        color = 0xffda3b,
+        color = 0xffda3bff,
         temperatures = {
             {floors = {-99, -1}, value = {20, 30}},
             {floors = {0, 0}, value = {30, 50}},

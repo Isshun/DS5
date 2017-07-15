@@ -3,7 +3,7 @@ data:extend({
         label = "Sand",
         name = "base.ground.sand",
         type = "ground",
-        color = 0xfff9bd,
+        color = 0xfff9bdff,
         fertility = 0.1,
         permeability = 0.5,
         graphics = { path = "[base]/graphics/grounds/sand.png" }
@@ -39,7 +39,7 @@ data:extend({
         label = "Granite",
         name = "base.ground.granite",
         type = "ground",
-        color = 0xfff9bd,
+        color = 0xfff9bdff,
         fertility = 0,
         permeability = 0.3,
         graphics = { path = "[base]/graphics/grounds/granite.png" }
@@ -48,7 +48,7 @@ data:extend({
         label = "Link to down stair",
         name = "base.ground.link",
         type = "ground",
-        color = 0xfff9bd,
+        color = 0xfff9bdff,
         fertility = 0,
         permeability = 1,
         is_link_down = true,

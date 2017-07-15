@@ -3,7 +3,7 @@ ui:extend({
     id = "base.ui.menu.save",
     position = {500, 400},
     size = {300, -1},
-    background = 0xffdd121c1e,
+    background = 0xdd121c1e,
     in_game = false,
     visible = false,
     views = {

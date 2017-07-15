@@ -1,15 +1,14 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.building.BasicRepairJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -19,7 +18,6 @@ import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.plant.BasicHarvestJob;
 import org.smallbox.faraway.modules.storing.BasicStoreJob;
-import org.smallbox.faraway.util.Log;
 
 /**
  * Created by Alex on 24/07/2016.
@@ -51,7 +49,7 @@ public class JobController extends LuaController {
                                 .setSize(30, 30))
                         .addView(UILabel.create(null)
                                 .setDashedString(job.getMainLabel(), getJobStatus(job), 40)
-                                .setTextColor(job.getCharacter() != null ? 0x9afbff : 0xffB4D4D3)
+                                .setTextColor(job.getCharacter() != null ? 0x9afbffff : 0xB4D4D3ff)
                                 .setSize(300, 22)
                                 .setPosition(24, 0))
                 )
@@ -82,13 +80,8 @@ public class JobController extends LuaController {
         return null;
     }
 
-    @Override
-    public void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
-        if (action == GameEventListener.Action.RELEASED && key == Input.Keys.T && modifier == GameEventListener.Modifier.NONE) {
-            setVisible(!isVisible());
-            ApplicationClient.uiManager.findById("base.ui.right_panel").setVisible(!isVisible());
-
-            Log.info("jobModule: " + isVisible() + ", main: " + ApplicationClient.uiManager.findById("base.ui.right_panel").isVisible());
-        }
+    @GameShortcut(key = Input.Keys.T)
+    public void onPressT() {
+        setVisible(true);
     }
 }

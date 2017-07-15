@@ -1,7 +1,6 @@
 package org.smallbox.faraway.util;
 
 import org.apache.commons.io.IOUtils;
-import org.smallbox.faraway.core.Application;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +21,8 @@ public class Log {
     private final static Level level = Level.ALL;
     public static Queue<String> _historyDebug = new ConcurrentLinkedQueue<>();
     public static Queue<String> _history = new ConcurrentLinkedQueue<>();
+    public static String _lastErrorMessage;
+    public static long _lastErrorTime;
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private final ConsoleHandler consoleHandler;
@@ -121,10 +122,13 @@ public class Log {
 
     public static void error(Throwable t) {
         printError(t);
-        Application.exitWithError();
+//        Application.exitWithError();
     }
 
     private static void printError(Throwable t) {
+        _lastErrorTime = System.currentTimeMillis();
+        _lastErrorMessage = t.getMessage();
+
         logger.severe(t.getMessage());
         for (StackTraceElement element : t.getStackTrace()) {
             logger.severe(element.toString());
@@ -145,7 +149,7 @@ public class Log {
         for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
             logger.severe(element.toString());
         }
-        Application.exitWithError();
+//        Application.exitWithError();
     }
 
     public static void error(String message, Object... args) {

@@ -5,9 +5,15 @@ package org.smallbox.faraway.core.game;
  */
 public class ApplicationConfig {
 
+    public static class ApplicationConfigDebug {
+        public enum ActionOnLoad {NONE, LAST_SAVE, NEW_GAME}
+        public ActionOnLoad     actionOnLoad = ActionOnLoad.NEW_GAME;
+        public String           scenario = "data/scenarios/test1.json";
+    }
+
     public static class ApplicationConfigScreenInfo {
-        public int[]            resolution = new int[] {1400, 850};
-        public int[]            position = new int[] {40, 20};
+        public int[]            resolution = new int[] {1600, 950};
+        public int[]            position = new int[] {2000, 20};
         public String           mode = "window";
         public int              foregroundFPS = 60;
         public int              backgroundFPS = 30;
@@ -38,6 +44,7 @@ public class ApplicationConfig {
         public double           digTime = GameTime.fromMinute(15);
     }
 
+    public ApplicationConfigDebug debug = new ApplicationConfigDebug();
     public ApplicationConfigScreenInfo screen = new ApplicationConfigScreenInfo();
     public ApplicationConfigGameInfo game = new ApplicationConfigGameInfo();
     public boolean              launchGui = true;

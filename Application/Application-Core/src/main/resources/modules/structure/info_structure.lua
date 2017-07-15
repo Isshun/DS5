@@ -6,8 +6,8 @@ ui:extend({
     visible = false,
     views = {
 
-        { type = "view", position = {275, 15}, size = {80, 25}, background = 0xff3e4b0b, views = {
-            { type = "view", id = "progress_health", size = {50, 25}, background = 0xff89ab00 },
+        { type = "view", position = {275, 15}, size = {80, 25}, background = 0x3e4b0bff, views = {
+            { type = "view", id = "progress_health", size = {50, 25}, background = 0x89ab00ff },
             { type = "label", id = "lb_health", text_color = color2, text_size = 16, padding = 7 },
         }},
 

@@ -18,6 +18,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.task.LoadTask;
 import org.smallbox.faraway.util.FileUtils;
+import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 import java.util.function.Consumer;
@@ -130,6 +131,28 @@ public class GDXApplication extends ApplicationAdapter {
         } else {
             minimalRender();
         }
+
+        errorRender();
+    }
+
+    private void errorRender() {
+
+        if (Log._lastErrorMessage != null && System.currentTimeMillis() < Log._lastErrorTime + 5000) {
+            _batch.begin();
+
+            OrthographicCamera camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            _batch.setProjectionMatrix(camera.combined);
+
+            _systemFont.setColor(0.0f, 0.0f, 0.0f, 1);
+            _systemFont.draw(_batch, Log._lastErrorMessage, 21, Gdx.graphics.getHeight() - 21);
+
+            _systemFont.setColor(1.0f, 0.2f, 0.2f, 1);
+            _systemFont.draw(_batch, Log._lastErrorMessage, 20, Gdx.graphics.getHeight() - 20);
+
+            _batch.end();
+        }
+
     }
 
     private void gameRender() {

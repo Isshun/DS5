@@ -1,0 +1,28 @@
+{
+  "planet": "base.planet.corrin",
+  "region": "mountain",
+  "width": 14,
+  "height": 20,
+  "level": 2,
+  "characters": [
+    {"x": 10, "y": 10, "z": 1}
+  ],
+  "consumables": [
+    {"x": 0, "y": 0, "z": 1, "name": "base.consumable.easy_meal", "quantity": 1000},
+    {"x": 1, "y": 0, "z": 1, "name": "base.consumable.drink.water", "quantity": 800},
+    {"x": 2, "y": 0, "z": 1, "name": "base.consumable.vegetable.carrot", "quantity": 50},
+    {"x": 3, "y": 0, "z": 1, "name": "base.consumable.vegetable.rice", "quantity": 40},
+    {"x": 4, "y": 0, "z": 1, "name": "base.consumable.wood_log", "quantity": 1000}
+  ],
+  "items": [
+    {"x": 0, "y": 2, "z": 1, "name": "base.item.bed.wood"}
+  ],
+  "areas": [
+    {"type": "org.smallbox.faraway.modules.consumable.StorageArea", "parcels": [
+      {"x": 8, "y": 10, "z": 1},
+      {"x": 9, "y": 10, "z": 1},
+      {"x": 8, "y": 11, "z": 1},
+      {"x": 9, "y": 11, "z": 1}
+    ]}
+  ]
+}

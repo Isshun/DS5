@@ -17,6 +17,7 @@ data:extend({
         },
         permeability = 0.2,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
+        walkable = false
     },
     { label = "Sandstone wall",
         name = "base.sandstone_wall",

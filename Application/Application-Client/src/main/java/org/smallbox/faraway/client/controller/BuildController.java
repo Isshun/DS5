@@ -3,13 +3,13 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.render.layer.BuildLayer;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Data;
@@ -42,13 +42,7 @@ public class BuildController extends LuaController {
     private MainPanelController mainPanelController;
 
     @BindLua
-    private UIList listStructures;
-
-    @BindLua
-    private UIList listItems;
-
-    @BindLua
-    private UIList listNetworks;
+    private UIList list;
 
     @BindLua
     private UILabel contentLabel;
@@ -61,47 +55,21 @@ public class BuildController extends LuaController {
     @Override
     public void onReloadUI() {
         mainPanelController.addShortcut("Build", this);
+        onOpenItems();
     }
-//
+
 //    @Override
-//    public boolean onClickOnParcel(List<ParcelModel> parcels) {
-////        if (_currentItem != null) {
-////            if (_currentItem.isUserItem) {
-////                parcels.forEach(parcel -> itemModule.addPattern(parcel, _currentItem));
-////            }
-////            if (_currentItem.isStructure) {
-////                parcels.forEach(parcel -> structureModule.addPattern(parcel, _currentItem));
-////            }
-////        }
-//
-//        _currentItem = null;
-//
-//        buildLayer.setItemInfo(null);
-//
+//    public boolean onKeyPress(int key) {
+//        if (key == Input.Keys.ESCAPE && _currentItem != null) {
+//            _currentItem = null;
+//            return true;
+//        }
 //        return false;
 //    }
 
-    @Override
-    public boolean onKeyPress(int key) {
-        if (key == Input.Keys.ESCAPE && _currentItem != null) {
-            _currentItem = null;
-            return true;
-        }
-        return false;
-    }
-
-//    @Override
-//    public void onMouseRelease(GameEvent event) {
-//        if (event.mouseEvent != null && event.mouseEvent.button == GameEventListener.MouseButton.RIGHT) {
-//            _currentItem = null;
-//        }
-//    }
-
-    @BindLuaAction
-    private void onOpenItems(View view) {
-        listItems.setVisible(!listItems.isVisible());
-        listStructures.setVisible(false);
-        listNetworks.setVisible(false);
+    private void onOpenItems() {
+        list.removeAllViews();
+        list.addView(createListTitle("Items", event -> onOpenItems()));
 
         data.getItems().stream()
                 .filter(item -> item.isUserItem)
@@ -109,51 +77,50 @@ public class BuildController extends LuaController {
                     UIFrame frame = new UIFrame(null);
                     frame.setSize(300, 32);
                     frame.setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo));
-                    frame.setBackgroundFocusColor(0xffff2233);
+                    frame.setBackgroundFocusColor(0xff2233ff);
 
                     UIImage image = new UIImage(null);
                     image.setImage(ApplicationClient.spriteManager.getIcon(itemInfo));
                     frame.addView(image);
 
                     UILabel label = new UILabel(null);
-                    label.setTextColor(0x9afbff);
+                    label.setTextColor(0x9afbffff);
                     label.setMargin(14, 0, 0, 38);
                     label.setText(itemInfo.label);
                     frame.addView(label);
 
-                    listItems.addNextView(frame);
+                    list.addView(frame);
                 });
-        listItems.setHeight(listItems.getViews().size() * 32);
-        listItems.switchViews();
+
+        list.addView(createListTitle("Structure", event -> onOpenStructures()));
+        list.addView(createListTitle("Network", event -> onOpenNetworks()));
     }
 
-    @BindLuaAction
-    private void onOpenStructures(View view) {
-        listItems.setVisible(false);
-        listStructures.setVisible(!listStructures.isVisible());
-        listNetworks.setVisible(false);
+    private void onOpenStructures() {
+        list.removeAllViews();
+        list.addView(createListTitle("Items", event -> onOpenItems()));
+        list.addView(createListTitle("Structure", event -> onOpenStructures()));
 
         data.getItems().stream()
                 .filter(itemInfo -> itemInfo.isStructure)
-                .forEach(itemInfo -> listStructures.addNextView(UILabel.create(null)
+                .forEach(itemInfo -> list.addView(UILabel.create(null)
                         .setText(itemInfo.label)
-                        .setTextColor(0x9afbff)
+                        .setTextColor(0x9afbffff)
                         .setSize(100, 32)
-                        .setBackgroundFocusColor(0xff25c9cb)
+                        .setBackgroundFocusColor(0x25c9cbff)
                         .setPadding(10)
                         .setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo))));
 
-        listStructures.setHeight(listStructures.getViews().size() * 32);
-        listStructures.switchViews();
+        list.addView(createListTitle("Network", event -> onOpenNetworks()));
     }
 
-    @BindLuaAction
-    private void onOpenNetworks(View view) {
-        listItems.setVisible(false);
-        listStructures.setVisible(false);
-        listNetworks.setVisible(!listNetworks.isVisible());
+    private void onOpenNetworks() {
+        list.removeAllViews();
+        list.addView(createListTitle("Items", event -> onOpenItems()));
+        list.addView(createListTitle("Structure", event -> onOpenStructures()));
+        list.addView(createListTitle("Network", event -> onOpenNetworks()));
 
-        Application.data.getItems().stream()
+        data.getItems().stream()
                 .filter(item -> item.isNetworkItem)
                 .forEach(itemInfo -> {
                     UIFrame frame = new UIFrame(null);
@@ -167,13 +134,22 @@ public class BuildController extends LuaController {
                     UILabel label = new UILabel(null);
                     label.setMargin(14, 0, 0, 38);
                     label.setText(itemInfo.label);
-                    label.setTextColor(0x9afbff);
+                    label.setTextColor(0x9afbffff);
                     frame.addView(label);
 
-                    listNetworks.addNextView(frame);
+                    list.addView(frame);
                 });
-        listNetworks.setHeight(listNetworks.getViews().size() * 32);
-        listNetworks.switchViews();
+    }
+
+    private View createListTitle(String label, OnClickListener clickListener) {
+        return UILabel.create(null)
+                .setText(label)
+                .setTextSize(16)
+                .setPadding(5)
+                .setSize(350, 28)
+                .setBackgroundColor(0x349394ff)
+                .setFocusBackgroundColor(0x25c9cbff)
+                .setOnClickListener(clickListener);
     }
 
     public void setCurrentItem(ItemInfo itemInfo) {
@@ -203,4 +179,8 @@ public class BuildController extends LuaController {
         return _currentItem;
     }
 
+    @GameShortcut(key = Input.Keys.B)
+    public void onPressT() {
+        setVisible(true);
+    }
 }

@@ -1,8 +1,10 @@
 package org.smallbox.faraway.client.controller;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -57,5 +59,10 @@ public class ConsumableController extends LuaController {
         });
 
         consumableList.switchViews();
+    }
+
+    @GameShortcut(key = Input.Keys.I)
+    public void onPressT() {
+        setVisible(true);
     }
 }

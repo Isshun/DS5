@@ -55,9 +55,9 @@ public class StructureTopLayer extends BaseLayer {
                         renderer.drawTextOnMap(structure.getParcel(), structure.getHealth() + "/" + structure.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
                     }
 
-                    if (!structure.isBuildComplete()) {
-                        renderer.drawTextOnMap(structure.getParcel(), "to build", 14, Color.CHARTREUSE, 0, 0);
-                    }
+//                    if (!structure.isBuildComplete()) {
+//                        renderer.drawTextOnMap(structure.getParcel(), "to build", 14, Color.CHARTREUSE, 0, 0);
+//                    }
 
                 });
 

@@ -29,6 +29,7 @@ public class CharacterInfoStatusController extends LuaController {
     private CharacterBuffModule buffModule;
 
     @BindLua private UILabel lbJob;
+    @BindLua private UILabel lbJobProgress;
     @BindLua private UIFrame frameJob;
     @BindLua private UIImage imgJob;
 
@@ -82,6 +83,10 @@ public class CharacterInfoStatusController extends LuaController {
         if (job != null) {
             lbJob.setVisible(true);
             lbJob.setText(job.getMainLabel());
+
+            if (job.getProgress() > 0) {
+                lbJobProgress.setText(String.format("%3d%%", (int) (job.getProgress() * 100)));
+            }
 
             frameJob.setVisible(true);
             frameJob.setWidth((int) (job.getProgress() * 300));
@@ -149,12 +154,12 @@ public class CharacterInfoStatusController extends LuaController {
                 .stream()
                 .sorted((o1, o2) -> o2.mood - o1.mood)
                 .forEach(buff ->
-                listBuffs.addNextView(UILabel
-                        .create(null)
-                        .setText("[" + (buff.mood > 0 ? "+" : "") + buff.mood  + "] " + buff.message)
-                        .setTextSize(14)
-                        .setTextColor(buff.mood > 0 ? 0xff33bb88 : 0xffbb5555)
-                        .setSize(300, 22)));
+                        listBuffs.addNextView(UILabel
+                                .create(null)
+                                .setText("[" + (buff.mood > 0 ? "+" : "") + buff.mood  + "] " + buff.message)
+                                .setTextSize(14)
+                                .setTextColor(buff.mood > 0 ? 0x33bb88ff : 0xbb5555ff)
+                                .setSize(300, 22)));
 
         listBuffs.switchViews();
     }

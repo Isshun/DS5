@@ -4,11 +4,11 @@ ui:extend(
         id = "menu.pause.button",
         style = {
             text_size = 22,
-            text_color = 0xffffff,
+            text_color = 0xffffffff,
             padding = 16,
             background = {
-                regular = 0x55ffffff,
-                focus = 0x25c9cb},
+                regular = 0xffffff55,
+                focus = 0x25c9cbff},
             size = {280, 48},
             margin = {10, 0, 0, 10}
         }

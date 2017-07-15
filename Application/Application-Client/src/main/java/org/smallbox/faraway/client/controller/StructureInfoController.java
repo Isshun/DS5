@@ -56,7 +56,7 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
             structure.getInventory().forEach(consumable ->
                     listInventory.addNextView(UILabel.create(null)
                             .setText(consumable.getInfo().label)
-                            .setTextColor(0x9afbff)
+                            .setTextColor(0x9afbffff)
                             .setSize(100, 20))
             );
             listInventory.switchViews();
@@ -70,7 +70,7 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
         structure.getInfo().build.components.forEach(componentInfo ->
                 listBuildComponents.addNextView(UILabel.create(null)
                         .setDashedString(componentInfo.component.label, structure.getInventoryQuantity(componentInfo.component) + " / " + componentInfo.quantity, 42)
-                        .setTextColor(structure.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xffababab : 0x9afbff)
+                        .setTextColor(structure.getInventoryQuantity(componentInfo.component) < componentInfo.quantity ? 0xabababff : 0x9afbffff)
                         .setSize(100, 20)));
         listBuildComponents.switchViews();
     }

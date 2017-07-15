@@ -51,7 +51,7 @@ public class CrewController extends LuaController {
                 view.addView(UILabel.create(null)
                         .setText(character.getName())
                         .setTextSize(18)
-                        .setTextColor(0xffB4D4D3)
+                        .setTextColor(0xB4D4D3ff)
                         .setSize(300, 28)
                         .setPadding(8, 0));
 
@@ -59,7 +59,7 @@ public class CrewController extends LuaController {
                     view.addView(UILabel.create(null)
                             .setText(character.getJob().getLabel())
                             .setTextSize(14)
-                            .setTextColor(0xffB4D4D3)
+                            .setTextColor(0xB4D4D3ff)
                             .setSize(300, 28)
                             .setPosition(0, 22)
                             .setPadding(8, 0));
@@ -92,11 +92,11 @@ public class CrewController extends LuaController {
         view.addView(new UIFrame(null)
                 .setSize(10, 30)
                 .setPosition(1, 0)
-                .setBackgroundColor(0xff0D4D4B));
+                .setBackgroundColor(0x0D4D4Bff));
 
         view.addView(new UIFrame(null)
                 .setSize(10, (int) (30 * value))
-                .setBackgroundColor(0xff679B99)
+                .setBackgroundColor(0x679B99ff)
                 .setPosition(1, (int) (30 - 30 * value)));
 
         view.addView(UIImage.create(null)
@@ -107,11 +107,8 @@ public class CrewController extends LuaController {
         return view;
     }
 
-    @GameShortcut(key = Input.Keys.BACKSPACE)
-    public void onEscape() {
-        if (isVisible()) {
-            mainPanelController.setVisible(true);
-        }
+    @GameShortcut(key = Input.Keys.C)
+    public void onPressT() {
+        setVisible(true);
     }
-
 }
