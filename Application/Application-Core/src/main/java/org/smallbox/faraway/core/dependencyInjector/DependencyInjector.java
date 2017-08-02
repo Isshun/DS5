@@ -68,12 +68,15 @@ public class DependencyInjector {
     }
 
     public void injectDependencies() {
-        injectDependencies(null);
+        if (_init) {
+            throw new RuntimeException("Cannot call " + getClass().getName() + " several time");
+        }
+        _init = true;
+        _objectPool.forEach(host -> injectDependencies(host, null));
     }
 
     public void injectDependencies(Object component) {
 //        if (!_init) {
-        _init = true;
 
         if (component != null) {
             injectDependencies(component, null);

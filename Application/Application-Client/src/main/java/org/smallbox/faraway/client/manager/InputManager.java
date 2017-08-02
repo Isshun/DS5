@@ -160,22 +160,27 @@ public class InputManager implements InputProcessor {
         _touchDragY = y;
         _touchDrag = true;
 
-        if (_lastMouseButton == Buttons.RIGHT) {
-//            if (Application.gameManager.isLoaded()) {
-//                ApplicationClient.layerManager.getViewport().update(x, y);
-//                return true;
-//            }
-//        } else if (_lastMouseButton == Buttons.LEFT) {
-//            Log.debug("select: " + _touchDownX + "x" + _touchDownY);
-//            Log.debug("to: " + x + "x" + y );
-//
-////            Application.notify(observer -> observer.onSelectParcel(parcels));
-//
-//            return false;
-//        } else {
+        // Passe l'evenement au game event manager
+        if (ApplicationClient.gameEventManager.onMouseMove(x, y, true)) {
+            return false;
         }
 
-        ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, -1, x, y, _lastMouseButton == Buttons.RIGHT);
+//        if (_lastMouseButton == Buttons.RIGHT) {
+////            if (Application.gameManager.isLoaded()) {
+////                ApplicationClient.layerManager.getViewport().update(x, y);
+////                return true;
+////            }
+////        } else if (_lastMouseButton == Buttons.LEFT) {
+////            Log.debug("select: " + _touchDownX + "x" + _touchDownY);
+////            Log.debug("to: " + x + "x" + y );
+////
+//////            Application.notify(observer -> observer.onSelectParcel(parcels));
+////
+////            return false;
+////        } else {
+//        }
+//
+//        ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, -1, x, y, _lastMouseButton == Buttons.RIGHT);
 
         return false;
     }
@@ -188,12 +193,12 @@ public class InputManager implements InputProcessor {
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
 
             // Passe l'evenement à l'ui event manager
-            if (ApplicationClient.uiEventManager.onMouseMove(x, y)) {
+            if (ApplicationClient.uiEventManager.onMouseMove(x, y, false)) {
                 return false;
             }
 
             // Passe l'evenement au game event manager
-            if (ApplicationClient.gameEventManager.onMouseMove(x, y)) {
+            if (ApplicationClient.gameEventManager.onMouseMove(x, y, false)) {
                 return false;
             }
 

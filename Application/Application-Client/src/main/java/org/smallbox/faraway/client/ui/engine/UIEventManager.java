@@ -205,7 +205,7 @@ public class UIEventManager implements EventManager {
     }
 
     @Override
-    public boolean onMouseMove(int x, int y) {
+    public boolean onMouseMove(int x, int y, boolean pressed) {
 
 
         // On drag hover

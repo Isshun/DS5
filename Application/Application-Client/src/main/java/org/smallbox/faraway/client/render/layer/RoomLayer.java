@@ -92,12 +92,6 @@ public class RoomLayer extends BaseLayer {
         return _textureByClass.get(cls);
     }
 
-    @Override
-    public void onMouseMove(int x, int y, int button) {
-        _mouseX = x;
-        _mouseY = y;
-    }
-
     public boolean isMandatory() {
         return true;
     }

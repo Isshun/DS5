@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.debug.layer;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
@@ -49,6 +50,9 @@ public class DebugLayer extends BaseLayer {
 
     @BindModule
     private ConsumableModule consumableModule;
+
+    @BindModule
+    private GameEventManager gameEventManager;
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
@@ -165,7 +169,14 @@ public class DebugLayer extends BaseLayer {
                     ApplicationClient.selectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
                 }
 
-                _data.forEach((key, value) -> drawDebug(renderer, "UI", key + ": " + value));
+                drawDebug(renderer, "Cursor screen position", gameEventManager.getMouseX() + " x " + gameEventManager.getMouseY());
+                drawDebug(renderer, "Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()));
+
+                ParcelModel parcel = WorldHelper.getParcel(
+                        ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()),
+                        ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
+                        ApplicationClient.layerManager.getViewport().getFloor());
+                drawDebug(renderer, "Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
                 break;
         }
 
@@ -201,18 +212,6 @@ public class DebugLayer extends BaseLayer {
             sb.append(" job: ").append(character.getJob().getLabel());
         }
         drawDebug(renderer, "Character", sb.toString());
-    }
-
-    @Override
-    public void onMouseMove(int x, int y, int button) {
-        _data.put("Cursor screen position", x + " x " + y);
-        _data.put("Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(x) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(y));
-
-        ParcelModel parcel = WorldHelper.getParcel(
-                ApplicationClient.layerManager.getViewport().getWorldPosX(x),
-                ApplicationClient.layerManager.getViewport().getWorldPosY(y),
-                ApplicationClient.layerManager.getViewport().getFloor());
-        _data.put("Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
     }
 
     private void drawHeaders(GDXRenderer renderer) {

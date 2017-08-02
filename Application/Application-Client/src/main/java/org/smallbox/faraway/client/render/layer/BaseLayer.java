@@ -27,10 +27,10 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     private int                 _width;
     private int                 _height;
     private int                 _floor;
-    private int                 _fromX;
-    private int                 _fromY;
-    private int                 _toX;
-    private int                 _toY;
+    protected int                 _fromX;
+    protected int                 _fromY;
+    protected int                 _toX;
+    protected int                 _toY;
     protected int               _frame;
 
     private long                _lastTime;
@@ -38,8 +38,11 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     private double _selectionChange = 0.5;
     private double _selectionOffset;
 
+    // Current mouse position
     protected int _mouseX;
     protected int _mouseY;
+
+    // On press mouse position
     protected int _mouseDownX;
     protected int _mouseDownY;
 
@@ -174,15 +177,14 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
         return layerList;
     }
 
-
     @Override
-    public void onMouseMove(int x, int y, int button) {
+    public final void onMouseMove(int x, int y, int button) {
         _mouseX = x;
         _mouseY = y;
     }
 
     @Override
-    public void onMousePress(int x, int y, int button) {
+    public final void onMousePress(int x, int y, int button) {
         _mouseDownX = x;
         _mouseDownY = y;
     }

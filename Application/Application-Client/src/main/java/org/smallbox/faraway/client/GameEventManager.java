@@ -12,13 +12,65 @@ import java.util.Collection;
  */
 public class GameEventManager implements EventManager {
 
+    private boolean _mousePressed;
+
+    // Current mouse position
+    protected int _mouseX;
+    protected int _mouseY;
+
+    // Mouse press position
+    protected int _mouseDownX;
+    protected int _mouseDownY;
+
+    // Mouse release position
+    protected int _mouseUpX;
+    protected int _mouseUpY;
+
+    public boolean isMousePressed() {
+        return _mousePressed;
+    }
+
+    public int getMouseX() {
+        return _mouseX;
+    }
+
+    public int getMouseY() {
+        return _mouseY;
+    }
+
+    public int getMouseDownX() {
+        return _mouseDownX;
+    }
+
+    public int getMouseDownY() {
+        return _mouseDownY;
+    }
+
+    public int getMouseUpX() {
+        return _mouseUpX;
+    }
+
+    public int getMouseUpY() {
+        return _mouseUpY;
+    }
+
     @Override
     public boolean onMousePress(int x, int y, int button) {
+        _mouseDownX = x;
+        _mouseDownY = y;
+        _mouseX = x;
+        _mouseY = y;
+        _mousePressed = true;
         return false;
     }
 
     @Override
     public boolean onMouseRelease(int x, int y, int button) {
+        _mouseUpX = x;
+        _mouseUpY = y;
+        _mouseX = x;
+        _mouseY = y;
+        _mousePressed = false;
 
         Collection<? extends ObjectModel> selected = ApplicationClient.selectionManager.getSelected();
 
@@ -43,7 +95,9 @@ public class GameEventManager implements EventManager {
     }
 
     @Override
-    public boolean onMouseMove(int x, int y) {
+    public boolean onMouseMove(int x, int y, boolean pressed) {
+        _mouseX = x;
+        _mouseY = y;
         return false;
     }
 
