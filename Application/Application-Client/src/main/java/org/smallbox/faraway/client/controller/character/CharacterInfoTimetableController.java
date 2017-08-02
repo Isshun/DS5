@@ -49,13 +49,14 @@ public class CharacterInfoTimetableController extends LuaController {
                     View view = new UIFrame(null)
                             .setSize(32, 22);
 
-                    view.addView(new UIFrame(null)
+                    View subView = new UIFrame(null)
                             .setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)))
-                            .setSize(300, 21)
-                            .setOnClickListener(event -> {
-                                timetable.nextState(dayTime.hour);
-                                event.view.setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
-                            }));
+                            .setSize(300, 21);
+                    subView.setOnClickListener((x, y) -> {
+                        timetable.nextState(dayTime.hour);
+                        subView.setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
+                    });
+                    view.addView(subView);
 
 //                view.addView(new UIFrame(null)
 //                        .setSize(4, 16)

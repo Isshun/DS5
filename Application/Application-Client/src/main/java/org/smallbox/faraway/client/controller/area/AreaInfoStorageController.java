@@ -2,10 +2,10 @@ package org.smallbox.faraway.client.controller.area;
 
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
@@ -30,6 +30,9 @@ import java.util.stream.Collectors;
  * Created by Alex on 26/04/2016.
  */
 public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
+
+    @BindComponent
+    protected SelectionManager selectionManager;
 
     @BindComponent
     private Data data;
@@ -108,7 +111,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelection(this, areaInfoController);
+        selectionManager.registerSelection(this, areaInfoController);
 
         // Creation d'un arbre contenant toutes les categories
         _tree = data.consumables.stream()
@@ -117,14 +120,14 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .map(CategoryContainer::new)
                 .collect(Collectors.toList());
 
-        btPriority1.setOnClickListener(event -> setPriority(event, 1));
-        btPriority2.setOnClickListener(event -> setPriority(event, 2));
-        btPriority3.setOnClickListener(event -> setPriority(event, 3));
-        btPriority4.setOnClickListener(event -> setPriority(event, 4));
-        btPriority5.setOnClickListener(event -> setPriority(event, 5));
+        btPriority1.setOnClickListener((int x, int y) -> setPriority(1));
+        btPriority2.setOnClickListener((int x, int y) -> setPriority(2));
+        btPriority3.setOnClickListener((int x, int y) -> setPriority(3));
+        btPriority4.setOnClickListener((int x, int y) -> setPriority(4));
+        btPriority5.setOnClickListener((int x, int y) -> setPriority(5));
     }
 
-    private void setPriority(GameEvent event, int priority) {
+    private void setPriority(int priority) {
         _area.setPriority(priority);
         displayPriority(_area.getPriority());
     }
@@ -145,14 +148,14 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
         _tree.forEach(categoryContainer -> {
             listStorage.addView(new UIFrame(null)
                     .setSize(200, 20)
-                    .setOnClickListener(event -> {
+                    .setOnClickListener((int x, int y) -> {
                         categoryContainer.isOpen = !categoryContainer.isOpen;
                         displayTree();
                     })
                     .addView(UILabel.createFast(categoryContainer.categoryName, ColorUtils.COLOR1).setPadding(5))
                     .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName), 16, 16)
                             .setPosition(300, 0)
-                            .setOnClickListener(event -> {
+                            .setOnClickListener((int x, int y) -> {
                                 clickOnBox(categoryContainer.categoryName, null);
                                 storingModule.notifyRulesChange(_area);
                                 displayTree();
@@ -165,14 +168,14 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 categoryContainer.subCategories.forEach(subCategoryContainer -> {
                     listStorage.addView(new UIFrame(null)
                             .setSize(200, 20)
-                            .setOnClickListener(event -> {
+                            .setOnClickListener((int x, int y) -> {
                                 subCategoryContainer.isOpen = !subCategoryContainer.isOpen;
                                 displayTree();
                             })
                             .addView(UILabel.createFast((subCategoryContainer.isOpen ? " + " : " - ") + subCategoryContainer.subCategoryName, ColorUtils.COLOR2).setPadding(5).setMargin(0, 0))
                             .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName, subCategoryContainer.subCategoryName), 16, 16)
                                     .setPosition(300, 0)
-                                    .setOnClickListener(event -> {
+                                    .setOnClickListener((int x, int y) -> {
                                         clickOnBox(categoryContainer.categoryName, subCategoryContainer.subCategoryName);
                                         storingModule.notifyRulesChange(_area);
                                         displayTree();
@@ -196,14 +199,14 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
         items.forEach(itemInfo -> {
             listStorage.addView(new UIFrame(null)
                     .setSize(200, 20)
-                    .setOnClickListener(event -> {
+                    .setOnClickListener((int x, int y) -> {
                         _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
                         displayTree();
                     })
                     .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).setPadding(5).setMargin(0, 0))
                     .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
                             .setPosition(300, 0)
-                            .setOnClickListener(event -> {
+                            .setOnClickListener((int x, int y) -> {
                                 _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
                                 storingModule.notifyRulesChange(_area);
                                 displayTree();

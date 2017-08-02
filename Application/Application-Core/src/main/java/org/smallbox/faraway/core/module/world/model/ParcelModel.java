@@ -157,17 +157,12 @@ public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel>
             return false;
         }
 
-        // Check structure (wall, closed door)
-        StructureItem structure = getItem(StructureItem.class);
-        if (structure != null && !structure.getInfo().isWalkable && structure.isBuildComplete()) {
-            return false;
+        // Check items (wall, closed door)
+        for (MapObjectModel item: _items.values()) {
+            if (!item.isWalkable() && item.isComplete()) {
+                return false;
+            }
         }
-
-        // TODO: addSubJob is walkable field set by modules
-//        // Check item
-//        if (_item != null && !_item.getInfo().isWalkable && _item.isComplete()) {
-//            return false;
-//        }
 
         return true;
     }

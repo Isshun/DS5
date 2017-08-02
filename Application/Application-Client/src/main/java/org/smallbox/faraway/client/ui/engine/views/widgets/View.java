@@ -10,7 +10,6 @@ import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -148,10 +147,9 @@ public abstract class View implements Comparable<View> {
         }
     }
 
-    public void click(GameEvent event) {
+    public void click(int x, int y) {
         assert _onClickListener != null;
-        event.view = this;
-        _onClickListener.onClick(event);
+        _onClickListener.onClick(x, y);
 
         if (_parent != null && _parent instanceof UIDropDown) {
             ((UIDropDown)_parent).setCurrent(this);
@@ -438,25 +436,25 @@ public abstract class View implements Comparable<View> {
 
     // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
-        _onClickListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
+        _onClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
         ApplicationClient.uiEventManager.setOnClickListener(this, _onClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnRightClickListener(LuaValue value) {
-        _onRightClickListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
+        _onRightClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
         ApplicationClient.uiEventManager.setOnRightClickListener(this, _onRightClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelUpListener(LuaValue value) {
-        _onMouseWheelUpListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
+        _onMouseWheelUpListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
         ApplicationClient.uiEventManager.setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelDownListener(LuaValue value) {
-        _onMouseWheelDownListener = (GameEvent event) -> value.call(CoerceJavaToLua.coerce(this));
+        _onMouseWheelDownListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
         ApplicationClient.uiEventManager.setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
     }
 
@@ -486,12 +484,6 @@ public abstract class View implements Comparable<View> {
         assert onFocusListener != null;
         _onFocusListener = onFocusListener;
         ApplicationClient.uiEventManager.setOnFocusListener(this, onFocusListener);
-    }
-
-    public void onClick(GameEvent event) {
-        if (_onClickListener != null) {
-            _onClickListener.onClick(event);
-        }
     }
 
     public void setPadding(int t, int r, int b, int l) {

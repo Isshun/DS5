@@ -1,10 +1,7 @@
 package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
-import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.util.Constant;
 
@@ -99,8 +96,8 @@ public class InputManager implements InputProcessor {
         }
 
         // Cleat UiEventManager selection listener when escape key is pushed
-        if (keycode == Keys.ESCAPE && ApplicationClient.uiEventManager.getSelectionListener() != null) {
-            ApplicationClient.uiEventManager.setSelectionListener(null);
+        if (keycode == Keys.ESCAPE && ApplicationClient.selectionManager.getSelectionListener() != null) {
+            ApplicationClient.selectionManager.setSelectionListener(null);
             return false;
         }
 
@@ -120,20 +117,17 @@ public class InputManager implements InputProcessor {
         _touchDownY = _touchDragY = y;
 
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            GameEventListener.MouseButton mouseButton = GameEventListener.MouseButton.LEFT;
-            switch (button) {
-                case Buttons.LEFT:
-                    mouseButton = GameEventListener.MouseButton.LEFT;
-                    break;
-                case Buttons.RIGHT:
-                    mouseButton = GameEventListener.MouseButton.RIGHT;
-                    break;
-                case Buttons.MIDDLE:
-                    mouseButton = GameEventListener.MouseButton.MIDDLE;
-                    break;
+
+            // Passe l'evenement à l'ui event manager
+            if (ApplicationClient.uiEventManager.onMousePress(x, y, button)) {
+                return false;
             }
 
-            ApplicationClient.onMouseEvent(GameEventListener.Action.PRESSED, mouseButton, x, y, false);
+            // Passe l'evenement au game event manager
+            if (ApplicationClient.gameEventManager.onMousePress(x, y, button)) {
+                return false;
+            }
+
         }
 
         return false;
@@ -144,22 +138,19 @@ public class InputManager implements InputProcessor {
         _touchDrag = false;
 
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            GameEventListener.MouseButton mouseButton = GameEventListener.MouseButton.LEFT;
-            switch (button) {
-                case Buttons.LEFT:
-                    mouseButton = GameEventListener.MouseButton.LEFT;
-                    break;
-                case Buttons.RIGHT:
-                    mouseButton = GameEventListener.MouseButton.RIGHT;
-                    break;
-                case Buttons.MIDDLE:
-                    mouseButton = GameEventListener.MouseButton.MIDDLE;
-                    break;
+
+            // Passe l'evenement à l'ui event manager
+            if (ApplicationClient.uiEventManager.onMouseRelease(x, y, button)) {
+                return false;
             }
 
-            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, mouseButton, x, y, false);
+            // Passe l'evenement au game event manager
+            if (ApplicationClient.gameEventManager.onMouseRelease(x, y, button)) {
+                return false;
+            }
 
         }
+
         return false;
     }
 
@@ -170,10 +161,10 @@ public class InputManager implements InputProcessor {
         _touchDrag = true;
 
         if (_lastMouseButton == Buttons.RIGHT) {
-            if (Application.gameManager.isLoaded()) {
-                ApplicationClient.layerManager.getViewport().update(x, y);
-                return true;
-            }
+//            if (Application.gameManager.isLoaded()) {
+//                ApplicationClient.layerManager.getViewport().update(x, y);
+//                return true;
+//            }
 //        } else if (_lastMouseButton == Buttons.LEFT) {
 //            Log.debug("select: " + _touchDownX + "x" + _touchDownY);
 //            Log.debug("to: " + x + "x" + y );
@@ -184,7 +175,7 @@ public class InputManager implements InputProcessor {
 //        } else {
         }
 
-        ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, _lastMouseButton == Buttons.RIGHT);
+        ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, -1, x, y, _lastMouseButton == Buttons.RIGHT);
 
         return false;
     }
@@ -193,12 +184,22 @@ public class InputManager implements InputProcessor {
     public boolean mouseMoved(int x, int y) {
         _lastPosX = x;
         _lastPosY = y;
+
         if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
-            ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, null, x, y, false);
+
+            // Passe l'evenement à l'ui event manager
+            if (ApplicationClient.uiEventManager.onMouseMove(x, y)) {
+                return false;
+            }
+
+            // Passe l'evenement au game event manager
+            if (ApplicationClient.gameEventManager.onMouseMove(x, y)) {
+                return false;
+            }
+
         }
 
-        GameEvent event = new GameEvent(new MouseEvent(x, y, null, GameEventListener.Action.MOVE));
-        ApplicationClient.notify(observer -> observer.onMouseMove(event));
+        ApplicationClient.notify(observer -> observer.onMouseMove(x, y, -1));
 
         return false;
     }
@@ -206,11 +207,11 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         if (amount < 0) {
-            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_UP, _lastPosX, _lastPosY, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false);
             return true;
         }
         if (amount > 0) {
-            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, GameEventListener.MouseButton.WHEEL_DOWN, _lastPosX, _lastPosY, false);
+            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false);
             return true;
         }
         return false;

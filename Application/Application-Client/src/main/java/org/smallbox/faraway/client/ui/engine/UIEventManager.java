@@ -1,22 +1,17 @@
 package org.smallbox.faraway.client.ui.engine;
 
+import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.client.controller.AbsInfoLuaController;
-import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.EventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Log;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-public class UIEventManager {
+public class UIEventManager implements EventManager {
 
     private Map<View, OnDragListener>       _onDragListeners;
     private Map<View, OnClickListener>      _onClickListeners;
@@ -27,16 +22,9 @@ public class UIEventManager {
     private Map<View, OnKeyListener>        _onKeysListeners;
     private UIDropDown                      _currentDropDown;
     private Map<View, Object>               _dropViews;
-    private Collection<AbsInfoLuaController<?>> _infoControllers;
-    private Map<AbsInfoLuaController<?>, AbsInfoLuaController<?>> _infoSubControllers;
-    private ParcelModel                     _lastParcel;
-    private Queue<AbsInfoLuaController<?>>  _lastControllers;
-    private LuaController                   _selectionPreController;
+    private OnDragListener                  _dragListener;
 
     public UIEventManager() {
-        _lastControllers = new ConcurrentLinkedQueue<>();
-        _infoSubControllers = new ConcurrentHashMap<>();
-        _infoControllers = new ConcurrentLinkedQueue<>();
         _onDragListeners = new ConcurrentSkipListMap<>();
         _onClickListeners = new ConcurrentSkipListMap<>();
         _onRightClickListeners = new ConcurrentSkipListMap<>();
@@ -95,7 +83,6 @@ public class UIEventManager {
         }
     }
 
-    private OnSelectionListener _selectionListener;
 
     public void addDropZone(View view) {
         _dropViews.put(view, view);
@@ -105,50 +92,26 @@ public class UIEventManager {
         return _dropViews;
     }
 
-    public OnSelectionListener getSelectionListener() {
-        return _selectionListener;
-    }
-
-    public void registerSelection(AbsInfoLuaController<?> controller) {
-        _infoControllers.add(controller);
-    }
-
-    public void registerSelection(AbsInfoLuaController<?> controller, AbsInfoLuaController<?> parent) {
-        _infoSubControllers.put(controller, parent);
-    }
-
-    public void registerSelectionPre(LuaController controller) {
-        _selectionPreController = controller;
-    }
-
-    public interface OnSelectionListener {
-        boolean onSelection(List<ParcelModel> parcels);
-    }
-
-    public void setSelectionListener(OnSelectionListener selectionListener) {
-        _selectionListener = selectionListener;
-    }
-
     public abstract static class OnDragListener {
         public View hoverView;
 
-        public abstract void onDrag(GameEvent event);
-        public abstract void onDrop(GameEvent event, View dropView);
-        public abstract void onHover(GameEvent event, View dropView);
-        public abstract void onHoverExit(GameEvent event, View dropView);
+        public abstract void onDrag(int x, int y);
+        public abstract void onDrop(int x, int y, View dropView);
+        public abstract void onHover(int x, int y, View dropView);
+        public abstract void onHoverExit(int x, int y, View dropView);
     }
 
-    public OnDragListener drag(GameEvent event, int x, int y) {
+    public OnDragListener drag(int x, int y) {
         for (Map.Entry<View, OnDragListener> entry: _onDragListeners.entrySet()) {
             if (entry.getKey().contains(x, y)) {
-                entry.getValue().onDrag(event);
+                entry.getValue().onDrag(x, y);
                 return entry.getValue();
             }
         }
         return null;
     }
 
-    public boolean click(GameEvent event, int x, int y) {
+    public boolean click(int x, int y) {
         View bestView = null;
         int bestDepth = -1;
 
@@ -166,140 +129,140 @@ public class UIEventManager {
 
         // Click on UI
         if (bestView != null) {
-            bestView.click(event);
+            bestView.click(x, y);
 //            _onClickListeners.get(bestView).onClick();
             return true;
         }
 
         // Click on map
         if (Application.gameManager.isRunning()) {
+            ApplicationClient.selectionManager.select(
+                    ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX()),
+                    ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY()),
+                    ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX()),
+                    ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY())
+            );
+        }
 
-            int fromMapX = ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX());
-            int fromMapY = ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY());
-            int toMapX = ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX());
-            int toMapY = ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY());
+        return false;
+    }
 
-            // Square selection
-            if (fromMapX != toMapX || fromMapY != toMapY) {
-                List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.layerManager.getViewport().getFloor());
-                Log.info("Click on map for parcels: %s", parcelList);
-                if (parcelList != null) {
+    @Override
+    public boolean onMousePress(int x, int y, int button) {
 
-                    if (_selectionListener != null) {
-                        if (_selectionListener.onSelection(parcelList)) {
-                            _selectionListener = null;
-                        }
-                    }
+        if (has(x, y)) {
+            return true;
+        }
 
-                    else {
-                        ApplicationClient.selected = null;
-                        doSelectionMultiple(parcelList);
-                    }
-                }
-            }
-
-            // Unique parcel
-            else {
-                ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.layerManager.getViewport().getFloor());
-                Log.info("Click on map at parcel: %s", parcel);
-                if (parcel != null) {
-
-                    if (_selectionListener != null) {
-                        if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
-                            _selectionListener = null;
-                        }
-                    }
-
-                    else {
-                        ApplicationClient.selected = null;
-                        doSelectionUnique(parcel);
-                    }
-                }
+        if (button == Input.Buttons.LEFT) {
+            _dragListener = drag(x, y);
+            if (_dragListener != null) {
+                return true;
             }
         }
 
         return false;
     }
 
-    private void doSelectionUnique(ParcelModel parcel) {
-        if (_selectionPreController != null) {
-            _selectionPreController.setVisible(true);
-        }
+    @Override
+    public boolean onMouseRelease(int x, int y, int button) {
 
-        // Click sur nouvelle parcel
-        if (_lastParcel != parcel) {
-            _lastParcel = parcel;
-
-            _lastControllers.clear();
-            _infoControllers.stream()
-                    .filter(controller -> controller.getObjectOnParcel(parcel) != null)
-                    .forEach(controller -> _lastControllers.add(controller));
-
-            if (CollectionUtils.isNotEmpty(_lastControllers)) {
-                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
+        // On drag drop
+        if (button == Input.Buttons.LEFT && _dragListener != null) {
+            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
+                    .filter(entry -> entry.getKey().contains(x, y))
+                    .findAny().orElse(null);
+            if (dropViewEntry != null) {
+                _dragListener.onHoverExit(x, y, dropViewEntry.getKey());
+                _dragListener.onDrop(x, y, dropViewEntry.getKey());
             }
+            _dragListener = null;
+            return true;
         }
 
-        // Click sur la même parcel que précédement
-        else {
-            if (CollectionUtils.isNotEmpty(_lastControllers)) {
-                _lastControllers.add(_lastControllers.poll());
-                displayController(_lastControllers.peek(), Collections.singletonList(parcel));
+        // Cleat UiEventManager selection listener when right button is clicked
+        if (button == Input.Buttons.RIGHT && ApplicationClient.selectionManager.getSelectionListener() != null) {
+            ApplicationClient.selectionManager.setSelectionListener(null);
+        }
+
+        if (button == Input.Buttons.LEFT && ApplicationClient.uiEventManager.click(x, y)) {
+            return true;
+        }
+
+        if (button == Input.Buttons.RIGHT && ApplicationClient.uiEventManager.rightClick(x, y)) {
+            return true;
+        }
+
+        if (button == Input.Buttons.FORWARD && ApplicationClient.uiEventManager.mouseWheelUp(x, y)) {
+            return true;
+        }
+
+        if (button == Input.Buttons.BACK && ApplicationClient.uiEventManager.mouseWheelDown(x, y)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean onMouseMove(int x, int y) {
+
+
+        // On drag hover
+        if (_dragListener != null) {
+            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
+                    .filter(entry -> entry.getKey().contains(x, y))
+                    .findAny().orElse(null);
+            if (dropViewEntry != null) {
+                if (_dragListener.hoverView != null) {
+                    _dragListener.onHoverExit(x, y, _dragListener.hoverView);
+                }
+                _dragListener.hoverView = dropViewEntry.getKey();
+                _dragListener.onHover(x, y, dropViewEntry.getKey());
+            } else if (_dragListener.hoverView != null) {
+                _dragListener.onHoverExit(x, y, _dragListener.hoverView);
+                _dragListener.hoverView = null;
             }
+            return false;
         }
 
+        ApplicationClient.uiManager.getViews().stream()
+                .filter(view -> view.isVisible() && view.isActive() && hasVisibleHierarchy(view))
+                .forEach(view -> {
+                    if (hasVisibleHierarchy(view) && view.contains(x, y)) {
+                        view.onEnter();
+                    } else if (view.isFocus()) {
+                        view.onExit();
+                    }
+                });
+
+        return false;
     }
 
-    private void doSelectionMultiple(List<ParcelModel> parcelList) {
-        if (_selectionPreController != null) {
-            _selectionPreController.setVisible(true);
-        }
-
-        _infoControllers.stream()
-                .filter(controller -> parcelList.stream().anyMatch(parcel -> controller.getObjectOnParcel(parcel) != null))
-                .findFirst()
-                .ifPresent(controller -> displayController(controller, parcelList));
-    }
-
-    private void displayController(AbsInfoLuaController<?> controller, Collection<ParcelModel> parcels) {
-
-        // Display sub controller
-        _infoSubControllers.entrySet().stream()
-                .filter(entry -> entry.getValue() == controller)
-                .peek(entry -> entry.getKey().setVisible(false))
-                .filter(entry -> parcels.stream().anyMatch(parcel -> entry.getKey().getObjectOnParcel(parcel) != null))
-                .findFirst()
-                .ifPresent(entry -> entry.getKey().displayToto(parcels));
-
-        // Display controller
-        controller.displayToto(parcels);
-
-    }
-
-    public boolean rightClick(GameEvent event, int x, int y) {
+    public boolean rightClick(int x, int y) {
         for (View view: _onRightClickListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onRightClickListeners.get(view).onClick(event);
+                _onRightClickListeners.get(view).onClick(x, y);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean mouseWheelUp(GameEvent event, int x, int y) {
+    public boolean mouseWheelUp(int x, int y) {
         for (View view: _onMouseWheelUpListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onMouseWheelUpListeners.get(view).onClick(event);
+                _onMouseWheelUpListeners.get(view).onClick(x, y);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean mouseWheelDown(GameEvent event, int x, int y) {
+    public boolean mouseWheelDown(int x, int y) {
         for (View view: _onMouseWheelDownListeners.keySet()) {
             if (view.isActive() && hasVisibleHierarchy(view) && view.contains(x, y)) {
-                _onMouseWheelDownListeners.get(view).onClick(event);
+                _onMouseWheelDownListeners.get(view).onClick(x, y);
                 return true;
             }
         }
@@ -322,18 +285,6 @@ public class UIEventManager {
 
     private boolean hasFocus(View view) {
         return true;
-    }
-
-    public void onMouseMove(int x, int y) {
-        ApplicationClient.uiManager.getViews().stream()
-                .filter(view -> view.isVisible() && view.isActive() && hasVisibleHierarchy(view))
-                .forEach(view -> {
-                    if (hasVisibleHierarchy(view) && view.contains(x, y)) {
-                        view.onEnter();
-                    } else if (view.isFocus()) {
-                        view.onExit();
-                    }
-                });
     }
 
     public boolean has(int x, int y) {

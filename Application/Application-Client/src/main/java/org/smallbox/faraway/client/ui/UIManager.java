@@ -7,7 +7,6 @@ import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
@@ -15,8 +14,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.*;
@@ -24,7 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static org.smallbox.faraway.core.engine.GameEventListener.*;
+import static org.smallbox.faraway.core.engine.GameEventListener.Action;
+import static org.smallbox.faraway.core.engine.GameEventListener.Modifier;
 
 public class UIManager {
 
@@ -194,7 +192,6 @@ public class UIManager {
 
     /**
      *
-     * @param event
      * @param action
      * @param button
      * @param x
@@ -202,80 +199,7 @@ public class UIManager {
      * @param rightPressed
      * @return L'evenement est consommé
      */
-    public boolean onMouseEvent(GameEvent event, Action action, MouseButton button, int x, int y, boolean rightPressed) {
-        for (ModuleBase module: Application.moduleManager.getModules()) {
-            if (!event.consumed && module.isLoaded() && module.onMouseEvent(action, button, x, y)) {
-                return true;
-            }
-        }
-
-        // On drag hover
-        if (!event.consumed && action == Action.MOVE && _dragListener != null) {
-            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
-                    .filter(entry -> entry.getKey().contains(event.mouseEvent.x, event.mouseEvent.y))
-                    .findAny().orElse(null);
-            if (dropViewEntry != null) {
-                if (_dragListener.hoverView != null) {
-                    _dragListener.onHoverExit(event, _dragListener.hoverView);
-                }
-                _dragListener.hoverView = dropViewEntry.getKey();
-                _dragListener.onHover(event, dropViewEntry.getKey());
-            } else if (_dragListener.hoverView != null) {
-                _dragListener.onHoverExit(event, _dragListener.hoverView);
-                _dragListener.hoverView = null;
-            }
-            return false;
-        }
-
-        if (!event.consumed && action == Action.MOVE) {
-            ApplicationClient.uiEventManager.onMouseMove(x, y);
-            return false;
-        }
-
-        if (!event.consumed && action == Action.PRESSED && ApplicationClient.uiEventManager.has(x, y)) {
-            return true;
-        }
-
-        if (!event.consumed && action == Action.PRESSED && button == MouseButton.LEFT) {
-            _dragListener = ApplicationClient.uiEventManager.drag(event, x, y);
-            if (_dragListener != null) {
-                return true;
-            }
-        }
-
-        // On drag drop
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && _dragListener != null) {
-            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
-                    .filter(entry -> entry.getKey().contains(event.mouseEvent.x, event.mouseEvent.y))
-                    .findAny().orElse(null);
-            if (dropViewEntry != null) {
-                _dragListener.onHoverExit(event, dropViewEntry.getKey());
-                _dragListener.onDrop(event, dropViewEntry.getKey());
-            }
-            _dragListener = null;
-            return true;
-        }
-
-        // Cleat UiEventManager selection listener when right button is clicked
-        if (action == Action.RELEASED && button == MouseButton.RIGHT && ApplicationClient.uiEventManager.getSelectionListener() != null) {
-            ApplicationClient.uiEventManager.setSelectionListener(null);
-        }
-
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.LEFT && ApplicationClient.uiEventManager.click(event, x, y)) {
-            return true;
-        }
-
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.RIGHT && ApplicationClient.uiEventManager.rightClick(event, x, y)) {
-            return true;
-        }
-
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_UP && ApplicationClient.uiEventManager.mouseWheelUp(event, x, y)) {
-            return true;
-        }
-
-        if (!event.consumed && action == Action.RELEASED && button == MouseButton.WHEEL_DOWN && ApplicationClient.uiEventManager.mouseWheelDown(event, x, y)) {
-            return true;
-        }
+    public boolean onMouseEvent(Action action, int button, int x, int y, boolean rightPressed) {
 
 //        if (action == Action.RELEASED && button == MouseButton.LEFT) {
 //            if (ApplicationClient.uiEventManager.rightClick(x, y)) {

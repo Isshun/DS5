@@ -1,12 +1,15 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 
 /**
  * Created by Alex on 25/04/2016.
  */
 public abstract class LuaController implements GameClientObserver {
+
     private View _rootView;
     private long _lastUpdate;
 

@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
@@ -214,7 +213,7 @@ public class LuaControllerManager implements GameObserver {
                 View view = rootView.findByAction(method.getName());
                 if (view != null) {
                     Log.debug(LuaControllerManager.class, "LuaController: Bind method %s", method.getName());
-                    view.setOnClickListener((GameEvent event) -> {
+                    view.setOnClickListener((int x, int y) -> {
                         try {
                             Log.debug(LuaControllerManager.class, "Method: %s", method.getName());
                             Log.debug(LuaControllerManager.class, "View: %s", view.getName());

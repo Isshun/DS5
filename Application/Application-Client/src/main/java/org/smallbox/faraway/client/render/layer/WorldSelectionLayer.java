@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -26,20 +25,20 @@ public class WorldSelectionLayer extends BaseLayer {
     }
 
     @Override
-    public void onMouseMove(GameEvent event) {
-        _endX = event.mouseEvent.x;
-        _endY = event.mouseEvent.y;
+    public void onMouseMove(int x, int y, int button) {
+        _endX = x;
+        _endY = y;
     }
 
     @Override
-    public void onMousePress(GameEvent event) {
+    public void onMousePress(int x, int y, int button) {
         _isPressed = true;
-        _startX = event.mouseEvent.x;
-        _startY = event.mouseEvent.y;
+        _startX = x;
+        _startY = y;
     }
 
     @Override
-    public void onMouseRelease(GameEvent event) {
+    public void onMouseRelease(int x, int y, int button) {
         _isPressed = false;
     }
 }

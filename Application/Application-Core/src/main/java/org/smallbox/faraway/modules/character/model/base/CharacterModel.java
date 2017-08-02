@@ -63,8 +63,6 @@ public abstract class CharacterModel extends MovableModel {
      * @return True si le personnage est déjà à la position voulue
      */
     public boolean moveTo(ParcelModel parcel) {
-        assert parcel != null;
-
         return moveTo(parcel, null);
     }
 
@@ -83,6 +81,8 @@ public abstract class CharacterModel extends MovableModel {
             }
             return true;
         }
+
+        Log.info("Move character to " + parcel.x + "x" + parcel.y);
 
         if (_moveListener != null) {
             Log.debug("[" + getName() + "] Cancel previous move listener");

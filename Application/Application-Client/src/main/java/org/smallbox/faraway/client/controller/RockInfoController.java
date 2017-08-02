@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
@@ -15,6 +16,9 @@ import java.util.Queue;
  * Created by Alex on 26/04/2016.
  */
 public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
+
+    @BindComponent
+    protected SelectionManager selectionManager;
 
     @BindComponent
     private UIEventManager uiEventManager;
@@ -36,7 +40,7 @@ public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelection(this);
+        selectionManager.registerSelection(this);
     }
 
     @Override

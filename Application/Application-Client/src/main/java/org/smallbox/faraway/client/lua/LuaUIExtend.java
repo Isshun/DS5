@@ -10,7 +10,6 @@ import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -279,7 +278,7 @@ public class LuaUIExtend extends LuaExtend {
 
         LuaValue onClick = value.get("on_click");
         if (!onClick.isnil()) {
-            view.setOnClickListener((GameEvent event) -> {
+            view.setOnClickListener((int x, int y) -> {
                 try {
                     if (onClick.isfunction()) {
                         onClick.call(luaView);

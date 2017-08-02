@@ -25,9 +25,10 @@ public class UIImage extends View {
         super(module);
     }
 
-    public void setImage(Sprite sprite) {
+    public UIImage setImage(Sprite sprite) {
         _sprite = sprite;
         _dirty = true;
+        return this;
     }
 
     public UIImage setImage(GraphicInfo graphicInfo) {

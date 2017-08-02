@@ -37,11 +37,11 @@ public class ItemLayer extends BaseLayer {
                         renderer.drawTextOnMap(parcel.x, parcel.y, item.getHealth() + "/" + item.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
                     }
 
-                    if (!item.isBuildComplete() && item.isBuildComplete()) {
+                    if (!item.isComplete() && item.isComplete()) {
                         renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
                     }
 
-                    if (!item.isBuildComplete()) {
+                    if (!item.isComplete()) {
                         renderer.drawTextOnMap(parcel.x, parcel.y, "to build", 14, Color.CHARTREUSE, 0, 0);
                     }
 
@@ -51,7 +51,7 @@ public class ItemLayer extends BaseLayer {
     }
 
     private Sprite getItemSprite(UsableItem item) {
-        return spriteManager.getSprite(item.getInfo(), item.getGraphic(), item.isBuildComplete() ? item.getInfo().height : 0, 0, 255, false);
+        return spriteManager.getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false);
     }
 
 }

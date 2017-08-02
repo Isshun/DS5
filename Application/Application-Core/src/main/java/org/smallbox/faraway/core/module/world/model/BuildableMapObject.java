@@ -109,8 +109,10 @@ public class BuildableMapObject extends MapObjectModel {
     public CharacterModel   getBuilder() { return _buildJob != null ? _buildJob.getCharacter() : null; }
 
     @Override
-    public boolean          isWalkable() { return !isBuildComplete() || _info.isWalkable; }
-    public boolean          isBuildComplete() { return _buildValue >= _info.build.cost; }
+    public boolean          isWalkable() { return !isComplete() || _info.isWalkable; }
+
+    @Override
+    public boolean          isComplete() { return _buildValue >= _info.build.cost; }
 
     public void setReceipt(ReceiptGroupInfo.ReceiptInfo receipt) {
         throw new NotImplementedException("");

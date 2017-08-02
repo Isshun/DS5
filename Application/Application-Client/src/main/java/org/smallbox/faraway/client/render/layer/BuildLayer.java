@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -27,11 +26,6 @@ public class BuildLayer extends BaseLayer {
     private ItemInfo                _cursorItem;
     private int                     _cursorParcelX;
     private int                     _cursorParcelY;
-
-    private int _mouseX;
-    private int _mouseY;
-    private int _mouseDownX;
-    private int _mouseDownY;
 
     private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
     private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00ff);
@@ -71,7 +65,7 @@ public class BuildLayer extends BaseLayer {
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
 
-        if (ApplicationClient.uiEventManager.getSelectionListener() != null) {
+        if (ApplicationClient.selectionManager.getSelectionListener() != null) {
 
             if (_itemInfo != null) {
 
@@ -128,18 +122,6 @@ public class BuildLayer extends BaseLayer {
         _cursorItem = itemInfo;
         _cursorParcelX = parcelX;
         _cursorParcelY = parcelY;
-    }
-
-    @Override
-    public void onMouseMove(GameEvent event) {
-        _mouseX = event.mouseEvent.x;
-        _mouseY = event.mouseEvent.y;
-    }
-
-    @Override
-    public void onMousePress(GameEvent event) {
-        _mouseDownX = event.mouseEvent.x;
-        _mouseDownY = event.mouseEvent.y;
     }
 
     public void dismissCursor() {

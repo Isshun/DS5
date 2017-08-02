@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller.character;
 
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -23,6 +24,9 @@ import java.util.Queue;
  * Created by Alex on 25/04/2016.
  */
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
+
+    @BindComponent
+    protected SelectionManager selectionManager;
 
     @BindComponent
     private UIEventManager uiEventManager;
@@ -59,7 +63,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelection(this);
+        selectionManager.registerSelection(this);
     }
 
     @Override

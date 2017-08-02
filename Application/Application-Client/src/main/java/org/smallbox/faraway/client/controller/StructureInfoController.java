@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
@@ -19,6 +20,9 @@ import java.util.Queue;
 public class StructureInfoController extends AbsInfoLuaController<StructureItem> {
 
     @BindComponent
+    protected SelectionManager selectionManager;
+
+    @BindComponent
     private UIEventManager uiEventManager;
 
     @BindModule
@@ -35,7 +39,7 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelection(this);
+        selectionManager.registerSelection(this);
     }
 
     @Override
@@ -44,7 +48,7 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
         lbHealth.setText(String.valueOf(structure.getHealth()));
         progressHealth.setWidth(80 * structure.getHealth() / structure.getMaxHealth());
 
-        if (!structure.isBuildComplete()) {
+        if (!structure.isComplete()) {
             frameBuild.setVisible(true);
             displayBuildPane(structure);
             return;

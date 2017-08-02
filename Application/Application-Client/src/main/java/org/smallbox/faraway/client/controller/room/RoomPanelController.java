@@ -1,11 +1,11 @@
 package org.smallbox.faraway.client.controller.room;
 
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.render.layer.RoomLayer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
@@ -21,6 +21,9 @@ import java.util.Comparator;
  * Created by Alex on 26/04/2016.
  */
 public class RoomPanelController extends LuaController {
+
+    @BindComponent
+    protected SelectionManager selectionManager;
 
     @BindComponent
     private UIEventManager uiEventManager;
@@ -57,9 +60,9 @@ public class RoomPanelController extends LuaController {
                             .setSize(160, 40)
                             .setFocusBackgroundColor(0x25c9cbff)
                             .setRegularBackgroundColor(0x121c1eff)
-                            .setOnClickListener(event -> {
+                            .setOnClickListener((int x, int y) -> {
                                 roomLayer.setMode(RoomLayer.Mode.ADD, cls);
-                                uiEventManager.setSelectionListener(parcels -> {
+                                selectionManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
                                     roomLayer.setMode(RoomLayer.Mode.NONE, cls);
                                     roomModule.addRoom(cls, parcels);
@@ -76,9 +79,9 @@ public class RoomPanelController extends LuaController {
                             .setSize(160, 40)
                             .setFocusBackgroundColor(0x25c9cbff)
                             .setRegularBackgroundColor(0x121c1eff)
-                            .setOnClickListener(event -> {
+                            .setOnClickListener((int x, int y) -> {
                                 roomLayer.setMode(RoomLayer.Mode.SUB, cls);
-                                uiEventManager.setSelectionListener(parcels -> {
+                                selectionManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
                                     roomLayer.setMode(RoomLayer.Mode.NONE, cls);
                                     roomModule.removeArea(parcels);
@@ -98,6 +101,6 @@ public class RoomPanelController extends LuaController {
     }
 
     @Override
-    public void onMouseMove(GameEvent event) {
+    public void onMouseMove(int x, int y, int button) {
     }
 }

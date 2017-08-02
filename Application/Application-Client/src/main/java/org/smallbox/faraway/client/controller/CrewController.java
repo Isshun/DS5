@@ -5,7 +5,6 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -75,7 +74,7 @@ public class CrewController extends LuaController {
                     }
                 }
 
-                view.setOnClickListener((GameEvent event) -> {
+                view.setOnClickListener((x, y) -> {
                     ApplicationClient.notify(obs -> obs.onSelectCharacter(character));
                     characterInfoController.display(character);
                 });

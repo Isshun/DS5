@@ -34,9 +34,9 @@ public class UICheckBox extends View {
     public UICheckBox setChecked(boolean checked) { _checked = checked; return this; }
 
     public UICheckBox setOnCheckListener(OnCheckListener onCheckListener) {
-        setOnClickListener(event -> {
+        setOnClickListener((x, y) -> {
             _checked = !_checked;
-            onCheckListener.onCheck(_checked, event.mouseEvent.x < _finalX + 32);
+            onCheckListener.onCheck(_checked, x < _finalX + 32);
         });
         return this;
     }

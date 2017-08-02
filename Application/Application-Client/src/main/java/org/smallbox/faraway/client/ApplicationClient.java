@@ -2,7 +2,6 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
 import com.google.gson.Gson;
-import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
@@ -18,7 +17,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -40,15 +38,15 @@ public class ApplicationClient {
     // Client
     public static final UIManager               uiManager;
     public static final UIEventManager          uiEventManager;
+    public static final GameEventManager        gameEventManager;
     public static final InputManager            inputManager;
     public static final ClientLuaModuleManager  luaModuleManager;
     public static final LuaControllerManager    luaControllerManager;
+    public static final SelectionManager        selectionManager;
 
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
     public static final LayerManager            layerManager;
-
-    public static Collection<? extends ObjectModel> selected;
 
     public static final ShortcutManager shortcutManager;
 
@@ -58,7 +56,9 @@ public class ApplicationClient {
         shortcutManager = dependencyInjector.create(ShortcutManager.class);
         uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
+        gameEventManager = dependencyInjector.create(GameEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
+        selectionManager = dependencyInjector.create(SelectionManager.class);
         gdxRenderer = dependencyInjector.create(GDXRenderer.class);
         layerManager = dependencyInjector.create(LayerManager.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
@@ -132,35 +132,19 @@ public class ApplicationClient {
         ApplicationClient.uiManager.onWindowEvent(action);
     }
 
-    public static void onMouseEvent(GameEventListener.Action action, GameEventListener.MouseButton button, int x, int y, boolean rightPressed) {
-        GameEvent event = new GameEvent(new MouseEvent(x, y, button, action));
+    public static void onMouseEvent(GameEventListener.Action action, int button, int x, int y, boolean rightPressed) {
 
         // Passe l'evenement à l'ui manager
-        if (ApplicationClient.uiManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
+        if (ApplicationClient.uiManager.onMouseEvent(action, button, x, y, rightPressed)) {
             return;
         }
 
-        // Left click
-        if (action == GameEventListener.Action.RELEASED) {
-            if (!event.consumed) {
-                ApplicationClient.notify(obs -> obs.onMouseRelease(event));
-            }
-
-//            if (!event.consumed && _mouseEvent.x < 1500) {
-//                ApplicationClient.notify(obs -> obs.onClickOnMap(event));
-//            }
-        }
-
         if (action == GameEventListener.Action.PRESSED) {
-            if (!event.consumed) {
-                ApplicationClient.notify(obs -> obs.onMousePress(event));
-            }
+            ApplicationClient.notify(obs -> obs.onMousePress(x, y, button));
         }
 
         if (action == GameEventListener.Action.MOVE) {
-            if (!event.consumed) {
-                ApplicationClient.notify(observer -> observer.onMouseMove(event));
-            }
+            ApplicationClient.notify(observer -> observer.onMouseMove(x, y, button));
         }
 
 //        // Lance un evenement clickOnMap si le jeu est lancé

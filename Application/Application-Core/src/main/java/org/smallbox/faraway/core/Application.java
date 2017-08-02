@@ -29,13 +29,13 @@ public class Application {
     public static DependencyInjector dependencyInjector;
 
     // Server
-    public static GameManager             gameManager;
-    public static ModuleManager           moduleManager;
-    public static LuaModuleManager        luaModuleManager;
-    public static TaskManager             taskManager;
-    public static SQLManager              sqlManager;
-    public static Data                    data;
-    public static GroovyManager           groovyManager;
+    public static GameManager           gameManager;
+    public static ModuleManager         moduleManager;
+    public static LuaModuleManager      luaModuleManager;
+    public static TaskManager           taskManager;
+    public static SQLManager            sqlManager;
+    public static Data                  data;
+    public static GroovyManager         groovyManager;
 
     // Both
     public static ApplicationConfig config;

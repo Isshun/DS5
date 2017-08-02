@@ -144,7 +144,7 @@ public class UsableItem extends BuildableMapObject {
                 return false;
             }
 
-            if (!isBuildComplete()) {
+            if (!isComplete()) {
                 return false;
             }
 

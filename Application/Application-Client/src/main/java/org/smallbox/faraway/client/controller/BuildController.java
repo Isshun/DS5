@@ -2,10 +2,10 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.render.layer.BuildLayer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -22,6 +22,9 @@ import org.smallbox.faraway.modules.world.WorldModule;
  * Created by Alex on 22/07/2016.
  */
 public class BuildController extends LuaController {
+
+    @BindComponent
+    protected SelectionManager selectionManager;
 
     @BindComponent
     private Data data;
@@ -69,76 +72,67 @@ public class BuildController extends LuaController {
 
     private void onOpenItems() {
         list.removeAllViews();
-        list.addView(createListTitle("Items", event -> onOpenItems()));
+        list.addView(createListTitle("Items", (int x, int y) -> onOpenItems()));
 
         data.getItems().stream()
                 .filter(item -> item.isUserItem)
-                .forEach(itemInfo -> {
-                    UIFrame frame = new UIFrame(null);
-                    frame.setSize(300, 32);
-                    frame.setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo));
-                    frame.setBackgroundFocusColor(0xff2233ff);
+                .forEach(itemInfo ->
+                        list.addView(new UIFrame(null)
+                                .setSize(300, 32)
+                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+                                .setBackgroundFocusColor(0xff2233ff)
+                                .addView(UIImage.create(null)
+                                        .setImage(ApplicationClient.spriteManager.getIcon(itemInfo)))
+                                .addView(UILabel.create(null)
+                                        .setText(itemInfo.label)
+                                        .setTextColor(0x9afbffff)
+                                        .setMargin(14, 0, 0, 38))));
 
-                    UIImage image = new UIImage(null);
-                    image.setImage(ApplicationClient.spriteManager.getIcon(itemInfo));
-                    frame.addView(image);
-
-                    UILabel label = new UILabel(null);
-                    label.setTextColor(0x9afbffff);
-                    label.setMargin(14, 0, 0, 38);
-                    label.setText(itemInfo.label);
-                    frame.addView(label);
-
-                    list.addView(frame);
-                });
-
-        list.addView(createListTitle("Structure", event -> onOpenStructures()));
-        list.addView(createListTitle("Network", event -> onOpenNetworks()));
+        list.addView(createListTitle("Structure", (int x, int y) -> onOpenStructures()));
+        list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
     }
 
     private void onOpenStructures() {
         list.removeAllViews();
-        list.addView(createListTitle("Items", event -> onOpenItems()));
-        list.addView(createListTitle("Structure", event -> onOpenStructures()));
+        list.addView(createListTitle("Items", (int x, int y) -> onOpenItems()));
+        list.addView(createListTitle("Structure", (int x, int y) -> onOpenStructures()));
 
         data.getItems().stream()
                 .filter(itemInfo -> itemInfo.isStructure)
-                .forEach(itemInfo -> list.addView(UILabel.create(null)
-                        .setText(itemInfo.label)
-                        .setTextColor(0x9afbffff)
-                        .setSize(100, 32)
-                        .setBackgroundFocusColor(0x25c9cbff)
-                        .setPadding(10)
-                        .setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo))));
+                .forEach(itemInfo ->
+                        list.addView(new UIFrame(null)
+                                .setSize(300, 32)
+                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+                                .setBackgroundFocusColor(0xff2233ff)
+                                .addView(UIImage.create(null)
+                                        .setImage(ApplicationClient.spriteManager.getIcon(itemInfo)))
+                                .addView(UILabel.create(null)
+                                        .setText(itemInfo.label)
+                                        .setTextColor(0x9afbffff)
+                                        .setMargin(14, 0, 0, 38))));
 
-        list.addView(createListTitle("Network", event -> onOpenNetworks()));
+        list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
     }
 
     private void onOpenNetworks() {
         list.removeAllViews();
-        list.addView(createListTitle("Items", event -> onOpenItems()));
-        list.addView(createListTitle("Structure", event -> onOpenStructures()));
-        list.addView(createListTitle("Network", event -> onOpenNetworks()));
+        list.addView(createListTitle("Items", (int x, int y) -> onOpenItems()));
+        list.addView(createListTitle("Structure", (int x, int y) -> onOpenStructures()));
+        list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
 
         data.getItems().stream()
                 .filter(item -> item.isNetworkItem)
-                .forEach(itemInfo -> {
-                    UIFrame frame = new UIFrame(null);
-                    frame.setSize(300, 32);
-                    frame.setOnClickListener((GameEvent event) -> setCurrentItem(itemInfo));
-
-                    UIImage image = new UIImage(null);
-                    image.setImage(ApplicationClient.spriteManager.getIcon(itemInfo));
-                    frame.addView(image);
-
-                    UILabel label = new UILabel(null);
-                    label.setMargin(14, 0, 0, 38);
-                    label.setText(itemInfo.label);
-                    label.setTextColor(0x9afbffff);
-                    frame.addView(label);
-
-                    list.addView(frame);
-                });
+                .forEach(itemInfo ->
+                        list.addView(new UIFrame(null)
+                                .setSize(300, 32)
+                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+                                .setBackgroundFocusColor(0xff2233ff)
+                                .addView(UIImage.create(null)
+                                        .setImage(ApplicationClient.spriteManager.getIcon(itemInfo)))
+                                .addView(UILabel.create(null)
+                                        .setText(itemInfo.label)
+                                        .setTextColor(0x9afbffff)
+                                        .setMargin(14, 0, 0, 38))));
     }
 
     private View createListTitle(String label, OnClickListener clickListener) {
@@ -158,7 +152,7 @@ public class BuildController extends LuaController {
         if (itemInfo != null) {
             buildLayer.setItemInfo(itemInfo);
 
-            uiEventManager.setSelectionListener(parcels -> {
+            selectionManager.setSelectionListener(parcels -> {
                 if (_currentItem != null) {
                     if (_currentItem.isUserItem) {
                         parcels.forEach(parcel -> itemModule.addPattern(parcel, _currentItem));

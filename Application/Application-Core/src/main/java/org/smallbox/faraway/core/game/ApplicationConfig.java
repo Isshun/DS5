@@ -7,7 +7,7 @@ public class ApplicationConfig {
 
     public static class ApplicationConfigDebug {
         public enum ActionOnLoad {NONE, LAST_SAVE, NEW_GAME}
-        public ActionOnLoad     actionOnLoad = ActionOnLoad.NEW_GAME;
+        public ActionOnLoad     actionOnLoad = ActionOnLoad.LAST_SAVE;
         public String           scenario = "data/scenarios/test1.json";
     }
 

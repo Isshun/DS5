@@ -38,6 +38,11 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     private double _selectionChange = 0.5;
     private double _selectionOffset;
 
+    protected int _mouseX;
+    protected int _mouseY;
+    protected int _mouseDownX;
+    protected int _mouseDownY;
+
     public BaseLayer() {
         if (!getClass().isAnnotationPresent(GameLayer.class)) {
             throw new GameException(getClass(), "GameLayer annotation is missing");
@@ -55,7 +60,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
-        if (ApplicationClient.selected != null && ApplicationClient.selected.contains(object)) {
+        if (ApplicationClient.selectionManager.selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
             } else if (_selectionOffset < -2) {
@@ -168,4 +173,18 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
         }
         return layerList;
     }
+
+
+    @Override
+    public void onMouseMove(int x, int y, int button) {
+        _mouseX = x;
+        _mouseY = y;
+    }
+
+    @Override
+    public void onMousePress(int x, int y, int button) {
+        _mouseDownX = x;
+        _mouseDownY = y;
+    }
+
 }

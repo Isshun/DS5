@@ -5,7 +5,6 @@ import org.smallbox.faraway.client.controller.TooltipController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
@@ -33,9 +32,9 @@ public class ParcelTooltipController extends LuaController {
     private TooltipController tooltipController;
 
     @Override
-    public void onMouseMove(GameEvent event) {
-        int worldX = viewport.getWorldPosX(event.mouseEvent.x);
-        int worldY = viewport.getWorldPosY(event.mouseEvent.y);
+    public void onMouseMove(int x, int y, int button) {
+        int worldX = viewport.getWorldPosX(x);
+        int worldY = viewport.getWorldPosY(y);
         int worldZ = viewport.getFloor();
 
         ParcelModel parcel = worldModule.getParcel(worldX, worldY, worldZ);

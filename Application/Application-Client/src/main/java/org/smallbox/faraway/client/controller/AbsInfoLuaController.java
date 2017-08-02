@@ -18,7 +18,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     @BindLuaController
     private MainPanelController mainPanelController;
 
-    protected Queue<T> listSelected = new ConcurrentLinkedQueue<T>();
+    protected Queue<T> listSelected = new ConcurrentLinkedQueue<>();
 
     public void display(T object) {
         setVisible(true);
@@ -87,9 +87,9 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
             } else {
                 onDisplayMultiple(listSelected);
             }
-            ApplicationClient.selected = listSelected;
+            ApplicationClient.selectionManager.setSelected(listSelected);
         } else {
-            ApplicationClient.selected = null;
+            ApplicationClient.selectionManager.setSelected(null);
         }
     }
 

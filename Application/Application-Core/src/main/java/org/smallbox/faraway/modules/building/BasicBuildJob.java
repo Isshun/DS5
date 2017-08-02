@@ -41,7 +41,7 @@ public class BasicBuildJob extends JobModel {
                 mapObject.actionBuild(1 / Application.config.game.buildTime * hourInterval);
                 job.setProgress(mapObject.getBuildValue(), mapObject.getBuildCost());
 
-                if (!mapObject.isBuildComplete()) {
+                if (!mapObject.isComplete()) {
                     return JobTaskReturn.TASK_CONTINUE;
                 }
 

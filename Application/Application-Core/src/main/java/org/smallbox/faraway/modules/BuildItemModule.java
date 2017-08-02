@@ -27,7 +27,7 @@ public abstract class BuildItemModule<T extends ModuleObserver> extends GameModu
 
         // Crée les hauling jobs
         mapObjects.stream()
-                .filter(mapObject -> !mapObject.isBuildComplete())
+                .filter(mapObject -> !mapObject.isComplete())
                 .filter(mapObject -> !mapObject.hasAllComponents())
                 .forEach(mapObject ->
                         mapObject._components.forEach((itemInfo, pair) -> {
@@ -38,7 +38,7 @@ public abstract class BuildItemModule<T extends ModuleObserver> extends GameModu
 
         // Crée les build jobs
         mapObjects.stream()
-                .filter(structure -> !structure.isBuildComplete())
+                .filter(structure -> !structure.isComplete())
                 .filter(BuildableMapObject::hasAllComponents)
                 .filter(structure -> !objectsInBuildJob.contains(structure))
                 .forEach(structure -> BasicBuildJob.buildStructure(jobModule, structure));

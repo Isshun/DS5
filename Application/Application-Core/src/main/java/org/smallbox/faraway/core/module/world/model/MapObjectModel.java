@@ -86,8 +86,8 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     // Sets
-    public void             setMode(int mode) { _mode = mode; }
-    public void             setParcel(ParcelModel parcel) {
+    public void                 setMode(int mode) { _mode = mode; }
+    public void                 setParcel(ParcelModel parcel) {
         if (_parcel != parcel) {
             _parcel = parcel;
             _parcel.setItem(this);
@@ -95,26 +95,27 @@ public abstract class MapObjectModel extends ObjectModel {
     }
 
     // Gets
-    public int              getId() { return _id; }
-    public String           getName() { return _name; }
-    public int              getMode() { return _mode; }
-    public int              getLight() { return _light; }
-    public String           getLabel() { return _label; }
-    public ItemInfo         getInfo() { return _info; }
-    public ParcelModel      getParcel() { return _parcel; }
+    public int                  getId() { return _id; }
+    public String               getName() { return _name; }
+    public int                  getMode() { return _mode; }
+    public int                  getLight() { return _light; }
+    public String               getLabel() { return _label; }
+    public ItemInfo             getInfo() { return _info; }
+    public ParcelModel          getParcel() { return _parcel; }
     public Collection<JobModel> getJobs() { return _jobs; }
 
     // Boolean
-    public boolean          isConsumable() { return _info.isConsumable; }
-    public boolean          isWalkable() { return _info.isWalkable; }
-    public boolean          isStructure() { return _info.isStructure; }
-    public boolean          isResource() { return _info.isResource; }
-    public boolean          isDoor() { return _info.isDoor; }
-    public boolean          isWall() { return _info.isWall; }
-    public boolean          isFood() { return _info.isFood; }
-    public boolean          isFactory() { return _info.isFactory; }
-    public boolean          isUserItem() { return _info.isUserItem; }
-    public boolean          isLight() { return _info.light > 0; }
+    public boolean              isConsumable() { return _info.isConsumable; }
+    public boolean              isWalkable() { return _info.isWalkable; }
+    public boolean              isStructure() { return _info.isStructure; }
+    public boolean              isResource() { return _info.isResource; }
+    public boolean              isDoor() { return _info.isDoor; }
+    public boolean              isWall() { return _info.isWall; }
+    public boolean              isFood() { return _info.isFood; }
+    public boolean              isFactory() { return _info.isFactory; }
+    public boolean              isUserItem() { return _info.isUserItem; }
+    public boolean              isLight() { return _info.light > 0; }
+    public boolean              isComplete() { return true; }
 
     public boolean matchFilter(ItemFilter filter) {
         return false;

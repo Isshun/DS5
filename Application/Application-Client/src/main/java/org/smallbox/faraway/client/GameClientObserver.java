@@ -34,9 +34,9 @@ public interface GameClientObserver extends GameObserver {
     default void onFloorDown() {}
     default void onFloorChange(int floor) {}
 
-    default void onMouseMove(GameEvent event) {}
-    default void onMousePress(GameEvent event) {}
-    default void onMouseRelease(GameEvent event) {}
+    default void onMouseMove(int x, int y, int button) {}
+    default void onMousePress(int x, int y, int button) {}
+    default void onMouseRelease(int x, int y, int button) {}
 
     default void onClickOnMap(GameEvent mouseEvent) {}
 

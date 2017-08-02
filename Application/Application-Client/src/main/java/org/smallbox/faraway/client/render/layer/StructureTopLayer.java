@@ -55,7 +55,7 @@ public class StructureTopLayer extends BaseLayer {
                         renderer.drawTextOnMap(structure.getParcel(), structure.getHealth() + "/" + structure.getMaxHealth(), 14, Color.CHARTREUSE, 0, 0);
                     }
 
-//                    if (!structure.isBuildComplete()) {
+//                    if (!structure.isComplete()) {
 //                        renderer.drawTextOnMap(structure.getParcel(), "to build", 14, Color.CHARTREUSE, 0, 0);
 //                    }
 
@@ -64,7 +64,7 @@ public class StructureTopLayer extends BaseLayer {
     }
 
     private Sprite getSprite(StructureItem structure) {
-        return spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isBuildComplete() ? structure.getInfo().height : 0, 0, 255, false);
+        return spriteManager.getSprite(structure.getInfo(), structure.getGraphic(), structure.isComplete() ? structure.getInfo().height : 0, 0, 255, false);
     }
 
     @Override

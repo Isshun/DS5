@@ -123,7 +123,7 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
     @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
         StructureItem structure = parcel.getItem(StructureItem.class);
-        if (structure != null && !structure.isBuildComplete() && (object == null || object instanceof StructureItem)) {
+        if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {
             parcel.removeItem(structure);
             notifyObservers(observer -> observer.onRemoveStructure(parcel, structure));
         }

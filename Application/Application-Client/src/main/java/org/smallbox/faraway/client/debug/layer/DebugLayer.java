@@ -6,7 +6,6 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
@@ -162,6 +161,10 @@ public class DebugLayer extends BaseLayer {
                 drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
                 drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
 
+                if (ApplicationClient.selectionManager.getSelected() != null) {
+                    ApplicationClient.selectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
+                }
+
                 _data.forEach((key, value) -> drawDebug(renderer, "UI", key + ": " + value));
                 break;
         }
@@ -201,13 +204,13 @@ public class DebugLayer extends BaseLayer {
     }
 
     @Override
-    public void onMouseMove(GameEvent event) {
-        _data.put("Cursor screen position", event.mouseEvent.x + " x " + event.mouseEvent.y);
-        _data.put("Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(event.mouseEvent.x) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(event.mouseEvent.y));
+    public void onMouseMove(int x, int y, int button) {
+        _data.put("Cursor screen position", x + " x " + y);
+        _data.put("Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(x) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(y));
 
         ParcelModel parcel = WorldHelper.getParcel(
-                ApplicationClient.layerManager.getViewport().getWorldPosX(event.mouseEvent.x),
-                ApplicationClient.layerManager.getViewport().getWorldPosY(event.mouseEvent.y),
+                ApplicationClient.layerManager.getViewport().getWorldPosX(x),
+                ApplicationClient.layerManager.getViewport().getWorldPosY(y),
                 ApplicationClient.layerManager.getViewport().getFloor());
         _data.put("Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
     }

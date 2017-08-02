@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
@@ -94,9 +93,9 @@ public class RoomLayer extends BaseLayer {
     }
 
     @Override
-    public void onMouseMove(GameEvent event) {
-        _mouseX = event.mouseEvent.x;
-        _mouseY = event.mouseEvent.y;
+    public void onMouseMove(int x, int y, int button) {
+        _mouseX = x;
+        _mouseY = y;
     }
 
     public boolean isMandatory() {

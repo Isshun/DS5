@@ -1,5 +1,5 @@
 package org.smallbox.faraway.client.ui.engine;
 
 public interface OnClickListener {
-    void onClick(GameEvent event);
+    void onClick(int x, int y);
 }

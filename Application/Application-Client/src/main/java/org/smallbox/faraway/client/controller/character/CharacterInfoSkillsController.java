@@ -3,7 +3,6 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.engine.ColorUtils;
@@ -64,14 +63,14 @@ public class CharacterInfoSkillsController extends LuaController {
 
                 view.setOnDragListener(new UIEventManager.OnDragListener() {
                     @Override
-                    public void onDrag(GameEvent event) {
-                        Log.info("drag at " + event.mouseEvent.x + " x " + event.mouseEvent.y);
+                    public void onDrag(int x, int y) {
+                        Log.info("drag at " + x + " x " + y);
                         Log.info("drag on " + skill);
                     }
 
                     @Override
-                    public void onDrop(GameEvent event, View dropView) {
-                        Log.info("drop at " + event.mouseEvent.x + " x " + event.mouseEvent.y);
+                    public void onDrop(int x, int y, View dropView) {
+                        Log.info("drop at " + x + " x " + y);
                         Log.info("drop on " + dropView);
                         Log.info("drop on " + dropView.getData());
 
@@ -80,12 +79,12 @@ public class CharacterInfoSkillsController extends LuaController {
                     }
 
                     @Override
-                    public void onHover(GameEvent event, View dropView) {
+                    public void onHover(int x, int y, View dropView) {
                         dropView.setBackgroundColor(0xbb3647ff);
                     }
 
                     @Override
-                    public void onHoverExit(GameEvent event, View dropView) {
+                    public void onHoverExit(int x, int y, View dropView) {
                         dropView.setBackgroundColor(0x1a3647ff);
                     }
                 });
@@ -95,7 +94,6 @@ public class CharacterInfoSkillsController extends LuaController {
                 }
 
                 listSkills.addNextView(view);
-
             });
         }
 

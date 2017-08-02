@@ -9,11 +9,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.smallbox.faraway.MouseEvent;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.task.LoadTask;
@@ -223,9 +220,7 @@ public class GDXApplication extends ApplicationAdapter {
                 && screenX < view.getFinalX() + view.getWidth()
                 && screenY > view.getFinalY()
                 && screenY < view.getFinalY() + view.getHeight()) {
-            MouseEvent mouseEvent = new MouseEvent(screenX, screenY, GameEventListener.MouseButton.LEFT, GameEventListener.Action.RELEASED);
-            GameEvent gameEvent = new GameEvent(mouseEvent);
-            view.click(gameEvent);
+            view.click(screenX, screenY);
         }
 
         if (view.getViews() != null) {

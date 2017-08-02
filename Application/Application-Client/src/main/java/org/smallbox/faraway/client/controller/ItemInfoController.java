@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
@@ -22,6 +23,9 @@ import java.util.Queue;
  * Created by Alex on 26/04/2016.
  */
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
+
+    @BindComponent
+    protected SelectionManager selectionManager;
 
     @BindComponent
     private UIEventManager uiEventManager;
@@ -64,7 +68,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelection(this);
+        selectionManager.registerSelection(this);
     }
 
     @Override
@@ -75,7 +79,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
         progressHealth.setWidth(80 * item.getHealth() / item.getMaxHealth());
 
-        if (!item.isBuildComplete()) {
+        if (!item.isComplete()) {
             frameBuild.setVisible(true);
             buildingActions.setVisible(true);
             regularActions.setVisible(false);
@@ -183,7 +187,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
                 UILabel btInfo = UILabel.create(null);
                 btInfo.setText("[info]");
-                btInfo.setOnClickListener(event -> itemInfoReceiptController.display(receiptGroup));
+                btInfo.setOnClickListener((x, y) -> itemInfoReceiptController.display(receiptGroup));
                 btInfo.setPosition(220, 0);
                 btInfo.setSize(50, 20);
                 btInfo.setBackgroundColor(Color.CYAN);
@@ -216,7 +220,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     // Refresh building frame
     private void refreshBuilding(UsableItem item) {
-        if (!item.isBuildComplete()) {
+        if (!item.isComplete()) {
             frameBuild.setVisible(true);
 
             imgBuildProgress.setTextureRect(0, 80, (int) (Math.floor(item.getBuildValue() * 352 / item.getBuildCost() / 10) * 10), 16);

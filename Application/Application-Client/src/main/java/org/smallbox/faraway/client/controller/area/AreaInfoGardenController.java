@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.controller.area;
 
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
@@ -23,6 +24,9 @@ import java.util.Queue;
 public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @BindComponent
+    protected SelectionManager selectionManager;
+
+    @BindComponent
     private UIEventManager uiEventManager;
 
     @BindModule
@@ -42,7 +46,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelection(this, areaInfoController);
+        selectionManager.registerSelection(this, areaInfoController);
     }
 
     @Override
@@ -58,7 +62,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
                                 .setTextSize(14)
                                 .setTextColor(0xB4D4D3FF)
                                 .setSize(200, 20)
-                                .setOnClickListener(event ->
+                                .setOnClickListener((x, y) ->
                                         area.getParcels().forEach(parcel -> plantModule.addPlant(item, parcel)))));
     }
 

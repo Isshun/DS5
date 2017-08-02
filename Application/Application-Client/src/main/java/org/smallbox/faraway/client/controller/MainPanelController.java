@@ -2,10 +2,10 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import com.sun.glass.ui.Cursor;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
@@ -18,7 +18,7 @@ import org.smallbox.faraway.core.game.Game;
 public class MainPanelController extends LuaController {
 
     @BindComponent
-    private UIEventManager uiEventManager;
+    private SelectionManager selectionManager;
 
     @BindComponent
     private Game game;
@@ -48,7 +48,7 @@ public class MainPanelController extends LuaController {
 
     @Override
     public void onReloadUI() {
-        uiEventManager.registerSelectionPre(this);
+        selectionManager.registerSelectionPre(this);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class MainPanelController extends LuaController {
                 .setName(mainGrid.getName() + "." + label)
                 .setBackgroundColor(0x349394ff)
                 .setFocusBackgroundColor(0x25c9cbff)
-                .setOnClickListener(event -> {
+                .setOnClickListener((x, y) -> {
                     _currentPaneController = controller;
                     _currentPaneController.setVisible(true);
                 }));

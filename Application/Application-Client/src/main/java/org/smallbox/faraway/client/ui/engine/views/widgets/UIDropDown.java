@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 /**
@@ -20,7 +19,7 @@ public class UIDropDown extends View {
 
         _overlay = new UIFrame(module);
         _overlay.setDeep(100);
-        _overlay.setOnClickListener((GameEvent event) -> {
+        _overlay.setOnClickListener((x, y) -> {
             setOpen(true);
             ApplicationClient.uiEventManager.setCurrentDropDown(_isOpen ? UIDropDown.this : null);
         });

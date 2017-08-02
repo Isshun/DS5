@@ -43,8 +43,8 @@ public class DebugController extends LuaController {
     public void onReloadUI() {
         mainPanelController.addShortcut("Debug", this);
 
-        listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> characterModule.addRandom()));
-        listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener(event -> consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 5, 5, 1)));
+        listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener((int x, int y) -> characterModule.addRandom()));
+        listDebug.addView(UILabel.create(null).setText("Add rice").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener((int x, int y) -> consumableModule.addConsumable("base.consumable.vegetable.rice", 10, 5, 5, 1)));
 
         layerManager.getLayers().forEach(layer ->
                 listDebug.addView(UICheckBox.create(null)
