@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.itemFactory;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -19,6 +20,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 /**
  * Created by Alex on 26/06/2015.
  */
+@GameObject
 @ModuleInfoAnnotation(name = "ItemFactoryModule", updateInterval = 1)
 public class ItemFactoryModule extends GameModule {
 

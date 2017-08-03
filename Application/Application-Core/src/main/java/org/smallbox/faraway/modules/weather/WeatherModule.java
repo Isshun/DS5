@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.weather;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -11,7 +12,6 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
@@ -22,6 +22,7 @@ import java.util.List;
 /**
  * Created by Alex on 13/06/2015.
  */
+@GameObject
 public class WeatherModule extends GameModule<WeatherModuleObserver> implements GameObserver {
     private int                                 _duration;
     private int                                 _floors;

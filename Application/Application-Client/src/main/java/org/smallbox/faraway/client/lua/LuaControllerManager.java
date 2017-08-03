@@ -11,6 +11,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -27,6 +28,7 @@ import java.util.stream.Stream;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class LuaControllerManager implements GameObserver {
 
     private Map<String, LuaController>      _controllers = new HashMap<>();

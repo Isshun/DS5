@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.dig;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 28/02/2017.
  */
+@GameObject
 public class DigModule extends GameModule {
 
     @BindModule

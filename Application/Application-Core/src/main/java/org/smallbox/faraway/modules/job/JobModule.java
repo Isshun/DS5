@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -29,6 +30,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@GameObject
 public class JobModule extends GameModule<JobModuleObserver> {
     private BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
     private BlockingQueue<JobModel>         _jobs = new LinkedBlockingQueue<>();

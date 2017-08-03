@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.room;
 
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@GameObject
 @ModuleSerializer(RoomSerializer.class)
 @SuppressWarnings("Duplicates")
 public class RoomModule extends GameModule {

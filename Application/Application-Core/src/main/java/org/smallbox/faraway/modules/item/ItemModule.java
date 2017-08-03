@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -26,6 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 26/06/2015.
  */
+@GameObject
 @ModuleSerializer(ItemModuleSerializer.class)
 public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.storing;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by Alex on 02/03/2017.
  */
+@GameObject
 public class StoringModule extends GameModule {
 
     @BindModule

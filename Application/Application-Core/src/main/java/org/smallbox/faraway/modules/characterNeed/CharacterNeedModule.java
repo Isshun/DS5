@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.characterNeed;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -29,6 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.*;
 
+@GameObject
 public class CharacterNeedModule extends GameModule {
 
     @BindComponent

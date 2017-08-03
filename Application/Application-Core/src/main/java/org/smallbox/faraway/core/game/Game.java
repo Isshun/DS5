@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -20,6 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@GameObject
 public class Game {
 
     private double _tickPerHour;

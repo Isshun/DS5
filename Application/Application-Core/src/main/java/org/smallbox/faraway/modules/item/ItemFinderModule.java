@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@GameObject
 public class ItemFinderModule extends GameModule {
 
     @BindComponent

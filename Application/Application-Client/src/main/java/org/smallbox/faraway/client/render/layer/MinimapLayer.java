@@ -11,6 +11,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -20,6 +21,7 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
+@GameObject
 @GameLayer(level = LayerManager.MINI_MAP_LEVEL, visible = true)
 public class MinimapLayer extends BaseLayer {
     //    private static final int    COLOR_background = 0xfffff9bdff;

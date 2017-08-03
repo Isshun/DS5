@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.characterBuff;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -17,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Alex on 16/06/2015.
  */
+@GameObject
 public class CharacterBuffModule extends GameModule {
 
     @BindComponent

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+@GameObject
 @ModuleSerializer(CharacterModuleSerializer.class)
 //@ModuleLayer(CharacterLayer.class)
 public class CharacterModule extends GameModule<CharacterModuleObserver> {

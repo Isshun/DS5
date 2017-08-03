@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
  * Created by Alex on 13/06/2015.
  */
 @ModuleSerializer(AreaSerializer.class)
+@GameObject
 @SuppressWarnings("Duplicates")
 public class AreaModule extends GameModule {
 

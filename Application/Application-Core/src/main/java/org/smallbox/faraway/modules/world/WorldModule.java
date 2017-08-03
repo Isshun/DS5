@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.world;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -15,6 +16,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
+@GameObject
 @ModuleSerializer(WorldModuleSerializer.class)
 public class WorldModule extends GameModule {
 

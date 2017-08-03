@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.structure;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.game.Data;
@@ -26,6 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Created by Alex on 26/06/2015.
  */
 @ModuleSerializer(StructureModuleSerializer.class)
+@GameObject
 //@ModuleLayer({StructureBottomLayer.class, StructureTopLayer.class})
 public class StructureModule extends BuildItemModule<StructureModuleObserver> {
 

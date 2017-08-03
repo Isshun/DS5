@@ -53,13 +53,11 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
 
         _isThirdParty = false;
         _isVisible = getClass().getAnnotation(GameLayer.class).visible();
-        Application.dependencyInjector.register(this);
     }
 
     public BaseLayer(boolean isThirdParty) {
         _isThirdParty = isThirdParty;
         _isVisible = getClass().getAnnotation(GameLayer.class).visible();
-        Application.dependencyInjector.register(this);
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {

@@ -59,6 +59,8 @@ public class GameManager implements GameObserver {
 
         _game.loadModules();
 
+        Application.dependencyInjector.injectGameDependencies();
+
         worldFactory.create(
                 Application.data,
                 _game,
@@ -100,6 +102,9 @@ public class GameManager implements GameObserver {
             Application.dependencyInjector.register(_game);
 
             _game.loadModules();
+
+            Application.dependencyInjector.injectGameDependencies();
+
             _game.createModules();
 
             Application.notify(observer -> observer.onGameCreateObserver(_game));

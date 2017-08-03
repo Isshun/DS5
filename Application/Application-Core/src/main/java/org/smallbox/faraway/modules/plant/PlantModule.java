@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.plant;
 
+import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by Alex on 02/03/2017.
  */
+@GameObject
 public class PlantModule extends GameModule {
 
     @BindComponent
