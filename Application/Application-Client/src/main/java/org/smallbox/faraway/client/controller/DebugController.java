@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -19,15 +19,16 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 /**
  * Created by Alex on 25/07/2016.
  */
+@GameObject
 public class DebugController extends LuaController {
 
     @BindLua
     private UIList listDebug;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
     @BindLuaController

@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
@@ -15,6 +16,7 @@ import java.util.Queue;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
 
     @BindComponent

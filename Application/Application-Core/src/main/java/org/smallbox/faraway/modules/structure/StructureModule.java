@@ -1,8 +1,7 @@
 package org.smallbox.faraway.modules.structure;
 
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -31,22 +30,22 @@ import java.util.concurrent.LinkedBlockingQueue;
 //@ModuleLayer({StructureBottomLayer.class, StructureTopLayer.class})
 public class StructureModule extends BuildItemModule<StructureModuleObserver> {
 
-    @BindModule
+    @BindComponent
     private PathManager pathManager;
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
     @BindComponent
     private Data data;
 
-//    @BindModule
+//    @BindComponent
 //    private WorldInteractionModule worldInteractionModule;
 
     private Collection<StructureItem> _structures;

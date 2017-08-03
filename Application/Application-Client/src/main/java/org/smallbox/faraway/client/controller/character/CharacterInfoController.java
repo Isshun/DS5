@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -23,6 +23,7 @@ import java.util.Queue;
 /**
  * Created by Alex on 25/04/2016.
  */
+@GameObject
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
 
     @BindComponent
@@ -31,7 +32,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindComponent
     private UIEventManager uiEventManager;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
     @BindLuaController

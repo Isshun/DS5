@@ -4,8 +4,8 @@ import com.badlogic.gdx.Input;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 /**
  * Created by Alex on 20/10/2015.
  */
+@ApplicationObject
 public class GameManager implements GameObserver {
 
-    @BindModule
+    @BindComponent
     private IWorldFactory worldFactory;
 
     @BindComponent
@@ -70,7 +71,7 @@ public class GameManager implements GameObserver {
         _game.createModules();
 
 //        Application.runOnMainThread(() -> {
-            Application.notify(observer -> observer.onGameCreateObserver(_game));
+            Application.notify(observer -> observer.onGameInit(_game));
             if (listener != null) {
                 listener.onGameCreate(_game);
             }
@@ -103,11 +104,12 @@ public class GameManager implements GameObserver {
 
             _game.loadModules();
 
+            Application.notify(observer -> observer.onGameInit(_game));
+
             Application.dependencyInjector.injectGameDependencies();
 
             _game.createModules();
 
-            Application.notify(observer -> observer.onGameCreateObserver(_game));
             if (listener != null) {
                 listener.onGameCreate(_game);
             }

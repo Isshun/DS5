@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.task;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 19/11/2016.
  */
+@ApplicationObject
 public class TaskManager {
     private static int BACKGROUND_THREAD_LIMIT = 2;
 

@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.game_info",
+    id = "base.ui.game_info",
     size = {application.info.screen_width, application.info.screen_height},
     controller = "org.smallbox.faraway.client.controller.SystemInfoController",
     level = 100,

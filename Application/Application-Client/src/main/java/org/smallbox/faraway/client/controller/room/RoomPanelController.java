@@ -10,7 +10,7 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.RoomTypeInfo;
 import org.smallbox.faraway.util.Log;
@@ -20,6 +20,7 @@ import java.util.Comparator;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class RoomPanelController extends LuaController {
 
     @BindComponent
@@ -28,7 +29,7 @@ public class RoomPanelController extends LuaController {
     @BindComponent
     private UIEventManager uiEventManager;
 
-    @BindModule
+    @BindComponent
     private RoomModule roomModule;
 
     @BindLua

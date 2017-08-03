@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
@@ -21,6 +21,7 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
  *
  * Created by Alex on 27/02/2017.
  */
+@GameObject
 public class SystemInfoController extends LuaController {
 
     @BindComponent
@@ -56,7 +57,7 @@ public class SystemInfoController extends LuaController {
     @BindLua
     private UILabel lbSpeed;
 
-    @BindModule
+    @BindComponent
     private WeatherModule weatherModule;
 
     @BindLuaController

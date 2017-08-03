@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -17,15 +17,16 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class TooltipController extends LuaController {
 
     @BindLua
     private UILabel lbName;
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
     @BindComponent

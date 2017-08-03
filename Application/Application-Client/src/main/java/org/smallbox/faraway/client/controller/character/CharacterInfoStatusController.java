@@ -7,7 +7,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
@@ -23,9 +24,10 @@ import org.smallbox.faraway.util.Utils;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class CharacterInfoStatusController extends LuaController {
 
-    @BindModule
+    @BindComponent
     private CharacterBuffModule buffModule;
 
     @BindLua private UILabel lbJob;

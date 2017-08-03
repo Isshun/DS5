@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.debug_world_consumables",
+    id = "base.ui.debug_world_consumables",
     controller = "org.smallbox.faraway.module.dev.controller.toolbox.DebugConsumableController",
     position = {200, 20},
     size = {200, 600},

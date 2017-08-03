@@ -7,7 +7,8 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
@@ -17,15 +18,16 @@ import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsEx
 /**
  * Created by Alex on 25/07/2016.
  */
+@GameObject
 public class CrewController extends LuaController {
 
     @BindLua
     private UIList listCrew;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
-    @BindModule
+    @BindComponent
     private CharacterNeedModule characterNeedModule;
 
     @BindLuaController

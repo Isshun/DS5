@@ -14,6 +14,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.*;
@@ -24,6 +25,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import static org.smallbox.faraway.core.engine.GameEventListener.Action;
 import static org.smallbox.faraway.core.engine.GameEventListener.Modifier;
 
+@ApplicationObject
 public class UIManager {
 
     private Map<String, LuaValue> _styles = new ConcurrentHashMap<>();

@@ -4,10 +4,12 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
 /**
  * Created by Alex on 24/07/2016.
  */
+@GameObject
 public class MenuMainController extends LuaController {
 
     @BindLuaAction

@@ -7,16 +7,17 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
+@GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL + 1, visible = false)
 public class CharacterDebugLayer extends BaseLayer {
 
-    @BindModule
+    @BindComponent
     private CharacterModule _characterModule;
 
     @BindComponent

@@ -4,7 +4,8 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
@@ -12,14 +13,15 @@ import org.smallbox.faraway.modules.plant.model.PlantItem;
 /**
  * Created by Alex on 31/07/2016.
  */
+@GameObject
 @GameLayer(level = LayerManager.PLANT_LAYER_LEVEL, visible = true)
 public class PlantLayer extends BaseLayer {
 
-    @BindModule
+    @BindComponent
     private PlantModule plantModule;
 
     @Override
-    public void onGameCreateObserver(Game game) {
+    public void onGameInit(Game game) {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

@@ -5,6 +5,7 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.client.lua.LuaUIBridge;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
@@ -16,6 +17,7 @@ import java.io.File;
 /**
  * Created by Alex on 29/11/2016.
  */
+@ApplicationObject
 public class ClientLuaModuleManager extends LuaModuleManager {
 
     @Override

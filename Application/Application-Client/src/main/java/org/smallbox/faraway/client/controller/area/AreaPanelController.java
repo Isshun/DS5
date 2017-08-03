@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.util.Log;
@@ -22,6 +22,7 @@ import java.util.Comparator;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class AreaPanelController extends LuaController {
 
     @BindComponent
@@ -30,7 +31,7 @@ public class AreaPanelController extends LuaController {
     @BindComponent
     private SelectionManager selectionManager;
 
-    @BindModule
+    @BindComponent
     private AreaModule areaModule;
 
     @BindLua

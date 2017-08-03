@@ -1,8 +1,7 @@
 package org.smallbox.faraway.modules.plant;
 
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -28,16 +27,16 @@ public class PlantModule extends GameModule {
     @BindComponent
     private Data data;
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private AreaModule areaModule;
 
     private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();

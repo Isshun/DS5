@@ -1,10 +1,12 @@
 package org.smallbox.faraway.core.groovy;
 
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 /**
  * Created by Alex on 26/11/2016.
  */
+@ApplicationObject
 public class GroovyManager {
 
     public interface GroovyBridge {

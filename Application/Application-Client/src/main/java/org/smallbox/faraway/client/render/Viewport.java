@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.render;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -9,6 +10,7 @@ import org.smallbox.faraway.util.Log;
 /**
  * Created by Alex on 04/06/2015.
  */
+@GameObject
 public class Viewport {
     private final static int    ANIM_FRAME = 10;
     public final static float[]       ZOOM_LEVELS = new float[] {

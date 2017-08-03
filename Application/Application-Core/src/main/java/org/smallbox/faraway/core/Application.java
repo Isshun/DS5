@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
+import org.smallbox.faraway.modules.world.factory.WorldFactory;
 
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -51,8 +52,10 @@ public class Application {
         moduleManager = dependencyInjector.create(ModuleManager.class);
         luaModuleManager = dependencyInjector.create(ServerLuaModuleManager.class);
         groovyManager = dependencyInjector.create(GroovyManager.class);
-        dependencyInjector.create(GameSaveManager.class);
         data = dependencyInjector.create(Data.class);
+
+        dependencyInjector.create(GameSaveManager.class);
+        dependencyInjector.create(WorldFactory.class);
 
         // Create APPLICATION_CONFIG
         config = dependencyInjector.create(ApplicationConfig.class);

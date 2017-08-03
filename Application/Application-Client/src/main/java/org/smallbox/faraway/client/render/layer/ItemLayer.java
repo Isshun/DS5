@@ -7,15 +7,16 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 
+@GameObject
 @GameLayer(level = LayerManager.ITEM_LAYER_LEVEL, visible = true)
 public class ItemLayer extends BaseLayer {
 
-    @BindModule
+    @BindComponent
     private ItemModule itemModule;
 
     @BindComponent

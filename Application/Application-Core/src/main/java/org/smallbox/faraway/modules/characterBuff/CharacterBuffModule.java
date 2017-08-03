@@ -1,8 +1,7 @@
 package org.smallbox.faraway.modules.characterBuff;
 
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -27,10 +26,10 @@ public class CharacterBuffModule extends GameModule {
     @BindComponent
     private Data data;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
-    @BindModule
+    @BindComponent
     private CharacterNeedModule characterNeedModule;
 
     private Map<CharacterModel, Map<BuffInfo, CharacterBuff>> _characters = new ConcurrentHashMap<>();

@@ -124,7 +124,7 @@ public class LuaUIExtend extends LuaExtend {
         readString(value, "name", v -> {
             view.setId(v.hashCode());
             view.setName(v);
-            Log.warning("Deprecated parameter: " + v);
+            Log.debug("Deprecated parameter: " + v);
         });
 
         readString(value, "action", view::setActionName);

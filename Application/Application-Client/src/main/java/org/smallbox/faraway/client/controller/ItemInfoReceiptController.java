@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -15,6 +16,7 @@ import java.util.Queue;
 /**
  * Created by Alex on 11/12/2016.
  */
+@GameObject
 public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryModel.FactoryReceiptGroupModel> {
 
     @BindLua private UILabel lbName;

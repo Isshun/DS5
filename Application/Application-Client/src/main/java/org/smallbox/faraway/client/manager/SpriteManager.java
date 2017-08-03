@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -31,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Alex on 04/06/2015.
  */
+@ApplicationObject
 public class SpriteManager {
     private static final int                NB_SELECTOR_TILE = 4;
 

@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.engine.module.java;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
@@ -19,6 +20,7 @@ import java.util.Optional;
 /**
  * Created by Alex on 31/08/2015.
  */
+@ApplicationObject
 public class ModuleManager implements GameObserver {
 
     public interface OnLoadModuleListener {

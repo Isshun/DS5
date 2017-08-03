@@ -17,22 +17,22 @@
 // */
 //public class BuildingModule extends GameModule {
 //
-//    @BindModule
+//    @BindComponent
 //    private WorldModule worldModule;
 //
-//    @BindModule
+//    @BindComponent
 //    private ItemModule itemModule;
 //
-//    @BindModule
+//    @BindComponent
 //    private StructureModule structureModule;
 //
-//    @BindModule
+//    @BindComponent
 //    private JobModule jobModule;
 //
-//    @BindModule
+//    @BindComponent
 //    private AreaModule areaModule;
 //
-//    @BindModule
+//    @BindComponent
 //    private PathManager pathManager;
 //
 //    @Override

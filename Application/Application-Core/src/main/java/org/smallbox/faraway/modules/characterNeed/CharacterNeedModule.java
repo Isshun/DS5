@@ -1,9 +1,8 @@
 package org.smallbox.faraway.modules.characterNeed;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -39,22 +38,22 @@ public class CharacterNeedModule extends GameModule {
     @BindComponent
     private Data data;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
-    @BindModule
+    @BindComponent
     private CharacterRelationModule characterRelationModule;
 
-    @BindModule
+    @BindComponent
     private CharacterBuffModule buffModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
-    @BindModule
+    @BindComponent
     private ItemModule itemModule;
 
     private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();

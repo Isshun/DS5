@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.area;
 
-import org.smallbox.faraway.core.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

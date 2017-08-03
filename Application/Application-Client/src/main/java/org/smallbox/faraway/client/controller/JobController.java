@@ -8,7 +8,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.building.BasicRepairJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -22,9 +23,10 @@ import org.smallbox.faraway.modules.storing.BasicStoreJob;
 /**
  * Created by Alex on 24/07/2016.
  */
+@GameObject
 public class JobController extends LuaController {
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
     @BindLua

@@ -1,9 +1,8 @@
 package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -36,19 +35,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 //@ModuleLayer(CharacterLayer.class)
 public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
-//    @BindModule
+//    @BindComponent
 //    private WorldInteractionModule worldInteractionModule;
 
     @BindComponent
     private Data data;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
-    @BindModule
+    @BindComponent
     private ItemModule itemModule;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();

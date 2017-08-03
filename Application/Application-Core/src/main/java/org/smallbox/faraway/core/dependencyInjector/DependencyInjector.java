@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.dependencyInjector;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -35,6 +34,7 @@ public class DependencyInjector {
     private ApplicationClientInterface _clientInterface;
 
     public Collection<Object> getObjects() { return _objectPool; }
+    public Collection<Object> getGameObjects() { return _gameObjectPool; }
 
     public <T> T getObject(Class<T> cls) {
         T applicationObject = (T) _objectPoolByClass.get(cls);
@@ -84,10 +84,11 @@ public class DependencyInjector {
             _gameObjectPool.add(component);
             _gameObjectPoolByClass.put(component.getClass(), component);
 
+            return;
         }
 
         // Register application object
-        else {
+        if (component.getClass().isAnnotationPresent(ApplicationObject.class)) {
 
             if (_init) {
                 throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
@@ -96,8 +97,11 @@ public class DependencyInjector {
             _objectPool.add(component);
             _objectPoolByClass.put(component.getClass(), component);
 
+            return;
         }
 
+//        throw new RuntimeException("Cannot call register for class: " + component.getClass());
+        Log.warning("Cannot call register for class: " + component.getClass());
     }
 
     /**
@@ -115,7 +119,6 @@ public class DependencyInjector {
             Log.verbose("Inject dependency to: " + host.getClass().getName());
             doInjectComponents(host);
             doInjectConfig(host);
-            doInjectModules(host);
             doInjectShortcut(host);
             Application.notify(observer -> observer.onInjectDependency(object));
         });
@@ -138,6 +141,7 @@ public class DependencyInjector {
         objects.forEach(host -> {
             Log.verbose("Inject dependency to: " + host.getClass().getName());
             doInjectGame(host);
+            doInjectConfig(host);
             Application.notify(observer -> observer.onInjectDependency(object));
         });
     }
@@ -146,21 +150,19 @@ public class DependencyInjector {
         for (Field field: host.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
-                if (field.isAnnotationPresent(BindComponent.class) || field.isAnnotationPresent(BindModule.class)) {
+                if (field.isAnnotationPresent(BindComponent.class)) {
                     Log.verbose(String.format("Inject [%s] to game object [%s]", field.getType().getSimpleName(), host.getClass().getSimpleName()));
                     for (Object object: _gameObjectPool) {
-                        if (field.getType() == object.getClass()) {
+                        if (field.getType().isInstance(object)) {
                             field.set(host, object);
                         }
                     }
                     for (Object object: _objectPool) {
-                        if (field.getType() == object.getClass()) {
+                        if (field.getType().isInstance(object)) {
                             field.set(host, object);
                         }
                     }
                     if (field.get(host) == null) {
-                        _gameObjectPool.forEach(o -> System.out.println(o.getClass()));
-                        _objectPool.forEach(o -> System.out.println(o.getClass()));
                         throw new GameException(DependencyInjector.class, "DependencyInjector: cannot inject type: " + field.getType());
                     }
                 }
@@ -208,56 +210,61 @@ public class DependencyInjector {
     }
 
     private void doInjectComponents(Object host) {
+        Set<Class> missing = new HashSet<>();
+
         for (Field field: host.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 BindComponent bindComponent = field.getAnnotation(BindComponent.class);
                 if (bindComponent != null) {
                     Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
-                    boolean hasBeenFound = false;
                     for (Object object: _objectPool) {
-                        if (field.getType() == object.getClass()) {
+                        if (field.getType().isInstance(object)) {
                             field.set(host, object);
-                            hasBeenFound = true;
                         }
                     }
-                    if (!hasBeenFound) {
-                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module: " + field.getType());
+                    if (field.get(host) == null) {
+                        missing.add(field.getType());
                     }
                 }
             } catch (IllegalAccessException e) {
                 throw new GameException(DependencyInjector.class, e);
             }
         }
-    }
 
-    private void doInjectModules(Object host) {
-        for (Field field: host.getClass().getDeclaredFields()) {
-            try {
-                field.setAccessible(true);
-                BindModule bindModule = field.getAnnotation(BindModule.class);
-                if (bindModule != null) {
-                    Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
-
-                    ModuleBase gameModule = null;
-                    if (Application.gameManager != null && Application.gameManager.getGame() != null) {
-                        gameModule = getModuleDependency(Application.gameManager.getGame().getModules(), field.getType());
-                    }
-
-                    ModuleBase applicationModule = getModuleDependency(Application.moduleManager.getApplicationModules(), field.getType());
-                    if (gameModule != null) {
-                        field.set(host, gameModule);
-                    } else if (applicationModule != null) {
-                        field.set(host, applicationModule);
-                    } else {
-//                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module", field.getType(), host.getClass().getSimpleName());
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                throw new GameException(DependencyInjector.class, e);
-            }
+        if (!missing.isEmpty()) {
+            missing.forEach(cls -> Log.warning("Missing dependency: " + cls.getName()));
+//            throw new GameException(DependencyInjector.class, "DependencyInjector: missing dependencies");
         }
     }
+
+//    private void doInjectModules(Object host) {
+//        for (Field field: host.getClass().getDeclaredFields()) {
+//            try {
+//                field.setAccessible(true);
+//                BindModule bindModule = field.getAnnotation(BindModule.class);
+//                if (bindModule != null) {
+//                    Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
+//
+//                    ModuleBase gameModule = null;
+//                    if (Application.gameManager != null && Application.gameManager.getGame() != null) {
+//                        gameModule = getModuleDependency(Application.gameManager.getGame().getModules(), field.getType());
+//                    }
+//
+//                    ModuleBase applicationModule = getModuleDependency(Application.moduleManager.getApplicationModules(), field.getType());
+//                    if (gameModule != null) {
+//                        field.set(host, gameModule);
+//                    } else if (applicationModule != null) {
+//                        field.set(host, applicationModule);
+//                    } else {
+////                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot find module", field.getType(), host.getClass().getSimpleName());
+//                    }
+//                }
+//            } catch (IllegalAccessException e) {
+//                throw new GameException(DependencyInjector.class, e);
+//            }
+//        }
+//    }
 
     private ModuleBase getModuleDependency(Collection<? extends ModuleBase> loadedModules, Class cls) {
         for (ModuleBase module: loadedModules) {

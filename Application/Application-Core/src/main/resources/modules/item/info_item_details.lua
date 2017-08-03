@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.panel_item_info.details",
+    id = "base.ui.panel_item_info.details",
     parent = "base.ui.panel_item_info.details_content",
     visible = false,
     views = {

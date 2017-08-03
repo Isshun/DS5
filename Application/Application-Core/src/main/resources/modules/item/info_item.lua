@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.panel_item_info",
+    id = "base.ui.panel_item_info",
     parent = "base.ui.right_panel",
     controller = "org.smallbox.faraway.client.controller.ItemInfoController",
     visible = false,

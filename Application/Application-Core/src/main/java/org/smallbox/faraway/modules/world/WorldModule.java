@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.world;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -20,10 +20,10 @@ import java.util.List;
 @ModuleSerializer(WorldModuleSerializer.class)
 public class WorldModule extends GameModule {
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private WeatherModule weatherModule;
 
     private ParcelModel[][][]                   _parcels;

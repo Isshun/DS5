@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.system_load",
+    id = "base.ui.system_load",
     visible = false,
     in_game = false,
     views = {

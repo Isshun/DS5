@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core;
+package org.smallbox.faraway.core.dependencyInjector;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

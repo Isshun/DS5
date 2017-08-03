@@ -10,11 +10,13 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
+@GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class BuildLayer extends BaseLayer {
 

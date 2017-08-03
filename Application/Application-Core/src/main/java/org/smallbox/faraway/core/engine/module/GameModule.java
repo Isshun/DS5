@@ -32,7 +32,7 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
     }
 
     @Override
-    public final void onGameCreateObserver(Game game) {
+    public final void onGameInit(Game game) {
 
     }
 

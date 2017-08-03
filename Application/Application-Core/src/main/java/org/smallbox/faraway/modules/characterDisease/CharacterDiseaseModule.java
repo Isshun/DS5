@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.characterDisease;
 
-import org.smallbox.faraway.core.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -14,7 +14,7 @@ import java.util.Collection;
 @GameObject
 public class CharacterDiseaseModule extends GameModule<CharacterModuleObserver> {
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
     @Override

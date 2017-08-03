@@ -35,7 +35,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     private long            _tickInterval;
     private double          _hourInterval;
 
-    //    public void onGameCreateObserver(Game game) {}
+    //    public void onGameInit(Game game) {}
     protected void onGameUpdate(Game game, int tick) {}
 
     public void onGameCreate(Game game) {}
@@ -43,11 +43,11 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     public void createGame(Game game) {
         Log.debug(getClass(), "Create game");
 //        if (runOnMainThread()) {
-//            onGameCreateObserver(game);
+//            onGameInit(game);
 //            _isLoaded = true;
 //        } else {
 //            Application.moduleManager.getExecutor().execute(() -> {
-//                onGameCreateObserver(game);
+//                onGameInit(game);
 //                _isLoaded = true;
 //            });
 //        }

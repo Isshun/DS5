@@ -2,8 +2,8 @@ package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -36,10 +36,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private BlockingQueue<JobModel>         _jobs = new LinkedBlockingQueue<>();
     private Map<CharacterModel, Integer>    _characterInnactiveDuration = new ConcurrentHashMap<>();
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
     @Override

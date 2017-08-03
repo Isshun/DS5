@@ -9,6 +9,7 @@ import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 
@@ -18,6 +19,7 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@ApplicationObject
 public class LayerManager implements GameClientObserver {
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
@@ -45,7 +47,7 @@ public class LayerManager implements GameClientObserver {
     public Viewport getViewport() { return _viewport; }
 
     @Override
-    public void onGameCreateObserver(Game game) {
+    public void onGameInit(Game game) {
         // Find GameLayer annotated class
         _layers = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
@@ -66,17 +68,17 @@ public class LayerManager implements GameClientObserver {
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
 
-        _layers.forEach(render -> render.onGameCreateObserver(game));
-    }
-
-    @Override
-    public void onGameStart(Game game) {
-        _frame = 0;
+        _layers.forEach(render -> render.onGameInit(game));
 
         // Create viewport
         _viewport = new Viewport(400, 300);
         _viewport.setPosition(0, 0, game.getInfo().groundFloor);
         ApplicationClient.dependencyInjector.register(_viewport);
+    }
+
+    @Override
+    public void onGameStart(Game game) {
+        _frame = 0;
 
         // Call gameStart on each layer
         _layers.forEach(render -> render.gameStart(game));

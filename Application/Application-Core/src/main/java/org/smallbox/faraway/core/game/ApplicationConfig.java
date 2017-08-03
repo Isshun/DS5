@@ -1,8 +1,11 @@
 package org.smallbox.faraway.core.game;
 
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+
 /**
  * Created by Alex on 22/11/2015.
  */
+@ApplicationObject
 public class ApplicationConfig {
 
     public static class ApplicationConfigDebug {

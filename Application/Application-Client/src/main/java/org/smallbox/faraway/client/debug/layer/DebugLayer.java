@@ -8,11 +8,10 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.GameObject;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
-import org.smallbox.faraway.core.dependencyInjector.Component;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -31,29 +30,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 @GameObject
-@Component
+@ApplicationObject
 @GameLayer(level = 999, visible = false)
 public class DebugLayer extends BaseLayer {
 
     @BindComponent
     private Game game;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
-    @BindModule
+    @BindComponent
     private ItemModule itemModule;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private PlantModule plantModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
-    @BindModule
+    @BindComponent
     private GameEventManager gameEventManager;
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);

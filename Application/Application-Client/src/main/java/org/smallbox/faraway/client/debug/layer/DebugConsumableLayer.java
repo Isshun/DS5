@@ -8,20 +8,22 @@ import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 
 /**
  * Created by Alex on 31/07/2016.
  */
+@GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugConsumableLayer extends BaseLayer {
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

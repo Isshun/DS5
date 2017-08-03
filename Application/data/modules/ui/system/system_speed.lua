@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.system_speed",
+    id = "base.ui.system_speed",
     position = {1200, 0},
     size = {400, 32},
     visible = false,

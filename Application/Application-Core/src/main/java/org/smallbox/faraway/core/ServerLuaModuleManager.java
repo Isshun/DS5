@@ -4,6 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
@@ -16,6 +17,7 @@ import java.io.File;
 /**
  * Created by Alex on 29/11/2016.
  */
+@ApplicationObject
 public class ServerLuaModuleManager extends LuaModuleManager {
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {

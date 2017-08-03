@@ -83,11 +83,22 @@ public class LuaBuffExtend extends LuaExtend {
                                 Object object = Application.dependencyInjector.getObjects().stream()
                                         .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
                                         .findAny().orElse(null);
-                                if (object == null) {
-                                    throw new GameException(LuaBuffExtend.class, "on_get_level DI error");
+
+                                Object gameObject = Application.dependencyInjector.getGameObjects().stream()
+                                        .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
+                                        .findAny().orElse(null);
+
+                                if (object != null) {
+                                    args[i] = CoerceJavaToLua.coerce(object);
                                 }
 
-                                args[i] = CoerceJavaToLua.coerce(object);
+                                else if (gameObject != null) {
+                                    args[i] = CoerceJavaToLua.coerce(gameObject);
+                                }
+
+                                else {
+                                    throw new GameException(LuaBuffExtend.class, "on_get_level DI error: " + argName);
+                                }
                             }
                         }
                         varargs = LuaValue.varargsOf(args);

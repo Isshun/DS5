@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -21,13 +21,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by Alex on 31/07/2016.
  */
+@GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
 public class ConsumableLayer extends BaseLayer {
 
     @BindComponent
     private SpriteManager spriteManager;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
     private Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();
@@ -38,7 +39,7 @@ public class ConsumableLayer extends BaseLayer {
     }
 
     @Override
-    public void onGameCreateObserver(Game game) {
+    public void onGameStart(Game game) {
         consumableModule.addObserver(new ConsumableModuleObserver() {
             @Override
             public void onAddConsumable(ParcelModel parcel, ConsumableItem consumable) {

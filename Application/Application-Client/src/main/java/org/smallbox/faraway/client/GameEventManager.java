@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -10,6 +11,7 @@ import java.util.Collection;
 /**
  * Created by Alex on 16/07/2017.
  */
+@ApplicationObject
 public class GameEventManager implements EventManager {
 
     private boolean _mousePressed;

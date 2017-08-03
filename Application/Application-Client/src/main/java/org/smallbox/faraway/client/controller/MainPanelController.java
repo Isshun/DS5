@@ -10,11 +10,13 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 
 /**
  * Created by Alex on 15/08/2016.
  */
+@GameObject
 public class MainPanelController extends LuaController {
 
     @BindComponent

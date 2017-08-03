@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -167,14 +167,14 @@ public class Game {
     }
 
     /**
-     * Call game modules onGameCreateObserver method and construct renders
+     * Call game modules onGameInit method and construct renders
      * createGame() is call before game onLoadModule or createGame
      * createGame() is call before startGame()
      */
     public void createModules() {
         Log.info("============ CREATE GAME ============");
 
-        // Call onGameCreateObserver method to each modules
+        // Call onGameInit method to each modules
 //        _modules = Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
         _modules.forEach(module -> module.createGame(this));

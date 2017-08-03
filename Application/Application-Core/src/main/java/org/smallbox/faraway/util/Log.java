@@ -18,7 +18,7 @@ import java.util.logging.*;
 public class Log {
     private final static boolean EXIT_ON_ERROR = true;
     private final static Logger logger = Logger.getLogger("FarAway");
-    private final static Level level = Level.ALL;
+    private final static Level level = Level.WARNING;
     public static Queue<String> _historyDebug = new ConcurrentLinkedQueue<>();
     public static Queue<String> _history = new ConcurrentLinkedQueue<>();
     public static String _lastErrorMessage;
@@ -183,33 +183,43 @@ public class Log {
     }
 
     public static void info(String component, String message, Object... args) {
-        if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-            print(Level.INFO, "[" + component + "] " + String.format(message, args));
+        if (Level.INFO.intValue() >= level.intValue()) {
+            if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
+                print(Level.INFO, "[" + component + "] " + String.format(message, args));
+            }
         }
     }
 
     public static void info(Class cls, String message, Object... args) {
-        if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-            print(Level.INFO, "[" + cls.getSimpleName() + "] " + String.format(message, args));
+        if (Level.INFO.intValue() >= level.intValue()) {
+            if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
+                print(Level.INFO, "[" + cls.getSimpleName() + "] " + String.format(message, args));
+            }
         }
     }
 
     public static void info(String message, Object... args) {
-        if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
-            String className = Thread.currentThread().getStackTrace()[2].getClassName();
-            print(Level.INFO, "[" + className.substring(className.lastIndexOf('.') + 1) + "] " + String.format(message, args));
+        if (Level.INFO.intValue() >= level.intValue()) {
+            if (inPackageList(debugPackages) || inPackageList(infoPackages)) {
+                String className = Thread.currentThread().getStackTrace()[2].getClassName();
+                print(Level.INFO, "[" + className.substring(className.lastIndexOf('.') + 1) + "] " + String.format(message, args));
+            }
         }
     }
 
     public static void debug(String message, Object... args) {
-        if (inPackageList(debugPackages)) {
-            print(Level.FINE, String.format(message, args));
+        if (Level.ALL.intValue() >= level.intValue()) {
+            if (inPackageList(debugPackages)) {
+                print(Level.FINE, String.format(message, args));
+            }
         }
     }
 
     public static void debug(Class cls, String message, Object... args) {
-        if (inPackageList(debugPackages)) {
-            print(Level.FINE, "[" + cls.getSimpleName() + "] " + String.format(message, args));
+        if (Level.ALL.intValue() >= level.intValue()) {
+            if (inPackageList(debugPackages)) {
+                print(Level.FINE, "[" + cls.getSimpleName() + "] " + String.format(message, args));
+            }
         }
     }
 

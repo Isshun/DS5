@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.info_weather",
+    id = "base.ui.info_weather",
     position = {0, 920},
     size = {372, 200},
     background = 0x121c1e,

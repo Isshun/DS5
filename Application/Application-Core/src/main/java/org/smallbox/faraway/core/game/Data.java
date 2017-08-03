@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.codehaus.groovy.runtime.metaclass.ConcurrentReaderHashMap;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.*;
@@ -12,6 +13,7 @@ import org.smallbox.faraway.util.Log;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ApplicationObject
 public class Data {
     public List<ReceiptGroupInfo>               receipts = new ArrayList<>();
     public List<ItemInfo>                       items = new ArrayList<>();

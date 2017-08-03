@@ -2,7 +2,7 @@ local quest
 
 ui:extend({
     type = "view",
-    name = "base.ui.info_quest",
+    id = "base.ui.info_quest",
     align = {"center", "center"},
     size = {680, 400},
     visible = false,

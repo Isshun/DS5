@@ -6,8 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by Alex on 12/04/2016.
+ * Created by Alex on 12/01/2017.
  */
-@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BindModule {}
+@Target(ElementType.TYPE)
+public @interface ApplicationObject {
+}

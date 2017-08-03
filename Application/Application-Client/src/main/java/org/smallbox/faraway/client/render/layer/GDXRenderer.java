@@ -13,12 +13,14 @@ import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
 /**
  * Created by Alex on 04/06/2015.
  */
+@ApplicationObject
 public class GDXRenderer {
     private static final Color TEXT_COLOR = Color.WHITE;
 

@@ -6,11 +6,13 @@ import org.smallbox.faraway.client.EventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+@ApplicationObject
 public class UIEventManager implements EventManager {
 
     private Map<View, OnDragListener>       _onDragListeners;

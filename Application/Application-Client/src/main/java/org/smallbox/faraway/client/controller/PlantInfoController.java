@@ -3,7 +3,8 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
@@ -13,9 +14,10 @@ import java.util.Queue;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
 
-    @BindModule
+    @BindComponent
     private PlantModule plantModule;
 
     @BindLua

@@ -2,6 +2,8 @@ package org.smallbox.faraway.client;
 
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -15,7 +17,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by Alex on 16/07/2017.
  */
-public class SelectionManager {
+@GameObject
+public class SelectionManager extends GameManager {
 
     public <T extends ObjectModel> void setSelected(Queue<T> selected) {
         _selected = selected;

@@ -2,7 +2,7 @@ ui:extend(
     {
         {
             type = "view",
-            name = "encyclopedia-resource",
+            id = "encyclopedia-resource",
             position = {400, 200},
             size = {800, 600},
             background = 0x62bcbeff,

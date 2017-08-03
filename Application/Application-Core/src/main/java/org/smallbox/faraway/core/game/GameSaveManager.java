@@ -5,6 +5,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.util.FileUtils;
@@ -14,6 +15,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@ApplicationObject
 public class GameSaveManager {
 
     public interface GameSerializerInterface {

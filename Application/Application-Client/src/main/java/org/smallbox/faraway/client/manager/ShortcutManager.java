@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.manager;
 
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
@@ -8,6 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by Alex on 23/02/2017.
  */
+@ApplicationObject
 public class ShortcutManager {
 
     public static final class ShortcutStrategy {

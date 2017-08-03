@@ -1,6 +1,6 @@
 ui:extend({
     type = "list",
-    name = "base.ui.tooltip",
+    id = "base.ui.tooltip",
     controller = "org.smallbox.faraway.client.controller.TooltipController",
     visible = true,
     background = 0x00000055,

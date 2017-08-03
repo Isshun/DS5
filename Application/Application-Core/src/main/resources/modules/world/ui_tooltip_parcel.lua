@@ -1,6 +1,6 @@
 ui:extend({
     type = "list",
-    name = "base.ui.tooltip_parcel",
+    id = "base.ui.tooltip_parcel",
     parent = "base.ui.tooltip.views",
     controller = "org.smallbox.faraway.client.controller.world.ParcelTooltipController",
     visible = false,

@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -21,10 +21,11 @@ import org.smallbox.faraway.modules.job.JobModel;
 
 import java.util.Map;
 
+@GameObject
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class CharacterLayer extends BaseLayer {
 
-    @BindModule
+    @BindComponent
     private CharacterModule _characterModule;
 
     @BindComponent

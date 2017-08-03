@@ -2,7 +2,7 @@ structure = nil
 
 ui:extend({
     type = "view",
-    name = "base.ui.info_structure",
+    id = "base.ui.info_structure",
     style = "base.style.right_panel",
     group = "base.style.right_panel",
     controller = "org.smallbox.faraway.module.structure.StructureInfoController",

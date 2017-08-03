@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -21,6 +21,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 /**
  * Created by Alex on 22/07/2016.
  */
+@GameObject
 public class BuildController extends LuaController {
 
     @BindComponent
@@ -32,13 +33,13 @@ public class BuildController extends LuaController {
     @BindComponent
     private UIEventManager uiEventManager;
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private ItemModule itemModule;
 
-    @BindModule
+    @BindComponent
     private StructureModule structureModule;
 
     @BindLuaController

@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.click_debug_views",
+    id = "base.ui.click_debug_views",
     controller = "org.smallbox.faraway.module.dev.ClickDebugController",
     position = {500, 800},
     size = {600, 200},

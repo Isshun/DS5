@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.room.RoomModule;
 import org.smallbox.faraway.modules.room.model.RoomModel;
@@ -20,13 +20,14 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Alex on 13/06/2015.
  */
+@GameObject
 @GameLayer(level = LayerManager.ROOM_LAYER_LEVEL, visible = true)
 public class RoomLayer extends BaseLayer {
 
     @BindComponent
     private SpriteManager spriteManager;
 
-    @BindModule
+    @BindComponent
     private RoomModule roomModule;
 
     private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();

@@ -12,7 +12,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@GameObject
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldGroundLayer extends BaseLayer {
     private static final int CHUNK_SIZE = 16;
@@ -37,7 +38,7 @@ public class WorldGroundLayer extends BaseLayer {
     private static final int BOTTOM = 0b00000010;
     private static final int BOTTOM_RIGHT = 0b00000001;
 
-    @BindModule
+    @BindComponent
     private WorldModule _worldModule;
 
     @BindComponent

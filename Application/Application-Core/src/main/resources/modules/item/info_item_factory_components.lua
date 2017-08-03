@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.panel_item_info.factory_components",
+    id = "base.ui.panel_item_info.factory_components",
     parent = "base.ui.panel_item_info.details_content",
     controller = "org.smallbox.faraway.client.controller.ItemInfoFactoryComponentsController",
     position = {12, 12},

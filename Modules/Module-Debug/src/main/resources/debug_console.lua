@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.debug_console",
+    id = "base.ui.debug_console",
     controller = "org.smallbox.faraway.module.dev.controller.DebugConsoleController",
     position = {600, 600},
     visible = true,

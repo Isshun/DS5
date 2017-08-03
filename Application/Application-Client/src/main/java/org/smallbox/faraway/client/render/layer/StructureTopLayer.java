@@ -7,18 +7,19 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.structure.StructureModule;
 
+@GameObject
 @GameLayer(level = LayerManager.STRUCTURE_LAYER_LEVEL, visible = true)
 public class StructureTopLayer extends BaseLayer {
 
     @BindComponent
     private SpriteManager spriteManager;
 
-    @BindModule
+    @BindComponent
     private StructureModule structureModule;
 
     protected MapObjectModel    _itemSelected;

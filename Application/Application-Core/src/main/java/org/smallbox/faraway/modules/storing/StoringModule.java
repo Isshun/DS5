@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.storing;
 
-import org.smallbox.faraway.core.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -24,19 +24,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @GameObject
 public class StoringModule extends GameModule {
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
-    @BindModule
+    @BindComponent
     private JobModule jobModule;
 
-    @BindModule
+    @BindComponent
     private AreaModule areaModule;
 
-    @BindModule
+    @BindComponent
     private PathManager pathManager;
 
     private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();

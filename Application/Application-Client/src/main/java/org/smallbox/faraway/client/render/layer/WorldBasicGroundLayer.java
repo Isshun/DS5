@@ -6,7 +6,8 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -14,10 +15,11 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@GameObject
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldBasicGroundLayer extends BaseLayer {
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
     private Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();

@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.controller.room;
 
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.room.RoomModule;
@@ -14,9 +14,10 @@ import java.util.Queue;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class RoomInfoCellController extends AbsInfoLuaController<RoomModel> {
 
-    @BindModule
+    @BindComponent
     private RoomModule roomModule;
 
     @BindComponent

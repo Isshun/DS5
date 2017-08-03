@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -40,7 +40,7 @@ public class LuaControllerManager implements GameObserver {
     public Map<String, LuaController> getControllers() { return _controllers; }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameInit(Game game) {
         // TODO ?
 //        ApplicationClient.luaModuleManager.init();
 
@@ -53,7 +53,7 @@ public class LuaControllerManager implements GameObserver {
         _controllers.values()
                 .forEach(controller ->
                         Stream.of(controller.getClass().getDeclaredMethods())
-                                .filter(method -> Arrays.asList("onGameCreateObserver", "onGameStart").contains(method.getName()))
+                                .filter(method -> Arrays.asList("onGameInit", "onGameStart").contains(method.getName()))
                                 .forEach(method -> Log.warning("Method " + method.getName() + " cannot be used on LuaController " + controller.getClass().getName())));
 
 
@@ -73,7 +73,10 @@ public class LuaControllerManager implements GameObserver {
 
         // Register to DependencyInjector
         _controllers.values().forEach(ApplicationClient.dependencyInjector::register);
+    }
 
+    @Override
+    public void onGameStart(Game game) {
         ApplicationClient.notify(GameClientObserver::onReloadUI);
     }
 

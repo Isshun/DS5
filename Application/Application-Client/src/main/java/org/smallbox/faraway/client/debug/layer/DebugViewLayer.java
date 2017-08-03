@@ -11,11 +11,13 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.util.CollectionUtils;
 
 /**
  * Created by Alex on 31/07/2016.
  */
+@GameObject
 @GameLayer(level = 2, visible = false)
 public class DebugViewLayer extends BaseLayer {
 

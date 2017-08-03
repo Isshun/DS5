@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.debug.renders_list",
+    id = "base.ui.debug.renders_list",
     controller = "org.smallbox.faraway.module.dev.DebugRendersController",
     position = {600, 100},
     visible = false,

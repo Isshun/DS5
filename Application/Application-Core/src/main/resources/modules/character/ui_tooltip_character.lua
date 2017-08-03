@@ -1,6 +1,6 @@
 ui:extend({
     type = "list",
-    name = "base.ui.tooltip_character",
+    id = "base.ui.tooltip_character",
     parent = "base.ui.tooltip.views",
     controller = "org.smallbox.faraway.client.controller.character.CharacterTooltipController",
     visible = false,

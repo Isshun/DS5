@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameObserverPriority;
@@ -14,6 +15,8 @@ import org.smallbox.faraway.core.game.GameSaveManager;
  * Created by Alex on 04/12/2016.
  */
 @GameObserverPriority(GameObserverPriority.Priority.LOW)
+
+@GameObject
 public class GameMenuController extends LuaController {
 
     @BindComponent

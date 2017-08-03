@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.Component;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.util.Log;
 
-@Component
+@GameObject
 @GameLayer(level = 999, visible = true)
 public class LogLayer extends BaseLayer {
 

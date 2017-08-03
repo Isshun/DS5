@@ -1,6 +1,6 @@
 ui:extend({
     type = "view",
-    name = "base.ui.info_views",
+    id = "base.ui.info_views",
     controller = "org.smallbox.faraway.module.dev.InfoViewsController",
     position = {300, 100},
     size = {300, 600},

@@ -2,7 +2,7 @@ rock = nil
 
 ui:extend({
     type = "view",
-    name = "base.ui.info_rock",
+    id = "base.ui.info_rock",
     style = "base.style.right_panel",
     group = "base.style.right_panel",
     visible = false,

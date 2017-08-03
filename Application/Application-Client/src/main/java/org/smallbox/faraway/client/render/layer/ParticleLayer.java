@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.util.Log;
@@ -16,12 +16,13 @@ import org.smallbox.faraway.util.Log;
 /**
  * Created by Alex on 05/06/2015.
  */
+@GameObject
 @GameLayer(level = LayerManager.PARTICLE_LAYER_LEVEL, visible = true)
 public class ParticleLayer extends BaseLayer {
     private ParticleEffect          _effect;
     private String                  _name;
 
-    @BindModule
+    @BindComponent
     private WeatherModule weatherModule;
 
     @BindComponent

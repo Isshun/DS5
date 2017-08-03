@@ -2,7 +2,7 @@ ui:extend(
     {
         {
             type = "view",
-            name = "system-ui-modules",
+            id = "system-ui-modules",
             position = {820, 100},
             size = {600, 400},
             background = 0x2b3036ff,

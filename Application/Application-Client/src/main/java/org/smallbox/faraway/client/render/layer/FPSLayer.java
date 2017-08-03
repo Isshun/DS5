@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
+@GameObject
 @GameLayer(level = 999, visible = true)
 public class FPSLayer extends BaseLayer {
 

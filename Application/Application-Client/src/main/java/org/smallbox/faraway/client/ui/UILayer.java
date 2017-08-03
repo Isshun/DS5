@@ -7,10 +7,12 @@ import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
 /**
  * Created by Alex on 24/11/2016.
  */
+@GameObject
 @GameLayer(level = 1, visible = true)
 public class UILayer extends BaseLayer {
 

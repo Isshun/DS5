@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.temperature;
 
-import org.smallbox.faraway.core.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -18,16 +18,16 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @GameObject
 public class TemperatureModule extends GameModule {
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private WeatherModule weatherModule;
 
-    @BindModule
+    @BindComponent
     private RoomModule roomModule;
 
-    @BindModule
+    @BindComponent
     private ItemModule itemModule;
 
     @Override

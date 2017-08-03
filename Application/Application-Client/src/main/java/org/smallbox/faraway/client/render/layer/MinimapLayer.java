@@ -11,8 +11,8 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -45,13 +45,13 @@ public class MinimapLayer extends BaseLayer {
     private boolean                     _dirty;
     private Pixmap                      _pixmap;
 
-    @BindModule
+    @BindComponent
     private PlantModule plantModule;
 
-    @BindModule
+    @BindComponent
     private WorldModule worldModule;
 
-    @BindModule
+    @BindComponent
     private CharacterModule characterModule;
 
     @Override

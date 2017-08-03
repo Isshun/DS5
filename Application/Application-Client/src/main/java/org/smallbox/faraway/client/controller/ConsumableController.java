@@ -5,7 +5,8 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindModule;
+import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -17,11 +18,12 @@ import java.util.Map;
 /**
  * Created by Alex on 26/04/2016.
  */
+@GameObject
 public class ConsumableController extends LuaController {
 
     @BindLua private UIList consumableList;
 
-    @BindModule
+    @BindComponent
     private ConsumableModule consumableModule;
 
     @BindLuaController

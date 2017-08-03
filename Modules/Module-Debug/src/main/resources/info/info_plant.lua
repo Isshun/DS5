@@ -2,7 +2,7 @@ plant = nil
 
 ui:extend({
     type = "view",
-    name = "base.ui.info_plant",
+    id = "base.ui.info_plant",
     style = "base.style.right_panel",
     visible = false,
     views = {
