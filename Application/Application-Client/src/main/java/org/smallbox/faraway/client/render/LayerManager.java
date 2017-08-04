@@ -84,8 +84,7 @@ public class LayerManager implements GameClientObserver {
         _layers.forEach(render -> render.gameStart(game));
     }
 
-    @Override
-    public void onGameRender(Game game) {
+    public void render(Game game) {
 
         // Draw
         if (Application.gameManager.isRunning()) {
