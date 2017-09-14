@@ -1,12 +1,12 @@
 package org.smallbox.faraway.modules.item;
 
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemFilter;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
@@ -103,6 +103,6 @@ public class ItemFinderModule extends GameModule {
     }
 
     @Override
-    protected void onGameUpdate(Game game, int tick) {
+    protected void onGameUpdate(int tick) {
     }
 }

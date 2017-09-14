@@ -66,7 +66,7 @@ public class GameTestHelper {
         Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
 
             @Override
-            public void onGameCreate(Game game) {
+            public void onGameCreate() {
                 game.setSpeed(4);
                 _testBase.injectModules(game);
 

@@ -3,9 +3,9 @@
 //import org.smallbox.faraway.core.engine.Color;
 //import org.smallbox.faraway.client.layer.GDXLayer;
 //import org.smallbox.faraway.client.layer.Viewport;
-//import org.smallbox.faraway.util.Constant;
-//import org.smallbox.faraway.util.FileUtils;
-//import org.smallbox.faraway.util.OnLoadListener;
+//import org.smallbox.faraway.common.util.Constant;
+//import org.smallbox.faraway.common.util.FileUtils;
+//import org.smallbox.faraway.common.util.OnLoadListener;
 //import UILabel;
 //
 //import java.io.File;

@@ -3,10 +3,8 @@ package org.smallbox.faraway.client.ui.engine;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.EventManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,7 +20,7 @@ public class UIEventManager implements EventManager {
     private Map<View, OnClickListener>      _onMouseWheelDownListeners;
     private Map<View, OnFocusListener>      _onFocusListeners;
     private Map<View, OnKeyListener>        _onKeysListeners;
-    private UIDropDown                      _currentDropDown;
+//    private UIDropDown                      _currentDropDown;
     private Map<View, Object>               _dropViews;
     private OnDragListener                  _dragListener;
 
@@ -124,10 +122,10 @@ public class UIEventManager implements EventManager {
             }
         }
 
-        if (_currentDropDown != null) {
-            _currentDropDown.setOpen(false);
-            _currentDropDown = null;
-        }
+//        if (_currentDropDown != null) {
+//            _currentDropDown.setOpen(false);
+//            _currentDropDown = null;
+//        }
 
         // Click on UI
         if (bestView != null) {
@@ -137,7 +135,7 @@ public class UIEventManager implements EventManager {
         }
 
         // Click on map
-        if (Application.gameManager.isRunning()) {
+        if (ApplicationClient.game.isRunning()) {
             ApplicationClient.selectionManager.select(
                     ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX()),
                     ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY()),
@@ -352,7 +350,7 @@ public class UIEventManager implements EventManager {
         _onKeysListeners.put(view, onKeyListener);
     }
 
-    public void setCurrentDropDown(UIDropDown dropDown) {
-        _currentDropDown = dropDown;
-    }
+//    public void setCurrentDropDown(UIDropDown dropDown) {
+//        _currentDropDown = dropDown;
+//    }
 }

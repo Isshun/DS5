@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.storing;
 
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.CollectionUtils;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
@@ -10,7 +11,6 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Collections;

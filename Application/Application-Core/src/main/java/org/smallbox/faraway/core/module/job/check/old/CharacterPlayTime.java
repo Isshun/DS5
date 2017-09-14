@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.game.model.check.old;
 //
-//import org.smallbox.faraway.util.Constant;
+//import org.smallbox.faraway.common.util.Constant;
 //import JobModule;
 //import org.smallbox.faraway.game.module.ServiceManager;
 //import org.smallbox.faraway.game.model.characters.base.CharacterModel;

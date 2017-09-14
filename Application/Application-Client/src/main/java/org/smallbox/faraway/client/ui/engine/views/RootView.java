@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.ui.engine.views;
 
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 /**
  * Created by Alex on 26/02/2017.
@@ -21,10 +20,6 @@ public class RootView {
 
     public boolean inGame() {
         return true;
-    }
-
-    public ModuleBase getModule() {
-        return null;
     }
 
     public void draw(GDXRenderer renderer, int x, int y) {

@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.area;
 
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.common.UUIDUtils;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.ArrayList;

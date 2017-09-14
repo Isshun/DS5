@@ -4,4 +4,18 @@ apply plugin: "java"
 
 dependencies {
 
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20170516'
+
+    compile 'org.apache.commons:commons-compress:1.10'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+    compile 'org.luaj:luaj-jse:3.0.1'
+    compile 'org.reflections:reflections:0.9.10'
+    compile 'org.json:json:20150729'
+    compile group: 'com.google.guava', name: 'guava', version: '20.0'
+    compile 'net.sourceforge.cssparser:cssparser:0.9.19'
+
+
 }

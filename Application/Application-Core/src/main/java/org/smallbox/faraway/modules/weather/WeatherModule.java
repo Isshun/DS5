@@ -1,20 +1,21 @@
 package org.smallbox.faraway.modules.weather;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.common.ColorUtils;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.PlanetInfo;
+import org.smallbox.faraway.common.modelInfo.RegionInfo;
+import org.smallbox.faraway.common.modelInfo.WeatherInfo;
+import org.smallbox.faraway.common.modelInfo.WeatherInfo.WeatherSunModel;
+import org.smallbox.faraway.common.util.CollectionUtils;
+import org.smallbox.faraway.common.util.Log;
+import org.smallbox.faraway.common.util.Utils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,10 @@ import java.util.List;
  */
 @GameObject
 public class WeatherModule extends GameModule<WeatherModuleObserver> implements GameObserver {
+
+    @BindComponent
+    private Game game;
+
     private int                                 _duration;
     private int                                 _floors;
     private WeatherInfo                         _weather;
@@ -46,7 +51,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     private double                              _temperature;
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
         _floors = game.getInfo().worldFloors;
         _temperatures = game.getInfo().region.temperatures;
         _temperatureByFloor = new double[_floors];
@@ -100,7 +105,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
             switchSunColor(_weather.sun, _dayTime);
         }
 
-        Application.notify(observer -> observer.onDayTimeChange(hourInfo));
+//        Application.notify(observer -> observer.onDayTimeChange(hourInfo));
     }
 
     public WeatherInfo getWeather() { return _weather; }
@@ -110,7 +115,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     public double getOxygen() { return 0.5; }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
         if (_duration-- <= 0) {
             _duration = 2500;
             loadWeather(getRandomWeather(game.getInfo().region.weather));

@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 //import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 //import org.smallbox.faraway.core.config.Config;
-//import org.smallbox.faraway.core.dependencyInjector.BindModule;
+//import org.smallbox.faraway.common.dependencyInjector.BindModule;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.lua.BindLua;
 //import org.smallbox.faraway.module.consumable.ConsumableModule;

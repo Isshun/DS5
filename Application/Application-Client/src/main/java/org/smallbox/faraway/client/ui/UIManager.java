@@ -5,25 +5,20 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.util.CollectionUtils;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import static org.smallbox.faraway.core.engine.GameEventListener.Action;
-import static org.smallbox.faraway.core.engine.GameEventListener.Modifier;
 
 @ApplicationObject
 public class UIManager {
@@ -35,9 +30,9 @@ public class UIManager {
         _rootViews.clear();
     }
 
-    public void addDropsDowns(UIDropDown view) {
-        _dropsDowns.add(view);
-    }
+//    public void addDropsDowns(UIDropDown view) {
+//        _dropsDowns.add(view);
+//    }
 
     public Collection<RootView> getRootViews() {
         return _rootViews;
@@ -93,7 +88,7 @@ public class UIManager {
     private Queue<RootView>             _rootViews = new LinkedBlockingQueue<>();
     private Map<View, String>           _subViews = new ConcurrentHashMap<>();
     private Set<View>                   _views = new ConcurrentHashSet<>();
-    private Queue<UIDropDown>           _dropsDowns = new ConcurrentLinkedQueue<>();
+//    private Queue<UIDropDown>           _dropsDowns = new ConcurrentLinkedQueue<>();
     private Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
     private Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
 
@@ -182,41 +177,41 @@ public class UIManager {
 //                        .forEach(subview -> subview.setVisible(true)));
 //    }
 
-    public boolean onKeyEvent(Action action, int key, Modifier modifier) {
-//        if (action == Action.RELEASED) {
-//            if (checkKeyboard(new GameEvent(key), key)) {
-//                return false;
-//            }
-//        }
+//    public boolean onKeyEvent(Action action, int key, Modifier modifier) {
+////        if (action == Action.RELEASED) {
+////            if (checkKeyboard(new GameEvent(key), key)) {
+////                return false;
+////            }
+////        }
+//
+//        return false;
+//    }
 
-        return false;
-    }
-
-    /**
-     *
-     * @param action
-     * @param button
-     * @param x
-     * @param y
-     * @param rightPressed
-     * @return L'evenement est consommé
-     */
-    public boolean onMouseEvent(Action action, int button, int x, int y, boolean rightPressed) {
-
-//        if (action == Action.RELEASED && button == MouseButton.LEFT) {
-//            if (ApplicationClient.uiEventManager.rightClick(x, y)) {
-//                return true;
-//            } else {
-//                Application.notify(observer -> observer.onKeyPress(Key.ESCAPE));
-//                return false;
-//            }
-//        }
-
-        return false;
-    }
-
-    public void onWindowEvent(Action action) {
-    }
+//    /**
+//     *
+//     * @param action
+//     * @param button
+//     * @param x
+//     * @param y
+//     * @param rightPressed
+//     * @return L'evenement est consommé
+//     */
+//    public boolean onMouseEvent(Action action, int button, int x, int y, boolean rightPressed) {
+//
+////        if (action == Action.RELEASED && button == MouseButton.LEFT) {
+////            if (ApplicationClient.uiEventManager.rightClick(x, y)) {
+////                return true;
+////            } else {
+////                Application.notify(observer -> observer.onKeyPress(Key.ESCAPE));
+////                return false;
+////            }
+////        }
+//
+//        return false;
+//    }
+//
+//    public void onWindowEvent(Action action) {
+//    }
 
 //    public void    onMouseWheel(int delta, int x, int y) {
 //        _viewport.setScale(delta, x, y);
@@ -239,9 +234,9 @@ public class UIManager {
         camera.zoom = 0.5f;
 
         _rootViews.stream()
-                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()) && (view.getModule() == null || view.getModule().isLoaded()))
+                .filter(view -> view.isVisible() && (gameRunning || !view.inGame()))
                 .forEach(view -> view.draw(renderer, 0, 0));
-        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
+//        _dropsDowns.forEach(view -> view.drawDropDown(renderer, 0, 0));
     }
 
     private void openContextMenu(ContextEntry[] entries, int x, int y) {

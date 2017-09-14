@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.util.Log;
 
 /**
  * Created by Alex on 09/11/2015.

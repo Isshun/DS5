@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.temperature;
 
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.room.RoomModule;
@@ -31,7 +31,7 @@ public class TemperatureModule extends GameModule {
     private ItemModule itemModule;
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         weatherModule.addObserver(new WeatherModuleObserver() {
             @Override
             public void onTemperatureChange(double temperature) {
@@ -40,12 +40,12 @@ public class TemperatureModule extends GameModule {
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
         _updateInterval = 10;
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onModuleUpdate() {
         if (roomModule != null) {
             roomModule.getRooms().forEach(room -> {
                 if (room.isExterior()) {

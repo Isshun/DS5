@@ -1,13 +1,12 @@
 package org.smallbox.faraway.modules.structure;
 
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Log;
+import org.smallbox.faraway.core.Data;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.BuildItemModule;
@@ -16,7 +15,6 @@ import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
@@ -53,7 +51,7 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
     public Collection<StructureItem> getStructures() { return _structures; }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         _structures = new LinkedBlockingQueue<>();
 
 //        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
@@ -93,11 +91,11 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
         createBuildJobs(jobModule, consumableModule, _structures);
         createRepairJobs(jobModule, _structures);
     }
@@ -120,29 +118,29 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
             structure.setParcel(parcel);
         }
     }
-
-    @Override
-    public void onCancelJobs(ParcelModel parcel, Object object) {
-        StructureItem structure = parcel.getItem(StructureItem.class);
-        if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {
-            parcel.removeItem(structure);
-            notifyObservers(observer -> observer.onRemoveStructure(parcel, structure));
-        }
-    }
-
-    @Override
-    public void removeObject(MapObjectModel mapObjectModel) {
-        if (mapObjectModel.isStructure() && mapObjectModel instanceof StructureItem) {
-            removeStructure((StructureItem) mapObjectModel);
-        }
-    }
-
-    @Override
-    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-        if (itemInfo.isStructure) {
-            putStructure(parcel, itemInfo, data, complete);
-        }
-    }
+//
+//    @Override
+//    public void onCancelJobs(ParcelModel parcel, Object object) {
+//        StructureItem structure = parcel.getItem(StructureItem.class);
+//        if (structure != null && !structure.isComplete() && (object == null || object instanceof StructureItem)) {
+//            parcel.removeItem(structure);
+//            notifyObservers(observer -> observer.onRemoveStructure(parcel, structure));
+//        }
+//    }
+//
+//    @Override
+//    public void removeObject(MapObjectModel mapObjectModel) {
+//        if (mapObjectModel.isStructure() && mapObjectModel instanceof StructureItem) {
+//            removeStructure((StructureItem) mapObjectModel);
+//        }
+//    }
+//
+//    @Override
+//    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+//        if (itemInfo.isStructure) {
+//            putStructure(parcel, itemInfo, data, complete);
+//        }
+//    }
 
     private StructureItem putStructure(ParcelModel parcel, ItemInfo itemInfo, int matterSupply, boolean complete) {
         if (parcel.hasItem(StructureItem.class) || parcel.getItem(StructureItem.class).isFloor()) {

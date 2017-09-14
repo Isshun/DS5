@@ -6,6 +6,7 @@ import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.Data;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
@@ -14,12 +15,8 @@ import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.config.Config;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.util.CollectionUtils;
+import org.smallbox.faraway.common.ColorUtils;
+import org.smallbox.faraway.common.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -28,9 +25,10 @@ import java.util.concurrent.PriorityBlockingQueue;
  * Created by Alex on 27/05/2015.
  */
 public abstract class View implements Comparable<View> {
-    protected Data _applicationData = Application.data;
+    protected Data _applicationData = ApplicationClient.data;
     protected int _originWidth;
     protected int _originHeight;
+    protected int UI_SCALE = 1;
     private String _group;
     private String _path;
     private int _index;
@@ -151,14 +149,14 @@ public abstract class View implements Comparable<View> {
         assert _onClickListener != null;
         _onClickListener.onClick(x, y);
 
-        if (_parent != null && _parent instanceof UIDropDown) {
-            ((UIDropDown)_parent).setCurrent(this);
-        }
+//        if (_parent != null && _parent instanceof UIDropDown) {
+//            ((UIDropDown)_parent).setCurrent(this);
+//        }
     }
 
     public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT }
 
-    protected final ModuleBase  _module;
+    protected final Object _module;
 
 //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
     protected Collection<View>  _views = new ConcurrentArrayQueue<>();
@@ -214,7 +212,7 @@ public abstract class View implements Comparable<View> {
     protected HorizontalAlign   _horizontalAlign = HorizontalAlign.LEFT;
     protected VerticalAlign     _verticalAlign = VerticalAlign.TOP;
 
-    public View(ModuleBase module) {
+    public View(Object module) {
         _module = module;
         _isVisible = true;
         _borderSize = 2;
@@ -287,7 +285,7 @@ public abstract class View implements Comparable<View> {
     public String       getName() { return _name; }
 
     public Collection<View> getViews() { return _views; }
-    public ModuleBase   getModule() { return _module; }
+    public Object   getModule() { return _module; }
     protected String    getString() { return null; }
     public int          getHeight() { return _height; }
     public int          getWidth() { return _width; }
@@ -341,9 +339,9 @@ public abstract class View implements Comparable<View> {
 //                }
 //            }
 
-            if (Config.onDebugView) {
-                renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name);
-            }
+//            if (Config.onDebugView) {
+//                renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name);
+//            }
         }
     }
 
@@ -385,10 +383,10 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setMargin(int top, int right, int bottom, int left) {
-        _marginTop = (int) (top * Application.config.uiScale);
-        _marginRight = (int) (right * Application.config.uiScale);
-        _marginBottom = (int) (bottom * Application.config.uiScale);
-        _marginLeft = (int) (left * Application.config.uiScale);
+        _marginTop = (int) (top * UI_SCALE);
+        _marginRight = (int) (right * UI_SCALE);
+        _marginBottom = (int) (bottom * UI_SCALE);
+        _marginLeft = (int) (left * UI_SCALE);
         return this;
     }
 
@@ -487,62 +485,62 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = (int) (t * Application.config.uiScale);
-        _paddingRight = (int) (r * Application.config.uiScale);
-        _paddingBottom = (int) (b * Application.config.uiScale);
-        _paddingLeft = (int) (l * Application.config.uiScale);
+        _paddingTop = (int) (t * UI_SCALE);
+        _paddingRight = (int) (r * UI_SCALE);
+        _paddingBottom = (int) (b * UI_SCALE);
+        _paddingLeft = (int) (l * UI_SCALE);
     }
 
     public View setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = (int) (t * Application.config.uiScale);
-        _paddingRight = _paddingLeft = (int) (r * Application.config.uiScale);
+        _paddingTop = _paddingBottom = (int) (t * UI_SCALE);
+        _paddingRight = _paddingLeft = (int) (r * UI_SCALE);
         return this;
     }
 
     public View setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.config.uiScale);
+        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * UI_SCALE);
         return this;
     }
 
     public View setFixedSize(int width, int height) {
-        _fixedWidth = (int) (width * Application.config.uiScale);
-        _fixedHeight = (int) (height * Application.config.uiScale);
+        _fixedWidth = (int) (width * UI_SCALE);
+        _fixedHeight = (int) (height * UI_SCALE);
         return this;
     }
 
     public View setSize(int width, int height) {
-        _width = (int) (width * Application.config.uiScale);
-        _height = (int) (height * Application.config.uiScale);
+        _width = (int) (width * UI_SCALE);
+        _height = (int) (height * UI_SCALE);
         _originWidth = width;
         _originHeight = height;
         return this;
     }
 
     public View setWidth(int width) {
-        _width = (int) (width * Application.config.uiScale);
+        _width = (int) (width * UI_SCALE);
         _originWidth = width;
         return this;
     }
 
     public View setHeight(int height) {
-        _height = (int) (height * Application.config.uiScale);
+        _height = (int) (height * UI_SCALE);
         _originHeight = height;
         return this;
     }
 
     public View setPositionX(int x) {
-        _x = (int) (x * Application.config.uiScale);
+        _x = (int) (x * UI_SCALE);
         return this;
     }
 
     public View setPositionY(int y) {
-        _y = (int) (y * Application.config.uiScale);
+        _y = (int) (y * UI_SCALE);
         return this;
     }
 
     public View setPosition(int x, int y) {
-        _x = (int) (x * Application.config.uiScale);
-        _y = (int) (y * Application.config.uiScale);
+        _x = (int) (x * UI_SCALE);
+        _y = (int) (y * UI_SCALE);
         return this;
     }
 

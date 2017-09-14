@@ -1,20 +1,20 @@
 package org.smallbox.faraway.modules.characterNeed;
 
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.CharacterInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.model.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
-import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.characterRelation.CharacterRelationModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.ConsumeJob;
@@ -59,7 +59,7 @@ public class CharacterNeedModule extends GameModule {
     private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onModuleUpdate() {
         characterModule.getCharacters().forEach(character -> {
             if (character.hasExtra(CharacterNeedsExtra.class)) {
                 CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);

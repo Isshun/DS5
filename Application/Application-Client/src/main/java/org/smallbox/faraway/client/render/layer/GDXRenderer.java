@@ -13,10 +13,8 @@ import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.common.ParcelCommon;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.util.Constant;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -161,13 +159,13 @@ public class GDXRenderer {
 
     public void drawFont(DrawFontCallback callback, int fontSize) {
         _batch.begin();
-        fontSize *= Application.config.uiScale;
+        fontSize *= 1;
         callback.onDraw(_batch, _fonts[fontSize]);
         _batch.end();
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        textSize *= Application.config.uiScale;
+        textSize *= 1;
 
         if (string != null) {
             _batch.begin();
@@ -249,7 +247,7 @@ public class GDXRenderer {
         drawPixel(ApplicationClient.layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH), ApplicationClient.layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
     }
 
-    public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color) {
+    public void drawTextOnMap(ParcelCommon parcel, String string, int size, Color color) {
         drawTextOnMap(parcel.x, parcel.y, string, size, color, 0, 0);
     }
 
@@ -257,7 +255,7 @@ public class GDXRenderer {
         drawTextOnMap(x, y, string, size, color, 0, 0);
     }
 
-    public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color, int offsetX, int offsetY) {
+    public void drawTextOnMap(ParcelCommon parcel, String string, int size, Color color, int offsetX, int offsetY) {
         drawTextOnMap(parcel.x, parcel.y, string, size, color, offsetX, offsetY);
     }
 
@@ -274,8 +272,9 @@ public class GDXRenderer {
         draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.layerManager.getViewport().getPosY(), itemSprite);
     }
 
-    public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.layerManager.getViewport().getPosY(), itemSprite);
+    public void drawOnMap(int x, int y, Sprite itemSprite) {
+        draw((x * Constant.TILE_WIDTH) + ApplicationClient.layerManager.getViewport().getPosX(),
+                (y * Constant.TILE_HEIGHT) + ApplicationClient.layerManager.getViewport().getPosY(), itemSprite);
     }
 
 //    public void drawOnMap(ParcelModel parcel, Texture texture) {

@@ -45,12 +45,12 @@
 //    }
 //
 //    @Override
-//    public void onGameStart(Game game) {
+//    public void onGameStart() {
 //        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel");
 //    }
 //
 //    @Override
-//    protected void onGameUpdate(Game game, int tick) {
+//    protected void onGameUpdate(int tick) {
 //
 //    }
 //

@@ -1,11 +1,10 @@
 package org.smallbox.faraway.client;
 
 import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.common.CharacterCommon;
+import org.smallbox.faraway.common.GameEventListener;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.ParcelCommon;
 
 import java.util.List;
 
@@ -17,9 +16,9 @@ public interface GameClientObserver extends GameObserver {
     default void onRefreshUI(int frame){}
     default void onDeselect() {}
 //    default void onOverParcel(ParcelModel parcel) {}
-    default void onSelectArea(AreaModel area) {}
-    default boolean onSelectCharacter(CharacterModel character) {return false;}
-    default boolean onSelectParcel(ParcelModel parcel) {return false;}
+//    default void onSelectArea(AreaModel area) {}
+    default boolean onSelectCharacter(CharacterCommon character) {return false;}
+//    default boolean onSelectParcel(ParcelModel parcel) {return false;}
     default void onKeyPressWithEvent(GameEvent event, int key) {
         if (!event.consumed && onKeyPress(key)) {
             event.consume();
@@ -45,7 +44,7 @@ public interface GameClientObserver extends GameObserver {
      * @param parcels Selected parcels
      * @return true if event has been consumed
      */
-    default boolean onClickOnParcel(List<ParcelModel> parcels) { return false; }
+    default boolean onClickOnParcel(List<ParcelCommon> parcels) { return false; }
 
     default void onClick(int x, int y) {}
 }

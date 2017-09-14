@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.manager;
 
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.util.Log;
 
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;

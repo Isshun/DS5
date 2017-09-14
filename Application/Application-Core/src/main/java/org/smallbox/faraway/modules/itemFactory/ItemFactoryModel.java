@@ -1,15 +1,15 @@
 package org.smallbox.faraway.modules.itemFactory;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.common.util.Log;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.util.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -17,8 +17,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.FactoryOutputMode;
-import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoFactory;
+import static org.smallbox.faraway.common.modelInfo.ItemInfo.FactoryOutputMode;
+import static org.smallbox.faraway.common.modelInfo.ItemInfo.ItemInfoFactory;
 
 /**
  * Created by Alex on 15/10/2015.

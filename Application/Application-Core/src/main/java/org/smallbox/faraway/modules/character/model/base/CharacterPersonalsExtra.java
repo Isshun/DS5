@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.model.base;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.common.ColorUtils;
 
 /**
  * Created by Alex on 24/06/2015.

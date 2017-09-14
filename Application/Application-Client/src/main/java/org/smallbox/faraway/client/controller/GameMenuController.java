@@ -3,13 +3,9 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameInfo;
-import org.smallbox.faraway.core.game.GameObserverPriority;
-import org.smallbox.faraway.core.game.GameSaveManager;
+import org.smallbox.faraway.common.GameObserverPriority;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 
 /**
  * Created by Alex on 04/12/2016.
@@ -19,8 +15,8 @@ import org.smallbox.faraway.core.game.GameSaveManager;
 @GameObject
 public class GameMenuController extends LuaController {
 
-    @BindComponent
-    private GameSaveManager gameSaveManager;
+//    @BindComponent
+//    private GameSaveManager gameSaveManager;
 
     @BindComponent
     private UIManager uiManager;
@@ -43,8 +39,8 @@ public class GameMenuController extends LuaController {
         uiManager.findById("base.ui.menu_pause").setVisible(false);
 //        uiManager.findById("base.ui.menu_save").setVisible(true);
 
-        Game game = Application.gameManager.getGame();
-        gameSaveManager.saveGame(game, game.getInfo(), GameInfo.Type.FAST);
+//        Game game = Application.gameManager.getGame();
+//        gameSaveManager.saveGame(game, game.getInfo(), GameInfo.Type.FAST);
     }
 
     @BindLuaAction

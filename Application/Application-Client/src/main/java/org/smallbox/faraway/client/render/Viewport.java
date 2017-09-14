@@ -1,12 +1,9 @@
 package org.smallbox.faraway.client.render;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.common.ParcelCommon;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.util.Constant;
+import org.smallbox.faraway.common.util.Log;
 
 /**
  * Created by Alex on 04/06/2015.
@@ -109,12 +106,12 @@ public class Viewport {
     }
 
     public void setFloor(int floor) {
-        if (Application.gameManager.isRunning()) {
-            if (floor >= 0 && floor < Application.gameManager.getGame().getInfo().worldFloors) {
-                _floor = floor;
-                ApplicationClient.notify(gameObserver -> gameObserver.onFloorChange(_floor));
-            }
-        }
+//        if (ApplicationClient.gameManager.isRunning()) {
+//            if (floor >= 0 && floor < ApplicationClient.gameManager.getGame().getInfo().worldFloors) {
+//                _floor = floor;
+//                ApplicationClient.notify(gameObserver -> gameObserver.onFloorChange(_floor));
+//            }
+//        }
     }
 
     public void setPosition(int x, int y, int z) {
@@ -129,10 +126,16 @@ public class Viewport {
                 && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }
 
-    public boolean hasParcel(ParcelModel parcel) {
-        return parcel != null
-                && parcel.z == _floor
-                && parcel.x >= _worldX && parcel.x <= _worldX + 50
-                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
+    public boolean hasParcel(int x, int y, int z) {
+        return z == _floor
+                && x >= _worldX && x <= _worldX + 50
+                && y >= _worldY && y <= _worldY + 50;
     }
+
+//    public boolean hasParcel(ParcelModel parcel) {
+//        return parcel != null
+//                && parcel.z == _floor
+//                && parcel.x >= _worldX && parcel.x <= _worldX + 50
+//                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
+//    }
 }

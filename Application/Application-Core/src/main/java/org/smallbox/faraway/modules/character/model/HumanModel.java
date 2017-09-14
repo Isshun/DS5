@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.GameSerializer;
+import org.smallbox.faraway.common.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.CharacterSerializer;
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.*;

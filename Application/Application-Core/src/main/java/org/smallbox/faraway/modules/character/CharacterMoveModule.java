@@ -1,18 +1,17 @@
 package org.smallbox.faraway.modules.character;
 
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.util.Constant;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
+import org.smallbox.faraway.core.game.model.MoveListener;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.MoveListener;
 
 @GameObject
 public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
@@ -28,7 +27,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onModuleUpdate() {
         fixCharacterPosition();
 
         characterModule.getCharacters().forEach(character -> {

@@ -1,12 +1,11 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;
 
 public class UIFrame extends View {
-    public UIFrame(ModuleBase module) {
+    public UIFrame(Object module) {
         super(module);
     }
 

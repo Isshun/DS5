@@ -34,8 +34,12 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '20.0'
     compile 'net.sourceforge.cssparser:cssparser:0.9.19'
 
+
     // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy
     compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.7'
+
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20170516'
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '21.0'

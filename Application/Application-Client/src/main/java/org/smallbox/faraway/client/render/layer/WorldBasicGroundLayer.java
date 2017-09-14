@@ -2,13 +2,12 @@ package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.GameLayer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.common.ParcelCommon;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 
 import java.util.Map;
 import java.util.Queue;
@@ -73,7 +72,7 @@ public class WorldBasicGroundLayer extends BaseLayer {
 //            return sprite;
 //        }
 
-        ItemInfo itemInfo = Application.data.getItemInfo("base.ground.grass");
+        ItemInfo itemInfo = ApplicationClient.data.getItemInfo("base.ground.grass");
         Sprite sprite = ApplicationClient.spriteManager.getSprite(itemInfo, itemInfo.graphics.get(0), 0, 0, 255, false);
         sprite.setRegion(0, 0, 32, 32);
         sprite.setRegionWidth(32);

@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.modules.world;
 //
 //import org.smallbox.faraway.GameEvent;
-//import org.smallbox.faraway.core.engine.module.ModuleObserver;
+//import org.smallbox.faraway.common.ModuleObserver;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //
 //import java.util.Collection;

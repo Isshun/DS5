@@ -2,16 +2,14 @@ package org.smallbox.faraway.client.render.layer;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.GameLayer;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameObserver;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.util.Constant;
+import org.smallbox.faraway.common.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,13 +140,13 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     public long getTotalDrawDelay() { return _totalDrawDelay; }
     public long getLastDrawDelay() { return _lastDrawDelay; }
 
-    public final void gameStart(Game game) {
+    public final void gameStart(int width, int height) {
         Log.debug(getClass(), "start rendere");
 
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
+        _width = width;
+        _height = height;
 
-        onGameStart(game);
+        onGameStart();
 
         _isLoaded = true;
     }
@@ -172,7 +170,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
         try {
 //            for (Class<? extends BaseLayer> cls: module.getClass().getAnnotation(ModuleLayer.class).value()) {
                 BaseLayer layer = cls.newInstance();
-                Application.dependencyInjector.register(layer);
+                ApplicationClient.dependencyInjector.register(layer);
                 layerList.add(layer);
 //            }
         } catch ( IllegalAccessException | InstantiationException e) {

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.character.model.base;
 
-import org.smallbox.faraway.util.Strings;
+import org.smallbox.faraway.common.util.Strings;
 
 public class CharacterRelation {
     public enum Relation {

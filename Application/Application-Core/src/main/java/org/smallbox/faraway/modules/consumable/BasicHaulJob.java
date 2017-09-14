@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.consumable;
 
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -11,7 +12,6 @@ import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
-import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.module.java;
 
-import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.common.ModuleInfo;
 
 import java.io.File;
 

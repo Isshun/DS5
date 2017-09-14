@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 
 /**
  * Created by Alex on 04/06/2015.

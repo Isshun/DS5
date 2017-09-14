@@ -2,13 +2,10 @@ package org.smallbox.faraway.client;
 
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.ParcelCommon;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.util.CollectionUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Alex on 16/07/2017.
  */
 @GameObject
-public class SelectionManager extends GameManager {
+public class SelectionManager {
 
     public <T extends ObjectModel> void setSelected(Queue<T> selected) {
         _selected = selected;
@@ -29,10 +26,10 @@ public class SelectionManager extends GameManager {
     }
 
     public interface OnSelectionListener {
-        boolean onSelection(List<ParcelModel> parcels);
+        boolean onSelection(List<ParcelCommon> parcels);
     }
 
-    private ParcelModel                     _lastParcel;
+    private ParcelCommon                     _lastParcel;
     private Queue<AbsInfoLuaController<?>> _lastControllers;
     private LuaController _selectionPreController;
     private OnSelectionListener _selectionListener;
@@ -71,48 +68,48 @@ public class SelectionManager extends GameManager {
     }
 
     public void select(int fromMapX, int fromMapY, int toMapX, int toMapY) {
-
-        // Square selection
-        if (fromMapX != toMapX || fromMapY != toMapY) {
-            List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.layerManager.getViewport().getFloor());
-            Log.info("Click on map for parcels: %s", parcelList);
-            if (parcelList != null) {
-
-                if (_selectionListener != null) {
-                    if (_selectionListener.onSelection(parcelList)) {
-                        _selectionListener = null;
-                    }
-                }
-
-                else {
-                    _selected = null;
-                    doSelectionMultiple(parcelList);
-                }
-            }
-        }
-
-        // Unique parcel
-        else {
-            ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.layerManager.getViewport().getFloor());
-            Log.info("Click on map at parcel: %s", parcel);
-            if (parcel != null) {
-
-                if (_selectionListener != null) {
-                    if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
-                        _selectionListener = null;
-                    }
-                }
-
-                else {
-                    _selected = null;
-                    doSelectionUnique(parcel);
-                }
-            }
-        }
+//
+//        // Square selection
+//        if (fromMapX != toMapX || fromMapY != toMapY) {
+//            List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.layerManager.getViewport().getFloor());
+//            Log.info("Click on map for parcels: %s", parcelList);
+//            if (parcelList != null) {
+//
+//                if (_selectionListener != null) {
+//                    if (_selectionListener.onSelection(parcelList)) {
+//                        _selectionListener = null;
+//                    }
+//                }
+//
+//                else {
+//                    _selected = null;
+//                    doSelectionMultiple(parcelList);
+//                }
+//            }
+//        }
+//
+//        // Unique parcel
+//        else {
+//            ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.layerManager.getViewport().getFloor());
+//            Log.info("Click on map at parcel: %s", parcel);
+//            if (parcel != null) {
+//
+//                if (_selectionListener != null) {
+//                    if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
+//                        _selectionListener = null;
+//                    }
+//                }
+//
+//                else {
+//                    _selected = null;
+//                    doSelectionUnique(parcel);
+//                }
+//            }
+//        }
 
     }
 
-    private void doSelectionUnique(ParcelModel parcel) {
+    private void doSelectionUnique(ParcelCommon parcel) {
         if (_selectionPreController != null) {
             _selectionPreController.setVisible(true);
         }
@@ -141,7 +138,7 @@ public class SelectionManager extends GameManager {
 
     }
 
-    private void doSelectionMultiple(List<ParcelModel> parcelList) {
+    private void doSelectionMultiple(List<ParcelCommon> parcelList) {
         if (_selectionPreController != null) {
             _selectionPreController.setVisible(true);
         }
@@ -152,7 +149,7 @@ public class SelectionManager extends GameManager {
                 .ifPresent(controller -> displayController(controller, parcelList));
     }
 
-    private void displayController(AbsInfoLuaController<?> controller, Collection<ParcelModel> parcels) {
+    private void displayController(AbsInfoLuaController<?> controller, Collection<ParcelCommon> parcels) {
 
         // Display sub controller
         _infoSubControllers.entrySet().stream()

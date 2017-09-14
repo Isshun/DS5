@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.common.ModuleBase;
+import org.smallbox.faraway.common.modelInfo.GraphicInfo;
 
 public class UIImage extends View {
     protected int _textureX;
@@ -74,8 +73,8 @@ public class UIImage extends View {
                         _sprite.setRegion(0, 0, _originWidth, _originHeight);
                         _sprite.setSize(_originWidth, _originHeight);
                         _sprite.setScale(
-                                (float)Application.config.uiScale,
-                                (float)Application.config.uiScale);
+                                UI_SCALE,
+                                UI_SCALE);
                         _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.plant;
 
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;

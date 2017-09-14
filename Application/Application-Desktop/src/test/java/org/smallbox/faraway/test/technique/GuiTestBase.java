@@ -3,10 +3,10 @@ package org.smallbox.faraway.test.technique;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import org.junit.Before;
 import org.smallbox.faraway.client.GDXApplication;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.common.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.ApplicationConfig;
-import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.util.FileUtils;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.farpoint.desktop.LwjglConfig;
 
 import java.awt.*;

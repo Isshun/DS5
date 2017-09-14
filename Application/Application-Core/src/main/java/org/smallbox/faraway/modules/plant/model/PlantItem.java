@@ -1,14 +1,14 @@
 package org.smallbox.faraway.modules.plant.model;
 
 import org.smallbox.faraway.GameSerializer;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Utils;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.plant.GardenArea;
 import org.smallbox.faraway.modules.plant.PlantGrowTask;
-import org.smallbox.faraway.util.Utils;
 
-import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
+import static org.smallbox.faraway.common.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
 @GameSerializer(PlantSerializer.class)
 public class PlantItem extends MapObjectModel {

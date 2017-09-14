@@ -8,7 +8,7 @@
 //import org.smallbox.faraway.client.ApplicationClient;
 //import org.smallbox.faraway.client.GDXApplication;
 //import org.smallbox.faraway.core.Application;
-//import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+//import org.smallbox.faraway.common.dependencyInjector.DependencyInjector;
 //import org.smallbox.faraway.core.game.ApplicationConfig;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.util.Log;

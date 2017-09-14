@@ -2,14 +2,14 @@
 //
 //import org.apache.commons.lang3.NotImplementedException;
 //import org.smallbox.faraway.core.Application;
-//import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+//import org.smallbox.faraway.common.modelInfo.ItemInfo;
 //import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 //import org.smallbox.faraway.modules.character.model.PathModel;
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.job.JobModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.modules.flora.model.PlantItem;
-//import org.smallbox.faraway.util.Log;
+//import org.smallbox.faraway.common.util.Log;
 //
 //public class GatherJob extends JobModel {
 //    public enum Mode {PLANT_SEED, NOURISH, HARVEST, CUT}

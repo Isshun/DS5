@@ -12,8 +12,8 @@
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.core.module.world.model.resource.ResourceModel;
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
-//import org.smallbox.faraway.util.Log;
-//import org.smallbox.faraway.util.Utils;
+//import org.smallbox.faraway.common.util.Log;
+//import org.smallbox.faraway.common.util.Utils;
 //
 ///**
 // * Created by Alex on 15/10/2015.

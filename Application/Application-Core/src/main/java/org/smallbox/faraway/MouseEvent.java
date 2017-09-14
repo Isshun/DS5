@@ -1,6 +1,6 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.common.GameEventListener;
 
 /**
  * Created by Alex on 23/07/2016.

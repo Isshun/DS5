@@ -2,18 +2,16 @@ package org.smallbox.faraway.core.game;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.GameTaskManager;
+import org.smallbox.faraway.common.*;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.PlanetInfo;
+import org.smallbox.faraway.common.modelInfo.RegionInfo;
+import org.smallbox.faraway.common.util.Log;
+import org.smallbox.faraway.common.util.Utils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.Utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -45,7 +43,7 @@ public class Game {
     private boolean                         _isRunning;
     private final GameInfo                  _info;
     private PlanetModel                     _planet;
-    private GameTime                        _gameTime;
+    private GameTime _gameTime;
     private int                             _tick;
     private Map<String, Boolean>            _displays;
     private int                             _speed;
@@ -61,15 +59,15 @@ public class Game {
         return _moduleScheduler;
     }
 
-    public void setDisplay(String displayName, boolean isActive) {
-        _displays.put(displayName, isActive);
-        Application.notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
-    }
-
-    public void toggleDisplay(String displayName) {
-        _displays.put(displayName, !_displays.containsKey(displayName) || !_displays.get(displayName));
-        Application.notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
-    }
+//    public void setDisplay(String displayName, boolean isActive) {
+//        _displays.put(displayName, isActive);
+//        Application.notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
+//    }
+//
+//    public void toggleDisplay(String displayName) {
+//        _displays.put(displayName, !_displays.containsKey(displayName) || !_displays.get(displayName));
+//        Application.notify(observer -> observer.onDisplayChange(displayName, _displays.get(displayName)));
+//    }
 
     public boolean                          isRunning() { return _isRunning; }
     public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }
@@ -183,13 +181,13 @@ public class Game {
         // Call onGameInit method to each modules
 //        _modules = Application.moduleManager.getGameModules().stream().filter(ModuleBase::isLoaded).collect(Collectors.toList());
         _modules.sort((o1, o2) -> o2.getModulePriority() - o1.getModulePriority());
-        _modules.forEach(module -> module.createGame(this));
+        _modules.forEach(module -> module.createGame());
 
         _status = GameStatus.CREATED;
     }
 
     public void start() {
-        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame(this));
+        _modules.stream().filter(ModuleBase::isLoaded).forEach(module -> module.startGame());
 
         _status = GameStatus.STARTED;
     }
@@ -219,9 +217,9 @@ public class Game {
                     _tick += 1;
                     _gameTime.add(1 / _tickPerHour);
 
-                    _modules.forEach(module -> module.updateGame(Game.this));
+                    _modules.forEach(module -> module.updateGame());
 
-                    Application.notify(gameObserver -> gameObserver.onGameUpdate(Game.this));
+                    Application.notify(gameObserver -> gameObserver.onGameUpdate());
 
                     if (listener != null) {
                         listener.onGameUpdate(this);

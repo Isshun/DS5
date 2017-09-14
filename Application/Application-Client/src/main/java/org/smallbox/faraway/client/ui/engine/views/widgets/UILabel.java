@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.common.ColorUtils;
+import org.smallbox.faraway.common.util.StringUtils;
 
 public class UILabel extends View {
     public static final int    REGULAR = 0;
@@ -23,7 +22,7 @@ public class UILabel extends View {
     private Color       _textColor = Color.BLACK;
     private int         _maxLength;
 
-    public UILabel(ModuleBase module) {
+    public UILabel(Object module) {
         super(module);
     }
 
@@ -316,7 +315,7 @@ public class UILabel extends View {
         return 0;
     }
 
-    public static UILabel create(ModuleBase module) {
+    public static UILabel create(Object module) {
         UILabel label = new UILabel(module);
         label.setSize(100, 32);
         return label;

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.groovy;
 
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 
 /**
  * Created by Alex on 26/11/2016.
@@ -51,7 +51,7 @@ public class GroovyManager {
 //
 //            GroovyScriptEngine engine = new GroovyScriptEngine(".");
 //            Script greeter = engine.createScript("ReloadingTest.groovy", binding);
-//            greeter.evaluate("import org.smallbox.faraway.core.game.modelInfo.*");
+//            greeter.evaluate("import org.smallbox.faraway.common.modelInfo.*");
 //            greeter.run();
 ////            greeter.invokeMethod("sayHello", null);
 ////            greeter.sayHello();

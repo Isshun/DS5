@@ -1,16 +1,16 @@
 package org.smallbox.faraway.modules.room;
 
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.util.AsyncTask;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.room.model.*;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.AsyncTask;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class RoomModule extends GameModule {
     }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         addRoomClass(QuarterRoom.class);
         addRoomClass(SickbayRoom.class);
         addRoomClass(CommonRoom.class);
@@ -59,7 +59,7 @@ public class RoomModule extends GameModule {
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
 
 //        _updateInterval = 10;
 //
@@ -78,7 +78,7 @@ public class RoomModule extends GameModule {
     public Collection<RoomModel> getRooms() { return _rooms; }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
 
         // TODO
         _rooms.forEach(room -> room.setTemperature(weatherModule.getTemperature()));

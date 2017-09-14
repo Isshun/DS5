@@ -2,15 +2,17 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.GameTaskManager;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.common.ApplicationConfig;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.GameObserverPriority;
+import org.smallbox.faraway.common.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.common.lua.LuaModuleManager;
+import org.smallbox.faraway.common.task.TaskManager;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.game.*;
+import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.GameSaveManager;
 import org.smallbox.faraway.core.groovy.GroovyManager;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
-import org.smallbox.faraway.core.task.TaskManager;
-import org.smallbox.faraway.modules.world.factory.WorldFactory;
 
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -37,7 +39,7 @@ public class Application {
     public static LuaModuleManager      luaModuleManager;
     public static TaskManager           taskManager;
     public static SQLManager            sqlManager;
-    public static Data                  data;
+    public static Data data;
     public static GroovyManager         groovyManager;
 
     // Both
@@ -52,6 +54,7 @@ public class Application {
         dependencyInjector = DependencyInjector.getInstance();
         gameManager = dependencyInjector.create(GameManager.class);
         taskManager = dependencyInjector.create(TaskManager.class);
+        taskManager.setRunInterface(Runnable::run);
         sqlManager = dependencyInjector.create(SQLManager.class);
         moduleManager = dependencyInjector.create(ModuleManager.class);
         luaModuleManager = dependencyInjector.create(ServerLuaModuleManager.class);
@@ -133,13 +136,4 @@ public class Application {
         return _observers;
     }
 
-    public static void runOnMainThread(Runnable runnable) {
-
-        if (Gdx.app != null) {
-            Gdx.app.postRunnable(runnable);
-        } else {
-            runnable.run();
-        }
-
-    }
 }

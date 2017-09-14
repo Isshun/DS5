@@ -1,9 +1,9 @@
 package org.smallbox.faraway.client.module;
 
 import org.smallbox.faraway.client.PlantCommon;
-import org.smallbox.faraway.common.CharacterCommon;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,5 +14,9 @@ public class PlantClientModule {
 
     public void update(PlantCommon plant) {
         plants.put(plant.id, plant);
+    }
+
+    public Collection<PlantCommon> getPlants() {
+        return plants.values();
     }
 }

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.render;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.render.layer.RenderLayer;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.common.util.Constant;
 
 /**
  * Created by Alex on 07/11/2015.

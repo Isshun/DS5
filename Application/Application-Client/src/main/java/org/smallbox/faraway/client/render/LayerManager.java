@@ -4,14 +4,13 @@ import com.badlogic.gdx.Input;
 import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.GameShortcut;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.util.Log;
 
 import java.lang.reflect.Modifier;
 import java.util.Collection;
@@ -47,7 +46,7 @@ public class LayerManager implements GameClientObserver {
     public Viewport getViewport() { return _viewport; }
 
     @Override
-    public void onGameInitLayers(Game game) {
+    public void onGameInitLayers() {
         // Find GameLayer annotated class
         _layers = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
@@ -56,8 +55,8 @@ public class LayerManager implements GameClientObserver {
 
                     try {
                         BaseLayer layer = cls.newInstance();
-                        Application.dependencyInjector.register(layer);
-                        Application.addObserver(layer);
+                        ApplicationClient.dependencyInjector.register(layer);
+                        ApplicationClient.addObserver(layer);
                         return layer;
                     } catch ( IllegalAccessException | InstantiationException e) {
                         throw new GameException(LayerManager.class, e);
@@ -68,33 +67,34 @@ public class LayerManager implements GameClientObserver {
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
 
-        _layers.forEach(layer -> layer.onGameInit(game));
+        _layers.forEach(GameObserver::onGameInit);
 
         // Create viewport
         _viewport = new Viewport(400, 300);
-        _viewport.setPosition(0, 0, game.getInfo().groundFloor);
+        _viewport.setPosition(0, 0, 1);
         ApplicationClient.dependencyInjector.register(_viewport);
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
         _frame = 0;
 
         // Call gameStart on each layer
-        _layers.forEach(render -> render.gameStart(game));
+        _layers.forEach(render -> render.gameStart(ApplicationClient.game.width, ApplicationClient.game.height));
     }
 
-    public void render(Game game) {
+    public void render() {
 
-        // Draw
-        if (Application.gameManager.isRunning()) {
-            _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
-        }
+//        // Draw
+//        if (Application.gameManager.isRunning()) {
+//            _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
+//        }
 
         ApplicationClient.layerManager.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
 
         // Move viewport
-        if (game.isRunning()) {
+        if (true) {
+//        if (game.isRunning()) {
             if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
             if (ApplicationClient.inputManager.getDirection()[1]) { _viewport.move(0, 20); }
             if (ApplicationClient.inputManager.getDirection()[2]) { _viewport.move(-20, 0); }
@@ -126,13 +126,13 @@ public class LayerManager implements GameClientObserver {
         return _layers;
     }
 
-    public void toggleRender(BaseLayer render) {
-        if (render.isLoaded()) {
-            render.unload();
-        } else {
-            render.gameStart(Application.gameManager.getGame());
-        }
-    }
+//    public void toggleRender(BaseLayer render) {
+//        if (render.isLoaded()) {
+//            render.unload();
+//        } else {
+//            render.gameStart(Application.gameManager.getGame());
+//        }
+//    }
 
     @GameShortcut(key = Input.Keys.PAGE_UP)
     public void onFloorUp() {

@@ -1,12 +1,12 @@
 package org.smallbox.faraway.modules.itemFactory;
 
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -43,7 +43,7 @@ public class ItemFactoryModule extends GameModule {
     private ItemModule itemModule;
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
         itemModule.getItems().stream()
                 .filter(item -> item.getFactory() != null)
                 .forEach(item -> {

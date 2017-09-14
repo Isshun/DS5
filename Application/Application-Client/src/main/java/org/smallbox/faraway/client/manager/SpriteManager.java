@@ -9,19 +9,13 @@ import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.NetworkItem;
-import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.modelInfo.GraphicInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.CollectionUtils;
+import org.smallbox.faraway.common.util.Constant;
+import org.smallbox.faraway.common.util.FileUtils;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -95,24 +89,24 @@ public class SpriteManager {
 //                .filter(file -> file.getName().endsWith(".png"))
 //                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
 
-        if (CollectionUtils.isNotEmpty(Application.data.getItems())) {
-            Application.data.getItems().forEach(itemInfo -> {
-                if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
-                    itemInfo.graphics.forEach(graphicInfo -> {
-                        _manager.load("data" + graphicInfo.path, Texture.class);
-                        File file = getFile(itemInfo, graphicInfo);
-                        if (file.exists()) {
-                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
-                        } else {
-                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(FileUtils.getFileHandle("data/graphics/missing.png")));
-                            Log.warning("Impossible de trouver la texture de l'item: " + itemInfo.name);
-                        }
-                    });
-                }
-            });
-        } else {
-            throw new GameException(SpriteManager.class, "Data collection should not be empty");
-        }
+//        if (CollectionUtils.isNotEmpty(ApplicationClient.data.getItems())) {
+//            ApplicationClient.data.getItems().forEach(itemInfo -> {
+//                if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
+//                    itemInfo.graphics.forEach(graphicInfo -> {
+//                        _manager.load("data" + graphicInfo.path, Texture.class);
+//                        File file = getFile(itemInfo, graphicInfo);
+//                        if (file.exists()) {
+//                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
+//                        } else {
+//                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(FileUtils.getFileHandle("data/graphics/missing.png")));
+//                            Log.warning("Impossible de trouver la texture de l'item: " + itemInfo.name);
+//                        }
+//                    });
+//                }
+//            });
+//        } else {
+//            throw new GameException(SpriteManager.class, "Data collection should not be empty");
+//        }
     }
 
     public Sprite getIcon(String path) {
@@ -138,7 +132,7 @@ public class SpriteManager {
     }
 
     public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
-    public Sprite getItem(StructureItem structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
+//    public Sprite getItem(StructureItem structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
 
     private Sprite getBluePrint() {
         long sum = getSum(-1, 0, 0, 0);
@@ -152,7 +146,7 @@ public class SpriteManager {
         return sprite;
     }
 
-    public Sprite getItem(NetworkItem networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
+//    public Sprite getItem(NetworkItem networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
 //    public Sprite getItem(UsableItem item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
 //    public Sprite getItem(UsableItem item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
@@ -163,8 +157,8 @@ public class SpriteManager {
         return getSprite(graphicInfo, parcelTile, itemTile, 255, false);
     }
 
-    public Sprite getItem(ConsumableItem consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
-    public Sprite getItem(ConsumableItem consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+//    public Sprite getItem(ConsumableItem consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
+//    public Sprite getItem(ConsumableItem consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
 
     public Sprite getIcon(ItemInfo info) {
         return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;
@@ -496,31 +490,31 @@ public class SpriteManager {
         return _icons.get(path);
     }
 
-    public Sprite getCharacter(CharacterModel c, int direction, int frame) {
-        int extra = c.getType().index;
-        int sum = 0;
-        sum = (sum << 8) + direction;
-        sum = (sum << 8) + frame;
-        sum = (sum << 8) + extra;
-
-        Sprite sprite = _spritesCharacters.get(sum);
-        if (sprite == null) {
-            Texture texture = new Texture(FileUtils.getFileHandle(c.getType().path));
-
-            sprite = new Sprite(texture, 0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT);
-            sprite.setFlip(false, true);
-
-//            sprite = new Sprite(texture,
-//                    Constant.CHAR_WIDTH * frame + (extra * 128),
-//                    Constant.CHAR_HEIGHT * direction,
-//                    Constant.CHAR_WIDTH,
-//                    Constant.CHAR_HEIGHT);
+//    public Sprite getCharacter(CharacterCommon c, int direction, int frame) {
+//        int extra = c.getType().index;
+//        int sum = 0;
+//        sum = (sum << 8) + direction;
+//        sum = (sum << 8) + frame;
+//        sum = (sum << 8) + extra;
 //
-            _spritesCharacters.put(sum, sprite);
-        }
-
-        return sprite;
-    }
+//        Sprite sprite = _spritesCharacters.get(sum);
+//        if (sprite == null) {
+//            Texture texture = new Texture(FileUtils.getFileHandle(c.getType().path));
+//
+//            sprite = new Sprite(texture, 0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT);
+//            sprite.setFlip(false, true);
+//
+////            sprite = new Sprite(texture,
+////                    Constant.CHAR_WIDTH * frame + (extra * 128),
+////                    Constant.CHAR_HEIGHT * direction,
+////                    Constant.CHAR_WIDTH,
+////                    Constant.CHAR_HEIGHT);
+////
+//            _spritesCharacters.put(sum, sprite);
+//        }
+//
+//        return sprite;
+//    }
 
     public Sprite getSelector(int tile) {
         return _selectors[tile % NB_SELECTOR_TILE];

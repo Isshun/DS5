@@ -2,16 +2,16 @@ package org.smallbox.faraway.modules.character;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.modelInfo.CharacterInfo;
+import org.smallbox.faraway.common.util.Constant;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
-import org.smallbox.faraway.util.Constant;
 
 public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
 

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.lua;
 import com.steadystate.css.dom.CSSValueImpl;
 import com.steadystate.css.dom.RGBColorImpl;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.common.ColorUtils;
 import org.w3c.dom.css.CSSStyleDeclaration;
 
 import java.util.HashMap;

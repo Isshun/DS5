@@ -9,12 +9,10 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.util.Log;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
@@ -40,7 +38,7 @@ public class LuaControllerManager implements GameObserver {
     public Map<String, LuaController> getControllers() { return _controllers; }
 
     @Override
-    public void onGameInitLayers(Game game) {
+    public void onGameInitLayers() {
         // TODO ?
 //        ApplicationClient.luaModuleManager.init();
 
@@ -69,19 +67,19 @@ public class LuaControllerManager implements GameObserver {
                 });
 
         // Bind game observers to controllers
-        _controllers.values().forEach(Application::addObserver);
+        _controllers.values().forEach(ApplicationClient::addObserver);
 
         // Register to DependencyInjector
         _controllers.values().forEach(ApplicationClient.dependencyInjector::register);
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
         ApplicationClient.notify(GameClientObserver::onReloadUI);
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
         if (System.currentTimeMillis() - _lastUpdate > 100) {
             _lastUpdate = System.currentTimeMillis();
             _controllers.forEach((clsName, controller) -> controller.controllerUpdate());

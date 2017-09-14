@@ -6,4 +6,8 @@ public class CharacterCommon extends ObjectModel {
     public int parcelY;
     public int parcelZ;
     public String name;
+
+    public String getName() {
+        return name;
+    }
 }

@@ -4,11 +4,11 @@
 //import org.smallbox.faraway.client.layer.GDXLayer;
 //import org.smallbox.faraway.client.layer.GameDisplay;
 //import org.smallbox.faraway.client.layer.Viewport;
-//import org.smallbox.faraway.core.dependencyInjector.BindModule;
+//import org.smallbox.faraway.common.dependencyInjector.BindModule;
 //import org.smallbox.faraway.core.module.room.model.RoomModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.module.room.RoomModule;
-//import org.smallbox.faraway.util.Constant;
+//import org.smallbox.faraway.common.util.Constant;
 //
 ///**
 // * Created by Alex on 14/06/2015.

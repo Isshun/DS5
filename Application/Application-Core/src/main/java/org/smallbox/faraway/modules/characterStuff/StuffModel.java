@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.characterStuff;
 
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 
 import java.util.ArrayList;
 import java.util.List;

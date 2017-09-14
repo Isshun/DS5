@@ -1,13 +1,15 @@
 package org.smallbox.faraway.modules.job;
 
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Constant;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
@@ -19,8 +21,6 @@ import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.modules.job.JobModel.JobStatus;
 import org.smallbox.faraway.modules.plant.BasicHarvestJob;
-import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -43,7 +43,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private ConsumableModule consumableModule;
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
 
         // Check all jobs
         _jobs.forEach(JobModel::check);
@@ -53,7 +53,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _jobs.removeIf(JobModel::isClose);
 
         // Run auto job
-        double hourInterval = getTickInterval() * game.getTickPerHour();
+        double hourInterval = getTickInterval() * Application.gameManager.getGame().getTickPerHour();
         _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null, hourInterval));
 
         // Assign job to inactive character
@@ -151,7 +151,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
         _jobs.add(job);
         sortJobs();
 
-        Application.notify(observer -> observer.onJobCreate(job));
+//        Application.notify(observer -> observer.onJobCreate(job));
     }
 
     private void sortJobs() {
@@ -181,7 +181,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     // TODO: utile ?
-    @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
         _jobs.stream().filter(JobModel::isOpen).forEach(job -> {
             if (object == null && job.getJobParcel() == parcel) {

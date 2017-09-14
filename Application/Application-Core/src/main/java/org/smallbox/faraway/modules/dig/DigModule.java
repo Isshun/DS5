@@ -1,15 +1,15 @@
 package org.smallbox.faraway.modules.dig;
 
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.util.CollectionUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class DigModule extends GameModule {
     private Map<ParcelModel, BasicDigJob> _parcels = new ConcurrentHashMap<>();
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
 
         areaModule.addAreaClass(DigArea.class);
 
@@ -54,7 +54,7 @@ public class DigModule extends GameModule {
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
         List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
         List<ParcelModel> parcelInDigJob = jobModule.getJobs().stream()
                 .filter(job -> job instanceof BasicDigJob)

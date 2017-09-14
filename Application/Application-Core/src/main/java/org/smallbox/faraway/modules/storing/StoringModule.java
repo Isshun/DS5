@@ -1,10 +1,10 @@
 package org.smallbox.faraway.modules.storing;
 
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.area.AreaModule;
@@ -42,12 +42,12 @@ public class StoringModule extends GameModule {
     private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         areaModule.addAreaClass(StorageArea.class);
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onModuleUpdate() {
 
         if (_checkQueue.isEmpty()) {
             _checkQueue.addAll(consumableModule.getConsumables());

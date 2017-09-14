@@ -3,13 +3,13 @@ package org.smallbox.faraway.core.game;
 import org.apache.commons.compress.archivers.*;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
+import org.smallbox.faraway.common.AbsGameModule;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.util.FileUtils;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ public class GameSaveManager {
     }
 
     public void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
-        Application.notify(observer -> observer.onCustomEvent("load_game.begin", null));
+//        Application.notify(observer -> observer.onCustomEvent("load_game.begin", null));
         long time = System.currentTimeMillis();
 
         try {
@@ -66,7 +66,7 @@ public class GameSaveManager {
                 // TODO
 //                dbFile.delete();
                 Log.info("Load onSave game: " + (System.currentTimeMillis() - time));
-                Application.notify(observer -> observer.onCustomEvent("load_game.complete", null));
+//                Application.notify(observer -> observer.onCustomEvent("load_game.complete", null));
             });
         } catch (IOException | ArchiveException e) {
             Log.error(e);
@@ -97,7 +97,7 @@ public class GameSaveManager {
     }
 
     private void save(Game game, File gameDirectory, String filename) {
-        Application.notify(observer -> observer.onCustomEvent("save_game.begin", null));
+//        Application.notify(observer -> observer.onCustomEvent("save_game.begin", null));
         long time = System.currentTimeMillis();
 
         // Create DB file
@@ -139,7 +139,7 @@ public class GameSaveManager {
                 }
 
                 Log.notice("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
-                Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
+//                Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
                 throw new GameException(GameSaveManager.class, e, "Error during game save");
             }

@@ -1,11 +1,11 @@
 package org.smallbox.faraway.client.ui.engine;
 
+import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.common.ColorUtils;
+import org.smallbox.faraway.common.ParcelCommon;
 
 public abstract class UICursor {
     protected UIFrame RES_ODD;
@@ -24,8 +24,8 @@ public abstract class UICursor {
     void    draw(GDXRenderer renderer, Viewport viewport, int startX, int startY, int toX, int toY, boolean isPressed) {
         startX = Math.max(startX, 0);
         startY = Math.max(startY, 0);
-        toX = Math.min(toX, Application.gameManager.getGame().getInfo().worldWidth);
-        toY = Math.min(toY, Application.gameManager.getGame().getInfo().worldHeight);
+        toX = Math.min(toX, ApplicationClient.game.width);
+        toY = Math.min(toY, ApplicationClient.game.height);
 
 //        for (int x = startX; x <= toX; x++) {
 //            for (int y = startY; y <= toY; y++) {
@@ -34,5 +34,5 @@ public abstract class UICursor {
 //        }
     }
 
-    protected abstract void onDraw(GDXRenderer renderer, ParcelModel parcel, int x, int y, boolean odd, boolean isPressed);
+    protected abstract void onDraw(GDXRenderer renderer, ParcelCommon parcel, int x, int y, boolean odd, boolean isPressed);
 }

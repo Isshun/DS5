@@ -1,14 +1,14 @@
 package org.smallbox.faraway.modules.plant;
 
 import org.smallbox.faraway.GameTaskManager;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -47,12 +47,12 @@ public class PlantModule extends GameModule {
     private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         areaModule.addAreaClass(GardenArea.class);
     }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onModuleUpdate() {
         // Fait pousser les plantes
         _plants.stream()
                 .filter(plant -> plant.task == null && plant.hasSeed() && computeGrowingInfo(plant))

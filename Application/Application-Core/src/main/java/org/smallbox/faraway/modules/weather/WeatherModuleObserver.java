@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.weather;
 
-import org.smallbox.faraway.core.engine.module.ModuleObserver;
-import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
+import org.smallbox.faraway.common.ModuleObserver;
+import org.smallbox.faraway.common.modelInfo.WeatherInfo;
 
 /**
  * Created by Alex on 15/07/2016.

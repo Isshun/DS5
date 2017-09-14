@@ -5,9 +5,9 @@ import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Path;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import org.smallbox.faraway.common.util.Utils;
 import org.smallbox.faraway.core.module.path.spline.BezierPath;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import org.smallbox.faraway.core.game.ApplicationConfig;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.common.ApplicationConfig;
+import org.smallbox.faraway.common.util.Constant;
 
 /**
  * Created by Alex on 22/11/2015.

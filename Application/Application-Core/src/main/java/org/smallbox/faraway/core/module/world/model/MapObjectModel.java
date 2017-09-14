@@ -1,8 +1,9 @@
 package org.smallbox.faraway.core.module.world.model;
 
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.GraphicInfo;
+import org.smallbox.faraway.common.modelInfo.ItemFilter;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.job.JobModel;
 
 import java.util.Collection;

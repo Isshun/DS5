@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.common.GameEventListener;
+import org.smallbox.faraway.common.util.Constant;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;

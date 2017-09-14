@@ -1,7 +1,9 @@
 package org.smallbox.faraway.core.game.model.planet;
 
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.modelInfo.PlanetInfo;
+import org.smallbox.faraway.common.modelInfo.RegionInfo;
+import org.smallbox.faraway.common.util.Constant;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import java.util.Map;
  */
 public class PlanetModel {
     private final PlanetAreaModel[][]   _areas;
-    private final PlanetInfo            _info;
+    private final PlanetInfo _info;
     private double                      _oxygen;
 
     public PlanetModel(PlanetInfo info) {

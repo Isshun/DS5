@@ -2,18 +2,18 @@ package org.smallbox.faraway.modules.character;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
-import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.BaseServerLuaExtend;
+import org.smallbox.faraway.common.ModuleBase;
+import org.smallbox.faraway.common.lua.data.DataExtendException;
+import org.smallbox.faraway.common.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.Application;
 
 import java.io.File;
 
 /**
  * Created by Alex on 22/11/2015.
  */
-public class LuaCharacterExtend extends LuaExtend {
+public class LuaCharacterExtend extends BaseServerLuaExtend {
 
     @Override
     public boolean accept(String type) {
@@ -21,9 +21,9 @@ public class LuaCharacterExtend extends LuaExtend {
     }
 
     @Override
-    public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
+    public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
         String name = getString(value, "name", null);
-        CharacterInfo characterInfo = data.characters.computeIfAbsent(name, k -> new CharacterInfo(name));
+        CharacterInfo characterInfo = Application.data.characters.computeIfAbsent(name, k -> new CharacterInfo(name));
 
         characterInfo.path = "data/characters/human.png";
 

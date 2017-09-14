@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.character.model.base;
 
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.common.modelInfo.CharacterInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Utils;
 
 /**
  * Created by Alex on 11/03/2017.

@@ -1,11 +1,12 @@
 package org.smallbox.faraway.modules.item;
 
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -18,7 +19,6 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Log;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
@@ -62,7 +62,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         _items = new LinkedBlockingQueue<>();
 
         jobModule.addObserver(new JobModuleObserver() {
@@ -81,31 +81,30 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     }
 
     @Override
-    public void onGameStart(Game game) {
+    public void onGameStart() {
         _items.stream()
                 .filter(item -> item.getBuildValue() < item.getBuildCost())
                 .forEach(this::launchBuild);
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
         createBuildJobs(jobModule, consumableModule, _items);
         createRepairJobs(jobModule, _items);
     }
 
-    @Override
-    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-        if (itemInfo.isUserItem) {
-            UsableItem item = new UsableItem(itemInfo, data);
-            item.setParcel(parcel);
-            item.init();
-            _items.add(item);
+//    @Override
+//    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+//        if (itemInfo.isUserItem) {
+//            UsableItem item = new UsableItem(itemInfo, data);
+//            item.setParcel(parcel);
+//            item.init();
+//            _items.add(item);
+//
+//            notifyObservers(obs -> obs.onAddItem(parcel, item));
+//        }
+//    }
 
-            notifyObservers(obs -> obs.onAddItem(parcel, item));
-        }
-    }
-
-    @Override
     public void removeObject(MapObjectModel mapObjectModel) {
         if (mapObjectModel.isUserItem() && mapObjectModel instanceof UsableItem) {
             _items.remove(mapObjectModel);

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.module.world.model;
 
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 
 /**
  * Created by Alex on 11/07/2015.

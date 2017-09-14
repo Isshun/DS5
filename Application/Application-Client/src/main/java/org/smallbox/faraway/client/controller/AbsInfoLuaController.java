@@ -4,10 +4,12 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.CollectionUtils;
+import org.smallbox.faraway.common.ParcelCommon;
+import org.smallbox.faraway.common.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -28,7 +30,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     }
 
     // TODO: verifier que la liste des parcel contient au moins un item affichable
-    public void displayToto(Collection<ParcelModel> parcelList) {
+    public void displayToto(Collection<ParcelCommon> parcelList) {
         setVisible(true);
         listSelected.clear();
         parcelList.forEach(parcel -> {
@@ -51,7 +53,7 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
     }
 
     @Override
-    public boolean onClickOnParcel(List<ParcelModel> parcels) {
+    public boolean onClickOnParcel(List<ParcelCommon> parcels) {
 //        list = parcels.stream()
 //                .map(this::getObjectOnParcel)
 //                .filter(Objects::nonNull)
@@ -97,6 +99,6 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
 
     protected abstract void onDisplayMultiple(Queue<T> objects);
 
-    public abstract T getObjectOnParcel(ParcelModel parcel);
+    public abstract T getObjectOnParcel(ParcelCommon parcel);
 
 }

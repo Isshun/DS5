@@ -3,8 +3,6 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnKeyListener;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;
 
@@ -19,7 +17,7 @@ public class UIGrid extends View {
     private int         _index;
     private boolean     _keepSorted;
 
-    public UIGrid(ModuleBase module) {
+    public UIGrid(Object module) {
         super(module);
     }
 
@@ -136,11 +134,11 @@ public class UIGrid extends View {
     }
 
     public void setRowHeight(int rowHeight) {
-        _rowHeight = (int) (rowHeight * Application.config.uiScale);
+        _rowHeight = (int) (rowHeight * UI_SCALE);
     }
 
     public void setColumnWidth(int columnWidth) {
-        _columnWidth = (int) (columnWidth * Application.config.uiScale);
+        _columnWidth = (int) (columnWidth * UI_SCALE);
     }
 
     public int getColumnWidth() {

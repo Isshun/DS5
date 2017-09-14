@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.module.world;
 
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
 
 import java.io.File;
 import java.util.Queue;

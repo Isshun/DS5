@@ -1,10 +1,8 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
 
 import java.util.Collection;
 
@@ -80,14 +78,14 @@ public class GameEventManager implements EventManager {
         if (button == Input.Buttons.RIGHT) {
             if (selected != null) {
                 for (ObjectModel object: selected) {
-                    if (object instanceof CharacterModel) {
-                        ((CharacterModel)object).moveTo(WorldHelper.getParcel(
-                                ApplicationClient.layerManager.getViewport().getWorldPosX(x),
-                                ApplicationClient.layerManager.getViewport().getWorldPosY(y),
-                                ApplicationClient.layerManager.getViewport().getFloor()
-                        ));
-                        return true;
-                    }
+//                    if (object instanceof CharacterModel) {
+//                        ((CharacterModel)object).moveTo(WorldHelper.getParcel(
+//                                ApplicationClient.layerManager.getViewport().getWorldPosX(x),
+//                                ApplicationClient.layerManager.getViewport().getWorldPosY(y),
+//                                ApplicationClient.layerManager.getViewport().getFloor()
+//                        ));
+//                        return true;
+//                    }
                 }
             }
         }

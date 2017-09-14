@@ -1,25 +1,28 @@
 package org.smallbox.faraway.modules.consumable;
 
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameModule;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemFilter;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Log;
+import org.smallbox.faraway.common.util.Utils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.Data;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.core.module.world.model.*;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Log;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -266,7 +269,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     @Override
-    public void onGameCreate(Game game) {
+    public void onGameCreate() {
         _consumables = new LinkedBlockingQueue<>();
 
         structureModule.addObserver(new StructureModuleObserver() {
@@ -306,7 +309,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     @Override
-    protected void onModuleUpdate(Game game) {
+    protected void onModuleUpdate() {
         _consumables.forEach(ConsumableItem::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
@@ -452,19 +455,19 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
     }
 
-    @Override
-    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
-        if (itemInfo.isConsumable) {
-            putConsumable(parcel, itemInfo, data);
-        }
-    }
-
-    @Override
-    public void removeObject(MapObjectModel mapObjectModel) {
-        if (mapObjectModel.isConsumable() && mapObjectModel instanceof ConsumableItem) {
-            removeConsumable((ConsumableItem) mapObjectModel);
-        }
-    }
+//    @Override
+//    public void putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) {
+//        if (itemInfo.isConsumable) {
+//            putConsumable(parcel, itemInfo, data);
+//        }
+//    }
+//
+//    @Override
+//    public void removeObject(MapObjectModel mapObjectModel) {
+//        if (mapObjectModel.isConsumable() && mapObjectModel instanceof ConsumableItem) {
+//            removeConsumable((ConsumableItem) mapObjectModel);
+//        }
+//    }
 
     public ConsumableItem putConsumable(ParcelModel parcel, ItemInfo itemInfo, int quantity) {
         throw new RuntimeException("this method is deprecated");

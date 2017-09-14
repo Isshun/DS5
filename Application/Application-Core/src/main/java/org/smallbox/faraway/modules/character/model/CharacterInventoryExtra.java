@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.character.model;
 
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.model.base.CharacterExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;

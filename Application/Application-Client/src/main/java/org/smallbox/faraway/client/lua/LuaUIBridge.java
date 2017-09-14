@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.lua;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
-import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
-import org.smallbox.faraway.core.engine.module.lua.LuaModule;
+import org.smallbox.faraway.common.lua.LuaExtendInterface;
+import org.smallbox.faraway.common.lua.LuaModule;
 
 /**
  * Created by Alex on 12/04/2016.

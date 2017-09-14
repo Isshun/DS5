@@ -1,15 +1,14 @@
 package org.smallbox.faraway.core.game;
 
-import com.badlogic.gdx.Input;
 import org.json.JSONObject;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.util.FileUtils;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +60,7 @@ public class GameManager implements GameObserver {
         _game.loadModules();
         _game.loadLayers();
 
-        Application.notify(observer -> observer.onGameInitLayers(_game));
+        Application.notify(observer -> observer.onGameInitLayers());
 
         Application.dependencyInjector.injectGameDependencies();
 
@@ -74,7 +73,7 @@ public class GameManager implements GameObserver {
         _game.createModules();
 
 //        Application.runOnMainThread(() -> {
-            Application.notify(observer -> observer.onGameInit(_game));
+            Application.notify(observer -> observer.onGameInit());
 
             if (listener != null) {
                 listener.onGameCreate(_game);
@@ -85,11 +84,11 @@ public class GameManager implements GameObserver {
 
         // TODO: qui à la rsp de l'envoi des events ?
 //        Application.runOnMainThread(() -> {
-            Application.notify(observer -> observer.onGameStart(_game));
+            Application.notify(observer -> observer.onGameStart());
 //        });
 
         _game.start();
-        _game.getModules().forEach(module -> module.startGame(_game));
+        _game.getModules().forEach(module -> module.startGame());
 
         Application.clientListener.onInitComplete();
 
@@ -110,7 +109,7 @@ public class GameManager implements GameObserver {
 
             _game.loadModules();
 
-            Application.notify(observer -> observer.onGameInit(_game));
+            Application.notify(observer -> observer.onGameInit());
 
             Application.dependencyInjector.injectGameDependencies();
 
@@ -122,10 +121,10 @@ public class GameManager implements GameObserver {
 
             gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
 
-                Application.notify(observer -> observer.onGameStart(_game));
+                Application.notify(observer -> observer.onGameStart());
 
                 _game.start();
-                _game.getModules().forEach(module -> module.startGame(_game));
+                _game.getModules().forEach(module -> module.startGame());
 
                 Application.clientListener.onInitComplete();
 
@@ -202,13 +201,13 @@ public class GameManager implements GameObserver {
                 });
     }
 
-    @GameShortcut(key = Input.Keys.F5)
-    public void actionQuickSaveGame() {
-        Log.notice("quickSaveGame");
-        gameSaveManager.saveGame(
-                Application.gameManager.getGame(),
-                Application.gameManager.getGame().getInfo(),
-                GameInfo.Type.FAST);
-    }
+//    @GameShortcut(key = Input.Keys.F5)
+//    public void actionQuickSaveGame() {
+//        Log.notice("quickSaveGame");
+//        gameSaveManager.saveGame(
+//                Application.gameManager.getGame(),
+//                Application.gameManager.getGame().getInfo(),
+//                GameInfo.Type.FAST);
+//    }
 
 }

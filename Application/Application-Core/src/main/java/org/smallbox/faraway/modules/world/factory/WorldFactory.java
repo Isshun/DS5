@@ -2,12 +2,12 @@ package org.smallbox.faraway.modules.world.factory;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.RegionInfo;
+import org.smallbox.faraway.core.Data;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
-import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;

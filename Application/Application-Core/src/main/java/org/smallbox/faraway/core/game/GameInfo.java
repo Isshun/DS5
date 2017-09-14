@@ -2,11 +2,11 @@ package org.smallbox.faraway.core.game;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.modelInfo.PlanetInfo;
+import org.smallbox.faraway.common.modelInfo.RegionInfo;
+import org.smallbox.faraway.common.util.Constant;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
-import org.smallbox.faraway.util.Constant;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

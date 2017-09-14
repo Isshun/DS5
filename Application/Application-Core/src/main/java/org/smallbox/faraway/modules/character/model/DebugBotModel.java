@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.character.model;
 
-import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.common.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;

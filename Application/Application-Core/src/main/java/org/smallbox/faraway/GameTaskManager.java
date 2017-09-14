@@ -1,6 +1,6 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 
 import java.util.ArrayList;

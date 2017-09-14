@@ -1,32 +1,21 @@
 package org.smallbox.faraway.client.debug.layer;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameEventManager;
+import org.smallbox.faraway.client.GameLayer;
+import org.smallbox.faraway.client.GameShortcut;
+import org.smallbox.faraway.client.module.PlantClientModule;
 import org.smallbox.faraway.client.module.TaskClientModule;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.item.ItemModule;
-import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.plant.PlantModule;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,20 +27,20 @@ public class DebugLayer extends BaseLayer {
     @BindComponent
     private Game game;
 
-    @BindComponent
-    private CharacterModule characterModule;
+//    @BindComponent
+//    private CharacterModule characterModule;
+
+//    @BindComponent
+//    private ItemModule itemModule;
+
+//    @BindComponent
+//    private JobModule jobModule;
 
     @BindComponent
-    private ItemModule itemModule;
+    private PlantClientModule plantModule;
 
-    @BindComponent
-    private JobModule jobModule;
-
-    @BindComponent
-    private PlantModule plantModule;
-
-    @BindComponent
-    private ConsumableModule consumableModule;
+//    @BindComponent
+//    private ConsumableModule consumableModule;
 
     @BindComponent
     private GameEventManager gameEventManager;
@@ -94,27 +83,28 @@ public class DebugLayer extends BaseLayer {
 
             // Display consumables
             case CONSUMABLE:
-                if (consumableModule != null && consumableModule.getConsumables() != null) {
-                    Map<ItemInfo, Integer> consumables = new HashMap<>();
-                    consumableModule.getConsumables().forEach(consumable -> {
-                        int quantity = consumables.getOrDefault(consumable.getInfo(), 0);
-                        consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
-                    });
-
-                    consumables.forEach((key, value) -> drawDebugConsumableInfo(renderer, key, value));
-                }
+//                if (consumableModule != null && consumableModule.getConsumables() != null) {
+//                    Map<ItemInfo, Integer> consumables = new HashMap<>();
+//                    consumableModule.getConsumables().forEach(consumable -> {
+//                        int quantity = consumables.getOrDefault(consumable.getInfo(), 0);
+//                        consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
+//                    });
+//
+//                    consumables.forEach((key, value) -> drawDebugConsumableInfo(renderer, key, value));
+//                }
                 break;
 
             // Display items
             case ITEM:
-                if (itemModule != null && itemModule.getItems() != null) {
-                    itemModule.getItems().forEach(item -> drawDebugItem(renderer, item));
-                }
+//                if (itemModule != null && itemModule.getItems() != null) {
+//                    itemModule.getItems().forEach(item -> drawDebugItem(renderer, item));
+//                }
                 break;
 
             case PLANT:
                 if (plantModule != null && plantModule.getPlants() != null) {
-                    plantModule.getPlants().forEach(plant -> drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity()));
+                    plantModule.getPlants().forEach(plant -> drawDebug(renderer, "Plant", plant.id));
+//                    plantModule.getPlants().forEach(plant -> drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity()));
                 }
                 break;
 
@@ -128,42 +118,42 @@ public class DebugLayer extends BaseLayer {
                                             render.getClass().getSimpleName(),
                                             render.isVisible() ? "x" : " ",
                                             render.getCumulateTime() / 1000,
-                                            render.getCumulateTime() / 1000 / (double)game.getTick())));
+                                            0)));
                 }
                 break;
 
             // Display jobs
             case JOB:
-                if (jobModule != null && jobModule.getJobs() != null) {
-                    jobModule.getJobs().forEach(job -> {
-                        drawDebug(renderer, "JOB",
-                                String.format("%s, %.2f, %s",
-                                        job.getMainLabel(),
-                                        job.getProgress(),
-                                        job.getLastReturn()
-                                )
-                        );
-                        job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));
-                    });
-                }
+//                if (jobModule != null && jobModule.getJobs() != null) {
+//                    jobModule.getJobs().forEach(job -> {
+//                        drawDebug(renderer, "JOB",
+//                                String.format("%s, %.2f, %s",
+//                                        job.getMainLabel(),
+//                                        job.getProgress(),
+//                                        job.getLastReturn()
+//                                )
+//                        );
+//                        job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));
+//                    });
+//                }
                 break;
 
             // Display characters
             case CHARACTER:
-                if (characterModule != null && characterModule.getCharacters() != null) {
-                    characterModule.getCharacters().forEach(character -> drawDebugCharacter(renderer, character));
-                }
+//                if (characterModule != null && characterModule.getCharacters() != null) {
+//                    characterModule.getCharacters().forEach(character -> drawDebugCharacter(renderer, character));
+//                }
                 break;
 
             // Display characters
             case MODULE:
-                game.getModules().stream()
-                        .sorted(Comparator.comparingLong(AbsGameModule::getCumulateTime).reversed())
-                        .forEach(module -> drawDebug(renderer, "MODULE",
-                                String.format("%-32s total: %-5d med: %.2f",
-                                        module.getName(),
-                                        module.getCumulateTime() / 1000,
-                                        module.getCumulateTime() / 1000 / (double)game.getTick())));
+//                game.getModules().stream()
+//                        .sorted(Comparator.comparingLong(AbsGameModule::getCumulateTime).reversed())
+//                        .forEach(module -> drawDebug(renderer, "MODULE",
+//                                String.format("%-32s total: %-5d med: %.2f",
+//                                        module.getName(),
+//                                        module.getCumulateTime() / 1000,
+//                                        module.getCumulateTime() / 1000 / (double)game.getTick())));
                 break;
 
             case SHORTCUTS:
@@ -178,8 +168,8 @@ public class DebugLayer extends BaseLayer {
                 drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.layerManager.getViewport().getFloor());
                 drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.layerManager.getViewport().getWidth() + " x " + ApplicationClient.layerManager.getViewport().getHeight());
 
-                drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
-                drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
+//                drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
+//                drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
 
                 if (ApplicationClient.selectionManager.getSelected() != null) {
                     ApplicationClient.selectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
@@ -188,47 +178,47 @@ public class DebugLayer extends BaseLayer {
                 drawDebug(renderer, "Cursor screen position", gameEventManager.getMouseX() + " x " + gameEventManager.getMouseY());
                 drawDebug(renderer, "Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()));
 
-                ParcelModel parcel = WorldHelper.getParcel(
-                        ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()),
-                        ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
-                        ApplicationClient.layerManager.getViewport().getFloor());
-                drawDebug(renderer, "Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
+//                ParcelModel parcel = WorldHelper.getParcel(
+//                        ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()),
+//                        ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
+//                        ApplicationClient.layerManager.getViewport().getFloor());
+//                drawDebug(renderer, "Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
                 break;
         }
 
     }
 
-    private void drawDebugItem(GDXRenderer renderer, UsableItem item) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(item.getName()).append(" ").append(item.getParcel().x).append("x").append(item.getParcel().y);
-
-        if (item.getFactory() != null) {
-            sb.append(" factory: ").append(item.getFactory().getMessage());
-            if (item.getFactory().getRunningReceipt() != null) {
-                sb.append(" cost remaining: ").append(item.getFactory().getRunningReceipt().getCostRemaining());
-            }
-        }
-
-        if (item.getInventory() != null) {
-            sb.append(" inventory: ");
-            item.getInventory().forEach(consumable -> sb.append(consumable.getLabel()).append("x").append(consumable.getFreeQuantity()).append(" "));
-        }
-
-        drawDebug(renderer, "Item", sb.toString());
-    }
-
-    private void drawDebugConsumableInfo(GDXRenderer renderer, ItemInfo itemInfo, int quantity) {
-        drawDebug(renderer, "Consumable", itemInfo.label + " x " + quantity);
-    }
-
-    private void drawDebugCharacter(GDXRenderer renderer, CharacterModel character) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(character.getName()).append(" ").append(character.getParcel().x).append("x").append(character.getParcel().y);
-        if (character.getJob() != null) {
-            sb.append(" job: ").append(character.getJob().getLabel());
-        }
-        drawDebug(renderer, "Character", sb.toString());
-    }
+//    private void drawDebugItem(GDXRenderer renderer, UsableItem item) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(item.getName()).append(" ").append(item.getParcel().x).append("x").append(item.getParcel().y);
+//
+//        if (item.getFactory() != null) {
+//            sb.append(" factory: ").append(item.getFactory().getMessage());
+//            if (item.getFactory().getRunningReceipt() != null) {
+//                sb.append(" cost remaining: ").append(item.getFactory().getRunningReceipt().getCostRemaining());
+//            }
+//        }
+//
+//        if (item.getInventory() != null) {
+//            sb.append(" inventory: ");
+//            item.getInventory().forEach(consumable -> sb.append(consumable.getLabel()).append("x").append(consumable.getFreeQuantity()).append(" "));
+//        }
+//
+//        drawDebug(renderer, "Item", sb.toString());
+//    }
+//
+//    private void drawDebugConsumableInfo(GDXRenderer renderer, ItemInfo itemInfo, int quantity) {
+//        drawDebug(renderer, "Consumable", itemInfo.label + " x " + quantity);
+//    }
+//
+//    private void drawDebugCharacter(GDXRenderer renderer, CharacterModel character) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(character.getName()).append(" ").append(character.getParcel().x).append("x").append(character.getParcel().y);
+//        if (character.getJob() != null) {
+//            sb.append(" job: ").append(character.getJob().getLabel());
+//        }
+//        drawDebug(renderer, "Character", sb.toString());
+//    }
 
     private void drawHeaders(GDXRenderer renderer) {
         int index = 0;
@@ -256,7 +246,7 @@ public class DebugLayer extends BaseLayer {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
+    public void onGameUpdate() {
         _lastUpdate = System.currentTimeMillis();
     }
 

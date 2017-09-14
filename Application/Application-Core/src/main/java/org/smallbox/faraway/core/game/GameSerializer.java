@@ -1,9 +1,9 @@
 package org.smallbox.faraway.core.game;
 
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
+import org.smallbox.faraway.common.AbsGameModule;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.module.ModuleSerializer;
-import org.smallbox.faraway.util.Log;
 
 public abstract class GameSerializer<T_MODULE> {
     public abstract void onSave(T_MODULE module, Game game);

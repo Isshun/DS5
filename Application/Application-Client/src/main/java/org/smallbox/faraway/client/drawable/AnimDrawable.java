@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.drawable;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.ApplicationClient;
-import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.common.util.Constant;
 
 /**
  * Created by Alex on 15/07/2015.

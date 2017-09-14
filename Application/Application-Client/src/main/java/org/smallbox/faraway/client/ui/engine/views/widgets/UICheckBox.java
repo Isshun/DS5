@@ -3,9 +3,9 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.util.StringUtils;
+import org.smallbox.faraway.common.ColorUtils;
+import org.smallbox.faraway.common.ModuleBase;
+import org.smallbox.faraway.common.util.StringUtils;
 
 public class UICheckBox extends View {
     public static final int    REGULAR = 0;

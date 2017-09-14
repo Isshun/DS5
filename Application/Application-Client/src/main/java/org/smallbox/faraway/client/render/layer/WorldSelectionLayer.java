@@ -3,7 +3,7 @@
 //import com.badlogic.gdx.graphics.Color;
 //import org.smallbox.faraway.client.render.Viewport;
 //import org.smallbox.faraway.core.GameLayer;
-//import org.smallbox.faraway.core.dependencyInjector.BindModule;
+//import org.smallbox.faraway.common.dependencyInjector.BindModule;
 //import org.smallbox.faraway.modules.world.WorldModule;
 //
 //@GameLayer(level = 999, visible = true)

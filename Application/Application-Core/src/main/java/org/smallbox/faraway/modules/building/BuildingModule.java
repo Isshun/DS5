@@ -1,6 +1,6 @@
 //package org.smallbox.faraway.modules.building;
 //
-//import org.smallbox.faraway.core.dependencyInjector.BindModule;
+//import org.smallbox.faraway.common.dependencyInjector.BindModule;
 //import org.smallbox.faraway.core.engine.module.GameModule;
 //import org.smallbox.faraway.core.game.Game;
 //import org.smallbox.faraway.core.module.path.PathManager;
@@ -36,12 +36,12 @@
 //    private PathManager pathManager;
 //
 //    @Override
-//    public void onGameCreate(Game game) {
+//    public void onGameCreate() {
 //        areaModule.addAreaClass(StorageArea.class);
 //    }
 //
 //    @Override
-//    public void onModuleUpdate(Game game) {
+//    public void onModuleUpdate() {
 //    }
 //
 //}

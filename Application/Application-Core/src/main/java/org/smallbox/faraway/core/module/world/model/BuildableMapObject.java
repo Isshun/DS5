@@ -1,8 +1,8 @@
 package org.smallbox.faraway.core.module.world.model;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 

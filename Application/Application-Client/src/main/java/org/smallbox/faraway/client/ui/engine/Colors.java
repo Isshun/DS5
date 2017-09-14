@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.engine;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.common.ColorUtils;
 
 public class Colors {
     protected static final Color BT_ACTIVE = ColorUtils.fromHex(29, 85, 96, 180);

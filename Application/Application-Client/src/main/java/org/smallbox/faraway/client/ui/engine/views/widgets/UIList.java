@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.ConcurrentModificationException;
 import java.util.stream.Collectors;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
  */
 public class UIList extends View implements AutoCloseable {
 
-    public UIList(ModuleBase module) {
+    public UIList(Object module) {
         super(module);
     }
 

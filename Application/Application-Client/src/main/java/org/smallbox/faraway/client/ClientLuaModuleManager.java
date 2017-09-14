@@ -5,12 +5,10 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.client.lua.LuaUIBridge;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
-import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
+import org.smallbox.faraway.common.ModuleBase;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.lua.LuaDataModel;
+import org.smallbox.faraway.common.lua.LuaModuleManager;
 
 import java.io.File;
 
@@ -36,7 +34,8 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "end end",
                 "main").call();
         globals.get("main").call(
-                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
+//                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
+                null,
                 CoerceJavaToLua.coerce(new LuaUIBridge(null) {
                     @Override
                     public void extend(LuaValue values) {

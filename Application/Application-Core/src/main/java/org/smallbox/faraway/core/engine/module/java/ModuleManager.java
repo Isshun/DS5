@@ -1,14 +1,14 @@
 package org.smallbox.faraway.core.engine.module.java;
 
 import org.reflections.Reflections;
+import org.smallbox.faraway.common.GameException;
+import org.smallbox.faraway.common.GameObserver;
+import org.smallbox.faraway.common.ModuleBase;
+import org.smallbox.faraway.common.ModuleInfo;
+import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
-import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;

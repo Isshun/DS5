@@ -1,19 +1,19 @@
 package org.smallbox.faraway.modules.world;
 
 import com.esotericsoftware.kryonet.Connection;
+import org.smallbox.faraway.common.GameModule;
 import org.smallbox.faraway.common.ParcelCommon;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
+import org.smallbox.faraway.common.modelInfo.ItemInfo;
+import org.smallbox.faraway.common.util.Constant;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
-import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +37,17 @@ public class WorldModule extends GameModule {
     private int                                 _floor = WorldHelper.getCurrentFloor();
 
     @Override
-    public void onGameStart(Game game) { }
+    public void onGameStart() { }
 
     @Override
-    public void onModuleUpdate(Game game) {
+    public void onModuleUpdate() {
     }
-
-    @Override
-    public boolean onSelectParcel(ParcelModel parcel) {
-//        _infoParcel2Controller.select(parcel);
-        return false;
-    }
+//
+//    @Override
+//    public boolean onSelectParcel(ParcelModel parcel) {
+////        _infoParcel2Controller.select(parcel);
+//        return false;
+//    }
 
     @Override
     public void onClientConnect(Connection client) {
@@ -107,7 +107,7 @@ public class WorldModule extends GameModule {
             ParcelModel parcelBottom = WorldHelper.getParcel(parcel.x, parcel.y, parcel.z - 1);
             if (parcelBottom != null && !parcelBottom.hasRock()) {
                 parcel.setGroundInfo(groundInfo);
-                Application.notify(observer -> observer.onChangeGround(parcel));
+//                Application.notify(observer -> observer.onChangeGround(parcel));
             }
         }
     }

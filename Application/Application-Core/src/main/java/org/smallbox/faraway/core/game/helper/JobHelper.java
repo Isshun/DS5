@@ -2,7 +2,7 @@
 //
 //import org.apache.commons.lang3.NotImplementedException;
 //import org.smallbox.faraway.core.Application;
-//import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+//import org.smallbox.faraway.common.modelInfo.ItemInfo;
 //import org.smallbox.faraway.core.module.job.model.DigJob;
 //import org.smallbox.faraway.core.module.job.model.GatherJob;
 //import org.smallbox.faraway.core.module.job.model.abs.JobModel;

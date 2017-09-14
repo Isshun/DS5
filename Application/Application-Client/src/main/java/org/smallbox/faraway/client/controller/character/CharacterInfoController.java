@@ -1,22 +1,21 @@
 package org.smallbox.faraway.client.controller.character;
 
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.GameShortcut;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.module.CharacterClientModule;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.CharacterModule;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.common.CharacterCommon;
+import org.smallbox.faraway.common.ParcelCommon;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 
 import java.util.Queue;
 
@@ -24,7 +23,7 @@ import java.util.Queue;
  * Created by Alex on 25/04/2016.
  */
 @GameObject
-public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
+public class CharacterInfoController extends AbsInfoLuaController<CharacterCommon> {
 
     @BindComponent
     protected SelectionManager selectionManager;
@@ -33,7 +32,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     private UIEventManager uiEventManager;
 
     @BindComponent
-    private CharacterModule characterModule;
+    private CharacterClientModule characterModule;
 
     @BindLuaController
     private CharacterInfoStatusController characterInfoStatusController;
@@ -68,12 +67,12 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     @Override
-    public CharacterModel getObjectOnParcel(ParcelModel parcel) {
+    public CharacterCommon getObjectOnParcel(ParcelCommon parcel) {
         return characterModule.getCharacter(parcel);
     }
 
     @Override
-    protected void onDisplayUnique(CharacterModel character) {
+    protected void onDisplayUnique(CharacterCommon character) {
         lbName.setText(character.getName());
 
         // Info
@@ -90,13 +89,13 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     @Override
-    protected void onDisplayMultiple(Queue<CharacterModel> characterList) {
+    protected void onDisplayMultiple(Queue<CharacterCommon> characterList) {
     }
 
-    @Override
-    public void onGameStart(Game game) {
-//        openPage(pageStatus, btOpenStatus);
-    }
+//    @Override
+//    public void onGameStart() {
+////        openPage(pageStatus, btOpenStatus);
+//    }
 
     @BindLuaAction
     public void onOpenStatus(View view) {

@@ -2,16 +2,15 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import com.sun.glass.ui.Cursor;
+import org.smallbox.faraway.client.GameShortcut;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.common.dependencyInjector.BindComponent;
+import org.smallbox.faraway.common.dependencyInjector.GameObject;
 
 /**
  * Created by Alex on 15/08/2016.
@@ -22,8 +21,8 @@ public class MainPanelController extends LuaController {
     @BindComponent
     private SelectionManager selectionManager;
 
-    @BindComponent
-    private Game game;
+//    @BindComponent
+//    private Game game;
 
     @BindComponent
     private LayerManager layerManager;
@@ -44,7 +43,7 @@ public class MainPanelController extends LuaController {
         if (!isVisible()) {
             setVisible(true);
         } else {
-            game.toggleRunning();
+//            game.toggleRunning();
         }
     }
 
@@ -54,9 +53,9 @@ public class MainPanelController extends LuaController {
     }
 
     @Override
-    public void onGameUpdate(Game game) {
-        lbPlanet.setText(game.getPlanetInfo().label + " / " + game.getRegionInfo().label);
-        lbFloor.setText("Floor " + layerManager.getViewport().getFloor());
+    public void onGameUpdate() {
+//        lbPlanet.setText(game.getPlanetInfo().label + " / " + game.getRegionInfo().label);
+//        lbFloor.setText("Floor " + layerManager.getViewport().getFloor());
     }
 
     @Override
