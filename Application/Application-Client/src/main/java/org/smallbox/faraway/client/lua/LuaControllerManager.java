@@ -40,7 +40,7 @@ public class LuaControllerManager implements GameObserver {
     public Map<String, LuaController> getControllers() { return _controllers; }
 
     @Override
-    public void onGameInit(Game game) {
+    public void onGameInitLayers(Game game) {
         // TODO ?
 //        ApplicationClient.luaModuleManager.init();
 

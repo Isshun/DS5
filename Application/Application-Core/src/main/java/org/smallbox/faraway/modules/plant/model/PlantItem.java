@@ -1,13 +1,16 @@
 package org.smallbox.faraway.modules.plant.model;
 
+import org.smallbox.faraway.GameSerializer;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.plant.GardenArea;
+import org.smallbox.faraway.modules.plant.PlantGrowTask;
 import org.smallbox.faraway.util.Utils;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
+@GameSerializer(PlantSerializer.class)
 public class PlantItem extends MapObjectModel {
     private GrowingInfo         _growingInfo;
     private double              _maturity;
@@ -16,6 +19,7 @@ public class PlantItem extends MapObjectModel {
     private double              _nourish;
     private int                 _tile;
     private JobModel            _job;
+    public PlantGrowTask        task;
 
     public PlantItem(ItemInfo info) {
         super(info);

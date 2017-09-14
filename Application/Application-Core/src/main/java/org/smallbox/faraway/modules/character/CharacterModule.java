@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.character;
 
+import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.common.UUIDUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
@@ -21,6 +22,7 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
@@ -46,6 +48,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     private Data data;
 
     @BindComponent
+    private GameTaskManager gameTaskManager;
+
+    @BindComponent
     private JobModule jobModule;
 
     @BindComponent
@@ -53,6 +58,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @BindComponent
     private ItemModule itemModule;
+
+    @BindComponent
+    private WorldModule worldModule;
 
     private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
@@ -66,6 +74,10 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onModuleUpdate(Game game) {
+
+        _characters.stream()
+                .filter(CharacterModel::isFree)
+                .forEach(character -> gameTaskManager.startTask(new RandomMoveTask(character)));
 
         fixCharacterInventory();
 
@@ -87,7 +99,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         });
 
         _characters.forEach(character -> {
-            Application.gameServer.serialize(character);
+            Application.gameServer.serialize("UPDATE", "CHARACTER", character._id, character);
         });
     }
 

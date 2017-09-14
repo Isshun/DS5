@@ -1,9 +1,10 @@
 package org.smallbox.faraway.core.game;
 
 import org.reflections.Reflections;
+import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
+import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 @GameObject
 public class Game {
 
+    public static long interval = 1000;
     private double _tickPerHour;
 
     public <T> T getModule(Class<T> cls) {
@@ -51,6 +53,7 @@ public class Game {
     private List<AbsGameModule>             _modules = new ArrayList<>();
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
     private final PlanetInfo                _planetInfo;
     private final RegionInfo                _regionInfo;
 
@@ -112,6 +115,9 @@ public class Game {
 
         _displays = new HashMap<>();
         _tick = 0;
+    }
+
+    public void loadLayers() {
     }
 
     public void loadModules() {
@@ -224,7 +230,18 @@ public class Game {
             } catch (Exception e) {
                 Log.error(e);
             }
-        }, 0, 10, TimeUnit.MILLISECONDS);
+        }, 0, 1000, TimeUnit.MILLISECONDS);
+
+        _moduleScheduler2.scheduleAtFixedRate(() -> {
+            try {
+                if (_isRunning) {
+                    Application.dependencyInjector.getObject(GameTaskManager.class).update();
+                }
+            } catch (Error e) {
+                Log.error(e);
+                e.printStackTrace();
+            }
+        }, 0, interval, TimeUnit.MILLISECONDS);
 
     }
 }

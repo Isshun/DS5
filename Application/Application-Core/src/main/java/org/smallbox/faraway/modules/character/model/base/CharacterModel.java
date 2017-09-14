@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.character.model.base;
 
+import org.smallbox.faraway.GameTask;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
@@ -26,6 +27,7 @@ public abstract class CharacterModel extends MovableModel {
     public CharacterPositionCommon position = new CharacterPositionCommon();
     protected Map<Class<? extends CharacterExtra>, CharacterExtra>  _extra = new ConcurrentHashMap<>();
     public PathModel _path;
+    public GameTask _task;
 
     public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
         super(id, parcel);
@@ -53,10 +55,11 @@ public abstract class CharacterModel extends MovableModel {
         _parcel = parcel;
     }
 
+    public boolean                      isFree() { return _task == null; }
+//    public boolean                      isFree() { return getJob() == null && _path == null; }
     public boolean                      isAlive() { return _isAlive; }
     public boolean                      isDead() { return !_isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
-    public boolean                      isFree() { return getJob() == null && _path == null; }
 
     /**
      * Déplace le personnage à la position demandée

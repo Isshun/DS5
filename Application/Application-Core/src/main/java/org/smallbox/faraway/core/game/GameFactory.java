@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.plant.PlantModule;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -59,6 +60,10 @@ public class GameFactory {
                     if (scenario.items != null) {
                         scenario.items.forEach(i -> Application.moduleManager.getModule(ItemModule.class).addItem(i.name, true, i.x, i.y, i.z));
                     }
+
+                    Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.carrot", 10, 10, 1);
+                    Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.carrot", 11, 10, 1);
+                    Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.carrot", 12, 10, 1);
 
                 }
 

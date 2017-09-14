@@ -1,5 +1,7 @@
 package org.smallbox.faraway.modules.plant;
 
+import org.smallbox.faraway.GameTaskManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -39,6 +41,9 @@ public class PlantModule extends GameModule {
     @BindComponent
     private AreaModule areaModule;
 
+    @BindComponent
+    private GameTaskManager gameTaskManager;
+
     private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();
 
     @Override
@@ -48,6 +53,11 @@ public class PlantModule extends GameModule {
 
     @Override
     public void onModuleUpdate(Game game) {
+        // Fait pousser les plantes
+        _plants.stream()
+                .filter(plant -> plant.task == null && plant.hasSeed() && computeGrowingInfo(plant))
+                .forEach(plant -> gameTaskManager.startTask(new PlantGrowTask(plant)));
+
         // Fait pousser les plantes
         _plants.stream()
                 .filter(plant -> plant.hasSeed() && computeGrowingInfo(plant))
@@ -61,6 +71,8 @@ public class PlantModule extends GameModule {
 
         // TODO: ajout auto de la graine
         _plants.forEach(plant -> plant.setSeed(true));
+
+        _plants.forEach(plant -> Application.gameServer.serialize("UPDATE", "PLANT", plant._id, plant));
     }
 
     public void addPlant(String plantName, int x, int y, int z) { addPlant(data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }

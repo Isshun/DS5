@@ -1,11 +1,6 @@
 package org.smallbox.faraway.util;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Queue;
@@ -68,19 +63,19 @@ public class Log {
             _history.add(message);
         }
 
-        if (fos == null) {
-            try {
-                fos = new FileOutputStream(new File("W:\\projects\\desktop\\FarAway\\Application\\sysout.log"));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (fos == null) {
+//            try {
+//                fos = new FileOutputStream(new File("W:\\projects\\desktop\\FarAway\\Application\\sysout.log"));
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-        try {
-            IOUtils.write(message + "\n", fos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            IOUtils.write(message + "\n", fos);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         if (level == Level.WARNING) {
             System.out.println("[WARNING] " + message);

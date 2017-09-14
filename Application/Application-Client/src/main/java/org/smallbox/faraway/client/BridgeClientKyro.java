@@ -4,7 +4,10 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import org.json.JSONObject;
 import org.smallbox.faraway.client.module.CharacterClientModule;
+import org.smallbox.faraway.client.module.PlantClientModule;
+import org.smallbox.faraway.client.module.TaskClientModule;
 import org.smallbox.faraway.common.*;
 
 import java.io.IOException;
@@ -14,7 +17,10 @@ import java.util.List;
 public class BridgeClientKyro {
     private Client client;
     private List<ServerListener> _listeners = new ArrayList<>();
+    private List<ModelDeserializer> _deserializer = new ArrayList<>();
     private CharacterClientModule characterClientModule = ApplicationClient.dependencyInjector.create(CharacterClientModule.class);
+    private PlantClientModule plantClientModule = ApplicationClient.dependencyInjector.create(PlantClientModule.class);
+    private TaskClientModule taskClientModule = ApplicationClient.dependencyInjector.create(TaskClientModule.class);
 
     public void register(ServerListener listener) {
         System.out.println("[CLIENT] REGISTER");
@@ -37,9 +43,19 @@ public class BridgeClientKyro {
                 public void received (Connection connection, Object object) {
                     if (object instanceof KryoMessage) {
                         KryoMessage message = (KryoMessage)object;
-                        System.out.println("[CLIENT] " + message.data);
+                        System.out.println("[CLIENT] " + message.type + " - " + message.data);
 
-                        characterClientModule.onReceiveCharacter(message.data);
+                        if ("PLANT".equals(message.type)) {
+                            PlantCommon plant = new PlantCommonDeserializer().deserialize(new JSONObject(message.data));
+                            plantClientModule.update(plant);
+                        }
+
+                        if ("CHARACTER".equals(message.type)) {
+                            CharacterCommon character = new CharacterCommonDeserializer().deserialize(new JSONObject(message.data));
+                            characterClientModule.update(character);
+                        }
+
+//                        characterClientModule.onReceiveCharacter(message.data);
                     }
                     if (object instanceof SomeResponse) {
                         SomeResponse response = (SomeResponse)object;

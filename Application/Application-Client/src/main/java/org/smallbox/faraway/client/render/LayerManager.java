@@ -47,7 +47,7 @@ public class LayerManager implements GameClientObserver {
     public Viewport getViewport() { return _viewport; }
 
     @Override
-    public void onGameInit(Game game) {
+    public void onGameInitLayers(Game game) {
         // Find GameLayer annotated class
         _layers = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
                 .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))

@@ -21,6 +21,7 @@ import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
  * Created by Alex on 24/07/2016.
  */
 // TODO: injection des field sur les superclass
+@SuppressWarnings("Duplicates")
 public class DependencyInjector {
     private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
     private Set<Object> _objectPool = new HashSet<>();
@@ -76,6 +77,7 @@ public class DependencyInjector {
 
         // Register game object
         if (component.getClass().isAnnotationPresent(GameObject.class)) {
+            assert !_gameObjectPoolByClass.containsKey(component.getClass()) : component.getClass() + " already register in DI";
 
             if (_initGame) {
                 throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
@@ -89,6 +91,7 @@ public class DependencyInjector {
 
         // Register application object
         if (component.getClass().isAnnotationPresent(ApplicationObject.class)) {
+            assert !_objectPoolByClass.containsKey(component.getClass()) : component.getClass() + " already register in DI";
 
             if (_init) {
                 throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
@@ -142,6 +145,7 @@ public class DependencyInjector {
             Log.verbose("Inject dependency to: " + host.getClass().getName());
             doInjectGame(host);
             doInjectConfig(host);
+            doInjectShortcut(host);
             Application.notify(observer -> observer.onInjectDependency(object));
         });
     }

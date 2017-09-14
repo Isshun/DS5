@@ -10,12 +10,12 @@ public class ApplicationConfig {
 
     public static class ApplicationConfigDebug {
         public enum ActionOnLoad {NONE, LAST_SAVE, NEW_GAME}
-        public ActionOnLoad     actionOnLoad = ActionOnLoad.LAST_SAVE;
+        public ActionOnLoad     actionOnLoad = ActionOnLoad.NEW_GAME;
         public String           scenario = "data/scenarios/test1.json";
     }
 
     public static class ApplicationConfigScreenInfo {
-        public int[]            resolution = new int[] {1600, 950};
+        public int[]            resolution = new int[] {1900, 1000};
         public int[]            position = new int[] {20, 20};
         public String           mode = "window";
         public int              foregroundFPS = 60;

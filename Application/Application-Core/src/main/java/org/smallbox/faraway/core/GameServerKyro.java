@@ -5,9 +5,9 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import org.reflections.Reflections;
+import org.smallbox.faraway.GameSerializer;
 import org.smallbox.faraway.common.*;
-import org.smallbox.faraway.modules.character.model.HumanModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +22,19 @@ public class GameServerKyro {
 
     public GameServerKyro() throws IOException {
 
-        _serializers.put(HumanModel.class, new CharacterSerializer());
+//        _serializers.put(HumanModel.class, new CharacterSerializer());
+//        _serializers.put(RandomMoveTask.class, new GameTaskSerializer());
+//        _serializers.put(PlantGrowTask.class, new GameTaskSerializer());
+
+        // Add serializers to map
+        new Reflections("org.smallbox.faraway").getTypesAnnotatedWith(GameSerializer.class)
+                .forEach(cls -> {
+                    try {
+                        _serializers.put(cls, cls.getAnnotation(GameSerializer.class).value().newInstance());
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
 
         Server server = new Server();
         server.start();
@@ -78,12 +90,22 @@ public class GameServerKyro {
         _connections.forEach(connection -> connection.sendTCP(object));
     }
 
-    public void serialize(CharacterModel character) {
+    public void serialize(String action, String type, long id, Object object) {
         KryoMessage message = new KryoMessage();
-        message.data = _serializers.get(character.getClass()).serialize(character);
+        message.id = id;
+        message.action = action;
+        message.type = type;
 
-        System.out.println("[Send data] " + message.data);
+        ModelSerializer serializer = _serializers.get(object.getClass());
+        if (serializer == null) {
+            throw new RuntimeException("No serializer for class: " + object.getClass());
+        }
+
+        message.data = serializer.serialize(object).toString();
+
+//        System.out.println("[Send data] " + message.data);
 
         write(message);
     }
+
 }

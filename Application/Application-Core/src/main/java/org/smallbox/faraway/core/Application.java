@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
+import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
@@ -16,6 +17,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application {
+//    public static final String BASE_PATH = "C:\\Projects\\FREE\\FarAway\\FarAway\\Application";
     public static final String BASE_PATH = "W:\\projects\\desktop\\FarAway\\Application";
     private static Queue<GameObserver> _observers = new PriorityBlockingQueue<>(200, (o1, o2) -> {
         GameObserverPriority.Priority p1 = o1.getClass().isAnnotationPresent(GameObserverPriority.class)
@@ -44,11 +46,11 @@ public class Application {
     public static boolean isLoaded = false;
     public static ApplicationClientListener clientListener;
     public static GameServerKyro gameServer;
+    public static long id;
 
     public Application() {
         dependencyInjector = DependencyInjector.getInstance();
         gameManager = dependencyInjector.create(GameManager.class);
-        dependencyInjector.create(PathManager.class);
         taskManager = dependencyInjector.create(TaskManager.class);
         sqlManager = dependencyInjector.create(SQLManager.class);
         moduleManager = dependencyInjector.create(ModuleManager.class);
@@ -57,8 +59,8 @@ public class Application {
         gameServer = dependencyInjector.create(GameServerKyro.class);
         data = dependencyInjector.create(Data.class);
 
+        dependencyInjector.create(GameTaskManager.class);
         dependencyInjector.create(GameSaveManager.class);
-        dependencyInjector.create(WorldFactory.class);
 
         // Create APPLICATION_CONFIG
         config = dependencyInjector.create(ApplicationConfig.class);

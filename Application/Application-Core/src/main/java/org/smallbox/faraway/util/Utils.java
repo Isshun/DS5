@@ -69,4 +69,20 @@ public class Utils {
     public static double progress(int from, int to, int current) {
         return (double)(current - from) / (to - from);
     }
+
+    public static long day(int value) {
+        return value * 24 * 60 * 60 * 1000;
+    }
+
+    public static long hour(int value) {
+        return value * 60 * 60 * 1000;
+    }
+
+    public static long minute(int value) {
+        return value * 60 * 1000;
+    }
+
+    public static long second(int value) {
+        return value * 1000;
+    }
 }

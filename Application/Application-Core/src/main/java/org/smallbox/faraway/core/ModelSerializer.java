@@ -1,5 +1,7 @@
 package org.smallbox.faraway.core;
 
+import org.json.JSONObject;
+
 public interface ModelSerializer<T> {
-    String serialize(T model);
+    JSONObject serialize(T model);
 }

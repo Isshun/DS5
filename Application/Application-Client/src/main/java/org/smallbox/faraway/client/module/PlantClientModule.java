@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.module;
 
+import org.smallbox.faraway.client.PlantCommon;
 import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
@@ -7,11 +8,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
-public class CharacterClientModule {
+public class PlantClientModule {
 
-    public Map<Long, CharacterCommon> characters = new ConcurrentHashMap<>();
+    public Map<Long, PlantCommon> plants = new ConcurrentHashMap<>();
 
-    public void update(CharacterCommon character) {
-        characters.put(character.id, character);
+    public void update(PlantCommon plant) {
+        plants.put(plant.id, plant);
     }
 }

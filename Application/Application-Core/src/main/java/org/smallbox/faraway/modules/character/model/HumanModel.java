@@ -1,15 +1,19 @@
 package org.smallbox.faraway.modules.character.model;
 
+import org.smallbox.faraway.GameSerializer;
+import org.smallbox.faraway.core.CharacterSerializer;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.*;
+import org.smallbox.faraway.modules.character.model.base.CharacterName;
 import org.smallbox.faraway.modules.job.freeTimeJobs.BasicWalkJob;
 
 /**
  * Created by Alex on 17/06/2015.
  */
 @CharacterInfoAnnotation("base.character.human")
+@GameSerializer(CharacterSerializer.class)
 public class HumanModel extends CharacterModel {
     public static final double     BODY_COLD_ABSORB = 32;
     public static final double     BODY_COLD_RESIST = 0.25;

@@ -59,6 +59,9 @@ public class GameManager implements GameObserver {
         Application.dependencyInjector.register(_game);
 
         _game.loadModules();
+        _game.loadLayers();
+
+        Application.notify(observer -> observer.onGameInitLayers(_game));
 
         Application.dependencyInjector.injectGameDependencies();
 
@@ -72,6 +75,7 @@ public class GameManager implements GameObserver {
 
 //        Application.runOnMainThread(() -> {
             Application.notify(observer -> observer.onGameInit(_game));
+
             if (listener != null) {
                 listener.onGameCreate(_game);
             }

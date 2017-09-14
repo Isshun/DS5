@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameEventManager;
+import org.smallbox.faraway.client.module.TaskClientModule;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
@@ -31,7 +32,7 @@ import java.util.Map;
 
 @GameObject
 @ApplicationObject
-@GameLayer(level = 999, visible = false)
+@GameLayer(level = 999, visible = true)
 public class DebugLayer extends BaseLayer {
 
     @BindComponent
@@ -55,6 +56,9 @@ public class DebugLayer extends BaseLayer {
     @BindComponent
     private GameEventManager gameEventManager;
 
+    @BindComponent
+    private TaskClientModule taskClientModule;
+
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
     private long _lastUpdate;
@@ -62,9 +66,9 @@ public class DebugLayer extends BaseLayer {
 
     private Map<String, String> _data = new HashMap<>();
 
-    private enum Mode { UI, CONSUMABLE, ITEM, PLANT, LAYER, SHORTCUTS, CHARACTER, JOB, MODULE}
+    private enum Mode {TASKS, UI, CONSUMABLE, ITEM, PLANT, LAYER, SHORTCUTS, CHARACTER, JOB, MODULE}
 
-    private Mode _mode = Mode.SHORTCUTS;
+    private Mode _mode = Mode.TASKS;
 
     {
         _data.put("Cursor screen position", "");
@@ -80,6 +84,13 @@ public class DebugLayer extends BaseLayer {
         drawHeaders(renderer);
 
         switch (_mode) {
+
+            // Events
+            case TASKS:
+                if (taskClientModule != null && taskClientModule.getTasks() != null) {
+                    taskClientModule.getTasks().forEach(task -> drawDebug(renderer, "Task ", task.id + " " + task.label + " " + task.elapsed + " " + task.duration ));
+                }
+                break;
 
             // Display consumables
             case CONSUMABLE:
@@ -156,10 +167,14 @@ public class DebugLayer extends BaseLayer {
                 break;
 
             case SHORTCUTS:
-                ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label + " -> " + strategy.key));
+                ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label.replace("org.smallbox.faraway.", "") + " -> " + strategy.key));
                 break;
 
             case UI:
+                long heapSize = Runtime.getRuntime().totalMemory();
+                long heapFreeSize = Runtime.getRuntime().freeMemory();
+                drawDebug(renderer, "VIEWPORT", "Heap: " + ((heapSize - heapFreeSize) / 1000 / 1000) + "mb");
+
                 drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.layerManager.getViewport().getFloor());
                 drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.layerManager.getViewport().getWidth() + " x " + ApplicationClient.layerManager.getViewport().getHeight());
 
@@ -276,5 +291,8 @@ public class DebugLayer extends BaseLayer {
 
     @GameShortcut(key = Input.Keys.NUM_9)
     public void onD9() { setModeIndex(9); }
+
+    @GameShortcut(key = Input.Keys.NUM_0)
+    public void onD0() { setModeIndex(10); }
 
 }
