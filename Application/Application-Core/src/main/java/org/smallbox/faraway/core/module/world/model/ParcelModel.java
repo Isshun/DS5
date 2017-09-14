@@ -3,9 +3,9 @@ package org.smallbox.faraway.core.module.world.model;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedNode;
 import com.badlogic.gdx.utils.Array;
+import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.module.path.ParcelConnection;
@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ParcelModel extends ObjectModel implements IndexedNode<ParcelModel> {
-    public final int                        x;
-    public final int                        y;
-    public final int                        z;
+public class ParcelModel extends ParcelCommon implements IndexedNode<ParcelModel> {
+//    public final int                        x;
+//    public final int                        y;
+//    public final int                        z;
 
     private int                             _environmentScore;
     private ParcelEnvironment               _environment;

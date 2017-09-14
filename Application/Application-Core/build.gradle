@@ -8,6 +8,7 @@ apply plugin: "java"
 //}
 
 dependencies {
+    compile project(":Application-Common")
 //    compile project(":Core-SmartFontGenerator")
 //    compile project(":Core-PathFinding")
 //    compile project(":Core-Debug")

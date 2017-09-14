@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;

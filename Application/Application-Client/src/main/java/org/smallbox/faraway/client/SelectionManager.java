@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;

@@ -1,9 +1,9 @@
 package org.smallbox.faraway.modules.area;
 
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.common.UUIDUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,7 @@ public abstract class AreaModel extends ObjectModel {
     private int                         _z;
 
     public AreaModel() {
-        _id = Utils.getUUID();
+        _id = UUIDUtils.getUUID();
     }
 
     public void addParcel(ParcelModel parcel) {

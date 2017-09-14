@@ -12,6 +12,7 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -267,6 +268,10 @@ public class GDXRenderer {
                 size,
                 color,
                 string);
+    }
+
+    public void drawOnMap(ParcelCommon parcel, Sprite itemSprite) {
+        draw((parcel.x * Constant.TILE_WIDTH) + ApplicationClient.layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + ApplicationClient.layerManager.getViewport().getPosY(), itemSprite);
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {

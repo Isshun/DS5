@@ -42,6 +42,8 @@ public class Application {
     public static ApplicationConfig config;
 
     public static boolean isLoaded = false;
+    public static ApplicationClientListener clientListener;
+    public static GameServerKyro gameServer;
 
     public Application() {
         dependencyInjector = DependencyInjector.getInstance();
@@ -52,6 +54,7 @@ public class Application {
         moduleManager = dependencyInjector.create(ModuleManager.class);
         luaModuleManager = dependencyInjector.create(ServerLuaModuleManager.class);
         groovyManager = dependencyInjector.create(GroovyManager.class);
+        gameServer = dependencyInjector.create(GameServerKyro.class);
         data = dependencyInjector.create(Data.class);
 
         dependencyInjector.create(GameSaveManager.class);

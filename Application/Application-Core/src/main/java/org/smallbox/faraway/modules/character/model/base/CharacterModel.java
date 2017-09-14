@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.character.model.base;
 
+import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.model.MovableModel;
@@ -17,13 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class CharacterModel extends MovableModel {
 
     public boolean                              _isAlive = true;
-    private PathModel                           _path;
     protected int                               _lag;
-    protected MoveListener                      _moveListener;
-    private double                              _moveStep;
+    public MoveListener                      _moveListener;
+    public double                              _moveStep;
     protected CharacterInfo                     _type;
     private boolean                             _isSleeping;
+    public CharacterPositionCommon position = new CharacterPositionCommon();
     protected Map<Class<? extends CharacterExtra>, CharacterExtra>  _extra = new ConcurrentHashMap<>();
+    public PathModel _path;
 
     public CharacterModel(int id, CharacterInfo characterInfo, ParcelModel parcel) {
         super(id, parcel);
@@ -108,64 +110,6 @@ public abstract class CharacterModel extends MovableModel {
         _job = job;
     }
 
-    public void        move() {
-        if (_path != null) {
-            // Character is sleeping
-            if (_isSleeping) {
-                Log.debug("Character #" + _id + ": sleeping . move canceled");
-                return;
-            }
-
-            // Increase move progress
-            _moveStep = Application.config.game.characterSpeed / Application.gameManager.getGame().getTickPerHour();
-//            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
-
-            // Character has reach next parcel
-            if (_moveProgress >= 1 && _path.getCurrentParcel() != null) {
-                _moveProgress = 0;
-
-                // Move continue, set next parcel + direction
-                if (_path.next()) {
-                    int fromX = _parcel.x;
-                    int fromY = _parcel.y;
-                    int toX = _path.getCurrentParcel().x;
-                    int toY = _path.getCurrentParcel().y;
-                    _direction = getDirection(fromX, fromY, toX, toY);
-
-                    setParcel(_path.getCurrentParcel());
-                }
-
-                // Move state, set path to null and call listener
-                else {
-                    Log.info(getName() + " Move state (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
-                    _path = null;
-
-                    if (_moveListener != null) {
-                        Log.info(getName() + " Move state: call onReach");
-                        MoveListener listener = _moveListener;
-                        _moveListener = null;
-                        listener.onReach(this);
-                    }
-                }
-            }
-
-            _moveProgress += _moveStep;
-            _moveProgress2 += _moveStep;
-        }
-    }
-
-    private Direction getDirection(int fromX, int fromY, int toX, int toY) {
-        if (toX > fromX && toY > fromY) return Direction.BOTTOM_RIGHT;
-        if (toX < fromX && toY > fromY) return Direction.BOTTOM_LEFT;
-        if (toX > fromX && toY < fromY) return Direction.TOP_RIGHT;
-        if (toX < fromX && toY < fromY) return Direction.TOP_LEFT;
-        if (toX > fromX) return Direction.RIGHT;
-        if (toX < fromX) return Direction.LEFT;
-        if (toY > fromY) return Direction.BOTTOM;
-        if (toY < fromY) return Direction.TOP;
-        return Direction.NONE;
-    }
-
     public void            action(double hourInterval) {
         if (_job != null) {
             _job.action(this, hourInterval);
@@ -197,5 +141,13 @@ public abstract class CharacterModel extends MovableModel {
 
     public boolean hasExtra(Class<?> cls) {
         return _extra.containsKey(cls);
+    }
+
+    public void setMoveStep(double v) {
+        _moveStep = v;
+    }
+
+    public void setMoveProgress(double i) {
+        _moveProgress = i;
     }
 }

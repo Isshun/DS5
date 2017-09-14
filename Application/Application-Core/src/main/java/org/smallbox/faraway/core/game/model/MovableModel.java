@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.game.model;
 
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModel;
 
@@ -18,11 +19,11 @@ public abstract class MovableModel extends ObjectModel {
     }
 
     protected int                       _frameIndex;
-    protected Direction                 _direction;
+    public Direction                 _direction;
     protected JobModel                  _job;
-    protected double                    _moveProgress;
-    protected double                    _moveProgress2;
-    protected ParcelModel               _parcel;
+    public double                       _moveProgress;
+    public double                    _moveProgress2;
+    public ParcelModel                  _parcel;
 
     public MovableModel(int id, ParcelModel parcel) {
         super(id);

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
 

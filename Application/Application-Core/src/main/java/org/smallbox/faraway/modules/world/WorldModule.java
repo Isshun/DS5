@@ -1,5 +1,7 @@
 package org.smallbox.faraway.modules.world;
 
+import com.esotericsoftware.kryonet.Connection;
+import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
@@ -45,6 +47,17 @@ public class WorldModule extends GameModule {
     public boolean onSelectParcel(ParcelModel parcel) {
 //        _infoParcel2Controller.select(parcel);
         return false;
+    }
+
+    @Override
+    public void onClientConnect(Connection client) {
+        _parcelList.forEach(parcel -> {
+            ParcelCommon parcelCommon = new ParcelCommon();
+            parcelCommon.x = parcel.x;
+            parcelCommon.y = parcel.y;
+            parcelCommon.z = parcel.z;
+            Application.gameServer.writeObject(client, parcelCommon);
+        });
     }
 
     public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {

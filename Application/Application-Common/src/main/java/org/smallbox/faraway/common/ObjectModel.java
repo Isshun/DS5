@@ -1,6 +1,4 @@
-package org.smallbox.faraway.core.game.model;
-
-import org.smallbox.faraway.util.Utils;
+package org.smallbox.faraway.common;
 
 /**
  * Created by Alex on 08/10/2015.
@@ -10,10 +8,10 @@ public class ObjectModel {
     public final int _id;
 
     public ObjectModel() {
-        _id = Utils.getUUID();
+        _id = UUIDUtils.getUUID();
     }
 
     public ObjectModel(int id) {
-        _id = Utils.getUUID(id);
+        _id = UUIDUtils.getUUID(id);
     }
 }

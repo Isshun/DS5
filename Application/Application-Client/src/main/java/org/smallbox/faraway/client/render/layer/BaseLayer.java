@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
@@ -45,6 +45,9 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     // On press mouse position
     protected int _mouseDownX;
     protected int _mouseDownY;
+
+    public void onInitLayer() {}
+    public void onUpdate(Object object) {}
 
     public BaseLayer() {
         if (!getClass().isAnnotationPresent(GameLayer.class)) {
@@ -90,6 +93,9 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
         } catch (NullPointerException e) {
             throw new RuntimeException("GameLayer annotation is missing for " + getClass());
         }
+    }
+
+    public void onInit() {
     }
 
 //    protected void onRenderUpdate() {}

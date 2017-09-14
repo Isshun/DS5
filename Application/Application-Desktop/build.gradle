@@ -47,7 +47,7 @@ run.dependsOn buildModules
 
 dependencies {
     compile project(":Application-Core")
-    compile project(":Application-Server")
+//    compile project(":Application-Server")
     compile project(":Application-Client")
 
 //    compile project(":Module-Area")

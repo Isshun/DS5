@@ -1,6 +1,6 @@
 package org.smallbox.faraway.core.engine.lua;
 
-import org.smallbox.faraway.core.game.model.ObjectModel;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 

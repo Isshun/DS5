@@ -16,7 +16,7 @@ public class ApplicationConfig {
 
     public static class ApplicationConfigScreenInfo {
         public int[]            resolution = new int[] {1600, 950};
-        public int[]            position = new int[] {2000, 20};
+        public int[]            position = new int[] {20, 20};
         public String           mode = "window";
         public int              foregroundFPS = 60;
         public int              backgroundFPS = 30;

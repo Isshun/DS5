@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.engine.module;
 
+import com.esotericsoftware.kryonet.Connection;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -37,6 +38,8 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
 
     //    public void onGameInit(Game game) {}
     protected void onGameUpdate(Game game, int tick) {}
+
+    public void onClientConnect(Connection client) {}
 
     public void onGameCreate(Game game) {}
 

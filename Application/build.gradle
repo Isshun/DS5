@@ -26,6 +26,7 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "http://clojars.org/repo/" }
     }
 
 }
@@ -39,10 +40,14 @@ project(":Application-Desktop") {
         compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+
+        compile 'com.esotericsoftware:kryo:4.0.1'
+        compile 'kryonet:kryonet:2.21'
+        compile 'com.esotericsoftware:jsonbeans:0.8-SNAPSHOT'
     }
 }
 
-project(":Application-Server") {
+project(":Application-Common") {
     apply plugin: "java"
 
     dependencies {
@@ -51,6 +56,10 @@ project(":Application-Server") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+
+        compile 'com.esotericsoftware:kryo:4.0.1'
+        compile 'kryonet:kryonet:2.21'
+        compile 'com.esotericsoftware:jsonbeans:0.8-SNAPSHOT'
     }
 }
 
@@ -63,6 +72,10 @@ project(":Application-Client") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+
+        compile 'com.esotericsoftware:kryo:4.0.1'
+        compile 'kryonet:kryonet:2.21'
+        compile 'com.esotericsoftware:jsonbeans:0.8-SNAPSHOT'
     }
 }
 

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.render;
 
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -119,6 +120,13 @@ public class Viewport {
     public void setPosition(int x, int y, int z) {
         setPosition(x, y);
         _floor = z;
+    }
+
+    public boolean hasParcel(ParcelCommon parcel) {
+        return parcel != null
+                && parcel.z == _floor
+                && parcel.x >= _worldX && parcel.x <= _worldX + 50
+                && parcel.y >= _worldY && parcel.y <= _worldY + 50;
     }
 
     public boolean hasParcel(ParcelModel parcel) {

@@ -68,7 +68,7 @@ public class LayerManager implements GameClientObserver {
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
 
-        _layers.forEach(render -> render.onGameInit(game));
+        _layers.forEach(layer -> layer.onGameInit(game));
 
         // Create viewport
         _viewport = new Viewport(400, 300);

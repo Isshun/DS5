@@ -1,5 +1,7 @@
 package org.smallbox.faraway.modules.character;
 
+import org.smallbox.faraway.common.UUIDUtils;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
@@ -7,7 +9,6 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -20,7 +21,10 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.util.*;
+import org.smallbox.faraway.util.CollectionUtils;
+import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.Strings;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -63,7 +67,6 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @Override
     public void onModuleUpdate(Game game) {
 
-        fixCharacterPosition();
         fixCharacterInventory();
 
         // Add new born
@@ -80,23 +83,12 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         // Execute action
         double hourInterval = getTickInterval() / game.getTickPerHour();
         _characters.forEach(character -> {
-            character.setDirection(MovableModel.Direction.NONE);
             character.action(hourInterval);
-            character.move();
         });
-    }
 
-    private void fixCharacterPosition() {
-        _characters.stream()
-                .filter(character -> character.getParcel() != null && !character.getParcel().isWalkable())
-                .forEach(character -> {
-                    Log.warning(getName() + " is stuck !");
-                    character.setParcel(WorldHelper.getNearestWalkable(character.getParcel(), 1, 20));
-                    if (character.getJob() != null) {
-                        character.getJob().quit(character);
-                        character.clearJob(character.getJob());
-                    }
-                });
+        _characters.forEach(character -> {
+            Application.gameServer.serialize(character);
+        });
     }
 
     /**
@@ -154,7 +146,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
             Constructor<? extends CharacterModel> constructor = cls.getConstructor(int.class, CharacterInfo.class, ParcelModel.class);
             CharacterInfo characterInfo = data.characters.get(cls.getAnnotation(CharacterInfoAnnotation.class).value());
             CharacterModel character = constructor.newInstance(
-                    Utils.getUUID(),
+                    UUIDUtils.getUUID(),
                     characterInfo,
                     WorldHelper.getRandomFreeSpace(WorldHelper.getGroundFloor(), true, true));
             add(character);
@@ -164,27 +156,9 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         }
     }
 
-    public boolean havePeopleOnProximity(CharacterModel character) {
-        for (CharacterModel c: _characters) {
-            if (c != character && WorldHelper.getApproxDistance(character.getParcel(), c.getParcel()) < 4) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public int getModulePriority() {
         return Constant.MODULE_CHARACTER_PRIORITY;
-    }
-
-    public boolean hasCharacterOnParcel(ParcelModel parcel) {
-        for (CharacterModel character: _characters) {
-            if (character.getParcel() == parcel) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void fixCharacterInventory() {

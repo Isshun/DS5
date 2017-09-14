@@ -130,9 +130,10 @@ public class Log {
         _lastErrorMessage = t.getMessage();
 
         logger.severe(t.getMessage());
-        for (StackTraceElement element : t.getStackTrace()) {
-            logger.severe(element.toString());
-        }
+//        for (StackTraceElement element : t.getStackTrace()) {
+//            logger.severe(element.toString());
+//        }
+        t.printStackTrace();
 
         if (t.getCause() != null) {
             logger.severe("Cause by:");

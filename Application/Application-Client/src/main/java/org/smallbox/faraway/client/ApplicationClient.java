@@ -7,11 +7,13 @@ import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ApplicationClientListener;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -43,6 +45,7 @@ public class ApplicationClient {
     public static final ClientLuaModuleManager  luaModuleManager;
     public static final LuaControllerManager    luaControllerManager;
     public static final SelectionManager        selectionManager;
+    public static final BridgeClientKyro BRIDGE_CLIENT;
 
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
@@ -51,6 +54,15 @@ public class ApplicationClient {
     public static final ShortcutManager shortcutManager;
 
     static {
+
+        Application.clientListener = new ApplicationClientListener() {
+            @Override
+            public void onInitComplete() {
+                layerManager.getLayers().forEach(BaseLayer::onInitLayer);
+                BRIDGE_CLIENT.register(object -> layerManager.getLayers().forEach(layer -> layer.onUpdate(object)));
+            }
+        };
+
         dependencyInjector = DependencyInjector.getInstance();
 
         shortcutManager = dependencyInjector.create(ShortcutManager.class);
@@ -63,6 +75,7 @@ public class ApplicationClient {
         layerManager = dependencyInjector.create(LayerManager.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
+        BRIDGE_CLIENT = dependencyInjector.create(BridgeClientKyro.class);
 
         // Application client interface
         dependencyInjector.setClientInterface(new DependencyInjector.ApplicationClientInterface() {

@@ -11,18 +11,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class Utils {
-    private static int _uuid;
-
-    public static int getUUID() {
-        return ++_uuid;
-    }
-
-    public static int getUUID(int usedId) {
-        if (_uuid < usedId + 1) {
-            _uuid = usedId + 1;
-        }
-        return usedId;
-    }
 
     public static long getLastDataModified() {
         long lastModified = 0;

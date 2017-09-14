@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.CharacterMoveModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 @GameObject
@@ -17,6 +18,9 @@ public class CharacterRelationModule extends GameModule {
     @BindComponent
     private CharacterModule characterModule;
 
+    @BindComponent
+    private CharacterMoveModule characterMoveModule;
+
     @Override
     public void onModuleUpdate(Game game) {
         characterModule.getCharacters().forEach(this::updateCharacter);
@@ -26,7 +30,7 @@ public class CharacterRelationModule extends GameModule {
     }
 
     public double getScore(CharacterModel character) {
-        if (characterModule.havePeopleOnProximity(character)) {
+        if (characterMoveModule.havePeopleOnProximity(character)) {
             return config.hourlyRelationChangeWithPeopleAtProximity;
         }
         return config.hourlyRelationChange;

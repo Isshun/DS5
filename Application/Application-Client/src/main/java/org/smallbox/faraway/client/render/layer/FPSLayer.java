@@ -11,9 +11,13 @@ import org.smallbox.faraway.core.dependencyInjector.GameObject;
 public class FPSLayer extends BaseLayer {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        renderer.drawText(10, 10, 12, Color.RED, "T " + String.valueOf(Application.gameManager.getGame().getTick()));
-        renderer.drawText(10, 25, 12, Color.RED, "F " + String.valueOf(frame));
-        renderer.drawPixel(10 + frame / 5 % 32, 40, 2, 2, Color.RED);
+        long heapSize = Runtime.getRuntime().totalMemory();
+        long heapFreeSize = Runtime.getRuntime().freeMemory();
+
+        renderer.drawText(10, 10, 12, Color.RED, "Heap: " + (heapSize - heapFreeSize) / 1000 / 1000);
+        renderer.drawText(10, 25, 12, Color.RED, "T " + String.valueOf(Application.gameManager.getGame().getTick()));
+        renderer.drawText(10, 40, 12, Color.RED, "F " + String.valueOf(frame));
+        renderer.drawPixel(10 + frame / 5 % 32, 55, 2, 2, Color.RED);
     }
 
 }
