@@ -1,4 +1,4 @@
-//package org.smallbox.faraway.core.engine.lua;
+//package org.smallbox.faraway.common.lua;
 //
 //import org.luaj.vm2.LuaTable;
 //import org.luaj.vm2.LuaValue;

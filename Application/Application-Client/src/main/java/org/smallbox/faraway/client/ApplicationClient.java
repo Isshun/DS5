@@ -29,7 +29,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 public class ApplicationClient {
-    public static final String BASE_PATH = "W:\\projects\\desktop\\FarAway\\Application";
+    public static final String BASE_PATH = FileUtils.BASE_PATH;
 
     private static Collection<GameClientObserver>     _observers = new LinkedBlockingQueue<>();
 
@@ -68,8 +68,6 @@ public class ApplicationClient {
     public static boolean isLoaded;
 
     static {
-        FileUtils.BASE_PATH = ApplicationClient.BASE_PATH;
-
         dependencyInjector = DependencyInjector.getInstance();
         dependencyInjector.addInject(ApplicationClient::doInjectShortcut);
 

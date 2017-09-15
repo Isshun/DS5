@@ -9,6 +9,8 @@ import org.smallbox.faraway.common.ModuleBase;
 import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.common.lua.LuaDataModel;
 import org.smallbox.faraway.common.lua.LuaModuleManager;
+import org.smallbox.faraway.common.lua.luaModel.LuaApplicationModel;
+import org.smallbox.faraway.common.lua.luaModel.LuaEventsModel;
 
 import java.io.File;
 
@@ -34,8 +36,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "end end",
                 "main").call();
         globals.get("main").call(
-//                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
-                null,
+                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
                 CoerceJavaToLua.coerce(new LuaUIBridge(null) {
                     @Override
                     public void extend(LuaValue values) {

@@ -68,19 +68,7 @@ public class GDXApplication extends ApplicationAdapter {
                 ApplicationClient.gdxRenderer.init(_batch, _fonts));
 
 
-
-
-//        // Server
-//        Application.taskManager.addLoadTask("Launch DB thread", false, () ->
-//                Application.taskManager.launchBackgroundThread(Application.sqlManager::update, 16));
-//
-//        Application.taskManager.addLoadTask("Load modules", false, () ->
-//                Application.moduleManager.loadModules(null));
-//
-//        Application.taskManager.addLoadTask("Load server lua modules", false, () -> Application.luaModuleManager.init(true));
-//        Application.taskManager.addLoadTask("Load server lua modules", false, () -> ApplicationClient.luaModuleManager.init(true));
-
-
+        ApplicationClient.taskManager.addLoadTask("Load client lua modules", false, () -> ApplicationClient.luaModuleManager.init(true));
 
 
 

@@ -1,7 +1,6 @@
-package org.smallbox.faraway.core.engine.lua;
+package org.smallbox.faraway.common.lua;
 
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.List;
 
@@ -31,8 +30,10 @@ public class LuaCrewModel {
 //        return ModuleHelper.getCharacterModule().getCharacters().stream().map(LuaCharacterModel::new).collect(Collectors.toList());
     }
 
+/*
     public CharacterModel getSelected() {
         throw new RuntimeException("Not implemented");
 //        return Application.gameManager.getGame().getSelector().getSelectedCharacter();
     }
+*/
 }

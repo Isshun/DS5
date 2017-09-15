@@ -9,6 +9,8 @@ import org.smallbox.faraway.common.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.common.lua.LuaDataModel;
 import org.smallbox.faraway.common.lua.LuaExtendInterface;
 import org.smallbox.faraway.common.lua.LuaModuleManager;
+import org.smallbox.faraway.common.lua.luaModel.LuaApplicationModel;
+import org.smallbox.faraway.common.lua.luaModel.LuaEventsModel;
 
 import java.io.File;
 
@@ -24,8 +26,7 @@ public class ServerLuaModuleManager extends LuaModuleManager {
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
         globals.get("main").call(
-//                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
-                null,
+                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
                 CoerceJavaToLua.coerce((LuaExtendInterface) values -> {}),
                 CoerceJavaToLua.coerce(new LuaDataModel() {
                     @Override

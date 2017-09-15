@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class FileUtils {
 
-    public static String BASE_PATH = null;
+    public static final String BASE_PATH = "W:\\projects\\desktop\\FarAway\\Application";
 
     public static void write(File file, String str) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file)) {

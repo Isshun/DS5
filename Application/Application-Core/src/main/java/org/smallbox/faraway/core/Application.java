@@ -8,6 +8,7 @@ import org.smallbox.faraway.common.GameObserverPriority;
 import org.smallbox.faraway.common.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.common.lua.LuaModuleManager;
 import org.smallbox.faraway.common.task.TaskManager;
+import org.smallbox.faraway.common.util.FileUtils;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameSaveManager;
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
 
 public class Application {
 //    public static final String BASE_PATH = "C:\\Projects\\FREE\\FarAway\\FarAway\\Application";
-    public static final String BASE_PATH = "W:\\projects\\desktop\\FarAway\\Application";
+    public static final String BASE_PATH = FileUtils.BASE_PATH;
     private static Queue<GameObserver> _observers = new PriorityBlockingQueue<>(200, (o1, o2) -> {
         GameObserverPriority.Priority p1 = o1.getClass().isAnnotationPresent(GameObserverPriority.class)
                 ? o1.getClass().getAnnotation(GameObserverPriority.class).value()
@@ -46,7 +47,6 @@ public class Application {
     public static ApplicationConfig config;
 
     public static boolean isLoaded = false;
-    public static ApplicationClientListener clientListener;
     public static GameServerKyro gameServer;
     public static long id;
 

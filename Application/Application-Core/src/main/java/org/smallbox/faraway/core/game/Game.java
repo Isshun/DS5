@@ -210,6 +210,7 @@ public class Game {
     }
 
     public void launchBackgroundThread(GameManager.GameListener listener) {
+        System.out.println("Launch game background thread");
 
         _moduleScheduler.scheduleAtFixedRate(() -> {
             try {

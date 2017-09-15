@@ -7,6 +7,7 @@ import org.smallbox.faraway.common.UUIDUtils;
 import org.smallbox.faraway.common.dependencyInjector.BindComponent;
 import org.smallbox.faraway.common.dependencyInjector.GameObject;
 import org.smallbox.faraway.common.modelInfo.CharacterInfo;
+import org.smallbox.faraway.common.util.CollectionUtils;
 import org.smallbox.faraway.common.util.Constant;
 import org.smallbox.faraway.common.util.Log;
 import org.smallbox.faraway.common.util.Strings;
@@ -79,12 +80,12 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
 //
 //        fixCharacterInventory();
 //
-//        // Add new born
-//        if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
-//            Log.info("Add new character");
-//            _characters.addAll(_addOnUpdate);
-//            _addOnUpdate.clear();
-//        }
+        // Add new born
+        if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
+            Log.info("Add new character");
+            _characters.addAll(_addOnUpdate);
+            _addOnUpdate.clear();
+        }
 //
 //        // Remove dead characters
 //        _characters.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);

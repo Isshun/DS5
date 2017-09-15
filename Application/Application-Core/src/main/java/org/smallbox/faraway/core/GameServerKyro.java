@@ -8,6 +8,8 @@ import com.esotericsoftware.kryonet.Server;
 import org.reflections.Reflections;
 import org.smallbox.faraway.GameSerializer;
 import org.smallbox.faraway.common.*;
+import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.plant.PlantModule;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ public class GameServerKyro {
     private Map<Class, ModelSerializer> _serializers = new ConcurrentHashMap<>();
 
     public GameServerKyro() throws IOException {
+        System.out.println("Start Kryo server");
 
 //        _serializers.put(HumanModel.class, new CharacterSerializer());
 //        _serializers.put(RandomMoveTask.class, new GameTaskSerializer());
@@ -64,6 +67,9 @@ public class GameServerKyro {
                         case "hello":
                             System.out.println("[SERVER] NEW CONNECTION");
                             _connections.add(connection);
+                            Application.gameManager.createGame("base.planet.corrin", "mountain", 14, 20, 2, null);
+                            Application.gameManager.getGame().getModule(CharacterModule.class).addRandom();
+                            Application.gameManager.getGame().getModule(PlantModule.class).addPlant("base.plant.carrot", 10, 10, 1);
                             Application.gameManager.getGame().getModules().forEach(module -> module.onClientConnect(connection));
                             break;
                     }

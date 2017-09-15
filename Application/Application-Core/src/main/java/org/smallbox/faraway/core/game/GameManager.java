@@ -90,8 +90,6 @@ public class GameManager implements GameObserver {
         _game.start();
         _game.getModules().forEach(module -> module.startGame());
 
-        Application.clientListener.onInitComplete();
-
         // Launch background thread
         _game.launchBackgroundThread(listener);
 
@@ -125,8 +123,6 @@ public class GameManager implements GameObserver {
 
                 _game.start();
                 _game.getModules().forEach(module -> module.startGame());
-
-                Application.clientListener.onInitComplete();
 
                 Application.gameServer.write("hello from server 1");
 
