@@ -9,10 +9,6 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
-/**
- * Created by Alex on 04/06/2015.
- */
-@GameObject
 public class RenderLayer {
     private final int   _x;
     private final int   _y;

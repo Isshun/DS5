@@ -2,7 +2,9 @@ package org.smallbox.faraway.client;
 
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.common.ObjectModel;
@@ -19,6 +21,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @GameObject
 public class SelectionManager extends GameManager {
+
+    @Inject
+    private LayerManager layerManager;
 
     public <T extends ObjectModel> void setSelected(Queue<T> selected) {
         _selected = selected;
@@ -74,7 +79,7 @@ public class SelectionManager extends GameManager {
 
         // Square selection
         if (fromMapX != toMapX || fromMapY != toMapY) {
-            List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, ApplicationClient.layerManager.getViewport().getFloor());
+            List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
             Log.info("Click on map for parcels: %s", parcelList);
             if (parcelList != null) {
 
@@ -93,7 +98,7 @@ public class SelectionManager extends GameManager {
 
         // Unique parcel
         else {
-            ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, ApplicationClient.layerManager.getViewport().getFloor());
+            ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, layerManager.getViewport().getFloor());
             Log.info("Click on map at parcel: %s", parcel);
             if (parcel != null) {
 

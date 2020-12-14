@@ -47,7 +47,7 @@ public class ApplicationClient {
 
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
-    public static final LayerManager            layerManager;
+    //public static final LayerManager            layerManager;
 
     public static final ShortcutManager shortcutManager;
 
@@ -56,6 +56,7 @@ public class ApplicationClient {
         Application.clientListener = new ApplicationClientListener() {
             @Override
             public void onInitComplete() {
+                LayerManager layerManager = dependencyInjector.getObject(LayerManager.class);
                 layerManager.getLayers().forEach(BaseLayer::onInitLayer);
                 BRIDGE_CLIENT.register(object -> layerManager.getLayers().forEach(layer -> layer.onUpdate(object)));
             }
@@ -70,7 +71,7 @@ public class ApplicationClient {
         spriteManager = dependencyInjector.create(SpriteManager.class);
         selectionManager = dependencyInjector.create(SelectionManager.class);
         gdxRenderer = dependencyInjector.create(GDXRenderer.class);
-        layerManager = dependencyInjector.create(LayerManager.class);
+        //layerManager = dependencyInjector.create(LayerManager.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
         BRIDGE_CLIENT = dependencyInjector.create(BridgeClientKyro.class);

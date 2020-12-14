@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.FileUtils;
 import org.jrenner.smartfont.SmartFontGenerator;
@@ -163,7 +164,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Render game
         if (Application.gameManager.isLoaded()) {
-            ApplicationClient.layerManager.render(Application.gameManager.getGame());
+            ApplicationClient.dependencyInjector.getObject(LayerManager.class).render(Application.gameManager.getGame());
         }
 //        fpsLogger.log();
     }

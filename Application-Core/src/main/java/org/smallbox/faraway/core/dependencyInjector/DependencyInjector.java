@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.dependencyInjector;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
@@ -80,9 +81,9 @@ public class DependencyInjector {
         if (component.getClass().isAnnotationPresent(GameObject.class)) {
             assert !_gameObjectPoolByClass.containsKey(component.getClass()) : component.getClass() + " already register in DI";
 
-            if (_initGame) {
-                throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
-            }
+//            if (_initGame) {
+//                throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
+//            }
 
             _gameObjectPool.add(component);
             _gameObjectPoolByClass.put(component.getClass(), component);
@@ -94,9 +95,9 @@ public class DependencyInjector {
         if (component.getClass().isAnnotationPresent(ApplicationObject.class)) {
             assert !_objectPoolByClass.containsKey(component.getClass()) : component.getClass() + " already register in DI";
 
-            if (_init) {
-                throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
-            }
+//            if (_init) {
+//                throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
+//            }
 
             _objectPool.add(component);
             _objectPoolByClass.put(component.getClass(), component);
@@ -130,7 +131,7 @@ public class DependencyInjector {
     }
 
     /**
-     * injectGameDependencies
+     * Inject GameObjects in ApplicationObjects and other GameObjects
      */
     public void injectGameDependencies() {
 
@@ -170,7 +171,7 @@ public class DependencyInjector {
                         }
                     }
                     if (field.get(host) == null) {
-                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot inject type: " + field.getType());
+                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot inject type: " + field.getType() + " in " + host.getClass().getTypeName());
                     }
                 }
             } catch (IllegalAccessException e) {
@@ -223,8 +224,8 @@ public class DependencyInjector {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Inject.class)) {
                     Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
-                    Objects.requireNonNull(_objectPoolByClass.get(field.getType()), "Unable to find field to inject: " + field.getType().getName());
-                    field.set(host, _objectPoolByClass.get(field.getType()));
+                    //Objects.requireNonNull(_objectPoolByClass.get(field.getType()), "Unable to find field to inject: " + field.getType().getName());
+                    field.set(host, ObjectUtils.firstNonNull(_objectPoolByClass.get(field.getType()), _gameObjectPoolByClass.get(field.getType())));
                 }
             } catch (IllegalAccessException e) {
                 throw new GameException(DependencyInjector.class, e);
@@ -300,6 +301,24 @@ public class DependencyInjector {
 
     public void registerModel(Object model) {
         _models.put(model.getClass(), model);
+    }
+
+    public void createGameObjects() {
+        new Reflections("org.smallbox").getTypesAnnotatedWith(GameObject.class).stream()
+                .filter(cls -> !_gameObjectPoolByClass.containsKey(cls))
+                .forEach(this::create);
+    }
+
+    public void destroyGameObjects() {
+        _gameObjectPool.clear();
+        _gameObjectPoolByClass.clear();
+    }
+
+    public <T> Collection<T> getSubTypesOf(Class<T> baseClass) {
+        List<T> objects = new ArrayList<>();
+        _gameObjectPool.stream().filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
+        _objectPool.stream().filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
+        return objects;
     }
 
     public interface ApplicationClientInterface {

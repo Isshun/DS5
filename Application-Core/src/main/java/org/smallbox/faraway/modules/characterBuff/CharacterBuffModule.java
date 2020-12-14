@@ -36,18 +36,19 @@ public class CharacterBuffModule extends GameModule {
 
     @Override
     protected void onModuleUpdate(Game game) {
-
-        // Ajoute les personnages manquant
-        characterModule.getCharacters().forEach(character -> {
-            if (!_characters.containsKey(character)) {
-                _characters.put(character, new ConcurrentHashMap<>());
-            }
-        });
-
-        // Check les buffs de chaque personnage
-        _characters.forEach(this::addMissingBuffs);
-        _characters.forEach(this::updateBuffs);
-        _characters.forEach(this::applyBuffsEffects);
+        //TODO
+//
+//        // Ajoute les personnages manquant
+//        characterModule.getCharacters().forEach(character -> {
+//            if (!_characters.containsKey(character)) {
+//                _characters.put(character, new ConcurrentHashMap<>());
+//            }
+//        });
+//
+//        // Check les buffs de chaque personnage
+//        _characters.forEach(this::addMissingBuffs);
+//        _characters.forEach(this::updateBuffs);
+//        _characters.forEach(this::applyBuffsEffects);
     }
 
     /**

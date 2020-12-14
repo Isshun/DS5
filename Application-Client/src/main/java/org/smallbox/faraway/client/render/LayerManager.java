@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 
@@ -21,6 +22,13 @@ import java.util.stream.Collectors;
 
 @ApplicationObject
 public class LayerManager implements GameClientObserver {
+
+    @Inject
+    private LayerManager layerManager;
+
+    @Inject
+    private Viewport                        _viewport;
+
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
     public static final int                 PARTICLE_LAYER_LEVEL = -99;
@@ -42,38 +50,32 @@ public class LayerManager implements GameClientObserver {
     private double                          _animationProgress;
 
     private Collection<BaseLayer>           _layers;
-    private Viewport                        _viewport;
 
     public Viewport getViewport() { return _viewport; }
 
     @Override
     public void onGameInitLayers(Game game) {
         // Find GameLayer annotated class
-        _layers = new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .map(cls -> {
-                    Log.info("Find game layer: " + cls.getSimpleName());
-
-                    try {
-                        BaseLayer layer = cls.newInstance();
-                        Application.dependencyInjector.register(layer);
-                        Application.addObserver(layer);
-                        return layer;
-                    } catch ( IllegalAccessException | InstantiationException e) {
-                        throw new GameException(LayerManager.class, e);
-                    }
-
-                })
-                .filter(Objects::nonNull)
+        _layers = Application.dependencyInjector.getSubTypesOf(BaseLayer.class).stream()
+//                new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
+//                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+//                .map(cls -> {
+//                    Log.info("Find game layer: " + cls.getSimpleName());
+//
+//                    BaseLayer layer = ;
+//                    Application.addObserver(layer);
+//                    return layer;
+//
+//                })
+//                .filter(Objects::nonNull)
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
 
         _layers.forEach(layer -> layer.onGameInit(game));
 
         // Create viewport
-        _viewport = new Viewport(400, 300);
         _viewport.setPosition(0, 0, game.getInfo().groundFloor);
-        ApplicationClient.dependencyInjector.register(_viewport);
+        //ApplicationClient.dependencyInjector.register(_viewport);
     }
 
     @Override
@@ -91,7 +93,7 @@ public class LayerManager implements GameClientObserver {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        ApplicationClient.layerManager.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
+        layerManager.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
 
         // Move viewport
         if (game.isRunning()) {

@@ -3,10 +3,12 @@ package org.smallbox.faraway.client.ui.engine;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.EventManager;
+import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 
 import java.util.Collection;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class UIEventManager implements EventManager {
     private UIDropDown                      _currentDropDown;
     private Map<View, Object>               _dropViews;
     private OnDragListener                  _dragListener;
+
+    @Inject
+    private LayerManager layerManager;
 
     public UIEventManager() {
         _onDragListeners = new ConcurrentSkipListMap<>();
@@ -139,10 +144,10 @@ public class UIEventManager implements EventManager {
         // Click on map
         if (Application.gameManager.isRunning()) {
             ApplicationClient.selectionManager.select(
-                    ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX()),
-                    ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY()),
-                    ApplicationClient.layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX()),
-                    ApplicationClient.layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY())
+                    layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX()),
+                    layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY()),
+                    layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX()),
+                    layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY())
             );
         }
 

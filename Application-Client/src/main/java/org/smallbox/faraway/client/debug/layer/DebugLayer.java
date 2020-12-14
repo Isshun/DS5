@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.module.TaskClientModule;
+import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
@@ -13,6 +14,7 @@ import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -58,6 +60,9 @@ public class DebugLayer extends BaseLayer {
 
     @BindComponent
     private TaskClientModule taskClientModule;
+
+    @Inject
+    private LayerManager layerManager;
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
@@ -120,8 +125,8 @@ public class DebugLayer extends BaseLayer {
 
             // Display renders
             case LAYER:
-                if (ApplicationClient.layerManager != null) {
-                    ApplicationClient.layerManager.getLayers().stream()
+                if (layerManager != null) {
+                    layerManager.getLayers().stream()
                             .sorted((o1, o2) -> (int)(o2.getCumulateTime() - o1.getCumulateTime()))
                             .forEach(render -> drawDebug(renderer, "Render",
                                     String.format("%-32s visible: %-5s total: %-5d med: %.2f",
@@ -175,8 +180,8 @@ public class DebugLayer extends BaseLayer {
                 long heapFreeSize = Runtime.getRuntime().freeMemory();
                 drawDebug(renderer, "VIEWPORT", "Heap: " + ((heapSize - heapFreeSize) / 1000 / 1000) + "mb");
 
-                drawDebug(renderer, "VIEWPORT", "Floor: " + ApplicationClient.layerManager.getViewport().getFloor());
-                drawDebug(renderer, "VIEWPORT", "Size: " + ApplicationClient.layerManager.getViewport().getWidth() + " x " + ApplicationClient.layerManager.getViewport().getHeight());
+                drawDebug(renderer, "VIEWPORT", "Floor: " + layerManager.getViewport().getFloor());
+                drawDebug(renderer, "VIEWPORT", "Size: " + layerManager.getViewport().getWidth() + " x " + layerManager.getViewport().getHeight());
 
                 drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
                 drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
@@ -186,12 +191,12 @@ public class DebugLayer extends BaseLayer {
                 }
 
                 drawDebug(renderer, "Cursor screen position", gameEventManager.getMouseX() + " x " + gameEventManager.getMouseY());
-                drawDebug(renderer, "Cursor world position", ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()) + " x " + ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()));
+                drawDebug(renderer, "Cursor world position", layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()) + " x " + layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()));
 
                 ParcelModel parcel = WorldHelper.getParcel(
-                        ApplicationClient.layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()),
-                        ApplicationClient.layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
-                        ApplicationClient.layerManager.getViewport().getFloor());
+                        layerManager.getViewport().getWorldPosX(gameEventManager.getMouseX()),
+                        layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
+                        layerManager.getViewport().getFloor());
                 drawDebug(renderer, "Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
                 break;
         }

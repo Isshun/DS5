@@ -45,9 +45,12 @@ public class LuaControllerManager implements GameObserver {
 //        ApplicationClient.luaModuleManager.init();
 
         // Invoke controllers
-        _controllers = new Reflections("org.smallbox.faraway").getSubTypesOf(LuaController.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .collect(Collectors.toConcurrentMap(Class::getCanonicalName, this::invokeController));
+        _controllers = Application.dependencyInjector.getSubTypesOf(LuaController.class).stream()
+                .collect(Collectors.toConcurrentMap(o -> o.getClass().getCanonicalName(), o -> o));
+        _controllers.forEach((key, value) -> value.setRootView(_viewByControllerName.get(key)));
+//        _controllers = new Reflections("org.smallbox.faraway").getSubTypesOf(LuaController.class).stream()
+//                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+//                .collect(Collectors.toConcurrentMap(Class::getCanonicalName, this::invokeController));
 
         // Check observer
         _controllers.values()
@@ -122,23 +125,23 @@ public class LuaControllerManager implements GameObserver {
         }
     }
 
-    /**
-     * Invoke controllers
-     *
-     * @param cls Controller to invoke
-     */
-    private LuaController invokeController(Class<? extends LuaController> cls) {
-        Log.debug(LuaControllerManager.class, "Invoke controller %s", cls.getSimpleName());
-        try {
-            Constructor constructor = cls.getConstructor();
-            constructor.setAccessible(true);
-            LuaController controller = (LuaController) constructor.newInstance();
-            controller.setRootView(_viewByControllerName.get(cls.getCanonicalName()));
-            return controller;
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-            throw new GameException(LuaControllerManager.class, e);
-        }
-    }
+//    /**
+//     * Invoke controllers
+//     *
+//     * @param cls Controller to invoke
+//     */
+//    private LuaController invokeController(Class<? extends LuaController> cls) {
+//        Log.debug(LuaControllerManager.class, "Invoke controller %s", cls.getSimpleName());
+//        try {
+//            Constructor constructor = cls.getConstructor();
+//            constructor.setAccessible(true);
+//            LuaController controller = (LuaController) constructor.newInstance();
+//            controller.setRootView(_viewByControllerName.get(cls.getCanonicalName()));
+//            return controller;
+//        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+//            throw new GameException(LuaControllerManager.class, e);
+//        }
+//    }
 
     /**
      * Bind controller fields

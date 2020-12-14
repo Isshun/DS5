@@ -61,14 +61,17 @@ public class GameManager implements GameObserver {
         }
 
         _game = new Game(gameInfo, applicationConfigService.getConfig());
+        Application.dependencyInjector.destroyGameObjects();
+
+        // For now game is created and register to DI manually because ctor need GameInfo
         Application.dependencyInjector.register(_game);
+        Application.dependencyInjector.createGameObjects();
 
         _game.loadModules();
         _game.loadLayers();
 
-        Application.notify(observer -> observer.onGameInitLayers(_game));
-
         Application.dependencyInjector.injectGameDependencies();
+        Application.notify(observer -> observer.onGameInitLayers(_game));
 
         worldFactory.create(
                 Application.data,

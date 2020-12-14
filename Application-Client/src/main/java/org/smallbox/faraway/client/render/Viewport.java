@@ -35,8 +35,7 @@ public class Viewport {
     private int         _worldX;
     private int         _worldY;
 
-    public Viewport(int x, int y) {
-        setPosition(x, y);
+    public Viewport() {
         _lastPosX = 0;
         _lastPosY = 0;
         _width = Constant.WINDOW_WIDTH - Constant.PANEL_WIDTH;

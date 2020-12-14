@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @GameObject
 public class Game {
@@ -126,28 +127,34 @@ public class Game {
     public void loadModules() {
         Log.info("Load game modules");
 
-        // Find game modules
-        new Reflections("org.smallbox.faraway").getSubTypesOf(AbsGameModule.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-//                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
-                .forEach(cls -> {
-                    try {
-                        Log.info("Find game module: " + cls.getSimpleName());
-                        AbsGameModule module = cls.getConstructor().newInstance();
+//        // Find game modules
+//        new Reflections("org.smallbox.faraway").getSubTypesOf(AbsGameModule.class).stream()
+//                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
+////                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
+//                .forEach(cls -> {
+//                    try {
+//                        Log.info("Find game module: " + cls.getSimpleName());
+//                        AbsGameModule module = cls.getConstructor().newInstance();
+//
+//                        if (cls.isAnnotationPresent(ModuleInfoAnnotation.class)) {
+//                            Log.info("Find game module: " + cls.getAnnotation(ModuleInfoAnnotation.class).name());
+//                            module.setUpdateInterval(cls.getAnnotation(ModuleInfoAnnotation.class).updateInterval());
+//                        }
+//
+//                        module.setInfo(ModuleInfo.fromName(cls.getSimpleName()));
+//                        _modules.add(module);
+//                    } catch (NoSuchMethodException e) {
+//                        Log.warning(ModuleManager.class, "Unable to instantiate " + cls.getName() + " - No default constructor");
+//                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
 
-                        if (cls.isAnnotationPresent(ModuleInfoAnnotation.class)) {
-                            Log.info("Find game module: " + cls.getAnnotation(ModuleInfoAnnotation.class).name());
-                            module.setUpdateInterval(cls.getAnnotation(ModuleInfoAnnotation.class).updateInterval());
-                        }
+        _modules = Application.dependencyInjector.getGameObjects().stream()
+                .filter(o -> o instanceof AbsGameModule)
+                .map(o -> (AbsGameModule)o)
+                .collect(Collectors.toList());
 
-                        module.setInfo(ModuleInfo.fromName(cls.getSimpleName()));
-                        _modules.add(module);
-                    } catch (NoSuchMethodException e) {
-                        Log.warning(ModuleManager.class, "Unable to instantiate " + cls.getName() + " - No default constructor");
-                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                });
 
         // Load game modules
         boolean moduleHasBeenLoaded;
@@ -171,7 +178,7 @@ public class Game {
 //        }
 
         _modules.forEach(Application::addObserver);
-        _modules.forEach(Application.dependencyInjector::register);
+//        _modules.forEach(Application.dependencyInjector::register);
         _modules.forEach(ModuleBase::create);
     }
 

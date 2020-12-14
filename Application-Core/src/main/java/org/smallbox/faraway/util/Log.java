@@ -220,6 +220,7 @@ public class Log {
     }
 
     public static void verbose(String message, Object... args) {
+        debug(message, args);
     }
 
     private static boolean inPackageList(String[] packageList) {
