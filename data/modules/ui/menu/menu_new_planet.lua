@@ -6,7 +6,7 @@ ui:extend({
     visible = false,
     views = {
         { type = "image", id = "img_background", size = {1920, 1200}, effects = { type = "fade", duration = 250 }},
-        { type = "view", position = {application.info.screen_width / 2 - 300 / 2, application.info.screen_height / 2 - 200}, views = {
+        { type = "view", position = {application.screen_width / 2 - 300 / 2, application.screen_height / 2 - 200}, views = {
             { type = "label", text = "Planets", text_size = 38},
             { type = "list", id = "list_planets", position = {0, 40}},
             { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 350}, text_size = 22, size = {100, 40},

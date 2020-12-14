@@ -76,7 +76,7 @@ public class BasicCraftJob extends JobModel {
                 job.setProgress(receipt.getCost() - receipt.getCostRemaining(), receipt.getCost());
 
                 // Incrémente la variable count de la recette (état d'avancement) et return TASK_CONTINUE si la valeur retournée n'est pas 0
-                if (receipt.craft(1 / Application.config.game.craftTime * hourInterval) > 0) {
+                if (receipt.craft(1 / jobModule.getGameConfig().craftTime * hourInterval) > 0) {
                     return JobTaskReturn.TASK_CONTINUE;
                 }
 

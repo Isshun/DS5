@@ -4,11 +4,13 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.*;
@@ -46,6 +48,9 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @BindComponent
     private StructureModule structureModule;
+
+    @Inject
+    private ApplicationConfigService applicationConfigService;
 
     private Collection<ConsumableItem> _consumables;
 
@@ -340,7 +345,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry : ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + Application.config.game.maxNearDistance) {
+            if (entry.getValue() <= bestDistance + applicationConfigService.getGameInfo().maxNearDistance) {
                 return entry.getKey();
             }
         }

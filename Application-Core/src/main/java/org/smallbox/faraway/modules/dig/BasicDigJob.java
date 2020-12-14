@@ -37,8 +37,8 @@ public class BasicDigJob extends JobModel {
                 // Déplace le personnage à l'emplacement des composants
                 job.addTask("Dig", (character, hourInterval) -> {
                     job._time += hourInterval;
-                    job.setProgress(job._time, Application.config.game.digTime);
-                    return job._time >= Application.config.game.digTime ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+                    job.setProgress(job._time, jobModule.getGameConfig().digTime);
+                    return job._time >= jobModule.getGameConfig().digTime ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
                 });
 
                 // Retire les rochers de la carte

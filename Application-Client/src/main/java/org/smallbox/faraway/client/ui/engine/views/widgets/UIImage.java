@@ -73,9 +73,7 @@ public class UIImage extends View {
                         _sprite = ApplicationClient.spriteManager.getIcon(_path);
                         _sprite.setRegion(0, 0, _originWidth, _originHeight);
                         _sprite.setSize(_originWidth, _originHeight);
-                        _sprite.setScale(
-                                (float)Application.config.uiScale,
-                                (float)Application.config.uiScale);
+                        _sprite.setScale(renderer.getUiScale(), renderer.getUiScale());
                         _sprite.flip(false, true);
                     } catch (GdxRuntimeException e) {
 //                e.printStackTrace();

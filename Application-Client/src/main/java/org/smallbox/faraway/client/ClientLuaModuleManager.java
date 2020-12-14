@@ -6,11 +6,14 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
 import org.smallbox.faraway.client.lua.LuaUIBridge;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.BindConfig;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 
 import java.io.File;
 
@@ -19,6 +22,9 @@ import java.io.File;
  */
 @ApplicationObject
 public class ClientLuaModuleManager extends LuaModuleManager {
+
+    @Inject
+    private ApplicationConfigService applicationConfigService;
 
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
@@ -36,7 +42,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "end end",
                 "main").call();
         globals.get("main").call(
-                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel())),
+                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel(), applicationConfigService.getScreenInfo())),
                 CoerceJavaToLua.coerce(new LuaUIBridge(null) {
                     @Override
                     public void extend(LuaValue values) {

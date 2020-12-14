@@ -6,6 +6,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.FileUtils;
@@ -31,6 +33,9 @@ public class GameManager implements GameObserver {
     @BindComponent
     private GameSaveManager gameSaveManager;
 
+    @Inject
+    private ApplicationConfigService applicationConfigService;
+
     private Game _game;
 
     public interface GameListener {
@@ -55,7 +60,7 @@ public class GameManager implements GameObserver {
             return;
         }
 
-        _game = new Game(gameInfo);
+        _game = new Game(gameInfo, applicationConfigService.getConfig());
         Application.dependencyInjector.register(_game);
 
         _game.loadModules();
@@ -105,7 +110,7 @@ public class GameManager implements GameObserver {
         try {
             long time = System.currentTimeMillis();
 
-            _game = new Game(gameInfo);
+            _game = new Game(gameInfo, applicationConfigService.getConfig());
             Application.dependencyInjector.register(_game);
 
             _game.loadModules();

@@ -6,7 +6,7 @@ ui:extend({
     visible = false,
     views = {
         { type = "image", id = "img_background", src = "[base]/graphics/mars_gallery_habitat_3.jpg", size = {1920, 1200}},
-        { type = "list", position = {application.info.screen_width / 2 - 500 / 2, application.info.screen_height / 2 - 200}, views = {
+        { type = "list", position = {application.screen_width / 2 - 500 / 2, application.screen_height / 2 - 200}, views = {
             { type = "label", text = "Load game", text_size = 38, size = {500, 50}},
             { type = "view", views = {
                 { type = "list", id = "list_games" },

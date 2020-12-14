@@ -118,7 +118,7 @@ public abstract class LuaModuleManager implements GameObserver {
 
         // Load modules info
         _luaModules.clear();
-        FileUtils.list(new File(Application.BASE_PATH, "data/modules/")).forEach(file -> {
+        FileUtils.list(FileUtils.getDataFile("modules")).forEach(file -> {
             try (FileInputStream fis = new FileInputStream(new File(file, "module.json"))) {
                 ModuleInfo info = ModuleInfo.fromJSON(Utils.toJSON(fis));
                 if ("lua".equals(info.type)) {
@@ -133,7 +133,7 @@ public abstract class LuaModuleManager implements GameObserver {
         _luaModules.forEach(this::loadModule);
 
         // TODO: load all lua files
-        loadLuaFiles(null, new File(Application.BASE_PATH));
+        loadLuaFiles(null, new File(FileUtils.BASE_PATH));
 
         Globals globals = createGlobals(null, null);
 

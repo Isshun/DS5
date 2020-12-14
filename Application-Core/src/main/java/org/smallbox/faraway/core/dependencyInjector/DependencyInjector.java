@@ -1,5 +1,6 @@
 package org.smallbox.faraway.core.dependencyInjector;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
@@ -123,6 +124,7 @@ public class DependencyInjector {
             doInjectComponents(host);
             doInjectConfig(host);
             doInjectShortcut(host);
+            doInjectInject(host);
             Application.notify(observer -> observer.onInjectDependency(object));
         });
     }
@@ -146,6 +148,7 @@ public class DependencyInjector {
             doInjectGame(host);
             doInjectConfig(host);
             doInjectShortcut(host);
+            doInjectInject(host);
             Application.notify(observer -> observer.onInjectDependency(object));
         });
     }
@@ -209,6 +212,22 @@ public class DependencyInjector {
                         });
                     }
                 }
+            }
+        }
+    }
+
+    // TODO: replace inject components / config by this method and rename it
+    private void doInjectInject(Object host) {
+        for (Field field: host.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(Inject.class)) {
+                    Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
+                    Objects.requireNonNull(_objectPoolByClass.get(field.getType()), "Unable to find field to inject: " + field.getType().getName());
+                    field.set(host, _objectPoolByClass.get(field.getType()));
+                }
+            } catch (IllegalAccessException e) {
+                throw new GameException(DependencyInjector.class, e);
             }
         }
     }
@@ -298,10 +317,28 @@ public class DependencyInjector {
     public <T> T registerModel(Class<T> cls, RegisterModelCallback<T> callback) {
         try {
             T model = callback.getModel();
+
+            callInitMethod(model);
+
             _models.put(cls, model);
             return model;
         } catch (IOException e) {
             throw new GameException(DependencyInjector.class, e);
         }
+    }
+
+    private <T> void callInitMethod(T model) {
+
+        for (Method method: model.getClass().getDeclaredMethods()) {
+            try {
+                method.setAccessible(true);
+                if (method.isAnnotationPresent(OnInit.class)) {
+                    method.invoke(model);
+                }
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new GameException(DependencyInjector.class, e);
+            }
+        }
+
     }
 }

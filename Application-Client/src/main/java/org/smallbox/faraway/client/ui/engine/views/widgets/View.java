@@ -39,6 +39,9 @@ public abstract class View implements Comparable<View> {
     private LuaController _controller;
     private boolean _isGameView;
 
+    // TODO: use value from application config
+    protected float uiScale = 1;
+
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
         _horizontalAlign = horizontalAlign;
@@ -385,10 +388,10 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setMargin(int top, int right, int bottom, int left) {
-        _marginTop = (int) (top * Application.config.uiScale);
-        _marginRight = (int) (right * Application.config.uiScale);
-        _marginBottom = (int) (bottom * Application.config.uiScale);
-        _marginLeft = (int) (left * Application.config.uiScale);
+        _marginTop = (int) (top * uiScale);
+        _marginRight = (int) (right * uiScale);
+        _marginBottom = (int) (bottom * uiScale);
+        _marginLeft = (int) (left * uiScale);
         return this;
     }
 
@@ -487,62 +490,62 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = (int) (t * Application.config.uiScale);
-        _paddingRight = (int) (r * Application.config.uiScale);
-        _paddingBottom = (int) (b * Application.config.uiScale);
-        _paddingLeft = (int) (l * Application.config.uiScale);
+        _paddingTop = (int) (t * uiScale);
+        _paddingRight = (int) (r * uiScale);
+        _paddingBottom = (int) (b * uiScale);
+        _paddingLeft = (int) (l * uiScale);
     }
 
     public View setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = (int) (t * Application.config.uiScale);
-        _paddingRight = _paddingLeft = (int) (r * Application.config.uiScale);
+        _paddingTop = _paddingBottom = (int) (t * uiScale);
+        _paddingRight = _paddingLeft = (int) (r * uiScale);
         return this;
     }
 
     public View setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * Application.config.uiScale);
+        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * uiScale);
         return this;
     }
 
     public View setFixedSize(int width, int height) {
-        _fixedWidth = (int) (width * Application.config.uiScale);
-        _fixedHeight = (int) (height * Application.config.uiScale);
+        _fixedWidth = (int) (width * uiScale);
+        _fixedHeight = (int) (height * uiScale);
         return this;
     }
 
     public View setSize(int width, int height) {
-        _width = (int) (width * Application.config.uiScale);
-        _height = (int) (height * Application.config.uiScale);
+        _width = (int) (width * uiScale);
+        _height = (int) (height * uiScale);
         _originWidth = width;
         _originHeight = height;
         return this;
     }
 
     public View setWidth(int width) {
-        _width = (int) (width * Application.config.uiScale);
+        _width = (int) (width * uiScale);
         _originWidth = width;
         return this;
     }
 
     public View setHeight(int height) {
-        _height = (int) (height * Application.config.uiScale);
+        _height = (int) (height * uiScale);
         _originHeight = height;
         return this;
     }
 
     public View setPositionX(int x) {
-        _x = (int) (x * Application.config.uiScale);
+        _x = (int) (x * uiScale);
         return this;
     }
 
     public View setPositionY(int y) {
-        _y = (int) (y * Application.config.uiScale);
+        _y = (int) (y * uiScale);
         return this;
     }
 
     public View setPosition(int x, int y) {
-        _x = (int) (x * Application.config.uiScale);
-        _y = (int) (y * Application.config.uiScale);
+        _x = (int) (x * uiScale);
+        _y = (int) (y * uiScale);
         return this;
     }
 

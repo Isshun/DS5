@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class Game {
 
     public static long interval = 1000;
+    private final ApplicationConfig config;
     private double _tickPerHour;
 
     public <T> T getModule(Class<T> cls) {
@@ -97,12 +99,13 @@ public class Game {
     public long                             getNextUpdate() { return _nextUpdate; }
     public int                              getTickInterval() { return _tickInterval; }
 
-    public Game(GameInfo info) {
-        _speed = Application.config.game.startSpeed;
-        _lastSpeed = Application.config.game.startSpeed;
-        _tickInterval = Application.config.game.tickInterval;
-        _gameTime = new GameTime(Application.config.game.startGameTime);
-        _tickPerHour = Application.config.game.ticksPerHour[_speed];
+    public Game(GameInfo info, ApplicationConfig config) {
+        this.config = config;
+        _speed = config.game.startSpeed;
+        _lastSpeed = config.game.startSpeed;
+        _tickInterval = config.game.tickInterval;
+        _gameTime = new GameTime(config.game.startGameTime);
+        _tickPerHour = config.game.ticksPerHour[_speed];
         _planetInfo = info.planet;
         _regionInfo = info.region;
 
@@ -203,10 +206,10 @@ public class Game {
 
     public void setSpeed(int speed) {
         _lastSpeed = _speed;
-        _speed = Utils.bound(1, Application.config.game.ticksPerHour.length - 1, speed);
+        _speed = Utils.bound(1, config.game.ticksPerHour.length - 1, speed);
         if (_speed != _lastSpeed) {
 //            _tickInterval = Application.config.game.ticksIntervals[_speed];
-            _tickPerHour = Application.config.game.ticksPerHour[_speed];
+            _tickPerHour = config.game.ticksPerHour[_speed];
             _isRunning = speed > 0;
         }
     }

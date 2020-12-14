@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.game.ApplicationConfig;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.character.CharacterModule;

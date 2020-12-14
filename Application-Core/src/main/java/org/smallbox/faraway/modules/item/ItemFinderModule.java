@@ -3,8 +3,10 @@ package org.smallbox.faraway.modules.item;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
@@ -25,6 +27,9 @@ public class ItemFinderModule extends GameModule {
 
     @BindComponent
     private ItemModule _items;
+
+    @Inject
+    private ApplicationConfigService applicationConfigService;
 
     // TODO: setJob item
     // TODO: isJobLaunchable path
@@ -94,7 +99,7 @@ public class ItemFinderModule extends GameModule {
 
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + Application.config.game.maxNearDistance) {
+            if (entry.getValue() <= bestDistance + applicationConfigService.getGameInfo().maxNearDistance) {
                 return entry.getKey();
             }
         }

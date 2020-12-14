@@ -5,7 +5,7 @@ import main.java.org.smallbox.farpoint.desktop.LwjglConfig;
 import org.junit.Before;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.game.ApplicationConfig;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 

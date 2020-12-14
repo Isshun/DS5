@@ -1,14 +1,14 @@
 ui:extend({
     type = "view",
     id = "base.ui.game_info",
-    size = {application.info.screen_width, application.info.screen_height},
+    size = {application.screen_width, application.screen_height},
     controller = "org.smallbox.faraway.client.controller.SystemInfoController",
     level = 100,
     visible = true,
     views = {
 
         -- Pause frame
-        { type = "view", id = "view_pause", background = 0x00000055, visible = false, size = {application.info.screen_width, application.info.screen_height}, views = {
+        { type = "view", id = "view_pause", background = 0x00000055, visible = false, size = {application.screen_width, application.screen_height}, views = {
             { type = "list", align = {"center", "center"}, background = color3, border = color1, size = {250, 350}, views = {
                 { type = "label", text = "Resume", text_size = 20, text_align = "center", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}},
                 { type = "label", text = "Save", text_size = 20, text_align = "center", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}},

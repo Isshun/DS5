@@ -4,10 +4,13 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
@@ -41,6 +44,9 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     @BindComponent
     private ConsumableModule consumableModule;
+
+    @Inject
+    private ApplicationConfigService applicationConfigService;
 
     @Override
     protected void onModuleUpdate(Game game) {
@@ -196,6 +202,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public boolean hasJob(JobModel job) {
         return _jobs.contains(job);
+    }
+
+    public ApplicationConfig.ApplicationConfigGameInfo getGameConfig() {
+        return applicationConfigService.getGameInfo();
     }
 
     public interface JobInitCallback<T> {

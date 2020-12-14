@@ -3,10 +3,12 @@ package org.smallbox.faraway.modules.character;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -19,6 +21,9 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 
     @BindComponent
     private CharacterModule characterModule;
+
+    @Inject
+    private ApplicationConfigService applicationConfigService;
 
 //    private Map<CharacterModel, PathModel> paths = new ConcurrentHashMap<>();
 
@@ -48,7 +53,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
             }
 
             // Increase move progress
-            character.setMoveStep(Application.config.game.characterSpeed / Application.gameManager.getGame().getTickPerHour());
+            character.setMoveStep(applicationConfigService.getGameInfo().characterSpeed / Application.gameManager.getGame().getTickPerHour());
 //            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
 
             // Character has reach next parcel

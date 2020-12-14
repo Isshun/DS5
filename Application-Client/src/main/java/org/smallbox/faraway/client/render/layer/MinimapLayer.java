@@ -13,8 +13,10 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -54,10 +56,13 @@ public class MinimapLayer extends BaseLayer {
     @BindComponent
     private CharacterModule characterModule;
 
+    @Inject
+    private ApplicationConfigService applicationConfigService;
+
     @Override
     public void onGameStart(Game game) {
-        _mainPosX = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * Application.config.uiScale - 10 * Application.config.uiScale);
-        _mainPosY = (int) (84 * Application.config.uiScale);
+        _mainPosX = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * applicationConfigService.getConfig().uiScale - 10 * applicationConfigService.getConfig().uiScale);
+        _mainPosY = (int) (84 * applicationConfigService.getConfig().uiScale);
 
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
@@ -95,8 +100,8 @@ public class MinimapLayer extends BaseLayer {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (_panelMain != null && _panelMain.isVisible()) {
-            int width = (int) (FRAME_WIDTH * Application.config.uiScale);
-            int height = (int) (FRAME_HEIGHT * Application.config.uiScale);
+            int width = (int) (FRAME_WIDTH * applicationConfigService.getConfig().uiScale);
+            int height = (int) (FRAME_HEIGHT * applicationConfigService.getConfig().uiScale);
 
             if (_dirty || _spriteMap == null) {
                 _dirty = false;

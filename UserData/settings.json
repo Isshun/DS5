@@ -1,0 +1,32 @@
+{
+  "debug": {
+    "actionOnLoad": "NEW_GAME",
+    "scenario": "data/scenarios/test1.json"
+  },
+  "screen": {
+    "resolution": [3400, 1300],
+    "position": [20, 20],
+    "mode": "WINDOW",
+    "foregroundFPS": 60,
+    "backgroundFPS": 30
+  },
+  "game": {
+    "ticksPerHour": [-1, 5000, 2000, 1000, 100, 50, 20, 10, 1],
+    "tickInterval": 10,
+    "startGameTime": 7,
+    "startSpeed": 1,
+    "roofMaxDistance": 6,
+    "inventoryMaxQuantity": 100,
+    "storageMaxQuantity": 100,
+    "environmentDistance": 5,
+    "maxNearDistance": 32,
+    "characterSpeed": 100,
+    "craftTime":  0.015,
+    "buildTime": 0.015,
+    "repairTime":  0.015,
+    "digTime": 0.25
+  },
+  "launchGui": true,
+  "uiScale": 1,
+  "lang": "en"
+}

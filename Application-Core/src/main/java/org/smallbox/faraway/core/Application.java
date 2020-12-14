@@ -1,24 +1,23 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
+import org.reflections.Reflections;
 import org.smallbox.faraway.GameTaskManager;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.*;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.groovy.GroovyManager;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
-import org.smallbox.faraway.modules.world.factory.WorldFactory;
 
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.Consumer;
 
 public class Application {
-//    public static final String BASE_PATH = "C:\\Projects\\FREE\\FarAway\\FarAway\\Application";
-    public static final String BASE_PATH = "C:\\Users\\Alex\\IdeaProjects\\DS5";
     private static Queue<GameObserver> _observers = new PriorityBlockingQueue<>(200, (o1, o2) -> {
         GameObserverPriority.Priority p1 = o1.getClass().isAnnotationPresent(GameObserverPriority.class)
                 ? o1.getClass().getAnnotation(GameObserverPriority.class).value()
@@ -40,9 +39,6 @@ public class Application {
     public static Data                  data;
     public static GroovyManager         groovyManager;
 
-    // Both
-    public static ApplicationConfig config;
-
     public static boolean isLoaded = false;
     public static ApplicationClientListener clientListener;
     public static GameServerKyro gameServer;
@@ -62,8 +58,16 @@ public class Application {
         dependencyInjector.create(GameTaskManager.class);
         dependencyInjector.create(GameSaveManager.class);
 
-        // Create APPLICATION_CONFIG
-        config = dependencyInjector.create(ApplicationConfig.class);
+        findAndCreateApplicationObjects();
+    }
+
+    /**
+     * Automatically create object annotated with @ApplicationObject
+     */
+    private void findAndCreateApplicationObjects() {
+        new Reflections("org.smallbox").getTypesAnnotatedWith(ApplicationObject.class).stream()
+                .filter(cls -> dependencyInjector.getObject(cls) == null)
+                .forEach(cls -> dependencyInjector.create(cls));
     }
 
     private static boolean                          _isRunning = true;
@@ -86,7 +90,6 @@ public class Application {
     }
 
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ApplicationConfig getConfig() { return config; }
 
 //    public void update() {
 //        if (Application.gameManager.isLoaded()) {

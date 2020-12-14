@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 
 import java.util.Collection;
@@ -21,21 +22,24 @@ public class LuaApplicationModel {
     public int                      day;
     public int                      hour;
     public int                      year;
+    public int                      screen_width;
+    public int                      screen_height;
     public LuaCrewModel             crew;
     public LuaEventsModel           events;
     public Game                     game;
     public Config                   config = new Config();
-    public ApplicationInfo          info = new ApplicationInfo();
     public Collection<LuaModule>    luaModules;
     public Collection<ModuleBase>   modules;
     public Collection<ModuleBase>   moduleThirds;
 
-    public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents) {
+    public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, ApplicationConfig.ApplicationConfigScreenInfo screenInfo) {
         crew = luaCrew;
         events = luaEvents;
         luaModules = Application.luaModuleManager.getModules();
         modules = Application.moduleManager.getModules();
         moduleThirds = Application.moduleManager.getModulesThird();
+        screen_width = screenInfo.resolution[0];
+        screen_height = screenInfo.resolution[1];
     }
 
     public void update() {

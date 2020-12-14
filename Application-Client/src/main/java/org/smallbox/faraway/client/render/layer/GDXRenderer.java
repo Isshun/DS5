@@ -15,6 +15,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
@@ -25,6 +27,9 @@ import org.smallbox.faraway.util.Constant;
 public class GDXRenderer {
     private static final Color TEXT_COLOR = Color.WHITE;
 
+    @Inject
+    ApplicationConfigService applicationConfigService;
+
     private SpriteBatch           _batch;
     private BitmapFont[]          _fonts;
     private OrthographicCamera    _camera;
@@ -32,6 +37,10 @@ public class GDXRenderer {
     private OrthographicCamera    _cameraWorld;
     private ShapeRenderer           _drawPixelShapeLayer;
     private int                         _zoom = Viewport.ZOOM_LEVELS.length - 1;
+
+    public float getUiScale() {
+        return (float) applicationConfigService.getConfig().uiScale;
+    }
 
     public void init(SpriteBatch batch, BitmapFont[] fonts) {
         _fonts = fonts;
@@ -161,13 +170,13 @@ public class GDXRenderer {
 
     public void drawFont(DrawFontCallback callback, int fontSize) {
         _batch.begin();
-        fontSize *= Application.config.uiScale;
+        fontSize *= getUiScale();
         callback.onDraw(_batch, _fonts[fontSize]);
         _batch.end();
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        textSize *= Application.config.uiScale;
+        textSize *= getUiScale();
 
         if (string != null) {
             _batch.begin();

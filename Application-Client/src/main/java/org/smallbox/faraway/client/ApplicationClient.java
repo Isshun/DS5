@@ -17,8 +17,9 @@ import org.smallbox.faraway.core.ApplicationClientListener;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.ApplicationConfig;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
@@ -33,9 +34,6 @@ public class ApplicationClient {
     private static Collection<GameClientObserver>     _observers = new LinkedBlockingQueue<>();
 
     public static final DependencyInjector      dependencyInjector;
-
-    // Both
-    public static final ApplicationConfig       applicationConfig;
 
     // Client
     public static final UIManager               uiManager;
@@ -85,24 +83,8 @@ public class ApplicationClient {
             }
         });
 
-        // Create applicationConfig
-        applicationConfig = loadConfig();
-
         // Create input processor
         inputManager = new InputManager();
-    }
-
-    private static ApplicationConfig loadConfig() {
-        Log.info("Load application applicationConfig");
-        File configFile = new File(Application.BASE_PATH, "data/config.json");
-        if (configFile.exists()) {
-            try (FileReader fileReader = new FileReader(configFile)) {
-                return new Gson().fromJson(fileReader, ApplicationConfig.class);
-            } catch (IOException e) {
-                throw new GameException(ApplicationClient.class, e, "Unable to read config file");
-            }
-        }
-        return null;
     }
 
     private static boolean                          _isRunning = true;
@@ -119,7 +101,6 @@ public class ApplicationClient {
     }
 
     public static void                 removeObserver(GameObserver observer) { assert observer != null; _observers.remove(observer); }
-    public ApplicationConfig getConfig() { return applicationConfig; }
 
     public static void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);

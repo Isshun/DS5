@@ -49,8 +49,8 @@ public class GDXApplication extends ApplicationAdapter {
         _batch = new SpriteBatch();
 
         _systemFont = new BitmapFont(
-                new FileHandle(new File(Application.BASE_PATH, "data/font-14.fnt")),
-                new FileHandle(new File(Application.BASE_PATH, "data/font-14.png")),
+                new FileHandle(new File(FileUtils.BASE_PATH, "data/font-14.fnt")),
+                new FileHandle(new File(FileUtils.BASE_PATH, "data/font-14.png")),
                 false);
 
         _application = new Application();
@@ -59,7 +59,7 @@ public class GDXApplication extends ApplicationAdapter {
             SmartFontGenerator fontGen = new SmartFontGenerator();
             _fonts = new BitmapFont[50];
             for (int i = 5; i < 50; i++) {
-                _fonts[i] = fontGen.createFont(new FileHandle(new File(Application.BASE_PATH, "data/fonts/font.ttf")), "font-" + i, i);
+                _fonts[i] = fontGen.createFont(new FileHandle(new File(FileUtils.BASE_PATH, "data/fonts/font.ttf")), "font-" + i, i);
                 _fonts[i].getData().flipped = true;
             }
         });
@@ -80,6 +80,10 @@ public class GDXApplication extends ApplicationAdapter {
         Application.taskManager.addLoadTask("Load modules", false, () ->
                 Application.moduleManager.loadModules(null));
 
+        // Call dependency injector
+        Application.taskManager.addLoadTask("Calling dependency injector", false,
+                Application.dependencyInjector::injectDependencies);
+
         Application.taskManager.addLoadTask("Load server lua modules", false, () -> Application.luaModuleManager.init(true));
         Application.taskManager.addLoadTask("Load server lua modules", false, () -> ApplicationClient.luaModuleManager.init(true));
 
@@ -92,10 +96,6 @@ public class GDXApplication extends ApplicationAdapter {
         // Load sprites
         Application.taskManager.addLoadTask("Load sprites", true,
                 ApplicationClient.spriteManager::init);
-
-        // Call dependency injector
-        Application.taskManager.addLoadTask("Calling dependency injector", false,
-                Application.dependencyInjector::injectDependencies);
 
 //        // Init input processor
 //        Application.taskManager.addLoadTask("Init input processor", false, () ->
@@ -180,8 +180,8 @@ public class GDXApplication extends ApplicationAdapter {
             _bgMenu2 = new Texture(FileUtils.getFileHandle("data/graphics/menu_bg.png"));
 
             _menuFont = new BitmapFont(
-                    new FileHandle(new File(Application.BASE_PATH, "data/font-32.fnt")),
-                    new FileHandle(new File(Application.BASE_PATH, "data/font-32.png")),
+                    new FileHandle(FileUtils.getDataFile("font-32.fnt")),
+                    new FileHandle(FileUtils.getDataFile("font-32.png")),
                     false);
             _menuFont.setColor(new Color(0x80ced6ff));
         }

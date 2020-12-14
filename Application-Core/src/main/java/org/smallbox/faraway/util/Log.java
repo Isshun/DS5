@@ -86,7 +86,7 @@ public class Log {
         }
 
         if (level == Level.FINE) {
-//            System.out.println("[DEBUG] " + message);
+            System.out.println("[DEBUG] " + message);
         }
 
     }

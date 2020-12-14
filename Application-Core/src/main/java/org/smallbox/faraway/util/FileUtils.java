@@ -19,6 +19,9 @@ import java.util.List;
  * Created by Alex on 02/07/2015.
  */
 public class FileUtils {
+    public static final String BASE_PATH = "C:\\Users\\Alex\\IdeaProjects\\DS5";
+    public static final String USERDATA_PATH = BASE_PATH + "\\UserData";
+    public static final String DATA_PATH = BASE_PATH + "\\data";
 
     public static void write(File file, String str) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -27,7 +30,7 @@ public class FileUtils {
     }
 
     public static List<File> listRecursively(String relativePath) {
-        return listRecursively(new File(Application.BASE_PATH, relativePath));
+        return listRecursively(new File(BASE_PATH, relativePath));
     }
 
     public static List<File> listRecursively(File file) {
@@ -102,10 +105,18 @@ public class FileUtils {
     }
 
     public static File getFile(String... relativePath) {
-        return Paths.get(Application.BASE_PATH, relativePath).toFile();
+        return Paths.get(BASE_PATH, relativePath).toFile();
     }
 
     public static FileHandle getFileHandle(String relativePath) {
         return new FileHandle(getFile(relativePath));
+    }
+
+    public static File getUserDataFile(String fileName) {
+        return new File(USERDATA_PATH, fileName);
+    }
+
+    public static File getDataFile(String fileName) {
+        return new File(DATA_PATH, fileName);
     }
 }
