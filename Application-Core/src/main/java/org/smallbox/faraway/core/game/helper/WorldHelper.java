@@ -325,7 +325,7 @@ public class WorldHelper {
     }
 
     public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        PathModel path = Application.dependencyInjector.getObject(PathManager.class).getPath(p1, p2, true, false);
+        PathModel path = Application.dependencyInjector.getDependency(PathManager.class).getPath(p1, p2, true, false);
         if (path != null) {
             return path.getLength();
         }

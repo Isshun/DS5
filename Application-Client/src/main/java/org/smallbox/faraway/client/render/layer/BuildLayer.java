@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.BuildController;
-import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
@@ -72,7 +71,7 @@ public class BuildLayer extends BaseLayer {
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
 
-        if (ApplicationClient.dependencyInjector.getObject(SelectionManager.class).getSelectionListener() != null) {
+        if (ApplicationClient.dependencyInjector.getDependency(SelectionManager.class).getSelectionListener() != null) {
 
             if (_itemInfo != null) {
 

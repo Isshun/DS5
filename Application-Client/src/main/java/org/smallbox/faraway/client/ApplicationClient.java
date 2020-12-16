@@ -1,9 +1,7 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
-import com.google.gson.Gson;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
-import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
@@ -17,15 +15,9 @@ import org.smallbox.faraway.core.ApplicationClientListener;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
@@ -50,7 +42,7 @@ public class ApplicationClient {
         Application.clientListener = new ApplicationClientListener() {
             @Override
             public void onInitComplete() {
-                LayerManager layerManager = dependencyInjector.getObject(LayerManager.class);
+                LayerManager layerManager = dependencyInjector.getDependency(LayerManager.class);
                 layerManager.getLayers().forEach(BaseLayer::onInitLayer);
                 BRIDGE_CLIENT.register(object -> layerManager.getLayers().forEach(layer -> layer.onUpdate(object)));
             }
@@ -70,7 +62,7 @@ public class ApplicationClient {
         dependencyInjector.setClientInterface(new DependencyInjector.ApplicationClientInterface() {
             @Override
             public void onShortcutBinding(String label, int key, Runnable runnable) {
-                dependencyInjector.getObject(ShortcutManager.class).addBinding(label, key, runnable);
+                dependencyInjector.getDependency(ShortcutManager.class).addBinding(label, key, runnable);
             }
         });
     }
@@ -93,7 +85,7 @@ public class ApplicationClient {
     public static void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);
 
-        if (dependencyInjector.getObject(UIManager.class).onKeyEvent(action, key, modifier)) {
+        if (dependencyInjector.getDependency(UIManager.class).onKeyEvent(action, key, modifier)) {
             return;
         }
 
@@ -106,18 +98,18 @@ public class ApplicationClient {
         // TODO: A deplacer dans ApplicationShortcutManage
         // Call shortcut strategy
         if (action == GameEventListener.Action.RELEASED) {
-            dependencyInjector.getObject(ShortcutManager.class).action(key);
+            dependencyInjector.getDependency(ShortcutManager.class).action(key);
         }
     }
 
     public void onWindowEvent(GameEventListener.Action action) {
-        dependencyInjector.getObject(UIManager.class).onWindowEvent(action);
+        dependencyInjector.getDependency(UIManager.class).onWindowEvent(action);
     }
 
     public static void onMouseEvent(GameEventListener.Action action, int button, int x, int y, boolean rightPressed) {
 
         // Passe l'evenement à l'ui manager
-        if (dependencyInjector.getObject(UIManager.class).onMouseEvent(action, button, x, y, rightPressed)) {
+        if (dependencyInjector.getDependency(UIManager.class).onMouseEvent(action, button, x, y, rightPressed)) {
             return;
         }
 

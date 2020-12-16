@@ -22,9 +22,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 20/10/2015.
- */
 @ApplicationObject
 public class GameManager implements GameObserver {
 
@@ -201,8 +198,7 @@ public class GameManager implements GameObserver {
     public void loadLastGame() {
         buildGameList().stream()
                 .flatMap(gameInfo -> gameInfo.saveFiles.stream())
-                .sorted((o1, o2) -> o2.date.compareTo(o1.date))
-                .findFirst()
+                .min((o1, o2) -> o2.date.compareTo(o1.date))
                 .ifPresent(saveInfo -> {
                     Log.info("Load save: " + saveInfo);
                     loadGame(saveInfo.game, saveInfo, null);

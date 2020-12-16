@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 public class MenuManager {
 
     public MenuManager() {
-        ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().forEach((name, rootView) -> {
+        ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().forEach((name, rootView) -> {
             if (rootView.getView().getController() != null) {
                 bindControllerFields(rootView.getView().getController(), rootView.getView());
                 bindControllerMethods(rootView.getView().getController(), rootView.getView());
@@ -31,7 +31,7 @@ public class MenuManager {
     }
 
     public void display(String viewName) {
-        ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().get(viewName).getView().setVisible(true);
+        ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().get(viewName).getView().setVisible(true);
     }
 
     /**
@@ -81,7 +81,7 @@ public class MenuManager {
             for (Field field : cls.getDeclaredFields()) {
                 if (field.getAnnotation(BindLuaController.class) != null) {
                     field.setAccessible(true);
-                    ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().values().stream().map(rootView -> rootView.getView().getController())
+                    ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().values().stream().map(rootView -> rootView.getView().getController())
                             .filter(subController -> subController != null && subController.getClass() == field.getType())
                             .findAny()
                             .ifPresent(subController -> {

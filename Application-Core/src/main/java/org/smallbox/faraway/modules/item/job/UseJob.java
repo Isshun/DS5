@@ -57,7 +57,7 @@ public class UseJob extends JobModel {
 //            return JobCheckReturn.ABORT;
 //        }
 
-        if (!Application.dependencyInjector.getObject(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
+        if (!Application.dependencyInjector.getDependency(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 

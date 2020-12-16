@@ -65,11 +65,11 @@ public class LuaUIExtend extends LuaExtend {
 //            return;
 //        }
 
-        if (ApplicationClient.dependencyInjector.getObject(UIManager.class).getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
+        if (ApplicationClient.dependencyInjector.getDependency(UIManager.class).getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
             return;
         }
 
-        if (ApplicationClient.dependencyInjector.getObject(UIManager.class).getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
+        if (ApplicationClient.dependencyInjector.getDependency(UIManager.class).getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
             return;
         }
 
@@ -100,11 +100,11 @@ public class LuaUIExtend extends LuaExtend {
                 }
             }
 
-            ApplicationClient.dependencyInjector.getObject(UIManager.class).addMenuView(rootView);
+            ApplicationClient.dependencyInjector.getDependency(UIManager.class).addMenuView(rootView);
         } else if (value.get("parent").isnil()) {
-            ApplicationClient.dependencyInjector.getObject(UIManager.class).addRootView(rootView);
+            ApplicationClient.dependencyInjector.getDependency(UIManager.class).addRootView(rootView);
         } else {
-            ApplicationClient.dependencyInjector.getObject(UIManager.class).addSubView(view, value.get("parent").tojstring());
+            ApplicationClient.dependencyInjector.getDependency(UIManager.class).addSubView(view, value.get("parent").tojstring());
         }
     }
 
@@ -394,7 +394,7 @@ public class LuaUIExtend extends LuaExtend {
 
     private View createDropDownView(ModuleBase module, LuaValue value) {
         View view = new UIDropDown(module);
-        ApplicationClient.dependencyInjector.getObject(UIManager.class).addDropsDowns((UIDropDown)view);
+        ApplicationClient.dependencyInjector.getDependency(UIManager.class).addDropsDowns((UIDropDown)view);
         return view;
     }
 
@@ -441,7 +441,7 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     private void applyStyle(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view, String styleName) {
-        value = ApplicationClient.dependencyInjector.getObject(UIManager.class).getStyle(styleName);
+        value = ApplicationClient.dependencyInjector.getDependency(UIManager.class).getStyle(styleName);
         Log.warning("Unable to find style: " + styleName);
         if (value != null) {
             customizeViewCosmetic(module, globals, value, inGame, deep, parent, view);

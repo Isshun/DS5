@@ -1,7 +1,6 @@
 package org.smallbox.faraway.modules.characterRelation;
 
 import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.BindConfig;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -12,8 +11,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 @GameObject
 public class CharacterRelationModule extends GameModule {
 
-    @BindConfig
-    private CharacterRelationConfig config;
+    private CharacterRelationConfig config = new CharacterRelationConfig();
 
     @Inject
     private CharacterModule characterModule;

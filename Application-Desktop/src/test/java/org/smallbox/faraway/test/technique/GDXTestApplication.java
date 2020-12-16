@@ -41,7 +41,7 @@ public class GDXTestApplication extends GDXApplication {
 
         // Call dependency injector
         Application.taskManager.addLoadTask("Calling dependency injector", false,
-                Application.dependencyInjector::injectDependencies);
+                Application.dependencyInjector::injectApplicationDependencies);
 
         // Resume game
         Application.taskManager.addLoadTask("Resume game", false, () -> {

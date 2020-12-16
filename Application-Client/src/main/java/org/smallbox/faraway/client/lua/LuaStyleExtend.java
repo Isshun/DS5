@@ -26,7 +26,7 @@ public class LuaStyleExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
-        ApplicationClient.dependencyInjector.getObject(UIManager.class).addStyle(getString(value, "id", null), value.get("style"));
+        ApplicationClient.dependencyInjector.getDependency(UIManager.class).addStyle(getString(value, "id", null), value.get("style"));
     }
 
 }

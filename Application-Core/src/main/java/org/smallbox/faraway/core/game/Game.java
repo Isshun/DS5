@@ -1,14 +1,10 @@
 package org.smallbox.faraway.core.game;
 
-import org.reflections.Reflections;
 import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
-import org.smallbox.faraway.core.engine.module.ModuleInfo;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
@@ -16,13 +12,10 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @GameObject
 public class Game {
@@ -240,7 +233,7 @@ public class Game {
         _moduleScheduler2.scheduleAtFixedRate(() -> {
             try {
                 if (_isRunning) {
-                    Application.dependencyInjector.getObject(GameTaskManager.class).update();
+                    Application.dependencyInjector.getDependency(GameTaskManager.class).update();
                 }
             } catch (Error e) {
                 Log.error(e);

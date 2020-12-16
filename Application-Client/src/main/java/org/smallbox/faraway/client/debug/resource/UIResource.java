@@ -64,13 +64,13 @@ public class UIResource {
     @GET
     @Path("all")
     public Collection<View> all() {
-        return ApplicationClient.dependencyInjector.getObject(UIManager.class).getViews();
+        return ApplicationClient.dependencyInjector.getDependency(UIManager.class).getViews();
     }
 
     @GET
     @Path("find/{id}")
     public View find(@PathParam("id") String id) {
-        return ApplicationClient.dependencyInjector.getObject(UIManager.class).findById(id);
+        return ApplicationClient.dependencyInjector.getDependency(UIManager.class).findById(id);
     }
 
 }

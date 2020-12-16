@@ -1,8 +1,12 @@
 package org.smallbox.faraway.util;
 
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.*;
@@ -50,17 +54,19 @@ public class Log {
     private static FileOutputStream fos;
 
     private static void print(Level level, String message) {
-
-        while (_history.size() > 4) {
-            _history.poll();
-        }
-        while (_historyDebug.size() > 4) {
-            _historyDebug.poll();
-        }
-        if (level == Level.FINE) {
-            _historyDebug.add(message);
-        } else {
-            _history.add(message);
+        ApplicationConfigService applicationConfigService = DependencyInjector.getInstance().getDependency(ApplicationConfigService.class);
+        if (Objects.nonNull(applicationConfigService) && Objects.nonNull(applicationConfigService.getConfig())) {
+            while (_history.size() > applicationConfigService.getConfig().debug.logLineNumber) {
+                _history.poll();
+            }
+            while (_historyDebug.size() > applicationConfigService.getConfig().debug.logLineNumber) {
+                _historyDebug.poll();
+            }
+            if (level == Level.FINE) {
+                _historyDebug.add(message);
+            } else {
+                _history.add(message);
+            }
         }
 
 //        if (fos == null) {

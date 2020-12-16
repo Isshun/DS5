@@ -23,8 +23,6 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
@@ -53,8 +51,8 @@ public abstract class View implements Comparable<View> {
 
     public final void removeAllViews() {
         _views.forEach(view -> {
-            ApplicationClient.dependencyInjector.getObject(UIManager.class).removeView(view);
-            ApplicationClient.dependencyInjector.getObject(UIEventManager.class).removeListeners(view);
+            ApplicationClient.dependencyInjector.getDependency(UIManager.class).removeView(view);
+            ApplicationClient.dependencyInjector.getDependency(UIEventManager.class).removeListeners(view);
             view.removeAllViews();
             onRemoveView(view);
         });
@@ -375,7 +373,7 @@ public abstract class View implements Comparable<View> {
             _views.add(view);
         }
 
-        ApplicationClient.dependencyInjector.getObject(UIManager.class).addView(view);
+        ApplicationClient.dependencyInjector.getDependency(UIManager.class).addView(view);
 
         onAddView(view);
 

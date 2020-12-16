@@ -95,7 +95,7 @@ public abstract class CharacterModel extends MovableModel {
             _moveListener = null;
         }
 
-        _path = Application.dependencyInjector.getObject(PathManager.class).getPath(_parcel, parcel, false, false);
+        _path = Application.dependencyInjector.getDependency(PathManager.class).getPath(_parcel, parcel, false, false);
         _moveProgress2 = 0;
         if (_path != null) {
             _moveListener = listener;

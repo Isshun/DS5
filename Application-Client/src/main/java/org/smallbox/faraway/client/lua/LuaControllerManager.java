@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.lua;
 
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.ObjectUtils;
+import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
@@ -18,19 +19,16 @@ import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @ApplicationObject
 public class LuaControllerManager implements GameObserver {
 
-    private Map<String, LuaController>      _controllers = new HashMap<>();
-    private Map<String, View>               _viewByControllerName = new HashMap<>();
-    private List<Object>                    _injectLater = new CopyOnWriteArrayList<>();
+    private final Map<String, View>         _viewByControllerName = new HashMap<>();
+    private Map<String, LuaController>      _controllers;
     private long                            _lastUpdate;
 
     public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
@@ -40,7 +38,7 @@ public class LuaControllerManager implements GameObserver {
 
         // Get controllers from DI
         _controllers = Application.dependencyInjector.getSubTypesOf(LuaController.class).stream()
-                .collect(Collectors.toConcurrentMap(o -> o.getClass().getCanonicalName(), o -> o));
+                .collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
 
         // Bind rootView to controller
         _controllers.values().forEach(this::bindRootViewToController);

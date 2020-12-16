@@ -65,7 +65,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
-        if (ApplicationClient.dependencyInjector.getObject(SelectionManager.class).selectContains(object)) {
+        if (ApplicationClient.dependencyInjector.getDependency(SelectionManager.class).selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
             } else if (_selectionOffset < -2) {

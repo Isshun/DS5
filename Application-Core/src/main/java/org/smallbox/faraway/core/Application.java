@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.*;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
@@ -66,7 +65,7 @@ public class Application {
      */
     private void findAndCreateApplicationObjects() {
         new Reflections("org.smallbox").getTypesAnnotatedWith(ApplicationObject.class).stream()
-                .filter(cls -> dependencyInjector.getObject(cls) == null)
+                .filter(cls -> dependencyInjector.getDependency(cls) == null)
                 .forEach(cls -> dependencyInjector.create(cls));
     }
 

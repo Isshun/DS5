@@ -17,7 +17,6 @@ import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.task.LoadTask;
 
 import java.io.File;
@@ -34,7 +33,7 @@ public class GDXApplication extends ApplicationAdapter {
     protected BitmapFont                          _systemFont;
     private InputProcessor _menuInputAdapter = new InputAdapter() {
         public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-            ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
+            ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
             return false;
         }
     };
@@ -85,7 +84,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Call dependency injector
         Application.taskManager.addLoadTask("Calling dependency injector", false,
-                Application.dependencyInjector::injectDependencies);
+                Application.dependencyInjector::injectApplicationDependencies);
 
         Application.taskManager.addLoadTask("Load server lua modules", false, () -> Application.luaModuleManager.init(true));
         Application.taskManager.addLoadTask("Load server lua modules", false, () -> ApplicationClient.luaModuleManager.init(true));
@@ -156,7 +155,7 @@ public class GDXApplication extends ApplicationAdapter {
     }
 
     private void gameRender() {
-        Gdx.input.setInputProcessor(ApplicationClient.dependencyInjector.getObject(InputManager.class));
+        Gdx.input.setInputProcessor(ApplicationClient.dependencyInjector.getDependency(InputManager.class));
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -166,7 +165,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         // Render game
         if (Application.gameManager.isLoaded()) {
-            ApplicationClient.dependencyInjector.getObject(LayerManager.class).render(Application.gameManager.getGame());
+            ApplicationClient.dependencyInjector.getDependency(LayerManager.class).render(Application.gameManager.getGame());
         }
 //        fpsLogger.log();
     }
@@ -212,7 +211,7 @@ public class GDXApplication extends ApplicationAdapter {
         // Render application
         ApplicationClient.gdxRenderer.clear();
         ApplicationClient.gdxRenderer.refresh();
-        ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().forEach((name, view) -> view.draw(ApplicationClient.gdxRenderer, 0, 0));
+        ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().forEach((name, view) -> view.draw(ApplicationClient.gdxRenderer, 0, 0));
 //
 //        _batch.end();
     }

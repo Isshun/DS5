@@ -9,6 +9,10 @@ public class ApplicationConfig {
         public enum ActionOnLoad {NONE, LAST_SAVE, NEW_GAME}
         public ActionOnLoad actionOnLoad;
         public String scenario;
+        public boolean log;
+        public int logFontSize;
+        public int logLineLength;
+        public int logLineNumber;
     }
 
     public static class ApplicationConfigScreenInfo {
