@@ -15,7 +15,7 @@
 // */
 //public class TemperatureLayer extends GameDisplay {
 //
-//    @BindComponent
+//    @Inject
 //    private RoomModule roomModule;
 //
 //    @Override

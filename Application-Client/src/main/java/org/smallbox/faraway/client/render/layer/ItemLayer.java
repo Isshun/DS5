@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -16,10 +16,10 @@ import org.smallbox.faraway.modules.item.UsableItem;
 @GameLayer(level = LayerManager.ITEM_LAYER_LEVEL, visible = true)
 public class ItemLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private ItemModule itemModule;
 
-    @BindComponent
+    @Inject
     private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

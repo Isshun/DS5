@@ -31,11 +31,6 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
         _observers.add(observer);
     }
 
-    @Override
-    public final void onGameInit(Game game) {
-
-    }
-
     public void notifyObservers(Consumer<T> action) {
         try {
             _observers.forEach(action);

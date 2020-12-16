@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Data;
@@ -32,22 +32,22 @@ import java.util.stream.Collectors;
 @GameObject
 public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
-    @BindComponent
+    @Inject
     protected SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private Data data;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
-    @BindComponent
+    @Inject
     private AreaModule areaModule;
 
-    @BindComponent
+    @Inject
     private StoringModule storingModule;
 
-    @BindLuaController
+    @Inject
     private AreaInfoController areaInfoController;
 
     @BindLua

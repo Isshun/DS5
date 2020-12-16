@@ -9,7 +9,7 @@
 //@GameLayer(level = 999, visible = true)
 //public class WorldSelectionLayer extends BaseLayer {
 //
-//    @BindComponent
+//    @Inject
 //    private WorldModule worldModule;
 //
 //    private int _startX;

@@ -1,7 +1,7 @@
 ui:extend({
     type = "list",
     id = "base.ui.right_panel.build",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.BuildController",
     position = {12, 0},
     visible = false,

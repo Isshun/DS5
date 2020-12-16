@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -47,17 +48,20 @@ public class MinimapLayer extends BaseLayer {
     private boolean                     _dirty;
     private Pixmap                      _pixmap;
 
-    @BindComponent
+    @Inject
     private PlantModule plantModule;
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
     @Inject
     private ApplicationConfigService applicationConfigService;
+
+    @Inject
+    private UIManager uiManager;
 
     @Override
     public void onGameStart(Game game) {
@@ -73,7 +77,7 @@ public class MinimapLayer extends BaseLayer {
 
     @Override
     public void onReloadUI() {
-        _panelMain = ApplicationClient.uiManager.findById("base.ui.right_panel.content");
+        _panelMain = uiManager.findById("base.ui.right_panel.content");
     }
 
     @Override

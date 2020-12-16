@@ -24,7 +24,7 @@ public class GuiTestBase extends TestBase {
         ApplicationConfig applicationConfig = new ApplicationConfig();
         applicationConfig.game.startGameTime = 4;
 
-        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> applicationConfig);
+//        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> applicationConfig);
 
         FileUtils.createRoamingDirectory();
 

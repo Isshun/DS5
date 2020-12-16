@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.right_panel.areas",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.area.AreaPanelController",
     visible = false,
     views = {

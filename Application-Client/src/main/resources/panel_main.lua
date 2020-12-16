@@ -8,7 +8,6 @@ ui:extend({
     background = color3,
     size = {372, 800},
 
-    special = true,
     visible = true,
     debug = true,
     layer = -1,

@@ -53,7 +53,7 @@ public class Game {
     private Map<String, Boolean>            _displays;
     private int                             _speed;
     private int                             _lastSpeed;
-    private List<AbsGameModule>             _modules = new ArrayList<>();
+    private List<AbsGameModule>       _modules;
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
@@ -78,8 +78,7 @@ public class Game {
     public boolean                          hasDisplay(String displayName) { return _displays.containsKey(displayName) && _displays.get(displayName); }
 
     public void                             toggleRunning() {
-        _isRunning = !_isRunning;
-        Application.notify(_isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
+        setRunning(!isRunning());
     }
 
     public void                             setRunning(boolean running) {
@@ -150,11 +149,7 @@ public class Game {
 //                    }
 //                });
 
-        _modules = Application.dependencyInjector.getGameObjects().stream()
-                .filter(o -> o instanceof AbsGameModule)
-                .map(o -> (AbsGameModule)o)
-                .collect(Collectors.toList());
-
+        _modules = Application.dependencyInjector.getGameModules();
 
         // Load game modules
         boolean moduleHasBeenLoaded;

@@ -4,14 +4,18 @@ import com.badlogic.gdx.Input;
 import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Modifier;
@@ -27,7 +31,16 @@ public class LayerManager implements GameClientObserver {
     private LayerManager layerManager;
 
     @Inject
+    private InputManager inputManager;
+
+    @Inject
+    private UIManager uiManager;
+
+    @Inject
     private Viewport                        _viewport;
+
+    @Inject
+    private GameManager gameManager;
 
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
@@ -53,8 +66,8 @@ public class LayerManager implements GameClientObserver {
 
     public Viewport getViewport() { return _viewport; }
 
-    @Override
-    public void onGameInitLayers(Game game) {
+    @OnGameLayerInit
+    public void onGameInitLayers() {
         // Find GameLayer annotated class
         _layers = Application.dependencyInjector.getSubTypesOf(BaseLayer.class).stream()
 //                new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
@@ -71,10 +84,8 @@ public class LayerManager implements GameClientObserver {
                 .sorted(Comparator.comparingInt(BaseLayer::getLevel))
                 .collect(Collectors.toList());
 
-        _layers.forEach(layer -> layer.onGameInit(game));
-
         // Create viewport
-        _viewport.setPosition(0, 0, game.getInfo().groundFloor);
+        _viewport.setPosition(0, 0, gameManager.getGame().getInfo().groundFloor);
         //ApplicationClient.dependencyInjector.register(_viewport);
     }
 
@@ -97,13 +108,13 @@ public class LayerManager implements GameClientObserver {
 
         // Move viewport
         if (game.isRunning()) {
-            if (ApplicationClient.inputManager.getDirection()[0]) { _viewport.move(20, 0); }
-            if (ApplicationClient.inputManager.getDirection()[1]) { _viewport.move(0, 20); }
-            if (ApplicationClient.inputManager.getDirection()[2]) { _viewport.move(-20, 0); }
-            if (ApplicationClient.inputManager.getDirection()[3]) { _viewport.move(0, -20); }
+            if (inputManager.getDirection()[0]) { _viewport.move(20, 0); }
+            if (inputManager.getDirection()[1]) { _viewport.move(0, 20); }
+            if (inputManager.getDirection()[2]) { _viewport.move(-20, 0); }
+            if (inputManager.getDirection()[3]) { _viewport.move(0, -20); }
         }
 
-        ApplicationClient.uiManager.onRefresh(_frame);
+        uiManager.onRefresh(_frame);
 
         _frame++;
     }

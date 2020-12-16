@@ -19,6 +19,9 @@ public class GameEventManager implements EventManager {
     @Inject
     private LayerManager layerManager;
 
+    @Inject
+    private SelectionManager selectionManager;
+
     private boolean _mousePressed;
 
     // Current mouse position
@@ -79,7 +82,7 @@ public class GameEventManager implements EventManager {
         _mouseY = y;
         _mousePressed = false;
 
-        Collection<? extends ObjectModel> selected = ApplicationClient.selectionManager.getSelected();
+        Collection<? extends ObjectModel> selected = selectionManager.getSelected();
 
         // Move character on pointer position
         if (button == Input.Buttons.RIGHT) {

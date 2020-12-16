@@ -2,8 +2,12 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInfo;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -14,9 +18,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Created by Alex on 03/12/2016.
  */
 public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaController {
-
-    @BindLuaController
-    private MainPanelController mainPanelController;
 
     protected Queue<T> listSelected = new ConcurrentLinkedQueue<>();
 
@@ -71,13 +72,13 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
         if (CollectionUtils.isNotEmpty(listSelected)) {
             displayObjects();
         } else {
-            mainPanelController.setVisible(true);
+            DependencyInjector.getInstance().getObject(MainPanelController.class).setVisible(true);
         }
     }
 
     protected void closePanel() {
         listSelected.clear();
-        mainPanelController.setVisible(true);
+        DependencyInjector.getInstance().getObject(MainPanelController.class).setVisible(true);
     }
 
     private void displayObjects() {
@@ -87,9 +88,9 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
             } else {
                 onDisplayMultiple(listSelected);
             }
-            ApplicationClient.selectionManager.setSelected(listSelected);
+            ApplicationClient.dependencyInjector.getObject(SelectionManager.class).setSelected(listSelected);
         } else {
-            ApplicationClient.selectionManager.setSelected(null);
+            ApplicationClient.dependencyInjector.getObject(SelectionManager.class).setSelected(null);
         }
     }
 

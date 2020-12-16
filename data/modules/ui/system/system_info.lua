@@ -7,16 +7,6 @@ ui:extend({
     visible = true,
     views = {
 
-        -- Pause frame
-        { type = "view", id = "view_pause", background = 0x00000055, visible = false, size = {application.screen_width, application.screen_height}, views = {
-            { type = "list", align = {"center", "center"}, background = color3, border = color1, size = {250, 350}, views = {
-                { type = "label", text = "Resume", text_size = 20, text_align = "center", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}},
-                { type = "label", text = "Save", text_size = 20, text_align = "center", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}},
-                { type = "label", text = "Load", text_size = 20, text_align = "center", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}},
-                { type = "label", text = "Exit", action="onActionExit", text_size = 20, text_align = "center", size = {240, 50}, background = 0xff349394, margin = {5, 0, 0, 5}},
-            }}
-        }},
-
         -- Top right system icons
         { type = "view", id = "view_weather", align = {"top", "right"}, position = {0, 0}, background = 0x203636ff, size = {372, 38}, views = {
 

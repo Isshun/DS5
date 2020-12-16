@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -34,19 +34,19 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleSerializer(ConsumableSerializer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
-    @BindComponent
+    @Inject
     private PathManager pathManager;
 
-    @BindComponent
+    @Inject
     private Data data;
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private StructureModule structureModule;
 
     @Inject

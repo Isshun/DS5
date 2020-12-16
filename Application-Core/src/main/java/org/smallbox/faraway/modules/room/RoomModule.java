@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.room;
 
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -25,10 +25,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 @SuppressWarnings("Duplicates")
 public class RoomModule extends GameModule {
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private WeatherModule weatherModule;
 
     private final List<RoomModel>                               _exteriorRooms = new ArrayList<>();

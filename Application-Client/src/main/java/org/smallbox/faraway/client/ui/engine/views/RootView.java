@@ -42,4 +42,6 @@ public class RootView {
     public String getName() {
         return _view.getName();
     }
+
+    public void setVisible(boolean visible) { _view.setVisible(visible); }
 }

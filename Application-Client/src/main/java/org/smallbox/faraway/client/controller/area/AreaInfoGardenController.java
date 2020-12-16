@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -24,25 +24,25 @@ import java.util.Queue;
 @GameObject
 public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
-    @BindComponent
+    @Inject
     protected SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
-    @BindComponent
+    @Inject
     private AreaModule areaModule;
 
-    @BindComponent
+    @Inject
     private PlantModule plantModule;
 
     @BindLua
     private UIList listPlants;
 
-    @BindComponent
+    @Inject
     private Data data;
 
-    @BindLuaController
+    @Inject
     private AreaInfoController areaInfoController;
 
     @Override

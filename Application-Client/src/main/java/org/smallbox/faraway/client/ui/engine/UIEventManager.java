@@ -3,7 +3,10 @@ package org.smallbox.faraway.client.ui.engine;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.EventManager;
+import org.smallbox.faraway.client.SelectionManager;
+import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
@@ -13,6 +16,7 @@ import org.smallbox.faraway.core.dependencyInjector.Inject;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.Predicate;
 
 @ApplicationObject
 public class UIEventManager implements EventManager {
@@ -30,6 +34,15 @@ public class UIEventManager implements EventManager {
 
     @Inject
     private LayerManager layerManager;
+
+    @Inject
+    private SelectionManager selectionManager;
+
+    @Inject
+    private InputManager inputManager;
+
+    @Inject
+    private UIManager uiManager;
 
     public UIEventManager() {
         _onDragListeners = new ConcurrentSkipListMap<>();
@@ -143,11 +156,11 @@ public class UIEventManager implements EventManager {
 
         // Click on map
         if (Application.gameManager.isRunning()) {
-            ApplicationClient.selectionManager.select(
-                    layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDownX()),
-                    layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDownY()),
-                    layerManager.getViewport().getWorldPosX(ApplicationClient.inputManager.getTouchDragX()),
-                    layerManager.getViewport().getWorldPosY(ApplicationClient.inputManager.getTouchDragY())
+            selectionManager.select(
+                    layerManager.getViewport().getWorldPosX(inputManager.getTouchDownX()),
+                    layerManager.getViewport().getWorldPosY(inputManager.getTouchDownY()),
+                    layerManager.getViewport().getWorldPosX(inputManager.getTouchDragX()),
+                    layerManager.getViewport().getWorldPosY(inputManager.getTouchDragY())
             );
         }
 
@@ -188,8 +201,8 @@ public class UIEventManager implements EventManager {
         }
 
         // Cleat UiEventManager selection listener when right button is clicked
-        if (button == Input.Buttons.RIGHT && ApplicationClient.selectionManager.getSelectionListener() != null) {
-            ApplicationClient.selectionManager.setSelectionListener(null);
+        if (button == Input.Buttons.RIGHT && selectionManager.getSelectionListener() != null) {
+            selectionManager.setSelectionListener(null);
         }
 
         if (button == Input.Buttons.LEFT && ApplicationClient.uiEventManager.click(x, y)) {
@@ -233,7 +246,7 @@ public class UIEventManager implements EventManager {
             return false;
         }
 
-        ApplicationClient.uiManager.getViews().stream()
+        uiManager.getViews().stream()
                 .filter(view -> view.isVisible() && view.isActive() && hasVisibleHierarchy(view))
                 .forEach(view -> {
                     if (hasVisibleHierarchy(view) && view.contains(x, y)) {
@@ -278,6 +291,10 @@ public class UIEventManager implements EventManager {
 
     public boolean hasClickListener(View view) {
         return _onClickListeners.containsKey(view);
+    }
+
+    public OnClickListener getClickListener(View view) {
+        return _onClickListeners.get(view);
     }
 
     public boolean keyRelease(int key) {

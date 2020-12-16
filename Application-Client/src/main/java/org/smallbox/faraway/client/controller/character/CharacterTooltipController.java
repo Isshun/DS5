@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -23,16 +23,16 @@ public class CharacterTooltipController extends LuaController {
     @BindLua private UILabel lbName;
     @BindLua private View content;
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
-    @BindComponent
+    @Inject
     private Viewport viewport;
 
-    @BindLuaController
+    @Inject
     private TooltipController tooltipController;
 
     @Override

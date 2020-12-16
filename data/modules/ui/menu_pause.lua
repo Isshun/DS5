@@ -7,7 +7,7 @@ ui:extend(
             text_color = 0xffffffff,
             padding = 16,
             background = {
-                regular = 0xffffff55,
+                regular = 0xffff0000,
                 focus = 0x25c9cbff},
             size = {280, 48},
             margin = {10, 0, 0, 10}

@@ -10,7 +10,7 @@ import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -26,10 +26,10 @@ import java.util.Map;
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class CharacterLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private SpriteManager spriteManager;
 
-    @BindComponent
+    @Inject
     private CharacterClientModule characterClientModule;
 
     private int                     _floor;

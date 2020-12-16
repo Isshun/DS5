@@ -2,16 +2,25 @@ package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.SelectionManager;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.util.Constant;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
 
-/**
- * Created by Alex on 04/06/2015.
- */
+@ApplicationObject
 public class InputManager implements InputProcessor {
+
+    @Inject
+    private SelectionManager selectionManager;
+
+    @Inject
+    private ApplicationConfigService applicationConfigService;
+
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
     private boolean[]           _keyDirection;
@@ -95,9 +104,9 @@ public class InputManager implements InputProcessor {
             _modifier = GameEventListener.Modifier.NONE;
         }
 
-        // Cleat UiEventManager selection listener when escape key is pushed
-        if (keycode == Keys.ESCAPE && ApplicationClient.selectionManager.getSelectionListener() != null) {
-            ApplicationClient.selectionManager.setSelectionListener(null);
+        // Clear UiEventManager selection listener when escape key is pushed
+        if (keycode == Keys.ESCAPE && selectionManager.getSelectionListener() != null) {
+            selectionManager.setSelectionListener(null);
             return false;
         }
 
@@ -116,7 +125,7 @@ public class InputManager implements InputProcessor {
         _touchDownX = _touchDragX = x;
         _touchDownY = _touchDragY = y;
 
-        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
+        if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
 
             // Passe l'evenement à l'ui event manager
             if (ApplicationClient.uiEventManager.onMousePress(x, y, button)) {
@@ -137,7 +146,7 @@ public class InputManager implements InputProcessor {
     public boolean touchUp(int x, int y, int pointer, int button) {
         _touchDrag = false;
 
-        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
+        if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
 
             // Passe l'evenement à l'ui event manager
             if (ApplicationClient.uiEventManager.onMouseRelease(x, y, button)) {
@@ -190,7 +199,7 @@ public class InputManager implements InputProcessor {
         _lastPosX = x;
         _lastPosY = y;
 
-        if (x > 0 && x < Constant.WINDOW_WIDTH && y > 0 && y < Constant.WINDOW_HEIGHT) {
+        if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
 
             // Passe l'evenement à l'ui event manager
             if (ApplicationClient.uiEventManager.onMouseMove(x, y, false)) {

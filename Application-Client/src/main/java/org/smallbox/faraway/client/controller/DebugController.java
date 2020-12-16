@@ -10,7 +10,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -25,23 +26,23 @@ public class DebugController extends LuaController {
     @BindLua
     private UIList listDebug;
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoController characterInfoController;
 
-    @BindComponent
+    @Inject
     private LayerManager layerManager;
 
-    @Override
-    public void onReloadUI() {
+    @AfterGameLayerInit
+    public void afterGameLayerInit() {
         mainPanelController.addShortcut("Debug", this);
 
         listDebug.addView(UILabel.create(null).setText("Add character").setBackgroundColor(Color.BLUE).setSize(200, 20).setOnClickListener((int x, int y) -> characterModule.addRandom()));

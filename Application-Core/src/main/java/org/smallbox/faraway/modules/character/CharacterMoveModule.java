@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -19,7 +19,7 @@ import org.smallbox.faraway.util.MoveListener;
 @GameObject
 public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
     @Inject

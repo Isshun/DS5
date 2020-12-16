@@ -10,6 +10,7 @@ import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -22,6 +23,9 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
@@ -49,8 +53,8 @@ public abstract class View implements Comparable<View> {
 
     public final void removeAllViews() {
         _views.forEach(view -> {
-            ApplicationClient.uiManager.removeView(view);
-            ApplicationClient.uiEventManager.removeListeners(view);
+            ApplicationClient.dependencyInjector.getObject(UIManager.class).removeView(view);
+            ApplicationClient.dependencyInjector.getObject(UIEventManager.class).removeListeners(view);
             view.removeAllViews();
             onRemoveView(view);
         });
@@ -164,7 +168,7 @@ public abstract class View implements Comparable<View> {
     protected final ModuleBase  _module;
 
 //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
-    protected Collection<View>  _views = new ConcurrentArrayQueue<>();
+    protected Collection<View>  _views = new LinkedBlockingQueue<>();
     protected Collection<View>  _nextViews = new ConcurrentArrayQueue<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
@@ -204,7 +208,7 @@ public abstract class View implements Comparable<View> {
     protected OnFocusListener _onFocusListener;
     protected boolean           _isFocus;
     protected boolean           _isActive = true;
-    protected int               _id;
+    protected String            _id;
     protected String            _actionName;
     protected int               _borderSize;
     protected Object            _data;
@@ -231,8 +235,7 @@ public abstract class View implements Comparable<View> {
     public boolean      isActive() { return _isActive; }
     public boolean      inGame() { return _inGame; }
 
-    public View         setId(int id) { _id = id; return this; }
-    public View         setId(String id) { _id = id.hashCode(); return this; }
+    public View         setId(String id) { _id = id; return this; }
     public View         setTextAlign(Align align) { _align = align; return this; }
     public View         setTextAlign(String align) { _align = View.Align.valueOf(StringUtils.upperCase(align)); return this; }
     public void         setFocus(boolean focus) { _isFocus = focus; }
@@ -278,7 +281,7 @@ public abstract class View implements Comparable<View> {
     public Color        getBackgroundColor() { return _backgroundColor; }
     public int          getLayer() { return _layer; }
     public View         getParent() { return _parent; }
-    public int          getId() { return _id; }
+    public String       getId() { return _id; }
     public int          getPosX() { return _x; }
     public int          getPosY() { return _y; }
     public int          getFinalX() { return _finalX; }
@@ -372,7 +375,7 @@ public abstract class View implements Comparable<View> {
             _views.add(view);
         }
 
-        ApplicationClient.uiManager.addView(view);
+        ApplicationClient.dependencyInjector.getObject(UIManager.class).addView(view);
 
         onAddView(view);
 
@@ -583,10 +586,6 @@ public abstract class View implements Comparable<View> {
     public abstract int getContentHeight();
     public void init(){}
 
-    public View findById(String id) {
-        return findById(id.hashCode());
-    }
-
     public View findByAction(String actionName) {
         for (View view: _views) {
             if (view._actionName != null && view._actionName.equals(actionName)) {
@@ -600,9 +599,9 @@ public abstract class View implements Comparable<View> {
         return null;
     }
 
-    public View findById(int resId) {
+    public View findById(String resId) {
         for (View view: _views) {
-            if (view._id == resId) {
+            if (StringUtils.equals(view._id, resId)) {
                 return view;
             }
             View ret = view.findById(resId);

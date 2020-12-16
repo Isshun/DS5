@@ -5,7 +5,8 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -23,14 +24,14 @@ public class ConsumableController extends LuaController {
 
     @BindLua private UIList consumableList;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
-    @Override
-    public void onReloadUI() {
+    @AfterGameLayerInit
+    public void afterGameLayerInit() {
         mainPanelController.addShortcut("Consumables", this);
     }
 

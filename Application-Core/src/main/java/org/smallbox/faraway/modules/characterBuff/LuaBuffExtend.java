@@ -80,25 +80,26 @@ public class LuaBuffExtend extends LuaExtend {
 
                             // Récupère un objet depuis l'injecteur de dependance
                             else {
-                                Object object = Application.dependencyInjector.getObjects().stream()
-                                        .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
-                                        .findAny().orElse(null);
-
-                                Object gameObject = Application.dependencyInjector.getGameObjects().stream()
-                                        .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
-                                        .findAny().orElse(null);
-
-                                if (object != null) {
-                                    args[i] = CoerceJavaToLua.coerce(object);
-                                }
-
-                                else if (gameObject != null) {
-                                    args[i] = CoerceJavaToLua.coerce(gameObject);
-                                }
-
-                                else {
-                                    throw new GameException(LuaBuffExtend.class, "on_get_level DI error: " + argName);
-                                }
+                                // TODO
+//                                Object object = Application.dependencyInjector.getObjects().stream()
+//                                        .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
+//                                        .findAny().orElse(null);
+//
+//                                Object gameObject = Application.dependencyInjector.getGameObjects().stream()
+//                                        .filter(obj -> argName.equals(obj.getClass().getSimpleName().toLowerCase()))
+//                                        .findAny().orElse(null);
+//
+//                                if (object != null) {
+//                                    args[i] = CoerceJavaToLua.coerce(object);
+//                                }
+//
+//                                else if (gameObject != null) {
+//                                    args[i] = CoerceJavaToLua.coerce(gameObject);
+//                                }
+//
+//                                else {
+//                                    throw new GameException(LuaBuffExtend.class, "on_get_level DI error: " + argName);
+//                                }
                             }
                         }
                         varargs = LuaValue.varargsOf(args);

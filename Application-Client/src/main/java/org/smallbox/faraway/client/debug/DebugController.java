@@ -34,13 +34,13 @@
 //    @BindLuaController
 //    private MainPanelController mainPanelController;
 //
-//    @BindComponent
+//    @Inject
 //    private ItemModule itemModule;
 //
-//    @BindComponent
+//    @Inject
 //    private StructureModule structureModule;
 //
-//    @BindComponent
+//    @Inject
 //    private ConsumableModule consumableModule;
 //
 //    @Override

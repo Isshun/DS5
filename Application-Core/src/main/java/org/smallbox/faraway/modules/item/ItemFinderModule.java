@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -22,10 +22,10 @@ import java.util.Map;
 @GameObject
 public class ItemFinderModule extends GameModule {
 
-    @BindComponent
+    @Inject
     private PathManager pathManager;
 
-    @BindComponent
+    @Inject
     private ItemModule _items;
 
     @Inject

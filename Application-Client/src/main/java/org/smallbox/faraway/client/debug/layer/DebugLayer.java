@@ -4,15 +4,19 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameEventManager;
+import org.smallbox.faraway.client.SelectionManager;
+import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.module.TaskClientModule;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
@@ -34,35 +38,44 @@ import java.util.Map;
 
 @GameObject
 @ApplicationObject
-@GameLayer(level = 999, visible = true)
+@GameLayer(level = 999, visible = false)
 public class DebugLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private Game game;
 
-    @BindComponent
+    @Inject
+    private ShortcutManager shortcutManager;
+
+    @Inject
+    private SelectionManager selectionManager;
+
+    @Inject
     private CharacterModule characterModule;
 
-    @BindComponent
+    @Inject
     private ItemModule itemModule;
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private PlantModule plantModule;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
-    @BindComponent
+    @Inject
     private GameEventManager gameEventManager;
 
-    @BindComponent
+    @Inject
     private TaskClientModule taskClientModule;
 
     @Inject
     private LayerManager layerManager;
+
+    @Inject
+    private UIManager uiManager;
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
@@ -172,7 +185,7 @@ public class DebugLayer extends BaseLayer {
                 break;
 
             case SHORTCUTS:
-                ApplicationClient.shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label.replace("org.smallbox.faraway.", "") + " -> " + strategy.key));
+                shortcutManager.getBindings().forEach(strategy -> drawDebug(renderer, "SHORTCUT", strategy.label.replace("org.smallbox.faraway.", "") + " -> " + strategy.key));
                 break;
 
             case UI:
@@ -186,8 +199,8 @@ public class DebugLayer extends BaseLayer {
                 drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
                 drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
 
-                if (ApplicationClient.selectionManager.getSelected() != null) {
-                    ApplicationClient.selectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
+                if (selectionManager.getSelected() != null) {
+                    selectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
                 }
 
                 drawDebug(renderer, "Cursor screen position", gameEventManager.getMouseX() + " x " + gameEventManager.getMouseY());
@@ -198,6 +211,11 @@ public class DebugLayer extends BaseLayer {
                         layerManager.getViewport().getWorldPosY(gameEventManager.getMouseY()),
                         layerManager.getViewport().getFloor());
                 drawDebug(renderer, "Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
+                drawDebug(renderer, "###############################", "");
+
+                uiManager.getRootViews().forEach(rootView -> {
+                    drawDebug(renderer, rootView.getView().getPath(), rootView.getView().isVisible() ? "visible" : "");
+                });
                 break;
         }
 

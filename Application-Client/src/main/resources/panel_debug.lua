@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.right_panel.debug",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.DebugController",
     visible = false,
     views = {

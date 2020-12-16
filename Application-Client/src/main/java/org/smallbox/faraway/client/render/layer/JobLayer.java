@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -18,10 +18,10 @@ import org.smallbox.faraway.modules.storing.BasicStoreJob;
 @GameLayer(level = LayerManager.JOB_LAYER_LEVEL, visible = true)
 public class JobLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

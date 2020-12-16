@@ -54,11 +54,11 @@ public class TestBase {
         initOk = false;
         testComplete = false;
 
-        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
-            ApplicationConfig applicationConfig = new ApplicationConfig();
-            applicationConfig.game.startSpeed = 4;
-            return applicationConfig;
-        });
+//        DependencyInjector.getInstance().registerModel(ApplicationConfig.class, () -> {
+//            ApplicationConfig applicationConfig = new ApplicationConfig();
+//            applicationConfig.game.startSpeed = 4;
+//            return applicationConfig;
+//        });
 
         if (_application == null) {
             _application = new GDXTestApplication(this::init);

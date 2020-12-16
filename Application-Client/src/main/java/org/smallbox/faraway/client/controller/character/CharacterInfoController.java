@@ -11,7 +11,7 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -26,31 +26,31 @@ import java.util.Queue;
 @GameObject
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
 
-    @BindComponent
+    @Inject
     protected SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoStatusController characterInfoStatusController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoDetailsController characterInfoDetailsController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoHealthController characterInfoHealthController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoInventoryController characterInfoInventoryController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoTimetableController characterInfoTimetableController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoSkillsController characterInfoSkillsController;
 
     @BindLua private UILabel lbName;

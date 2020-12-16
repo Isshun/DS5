@@ -4,7 +4,7 @@ ui:extend({
     type = "list",
     id = "base.ui.info_plant",
     controller = "org.smallbox.faraway.client.controller.PlantInfoController",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     level = 10,
     visible = false,
     position = {10, 10},

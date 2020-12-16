@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.right_panel.plan",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     visible = false,
     on_click = function() close_sub_menu() end,
     views = {

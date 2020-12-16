@@ -17,7 +17,7 @@ public class DesktopLauncher {
 //            try (FileReader fileReader = new FileReader(FileUtils.getFile("data/config.json"))) {
 //                return new Gson().fromJson(fileReader, ApplicationConfig.class);
 //            }
-        ApplicationConfigService applicationConfigService = DependencyInjector.getInstance().registerModel(ApplicationConfigService.class, ApplicationConfigService::new);
+        ApplicationConfigService applicationConfigService = DependencyInjector.getInstance().createAndInit(ApplicationConfigService.class);
 
         FileUtils.createRoamingDirectory();
 

@@ -39,6 +39,14 @@ public class ApplicationConfigService {
         return applicationConfig.screen;
     }
 
+    public int getResolutionWidth() {
+        return applicationConfig.screen.resolution[0];
+    }
+
+    public int getResolutionHeight() {
+        return applicationConfig.screen.resolution[1];
+    }
+
     public ApplicationConfig.ApplicationConfigGameInfo getGameInfo() {
         return applicationConfig.game;
     }

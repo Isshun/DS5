@@ -3,7 +3,7 @@ tab_width = 340 / 6
 ui:extend({
     type = "list",
     id = "base.ui.info_character",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.character.CharacterInfoController",
     visible = false,
     views = {

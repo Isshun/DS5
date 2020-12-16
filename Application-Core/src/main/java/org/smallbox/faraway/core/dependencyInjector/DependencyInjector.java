@@ -5,19 +5,21 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.util.Log;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
+import java.util.stream.Collectors;
 
 /**
  * Created by Alex on 24/07/2016.
@@ -26,25 +28,29 @@ import static com.badlogic.gdx.utils.JsonValue.ValueType.object;
 @SuppressWarnings("Duplicates")
 public class DependencyInjector {
     private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
-    private Set<Object> _objectPool = new HashSet<>();
-    private Map<Class, Object> _objectPoolByClass = new ConcurrentHashMap<>();
-    private Set<Object> _gameObjectPool = new HashSet<>();
-    private Map<Class, Object> _gameObjectPoolByClass = new ConcurrentHashMap<>();
+    private Map<Class, DependencyInfo> _objectPoolByClass = new ConcurrentHashMap<>();
+    private Map<Class, DependencyInfo> _gameObjectPoolByClass = new ConcurrentHashMap<>();
     private boolean _init = false;
     private boolean _initGame = false;
     private static final DependencyInjector _self = new DependencyInjector();
     private HashMap<Class<?>, Object> _models = new HashMap<>();
     private ApplicationClientInterface _clientInterface;
 
-    public Collection<Object> getObjects() { return _objectPool; }
-    public Collection<Object> getGameObjects() { return _gameObjectPool; }
-
     public <T> T getObject(Class<T> cls) {
-        T applicationObject = (T) _objectPoolByClass.get(cls);
+
+        // Get application object
+        DependencyInfo<T> applicationObject = (DependencyInfo<T>) _objectPoolByClass.get(cls);
         if (applicationObject != null) {
-            return applicationObject;
+            return applicationObject.dependency;
         }
-        return (T) _gameObjectPoolByClass.get(cls);
+
+        // Get game object
+        DependencyInfo<T> gameObject = (DependencyInfo<T>) _gameObjectPoolByClass.get(cls);
+        if (gameObject != null) {
+            return gameObject.dependency;
+        }
+
+        return null;
     }
 
     public static DependencyInjector getInstance() { return _self; }
@@ -71,6 +77,15 @@ public class DependencyInjector {
     }
 
     /**
+     * Some special object like ApplicationConfigService need to be created and initialized manually
+     */
+    public <T> T createAndInit(Class<T> cls) {
+        T object = create(cls);
+        callInitMethod(object, false);
+        return object;
+    }
+
+    /**
      * Register object to dependency injector
      *
      * @param component to register
@@ -85,8 +100,7 @@ public class DependencyInjector {
 //                throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
 //            }
 
-            _gameObjectPool.add(component);
-            _gameObjectPoolByClass.put(component.getClass(), component);
+            _gameObjectPoolByClass.put(component.getClass(), new DependencyInfo(component));
 
             return;
         }
@@ -99,8 +113,7 @@ public class DependencyInjector {
 //                throw new RuntimeException("Cannot call register after DI init except for game scope objects: " + component.getClass());
 //            }
 
-            _objectPool.add(component);
-            _objectPoolByClass.put(component.getClass(), component);
+            _objectPoolByClass.put(component.getClass(), new DependencyInfo(component));
 
             return;
         }
@@ -120,13 +133,14 @@ public class DependencyInjector {
 
         _init = true;
 
-        _objectPool.forEach(host -> {
+        _objectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.verbose("Inject dependency to: " + host.getClass().getName());
-            doInjectComponents(host);
+//            doInjectComponents(host);
             doInjectConfig(host);
             doInjectShortcut(host);
-            doInjectInject(host);
-            Application.notify(observer -> observer.onInjectDependency(object));
+            doInjectInject(host, false);
+            callInitMethod(host, false);
+//            Application.notify(observer -> observer.onInjectDependency(object));
         });
     }
 
@@ -141,43 +155,17 @@ public class DependencyInjector {
 
         _initGame = true;
 
-        List<Object> objects = new ArrayList<>();
-        objects.addAll(_objectPool);
-        objects.addAll(_gameObjectPool);
-        objects.forEach(host -> {
+        List<DependencyInfo> objects = new ArrayList<>();
+        objects.addAll(_objectPoolByClass.values());
+        objects.addAll(_gameObjectPoolByClass.values());
+        objects.stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.verbose("Inject dependency to: " + host.getClass().getName());
-            doInjectGame(host);
             doInjectConfig(host);
             doInjectShortcut(host);
-            doInjectInject(host);
-            Application.notify(observer -> observer.onInjectDependency(object));
+            doInjectInject(host, true);
+            callInitMethod(host, true);
+//            Application.notify(observer -> observer.onInjectDependency(object));
         });
-    }
-
-    private void doInjectGame(Object host) {
-        for (Field field: host.getClass().getDeclaredFields()) {
-            try {
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(BindComponent.class)) {
-                    Log.verbose(String.format("Inject [%s] to game object [%s]", field.getType().getSimpleName(), host.getClass().getSimpleName()));
-                    for (Object object: _gameObjectPool) {
-                        if (field.getType().isInstance(object)) {
-                            field.set(host, object);
-                        }
-                    }
-                    for (Object object: _objectPool) {
-                        if (field.getType().isInstance(object)) {
-                            field.set(host, object);
-                        }
-                    }
-                    if (field.get(host) == null) {
-                        throw new GameException(DependencyInjector.class, "DependencyInjector: cannot inject type: " + field.getType() + " in " + host.getClass().getTypeName());
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                throw new GameException(DependencyInjector.class, e);
-            }
-        }
     }
 
     private void doInjectConfig(Object host) {
@@ -218,47 +206,27 @@ public class DependencyInjector {
     }
 
     // TODO: replace inject components / config by this method and rename it
-    private void doInjectInject(Object host) {
+    private void doInjectInject(Object host, boolean gameExists) {
         for (Field field: host.getClass().getDeclaredFields()) {
             try {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Inject.class)) {
                     Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
+
                     //Objects.requireNonNull(_objectPoolByClass.get(field.getType()), "Unable to find field to inject: " + field.getType().getName());
-                    field.set(host, ObjectUtils.firstNonNull(_objectPoolByClass.get(field.getType()), _gameObjectPoolByClass.get(field.getType())));
-                }
-            } catch (IllegalAccessException e) {
-                throw new GameException(DependencyInjector.class, e);
-            }
-        }
-    }
+                    DependencyInfo toInject = ObjectUtils.firstNonNull(_objectPoolByClass.get(field.getType()), _gameObjectPoolByClass.get(field.getType()));
 
-    private void doInjectComponents(Object host) {
-        Set<Class> missing = new HashSet<>();
-
-        for (Field field: host.getClass().getDeclaredFields()) {
-            try {
-                field.setAccessible(true);
-                BindComponent bindComponent = field.getAnnotation(BindComponent.class);
-                if (bindComponent != null) {
-                    Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
-                    for (Object object: _objectPool) {
-                        if (field.getType().isInstance(object)) {
-                            field.set(host, object);
-                        }
+                    if (field.getType().isAnnotationPresent(ApplicationObject.class) || gameExists) {
+                        Objects.requireNonNull(toInject, "Try to inject null value for " + field.getType().getName() + " in " + host.getClass().getTypeName());
                     }
-                    if (field.get(host) == null) {
-                        missing.add(field.getType());
+
+                    if (toInject != null) {
+                        field.set(host, toInject.dependency);
                     }
                 }
             } catch (IllegalAccessException e) {
                 throw new GameException(DependencyInjector.class, e);
             }
-        }
-
-        if (!missing.isEmpty()) {
-            missing.forEach(cls -> Log.warning("Missing dependency: " + cls.getName()));
-//            throw new GameException(DependencyInjector.class, "DependencyInjector: missing dependencies");
         }
     }
 
@@ -310,15 +278,23 @@ public class DependencyInjector {
     }
 
     public void destroyGameObjects() {
-        _gameObjectPool.clear();
+        _initGame = false;
         _gameObjectPoolByClass.clear();
     }
 
     public <T> Collection<T> getSubTypesOf(Class<T> baseClass) {
         List<T> objects = new ArrayList<>();
-        _gameObjectPool.stream().filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
-        _objectPool.stream().filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
+        _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
+        _objectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
         return objects;
+    }
+
+    public List<AbsGameModule> getGameModules() {
+        return _gameObjectPoolByClass.values().stream()
+                .map(dependencyInfo -> dependencyInfo.dependency)
+                .filter(o -> o instanceof AbsGameModule)
+                .map(o -> (AbsGameModule)o)
+                .collect(Collectors.toList());
     }
 
     public interface ApplicationClientInterface {
@@ -333,31 +309,26 @@ public class DependencyInjector {
         T getModel() throws IOException;
     }
 
-    public <T> T registerModel(Class<T> cls, RegisterModelCallback<T> callback) {
-        try {
-            T model = callback.getModel();
-
-            callInitMethod(model);
-
-            _models.put(cls, model);
-            return model;
-        } catch (IOException e) {
-            throw new GameException(DependencyInjector.class, e);
-        }
+    private <T> void callInitMethod(T model, boolean gameExists) {
+        callMethodAnnotatedBy(model, OnInit.class);
     }
 
-    private <T> void callInitMethod(T model) {
+    public void callMethodAnnotatedBy(Class<? extends Annotation> annotationClass) {
+        _objectPoolByClass.values().forEach(dependencyInfo -> callMethodAnnotatedBy(dependencyInfo.dependency, annotationClass));
+        _gameObjectPoolByClass.values().forEach(dependencyInfo -> callMethodAnnotatedBy(dependencyInfo.dependency, annotationClass));
+    }
 
+    public <T> void callMethodAnnotatedBy(T model, Class<? extends Annotation> annotationClass) {
         for (Method method: model.getClass().getDeclaredMethods()) {
             try {
                 method.setAccessible(true);
-                if (method.isAnnotationPresent(OnInit.class)) {
+                if (method.isAnnotationPresent(annotationClass)) {
                     method.invoke(model);
                 }
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new GameException(DependencyInjector.class, e);
             }
         }
-
     }
+
 }

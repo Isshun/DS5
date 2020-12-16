@@ -8,7 +8,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.FileUtils;
 import org.jrenner.smartfont.SmartFontGenerator;
@@ -32,7 +34,7 @@ public class GDXApplication extends ApplicationAdapter {
     protected BitmapFont                          _systemFont;
     private InputProcessor _menuInputAdapter = new InputAdapter() {
         public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-            ApplicationClient.uiManager.getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
+            ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
             return false;
         }
     };
@@ -154,7 +156,7 @@ public class GDXApplication extends ApplicationAdapter {
     }
 
     private void gameRender() {
-        Gdx.input.setInputProcessor(ApplicationClient.inputManager);
+        Gdx.input.setInputProcessor(ApplicationClient.dependencyInjector.getObject(InputManager.class));
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -210,7 +212,7 @@ public class GDXApplication extends ApplicationAdapter {
         // Render application
         ApplicationClient.gdxRenderer.clear();
         ApplicationClient.gdxRenderer.refresh();
-        ApplicationClient.uiManager.getMenuViews().forEach((name, view) -> view.draw(ApplicationClient.gdxRenderer, 0, 0));
+        ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().forEach((name, view) -> view.draw(ApplicationClient.gdxRenderer, 0, 0));
 //
 //        _batch.end();
     }

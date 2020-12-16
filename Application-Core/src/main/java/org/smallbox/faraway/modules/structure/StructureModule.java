@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.structure;
 
 import org.smallbox.faraway.common.NotImplementedException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -30,22 +30,22 @@ import java.util.concurrent.LinkedBlockingQueue;
 //@ModuleLayer({StructureBottomLayer.class, StructureTopLayer.class})
 public class StructureModule extends BuildItemModule<StructureModuleObserver> {
 
-    @BindComponent
+    @Inject
     private PathManager pathManager;
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
-    @BindComponent
+    @Inject
     private Data data;
 
-//    @BindComponent
+//    @Inject
 //    private WorldInteractionModule worldInteractionModule;
 
     private Collection<StructureItem> _structures;

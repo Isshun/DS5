@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -18,13 +18,13 @@ import java.util.Queue;
 @GameObject
 public class ConsumableInfoController extends AbsInfoLuaController<ConsumableItem> {
 
-    @BindComponent
+    @Inject
     protected SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
     @BindLua

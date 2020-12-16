@@ -2,7 +2,7 @@ ui:extend({
     type = "list",
     id = "base.ui.info_rock",
     controller = "org.smallbox.faraway.client.controller.RockInfoController",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     visible = false,
     views = {
         { type = "label", text = "Rock", text_color = color1, text_size = 12, margin = {12, 12, 0, 12}},

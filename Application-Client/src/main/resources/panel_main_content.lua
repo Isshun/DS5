@@ -30,6 +30,7 @@ ui:extend({
                 }},
             }},
             { type = "grid", id = "main_grid", position = {0, 32}, columns = 2, column_width = 180, row_height = 50, focusable = true, sorted = true},
+            { type = "view", id = "base.ui.right_panel.sub_controller", position = {0, 150}, size = {350, 600}, background = 0x203636ff, special = true},
         }},
     },
 

@@ -10,6 +10,7 @@ import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -64,11 +65,11 @@ public class LuaUIExtend extends LuaExtend {
 //            return;
 //        }
 
-        if (ApplicationClient.uiManager.getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
+        if (ApplicationClient.dependencyInjector.getObject(UIManager.class).getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
             return;
         }
 
-        if (ApplicationClient.uiManager.getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
+        if (ApplicationClient.dependencyInjector.getObject(UIManager.class).getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
             return;
         }
 
@@ -99,11 +100,11 @@ public class LuaUIExtend extends LuaExtend {
                 }
             }
 
-            ApplicationClient.uiManager.addMenuView(rootView);
+            ApplicationClient.dependencyInjector.getObject(UIManager.class).addMenuView(rootView);
         } else if (value.get("parent").isnil()) {
-            ApplicationClient.uiManager.addRootView(rootView);
+            ApplicationClient.dependencyInjector.getObject(UIManager.class).addRootView(rootView);
         } else {
-            ApplicationClient.uiManager.addSubView(view, value.get("parent").tojstring());
+            ApplicationClient.dependencyInjector.getObject(UIManager.class).addSubView(view, value.get("parent").tojstring());
         }
     }
 
@@ -116,13 +117,13 @@ public class LuaUIExtend extends LuaExtend {
         view.setActive(getBoolean(value, "active", true));
 
         readString(value, "id", v -> {
-            view.setId(v.hashCode());
+            view.setId(v);
             view.setName(v);
             LuaStyleManager.getInstance().applyStyleFromId(v, view);
         });
 
         readString(value, "name", v -> {
-            view.setId(v.hashCode());
+            view.setId(v);
             view.setName(v);
             Log.debug("Deprecated parameter: " + v);
         });
@@ -141,8 +142,8 @@ public class LuaUIExtend extends LuaExtend {
             readString(value, "text", label::setText);
             readInt(value, "text_size", label::setTextSize);
             readInt(value, "text_color", label::setTextColor);
-            readString(value, "text_align", label::setTextAlign);
-//            label.setTextAlign(View.Align.valueOf(value.get("text_align").optjstring("LEFT").toUpperCase()));
+            // TODO
+            //readString(value, "text_align", label::setTextAlign);
         }
 
         // Checkbox only
@@ -393,7 +394,7 @@ public class LuaUIExtend extends LuaExtend {
 
     private View createDropDownView(ModuleBase module, LuaValue value) {
         View view = new UIDropDown(module);
-        ApplicationClient.uiManager.addDropsDowns((UIDropDown)view);
+        ApplicationClient.dependencyInjector.getObject(UIManager.class).addDropsDowns((UIDropDown)view);
         return view;
     }
 
@@ -440,7 +441,7 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     private void applyStyle(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view, String styleName) {
-        value = ApplicationClient.uiManager.getStyle(styleName);
+        value = ApplicationClient.dependencyInjector.getObject(UIManager.class).getStyle(styleName);
         Log.warning("Unable to find style: " + styleName);
         if (value != null) {
             customizeViewCosmetic(module, globals, value, inGame, deep, parent, view);

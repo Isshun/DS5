@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.itemFactory;
 
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -24,22 +24,22 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @ModuleInfoAnnotation(name = "ItemFactoryModule", updateInterval = 1)
 public class ItemFactoryModule extends GameModule {
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private StructureModule structureModule;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
-//    @BindComponent
+//    @Inject
 //    private WorldInteractionModule worldInteractionModule;
 
-    @BindComponent
+    @Inject
     private ItemModule itemModule;
 
     @Override

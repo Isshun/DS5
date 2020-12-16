@@ -61,6 +61,10 @@ public class UIManager {
 
     public void removeView(View view) {
         _views.remove(view);
+
+        if (view.getParent() != null) {
+            view.getParent().getViews().remove(view);
+        }
     }
 
     public void addStyle(String id, LuaValue style) {
@@ -280,9 +284,8 @@ public class UIManager {
         }
 
         else {
-            int resId = id.hashCode();
             for (RootView view : _rootViews) {
-                View v = view.getView().findById(resId);
+                View v = view.getView().findById(id);
                 if (v != null) {
                     return v;
                 }

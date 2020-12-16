@@ -7,7 +7,7 @@ import com.badlogic.gdx.ai.pfa.SmoothableGraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 public class PathManager extends GameModule {
     private static final int                    THREAD_POOL_SIZE = 1;
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
     final private ArrayList<Runnable>           _runnable;

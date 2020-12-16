@@ -4,12 +4,13 @@ import com.badlogic.gdx.Input;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
-import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.modules.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -27,10 +28,10 @@ import java.util.stream.Collectors;
 @ApplicationObject
 public class GameManager implements GameObserver {
 
-    @BindComponent
-    private IWorldFactory worldFactory;
+    @Inject
+    private WorldFactory worldFactory;
 
-    @BindComponent
+    @Inject
     private GameSaveManager gameSaveManager;
 
     @Inject
@@ -71,7 +72,8 @@ public class GameManager implements GameObserver {
         _game.loadLayers();
 
         Application.dependencyInjector.injectGameDependencies();
-        Application.notify(observer -> observer.onGameInitLayers(_game));
+        Application.dependencyInjector.callMethodAnnotatedBy(OnGameLayerInit.class);
+        Application.dependencyInjector.callMethodAnnotatedBy(AfterGameLayerInit.class);
 
         worldFactory.create(
                 Application.data,
@@ -82,7 +84,6 @@ public class GameManager implements GameObserver {
         _game.createModules();
 
 //        Application.runOnMainThread(() -> {
-            Application.notify(observer -> observer.onGameInit(_game));
 
             if (listener != null) {
                 listener.onGameCreate(_game);
@@ -117,8 +118,6 @@ public class GameManager implements GameObserver {
             Application.dependencyInjector.register(_game);
 
             _game.loadModules();
-
-            Application.notify(observer -> observer.onGameInit(_game));
 
             Application.dependencyInjector.injectGameDependencies();
 

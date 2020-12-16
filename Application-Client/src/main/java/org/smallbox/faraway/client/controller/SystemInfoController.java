@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
@@ -24,14 +24,11 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
 @GameObject
 public class SystemInfoController extends LuaController {
 
-    @BindComponent
+    @Inject
     private Game game;
 
-    @BindComponent
+    @Inject
     private GameManager gameManager;
-
-    @BindLua
-    private View viewPause;
 
     @BindLua
     private View viewWeather;
@@ -57,10 +54,10 @@ public class SystemInfoController extends LuaController {
     @BindLua
     private UILabel lbSpeed;
 
-    @BindComponent
+    @Inject
     private WeatherModule weatherModule;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
     @Override
@@ -91,24 +88,17 @@ public class SystemInfoController extends LuaController {
 
     @Override
     public void onGamePaused() {
-        viewPause.setVisible(true);
         icSpeed.setImage("[base]/graphics/ic_speed_0.png");
     }
 
     @Override
     public void onGameResume() {
-        viewPause.setVisible(false);
         icSpeed.setImage("[base]/graphics/ic_speed_" + game.getSpeed() + ".png");
     }
 
     @BindLuaAction
     public void onActionMenu(View view) {
         game.setRunning(false);
-    }
-
-    @BindLuaAction
-    public void onActionExit(View view) {
-        gameManager.closeGame();
     }
 
     @GameShortcut(key = Input.Keys.SPACE)

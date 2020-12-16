@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.lua;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
@@ -25,7 +26,7 @@ public class LuaStyleExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
-        ApplicationClient.uiManager.addStyle(getString(value, "id", null), value.get("style"));
+        ApplicationClient.dependencyInjector.getObject(UIManager.class).addStyle(getString(value, "id", null), value.get("style"));
     }
 
 }

@@ -36,20 +36,14 @@ public class ApplicationClient {
     public static final DependencyInjector      dependencyInjector;
 
     // Client
-    public static final UIManager               uiManager;
     public static final UIEventManager          uiEventManager;
     public static final GameEventManager        gameEventManager;
-    public static final InputManager            inputManager;
     public static final ClientLuaModuleManager  luaModuleManager;
     public static final LuaControllerManager    luaControllerManager;
-    public static final SelectionManager        selectionManager;
     public static final BridgeClientKyro BRIDGE_CLIENT;
 
     public static final SpriteManager           spriteManager;
     public static final GDXRenderer             gdxRenderer;
-    //public static final LayerManager            layerManager;
-
-    public static final ShortcutManager shortcutManager;
 
     static {
 
@@ -64,14 +58,10 @@ public class ApplicationClient {
 
         dependencyInjector = DependencyInjector.getInstance();
 
-        shortcutManager = dependencyInjector.create(ShortcutManager.class);
-        uiManager = dependencyInjector.create(UIManager.class);
         uiEventManager = dependencyInjector.create(UIEventManager.class);
         gameEventManager = dependencyInjector.create(GameEventManager.class);
         spriteManager = dependencyInjector.create(SpriteManager.class);
-        selectionManager = dependencyInjector.create(SelectionManager.class);
         gdxRenderer = dependencyInjector.create(GDXRenderer.class);
-        //layerManager = dependencyInjector.create(LayerManager.class);
         luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
         luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
         BRIDGE_CLIENT = dependencyInjector.create(BridgeClientKyro.class);
@@ -80,12 +70,9 @@ public class ApplicationClient {
         dependencyInjector.setClientInterface(new DependencyInjector.ApplicationClientInterface() {
             @Override
             public void onShortcutBinding(String label, int key, Runnable runnable) {
-                shortcutManager.addBinding(label, key, runnable);
+                dependencyInjector.getObject(ShortcutManager.class).addBinding(label, key, runnable);
             }
         });
-
-        // Create input processor
-        inputManager = new InputManager();
     }
 
     private static boolean                          _isRunning = true;
@@ -106,7 +93,7 @@ public class ApplicationClient {
     public static void onKeyEvent(GameEventListener.Action action, int key, GameEventListener.Modifier modifier) {
 //        ApplicationShortcutManager.onKeyPress(key, modifier);
 
-        if (ApplicationClient.uiManager.onKeyEvent(action, key, modifier)) {
+        if (dependencyInjector.getObject(UIManager.class).onKeyEvent(action, key, modifier)) {
             return;
         }
 
@@ -119,18 +106,18 @@ public class ApplicationClient {
         // TODO: A deplacer dans ApplicationShortcutManage
         // Call shortcut strategy
         if (action == GameEventListener.Action.RELEASED) {
-            shortcutManager.action(key);
+            dependencyInjector.getObject(ShortcutManager.class).action(key);
         }
     }
 
     public void onWindowEvent(GameEventListener.Action action) {
-        ApplicationClient.uiManager.onWindowEvent(action);
+        dependencyInjector.getObject(UIManager.class).onWindowEvent(action);
     }
 
     public static void onMouseEvent(GameEventListener.Action action, int button, int x, int y, boolean rightPressed) {
 
         // Passe l'evenement à l'ui manager
-        if (ApplicationClient.uiManager.onMouseEvent(action, button, x, y, rightPressed)) {
+        if (dependencyInjector.getObject(UIManager.class).onMouseEvent(action, button, x, y, rightPressed)) {
             return;
         }
 

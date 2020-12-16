@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.common.NotImplementedException;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -31,16 +31,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleSerializer(ItemModuleSerializer.class)
 public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private StructureModule structureModule;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
     private Collection<UsableItem> _items;

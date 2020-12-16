@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.render.layer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.BuildController;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.manager.InputManager;
@@ -11,6 +12,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -20,8 +22,11 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 @GameLayer(level = LayerManager.CHARACTER_LAYER_LEVEL, visible = true)
 public class BuildLayer extends BaseLayer {
 
-    @BindLuaController
+    @Inject
     private BuildController buildController;
+
+    @Inject
+    private InputManager inputManager;
 
     private int                     _frame;
     private int                     _floor;
@@ -67,7 +72,7 @@ public class BuildLayer extends BaseLayer {
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
 
-        if (ApplicationClient.selectionManager.getSelectionListener() != null) {
+        if (ApplicationClient.dependencyInjector.getObject(SelectionManager.class).getSelectionListener() != null) {
 
             if (_itemInfo != null) {
 
@@ -90,8 +95,7 @@ public class BuildLayer extends BaseLayer {
 
             if (buildController != null && buildController.getCurrentItem() != null) {
 
-                if (ApplicationClient.inputManager.getTouchDrag()) {
-                    InputManager inputManager = ApplicationClient.inputManager;
+                if (inputManager.getTouchDrag()) {
                     WorldHelper.getParcelInRect(
                             viewport.getWorldPosX(inputManager.getTouchDownX()),
                             viewport.getWorldPosY(inputManager.getTouchDownY()),
@@ -100,10 +104,10 @@ public class BuildLayer extends BaseLayer {
                             viewport.getFloor())
                             .forEach(parcel -> renderer.draw(viewport.getScreenPosX(parcel.x), viewport.getScreenPosY(parcel.y), resEden2));
                 } else {
-                    renderer.draw(ApplicationClient.inputManager.getMouseX(), ApplicationClient.inputManager.getMouseY(), resEden);
+                    renderer.draw(inputManager.getMouseX(), inputManager.getMouseY(), resEden);
 
                     Sprite sprite = ApplicationClient.spriteManager.getIcon(buildController.getCurrentItem());
-                    renderer.draw(ApplicationClient.inputManager.getMouseX(), ApplicationClient.inputManager.getMouseY(), sprite);
+                    renderer.draw(inputManager.getMouseX(), inputManager.getMouseY(), sprite);
                 }
             }
 

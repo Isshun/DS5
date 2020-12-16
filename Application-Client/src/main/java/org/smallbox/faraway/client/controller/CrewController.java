@@ -7,8 +7,10 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
@@ -24,20 +26,20 @@ public class CrewController extends LuaController {
     @BindLua
     private UIList listCrew;
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
-    @BindComponent
+    @Inject
     private CharacterNeedModule characterNeedModule;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
-    @BindLuaController
+    @Inject
     private CharacterInfoController characterInfoController;
 
-    @Override
-    public void onReloadUI() {
+    @AfterGameLayerInit
+    public void afterGameLayerInit() {
         mainPanelController.addShortcut("Crew", this);
     }
 

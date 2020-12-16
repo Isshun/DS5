@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.*;
@@ -16,10 +16,10 @@ import org.smallbox.faraway.util.Constant;
 @GameLayer(level = LayerManager.WORLD_TOP_LAYER_LEVEL, visible = true)
 public class WorldTopLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private WorldModule _worldModule;
 
-    @BindComponent
+    @Inject
     protected SpriteManager _spriteManager;
 
     protected MapObjectModel    _itemSelected;

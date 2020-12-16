@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @GameLayer(level = 999, visible = false)
 public class DebugCharacterLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private CharacterModule characterModule;
 
     private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);

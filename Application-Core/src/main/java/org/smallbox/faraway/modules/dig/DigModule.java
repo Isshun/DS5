@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.dig;
 
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
@@ -22,16 +22,16 @@ import java.util.stream.Collectors;
 @GameObject
 public class DigModule extends GameModule {
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
-    @BindComponent
+    @Inject
     private ConsumableModule consumableModule;
 
-    @BindComponent
+    @Inject
     private AreaModule areaModule;
 
     private Map<ParcelModel, BasicDigJob> _parcels = new ConcurrentHashMap<>();

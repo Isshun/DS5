@@ -11,7 +11,8 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
@@ -25,13 +26,13 @@ import java.util.Comparator;
 @GameObject
 public class AreaPanelController extends LuaController {
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
-    @BindComponent
+    @Inject
     private SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private AreaModule areaModule;
 
     @BindLua
@@ -40,14 +41,14 @@ public class AreaPanelController extends LuaController {
     @BindLua
     private UIList listAreasSub;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
-    @BindComponent
+    @Inject
     private AreaLayer areaLayer;
 
-    @Override
-    public void onReloadUI() {
+    @AfterGameLayerInit
+    public void afterGameLayerInit() {
 
         mainPanelController.addShortcut("Areas", this);
 

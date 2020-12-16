@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.util.Log;
@@ -20,7 +21,7 @@ import java.lang.reflect.Method;
 public class MenuManager {
 
     public MenuManager() {
-        ApplicationClient.uiManager.getMenuViews().forEach((name, rootView) -> {
+        ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().forEach((name, rootView) -> {
             if (rootView.getView().getController() != null) {
                 bindControllerFields(rootView.getView().getController(), rootView.getView());
                 bindControllerMethods(rootView.getView().getController(), rootView.getView());
@@ -30,7 +31,7 @@ public class MenuManager {
     }
 
     public void display(String viewName) {
-        ApplicationClient.uiManager.getMenuViews().get(viewName).getView().setVisible(true);
+        ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().get(viewName).getView().setVisible(true);
     }
 
     /**
@@ -80,7 +81,7 @@ public class MenuManager {
             for (Field field : cls.getDeclaredFields()) {
                 if (field.getAnnotation(BindLuaController.class) != null) {
                     field.setAccessible(true);
-                    ApplicationClient.uiManager.getMenuViews().values().stream().map(rootView -> rootView.getView().getController())
+                    ApplicationClient.dependencyInjector.getObject(UIManager.class).getMenuViews().values().stream().map(rootView -> rootView.getView().getController())
                             .filter(subController -> subController != null && subController.getClass() == field.getType())
                             .findAny()
                             .ifPresent(subController -> {

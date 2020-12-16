@@ -2,7 +2,7 @@ ui:extend({
     type = "view",
     id = "base.ui.right_panel.consumable",
     controller = "org.smallbox.faraway.client.controller.ConsumableController",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     level = 10,
     visible = false,
     views = {

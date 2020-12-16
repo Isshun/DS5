@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.right_panel.jobs",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     controller = "org.smallbox.faraway.client.controller.JobController",
     visible = false,
     views = {

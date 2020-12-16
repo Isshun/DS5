@@ -8,7 +8,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.building.BasicRepairJob;
@@ -26,17 +27,17 @@ import org.smallbox.faraway.modules.storing.BasicStoreJob;
 @GameObject
 public class JobController extends LuaController {
 
-    @BindComponent
+    @Inject
     private JobModule jobModule;
 
     @BindLua
     private UIList listJobs;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
-    @Override
-    public void onReloadUI() {
+    @AfterGameLayerInit
+    public void afterGameLayerInit() {
         mainPanelController.addShortcut("Jobs", this);
     }
 

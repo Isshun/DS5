@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
@@ -21,10 +21,10 @@ public class CursorSelectionLayer extends BaseLayer {
 
     private static final Color COLOR_ROCK = ColorUtils.fromHex(0xff442dff);
 
-    @BindComponent
+    @Inject
     private CursorSelectionModule cursorSelectionModule;
 
-    @BindComponent
+    @Inject
     private GameEventManager gameEventManager;
 
     @Override

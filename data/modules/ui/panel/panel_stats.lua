@@ -1,7 +1,7 @@
 ui:extend({
     type = "view",
     id = "base.ui.right_panel.stats",
-    parent = "base.ui.right_panel",
+    parent = "base.ui.right_panel.sub_controller",
     visible = false,
     views = {
         { type = "label", text = "< ", text_size = 34, position = {16, 7}, size = {32, 32}, on_click = function(view)

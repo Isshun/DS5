@@ -10,7 +10,8 @@ import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -24,25 +25,25 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @GameObject
 public class BuildController extends LuaController {
 
-    @BindComponent
+    @Inject
     protected SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private Data data;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
-    @BindComponent
+    @Inject
     private ItemModule itemModule;
 
-    @BindComponent
+    @Inject
     private StructureModule structureModule;
 
-    @BindLuaController
+    @Inject
     private MainPanelController mainPanelController;
 
     @BindLua
@@ -51,13 +52,13 @@ public class BuildController extends LuaController {
     @BindLua
     private UILabel contentLabel;
 
-    @BindComponent
+    @Inject
     private BuildLayer buildLayer;
 
     private ItemInfo _currentItem;
 
-    @Override
-    public void onReloadUI() {
+    @AfterGameLayerInit
+    public void afterGameLayerInit() {
         mainPanelController.addShortcut("Build", this);
         onOpenItems();
     }

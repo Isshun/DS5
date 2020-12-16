@@ -18,9 +18,6 @@ public class Constant {
     public static final int         BASE_WIDTH            = 1280;
     public static final int         BASE_HEIGHT            = 800;
 
-    public static final int         WINDOW_WIDTH            = 1920;
-    public static final int         WINDOW_HEIGHT            = 1200;
-
     public static final int         TILE_WIDTH                = 32;
     public static final int         TILE_HEIGHT                = 32;
     public static final int         CHAR_HEIGHT                = 32;
@@ -34,7 +31,6 @@ public class Constant {
     public static final double      CHARACTER_INIT_ENTERTAINMENT = 1;
     public static final double      CHARACTER_INIT_RELATION = 1;
     public static final int         PANEL_WIDTH             = 420;
-    public static final int         PANEL_HEIGHT             = WINDOW_HEIGHT;
     public static final int         DURATION_MULTIPLIER     = 10;
     public static final int         CHANCE_TO_GET_MEETING_AREA_WHEN_JOBLESS = 0;
     public static final int         CHARACTER_INVENTORY_SPACE = 20;

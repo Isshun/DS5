@@ -30,10 +30,8 @@ public interface GameObserver {
     default void onGamePaused() {}
     default void onGameResume() {}
     default void onGameStart(Game game) {}
-    default void onGameInit(Game game) {}
-    default void onGameInitLayers(Game game) {}
     default void onGameUpdate(Game game) {}
-    default void onInjectDependency(Object object) {}
+//    default void onInjectDependency(Object object) {}
     default void onDisplayChange(String displayName, boolean isVisible) {}
 //    default void onOpenQuest(QuestModel quest) {}
     default void onCancelJobs(ParcelModel parcel, Object object) {}

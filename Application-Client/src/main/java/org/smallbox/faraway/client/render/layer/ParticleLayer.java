@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -22,10 +22,10 @@ public class ParticleLayer extends BaseLayer {
     private ParticleEffect          _effect;
     private String                  _name;
 
-    @BindComponent
+    @Inject
     private WeatherModule weatherModule;
 
-    @BindComponent
+    @Inject
     private Game game;
 
     @Override

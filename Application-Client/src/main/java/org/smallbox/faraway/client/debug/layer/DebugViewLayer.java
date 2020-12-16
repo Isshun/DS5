@@ -10,7 +10,7 @@ import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.util.CollectionUtils;
 
@@ -18,13 +18,13 @@ import org.smallbox.faraway.util.CollectionUtils;
  * Created by Alex on 31/07/2016.
  */
 @GameObject
-@GameLayer(level = 2, visible = false)
+@GameLayer(level = 999, visible = false)
 public class DebugViewLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private UIManager uiManager;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -44,8 +44,15 @@ public class DebugViewLayer extends BaseLayer {
 
     private void drawViewRecurse(GDXRenderer renderer, View view) {
         if (view.isVisible()) {
-            renderer.drawRectangle(view.getFinalX(), view.getFinalY(), view.getWidth(), view.getHeight(), uiEventManager.hasClickListener(view) ? Color.YELLOW : Color.RED, false);
-            renderer.drawText(view.getFinalX(), view.getFinalY(), 12, Color.RED, view.getName());
+            if (uiEventManager.hasClickListener(view)) {
+                renderer.drawRectangle(view.getFinalX(), view.getFinalY(), view.getWidth(), view.getHeight(), Color.YELLOW, false);
+                renderer.drawText(view.getFinalX() + 3, view.getFinalY() + 3, 12, Color.BLACK, view.getPath());
+                renderer.drawText(view.getFinalX() + 2, view.getFinalY() + 2, 12, Color.YELLOW, view.getPath());
+            } else {
+                renderer.drawRectangle(view.getFinalX(), view.getFinalY(), view.getWidth(), view.getHeight(), uiEventManager.hasClickListener(view) ? Color.YELLOW : Color.SALMON, false);
+                renderer.drawText(view.getFinalX() + 3, view.getFinalY() + 3, 12, Color.BLACK, view.getPath());
+                renderer.drawText(view.getFinalX() + 2, view.getFinalY() + 2, 12, Color.RED, view.getPath());
+            }
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 10, 12, Color.RED, view.getPath());
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 20, 12, Color.RED, "size: " + view.getViews().size());
 
@@ -55,10 +62,14 @@ public class DebugViewLayer extends BaseLayer {
         }
     }
 
-    @SuppressWarnings("unused")
     @GameShortcut(key = Input.Keys.F6)
     public void onToggleVisibility() {
         toggleVisibility();
+    }
+
+    @GameShortcut(key = Input.Keys.F2)
+    public void hideAllViews() {
+        uiManager.getRootViews().forEach(rootView -> rootView.setVisible(false));
     }
 
 }

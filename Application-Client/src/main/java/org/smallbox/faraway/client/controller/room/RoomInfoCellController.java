@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller.room;
 
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -17,10 +17,10 @@ import java.util.Queue;
 @GameObject
 public class RoomInfoCellController extends AbsInfoLuaController<RoomModel> {
 
-    @BindComponent
+    @Inject
     private RoomModule roomModule;
 
-    @BindComponent
+    @Inject
     private Data data;
 
     @Override

@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -25,10 +25,10 @@ import java.util.Queue;
 @GameObject
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
-    @BindComponent
+    @Inject
     protected SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
     private UIEventManager uiEventManager;
 
     @BindLua private UILabel        lbName;
@@ -58,13 +58,13 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private UILabel progressBuild;
     @BindLua private UIList listBuildComponents;
 
-    @BindLuaController
+    @Inject
     private ItemInfoReceiptController itemInfoReceiptController;
 
-    @BindLuaController
+    @Inject
     private ItemInfoFactoryComponentsController itemInfoFactoryComponentsController;
 
-    @BindComponent
+    @Inject
     private ItemModule itemModule;
 
     @Override

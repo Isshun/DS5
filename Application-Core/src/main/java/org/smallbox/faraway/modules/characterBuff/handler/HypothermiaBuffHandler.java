@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.characterBuff.handler;
 
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -11,7 +11,7 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
 @GameObject
 public class HypothermiaBuffHandler extends BuffHandler {
 
-    @BindComponent
+    @Inject
     private WeatherModule weatherModule;
 
     @Override

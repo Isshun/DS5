@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -20,7 +20,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugPathLayer extends BaseLayer {
 
-    @BindComponent
+    @Inject
     private WorldModule worldModule;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {

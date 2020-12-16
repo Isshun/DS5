@@ -1,14 +1,20 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.BindComponent;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.game.Game;
 
@@ -18,17 +24,26 @@ import org.smallbox.faraway.core.game.Game;
 @GameObject
 public class MainPanelController extends LuaController {
 
-    @BindComponent
+    @Inject
     private SelectionManager selectionManager;
 
-    @BindComponent
+    @Inject
+    private UIEventManager uiEventManager;
+
+    @Inject
+    private UIManager uiManager;
+
+    @Inject
     private Game game;
 
-    @BindComponent
+    @Inject
     private LayerManager layerManager;
 
     @BindLua
     private UIGrid mainGrid;
+
+//    @BindLua
+//    private UIFrame subController;
 
     @BindLua
     private UILabel lbPlanet;
@@ -37,15 +52,6 @@ public class MainPanelController extends LuaController {
     private UILabel lbFloor;
 
     private LuaController _currentPaneController;
-
-    @GameShortcut(key = Input.Keys.ESCAPE)
-    public void onEscape() {
-        if (!isVisible()) {
-            setVisible(true);
-        } else {
-            game.toggleRunning();
-        }
-    }
 
     @Override
     public void onReloadUI() {
@@ -64,18 +70,37 @@ public class MainPanelController extends LuaController {
     }
 
     public void addShortcut(String label, LuaController controller) {
+        String id = mainGrid.getName() + "." + controller.getClass().getCanonicalName();
+
+        // Remove old entries and listeners if exists
+        mainGrid.getViews().stream()
+                .filter(view -> StringUtils.equals(view.getId(), id))
+                .forEach(oldView -> uiManager.removeView(oldView));
+
+//        mainGrid.getViews().removeIf(view -> StringUtils.equals(view.getId(), id));
+
+
+//        mainGrid.getViews().stream().filter(view -> StringUtils.equals(view.getId(), id)).forEach(oldView -> {
+//            uiEventManager.removeListeners(oldView);
+//            uiManager.getViews().remove(oldView);
+//            mainGrid.getViews().remove(oldView);
+//        });
+
         mainGrid.addView(UILabel.create(null)
                 .setText(label)
                 .setTextSize(18)
                 .setPadding(10)
                 .setSize(170, 40)
-                .setId(mainGrid.getName() + "." + label)
+                .setId(id)
                 .setName(mainGrid.getName() + "." + label)
                 .setBackgroundColor(0x349394ff)
                 .setFocusBackgroundColor(0x25c9cbff)
                 .setOnClickListener((x, y) -> {
-                    _currentPaneController = controller;
-                    _currentPaneController.setVisible(true);
+//                    mainContent.removeAllViews();
+//                    mainContent.addView(controller.getRootView());
+                    controller.getRootView().setVisible(true);
+//                    _currentPaneController = controller;
+//                    _currentPaneController.setVisible(true);
                 }));
     }
 
