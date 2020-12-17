@@ -5,7 +5,8 @@
     "log": true,
     "logFontSize": 16,
     "logLineNumber": 50,
-    "logLineLength": 600
+    "logLineLength": 600,
+    "logLevel": "DEBUG"
   },
   "screen": {
     "resolution": [3400, 1300],

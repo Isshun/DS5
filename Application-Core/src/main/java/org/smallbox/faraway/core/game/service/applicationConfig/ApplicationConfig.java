@@ -13,6 +13,9 @@ public class ApplicationConfig {
         public int logFontSize;
         public int logLineLength;
         public int logLineNumber;
+
+        // ERROR / WARNING / INFO / DEBUG
+        public String logLevel;
     }
 
     public static class ApplicationConfigScreenInfo {

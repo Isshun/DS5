@@ -65,7 +65,7 @@ public class Log {
             if (level == Level.FINE) {
                 _historyDebug.add(message);
             } else {
-                _history.add(message);
+                _history.add("[" + level.getName() + "] " + message);
             }
         }
 

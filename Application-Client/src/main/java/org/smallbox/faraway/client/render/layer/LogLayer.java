@@ -29,10 +29,23 @@ public class LogLayer extends BaseLayer {
         Log._history.forEach(message -> {
             int posY = Gdx.graphics.getHeight() - ((lineNumber + 1) * (fontSize + 2)) + (_index * (fontSize + 2));
             String text = message.substring(0, Math.min(lineLength, message.length()));
+            Color color = Color.WHITE;
+
+            if (message.startsWith("[WARNING]")) {
+                color = Color.ORANGE;
+            }
+
+            if (message.startsWith("[ERROR]")) {
+                color = Color.RED;
+            }
+
+            if (message.startsWith("[DEBUG]")) {
+                color = Color.GRAY;
+            }
 
             renderer.drawText(12, posY - 1, fontSize, Color.BLACK, text);
             renderer.drawText(11, posY - 2, fontSize, Color.BLACK, text);
-            renderer.drawText(10, posY - 3, fontSize, Color.WHITE, text);
+            renderer.drawText(10, posY - 3, fontSize, color, text);
 
             _index++;
         });

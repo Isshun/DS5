@@ -20,8 +20,8 @@ public class TestBase {
     protected static ApplicationConfig applicationConfig = new ApplicationConfig();
 
     static {
-        applicationConfig.game.startSpeed = 4;
-        applicationConfig.launchGui = false;
+//        applicationConfig.game.startSpeed = 4;
+//        applicationConfig.launchGui = false;
     }
 
     protected boolean testComplete = false;

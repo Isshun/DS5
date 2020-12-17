@@ -13,6 +13,8 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -57,8 +59,8 @@ public class WorldGroundLayer extends BaseLayer {
     private Map<ItemInfo, Pixmap>   _pxGroundBorders;
     private Map<ItemInfo, Pixmap>   _pxGroundDecorations;
 
-    @Override
-    public void onGameStart(Game game) {
+    @OnGameLayerInit
+    public void onGameLayerInit() {
         Application.runOnMainThread(() -> {
             _pxLiquids = new HashMap<>();
 
@@ -92,8 +94,8 @@ public class WorldGroundLayer extends BaseLayer {
 
             _pxRocks = new HashMap<>();
 
-            _cols = game.getInfo().worldWidth / CHUNK_SIZE;
-            _rows = game.getInfo().worldHeight / CHUNK_SIZE;
+            _cols = game.getInfo().worldWidth / CHUNK_SIZE + 1;
+            _rows = game.getInfo().worldHeight / CHUNK_SIZE + 1;
 
             _floor = WorldHelper.getCurrentFloor();
             _groundLayers = new Texture[_cols][_rows];

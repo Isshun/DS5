@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.module.CharacterClientModule;
 import org.smallbox.faraway.client.render.LayerManager;
@@ -15,6 +16,7 @@ import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -31,6 +33,9 @@ public class CharacterLayer extends BaseLayer {
 
     @Inject
     private CharacterClientModule characterClientModule;
+
+    @Inject
+    private CharacterModule characterModule;
 
     private int                     _floor;
 
@@ -58,39 +63,40 @@ public class CharacterLayer extends BaseLayer {
             renderer.drawRectangleOnMap(character.parcelX, character.parcelY, 16, 16, Color.BROWN, true, 0, 0);
         });
 
-//        _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
-//        _characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
+        characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
+        characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
     }
 
-//    private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterPositionCommon position) {
-//        int viewPortX = viewport.getPosX();
-//        int viewPortY = viewport.getPosY();
-//
-//        if (position.pathLength > 0 && position._curve != null) {
-//            Vector2 out = new Vector2();
-//            position.myCatmull.valueAt(out, (float) position._moveProgress2 / position.pathLength);
-//            doDraw(renderer, position,
-//                    (int) (viewPortX + out.x * 32),
-//                    (int) (viewPortY + out.y * 32));
-//        } else {
-//            doDraw(renderer, position,
-//                    viewPortX + position.parcelX * 32,
-//                    viewPortY + position.parcelY * 32);
-//        }
-//    }
+    private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
+        int viewPortX = viewport.getPosX();
+        int viewPortY = viewport.getPosY();
+        CharacterPositionCommon position = character.position;
 
-    private void doDraw(GDXRenderer renderer, CharacterModel positionCommon, int posX, int posY) {
-////        if (positionCommon.isAlive()) {
-//            drawCharacter(renderer, positionCommon, posX, posY);
-//            drawLabel(renderer, positionCommon, posX, posY);
-//            drawSelection(renderer, spriteManager, positionCommon, posX, posY, 32, 36, 0, 0);
-//            drawInventory(renderer, positionCommon, posX, posY);
-//            drawJob(renderer, positionCommon, posX, posY);
-////        }
-////
-////        else {
-////            renderer.draw(posX, posY, spriteManager.getIcon("[base]/res/ic_dead.png"));
-////        }
+        if (position.pathLength > 0 && position._curve != null) {
+            Vector2 out = new Vector2();
+            position.myCatmull.valueAt(out, (float) position._moveProgress2 / position.pathLength);
+            doDraw(renderer, character,
+                    (int) (viewPortX + out.x * 32),
+                    (int) (viewPortY + out.y * 32));
+        } else {
+            doDraw(renderer, character,
+                    viewPortX + position.parcelX * 32,
+                    viewPortY + position.parcelY * 32);
+        }
+    }
+
+    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+//        if (positionCommon.isAlive()) {
+            drawCharacter(renderer, character, posX, posY);
+            drawLabel(renderer, character, posX, posY);
+            drawSelection(renderer, spriteManager, character, posX, posY, 32, 36, 0, 0);
+            drawInventory(renderer, character, posX, posY);
+            drawJob(renderer, character, posX, posY);
+//        }
+//
+//        else {
+//            renderer.draw(posX, posY, spriteManager.getIcon("[base]/res/ic_dead.png"));
+//        }
     }
 
     /**
