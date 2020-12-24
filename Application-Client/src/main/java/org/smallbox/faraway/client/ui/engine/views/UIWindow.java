@@ -6,7 +6,7 @@
 //import UILabel;
 //
 ///**
-// * Created by Alex on 31/08/2015.
+// * Created by Alex
 // */
 //public abstract class UIWindow extends UIFrame {
 //    protected UIFrame _frameMain;

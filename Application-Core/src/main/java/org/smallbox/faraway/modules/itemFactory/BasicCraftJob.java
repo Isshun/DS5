@@ -10,9 +10,6 @@ import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 
-/**
- * Created by Alex on 09/12/2016.
- */
 public class BasicCraftJob extends JobModel {
 
     private ReceiptGroupInfo.ReceiptInfo _receiptInfo;

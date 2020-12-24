@@ -4,9 +4,6 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
 
-/**
- * Created by Alex on 19/06/2015.
- */
 public class LuaVisitorModel {
     public LuaCharacterModel add() {
         throw new NotImplementedException("");

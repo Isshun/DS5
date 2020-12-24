@@ -12,9 +12,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugGroundLayer extends BaseLayer {

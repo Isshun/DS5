@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
-/**
- * Created by Alex on 15/10/2015.
- */
 public class LuaLangExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {

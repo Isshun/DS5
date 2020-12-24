@@ -11,7 +11,7 @@
 //import org.smallbox.faraway.util.Constant;
 //
 ///**
-// * Created by Alex on 14/06/2015.
+// * Created by Alex
 // */
 //public class TemperatureLayer extends GameDisplay {
 //

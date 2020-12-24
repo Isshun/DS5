@@ -3,9 +3,6 @@ package org.smallbox.faraway.core.module.path.parcel;
 import com.badlogic.gdx.ai.pfa.Connection;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
-/**
- * Created by Alex on 21/07/2015.
- */
 public class ParcelConnection implements Connection<ParcelModel> {
     private final ParcelModel   _fromParcel;
     private final ParcelModel   _toParcel;

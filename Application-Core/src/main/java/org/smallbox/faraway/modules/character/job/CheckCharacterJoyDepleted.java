@@ -10,7 +10,7 @@
 //import java.util.List;
 //
 ///**
-// * Created by Alex on 06/07/2015.
+// * Created by Alex
 // */
 //public class CheckCharacterEntertainmentDepleted extends CharacterCheck {
 //    @Override

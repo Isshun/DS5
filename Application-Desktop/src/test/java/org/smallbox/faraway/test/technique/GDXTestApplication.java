@@ -7,7 +7,7 @@
 //import org.smallbox.faraway.core.task.TaskManager;
 //
 ///**
-// * Created by Alex on 27/02/2017.
+// * Created by Alex
 // */
 //public class GDXTestApplication extends GDXApplication {
 //    private final GameTestCallback _callback;

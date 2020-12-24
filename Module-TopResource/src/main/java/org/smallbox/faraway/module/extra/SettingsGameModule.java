@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.Log;
 
-/**
- * Created by Alex on 05/07/2015.
- */
 public class SettingsGameModule extends GameModule {
 
     @Override

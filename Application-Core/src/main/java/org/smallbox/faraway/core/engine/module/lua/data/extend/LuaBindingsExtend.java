@@ -12,9 +12,6 @@ import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 
 import java.io.File;
 
-/**
- * Created by Alex on 04/11/2015.
- */
 public class LuaBindingsExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {

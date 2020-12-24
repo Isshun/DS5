@@ -13,7 +13,7 @@
 //import org.smallbox.faraway.modules.world.WorldModule;
 //
 ///**
-// * Created by Alex on 02/03/2017.
+// * Created by Alex
 // */
 //public class BuildingModule extends GameModule {
 //

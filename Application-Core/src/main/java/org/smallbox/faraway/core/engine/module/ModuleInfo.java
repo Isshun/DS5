@@ -6,9 +6,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 08/10/2015.
- */
 public class ModuleInfo {
     public static class Required {
         public String id;

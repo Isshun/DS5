@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.game.modelInfo;
 
 import java.util.List;
 
-/**
- * Created by Alex on 12/10/2015.
- */
 public class ReceiptGroupInfo extends ObjectInfo {
 
     public static class ReceiptInfo {

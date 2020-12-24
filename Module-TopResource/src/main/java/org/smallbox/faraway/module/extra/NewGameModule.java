@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 
-/**
- * Created by Alex on 05/07/2015.
- */
 public class NewGameModule extends GameModule {
     private PlanetInfo      _planet;
     private RegionInfo      _region;

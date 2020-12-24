@@ -5,9 +5,6 @@ import org.smallbox.faraway.common.ObjectModel;
 
 import java.util.Collection;
 
-/**
- * Created by Alex on 08/10/2015.
- */
 public class UIAdapter {
     private Collection<ObjectModel>         _data;
     private final OnCreateView              _onCreateView;

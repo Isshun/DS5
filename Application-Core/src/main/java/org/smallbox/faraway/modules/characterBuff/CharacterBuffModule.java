@@ -14,9 +14,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Alex on 16/06/2015.
- */
 @GameObject
 public class CharacterBuffModule extends GameModule {
 

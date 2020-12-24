@@ -7,9 +7,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
-/**
- * Created by Alex on 01/12/2016.
- */
 @Provider
 public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 

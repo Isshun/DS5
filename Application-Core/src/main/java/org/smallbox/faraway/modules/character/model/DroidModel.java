@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 
-/**
- * Created by Alex on 17/06/2015.
- */
 @CharacterInfoAnnotation("base.character.droid")
 public class DroidModel extends CharacterModel {
     private static final double     BODY_COLD_ABSORB = 100;

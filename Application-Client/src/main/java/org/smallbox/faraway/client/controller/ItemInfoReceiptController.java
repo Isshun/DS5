@@ -13,9 +13,6 @@ import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Queue;
 
-/**
- * Created by Alex on 11/12/2016.
- */
 @GameObject
 public class ItemInfoReceiptController extends AbsInfoLuaController<ItemFactoryModel.FactoryReceiptGroupModel> {
 

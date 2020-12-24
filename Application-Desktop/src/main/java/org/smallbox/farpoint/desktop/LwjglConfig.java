@@ -4,9 +4,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.util.Constant;
 
-/**
- * Created by Alex on 22/11/2015.
- */
 public class LwjglConfig {
     public static LwjglApplicationConfiguration from(ApplicationConfig config) {
         LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();

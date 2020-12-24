@@ -7,7 +7,7 @@
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //
 ///**
-// * Created by Alex on 20/06/2015.
+// * Created by Alex
 // */
 //public class LuaMapModel {
 //    public LuaValue getDropLocation() {

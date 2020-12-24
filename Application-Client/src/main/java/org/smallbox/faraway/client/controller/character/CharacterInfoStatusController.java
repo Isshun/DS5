@@ -21,9 +21,6 @@ import org.smallbox.faraway.modules.storing.BasicStoreJob;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Utils;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class CharacterInfoStatusController extends LuaController {
 

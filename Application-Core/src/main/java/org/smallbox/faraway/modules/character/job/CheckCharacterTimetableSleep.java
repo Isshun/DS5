@@ -10,7 +10,7 @@
 //import org.smallbox.faraway.modules.item.job.SleepJob;
 //
 ///**
-// * Created by Alex on 25/10/2015.
+// * Created by Alex
 // */
 //public class CheckCharacterTimetableSleep extends CharacterCheck {
 //    private final ItemFilter bedFilter;

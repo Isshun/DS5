@@ -12,9 +12,6 @@ import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * Created by Alex on 12/10/2015.
- */
 public class LuaReceiptExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {

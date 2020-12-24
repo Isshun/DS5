@@ -4,9 +4,6 @@ import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
-/**
- * Created by Alex on 28/09/2015.
- */
 public class UIDropDown extends View {
     private int     _count;
     private boolean _isOpen;

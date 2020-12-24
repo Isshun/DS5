@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.module.world.model;
 
-/**
- * Created by Alex on 10/11/2015.
- */
 public class ParcelEnvironment {
     public double               rubble;
     public double               dirt;

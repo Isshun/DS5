@@ -10,7 +10,7 @@
 //import org.smallbox.faraway.modules.job.JobModel;
 //
 ///**
-// * Created by Alex on 25/10/2015.
+// * Created by Alex
 // */
 //public class CheckCharacterEnergyCritical extends CharacterCheck {
 //    private final ItemFilter bedFilter;

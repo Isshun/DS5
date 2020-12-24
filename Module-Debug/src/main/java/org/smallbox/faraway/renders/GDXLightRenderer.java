@@ -24,7 +24,7 @@
 //import java.util.List;
 //
 ///**
-// * Created by Alex on 04/06/2015.
+// * Created by Alex
 // */
 //public class GDXLightRenderer extends LightRenderer {
 //    static final int RAYS_PER_BALL = 128;

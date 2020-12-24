@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
-/**
- * Created by Alex on 14/10/2015.
- */
 public class LuaCharacterDiseaseExtend extends LuaExtend {
 
     @Override

@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.game.modelInfo;
 
 import com.badlogic.gdx.math.Rectangle;
 
-/**
- * Created by Alex on 15/10/2015.
- */
 public class GraphicInfo {
     public enum Type { NONE, TERRAIN, WALL, DOOR, STRUCTURE, PLANT }
 

@@ -6,9 +6,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterRelation;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 24/06/2015.
- */
 public class CharacterRelationModel {
     protected List<CharacterRelation> _relations;
     protected CharacterModel _mate;

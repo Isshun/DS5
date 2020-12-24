@@ -8,9 +8,6 @@ import org.smallbox.faraway.core.module.job.model.GatherJob;
 import org.smallbox.faraway.core.module.world.model.PlantModel;
 import org.smallbox.faraway.module.area.AreaModule;
 
-/**
- * Created by Alex on 05/07/2015.
- */
 public class GardenModule extends GameModule {
 
     @BindModule

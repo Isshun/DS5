@@ -12,9 +12,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Log;
 import org.smallbox.faraway.util.Utils;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class CharacterInfoSkillsController extends LuaController {
 

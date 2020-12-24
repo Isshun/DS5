@@ -9,9 +9,6 @@ import org.w3c.dom.css.CSSStyleDeclaration;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Alex on 11/07/2016.
- */
 public class LuaStyleManager {
     private static LuaStyleManager _self;
     private Map<String, CSSStyleDeclaration> _rules = new HashMap<>();

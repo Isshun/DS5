@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
 
-/**
- * Created by Alex on 06/06/2015.
- */
 public interface GameObserver {
     default void onObjectComplete(MapObjectModel mapObjectModel){}
     default void onChangeGround(ParcelModel parcel){}

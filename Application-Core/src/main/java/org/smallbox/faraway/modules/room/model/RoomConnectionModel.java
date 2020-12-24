@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 18/06/2015.
- */
 public class RoomConnectionModel {
     public final RoomModel          _room;
     public final List<ParcelModel>  _parcels = new ArrayList<>();

@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.modules.item.UsableItem;
 //
 ///**
-// * Created by Alex on 17/06/2015.
+// * Created by Alex
 // */
 //public class CheckJoyItem extends CharacterCheck {
 //

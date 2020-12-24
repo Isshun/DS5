@@ -3,9 +3,6 @@ package org.smallbox.faraway.modules.characterDisease;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-/**
- * Created by Alex on 26/10/2015.
- */
 public class CharacterDisease {
     public DiseaseInfo      info;
     public CharacterModel   character;

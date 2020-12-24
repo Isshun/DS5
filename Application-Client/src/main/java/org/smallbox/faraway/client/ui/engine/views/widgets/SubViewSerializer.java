@@ -7,7 +7,7 @@
 //import java.io.IOException;
 //
 ///**
-// * Created by Alex on 02/12/2016.
+// * Created by Alex
 // */
 //public class SubViewSerializer extends JsonSerializer {
 //    @Override

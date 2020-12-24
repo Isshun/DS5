@@ -2,9 +2,6 @@ package org.smallbox.faraway.client.ui;
 
 import java.util.List;
 
-/**
- * Created by Alex on 28/05/2015.
- */
 public class LayoutModel {
     public static class LayoutEntry {
         public String   type;

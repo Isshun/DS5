@@ -17,9 +17,6 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/11/2016.
- */
 @ApplicationObject
 public class ClientLuaModuleManager extends LuaModuleManager {
 

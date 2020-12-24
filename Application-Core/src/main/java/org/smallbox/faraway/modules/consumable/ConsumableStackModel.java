@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import java.util.Collection;
 import java.util.LinkedList;
 
-/**
- * Created by Alex on 29/07/2016.
- */
 public class ConsumableStackModel {
     private final Collection<ConsumableItem>   _consumables;
     private final ItemInfo                      _itemInfo;

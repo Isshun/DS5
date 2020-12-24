@@ -13,7 +13,7 @@
 //import java.util.List;
 //
 ///**
-// * Created by Alex on 19/06/2015.
+// * Created by Alex
 // */
 //public class QuestModule extends GameModule<QuestModuleObserver> {
 //    private final LuaQuestExtend    _extend;

@@ -10,7 +10,7 @@
 //import org.smallbox.faraway.modules.item.UsableItem;
 //
 ///**
-// * Created by Alex on 25/10/2015.
+// * Created by Alex
 // */
 //public class SleepJob extends JobModel {
 //    private UsableItem _sleepItem;

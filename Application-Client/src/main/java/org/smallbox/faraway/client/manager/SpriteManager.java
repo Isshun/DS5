@@ -30,9 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Alex on 04/06/2015.
- */
 @ApplicationObject
 public class SpriteManager {
     private static final int                NB_SELECTOR_TILE = 4;

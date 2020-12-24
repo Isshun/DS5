@@ -3,9 +3,6 @@ package org.smallbox.faraway.modules.character.model.base;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.engine.ColorUtils;
 
-/**
- * Created by Alex on 24/06/2015.
- */
 public class CharacterPersonalsExtra extends CharacterExtra {
     private static final Color COLOR_FEMALE = ColorUtils.fromHex(255, 180, 220);
     private static final Color COLOR_MALE = ColorUtils.fromHex(110, 200, 255);

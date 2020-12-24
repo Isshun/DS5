@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 @GameObject
 @GameLayer(level = LayerManager.PLANT_LAYER_LEVEL, visible = true)
 public class PlantLayer extends BaseLayer {

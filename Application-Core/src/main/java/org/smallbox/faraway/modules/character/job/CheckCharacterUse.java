@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.modules.job.JobModel;
 //
 ///**
-// * Created by Alex on 05/06/2015.
+// * Created by Alex
 // */
 //public class CheckCharacterUse extends CharacterCheck {
 //

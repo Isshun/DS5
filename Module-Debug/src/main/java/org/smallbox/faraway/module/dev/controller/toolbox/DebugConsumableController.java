@@ -8,9 +8,6 @@ import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldInteractionModule;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 public class DebugConsumableController extends LuaController {
     @BindModule
     private ConsumableModule _consumableModule;

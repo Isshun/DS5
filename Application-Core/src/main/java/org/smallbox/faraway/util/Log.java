@@ -11,9 +11,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.*;
 
-/**
- * Created by Alex on 13/05/2016.
- */
 public class Log {
     private final static boolean EXIT_ON_ERROR = true;
     private final static Logger logger = Logger.getLogger("FarAway");

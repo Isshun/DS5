@@ -11,9 +11,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterDiseasesExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.characterDisease.CharacterDiseaseModule;
 
-/**
- * Created by Alex on 11/12/2016.
- */
 @GameObject
 public class CharacterInfoHealthController extends LuaController {
 

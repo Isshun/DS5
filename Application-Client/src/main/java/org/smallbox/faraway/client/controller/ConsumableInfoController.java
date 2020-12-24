@@ -12,9 +12,6 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 
 import java.util.Queue;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class ConsumableInfoController extends AbsInfoLuaController<ConsumableItem> {
 

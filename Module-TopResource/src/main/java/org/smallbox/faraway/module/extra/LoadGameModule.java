@@ -14,9 +14,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 05/07/2015.
- */
 public class LoadGameModule extends ApplicationModule {
     private List<GameInfo>          _games = new ArrayList<>();
 

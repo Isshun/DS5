@@ -10,9 +10,6 @@ import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/09/2015.
- */
 public class LuaWeatherExtend extends LuaExtend {
     @Override
     public boolean accept(String type) { return "weather".equals(type); }

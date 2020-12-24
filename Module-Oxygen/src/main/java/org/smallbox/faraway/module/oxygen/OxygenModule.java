@@ -16,9 +16,6 @@ import org.smallbox.faraway.module.world.WorldModule;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 18/06/2015.
- */
 public class OxygenModule extends GameModule {
 
     @BindModule

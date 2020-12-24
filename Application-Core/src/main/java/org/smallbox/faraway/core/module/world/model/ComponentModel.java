@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.module.world.model;
 
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
-/**
- * Created by Alex on 11/07/2015.
- */
 public class ComponentModel {
     public final ItemInfo           info;
     public final int                neededQuantity;

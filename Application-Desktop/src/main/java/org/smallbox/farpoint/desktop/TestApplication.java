@@ -11,9 +11,6 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import org.smallbox.faraway.util.Log;
 
-/**
- * Created by Alex on 09/11/2015.
- */
 public class TestApplication extends ApplicationAdapter {
     public Sprite[]             sprites;
     public Sprite               sprite;

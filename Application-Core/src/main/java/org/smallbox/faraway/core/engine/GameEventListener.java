@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.engine;
 
-/**
- * Created by Alex on 27/05/2015.
- */
 public interface GameEventListener {
 //    enum Key {
 //        UNKNOWN, ENTER, BACKSPACE, ESCAPE, SPACE(" "), PAGEUP, PAGEDOWN, ADD, SUBTRACT, TAB, TILDE, UP, DOWN, LEFT, RIGHT,

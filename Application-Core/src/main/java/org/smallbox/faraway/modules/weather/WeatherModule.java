@@ -21,9 +21,6 @@ import org.smallbox.faraway.util.Utils;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Alex on 13/06/2015.
- */
 @GameObject
 public class WeatherModule extends GameModule<WeatherModuleObserver> implements GameObserver {
     private int                                 _duration;

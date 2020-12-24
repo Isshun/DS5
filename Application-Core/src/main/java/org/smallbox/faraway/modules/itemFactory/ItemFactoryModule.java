@@ -17,9 +17,6 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-/**
- * Created by Alex on 26/06/2015.
- */
 @GameObject
 @ModuleInfoAnnotation(name = "ItemFactoryModule", updateInterval = 1)
 public class ItemFactoryModule extends GameModule {

@@ -9,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Alex on 29/06/2015.
- */
 public class ParcelPathCache {
     private final Map<ParcelModel, PathCacheModel>  _paths;
     private final List<PathCacheModel>              _pathsBy;

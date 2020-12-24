@@ -6,9 +6,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
 
-/**
- * Created by Alex on 14/03/2017.
- */
 public class BasicAndroidSelfCheckJob extends JobModel {
 
     private double _time;

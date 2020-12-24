@@ -9,9 +9,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 14/07/2015.
- */
 public class BuildableMapObject extends MapObjectModel {
 
     private int                 _matter;

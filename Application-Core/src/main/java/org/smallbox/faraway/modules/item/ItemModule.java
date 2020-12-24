@@ -24,9 +24,6 @@ import org.smallbox.faraway.util.Log;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Created by Alex on 26/06/2015.
- */
 @GameObject
 @ModuleSerializer(ItemModuleSerializer.class)
 public class ItemModule extends BuildItemModule<ItemModuleObserver> {

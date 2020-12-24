@@ -5,9 +5,6 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 24/03/2017.
- */
 public class BezierPath {
     private int SEGMENTS_PER_CURVE = 64;
     private float MINIMUM_SQR_DISTANCE = 0.01f;

@@ -12,9 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * Created by Alex on 02/07/2015.
- */
 public class BuffInfo extends ObjectInfo {
 
     public interface OnGetLevel {

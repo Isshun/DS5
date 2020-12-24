@@ -18,9 +18,6 @@ import org.smallbox.faraway.util.CollectionUtils;
 import java.util.Collection;
 import java.util.Queue;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 

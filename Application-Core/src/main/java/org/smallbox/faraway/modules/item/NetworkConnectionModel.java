@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.module.world.model.NetworkItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
-/**
- * Created by Alex on 05/11/2015.
- */
 public class NetworkConnectionModel {
     private final NetworkInfo   _networkInfo;
     private final int           _distance;

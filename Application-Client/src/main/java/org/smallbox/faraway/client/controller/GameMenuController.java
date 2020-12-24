@@ -12,7 +12,7 @@
 //import org.smallbox.faraway.core.game.GameSaveManager;
 //
 ///**
-// * Created by Alex on 04/12/2016.
+// * Created by Alex
 // */
 //@GameObserverPriority(GameObserverPriority.Priority.LOW)
 //

@@ -5,9 +5,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.List;
 
-/**
- * Created by Alex on 19/06/2015.
- */
 public class LuaCrewModel {
     public int count = 42;
 

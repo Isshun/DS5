@@ -15,9 +15,6 @@ import org.smallbox.faraway.util.CollectionUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class ConsumableController extends LuaController {
 

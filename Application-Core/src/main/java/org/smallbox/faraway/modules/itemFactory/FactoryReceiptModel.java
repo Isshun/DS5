@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 
 import java.util.List;
 
-/**
- * Created by Alex on 17/10/2015.
- */
 public class FactoryReceiptModel {
 
     public boolean isActive;

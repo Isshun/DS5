@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.core.module.world.SQLHelper;
 //
 ///**
-// * Created by Alex on 19/11/2015.
+// * Created by Alex
 // */
 //public class MainSerializer extends GameSerializer {
 //

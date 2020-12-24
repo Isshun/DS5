@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * Created by Alex on 12/05/2016.
- */
 public class CollectionUtils {
     public static boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();

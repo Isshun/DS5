@@ -12,9 +12,6 @@ import org.smallbox.faraway.debug.DebugModule;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 30/08/2015.
- */
 public class ClickDebugController extends LuaController {
     @BindModule
     private DebugModule module;

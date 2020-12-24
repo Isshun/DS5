@@ -16,9 +16,6 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 06/07/2015.
- */
 @ApplicationObject
 public class WorldFactory extends ApplicationModule implements IWorldFactory {
 

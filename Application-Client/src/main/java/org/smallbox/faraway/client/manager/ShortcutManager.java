@@ -6,9 +6,6 @@ import org.smallbox.faraway.util.Log;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Created by Alex on 23/02/2017.
- */
 @ApplicationObject
 public class ShortcutManager {
 

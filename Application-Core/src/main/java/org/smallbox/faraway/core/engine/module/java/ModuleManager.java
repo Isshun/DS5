@@ -20,9 +20,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by Alex on 31/08/2015.
- */
 @ApplicationObject
 public class ModuleManager implements GameObserver {
 

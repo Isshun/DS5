@@ -25,9 +25,6 @@ import java.util.Collection;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 

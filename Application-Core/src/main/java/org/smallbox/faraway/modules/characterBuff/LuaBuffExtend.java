@@ -16,9 +16,6 @@ import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 
-/**
- * Created by Alex on 14/10/2015.
- */
 public class LuaBuffExtend extends LuaExtend {
 
     @Override

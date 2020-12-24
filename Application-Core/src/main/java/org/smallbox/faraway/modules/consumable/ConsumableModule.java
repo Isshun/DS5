@@ -25,9 +25,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Created by Alex on 26/06/2015.
- */
 @GameObject
 @ModuleSerializer(ConsumableSerializer.class)
 public class ConsumableModule extends GameModule<ConsumableModuleObserver> {

@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.game.model.onCheck.old.CharacterCheck;
 //
 ///**
-// * Created by Alex on 01/06/2015.
+// * Created by Alex
 // */
 //public class CheckMine extends CharacterCheck {
 //

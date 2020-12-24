@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.module.world;
 
-/**
- * Created by Alex on 10/11/2015.
- */
 public class ChunkCacheModel {
     public final int _index;
     public final int fromX;

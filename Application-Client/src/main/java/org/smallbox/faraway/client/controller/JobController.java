@@ -13,9 +13,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 
-/**
- * Created by Alex on 24/07/2016.
- */
 @GameObject
 public class JobController extends LuaController {
 

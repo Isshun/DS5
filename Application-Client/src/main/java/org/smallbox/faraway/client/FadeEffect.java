@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 
-/**
- * Created by Alex on 14/11/2015.
- */
 public class FadeEffect {
     private Sprite  _from;
     private Sprite  _to;

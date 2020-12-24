@@ -16,9 +16,6 @@ import org.smallbox.faraway.util.CollectionUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 28/02/2017.
- */
 @GameObject
 public class DigModule extends GameModule {
 

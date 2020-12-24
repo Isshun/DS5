@@ -16,7 +16,7 @@
 //import java.io.File;
 //
 ///**
-// * Created by Alex on 18/02/2017.
+// * Created by Alex
 // */
 //public class GdxTestApplication extends GDXApplication {
 //    private static final boolean HAS_GDX = true;

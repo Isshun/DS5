@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 
-/**
- * Created by Alex on 04/11/2015.
- */
 public class NetworkItem extends MapObjectModel {
     private final ItemInfo          _info;
     private final NetworkInfo       _networkInfo;

@@ -7,9 +7,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Alex on 24/06/2015.
- */
 public class CharacterDiseasesExtra extends CharacterExtra {
 
     private Map<DiseaseInfo, CharacterDisease> _diseases = new ConcurrentHashMap<>();

@@ -13,9 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
 

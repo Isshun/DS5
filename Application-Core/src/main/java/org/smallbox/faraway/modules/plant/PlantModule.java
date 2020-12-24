@@ -20,9 +20,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 02/03/2017.
- */
 @GameObject
 public class PlantModule extends GameModule {
 

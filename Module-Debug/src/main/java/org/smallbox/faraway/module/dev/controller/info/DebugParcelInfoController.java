@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.module.world.WorldModule;
 import org.smallbox.faraway.module.world.WorldModuleObserver;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 public class DebugParcelInfoController extends LuaController {
 
     @BindModule

@@ -15,9 +15,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 02/07/2015.
- */
 public class FileUtils {
     public static final String BASE_PATH = "C:\\Users\\Alex\\IdeaProjects\\DS5";
     public static final String USERDATA_PATH = BASE_PATH + "\\UserData";

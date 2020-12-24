@@ -8,9 +8,6 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
-/**
- * Created by Alex on 24/11/2016.
- */
 @GameObject
 @GameLayer(level = 1, visible = true)
 public class UILayer extends BaseLayer {

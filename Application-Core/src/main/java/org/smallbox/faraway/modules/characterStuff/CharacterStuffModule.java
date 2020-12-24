@@ -10,7 +10,7 @@
 //import java.util.Map;
 //
 ///**
-// * Created by Alex on 24/06/2015.
+// * Created by Alex
 // */
 //public class CharacterStuffModule extends GameModule {
 //    protected Map<CharacterModel, org.smallbox.faraway.module.character.model.StuffModel> _data;

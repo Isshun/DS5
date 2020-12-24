@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.task;
 
 import java.util.concurrent.*;
 
-/**
- * Created by Alex on 19/11/2016.
- */
 public class LoaderThreadExecutor extends ThreadPoolExecutor {
 
     public LoaderThreadExecutor() {

@@ -4,9 +4,6 @@ import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 
 import java.util.List;
 
-/**
- * Created by Alex on 26/06/2015.
- */
 public class RegionInfo {
     public static class RegionDistribution {
         public int[]                latitude;

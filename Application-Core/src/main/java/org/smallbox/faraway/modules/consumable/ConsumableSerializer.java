@@ -12,9 +12,6 @@ import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
 
-/**
- * Created by Alex on 21/07/2016.
- */
 public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
 
     @Override

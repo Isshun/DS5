@@ -19,9 +19,6 @@ import java.util.Comparator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 02/03/2017.
- */
 @GameObject
 public class StoringModule extends GameModule {
 

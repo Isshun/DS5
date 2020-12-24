@@ -14,9 +14,6 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class TooltipController extends LuaController {
 

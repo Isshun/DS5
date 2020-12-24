@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-/**
- * Created by Alex on 15/07/2015.
- */
 public class ParticleDrawable extends GDXDrawable {
     private final ParticleEffect _effect;
 

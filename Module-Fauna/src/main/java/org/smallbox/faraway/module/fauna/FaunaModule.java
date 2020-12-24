@@ -8,9 +8,6 @@ import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 26/06/2015.
- */
 public class FaunaModule extends GameModule {
     private List<RegionInfo.RegionFauna>    FAUNA_COMMON_POOL = new ArrayList<>();
     private List<RegionInfo.RegionFauna>    FAUNA_UNUSUAL_POOL = new ArrayList<>();

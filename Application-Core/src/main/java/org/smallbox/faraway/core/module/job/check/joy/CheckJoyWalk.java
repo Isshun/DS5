@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //
 ///**
-// * Created by Alex on 17/06/2015.
+// * Created by Alex
 // */
 //public class CheckJoyWalk extends CharacterCheck {
 //    private ParcelModel             _parcel;

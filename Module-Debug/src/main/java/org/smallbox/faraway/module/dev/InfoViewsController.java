@@ -8,9 +8,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 
-/**
- * Created by Alex on 30/08/2015.
- */
 public class InfoViewsController extends LuaController {
 
     @BindLua

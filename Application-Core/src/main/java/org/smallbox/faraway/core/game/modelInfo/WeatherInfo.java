@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
-/**
- * Created by Alex on 05/06/2015.
- */
 public class WeatherInfo extends ObjectInfo {
     public static class WeatherSunModel {
         public int          dawn;

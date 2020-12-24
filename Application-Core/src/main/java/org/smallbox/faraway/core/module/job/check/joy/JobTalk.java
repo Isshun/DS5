@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.core.engine.module.java.ModuleHelper;
 //
 ///**
-// * Created by Alex on 02/07/2015.
+// * Created by Alex
 // */
 //public class JobTalk extends JobModel {
 //    private CharacterModel  _friend;

@@ -11,9 +11,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.modules.item.UsableItem;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class ItemInfoFactoryComponentsController extends LuaController {
 

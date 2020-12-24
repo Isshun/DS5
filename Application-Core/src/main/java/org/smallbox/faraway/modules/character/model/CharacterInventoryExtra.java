@@ -10,9 +10,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Alex on 28/03/2017.
- */
 public class CharacterInventoryExtra extends CharacterExtra {
 
     private Map<ItemInfo, Integer> _inventory = new ConcurrentHashMap<>();

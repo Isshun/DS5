@@ -7,9 +7,6 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.util.Constant;
 
-/**
- * Created by Alex on 15/07/2015.
- */
 public class AnimDrawable extends GDXDrawable {
     private final int       _interval;
     private TextureRegion[] _textureRegion;

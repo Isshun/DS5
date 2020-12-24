@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.engine.module.lua.data;
 
-/**
- * Created by Alex on 12/10/2015.
- */
 public class DataExtendException extends Throwable {
     private final Type      _type;
     private final String    _item;

@@ -3,9 +3,6 @@ package org.smallbox.faraway.client.ui.engine;
 import org.smallbox.faraway.MouseEvent;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
-/**
- * Created by Alex on 16/08/2016.
- */
 public class GameEvent {
     public MouseEvent mouseEvent;
     public boolean consumed;

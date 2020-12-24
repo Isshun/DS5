@@ -8,7 +8,7 @@
 //import org.smallbox.faraway.modules.item.job.UseJob;
 //
 ///**
-// * Created by Alex on 17/06/2015.
+// * Created by Alex
 // */
 //public class CheckJoySleep extends CharacterCheck {
 //    private final ItemModule _items;

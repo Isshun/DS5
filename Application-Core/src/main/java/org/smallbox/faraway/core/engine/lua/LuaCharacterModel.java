@@ -4,9 +4,6 @@ import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-/**
- * Created by Alex on 19/06/2015.
- */
 public class LuaCharacterModel extends ObjectModel {
 //    public final int                id;
 //    public final String             name;

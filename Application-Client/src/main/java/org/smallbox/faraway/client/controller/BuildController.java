@@ -18,9 +18,6 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-/**
- * Created by Alex on 22/07/2016.
- */
 @GameObject
 public class BuildController extends LuaController {
 

@@ -11,9 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Created by Alex on 19/11/2016.
- */
 @ApplicationObject
 public class TaskManager {
     private static int BACKGROUND_THREAD_LIMIT = 2;

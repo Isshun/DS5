@@ -13,9 +13,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.util.Log;
 
-/**
- * Created by Alex on 05/06/2015.
- */
 @GameObject
 @GameLayer(level = LayerManager.PARTICLE_LAYER_LEVEL, visible = true)
 public class ParticleLayer extends BaseLayer {

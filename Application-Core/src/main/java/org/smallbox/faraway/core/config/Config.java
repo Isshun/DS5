@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.config;
 
-/**
- * Created by Alex on 11/11/2015.
- */
 public class Config {
 
     public static boolean onDebugView;

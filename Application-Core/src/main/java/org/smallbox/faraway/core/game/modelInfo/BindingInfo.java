@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.game.modelInfo;
 
 import org.smallbox.faraway.core.engine.GameEventListener;
 
-/**
- * Created by Alex on 04/11/2015.
- */
 public class BindingInfo extends ObjectInfo {
     public interface BindingCheckInterface {
         boolean onCheck();

@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 03/12/2016.
- */
 public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaController {
 
     protected Queue<T> listSelected = new ConcurrentLinkedQueue<>();

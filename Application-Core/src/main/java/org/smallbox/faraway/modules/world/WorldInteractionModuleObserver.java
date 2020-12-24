@@ -7,7 +7,7 @@
 //import java.util.Collection;
 //
 ///**
-// * Created by Alex on 21/07/2016.
+// * Created by Alex
 // */
 //public interface WorldInteractionModuleObserver extends ModuleObserver {
 //    default void actionPlan(int finalX, int finalY, int floor) {}

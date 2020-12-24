@@ -7,9 +7,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.lua.BindLua;
 
-/**
- * Created by Alex on 15/08/2016.
- */
 public class DebugSystemController extends LuaController {
     @BindLua
     private UILabel lbHeap;

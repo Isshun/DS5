@@ -10,9 +10,6 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 
 import java.io.File;
 
-/**
- * Created by Alex on 22/11/2015.
- */
 public class LuaCharacterExtend extends LuaExtend {
 
     @Override

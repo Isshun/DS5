@@ -9,9 +9,6 @@ import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
-/**
- * Created by Alex on 28/06/2015.
- */
 public class GameSelectionExtra {
     private ParcelModel _lastMoveParcel;
 

@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core.game.modelInfo;
 
-/**
- * Created by Alex on 03/07/2015.
- */
 public class CharacterInfo extends ObjectInfo {
     public CharacterInfo(String name) {
         this.name = name;

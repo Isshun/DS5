@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 30/10/2015.
- */
 public class PathModel {
 
 //    public final double[] _spline;

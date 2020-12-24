@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.core.config;
 //
 ///**
-// * Created by Alex on 02/12/2016.
+// * Created by Alex
 // */
 //public class IConfig {
 //}

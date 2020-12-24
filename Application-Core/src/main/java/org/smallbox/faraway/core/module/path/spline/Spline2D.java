@@ -4,7 +4,7 @@
 //import java.util.Arrays;
 //
 ///**
-// * Created by Alex on 24/03/2017.
+// * Created by Alex
 // */
 //public class Spline2D {
 //

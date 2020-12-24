@@ -13,9 +13,6 @@ import org.smallbox.faraway.modules.area.AreaModule;
 
 import java.util.Queue;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class AreaInfoController extends AbsInfoLuaController<AreaModel> {
 

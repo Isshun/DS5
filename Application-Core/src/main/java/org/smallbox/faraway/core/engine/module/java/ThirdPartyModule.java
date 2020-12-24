@@ -4,9 +4,6 @@ import org.smallbox.faraway.core.engine.module.ModuleInfo;
 
 import java.io.File;
 
-/**
- * Created by Alex on 19/10/2015.
- */
 public class ThirdPartyModule {
     private final ModuleInfo    _info;
     private final File          _directory;

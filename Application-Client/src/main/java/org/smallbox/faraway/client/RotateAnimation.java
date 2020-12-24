@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 
-/**
- * Created by Alex on 14/11/2015.
- */
 public class RotateAnimation {
     private float   _rotation;
     private int     _duration;

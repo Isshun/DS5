@@ -2,9 +2,6 @@ package org.smallbox.faraway.modules.world.factory.old;
 
 import java.util.Random;
 
-/**
- * Created by Alex on 21/06/2015.
- */
 public class PerlingGenerator {
 
     public static float Interpolate(float x0, float x1, float alpha)

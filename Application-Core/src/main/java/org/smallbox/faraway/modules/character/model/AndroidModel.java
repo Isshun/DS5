@@ -6,9 +6,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterStatsExtra;
 import org.smallbox.faraway.modules.job.freeTimeJobs.BasicAndroidSelfCheckJob;
 
-/**
- * Created by Alex on 17/06/2015.
- */
 @CharacterInfoAnnotation("base.character.android")
 public class AndroidModel extends CharacterModel {
     private static final double     BODY_COLD_ABSORB = 64;

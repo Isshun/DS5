@@ -17,9 +17,6 @@ import org.smallbox.faraway.modules.plant.PlantModule;
 
 import java.util.Queue;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 

@@ -9,9 +9,6 @@ import org.smallbox.faraway.modules.character.model.base.*;
 import org.smallbox.faraway.modules.character.model.base.CharacterName;
 import org.smallbox.faraway.modules.job.freeTimeJobs.BasicWalkJob;
 
-/**
- * Created by Alex on 17/06/2015.
- */
 @CharacterInfoAnnotation("base.character.human")
 @GameSerializer(CharacterSerializer.class)
 public class HumanModel extends CharacterModel {

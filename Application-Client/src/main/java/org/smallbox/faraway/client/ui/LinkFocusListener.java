@@ -5,9 +5,6 @@ import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 
-/**
- * Created by Alex on 25/06/2015.
- */
 public class LinkFocusListener implements OnFocusListener {
     @Override
     public void onExit(View view) {

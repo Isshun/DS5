@@ -12,9 +12,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 22/11/2015.
- */
 public class LuaQuestExtend extends LuaExtend {
     private List<QuestInfo> _questInfos = new ArrayList<>();
 

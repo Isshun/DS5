@@ -12,9 +12,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
 
-/**
- * Created by Alex on 04/06/2015.
- */
 @GameObject
 public class Viewport {
 

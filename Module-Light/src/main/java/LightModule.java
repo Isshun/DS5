@@ -12,7 +12,7 @@
 //import java.util.List;
 //
 ///**
-// * Created by Alex on 03/07/2015.
+// * Created by Alex
 // */
 //public class LightModule extends GameModule {
 //    private List<MapObjectModel> _items = new ArrayList<>();

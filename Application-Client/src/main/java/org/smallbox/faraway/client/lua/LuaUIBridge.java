@@ -7,9 +7,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 
-/**
- * Created by Alex on 12/04/2016.
- */
 public abstract class LuaUIBridge implements LuaExtendInterface {
     private final LuaModule _module;
 

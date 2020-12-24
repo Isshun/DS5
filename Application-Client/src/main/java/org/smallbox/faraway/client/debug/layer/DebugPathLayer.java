@@ -15,9 +15,6 @@ import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugPathLayer extends BaseLayer {

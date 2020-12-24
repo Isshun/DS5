@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/09/2015.
- */
 public class LuaCursorExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {

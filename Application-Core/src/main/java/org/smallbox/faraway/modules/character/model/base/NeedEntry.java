@@ -4,9 +4,6 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.util.Utils;
 
-/**
- * Created by Alex on 11/03/2017.
- */
 public class NeedEntry {
     public final String name;
     public final double optimal;

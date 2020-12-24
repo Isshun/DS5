@@ -12,7 +12,7 @@
 //import org.smallbox.faraway.util.Constant;
 //
 ///**
-// * Created by Alex on 26/06/2015.
+// * Created by Alex
 // */
 //public class GDXFaunaRenderer extends BaseRenderer {
 //    private FaunaModule _faunaModule;

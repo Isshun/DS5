@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
-/**
- * Created by Alex on 18/07/2016.
- */
 public interface WorldModuleObserver extends ModuleObserver {
     default MapObjectModel putObject(ParcelModel parcel, ItemInfo itemInfo, int data, boolean complete) { return null; }
 

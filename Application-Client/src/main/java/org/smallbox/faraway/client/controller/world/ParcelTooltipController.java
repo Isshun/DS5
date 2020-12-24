@@ -11,9 +11,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class ParcelTooltipController extends LuaController {
 

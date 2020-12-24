@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 09/12/2016.
- */
 public class BasicHaulJob extends JobModel {
 
     private ConsumableModule _consumableModule;

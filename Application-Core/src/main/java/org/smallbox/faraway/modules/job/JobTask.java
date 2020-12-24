@@ -2,9 +2,6 @@ package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-/**
- * Created by Alex on 11/12/2016.
- */
 public class JobTask {
 
     public interface JobTaskAction {

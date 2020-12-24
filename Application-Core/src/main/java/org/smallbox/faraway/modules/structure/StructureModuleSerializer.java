@@ -11,9 +11,6 @@ import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.Constant;
 
-/**
- * Created by Alex on 21/07/2016.
- */
 public class StructureModuleSerializer extends GameSerializer<StructureModule> {
 
     @Override

@@ -3,9 +3,6 @@ package org.smallbox.faraway.core.module.path;
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
-/**
- * Created by Alex on 29/06/2015.
- */
 public class PathCacheModel {
     private final GraphPath<ParcelModel>    _path;
     private final ParcelModel               _fromParcel;

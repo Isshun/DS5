@@ -16,9 +16,6 @@ import java.util.LinkedList;
 
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoPlant.GrowingInfo;
 
-/**
- * Created by Alex on 05/07/2015.
- */
 @ModuleRenderer(FloraTopRenderer.class)
 public class FloraModule extends GameModule<FloraModuleObserver> {
     @BindModule

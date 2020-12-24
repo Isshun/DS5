@@ -13,9 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 16/03/2017.
- */
 public abstract class BuildItemModule<T extends ModuleObserver> extends GameModule<T>  {
 
     protected void createBuildJobs(JobModule jobModule, ConsumableModule consumableModule, Collection<? extends BuildableMapObject> mapObjects) {

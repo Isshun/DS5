@@ -12,7 +12,7 @@
 //import java.awt.*;
 //
 ///**
-// * Created by Alex on 18/02/2017.
+// * Created by Alex
 // */
 //public class GuiTestBase extends TestBase {
 //

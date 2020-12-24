@@ -5,9 +5,6 @@ import org.smallbox.faraway.core.game.Game;
 
 import java.io.File;
 
-/**
- * Created by Alex on 09/10/2015.
- */
 public class LuaModule extends AbsGameModule {
     private final File          _directory;
     private boolean             _isActivate;

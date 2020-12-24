@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.engine.module.lua.luaModel;
 
 import org.smallbox.faraway.core.Application;
 
-/**
- * Created by Alex on 26/09/2015.
- */
 public class LuaEventsModel {
     public static final int on_character_selected = 1;
     public static final int on_parcel_selected = 2;

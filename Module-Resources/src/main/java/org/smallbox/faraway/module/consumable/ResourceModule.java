@@ -9,9 +9,6 @@ import org.smallbox.faraway.core.module.world.WorldModule;
 import org.smallbox.faraway.module.job.JobModule;
 import org.smallbox.faraway.module.structure.StructureModule;
 
-/**
- * Created by Alex on 26/06/2015.
- */
 public class ResourceModule extends GameModule<ConsumableModuleObserver> {
     @BindModule("base.module.world")
     private WorldModule _world;

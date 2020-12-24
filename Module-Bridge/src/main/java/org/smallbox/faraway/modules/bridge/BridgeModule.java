@@ -12,7 +12,7 @@
 //import javax.xml.parsers.ParserConfigurationException;
 //
 ///**
-// * Created by Alex on 22/08/2015.
+// * Created by Alex
 // */
 //public class BridgeModule extends GameModule {
 //    private MerlinServer mServer;

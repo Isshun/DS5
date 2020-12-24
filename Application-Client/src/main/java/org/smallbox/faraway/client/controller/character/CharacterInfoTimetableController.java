@@ -13,9 +13,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class CharacterInfoTimetableController extends LuaController {
 

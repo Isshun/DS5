@@ -2,9 +2,6 @@ package org.smallbox.faraway.modules.room.model;
 
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-/**
- * Created by Alex on 08/03/2017.
- */
 @RoomTypeInfo(label = "Quarter")
 public class QuarterRoom extends RoomModel {
 

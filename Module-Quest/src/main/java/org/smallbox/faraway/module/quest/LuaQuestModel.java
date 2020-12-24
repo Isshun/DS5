@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //
 ///**
-// * Created by Alex on 20/06/2015.
+// * Created by Alex
 // */
 //public class LuaQuestModel {
 //    public static class LuaQuestRewardsModel {

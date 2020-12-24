@@ -12,9 +12,6 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
 import org.smallbox.faraway.modules.weather.WeatherModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-/**
- * Created by Alex on 13/06/2015.
- */
 @GameObject
 public class TemperatureModule extends GameModule {
 

@@ -17,9 +17,6 @@ import org.smallbox.faraway.modules.consumable.ConsumableModuleObserver;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL, visible = true)
 public class ConsumableLayer extends BaseLayer {

@@ -8,7 +8,7 @@
 //import org.smallbox.faraway.modules.job.JobModel;
 //
 ///**
-// * Created by Alex on 09/10/2015.
+// * Created by Alex
 // */
 //public class BuildJob extends JobModel {
 //    private final BuildableMapObject _buildItem;

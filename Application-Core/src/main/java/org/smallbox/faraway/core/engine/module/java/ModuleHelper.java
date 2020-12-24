@@ -5,7 +5,7 @@
 //import org.smallbox.faraway.core.module.world.WorldModule;
 //
 ///**
-// * Created by Alex on 01/09/2015.
+// * Created by Alex
 // */
 //public class ModuleHelper {
 //    private static CharacterModule  _characterModule;

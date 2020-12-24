@@ -15,9 +15,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 
-/**
- * Created by Alex on 15/08/2016.
- */
 @GameObject
 public class MainPanelController extends LuaController {
 

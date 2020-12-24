@@ -3,9 +3,6 @@ package org.smallbox.faraway.modules.item;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 
-/**
- * Created by Alex on 17/10/2015.
- */
 public class PotentialConsumable {
     public final ItemInfo           itemInfo;
     public final ConsumableItem consumable;

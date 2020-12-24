@@ -9,9 +9,6 @@ import org.smallbox.faraway.util.Log;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 03/06/2015.
- */
 public class ConsumableItem extends MapObjectModel {
     private int _freeQuantity;
     private int _totalQuantity;

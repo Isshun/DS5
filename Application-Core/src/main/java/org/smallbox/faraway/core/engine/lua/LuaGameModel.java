@@ -3,7 +3,7 @@
 //import org.smallbox.faraway.core.game.Game;
 //
 ///**
-// * Created by Alex on 19/06/2015.
+// * Created by Alex
 // */
 //public class LuaGameModel {
 //    public final long               tick;

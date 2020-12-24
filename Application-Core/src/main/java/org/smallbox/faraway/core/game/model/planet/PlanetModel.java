@@ -7,9 +7,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Alex on 17/06/2015.
- */
 public class PlanetModel {
     private final PlanetAreaModel[][]   _areas;
     private final PlanetInfo            _info;

@@ -17,9 +17,6 @@ import org.smallbox.faraway.util.Constant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by Alex on 13/06/2015.
- */
 @GameObject
 @GameLayer(level = LayerManager.ROOM_LAYER_LEVEL, visible = true)
 public class RoomLayer extends BaseLayer {

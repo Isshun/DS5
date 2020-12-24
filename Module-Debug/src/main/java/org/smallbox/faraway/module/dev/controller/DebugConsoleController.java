@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.lua.BindLua;
 import org.smallbox.faraway.util.Log;
 
-/**
- * Created by Alex on 31/07/2016.
- */
 public class DebugConsoleController extends LuaController {
     @BindLua
     private UILabel lbEntry;

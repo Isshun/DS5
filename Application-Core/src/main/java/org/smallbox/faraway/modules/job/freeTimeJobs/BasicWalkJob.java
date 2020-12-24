@@ -6,9 +6,6 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 
-/**
- * Created by Alex on 14/03/2017.
- */
 public class BasicWalkJob extends JobModel {
 
     public BasicWalkJob(CharacterModel character) {

@@ -15,9 +15,6 @@ import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
 
 import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.TAG_FOOD;
 
-/**
- * Created by Alex on 25/07/2016.
- */
 @GameObject
 public class CrewController extends LuaController {
 

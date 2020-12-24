@@ -22,9 +22,6 @@ import org.smallbox.faraway.util.Log;
 
 import java.util.Comparator;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class AreaPanelController extends LuaController {
 

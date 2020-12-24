@@ -3,9 +3,6 @@ package org.smallbox.faraway.modules.world.factory.old;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 21/06/2015.
- */
 public class MapFactoryConfig {
     public void addAdjustment(float min, float max) {
         this.adjustments.add(new AdjustmentValue(min, max));

@@ -10,7 +10,7 @@
 //import org.smallbox.faraway.modules.flora.model.PlantItem;
 //
 ///**
-// * Created by Alex on 06/07/2015.
+// * Created by Alex
 // */
 //public class JobHelper {
 //

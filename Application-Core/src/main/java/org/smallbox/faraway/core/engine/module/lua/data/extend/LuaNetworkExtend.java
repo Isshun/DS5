@@ -12,9 +12,6 @@ import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * Created by Alex on 04/11/2015.
- */
 public class LuaNetworkExtend extends LuaExtend {
     @Override
     public boolean accept(String type) {

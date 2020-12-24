@@ -11,9 +11,6 @@ import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/09/2015.
- */
 public class LuaStyleExtend extends LuaExtend {
 
     @Override

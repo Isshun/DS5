@@ -6,9 +6,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 31/10/2015.
- */
 public class CharacterSkillExtra extends CharacterExtra {
 
     public static class SkillEntry {

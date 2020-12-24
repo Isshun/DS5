@@ -6,9 +6,6 @@ import org.smallbox.faraway.core.game.Game;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Alex on 30/08/2015.
- */
 public class LogModule extends GameModule {
     private String      _lastMessage;
 

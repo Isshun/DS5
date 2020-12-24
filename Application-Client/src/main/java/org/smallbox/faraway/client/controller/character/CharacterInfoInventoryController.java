@@ -8,9 +8,6 @@ import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.CollectionUtils;
 
-/**
- * Created by Alex on 06/03/2017.
- */
 @GameObject
 public class CharacterInfoInventoryController extends LuaController {
 

@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.engine;
 
 import com.badlogic.gdx.graphics.Color;
 
-/**
- * Created by Alex on 27/05/2015.
- */
 public class ColorUtils {
 
     public static Color COLOR1 = fromHex(0x2ab8baff);

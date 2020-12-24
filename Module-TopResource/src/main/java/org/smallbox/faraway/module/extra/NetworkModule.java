@@ -20,7 +20,7 @@
 //import java.util.Set;
 //
 ///**
-// * Created by Alex on 05/07/2015.
+// * Created by Alex
 // */
 //public class NetworkModule extends GameModule<NetworkModuleObserver> {
 //    @BindModule("base.module.world")

@@ -15,9 +15,6 @@ import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import java.io.File;
 import java.util.*;
 
-/**
- * Created by Alex on 29/09/2015.
- */
 public class LuaItemExtend extends LuaExtend {
 
     private static Map<String, LuaValue> _cache = new HashMap<>();

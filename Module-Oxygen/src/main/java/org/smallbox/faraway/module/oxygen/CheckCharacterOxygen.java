@@ -11,9 +11,6 @@ import org.smallbox.faraway.module.room.RoomModule;
 
 import java.util.Optional;
 
-/**
- * Created by Alex on 28/06/2015.
- */
 public class CheckCharacterOxygen extends CharacterCheck {
     private final RoomModule _roomModule;
     private ParcelModel _parcel;

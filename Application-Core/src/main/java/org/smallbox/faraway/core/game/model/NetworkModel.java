@@ -8,9 +8,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Alex on 04/11/2015.
- */
 public class NetworkModel {
     private final NetworkInfo _info;
     private Set<NetworkItem> _objects = new HashSet<>();

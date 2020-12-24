@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by Alex on 13/06/2015.
- */
 public abstract class AreaModel extends ObjectModel {
     protected final List<ParcelModel>   _parcels = new ArrayList<>();
     private final int                   _id;

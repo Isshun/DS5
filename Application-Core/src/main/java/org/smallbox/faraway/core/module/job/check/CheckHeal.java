@@ -6,7 +6,7 @@
 //import org.smallbox.faraway.game.model.job.JobModel;
 //
 ///**
-// * Created by Alex on 01/06/2015.
+// * Created by Alex
 // */
 //public class CheckHeal extends CharacterCheck {
 //

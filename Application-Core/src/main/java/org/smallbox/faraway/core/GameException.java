@@ -1,8 +1,5 @@
 package org.smallbox.faraway.core;
 
-/**
- * Created by Alex on 04/03/2017.
- */
 public class GameException extends RuntimeException {
 
     public GameException(Class cls, Throwable throwable) {

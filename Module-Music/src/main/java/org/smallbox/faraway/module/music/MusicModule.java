@@ -4,9 +4,6 @@ import com.badlogic.gdx.audio.Music;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 
-/**
- * Created by Alex on 05/07/2015.
- */
 public class MusicModule extends GameModule {
     private Music music;
 

@@ -18,7 +18,7 @@ import org.smallbox.faraway.modules.weather.WeatherModule;
 /**
  * SystemInfoController
  *
- * Created by Alex on 27/02/2017.
+ * Created by Alex
  */
 @GameObject
 public class SystemInfoController extends LuaController {

@@ -10,7 +10,7 @@
 //import java.util.List;
 //
 ///**
-// * Created by Alex on 18/06/2015.
+// * Created by Alex
 // */
 //public class PowerModule extends GameModule {
 //    private static final int    UPDATE_INTERVAL = 40;

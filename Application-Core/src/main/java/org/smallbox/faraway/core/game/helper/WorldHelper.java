@@ -18,9 +18,6 @@ import org.smallbox.faraway.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Alex on 09/07/2015.
- */
 public class WorldHelper {
     private static ParcelModel[][][]    _parcels;
     private static int                  _currentFloor;

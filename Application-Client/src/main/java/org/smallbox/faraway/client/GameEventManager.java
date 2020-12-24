@@ -10,9 +10,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.Collection;
 
-/**
- * Created by Alex on 16/07/2017.
- */
 @ApplicationObject
 public class GameEventManager implements EventManager {
 

@@ -13,9 +13,6 @@ import org.smallbox.faraway.module.character.CharacterModule;
 import org.smallbox.faraway.module.consumable.ConsumableModule;
 import org.smallbox.faraway.module.world.WorldModule;
 
-/**
- * Created by Alex on 18/11/2016.
- */
 public class DebugModule extends GameModule {
 
     @BindModule

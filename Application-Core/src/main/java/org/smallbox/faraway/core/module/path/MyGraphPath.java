@@ -5,9 +5,6 @@ import com.badlogic.gdx.ai.pfa.SmoothableGraphPath;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
-/**
- * Created by Alex on 14/03/2017.
- */
 public class MyGraphPath extends DefaultGraphPath<ParcelModel> implements SmoothableGraphPath<ParcelModel, Vector2> {
 
     @Override

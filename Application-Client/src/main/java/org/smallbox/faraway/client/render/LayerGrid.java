@@ -6,9 +6,6 @@ import org.smallbox.faraway.client.render.layer.RenderLayer;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.util.Constant;
 
-/**
- * Created by Alex on 07/11/2015.
- */
 public class LayerGrid {
     public interface OnRefreshLayer {
         void onRefreshLayer(RenderLayer layer, int fromX, int fromY, int toX, int toY);

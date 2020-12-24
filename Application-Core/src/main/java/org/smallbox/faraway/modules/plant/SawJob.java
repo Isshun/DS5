@@ -16,7 +16,7 @@
 //import org.smallbox.faraway.util.Utils;
 //
 ///**
-// * Created by Alex on 15/10/2015.
+// * Created by Alex
 // */
 //public class CutJob extends JobModel {
 //    private ResourceModel _resource;

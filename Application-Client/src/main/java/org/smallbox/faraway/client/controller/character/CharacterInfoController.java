@@ -20,9 +20,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import java.util.Objects;
 import java.util.Queue;
 
-/**
- * Created by Alex on 25/04/2016.
- */
 @GameObject
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
 

@@ -10,9 +10,6 @@ import org.smallbox.faraway.modules.world.factory.old.PerlingGenerator;
 
 import java.util.Random;
 
-/**
- * Created by Alex on 07/07/2015.
- */
 public class PerlinTestApp extends ApplicationAdapter {
     private Sprite[]        _sprite;
     private SpriteBatch     _batch;

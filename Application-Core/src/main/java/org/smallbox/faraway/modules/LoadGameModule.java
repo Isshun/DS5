@@ -15,7 +15,7 @@
 //import java.util.List;
 //
 ///**
-// * Created by Alex on 05/07/2015.
+// * Created by Alex
 // */
 //public class LoadGameModule extends ApplicationModule {
 //    private List<GameInfo>          _games = new ArrayList<>();

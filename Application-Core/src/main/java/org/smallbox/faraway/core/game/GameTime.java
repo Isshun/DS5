@@ -2,9 +2,6 @@ package org.smallbox.faraway.core.game;
 
 import java.util.Calendar;
 
-/**
- * Created by Alex on 22/03/2017.
- */
 public class GameTime {
 
     // Temps interne au jeu (en heure)

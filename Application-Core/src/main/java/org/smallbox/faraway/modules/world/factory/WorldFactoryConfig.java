@@ -1,8 +1,5 @@
 package org.smallbox.faraway.modules.world.factory;
 
-/**
- * Created by Alex on 06/07/2015.
- */
 public class WorldFactoryConfig {
     public static WorldFactoryConfig[] CONFIGS = new WorldFactoryConfig[] {
             new WorldFactoryConfig("valley", 5, 8, 8, 2f, 0.65f),
