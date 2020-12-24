@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -59,7 +58,7 @@ public class UIMultiCheckBox extends View {
 
         int hash = string.hashCode();
         if (hash != _hash1) {
-            setStringValue(_applicationData != null && _applicationData.hasString(hash) ? _applicationData.getString(hash) : string);
+            setStringValue(applicationData != null && applicationData.hasString(hash) ? applicationData.getString(hash) : string);
         }
         return this;
     }
@@ -71,8 +70,8 @@ public class UIMultiCheckBox extends View {
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2) {
-            str1 = _applicationData != null && _applicationData.hasString(hash1) ? _applicationData.getString(hash1) : str1;
-            str2 = _applicationData != null && _applicationData.hasString(hash2) ? _applicationData.getString(hash2) : str2;
+            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
+            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
             setStringValue(str1 + str2);
         }
     }
@@ -90,9 +89,9 @@ public class UIMultiCheckBox extends View {
         int hash2 = str2.hashCode();
         int hash3 = str3.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3) {
-            str1 = _applicationData != null && _applicationData.hasString(hash1) ? _applicationData.getString(hash1) : str1;
-            str2 = _applicationData != null && _applicationData.hasString(hash2) ? _applicationData.getString(hash2) : str2;
-            str3 = _applicationData != null && _applicationData.hasString(hash3) ? _applicationData.getString(hash3) : str3;
+            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
+            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
+            str3 = applicationData != null && applicationData.hasString(hash3) ? applicationData.getString(hash3) : str3;
             setStringValue(str1 + str2 + str3);
         }
     }
@@ -108,10 +107,10 @@ public class UIMultiCheckBox extends View {
         int hash3 = str3.hashCode();
         int hash4 = str4.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3 || hash4 != _hash4) {
-            str1 = _applicationData != null && _applicationData.hasString(hash1) ? _applicationData.getString(hash1) : str1;
-            str2 = _applicationData != null && _applicationData.hasString(hash2) ? _applicationData.getString(hash2) : str2;
-            str3 = _applicationData != null && _applicationData.hasString(hash3) ? _applicationData.getString(hash3) : str3;
-            str4 = _applicationData != null && _applicationData.hasString(hash4) ? _applicationData.getString(hash4) : str4;
+            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
+            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
+            str3 = applicationData != null && applicationData.hasString(hash3) ? applicationData.getString(hash3) : str3;
+            str4 = applicationData != null && applicationData.hasString(hash4) ? applicationData.getString(hash4) : str4;
             setStringValue(str1 + str2 + str3 + str4);
         }
     }
@@ -125,7 +124,7 @@ public class UIMultiCheckBox extends View {
         // TODO
         int hash = string.hashCode();
 //        if (hash != _hash1) {
-            string = _applicationData != null && _applicationData.hasString(hash) ? _applicationData.getString(hash) : string;
+            string = applicationData != null && applicationData.hasString(hash) ? applicationData.getString(hash) : string;
         setStringValue(String.format(string, value));
 //        }
     }
@@ -167,7 +166,7 @@ public class UIMultiCheckBox extends View {
     public UIMultiCheckBox setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
-            _height = (int)(ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
+            _height = (int)(gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
         }
         return this;
     }
@@ -233,7 +232,7 @@ public class UIMultiCheckBox extends View {
     public int getContentWidth() {
         if (_string != null) {
 //            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).width;
-            return (int) (_string.length() * ApplicationClient.gdxRenderer.getFont(_textSize).getRegion().getRegionWidth());
+            return (int) (_string.length() * gdxRenderer.getFont(_textSize).getRegion().getRegionWidth());
         }
         return 0;
     }
@@ -242,7 +241,7 @@ public class UIMultiCheckBox extends View {
     public int getContentHeight() {
         if (_string != null) {
 //            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).height;
-            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight();
+            return (int) gdxRenderer.getFont(_textSize).getLineHeight();
         }
         return 0;
     }

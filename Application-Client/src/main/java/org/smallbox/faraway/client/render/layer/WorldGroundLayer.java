@@ -15,6 +15,7 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -51,6 +52,12 @@ public class WorldGroundLayer extends BaseLayer {
     private Viewport viewport;
 
     @Inject
+    private Data data;
+
+    @Inject
+    private SpriteManager spriteManager;
+
+    @Inject
     private ApplicationConfigService applicationConfigService;
 
     private ExecutorService         _executor = Executors.newSingleThreadExecutor();
@@ -75,7 +82,7 @@ public class WorldGroundLayer extends BaseLayer {
             _pxGroundBorders = new HashMap<>();
             _pxGroundDecorations = new HashMap<>();
 
-            Application.data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
+            data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
                 Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
                 textureIn.getTextureData().prepare();
                 _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
@@ -93,13 +100,13 @@ public class WorldGroundLayer extends BaseLayer {
                 }
             });
 
-            Application.data.items.stream().filter(itemInfo -> itemInfo.isRock).forEach(itemInfo -> {
+            data.items.stream().filter(itemInfo -> itemInfo.isRock).forEach(itemInfo -> {
                 Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
                 textureIn.getTextureData().prepare();
                 _pxRocks.put(itemInfo, textureIn.getTextureData().consumePixmap());
             });
 
-            Application.data.items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
+            data.items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
                 Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
                 textureIn.getTextureData().prepare();
                 _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
@@ -163,7 +170,6 @@ public class WorldGroundLayer extends BaseLayer {
             final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, game.getInfo().worldHeight);
 
             _worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, viewport.getFloor(), viewport.getFloor(), parcels -> {
-                SpriteManager spriteManager = ApplicationClient.spriteManager;
                 Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
                 Pixmap pxRockOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
 

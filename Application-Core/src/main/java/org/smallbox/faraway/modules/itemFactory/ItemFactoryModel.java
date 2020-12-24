@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.FactoryOutputMode;
 import static org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoFactory;
 
-/**
- * Created by Alex on 15/10/2015.
- */
 public class ItemFactoryModel {
     private final UsableItem _item;
     private FactoryReceiptModel _runningReceipt;

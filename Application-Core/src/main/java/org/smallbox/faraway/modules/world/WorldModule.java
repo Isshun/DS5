@@ -53,16 +53,16 @@ public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObser
         return false;
     }
 
-    @Override
-    public void onClientConnect(Connection client) {
-        modelList.forEach(parcel -> {
-            ParcelCommon parcelCommon = new ParcelCommon();
-            parcelCommon.x = parcel.x;
-            parcelCommon.y = parcel.y;
-            parcelCommon.z = parcel.z;
-            Application.gameServer.writeObject(client, parcelCommon);
-        });
-    }
+//    @Override
+//    public void onClientConnect(Connection client) {
+//        modelList.forEach(parcel -> {
+//            ParcelCommon parcelCommon = new ParcelCommon();
+//            parcelCommon.x = parcel.x;
+//            parcelCommon.y = parcel.y;
+//            parcelCommon.z = parcel.z;
+//            Application.gameServer.writeObject(client, parcelCommon);
+//        });
+//    }
 
     public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
         WorldHelper.init(game.getInfo(), parcels);

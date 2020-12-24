@@ -15,6 +15,7 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -73,6 +74,9 @@ public class MinimapLayer extends BaseLayer {
 
     @Inject
     private MainPanelController mainPanelController;
+
+    @Inject
+    private GameManager gameManager;
 
     private int miniMapWidth;
     private int miniMapHeight;
@@ -143,7 +147,7 @@ public class MinimapLayer extends BaseLayer {
     }
 
     private void createMap() {
-        if (Application.gameManager.isLoaded()) {
+        if (gameManager.isLoaded()) {
 
             float scaleX = (float)miniMapWidth / gameWidth;
             float scaleY = (float)miniMapHeight / gameHeight;

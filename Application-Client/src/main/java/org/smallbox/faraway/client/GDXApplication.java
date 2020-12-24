@@ -10,12 +10,22 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.jrenner.smartfont.SmartFontGenerator;
 import org.smallbox.faraway.client.manager.InputManager;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
+import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.ServerLuaModuleManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.engine.module.java.ModuleManager;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.groovy.GroovyManager;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.LoadTask;
+import org.smallbox.faraway.core.task.TaskManager;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -25,18 +35,21 @@ import java.util.function.Consumer;
 public class GDXApplication extends ApplicationAdapter {
     private final GameTestCallback _callback;
     private FPSLogger fpsLogger = new FPSLogger();
+    private TaskManager taskManager = new TaskManager();
 
     protected SpriteBatch                         _batch;
     protected Application                         _application;
     protected ApplicationClient                   _client;
     protected BitmapFont[]                        _fonts;
     protected BitmapFont                          _systemFont;
-    private InputProcessor _menuInputAdapter = new InputAdapter() {
+    private final InputProcessor _menuInputAdapter = new InputAdapter() {
         public boolean touchUp (int screenX, int screenY, int pointer, int button) {
-            ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
+            DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
             return false;
         }
     };
+    private GameManager gameManager;
+    private GDXRenderer gdxRenderer;
 
     public GDXApplication(GameTestCallback callback) {
         _callback = callback;
@@ -57,7 +70,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         _application = new Application();
 
-        Application.taskManager.addLoadTask("Generate fonts", true, () -> {
+        taskManager.addLoadTask("Generate fonts", true, () -> {
             SmartFontGenerator fontGen = new SmartFontGenerator();
             _fonts = new BitmapFont[50];
             for (int i = 5; i < 50; i++) {
@@ -66,28 +79,28 @@ public class GDXApplication extends ApplicationAdapter {
             }
         });
 
-        Application.taskManager.addLoadTask("Create client app", false, () ->
+        taskManager.addLoadTask("Create client app", false, () ->
                 _client = new ApplicationClient());
 
-        Application.taskManager.addLoadTask("Init groovy manager", false,
-                Application.groovyManager::init);
+        // Call dependency injector
+        taskManager.addLoadTask("Calling dependency injector", false,
+                DependencyInjector.getInstance()::injectApplicationDependencies);
 
-        Application.taskManager.addLoadTask("Create layer", true, () ->
-                ApplicationClient.gdxRenderer.init(_batch, _fonts));
+        taskManager.addLoadTask("Init groovy manager", false,
+                DependencyInjector.getInstance().getDependency(GroovyManager.class)::init);
+
+        taskManager.addLoadTask("Create layer", true, () ->
+                DependencyInjector.getInstance().getDependency(GDXRenderer.class).init(_batch, _fonts));
 
         // Server
-        Application.taskManager.addLoadTask("Launch DB thread", false, () ->
-                Application.taskManager.launchBackgroundThread(Application.sqlManager::update, 16));
+        taskManager.addLoadTask("Launch DB thread", false, () ->
+                taskManager.launchBackgroundThread(DependencyInjector.getInstance().getDependency(SQLManager.class)::update, 16));
 
-        Application.taskManager.addLoadTask("Load modules", false, () ->
-                Application.moduleManager.loadModules(null));
+        taskManager.addLoadTask("Load modules", false, () ->
+                DependencyInjector.getInstance().getDependency(ModuleManager.class).loadModules(null));
 
-        // Call dependency injector
-        Application.taskManager.addLoadTask("Calling dependency injector", false,
-                Application.dependencyInjector::injectApplicationDependencies);
-
-        Application.taskManager.addLoadTask("Load server lua modules", false, () -> Application.luaModuleManager.init(true));
-        Application.taskManager.addLoadTask("Load server lua modules", false, () -> ApplicationClient.luaModuleManager.init(true));
+        taskManager.addLoadTask("Load client lua modules", false, () -> DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class).init(true));
+        taskManager.addLoadTask("Load server lua modules", false, () -> DependencyInjector.getInstance().getDependency(ServerLuaModuleManager.class).init(true));
 
 //        Application.taskManager.addLoadTask("Load client lua modules", false, ApplicationClient.luaModuleManager::init);
 
@@ -96,15 +109,15 @@ public class GDXApplication extends ApplicationAdapter {
 //                Application.taskManager.launchBackgroundThread(DebugServer::start));
 
         // Load sprites
-        Application.taskManager.addLoadTask("Load sprites", true,
-                ApplicationClient.spriteManager::init);
+        taskManager.addLoadTask("Load sprites", true,
+                DependencyInjector.getInstance().getDependency(SpriteManager.class)::init);
 
 //        // Init input processor
 //        Application.taskManager.addLoadTask("Init input processor", false, () ->
 //                Gdx.input.setInputProcessor(ApplicationClient.inputManager));
 
         // Resume game
-        Application.taskManager.addLoadTask("Resume game", false, () -> {
+        taskManager.addLoadTask("Resume game", false, () -> {
             //            ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
 //            Application.gameManager.loadLastGame();
 //            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
@@ -112,18 +125,21 @@ public class GDXApplication extends ApplicationAdapter {
 //                Application.gameManager.loadGame();
 
             if (_callback != null) {
-                Application.taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);
+                taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);
             }
 
             Application.isLoaded = true;
         });
+
+        gameManager = DependencyInjector.getInstance().getDependency(GameManager.class);
+        gdxRenderer = DependencyInjector.getInstance().getDependency(GDXRenderer.class);
 
 //        Application.taskManager.addLoadTask("Launch world thread", false, () ->
     }
 
     @Override
     public void render () {
-        if (Application.gameManager != null && Application.gameManager.getGameStatus() == Game.GameStatus.STARTED) {
+        if (gameManager != null && gameManager.getGameStatus() == Game.GameStatus.STARTED) {
             gameRender();
         } else if (Application.isLoaded) {
             menuRender();
@@ -155,17 +171,17 @@ public class GDXApplication extends ApplicationAdapter {
     }
 
     private void gameRender() {
-        Gdx.input.setInputProcessor(ApplicationClient.dependencyInjector.getDependency(InputManager.class));
+        Gdx.input.setInputProcessor(DependencyInjector.getInstance().getDependency(InputManager.class));
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Render application
-        ApplicationClient.gdxRenderer.clear();
-        ApplicationClient.gdxRenderer.refresh();
+        gdxRenderer.clear();
+        gdxRenderer.refresh();
 
         // Render game
-        if (Application.gameManager.isLoaded()) {
-            ApplicationClient.dependencyInjector.getDependency(LayerManager.class).render(Application.gameManager.getGame());
+        if (gameManager.isLoaded()) {
+            DependencyInjector.getInstance().getDependency(LayerManager.class).render(gameManager.getGame());
         }
 //        fpsLogger.log();
     }
@@ -209,9 +225,9 @@ public class GDXApplication extends ApplicationAdapter {
         menuManager.display("base.ui.menu.main");
 
         // Render application
-        ApplicationClient.gdxRenderer.clear();
-        ApplicationClient.gdxRenderer.refresh();
-        ApplicationClient.dependencyInjector.getDependency(UIManager.class).getMenuViews().forEach((name, view) -> view.draw(ApplicationClient.gdxRenderer, 0, 0));
+        gdxRenderer.clear();
+        gdxRenderer.refresh();
+        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().forEach((name, view) -> view.draw(gdxRenderer, 0, 0));
 //
 //        _batch.end();
     }
@@ -248,7 +264,7 @@ public class GDXApplication extends ApplicationAdapter {
         _batch.setProjectionMatrix(camera.combined);
 
         // Display tasks message
-        Application.taskManager.getLoadTasks().forEach(new Consumer<LoadTask>() {
+        taskManager.getLoadTasks().forEach(new Consumer<LoadTask>() {
 
             private int taskIndex;
 

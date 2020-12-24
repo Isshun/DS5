@@ -5,18 +5,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.ConcurrentArrayQueue;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.config.Config;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
@@ -26,11 +26,13 @@ import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
-/**
- * Created by Alex on 27/05/2015.
- */
 public abstract class View implements Comparable<View> {
-    protected Data _applicationData = Application.data;
+    protected final UIEventManager uiEventManager;
+    protected final UIManager uiManager;
+    protected final SpriteManager spriteManager;
+    protected final GDXRenderer gdxRenderer;
+    protected final Data applicationData;
+
     protected int _originWidth;
     protected int _originHeight;
     private String _group;
@@ -40,6 +42,21 @@ public abstract class View implements Comparable<View> {
     private Color _borderColor;
     private LuaController _controller;
     private boolean _isGameView;
+
+    public View(ModuleBase module) {
+        // Inject all dependency to view once for all, waiting for a clever solution
+        uiEventManager = DependencyInjector.getInstance().getDependency(UIEventManager.class);
+        uiManager = DependencyInjector.getInstance().getDependency(UIManager.class);
+        spriteManager = DependencyInjector.getInstance().getDependency(SpriteManager.class);
+        gdxRenderer = DependencyInjector.getInstance().getDependency(GDXRenderer.class);
+        applicationData = DependencyInjector.getInstance().getDependency(Data.class);
+
+        _module = module;
+        _isVisible = true;
+        _borderSize = 2;
+        _x = 0;
+        _y = 0;
+    }
 
     // TODO: use value from application config
     protected float uiScale = 1;
@@ -51,8 +68,8 @@ public abstract class View implements Comparable<View> {
 
     public final void removeAllViews() {
         _views.forEach(view -> {
-            ApplicationClient.dependencyInjector.getDependency(UIManager.class).removeView(view);
-            ApplicationClient.dependencyInjector.getDependency(UIEventManager.class).removeListeners(view);
+            DependencyInjector.getInstance().getDependency(UIManager.class).removeView(view);
+            DependencyInjector.getInstance().getDependency(UIEventManager.class).removeListeners(view);
             view.removeAllViews();
             onRemoveView(view);
         });
@@ -219,14 +236,6 @@ public abstract class View implements Comparable<View> {
     protected HorizontalAlign   _horizontalAlign = HorizontalAlign.LEFT;
     protected VerticalAlign     _verticalAlign = VerticalAlign.TOP;
 
-    public View(ModuleBase module) {
-        _module = module;
-        _isVisible = true;
-        _borderSize = 2;
-        _x = 0;
-        _y = 0;
-    }
-
     public boolean      isFocus() { return _isFocus; }
     public boolean      isVisible() { return _isVisible && (_parent == null || _parent.isVisible()); }
     //    public boolean      isVisible() { return _isVisible; }
@@ -373,7 +382,7 @@ public abstract class View implements Comparable<View> {
             _views.add(view);
         }
 
-        ApplicationClient.dependencyInjector.getDependency(UIManager.class).addView(view);
+        uiManager.addView(view);
 
         onAddView(view);
 
@@ -423,13 +432,13 @@ public abstract class View implements Comparable<View> {
 
     public View setOnDragListener(UIEventManager.OnDragListener onDragListener) {
         _onDragListener = onDragListener;
-        ApplicationClient.uiEventManager.setOnDragListener(this, _onDragListener);
+        uiEventManager.setOnDragListener(this, _onDragListener);
         return this;
     }
 
     public View setOnClickListener(OnClickListener onClickListener) {
         _onClickListener = onClickListener;
-        ApplicationClient.uiEventManager.setOnClickListener(this, onClickListener);
+        uiEventManager.setOnClickListener(this, onClickListener);
         return this;
     }
 
@@ -441,25 +450,25 @@ public abstract class View implements Comparable<View> {
     // TODO: crash in lua throw on main thread
     public void setOnClickListener(LuaValue value) {
         _onClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
-        ApplicationClient.uiEventManager.setOnClickListener(this, _onClickListener);
+        uiEventManager.setOnClickListener(this, _onClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnRightClickListener(LuaValue value) {
         _onRightClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
-        ApplicationClient.uiEventManager.setOnRightClickListener(this, _onRightClickListener);
+        uiEventManager.setOnRightClickListener(this, _onRightClickListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelUpListener(LuaValue value) {
         _onMouseWheelUpListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
-        ApplicationClient.uiEventManager.setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
+        uiEventManager.setOnMouseWheelUpListener(this, _onMouseWheelUpListener);
     }
 
     // TODO: crash in lua throw on main thread
     public void setOnMouseWheelDownListener(LuaValue value) {
         _onMouseWheelDownListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
-        ApplicationClient.uiEventManager.setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
+        uiEventManager.setOnMouseWheelDownListener(this, _onMouseWheelDownListener);
     }
 
     // TODO: crash in lua throw on main thread
@@ -475,19 +484,19 @@ public abstract class View implements Comparable<View> {
                 value.call(CoerceJavaToLua.coerce(this), LuaValue.valueOf(false));
             }
         };
-        ApplicationClient.uiEventManager.setOnFocusListener(this, _onFocusListener);
+        uiEventManager.setOnFocusListener(this, _onFocusListener);
     }
 
     public void setOnRightClickListener(OnClickListener onClickListener) {
         assert onClickListener != null;
         _onRightClickListener = onClickListener;
-        ApplicationClient.uiEventManager.setOnRightClickListener(this, onClickListener);
+        uiEventManager.setOnRightClickListener(this, onClickListener);
     }
 
     public void setOnFocusListener(OnFocusListener onFocusListener) {
         assert onFocusListener != null;
         _onFocusListener = onFocusListener;
-        ApplicationClient.uiEventManager.setOnFocusListener(this, onFocusListener);
+        uiEventManager.setOnFocusListener(this, onFocusListener);
     }
 
     public void setPadding(int t, int r, int b, int l) {
@@ -576,7 +585,7 @@ public abstract class View implements Comparable<View> {
     protected void remove() {
         _parent = null;
         if (_onClickListener != null) {
-            ApplicationClient.uiEventManager.removeOnClickListener(this);
+            uiEventManager.removeOnClickListener(this);
         }
     }
 
@@ -625,10 +634,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (ApplicationClient.gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
+                return (gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return ApplicationClient.gdxRenderer.getWidth() - _width - _x;
+                return gdxRenderer.getWidth() - _width - _x;
             }
         }
 
@@ -650,10 +659,10 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport à l'écran
         else {
             if (_verticalAlign == VerticalAlign.CENTER) {
-                return (ApplicationClient.gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
+                return (gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
             }
             if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return ApplicationClient.gdxRenderer.getHeight() - _y;
+                return gdxRenderer.getHeight() - _y;
             }
         }
 

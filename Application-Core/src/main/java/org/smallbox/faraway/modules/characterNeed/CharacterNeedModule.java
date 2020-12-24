@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -55,6 +56,9 @@ public class CharacterNeedModule extends GameModule {
 
     @Inject
     private ItemModule itemModule;
+
+    @Inject
+    private GameManager gameManager;
 
     private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
@@ -133,7 +137,7 @@ public class CharacterNeedModule extends GameModule {
     }
 
     private double byHour(double value) {
-        return value / Application.gameManager.getGame().getTickPerHour();
+        return value / gameManager.getGame().getTickPerHour();
     }
 
     /**

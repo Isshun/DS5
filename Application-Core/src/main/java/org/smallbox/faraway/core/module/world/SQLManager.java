@@ -8,9 +8,6 @@ import java.io.File;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * Created by Alex on 10/11/2015.
- */
 @ApplicationObject
 public class SQLManager {
     private Queue<DBRunnable>   _queue = new LinkedBlockingQueue<>();

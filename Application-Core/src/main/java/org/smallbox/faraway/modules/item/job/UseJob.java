@@ -1,6 +1,8 @@
 package org.smallbox.faraway.modules.item.job;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -34,7 +36,7 @@ public class UseJob extends JobModel {
 
         addMoveTask("Move", item.getParcel());
         addTask("Use", (character, hourInterval) -> {
-            _duration += 1 / Application.gameManager.getGame().getTickPerHour();
+            _duration += 1 / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour();
             double durationLeft = totalDuration - _duration;
             callback.onUse(item, durationLeft);
             setProgress(_duration, totalDuration);
@@ -57,7 +59,7 @@ public class UseJob extends JobModel {
 //            return JobCheckReturn.ABORT;
 //        }
 
-        if (!Application.dependencyInjector.getDependency(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
+        if (!DependencyInjector.getInstance().getDependency(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
             return JobCheckReturn.STAND_BY;
         }
 

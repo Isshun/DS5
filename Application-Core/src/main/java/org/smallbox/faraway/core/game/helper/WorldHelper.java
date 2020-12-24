@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game.helper;
 import com.badlogic.gdx.math.MathUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -325,7 +326,7 @@ public class WorldHelper {
     }
 
     public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        PathModel path = Application.dependencyInjector.getDependency(PathManager.class).getPath(p1, p2, true, false);
+        PathModel path = DependencyInjector.getInstance().getDependency(PathManager.class).getPath(p1, p2, true, false);
         if (path != null) {
             return path.getLength();
         }

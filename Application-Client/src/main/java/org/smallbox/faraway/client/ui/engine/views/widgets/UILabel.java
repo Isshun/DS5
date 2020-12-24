@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -53,7 +52,7 @@ public class UILabel extends View {
 
         int hash = string.hashCode();
         if (hash != _hash1) {
-            setStringValue(_applicationData != null && _applicationData.hasString(hash) ? _applicationData.getString(hash) : string);
+            setStringValue(applicationData != null && applicationData.hasString(hash) ? applicationData.getString(hash) : string);
         }
         return this;
     }
@@ -65,8 +64,8 @@ public class UILabel extends View {
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2) {
-            str1 = _applicationData != null && _applicationData.hasString(hash1) ? _applicationData.getString(hash1) : str1;
-            str2 = _applicationData != null && _applicationData.hasString(hash2) ? _applicationData.getString(hash2) : str2;
+            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
+            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
             setStringValue(str1 + str2);
         }
     }
@@ -84,9 +83,9 @@ public class UILabel extends View {
         int hash2 = str2.hashCode();
         int hash3 = str3.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3) {
-            str1 = _applicationData != null && _applicationData.hasString(hash1) ? _applicationData.getString(hash1) : str1;
-            str2 = _applicationData != null && _applicationData.hasString(hash2) ? _applicationData.getString(hash2) : str2;
-            str3 = _applicationData != null && _applicationData.hasString(hash3) ? _applicationData.getString(hash3) : str3;
+            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
+            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
+            str3 = applicationData != null && applicationData.hasString(hash3) ? applicationData.getString(hash3) : str3;
             setStringValue(str1 + str2 + str3);
         }
     }
@@ -102,10 +101,10 @@ public class UILabel extends View {
         int hash3 = str3.hashCode();
         int hash4 = str4.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3 || hash4 != _hash4) {
-            str1 = _applicationData != null && _applicationData.hasString(hash1) ? _applicationData.getString(hash1) : str1;
-            str2 = _applicationData != null && _applicationData.hasString(hash2) ? _applicationData.getString(hash2) : str2;
-            str3 = _applicationData != null && _applicationData.hasString(hash3) ? _applicationData.getString(hash3) : str3;
-            str4 = _applicationData != null && _applicationData.hasString(hash4) ? _applicationData.getString(hash4) : str4;
+            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
+            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
+            str3 = applicationData != null && applicationData.hasString(hash3) ? applicationData.getString(hash3) : str3;
+            str4 = applicationData != null && applicationData.hasString(hash4) ? applicationData.getString(hash4) : str4;
             setStringValue(str1 + str2 + str3 + str4);
         }
     }
@@ -119,7 +118,7 @@ public class UILabel extends View {
         // TODO
         int hash = string.hashCode();
 //        if (hash != _hash1) {
-        string = _applicationData != null && _applicationData.hasString(hash) ? _applicationData.getString(hash) : string;
+        string = applicationData != null && applicationData.hasString(hash) ? applicationData.getString(hash) : string;
         setStringValue(String.format(string, value));
 //        }
     }
@@ -161,7 +160,7 @@ public class UILabel extends View {
     public UILabel setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
-            _height = (int)(ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
+            _height = (int)(gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
         }
         return this;
     }
@@ -237,7 +236,7 @@ public class UILabel extends View {
                             inTag = false;
 
                             if (sbTagMeta.toString().contains("icon")) {
-                                Sprite sprite = ApplicationClient.spriteManager.getIcon("[base]/res/ic_blueprint.png");
+                                Sprite sprite = spriteManager.getIcon("[base]/res/ic_blueprint.png");
                                 sprite.setPosition(finalX - 8, finalY - 8);
                                 sprite.draw(batch);
                                 tagOffsetX += 32;
@@ -302,7 +301,7 @@ public class UILabel extends View {
     public int getContentWidth() {
         if (_text != null) {
 //            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_text).width;
-            return (int) (_text.length() * ApplicationClient.gdxRenderer.getFont(_textSize).getRegion().getRegionWidth());
+            return (int) (_text.length() * gdxRenderer.getFont(_textSize).getRegion().getRegionWidth());
         }
         return 0;
     }
@@ -311,7 +310,7 @@ public class UILabel extends View {
     public int getContentHeight() {
         if (_text != null) {
 //            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_text).height;
-            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getLineHeight();
+            return (int) gdxRenderer.getFont(_textSize).getLineHeight();
         }
         return 0;
     }

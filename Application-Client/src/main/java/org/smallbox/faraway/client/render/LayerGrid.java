@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.render;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.render.layer.RenderLayer;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.util.Constant;
 
 /**
@@ -48,7 +49,7 @@ public class LayerGrid {
     public void refresh() {
         for (int column = 0; column < _columns; column++) {
             for (int row = 0; row < _rows; row++) {
-                if (_layers[column][row].isVisible(ApplicationClient.dependencyInjector.getDependency(LayerManager.class).getViewport()) && _layers[column][row].needRefresh()) {
+                if (_layers[column][row].isVisible(DependencyInjector.getInstance().getDependency(LayerManager.class).getViewport()) && _layers[column][row].needRefresh()) {
                     _layers[column][row].refresh();
                     _onRefreshLayer.onRefreshLayer(_layers[column][row], column * CACHE_SIZE, row * CACHE_SIZE, (column + 1) * CACHE_SIZE, (row + 1) * CACHE_SIZE);
                 }
@@ -66,7 +67,7 @@ public class LayerGrid {
     }
 
     public void draw(GDXRenderer renderer) {
-        Viewport viewport = ApplicationClient.dependencyInjector.getDependency(LayerManager.class).getViewport();
+        Viewport viewport = DependencyInjector.getInstance().getDependency(LayerManager.class).getViewport();
 
         for (int column = _columns - 1; column >= 0; column--) {
             for (int row = _rows - 1; row >= 0; row--) {

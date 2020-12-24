@@ -3,8 +3,10 @@ package org.smallbox.faraway.modules.weather;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -44,6 +46,9 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
     private double[]                            _temperatureByFloor;
     private double[]                            _temperatureTargetByFloor;
     private double                              _temperature;
+
+    @Inject
+    private Data data;
 
     @Override
     public void onGameStart(Game game) {
@@ -151,7 +156,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
             Collections.shuffle(weatherList);
             return weatherList.get(0).info;
         }
-        return Application.data.weathers.get("base.weather.regular");
+        return data.weathers.get("base.weather.regular");
     }
 
     private void loadWeather(WeatherInfo weather) {

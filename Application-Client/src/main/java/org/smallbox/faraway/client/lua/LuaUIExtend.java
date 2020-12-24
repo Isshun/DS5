@@ -6,6 +6,7 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
@@ -15,16 +16,15 @@ import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
+import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.util.Log;
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/09/2015.
- */
 public class LuaUIExtend extends LuaExtend {
 
     @Override
@@ -65,11 +65,11 @@ public class LuaUIExtend extends LuaExtend {
 //            return;
 //        }
 
-        if (ApplicationClient.dependencyInjector.getDependency(UIManager.class).getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
+        if (DependencyInjector.getInstance().getDependency(UIManager.class).getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
             return;
         }
 
-        if (ApplicationClient.dependencyInjector.getDependency(UIManager.class).getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
+        if (DependencyInjector.getInstance().getDependency(UIManager.class).getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
             return;
         }
 
@@ -94,17 +94,17 @@ public class LuaUIExtend extends LuaExtend {
         if (value.get("parent").isnil() && rootName.startsWith("base.ui.menu.")) {
             if (!value.get("controller").isnil()) {
                 try {
-                    rootView.getView().setController((LuaController) Class.forName(value.get("controller").tojstring()).newInstance());
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                    rootView.getView().setController((LuaController)DependencyInjector.getInstance().getDependency(Class.forName(value.get("controller").tojstring())));
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
 
-            ApplicationClient.dependencyInjector.getDependency(UIManager.class).addMenuView(rootView);
+            DependencyInjector.getInstance().getDependency(UIManager.class).addMenuView(rootView);
         } else if (value.get("parent").isnil()) {
-            ApplicationClient.dependencyInjector.getDependency(UIManager.class).addRootView(rootView);
+            DependencyInjector.getInstance().getDependency(UIManager.class).addRootView(rootView);
         } else {
-            ApplicationClient.dependencyInjector.getDependency(UIManager.class).addSubView(view, value.get("parent").tojstring());
+            DependencyInjector.getInstance().getDependency(UIManager.class).addSubView(view, value.get("parent").tojstring());
         }
     }
 
@@ -348,10 +348,10 @@ public class LuaUIExtend extends LuaExtend {
         customizeViewMandatory(module, globals, value, inGame, deep, parent, view);
 
         // Apply style
-        ApplicationClient.luaModuleManager.runAfter(() -> readString(value, "style", styleName -> applyStyle(module, globals, value, inGame, deep, parent, view, styleName)));
+        DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class).runAfter(() -> readString(value, "style", styleName -> applyStyle(module, globals, value, inGame, deep, parent, view, styleName)));
 
         // Apply cosmetic value
-        ApplicationClient.luaModuleManager.runAfter(() -> customizeViewCosmetic(module, globals, value, inGame, deep, parent, view));
+        DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class).runAfter(() -> customizeViewCosmetic(module, globals, value, inGame, deep, parent, view));
 
         // Add listeners
         customizeViewListeners(module, globals, value, inGame, deep, parent, view);
@@ -369,7 +369,7 @@ public class LuaUIExtend extends LuaExtend {
         }
 
         // Set controller
-        readString(value, "controller", controllerName -> ApplicationClient.luaControllerManager.setControllerView(controllerName, view));
+        readString(value, "controller", controllerName -> DependencyInjector.getInstance().getDependency(LuaControllerManager.class).setControllerView(controllerName, view));
 
         // Add to ui manager
 //        ApplicationClient.uiManager.addView(view);
@@ -394,7 +394,7 @@ public class LuaUIExtend extends LuaExtend {
 
     private View createDropDownView(ModuleBase module, LuaValue value) {
         View view = new UIDropDown(module);
-        ApplicationClient.dependencyInjector.getDependency(UIManager.class).addDropsDowns((UIDropDown)view);
+        DependencyInjector.getInstance().getDependency(UIManager.class).addDropsDowns((UIDropDown)view);
         return view;
     }
 
@@ -441,7 +441,7 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     private void applyStyle(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view, String styleName) {
-        value = ApplicationClient.dependencyInjector.getDependency(UIManager.class).getStyle(styleName);
+        value = DependencyInjector.getInstance().getDependency(UIManager.class).getStyle(styleName);
         Log.warning("Unable to find style: " + styleName);
         if (value != null) {
             customizeViewCosmetic(module, globals, value, inGame, deep, parent, view);

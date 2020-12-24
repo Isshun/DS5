@@ -27,46 +27,16 @@ public class Application {
         return p1.compareTo(p2);
     });
 
-    public static DependencyInjector dependencyInjector;
-
     // Server
-    public static GameManager           gameManager;
-    public static ModuleManager         moduleManager;
-    public static LuaModuleManager      luaModuleManager;
-    public static TaskManager           taskManager;
-    public static SQLManager            sqlManager;
     public static Data                  data;
-    public static GroovyManager         groovyManager;
 
     public static boolean isLoaded = false;
     public static ApplicationClientListener clientListener;
-    public static GameServerKyro gameServer;
     public static long id;
 
     public Application() {
-        dependencyInjector = DependencyInjector.getInstance();
-        gameManager = dependencyInjector.create(GameManager.class);
-        taskManager = dependencyInjector.create(TaskManager.class);
-        sqlManager = dependencyInjector.create(SQLManager.class);
-        moduleManager = dependencyInjector.create(ModuleManager.class);
-        luaModuleManager = dependencyInjector.create(ServerLuaModuleManager.class);
-        groovyManager = dependencyInjector.create(GroovyManager.class);
-        gameServer = dependencyInjector.create(GameServerKyro.class);
-        data = dependencyInjector.create(Data.class);
-
-        dependencyInjector.create(GameTaskManager.class);
-        dependencyInjector.create(GameSaveManager.class);
-
-        findAndCreateApplicationObjects();
-    }
-
-    /**
-     * Automatically create object annotated with @ApplicationObject
-     */
-    private void findAndCreateApplicationObjects() {
-        new Reflections("org.smallbox").getTypesAnnotatedWith(ApplicationObject.class).stream()
-                .filter(cls -> dependencyInjector.getDependency(cls) == null)
-                .forEach(cls -> dependencyInjector.create(cls));
+        DependencyInjector.getInstance().findAndCreateApplicationObjects();
+        data = DependencyInjector.getInstance().getDependency(Data.class);
     }
 
     private static boolean                          _isRunning = true;
@@ -116,8 +86,6 @@ public class Application {
     public static void notify(Consumer<GameObserver> action) {
 //        ApplicationClient.getObservers().forEach(action);
 
-        action.getClass();
-
         try {
             _observers.forEach(action);
         } catch (Error | RuntimeException e) {
@@ -136,7 +104,6 @@ public class Application {
     }
 
     public static void runOnMainThread(Runnable runnable) {
-
         if (Gdx.app != null) {
             Gdx.app.postRunnable(runnable);
         } else {

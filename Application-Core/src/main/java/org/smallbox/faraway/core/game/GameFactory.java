@@ -2,7 +2,11 @@ package org.smallbox.faraway.core.game;
 
 import com.google.gson.Gson;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameScenario;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -13,10 +17,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-/**
- * Created by Alex on 14/07/2017.
- */
+@ApplicationObject
 public class GameFactory {
+
+    @Inject
+    private GameManager gameManager;
+
+    @Inject
+    private CharacterModule characterModule;
+
+    @Inject
+    private ConsumableModule consumableModule;
+
+    @Inject
+    private ItemModule itemModule;
+
+    @Inject
+    private PlantModule plantModule;
+
+    @Inject
+    private WorldModule worldModule;
+
+    @Inject
+    private Data data;
+
     private GameScenario scenario;
     private String planet = "base.planet.corrin";
     private String region = "mountain";
@@ -33,41 +57,42 @@ public class GameFactory {
         this.level = scenario.level != 0 ? scenario.level : this.level;
     }
 
-    public void setScenario(String scenarioPath) {
+    private GameScenario loadScenario(String scenarioPath) {
         if (scenarioPath != null) {
             try {
-                setScenario(new Gson().fromJson(new FileReader(new File(scenarioPath)), GameScenario.class));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                return new Gson().fromJson(new FileReader(scenarioPath), GameScenario.class);
+            } catch (FileNotFoundException ignored) {
             }
         }
+        throw new GameException(GameFactory.class, "Unable to load scenario");
     }
 
-    public void create() {
-        Application.gameManager.createGame(GameInfo.create(this.planet, this.region, this.width, this.height, this.level), new GameManager.GameListener() {
+    public void create(String scenarioPath) {
+        setScenario(loadScenario(scenarioPath));
+
+        gameManager.createGame(GameInfo.create(this.planet, this.region, this.width, this.height, this.level), new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
 
-                if (scenario != null) {
-
-                    if (scenario.characters != null) {
-                        scenario.characters.forEach(characterEntity -> Application.moduleManager.getModule(CharacterModule.class).addRandom());
+                if (GameFactory.this.scenario != null) {
+                    if (GameFactory.this.scenario.characters != null) {
+                        GameFactory.this.scenario.characters.forEach(characterEntity -> characterModule.addRandom());
                     }
 
-                    if (scenario.consumables != null) {
-                        scenario.consumables.forEach(c -> Application.moduleManager.getModule(ConsumableModule.class).addConsumable(c.name, c.quantity, c.x, c.y, c.z));
+                    if (GameFactory.this.scenario.consumables != null) {
+                        GameFactory.this.scenario.consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z));
                     }
 
-                    if (scenario.items != null) {
-                        scenario.items.forEach(i -> Application.moduleManager.getModule(ItemModule.class).addItem(i.name, true, i.x, i.y, i.z));
+                    if (GameFactory.this.scenario.items != null) {
+                        GameFactory.this.scenario.items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z));
                     }
 
-                    if (scenario.plants != null) {
-                        scenario.plants.forEach(i -> Application.moduleManager.getModule(PlantModule.class).addPlant(i.name, i.x, i.y, i.z));
+                    if (GameFactory.this.scenario.plants != null) {
+                        GameFactory.this.scenario.plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z));
                     }
 
-                    if (scenario.resources != null) {
-                        scenario.resources.forEach(i -> Application.moduleManager.getModule(WorldModule.class).getParcel(i.x, i.y, i.z).setRockInfo(Application.data.getItemInfo("base.granite")));
+                    if (GameFactory.this.scenario.resources != null) {
+                        GameFactory.this.scenario.resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(data.getItemInfo("base.granite")));
                     }
 
                 }

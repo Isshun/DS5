@@ -21,7 +21,7 @@ public class UIDropDown extends View {
         _overlay.setDeep(100);
         _overlay.setOnClickListener((x, y) -> {
             setOpen(true);
-            ApplicationClient.uiEventManager.setCurrentDropDown(_isOpen ? UIDropDown.this : null);
+            uiEventManager.setCurrentDropDown(_isOpen ? UIDropDown.this : null);
         });
     }
 

@@ -4,6 +4,7 @@ import org.smallbox.faraway.GameTask;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -95,7 +96,7 @@ public abstract class CharacterModel extends MovableModel {
             _moveListener = null;
         }
 
-        _path = Application.dependencyInjector.getDependency(PathManager.class).getPath(_parcel, toParcel, false, false);
+        _path = DependencyInjector.getInstance().getDependency(PathManager.class).getPath(_parcel, toParcel, false, false);
         _moveProgress2 = 0;
         if (_path != null) {
             _moveListener = listener;

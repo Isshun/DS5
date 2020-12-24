@@ -4,10 +4,12 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.modules.character.model.HumanModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterPersonalsExtra;
@@ -19,8 +21,8 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
     public int getModulePriority() { return Constant.MODULE_CHARACTER_PRIORITY; }
 
     @Override
-    public void onSave(CharacterModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onSave(SQLManager sqlManager, CharacterModule module, Game game) {
+        sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE characters (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, firstname TEXT, lastname TEXT)");
                 SQLiteStatement st = db.prepare("INSERT INTO characters (_id, x, y, z, firstname, lastname) VALUES (?, ?, ?, ?, ?, ?)");
@@ -46,8 +48,8 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
         });
     }
 
-    public void onLoad(CharacterModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onLoad(SQLManager sqlManager, CharacterModule module, Game game, Data data) {
+        sqlManager.post(db -> {
             try {
                 SQLiteStatement st = db.prepare("SELECT _id, x, y, z, firstname, lastname FROM characters");
                 try {
@@ -59,7 +61,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                         String firstname = st.columnString(4);
                         String lastname =  st.columnString(5);
 
-                        CharacterInfo characterInfo = Application.data.characters.get("base.character.human");
+                        CharacterInfo characterInfo = data.characters.get("base.character.human");
                         module.add(new HumanModel(id, characterInfo, WorldHelper.getParcel(x, y, z)));
                     }
                 } finally {

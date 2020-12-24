@@ -2,8 +2,10 @@ package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.debug.DebugService;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -23,6 +25,12 @@ public class InputManager implements InputProcessor {
 
     @Inject
     private ApplicationConfigService applicationConfigService;
+
+    @Inject
+    private GameEventManager gameEventManager;
+
+    @Inject
+    private UIEventManager uiEventManager;
 
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
@@ -160,12 +168,12 @@ public class InputManager implements InputProcessor {
         if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
 
             // Passe l'evenement à l'ui event manager
-            if (ApplicationClient.uiEventManager.onMousePress(x, y, button)) {
+            if (uiEventManager.onMousePress(x, y, button)) {
                 return false;
             }
 
             // Passe l'evenement au game event manager
-            if (ApplicationClient.gameEventManager.onMousePress(x, y, button)) {
+            if (gameEventManager.onMousePress(x, y, button)) {
                 return false;
             }
 
@@ -186,12 +194,12 @@ public class InputManager implements InputProcessor {
         if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
 
             // Passe l'evenement à l'ui event manager
-            if (ApplicationClient.uiEventManager.onMouseRelease(x, y, button)) {
+            if (uiEventManager.onMouseRelease(x, y, button)) {
                 return false;
             }
 
             // Passe l'evenement au game event manager
-            if (ApplicationClient.gameEventManager.onMouseRelease(x, y, button)) {
+            if (gameEventManager.onMouseRelease(x, y, button)) {
                 return false;
             }
 
@@ -207,7 +215,7 @@ public class InputManager implements InputProcessor {
         _touchDrag = true;
 
         // Passe l'evenement au game event manager
-        if (ApplicationClient.gameEventManager.onMouseMove(x, y, true)) {
+        if (gameEventManager.onMouseMove(x, y, true)) {
             return false;
         }
 
@@ -239,12 +247,12 @@ public class InputManager implements InputProcessor {
         if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
 
             // Passe l'evenement à l'ui event manager
-            if (ApplicationClient.uiEventManager.onMouseMove(x, y, false)) {
+            if (uiEventManager.onMouseMove(x, y, false)) {
                 return false;
             }
 
             // Passe l'evenement au game event manager
-            if (ApplicationClient.gameEventManager.onMouseMove(x, y, false)) {
+            if (gameEventManager.onMouseMove(x, y, false)) {
                 return false;
             }
 

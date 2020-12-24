@@ -8,9 +8,6 @@ import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/09/2015.
- */
 public abstract class LuaExtend {
     public abstract boolean accept(String type);
     public abstract void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException;

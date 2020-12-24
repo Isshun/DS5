@@ -71,7 +71,7 @@ public class ConsumableLayer extends BaseLayer {
         consumableModule.getConsumables().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(consumable -> {
-                    renderer.drawOnMap(consumable.getParcel(), ApplicationClient.spriteManager.getNewSprite(consumable.getGraphic()));
+                    renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()));
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);
                     String stringQuantity = consumable.getTotalQuantity() >= 1000 ? consumable.getTotalQuantity() / 1000 + "k" : String.valueOf(consumable.getTotalQuantity());
                     renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 12, new Color(0x000000FF), 16, 16);

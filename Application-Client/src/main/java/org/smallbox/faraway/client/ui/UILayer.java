@@ -23,7 +23,7 @@ public class UILayer extends BaseLayer {
 
     @Override
     protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        uiManager.draw(renderer, Application.gameManager.isLoaded());
+        uiManager.draw(renderer, true);
 
         if (_debugView != null) {
             _debugView.draw(renderer, 0, 0);

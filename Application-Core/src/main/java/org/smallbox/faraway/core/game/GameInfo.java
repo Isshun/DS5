@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.util.Constant;
@@ -12,9 +13,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by Alex on 30/08/2015.
- */
 public class GameInfo {
     public enum Type {INIT, AUTO, FAST, REGULAR}
 
@@ -62,7 +60,7 @@ public class GameInfo {
         GameInfo gameInfo = new GameInfo();
 
         gameInfo.name = json.getString("name");
-        gameInfo.planet = Application.data.getPlanet(json.getString("planet"));
+        gameInfo.planet = DependencyInjector.getInstance().getDependency(Data.class).getPlanet(json.getString("planet"));
         if (gameInfo.planet != null && gameInfo.planet.regions != null) {
             gameInfo.region = gameInfo.planet.regions.stream().filter(region -> region.name.equals(json.getString("region"))).findFirst().get();
         }
@@ -92,7 +90,7 @@ public class GameInfo {
     }
 
     public static GameInfo create(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors) {
-        return create(Application.data.getRegion(planetName, regionName), worldWidth, worldHeight, worldFloors);
+        return create(DependencyInjector.getInstance().getDependency(Data.class).getRegion(planetName, regionName), worldWidth, worldHeight, worldFloors);
     }
 
     public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight, int worldFloors) {

@@ -4,11 +4,11 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
-/**
- * Created by Alex on 14/10/2015.
- */
 public class CharacterBuff extends ObjectModel {
     public BuffInfo         info;
     public CharacterModel   character;
@@ -38,7 +38,7 @@ public class CharacterBuff extends ObjectModel {
         if (this.character.isAlive()) {
             this.info.update(this, tick);
         }
-        if (tick % Application.gameManager.getGame().getTickPerHour() == 0) {
+        if (tick % DependencyInjector.getInstance().getDependency(Game.class).getTickPerHour() == 0) {
             this.info.updateHourly(this, tick);
         }
     }

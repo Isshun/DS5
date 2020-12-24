@@ -18,15 +18,24 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 public class DependencyInjector {
+    private static final DependencyInjector _self = new DependencyInjector();
     private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
     private final Map<Class<?>, DependencyInfo<?>> _objectPoolByClass = new ConcurrentHashMap<>();
     private final Map<Class<?>, DependencyInfo<?>> _gameObjectPoolByClass = new ConcurrentHashMap<>();
     private boolean _init = false;
     private boolean _initGame = false;
-    private static final DependencyInjector _self = new DependencyInjector();
     private ApplicationClientInterface _clientInterface;
 
     public static DependencyInjector getInstance() { return _self; }
+
+    /**
+     * Automatically create object annotated with @ApplicationObject
+     */
+    public void findAndCreateApplicationObjects() {
+        new Reflections("org.smallbox").getTypesAnnotatedWith(ApplicationObject.class).stream()
+                .filter(cls -> getDependency(cls) == null)
+                .forEach(cls -> create(cls));
+    }
 
     /**
      * Return ApplicationObject or GameObject stored in DI for asked class, return null if none of them exists
@@ -60,7 +69,7 @@ public class DependencyInjector {
             register(object);
             return object;
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new GameException(DependencyInjector.class, "Cannot create dependency: " + cls.getSimpleName());
+            throw new GameException(DependencyInjector.class, "Cannot create dependency: " + cls.getSimpleName() + "\n" + e.getMessage());
         }
     }
 
@@ -192,6 +201,8 @@ public class DependencyInjector {
 
                     if (toInject != null) {
                         field.set(host, toInject.dependency);
+                    } else {
+                        Log.warning(field.getType().getSimpleName() + " is null");
                     }
                 }
             } catch (IllegalAccessException e) {
@@ -222,6 +233,7 @@ public class DependencyInjector {
         return objects;
     }
 
+    @Deprecated
     public List<AbsGameModule> getGameModules() {
         return _gameObjectPoolByClass.values().stream()
                 .map(dependencyInfo -> dependencyInfo.dependency)

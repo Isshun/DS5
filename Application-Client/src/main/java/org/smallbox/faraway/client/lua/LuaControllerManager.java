@@ -11,6 +11,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -42,7 +43,7 @@ public class LuaControllerManager implements GameObserver {
     public void onGameInitLayers() {
 
         // Get controllers from DI
-        _controllers = Application.dependencyInjector.getSubTypesOf(LuaController.class).stream()
+        _controllers = DependencyInjector.getInstance().getSubTypesOf(LuaController.class).stream()
                 .collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
 
         // Bind rootView to controller

@@ -1,6 +1,8 @@
 package org.smallbox.faraway.modules.consumable;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -37,7 +39,7 @@ public class ConsumeJob extends JobModel {
         addMoveTask("Move", consumable.getParcel());
         addTask("Consume", (character, hourInterval) -> {
             if (_lock.available) {
-                _duration += 1 / Application.gameManager.getGame().getTickPerHour();
+                _duration += 1 / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour();
                 double durationLeft = totalDuration - _duration;
                 callback.onConsume(consumable, durationLeft);
                 setProgress(_duration, totalDuration);

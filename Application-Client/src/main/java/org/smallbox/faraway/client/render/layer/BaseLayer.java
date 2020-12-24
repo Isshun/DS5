@@ -9,6 +9,7 @@ import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
@@ -65,7 +66,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
-        if (ApplicationClient.dependencyInjector.getDependency(SelectionManager.class).selectContains(object)) {
+        if (DependencyInjector.getInstance().getDependency(SelectionManager.class).selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
             } else if (_selectionOffset < -2) {
@@ -166,20 +167,6 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     @Override
     public void onFloorChange(int floor) {
         _floor = floor;
-    }
-
-    public static List<BaseLayer> createLayer(Class<? extends BaseLayer> cls) {
-        List<BaseLayer> layerList = new ArrayList<>();
-        try {
-//            for (Class<? extends BaseLayer> cls: module.getClass().getAnnotation(ModuleLayer.class).value()) {
-                BaseLayer layer = cls.newInstance();
-                Application.dependencyInjector.register(layer);
-                layerList.add(layer);
-//            }
-        } catch ( IllegalAccessException | InstantiationException e) {
-            throw new GameException(BaseLayer.class, e);
-        }
-        return layerList;
     }
 
     @Override

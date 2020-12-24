@@ -14,6 +14,7 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -37,6 +38,9 @@ public class CharacterLayer extends BaseLayer {
 
     @Inject
     private CharacterModule characterModule;
+
+    @Inject
+    private GameManager gameManager;
 
     private int                     _floor;
 
@@ -152,7 +156,7 @@ public class CharacterLayer extends BaseLayer {
     private void drawPath(CharacterModel character, Viewport viewport, GDXRenderer renderer) {
         int viewPortX = viewport.getPosX();
         int viewPortY = viewport.getPosY();
-        int framePerTick = Application.gameManager.getGame().getTickInterval() / (1000 / 60);
+        int framePerTick = gameManager.getGame().getTickInterval() / (1000 / 60);
 //
 //        if (character.getPath().getSections().peek().p1 == character.getParcel()) {
 //            character.getPath().getSections().poll();
@@ -185,7 +189,7 @@ public class CharacterLayer extends BaseLayer {
 //            System.out.println("start index: " + path.getIndex());
         }
 
-        int tickInterval = Application.gameManager.getGame().getTickInterval();
+        int tickInterval = gameManager.getGame().getTickInterval();
 
 //        Interpolation easAlpha;
 //        int lifeTime;

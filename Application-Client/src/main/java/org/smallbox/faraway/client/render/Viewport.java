@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
@@ -23,6 +24,9 @@ public class Viewport {
 
     @Inject
     private Game game;
+
+    @Inject
+    private GameManager gameManager;
 
     private final static int    ANIM_FRAME = 10;
     public final static float[]       ZOOM_LEVELS = new float[] {
@@ -130,8 +134,8 @@ public class Viewport {
     }
 
     public void setFloor(int floor) {
-        if (Application.gameManager.isRunning()) {
-            if (floor >= 0 && floor < Application.gameManager.getGame().getInfo().worldFloors) {
+        if (gameManager.isRunning()) {
+            if (floor >= 0 && floor < gameManager.getGame().getInfo().worldFloors) {
                 _floor = floor;
                 ApplicationClient.notify(gameObserver -> gameObserver.onFloorChange(_floor));
             }

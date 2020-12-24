@@ -2,9 +2,6 @@ package org.smallbox.faraway;
 
 import org.smallbox.faraway.core.Application;
 
-/**
- * Created by 300206 on 14/09/2017.
- */
 public abstract class GameTask {
     public final long id;
     public final String name;

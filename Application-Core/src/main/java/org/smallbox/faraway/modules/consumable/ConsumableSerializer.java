@@ -4,9 +4,11 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
 
@@ -19,8 +21,8 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void onSave(ConsumableModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onSave(SQLManager sqlManager, ConsumableModule module, Game game) {
+        sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
 
@@ -49,13 +51,13 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
         });
     }
 
-    public void onLoad(ConsumableModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onLoad(SQLManager sqlManager, ConsumableModule module, Game game, Data data) {
+        sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, quantity FROM WorldModule_consumable");
                 try {
                     while (stItem.step()) {
-                        ItemInfo itemInfo = Application.data.getItemInfo(stItem.columnString(4));
+                        ItemInfo itemInfo = data.getItemInfo(stItem.columnString(4));
                         if (itemInfo != null) {
                             module.create(itemInfo, stItem.columnInt(5), stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                         }

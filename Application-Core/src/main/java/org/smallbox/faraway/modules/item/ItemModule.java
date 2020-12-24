@@ -4,6 +4,7 @@ import org.smallbox.faraway.common.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -42,6 +43,9 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
     @Inject
     private ConsumableModule consumableModule;
+
+    @Inject
+    private Data data;
 
     private Collection<UsableItem> _items;
 
@@ -144,7 +148,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     }
 
     public UsableItem addItem(String itemName, boolean isComplete, int x, int y, int z) {
-        return addItem(Application.data.getItemInfo(itemName), isComplete, x, y, z);
+        return addItem(data.getItemInfo(itemName), isComplete, x, y, z);
     }
 
     public UsableItem addItem(ItemInfo itemInfo, boolean isComplete, int x, int y, int z) {

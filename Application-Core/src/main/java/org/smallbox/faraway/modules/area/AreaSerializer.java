@@ -3,15 +3,17 @@ package org.smallbox.faraway.modules.area;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.modules.consumable.StorageArea;
 
 public class AreaSerializer extends GameSerializer<AreaModule> {
 
     @Override
-    public void onSave(AreaModule module, Game game) {
+    public void onSave(SQLManager sqlManager, AreaModule module, Game game) {
 //        Application.sqlManager.post(db -> {
 //            AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
 //            try {
@@ -77,7 +79,7 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
 //        });
     }
 
-    public void onLoad(AreaModule module, Game game) {
+    public void onLoad(SQLManager sqlManager, AreaModule module, Game game, Data data) {
 //        Application.sqlManager.post(db -> {
 //            try {
 //                SQLiteStatement stParcel = db.prepare("SELECT x, y, z, area_id FROM area_parcel where area_id = ?");
@@ -115,10 +117,10 @@ public class AreaSerializer extends GameSerializer<AreaModule> {
 //        });
     }
 
-    private void getAreaStorageItems(StorageArea storage, SQLiteStatement stItem, int areaId) throws SQLiteException {
+    private void getAreaStorageItems(StorageArea storage, SQLiteStatement stItem, int areaId, Data data) throws SQLiteException {
         stItem.bind(1, areaId);
         while (stItem.step()) {
-            storage.setAccept(Application.data.getItemInfo(stItem.columnString(0)), true);
+            storage.setAccept(data.getItemInfo(stItem.columnString(0)), true);
             storage.setPriority(stItem.columnInt(2));
         }
         stItem.reset(false);

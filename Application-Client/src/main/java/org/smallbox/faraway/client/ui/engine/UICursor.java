@@ -4,7 +4,10 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 public abstract class UICursor {
@@ -24,8 +27,8 @@ public abstract class UICursor {
     void    draw(GDXRenderer renderer, Viewport viewport, int startX, int startY, int toX, int toY, boolean isPressed) {
         startX = Math.max(startX, 0);
         startY = Math.max(startY, 0);
-        toX = Math.min(toX, Application.gameManager.getGame().getInfo().worldWidth);
-        toY = Math.min(toY, Application.gameManager.getGame().getInfo().worldHeight);
+        toX = Math.min(toX, DependencyInjector.getInstance().getDependency(Game.class).getInfo().worldWidth);
+        toY = Math.min(toY, DependencyInjector.getInstance().getDependency(Game.class).getInfo().worldHeight);
 
 //        for (int x = startX; x <= toX; x++) {
 //            for (int y = startY; y <= toY; y++) {

@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
@@ -29,6 +30,9 @@ public class CharacterInfoStatusController extends LuaController {
 
     @Inject
     private CharacterBuffModule buffModule;
+
+    @Inject
+    private SpriteManager spriteManager;
 
     @BindLua private UILabel lbJob;
     @BindLua private UILabel lbJobProgress;
@@ -97,7 +101,7 @@ public class CharacterInfoStatusController extends LuaController {
                 ((BasicHaulJob) job).getConsumables().forEach((consumable, quantity) -> {
                     if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
                         imgJob.setVisible(true);
-                        imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
+                        imgJob.setImage(spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
                     }
                 });
             }
@@ -106,7 +110,7 @@ public class CharacterInfoStatusController extends LuaController {
                 ((BasicStoreJob) job).getConsumables().forEach(consumable -> {
                     if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
                         imgJob.setVisible(true);
-                        imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
+                        imgJob.setImage(spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
                     }
                 });
             }
@@ -116,7 +120,7 @@ public class CharacterInfoStatusController extends LuaController {
                 if (receiptInfo != null) {
                     if (CollectionUtils.isNotEmpty(receiptInfo.inputs)) {
                         imgJob.setVisible(true);
-                        imgJob.setImage(ApplicationClient.spriteManager.getNewSprite(receiptInfo.inputs.get(0).item.graphics.get(0)));
+                        imgJob.setImage(spriteManager.getNewSprite(receiptInfo.inputs.get(0).item.graphics.get(0)));
                     }
                     if (CollectionUtils.isNotEmpty(receiptInfo.outputs)) {
 //                        imgJobOut.setImage(ApplicationClient.spriteManager.getNewSprite(receiptInfo.outputs.get(0).item.graphics.get(0)));

@@ -4,8 +4,10 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.util.Constant;
 
@@ -18,8 +20,8 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void onSave(StructureModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onSave(SQLManager sqlManager, StructureModule module, Game game) {
+        sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_structure (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER)");
 
@@ -48,13 +50,13 @@ public class StructureModuleSerializer extends GameSerializer<StructureModule> {
         });
     }
 
-    public void onLoad(StructureModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onLoad(SQLManager sqlManager, StructureModule module, Game game, Data data) {
+        sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, buildProgress FROM WorldModule_structure");
                 try {
                     while (stItem.step()) {
-                        StructureItem structure = new StructureItem(Application.data.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
+                        StructureItem structure = new StructureItem(data.getItemInfo(stItem.columnString(4)), stItem.columnInt(0));
                         structure.setBuildProgress(stItem.columnInt(5));
                         module.addStructure(structure, stItem.columnInt(1), stItem.columnInt(2), stItem.columnInt(3));
                     }

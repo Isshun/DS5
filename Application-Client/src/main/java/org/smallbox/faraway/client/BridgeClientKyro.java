@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.module.PlantClientModule;
 import org.smallbox.faraway.client.module.TaskClientModule;
 import org.smallbox.faraway.common.ModelDeserializer;
 import org.smallbox.faraway.core.bridge.Client;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,9 @@ public class BridgeClientKyro {
     private Client client;
     private List<ServerListener> _listeners = new ArrayList<>();
     private List<ModelDeserializer> _deserializer = new ArrayList<>();
-    private CharacterClientModule characterClientModule = ApplicationClient.dependencyInjector.create(CharacterClientModule.class);
-    private PlantClientModule plantClientModule = ApplicationClient.dependencyInjector.create(PlantClientModule.class);
-    private TaskClientModule taskClientModule = ApplicationClient.dependencyInjector.create(TaskClientModule.class);
+    private CharacterClientModule characterClientModule = DependencyInjector.getInstance().create(CharacterClientModule.class);
+    private PlantClientModule plantClientModule = DependencyInjector.getInstance().create(PlantClientModule.class);
+    private TaskClientModule taskClientModule = DependencyInjector.getInstance().create(TaskClientModule.class);
 
     public void register(ServerListener listener) {
         System.out.println("[CLIENT] REGISTER");

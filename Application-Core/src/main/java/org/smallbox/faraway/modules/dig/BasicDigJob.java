@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.dig;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -44,7 +45,7 @@ public class BasicDigJob extends JobModel {
                 // Retire les rochers de la carte
                 job.addTechnicalTask("Remove rock", character -> {
                     digParcel.setRockInfo(null);
-                    Application.moduleManager.getModule(PathManager.class).refreshConnections(digParcel);
+                    DependencyInjector.getInstance().getDependency(PathManager.class).refreshConnections(digParcel);
                 });
 
                 // Crée les gravats

@@ -3,21 +3,22 @@ package org.smallbox.faraway.core.game;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.util.Log;
 
 public abstract class GameSerializer<T_MODULE> {
-    public abstract void onSave(T_MODULE module, Game game);
-    public abstract void onLoad(T_MODULE module, Game game);
+    public abstract void onSave(SQLManager sqlManager, T_MODULE module, Game game);
+    public abstract void onLoad(SQLManager sqlManager, T_MODULE module, Game game, Data data);
     public int getModulePriority() { return 0; }
 
-    public void save(T_MODULE module, Game game) {
+    public void save(SQLManager sqlManager, T_MODULE module, Game game) {
         Log.info("Serializer: call onSave on " + getClass().getName());
-        onSave(module, game);
+        onSave(sqlManager, module, game);
     }
 
-    public void load(T_MODULE module, Game game) {
+    public void load(SQLManager sqlManager, T_MODULE module, Game game, Data data) {
         Log.info("Serializer: call onLoadModule " + getClass().getName());
-        onLoad(module, game);
+        onLoad(sqlManager, module, game, data);
     }
 
     public static GameSerializer<AbsGameModule> createSerializer(AbsGameModule module) {

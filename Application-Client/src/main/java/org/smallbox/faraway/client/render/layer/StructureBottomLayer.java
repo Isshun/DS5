@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.render.layer;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
@@ -14,10 +13,13 @@ import org.smallbox.faraway.modules.structure.StructureModule;
 @GameObject
 @GameLayer(level = LayerManager.WORLD_TOP_LAYER_LEVEL, visible = true)
 public class StructureBottomLayer extends BaseLayer {
+
     @Inject
     private StructureModule _structureModule;
 
-    protected SpriteManager _spriteManager;
+    @Inject
+    private SpriteManager spriteManager;
+
     protected MapObjectModel    _itemSelected;
     private int                 _floor;
     private int                 _width;
@@ -27,7 +29,6 @@ public class StructureBottomLayer extends BaseLayer {
     public void onGameStart(Game game) {
         _width = game.getInfo().worldWidth;
         _height = game.getInfo().worldHeight;
-        _spriteManager = ApplicationClient.spriteManager;
     }
 
     @Override

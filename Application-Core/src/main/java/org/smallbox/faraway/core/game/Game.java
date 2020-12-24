@@ -2,7 +2,9 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
@@ -19,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 @GameObject
 public class Game {
+
+    @Inject
+    private GameTaskManager gameTaskManager;
 
     public static long interval = 1000;
     private final ApplicationConfig config;
@@ -46,7 +51,7 @@ public class Game {
     private Map<String, Boolean>            _displays;
     private int                             _speed;
     private int                             _lastSpeed;
-    private List<AbsGameModule>       _modules;
+    private List<AbsGameModule>             _modules;
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
@@ -143,7 +148,7 @@ public class Game {
 //                    }
 //                });
 
-        _modules = Application.dependencyInjector.getGameModules();
+        _modules = DependencyInjector.getInstance().getGameModules();
 
         // Load game modules
         boolean moduleHasBeenLoaded;
@@ -245,7 +250,7 @@ public class Game {
         _moduleScheduler3.scheduleAtFixedRate(() -> {
             try {
                 if (_isRunning) {
-                    Application.dependencyInjector.getDependency(GameTaskManager.class).update();
+                    gameTaskManager.update();
                     Application.notify(gameObserver -> gameObserver.onGameRender(Game.this));
                 }
             } catch (Error e) {

@@ -72,8 +72,6 @@ public class PlantModule extends GameModule {
 
         // TODO: ajout auto de la graine
         _plants.forEach(plant -> plant.setSeed(true));
-
-        _plants.forEach(plant -> Application.gameServer.serialize("UPDATE", "PLANT", plant._id, plant));
     }
 
     public void addPlant(String plantName, int x, int y, int z) { addPlant(data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }

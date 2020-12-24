@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 
 import java.io.File;
@@ -24,6 +25,9 @@ public class ClientLuaModuleManager extends LuaModuleManager {
 
     @Inject
     private ApplicationConfigService applicationConfigService;
+
+    @Inject
+    private Data data;
 
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
@@ -54,7 +58,7 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         }
                     }
                 }),
-                CoerceJavaToLua.coerce(new LuaDataModel() {
+                CoerceJavaToLua.coerce(new LuaDataModel(data) {
                     @Override
                     public void extend(LuaValue values) {
                     }

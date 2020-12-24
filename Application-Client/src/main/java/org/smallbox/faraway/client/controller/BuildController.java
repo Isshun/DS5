@@ -1,9 +1,9 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.layer.BuildLayer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -54,6 +54,9 @@ public class BuildController extends LuaController {
     @Inject
     private BuildLayer buildLayer;
 
+    @Inject
+    private SpriteManager spriteManager;
+
     private ItemInfo _currentItem;
 
     @AfterGameLayerInit
@@ -83,7 +86,7 @@ public class BuildController extends LuaController {
                                 .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
                                 .setBackgroundFocusColor(0xff2233ff)
                                 .addView(UIImage.create(null)
-                                        .setImage(ApplicationClient.spriteManager.getIcon(itemInfo)))
+                                        .setImage(spriteManager.getIcon(itemInfo)))
                                 .addView(UILabel.create(null)
                                         .setText(itemInfo.label)
                                         .setTextColor(0x9afbffff)
@@ -106,7 +109,7 @@ public class BuildController extends LuaController {
                                 .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
                                 .setBackgroundFocusColor(0xff2233ff)
                                 .addView(UIImage.create(null)
-                                        .setImage(ApplicationClient.spriteManager.getIcon(itemInfo)))
+                                        .setImage(spriteManager.getIcon(itemInfo)))
                                 .addView(UILabel.create(null)
                                         .setText(itemInfo.label)
                                         .setTextColor(0x9afbffff)
@@ -129,7 +132,7 @@ public class BuildController extends LuaController {
                                 .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
                                 .setBackgroundFocusColor(0xff2233ff)
                                 .addView(UIImage.create(null)
-                                        .setImage(ApplicationClient.spriteManager.getIcon(itemInfo)))
+                                        .setImage(spriteManager.getIcon(itemInfo)))
                                 .addView(UILabel.create(null)
                                         .setText(itemInfo.label)
                                         .setTextColor(0x9afbffff)

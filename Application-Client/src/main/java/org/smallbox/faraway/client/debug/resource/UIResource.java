@@ -43,6 +43,7 @@ package org.smallbox.faraway.client.debug.resource;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -64,13 +65,13 @@ public class UIResource {
     @GET
     @Path("all")
     public Collection<View> all() {
-        return ApplicationClient.dependencyInjector.getDependency(UIManager.class).getViews();
+        return DependencyInjector.getInstance().getDependency(UIManager.class).getViews();
     }
 
     @GET
     @Path("find/{id}")
     public View find(@PathParam("id") String id) {
-        return ApplicationClient.dependencyInjector.getDependency(UIManager.class).findById(id);
+        return DependencyInjector.getInstance().getDependency(UIManager.class).findById(id);
     }
 
 }

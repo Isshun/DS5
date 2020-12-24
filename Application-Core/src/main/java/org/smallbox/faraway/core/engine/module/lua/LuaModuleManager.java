@@ -6,10 +6,12 @@ import org.luaj.vm2.LuaValue;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.FileUtils;
@@ -27,9 +29,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
-/**
- * Created by Alex on 26/09/2015.
- */
 public abstract class LuaModuleManager implements GameObserver {
     private Collection<LuaEventListener>        _luaEventListeners = new LinkedBlockingQueue<>();
     private Collection<LuaEventListener>        _luaEventInGameListeners = new LinkedBlockingQueue<>();
@@ -108,7 +107,7 @@ public abstract class LuaModuleManager implements GameObserver {
                 .collect(Collectors.toList());
 
         // TODO: wrong emplacement
-        Application.data.bindings.clear();
+        DependencyInjector.getInstance().getDependency(Data.class).bindings.clear();
 //        _luaApplication.bindings = new LuaTable();
 
         _luaEventListeners.clear();
@@ -174,7 +173,7 @@ public abstract class LuaModuleManager implements GameObserver {
 
         _runAfterList.forEach(Runnable::run);
 
-        Application.data.fix();
+        DependencyInjector.getInstance().getDependency(Data.class).fix();
 
         Log.info("LOAD LUA !!!");
         _luaLoadListeners.forEach(LuaLoadListener::onLoad);
@@ -240,7 +239,7 @@ public abstract class LuaModuleManager implements GameObserver {
         if (optional.isPresent()) {
             Log.debug(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
             try {
-                optional.get().extend(Application.data, module, globals, value, dataDirectory);
+                optional.get().extend(DependencyInjector.getInstance().getDependency(Data.class), module, globals, value, dataDirectory);
             } catch (DataExtendException e) {
                 if (!value.get("name").isnil()) {
                     Log.info("Error during extend " + value.get("name").toString());

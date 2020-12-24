@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -17,6 +18,9 @@ import org.smallbox.faraway.util.Utils;
  */
 @GameObject
 public class CharacterInfoSkillsController extends LuaController {
+
+    @Inject
+    private UIEventManager uiEventManager;
 
     @BindLua
     private UIList listSkills;
@@ -92,7 +96,7 @@ public class CharacterInfoSkillsController extends LuaController {
                 });
 
                 if (skill.available) {
-                    ApplicationClient.uiEventManager.addDropZone(view);
+                    uiEventManager.addDropZone(view);
                 }
 
                 listSkills.addNextView(view);

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
@@ -36,12 +37,11 @@ public class DesktopLauncher {
         if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
             switch (applicationConfig.debug.actionOnLoad) {
                 case LAST_SAVE:
-                    Application.gameManager.loadLastGame();
+                    DependencyInjector.getInstance().getDependency(GameManager.class).loadLastGame();
                     break;
                 case NEW_GAME:
-                    GameFactory factory = Application.gameManager.createGameNew();
-                    factory.setScenario(applicationConfig.debug.scenario);
-                    factory.create();
+                    GameFactory factory = DependencyInjector.getInstance().getDependency(GameFactory.class);
+                    factory.create(applicationConfig.debug.scenario);
                     break;
             }
         }

@@ -4,8 +4,10 @@ import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
+import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
@@ -18,8 +20,8 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void onSave(WorldModule module, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onSave(SQLManager sqlManager, WorldModule module, Game game) {
+        sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
             int floors = game.getInfo().worldFloors;
@@ -112,8 +114,8 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
         });
     }
 
-    public void onLoad(WorldModule worldModule, Game game) {
-        Application.sqlManager.post(db -> {
+    public void onLoad(SQLManager sqlManager, WorldModule worldModule, Game game, Data data) {
+        sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
             int floors = game.getInfo().worldFloors;
@@ -135,12 +137,12 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                         // Ground
                         if (!st.columnNull(3)) {
-                            parcel.setGroundInfo(Application.data.getItemInfo(st.columnString(3)));
+                            parcel.setGroundInfo(data.getItemInfo(st.columnString(3)));
                         }
 
                         // Rock
                         if (!st.columnNull(4)) {
-                            parcel.setRockInfo(Application.data.getItemInfo(st.columnString(4)));
+                            parcel.setRockInfo(data.getItemInfo(st.columnString(4)));
                         }
 
 //                        // Plant
@@ -160,7 +162,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 
                         // Liquid
                         if (!st.columnNull(9)) {
-                            parcel.setLiquidInfo(Application.data.getItemInfo(st.columnString(9)), st.columnDouble(10));
+                            parcel.setLiquidInfo(data.getItemInfo(st.columnString(9)), st.columnDouble(10));
                         }
                     }
                 } finally {

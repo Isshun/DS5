@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.render.layer;
 
 import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
@@ -19,6 +20,9 @@ public class PlantLayer extends BaseLayer {
     @Inject
     private PlantModule plantModule;
 
+    @Inject
+    private SpriteManager spriteManager;
+
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         plantModule.getPlants().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
@@ -30,7 +34,7 @@ public class PlantLayer extends BaseLayer {
 
     private void drawPlant(GDXRenderer renderer, PlantItem plant) {
         renderer.drawOnMap(plant.getParcel(),
-                ApplicationClient.spriteManager.getNewSprite(plant.getGraphic(), getTileForMaturity(plant)));
+                spriteManager.getNewSprite(plant.getGraphic(), getTileForMaturity(plant)));
     }
 
     private int getTileForMaturity(PlantItem plant) {

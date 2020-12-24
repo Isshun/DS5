@@ -3,6 +3,8 @@ package org.smallbox.faraway.util;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.io.File;
@@ -36,14 +38,14 @@ public class Utils {
     }
 
     public static String getDateStr(long time) {
-        int totalHours = (int)(time / Application.gameManager.getGame().getTickPerHour());
-        int totalDays = totalHours / Application.gameManager.getGame().getHourPerDay();
-        return "Day " + String.valueOf(totalDays) + " - " + String.valueOf(totalHours % Application.gameManager.getGame().getHourPerDay()) + "h";
+        int totalHours = (int)(time / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour());
+        int totalDays = totalHours / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getHourPerDay();
+        return "Day " + String.valueOf(totalDays) + " - " + String.valueOf(totalHours % DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getHourPerDay()) + "h";
     }
 
     public static String getTimeStr(long time) {
-        int totalHours = (int)(time / Application.gameManager.getGame().getTickPerHour());
-        return String.valueOf(totalHours % Application.gameManager.getGame().getHourPerDay()) + "h";
+        int totalHours = (int)(time / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour());
+        return String.valueOf(totalHours % DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getHourPerDay()) + "h";
     }
 
     public static double bound(double min, double max, double value) {

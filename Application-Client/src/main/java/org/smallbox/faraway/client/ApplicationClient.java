@@ -15,6 +15,7 @@ import org.smallbox.faraway.core.ApplicationClientListener;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Utils;
 
@@ -25,46 +26,17 @@ import java.util.function.Consumer;
 public class ApplicationClient {
     private static Collection<GameClientObserver>     _observers = new LinkedBlockingQueue<>();
 
-    public static final DependencyInjector      dependencyInjector;
-
-    // Client
-    public static final UIEventManager          uiEventManager;
-    public static final GameEventManager        gameEventManager;
-    public static final ClientLuaModuleManager  luaModuleManager;
-    public static final LuaControllerManager    luaControllerManager;
-    public static final BridgeClientKyro BRIDGE_CLIENT;
-
-    public static final SpriteManager           spriteManager;
-    public static final GDXRenderer             gdxRenderer;
+    private static final DependencyInjector dependencyInjector = DependencyInjector.getInstance();
 
     static {
-
-        Application.clientListener = new ApplicationClientListener() {
-            @Override
-            public void onInitComplete() {
-                LayerManager layerManager = dependencyInjector.getDependency(LayerManager.class);
-                layerManager.getLayers().forEach(BaseLayer::onInitLayer);
-                BRIDGE_CLIENT.register(object -> layerManager.getLayers().forEach(layer -> layer.onUpdate(object)));
-            }
+        Application.clientListener = () -> {
+            LayerManager layerManager = dependencyInjector.getDependency(LayerManager.class);
+            layerManager.getLayers().forEach(BaseLayer::onInitLayer);
         };
 
-        dependencyInjector = DependencyInjector.getInstance();
-
-        uiEventManager = dependencyInjector.create(UIEventManager.class);
-        gameEventManager = dependencyInjector.create(GameEventManager.class);
-        spriteManager = dependencyInjector.create(SpriteManager.class);
-        gdxRenderer = dependencyInjector.create(GDXRenderer.class);
-        luaModuleManager = dependencyInjector.create(ClientLuaModuleManager.class);
-        luaControllerManager = dependencyInjector.create(LuaControllerManager.class);
-        BRIDGE_CLIENT = dependencyInjector.create(BridgeClientKyro.class);
-
         // Application client interface
-        dependencyInjector.setClientInterface(new DependencyInjector.ApplicationClientInterface() {
-            @Override
-            public void onShortcutBinding(String label, int key, Runnable runnable) {
-                dependencyInjector.getDependency(ShortcutManager.class).addBinding(label, key, runnable);
-            }
-        });
+        dependencyInjector.setClientInterface((label, key, runnable) ->
+                dependencyInjector.getDependency(ShortcutManager.class).addBinding(label, key, runnable));
     }
 
     private static boolean                          _isRunning = true;
@@ -89,7 +61,7 @@ public class ApplicationClient {
             return;
         }
 
-        if (Application.gameManager.isLoaded()) {
+        if (dependencyInjector.getDependency(GameManager.class).isLoaded()) {
             GameEvent event = new GameEvent(key);
             ApplicationClient.notify(observer -> observer.onKeyPressWithEvent(event, key));
             ApplicationClient.notify(observer -> observer.onKeyEvent(action, key, modifier));
@@ -122,7 +94,7 @@ public class ApplicationClient {
         }
 
 //        // Lance un evenement clickOnMap si le jeu est lancé
-//        if (Application.gameManager.isLoaded()) {
+//        if (dependencyInjector.getDependency(GameManager.class).isLoaded()) {
 //
 //            if (action == GameEventListener.Action.RELEASED) {
 //                System.out.println("Click on map at pixel: " + x + " x " + y);
@@ -133,7 +105,7 @@ public class ApplicationClient {
 //                    System.out.println("Click on map at parcel: " + parcel.x + " x " + parcel.y);
 //                    Application.notify(observer -> observer.onClickOnParcel(Collections.singletonList(parcel)));
 //                }
-////            Application.gameManager.getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
+////            dependencyInjector.getDependency(GameManager.class).getGame().getInteraction().onMoveEvent(event, action, button, x, y, rightPressed);
 ////            if (ApplicationShortcutManager.onMouseEvent(event, action, button, x, y, rightPressed)) {
 ////                return;
 ////            }

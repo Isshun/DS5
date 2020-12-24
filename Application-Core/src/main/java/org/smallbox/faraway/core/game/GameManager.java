@@ -4,10 +4,7 @@ import com.badlogic.gdx.Input;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.*;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.modules.world.factory.WorldFactory;
@@ -34,15 +31,14 @@ public class GameManager implements GameObserver {
     @Inject
     private ApplicationConfigService applicationConfigService;
 
+    @Inject
+    private Data data;
+
     private Game _game;
 
     public interface GameListener {
         void onGameCreate(Game game);
         void onGameUpdate(Game game);
-    }
-
-    public GameFactory createGameNew() {
-        return new GameFactory();
     }
 
     public void createGame(GameInfo gameInfo, GameListener listener) {
@@ -55,24 +51,20 @@ public class GameManager implements GameObserver {
         }
 
         _game = new Game(gameInfo, applicationConfigService.getConfig());
-        Application.dependencyInjector.destroyGameObjects();
+        DependencyInjector.getInstance().destroyGameObjects();
 
         // For now game is created and register to DI manually because ctor need GameInfo
-        Application.dependencyInjector.register(_game);
-        Application.dependencyInjector.createGameObjects();
+        DependencyInjector.getInstance().register(_game);
+        DependencyInjector.getInstance().createGameObjects();
 
         _game.loadModules();
         _game.loadLayers();
 
-        Application.dependencyInjector.injectGameDependencies();
-        Application.dependencyInjector.callMethodAnnotatedBy(OnGameLayerInit.class);
-        Application.dependencyInjector.callMethodAnnotatedBy(AfterGameLayerInit.class);
+        DependencyInjector.getInstance().injectGameDependencies();
+        DependencyInjector.getInstance().callMethodAnnotatedBy(OnGameLayerInit.class);
+        DependencyInjector.getInstance().callMethodAnnotatedBy(AfterGameLayerInit.class);
 
-        worldFactory.create(
-                Application.data,
-                _game,
-                _game.getModule(WorldModule.class),
-                gameInfo.region);
+        worldFactory.create(data, _game, gameInfo.region);
 
         _game.createModules();
 
@@ -108,11 +100,11 @@ public class GameManager implements GameObserver {
             long time = System.currentTimeMillis();
 
             _game = new Game(gameInfo, applicationConfigService.getConfig());
-            Application.dependencyInjector.register(_game);
+            DependencyInjector.getInstance().register(_game);
 
             _game.loadModules();
 
-            Application.dependencyInjector.injectGameDependencies();
+            DependencyInjector.getInstance().injectGameDependencies();
 
             _game.createModules();
 
@@ -129,12 +121,8 @@ public class GameManager implements GameObserver {
 
                 Application.clientListener.onInitComplete();
 
-                Application.gameServer.write("hello from server 1");
-
                 // Launch background thread
                 _game.launchBackgroundThread(listener);
-
-                Application.gameServer.write("hello from server 2");
 
                 Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
 
@@ -204,10 +192,7 @@ public class GameManager implements GameObserver {
     @GameShortcut(key = Input.Keys.F5)
     public void actionQuickSaveGame() {
         Log.notice("quickSaveGame");
-        gameSaveManager.saveGame(
-                Application.gameManager.getGame(),
-                Application.gameManager.getGame().getInfo(),
-                GameInfo.Type.FAST);
+        gameSaveManager.saveGame(_game, _game.getInfo(), GameInfo.Type.FAST);
     }
 
 }

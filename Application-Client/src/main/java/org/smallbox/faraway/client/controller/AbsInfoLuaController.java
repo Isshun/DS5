@@ -87,9 +87,9 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
             } else {
                 onDisplayMultiple(listSelected);
             }
-            ApplicationClient.dependencyInjector.getDependency(SelectionManager.class).setSelected(listSelected);
+            DependencyInjector.getInstance().getDependency(SelectionManager.class).setSelected(listSelected);
         } else {
-            ApplicationClient.dependencyInjector.getDependency(SelectionManager.class).setSelected(null);
+            DependencyInjector.getInstance().getDependency(SelectionManager.class).setSelected(null);
         }
     }
 

@@ -4,9 +4,12 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
@@ -22,6 +25,9 @@ import java.util.Optional;
  */
 @ApplicationObject
 public class ModuleManager implements GameObserver {
+
+    @Inject
+    private GameManager gameManager;
 
     public interface OnLoadModuleListener {
         void onLoadModule(String message);
@@ -147,7 +153,7 @@ public class ModuleManager implements GameObserver {
         }
 
         _applicationModules.forEach(Application::addObserver);
-        _applicationModules.forEach(Application.dependencyInjector::register);
+        _applicationModules.forEach(DependencyInjector.getInstance()::register);
         _applicationModules.forEach(ModuleBase::create);
     }
 
@@ -170,8 +176,8 @@ public class ModuleManager implements GameObserver {
             return optionalApplicationModule.get();
         }
 
-        if (Application.gameManager != null && Application.gameManager.getGame() != null) {
-            Optional<T> optionalGameModule = (Optional<T>) Application.gameManager.getGame().getModules().stream().filter(cls::isInstance).findFirst();
+        if (gameManager != null && gameManager.getGame() != null) {
+            Optional<T> optionalGameModule = (Optional<T>) gameManager.getGame().getModules().stream().filter(cls::isInstance).findFirst();
             if (optionalGameModule.isPresent()) {
                 return optionalGameModule.get();
             }

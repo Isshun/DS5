@@ -12,6 +12,8 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -53,6 +55,9 @@ public class SpriteManager {
 
     private int _spriteCount;
     private AssetManager _manager;
+    
+    @Inject
+    private Data data;
 
     public SpriteManager() {
         _icons = new HashMap<>();
@@ -95,8 +100,8 @@ public class SpriteManager {
 //                .filter(file -> file.getName().endsWith(".png"))
 //                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
 
-        if (CollectionUtils.isNotEmpty(Application.data.getItems())) {
-            Application.data.getItems().forEach(itemInfo -> {
+        if (CollectionUtils.isNotEmpty(data.getItems())) {
+            data.getItems().forEach(itemInfo -> {
                 if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
                     itemInfo.graphics.forEach(graphicInfo -> {
                         _manager.load("data" + graphicInfo.path, Texture.class);

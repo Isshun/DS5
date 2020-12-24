@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by 300206 on 14/09/2017.
- */
 @GameObject
 public class GameTaskManager {
 

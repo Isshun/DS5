@@ -12,28 +12,28 @@ import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 
 import java.io.File;
 
-/**
- * Created by Alex on 29/11/2016.
- */
 @ApplicationObject
 public class ServerLuaModuleManager extends LuaModuleManager {
 
     @Inject
     private ApplicationConfigService applicationConfigService;
 
+    @Inject
+    private Data data;
+
     @Override
     protected Globals createGlobals(ModuleBase module, File dataDirectory) {
-
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
         globals.get("main").call(
                 CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel(), applicationConfigService.getScreenInfo())),
                 CoerceJavaToLua.coerce((LuaExtendInterface) values -> {}),
-                CoerceJavaToLua.coerce(new LuaDataModel() {
+                CoerceJavaToLua.coerce(new LuaDataModel(data) {
                     @Override
                     public void extend(LuaValue values) {
 //                        Log.debug("Load lua data: " + values.get("name").toString());
@@ -46,6 +46,7 @@ public class ServerLuaModuleManager extends LuaModuleManager {
                         }
                     }
                 }));
+
         return globals;
     }
 }

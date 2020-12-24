@@ -1,6 +1,7 @@
 package org.smallbox.faraway.modules.building;
 
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
@@ -47,7 +48,7 @@ public class BasicBuildJob extends JobModel {
                     return JobTaskReturn.TASK_CONTINUE;
                 }
 
-                Application.moduleManager.getModule(PathManager.class).refreshConnections(job.getJobParcel());
+                DependencyInjector.getInstance().getDependency(PathManager.class).refreshConnections(job.getJobParcel());
 
                 return JobTaskReturn.TASK_COMPLETE;
             });

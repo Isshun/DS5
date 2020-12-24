@@ -19,9 +19,6 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 
-/**
- * Created by Alex on 04/06/2015.
- */
 @ApplicationObject
 public class GDXRenderer {
     private static final Color TEXT_COLOR = Color.WHITE;

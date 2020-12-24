@@ -8,16 +8,23 @@ import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.GameInfo;
+import org.smallbox.faraway.core.game.GameManager;
 
 @ApplicationObject
 public class MenuMainController extends LuaController {
 
     @Inject
+    private GameManager gameManager;
+
+    @Inject
     private MenuSettingsController menuSettingsController;
+
+    public MenuMainController() {
+    }
 
     @BindLuaAction
     private void onActionNewGame(View view) {
-        Application.gameManager.createGame(GameInfo.create("base.planet.corrin", "mountain", 14, 20, 2), null);
+        gameManager.createGame(GameInfo.create("base.planet.corrin", "mountain", 14, 20, 2), null);
     }
 
     @BindLuaAction
@@ -27,7 +34,7 @@ public class MenuMainController extends LuaController {
 
     @BindLuaAction
     private void onActionContinue(View view) {
-        Application.gameManager.loadLastGame();
+        gameManager.loadLastGame();
     }
 
     @BindLuaAction

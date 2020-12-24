@@ -31,7 +31,7 @@ public class UIImage extends View {
     }
 
     public UIImage setImage(GraphicInfo graphicInfo) {
-        _sprite = ApplicationClient.spriteManager.getNewSprite(graphicInfo);
+        _sprite = spriteManager.getNewSprite(graphicInfo);
         _dirty = true;
         return this;
     }
@@ -69,7 +69,7 @@ public class UIImage extends View {
 
                 if (_path != null) {
                     try {
-                        _sprite = ApplicationClient.spriteManager.getIcon(_path);
+                        _sprite = spriteManager.getIcon(_path);
                         _sprite.setRegion(0, 0, _originWidth, _originHeight);
                         _sprite.setSize(_originWidth, _originHeight);
                         _sprite.setScale(renderer.getUiScale(), renderer.getUiScale());

@@ -102,9 +102,6 @@ public class CharacterModule extends GenericGameModule<CharacterModel, Character
             character.action(hourInterval);
         });
 
-        modelList.forEach(character -> {
-            Application.gameServer.serialize("UPDATE", "CHARACTER", character._id, character);
-        });
     }
 
     /**

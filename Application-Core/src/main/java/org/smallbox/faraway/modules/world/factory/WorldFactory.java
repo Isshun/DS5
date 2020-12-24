@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.world.factory;
 import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -21,13 +22,16 @@ import java.util.List;
 @ApplicationObject
 public class WorldFactory extends ApplicationModule implements IWorldFactory {
 
+    @Inject
+    private WorldModule worldModule;
+
     private ParcelModel[][][]   _parcels;
     private int                 _floors;
     private int                 _width;
     private int                 _height;
 
     @Override
-    public void create(Data data, Game game, WorldModule worldModule, RegionInfo regionInfo) {
+    public void create(Data data, Game game, RegionInfo regionInfo) {
         ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
         ItemInfo defaultGroundInfo = data.getItemInfo("base.ground.grass");
 

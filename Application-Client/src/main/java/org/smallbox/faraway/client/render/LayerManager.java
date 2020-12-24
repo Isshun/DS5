@@ -10,6 +10,7 @@ import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
@@ -38,7 +39,7 @@ public class LayerManager implements GameClientObserver {
     private GameManager gameManager;
 
     @Inject
-    private GDXRenderer renderer;
+    private GDXRenderer gdxRenderer;
 
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
@@ -67,7 +68,7 @@ public class LayerManager implements GameClientObserver {
     @OnGameLayerInit
     public void onGameInitLayers() {
         // Find GameLayer annotated class
-        _layers = Application.dependencyInjector.getSubTypesOf(BaseLayer.class).stream()
+        _layers = DependencyInjector.getInstance().getSubTypesOf(BaseLayer.class).stream()
 //                new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
 //                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
 //                .map(cls -> {
@@ -84,7 +85,7 @@ public class LayerManager implements GameClientObserver {
 
         // Create viewport
         //_viewport.setPosition(0, 0, gameManager.getGame().getInfo().groundFloor);
-        //ApplicationClient.dependencyInjector.register(_viewport);
+        //DependencyInjector.getInstance().register(_viewport);
     }
 
     @Override
@@ -98,11 +99,11 @@ public class LayerManager implements GameClientObserver {
     public void render(Game game) {
 
         // Draw
-        if (Application.gameManager.isRunning()) {
+        if (gameManager.isRunning()) {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        layerManager.draw(ApplicationClient.gdxRenderer, _viewport, _animationProgress, _frame);
+        layerManager.draw(gdxRenderer, _viewport, _animationProgress, _frame);
 
         // Move viewport
         if (game.isRunning()) {
@@ -141,7 +142,7 @@ public class LayerManager implements GameClientObserver {
         if (render.isLoaded()) {
             render.unload();
         } else {
-            render.gameStart(Application.gameManager.getGame());
+            render.gameStart(gameManager.getGame());
         }
     }
 

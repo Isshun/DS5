@@ -12,6 +12,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.game.GameManager;
 
 import java.util.Collection;
 import java.util.Map;
@@ -42,6 +43,9 @@ public class UIEventManager implements EventManager {
 
     @Inject
     private UIManager uiManager;
+
+    @Inject
+    private GameManager gameManager;
 
     public UIEventManager() {
         _onDragListeners = new ConcurrentSkipListMap<>();
@@ -154,7 +158,7 @@ public class UIEventManager implements EventManager {
         }
 
         // Click on map
-        if (Application.gameManager.isRunning()) {
+        if (gameManager.isRunning()) {
             selectionManager.select(
                     layerManager.getViewport().getWorldPosX(inputManager.getTouchDownX()),
                     layerManager.getViewport().getWorldPosY(inputManager.getTouchDownY()),
@@ -188,7 +192,7 @@ public class UIEventManager implements EventManager {
 
         // On drag drop
         if (button == Input.Buttons.LEFT && _dragListener != null) {
-            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
+            Map.Entry<View, Object> dropViewEntry = getDropViews().entrySet().stream()
                     .filter(entry -> entry.getKey().contains(x, y))
                     .findAny().orElse(null);
             if (dropViewEntry != null) {
@@ -204,19 +208,19 @@ public class UIEventManager implements EventManager {
             selectionManager.setSelectionListener(null);
         }
 
-        if (button == Input.Buttons.LEFT && ApplicationClient.uiEventManager.click(x, y)) {
+        if (button == Input.Buttons.LEFT && click(x, y)) {
             return true;
         }
 
-        if (button == Input.Buttons.RIGHT && ApplicationClient.uiEventManager.rightClick(x, y)) {
+        if (button == Input.Buttons.RIGHT && rightClick(x, y)) {
             return true;
         }
 
-        if (button == Input.Buttons.FORWARD && ApplicationClient.uiEventManager.mouseWheelUp(x, y)) {
+        if (button == Input.Buttons.FORWARD && mouseWheelUp(x, y)) {
             return true;
         }
 
-        if (button == Input.Buttons.BACK && ApplicationClient.uiEventManager.mouseWheelDown(x, y)) {
+        if (button == Input.Buttons.BACK && mouseWheelDown(x, y)) {
             return true;
         }
 
@@ -229,7 +233,7 @@ public class UIEventManager implements EventManager {
 
         // On drag hover
         if (_dragListener != null) {
-            Map.Entry<View, Object> dropViewEntry = ApplicationClient.uiEventManager.getDropViews().entrySet().stream()
+            Map.Entry<View, Object> dropViewEntry = getDropViews().entrySet().stream()
                     .filter(entry -> entry.getKey().contains(x, y))
                     .findAny().orElse(null);
             if (dropViewEntry != null) {
