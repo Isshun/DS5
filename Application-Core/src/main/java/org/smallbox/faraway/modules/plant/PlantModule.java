@@ -4,6 +4,7 @@ import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -46,8 +47,8 @@ public class PlantModule extends GameModule {
 
     private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();
 
-    @Override
-    public void onGameCreate(Game game) {
+    @OnInit
+    public void init() {
         areaModule.addAreaClass(GardenArea.class);
     }
 

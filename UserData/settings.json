@@ -1,6 +1,6 @@
 {
   "debug": {
-    "actionOnLoad": "NEW_GAME",
+    "actionOnLoad": "",
     "scenario": "data/scenarios/test1.json",
     "log": true,
     "logFontSize": 16,
@@ -19,7 +19,7 @@
     "ticksPerHour": [-1, 5000, 2000, 1000, 100, 50, 20, 10, 1],
     "tickInterval": 10,
     "startGameTime": 7,
-    "startSpeed": 1,
+    "startSpeed": 3,
     "roofMaxDistance": 6,
     "inventoryMaxQuantity": 100,
     "storageMaxQuantity": 100,

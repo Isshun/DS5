@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.storing;
 
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -41,8 +42,8 @@ public class StoringModule extends GameModule {
 
     private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
 
-    @Override
-    public void onGameCreate(Game game) {
+    @OnInit
+    public void init() {
         areaModule.addAreaClass(StorageArea.class);
     }
 

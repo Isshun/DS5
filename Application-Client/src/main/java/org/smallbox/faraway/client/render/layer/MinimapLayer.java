@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.client.ApplicationClient;
+import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -21,6 +20,8 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -31,20 +32,18 @@ public class MinimapLayer extends BaseLayer {
     private static final int    COLOR_ROCK = 0x60442dff;
     private static final int    COLOR_PLANT = 0x9bcd4dff;
     private static final int    COLOR_STRUCTURE = 0x333333ff;
+    private static final Color  COLOR_ITEM = new Color(0xff3333ff);
     private static final Color  COLOR_CHARACTER = new Color(0x3c59ffff);
     private static final Color  COLOR_VIEW = new Color(0x349394ff);
     private static final Color  COLOR_WATER = new Color(0x006d7c1d);
-
-    private static final int    FRAME_WIDTH = 352;
-    private static final int    FRAME_HEIGHT = 220;
 
     private int                         _mainPosX;
     private int                         _mainPosY;
     private int                         _floor;
     private Sprite                      _spriteMap;
     private View                        _panelMain;
-    private int                         _width;
-    private int                         _height;
+    private int gameWidth;
+    private int gameHeight;
     private boolean                     _dirty;
     private Pixmap                      _pixmap;
 
@@ -58,26 +57,41 @@ public class MinimapLayer extends BaseLayer {
     private CharacterModule characterModule;
 
     @Inject
+    private ItemModule itemModule;
+
+    @Inject
+    private ConsumableModule consumableModule;
+
+    @Inject
     private ApplicationConfigService applicationConfigService;
 
     @Inject
     private UIManager uiManager;
 
+    @Inject
+    private Viewport viewport;
+
+    @Inject
+    private MainPanelController mainPanelController;
+
+    private int miniMapWidth;
+    private int miniMapHeight;
+    private float ratioX;
+    private float ratioY;
+
     @Override
     public void onGameStart(Game game) {
-        _mainPosX = (int) (Gdx.graphics.getWidth() - FRAME_WIDTH * applicationConfigService.getConfig().uiScale - 10 * applicationConfigService.getConfig().uiScale);
-        _mainPosY = (int) (84 * applicationConfigService.getConfig().uiScale);
+        gameWidth = game.getInfo().worldWidth;
+        gameHeight = game.getInfo().worldHeight;
 
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
+        miniMapWidth = (int) (mainPanelController.getMapContainer().getWidth() * applicationConfigService.getConfig().uiScale);
+        miniMapHeight = (int) (mainPanelController.getMapContainer().getHeight() * applicationConfigService.getConfig().uiScale);
 
-        _pixmap = new Pixmap(_width, _height, Pixmap.Format.RGB888);
+        ratioX = ((float)miniMapWidth / gameWidth);
+        ratioY = ((float)miniMapHeight / gameHeight);
+
+        _pixmap = new Pixmap(gameWidth, gameHeight, Pixmap.Format.RGB888);
         _floor = WorldHelper.getCurrentFloor();
-    }
-
-    @Override
-    public void onReloadUI() {
-        _panelMain = uiManager.findById("base.ui.right_panel.content");
     }
 
     @Override
@@ -86,58 +100,61 @@ public class MinimapLayer extends BaseLayer {
         _dirty = true;
     }
 
-    // TODO
-//    @Override
-//    public void onStructureComplete(StructureItem structure) {
-//        _dirty = true;
-//    }
-//
-//    @Override
-//    public void onItemComplete(UsableItem item) {
-//        _dirty = true;
-//    }
-
     @Override
     public void onRemoveRock(ParcelModel parcel) {
         _dirty = true;
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        if (_panelMain != null && _panelMain.isVisible()) {
-            int width = (int) (FRAME_WIDTH * applicationConfigService.getConfig().uiScale);
-            int height = (int) (FRAME_HEIGHT * applicationConfigService.getConfig().uiScale);
+        if (mainPanelController.getRootView().isVisible()) {
 
             if (_dirty || _spriteMap == null) {
                 _dirty = false;
-                createMap(width, height);
+                createMap();
             }
 
             if (_spriteMap != null) {
                 renderer.draw(_spriteMap);
             }
 
-            float ratioX = ((float)width / _width);
-            float ratioY = ((float)height / _height);
-            int x = _mainPosX + (int)((Math.min(_width-38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
-            int y = _mainPosY + (int)((Math.min(_height-32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
-            renderer.drawPixel(x, y, (int) (38 * ratioX), 1, COLOR_VIEW);
-            renderer.drawPixel(x, y, 1, (int) (32 * ratioY), COLOR_VIEW);
-            renderer.drawPixel(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1, COLOR_VIEW);
-            renderer.drawPixel((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1, COLOR_VIEW);
-
-            characterModule.getCharacters().stream()
-                    .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
-                    .forEach(character -> renderer.drawPixel((int) (_mainPosX + (character.getParcel().x * ratioX)), (int) (_mainPosY + (character.getParcel().y * ratioY)), 3, 3, COLOR_CHARACTER
-                    ));
+            drawViewport(renderer);
+            drawCharacters(renderer);
         }
     }
 
-    private void createMap(int width, int height) {
+    private void drawViewport(GDXRenderer renderer) {
+        int x = _mainPosX + (int)((Math.min(gameWidth -38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
+        int y = _mainPosY + (int)((Math.min(gameHeight -32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
+        renderer.drawPixel(x, y, (int) (38 * ratioX), 1, COLOR_VIEW);
+        renderer.drawPixel(x, y, 1, (int) (32 * ratioY), COLOR_VIEW);
+        renderer.drawPixel(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1, COLOR_VIEW);
+        renderer.drawPixel((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1, COLOR_VIEW);
+    }
+
+    private void drawCharacters(GDXRenderer renderer) {
+        characterModule.getCharacters().stream()
+                .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
+                .forEach(character -> renderer.drawPixel(
+                        (int) (_mainPosX + (character.getParcel().x * ratioX)),
+                        (int) (_mainPosY + (character.getParcel().y * ratioY)),
+                        3,
+                        3,
+                        COLOR_CHARACTER));
+    }
+
+    private void createMap() {
         if (Application.gameManager.isLoaded()) {
 
+            float scaleX = (float)miniMapWidth / gameWidth;
+            float scaleY = (float)miniMapHeight / gameHeight;
+            float scale = Math.min(scaleX, scaleY);
+
+            int displayWidth = (int)(gameWidth * scale);
+            int displayHeight = (int)(gameHeight * scale);
+
             ParcelModel[][][] parcels = worldModule.getParcels();
-            for (int x = 0; x < _width; x++) {
-                for (int y = 0; y < _height; y++) {
+            for (int x = 0; x < gameWidth; x++) {
+                for (int y = 0; y < gameHeight; y++) {
                     if (parcels[x][y][_floor].hasItem(StructureItem.class)) {
                         _pixmap.drawPixel(x, y, COLOR_STRUCTURE);
                     } else if (plantModule.getPlant(parcels[x][y][_floor]) != null) {
@@ -155,11 +172,13 @@ public class MinimapLayer extends BaseLayer {
             }
 
             _spriteMap = new Sprite(new Texture(_pixmap, Pixmap.Format.RGB888, false));
-            _spriteMap.setSize(_width, _height);
-            _spriteMap.setRegion(0, 0, _width, _height);
+            _spriteMap.setSize(gameWidth, gameHeight);
+            _spriteMap.setRegion(0, 0, gameWidth, gameHeight);
             _spriteMap.flip(false, true);
-            _spriteMap.setScale((float)width / _width, (float)height / _height);
-            _spriteMap.setPosition(_mainPosX, _mainPosY);
+            _spriteMap.setScale(scale, scale);
+            _spriteMap.setPosition(
+                    mainPanelController.getMapContainer().getFinalX() + miniMapWidth / 2f - displayWidth / 2f,
+                    mainPanelController.getMapContainer().getFinalY() + miniMapHeight / 2f - displayHeight / 2f);
             _spriteMap.setOrigin(0, 0);
         }
     }

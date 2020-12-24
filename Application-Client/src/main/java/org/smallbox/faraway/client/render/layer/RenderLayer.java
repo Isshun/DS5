@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
 public class RenderLayer {
     private final int   _x;
@@ -128,6 +127,8 @@ public class RenderLayer {
         int posY = (int) ((_y + viewport.getPosY()) * viewport.getScale());
         int width = (int) (_width * viewport.getScale());
         int height = (int) (_height * viewport.getScale());
+
+        // TODO: take right panel in consideration
         return (posX < 1500 && posY < 1200 && posX + width > 0 && posY + height > 0);
     }
 }

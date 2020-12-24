@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.ui;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;

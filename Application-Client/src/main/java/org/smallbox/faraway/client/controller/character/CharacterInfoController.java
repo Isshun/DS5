@@ -6,18 +6,18 @@ import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
+import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -54,6 +54,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     private CharacterInfoSkillsController characterInfoSkillsController;
 
     @BindLua private UILabel lbName;
+    @BindLua private UILabel lbPosition;
 
     @BindLua private View bgStatus;
     @BindLua private View bgInventory;
@@ -61,6 +62,8 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     @BindLua private View bgHealth;
     @BindLua private View bgSkills;
     @BindLua private View bgTimetable;
+
+    private CharacterModel character;
 
     @Override
     public void onReloadUI() {
@@ -74,6 +77,8 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @Override
     protected void onDisplayUnique(CharacterModel character) {
+        this.character = character;
+
         lbName.setText(character.getName());
 
         // Info
@@ -141,7 +146,13 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @Override
     public void onControllerUpdate() {
+        if (Objects.nonNull(character)) {
 
+            if (Objects.nonNull(character.getParcel())) {
+                lbPosition.setText(character.getParcel().x + "x" + character.getParcel().y + "x" + character.getParcel().z);
+            }
+
+        }
     }
 
     @GameShortcut(key = Input.Keys.TAB)

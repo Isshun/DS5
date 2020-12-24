@@ -1,10 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
 
 /**
  * Created by Alex on 25/04/2016.

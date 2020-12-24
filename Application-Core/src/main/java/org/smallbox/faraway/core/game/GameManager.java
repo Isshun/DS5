@@ -45,10 +45,6 @@ public class GameManager implements GameObserver {
         return new GameFactory();
     }
 
-    public void createGame(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors, GameListener listener) {
-        createGame(GameInfo.create(planetName, regionName, worldWidth, worldHeight, worldFloors), listener);
-    }
-
     public void createGame(GameInfo gameInfo, GameListener listener) {
         long time = System.currentTimeMillis();
 

@@ -64,30 +64,30 @@ public abstract class CharacterModel extends MovableModel {
     /**
      * Déplace le personnage à la position demandée
      *
-     * @param parcel Destination
+     * @param toParcel Destination
      * @return True si le personnage est déjà à la position voulue
      */
-    public boolean moveTo(ParcelModel parcel) {
-        return moveTo(parcel, null);
+    public boolean moveTo(ParcelModel toParcel) {
+        return moveTo(toParcel, null);
     }
 
-    public boolean moveTo(ParcelModel parcel, MoveListener<CharacterModel> listener) {
-        assert parcel != null;
+    public boolean moveTo(ParcelModel toParcel, MoveListener<CharacterModel> listener) {
+        assert toParcel != null;
 
         // Déjà entrain de se déplacer vers la postion
-        if (_path != null && _path.getLastParcel() == parcel) {
+        if (_path != null && _path.getLastParcel() == toParcel) {
             return false;
         }
 
         // Déjà à la position désirée
-        if (_path == null && parcel == _parcel) {
+        if (_path == null && toParcel == _parcel) {
             if (listener != null) {
                 listener.onReach(this);
             }
             return true;
         }
 
-        Log.info("Move character to " + parcel.x + "x" + parcel.y);
+        Log.info("Move character to " + toParcel.x + "x" + toParcel.y);
 
         if (_moveListener != null) {
             Log.debug("[" + getName() + "] Cancel previous move listener");
@@ -95,7 +95,7 @@ public abstract class CharacterModel extends MovableModel {
             _moveListener = null;
         }
 
-        _path = Application.dependencyInjector.getDependency(PathManager.class).getPath(_parcel, parcel, false, false);
+        _path = Application.dependencyInjector.getDependency(PathManager.class).getPath(_parcel, toParcel, false, false);
         _moveProgress2 = 0;
         if (_path != null) {
             _moveListener = listener;

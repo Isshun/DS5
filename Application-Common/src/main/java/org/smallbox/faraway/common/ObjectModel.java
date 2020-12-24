@@ -14,4 +14,9 @@ public class ObjectModel {
     public ObjectModel(int id) {
         _id = UUIDUtils.getUUID(id);
     }
+
+    public int getId() {
+        return _id;
+    }
+
 }

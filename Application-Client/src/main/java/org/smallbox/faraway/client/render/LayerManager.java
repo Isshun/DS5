@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.render;
 
 import com.badlogic.gdx.Input;
-import org.reflections.Reflections;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.manager.InputManager;
@@ -9,19 +8,15 @@ import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.util.Log;
 
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @ApplicationObject
@@ -41,6 +36,9 @@ public class LayerManager implements GameClientObserver {
 
     @Inject
     private GameManager gameManager;
+
+    @Inject
+    private GDXRenderer renderer;
 
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
@@ -85,7 +83,7 @@ public class LayerManager implements GameClientObserver {
                 .collect(Collectors.toList());
 
         // Create viewport
-        _viewport.setPosition(0, 0, gameManager.getGame().getInfo().groundFloor);
+        //_viewport.setPosition(0, 0, gameManager.getGame().getInfo().groundFloor);
         //ApplicationClient.dependencyInjector.register(_viewport);
     }
 

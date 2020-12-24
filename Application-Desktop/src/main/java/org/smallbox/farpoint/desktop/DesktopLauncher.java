@@ -1,6 +1,7 @@
 package main.java.org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.GDXApplication;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -32,15 +33,17 @@ public class DesktopLauncher {
     }
 
     private static void getGameCallback(ApplicationConfig applicationConfig) {
-        switch (applicationConfig.debug.actionOnLoad) {
-            case LAST_SAVE:
-                Application.gameManager.loadLastGame();
-                break;
-            case NEW_GAME:
-                GameFactory factory = Application.gameManager.createGameNew();
-                factory.setScenario(applicationConfig.debug.scenario);
-                factory.create();
-                break;
+        if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
+            switch (applicationConfig.debug.actionOnLoad) {
+                case LAST_SAVE:
+                    Application.gameManager.loadLastGame();
+                    break;
+                case NEW_GAME:
+                    GameFactory factory = Application.gameManager.createGameNew();
+                    factory.setScenario(applicationConfig.debug.scenario);
+                    factory.create();
+                    break;
+            }
         }
     }
 

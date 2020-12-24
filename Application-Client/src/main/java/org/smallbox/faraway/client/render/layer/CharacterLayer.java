@@ -11,9 +11,10 @@ import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -68,30 +69,32 @@ public class CharacterLayer extends BaseLayer {
     }
 
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
-        int viewPortX = viewport.getPosX();
-        int viewPortY = viewport.getPosY();
-        CharacterPositionCommon position = character.position;
+        if (character.getParcel().z == viewport.getFloor()) {
+            int viewPortX = viewport.getPosX();
+            int viewPortY = viewport.getPosY();
+            CharacterPositionCommon position = character.position;
 
-        if (position.pathLength > 0 && position._curve != null) {
-            Vector2 out = new Vector2();
-            position.myCatmull.valueAt(out, (float) position._moveProgress2 / position.pathLength);
-            doDraw(renderer, character,
-                    (int) (viewPortX + out.x * 32),
-                    (int) (viewPortY + out.y * 32));
-        } else {
-            doDraw(renderer, character,
-                    viewPortX + position.parcelX * 32,
-                    viewPortY + position.parcelY * 32);
+            if (position.pathLength > 0 && position._curve != null) {
+                Vector2 out = new Vector2();
+                position.myCatmull.valueAt(out, (float) position._moveProgress2 / position.pathLength);
+                doDraw(renderer, character,
+                        (int) (viewPortX + out.x * 32),
+                        (int) (viewPortY + out.y * 32));
+            } else {
+                doDraw(renderer, character,
+                        viewPortX + position.parcelX * 32,
+                        viewPortY + position.parcelY * 32);
+            }
         }
     }
 
     private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
 //        if (positionCommon.isAlive()) {
-            drawCharacter(renderer, character, posX, posY);
-            drawLabel(renderer, character, posX, posY);
-            drawSelection(renderer, spriteManager, character, posX, posY, 32, 36, 0, 0);
-            drawInventory(renderer, character, posX, posY);
-            drawJob(renderer, character, posX, posY);
+        drawCharacter(renderer, character, posX, posY);
+        drawLabel(renderer, character, posX, posY);
+        drawSelection(renderer, spriteManager, character, posX, posY, 32, 36, 0, 0);
+        drawInventory(renderer, character, posX, posY);
+        drawJob(renderer, character, posX, posY);
 //        }
 //
 //        else {

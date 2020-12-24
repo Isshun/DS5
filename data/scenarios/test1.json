@@ -1,9 +1,9 @@
 {
   "planet": "base.planet.corrin",
   "region": "mountain",
-  "width": 14,
-  "height": 20,
-  "level": 2,
+  "width": 150,
+  "height": 150,
+  "level": 16,
   "characters": [
     {"x": 10, "y": 10, "z": 1}
   ],
@@ -16,6 +16,16 @@
   ],
   "items": [
     {"x": 0, "y": 2, "z": 1, "name": "base.item.bed.wood"}
+  ],
+  "plants": [
+    {"x": 10, "y": 10, "z": 1, "name": "base.plant.carrot"},
+    {"x": 11, "y": 10, "z": 1, "name": "base.plant.carrot"},
+    {"x": 12, "y": 10, "z": 1, "name": "base.plant.carrot"}
+  ],
+  "resources": [
+    {"x": 10, "y": 12, "z": 1, "name": "base.granite"},
+    {"x": 11, "y": 12, "z": 1, "name": "base.granite"},
+    {"x": 12, "y": 12, "z": 1, "name": "base.granite"}
   ],
   "areas": [
     {"type": "org.smallbox.faraway.modules.consumable.StorageArea", "parcels": [

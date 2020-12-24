@@ -1,21 +1,20 @@
 package org.smallbox.faraway.client.controller;
 
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.controller.area.AreaPanelController;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
+import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.game.Game;
 
 /**
@@ -39,11 +38,20 @@ public class MainPanelController extends LuaController {
     @Inject
     private LayerManager layerManager;
 
+    @Inject
+    private CrewController crewController;
+
+    @Inject
+    private AreaPanelController areaPanelController;
+
+    @Inject
+    private BuildController buildController;
+
+    @Inject
+    private JobController jobController;
+
     @BindLua
     private UIGrid mainGrid;
-
-//    @BindLua
-//    private UIFrame subController;
 
     @BindLua
     private UILabel lbPlanet;
@@ -51,11 +59,30 @@ public class MainPanelController extends LuaController {
     @BindLua
     private UILabel lbFloor;
 
+    @BindLua
+    private View btCrew;
+
+    @BindLua
+    private View btBuild;
+
+    @BindLua
+    private View btArea;
+
+    @BindLua
+    private View btJobs;
+
+    @BindLua
+    private View mapContainer;
+
     private LuaController _currentPaneController;
 
     @Override
     public void onReloadUI() {
         selectionManager.registerSelectionPre(this);
+        btCrew.setOnClickListener((x, y) -> crewController.getRootView().setVisible(true));
+        btArea.setOnClickListener((x, y) -> areaPanelController.getRootView().setVisible(true));
+        btBuild.setOnClickListener((x, y) -> buildController.getRootView().setVisible(true));
+        btJobs.setOnClickListener((x, y) -> jobController.getRootView().setVisible(true));
     }
 
     @Override
@@ -104,4 +131,7 @@ public class MainPanelController extends LuaController {
                 }));
     }
 
+    public View getMapContainer() {
+        return mapContainer;
+    }
 }

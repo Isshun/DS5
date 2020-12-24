@@ -2,7 +2,6 @@ package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
@@ -87,7 +86,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
         // adapté pour le personnage.
         // Par exemple: si le personnage vient de terminer un craft le StorageModule va lancer un BasicStoreJob sur le
         // consomable nouvellement créé, job qui aura des chances d'être assigné à ce personnage car étant le plus proche.
-        if (_characterInnactiveDuration.getOrDefault(character, 0) > 10) {
+        if (_characterInnactiveDuration.getOrDefault(character, 0) > 2) {
             _characterInnactiveDuration.put(character, 0);
 
             List<JobModel> availableJobs = _jobs.stream()
@@ -206,6 +205,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public ApplicationConfig.ApplicationConfigGameInfo getGameConfig() {
         return applicationConfigService.getGameInfo();
+    }
+
+    public JobModel getJob(int jobId) {
+        return _jobs.stream().filter(jobModel -> jobModel.getId() == jobId).findFirst().orElse(null);
     }
 
     public interface JobInitCallback<T> {

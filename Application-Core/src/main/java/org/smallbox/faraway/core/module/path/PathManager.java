@@ -1,10 +1,11 @@
 package org.smallbox.faraway.core.module.path;
 
+import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.ai.pfa.DefaultGraphPath;
 import com.badlogic.gdx.ai.pfa.GraphPath;
-import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.ai.pfa.SmoothableGraphPath;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
+import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
@@ -12,6 +13,7 @@ import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.path.parcel.ParcelGraph;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -33,9 +35,8 @@ public class PathManager extends GameModule {
     final private ArrayList<Runnable>           _runnable;
     final private ExecutorService               _threadPool;
     private IndexedAStarPathFinder<ParcelModel> _finder;
-    private Heuristic<ParcelModel>              _heuristic;
     private Map<Long, PathModel>                _cache;
-    private IndexedGraph                        _graph;
+    private ParcelGraph parcelGraph;
 
     public PathManager() {
         _threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
@@ -61,50 +62,51 @@ public class PathManager extends GameModule {
     }
 
     public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel, boolean horizontalApprox, boolean verticalApprox) {
-        assert fromParcel != null;
-        assert toParcel != null;
-
-        PathModel bestPath = null;
-
-        // Exact parcel
-        if (toParcel.isWalkable()) {
-            PathModel path = getPath(fromParcel, toParcel);
-            if (path != null) {
-                bestPath = path;
-            }
-        }
-
-        // Top / bottom / right / left parcel
-        if (bestPath == null && horizontalApprox) {
-            ParcelModel parcel = null;
-            PathModel path = null;
-            if ((parcel = WorldHelper.getParcel(toParcel.x - 1, toParcel.y, toParcel.z)) != null && parcel.isWalkable())
-                if ((path = getPath(fromParcel, parcel)) != null)
-                    bestPath = path;
-            if ((parcel = WorldHelper.getParcel(toParcel.x + 1, toParcel.y, toParcel.z)) != null && parcel.isWalkable())
-                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
-                    bestPath = path;
-            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y - 1, toParcel.z)) != null && parcel.isWalkable())
-                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
-                    bestPath = path;
-            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y + 1, toParcel.z)) != null && parcel.isWalkable())
-                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
-                    bestPath = path;
-        }
-
-        // Upper / lower parcel
-        if (bestPath == null && verticalApprox) {
-            ParcelModel parcel = null;
-            PathModel path = null;
-            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y, toParcel.z - 1)) != null && parcel.isWalkable())
-                if ((path = getPath(fromParcel, parcel)) != null)
-                    bestPath = path;
-            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y, toParcel.z + 1)) != null && parcel.isWalkable())
-                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
-                    bestPath = path;
-        }
-
-        return bestPath;
+        return getPath(fromParcel, toParcel);
+//        assert fromParcel != null;
+//        assert toParcel != null;
+//
+//        PathModel bestPath = null;
+//
+//        // Exact parcel
+//        if (toParcel.isWalkable()) {
+//            PathModel path = getPath(fromParcel, toParcel);
+//            if (path != null) {
+//                bestPath = path;
+//            }
+//        }
+//
+//        // Top / bottom / right / left parcel
+//        if (bestPath == null && horizontalApprox) {
+//            ParcelModel parcel = null;
+//            PathModel path = null;
+//            if ((parcel = WorldHelper.getParcel(toParcel.x - 1, toParcel.y, toParcel.z)) != null && parcel.isWalkable())
+//                if ((path = getPath(fromParcel, parcel)) != null)
+//                    bestPath = path;
+//            if ((parcel = WorldHelper.getParcel(toParcel.x + 1, toParcel.y, toParcel.z)) != null && parcel.isWalkable())
+//                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+//                    bestPath = path;
+//            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y - 1, toParcel.z)) != null && parcel.isWalkable())
+//                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+//                    bestPath = path;
+//            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y + 1, toParcel.z)) != null && parcel.isWalkable())
+//                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+//                    bestPath = path;
+//        }
+//
+//        // Upper / lower parcel
+//        if (bestPath == null && verticalApprox) {
+//            ParcelModel parcel = null;
+//            PathModel path = null;
+//            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y, toParcel.z - 1)) != null && parcel.isWalkable())
+//                if ((path = getPath(fromParcel, parcel)) != null)
+//                    bestPath = path;
+//            if ((parcel = WorldHelper.getParcel(toParcel.x, toParcel.y, toParcel.z + 1)) != null && parcel.isWalkable())
+//                if ((path = getPath(fromParcel, parcel)) != null && (bestPath == null || path.getLength() < bestPath.getLength()))
+//                    bestPath = path;
+//        }
+//
+//        return bestPath;
     }
 
     private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
@@ -148,53 +150,55 @@ public class PathManager extends GameModule {
         assert fromParcel != null;
         assert toParcel != null;
 
-        if (_finder == null) {
-            _graph = new IndexedGraph(worldModule.getParcelList());
-            _finder = new IndexedAStarPathFinder<>(_graph);
-            _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
-
-            // Create cache
-            _cache = new HashMap<>();
-        }
-
-        Log.debug(PathManager.class, "Find path from " + fromParcel + " to " + toParcel);
-
-        long time = System.currentTimeMillis();
-
-        // Check if target parcel is not surrounded by non-walkable org.smallbox.faraway.core.module.room.model
-        if (WorldHelper.isSurroundedByBlocked(toParcel)) {
-            Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
-            return null;
-        }
-
-        // Find path to target parcel
-        try {
-            SmoothableGraphPath<ParcelModel, Vector2> nodes = new MyGraphPath();
-//            GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
-            if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
-                Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
-
-//                new PathSmoother(new RaycastCollisionDetector() {
-//                    @Override
-//                    public boolean collides(Ray ray) {
-//                        return false;
-//                    }
+        return parcelGraph.findPath(fromParcel, toParcel);
 //
-//                    @Override
-//                    public boolean findCollision(Collision outputCollision, Ray inputRay) {
-//                        return false;
-//                    }
-//                }).smoothPath(nodes);
-
-                return nodes;
-            }
-        } catch (Exception e) {
-            Log.warning(PathManager.class, "Error during path resolve");
-        }
-
-        // No path found
-        Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
-        return null;
+//        if (_finder == null) {
+//            parcelGraph = new IndexedGraph(worldModule.getAll());
+//            _finder = new IndexedAStarPathFinder<>(parcelGraph);
+//            _heuristic = (node, endNode) -> 10 * (Math.abs(node.x - endNode.x) + Math.abs(node.y - endNode.y));
+//
+//            // Create cache
+//            _cache = new HashMap<>();
+//        }
+//
+//        Log.debug(PathManager.class, "Find path from " + fromParcel + " to " + toParcel);
+//
+//        long time = System.currentTimeMillis();
+//
+//        // Check if target parcel is not surrounded by non-walkable org.smallbox.faraway.core.module.room.model
+//        if (WorldHelper.isSurroundedByBlocked(toParcel)) {
+//            Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (surrounded)");
+//            return null;
+//        }
+//
+//        // Find path to target parcel
+//        try {
+//            SmoothableGraphPath<ParcelModel, Vector2> nodes = new MyGraphPath();
+////            GraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
+//            if (_finder.searchNodePath(fromParcel, toParcel, _heuristic, nodes)) {
+//                Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (success)");
+//
+////                new PathSmoother(new RaycastCollisionDetector() {
+////                    @Override
+////                    public boolean collides(Ray ray) {
+////                        return false;
+////                    }
+////
+////                    @Override
+////                    public boolean findCollision(Collision outputCollision, Ray inputRay) {
+////                        return false;
+////                    }
+////                }).smoothPath(nodes);
+//
+//                return nodes;
+//            }
+//        } catch (Exception e) {
+//            Log.warning(PathManager.class, "Error during path resolve");
+//        }
+//
+//        // No path found
+//        Log.debug(PathManager.class, "Path resolved in " + (System.currentTimeMillis() - time) + "ms (fail)");
+//        return null;
     }
 
     private long getSum(ParcelModel fromParcel, ParcelModel toParcel) {
@@ -222,20 +226,49 @@ public class PathManager extends GameModule {
     }
 
     public void refreshConnections(ParcelModel source) {
-        source.getConnections().clear();
-
-        WorldHelper.getParcelArround(source, 1, target -> {
-            if (source.isWalkable()) {
-                target.addConnection(source);
-            } else {
-                target.removeConnection(source);
-            }
-
-            if (target.isWalkable()) {
-                source.addConnection(target);
-            } else {
-                source.removeConnection(target);
-            }
-        });
+//        parcelGraph.refreshConnections(source);
     }
+
+    public boolean hasConnection(ParcelModel fromParcel, ParcelModel toParcel) {
+        for (Connection<?> connection: parcelGraph.getConnections(fromParcel)) {
+            if (connection.getToNode() == toParcel) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void initParcels(ParcelModel[][][] parcels, int width, int height, int floors) {
+        parcelGraph = new ParcelGraph(width * height * floors);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int f = 0; f < floors; f++) {
+                    ParcelModel fromParcel = parcels[x][y][f];
+
+                    // Top
+                    if (y > 0) {
+                        parcelGraph.createConnection(fromParcel, parcels[x][y-1][f]);
+                    }
+
+                    // Bottom
+                    if (y < height - 1) {
+                        parcelGraph.createConnection(fromParcel, parcels[x][y+1][f]);
+                    }
+
+                    // Left
+                    if (x > 0) {
+                        parcelGraph.createConnection(fromParcel, parcels[x-1][y][f]);
+                    }
+
+                    // Right
+                    if (x < width - 1) {
+                        parcelGraph.createConnection(fromParcel, parcels[x+1][y][f]);
+                    }
+
+                }
+            }
+        }
+
+    }
+
 }

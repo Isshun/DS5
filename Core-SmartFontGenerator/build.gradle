@@ -1,5 +1,5 @@
 apply plugin: "java-library"
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 

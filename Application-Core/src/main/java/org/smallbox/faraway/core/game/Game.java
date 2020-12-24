@@ -50,6 +50,7 @@ public class Game {
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService  _moduleScheduler3 = Executors.newScheduledThreadPool(1);
     private final PlanetInfo                _planetInfo;
     private final RegionInfo                _regionInfo;
 
@@ -228,18 +229,30 @@ public class Game {
             } catch (Exception e) {
                 Log.error(e);
             }
-        }, 0, 1000, TimeUnit.MILLISECONDS);
+        }, 0, 40, TimeUnit.MILLISECONDS);
 
-        _moduleScheduler2.scheduleAtFixedRate(() -> {
+//        _moduleScheduler2.scheduleAtFixedRate(() -> {
+//            try {
+//                if (_isRunning) {
+//                    Application.dependencyInjector.getDependency(GameTaskManager.class).update();
+//                }
+//            } catch (Error e) {
+//                Log.error(e);
+//                e.printStackTrace();
+//            }
+//        }, 0, interval, TimeUnit.MILLISECONDS);
+
+        _moduleScheduler3.scheduleAtFixedRate(() -> {
             try {
                 if (_isRunning) {
                     Application.dependencyInjector.getDependency(GameTaskManager.class).update();
+                    Application.notify(gameObserver -> gameObserver.onGameRender(Game.this));
                 }
             } catch (Error e) {
                 Log.error(e);
                 e.printStackTrace();
             }
-        }, 0, interval, TimeUnit.MILLISECONDS);
+        }, 0, 16, TimeUnit.MILLISECONDS);
 
     }
 }

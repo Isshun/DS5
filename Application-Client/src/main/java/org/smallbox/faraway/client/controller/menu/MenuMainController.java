@@ -4,17 +4,20 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.game.GameInfo;
 
-/**
- * Created by Alex on 24/07/2016.
- */
-@GameObject
+@ApplicationObject
 public class MenuMainController extends LuaController {
+
+    @Inject
+    private MenuSettingsController menuSettingsController;
 
     @BindLuaAction
     private void onActionNewGame(View view) {
-        Application.gameManager.createGame("base.planet.corrin", "mountain", 14, 20, 2, null);
+        Application.gameManager.createGame(GameInfo.create("base.planet.corrin", "mountain", 14, 20, 2), null);
     }
 
     @BindLuaAction
@@ -39,6 +42,8 @@ public class MenuMainController extends LuaController {
 
     @BindLuaAction
     private void onActionSettings(View view) {
+        setVisible(false);
+        menuSettingsController.setVisible(true);
     }
 
 }

@@ -7,6 +7,7 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
+import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +44,7 @@ public class GameFactory {
     }
 
     public void create() {
-        Application.gameManager.createGame(this.planet, this.region, this.width, this.height, this.level, new GameManager.GameListener() {
+        Application.gameManager.createGame(GameInfo.create(this.planet, this.region, this.width, this.height, this.level), new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
 
@@ -61,9 +62,13 @@ public class GameFactory {
                         scenario.items.forEach(i -> Application.moduleManager.getModule(ItemModule.class).addItem(i.name, true, i.x, i.y, i.z));
                     }
 
-                    Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.carrot", 10, 10, 1);
-                    Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.carrot", 11, 10, 1);
-                    Application.moduleManager.getModule(PlantModule.class).addPlant("base.plant.carrot", 12, 10, 1);
+                    if (scenario.plants != null) {
+                        scenario.plants.forEach(i -> Application.moduleManager.getModule(PlantModule.class).addPlant(i.name, i.x, i.y, i.z));
+                    }
+
+                    if (scenario.resources != null) {
+                        scenario.resources.forEach(i -> Application.moduleManager.getModule(WorldModule.class).getParcel(i.x, i.y, i.z).setRockInfo(Application.data.getItemInfo("base.granite")));
+                    }
 
                 }
 

@@ -3,7 +3,6 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnKeyListener;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;

@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client;
 
 import org.json.JSONObject;
-import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.common.ModelDeserializer;
 
 public class PlantCommonDeserializer implements ModelDeserializer<PlantCommon> {

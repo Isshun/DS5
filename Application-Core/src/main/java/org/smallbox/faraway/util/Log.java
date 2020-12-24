@@ -209,6 +209,10 @@ public class Log {
         }
     }
 
+    public static void command(String message) {
+        print(Level.SEVERE, message);
+    }
+
     public static void debug(String message, Object... args) {
         if (Level.ALL.intValue() >= level.intValue()) {
             if (inPackageList(debugPackages)) {

@@ -1,13 +1,11 @@
 package org.smallbox.faraway.client;
 
-import org.json.JSONObject;
 import org.smallbox.faraway.client.module.CharacterClientModule;
 import org.smallbox.faraway.client.module.PlantClientModule;
 import org.smallbox.faraway.client.module.TaskClientModule;
-import org.smallbox.faraway.common.*;
+import org.smallbox.faraway.common.ModelDeserializer;
 import org.smallbox.faraway.core.bridge.Client;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

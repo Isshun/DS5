@@ -1,7 +1,6 @@
 package org.smallbox.faraway.util;
 
 public class Constant {
-    public static final boolean     DEBUG = true;
     public static final int         PLANET_WIDTH = 100;
     public static final int         PLANET_HEIGHT = 90;
     public static final long        RELOAD_DATA_INTERVAL = 2000;
@@ -14,9 +13,6 @@ public class Constant {
     public static final int         MODULE_JOB_PRIORITY = 100;
     public static final int         MODULE_CHARACTER_PRIORITY = 101;
     public static final int         MODULE_WORLD_PRIORITY = 102;
-
-    public static final int         BASE_WIDTH            = 1280;
-    public static final int         BASE_HEIGHT            = 800;
 
     public static final int         TILE_WIDTH                = 32;
     public static final int         TILE_HEIGHT                = 32;

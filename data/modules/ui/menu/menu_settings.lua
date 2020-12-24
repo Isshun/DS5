@@ -92,6 +92,7 @@ end
 ui:extend({
     type = "view",
     id = "base.ui.menu.settings",
+    controller = "org.smallbox.faraway.client.controller.menu.MenuSettingsController",
     size = {application.screen_width, application.screen_height},
     background = 0x000000ff,
     in_game = false,

@@ -1,14 +1,13 @@
 package org.smallbox.faraway.core.module.world.model;
 
 import com.badlogic.gdx.ai.pfa.Connection;
-import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.path.ParcelConnection;
+import org.smallbox.faraway.core.module.path.parcel.ParcelConnection;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 
@@ -27,8 +26,6 @@ public class ParcelModel extends ParcelCommon {
     private ParcelEnvironment               _environment;
     private RoomModel                       _room;
     private AreaModel                       _area;
-    private Array<Connection<ParcelModel>>  _connections;
-    private static Array<Connection<ParcelModel>>  _emptyConnections = new Array<>();
     private final int                       _index;
     private int                             _tile;
     private double                          _liquidValue;
@@ -49,7 +46,6 @@ public class ParcelModel extends ParcelCommon {
 
     public void                     setRoom(RoomModel room) { _room = room; }
     public void                     setArea(AreaModel area) { _area = area; }
-    public void                     setConnections(Array<Connection<ParcelModel>> connections) { _connections = connections; }
 
     public void                     setItem(MapObjectModel item) {
         if (!_items.containsValue(item)) {
@@ -103,12 +99,6 @@ public class ParcelModel extends ParcelCommon {
         }
     }
 
-    public void resetConnection() {
-        Array<Connection<ParcelModel>> connections = new Array<>(6);
-        WorldHelper.getParcelArround(this, 1, toParcel -> addParcelToConnections(connections, toParcel));
-        setConnections(connections);
-    }
-
     @Override
     public String toString() {
         return x + "x" + y + "x" + z;
@@ -118,9 +108,9 @@ public class ParcelModel extends ParcelCommon {
         if (!isWalkable()) {
             return false;
         }
-        if (_connections == null || _connections.size == 0) {
-            return false;
-        }
+//        if (_connections == null || _connections.size == 0) {
+//            return false;
+//        }
         return !(hasItem(StructureItem.class) && getItem(StructureItem.class).getInfo().isDoor);
     }
 
@@ -190,14 +180,6 @@ public class ParcelModel extends ParcelCommon {
         return _index;
     }
 
-    public Array<Connection<ParcelModel>> getConnections() {
-        if (!isWalkable()) {
-            return _emptyConnections;
-        }
-
-        return _connections;
-    }
-
     public boolean equals(int x, int y, int z) {
         return this.x == x && this.y == y && this.z == z;
     }
@@ -239,37 +221,8 @@ public class ParcelModel extends ParcelCommon {
         return _items.values();
     }
 
-    public boolean hasConnection(ParcelModel parcel) {
-        for (Connection<ParcelModel> connection: _connections) {
-            if (connection.getFromNode() == this && connection.getToNode() == parcel) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean hasItems() {
         return !_items.isEmpty();
     }
 
-    public void addConnection(ParcelModel toParcel) {
-
-        // Don't add connection if already exists
-        for (int i = 0; i < _connections.size; i++) {
-            if (_connections.get(i).getToNode() == toParcel) {
-                return;
-            }
-        }
-
-        _connections.add(new ParcelConnection(this, toParcel));
-    }
-
-    public void removeConnection(ParcelModel toParcel) {
-        for (int i = 0; i < _connections.size; i++) {
-            if (_connections.get(i).getToNode() == toParcel) {
-                _connections.removeIndex(i);
-                return;
-            }
-        }
-    }
 }

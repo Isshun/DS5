@@ -16,7 +16,6 @@ import org.smallbox.faraway.core.dependencyInjector.Inject;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.function.Predicate;
 
 @ApplicationObject
 public class UIEventManager implements EventManager {

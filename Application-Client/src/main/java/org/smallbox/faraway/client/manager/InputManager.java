@@ -3,17 +3,20 @@ package org.smallbox.faraway.client.manager;
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.SelectionManager;
+import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
-import org.smallbox.faraway.util.Constant;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
 
 @ApplicationObject
 public class InputManager implements InputProcessor {
+
+    @Inject
+    private DebugService debugService;
 
     @Inject
     private SelectionManager selectionManager;
@@ -39,6 +42,14 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (keycode == Keys.GRAVE) {
+            return false;
+        }
+
+        if (debugService.isDebugMode()) {
+            return false;
+        }
+
         if (keycode == Keys.CONTROL_LEFT) {
             _modifier = GameEventListener.Modifier.CONTROL;
         }
@@ -72,6 +83,17 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+
+        if (keycode == Keys.GRAVE) {
+            debugService.toggleDebugMode();;
+            return false;
+        }
+
+        if (debugService.isDebugMode()) {
+            debugService.keyUp(keycode);
+            return false;
+        }
+
         if (keycode == Keys.A || keycode == Keys.LEFT) {
             _keyDirection[0] = false;
 //            return true;
@@ -116,11 +138,21 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
+        if (debugService.isDebugMode()) {
+            debugService.typeCharacter(character);
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+
+        if (debugService.isDebugMode()) {
+            return false;
+        }
+
         _lastMouseButton = button;
         _touchDownX = _touchDragX = x;
         _touchDownY = _touchDragY = y;
@@ -144,6 +176,11 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchUp(int x, int y, int pointer, int button) {
+        if (debugService.isDebugMode()) {
+            debugService.click(x, y);
+            return false;
+        }
+
         _touchDrag = false;
 
         if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {

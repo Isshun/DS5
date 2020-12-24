@@ -6,10 +6,12 @@ import org.smallbox.faraway.core.bridge.Connection;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @GameObject
 @ModuleSerializer(WorldModuleSerializer.class)
-public class WorldModule extends GameModule {
+public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObserver> {
 
     @Inject
     private JobModule jobModule;
@@ -28,8 +30,10 @@ public class WorldModule extends GameModule {
     @Inject
     private WeatherModule weatherModule;
 
+    @Inject
+    private PathManager pathManager;
+
     private ParcelModel[][][]                   _parcels;
-    private List<ParcelModel>                   _parcelList;
     private int                                 _width;
     private int                                 _height;
     private int                                 _floors;
@@ -51,7 +55,7 @@ public class WorldModule extends GameModule {
 
     @Override
     public void onClientConnect(Connection client) {
-        _parcelList.forEach(parcel -> {
+        modelList.forEach(parcel -> {
             ParcelCommon parcelCommon = new ParcelCommon();
             parcelCommon.x = parcel.x;
             parcelCommon.y = parcel.y;
@@ -69,11 +73,12 @@ public class WorldModule extends GameModule {
         _floor = _floors - 1;
 
         _parcels = parcels;
-        _parcelList = parcelList;
+        modelList = parcelList;
+
+        pathManager.initParcels(parcels, _width, _height, _floors);
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }
-    public List<ParcelModel>                    getParcelList() { return _parcelList; }
 
     public void getParcels(int fromX, int toX, int fromY, int toY, int fromZ, int toZ, GetParcelListener getParcelListener) {
         assert getParcelListener != null;

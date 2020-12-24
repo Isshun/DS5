@@ -6,7 +6,9 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -39,7 +41,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @GameObject
 @ModuleSerializer(CharacterModuleSerializer.class)
 //@ModuleLayer(CharacterLayer.class)
-public class CharacterModule extends GameModule<CharacterModuleObserver> {
+public class CharacterModule extends GenericGameModule<CharacterModel, CharacterModuleObserver> {
 
 //    @Inject
 //    private WorldInteractionModule worldInteractionModule;
@@ -62,43 +64,45 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     @Inject
     private WorldModule worldModule;
 
-    private BlockingQueue<CharacterModel>       _characters = new LinkedBlockingQueue<>();
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private List<CharacterModel>                _visitors = new ArrayList<>();
     private int                                 _count;
 
-    public void addCharacter(CharacterModel character) { _characters.add(character); }
-    public Collection<CharacterModel>     getCharacters() { return _characters; }
+    public Collection<CharacterModel>     getCharacters() { return modelList; }
     public Collection<CharacterModel>     getVisitors() { return _visitors; }
-    public int                            getCount() { return _count; }
+
+    @OnInit
+    private void init() {
+        modelList = new LinkedBlockingQueue<>();
+    }
 
     @Override
     public void onModuleUpdate(Game game) {
 
-        _characters.stream()
-                .filter(CharacterModel::isFree)
-                .forEach(character -> gameTaskManager.startTask(new RandomMoveTask(character)));
+//        modelList.stream()
+//                .filter(CharacterModel::isFree)
+//                .forEach(character -> gameTaskManager.startTask(new RandomMoveTask(character)));
 
         fixCharacterInventory();
 
         // Add new born
         if (CollectionUtils.isNotEmpty(_addOnUpdate)) {
             Log.info("Add new character");
-            _characters.addAll(_addOnUpdate);
+            modelList.addAll(_addOnUpdate);
             _addOnUpdate.clear();
         }
 
         // Remove dead characters
-        _characters.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
-        _characters.removeIf(CharacterModel::isDead);
+        modelList.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
+        modelList.removeIf(CharacterModel::isDead);
 
         // Execute action
         double hourInterval = getTickInterval() / game.getTickPerHour();
-        _characters.forEach(character -> {
+        modelList.forEach(character -> {
             character.action(hourInterval);
         });
 
-        _characters.forEach(character -> {
+        modelList.forEach(character -> {
             Application.gameServer.serialize("UPDATE", "CHARACTER", character._id, character);
         });
     }
@@ -115,13 +119,11 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         }
     }
 
-    public CharacterModel add(CharacterModel character) {
-        _count++;
+    @Override
+    public void add(CharacterModel character) {
         _addOnUpdate.add(character);
 
         notifyObservers(observer -> observer.onAddCharacter(character));
-
-        return character;
     }
 
     public void remove(CharacterModel c) {
@@ -131,17 +133,8 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
         }
     }
 
-    public CharacterModel getCharacter(int characterId) {
-        for (CharacterModel character: _characters) {
-            if (character.getId() == characterId) {
-                return character;
-            }
-        }
-        return null;
-    }
-
     public CharacterModel getCharacter(ParcelModel parcel) {
-        for (CharacterModel character: _characters) {
+        for (CharacterModel character: modelList) {
             if (character.getParcel() == parcel) {
                 return character;
             }
@@ -174,7 +167,7 @@ public class CharacterModule extends GameModule<CharacterModuleObserver> {
     }
 
     private void fixCharacterInventory() {
-        _characters.stream()
+        modelList.stream()
                 .filter(character -> character.hasExtra(CharacterInventoryExtra.class))
                 .filter(character -> character.getJob() == null && !character.getExtra(CharacterInventoryExtra.class).getAll().isEmpty())
                 .forEach(character -> {

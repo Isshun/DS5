@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.OnInit;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
@@ -19,6 +20,9 @@ public class Viewport {
 
     @Inject
     private ApplicationConfigService applicationConfigService;
+
+    @Inject
+    private Game game;
 
     private final static int    ANIM_FRAME = 10;
     public final static float[]       ZOOM_LEVELS = new float[] {
@@ -51,6 +55,13 @@ public class Viewport {
     private void onInit() {
         _width = applicationConfigService.getResolutionWidth() - Constant.PANEL_WIDTH;
         _height = applicationConfigService.getResolutionHeight();
+        _floor = game.getInfo().worldFloors - 1;
+        centerOnMap(game.getInfo().worldWidth / 2, game.getInfo().worldHeight / 2);
+    }
+
+    private void centerOnMap(int parcelX, int parcelY) {
+        _posX = (_width / 2) - (parcelX * Constant.TILE_WIDTH);
+        _posY = (_height / 2) - (parcelY * Constant.TILE_HEIGHT);
     }
 
     public void update(int x, int y) {

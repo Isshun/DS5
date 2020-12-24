@@ -1,6 +1,7 @@
-package org.smallbox.faraway.core.module.path;
+package org.smallbox.faraway.core.module.path.parcel;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
+import org.smallbox.faraway.core.module.path.PathCacheModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.ArrayList;

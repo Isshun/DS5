@@ -60,7 +60,7 @@ public class CharacterModuleSerializer extends GameSerializer<CharacterModule> {
                         String lastname =  st.columnString(5);
 
                         CharacterInfo characterInfo = Application.data.characters.get("base.character.human");
-                        module.addCharacter(new HumanModel(id, characterInfo, WorldHelper.getParcel(x, y, z)));
+                        module.add(new HumanModel(id, characterInfo, WorldHelper.getParcel(x, y, z)));
                     }
                 } finally {
                     st.dispose();

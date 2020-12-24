@@ -46,8 +46,8 @@ public class DependencyInjector {
     }
 
     public <T> T create(Class<T> cls) {
+        Log.info("Create application object: " + cls.getSimpleName());
         try {
-
             T object = getDependency(cls);
             if (Objects.isNull(object)) {
                 object = cls.getConstructor().newInstance();

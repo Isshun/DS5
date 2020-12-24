@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.module;
 
 import org.smallbox.faraway.client.PlantCommon;
-import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
 
 import java.util.Map;

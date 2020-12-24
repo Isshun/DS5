@@ -16,8 +16,8 @@ ui:extend({
             { type = "label", id = "lb_date", text_color = color2, text_size = 12, position = {38, 24} },
 
             -- Weather
-            { type = "label", id = "lb_weather", text_color = color2, text_size = 16, text_align = "RIGHT", position = {330, 7}},
-            { type = "label", id = "lb_temperature", text_color = color2, text_size = 12, text_align = "RIGHT", position = {330, 24}},
+            { type = "label", id = "lb_weather", text_color = color2, text_size = 16, text_align = "RIGHT", position = {230, 7}},
+            { type = "label", id = "lb_temperature", text_color = color2, text_size = 12, text_align = "RIGHT", position = {230, 24}},
             { type = "image", id = "img_weather", src = "[base]/graphics/icons/weather/regular.png", size = {32, 32}, position = {335, 3}},
 
             -- Game speed

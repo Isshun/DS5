@@ -8,7 +8,8 @@ ui:extend({
     visible = false,
     views = {
         { type = "label", text = "Colon", text_color = color1, text_size = 12, margin = {12, 12, 0, 12}},
-        { type = "label", id = "lb_name", text = "name", text_size = 28, text_color = color2, margin = {12, 12} },
+        { type = "label", id = "lb_position", text_color = color1, text_size = 12, margin = {12, 12, 0, 12}, position = {250, 0}},
+        { type = "label", id = "lb_name", text = "name", text_size = 28, text_color = color2, margin = {12, 12}},
 
         { type = "view", size = {400, 40}, position = {12, 0}, views = {
             { type = "grid", columns = 10, column_width = tab_width, row_height = 40, views = {

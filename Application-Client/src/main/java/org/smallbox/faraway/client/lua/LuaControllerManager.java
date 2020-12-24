@@ -2,12 +2,11 @@ package org.smallbox.faraway.client.lua;
 
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.ObjectUtils;
-import org.eclipse.jetty.util.ConcurrentArrayQueue;
+import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
@@ -17,12 +16,14 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
 
-import java.lang.reflect.*;
-import java.util.*;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ApplicationObject
 public class LuaControllerManager implements GameObserver {
@@ -32,6 +33,10 @@ public class LuaControllerManager implements GameObserver {
     private long                            _lastUpdate;
 
     public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
+
+    public Map<String, LuaController> getControllers() {
+        return _controllers;
+    }
 
     @OnGameLayerInit
     public void onGameInitLayers() {
@@ -52,6 +57,8 @@ public class LuaControllerManager implements GameObserver {
         // Bind action methods
         _controllers.values().forEach(this::bindMethodsForController);
 
+        // Call OnReloadUI
+        _controllers.values().forEach(GameClientObserver::onReloadUI);
     }
 
     @Override

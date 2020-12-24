@@ -8,13 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.common.ParcelCommon;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
@@ -217,6 +215,17 @@ public class GDXRenderer {
         }
     }
 
+    public void drawCircle(int x, int y, int radius, Color color, boolean filled) {
+        if (color != null) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            _drawPixelShapeLayer.setProjectionMatrix(_camera.combined);
+            _drawPixelShapeLayer.begin(filled ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
+            _drawPixelShapeLayer.setColor(color);
+            _drawPixelShapeLayer.circle(x, y, radius);
+            _drawPixelShapeLayer.end();
+        }
+    }
+
     public void drawRectangleOnMap(int x, int y, int width, int height, Color color, boolean filled, int offsetX, int offsetY) {
         if (color != null) {
             drawRectangle(
@@ -224,6 +233,18 @@ public class GDXRenderer {
                     layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
                     width,
                     height,
+                    color,
+                    filled
+            );
+        }
+    }
+
+    public void drawCircleOnMap(int x, int y, int radius, Color color, boolean filled, int offsetX, int offsetY) {
+        if (color != null) {
+            drawCircle(
+                    layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
+                    layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                    radius,
                     color,
                     filled
             );

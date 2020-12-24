@@ -2,9 +2,6 @@ package org.smallbox.faraway.core;
 
 import java.util.List;
 
-/**
- * Created by Alex on 14/07/2017.
- */
 public class GameScenario {
 
     public static class ScenarioCharacterEntity {
@@ -28,6 +25,20 @@ public class GameScenario {
         public int z;
     }
 
+    public static class ScenarioPlantEntity {
+        public String name;
+        public int x;
+        public int y;
+        public int z;
+    }
+
+    public static class ScenarioResourceEntity {
+        public String name;
+        public int x;
+        public int y;
+        public int z;
+    }
+
     public String planet;
     public String region;
     public int width;
@@ -36,4 +47,6 @@ public class GameScenario {
     public List<ScenarioCharacterEntity> characters;
     public List<ScenarioConsumableEntity> consumables;
     public List<ScenarioItemEntity> items;
+    public List<ScenarioPlantEntity> plants;
+    public List<ScenarioResourceEntity> resources;
 }

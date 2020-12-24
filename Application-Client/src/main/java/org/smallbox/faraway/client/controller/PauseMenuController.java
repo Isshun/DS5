@@ -1,13 +1,8 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;

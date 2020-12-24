@@ -2,6 +2,7 @@ package org.smallbox.faraway.test.technique;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameInfo;
 import org.smallbox.faraway.core.game.GameManager;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class GameTestHelper {
     }
 
     private void doRun() throws InterruptedException {
-        Application.gameManager.createGame("base.planet.corrin", "mountain", 12, 16, 2, new GameManager.GameListener() {
+        Application.gameManager.createGame(GameInfo.create("base.planet.corrin", "mountain", 12, 16, 2), new GameManager.GameListener() {
 
             @Override
             public void onGameCreate(Game game) {

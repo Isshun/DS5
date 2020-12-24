@@ -42,6 +42,11 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
         });
     }
 
+    @Override
+    public void onGameRender(Game game) {
+//        characterModule.getAll().forEach(this::move);
+    }
+
     public void move(CharacterModel character) {
         PathModel _path = character._path;
 
@@ -57,38 +62,8 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 //            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
 
             // Character has reach next parcel
-            if (character._moveProgress >= 1 && _path.getCurrentParcel() != null) {
-                character.setMoveProgress(0);
-
-                // Move continue, set next parcel + direction
-                if (_path.next()) {
-                    int fromX = character._parcel.x;
-                    int fromY = character._parcel.y;
-                    int toX = _path.getCurrentParcel().x;
-                    int toY = _path.getCurrentParcel().y;
-                    character._direction = getDirection(fromX, fromY, toX, toY);
-
-                    character.setParcel(_path.getCurrentParcel());
-
-//                    character.position.myCatmull = _path.myCatmull;
-                    character.position.pathLength = _path.getLength();
-//                    character.position._curve = _path._curve;
-                }
-
-                // Move state, set path to null and call listener
-                else {
-                    Log.info(getName() + " Move state (" + _path.getFirstParcel().x + "x" + _path.getFirstParcel().y + "x" + _path.getFirstParcel().z + " to " + _path.getLastParcel().x + "x" + _path.getLastParcel().y + "x" + _path.getLastParcel().z + ")");
-                    _path = null;
-
-                    if (character._moveListener != null) {
-                        Log.info(getName() + " Move state: call onReach");
-                        MoveListener listener = character._moveListener;
-                        character._moveListener = null;
-                        listener.onReach(character);
-                    }
-
-                    character.position.pathLength = 0;
-                }
+            if (character._moveProgress >= 1) {
+                moveToNextParcel(character, _path);
             }
 
             character._moveProgress += character._moveStep;
@@ -101,7 +76,45 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
             character.position.parcelY = character.getParcel().y;
             character.position.parcelZ = character.getParcel().z;
 
+            Log.debug(getName() + " Move progress = " + character._moveProgress + ", " + character._moveProgress2);
+
             Application.gameServer.write(character.position);
+        }
+    }
+
+    private void moveToNextParcel(CharacterModel character, PathModel _path) {
+
+        character.setMoveProgress(0);
+
+        // If path.next() return true, the move is continuing
+        if (_path.next()) {
+
+            // Set direction to the next parcel
+            ParcelModel fromParcel = character._parcel;
+            ParcelModel toParcel = _path.getCurrentParcel();
+            character._direction = getDirection(fromParcel.x, fromParcel.y, toParcel.x, toParcel.y);
+
+            // Set logic position of the character to the next parcel
+            character.setParcel(_path.getCurrentParcel());
+
+            // TODO: no idea of the purpose of pathLength
+            character.position.pathLength = _path.getLength();
+        }
+
+        // When path.next() return false, the move is completed
+        else {
+            character._path = null;
+
+            // TODO: is moveListener useful ?
+            if (character._moveListener != null) {
+                Log.info(getName() + " Move state: call onReach");
+                MoveListener listener = character._moveListener;
+                character._moveListener = null;
+                listener.onReach(character);
+            }
+
+            // TODO: no idea of the purpose of pathLength
+            character.position.pathLength = 0;
         }
     }
 

@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.dig;
 
 import org.smallbox.faraway.core.dependencyInjector.Inject;
 import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -36,9 +37,8 @@ public class DigModule extends GameModule {
 
     private Map<ParcelModel, BasicDigJob> _parcels = new ConcurrentHashMap<>();
 
-    @Override
-    public void onGameCreate(Game game) {
-
+    @OnInit
+    public void init() {
         areaModule.addAreaClass(DigArea.class);
 
 //        worldModule.getParcelList().stream()
