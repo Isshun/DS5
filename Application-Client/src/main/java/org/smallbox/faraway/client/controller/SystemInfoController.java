@@ -7,8 +7,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameTime;
@@ -29,35 +29,20 @@ public class SystemInfoController extends LuaController {
     @Inject
     private GameManager gameManager;
 
-    @BindLua
-    private View viewWeather;
-
-    @BindLua
-    private UILabel lbTime;
-
-    @BindLua
-    private UILabel lbDate;
-
-    @BindLua
-    private UILabel lbWeather;
-
-    @BindLua
-    private UIImage imgWeather;
-
-    @BindLua
-    private UILabel lbTemperature;
-
-    @BindLua
-    private UIImage icSpeed;
-
-    @BindLua
-    private UILabel lbSpeed;
-
     @Inject
     private WeatherModule weatherModule;
 
     @Inject
     private MainPanelController mainPanelController;
+
+    @BindLua private View viewWeather;
+    @BindLua private UILabel lbTime;
+    @BindLua private UILabel lbDate;
+    @BindLua private UILabel lbWeather;
+    @BindLua private UIImage imgWeather;
+    @BindLua private UILabel lbTemperature;
+    @BindLua private UIImage icSpeed;
+    @BindLua private UILabel lbSpeed;
 
     @Override
     protected void onControllerUpdate() {

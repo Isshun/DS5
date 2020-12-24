@@ -37,6 +37,7 @@ public class CharacterSkillExtra extends CharacterExtra {
     }
 
     public enum SkillType {
+        NONE,
         HEAL,
         CRAFT,
         COOK,

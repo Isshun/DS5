@@ -1,19 +1,16 @@
 package org.smallbox.faraway.core.game;
 
 import com.google.gson.Gson;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameScenario;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 

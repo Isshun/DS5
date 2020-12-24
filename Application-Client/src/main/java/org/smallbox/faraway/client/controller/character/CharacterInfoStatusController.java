@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.controller.character;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.manager.SpriteManager;
@@ -8,8 +7,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;

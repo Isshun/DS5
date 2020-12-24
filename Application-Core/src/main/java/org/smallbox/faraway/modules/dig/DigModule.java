@@ -1,20 +1,19 @@
 package org.smallbox.faraway.modules.dig;
 
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +34,8 @@ public class DigModule extends GameModule {
     @Inject
     private AreaModule areaModule;
 
-    private Map<ParcelModel, BasicDigJob> _parcels = new ConcurrentHashMap<>();
+    @Inject
+    private DigJobFactory digJobFactory;
 
     @OnInit
     public void init() {
@@ -57,19 +57,15 @@ public class DigModule extends GameModule {
     protected void onModuleUpdate(Game game) {
         List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
         List<ParcelModel> parcelInDigJob = jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicDigJob)
-                .map(job -> ((BasicDigJob)job).getDigParcel())
+                .filter(job -> job instanceof DigJob)
+                .map(JobModel::getJobParcel)
                 .collect(Collectors.toList());
 
         // Create missing dig job
         parcelInDigArea.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
                 .filter(parcel -> CollectionUtils.notContains(parcelInDigJob, parcel))
-                .forEach(this::createMissingJob);
-    }
-
-    private void createMissingJob(ParcelModel parcel) {
-        BasicDigJob.create(consumableModule, jobModule, worldModule, parcel);
+                .forEach(parcel -> jobModule.addJob(digJobFactory.createJob(parcel)));
     }
 
 }

@@ -3,8 +3,8 @@ package org.smallbox.faraway.client;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
@@ -21,6 +21,9 @@ public class GameEventManager implements EventManager {
 
     @Inject
     private SelectionManager selectionManager;
+
+    @Inject
+    private GameActionManager gameActionManager;
 
     private boolean _mousePressed;
 
@@ -84,20 +87,24 @@ public class GameEventManager implements EventManager {
 
         Collection<? extends ObjectModel> selected = selectionManager.getSelected();
 
-        // Move character on pointer position
+//        // Move character on pointer position
+//        if (button == Input.Buttons.RIGHT) {
+//            if (selected != null) {
+//                for (ObjectModel object: selected) {
+//                    if (object instanceof CharacterModel) {
+//                        ((CharacterModel)object).moveTo(WorldHelper.getParcel(
+//                                layerManager.getViewport().getWorldPosX(x),
+//                                layerManager.getViewport().getWorldPosY(y),
+//                                layerManager.getViewport().getFloor()
+//                        ));
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+
         if (button == Input.Buttons.RIGHT) {
-            if (selected != null) {
-                for (ObjectModel object: selected) {
-                    if (object instanceof CharacterModel) {
-                        ((CharacterModel)object).moveTo(WorldHelper.getParcel(
-                                layerManager.getViewport().getWorldPosX(x),
-                                layerManager.getViewport().getWorldPosY(y),
-                                layerManager.getViewport().getFloor()
-                        ));
-                        return true;
-                    }
-                }
-            }
+            gameActionManager.setMode(GameActionManager.Mode.NONE);
         }
 
         ApplicationClient.notify(obs -> obs.onMouseRelease(x, y, button));

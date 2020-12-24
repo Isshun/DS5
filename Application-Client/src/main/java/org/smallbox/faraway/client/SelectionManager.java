@@ -4,8 +4,8 @@ import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -16,14 +16,14 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Created by Alex on 16/07/2017.
- */
 @GameObject
 public class SelectionManager extends GameManager {
 
     @Inject
     private LayerManager layerManager;
+
+    @Inject
+    private GameActionManager gameActionManager;
 
     public <T extends ObjectModel> void setSelected(Queue<T> selected) {
         _selected = selected;
@@ -81,19 +81,21 @@ public class SelectionManager extends GameManager {
         if (fromMapX != toMapX || fromMapY != toMapY) {
             List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
             Log.info("Click on map for parcels: %s", parcelList);
-            if (parcelList != null) {
 
-                if (_selectionListener != null) {
-                    if (_selectionListener.onSelection(parcelList)) {
-                        _selectionListener = null;
-                    }
-                }
-
-                else {
-                    _selected = null;
-                    doSelectionMultiple(parcelList);
-                }
-            }
+            gameActionManager.selectParcels(parcelList);
+//            if (parcelList != null) {
+//
+//                if (_selectionListener != null) {
+//                    if (_selectionListener.onSelection(parcelList)) {
+//                        _selectionListener = null;
+//                    }
+//                }
+//
+//                else {
+//                    _selected = null;
+//                    doSelectionMultiple(parcelList);
+//                }
+//            }
         }
 
         // Unique parcel

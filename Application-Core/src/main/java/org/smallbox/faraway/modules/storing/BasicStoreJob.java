@@ -104,13 +104,13 @@ public class BasicStoreJob extends JobModel {
             // Déplace le personnage à l'emplacement des composants
             addMoveTask("Move to consumable", targetConsumable.getParcel());
 
-            addTechnicalTask("Add consumable to inventory", character -> {
+            addTechnicalTask(() -> {
                 // Update lock to take all consumables
                 _targetConsumables.forEach(consumable -> _consumableModule.addToLock(this, consumable, consumable.getFreeQuantity()));
 
-                // Ajoute les composants à l'inventaire du personnage
-                ConsumableItem inventoryConsumable = _consumableModule.createConsumableFromLock(this, targetConsumable);
-                character.getExtra(CharacterInventoryExtra.class).addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
+//                // Ajoute les composants à l'inventaire du personnage
+//                ConsumableItem inventoryConsumable = _consumableModule.createConsumableFromLock(this, targetConsumable);
+//                character.getExtra(CharacterInventoryExtra.class).addInventory(inventoryConsumable.getInfo(), inventoryConsumable.getTotalQuantity());
             });
 
         });
@@ -119,10 +119,10 @@ public class BasicStoreJob extends JobModel {
         addMoveTask("Move to storage", _targetParcel);
 
         // Ajoute les composants à la zone de stockage
-        addTechnicalTask("Drop consumable to storage", character ->
+        addTechnicalTask(() ->
                 _targetConsumables.forEach(targetConsumable -> {
-                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo());
-                    _consumableModule.addConsumable(consumable.getInfo(), consumable.getFreeQuantity(), _targetParcel);
+//                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo());
+//                    _consumableModule.addConsumable(consumable.getInfo(), consumable.getFreeQuantity(), _targetParcel);
                 })
         );
 

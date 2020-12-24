@@ -5,16 +5,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -26,6 +24,7 @@ import org.smallbox.faraway.util.Constant;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,6 +40,8 @@ public class WorldGroundLayer extends BaseLayer {
     private static final int BOTTOM_LEFT = 0b00000100;
     private static final int BOTTOM = 0b00000010;
     private static final int BOTTOM_RIGHT = 0b00000001;
+
+    private static final Random random = new Random(42);
 
     @Inject
     private WorldModule _worldModule;

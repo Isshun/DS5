@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.manager;
 
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;

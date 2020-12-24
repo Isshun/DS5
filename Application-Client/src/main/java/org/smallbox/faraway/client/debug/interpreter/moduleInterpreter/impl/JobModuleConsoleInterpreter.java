@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.impl;
 
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCommand;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.job.model.MoveJob;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -33,7 +33,7 @@ public class JobModuleConsoleInterpreter extends ConsoleInterpreterBase {
     @ConsoleCommand("add")
     public String add() {
         JobModel job = MoveJob.create(characterModule.getRandom(), worldModule.getRandom());
-        jobModule.createJob(job);
+        jobModule.addJob(job);
         return job.getLabel();
     }
 

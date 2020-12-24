@@ -2,8 +2,8 @@ package org.smallbox.faraway.modules.world.factory;
 
 import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;

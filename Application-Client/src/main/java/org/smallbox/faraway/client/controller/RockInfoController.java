@@ -4,8 +4,8 @@ import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
@@ -25,20 +25,11 @@ public class RockInfoController extends AbsInfoLuaController<ParcelModel> {
     @Inject
     private UIEventManager uiEventManager;
 
-    @BindLua
-    private UILabel lbLabel;
-
-    @BindLua
-    private UILabel lbQuantity;
-
-    @BindLua
-    private UILabel lbJob;
-
-    @BindLua
-    private UILabel lbName;
-
-    @BindLua
-    private UILabel lbProduct;
+    @BindLua private UILabel lbLabel;
+    @BindLua private UILabel lbQuantity;
+    @BindLua private UILabel lbJob;
+    @BindLua private UILabel lbName;
+    @BindLua private UILabel lbProduct;
 
     @Override
     public void onReloadUI() {

@@ -2,13 +2,11 @@ package org.smallbox.faraway.client.debug;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayer;
-import org.smallbox.faraway.client.debug.dashboard.DashboardMode;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @ApplicationObject

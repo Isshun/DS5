@@ -6,8 +6,8 @@ import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 

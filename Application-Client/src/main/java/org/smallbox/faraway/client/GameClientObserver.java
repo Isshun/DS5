@@ -9,9 +9,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.List;
 
-/**
- * Created by Alex on 15/01/2017.
- */
 public interface GameClientObserver extends GameObserver {
     default void onReloadUI(){}
     default void onRefreshUI(int frame){}

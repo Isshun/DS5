@@ -1,10 +1,9 @@
 package org.smallbox.faraway.modules.plant;
 
 import org.smallbox.faraway.GameTaskManager;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -45,6 +44,9 @@ public class PlantModule extends GameModule {
     @Inject
     private GameTaskManager gameTaskManager;
 
+    @Inject
+    private HarvestJobFactory harvestJobFactory;
+
     private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();
 
     @OnInit
@@ -68,7 +70,7 @@ public class PlantModule extends GameModule {
         _plants.stream()
                 .filter(plant -> plant.getJob() == null)
                 .filter(plant -> plant.getMaturity() >= 1)
-                .forEach(plant -> BasicHarvestJob.create(consumableModule, jobModule, plant));
+                .forEach(plant -> jobModule.addJob(harvestJobFactory.create(plant)));
 
         // TODO: ajout auto de la graine
         _plants.forEach(plant -> plant.setSeed(true));

@@ -1,16 +1,8 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
-import org.reflections.Reflections;
-import org.smallbox.faraway.GameTaskManager;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.engine.module.java.ModuleManager;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.*;
-import org.smallbox.faraway.core.groovy.GroovyManager;
-import org.smallbox.faraway.core.module.world.SQLManager;
-import org.smallbox.faraway.core.task.TaskManager;
 
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;

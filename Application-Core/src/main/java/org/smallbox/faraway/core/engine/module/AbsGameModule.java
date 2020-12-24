@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.bridge.Connection;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;

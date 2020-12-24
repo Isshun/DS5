@@ -1,18 +1,16 @@
 package org.smallbox.faraway.client.render;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.manager.InputManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 
@@ -33,7 +31,7 @@ public class LayerManager implements GameClientObserver {
     private UIManager uiManager;
 
     @Inject
-    private Viewport                        _viewport;
+    private Viewport viewport;
 
     @Inject
     private GameManager gameManager;
@@ -63,7 +61,7 @@ public class LayerManager implements GameClientObserver {
 
     private Collection<BaseLayer>           _layers;
 
-    public Viewport getViewport() { return _viewport; }
+    public Viewport getViewport() { return viewport; }
 
     @OnGameLayerInit
     public void onGameInitLayers() {
@@ -103,14 +101,14 @@ public class LayerManager implements GameClientObserver {
             _animationProgress = 1 - ((double) (game.getNextUpdate() - System.currentTimeMillis()) / game.getTickInterval());
         }
 
-        layerManager.draw(gdxRenderer, _viewport, _animationProgress, _frame);
+        layerManager.draw(gdxRenderer, viewport, _animationProgress, _frame);
 
         // Move viewport
         if (game.isRunning()) {
-            if (inputManager.getDirection()[0]) { _viewport.move(20, 0); }
-            if (inputManager.getDirection()[1]) { _viewport.move(0, 20); }
-            if (inputManager.getDirection()[2]) { _viewport.move(-20, 0); }
-            if (inputManager.getDirection()[3]) { _viewport.move(0, -20); }
+            if (inputManager.getDirection()[0]) { viewport.move(20, 0); }
+            if (inputManager.getDirection()[1]) { viewport.move(0, 20); }
+            if (inputManager.getDirection()[2]) { viewport.move(-20, 0); }
+            if (inputManager.getDirection()[3]) { viewport.move(0, -20); }
         }
 
         uiManager.onRefresh(_frame);
@@ -148,12 +146,12 @@ public class LayerManager implements GameClientObserver {
 
     @GameShortcut(key = Input.Keys.PAGE_UP)
     public void onFloorUp() {
-        _viewport.setFloor(_viewport.getFloor() + 1);
+        viewport.setFloor(viewport.getFloor() + 1);
     }
 
     @GameShortcut(key = Input.Keys.PAGE_DOWN)
     public void onFloorDown() {
-        _viewport.setFloor(_viewport.getFloor() - 1);
+        viewport.setFloor(viewport.getFloor() - 1);
     }
 
 }

@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.game.service.applicationConfig;
 
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
 import org.smallbox.faraway.core.game.GameTime;
 
 public class ApplicationConfig {
@@ -20,6 +19,9 @@ public class ApplicationConfig {
 
     public static class ApplicationConfigScreenInfo {
         public int[]            resolution;
+        public int[][]          acceptedResolutions43;
+        public int[][]          acceptedResolutions169;
+        public int[][]          acceptedResolutions1610;
         public int[]            position;
         public String           mode;
         public int              foregroundFPS;

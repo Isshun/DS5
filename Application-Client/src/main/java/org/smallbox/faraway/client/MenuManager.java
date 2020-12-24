@@ -5,30 +5,47 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.controller.menu.MenuMainController;
+import org.smallbox.faraway.client.controller.menu.MenuSettingsController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.*;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * Created by Alex on 04/04/2017.
- */
+@ApplicationObject
 public class MenuManager {
 
-    public MenuManager() {
-        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().forEach((name, rootView) -> {
-            if (rootView.getView().getController() != null) {
-                bindControllerFields(rootView.getView().getController(), rootView.getView());
-                bindControllerMethods(rootView.getView().getController(), rootView.getView());
-                bindControllerSubControllers(rootView.getView().getController());
-            }
-        });
+    @Inject
+    private LuaControllerManager luaControllerManager;
+
+    @Inject
+    private MenuMainController menuMainController;
+
+    @Inject
+    private MenuSettingsController menuSettingsController;
+
+    @OnApplicationLayerInit
+    public void onApplicationLayerInit() {
+        luaControllerManager.initController(menuMainController);
+        luaControllerManager.initController(menuSettingsController);
+//        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().forEach((name, rootView) -> {
+//            if (rootView.getView().getController() != null) {
+//                bindControllerFields(rootView.getView().getController(), rootView.getView());
+//                bindControllerMethods(rootView.getView().getController(), rootView.getView());
+//                bindControllerSubControllers(rootView.getView().getController());
+//            }
+//        });
     }
 
     public void display(String viewName) {

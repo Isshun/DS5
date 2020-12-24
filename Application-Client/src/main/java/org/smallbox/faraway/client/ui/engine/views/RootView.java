@@ -4,9 +4,6 @@ import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
-/**
- * Created by Alex on 26/02/2017.
- */
 public class RootView {
 
     private View _view;
@@ -16,7 +13,7 @@ public class RootView {
     }
 
     public boolean isVisible() {
-        return true;
+        return _view.isVisible();
     }
 
     public boolean inGame() {

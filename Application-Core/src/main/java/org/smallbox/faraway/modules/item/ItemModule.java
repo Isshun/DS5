@@ -1,9 +1,8 @@
 package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.common.NotImplementedException;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -62,7 +61,9 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
      * @return
      */
     public UseJob createUseJob(UsableItem item, double totalDuration, UseJob.OnUseCallback callback) {
-        return jobModule.createJob(new UseJob(this, item, totalDuration, callback));
+        UseJob useJob = new UseJob(this, item, totalDuration, callback);
+        jobModule.addJob(useJob);
+        return useJob;
     }
 
     @Override

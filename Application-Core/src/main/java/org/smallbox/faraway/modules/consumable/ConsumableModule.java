@@ -1,10 +1,8 @@
 package org.smallbox.faraway.modules.consumable;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
@@ -168,7 +166,9 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
      * @return Le job créé
      */
     public ConsumeJob createConsumeJob(ConsumableItem consumable, double totalDuration, ConsumeJob.OnConsumeCallback callback) {
-        return jobModule.createJob(new ConsumeJob(this, consumable, totalDuration, callback));
+        ConsumeJob consumeJob = new ConsumeJob(this, consumable, totalDuration, callback);
+        jobModule.addJob(consumeJob);
+        return consumeJob;
     }
 
     public boolean createHaulToFactoryJobs(MapObjectModel item, ItemInfo itemInfo, int quantity) {

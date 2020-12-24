@@ -3,79 +3,39 @@ package org.smallbox.faraway.client.controller;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 
 import java.util.Queue;
 
-/**
- * Created by Alex on 26/04/2016.
- */
 @GameObject
 public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
 
     @Inject
     private PlantModule plantModule;
 
-    @BindLua
-    private UILabel lbLabel;
-
-    @BindLua
-    private UILabel lbJob;
-
-    @BindLua
-    private UILabel lbMaturity;
-
-    @BindLua
-    private UILabel lbGarden;
-
-    @BindLua
-    private UILabel lbSeed;
-
-    @BindLua
-    private UILabel lbNourish;
-
-    @BindLua
-    private UILabel lbGrowing;
-
-    @BindLua
-    private UILabel lbTemperature;
-
-    @BindLua
-    private UILabel lbLight;
-
-    @BindLua
-    private UILabel lbMoisture;
-
-    @BindLua
-    private UILabel lbOxygen;
-
-    @BindLua
-    private UILabel lbCurrentTemperature;
-
-    @BindLua
-    private UILabel lbCurrentOxygen;
-
-    @BindLua
-    private UILabel lbCurrentMoisture;
-
-    @BindLua
-    private UILabel lbCurrentLight;
-
-    @BindLua
-    private View imgTemperature;
-
-    @BindLua
-    private View imgLight;
-
-    @BindLua
-    private View imgMoisture;
-
-    @BindLua
-    private View imgOxygen;
+    @BindLua private UILabel lbLabel;
+    @BindLua private UILabel lbJob;
+    @BindLua private UILabel lbMaturity;
+    @BindLua private UILabel lbGarden;
+    @BindLua private UILabel lbSeed;
+    @BindLua private UILabel lbNourish;
+    @BindLua private UILabel lbGrowing;
+    @BindLua private UILabel lbTemperature;
+    @BindLua private UILabel lbLight;
+    @BindLua private UILabel lbMoisture;
+    @BindLua private UILabel lbOxygen;
+    @BindLua private UILabel lbCurrentTemperature;
+    @BindLua private UILabel lbCurrentOxygen;
+    @BindLua private UILabel lbCurrentMoisture;
+    @BindLua private UILabel lbCurrentLight;
+    @BindLua private View imgTemperature;
+    @BindLua private View imgLight;
+    @BindLua private View imgMoisture;
+    @BindLua private View imgOxygen;
 
     @Override
     protected void onDisplayUnique(PlantItem plant) {
@@ -120,7 +80,6 @@ public class PlantInfoController extends AbsInfoLuaController<PlantItem> {
             imgLight.setPosition(positionLight - 4, 16);
             lbCurrentLight.setPosition(positionLight - 8, 32);
             lbCurrentLight.setText((int)(parcel.getLight() * 100) + "%");
-
 
             // Moisture
             int positionMoisture = getStatePosition(parcel.getMoisture(), bestMoisture, minMoisture, maxMoisture);

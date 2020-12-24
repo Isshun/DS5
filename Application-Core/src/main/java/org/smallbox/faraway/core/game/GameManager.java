@@ -5,8 +5,11 @@ import org.json.JSONObject;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.*;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
-import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.modules.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
@@ -60,6 +63,7 @@ public class GameManager implements GameObserver {
         _game.loadModules();
         _game.loadLayers();
 
+        // Inject GameObjects
         DependencyInjector.getInstance().injectGameDependencies();
         DependencyInjector.getInstance().callMethodAnnotatedBy(OnGameLayerInit.class);
         DependencyInjector.getInstance().callMethodAnnotatedBy(AfterGameLayerInit.class);
@@ -135,6 +139,8 @@ public class GameManager implements GameObserver {
     public void closeGame() {
         _game.stop();
         _game = null;
+
+        DependencyInjector.getInstance().destroyGameObjects();
     }
 
     /**

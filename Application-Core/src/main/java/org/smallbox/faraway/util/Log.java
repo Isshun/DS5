@@ -17,7 +17,7 @@ import java.util.logging.*;
 public class Log {
     private final static boolean EXIT_ON_ERROR = true;
     private final static Logger logger = Logger.getLogger("FarAway");
-    private final static Level level = Level.ALL;
+    private final static Level level = Level.INFO;
     public static Queue<String> _historyDebug = new ConcurrentLinkedQueue<>();
     public static Queue<String> _history = new ConcurrentLinkedQueue<>();
     public static String _lastErrorMessage;

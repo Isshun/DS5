@@ -1,9 +1,9 @@
 {
   "planet": "base.planet.corrin",
   "region": "mountain",
-  "width": 150,
-  "height": 150,
-  "level": 16,
+  "width": 40,
+  "height": 30,
+  "level": 2,
   "characters": [
     {"x": 10, "y": 10, "z": 1}
   ],
@@ -23,9 +23,24 @@
     {"x": 12, "y": 10, "z": 1, "name": "base.plant.carrot"}
   ],
   "resources": [
+    {"x": 7, "y": 12, "z": 1, "name": "base.granite"},
+    {"x": 8, "y": 12, "z": 1, "name": "base.granite"},
+    {"x": 9, "y": 12, "z": 1, "name": "base.granite"},
     {"x": 10, "y": 12, "z": 1, "name": "base.granite"},
     {"x": 11, "y": 12, "z": 1, "name": "base.granite"},
-    {"x": 12, "y": 12, "z": 1, "name": "base.granite"}
+    {"x": 12, "y": 12, "z": 1, "name": "base.granite"},
+    {"x": 7, "y": 13, "z": 1, "name": "base.granite"},
+    {"x": 8, "y": 13, "z": 1, "name": "base.granite"},
+    {"x": 9, "y": 13, "z": 1, "name": "base.granite"},
+    {"x": 10, "y": 13, "z": 1, "name": "base.granite"},
+    {"x": 11, "y": 13, "z": 1, "name": "base.granite"},
+    {"x": 12, "y": 13, "z": 1, "name": "base.granite"},
+    {"x": 7, "y": 14, "z": 1, "name": "base.granite"},
+    {"x": 8, "y": 14, "z": 1, "name": "base.granite"},
+    {"x": 9, "y": 14, "z": 1, "name": "base.granite"},
+    {"x": 10, "y": 14, "z": 1, "name": "base.granite"},
+    {"x": 11, "y": 14, "z": 1, "name": "base.granite"},
+    {"x": 12, "y": 14, "z": 1, "name": "base.granite"}
   ],
   "areas": [
     {"type": "org.smallbox.faraway.modules.consumable.StorageArea", "parcels": [

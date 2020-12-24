@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.ui.engine;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.EventManager;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.manager.InputManager;
@@ -9,9 +8,8 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
 
 import java.util.Collection;

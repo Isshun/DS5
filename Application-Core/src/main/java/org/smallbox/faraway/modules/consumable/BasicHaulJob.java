@@ -89,12 +89,12 @@ public class BasicHaulJob extends JobModel {
         // Apporte les composants à la fabrique
         addMoveTask("Bring back to factory", _targetParcel);
 
-        // Charge les comnposants dans la fabrique
-        addTechnicalTask("Load factory", character ->
-                _targetConsumables.forEach((initialConsumable, quantity) -> {
-                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(initialConsumable.getInfo(), quantity);
-                    _item.addInventory(consumable);
-                }));
+//        // Charge les comnposants dans la fabrique
+//        addTechnicalTask("Load factory", character ->
+//                _targetConsumables.forEach((initialConsumable, quantity) -> {
+//                    ConsumableItem consumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(initialConsumable.getInfo(), quantity);
+//                    _item.addInventory(consumable);
+//                }));
 
         return true;
     }

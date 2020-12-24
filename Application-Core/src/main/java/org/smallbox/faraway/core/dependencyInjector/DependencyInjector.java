@@ -4,6 +4,10 @@ import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -224,6 +228,20 @@ public class DependencyInjector {
     public void destroyGameObjects() {
         _initGame = false;
         _gameObjectPoolByClass.clear();
+
+        // For each ApplicationObject, set to null every field annotated with @Inject representing a GameObject
+        _objectPoolByClass.values().forEach(dependencyInfo -> {
+            for (Field field: dependencyInfo.dependency.getClass().getDeclaredFields()) {
+                try {
+                    field.setAccessible(true);
+                    if (field.isAnnotationPresent(Inject.class) && field.getType().isAnnotationPresent(GameObject.class)) {
+                        field.set(dependencyInfo.dependency, null);
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new GameException(DependencyInjector.class, e);
+                }
+            }
+        });
     }
 
     public <T> Collection<T> getSubTypesOf(Class<T> baseClass) {
@@ -240,6 +258,10 @@ public class DependencyInjector {
                 .filter(o -> o instanceof AbsGameModule)
                 .map(o -> (AbsGameModule)o)
                 .collect(Collectors.toList());
+    }
+
+    public Collection<DependencyInfo<?>> getGameDependencies() {
+        return _gameObjectPoolByClass.values();
     }
 
     public interface ApplicationClientInterface {

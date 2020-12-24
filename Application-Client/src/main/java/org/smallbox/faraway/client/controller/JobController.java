@@ -7,18 +7,11 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.AfterGameLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.modules.building.BasicBuildJob;
-import org.smallbox.faraway.modules.building.BasicRepairJob;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.dig.BasicDigJob;
-import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.plant.BasicHarvestJob;
-import org.smallbox.faraway.modules.storing.BasicStoreJob;
 
 /**
  * Created by Alex on 24/07/2016.
@@ -46,7 +39,7 @@ public class JobController extends LuaController {
                 listJobs.addNextView(new UIFrame(null)
                         .setSize(300, 28)
                         .addView(UIImage.create(null)
-                                .setImage(getImagePath(job))
+                                .setImage(job.getIcon())
                                 .setPosition(-19, -19)
                                 .setSize(30, 30))
                         .addView(UILabel.create(null)
@@ -69,17 +62,6 @@ public class JobController extends LuaController {
         }
 
         return job.getStatus().name();
-    }
-
-    private String getImagePath(JobModel job) {
-        if (job instanceof BasicDigJob) return "[base]/graphics/jobs/ic_mining.png";
-        if (job instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
-        if (job instanceof BasicStoreJob) return "[base]/graphics/jobs/ic_store.png";
-        if (job instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
-        if (job instanceof BasicBuildJob) return "[base]/graphics/jobs/ic_build.png";
-        if (job instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
-        if (job instanceof BasicHarvestJob) return "[base]/graphics/jobs/ic_gather.png";
-        return null;
     }
 
     @GameShortcut(key = Input.Keys.T)

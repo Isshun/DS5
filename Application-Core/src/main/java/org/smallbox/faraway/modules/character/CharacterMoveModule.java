@@ -1,9 +1,7 @@
 package org.smallbox.faraway.modules.character;
 
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
@@ -38,7 +36,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 
     @Override
     public void onModuleUpdate(Game game) {
-        fixCharacterPosition();
+//        fixCharacterPosition();
 
         characterModule.getCharacters().forEach(character -> {
             character.setDirection(MovableModel.Direction.NONE);
@@ -120,18 +118,18 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
         }
     }
 
-    private void fixCharacterPosition() {
-        characterModule.getCharacters().stream()
-                .filter(character -> character.getParcel() != null && !character.getParcel().isWalkable())
-                .forEach(character -> {
-                    Log.warning(getName() + " is stuck !");
-                    character.setParcel(WorldHelper.getNearestWalkable(character.getParcel(), 1, 20));
-                    if (character.getJob() != null) {
-                        character.getJob().quit(character);
-                        character.clearJob(character.getJob());
-                    }
-                });
-    }
+//    private void fixCharacterPosition() {
+//        characterModule.getCharacters().stream()
+//                .filter(character -> character.getParcel() != null && !character.getParcel().isWalkable())
+//                .forEach(character -> {
+//                    Log.warning(getName() + " is stuck !");
+//                    character.setParcel(WorldHelper.getNearestWalkable(character.getParcel(), 1, 20));
+//                    if (character.getJob() != null) {
+//                        character.getJob().quit(character);
+//                        character.clearJob(character.getJob());
+//                    }
+//                });
+//    }
 
     public boolean havePeopleOnProximity(CharacterModel character) {
         return characterModule.getCharacters().stream()

@@ -2,10 +2,9 @@ package org.smallbox.faraway.client.render;
 
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.common.ParcelCommon;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;

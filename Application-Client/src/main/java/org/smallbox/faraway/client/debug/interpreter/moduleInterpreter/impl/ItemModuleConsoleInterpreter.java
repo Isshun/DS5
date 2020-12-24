@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.impl;
 
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCommand;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 

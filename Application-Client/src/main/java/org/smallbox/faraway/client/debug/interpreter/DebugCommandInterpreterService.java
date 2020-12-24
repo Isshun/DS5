@@ -4,9 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCommand;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.impl.*;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.InvocationTargetException;

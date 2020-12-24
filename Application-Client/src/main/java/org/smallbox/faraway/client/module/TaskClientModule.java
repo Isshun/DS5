@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.module;
 
 import org.smallbox.faraway.common.ClientGameTask;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 
 import java.util.Collection;
 import java.util.Map;

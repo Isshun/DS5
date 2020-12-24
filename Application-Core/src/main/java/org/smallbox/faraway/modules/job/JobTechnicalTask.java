@@ -1,22 +1,20 @@
 package org.smallbox.faraway.modules.job;
 
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-
 /**
  * Created by Alex on 28/02/2017.
  */
 public class JobTechnicalTask extends JobTask {
 
     public interface JobTechnicalTaskAction {
-        void onExecuteTask(CharacterModel character);
+        void onExecuteTask();
     }
 
     public String label;
     public JobTechnicalTaskAction action;
 
-    public JobTechnicalTask(String label, JobTechnicalTaskAction action) {
-        super(label, (character, hourInterval) -> {
-            action.onExecuteTask(character);
+    public JobTechnicalTask(JobTechnicalTaskAction action) {
+        super("technical", (character, hourInterval) -> {
+            action.onExecuteTask();
             return JobTaskReturn.TASK_COMPLETE;
         });
         this.label = label;

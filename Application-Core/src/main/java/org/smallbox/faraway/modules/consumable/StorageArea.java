@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.consumable;
 
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -10,10 +11,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Alex on 13/06/2015.
- */
-@AreaTypeInfo(label = "Storage")
+@GameObject
+@AreaTypeInfo(label = "Storage", color = 0xff0000ff)
 public class StorageArea extends AreaModel {
     private static int                  _count;
     private int                         _index;

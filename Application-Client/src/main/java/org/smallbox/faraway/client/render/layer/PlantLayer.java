@@ -1,12 +1,11 @@
 package org.smallbox.faraway.client.render.layer;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 

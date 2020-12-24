@@ -1,23 +1,51 @@
 package org.smallbox.faraway.modules.job;
 
+import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.building.BasicBuildJob;
+import org.smallbox.faraway.modules.building.BasicRepairJob;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
+import org.smallbox.faraway.modules.storing.BasicStoreJob;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
- * Base class for job
- */
-public abstract class JobModel extends ObjectModel {
+public class JobModel extends ObjectModel {
+
+    public double _time;
+    private String icon;
+    private Color color;
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIcon() {
+        if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
+        if (this instanceof BasicStoreJob) return "[base]/graphics/jobs/ic_store.png";
+        if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
+        if (this instanceof BasicBuildJob) return "[base]/graphics/jobs/ic_build.png";
+        if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
+        return icon;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Color getColor() {
+        return color;
+    }
 
     public enum JobCheckReturn {
         OK, STAND_BY, ABORT, BLOCKED
@@ -45,15 +73,16 @@ public abstract class JobModel extends ObjectModel {
     protected String            _label;
     protected JobStatus         _status = JobStatus.JOB_INITIALIZED;
     protected String            _message;
-    protected ParcelModel       _jobParcel;
-    protected ParcelModel       _targetParcel;
-    protected ParcelModel       _startParcel;
+    public ParcelModel       _jobParcel;
+    public ParcelModel       _targetParcel;
+    public ParcelModel       _startParcel;
     protected boolean           _isEntertainment;
     protected boolean           _isAuto;
     protected String            _mainLabel = "";
     protected Object            _data;
     protected boolean           _visible = true;
     protected JobTaskReturn     _lastTaskReturn;
+    private CharacterSkillExtra.SkillType skillType;
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
         init();
@@ -116,7 +145,7 @@ public abstract class JobModel extends ObjectModel {
     public boolean                  isAuto() { return _isAuto; }
     public boolean                  isVisible() { return _visible; }
 
-    protected boolean onNewInit() { return true; }
+    public boolean onNewInit() { return true; }
     protected boolean onFirstStart() { return true; }
     protected JobCheckReturn onCheck(CharacterModel character) { return JobCheckReturn.OK; }
     protected void onUpdate() {}
@@ -156,8 +185,17 @@ public abstract class JobModel extends ObjectModel {
         _status = JobStatus.JOB_RUNNING;
     }
 
-    public abstract boolean checkCharacterAccepted(CharacterModel character);
-    public abstract CharacterSkillExtra.SkillType getSkillType();
+    public boolean checkCharacterAccepted(CharacterModel character) {
+        return true;
+    }
+
+    public CharacterSkillExtra.SkillType getSkillType() {
+        return skillType;
+    }
+
+    public void setSkillType(CharacterSkillExtra.SkillType skillType) {
+        this.skillType = skillType;
+    }
 
     /**
      * Retire le personnage de la tache, mais celle-ci continue
@@ -272,16 +310,10 @@ public abstract class JobModel extends ObjectModel {
      * Add technical task
      * Technical task are basically a standard task with no return status
      *
-     * @param label Label
      * @param jobTechnicalTaskAction Action
      */
-    public void addTechnicalTask(String label, JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
-
-        if (_tasks.isEmpty()) {
-            _label = label;
-        }
-
-        _tasks.add(new JobTechnicalTask(label, jobTechnicalTaskAction));
+    public void addTechnicalTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
+        _tasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
     }
 
     /**

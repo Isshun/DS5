@@ -2,17 +2,15 @@ package org.smallbox.faraway.client.lua;
 
 import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.ObjectUtils;
-import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.dependencyInjector.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -46,20 +44,24 @@ public class LuaControllerManager implements GameObserver {
         _controllers = DependencyInjector.getInstance().getSubTypesOf(LuaController.class).stream()
                 .collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
 
+        _controllers.values().forEach(this::initController);
+    }
+
+    public void initController(LuaController controller) {
         // Bind rootView to controller
-        _controllers.values().forEach(this::bindRootViewToController);
+        bindRootViewToController(controller);
 
         // Bind sub controllers
-        _controllers.values().forEach(this::bindControllerSubControllers);
+        bindControllerSubControllers(controller);
 
         // Bind lua field
-        _controllers.values().forEach(this::bindFieldsForController);
+        bindFieldsForController(controller);
 
         // Bind action methods
-        _controllers.values().forEach(this::bindMethodsForController);
+        bindMethodsForController(controller);
 
         // Call OnReloadUI
-        _controllers.values().forEach(GameClientObserver::onReloadUI);
+        controller.onReloadUI();
     }
 
     @Override

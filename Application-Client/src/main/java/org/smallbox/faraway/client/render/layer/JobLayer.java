@@ -5,13 +5,13 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
+import org.smallbox.faraway.modules.dig.DigJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.plant.BasicHarvestJob;
 import org.smallbox.faraway.modules.storing.BasicStoreJob;
 
 @GameObject
@@ -50,9 +50,12 @@ public class JobLayer extends BaseLayer {
                 renderer.drawTextOnMap(job.getJobParcel(), "craft", 10, Color.CHARTREUSE, 0, 0);
             }
 
-            if (job instanceof BasicHarvestJob) {
-                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_gather.png"));
-                renderer.drawTextOnMap(job.getJobParcel(), "gather", 10, Color.CHARTREUSE, 0, 0);
+            if (job.getIcon() != null) {
+                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
+            }
+
+            if (job.getColor() != null) {
+                renderer.drawTextOnMap(job.getJobParcel(), "gather", 10, job.getColor(), 0, 0);
             }
 
         });

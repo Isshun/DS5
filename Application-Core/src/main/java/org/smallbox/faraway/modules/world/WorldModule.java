@@ -1,11 +1,8 @@
 package org.smallbox.faraway.modules.world;
 
-import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.bridge.Connection;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;

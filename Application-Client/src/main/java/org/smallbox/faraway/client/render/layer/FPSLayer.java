@@ -2,10 +2,9 @@ package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
 
 @GameObject

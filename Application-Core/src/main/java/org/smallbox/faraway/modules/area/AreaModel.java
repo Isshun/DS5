@@ -74,4 +74,8 @@ public abstract class AreaModel extends ObjectModel {
     public boolean haveParcel(ParcelModel parcel) {
         return _parcels.contains(parcel);
     }
+
+    public void execute(ParcelModel parcel) {
+
+    }
 }
