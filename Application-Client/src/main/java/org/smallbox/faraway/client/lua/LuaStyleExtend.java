@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.lua;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.ModuleBase;

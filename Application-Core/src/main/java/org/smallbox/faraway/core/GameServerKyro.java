@@ -2,12 +2,10 @@ package org.smallbox.faraway.core;
 
 import org.reflections.Reflections;
 import org.smallbox.faraway.GameSerializer;
-import org.smallbox.faraway.common.*;
+import org.smallbox.faraway.common.KryoMessage;
 import org.smallbox.faraway.core.bridge.Connection;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

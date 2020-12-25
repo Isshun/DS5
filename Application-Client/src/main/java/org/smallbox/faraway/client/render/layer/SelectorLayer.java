@@ -2,12 +2,11 @@ package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.GameActionManager;
+import org.smallbox.faraway.client.GameActionMode;
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.module.CursorSelection.CursorSelectionModule;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
-import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -35,7 +34,7 @@ public class SelectorLayer extends BaseLayer {
 
     @Override
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        if (gameActionManager.getMode() != GameActionManager.Mode.NONE && gameEventManager.isMousePressed()) {
+        if (gameActionManager.getMode() != GameActionMode.NONE && gameEventManager.isMousePressed()) {
             int fromX = gameEventManager.getMouseDownX();
             int fromY = gameEventManager.getMouseDownY();
             int width = gameEventManager.getMouseX() - gameEventManager.getMouseDownX();

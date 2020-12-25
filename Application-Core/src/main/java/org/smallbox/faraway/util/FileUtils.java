@@ -3,7 +3,6 @@ package org.smallbox.faraway.util;
 import com.badlogic.gdx.files.FileHandle;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.smallbox.faraway.core.Application;
 
 import java.io.File;
 import java.io.FileInputStream;

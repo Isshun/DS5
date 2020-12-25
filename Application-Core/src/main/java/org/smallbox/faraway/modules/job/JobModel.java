@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.job;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
-import org.smallbox.faraway.modules.storing.BasicStoreJob;
+import org.smallbox.faraway.modules.storage.BasicStoreJob;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;

@@ -1,13 +1,11 @@
 package main.java.org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.GDXApplication;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;

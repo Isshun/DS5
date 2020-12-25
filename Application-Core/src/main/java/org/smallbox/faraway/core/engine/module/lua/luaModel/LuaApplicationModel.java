@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
-import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

@@ -5,9 +5,8 @@ import org.smallbox.faraway.core.CharacterSerializer;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
-import org.smallbox.faraway.modules.character.model.base.*;
 import org.smallbox.faraway.modules.character.model.base.CharacterName;
-import org.smallbox.faraway.modules.job.freeTimeJobs.BasicWalkJob;
+import org.smallbox.faraway.modules.character.model.base.*;
 
 @CharacterInfoAnnotation("base.character.human")
 @GameSerializer(CharacterSerializer.class)

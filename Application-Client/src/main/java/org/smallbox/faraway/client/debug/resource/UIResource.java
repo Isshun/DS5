@@ -40,7 +40,6 @@
 
 package org.smallbox.faraway.client.debug.resource;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;

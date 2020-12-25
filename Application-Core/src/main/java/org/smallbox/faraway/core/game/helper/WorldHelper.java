@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game.helper;
 
 import com.badlogic.gdx.math.MathUtils;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.GameInfo;
@@ -285,6 +284,13 @@ public class WorldHelper {
 
     public static boolean isSurroundedByBlocked(ParcelModel toParcel) {
         return isSurroundedByBlocked(toParcel.x, toParcel.y, toParcel.z);
+    }
+
+    public static boolean isSurroundedCross(ParcelModel p1, ParcelModel p2) {
+        return (p1.z == p2.z && p1.x == p2.x - 1 && p1.y == p2.y)
+                || (p1.z == p2.z && p1.x == p2.x + 1 && p1.y == p2.y)
+                || (p1.z == p2.z && p1.x == p2.x && p1.y == p2.y - 1)
+                || (p1.z == p2.z && p1.x == p2.x && p1.y == p2.y + 1);
     }
 
     public static boolean isSurroundedByBlocked(int x, int y, int z) {

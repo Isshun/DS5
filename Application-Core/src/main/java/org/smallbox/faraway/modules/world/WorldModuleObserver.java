@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.world;
 
-import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;

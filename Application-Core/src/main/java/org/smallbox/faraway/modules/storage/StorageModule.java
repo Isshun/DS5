@@ -1,16 +1,15 @@
-package org.smallbox.faraway.modules.storing;
+package org.smallbox.faraway.modules.storage;
 
-import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.area.AreaModule;
+import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -20,7 +19,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
-public class StoringModule extends GameModule {
+public class StorageModule extends AreaModuleBase<StorageArea> {
 
     @Inject
     private WorldModule worldModule;
@@ -87,7 +86,6 @@ public class StoringModule extends GameModule {
     }
 
     private void createStoreJob(StorageArea storageArea, ConsumableItem consumable) {
-
         // Crée le job sur la première parcel disponible
         if (storageArea != null) {
             storageArea.getParcels().stream()
@@ -126,10 +124,6 @@ public class StoringModule extends GameModule {
 
     }
 
-    /**
-     *
-     * @param area
-     */
     public void notifyRulesChange(StorageArea area) {
 
         // Annule les jobs contenant des consumables non compatible avec les zone de stockage
@@ -137,5 +131,10 @@ public class StoringModule extends GameModule {
                 .filter(job -> area.getParcels().contains(job.getTargetParcel()))
                 .filter(job -> !area.isAccepted(job.getConsumables()))
                 .forEach(job -> jobModule.removeJob(job));
+    }
+
+    @Override
+    public StorageArea onNewArea() {
+        return new StorageArea();
     }
 }

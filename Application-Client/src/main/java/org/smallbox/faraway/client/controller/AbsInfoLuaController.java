@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;

@@ -2,8 +2,8 @@ package org.smallbox.faraway.modules.room.model;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.common.NotImplementedException;
-import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

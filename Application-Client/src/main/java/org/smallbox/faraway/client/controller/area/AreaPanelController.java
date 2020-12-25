@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.controller.area;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.GameActionManager;
+import org.smallbox.faraway.client.GameActionMode;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
@@ -12,13 +13,12 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
-import org.smallbox.faraway.util.Log;
 
 import java.util.Comparator;
 
@@ -69,7 +69,7 @@ public class AreaPanelController extends LuaController {
                             .setFocusBackgroundColor(0x25c9cbff)
                             .setRegularBackgroundColor(0x121c1eff)
                             .setOnClickListener((int x, int y) -> {
-                                gameActionManager.setAreaAction(GameActionManager.Mode.ADD_AREA, (AreaModel)dependency);
+                                gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel)dependency);
 //                                areaLayer.setMode(AreaLayer.Mode.ADD, cls);
 //                                selectionManager.setSelectionListener(parcels -> {
 //                                    areaLayer.setMode(AreaLayer.Mode.NONE, cls);

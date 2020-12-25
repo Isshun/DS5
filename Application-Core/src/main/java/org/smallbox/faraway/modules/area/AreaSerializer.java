@@ -2,13 +2,12 @@ package org.smallbox.faraway.modules.area;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.SQLManager;
-import org.smallbox.faraway.modules.consumable.StorageArea;
+import org.smallbox.faraway.modules.storage.StorageArea;
 
 public class AreaSerializer extends GameSerializer<AreaModule> {
 

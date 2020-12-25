@@ -2,10 +2,8 @@ package org.smallbox.faraway.util;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 
 import java.io.File;
 import java.io.FileInputStream;

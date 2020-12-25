@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.item.job;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.module.path.PathManager;

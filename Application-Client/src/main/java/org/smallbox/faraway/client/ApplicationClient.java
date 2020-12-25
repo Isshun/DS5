@@ -1,17 +1,12 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
-import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.ApplicationClientListener;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.GameEventListener;

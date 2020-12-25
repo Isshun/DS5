@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.lua;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;

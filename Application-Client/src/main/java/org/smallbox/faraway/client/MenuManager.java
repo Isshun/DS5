@@ -11,12 +11,10 @@ import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.*;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.util.Log;
 
 import java.lang.reflect.Field;

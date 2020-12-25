@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.area;
 
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.common.UUIDUtils;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
@@ -74,5 +75,9 @@ public abstract class AreaModel extends ObjectModel {
 
     public void execute(ParcelModel parcel) {
 
+    }
+
+    public boolean haveParcelNextTo(ParcelModel targetParcel) {
+        return _parcels.stream().anyMatch(parcel -> WorldHelper.isSurroundedCross(parcel, targetParcel));
     }
 }

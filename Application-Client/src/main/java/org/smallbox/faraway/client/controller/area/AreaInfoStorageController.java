@@ -18,8 +18,8 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.consumable.StorageArea;
-import org.smallbox.faraway.modules.storing.StoringModule;
+import org.smallbox.faraway.modules.storage.StorageArea;
+import org.smallbox.faraway.modules.storage.StorageModule;
 
 import java.util.Collection;
 import java.util.Queue;
@@ -41,7 +41,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     private AreaModule areaModule;
 
     @Inject
-    private StoringModule storingModule;
+    private StorageModule storageModule;
 
     @Inject
     private AreaInfoController areaInfoController;
@@ -154,7 +154,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                             .setPosition(300, 0)
                             .setOnClickListener((int x, int y) -> {
                                 clickOnBox(categoryContainer.categoryName, null);
-                                storingModule.notifyRulesChange(_area);
+                                storageModule.notifyRulesChange(_area);
                                 displayTree();
                             })
                     )
@@ -174,7 +174,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                                     .setPosition(300, 0)
                                     .setOnClickListener((int x, int y) -> {
                                         clickOnBox(categoryContainer.categoryName, subCategoryContainer.subCategoryName);
-                                        storingModule.notifyRulesChange(_area);
+                                        storageModule.notifyRulesChange(_area);
                                         displayTree();
                                     }))
                     );
@@ -205,7 +205,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                             .setPosition(300, 0)
                             .setOnClickListener((int x, int y) -> {
                                 _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
-                                storingModule.notifyRulesChange(_area);
+                                storageModule.notifyRulesChange(_area);
                                 displayTree();
                             }))
             );

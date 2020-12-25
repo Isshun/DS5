@@ -2,7 +2,6 @@ package org.smallbox.faraway.core.game;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;

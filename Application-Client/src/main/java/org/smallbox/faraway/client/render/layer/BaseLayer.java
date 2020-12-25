@@ -1,12 +1,10 @@
 package org.smallbox.faraway.client.render.layer;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.SelectionManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -14,9 +12,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     private final boolean       _isThirdParty;

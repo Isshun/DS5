@@ -43,6 +43,9 @@ public class DebugCommandInterpreterService {
     private StructureModuleConsoleInterpreter structureModuleConsoleInterpreter;
 
     @Inject
+    private StorageModuleConsoleInterpreter storageModuleConsoleInterpreter;
+
+    @Inject
     private WeatherModuleConsoleInterpreter weatherModuleConsoleInterpreter;
 
     @Inject
@@ -60,8 +63,8 @@ public class DebugCommandInterpreterService {
         EXTRA_COMMANDS.put("job", jobModuleConsoleInterpreter);
 //        EXTRA_COMMANDS.put("plan", characterModuleConsoleInterpreter);
         EXTRA_COMMANDS.put("room", roomModuleConsoleInterpreter);
-//        EXTRA_COMMANDS.put("storing", characterModuleConsoleInterpreter);
         EXTRA_COMMANDS.put("structure", structureModuleConsoleInterpreter);
+        EXTRA_COMMANDS.put("storage", storageModuleConsoleInterpreter);
         EXTRA_COMMANDS.put("weather", weatherModuleConsoleInterpreter);
         EXTRA_COMMANDS.put("world", worldModuleConsoleInterpreter);
         EXTRA_COMMANDS.put("module", moduleConsoleInterpreter);

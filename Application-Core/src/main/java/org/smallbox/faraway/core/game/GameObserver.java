@@ -6,8 +6,8 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.modules.consumable.StorageArea;
 import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.modules.storage.StorageArea;
 
 public interface GameObserver {
     default void onObjectComplete(MapObjectModel mapObjectModel){}

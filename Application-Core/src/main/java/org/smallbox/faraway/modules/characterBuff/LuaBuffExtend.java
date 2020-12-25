@@ -2,8 +2,6 @@ package org.smallbox.faraway.modules.characterBuff;
 
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;

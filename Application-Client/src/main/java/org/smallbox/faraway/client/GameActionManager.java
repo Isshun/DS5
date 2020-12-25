@@ -13,19 +13,17 @@ import java.util.List;
 @GameObject
 public class GameActionManager extends GameManager {
 
-    public enum Mode {NONE, ADD_AREA, REMOVE_AREA}
-
-    private Mode mode = Mode.NONE;
+    private GameActionMode mode = GameActionMode.NONE;
     private AreaModel areaAction;
     private AreaTypeInfo areaTypeInfo;
     private Color actionColor;
     private String actionLabel;
 
-    public void setMode(Mode mode) {
+    public void setMode(GameActionMode mode) {
         this.mode = mode;
     }
 
-    public void setAreaAction(Mode mode, AreaModel areaModel) {
+    public void setAreaAction(GameActionMode mode, AreaModel areaModel) {
         Log.info("Area action: " + areaModel);
         this.mode = mode;
         this.areaAction = areaModel;
@@ -34,7 +32,7 @@ public class GameActionManager extends GameManager {
         this.actionLabel = areaModel.getClass().getAnnotation(AreaTypeInfo.class).label();
     }
 
-    public Mode getMode() {
+    public GameActionMode getMode() {
         return mode;
     }
 

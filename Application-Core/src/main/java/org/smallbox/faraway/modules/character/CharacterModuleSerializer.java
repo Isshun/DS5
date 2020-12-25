@@ -2,7 +2,6 @@ package org.smallbox.faraway.modules.character;
 
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;

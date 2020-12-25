@@ -5,8 +5,6 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.Collection;
 
@@ -101,7 +99,7 @@ public class GameEventManager implements EventManager {
 //        }
 
         if (button == Input.Buttons.RIGHT) {
-            gameActionManager.setMode(GameActionManager.Mode.NONE);
+            gameActionManager.setMode(GameActionMode.NONE);
         }
 
         ApplicationClient.notify(obs -> obs.onMouseRelease(x, y, button));

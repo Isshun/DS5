@@ -2,7 +2,6 @@ package org.smallbox.faraway.client.drawable;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 

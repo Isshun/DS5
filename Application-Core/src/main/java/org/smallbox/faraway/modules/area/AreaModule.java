@@ -1,6 +1,8 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -14,15 +16,20 @@ import java.util.stream.Stream;
 
 @ModuleSerializer(AreaSerializer.class)
 @GameObject
-@SuppressWarnings("Duplicates")
 public class AreaModule extends GameModule {
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
 
     private Collection<Class<? extends AreaModel>> _areaClasses = new LinkedBlockingQueue<>();
+    private Collection<AreaModuleListener> specializedAreaModules;
 
     public Collection<AreaModel> getAreas() {
         return _areas;
+    }
+
+    @OnInit
+    private void init() {
+        specializedAreaModules = DependencyInjector.getInstance().getSubTypesOf(AreaModuleListener.class);
     }
 
     public <T extends AreaModel> Stream<T> getAreas(Class<T> cls) {
@@ -107,6 +114,10 @@ public class AreaModule extends GameModule {
     public void removeArea(List<ParcelModel> parcels) {
         _areas.forEach(area -> parcels.forEach(area::removeParcel));
         _areas.removeIf(area -> area.getParcels().isEmpty());
+    }
+
+    public void removeArea(ParcelModel parcel) {
+        specializedAreaModules.forEach(specializedAreaModule -> specializedAreaModule.onRemoveParcel(parcel));
     }
 
 }

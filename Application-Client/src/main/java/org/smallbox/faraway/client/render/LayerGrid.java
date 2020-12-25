@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.render;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.render.layer.RenderLayer;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;

@@ -7,10 +7,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-
-import java.util.Collection;
 
 public class ParcelGraph implements IndexedGraph<ParcelModel> {
     private final ParcelHeuristic parcelHeuristic = new ParcelHeuristic();

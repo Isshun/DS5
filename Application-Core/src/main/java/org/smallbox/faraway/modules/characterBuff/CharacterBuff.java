@@ -2,11 +2,9 @@ package org.smallbox.faraway.modules.characterBuff;
 
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 public class CharacterBuff extends ObjectModel {

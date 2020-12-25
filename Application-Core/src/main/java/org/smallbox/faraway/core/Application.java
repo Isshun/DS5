@@ -2,7 +2,9 @@ package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.game.*;
+import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.GameObserverPriority;
 
 import java.util.Queue;
 import java.util.concurrent.PriorityBlockingQueue;

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.itemFactory;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;

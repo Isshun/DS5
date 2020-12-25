@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import org.smallbox.faraway.util.Log;
 
 public class TestApplication extends ApplicationAdapter {
