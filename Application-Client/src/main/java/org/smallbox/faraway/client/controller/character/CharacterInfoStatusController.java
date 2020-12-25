@@ -134,19 +134,19 @@ public class CharacterInfoStatusController extends LuaController {
 
         // Display optimal
         if (entry.value() > entry.warning) {
-            label.setTextColor(0xbbd3ff07).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
+//            label.setTextColor(0xbbd3ff07).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
             gauge.setTextureRect(0, 80, Utils.round(entry.value() * 170, 10), 8);
         }
 
         // Display warning
         else if (entry.value() > entry.critical) {
-            label.setTextColor(0xbbfeb60b).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
+//            label.setTextColor(0xbbfeb60b).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
             gauge.setTextureRect(0, 32, Utils.round(entry.value() * 170, 10), 8);
         }
 
         // Display critical
         else {
-            label.setTextColor(0xbbff3131).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
+//            label.setTextColor(0xbbff3131).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
             gauge.setTextureRect(0, 48, Math.max(10, Utils.round(entry.value() * 170, 10)), 8);
         }
     }

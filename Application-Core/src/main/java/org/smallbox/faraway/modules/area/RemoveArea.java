@@ -17,7 +17,7 @@ import java.util.Set;
 public class RemoveArea extends AreaModel {
 
     @Inject
-    private AreaModule areaModule;
+    private GameActionManager areaModule;
 
     @Override
     public boolean isAccepted(ItemInfo itemInfo) {

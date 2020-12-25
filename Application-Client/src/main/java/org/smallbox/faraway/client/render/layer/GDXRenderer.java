@@ -191,7 +191,7 @@ public class GDXRenderer {
     public void drawPixel(int x, int y, int width, int height, Color color) {
         if (color != null) {
             _batch.begin();
-            Gdx.gl.glEnable(GL20.GL_BLEND);
+            //Gdx.gl.glEnable(GL20.GL_BLEND);
             _drawPixelShapeLayer.setProjectionMatrix(_camera.combined);
             _drawPixelShapeLayer.begin(ShapeRenderer.ShapeType.Filled);
             _drawPixelShapeLayer.setColor(color);

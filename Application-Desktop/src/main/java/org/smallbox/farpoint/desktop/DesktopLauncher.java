@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.test.PerlinTestApp;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -29,6 +30,7 @@ public class DesktopLauncher {
         Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
         new LwjglApplication(new GDXApplication(() -> getGameCallback(applicationConfigService.getConfig())), LwjglConfig.from(applicationConfigService.getConfig()));
+//        new LwjglApplication(new PerlinTestApp());
     }
 
     private static void getGameCallback(ApplicationConfig applicationConfig) {

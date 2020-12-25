@@ -1,5 +1,7 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -94,10 +96,7 @@ public class AreaModule extends GameModule {
     }
 
     public AreaModel getArea(ParcelModel parcel) {
-        return _areas.stream()
-                .filter(area -> area.getParcels().contains(parcel))
-                .findFirst()
-                .orElse(null);
+        throw new NotImplementedException();
     }
 
     public <T extends AreaModel> Stream<T> getArea(Class<T> cls) {
@@ -120,4 +119,14 @@ public class AreaModule extends GameModule {
         specializedAreaModules.forEach(specializedAreaModule -> specializedAreaModule.onRemoveParcel(parcel));
     }
 
+    public boolean hasArea(ParcelModel parcel) {
+        return specializedAreaModules.stream().anyMatch(listener -> listener.hasArea(parcel));
+    }
+
+    public void selectArea(ParcelModel parcel) {
+        specializedAreaModules.stream()
+                .filter(listener -> listener.hasArea(parcel))
+                .findFirst()
+                .ifPresent(listener -> listener.select(parcel));
+    }
 }

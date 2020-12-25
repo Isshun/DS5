@@ -68,7 +68,7 @@ public class GameManager implements GameObserver {
         DependencyInjector.getInstance().callMethodAnnotatedBy(OnGameLayerInit.class);
         DependencyInjector.getInstance().callMethodAnnotatedBy(AfterGameLayerInit.class);
 
-        worldFactory.create(data, _game, gameInfo.region);
+        worldFactory.buildMap();
 
         _game.createModules();
 

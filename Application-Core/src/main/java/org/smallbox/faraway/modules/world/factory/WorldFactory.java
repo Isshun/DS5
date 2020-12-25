@@ -7,76 +7,43 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.IWorldFactory;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.modules.world.factory.old.MapFactoryConfig;
+import org.smallbox.faraway.modules.world.factory.old.PerlingGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationObject
-public class WorldFactory extends ApplicationModule implements IWorldFactory {
+public class WorldFactory {
 
     @Inject
     private WorldModule worldModule;
 
-    private ParcelModel[][][]   _parcels;
-    private int                 _floors;
-    private int                 _width;
-    private int                 _height;
+    @Inject
+    private Game game;
 
-    @Override
-    public void create(Data data, Game game, RegionInfo regionInfo) {
-        ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
-        ItemInfo defaultGroundInfo = data.getItemInfo("base.ground.grass");
+    @Inject
+    private Data data;
 
-        List<ParcelModel> parcelList = new ArrayList<>();
-
+    public void buildMap() {
         MathUtils.random.setSeed(42);
 
-        _floors = game.getInfo().worldFloors;
-        _width = game.getInfo().worldWidth;
-        _height = game.getInfo().worldHeight;
-        _parcels = new ParcelModel[_width][_height][_floors];
-        for (int x = 0; x < _width; x++) {
-            for (int y = 0; y < _height; y++) {
-                for (int f = 0; f < _floors; f++) {
-                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
-                    if (parcel.z < _floors - 1) {
-                        parcel.setRockInfo(defaultRockInfo);
-                    } else {
-                        parcel.setGroundInfo(defaultGroundInfo);
-                    }
-                    _parcels[x][y][f] = parcel;
-                    parcelList.add(parcel);
-                }
-            }
-        }
+        int floors = game.getInfo().worldFloors;
+        int width = game.getInfo().worldWidth;
+        int height = game.getInfo().worldHeight;
 
-        // Add region elements
-        if (regionInfo != null) {
-            ItemInfo regionGroundInfo = data.getItemInfo(regionInfo.terrains.get(0).ground);
+        List<ParcelModel> parcelList = new ArrayList<>();
+        ParcelModel[][][] parcelsMap = new ParcelModel[width][height][floors];
 
-            parcelList.forEach(parcel -> {
-                if (parcel.z < _floors - 1) {
-                    parcel.setRockInfo(defaultRockInfo);
-                    parcel.setGroundInfo(defaultRockInfo);
-                } else {
-                    parcel.setGroundInfo(regionGroundInfo);
-                }
-            });
-        }
+        initDefaultRockAndGround(parcelList, parcelsMap, width, height, floors);
+        initRegionRockAndGround(parcelList, floors);
+        computeGroundFloorMountains(parcelsMap, width, height);
+        cleanMap(parcelList, parcelsMap);
 
-        worldModule.init(game, _parcels, parcelList);
-
-//        WorldHelper.init(game.getInfo(), _parcels);
-
-//        ModuleHelper.getWorldModule().init(game, _parcels, parcelList);
-
-
-//        throw new NotImplementedException("");
+        worldModule.init(game, parcelsMap, parcelList);
 
 //        _parcels = new ParcelModel[_width][_height][_floors];
 //        List<ParcelModel> parcelList = new ArrayList<>();
@@ -136,12 +103,71 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
 //        Application.pathManager.init(parcelList);
     }
 
+    private void initDefaultRockAndGround(List<ParcelModel> parcelList, ParcelModel[][][] parcelsMap, int width, int height, int floors) {
+        ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
+        ItemInfo defaultGroundInfo = data.getItemInfo("base.ground.grass");
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int f = 0; f < floors; f++) {
+                    ParcelModel parcel = new ParcelModel(x + (y * width) + (f * width * height), x, y, f);
+                    if (parcel.z < floors - 1) {
+                        parcel.setRockInfo(defaultRockInfo);
+                    } else {
+                        parcel.setGroundInfo(defaultGroundInfo);
+                    }
+                    parcelsMap[x][y][f] = parcel;
+                    parcelList.add(parcel);
+                }
+            }
+        }
+    }
+
+    // Add region elements
+    private void initRegionRockAndGround(List<ParcelModel> parcelList, int floors) {
+        ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
+        ItemInfo defaultGroundInfo = data.getItemInfo("base.ground.grass");
+
+        if (game.getInfo().region != null) {
+            ItemInfo regionGroundInfo = data.getItemInfo(game.getInfo().region.terrains.get(0).ground);
+
+            parcelList.forEach(parcel -> {
+                if (parcel.z < floors - 1) {
+                    parcel.setRockInfo(defaultRockInfo);
+                    parcel.setGroundInfo(defaultRockInfo);
+                } else {
+                    parcel.setGroundInfo(regionGroundInfo);
+                }
+            });
+        }
+    }
+
+    private void computeGroundFloorMountains(ParcelModel[][][] _parcels, int width, int height) {
+        ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
+
+        MapFactoryConfig config = MapFactoryConfig.createMountains();
+
+        float[][] image = PerlingGenerator.GenerateWhiteNoise(width * 10, height * 10);
+        float[][] perlinNoise = PerlingGenerator.GeneratePerlinNoise(image, config.perlinOctave);
+        for (MapFactoryConfig.AdjustmentValue adjustment : config.adjustments) {
+            perlinNoise = PerlingGenerator.AdjustLevels(perlinNoise, adjustment.min, adjustment.max);
+        }
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (perlinNoise[x * 10][y * 10] < 0.7) {
+                    _parcels[x][y][1].setRockInfo(defaultRockInfo);
+                }
+            }
+        }
+    }
+
     private void cleanMap(List<ParcelModel> parcelList, ParcelModel[][][] parcels) {
         parcelList.forEach(parcel -> {
-            ParcelModel r = getParcel(parcels, parcel.x + 1, parcel.y, parcel.z);
-            ParcelModel l = getParcel(parcels, parcel.x - 1, parcel.y, parcel.z);
-            ParcelModel t = getParcel(parcels, parcel.x, parcel.y + 1, parcel.z);
-            ParcelModel b = getParcel(parcels, parcel.x, parcel.y - 1, parcel.z);
+            ParcelModel r = safeParcel(parcels, parcel.x + 1, parcel.y, parcel.z);
+            ParcelModel l = safeParcel(parcels, parcel.x - 1, parcel.y, parcel.z);
+            ParcelModel t = safeParcel(parcels, parcel.x, parcel.y + 1, parcel.z);
+            ParcelModel b = safeParcel(parcels, parcel.x, parcel.y - 1, parcel.z);
 
             // Add resource on empty parcel surrounded by rock
             if (!parcel.hasRock()) {
@@ -178,57 +204,57 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
         });
     }
 
-    private ParcelModel getParcel(ParcelModel[][][] parcels, int x, int y, int z) {
-        return (x < 0 || x >= _width || y < 0 || y >= _height || z < 0 || z >= _floors) ? null : parcels[x][y][z];
+    private ParcelModel safeParcel(ParcelModel[][][] parcels, int x, int y, int z) {
+        return (x < 0 || x >= game.getInfo().worldWidth || y < 0 || y >= game.getInfo().worldHeight || z < 0 || z >= game.getInfo().worldFloors) ? null : parcels[x][y][z];
     }
-
-    private void applyToParcel(Data data, RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
-        if (terrain.condition == null
-                || ("rock".equals(terrain.condition) && parcel.hasRock())
-                || ("ground".equals(terrain.condition) && !parcel.hasRock() && parcel.hasGround())) {
-
-            // Set liquid
-            if (terrain.liquid != null) {
-                if (parcel.z == _floors - 1) {
-                    ItemInfo liquidInfo = data.getItemInfo(terrain.liquid);
-
-                    // Replace ground on current parcel by liquid surface
-                    parcel.setGroundInfo(liquidInfo.surface);
-
-                    // Put ground on z-1 parcel
-                    if (terrain.ground != null) {
-                        _parcels[parcel.x][parcel.y][parcel.z - 1].setGroundInfo(data.getItemInfo(terrain.ground));
-                        _parcels[parcel.x][parcel.y][parcel.z - 1].setRockInfo(null);
-                    }
-
-                    // Put liquid on z-1 parcel
-                    _parcels[parcel.x][parcel.y][parcel.z - 1].setLiquidInfo(liquidInfo, 0.5);
-                }
-                return;
-            }
-
-            // Set ground
-            if (terrain.ground != null) {
-                parcel.setGroundInfo(data.getItemInfo(terrain.ground));
-            }
-
-            // Add resource
-            if (terrain.resource != null) {
-                ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
-                if (resourceInfo.isRock) {
-                    parcel.setRockInfo(resourceInfo);
-                }
-//                if (resourceInfo.isPlant) {
-//                    PlantItem resource = new PlantItem(resourceInfo);
-//                    parcel.setPlant(resource);
-//                    resource.setParcel(parcel);
+//
+//    private void applyToParcel(Data data, RegionInfo.RegionTerrain terrain, ParcelModel parcel) {
+//        if (terrain.condition == null
+//                || ("rock".equals(terrain.condition) && parcel.hasRock())
+//                || ("ground".equals(terrain.condition) && !parcel.hasRock() && parcel.hasGround())) {
+//
+//            // Set liquid
+//            if (terrain.liquid != null) {
+//                if (parcel.z == _floors - 1) {
+//                    ItemInfo liquidInfo = data.getItemInfo(terrain.liquid);
+//
+//                    // Replace ground on current parcel by liquid surface
+//                    parcel.setGroundInfo(liquidInfo.surface);
+//
+//                    // Put ground on z-1 parcel
+//                    if (terrain.ground != null) {
+//                        _parcels[parcel.x][parcel.y][parcel.z - 1].setGroundInfo(data.getItemInfo(terrain.ground));
+//                        _parcels[parcel.x][parcel.y][parcel.z - 1].setRockInfo(null);
+//                    }
+//
+//                    // Put liquid on z-1 parcel
+//                    _parcels[parcel.x][parcel.y][parcel.z - 1].setLiquidInfo(liquidInfo, 0.5);
 //                }
-//                if (resource.isRock()) {
-//                    resource.getRock().setQuantity(terrain.quantity != null ? Utils.getRandom(terrain.quantity) : 10);
+//                return;
+//            }
+//
+//            // Set ground
+//            if (terrain.ground != null) {
+//                parcel.setGroundInfo(data.getItemInfo(terrain.ground));
+//            }
+//
+//            // Add resource
+//            if (terrain.resource != null) {
+//                ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
+//                if (resourceInfo.isRock) {
+//                    parcel.setRockInfo(resourceInfo);
 //                }
-            }
-        }
-    }
+////                if (resourceInfo.isPlant) {
+////                    PlantItem resource = new PlantItem(resourceInfo);
+////                    parcel.setPlant(resource);
+////                    resource.setParcel(parcel);
+////                }
+////                if (resource.isRock()) {
+////                    resource.getRock().setQuantity(terrain.quantity != null ? Utils.getRandom(terrain.quantity) : 10);
+////                }
+//            }
+//        }
+//    }
 
 //    public Queue<ParcelModel> getFreeParcels(ParcelModel startParcel) {
 //        List<ParcelModel> freeParcels = new ArrayList<>();
@@ -283,7 +309,4 @@ public class WorldFactory extends ApplicationModule implements IWorldFactory {
 //        game.getViewport().moveTo(startParcel.x, startParcel.y);
     }
 
-    public ParcelModel[][][] getParcels() {
-        return _parcels;
-    }
 }

@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.path.parcel.ParcelGraph;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
@@ -17,8 +18,10 @@ import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Stream;
 
 @GameObject
 public class PathManager extends GameModule {
@@ -238,32 +241,24 @@ public class PathManager extends GameModule {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int f = 0; f < floors; f++) {
-                    ParcelModel fromParcel = parcels[x][y][f];
-
-                    // Top
-                    if (y > 0) {
-                        parcelGraph.createConnection(fromParcel, parcels[x][y-1][f]);
-                    }
-
-                    // Bottom
-                    if (y < height - 1) {
-                        parcelGraph.createConnection(fromParcel, parcels[x][y+1][f]);
-                    }
-
-                    // Left
-                    if (x > 0) {
-                        parcelGraph.createConnection(fromParcel, parcels[x-1][y][f]);
-                    }
-
-                    // Right
-                    if (x < width - 1) {
-                        parcelGraph.createConnection(fromParcel, parcels[x+1][y][f]);
-                    }
-
+                    ParcelModel fromParcel = safeParcel(parcels, x, y, f, width, height, floors);
+                    Stream.of(
+                            safeParcel(parcels, x, y - 1, f, width, height, floors),
+                            safeParcel(parcels, x, y + 1, f, width, height, floors),
+                            safeParcel(parcels, x - 1, y, f, width, height, floors),
+                            safeParcel(parcels, x + 1, y, f, width, height, floors)
+                    )
+                            .filter(Objects::nonNull)
+                            .filter(ParcelModel::isWalkable)
+                            .forEach(parcel -> parcelGraph.createConnection(fromParcel, parcel));
                 }
             }
         }
 
+    }
+
+    private ParcelModel safeParcel(ParcelModel[][][] parcels, int x, int y, int z, int width, int height, int floors) {
+        return (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= floors) ? null : parcels[x][y][z];
     }
 
 }

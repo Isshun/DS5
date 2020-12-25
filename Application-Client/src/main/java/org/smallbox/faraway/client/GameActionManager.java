@@ -2,9 +2,11 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
+import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.util.Log;
 
@@ -12,6 +14,9 @@ import java.util.List;
 
 @GameObject
 public class GameActionManager extends GameManager {
+
+    @Inject
+    private AreaModule areaModule;
 
     private GameActionMode mode = GameActionMode.NONE;
     private AreaModel areaAction;
@@ -53,7 +58,18 @@ public class GameActionManager extends GameManager {
     }
 
     public void selectParcels(List<ParcelModel> parcelList) {
-        parcelList.forEach(parcel -> areaAction.execute(parcel));
+        if (areaAction != null) {
+            parcelList.forEach(parcel -> areaAction.execute(parcel));
+        }
     }
 
+    public void selectParcel(ParcelModel parcel) {
+        if (areaAction != null) {
+            areaAction.execute(parcel);
+        }
+
+        else if (areaModule.hasArea(parcel)) {
+            areaModule.selectArea(parcel);
+        }
+    }
 }

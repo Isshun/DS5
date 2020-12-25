@@ -26,6 +26,9 @@ public class ParcelGraph implements IndexedGraph<ParcelModel> {
 
     @Override
     public Array<Connection<ParcelModel>> getConnections(ParcelModel parcel) {
+        if (!connections.containsKey(parcel)) {
+            connections.put(parcel, new Array<>());
+        }
         return connections.get(parcel);
     }
 
@@ -40,9 +43,9 @@ public class ParcelGraph implements IndexedGraph<ParcelModel> {
     }
 
     public GraphPath<ParcelModel> findPath(ParcelModel startParcel, ParcelModel goalParcel) {
-        GraphPath<ParcelModel> cityPath = new DefaultGraphPath<>();
-        new IndexedAStarPathFinder<>(this).searchNodePath(startParcel, goalParcel, parcelHeuristic, cityPath);
-        return cityPath;
+        GraphPath<ParcelModel> path = new DefaultGraphPath<>();
+        new IndexedAStarPathFinder<>(this).searchNodePath(startParcel, goalParcel, parcelHeuristic, path);
+        return path;
     }
 
     public void refreshConnections(ParcelModel source) {

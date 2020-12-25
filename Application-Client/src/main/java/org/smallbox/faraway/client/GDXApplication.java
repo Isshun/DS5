@@ -18,7 +18,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplica
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
@@ -38,6 +40,8 @@ public class GDXApplication extends ApplicationAdapter {
     private MenuRender menuRender;
     private MinimalRender minimalRender;
     private ErrorRender errorRender;
+    private GameFactory gameFactory;
+    private ApplicationConfigService applicationConfigService;
 
     public GDXApplication(GameTestCallback callback) {
         _callback = callback;
@@ -69,10 +73,12 @@ public class GDXApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Resume game", false, this::resumeGame);
 
         gameManager = di.getDependency(GameManager.class);
+        gameFactory = di.getDependency(GameFactory.class);
         gameRender = di.getDependency(GameRender.class);
         menuRender = di.getDependency(MenuRender.class);
         minimalRender = di.getDependency(MinimalRender.class);
         errorRender = di.getDependency(ErrorRender.class);
+        applicationConfigService = di.getDependency(ApplicationConfigService.class);
     }
 
     private void generateFonts() {
@@ -88,8 +94,9 @@ public class GDXApplication extends ApplicationAdapter {
         //            ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
 //            Application.gameManager.loadLastGame();
 //            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            Application.gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
+//            gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
 //                Application.gameManager.loadGame();
+        gameFactory.create(applicationConfigService.getDebugInfo().scenario);
 
         if (_callback != null) {
             taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);

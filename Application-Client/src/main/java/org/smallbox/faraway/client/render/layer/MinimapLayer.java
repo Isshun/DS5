@@ -33,7 +33,7 @@ public class MinimapLayer extends BaseLayer {
     private static final int    COLOR_STRUCTURE = 0x333333ff;
     private static final Color  COLOR_ITEM = new Color(0xff3333ff);
     private static final Color  COLOR_CHARACTER = new Color(0x3c59ffff);
-    private static final Color  COLOR_VIEW = new Color(0x349394ff);
+    private static final Color COLOR_VIEWPORT = new Color(0x2473f4ff);
     private static final Color  COLOR_WATER = new Color(0x006d7c1d);
 
     private int                         _mainPosX;
@@ -127,10 +127,10 @@ public class MinimapLayer extends BaseLayer {
     private void drawViewport(GDXRenderer renderer) {
         int x = _mainPosX + (int)((Math.min(gameWidth -38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
         int y = _mainPosY + (int)((Math.min(gameHeight -32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
-        renderer.drawPixel(x, y, (int) (38 * ratioX), 1, COLOR_VIEW);
-        renderer.drawPixel(x, y, 1, (int) (32 * ratioY), COLOR_VIEW);
-        renderer.drawPixel(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 1, COLOR_VIEW);
-        renderer.drawPixel((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 1, COLOR_VIEW);
+        renderer.drawPixel(x, y, (int) (38 * ratioX), 2, COLOR_VIEWPORT);
+        renderer.drawPixel(x, y, 2, (int) (32 * ratioY), COLOR_VIEWPORT);
+        renderer.drawPixel(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 2, COLOR_VIEWPORT);
+        renderer.drawPixel((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 2, COLOR_VIEWPORT);
     }
 
     private void drawCharacters(GDXRenderer renderer) {
@@ -146,6 +146,8 @@ public class MinimapLayer extends BaseLayer {
 
     private void createMap() {
         if (gameManager.isLoaded()) {
+            _mainPosX = mainPanelController.getMapContainer().getFinalX();
+            _mainPosY = mainPanelController.getMapContainer().getFinalY();
 
             float scaleX = (float)miniMapWidth / gameWidth;
             float scaleY = (float)miniMapHeight / gameHeight;

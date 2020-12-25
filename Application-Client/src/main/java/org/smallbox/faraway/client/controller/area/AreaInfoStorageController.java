@@ -12,6 +12,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -46,26 +47,13 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     @Inject
     private AreaInfoController areaInfoController;
 
-    @BindLua
-    private UIList listStorage;
-
-    @BindLua
-    private UILabel btPriority1;
-
-    @BindLua
-    private UILabel btPriority2;
-
-    @BindLua
-    private UILabel btPriority3;
-
-    @BindLua
-    private UILabel btPriority4;
-
-    @BindLua
-    private UILabel btPriority5;
-
-    @BindLua
-    private UILabel lbSpace;
+    @BindLua private UIList listStorage;
+    @BindLua private UILabel btPriority1;
+    @BindLua private UILabel btPriority2;
+    @BindLua private UILabel btPriority3;
+    @BindLua private UILabel btPriority4;
+    @BindLua private UILabel btPriority5;
+    @BindLua private UILabel lbSpace;
 
     private Collection<CategoryContainer> _tree;
     private StorageArea _area;
@@ -122,6 +110,11 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
         btPriority3.setOnClickListener((int x, int y) -> setPriority(3));
         btPriority4.setOnClickListener((int x, int y) -> setPriority(4));
         btPriority5.setOnClickListener((int x, int y) -> setPriority(5));
+    }
+
+    @OnInit
+    private void init() {
+        storageModule.addListener();
     }
 
     private void setPriority(int priority) {

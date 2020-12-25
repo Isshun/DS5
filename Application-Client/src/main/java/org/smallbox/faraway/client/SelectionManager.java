@@ -104,16 +104,18 @@ public class SelectionManager extends GameManager {
             Log.info("Click on map at parcel: %s", parcel);
             if (parcel != null) {
 
-                if (_selectionListener != null) {
-                    if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
-                        _selectionListener = null;
-                    }
-                }
+                gameActionManager.selectParcel(parcel);
 
-                else {
-                    _selected = null;
-                    doSelectionUnique(parcel);
-                }
+//                if (_selectionListener != null) {
+//                    if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
+//                        _selectionListener = null;
+//                    }
+//                }
+//
+//                else {
+//                    _selected = null;
+//                    doSelectionUnique(parcel);
+//                }
             }
         }
 

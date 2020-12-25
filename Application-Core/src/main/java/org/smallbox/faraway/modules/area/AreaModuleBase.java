@@ -54,4 +54,18 @@ public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModul
         areas.removeIf(
                 AreaModel::isEmpty);
     }
+
+    @Override
+    public boolean hasArea(ParcelModel parcel) {
+        return areas.stream().anyMatch(area -> area.getParcels().contains(parcel));
+    }
+
+    @Override
+    public void select(ParcelModel parcel) {
+        areas.stream().filter(area -> area.getParcels().contains(parcel)).findFirst().ifPresent(area -> onSelectArea(area));
+    }
+
+    protected void onSelectArea(T_AREA area) {
+    }
+
 }
