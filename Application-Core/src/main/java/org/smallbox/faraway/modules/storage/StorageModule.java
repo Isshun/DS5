@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.storage;
 
+import org.smallbox.faraway.client.controller.area.AreaInfoStorageController;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -7,7 +8,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -38,7 +38,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     private PathManager pathManager;
 
     @Inject
-    private AreaInfoStorageController pathManager;
+    private AreaInfoStorageController areaInfoStorageController;
 
     private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
 
@@ -144,6 +144,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
 
     @Override
     protected void onSelectArea(StorageArea area) {
+        areaInfoStorageController.displayArea(area);
     }
 
 }

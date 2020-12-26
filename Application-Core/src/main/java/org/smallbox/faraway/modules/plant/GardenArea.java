@@ -1,8 +1,8 @@
 package org.smallbox.faraway.modules.plant;
 
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -22,9 +22,13 @@ public class GardenArea extends AreaModel {
     @Inject
     private GardenModule gardenModule;
 
-    public GardenArea() {
+    @Inject
+    private Data data;
+
+    @OnInit
+    public void init() {
         _potentialItem = new LinkedBlockingQueue<>();
-        _potentialItem.addAll(DependencyInjector.getInstance().getDependency(Data.class).items.stream().filter(item -> item.isPlant).collect(Collectors.toList()));
+        _potentialItem.addAll(data.items.stream().filter(item -> item.isPlant).collect(Collectors.toList()));
     }
 
     public void cleanField(ParcelModel parcel) {

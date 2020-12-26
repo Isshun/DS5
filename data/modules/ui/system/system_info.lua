@@ -6,9 +6,12 @@ ui:extend({
     level = 100,
     visible = true,
     views = {
+        {
+            type = "view", size = {4, 38}, background = blue_dark_1, align = {"top", "right"}, position = {373, 0}
+        },
 
         -- Top right system icons
-        { type = "view", id = "view_weather", align = {"top", "right"}, position = {0, 0}, background = 0x203636ff, size = {372, 38}, views = {
+        { type = "view", id = "view_weather", align = {"top", "right"}, position = {0, 0}, background = 0x203636ff, size = {373, 38}, views = {
 
             -- Time and day
             { type = "image", id = "img_time", src = "[base]/graphics/icons/daytimes/noon.png", size = {32, 32}, position = {2, 2}},

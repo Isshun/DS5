@@ -2,8 +2,6 @@ package org.smallbox.faraway.util;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.game.GameManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,17 +31,6 @@ public class Utils {
 
     public static JSONObject toJSON(FileInputStream fis) throws IOException {
         return new JSONObject(IOUtils.toString(fis, StandardCharsets.UTF_8));
-    }
-
-    public static String getDateStr(long time) {
-        int totalHours = (int)(time / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour());
-        int totalDays = totalHours / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getHourPerDay();
-        return "Day " + String.valueOf(totalDays) + " - " + String.valueOf(totalHours % DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getHourPerDay()) + "h";
-    }
-
-    public static String getTimeStr(long time) {
-        int totalHours = (int)(time / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour());
-        return String.valueOf(totalHours % DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getHourPerDay()) + "h";
     }
 
     public static double bound(double min, double max, double value) {

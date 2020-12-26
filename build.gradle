@@ -49,6 +49,8 @@ project(":Application-Core") {
 
     dependencies {
         implementation project(":Application-Common")
+        implementation project(":Core-SmartFontGenerator")
+        implementation project(":Core-PathFinding")
 //    compile project(":Core-SmartFontGenerator")
 //    compile project(":Core-PathFinding")
 //    compile project(":Core-Debug")
@@ -117,7 +119,6 @@ project(":Application-Client") {
         // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy
         compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.7'
 
-
         compile group: 'io.jsonwebtoken', name: 'jjwt', version:'0.6.0'
         compile group: 'commons-io', name: 'commons-io', version:'2.4'
 
@@ -149,7 +150,6 @@ project(":Application-Client") {
 
         compile 'org.fusesource:sigar:1.6.4'
         compile 'net.java.dev.jna:jna-platform:4.2.2'
-
 
         // https://mvnrepository.com/artifact/junit/junit
         compile group: 'junit', name: 'junit', version: '4.12'

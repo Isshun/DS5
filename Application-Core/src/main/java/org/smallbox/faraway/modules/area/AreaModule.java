@@ -23,15 +23,9 @@ public class AreaModule extends GameModule {
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
 
     private Collection<Class<? extends AreaModel>> _areaClasses = new LinkedBlockingQueue<>();
-    private Collection<AreaModuleListener> specializedAreaModules;
 
     public Collection<AreaModel> getAreas() {
         return _areas;
-    }
-
-    @OnInit
-    private void init() {
-        specializedAreaModules = DependencyInjector.getInstance().getSubTypesOf(AreaModuleListener.class);
     }
 
     public <T extends AreaModel> Stream<T> getAreas(Class<T> cls) {
@@ -115,18 +109,4 @@ public class AreaModule extends GameModule {
         _areas.removeIf(area -> area.getParcels().isEmpty());
     }
 
-    public void removeArea(ParcelModel parcel) {
-        specializedAreaModules.forEach(specializedAreaModule -> specializedAreaModule.onRemoveParcel(parcel));
-    }
-
-    public boolean hasArea(ParcelModel parcel) {
-        return specializedAreaModules.stream().anyMatch(listener -> listener.hasArea(parcel));
-    }
-
-    public void selectArea(ParcelModel parcel) {
-        specializedAreaModules.stream()
-                .filter(listener -> listener.hasArea(parcel))
-                .findFirst()
-                .ifPresent(listener -> listener.select(parcel));
-    }
 }

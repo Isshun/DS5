@@ -2,14 +2,13 @@ package org.smallbox.faraway.modules.area;
 
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.storage.StorageArea;
 
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
-public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModule implements AreaModuleListener {
+public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModule implements GameActionAreaListener {
     protected Queue<T_AREA> areas = new ConcurrentLinkedQueue<>();
 
     public void addParcel(ParcelModel parcel) {
@@ -49,7 +48,7 @@ public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModul
     public abstract T_AREA onNewArea();
 
     @Override
-    public void onRemoveParcel(ParcelModel parcel) {
+    public void removeArea(ParcelModel parcel) {
         areas.forEach(storageArea -> storageArea.removeParcel(parcel));
         areas.removeIf(
                 AreaModel::isEmpty);
@@ -61,7 +60,7 @@ public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModul
     }
 
     @Override
-    public void select(ParcelModel parcel) {
+    public void selectArea(ParcelModel parcel) {
         areas.stream().filter(area -> area.getParcels().contains(parcel)).findFirst().ifPresent(area -> onSelectArea(area));
     }
 

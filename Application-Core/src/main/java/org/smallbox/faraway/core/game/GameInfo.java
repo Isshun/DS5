@@ -77,7 +77,7 @@ public class GameInfo {
                 saveInfo.filename = jsonSave.getString("filename");
                 try {
                     saveInfo.date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.ENGLISH).parse(jsonSave.getString("date"));
-                    saveInfo.label = new SimpleDateFormat("dd/MM/YYYY - HH:mm:ss", Locale.ENGLISH).format(saveInfo.date);
+                    saveInfo.label = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss", Locale.ENGLISH).format(saveInfo.date);
                 } catch (ParseException e) {
                     throw new GameException(GameInfo.class, "Cannot read GameInfo json");
                 }

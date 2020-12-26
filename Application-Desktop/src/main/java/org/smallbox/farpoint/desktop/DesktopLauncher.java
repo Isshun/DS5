@@ -22,12 +22,12 @@ public class DesktopLauncher {
 
         FileUtils.createRoamingDirectory();
 
-        // Get native screen resolution
-        java.awt.GraphicsDevice gd = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
-        double ratio = (double)width / height;
-        Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
+//        // Get native screen resolution
+//        java.awt.GraphicsDevice gd = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+//        int width = gd.getDisplayMode().getWidth();
+//        int height = gd.getDisplayMode().getHeight();
+//        double ratio = (double)width / height;
+//        Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
         new LwjglApplication(new GDXApplication(() -> getGameCallback(applicationConfigService.getConfig())), LwjglConfig.from(applicationConfigService.getConfig()));
 //        new LwjglApplication(new PerlinTestApp());

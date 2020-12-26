@@ -328,14 +328,6 @@ public class WorldHelper {
         return Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
     }
 
-    public static int getDistance(ParcelModel p1, ParcelModel p2) {
-        PathModel path = DependencyInjector.getInstance().getDependency(PathManager.class).getPath(p1, p2, true, false);
-        if (path != null) {
-            return path.getLength();
-        }
-        return -1;
-    }
-
     public static List<ParcelModel> getParcelInRect(int x1, int y1, int x2, int y2, int z) {
         List<ParcelModel> parcelList = new ArrayList<>();
 
