@@ -41,11 +41,13 @@ public class StorageArea extends AreaModel {
     public Collection<ItemInfo> getItemsAccepts() { return _items; }
 
     public boolean isAccepted(ItemInfo itemInfo) {
-        return _items.stream().anyMatch(itemInfo::instanceOf);
+//        return _items.stream().anyMatch(itemInfo::instanceOf);
+        return true;
     }
 
     public boolean isAccepted(Collection<ConsumableItem> consumables) {
-        return consumables.stream().allMatch(consumable -> isAccepted(consumable.getInfo()));
+//        return consumables.stream().allMatch(consumable -> isAccepted(consumable.getInfo()));
+        return true;
     }
 
 //    public ParcelModel getFreeParcel(ConsumableItem consumable) {

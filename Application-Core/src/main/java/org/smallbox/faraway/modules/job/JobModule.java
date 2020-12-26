@@ -97,6 +97,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         Log.debug(JobModule.class, "add job: " + job.getLabel());
 
+        job.executeInitTasks();
+
         _jobs.add(job);
 
         sortJobs();

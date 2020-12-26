@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.game;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
@@ -13,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GameInfo {
+    public boolean generateMountains;
+
     public enum Type {INIT, AUTO, FAST, REGULAR}
 
     public static class GameSaveInfo {
@@ -88,11 +91,15 @@ public class GameInfo {
         return gameInfo;
     }
 
-    public static GameInfo create(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors) {
-        return create(DependencyInjector.getInstance().getDependency(Data.class).getRegion(planetName, regionName), worldWidth, worldHeight, worldFloors);
+    public static GameInfo create(GameScenario scenario) {
+        return create(DependencyInjector.getInstance().getDependency(Data.class).getRegion(scenario.planet, scenario.region), scenario.width, scenario.height, scenario.level, scenario.generateMountains);
     }
 
-    public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight, int worldFloors) {
+    public static GameInfo create(String planetName, String regionName, int worldWidth, int worldHeight, int worldFloors) {
+        return create(DependencyInjector.getInstance().getDependency(Data.class).getRegion(planetName, regionName), worldWidth, worldHeight, worldFloors, true);
+    }
+
+    public static GameInfo create(RegionInfo regionInfo, int worldWidth, int worldHeight, int worldFloors, boolean generateMountains) {
         assert worldWidth <= Constant.MAX_WORLD_WIDTH;
         assert worldHeight <= Constant.MAX_WORLD_HEIGHT;
         assert worldFloors <= Constant.MAX_WORLD_FLOORS;
@@ -106,6 +113,7 @@ public class GameInfo {
         info.planet = regionInfo.planet;
         info.region = regionInfo;
         info.name = UUID.randomUUID().toString();
+        info.generateMountains = generateMountains;
 
         return info;
     }

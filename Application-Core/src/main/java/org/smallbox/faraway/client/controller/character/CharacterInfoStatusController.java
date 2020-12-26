@@ -17,7 +17,7 @@ import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.modules.storage.BasicStoreJob;
+import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Utils;
 
@@ -102,8 +102,8 @@ public class CharacterInfoStatusController extends LuaController {
                 });
             }
 
-            if (job instanceof BasicStoreJob) {
-                ((BasicStoreJob) job).getConsumables().forEach(consumable -> {
+            if (job instanceof StoreJob) {
+                ((StoreJob) job).getConsumables().forEach(consumable -> {
                     if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
                         imgJob.setVisible(true);
                         imgJob.setImage(spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));

@@ -70,7 +70,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     // TODO à clean et tester
-    public void addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel) {
+    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel) {
 
         if (quantity < 0) {
             throw new GameException(ConsumableModule.class, "addConsumable: invalid quantity (%d)", quantity);
@@ -103,12 +103,16 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
                 consumable.setParcel(finalParcel);
                 _consumables.add(consumable);
             }
+
+            return consumable;
         }
 
         // Aucune parcel n'a pu être trouvée
         else {
             Log.warning(ConsumableModule.class, "No parcel found to add consumable (item: %s parcel: %s)", itemInfo, targetParcel);
         }
+
+        return null;
     }
 
     public Collection<ConsumableJobLock> getLocks() {
@@ -312,7 +316,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         _consumables.forEach(ConsumableItem::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
-        _consumables.removeIf(consumable -> consumable.getTotalQuantity() == 0 && !consumable.hasLock());
+        _consumables.removeIf(consumable -> consumable.getTotalQuantity() == 0 && !consumable.hasLock() && consumable.getStoreJob() == null);
 
         // Retire les locks des jobs n'existant plus
         _locks.stream()

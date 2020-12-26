@@ -44,6 +44,7 @@ public class GameFactory {
     private int width = 20;
     private int height = 20;
     private int level = 2;
+    private boolean generateMountains;
 
     public void setScenario(GameScenario scenario) {
         this.scenario = scenario;
@@ -52,6 +53,7 @@ public class GameFactory {
         this.width = scenario.width != 0 ? scenario.width : this.width;
         this.height = scenario.height != 0 ? scenario.height : this.height;
         this.level = scenario.level != 0 ? scenario.level : this.level;
+        this.generateMountains = scenario.generateMountains;
     }
 
     private GameScenario loadScenario(String scenarioPath) {
@@ -67,7 +69,7 @@ public class GameFactory {
     public void create(String scenarioPath) {
         setScenario(loadScenario(scenarioPath));
 
-        gameManager.createGame(GameInfo.create(this.planet, this.region, this.width, this.height, this.level), new GameManager.GameListener() {
+        gameManager.createGame(GameInfo.create(this.scenario), new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
 

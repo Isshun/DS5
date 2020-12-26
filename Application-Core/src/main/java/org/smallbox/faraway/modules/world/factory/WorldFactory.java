@@ -40,7 +40,10 @@ public class WorldFactory {
 
         initDefaultRockAndGround(parcelList, parcelsMap, width, height, floors);
         initRegionRockAndGround(parcelList, floors);
-        computeGroundFloorMountains(parcelsMap, width, height);
+
+        if (game.getInfo().generateMountains) {
+            computeGroundFloorMountains(parcelsMap, width, height);
+        }
         cleanMap(parcelList, parcelsMap);
 
         worldModule.init(game, parcelsMap, parcelList);

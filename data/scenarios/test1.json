@@ -1,9 +1,10 @@
 {
   "planet": "base.planet.corrin",
   "region": "mountain",
-  "width": 229,
-  "height": 150,
+  "width": 30,
+  "height": 20,
   "level": 2,
+  "generateMountains": false,
   "characters": [
     {"x": 10, "y": 10, "z": 1}
   ],

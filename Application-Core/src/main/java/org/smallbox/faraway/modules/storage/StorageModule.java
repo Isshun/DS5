@@ -40,6 +40,9 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     @Inject
     private AreaInfoStorageController areaInfoStorageController;
 
+    @Inject
+    private StoreJobFactory storeJobFactory;
+
     private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
 
     @OnInit
@@ -56,51 +59,41 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
 
         ConsumableItem consumable = _checkQueue.poll();
         if (consumable != null && consumable.getFreeQuantity() > 0) {
+            checkConsumable(consumable);
+        }
 
-            BasicStoreJob storeJob = jobModule.getJobs(BasicStoreJob.class)
-                    .filter(job -> job.haveConsumable(consumable))
-                    .findFirst().orElse(null);
+    }
 
-            StorageArea storageArea = areaModule.getArea(StorageArea.class)
-                    .filter(area -> area.haveParcel(storeJob != null ? storeJob.getTargetParcel() : consumable.getParcel()))
-                    .findFirst().orElse(null);
+    private void checkConsumable(ConsumableItem consumable) {
+        StoreJob storeJob = consumable.getStoreJob();
+        StorageArea storageArea = areas.stream()
+                .filter(area -> area.haveParcel(storeJob != null ? storeJob.getTargetParcel() : consumable.getParcel()))
+                .findFirst().orElse(null);
 
-            StorageArea bestArea = getBestArea(consumable.getInfo(), consumable.getFreeQuantity());
+        StorageArea bestArea = getBestArea(consumable.getInfo(), consumable.getFreeQuantity());
 
-            // Le consomable n'a pas de zone de stockage ni de StoreJob
-            // -> Crée un StoreJob
+        if (bestArea != null) {
+
+            // Consumable have no StoreJob or StoreArea
             if (storageArea == null) {
-                createStoreJob(bestArea, consumable);
+                jobModule.addJob(storeJobFactory.createJob(bestArea, consumable));
             }
 
-            // Le consomable est déjà dans un zone de stockage ou dans un StoreJob.
-            // -> Trouve la meilleur zone de stockage possible et vérifie qu'elle corresponde à la zone actuelle
-            // -> Crée un StoreJob
-            else if (bestArea != null && bestArea.getPriority() > storageArea.getPriority()) {
+            // Consumable have StoreJob or StoreArea but not the best one
+            else if (storageArea != bestArea) {
 
                 if (storeJob != null) {
                     jobModule.removeJob(storeJob);
                 }
 
-                createStoreJob(bestArea, consumable);
+                jobModule.addJob(storeJobFactory.createJob(bestArea, consumable));
             }
 
-        }
-
-    }
-
-    private void createStoreJob(StorageArea storageArea, ConsumableItem consumable) {
-        // Crée le job sur la première parcel disponible
-        if (storageArea != null) {
-            storageArea.getParcels().stream()
-                    .filter(parcel -> consumableModule.parcelAcceptConsumable(parcel, consumable))
-                    .findFirst()
-                    .ifPresent(parcel -> BasicStoreJob.toParcel(consumableModule, jobModule, consumable, parcel, storageArea));
         }
     }
 
     private StorageArea getBestArea(ItemInfo itemInfo, int quantity) {
-        return areaModule.getAreas(StorageArea.class)
+        return areas.stream()
 
                 // Trie les zone de stockage par priorité
                 .sorted(Comparator.comparingInt(StorageArea::getPriority).reversed())
@@ -120,8 +113,8 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     private void cancelDuplicateJobs() {
         // Supprime les jobs à mutualiser (jobs ayants des consomables avec des resources libre)
         jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicStoreJob)
-                .map(job -> (BasicStoreJob)job)
+                .filter(job -> job instanceof StoreJob)
+                .map(job -> (StoreJob)job)
                 .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED || job.getStatus() == JobModel.JobStatus.JOB_WAITING)
                 .filter(job -> job.getConsumables().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
                 .forEach(job -> jobModule.removeJob(job));
@@ -131,7 +124,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     public void notifyRulesChange(StorageArea area) {
 
         // Annule les jobs contenant des consumables non compatible avec les zone de stockage
-        jobModule.getJobs(BasicStoreJob.class)
+        jobModule.getJobs(StoreJob.class)
                 .filter(job -> area.getParcels().contains(job.getTargetParcel()))
                 .filter(job -> !area.isAccepted(job.getConsumables()))
                 .forEach(job -> jobModule.removeJob(job));

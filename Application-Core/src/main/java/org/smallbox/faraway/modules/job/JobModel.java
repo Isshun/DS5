@@ -13,7 +13,7 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
-import org.smallbox.faraway.modules.storage.BasicStoreJob;
+import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
@@ -32,7 +32,7 @@ public class JobModel extends ObjectModel {
 
     public String getIcon() {
         if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
-        if (this instanceof BasicStoreJob) return "[base]/graphics/jobs/ic_store.png";
+        if (this instanceof StoreJob) return "[base]/graphics/jobs/ic_store.png";
         if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
         if (this instanceof BasicBuildJob) return "[base]/graphics/jobs/ic_build.png";
         if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
@@ -45,6 +45,10 @@ public class JobModel extends ObjectModel {
 
     public Color getColor() {
         return color;
+    }
+
+    public void executeInitTasks() {
+        initTasks.forEach(task -> task.action.onExecuteTask());
     }
 
     public enum JobCheckReturn {
@@ -227,6 +231,8 @@ public class JobModel extends ObjectModel {
 
         onClose();
 
+        closeTasks.forEach(task -> task.action.onExecuteTask());
+
         _isClose = true;
         _status = JobStatus.JOB_COMPLETE;
     }
@@ -263,6 +269,8 @@ public class JobModel extends ObjectModel {
     }
 
     private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
+    private Queue<JobTechnicalTask> initTasks = new ConcurrentLinkedQueue<>();
+    private Queue<JobTechnicalTask> closeTasks = new ConcurrentLinkedQueue<>();
 
     public Collection<JobTask> getTasks() {
         return _tasks;
@@ -314,6 +322,14 @@ public class JobModel extends ObjectModel {
      */
     public void addTechnicalTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
         _tasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
+    }
+
+    public void addInitTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
+        initTasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
+    }
+
+    public void addCloseTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
+        closeTasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
     }
 
     /**

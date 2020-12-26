@@ -11,7 +11,7 @@ import org.smallbox.faraway.modules.building.BasicBuildJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.storage.BasicStoreJob;
+import org.smallbox.faraway.modules.storage.StoreJob;
 
 @GameObject
 @GameLayer(level = LayerManager.JOB_LAYER_LEVEL, visible = true)
@@ -27,8 +27,8 @@ public class JobLayer extends BaseLayer {
 
         jobModule.getJobs().forEach(job -> {
 
-            if (job instanceof BasicStoreJob) {
-                ((BasicStoreJob)job).getConsumables().forEach(consumable -> {
+            if (job instanceof StoreJob) {
+                ((StoreJob)job).getConsumables().forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
                     renderer.drawTextOnMap(job.getJobParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
                 });
