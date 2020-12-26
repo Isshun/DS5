@@ -18,46 +18,12 @@ import java.util.Map;
 /**
  * Job déplacant les consomables vers les zones de stockage
  */
-public class BasicBuildJob extends JobModel {
+public class BuildJob extends JobModel {
 
     protected Map<ConsumableItem, Integer> _targetConsumables;
-    private MapObjectModel _mapObject;
+    public BuildableMapObject _mapObject;
 
     public Map<ConsumableItem, Integer> getConsumables() { return _targetConsumables; }
-
-    public static void buildStructure(JobModule jobModule, BuildableMapObject mapObject) {
-
-        jobModule.createJob(BasicBuildJob.class, null, mapObject.getParcel(), job -> {
-            mapObject.setBuildJob(job);
-
-            job.setMainLabel("Build " + mapObject.getInfo().label);
-
-            job._mapObject = mapObject;
-            job._targetParcel = mapObject.getParcel();
-            job._startParcel = mapObject.getParcel();
-
-            job.addMoveTask("Move to object", mapObject.getParcel());
-            job.addTask("Build", (character, hourInterval) -> {
-                mapObject.actionBuild(1 / jobModule.getGameConfig().buildTime * hourInterval);
-                job.setProgress(mapObject.getBuildValue(), mapObject.getBuildCost());
-
-                if (!mapObject.isComplete()) {
-                    return JobTaskReturn.TASK_CONTINUE;
-                }
-
-                DependencyInjector.getInstance().getDependency(PathManager.class).refreshConnections(job.getJobParcel());
-
-                return JobTaskReturn.TASK_COMPLETE;
-            });
-
-            return true;
-        });
-
-    }
-
-    public BasicBuildJob(ItemInfo.ItemInfoAction itemInfoAction, ParcelModel parcelModel) {
-        super(itemInfoAction, parcelModel);
-    }
 
     @Override
     protected JobCheckReturn onCheck(CharacterModel character) {
@@ -79,11 +45,6 @@ public class BasicBuildJob extends JobModel {
 
     public MapObjectModel getObject() {
         return _mapObject;
-    }
-
-    @Override
-    public CharacterSkillExtra.SkillType getSkillType() {
-        return CharacterSkillExtra.SkillType.BUILD;
     }
 
 }

@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.module.world.model;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
-import org.smallbox.faraway.modules.building.BasicBuildJob;
+import org.smallbox.faraway.modules.building.BuildJob;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.Map;
@@ -85,7 +85,7 @@ public class BuildableMapObject extends MapObjectModel {
     }
 
     private double _buildValue;
-    private BasicBuildJob _buildJob;
+    private BuildJob _buildJob;
 
     public boolean hasAllComponents() {
         for (Map.Entry<ItemInfo, BuildableMapObjectComponent> entry: _components.entrySet()) {
@@ -96,13 +96,13 @@ public class BuildableMapObject extends MapObjectModel {
         return true;
     }
 
-    public void             setBuildJob(BasicBuildJob job) { _buildJob = job; }
+    public void             setBuildJob(BuildJob job) { _buildJob = job; }
     public void             setBuildProgress(double buildProgress) { _buildValue = Math.min(buildProgress, _info.build.cost); }
 
     public double           getBuildProgress() { return _buildValue / _info.build.cost; }
     public double           getBuildValue() { return _buildValue; }
     public double           getBuildCost() { return _info.build.cost; }
-    public BasicBuildJob    getBuildJob() { return _buildJob; }
+    public BuildJob getBuildJob() { return _buildJob; }
     public CharacterModel   getBuilder() { return _buildJob != null ? _buildJob.getCharacter() : null; }
 
     @Override

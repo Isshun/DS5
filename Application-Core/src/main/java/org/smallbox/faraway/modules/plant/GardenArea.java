@@ -97,7 +97,7 @@ public class GardenArea extends AreaModel {
     public Collection<ItemInfo> getPotentials() { return _potentialItem; }
 
     @Override
-    public void execute(ParcelModel parcel) {
+    public void onParcelSelected(ParcelModel parcel) {
         gardenModule.addParcel(parcel);
     }
 }

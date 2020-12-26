@@ -50,6 +50,11 @@ public class StorageArea extends AreaModel {
         return true;
     }
 
+    public boolean isAccepted(ConsumableItem consumable) {
+//        return consumables.stream().allMatch(consumable -> isAccepted(consumable.getInfo()));
+        return true;
+    }
+
 //    public ParcelModel getFreeParcel(ConsumableItem consumable) {
 //        ParcelModel bestParcel = null;
 //        for (ParcelModel parcel: _parcels) {
@@ -124,7 +129,7 @@ public class StorageArea extends AreaModel {
     }
 
     @Override
-    public void execute(ParcelModel parcel) {
+    public void onParcelSelected(ParcelModel parcel) {
         storageModule.addParcel(parcel);
     }
 

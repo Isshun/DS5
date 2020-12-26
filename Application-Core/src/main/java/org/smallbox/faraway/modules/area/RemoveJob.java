@@ -24,7 +24,7 @@ public class RemoveJob extends AreaModel {
     }
 
     @Override
-    public void execute(ParcelModel parcel) {
+    public void onParcelSelected(ParcelModel parcel) {
         jobModule.getJobs().stream().filter(job -> job.getJobParcel() == parcel).forEach(job -> jobModule.removeJob(job));
     }
 

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.selection.SelectionManager;
 import org.smallbox.faraway.common.ObjectModel;

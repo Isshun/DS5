@@ -40,7 +40,7 @@ public class DigArea extends AreaModel {
     }
 
     @Override
-    public void execute(ParcelModel parcel) {
+    public void onParcelSelected(ParcelModel parcel) {
         if (parcel.getRockInfo() != null) {
             jobModule.addJob(digJobFactory.createJob(parcel));
         }

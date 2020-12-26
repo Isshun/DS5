@@ -1,26 +1,18 @@
 package org.smallbox.faraway.client.render.layer;
 
-import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.GameActionManager;
-import org.smallbox.faraway.client.GameActionMode;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
+import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.GameEventManager;
-import org.smallbox.faraway.client.module.CursorSelection.CursorSelectionModule;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 
 @GameObject
 @GameLayer(level = LayerManager.TOP, visible = true)
 public class SelectorLayer extends BaseLayer {
-
-    private static final Color COLOR_ROCK = ColorUtils.fromHex(0xff442dff);
-
-    @Inject
-    private CursorSelectionModule cursorSelectionModule;
 
     @Inject
     private GameEventManager gameEventManager;

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.modules.area;
+package org.smallbox.faraway.client.gameAction;
 
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 

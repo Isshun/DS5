@@ -107,26 +107,12 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
                 .findFirst().orElse(null);
     }
 
-    /**
-     * Supprime les jobs n'ayants pas démarrés
-     */
-    private void cancelDuplicateJobs() {
-        // Supprime les jobs à mutualiser (jobs ayants des consomables avec des resources libre)
-        jobModule.getJobs().stream()
-                .filter(job -> job instanceof StoreJob)
-                .map(job -> (StoreJob)job)
-                .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED || job.getStatus() == JobModel.JobStatus.JOB_WAITING)
-                .filter(job -> job.getConsumables().stream().anyMatch(consumable -> consumable.getFreeQuantity() > 0))
-                .forEach(job -> jobModule.removeJob(job));
-
-    }
-
     public void notifyRulesChange(StorageArea area) {
 
         // Annule les jobs contenant des consumables non compatible avec les zone de stockage
         jobModule.getJobs(StoreJob.class)
                 .filter(job -> area.getParcels().contains(job.getTargetParcel()))
-                .filter(job -> !area.isAccepted(job.getConsumables()))
+                .filter(job -> !area.isAccepted(job.sourceConsumable))
                 .forEach(job -> jobModule.removeJob(job));
     }
 

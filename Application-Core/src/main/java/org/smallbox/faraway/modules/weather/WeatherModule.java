@@ -156,7 +156,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
         return data.weathers.get("base.weather.regular");
     }
 
-    private void loadWeather(WeatherInfo weather) {
+    public void loadWeather(WeatherInfo weather) {
         _weather = weather;
 
         Log.info(WeatherModule.class, "Start weather: " + _weather.name);

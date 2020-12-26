@@ -7,10 +7,8 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
@@ -20,13 +18,7 @@ import java.util.stream.Collectors;
 public class DigModule extends GameModule {
 
     @Inject
-    private WorldModule worldModule;
-
-    @Inject
     private JobModule jobModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
 
     @Inject
     private AreaModule areaModule;
@@ -37,17 +29,6 @@ public class DigModule extends GameModule {
     @OnInit
     public void init() {
         areaModule.addAreaClass(DigArea.class);
-
-//        worldModule.getParcelList().stream()
-//                .filter(parcel -> parcel.z == 1)
-//                .filter(parcel -> !_parcels.containsKey(parcel))
-//                .filter(parcel -> parcel.getRockInfo() != null)
-//                .forEach(parcel -> {
-//                    BasicDigJob digJob = BasicDigJob.create(consumableModule, jobModule, worldModule, parcel);
-//                    if (digJob != null) {
-//                        _parcels.put(parcel, digJob);
-//                    }
-//                });
     }
 
     @Override

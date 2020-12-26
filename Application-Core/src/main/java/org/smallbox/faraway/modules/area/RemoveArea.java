@@ -1,6 +1,6 @@
 package org.smallbox.faraway.modules.area;
 
-import org.smallbox.faraway.client.GameActionManager;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -24,7 +24,7 @@ public class RemoveArea extends AreaModel {
     }
 
     @Override
-    public void execute(ParcelModel parcel) {
+    public void onParcelSelected(ParcelModel parcel) {
         areaModule.removeArea(parcel);
     }
 

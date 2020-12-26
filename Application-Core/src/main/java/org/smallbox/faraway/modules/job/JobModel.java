@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.building.BasicBuildJob;
+import org.smallbox.faraway.modules.building.BuildJob;
 import org.smallbox.faraway.modules.building.BasicRepairJob;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -34,7 +34,7 @@ public class JobModel extends ObjectModel {
         if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
         if (this instanceof StoreJob) return "[base]/graphics/jobs/ic_store.png";
         if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
-        if (this instanceof BasicBuildJob) return "[base]/graphics/jobs/ic_build.png";
+        if (this instanceof BuildJob) return "[base]/graphics/jobs/ic_build.png";
         if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
         return icon;
     }

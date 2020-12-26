@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client;
+package org.smallbox.faraway.client.gameAction;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.SelectionInfoController;
@@ -7,11 +7,13 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
-import org.smallbox.faraway.modules.area.GameActionAreaListener;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
+import org.smallbox.faraway.modules.building.BuildJobFactory;
+import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
@@ -26,12 +28,19 @@ public class GameActionManager extends GameManager {
     @Inject
     private SelectionInfoController selectionInfoController;
 
+    @Inject
+    private JobModule jobModule;
+
+    @Inject
+    private BuildJobFactory buildJobFactory;
+
     private Collection<GameActionAreaListener> specializedAreaModules;
     private GameActionMode mode = GameActionMode.NONE;
-    private AreaModel areaAction;
+    private OnSelectParcelListener areaAction;
     private AreaTypeInfo areaTypeInfo;
     private Color actionColor;
     private String actionLabel;
+    private ItemInfo itemInfo;
 
     @OnInit
     private void init() {
@@ -52,12 +61,16 @@ public class GameActionManager extends GameManager {
         this.actionLabel = areaModel.getClass().getAnnotation(AreaTypeInfo.class).label();
     }
 
-    public GameActionMode getMode() {
-        return mode;
+    public void setBuildAction(ItemInfo itemInfo) {
+        this.mode = GameActionMode.BUILD;
+        this.itemInfo = itemInfo;
+        this.actionColor = Color.BLUE;
+        this.actionLabel = "Build " + itemInfo.label;
+        this.areaAction = parcel -> jobModule.addJob(buildJobFactory.createJob(itemInfo, parcel));
     }
 
-    public AreaModel getAreaAction() {
-        return areaAction;
+    public GameActionMode getMode() {
+        return mode;
     }
 
     public AreaTypeInfo getAreaTypeInfo() {
@@ -74,13 +87,13 @@ public class GameActionManager extends GameManager {
 
     public void selectParcels(List<ParcelModel> parcelList) {
         if (areaAction != null) {
-            parcelList.forEach(parcel -> areaAction.execute(parcel));
+            parcelList.forEach(parcel -> areaAction.onParcelSelected(parcel));
         }
     }
 
     public void selectParcel(ParcelModel parcel) {
         if (areaAction != null) {
-            areaAction.execute(parcel);
+            areaAction.onParcelSelected(parcel);
         }
 
         else if (hasArea(parcel)) {
@@ -106,4 +119,5 @@ public class GameActionManager extends GameManager {
                 .findFirst()
                 .ifPresent(listener -> listener.selectArea(parcel));
     }
+
 }

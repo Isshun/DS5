@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.client.gameAction.OnSelectParcelListener;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.common.UUIDUtils;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class AreaModel extends ObjectModel {
+public abstract class AreaModel extends ObjectModel implements OnSelectParcelListener {
     protected final List<ParcelModel>   _parcels = new ArrayList<>();
     private final int                   _id;
     private int                         _x;
@@ -73,8 +74,8 @@ public abstract class AreaModel extends ObjectModel {
         return _parcels.contains(parcel);
     }
 
-    public void execute(ParcelModel parcel) {
-
+    @Override
+    public void onParcelSelected(ParcelModel parcel) {
     }
 
     public boolean haveParcelNextTo(ParcelModel targetParcel) {

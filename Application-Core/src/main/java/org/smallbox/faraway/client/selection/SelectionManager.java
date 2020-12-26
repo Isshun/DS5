@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.selection;
 
-import org.smallbox.faraway.client.GameActionManager;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.SelectionInfoController;
@@ -14,7 +14,6 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
-import org.smallbox.faraway.modules.area.GameActionAreaListener;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -131,25 +130,17 @@ public class SelectionManager extends GameManager {
             Log.info("Click on map at parcel: %s", parcel);
             if (parcel != null) {
 
-                List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
-
-                if (CollectionUtils.isNotEmpty(matchingAreaModules)) {
-                    matchingAreaModules.get(0).selectArea(parcel);
+                if (gameActionManager.getMode() != null) {
+                    gameActionManager.selectParcel(parcel);
                 } else {
-                    selectionInfoController.onSelectParcel(parcel);
+                    List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
+
+                    if (CollectionUtils.isNotEmpty(matchingAreaModules)) {
+                        matchingAreaModules.get(0).selectArea(parcel);
+                    } else {
+                        selectionInfoController.onSelectParcel(parcel);
+                    }
                 }
-
-
-//                if (_selectionListener != null) {
-//                    if (_selectionListener.onSelection(Collections.singletonList(parcel))) {
-//                        _selectionListener = null;
-//                    }
-//                }
-//
-//                else {
-//                    _selected = null;
-//                    doSelectionUnique(parcel);
-//                }
             }
         }
 

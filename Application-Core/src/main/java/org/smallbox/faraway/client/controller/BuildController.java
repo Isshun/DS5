@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.selection.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.layer.BuildLayer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -49,10 +49,10 @@ public class BuildController extends LuaController {
     private UILabel contentLabel;
 
     @Inject
-    private BuildLayer buildLayer;
+    private SpriteManager spriteManager;
 
     @Inject
-    private SpriteManager spriteManager;
+    private GameActionManager gameActionManager;
 
     private ItemInfo _currentItem;
 
@@ -151,22 +151,23 @@ public class BuildController extends LuaController {
         _currentItem = itemInfo;
 
         if (itemInfo != null) {
-            buildLayer.setItemInfo(itemInfo);
+//            buildLayer.setItemInfo(itemInfo);
+//
+//            selectionManager.setSelectionListener(parcels -> {
+//                if (_currentItem != null) {
+//                    if (_currentItem.isUserItem) {
+//                        parcels.forEach(parcel -> itemModule.addPattern(parcel, _currentItem));
+//                    }
+//                    if (_currentItem.isStructure) {
+//                        parcels.forEach(parcel -> structureModule.addPattern(parcel, _currentItem));
+//                    }
+//                }
+//
+//                buildLayer.setItemInfo(_currentItem);
+//                return false;
+//            });
 
-            selectionManager.setSelectionListener(parcels -> {
-                if (_currentItem != null) {
-                    if (_currentItem.isUserItem) {
-                        parcels.forEach(parcel -> itemModule.addPattern(parcel, _currentItem));
-                    }
-                    if (_currentItem.isStructure) {
-                        parcels.forEach(parcel -> structureModule.addPattern(parcel, _currentItem));
-                    }
-                }
-
-                buildLayer.setItemInfo(_currentItem);
-                return false;
-            });
-
+            gameActionManager.setBuildAction(itemInfo);
         }
     }
 

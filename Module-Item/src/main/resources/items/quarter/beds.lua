@@ -14,7 +14,7 @@ data:extend({
         name = "base.item.bed.wood",
         type = "item",
         category = "quarter",
-        build = { cost = 100 },
+        build = { cost = 20 },
         size = {1, 2},
         health = 75,
         graphics = { path = "[base]/graphics/items/bed_wood.png" },

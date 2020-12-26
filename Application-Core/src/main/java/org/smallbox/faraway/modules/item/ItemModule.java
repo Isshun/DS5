@@ -12,6 +12,7 @@ import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.BuildItemModule;
 import org.smallbox.faraway.modules.building.BasicDumpJob;
+import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.job.UseJob;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -39,6 +40,9 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
     @Inject
     private ConsumableModule consumableModule;
+
+    @Inject
+    private BuildJobFactory buildJobFactory;
 
     @Inject
     private Data data;
@@ -91,7 +95,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
     @Override
     protected void onModuleUpdate(Game game) {
-        createBuildJobs(jobModule, consumableModule, _items);
+        createBuildJobs(jobModule, consumableModule, buildJobFactory, _items);
         createRepairJobs(jobModule, _items);
     }
 

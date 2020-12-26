@@ -4,8 +4,9 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.engine.module.ModuleObserver;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
-import org.smallbox.faraway.modules.building.BasicBuildJob;
+import org.smallbox.faraway.modules.building.BuildJob;
 import org.smallbox.faraway.modules.building.BasicRepairJob;
+import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 
@@ -15,30 +16,30 @@ import java.util.stream.Collectors;
 
 public abstract class BuildItemModule<T extends ModuleObserver> extends GameModule<T>  {
 
-    protected void createBuildJobs(JobModule jobModule, ConsumableModule consumableModule, Collection<? extends BuildableMapObject> mapObjects) {
-        List<MapObjectModel> objectsInBuildJob = jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicBuildJob)
-                .map(job -> (BasicBuildJob)job)
-                .map(BasicBuildJob::getObject)
-                .collect(Collectors.toList());
-
-        // Crée les hauling jobs
-        mapObjects.stream()
-                .filter(mapObject -> !mapObject.isComplete())
-                .filter(mapObject -> !mapObject.hasAllComponents())
-                .forEach(mapObject ->
-                        mapObject._components.forEach((itemInfo, pair) -> {
-                            if (pair.availableQuantity < pair.neededQuantity) {
-                                consumableModule.createHaulToFactoryJobs(mapObject, itemInfo, pair.neededQuantity - pair.availableQuantity);
-                            }
-                        }));
-
-        // Crée les build jobs
-        mapObjects.stream()
-                .filter(structure -> !structure.isComplete())
-                .filter(BuildableMapObject::hasAllComponents)
-                .filter(structure -> !objectsInBuildJob.contains(structure))
-                .forEach(structure -> BasicBuildJob.buildStructure(jobModule, structure));
+    protected void createBuildJobs(JobModule jobModule, ConsumableModule consumableModule, BuildJobFactory buildJobFactory, Collection<? extends BuildableMapObject> mapObjects) {
+//        List<MapObjectModel> objectsInBuildJob = jobModule.getJobs().stream()
+//                .filter(job -> job instanceof BuildJob)
+//                .map(job -> (BuildJob)job)
+//                .map(BuildJob::getObject)
+//                .collect(Collectors.toList());
+//
+//        // Crée les hauling jobs
+//        mapObjects.stream()
+//                .filter(mapObject -> !mapObject.isComplete())
+//                .filter(mapObject -> !mapObject.hasAllComponents())
+//                .forEach(mapObject ->
+//                        mapObject._components.forEach((itemInfo, pair) -> {
+//                            if (pair.availableQuantity < pair.neededQuantity) {
+//                                consumableModule.createHaulToFactoryJobs(mapObject, itemInfo, pair.neededQuantity - pair.availableQuantity);
+//                            }
+//                        }));
+//
+//        // Crée les build jobs
+//        mapObjects.stream()
+//                .filter(structure -> !structure.isComplete())
+//                .filter(BuildableMapObject::hasAllComponents)
+//                .filter(structure -> !objectsInBuildJob.contains(structure))
+//                .forEach(buildJobFactory::createJob);
     }
 
     protected void createRepairJobs(JobModule jobModule, Collection<? extends BuildableMapObject> mapObjects) {

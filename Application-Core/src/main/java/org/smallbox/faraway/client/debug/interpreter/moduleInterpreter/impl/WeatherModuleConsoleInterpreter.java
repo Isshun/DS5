@@ -1,11 +1,14 @@
 package org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.impl;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleCommand;
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleInterpreterBase;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
+import org.smallbox.faraway.modules.weather.WeatherModule;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -14,17 +17,14 @@ import java.util.stream.Collectors;
 public class WeatherModuleConsoleInterpreter extends ConsoleInterpreterBase {
 
     @Inject
-    private JobModule jobModule;
+    private WeatherModule weatherModule;
 
-    @ConsoleCommand("list")
-    public Collection<String> getList() {
-        return jobModule.getJobs().stream().map(c -> "#" + c.getId() + " " + c.getLabel()).collect(Collectors.toList());
-    }
+    @Inject
+    private Data data;
 
-    @ConsoleCommand("info")
-    public Collection<String> getInfo(String id) {
-        JobModel job = jobModule.getJob(Integer.parseInt(id));
-        return list(job.getId(), job.getLabel());
+    @ConsoleCommand("random")
+    public void getList() {
+        data.weathers.values().stream().skip(RandomUtils.nextInt(0, data.weathers.size() - 1)).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
     }
 
 }

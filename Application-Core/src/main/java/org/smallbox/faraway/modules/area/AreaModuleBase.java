@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.area;
 
+import org.smallbox.faraway.client.gameAction.GameActionAreaListener;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
