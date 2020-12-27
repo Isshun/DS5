@@ -35,7 +35,7 @@ public class ConsumeJob extends JobModel {
 
         setMainLabel("Consume " + consumable.getInfo().label);
 
-        addMoveTask("Move", consumable.getParcel());
+        addMoveTask("Move", consumable::getParcel);
         addTask("Consume", (character, hourInterval) -> {
             if (_lock.available) {
                 _duration += 1 / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour();

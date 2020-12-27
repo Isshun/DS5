@@ -71,7 +71,7 @@ public class BasicHaulJob extends JobModel {
 
             // Déplace le personnage à l'emplacement des composants
             if (lock.consumable.getParcel() != null) {
-                addMoveTask("Move to consumable", lock.consumable.getParcel());
+                addMoveTask("Move to consumable", () -> lock.consumable.getParcel());
             }
 
             // Ajoute les composants à l'inventaire du personnage
@@ -84,7 +84,7 @@ public class BasicHaulJob extends JobModel {
         });
 
         // Apporte les composants à la fabrique
-        addMoveTask("Bring back to factory", _targetParcel);
+        addMoveTask("Bring back to factory", () -> _targetParcel);
 
 //        // Charge les comnposants dans la fabrique
 //        addTechnicalTask("Load factory", character ->

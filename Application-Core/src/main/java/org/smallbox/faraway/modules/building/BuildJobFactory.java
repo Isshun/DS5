@@ -22,6 +22,9 @@ public class BuildJobFactory {
     private PathManager pathManager;
 
     @Inject
+    private BringItemJobFactory bringItemJobFactory;
+
+    @Inject
     private ApplicationConfigService applicationConfigService;
 
     public JobModel createJob(ItemInfo itemInfo, ParcelModel targetParcel) {
@@ -29,15 +32,18 @@ public class BuildJobFactory {
 
         job.setSkillType(CharacterSkillExtra.SkillType.BUILD);
 
+        job.setMainLabel("Build " + itemInfo.label);
         job._targetParcel = targetParcel;
         job._startParcel = targetParcel;
         job._jobParcel = targetParcel;
+        job._mapObject = itemModule.addItem(itemInfo, false, targetParcel);
 
-        // Init
-        job.addInitTask(() -> job._mapObject = itemModule.addItem(itemInfo, false, targetParcel));
+        itemInfo.receipts.stream().findFirst().ifPresent(
+                receiptInfo -> receiptInfo.inputs.forEach(
+                        inputInfo -> job.addSubJob(bringItemJobFactory.createJob(job, job._mapObject, inputInfo.item, inputInfo.quantity))));
 
         // Job
-        job.addMoveTask("Move to parcel", targetParcel);
+        job.addMoveTask("Move to parcel", () -> targetParcel);
         job.addTask("Build", (character, hourInterval) -> {
             job._mapObject.actionBuild(1 / applicationConfigService.getGameInfo().buildTime * hourInterval);
             job.setProgress(job._mapObject.getBuildValue(), job._mapObject.getBuildCost());

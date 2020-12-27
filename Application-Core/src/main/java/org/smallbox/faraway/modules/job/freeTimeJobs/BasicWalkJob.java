@@ -12,7 +12,7 @@ public class BasicWalkJob extends JobModel {
         setMainLabel("Walk");
         setVisible(false);
         ParcelModel targetParcel = WorldHelper.getRandomParcel(character.getParcel(), 32);
-        addMoveTask("move 1", targetParcel);
+        addMoveTask("move 1", () -> targetParcel);
     }
 
     @Override

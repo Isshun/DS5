@@ -45,9 +45,9 @@ public class StoreJobFactory {
             job.addInitTask(() -> job.sourceConsumable.setStoreJob(job)); // Set store job on source consumable
 
             // Job
-            job.addMoveTask("Move to consumable", job.sourceConsumable.getParcel()); // Move character to sourceConsumable
+            job.addMoveTask("Move to consumable", () -> job.sourceConsumable.getParcel()); // Move character to sourceConsumable
             job.addTechnicalTask(() -> takeConsumable(job.sourceConsumable, job.getCharacter())); // Move consumable to character's inventory
-            job.addMoveTask("Move to storage", targetParcel); // Apporte les composants à la zone de stockage
+            job.addMoveTask("Move to storage", () -> targetParcel); // Apporte les composants à la zone de stockage
             job.addTechnicalTask(() -> dropConsumable(job.targetConsumable, job.getCharacter(), job._targetParcel)); // Ajoute les composants à la zone de stockage
 
             // Close

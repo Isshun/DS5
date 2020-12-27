@@ -51,6 +51,8 @@ public class JobOrchestratorModule {
             List<JobModel> availableJobs = jobModule.getJobs().stream()
                     .filter(job -> job.getCharacter() == null)
                     .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_WAITING || job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED)
+                    .filter(JobModel::isSubJobCompleted)
+                    .filter(JobModel::initConditionalCompleted)
                     .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))
                     .collect(Collectors.toList());
 

@@ -64,7 +64,7 @@ public class BasicCraftJob extends JobModel {
             job._startParcel = factoryParcel;
 
             // Apporte les composants à la fabrique
-            job.addTask("Go to factory", (character, hourInterval) -> character.moveTo(factoryParcel) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+            job.addTask("Go to factory", (character, hourInterval) -> character.moveTo(factoryParcel, true) ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
 
             // Craft action
             job.addTask("Craft item", (character, hourInterval) -> {

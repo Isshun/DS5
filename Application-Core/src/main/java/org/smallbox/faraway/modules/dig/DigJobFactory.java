@@ -42,7 +42,7 @@ public class DigJobFactory {
             job.setColor(new Color(0x80391eff));
 
             // Move character to rock
-            job.addMoveTask("Move to rock", targetParcel);
+            job.addMoveTask("Move to rock", () -> targetParcel);
 
             // Dig action
             job.addTask("Dig", (character, hourInterval) -> {

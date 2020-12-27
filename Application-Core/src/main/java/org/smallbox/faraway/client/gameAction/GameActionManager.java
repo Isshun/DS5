@@ -66,7 +66,9 @@ public class GameActionManager extends GameManager {
         this.itemInfo = itemInfo;
         this.actionColor = Color.BLUE;
         this.actionLabel = "Build " + itemInfo.label;
-        this.areaAction = parcel -> jobModule.addJob(buildJobFactory.createJob(itemInfo, parcel));
+        this.areaAction = parcel -> {
+            jobModule.addJob(buildJobFactory.createJob(itemInfo, parcel));
+        };
     }
 
     public GameActionMode getMode() {

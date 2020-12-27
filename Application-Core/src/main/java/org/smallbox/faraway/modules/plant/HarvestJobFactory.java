@@ -40,7 +40,7 @@ public class HarvestJobFactory {
             job.setColor(Color.CHARTREUSE);
 
             // Déplace le personnage à l'emplacement des composants
-            job.addMoveTask("Move to plant", consumableDropParcel);
+            job.addMoveTask("Move to plant", () -> consumableDropParcel);
 
             // - Create output products
             // - Set plant maturity to 0

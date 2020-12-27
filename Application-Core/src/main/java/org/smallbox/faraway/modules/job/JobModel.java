@@ -13,10 +13,13 @@ import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
+import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
+import org.smallbox.faraway.modules.job.taskAction.PrerequisiteTaskAction;
 import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.Log;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,6 +28,7 @@ public class JobModel extends ObjectModel {
     public double _time;
     private String icon;
     private Color color;
+    private Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
 
     public void setIcon(String icon) {
         this.icon = icon;
@@ -48,7 +52,19 @@ public class JobModel extends ObjectModel {
     }
 
     public void executeInitTasks() {
-        initTasks.forEach(task -> task.action.onExecuteTask());
+        initTasks.forEach(TechnicalTaskAction::onExecuteTask);
+    }
+
+    public void addSubJob(JobModel job) {
+        subJob.add(job);
+    }
+
+    public boolean isSubJobCompleted() {
+        return subJob.stream().allMatch(JobModel::isClose);
+    }
+
+    public boolean initConditionalCompleted() {
+        return this.prerequisiteTasks.stream().allMatch(PrerequisiteTaskAction::onExecuteTask);
     }
 
     public enum JobCheckReturn {
@@ -231,7 +247,7 @@ public class JobModel extends ObjectModel {
 
         onClose();
 
-        closeTasks.forEach(task -> task.action.onExecuteTask());
+        closeTasks.forEach(task -> task.onExecuteTask());
 
         _isClose = true;
         _status = JobStatus.JOB_COMPLETE;
@@ -269,8 +285,9 @@ public class JobModel extends ObjectModel {
     }
 
     private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
-    private Queue<JobTechnicalTask> initTasks = new ConcurrentLinkedQueue<>();
-    private Queue<JobTechnicalTask> closeTasks = new ConcurrentLinkedQueue<>();
+    private Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
+    private Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
+    private Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
 
     public Collection<JobTask> getTasks() {
         return _tasks;
@@ -291,45 +308,49 @@ public class JobModel extends ObjectModel {
         _tasks.add(new JobTask(label, jobTaskAction));
     }
 
+    public interface ParcelCallback {
+        ParcelModel getParcel();
+    }
+
     /**
      * Add move task
-     *
-     * @param label Label
-     * @param parcel Parcel to move
      */
-    public void addMoveTask(String label, ParcelModel parcel) {
-
+    public void addMoveTask(String label, ParcelCallback parcelCallback) {
         if (_tasks.isEmpty()) {
             _label = label;
         }
 
         _tasks.add(new JobTask(label, (character, hourInterval) -> {
-            if (parcel != null && character.moveTo(parcel)) {
-                return JobTaskReturn.TASK_COMPLETE;
-            }
-            if (parcel != null && character.getPath() != null && character.getPath().getLastParcel() == parcel) {
+            ParcelModel targetParcel = parcelCallback.getParcel();
+            Objects.requireNonNull(targetParcel);
+
+            if (character.getPath() == null || character.getPath().getLastParcel() != targetParcel) {
+                character.moveTo(targetParcel, true);
                 return JobTaskReturn.TASK_CONTINUE;
             }
-            return JobTaskReturn.TASK_ERROR;
+
+            if (character.getParcel() == character.getPath().getLastParcelCharacter()) {
+                return JobTaskReturn.TASK_COMPLETE;
+            }
+
+            return JobTaskReturn.TASK_CONTINUE;
         }));
     }
 
-    /**
-     * Add technical task
-     * Technical task are basically a standard task with no return status
-     *
-     * @param jobTechnicalTaskAction Action
-     */
-    public void addTechnicalTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
-        _tasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
+    public void addTechnicalTask(TechnicalTaskAction technicalTaskAction) {
+        _tasks.add(new JobTask("Technical", technicalTaskAction));
     }
 
-    public void addInitTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
-        initTasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
+    public void addInitTask(TechnicalTaskAction technicalTaskAction) {
+        initTasks.add(technicalTaskAction);
     }
 
-    public void addCloseTask(JobTechnicalTask.JobTechnicalTaskAction jobTechnicalTaskAction) {
-        closeTasks.add(new JobTechnicalTask(jobTechnicalTaskAction));
+    public void addPrerequisiteTask(PrerequisiteTaskAction jobTechnicalTaskAction) {
+        prerequisiteTasks.add(jobTechnicalTaskAction);
+    }
+
+    public void addCloseTask(TechnicalTaskAction technicalTaskAction) {
+        closeTasks.add(technicalTaskAction);
     }
 
     /**
@@ -384,12 +405,21 @@ public class JobModel extends ObjectModel {
     private JobTaskReturn actionTask(CharacterModel character, JobTask task, double hourInterval) {
         Log.debug(JobModel.class, "actionTask: (taks: %s, job: %s)", task.label, this);
 
+        if (task.technicalAction != null) {
+            task.technicalAction.onExecuteTask();
+            return JobTaskReturn.TASK_COMPLETE;
+        }
+
         _lastTaskReturn = task.action.onExecuteTask(character, hourInterval);
         _label = task.label;
 
         Log.debug(JobModel.class, "actionTask return: %s", _lastTaskReturn);
 
         return _lastTaskReturn;
+    }
+
+    public Collection<JobModel> getSubJob() {
+        return subJob;
     }
 
 }

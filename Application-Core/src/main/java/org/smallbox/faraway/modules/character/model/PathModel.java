@@ -19,8 +19,10 @@ public class PathModel {
 //    public final double[] _spline;
 //    public final double[] _c;
     public final List<Vector3> _curve;
+    private final ParcelModel _lastParcelCharacter;
     public Path<Vector2> myCatmull;
     private long _startTime;
+    public boolean minusOne;
 
     public void setStartTime(long startTime) {
         _startTime = startTime;
@@ -28,6 +30,10 @@ public class PathModel {
 
     public long getStartTime() {
         return _startTime;
+    }
+
+    public ParcelModel getLastParcelCharacter() {
+        return _lastParcelCharacter;
     }
 
     public static class PathSection {
@@ -56,9 +62,9 @@ public class PathModel {
     public GraphPath<ParcelModel>      _nodes;
     private final Queue<PathSection>    _smooth = new ConcurrentLinkedQueue<>();
 
-    public static PathModel create(GraphPath<ParcelModel> nodes) {
+    public static PathModel create(GraphPath<ParcelModel> nodes, boolean minusOne) {
         if (nodes != null) {
-            return new PathModel(nodes);
+            return new PathModel(nodes, minusOne);
         }
         return null;
     }
@@ -67,8 +73,9 @@ public class PathModel {
         return _smooth;
     }
 
-    private PathModel(GraphPath<ParcelModel> nodes) {
+    private PathModel(GraphPath<ParcelModel> nodes, boolean minusOne) {
         _nodes = nodes;
+        this.minusOne = minusOne;
 
         List<Vector3> vector3List = new ArrayList<>();
         nodes.forEach(parcel -> vector3List.add(new Vector3(parcel.x, parcel.y, 0)));
@@ -112,6 +119,7 @@ public class PathModel {
         _currentParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _firstParcel = nodes.getCount() > 0 ? nodes.get(0) : null;
         _lastParcel = nodes.getCount() > 0 ? nodes.get(nodes.getCount()-1) : null;
+        _lastParcelCharacter = nodes.getCount() > 0 ? nodes.get(nodes.getCount() - (minusOne ? 2 : 1)) : null;
         _length = nodes.getCount();
         _index = 0;
 
@@ -184,7 +192,7 @@ public class PathModel {
     public GraphPath<ParcelModel> getNodes() { return _nodes; }
 
     public boolean next() {
-        if (++_index < _length) {
+        if (++_index < _length - (minusOne ? 1 : 0)) {
             _currentParcel = _nodes.get(_index);
             return true;
         }

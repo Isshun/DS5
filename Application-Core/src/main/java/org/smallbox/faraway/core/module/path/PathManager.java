@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.path.parcel.ParcelGraph;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
@@ -51,16 +50,16 @@ public class PathManager extends GameModule {
         _threadPool.shutdownNow();
     }
 
-    public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel) {
-        return getPath(fromParcel, toParcel) != null;
-    }
+//    public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel) {
+//        return getPath(fromParcel, toParcel) != null;
+//    }
 
-    public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel, boolean horizontalApprox, boolean verticalApprox) {
-        return getPath(fromParcel, toParcel, horizontalApprox, verticalApprox) != null;
-    }
+//    public boolean hasPath(ParcelModel fromParcel, ParcelModel toParcel, boolean horizontalApprox, boolean verticalApprox) {
+//        return getPath(fromParcel, toParcel, horizontalApprox, verticalApprox) != null;
+//    }
 
-    public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel, boolean horizontalApprox, boolean verticalApprox) {
-        return getPath(fromParcel, toParcel);
+    public PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel, boolean horizontalApprox, boolean verticalApprox, boolean minusOne) {
+        return getPath(fromParcel, toParcel, minusOne);
 //        assert fromParcel != null;
 //        assert toParcel != null;
 //
@@ -107,7 +106,7 @@ public class PathManager extends GameModule {
 //        return bestPath;
     }
 
-    private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel) {
+    private PathModel getPath(ParcelModel fromParcel, ParcelModel toParcel, boolean minusOne) {
         if (fromParcel == null) {
             throw new GameException(PathManager.class, "fromParcel is null");
         }
@@ -127,7 +126,7 @@ public class PathManager extends GameModule {
         if (fromParcel == toParcel) {
             DefaultGraphPath<ParcelModel> nodes = new DefaultGraphPath<>();
             nodes.add(toParcel);
-            return PathModel.create(nodes);
+            return PathModel.create(nodes, minusOne);
         }
 
         // Get path from cache
@@ -138,7 +137,7 @@ public class PathManager extends GameModule {
 //        }
 
         // Looking for new path
-        PathModel path = PathModel.create(findPath(fromParcel, toParcel));
+        PathModel path = PathModel.create(findPath(fromParcel, toParcel), minusOne);
 //        _cache.put(cacheId, path);
 
         return path;

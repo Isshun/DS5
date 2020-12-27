@@ -227,6 +227,16 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         lock.quantity += quantity;
     }
 
+    public int removeQuantity(ConsumableItem consumable, int quantity) {
+        if (quantity < consumable.getTotalQuantity()) {
+            consumable.setQuantity(consumable.getTotalQuantity() - quantity);
+            return quantity;
+        }
+
+        removeConsumable(consumable);
+        return consumable.getTotalQuantity();
+    }
+
     public static class ConsumableJobLock {
         public ConsumableItem consumable;
         public JobModel job;
@@ -335,7 +345,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         for (int i = 0; i < length; i++) {
             MapObjectModel mapObject = list.get((i + start) % length);
             if (mapObject.matchFilter(filter)) {
-                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel(), false, false);
+                PathModel path = pathManager.getPath(fromParcel, mapObject.getParcel(), false, false, true);
                 if (path != null) {
                     ObjectsMatchingFilter.put(mapObject, path.getLength());
                     if (bestDistance > path.getLength()) {

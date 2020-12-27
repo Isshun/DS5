@@ -31,7 +31,7 @@ public class BasicRepairJob extends JobModel {
             job._mapObject = mapObject;
             job._targetParcel = mapObject.getParcel();
 
-            job.addMoveTask("Move to object", mapObject.getParcel());
+            job.addMoveTask("Move to object", mapObject::getParcel);
             job.addTask("Repair", (character, hourInterval) -> {
                 mapObject.addHealth(1 / jobModule.getGameConfig().repairTime * hourInterval);
                 job.setProgress(mapObject.getHealth(), mapObject.getMaxHealth());

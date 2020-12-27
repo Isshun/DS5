@@ -68,10 +68,14 @@ public abstract class CharacterModel extends MovableModel {
      * @return True si le personnage est déjà à la position voulue
      */
     public boolean moveTo(ParcelModel toParcel) {
-        return moveTo(toParcel, null);
+        return moveTo(toParcel, null, false);
     }
 
-    public boolean moveTo(ParcelModel toParcel, MoveListener<CharacterModel> listener) {
+    public boolean moveTo(ParcelModel toParcel, boolean minusOne) {
+        return moveTo(toParcel, null, minusOne);
+    }
+
+    public boolean moveTo(ParcelModel toParcel, MoveListener<CharacterModel> listener, boolean minusOne) {
         assert toParcel != null;
 
         // Déjà entrain de se déplacer vers la postion
@@ -95,7 +99,7 @@ public abstract class CharacterModel extends MovableModel {
             _moveListener = null;
         }
 
-        _path = DependencyInjector.getInstance().getDependency(PathManager.class).getPath(_parcel, toParcel, false, false);
+        _path = DependencyInjector.getInstance().getDependency(PathManager.class).getPath(_parcel, toParcel, false, false, minusOne);
         _moveProgress2 = 0;
         if (_path != null) {
             _moveListener = listener;

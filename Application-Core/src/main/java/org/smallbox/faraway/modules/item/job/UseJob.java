@@ -33,7 +33,7 @@ public class UseJob extends JobModel {
 
         setMainLabel("Use " + item.getInfo().label);
 
-        addMoveTask("Move", item.getParcel());
+        addMoveTask("Move", item::getParcel);
         addTask("Use", (character, hourInterval) -> {
             _duration += 1 / DependencyInjector.getInstance().getDependency(GameManager.class).getGame().getTickPerHour();
             double durationLeft = totalDuration - _duration;
@@ -58,9 +58,9 @@ public class UseJob extends JobModel {
 //            return JobCheckReturn.ABORT;
 //        }
 
-        if (!DependencyInjector.getInstance().getDependency(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
-            return JobCheckReturn.STAND_BY;
-        }
+//        if (!DependencyInjector.getInstance().getDependency(PathManager.class).hasPath(character.getParcel(), _item.getParcel())) {
+//            return JobCheckReturn.STAND_BY;
+//        }
 
         return JobCheckReturn.OK;
     }

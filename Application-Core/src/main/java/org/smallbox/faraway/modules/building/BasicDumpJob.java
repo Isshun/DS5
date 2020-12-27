@@ -24,7 +24,7 @@ public class BasicDumpJob extends JobModel {
 
         setMainLabel("Dump " + mapObject.getInfo().label);
 
-        addMoveTask("Move to object", mapObject.getParcel());
+        addMoveTask("Move to object", mapObject::getParcel);
 
         addTask("Dump", (character, hourInterval) -> {
             setProgress(_progress + (1 / 0.15 * hourInterval), 1);
