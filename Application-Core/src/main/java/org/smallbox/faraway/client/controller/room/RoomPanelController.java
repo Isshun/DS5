@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.controller.room;
 
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -21,7 +21,7 @@ import java.util.Comparator;
 public class RoomPanelController extends LuaController {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -60,7 +60,7 @@ public class RoomPanelController extends LuaController {
                             .setRegularBackgroundColor(0x121c1eff)
                             .setOnClickListener((int x, int y) -> {
                                 roomLayer.setMode(RoomLayer.Mode.ADD, cls);
-                                selectionManager.setSelectionListener(parcels -> {
+                                gameSelectionManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
                                     roomLayer.setMode(RoomLayer.Mode.NONE, cls);
                                     roomModule.addRoom(cls, parcels);
@@ -79,7 +79,7 @@ public class RoomPanelController extends LuaController {
                             .setRegularBackgroundColor(0x121c1eff)
                             .setOnClickListener((int x, int y) -> {
                                 roomLayer.setMode(RoomLayer.Mode.SUB, cls);
-                                selectionManager.setSelectionListener(parcels -> {
+                                gameSelectionManager.setSelectionListener(parcels -> {
                                     Log.warning(RoomPanelController.class, "HELLO");
                                     roomLayer.setMode(RoomLayer.Mode.NONE, cls);
                                     roomModule.removeArea(parcels);

@@ -2,7 +2,8 @@ package org.smallbox.faraway.client.render;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.manager.InputManager;
+import org.smallbox.faraway.client.manager.input.InputManager;
+import org.smallbox.faraway.client.manager.input.WorldInputManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -38,6 +39,9 @@ public class LayerManager implements GameClientObserver {
 
     @Inject
     private GDXRenderer gdxRenderer;
+
+    @Inject
+    private WorldInputManager worldInputManager;
 
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
@@ -105,10 +109,10 @@ public class LayerManager implements GameClientObserver {
 
         // Move viewport
         if (game.isRunning()) {
-            if (inputManager.getDirection()[0]) { viewport.move(20, 0); }
-            if (inputManager.getDirection()[1]) { viewport.move(0, 20); }
-            if (inputManager.getDirection()[2]) { viewport.move(-20, 0); }
-            if (inputManager.getDirection()[3]) { viewport.move(0, -20); }
+            if (worldInputManager.getDirection()[0]) { viewport.move(20, 0); }
+            if (worldInputManager.getDirection()[1]) { viewport.move(0, 20); }
+            if (worldInputManager.getDirection()[2]) { viewport.move(-20, 0); }
+            if (worldInputManager.getDirection()[3]) { viewport.move(0, -20); }
         }
 
         uiManager.onRefresh(_frame);

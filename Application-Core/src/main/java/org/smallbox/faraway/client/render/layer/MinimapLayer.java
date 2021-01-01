@@ -16,7 +16,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -63,7 +63,7 @@ public class MinimapLayer extends BaseLayer {
     private ConsumableModule consumableModule;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private UIManager uiManager;
@@ -87,8 +87,8 @@ public class MinimapLayer extends BaseLayer {
         gameWidth = game.getInfo().worldWidth;
         gameHeight = game.getInfo().worldHeight;
 
-        miniMapWidth = (int) (mainPanelController.getMapContainer().getWidth() * applicationConfigService.getConfig().uiScale);
-        miniMapHeight = (int) (mainPanelController.getMapContainer().getHeight() * applicationConfigService.getConfig().uiScale);
+        miniMapWidth = (int) (mainPanelController.getMapContainer().getWidth() * applicationConfig.uiScale);
+        miniMapHeight = (int) (mainPanelController.getMapContainer().getHeight() * applicationConfig.uiScale);
 
         ratioX = ((float)miniMapWidth / gameWidth);
         ratioY = ((float)miniMapHeight / gameHeight);

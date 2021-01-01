@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.building.BuildJob;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.storage.StoreJob;
 
@@ -44,10 +43,10 @@ public class JobLayer extends BaseLayer {
                 renderer.drawTextOnMap(job.getJobParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
             }
 
-            if (job instanceof BasicCraftJob) {
-                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_craft.png"));
-                renderer.drawTextOnMap(job.getJobParcel(), "craft", 10, Color.CHARTREUSE, 0, 0);
-            }
+//            if (job instanceof BasicCraftJob) {
+//                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_craft.png"));
+//                renderer.drawTextOnMap(job.getJobParcel(), "craft", 10, Color.CHARTREUSE, 0, 0);
+//            }
 
             if (job.getIcon() != null) {
                 renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));

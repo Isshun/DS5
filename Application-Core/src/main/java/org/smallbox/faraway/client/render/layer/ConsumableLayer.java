@@ -64,7 +64,7 @@ public class ConsumableLayer extends BaseLayer {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        consumableModule.getConsumables().stream()
+        consumableModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()));

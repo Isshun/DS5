@@ -2,10 +2,13 @@ package org.smallbox.faraway.client.gameAction;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.SelectionInfoController;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -16,8 +19,12 @@ import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.Log;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 @GameObject
 public class GameActionManager extends GameManager {
@@ -34,6 +41,7 @@ public class GameActionManager extends GameManager {
     @Inject
     private BuildJobFactory buildJobFactory;
 
+    private Map<Class<? extends Annotation>, Map<OnGameSelectAction, Consumer<ObjectModel>>> gameActionsConsumers;
     private Collection<GameActionAreaListener> specializedAreaModules;
     private GameActionMode mode = GameActionMode.NONE;
     private OnSelectParcelListener areaAction;
@@ -45,6 +53,8 @@ public class GameActionManager extends GameManager {
     @OnInit
     private void init() {
         specializedAreaModules = DependencyInjector.getInstance().getSubTypesOf(GameActionAreaListener.class);
+        gameActionsConsumers = new ConcurrentHashMap<>();
+        gameActionsConsumers.put(OnGameSelectAction.class, DependencyInjector.getInstance().getMethodsAnnotatedBy(OnGameSelectAction.class));
     }
 
     public void clearAction() {
@@ -98,28 +108,36 @@ public class GameActionManager extends GameManager {
             areaAction.onParcelSelected(parcel);
         }
 
-        else if (hasArea(parcel)) {
-            selectArea(parcel);
-        }
-
-        else {
-            selectionInfoController.onSelectParcelOld(parcel);
-        }
+//        else if (hasArea(parcel)) {
+//            selectArea(parcel);
+//        }
+//
+//        else {
+//            selectionInfoController.onSelectParcelOld(parcel);
+//        }
     }
 
     public void removeArea(ParcelModel parcel) {
         specializedAreaModules.forEach(specializedAreaModule -> specializedAreaModule.removeArea(parcel));
     }
 
-    public boolean hasArea(ParcelModel parcel) {
-        return specializedAreaModules.stream().anyMatch(listener -> listener.hasArea(parcel));
+//    public boolean hasArea(ParcelModel parcel) {
+//        return specializedAreaModules.stream().anyMatch(listener -> listener.hasArea(parcel));
+//    }
+//
+//    public void selectArea(ParcelModel parcel) {
+//        specializedAreaModules.stream()
+//                .filter(listener -> listener.hasArea(parcel))
+//                .findFirst()
+//                .ifPresent(listener -> listener.selectArea(parcel));
+//    }
+
+    public boolean hasAction() {
+        return mode != GameActionMode.NONE;
     }
 
-    public void selectArea(ParcelModel parcel) {
-        specializedAreaModules.stream()
-                .filter(listener -> listener.hasArea(parcel))
-                .findFirst()
-                .ifPresent(listener -> listener.selectArea(parcel));
+    public void callActions(Class<? extends Annotation> annotation, ObjectModel object) {
+        gameActionsConsumers.get(annotation).entrySet().stream().filter(entry -> entry.getKey().value().isInstance(object)).forEach(entry -> entry.getValue().accept(object));
     }
 
 }

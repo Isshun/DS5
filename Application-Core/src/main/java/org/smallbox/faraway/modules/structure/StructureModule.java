@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.structure;
 import org.smallbox.faraway.common.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -11,7 +12,6 @@ import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
-import org.smallbox.faraway.modules.BuildItemModule;
 import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel;
@@ -26,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 @ModuleSerializer(StructureModuleSerializer.class)
 @GameObject
 //@ModuleLayer({StructureBottomLayer.class, StructureTopLayer.class})
-public class StructureModule extends BuildItemModule<StructureModuleObserver> {
+public class StructureModule extends GenericGameModule<StructureItem, StructureModuleObserver> {
 
     @Inject
     private PathManager pathManager;
@@ -99,8 +99,8 @@ public class StructureModule extends BuildItemModule<StructureModuleObserver> {
 
     @Override
     protected void onModuleUpdate(Game game) {
-        createBuildJobs(jobModule, consumableModule, buildJobFactory, _structures);
-        createRepairJobs(jobModule, _structures);
+//        createBuildJobs(jobModule, consumableModule, buildJobFactory, _structures);
+//        createRepairJobs(jobModule, _structures);
     }
 
     public void removeStructure(StructureItem structure) {

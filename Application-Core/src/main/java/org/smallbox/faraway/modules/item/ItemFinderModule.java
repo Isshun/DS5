@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
@@ -24,10 +24,10 @@ public class ItemFinderModule extends GameModule {
     private PathManager pathManager;
 
     @Inject
-    private ItemModule _items;
+    private ItemModule itemModule;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     // TODO: setJob item
     // TODO: isJobLaunchable path
@@ -35,7 +35,7 @@ public class ItemFinderModule extends GameModule {
         if (filter.needItem) {
             int bestDistance = Integer.MAX_VALUE;
             UsableItem bestItem = null;
-            for (UsableItem item: _items.getItems()) {
+            for (UsableItem item: itemModule.getAll()) {
                 if (item.matchFilter(filter)) {
                     PathModel path = pathManager.getPath(character.getParcel(), item.getParcel(), true, false, true);
                     if (path != null && path.getLength() < bestDistance) {
@@ -75,7 +75,7 @@ public class ItemFinderModule extends GameModule {
 //                .findFirst()
 //                .orElse(null);
 
-        List<UsableItem> list = new ArrayList<>(_items.getItems());
+        List<UsableItem> list = new ArrayList<>(itemModule.getAll());
 
         // Get matching items
         int start = (int) (Math.random() * list.size());
@@ -97,7 +97,7 @@ public class ItemFinderModule extends GameModule {
 
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry: ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + applicationConfigService.getGameInfo().maxNearDistance) {
+            if (entry.getValue() <= bestDistance + applicationConfig.game.maxNearDistance) {
                 return entry.getKey();
             }
         }

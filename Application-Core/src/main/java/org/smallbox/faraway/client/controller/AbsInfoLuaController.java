@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -83,9 +83,9 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
             } else {
                 onDisplayMultiple(listSelected);
             }
-            DependencyInjector.getInstance().getDependency(SelectionManager.class).setSelected(listSelected);
+            DependencyInjector.getInstance().getDependency(GameSelectionManager.class).setSelected(listSelected);
         } else {
-            DependencyInjector.getInstance().getDependency(SelectionManager.class).setSelected(null);
+            DependencyInjector.getInstance().getDependency(GameSelectionManager.class).setSelected(null);
         }
     }
 

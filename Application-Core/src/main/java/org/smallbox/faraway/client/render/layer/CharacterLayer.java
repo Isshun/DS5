@@ -84,8 +84,8 @@ public class CharacterLayer extends BaseLayer {
                         (int) (viewPortY + out.y * 32));
             } else {
                 doDraw(renderer, character,
-                        viewPortX + position.parcelX * 32,
-                        viewPortY + position.parcelY * 32);
+                        viewPortX + character.getParcel().x * 32,
+                        viewPortY + character.getParcel().y * 32);
             }
         }
     }

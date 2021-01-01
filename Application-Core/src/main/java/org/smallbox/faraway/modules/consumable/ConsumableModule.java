@@ -3,12 +3,12 @@ package org.smallbox.faraway.modules.consumable;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.*;
@@ -23,11 +23,10 @@ import org.smallbox.faraway.util.Utils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 @GameObject
 @ModuleSerializer(ConsumableSerializer.class)
-public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
+public class ConsumableModule extends GenericGameModule<ConsumableItem, ConsumableModuleObserver> {
 
     @Inject
     private PathManager pathManager;
@@ -45,9 +44,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     private StructureModule structureModule;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
-
-    private Collection<ConsumableItem> _consumables;
+    private ApplicationConfig applicationConfig;
 
     public void addConsumable(String itemName, int quantity, int x, int y, int z) {
         addConsumable(data.getItemInfo(itemName), quantity, x, y, z);
@@ -101,7 +98,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             else {
                 consumable = new ConsumableItem(itemInfo, quantity);
                 consumable.setParcel(finalParcel);
-                _consumables.add(consumable);
+                add(consumable);
             }
 
             return consumable;
@@ -277,14 +274,8 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     private Collection<ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
 
-    public Collection<ConsumableItem> getConsumables() {
-        return _consumables;
-    }
-
     @Override
     public void onGameCreate(Game game) {
-        _consumables = new LinkedBlockingQueue<>();
-
         structureModule.addObserver(new StructureModuleObserver() {
             @Override
             public void onStructureComplete(StructureItem structure) {
@@ -323,10 +314,10 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     @Override
     protected void onModuleUpdate(Game game) {
-        _consumables.forEach(ConsumableItem::fixPosition);
+        getAll().forEach(ConsumableItem::fixPosition);
 
         // Retire les consomables ayant comme quantité 0
-        _consumables.removeIf(consumable -> consumable.getTotalQuantity() == 0 && !consumable.hasLock() && consumable.getStoreJob() == null);
+        getAll().removeIf(consumable -> consumable.getTotalQuantity() == 0 && !consumable.hasLock() && consumable.getStoreJob() == null);
 
         // Retire les locks des jobs n'existant plus
         _locks.stream()
@@ -335,7 +326,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public MapObjectModel getRandomNearest(ItemFilter filter, ParcelModel fromParcel) {
-        List<? extends MapObjectModel> list = new ArrayList<>(_consumables);
+        List<? extends MapObjectModel> list = new ArrayList<>(getAll());
 
         // Get matching items
         int start = (int) (Math.random() * list.size());
@@ -356,7 +347,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         }
         // Take first item at acceptable distance
         for (Map.Entry<MapObjectModel, Integer> entry : ObjectsMatchingFilter.entrySet()) {
-            if (entry.getValue() <= bestDistance + applicationConfigService.getGameInfo().maxNearDistance) {
+            if (entry.getValue() <= bestDistance + applicationConfig.game.maxNearDistance) {
                 return entry.getKey();
             }
         }
@@ -424,7 +415,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
         if (consumable != null && consumable.getParcel() != null) {
             ParcelModel parcel = consumable.getParcel();
-            _consumables.remove(consumable);
+            remove(consumable);
 
             notifyObservers(observer -> observer.onRemoveConsumable(parcel, consumable));
         }
@@ -447,7 +438,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
             // Ajout le nouveau consomable sur la carte
             else {
                 moveConsumableToParcel(finalParcel, consumable);
-                _consumables.add(consumable);
+                add(consumable);
             }
 
             notifyObservers(observer -> observer.onAddConsumable(finalParcel, consumable));
@@ -487,7 +478,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public ConsumableItem find(ItemInfo itemInfo) {
-        return _consumables.stream()
+        return getAll().stream()
                 .filter(consumable -> consumable.getInfo() == itemInfo && consumable.getParcel() != null)
                 .findAny().orElse(null);
     }
@@ -497,7 +488,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         consumable.setQuantity(quantity);
         consumable.setParcel(parcel);
 
-        _consumables.add(consumable);
+        add(consumable);
 
         return consumable;
     }
@@ -514,7 +505,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
     }
 
     public int getTotal(ItemInfo itemInfo) {
-        return _consumables.stream()
+        return getAll().stream()
                 .filter(consumable -> consumable.getInfo().instanceOf(itemInfo))
                 .mapToInt(ConsumableItem::getFreeQuantity)
                 .sum();
@@ -522,7 +513,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     // TODO
     public int getTotalAccessible(ItemInfo itemInfo, ParcelModel parcel) {
-        return _consumables.stream()
+        return getAll().stream()
                 .filter(consumable -> consumable.getInfo() == itemInfo)
                 .mapToInt(ConsumableItem::getFreeQuantity)
                 .sum();
@@ -533,7 +524,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
         HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
         int previewQuantity = 0;
 
-        for (ConsumableItem consumable : _consumables) {
+        for (ConsumableItem consumable : getAll()) {
             if (consumable.getInfo().instanceOf(itemInfo)) {
 
                 // Ajoute à la liste des preview le consomable et la quantité disponible
@@ -556,7 +547,7 @@ public class ConsumableModule extends GameModule<ConsumableModuleObserver> {
 
     // TODO: perfs
     public ConsumableItem getConsumable(ParcelModel parcel) {
-        return _consumables.stream().filter(consumableItem -> consumableItem.getParcel() == parcel).findFirst().orElse(null);
+        return getAll().stream().filter(consumableItem -> consumableItem.getParcel() == parcel).findFirst().orElse(null);
     }
 
     public ConsumableItem getConsumable(int x, int y, int z) {

@@ -1,15 +1,19 @@
-package org.smallbox.faraway.client.manager;
+package org.smallbox.faraway.client.manager.input;
 
 import com.badlogic.gdx.InputProcessor;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameEventManager;
-import org.smallbox.faraway.client.selection.SelectionManager;
 import org.smallbox.faraway.client.debug.DebugService;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
+import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
+import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
@@ -21,20 +25,28 @@ public class InputManager implements InputProcessor {
     private DebugService debugService;
 
     @Inject
-    private SelectionManager selectionManager;
-
-    @Inject
-    private ApplicationConfigService applicationConfigService;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private GameEventManager gameEventManager;
 
     @Inject
+    private GameContextMenuManager gameContextMenuManager;
+
+    @Inject
+    private GameActionManager gameActionManager;
+
+    @Inject
     private UIEventManager uiEventManager;
+
+    @Inject
+    private WorldInputManager worldInputManager;
+
+    @Inject
+    private Viewport viewport;
 
     private GameEventListener.Modifier _modifier;
     private int                 _lastMouseButton;
-    private boolean[]           _keyDirection;
     private int                 _lastPosX;
     private int                 _lastPosY;
     private int _touchDownX;
@@ -45,7 +57,6 @@ public class InputManager implements InputProcessor {
 
     public InputManager() {
         _modifier = GameEventListener.Modifier.NONE;
-        _keyDirection = new boolean[4];
     }
 
     @Override
@@ -70,21 +81,7 @@ public class InputManager implements InputProcessor {
             _modifier = GameEventListener.Modifier.SHIFT;
         }
 
-        if (keycode == Keys.A || keycode == Keys.LEFT) {
-            _keyDirection[0] = true;
-        }
-
-        if (keycode == Keys.W || keycode == Keys.UP) {
-            _keyDirection[1] = true;
-        }
-
-        if (keycode == Keys.D || keycode == Keys.RIGHT) {
-            _keyDirection[2] = true;
-        }
-
-        if (keycode == Keys.S || keycode == Keys.DOWN) {
-            _keyDirection[3] = true;
-        }
+        worldInputManager.keyDown(keycode);
 
         return false;
     }
@@ -102,25 +99,7 @@ public class InputManager implements InputProcessor {
             return false;
         }
 
-        if (keycode == Keys.A || keycode == Keys.LEFT) {
-            _keyDirection[0] = false;
-//            return true;
-        }
-
-        if (keycode == Keys.W || keycode == Keys.UP) {
-            _keyDirection[1] = false;
-//            return true;
-        }
-
-        if (keycode == Keys.D || keycode == Keys.RIGHT) {
-            _keyDirection[2] = false;
-//            return true;
-        }
-
-        if (keycode == Keys.S || keycode == Keys.DOWN) {
-            _keyDirection[3] = false;
-//            return true;
-        }
+        worldInputManager.keyUp(keycode);
 
         if (keycode == Keys.CONTROL_LEFT) {
             _modifier = GameEventListener.Modifier.NONE;
@@ -135,8 +114,8 @@ public class InputManager implements InputProcessor {
         }
 
         // Clear UiEventManager selection listener when escape key is pushed
-        if (keycode == Keys.ESCAPE && selectionManager.getSelectionListener() != null) {
-            selectionManager.setSelectionListener(null);
+        if (keycode == Keys.ESCAPE && gameSelectionManager.getSelectionListener() != null) {
+            gameSelectionManager.setSelectionListener(null);
             return false;
         }
 
@@ -165,18 +144,18 @@ public class InputManager implements InputProcessor {
         _touchDownX = _touchDragX = x;
         _touchDownY = _touchDragY = y;
 
-        if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
+        if (gameContextMenuManager.getMenu() != null) {
+            return true;
+        }
 
-            // Passe l'evenement à l'ui event manager
-            if (uiEventManager.onMousePress(x, y, button)) {
-                return false;
-            }
+        // Passe l'evenement à l'ui event manager
+        if (uiEventManager.onMousePress(x, y, button)) {
+            return false;
+        }
 
-            // Passe l'evenement au game event manager
-            if (gameEventManager.onMousePress(x, y, button)) {
-                return false;
-            }
-
+        // Passe l'evenement au game event manager
+        if (gameEventManager.onMousePress(x, y, button)) {
+            return false;
         }
 
         return false;
@@ -191,18 +170,24 @@ public class InputManager implements InputProcessor {
 
         _touchDrag = false;
 
-        if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
+        if (!gameActionManager.hasAction() && button == Buttons.RIGHT) {
+            gameContextMenuManager.open(x, y, WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor()));
+            return true;
+        }
 
-            // Passe l'evenement à l'ui event manager
-            if (uiEventManager.onMouseRelease(x, y, button)) {
-                return false;
-            }
+        if (gameContextMenuManager.getMenu() != null && button == Buttons.LEFT) {
+            gameContextMenuManager.click(x, y);
+            return true;
+        }
 
-            // Passe l'evenement au game event manager
-            if (gameEventManager.onMouseRelease(x, y, button)) {
-                return false;
-            }
+        // Passe l'evenement à l'ui event manager
+        if (uiEventManager.onMouseRelease(x, y, button)) {
+            return false;
+        }
 
+        // Passe l'evenement au game event manager
+        if (gameEventManager.onMouseRelease(x, y, button)) {
+            return false;
         }
 
         return false;
@@ -219,23 +204,6 @@ public class InputManager implements InputProcessor {
             return false;
         }
 
-//        if (_lastMouseButton == Buttons.RIGHT) {
-////            if (Application.gameManager.isLoaded()) {
-////                ApplicationClient.layerManager.getViewport().update(x, y);
-////                return true;
-////            }
-////        } else if (_lastMouseButton == Buttons.LEFT) {
-////            Log.debug("select: " + _touchDownX + "x" + _touchDownY);
-////            Log.debug("to: " + x + "x" + y );
-////
-//////            Application.notify(observer -> observer.onSelectParcel(parcels));
-////
-////            return false;
-////        } else {
-//        }
-//
-//        ApplicationClient.onMouseEvent(GameEventListener.Action.MOVE, -1, x, y, _lastMouseButton == Buttons.RIGHT);
-
         return false;
     }
 
@@ -244,18 +212,14 @@ public class InputManager implements InputProcessor {
         _lastPosX = x;
         _lastPosY = y;
 
-        if (x > 0 && x < applicationConfigService.getScreenInfo().resolution[0] && y > 0 && y < applicationConfigService.getScreenInfo().resolution[1]) {
+        // Passe l'evenement à l'ui event manager
+        if (uiEventManager.onMouseMove(x, y, false)) {
+            return false;
+        }
 
-            // Passe l'evenement à l'ui event manager
-            if (uiEventManager.onMouseMove(x, y, false)) {
-                return false;
-            }
-
-            // Passe l'evenement au game event manager
-            if (gameEventManager.onMouseMove(x, y, false)) {
-                return false;
-            }
-
+        // Passe l'evenement au game event manager
+        if (gameEventManager.onMouseMove(x, y, false)) {
+            return false;
         }
 
         ApplicationClient.notify(observer -> observer.onMouseMove(x, y, -1));
@@ -266,14 +230,17 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
+
         if (amountX < 0) {
             ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false);
             return true;
         }
+
         if (amountX > 0) {
             ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false);
             return true;
         }
+
         return false;
     }
 
@@ -288,7 +255,4 @@ public class InputManager implements InputProcessor {
 
     public boolean getTouchDrag() { return _touchDrag; }
 
-    public boolean[] getDirection() {
-        return _keyDirection;
-    }
 }

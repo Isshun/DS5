@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller.character;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -13,6 +13,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
@@ -25,7 +26,7 @@ import java.util.Queue;
 public class CharacterInfoController extends AbsInfoLuaController<CharacterModel> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -65,7 +66,7 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this);
+        gameSelectionManager.registerSelection(this);
     }
 
     @Override
@@ -151,6 +152,11 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
             }
 
         }
+    }
+
+    @OnGameSelectAction(CharacterModel.class)
+    public void onSelectCharacter(CharacterModel character) {
+        display(character);
     }
 
     @GameShortcut(key = Input.Keys.TAB)

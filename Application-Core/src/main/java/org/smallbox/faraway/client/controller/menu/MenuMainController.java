@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 @ApplicationObject
 public class MenuMainController extends LuaController {
@@ -21,7 +21,7 @@ public class MenuMainController extends LuaController {
     private GameFactory gameFactory;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private MenuSettingsController menuSettingsController;
@@ -34,7 +34,7 @@ public class MenuMainController extends LuaController {
     @BindLuaAction
     private void onActionNewGame(View view) {
         setVisible(false);
-        gameFactory.create(applicationConfigService.getDebugInfo().scenario);
+        gameFactory.create(applicationConfig.debug.scenario);
     }
 
     @BindLuaAction

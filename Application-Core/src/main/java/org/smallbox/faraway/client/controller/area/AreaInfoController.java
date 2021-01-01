@@ -1,12 +1,13 @@
 package org.smallbox.faraway.client.controller.area;
 
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModule;
@@ -17,7 +18,7 @@ import java.util.Queue;
 public class AreaInfoController extends AbsInfoLuaController<AreaModel> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -36,15 +37,19 @@ public class AreaInfoController extends AbsInfoLuaController<AreaModel> {
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this);
+        gameSelectionManager.registerSelection(this);
     }
 
-    @Override
-    protected void onDisplayUnique(AreaModel area) {
-        lbName.setText(area.getName());
+//    @OnGameSelectAction(AreaModel.class)
+//    private void onSelectArea(AreaModel area) {
+//        lbName.setText(area.getName());
+//
+//        lbLabel.setText("Type: " + area.getInfo().label());
+//        lbParcels.setText("Parcels: " + area.getParcels());
+//    }
 
-        lbLabel.setText("Type: " + area.getInfo().label());
-        lbParcels.setText("Parcels: " + area.getParcels());
+    @Override
+    protected void onDisplayUnique(AreaModel areaModel) {
     }
 
     @Override

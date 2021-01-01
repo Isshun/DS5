@@ -7,9 +7,7 @@ import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
-import org.smallbox.faraway.core.test.PerlinTestApp;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
 
 public class DesktopLauncher {
 
@@ -18,7 +16,8 @@ public class DesktopLauncher {
 //            try (FileReader fileReader = new FileReader(FileUtils.getFile("data/config.json"))) {
 //                return new Gson().fromJson(fileReader, ApplicationConfig.class);
 //            }
-        ApplicationConfigService applicationConfigService = DependencyInjector.getInstance().createAndInit(ApplicationConfigService.class);
+        DependencyInjector.getInstance().createAndInit(ApplicationConfigService.class);
+        ApplicationConfig applicationConfig = DependencyInjector.getInstance().getDependency(ApplicationConfig.class);
 
         FileUtils.createRoamingDirectory();
 
@@ -29,7 +28,7 @@ public class DesktopLauncher {
 //        double ratio = (double)width / height;
 //        Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
 
-        new LwjglApplication(new GDXApplication(() -> getGameCallback(applicationConfigService.getConfig())), LwjglConfig.from(applicationConfigService.getConfig()));
+        new LwjglApplication(new GDXApplication(() -> getGameCallback(applicationConfig)), LwjglConfig.from(applicationConfig));
 //        new LwjglApplication(new PerlinTestApp());
     }
 

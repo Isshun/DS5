@@ -20,7 +20,7 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
@@ -41,7 +41,7 @@ public class GDXApplication extends ApplicationAdapter {
     private MinimalRender minimalRender;
     private ErrorRender errorRender;
     private GameFactory gameFactory;
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     public GDXApplication(GameTestCallback callback) {
         _callback = callback;
@@ -78,7 +78,7 @@ public class GDXApplication extends ApplicationAdapter {
         menuRender = di.getDependency(MenuRender.class);
         minimalRender = di.getDependency(MinimalRender.class);
         errorRender = di.getDependency(ErrorRender.class);
-        applicationConfigService = di.getDependency(ApplicationConfigService.class);
+        applicationConfig = di.getDependency(ApplicationConfig.class);
     }
 
     private void generateFonts() {
@@ -96,7 +96,7 @@ public class GDXApplication extends ApplicationAdapter {
 //            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
 //            gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
 //                Application.gameManager.loadGame();
-        gameFactory.create(applicationConfigService.getDebugInfo().scenario);
+        gameFactory.create(applicationConfig.debug.scenario);
 
         if (_callback != null) {
             taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);

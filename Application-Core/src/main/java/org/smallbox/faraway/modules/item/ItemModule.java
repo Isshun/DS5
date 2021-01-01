@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.item;
 import org.smallbox.faraway.common.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -10,7 +11,6 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.BuildItemModule;
 import org.smallbox.faraway.modules.building.BasicDumpJob;
 import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -27,7 +27,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @GameObject
 @ModuleSerializer(ItemModuleSerializer.class)
-public class ItemModule extends BuildItemModule<ItemModuleObserver> {
+public class ItemModule extends GenericGameModule<UsableItem, ItemModuleObserver> {
 
     @Inject
     private WorldModule worldModule;
@@ -47,12 +47,6 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     @Inject
     private Data data;
 
-    private Collection<UsableItem> _items;
-
-    public Collection<UsableItem> getItems() {
-        return _items;
-    }
-
     /**
      * Crée un UseJob
      *
@@ -69,17 +63,15 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
     @Override
     public void onGameCreate(Game game) {
-        _items = new LinkedBlockingQueue<>();
-
         jobModule.addObserver(new JobModuleObserver() {
             @Override
             public void onJobCancel(JobModel job) {
-                _items.removeIf(item -> item.getBuildJob() == job);
+                getAll().removeIf(item -> item.getBuildJob() == job);
             }
 
             @Override
             public void onJobComplete(JobModel job) {
-                _items.removeIf(item -> item.getBuildJob() == job);
+                getAll().removeIf(item -> item.getBuildJob() == job);
             }
         });
 
@@ -88,15 +80,15 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
 
     @Override
     public void onGameStart(Game game) {
-        _items.stream()
+        getAll().stream()
                 .filter(item -> item.getBuildValue() < item.getBuildCost())
                 .forEach(this::launchBuild);
     }
 
     @Override
     protected void onModuleUpdate(Game game) {
-        createBuildJobs(jobModule, consumableModule, buildJobFactory, _items);
-        createRepairJobs(jobModule, _items);
+//        createBuildJobs(jobModule, consumableModule, buildJobFactory, _items);
+//        createRepairJobs(jobModule, _items);
     }
 
     @Override
@@ -105,7 +97,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
             UsableItem item = new UsableItem(itemInfo, data);
             item.setParcel(parcel);
             item.init();
-            _items.add(item);
+            add(item);
 
             notifyObservers(obs -> obs.onAddItem(parcel, item));
         }
@@ -114,7 +106,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     @Override
     public void removeObject(MapObjectModel mapObjectModel) {
         if (mapObjectModel.isUserItem() && mapObjectModel instanceof UsableItem) {
-            _items.remove(mapObjectModel);
+            remove((UsableItem) mapObjectModel);
             jobModule.onCancelJobs(mapObjectModel.getParcel(), mapObjectModel);
 
             notifyObservers(obs -> obs.onRemoveItem(mapObjectModel.getParcel(), (UsableItem) mapObjectModel));
@@ -129,7 +121,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
         item.setParcel(parcel);
         item.init();
         item.setBuildProgress(0);
-        _items.add(item);
+        add(item);
     }
 
     /**
@@ -142,8 +134,8 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     }
 
     public void addItem(UsableItem item) {
-        if (!_items.contains(item)) {
-            _items.add(item);
+        if (!contains(item)) {
+            add(item);
 
             notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
         }
@@ -163,7 +155,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
         item.setBuildProgress(isComplete ? itemInfo.build.cost : 0);
         item.init();
 
-        _items.add(item);
+        add(item);
 
         notifyObservers(obs -> obs.onAddItem(item.getParcel(), item));
 
@@ -171,7 +163,7 @@ public class ItemModule extends BuildItemModule<ItemModuleObserver> {
     }
 
     public UsableItem getItem(ParcelModel parcel) {
-        for (UsableItem item: _items) {
+        for (UsableItem item: getAll()) {
             if (item.getParcel() == parcel) {
                 return item;
             }

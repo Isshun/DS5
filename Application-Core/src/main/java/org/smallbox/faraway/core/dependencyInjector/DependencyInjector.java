@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.dependencyInjector;
 
 import org.reflections.Reflections;
+import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameShortcut;
@@ -8,6 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Log;
@@ -19,7 +21,9 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DependencyInjector {
     private static final DependencyInjector _self = new DependencyInjector();
@@ -249,6 +253,25 @@ public class DependencyInjector {
         _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).filter(baseClass::isInstance).map(baseClass::cast).forEach(objects::add);
         return objects;
+    }
+
+    public <T extends Annotation> Map<T, Consumer<ObjectModel>> getMethodsAnnotatedBy(Class<T> baseClass) {
+        Map<T, Consumer<ObjectModel>> results = new ConcurrentHashMap<>();
+        Stream.concat(
+                _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency),
+                _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency)
+        ).forEach(dependency ->
+                Stream.of(dependency.getClass().getMethods())
+                        .filter(method -> method.isAnnotationPresent(baseClass))
+                        .forEach(method -> results.put(method.getAnnotation(baseClass), objectModel -> {
+                            try {
+                                method.invoke(dependency, objectModel);
+                            } catch (IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+                        }))
+        );
+        return results;
     }
 
     @Deprecated

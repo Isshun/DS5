@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.building;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.BuildableMapObject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -25,7 +25,7 @@ public class BuildJobFactory {
     private BringItemJobFactory bringItemJobFactory;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     public JobModel createJob(ItemInfo itemInfo, ParcelModel targetParcel) {
         BuildJob job = new BuildJob();
@@ -45,7 +45,7 @@ public class BuildJobFactory {
         // Job
         job.addMoveTask("Move to parcel", () -> targetParcel);
         job.addTask("Build", (character, hourInterval) -> {
-            job._mapObject.actionBuild(1 / applicationConfigService.getGameInfo().buildTime * hourInterval);
+            job._mapObject.actionBuild(1 / applicationConfig.game.buildTime * hourInterval);
             job.setProgress(job._mapObject.getBuildValue(), job._mapObject.getBuildCost());
 
             if (!job._mapObject.isComplete()) {

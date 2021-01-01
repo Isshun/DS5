@@ -8,13 +8,11 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.building.BuildJob;
-import org.smallbox.faraway.modules.building.BasicRepairJob;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
-import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.modules.job.taskAction.PrerequisiteTaskAction;
+import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.Log;
 
@@ -37,9 +35,9 @@ public class JobModel extends ObjectModel {
     public String getIcon() {
         if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
         if (this instanceof StoreJob) return "[base]/graphics/jobs/ic_store.png";
-        if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
+//        if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
         if (this instanceof BuildJob) return "[base]/graphics/jobs/ic_build.png";
-        if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
+//        if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
         return icon;
     }
 

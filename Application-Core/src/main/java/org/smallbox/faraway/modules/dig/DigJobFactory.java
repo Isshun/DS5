@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
@@ -19,7 +19,7 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
 public class DigJobFactory {
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private ConsumableModule consumableModule;
@@ -47,8 +47,8 @@ public class DigJobFactory {
             // Dig action
             job.addTask("Dig", (character, hourInterval) -> {
                 job._time += hourInterval;
-                job.setProgress(job._time, applicationConfigService.getGameInfo().digTime);
-                return job._time >= applicationConfigService.getGameInfo().digTime ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+                job.setProgress(job._time, applicationConfig.game.digTime);
+                return job._time >= applicationConfig.game.digTime ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
             });
 
             // - Create output products

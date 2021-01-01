@@ -1,19 +1,27 @@
 package org.smallbox.faraway.client.selection;
 
-import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.controller.SelectionInfoController;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
+import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
+import org.smallbox.faraway.modules.consumable.ConsumableModule;
+import org.smallbox.faraway.modules.item.ItemModule;
+import org.smallbox.faraway.modules.item.UsableItem;
+import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Log;
 
@@ -23,7 +31,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 @GameObject
-public class SelectionManager extends GameManager {
+public class GameSelectionManager extends GameManager {
 
     @Inject
     private LayerManager layerManager;
@@ -32,9 +40,18 @@ public class SelectionManager extends GameManager {
     private GameActionManager gameActionManager;
 
     @Inject
-    private SelectionInfoController selectionInfoController;
+    private CharacterModule characterModule;
 
-    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
+    @Inject
+    private ConsumableModule consumableModule;
+
+    @Inject
+    private ItemModule itemModule;
+
+    @Inject
+    private StructureModule structureModule;
+
+//    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
     private Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();
     private Collection<AreaModuleBase> specializedAreaModules;
 
@@ -43,20 +60,34 @@ public class SelectionManager extends GameManager {
         specializedAreaModules = DependencyInjector.getInstance().getSubTypesOf(AreaModuleBase.class);
     }
 
-    public <T extends ObjectModel> void setSelected(Queue<T> selected) {
-        _selected = selected;
+    public <T extends ObjectModel> void setSelected(Collection<T> selected) {
+        if (selected != null) {
+            _selected.clear();
+            _selected.addAll(selected);
+        }
+    }
+
+    public <T extends ObjectModel> void select(T object) {
+        _selected.clear();
+        _selected.add(object);
+
+        gameActionManager.callActions(OnGameSelectAction.class, object);
     }
 
     public boolean selectContains(ObjectModel object) {
         return _selected != null && _selected.contains(object);
     }
 
-    public void registerSelectionParcelListener(SelectionParcelListener selectionParcelListener) {
-        selectionParcelListeners.add(selectionParcelListener);
-    }
+//    public void registerSelectionParcelListener(SelectionParcelListener selectionParcelListener) {
+//        selectionParcelListeners.add(selectionParcelListener);
+//    }
 
     public void registerSelectionAreaListener(SelectionAreaListener selectionAreaListener) {
         selectionAreaListeners.add(selectionAreaListener);
+    }
+
+    public <T extends ObjectModel> T getSelected(Class<T> cls) {
+        return _selected.size() == 1 ? _selected.stream().filter(cls::isInstance).map(cls::cast).findFirst().orElse(null) : null;
     }
 
     public interface OnSelectionListener {
@@ -69,9 +100,9 @@ public class SelectionManager extends GameManager {
     private OnSelectionListener _selectionListener;
     private Collection<AbsInfoLuaController<?>> _infoControllers;
     private Map<AbsInfoLuaController<?>, AbsInfoLuaController<?>> _infoSubControllers;
-    private Collection<? extends ObjectModel> _selected;
+    private final Collection<ObjectModel> _selected = new ConcurrentLinkedQueue<>();
 
-    public SelectionManager() {
+    public GameSelectionManager() {
         _lastControllers = new ConcurrentLinkedQueue<>();
         _infoSubControllers = new ConcurrentHashMap<>();
         _infoControllers = new ConcurrentLinkedQueue<>();
@@ -101,14 +132,38 @@ public class SelectionManager extends GameManager {
         return _selected;
     }
 
+    // Unique parcel
+    public void select(int mapX, int mapY) {
+        ParcelModel parcel = WorldHelper.getParcel(mapX, mapY, layerManager.getViewport().getFloor());
+        Log.info("Click on map at parcel: %s", parcel);
+        if (parcel != null) {
+
+            if (gameActionManager.hasAction()) {
+                gameActionManager.selectParcel(parcel);
+            } else {
+                List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
+                CharacterModel character = characterModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
+                ConsumableItem consumable = consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
+                UsableItem item = itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
+                StructureItem structure = structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
+
+                if (CollectionUtils.isNotEmpty(matchingAreaModules)) {
+                    select(matchingAreaModules.get(0).getArea(parcel));
+                } else if (character != null) {
+                    select(character);
+                } else {
+                    select(parcel);
+                }
+            }
+        }
+    }
+
+    // Square selection
     public void select(int fromMapX, int fromMapY, int toMapX, int toMapY) {
+        List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
+        Log.info("Click on map for parcels: %s", parcelList);
 
-        // Square selection
-        if (fromMapX != toMapX || fromMapY != toMapY) {
-            List<ParcelModel> parcelList = WorldHelper.getParcelInRect(fromMapX, fromMapY, toMapX, toMapY, layerManager.getViewport().getFloor());
-            Log.info("Click on map for parcels: %s", parcelList);
-
-            gameActionManager.selectParcels(parcelList);
+        gameActionManager.selectParcels(parcelList);
 //            if (parcelList != null) {
 //
 //                if (_selectionListener != null) {
@@ -122,28 +177,6 @@ public class SelectionManager extends GameManager {
 //                    doSelectionMultiple(parcelList);
 //                }
 //            }
-        }
-
-        // Unique parcel
-        else {
-            ParcelModel parcel = WorldHelper.getParcel(fromMapX, fromMapY, layerManager.getViewport().getFloor());
-            Log.info("Click on map at parcel: %s", parcel);
-            if (parcel != null) {
-
-                if (gameActionManager.getMode() != null) {
-                    gameActionManager.selectParcel(parcel);
-                } else {
-                    List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
-
-                    if (CollectionUtils.isNotEmpty(matchingAreaModules)) {
-                        matchingAreaModules.get(0).selectArea(parcel);
-                    } else {
-                        selectionInfoController.onSelectParcel(parcel);
-                    }
-                }
-            }
-        }
-
     }
 
     private void doSelectionUnique(ParcelModel parcel) {

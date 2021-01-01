@@ -1,7 +1,9 @@
 package org.smallbox.faraway.core.game.service.applicationConfig;
 
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.game.GameTime;
 
+@ApplicationObject
 public class ApplicationConfig {
 
     public static class ApplicationConfigDebug {
@@ -59,4 +61,13 @@ public class ApplicationConfig {
     public boolean              launchGui;
     public double               uiScale;
     public String               lang;
+
+    public int getResolutionWidth() {
+        return screen.resolution[0];
+    }
+
+    public int getResolutionHeight() {
+        return screen.resolution[1];
+    }
+
 }

@@ -7,6 +7,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
@@ -16,7 +17,7 @@ import org.smallbox.faraway.util.Log;
 public class Viewport {
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private Game game;
@@ -53,8 +54,8 @@ public class Viewport {
 
     @OnInit
     private void onInit() {
-        _width = applicationConfigService.getResolutionWidth() - Constant.PANEL_WIDTH;
-        _height = applicationConfigService.getResolutionHeight();
+        _width = applicationConfig.getResolutionWidth() - Constant.PANEL_WIDTH;
+        _height = applicationConfig.getResolutionHeight();
         _floor = game.getInfo().worldFloors - 1;
         centerOnMap(game.getInfo().worldWidth / 2, game.getInfo().worldHeight / 2);
     }

@@ -41,7 +41,7 @@ public class ItemFactoryModule extends GameModule {
 
     @Override
     protected void onModuleUpdate(Game game) {
-        itemModule.getItems().stream()
+        itemModule.getAll().stream()
                 .filter(item -> item.getFactory() != null)
                 .forEach(item -> {
                     actionCheckComponents(item, item.getFactory());
@@ -117,7 +117,7 @@ public class ItemFactoryModule extends GameModule {
     private void actionCraftJobs(UsableItem item, ItemFactoryModel factory) {
         if (factory.hasRunningReceipt() && factory.hasEnoughComponents() && factory.getRunningReceipt().getCostRemaining() > 0 && factory.getCraftJob() == null) {
             factory.setMessage("{red,icon;" + factory.getRunningReceipt() + "}: crafting");
-            BasicCraftJob.create(jobModule, item.getParcel(), factory.getRunningReceipt().receiptInfo, factory);
+//            BasicCraftJob.create(jobModule, item.getParcel(), factory.getRunningReceipt().receiptInfo, factory);
         }
     }
 

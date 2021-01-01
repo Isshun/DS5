@@ -1,13 +1,13 @@
 package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.client.selection.SelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.selection.SelectionParcelListener;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -19,10 +19,10 @@ import java.util.Optional;
 import java.util.Queue;
 
 @GameObject
-public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> implements SelectionParcelListener {
+public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -44,15 +44,15 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> i
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this);
+        gameSelectionManager.registerSelection(this);
     }
 
     @OnInit
     public void init() {
-        selectionManager.registerSelectionParcelListener(this);
+//        gameSelectionManager.registerSelectionParcelListener(this);
     }
 
-    @Override
+    @OnGameSelectAction(ParcelModel.class)
     public void onSelectParcel(ParcelModel parcel) {
         setVisible(true);
 

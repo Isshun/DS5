@@ -54,7 +54,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     public void onModuleUpdate(Game game) {
 
         if (_checkQueue.isEmpty()) {
-            _checkQueue.addAll(consumableModule.getConsumables());
+            _checkQueue.addAll(consumableModule.getAll());
         }
 
         ConsumableItem consumable = _checkQueue.poll();
@@ -121,9 +121,9 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
         return new StorageArea();
     }
 
-    @Override
-    protected void onSelectArea(StorageArea area) {
-        areaInfoStorageController.displayArea(area);
-    }
+//    @Override
+//    protected void onSelectArea(StorageArea area) {
+//        areaInfoStorageController.displayArea(area);
+//    }
 
 }

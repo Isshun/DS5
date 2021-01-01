@@ -2,12 +2,13 @@ package org.smallbox.faraway.client.debug.dashboard.content;
 
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.ObjectUtils;
+import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.util.Log;
 
 import java.util.ArrayList;
@@ -19,19 +20,21 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
     private final Color BACKGROUND_COLOR = new Color(0x000000aa);
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private DebugCommandInterpreterService debugCommandInterpreterService;
+
+    @Inject
+    private DebugService debugService;
 
     private int _index;
 
     @Override
     public void    onDraw(GDXRenderer renderer, int frame) {
-        int fontSize = applicationConfigService.getConfig().debug.logFontSize;
-        int lineLength = applicationConfigService.getConfig().debug.logLineLength;
-        int lineNumber = applicationConfigService.getConfig().debug.logLineNumber;
-        int resolutionHeight = applicationConfigService.getResolutionHeight();
+        int fontSize = applicationConfig.debug.logFontSize;
+        int lineLength = applicationConfig.debug.logLineLength;
+        int resolutionHeight = applicationConfig.getResolutionHeight();
         int consoleEntryHeight = 32;
         String prefix = frame / 60 % 2 == 0 ? "█" : " ";
 
@@ -39,7 +42,7 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
 
         List<String> history = new ArrayList<>(Log._history);
         Collections.reverse(history);
-        history.forEach(message -> {
+        history.stream().limit(debugService.isDebugMode() ? 50 : 8).forEach(message -> {
             int posY = resolutionHeight - consoleEntryHeight - (_index * (fontSize + 2));
             String text = message.substring(0, Math.min(lineLength, message.length()));
             Color color = Color.WHITE;

@@ -37,7 +37,7 @@ public class ConsumableController extends LuaController {
         consumableList.removeAllViews();
 
         Map<ItemInfo, Integer> quantities = new HashMap<>();
-        consumableModule.getConsumables().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getTotalQuantity() + (quantities.getOrDefault(consumable.getInfo(), 0))));
+        consumableModule.getAll().forEach(consumable -> quantities.put(consumable.getInfo(), consumable.getTotalQuantity() + (quantities.getOrDefault(consumable.getInfo(), 0))));
 
         quantities.forEach((itemInfo, quantity) -> {
 

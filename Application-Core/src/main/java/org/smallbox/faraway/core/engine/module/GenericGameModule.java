@@ -1,16 +1,17 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.common.ObjectModel;
+import org.smallbox.faraway.modules.item.UsableItem;
 
 import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class GenericGameModule<T_MODEL extends ObjectModel, T extends ModuleObserver> extends GameModule<T> {
-    protected Collection<T_MODEL> modelList;
-    private int count;
+    protected Collection<T_MODEL> modelList = new LinkedBlockingQueue<>();
 
     public int getCount() {
-        return count;
+        return modelList.size();
     }
 
     public Collection<T_MODEL> getAll() {
@@ -27,8 +28,15 @@ public abstract class GenericGameModule<T_MODEL extends ObjectModel, T extends M
     }
 
     public void add(T_MODEL model) {
-        count++;
         modelList.add(model);
+    }
+
+    public void remove(T_MODEL model) {
+        modelList.add(model);
+    }
+
+    public boolean contains(T_MODEL model) {
+        return modelList.contains(model);
     }
 
     public T_MODEL getRandom() {

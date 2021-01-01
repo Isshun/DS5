@@ -2,8 +2,8 @@ package org.smallbox.faraway.client.ui.engine;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.EventManager;
-import org.smallbox.faraway.client.selection.SelectionManager;
-import org.smallbox.faraway.client.manager.InputManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
@@ -34,7 +34,7 @@ public class UIEventManager implements EventManager {
     private LayerManager layerManager;
 
     @Inject
-    private SelectionManager selectionManager;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private InputManager inputManager;
@@ -157,12 +157,15 @@ public class UIEventManager implements EventManager {
 
         // Click on map
         if (gameManager.isRunning()) {
-            selectionManager.select(
-                    layerManager.getViewport().getWorldPosX(inputManager.getTouchDownX()),
-                    layerManager.getViewport().getWorldPosY(inputManager.getTouchDownY()),
-                    layerManager.getViewport().getWorldPosX(inputManager.getTouchDragX()),
-                    layerManager.getViewport().getWorldPosY(inputManager.getTouchDragY())
-            );
+            int fromX = layerManager.getViewport().getWorldPosX(inputManager.getTouchDownX());
+            int fromY = layerManager.getViewport().getWorldPosY(inputManager.getTouchDownY());
+            int toX = layerManager.getViewport().getWorldPosX(inputManager.getTouchDragX());
+            int toY = layerManager.getViewport().getWorldPosY(inputManager.getTouchDragY());
+            if (fromX != toX || fromY != toY) {
+                gameSelectionManager.select(fromX, fromY, toX, toY);
+            } else {
+                gameSelectionManager.select(fromX, fromY);
+            }
         }
 
         return false;
@@ -202,8 +205,8 @@ public class UIEventManager implements EventManager {
         }
 
         // Cleat UiEventManager selection listener when right button is clicked
-        if (button == Input.Buttons.RIGHT && selectionManager.getSelectionListener() != null) {
-            selectionManager.setSelectionListener(null);
+        if (button == Input.Buttons.RIGHT && gameSelectionManager.getSelectionListener() != null) {
+            gameSelectionManager.setSelectionListener(null);
         }
 
         if (button == Input.Buttons.LEFT && click(x, y)) {

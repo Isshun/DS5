@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.modules.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
@@ -32,7 +33,7 @@ public class GameManager implements GameObserver {
     private GameSaveManager gameSaveManager;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private Data data;
@@ -53,7 +54,7 @@ public class GameManager implements GameObserver {
             return;
         }
 
-        _game = new Game(gameInfo, applicationConfigService.getConfig());
+        _game = new Game(gameInfo, applicationConfig);
         DependencyInjector.getInstance().destroyGameObjects();
 
         // For now game is created and register to DI manually because ctor need GameInfo
@@ -103,7 +104,7 @@ public class GameManager implements GameObserver {
         try {
             long time = System.currentTimeMillis();
 
-            _game = new Game(gameInfo, applicationConfigService.getConfig());
+            _game = new Game(gameInfo, applicationConfig);
             DependencyInjector.getInstance().register(_game);
 
             _game.loadModules();

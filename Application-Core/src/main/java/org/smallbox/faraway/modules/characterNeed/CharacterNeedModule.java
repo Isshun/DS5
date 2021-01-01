@@ -167,7 +167,7 @@ public class CharacterNeedModule extends GameModule {
     private boolean tryToRestoreNeedWithItem(CharacterModel character, NeedEntry need) {
 
         // Find best item
-        UsableItem bestItem = itemModule.getItems().stream()
+        UsableItem bestItem = itemModule.getAll().stream()
                 .filter(item -> need.hasEffect(item.getInfo().use))
                 .findAny().orElse(null);
         if (bestItem == null) {
@@ -188,7 +188,7 @@ public class CharacterNeedModule extends GameModule {
     private boolean tryToRestoreNeedWithConsumable(CharacterModel character, NeedEntry need) {
 
         // Find best consumable
-        ConsumableItem bestConsumable = consumableModule.getConsumables().stream()
+        ConsumableItem bestConsumable = consumableModule.getAll().stream()
                 .filter(consumable -> consumable.getFreeQuantity() > 0)
                 .filter(item -> need.hasEffect(item.getInfo().consume))
                 .findAny().orElse(null);

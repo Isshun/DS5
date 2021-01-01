@@ -3,7 +3,7 @@ package org.smallbox.faraway.client;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -17,7 +17,7 @@ public class GameEventManager implements EventManager {
     private LayerManager layerManager;
 
     @Inject
-    private SelectionManager selectionManager;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private GameActionManager gameActionManager;
@@ -70,7 +70,9 @@ public class GameEventManager implements EventManager {
         _mouseDownY = y;
         _mouseX = x;
         _mouseY = y;
-        _mousePressed = true;
+        if (button == Input.Buttons.LEFT) {
+            _mousePressed = true;
+        }
         return false;
     }
 
@@ -82,7 +84,7 @@ public class GameEventManager implements EventManager {
         _mouseY = y;
         _mousePressed = false;
 
-        Collection<? extends ObjectModel> selected = selectionManager.getSelected();
+        Collection<? extends ObjectModel> selected = gameSelectionManager.getSelected();
 
 //        // Move character on pointer position
 //        if (button == Input.Buttons.RIGHT) {

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.controller.area;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
@@ -29,7 +29,7 @@ public class AreaPanelController extends LuaController {
     private UIEventManager uiEventManager;
 
     @Inject
-    private SelectionManager selectionManager;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private AreaModule areaModule;

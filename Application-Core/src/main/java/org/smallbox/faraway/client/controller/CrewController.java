@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -32,6 +33,9 @@ public class CrewController extends LuaController {
 
     @Inject
     private CharacterInfoController characterInfoController;
+
+    @Inject
+    private GameSelectionManager gameSelectionManager;
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
@@ -74,8 +78,9 @@ public class CrewController extends LuaController {
                 }
 
                 view.setOnClickListener((x, y) -> {
-                    ApplicationClient.notify(obs -> obs.onSelectCharacter(character));
-                    characterInfoController.display(character);
+                    gameSelectionManager.select(character);
+//                    ApplicationClient.notify(obs -> obs.onSelectCharacter(character));
+//                    characterInfoController.display(character);
                 });
 
                 listCrew.addNextView(view);

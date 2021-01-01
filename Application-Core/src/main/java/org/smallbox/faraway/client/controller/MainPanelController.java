@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.area.AreaPanelController;
 import org.smallbox.faraway.client.render.LayerManager;
@@ -19,7 +19,7 @@ import org.smallbox.faraway.core.game.Game;
 public class MainPanelController extends LuaController {
 
     @Inject
-    private SelectionManager selectionManager;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -73,7 +73,7 @@ public class MainPanelController extends LuaController {
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelectionPre(this);
+        gameSelectionManager.registerSelectionPre(this);
         btCrew.setOnClickListener((x, y) -> crewController.getRootView().setVisible(true));
         btArea.setOnClickListener((x, y) -> areaPanelController.getRootView().setVisible(true));
         btBuild.setOnClickListener((x, y) -> buildController.getRootView().setVisible(true));

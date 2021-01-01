@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
@@ -16,7 +16,7 @@ import java.util.Queue;
 public class ConsumableInfoController extends AbsInfoLuaController<ConsumableItem> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -31,7 +31,7 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this);
+        gameSelectionManager.registerSelection(this);
     }
 
     @Override

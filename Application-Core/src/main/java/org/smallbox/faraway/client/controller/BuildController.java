@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
@@ -22,7 +22,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 public class BuildController extends LuaController {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private Data data;

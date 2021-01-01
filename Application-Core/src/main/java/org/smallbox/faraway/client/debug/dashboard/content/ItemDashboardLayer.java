@@ -15,9 +15,7 @@ public class ItemDashboardLayer extends DashboardLayerBase {
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
-        if (itemModule != null && itemModule.getItems() != null) {
-            itemModule.getItems().forEach(item -> drawDebugItem(renderer, item));
-        }
+        itemModule.getAll().forEach(item -> drawDebugItem(renderer, item));
     }
 
     private void drawDebugItem(GDXRenderer renderer, UsableItem item) {

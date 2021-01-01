@@ -23,7 +23,7 @@ public class ItemLayer extends BaseLayer {
     private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        itemModule.getItems().stream()
+        itemModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(item -> {
                     ParcelModel parcel = item.getParcel();

@@ -25,7 +25,7 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_consumable (_id, x, y, z, name, quantity) VALUES (?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    for (ConsumableItem consumable: module.getConsumables()) {
+                    for (ConsumableItem consumable: module.getAll()) {
                         if (consumable.getParcel() != null) {
                             stItem.bind(1, consumable.getId());
                             stItem.bind(2, consumable.getParcel().x);

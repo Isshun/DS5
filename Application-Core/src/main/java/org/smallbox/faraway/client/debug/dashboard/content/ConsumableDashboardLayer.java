@@ -18,9 +18,9 @@ public class ConsumableDashboardLayer extends DashboardLayerBase {
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
-        if (consumableModule != null && consumableModule.getConsumables() != null) {
+        if (consumableModule != null && consumableModule.getAll() != null) {
             Map<ItemInfo, Integer> consumables = new HashMap<>();
-            consumableModule.getConsumables().forEach(consumable -> {
+            consumableModule.getAll().forEach(consumable -> {
                 int quantity = consumables.getOrDefault(consumable.getInfo(), 0);
                 consumables.put(consumable.getInfo(), quantity + consumable.getFreeQuantity());
             });

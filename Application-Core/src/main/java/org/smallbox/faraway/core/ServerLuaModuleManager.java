@@ -13,7 +13,7 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaEventsModel;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 import java.io.File;
 
@@ -21,7 +21,7 @@ import java.io.File;
 public class ServerLuaModuleManager extends LuaModuleManager {
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private Data data;
@@ -31,7 +31,7 @@ public class ServerLuaModuleManager extends LuaModuleManager {
         Globals globals = JsePlatform.standardGlobals();
         globals.load("function main(a, u, d)\n application = a\n data = d\n ui = u\n math.round = function(num, idp)\n local mult = 10^(idp or 0)\n return math.floor(num * mult + 0.5) / mult\n end end", "main").call();
         globals.get("main").call(
-                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel(), applicationConfigService.getScreenInfo())),
+                CoerceJavaToLua.coerce(new LuaApplicationModel(null, new LuaEventsModel(), applicationConfig.screen)),
                 CoerceJavaToLua.coerce((LuaExtendInterface) values -> {}),
                 CoerceJavaToLua.coerce(new LuaDataModel(data) {
                     @Override

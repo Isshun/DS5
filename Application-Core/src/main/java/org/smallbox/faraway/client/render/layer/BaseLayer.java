@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.render.layer;
 
 import org.smallbox.faraway.client.GameClientObserver;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.common.ObjectModel;
@@ -61,7 +61,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
-        if (DependencyInjector.getInstance().getDependency(SelectionManager.class).selectContains(object)) {
+        if (DependencyInjector.getInstance().getDependency(GameSelectionManager.class).selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
             } else if (_selectionOffset < -2) {

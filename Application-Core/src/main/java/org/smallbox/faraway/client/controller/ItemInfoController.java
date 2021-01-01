@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -22,7 +22,7 @@ import java.util.Queue;
 public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -65,7 +65,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this);
+        gameSelectionManager.registerSelection(this);
     }
 
     @Override

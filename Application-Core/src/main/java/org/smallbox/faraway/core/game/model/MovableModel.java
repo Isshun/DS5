@@ -28,7 +28,7 @@ public abstract class MovableModel extends ObjectModel {
     public MovableModel(int id, ParcelModel parcel) {
         super(id);
 
-        _parcel = parcel;
+        setParcel(parcel);
         _frameIndex = (int) (Math.random() * 1000 % 20);
     }
 

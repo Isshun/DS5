@@ -15,6 +15,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
@@ -27,7 +28,7 @@ public class GDXRenderer {
     private LayerManager layerManager;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     private SpriteBatch           _batch;
     private BitmapFont[]          _fonts;
@@ -38,7 +39,7 @@ public class GDXRenderer {
     private int                         _zoom = Viewport.ZOOM_LEVELS.length - 1;
 
     public float getUiScale() {
-        return (float) applicationConfigService.getConfig().uiScale;
+        return (float) applicationConfig.uiScale;
     }
 
     public void init(SpriteBatch batch, BitmapFont[] fonts) {

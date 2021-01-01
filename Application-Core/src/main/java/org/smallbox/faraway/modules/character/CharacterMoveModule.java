@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -22,7 +22,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
     private CharacterModule characterModule;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private GameManager gameManager;
@@ -60,7 +60,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
             }
 
             // Increase move progress
-            character.setMoveStep(applicationConfigService.getGameInfo().characterSpeed / gameManager.getGame().getTickPerHour());
+            character.setMoveStep(applicationConfig.game.characterSpeed / gameManager.getGame().getTickPerHour());
 //            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
 
             // Character has reach next parcel

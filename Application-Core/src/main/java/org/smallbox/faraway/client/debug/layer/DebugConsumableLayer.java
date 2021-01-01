@@ -24,7 +24,7 @@ public class DebugConsumableLayer extends BaseLayer {
     private JobModule jobModule;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        consumableModule.getConsumables()
+        consumableModule.getAll()
                 .forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel().x, consumable.getParcel().y, consumableModule.hasLock(consumable) ? Color.CORAL : Color.CYAN);
 

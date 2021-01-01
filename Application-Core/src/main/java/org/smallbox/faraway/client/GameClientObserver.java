@@ -14,8 +14,8 @@ public interface GameClientObserver extends GameObserver {
     default void onRefreshUI(int frame){}
     default void onDeselect() {}
 //    default void onOverParcel(ParcelModel parcel) {}
-    default void onSelectArea(AreaModel area) {}
-    default boolean onSelectCharacter(CharacterModel character) {return false;}
+//    default void onSelectArea(AreaModel area) {}
+//    default boolean onSelectCharacter(CharacterModel character) {return false;}
     default boolean onSelectParcelOld(ParcelModel parcel) {return false;}
     default void onKeyPressWithEvent(GameEvent event, int key) {
         if (!event.consumed && onKeyPress(key)) {

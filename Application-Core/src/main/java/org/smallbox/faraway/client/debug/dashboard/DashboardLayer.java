@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.dashboard;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.debug.dashboard.content.*;
 import org.smallbox.faraway.client.debug.layer.*;
 import org.smallbox.faraway.client.render.Viewport;
@@ -24,7 +24,7 @@ import java.util.function.BiConsumer;
 public class DashboardLayer extends BaseLayer {
 
     @Inject
-    private SelectionManager selectionManager;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private ShortcutDashboardLayer shortcutDashboardLayer;

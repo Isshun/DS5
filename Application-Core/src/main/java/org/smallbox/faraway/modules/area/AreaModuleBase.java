@@ -60,12 +60,16 @@ public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModul
         return areas.stream().anyMatch(area -> area.getParcels().contains(parcel));
     }
 
-    @Override
-    public void selectArea(ParcelModel parcel) {
-        areas.stream().filter(area -> area.getParcels().contains(parcel)).findFirst().ifPresent(area -> onSelectArea(area));
+    public AreaModel getArea(ParcelModel parcel) {
+        return areas.stream().filter(area -> area.getParcels().contains(parcel)).findFirst().orElse(null);
     }
 
-    protected void onSelectArea(T_AREA area) {
-    }
+//    @Override
+//    public void selectArea(ParcelModel parcel) {
+//        areas.stream().filter(area -> area.getParcels().contains(parcel)).findFirst().ifPresent(this::onSelectArea);
+//    }
+//
+//    protected void onSelectArea(T_AREA area) {
+//    }
 
 }

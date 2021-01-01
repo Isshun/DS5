@@ -9,13 +9,11 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
 import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
-import org.smallbox.faraway.modules.itemFactory.BasicCraftJob;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -109,18 +107,18 @@ public class CharacterInfoStatusController extends LuaController {
                 }
             }
 
-            if (job instanceof BasicCraftJob) {
-                ReceiptGroupInfo.ReceiptInfo receiptInfo = ((BasicCraftJob) job).getReceiptInfo();
-                if (receiptInfo != null) {
-                    if (CollectionUtils.isNotEmpty(receiptInfo.inputs)) {
-                        imgJob.setVisible(true);
-                        imgJob.setImage(spriteManager.getNewSprite(receiptInfo.inputs.get(0).item.graphics.get(0)));
-                    }
-                    if (CollectionUtils.isNotEmpty(receiptInfo.outputs)) {
-//                        imgJobOut.setImage(ApplicationClient.spriteManager.getNewSprite(receiptInfo.outputs.get(0).item.graphics.get(0)));
-                    }
-                }
-            }
+//            if (job instanceof BasicCraftJob) {
+//                ReceiptGroupInfo.ReceiptInfo receiptInfo = ((BasicCraftJob) job).getReceiptInfo();
+//                if (receiptInfo != null) {
+//                    if (CollectionUtils.isNotEmpty(receiptInfo.inputs)) {
+//                        imgJob.setVisible(true);
+//                        imgJob.setImage(spriteManager.getNewSprite(receiptInfo.inputs.get(0).item.graphics.get(0)));
+//                    }
+//                    if (CollectionUtils.isNotEmpty(receiptInfo.outputs)) {
+////                        imgJobOut.setImage(ApplicationClient.spriteManager.getNewSprite(receiptInfo.outputs.get(0).item.graphics.get(0)));
+//                    }
+//                }
+//            }
         } else {
             lbJob.setVisible(false);
             frameJob.setVisible(false);

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.controller.area;
 
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -21,7 +21,7 @@ import java.util.Queue;
 public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private UIEventManager uiEventManager;
@@ -43,7 +43,7 @@ public class AreaInfoGardenController extends AbsInfoLuaController<AreaModel> {
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this, areaInfoController);
+        gameSelectionManager.registerSelection(this, areaInfoController);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.GameEventManager;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
@@ -19,7 +19,7 @@ public class InterfaceDashboardLayer extends DashboardLayerBase {
     private Game game;
 
     @Inject
-    private SelectionManager selectionManager;
+    private GameSelectionManager gameSelectionManager;
 
     @Inject
     private LayerManager layerManager;
@@ -42,8 +42,8 @@ public class InterfaceDashboardLayer extends DashboardLayerBase {
         drawDebug(renderer, "WORLD", "Size: " + game.getInfo().worldWidth + " x " + game.getInfo().worldHeight + " x " + game.getInfo().worldFloors);
         drawDebug(renderer, "WORLD", "Ground floor: " + game.getInfo().groundFloor);
 
-        if (selectionManager.getSelected() != null) {
-            selectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
+        if (gameSelectionManager.getSelected() != null) {
+            gameSelectionManager.getSelected().forEach(selected -> drawDebug(renderer, "SELECTION", "Current: " + selected));
         }
 
         drawDebug(renderer, "Cursor screen position", gameEventManager.getMouseX() + " x " + gameEventManager.getMouseY());

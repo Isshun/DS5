@@ -24,7 +24,7 @@ public class DebugItemLayer extends BaseLayer {
     private JobModule jobModule;
 
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        itemModule.getItems()
+        itemModule.getAll()
                 .stream()
                 .filter(item -> item.getParcel().z == viewport.getFloor())
                 .forEach(item -> {

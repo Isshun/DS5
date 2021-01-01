@@ -25,7 +25,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                 SQLiteStatement stItem = db.prepare("INSERT INTO WorldModule_item (_id, x, y, z, name, buildProgress, health) VALUES (?, ?, ?, ?, ?, ?, ?)");
                 try {
                     db.exec("begin transaction");
-                    for (UsableItem item: module.getItems()) {
+                    for (UsableItem item: module.getAll()) {
                         if (item.getParcel() != null) {
                             stItem.bind(1, item.getId());
                             stItem.bind(2, item.getParcel().x);

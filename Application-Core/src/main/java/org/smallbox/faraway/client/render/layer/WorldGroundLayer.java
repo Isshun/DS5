@@ -17,7 +17,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
@@ -59,7 +59,7 @@ public class WorldGroundLayer extends BaseLayer {
     private SpriteManager spriteManager;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     private ExecutorService         _executor = Executors.newSingleThreadExecutor();
     private Texture[][]             _groundLayers;
@@ -132,8 +132,8 @@ public class WorldGroundLayer extends BaseLayer {
         int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale()), 0);
 
         // TODO: take right panel in consideration
-        int tileWidthCount = (int) (applicationConfigService.getResolutionWidth() / (Constant.TILE_WIDTH * viewport.getScale()));
-        int tileHeightCount = (int) (applicationConfigService.getResolutionHeight() / (Constant.TILE_HEIGHT * viewport.getScale()));
+        int tileWidthCount = (int) (applicationConfig.getResolutionWidth() / (Constant.TILE_WIDTH * viewport.getScale()));
+        int tileHeightCount = (int) (applicationConfig.getResolutionHeight() / (Constant.TILE_HEIGHT * viewport.getScale()));
         int toX = Math.min(fromX + tileWidthCount, game.getInfo().worldWidth);
         int toY = Math.min(fromY + tileHeightCount, game.getInfo().worldHeight);
 

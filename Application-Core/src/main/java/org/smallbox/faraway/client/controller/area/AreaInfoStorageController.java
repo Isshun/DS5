@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.controller.area;
 
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.client.selection.SelectionManager;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.Colors;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     @Inject
-    protected SelectionManager selectionManager;
+    protected GameSelectionManager gameSelectionManager;
 
     @Inject
     private Data data;
@@ -96,7 +96,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
 
     @Override
     public void onReloadUI() {
-        selectionManager.registerSelection(this, areaInfoController);
+        gameSelectionManager.registerSelection(this, areaInfoController);
 
         // Creation d'un arbre contenant toutes les categories
         _tree = data.consumables.stream()
@@ -246,7 +246,8 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .sum());
     }
 
-    public void displayArea(StorageArea area) {
+    @OnGameSelectAction(StorageArea.class)
+    public void onDisplayArea(StorageArea area) {
         _area = area;
         setVisible(true);
     }

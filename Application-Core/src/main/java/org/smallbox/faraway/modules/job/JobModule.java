@@ -32,7 +32,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     private ConsumableModule consumableModule;
 
     @Inject
-    private ApplicationConfigService applicationConfigService;
+    private ApplicationConfig applicationConfig;
 
     @Inject
     private JobOrchestratorModule jobOrchestratorModule;
@@ -153,10 +153,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     public boolean hasJob(JobModel job) {
         return _jobs.contains(job);
-    }
-
-    public ApplicationConfig.ApplicationConfigGameInfo getGameConfig() {
-        return applicationConfigService.getGameInfo();
     }
 
     public JobModel getJob(int jobId) {
