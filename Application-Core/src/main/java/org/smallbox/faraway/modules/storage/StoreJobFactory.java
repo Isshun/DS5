@@ -32,8 +32,6 @@ public class StoreJobFactory {
 
             job.sourceConsumable = consumable;
             job._targetParcel = targetParcel;
-            job._startParcel = targetParcel;
-            job._jobParcel = targetParcel;
             job.setMainLabel("Store");
             job.setIcon("[base]/graphics/jobs/ic_haul.png");
             job.setSkillType(CharacterSkillExtra.SkillType.STORE);

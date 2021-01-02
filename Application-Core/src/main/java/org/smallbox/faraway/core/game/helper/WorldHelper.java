@@ -8,11 +8,13 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public class WorldHelper {
     private static ParcelModel[][][]    _parcels;
@@ -364,28 +366,31 @@ public class WorldHelper {
         void onCallback(ParcelModel parcelModel);
     }
 
-    public static void getParcelArround(ParcelModel source, int range, ParcelCallback callback) {
-        getParcelArround(source.x, source.y, source.z, range, callback);
+    public static void getParcelAround(ParcelModel source, SurroundedPattern surroundedPattern, ParcelCallback callback) {
+        getParcelAround(source, surroundedPattern, parcel -> true, callback);
     }
 
-    public static void getParcelArround(int x1, int y1, int z1, int range, ParcelCallback callback) {
-        int fromX = Math.min(x1, x1 - range);
-        int fromY = Math.min(y1, y1 - range);
-        int fromZ = Math.min(z1, z1 - range);
-        int toX = Math.max(x1, x1 + range);
-        int toY = Math.max(y1, y1 + range);
-        int toZ = Math.max(z1, z1 + range);
+    public static void getParcelAround(ParcelModel source, SurroundedPattern surroundedPattern, Predicate<ParcelModel> condition, ParcelCallback callback) {
 
-        for (int x = fromX; x <= toX; x++) {
-            for (int y = fromY; y <= toY; y++) {
-                for (int z = fromZ; z <= toZ; z++) {
-                    ParcelModel parcel = WorldHelper.getParcel(x, y, z);
-                    if (parcel != null) {
-                        callback.onCallback(parcel);
-                    }
-                }
-            }
+        // Same parcel
+        if (surroundedPattern != SurroundedPattern.X_CROSS && surroundedPattern != SurroundedPattern.X_SQUARE) {
+            Optional.ofNullable(getParcel(source.x, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
         }
+
+        // Cross
+        Optional.ofNullable(getParcel(source.x - 1, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
+        Optional.ofNullable(getParcel(source.x + 1, source.y, source.z)).filter(condition).ifPresent(callback::onCallback);
+        Optional.ofNullable(getParcel(source.x, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+        Optional.ofNullable(getParcel(source.x, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+
+        // Diagonal
+        if (surroundedPattern == SurroundedPattern.SQUARE) {
+            Optional.ofNullable(getParcel(source.x - 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x + 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x - 1, source.y + 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+            Optional.ofNullable(getParcel(source.x + 1, source.y - 1, source.z)).filter(condition).ifPresent(callback::onCallback);
+        }
+
     }
 
     public static ParcelModel getRandomParcel(ParcelModel initailParcel, int maxDistance) {
@@ -395,24 +400,6 @@ public class WorldHelper {
     }
 
     public enum SearchStrategy { FREE }
-
-    public interface SearchArroundCallback {
-        boolean check(ParcelModel parcel);
-    }
-
-    public static ParcelModel searchAround2(ParcelModel originParcel, int maxDistance, SearchArroundCallback callback) {
-        for (int distance = 0; distance <= maxDistance; distance++) {
-            for (int x = originParcel.x - distance; x <= originParcel.x + distance; x++) {
-                for (int y = originParcel.y - distance; y <= originParcel.y + distance; y++) {
-                    ParcelModel parcel = getParcel(x, y, originParcel.z);
-                    if (parcel != null && callback.check(parcel)) {
-                        return parcel;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 
     public static ParcelModel searchAround(ParcelModel originParcel, int maxDistance, SearchStrategy... strategies) {
         for (int distance = 0; distance <= maxDistance; distance++) {

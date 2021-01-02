@@ -26,8 +26,6 @@ public class BringItemJobFactory {
 
         job.setMainLabel("Bring " + itemInfo.label + " to " + mapObject.getInfo().label);
         job._targetParcel = mapObject.getParcel();
-        job._startParcel = mapObject.getParcel();
-        job._jobParcel = mapObject.getParcel();
         job.setIcon("[base]/graphics/jobs/ic_haul.png");
         job.setSkillType(CharacterSkillExtra.SkillType.STORE);
         job.setColor(new Color(0xbb391eff));

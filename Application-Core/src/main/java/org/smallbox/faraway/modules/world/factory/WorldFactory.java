@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.MathUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -48,35 +47,6 @@ public class WorldFactory {
 
         worldModule.init(game, parcelsMap, parcelList);
 
-//        _parcels = new ParcelModel[_width][_height][_floors];
-//        List<ParcelModel> parcelList = new ArrayList<>();
-//        Map<Integer, List<ParcelModel>> parcelListFloors = new HashMap<>();
-//        for (int f = 0; f < _floors; f++) {
-//            parcelListFloors.put(f, new ArrayList<>());
-//        }
-//
-//        // Create parcels
-//        for (int x = 0; x < _width; x++) {
-//            for (int y = 0; y < _height; y++) {
-//                for (int f = 0; f < _floors; f++) {
-//                    ParcelModel parcel = new ParcelModel(x + (y * _width) + (f * _width * _height), x, y, f);
-//                    parcelList.addSubJob(parcel);
-//                    parcelListFloors.get(f).addSubJob(parcel);
-//                    _parcels[x][y][f] = parcel;
-//                }
-//            }
-//        }
-//
-//        // Add underground rock
-//        ItemInfo graniteInfo = data.getItemInfo("base.granite");
-//        for (int z = 0; z < _floors - 1; z++) {
-//            for (int y = 0; y < _height; y++) {
-//                for (int x = 0; x < _width; x++) {
-//                    _parcels[x][y][z].setRockInfo(graniteInfo);
-//                }
-//            }
-//        }
-//
 //        // Add region terrains
 //        for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {
 //            if ("random_light".equals(terrain.pattern) || "random_large".equals(terrain.pattern)) {

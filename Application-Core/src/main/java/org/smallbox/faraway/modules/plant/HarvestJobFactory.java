@@ -29,7 +29,6 @@ public class HarvestJobFactory {
         if (consumableDropParcel != null) {
             JobModel job = new JobModel();
 
-            job._startParcel = job._targetParcel = plant.getParcel();
             job._targetParcel = plant.getParcel();
             job.setMainLabel("Harvest");
             job.setSkillType(CharacterSkillExtra.SkillType.GATHER);

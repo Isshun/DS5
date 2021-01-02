@@ -2,7 +2,6 @@ package org.smallbox.faraway.modules.item.job;
 
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.item.ItemModule;
@@ -29,7 +28,7 @@ public class UseJob extends JobModel {
     public UseJob(ItemModule itemModule, UsableItem item, double totalDuration, OnUseCallback callback) {
         _itemModule = itemModule;
         _item = item;
-        _startParcel = _targetParcel = item.getParcel();
+        _targetParcel = item.getParcel();
 
         setMainLabel("Use " + item.getInfo().label);
 

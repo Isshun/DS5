@@ -61,7 +61,7 @@ public class JobOrchestratorModule {
                     .filter(JobModel::isFree)
                     .filter(JobModel::isSubJobCompleted)
                     .filter(JobModel::initConditionalCompleted)
-                    .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))
+                    .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getTargetParcel(), character.getParcel())))
                     .collect(Collectors.toList());
 
             // Assign regular job

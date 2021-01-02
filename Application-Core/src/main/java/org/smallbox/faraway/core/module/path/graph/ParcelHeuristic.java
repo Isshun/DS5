@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.path.parcel;
+package org.smallbox.faraway.core.module.path.graph;
 
 import com.badlogic.gdx.ai.pfa.Heuristic;
 import com.badlogic.gdx.math.Vector2;

@@ -36,7 +36,7 @@ public class DigModule extends GameModule {
         List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
         List<ParcelModel> parcelInDigJob = jobModule.getJobs().stream()
                 .filter(job -> job instanceof DigJob)
-                .map(JobModel::getJobParcel)
+                .map(JobModel::getTargetParcel)
                 .collect(Collectors.toList());
 
         // Create missing dig job

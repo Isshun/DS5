@@ -20,7 +20,6 @@ public class BasicDumpJob extends JobModel {
 
         _mapObject = mapObject;
         _targetParcel = mapObject.getParcel();
-        _startParcel = mapObject.getParcel();
 
         setMainLabel("Dump " + mapObject.getInfo().label);
 

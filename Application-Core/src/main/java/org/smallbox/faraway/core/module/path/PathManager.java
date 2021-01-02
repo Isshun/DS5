@@ -9,7 +9,10 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.path.parcel.ParcelGraph;
+import org.smallbox.faraway.core.game.helper.SurroundedPattern;
+import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.module.path.graph.ParcelGraph;
+import org.smallbox.faraway.core.module.path.graph.TemporaryGraph;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -17,10 +20,8 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Stream;
 
 @GameObject
 public class PathManager extends GameModule {
@@ -28,6 +29,9 @@ public class PathManager extends GameModule {
 
     @Inject
     private WorldModule worldModule;
+
+    @Inject
+    private Game game;
 
     final private ArrayList<Runnable>           _runnable;
     final private ExecutorService               _threadPool;
@@ -137,22 +141,28 @@ public class PathManager extends GameModule {
 //        }
 
         // Looking for new path
-        PathModel path = PathModel.create(findPath(fromParcel, toParcel), minusOne);
+        try {
+            PathModel path = PathModel.create(findPath(fromParcel, toParcel), minusOne);
 //        _cache.put(cacheId, path);
 
-        // Non walkable last parcel
-        if (!path.getLastParcelCharacter().isWalkable()) {
-            return null;
+            // Non walkable last parcel
+            if (!path.getLastParcelCharacter().isWalkable()) {
+                return null;
+            }
+
+            return path;
+        } catch (Exception e) {
+            Log.warning("Unable to find path");
         }
 
-        return path;
+        return null;
     }
 
     public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
         assert fromParcel != null;
         assert toParcel != null;
 
-        return parcelGraph.findPath(fromParcel, toParcel);
+        return new TemporaryGraph(parcelGraph, toParcel).findPath(fromParcel, toParcel);
 //
 //        if (_finder == null) {
 //            parcelGraph = new IndexedGraph(worldModule.getAll());
@@ -228,7 +238,7 @@ public class PathManager extends GameModule {
     }
 
     public void refreshConnections(ParcelModel source) {
-//        parcelGraph.refreshConnections(source);
+        WorldHelper.getParcelAround(source, SurroundedPattern.X_CROSS, parcel -> parcelGraph.refreshConnections(parcel));
     }
 
     public boolean hasConnection(ParcelModel fromParcel, ParcelModel toParcel) {
@@ -240,29 +250,16 @@ public class PathManager extends GameModule {
         return false;
     }
 
-    public void initParcels(ParcelModel[][][] parcels, int width, int height, int floors) {
-        parcelGraph = new ParcelGraph(width * height * floors);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int f = 0; f < floors; f++) {
-                    ParcelModel fromParcel = safeParcel(parcels, x, y, f, width, height, floors);
-                    Stream.of(
-                            safeParcel(parcels, x, y - 1, f, width, height, floors),
-                            safeParcel(parcels, x, y + 1, f, width, height, floors),
-                            safeParcel(parcels, x - 1, y, f, width, height, floors),
-                            safeParcel(parcels, x + 1, y, f, width, height, floors)
-                    )
-                            .filter(Objects::nonNull)
-                            .filter(ParcelModel::isWalkable)
-                            .forEach(parcel -> parcelGraph.createConnection(fromParcel, parcel));
-                }
-            }
-        }
-
-    }
-
-    private ParcelModel safeParcel(ParcelModel[][][] parcels, int x, int y, int z, int width, int height, int floors) {
-        return (x < 0 || x >= width || y < 0 || y >= height || z < 0 || z >= floors) ? null : parcels[x][y][z];
+    public void initParcels() {
+        parcelGraph = new ParcelGraph(worldModule.getWidth() * worldModule.getHeight() * worldModule.getFloors());
+        worldModule.getAll().forEach(fromParcel ->
+                WorldHelper.getParcelAround(
+                        fromParcel,
+                        SurroundedPattern.X_CROSS,
+                        ParcelModel::isWalkable,
+                        toParcel -> parcelGraph.createConnection(fromParcel, toParcel)
+                )
+        );
     }
 
 }

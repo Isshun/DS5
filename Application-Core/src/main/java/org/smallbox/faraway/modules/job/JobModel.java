@@ -12,7 +12,6 @@ import org.smallbox.faraway.modules.building.BuildJob;
 import org.smallbox.faraway.modules.character.CharacterMoveModule;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.job.taskAction.PrerequisiteTaskAction;
 import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.modules.storage.StoreJob;
@@ -36,7 +35,7 @@ public class JobModel extends ObjectModel {
     }
 
     public String getIcon() {
-        if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
+//        if (this instanceof BasicHaulJob) return "[base]/graphics/jobs/ic_haul.png";
         if (this instanceof StoreJob) return "[base]/graphics/jobs/ic_store.png";
 //        if (this instanceof BasicCraftJob) return "[base]/graphics/jobs/ic_craft.png";
         if (this instanceof BuildJob) return "[base]/graphics/jobs/ic_build.png";
@@ -99,9 +98,7 @@ public class JobModel extends ObjectModel {
     protected String            _label;
     protected JobStatus         _status = JobStatus.JOB_INITIALIZED;
     protected String            _message;
-    public ParcelModel       _jobParcel;
     public ParcelModel       _targetParcel;
-    public ParcelModel       _startParcel;
     protected boolean           _isEntertainment;
     protected boolean           _isAuto;
     protected String            _mainLabel = "";
@@ -112,7 +109,6 @@ public class JobModel extends ObjectModel {
 
     public JobModel(ItemInfo.ItemInfoAction actionInfo, ParcelModel targetParcel) {
         init();
-        _jobParcel = targetParcel;
         _targetParcel = targetParcel;
         if (actionInfo != null) {
             _actionInfo = actionInfo;
@@ -151,8 +147,6 @@ public class JobModel extends ObjectModel {
     public JobStatus                getStatus() { return _status; }
     public double                   getSpeedModifier() { return 1; }
     public ParcelModel              getTargetParcel() { return _targetParcel; }
-    public ParcelModel              getStartParcel() { return _startParcel; }
-    public ParcelModel              getJobParcel() { return _jobParcel; }
     public ItemInfo.ItemInfoAction  getAction() { return _actionInfo; }
     public Object                   getData() { return _data; }
     public JobTaskReturn            getLastReturn() { return _lastTaskReturn; }

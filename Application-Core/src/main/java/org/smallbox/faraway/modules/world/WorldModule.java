@@ -71,8 +71,6 @@ public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObser
 
         _parcels = parcels;
         modelList = parcelList;
-
-        pathManager.initParcels(parcels, _width, _height, _floors);
     }
 
     public ParcelModel[][][]                    getParcels() { return _parcels; }

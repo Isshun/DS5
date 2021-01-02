@@ -10,6 +10,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
@@ -33,6 +34,9 @@ public class GameManager implements GameObserver {
 
     @Inject
     private ApplicationConfig applicationConfig;
+
+    @Inject
+    private PathManager pathManager;
 
     @Inject
     private Data data;
@@ -72,12 +76,11 @@ public class GameManager implements GameObserver {
 
         _game.createModules();
 
-//        Application.runOnMainThread(() -> {
+        if (listener != null) {
+            listener.onGameCreate(_game);
+        }
 
-            if (listener != null) {
-                listener.onGameCreate(_game);
-            }
-//        });
+        pathManager.initParcels();
 
 //        gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
 

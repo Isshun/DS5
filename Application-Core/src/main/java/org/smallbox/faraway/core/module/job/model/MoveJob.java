@@ -14,7 +14,7 @@ public class MoveJob extends JobModel {
     private MoveJob(ParcelModel jobParcel) {
         super(null, jobParcel);
 
-        setMainLabel("Move to " + _jobParcel.x + "x" + _jobParcel.y + " (f" + _jobParcel.z + ")");
+        setMainLabel("Move to " + jobParcel.x + "x" + jobParcel.y + " (f" + jobParcel.z + ")");
         addMoveTask("Move", () -> jobParcel);
 
 //        super(null, jobParcel, new IconDrawable("data/res/ic_dump.png", 0, 0, 32, 32), new AnimDrawable("data/res/actions.png", 0, 128, 32, 32, 7, 10));

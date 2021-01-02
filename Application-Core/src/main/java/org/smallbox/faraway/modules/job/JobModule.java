@@ -93,10 +93,6 @@ public class JobModule extends GameModule<JobModuleObserver> {
             throw new GameException(JobModule.class, "Trying to create a job already existing", job);
         }
 
-        if (job.getStartParcel() == null) {
-            throw new GameException(JobModule.class, "Job startParcel cannot be null", job);
-        }
-
         if (job.getStatus() != JobStatus.JOB_INITIALIZED) {
             throw new GameException(JobModule.class, "Job status must be JOB_INITIALIZED");
         }
@@ -146,7 +142,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
         _jobs.stream().filter(JobModel::isOpen).forEach(job -> {
-            if (object == null && job.getJobParcel() == parcel) {
+            if (object == null && job.getTargetParcel() == parcel) {
                 job.close();
             }
         });

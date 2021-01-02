@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.building.BuildJob;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.storage.StoreJob;
 
@@ -29,18 +28,18 @@ public class JobLayer extends BaseLayer {
             if (job instanceof StoreJob) {
                 if (((StoreJob)job).sourceConsumable.getFreeQuantity() > 0) {
                     renderer.drawOnMap(((StoreJob)job).sourceConsumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
-                    renderer.drawTextOnMap(job.getJobParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
+                    renderer.drawTextOnMap(job.getTargetParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
                 }
             }
 
-            if (job instanceof BasicHaulJob) {
-                renderer.drawOnMap(job.getJobParcel(), spriteManager.getIcon("graphics/jobs/ic_haul.png"));
-                renderer.drawTextOnMap(job.getJobParcel(), "hauling", 10, Color.CHARTREUSE, 0, 0);
-            }
+//            if (job instanceof BasicHaulJob) {
+//                renderer.drawOnMap(job.getJobParcel(), spriteManager.getIcon("graphics/jobs/ic_haul.png"));
+//                renderer.drawTextOnMap(job.getJobParcel(), "hauling", 10, Color.CHARTREUSE, 0, 0);
+//            }
 
             if (job instanceof BuildJob) {
-                renderer.drawOnMap(job.getJobParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
-                renderer.drawTextOnMap(job.getJobParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
+                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
+                renderer.drawTextOnMap(job.getTargetParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
             }
 
 //            if (job instanceof BasicCraftJob) {
@@ -53,7 +52,7 @@ public class JobLayer extends BaseLayer {
             }
 
             if (job.getColor() != null) {
-                renderer.drawTextOnMap(job.getJobParcel(), "gather", 10, job.getColor(), 0, 0);
+                renderer.drawTextOnMap(job.getTargetParcel(), "gather", 10, job.getColor(), 0, 0);
             }
 
         });

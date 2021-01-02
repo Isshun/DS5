@@ -7,7 +7,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
-import org.smallbox.faraway.core.module.path.parcel.ParcelConnection;
+import org.smallbox.faraway.core.module.path.graph.ParcelConnection;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.room.model.RoomModel;
 

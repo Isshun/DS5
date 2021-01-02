@@ -13,7 +13,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
 import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -91,14 +90,14 @@ public class CharacterInfoStatusController extends LuaController {
             frameJob.setVisible(true);
             frameJob.setWidth((int) (job.getProgress() * 300));
 
-            if (job instanceof BasicHaulJob) {
-                ((BasicHaulJob) job).getConsumables().forEach((consumable, quantity) -> {
-                    if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
-                        imgJob.setVisible(true);
-                        imgJob.setImage(spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
-                    }
-                });
-            }
+//            if (job instanceof BasicHaulJob) {
+//                ((BasicHaulJob) job).getConsumables().forEach((consumable, quantity) -> {
+//                    if (CollectionUtils.isNotEmpty(consumable.getInfo().graphics)) {
+//                        imgJob.setVisible(true);
+//                        imgJob.setImage(spriteManager.getNewSprite(consumable.getInfo().graphics.get(0)));
+//                    }
+//                });
+//            }
 
             if (job instanceof StoreJob) {
                 if (CollectionUtils.isNotEmpty(((StoreJob) job).targetConsumable.getInfo().graphics)) {

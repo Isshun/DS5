@@ -11,7 +11,6 @@ import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
@@ -33,11 +32,14 @@ public class MenuManager {
     @Inject
     private MenuSettingsController menuSettingsController;
 
+    @Inject
+    private UIManager uiManager;
+
     @OnApplicationLayerInit
     public void onApplicationLayerInit() {
         luaControllerManager.initController(menuMainController);
         luaControllerManager.initController(menuSettingsController);
-//        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().forEach((name, rootView) -> {
+//        uiManager.getMenuViews().forEach((name, rootView) -> {
 //            if (rootView.getView().getController() != null) {
 //                bindControllerFields(rootView.getView().getController(), rootView.getView());
 //                bindControllerMethods(rootView.getView().getController(), rootView.getView());
@@ -47,7 +49,7 @@ public class MenuManager {
     }
 
     public void display(String viewName) {
-        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().get(viewName).getView().setVisible(true);
+        uiManager.getMenuViews().get(viewName).getView().setVisible(true);
     }
 
     /**
@@ -97,7 +99,7 @@ public class MenuManager {
             for (Field field : cls.getDeclaredFields()) {
                 if (field.getAnnotation(BindLuaController.class) != null) {
                     field.setAccessible(true);
-                    DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().values().stream().map(rootView -> rootView.getView().getController())
+                    uiManager.getMenuViews().values().stream().map(rootView -> rootView.getView().getController())
                             .filter(subController -> subController != null && subController.getClass() == field.getType())
                             .findAny()
                             .ifPresent(subController -> {

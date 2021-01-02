@@ -169,37 +169,37 @@ public class ConsumableModule extends GenericGameModule<ConsumableItem, Consumab
         return consumeJob;
     }
 
-    public boolean createHaulToFactoryJobs(MapObjectModel item, ItemInfo itemInfo, int quantity) {
-
-        // Compte le nombre de consomables qui seront rapportés par les jobs existants
-        int quantityInJob = jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicHaulJob)
-                .map(job -> (BasicHaulJob)job)
-                .filter(job -> job.getItem() == item)
-                .mapToInt(BasicHaulJob::getHaulingQuantity)
-                .sum();
-
-        // Ajoute des jobs tant que la quantité de consomable présent dans l'usine et les jobs est inférieur à la quantité requise
-        int currentQuantity = 0;
-        while (currentQuantity + quantityInJob < quantity) {
-            BasicHaulJob job = createHaulToFactoryJob(itemInfo, item, quantity - (currentQuantity + quantityInJob));
-
-            // Ajoute la quantity de consomable ammené par ce nouveau job à la quantity existante
-            if (job != null) {
-                Log.info("[Factory] %s -> launch hauling job for component: %s", item, itemInfo);
-
-                quantityInJob += job.getHaulingQuantity();
-            }
-
-            else {
-                Log.debug("[Factory] %s -> not enough component: %s", item, itemInfo);
-
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    public boolean createHaulToFactoryJobs(MapObjectModel item, ItemInfo itemInfo, int quantity) {
+//
+//        // Compte le nombre de consomables qui seront rapportés par les jobs existants
+//        int quantityInJob = jobModule.getJobs().stream()
+//                .filter(job -> job instanceof BasicHaulJob)
+//                .map(job -> (BasicHaulJob)job)
+//                .filter(job -> job.getItem() == item)
+//                .mapToInt(BasicHaulJob::getHaulingQuantity)
+//                .sum();
+//
+//        // Ajoute des jobs tant que la quantité de consomable présent dans l'usine et les jobs est inférieur à la quantité requise
+//        int currentQuantity = 0;
+//        while (currentQuantity + quantityInJob < quantity) {
+//            BasicHaulJob job = createHaulToFactoryJob(itemInfo, item, quantity - (currentQuantity + quantityInJob));
+//
+//            // Ajoute la quantity de consomable ammené par ce nouveau job à la quantity existante
+//            if (job != null) {
+//                Log.info("[Factory] %s -> launch hauling job for component: %s", item, itemInfo);
+//
+//                quantityInJob += job.getHaulingQuantity();
+//            }
+//
+//            else {
+//                Log.debug("[Factory] %s -> not enough component: %s", item, itemInfo);
+//
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 
     public void addToLock(JobModel job, ConsumableItem consumable, int quantity) {
 
@@ -518,32 +518,32 @@ public class ConsumableModule extends GenericGameModule<ConsumableItem, Consumab
                 .mapToInt(ConsumableItem::getFreeQuantity)
                 .sum();
     }
-
-    // TODO
-    public BasicHaulJob createHaulToFactoryJob(ItemInfo itemInfo, MapObjectModel item, int needQuantity) {
-        HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
-        int previewQuantity = 0;
-
-        for (ConsumableItem consumable : getAll()) {
-            if (consumable.getInfo().instanceOf(itemInfo)) {
-
-                // Ajoute à la liste des preview le consomable et la quantité disponible
-                int jobQuantity = Math.min(needQuantity - previewQuantity, consumable.getFreeQuantity());
-                if (jobQuantity > 0) {
-                    previewConsumables.put(consumable, jobQuantity);
-                    previewQuantity += jobQuantity;
-                }
-
-            }
-        }
-
-        // Si suffisament de composants sont disponible alors le job est créé
-        if (previewQuantity == needQuantity) {
-            return BasicHaulJob.toFactory(this, jobModule, previewConsumables, item);
-        }
-
-        return null;
-    }
+//
+//    // TODO
+//    public BasicHaulJob createHaulToFactoryJob(ItemInfo itemInfo, MapObjectModel item, int needQuantity) {
+//        HashMap<ConsumableItem, Integer> previewConsumables = new HashMap<>();
+//        int previewQuantity = 0;
+//
+//        for (ConsumableItem consumable : getAll()) {
+//            if (consumable.getInfo().instanceOf(itemInfo)) {
+//
+//                // Ajoute à la liste des preview le consomable et la quantité disponible
+//                int jobQuantity = Math.min(needQuantity - previewQuantity, consumable.getFreeQuantity());
+//                if (jobQuantity > 0) {
+//                    previewConsumables.put(consumable, jobQuantity);
+//                    previewQuantity += jobQuantity;
+//                }
+//
+//            }
+//        }
+//
+//        // Si suffisament de composants sont disponible alors le job est créé
+//        if (previewQuantity == needQuantity) {
+//            return BasicHaulJob.toFactory(this, jobModule, previewConsumables, item);
+//        }
+//
+//        return null;
+//    }
 
     // TODO: perfs
     public ConsumableItem getConsumable(ParcelModel parcel) {

@@ -31,15 +31,10 @@ public class DigJobFactory {
             JobModel job = new DigJob();
 
             job._targetParcel = digParcel;
-            job._startParcel = digParcel;
-            job._jobParcel = digParcel;
             job.setMainLabel("Dig");
             job.setSkillType(CharacterSkillExtra.SkillType.DIG);
             job.setIcon("[base]/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
-
-//            // Move character to rock
-//            job.addMoveTask("Move to rock", () -> digParcel);
 
             // Dig action
             job.addTask("Dig", (character, hourInterval) -> {

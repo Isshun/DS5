@@ -1,13 +1,11 @@
 package org.smallbox.faraway.client.debug.layer;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -18,9 +16,8 @@ import org.smallbox.faraway.modules.world.WorldModule;
 @GameObject
 @GameLayer(level = LayerManager.CONSUMABLE_LAYER_LEVEL + 1, visible = false)
 public class DebugPathLayer extends BaseLayer {
-
-    private static Color GREEN = new Color(0x00ff0055);
-    private static Color RED = new Color(0xff0000bb);
+    private static final Color GREEN = new Color(0x00ff00dd);
+    private static final Color RED = new Color(0xff0000ff);
 
     @Inject
     private WorldModule worldModule;
@@ -61,15 +58,10 @@ public class DebugPathLayer extends BaseLayer {
                 .filter(characterModel -> characterModel.getPath() != null)
                 .forEach(character -> {
                     character.getPath().getNodes().forEach(parcel -> {
-                        renderer.drawCircleOnMap(parcel.x, parcel.y, 6, Color.BLACK, true, 16, 16);
-                        renderer.drawCircleOnMap(parcel.x, parcel.y, 5, Color.WHITE, true, 16, 16);
+                        renderer.drawCircleOnMap(parcel.x, parcel.y, 5, Color.BLACK, true, 16, 16);
+                        renderer.drawCircleOnMap(parcel.x, parcel.y, 4, Color.WHITE, true, 16, 16);
                     });
                 });
-    }
-
-    @GameShortcut(key = Input.Keys.F7)
-    public void onToggleVisibility() {
-        toggleVisibility();
     }
 
 }

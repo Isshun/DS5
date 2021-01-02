@@ -8,11 +8,9 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
@@ -95,17 +93,17 @@ public class ItemFactoryModule extends GameModule {
      * @param item UsableItem
      */
     private void actionHaulingJobs(UsableItem item, ItemFactoryModel factory) {
-        if (factory.hasRunningReceipt()) {
-            for (ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo receiptInputInfo: factory.getRunningReceipt().receiptInfo.inputs) {
-                int currentQuantity = factory.getCurrentQuantity(receiptInputInfo.item);
-                if (currentQuantity < receiptInputInfo.quantity) {
-                    if (!consumableModule.createHaulToFactoryJobs(item, receiptInputInfo.item, receiptInputInfo.quantity - currentQuantity)) {
-                        // Annule la construction s'il n'y à plus suffisament de consomable disponible
-                        actionClear(item, factory);
-                    }
-                }
-            }
-        }
+//        if (factory.hasRunningReceipt()) {
+//            for (ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo receiptInputInfo: factory.getRunningReceipt().receiptInfo.inputs) {
+//                int currentQuantity = factory.getCurrentQuantity(receiptInputInfo.item);
+//                if (currentQuantity < receiptInputInfo.quantity) {
+//                    if (!consumableModule.createHaulToFactoryJobs(item, receiptInputInfo.item, receiptInputInfo.quantity - currentQuantity)) {
+//                        // Annule la construction s'il n'y à plus suffisament de consomable disponible
+//                        actionClear(item, factory);
+//                    }
+//                }
+//            }
+//        }
     }
 
     /**
@@ -152,12 +150,12 @@ public class ItemFactoryModule extends GameModule {
     private void actionClear(UsableItem item, ItemFactoryModel factory) {
         // TODO: Libère les objets non consommés
 
-        // Termine les jobs
-        jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicHaulJob)
-                .map(job -> (BasicHaulJob)job)
-                .filter(job -> job.getItem() == item)
-                .forEach(JobModel::close);
+//        // Termine les jobs
+//        jobModule.getJobs().stream()
+//                .filter(job -> job instanceof BasicHaulJob)
+//                .map(job -> (BasicHaulJob)job)
+//                .filter(job -> job.getItem() == item)
+//                .forEach(JobModel::close);
 
         // Retire la recette en cours
         factory.setRunningReceipt(null);
@@ -201,14 +199,14 @@ public class ItemFactoryModule extends GameModule {
 //                .mapToInt(job -> job.getCharacter().getInventoryQuantity(itemInfo))
 //                .sum();
 
-        // TODO: inutile avec le system de lock
-        // Check la quantité réservée par les job
-        availableQuantity += jobModule.getJobs().stream()
-                .filter(job -> job instanceof BasicHaulJob)
-                .map(job -> (BasicHaulJob)job)
-                .filter(job -> job.getItem() == item)
-                .mapToInt(BasicHaulJob::getHaulingQuantity)
-                .sum();
+//        // TODO: inutile avec le system de lock
+//        // Check la quantité réservée par les job
+//        availableQuantity += jobModule.getJobs().stream()
+//                .filter(job -> job instanceof BasicHaulJob)
+//                .map(job -> (BasicHaulJob)job)
+//                .filter(job -> job.getItem() == item)
+//                .mapToInt(BasicHaulJob::getHaulingQuantity)
+//                .sum();
 
         if (availableQuantity >= needQuantity) {
             return true;

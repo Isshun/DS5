@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.module.path.parcel;
+package org.smallbox.faraway.core.module.path.graph;
 
 import com.badlogic.gdx.ai.pfa.GraphPath;
 import org.smallbox.faraway.core.module.path.PathCacheModel;

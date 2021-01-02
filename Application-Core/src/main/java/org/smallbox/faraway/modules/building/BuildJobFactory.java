@@ -34,8 +34,6 @@ public class BuildJobFactory {
 
         job.setMainLabel("Build " + itemInfo.label);
         job._targetParcel = targetParcel;
-        job._startParcel = targetParcel;
-        job._jobParcel = targetParcel;
         job._mapObject = itemModule.addItem(itemInfo, false, targetParcel);
 
         itemInfo.receipts.stream().findFirst().ifPresent(
@@ -57,7 +55,7 @@ public class BuildJobFactory {
 
         // Close
         job.addCloseTask(() -> removeUncompletedObject(job._mapObject)); // Delete uncompleted object
-        job.addCloseTask(() -> pathManager.refreshConnections(job.getJobParcel())); // Refresh path manager
+        job.addCloseTask(() -> pathManager.refreshConnections(job.getTargetParcel())); // Refresh path manager
 
         return job;
     }
