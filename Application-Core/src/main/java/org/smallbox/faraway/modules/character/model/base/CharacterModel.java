@@ -3,15 +3,13 @@ package org.smallbox.faraway.modules.character.model.base;
 import org.smallbox.faraway.GameTask;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
-import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.MoveListener;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,66 +59,11 @@ public abstract class CharacterModel extends MovableModel {
     public boolean                      isDead() { return !_isAlive; }
     public boolean                      isSleeping() { return _isSleeping; }
 
-    /**
-     * Déplace le personnage à la position demandée
-     *
-     * @param toParcel Destination
-     * @return True si le personnage est déjà à la position voulue
-     */
-    public boolean moveTo(ParcelModel toParcel) {
-        return moveTo(toParcel, null, false);
-    }
-
-    public boolean moveTo(ParcelModel toParcel, boolean minusOne) {
-        return moveTo(toParcel, null, minusOne);
-    }
-
-    public boolean moveTo(ParcelModel toParcel, MoveListener<CharacterModel> listener, boolean minusOne) {
-        assert toParcel != null;
-
-        // Déjà entrain de se déplacer vers la postion
-        if (_path != null && _path.getLastParcel() == toParcel) {
-            return false;
-        }
-
-        // Déjà à la position désirée
-        if (_path == null && toParcel == _parcel) {
-            if (listener != null) {
-                listener.onReach(this);
-            }
-            return true;
-        }
-
-        Log.info("Move character to " + toParcel.x + "x" + toParcel.y);
-
-        if (_moveListener != null) {
-            Log.debug("[" + getName() + "] Cancel previous move listener");
-            _moveListener.onFail(this);
-            _moveListener = null;
-        }
-
-        _path = DependencyInjector.getInstance().getDependency(PathManager.class).getPath(_parcel, toParcel, false, false, minusOne);
-        _moveProgress2 = 0;
-        if (_path != null) {
-            _moveListener = listener;
-        } else if (listener != null) {
-            listener.onFail(this);
-        }
-
-        return false;
-    }
-
     public void    setJob(JobModel job) {
         assert _job == null;
         assert job != null;
 
         _job = job;
-    }
-
-    public void            action(double hourInterval) {
-        if (_job != null) {
-            _job.action(this, hourInterval);
-        }
     }
 
     public void clearJob(JobModel job) {
@@ -156,5 +99,11 @@ public abstract class CharacterModel extends MovableModel {
 
     public void setMoveProgress(double i) {
         _moveProgress = i;
+    }
+
+    public void setPath(PathModel path) {
+        _path = path;
+        _moveProgress = 0;
+        _moveProgress2 = 0;
     }
 }

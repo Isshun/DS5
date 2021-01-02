@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
@@ -32,6 +33,7 @@ public class LuaApplicationModel {
     public Collection<LuaModule>    luaModules;
     public Collection<ModuleBase>   modules;
     public Collection<ModuleBase>   moduleThirds;
+    private GameTime gameTime;
 
     public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, ApplicationConfig.ApplicationConfigScreenInfo screenInfo) {
         crew = luaCrew;
@@ -44,11 +46,12 @@ public class LuaApplicationModel {
     }
 
     public void update() {
-        this.game = DependencyInjector.getInstance().getDependency(GameManager.class).getGame();
+        this.game = DependencyInjector.getInstance().getDependency(Game.class);
+        this.gameTime = DependencyInjector.getInstance().getDependency(GameTime.class);
         this.tick = game.getTick();
-        this.hour = game.getTime().getHour();
-        this.day = game.getTime().getDay();
-        this.year = game.getTime().getYear();
+        this.hour = gameTime.getHour();
+        this.day = gameTime.getDay();
+        this.year = gameTime.getYear();
     }
 
     public ModuleBase getModule(String name) {

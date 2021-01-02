@@ -48,29 +48,4 @@ public class Constant {
     public static final int         COUNT_BEFORE_REUSE_BLOCKED_ITEM = 10;
     public static final int         DELAY_TO_RESTART_BLOCKED_JOB = COUNT_BEFORE_REUSE_BLOCKED_ITEM;
     public static final int         NB_COLUMNS_TITLE = 29;
-    public static final int[][]     RESOLUTIONS_4_3 = new int[][] {
-            {800, 600},
-            {1024, 768},
-            {1152, 864},
-            {1280, 960},
-            {1400, 1050},
-            {1600, 1200},
-    };
-    public static final int[][]     RESOLUTIONS_16_9 = new int[][] {
-            {1280, 720},
-            {1360, 768},
-            {1366, 768},
-            {1600, 900},
-            {1600, 1200},
-            {1920, 1080},
-            {2048, 1152},
-            {2560, 1440},
-    };
-    public static final int[][]     RESOLUTIONS_16_10 = new int[][] {
-            {1280, 800},
-            {1440, 900},
-            {1680, 1050},
-            {1920, 1200},
-            {2560, 1600},
-    };
 }

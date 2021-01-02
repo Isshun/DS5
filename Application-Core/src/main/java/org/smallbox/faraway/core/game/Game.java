@@ -28,6 +28,9 @@ public class Game {
     @Inject
     private GameTaskManager gameTaskManager;
 
+    @Inject
+    private GameTime gameTime;
+
     public static long interval = 1000;
     private final ApplicationConfig config;
     private double _tickPerHour;
@@ -49,7 +52,6 @@ public class Game {
     private boolean                         _isRunning;
     private final GameInfo                  _info;
     private PlanetModel                     _planet;
-    private GameTime                        _gameTime;
     private int                             _tick;
     private Map<String, Boolean>            _displays;
     private int                             _speed;
@@ -88,7 +90,6 @@ public class Game {
         Application.notify(_isRunning ? GameObserver::onGameResume : GameObserver::onGamePaused);
     }
 
-    public GameTime                         getTime() { return _gameTime; }
     public double                           getTickPerHour() { return _tickPerHour; }
     public int                              getHourPerDay() { return _planet.getInfo().dayDuration; }
     public PlanetModel                      getPlanet() { return _planet; }
@@ -106,7 +107,6 @@ public class Game {
         _speed = config.game.startSpeed;
         _lastSpeed = config.game.startSpeed;
         _tickInterval = config.game.tickInterval;
-        _gameTime = new GameTime(config.game.startGameTime);
         _tickPerHour = config.game.ticksPerHour[_speed];
         _planetInfo = info.planet;
         _regionInfo = info.region;
@@ -224,7 +224,7 @@ public class Game {
             try {
                 if (_isRunning) {
                     _tick += 1;
-                    _gameTime.add(1 / _tickPerHour);
+                    gameTime.add(1 / _tickPerHour);
 
                     _modules.forEach(module -> {
                         try {

@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -36,12 +37,17 @@ public class JobModule extends GameModule<JobModuleObserver> {
     @Inject
     private JobOrchestratorModule jobOrchestratorModule;
 
+    @Inject
+    private GameTime gameTime;
+
     @Override
     protected void onModuleUpdate(Game game) {
 
         // Check all jobs
         _jobs.forEach(JobModel::check);
         _jobs.forEach(JobModel::update);
+
+        _jobs.stream().filter(JobModel::isBlocked).filter(jobModel -> jobModel.getBlocked().isBefore(gameTime.getTime())).forEach(JobModel::unblock);
 
         _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
         _jobs.removeIf(JobModel::isClose);

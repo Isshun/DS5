@@ -27,6 +27,9 @@ public class SystemInfoController extends LuaController {
     private Game game;
 
     @Inject
+    private GameTime gameTime;
+
+    @Inject
     private GameManager gameManager;
 
     @Inject
@@ -48,9 +51,8 @@ public class SystemInfoController extends LuaController {
     protected void onControllerUpdate() {
 
         // Display game time
-        GameTime time = game.getTime();
-        lbTime.setText(String.format("%02d:%02d", time.getHour(), time.getMinute()));
-        lbDate.setText(String.format("%02d/%02d/%d", time.getDay(), time.getMonth(), time.getYear()));
+        lbTime.setText(String.format("%02d:%02d", gameTime.getHour(), gameTime.getMinute()));
+        lbDate.setText(String.format("%02d/%02d/%d", gameTime.getDay(), gameTime.getMonth(), gameTime.getYear()));
 
         // Display weather, temperature and pressure
         WeatherInfo weatherInfo = weatherModule.getWeather();

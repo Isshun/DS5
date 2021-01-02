@@ -9,8 +9,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.modules.character.CharacterTimetableExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
@@ -19,6 +19,9 @@ public class CharacterInfoTimetableController extends LuaController {
 
     @Inject
     private Game game;
+
+    @Inject
+    private GameTime gameTime;
 
     @BindLua
     private UIList listTimetable;
@@ -85,7 +88,7 @@ public class CharacterInfoTimetableController extends LuaController {
                 });
             }
 
-            marker.setPositionY((22 * 24) * (game.getTime().getHour() * 60 + game.getTime().getMinute()) / (24 * 60));
+            marker.setPositionY((22 * 24) * (gameTime.getHour() * 60 + gameTime.getMinute()) / (24 * 60));
         }
     }
 

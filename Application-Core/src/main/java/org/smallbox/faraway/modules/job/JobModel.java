@@ -3,11 +3,13 @@ package org.smallbox.faraway.modules.job;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.building.BuildJob;
+import org.smallbox.faraway.modules.character.CharacterMoveModule;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.BasicHaulJob;
@@ -16,6 +18,7 @@ import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.log.Log;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
@@ -65,6 +68,11 @@ public class JobModel extends ObjectModel {
         return this.prerequisiteTasks.stream().allMatch(PrerequisiteTaskAction::onExecuteTask);
     }
 
+    public void unblock() {
+        _status = JobStatus.JOB_WAITING;
+        _blocked = null;
+    }
+
     public enum JobCheckReturn {
         OK, STAND_BY, ABORT, BLOCKED
     }
@@ -79,7 +87,7 @@ public class JobModel extends ObjectModel {
 
     protected int               _limit;
     protected int               _fail;
-    protected int               _blocked;
+    protected LocalDateTime _blocked;
     protected int               _cost = 1;
     protected boolean           _isClose;
     protected double            _progress;
@@ -133,7 +141,10 @@ public class JobModel extends ObjectModel {
     public CharacterModel           getCharacter() { return _character; }
     public CharacterModel           getCharacterRequire() { return _characterRequire; }
     public int                      getFail() { return _fail; }
-    public int                      getBlocked() { return _blocked; }
+    public LocalDateTime getBlocked() { return _blocked; }
+    public boolean isBlocked() { return _status == JobStatus.JOB_BLOCKED; }
+    public boolean isAvailable() { return _status == JobStatus.JOB_INITIALIZED || _status == JobStatus.JOB_WAITING; }
+    public boolean isFree() { return _character == null; }
     public JobAbortReason           getReason() { return _reason; }
     public double                   getQuantity() { return _progress; }
     public double                   getProgress() { return Math.min(_progress, 1); }
@@ -156,6 +167,12 @@ public class JobModel extends ObjectModel {
     public void                     setData(Object data) { _data = data; }
     public void                     setMainLabel(String mainLabel) { _mainLabel = mainLabel; }
     public void                     setProgress(double current, double  total) { _progress = current / total; }
+    public void block(CharacterModel character, LocalDateTime blocked) {
+        quit(character);
+        _blocked = blocked;
+        _status = JobStatus.JOB_BLOCKED;
+    }
+    public void                     setCharacter(CharacterModel character) { _character = character; }
 
     public boolean                  isClose() { return _isClose; }
     public boolean                  isOpen() { return !_isClose; }
@@ -245,7 +262,7 @@ public class JobModel extends ObjectModel {
 
         onClose();
 
-        closeTasks.forEach(task -> task.onExecuteTask());
+        closeTasks.forEach(TechnicalTaskAction::onExecuteTask);
 
         _isClose = true;
         _status = JobStatus.JOB_COMPLETE;
@@ -323,7 +340,7 @@ public class JobModel extends ObjectModel {
             Objects.requireNonNull(targetParcel);
 
             if (character.getPath() == null || character.getPath().getLastParcel() != targetParcel) {
-                character.moveTo(targetParcel, true);
+                DependencyInjector.getInstance().getDependency(CharacterMoveModule.class).move(character, targetParcel, true);
                 return JobTaskReturn.TASK_CONTINUE;
             }
 

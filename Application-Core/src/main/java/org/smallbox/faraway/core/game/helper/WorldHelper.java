@@ -283,11 +283,26 @@ public class WorldHelper {
         return isSurroundedByBlocked(toParcel.x, toParcel.y, toParcel.z);
     }
 
-    public static boolean isSurroundedCross(ParcelModel p1, ParcelModel p2) {
-        return (p1.z == p2.z && p1.x == p2.x - 1 && p1.y == p2.y)
-                || (p1.z == p2.z && p1.x == p2.x + 1 && p1.y == p2.y)
-                || (p1.z == p2.z && p1.x == p2.x && p1.y == p2.y - 1)
-                || (p1.z == p2.z && p1.x == p2.x && p1.y == p2.y + 1);
+    public static boolean isSurrounded(SurroundedPattern surroundedPattern, ParcelModel parcelGoal, ParcelModel parcelCheck) {
+
+        // Same parcel
+        if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x && parcelGoal.y == parcelCheck.y) return true;
+
+        // Cross
+        if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x - 1 && parcelGoal.y == parcelCheck.y) return true;
+        if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x + 1 && parcelGoal.y == parcelCheck.y) return true;
+        if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x && parcelGoal.y == parcelCheck.y - 1) return true;
+        if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x && parcelGoal.y == parcelCheck.y + 1) return true;
+
+        // Diagonal
+        if (surroundedPattern == SurroundedPattern.SQUARE) {
+            if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x - 1 && parcelGoal.y == parcelCheck.y - 1) return true;
+            if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x + 1 && parcelGoal.y == parcelCheck.y + 1) return true;
+            if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x - 1 && parcelGoal.y == parcelCheck.y + 1) return true;
+            if (parcelGoal.z == parcelCheck.z && parcelGoal.x == parcelCheck.x + 1 && parcelGoal.y == parcelCheck.y - 1) return true;
+        }
+
+        return false;
     }
 
     public static boolean isSurroundedByBlocked(int x, int y, int z) {

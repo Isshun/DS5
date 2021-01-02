@@ -2,6 +2,8 @@ package org.smallbox.faraway.modules.job;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterFreeTimeExtra;
@@ -27,6 +29,12 @@ public class JobOrchestratorModule {
     @Inject
     private JobModule jobModule;
 
+    @Inject
+    private Game game;
+
+    @Inject
+    private GameTime gameTime;
+
     public void assign() {
         characterModule.getCharacters().stream()
                 .filter(CharacterModel::isFree)
@@ -49,8 +57,8 @@ public class JobOrchestratorModule {
             _characterInnactiveDuration.put(character, 0);
 
             List<JobModel> availableJobs = jobModule.getJobs().stream()
-                    .filter(job -> job.getCharacter() == null)
-                    .filter(job -> job.getStatus() == JobModel.JobStatus.JOB_WAITING || job.getStatus() == JobModel.JobStatus.JOB_INITIALIZED)
+                    .filter(JobModel::isAvailable)
+                    .filter(JobModel::isFree)
                     .filter(JobModel::isSubJobCompleted)
                     .filter(JobModel::initConditionalCompleted)
                     .sorted(Comparator.comparingInt(j -> WorldHelper.getApproxDistance(j.getStartParcel(), character.getParcel())))

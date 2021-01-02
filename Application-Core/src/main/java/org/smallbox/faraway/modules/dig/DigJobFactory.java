@@ -5,7 +5,6 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -28,8 +27,6 @@ public class DigJobFactory {
     private PathManager pathManager;
 
     public JobModel createJob(ParcelModel digParcel) {
-        ParcelModel targetParcel = WorldHelper.searchAround(digParcel, 1, WorldHelper.SearchStrategy.FREE);
-
         if (digParcel.getRockInfo() != null) {
             JobModel job = new DigJob();
 
@@ -41,8 +38,8 @@ public class DigJobFactory {
             job.setIcon("[base]/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
 
-            // Move character to rock
-            job.addMoveTask("Move to rock", () -> targetParcel);
+//            // Move character to rock
+//            job.addMoveTask("Move to rock", () -> digParcel);
 
             // Dig action
             job.addTask("Dig", (character, hourInterval) -> {

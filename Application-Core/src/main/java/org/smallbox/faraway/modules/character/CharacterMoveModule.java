@@ -8,12 +8,13 @@ import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.MoveListener;
+import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
@@ -23,6 +24,9 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 
     @Inject
     private ApplicationConfig applicationConfig;
+
+    @Inject
+    private PathManager pathManager;
 
     @Inject
     private GameManager gameManager;
@@ -40,7 +44,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 
         characterModule.getCharacters().forEach(character -> {
             character.setDirection(MovableModel.Direction.NONE);
-            move(character);
+            doMove(character);
         });
     }
 
@@ -49,7 +53,31 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 //        characterModule.getAll().forEach(this::move);
     }
 
-    public void move(CharacterModel character) {
+    public CharacterMoveStatus move(CharacterModel character, ParcelModel parcel, boolean minusOne) {
+
+        // Character is already moving to this parcel
+        if (character.getPath() != null && character.getPath().getLastParcel() == parcel) {
+            return CharacterMoveStatus.CONTINUE;
+        }
+
+        // Character is already on this parcel
+        if (character.getPath() == null && character.getParcel() == parcel) {
+            return CharacterMoveStatus.COMPLETED;
+        }
+
+        Log.info("Move character to " + parcel.x + "x" + parcel.y);
+        PathModel path = pathManager.getPath(character.getParcel(), parcel, false, false, minusOne);
+
+        // Path to parcel cannot be found
+        if (path == null) {
+            return CharacterMoveStatus.BLOCKED;
+        }
+
+        character.setPath(path);
+        return CharacterMoveStatus.CONTINUE;
+    }
+
+    private void doMove(CharacterModel character) {
         PathModel _path = character._path;
 
         if (_path != null) {

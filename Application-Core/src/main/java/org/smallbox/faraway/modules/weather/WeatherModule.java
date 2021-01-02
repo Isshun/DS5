@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
@@ -46,6 +47,9 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 
     @Inject
     private Data data;
+
+    @Inject
+    private GameTime gameTime;
 
     @Override
     public void onGameStart(Game game) {
@@ -86,7 +90,7 @@ public class WeatherModule extends GameModule<WeatherModuleObserver> implements 
 
         PlanetInfo planetInfo = game.getPlanet().getInfo();
         if (planetInfo.dayTimes != null) {
-            planetInfo.dayTimes.stream().filter(dayTime -> dayTime.hour == game.getTime().getHour()).forEach(this::setHour);
+            planetInfo.dayTimes.stream().filter(dayTime -> dayTime.hour == gameTime.getHour()).forEach(this::setHour);
         }
 
         notifyObservers(observer -> observer.onTemperatureChange(Math.random() * 40));

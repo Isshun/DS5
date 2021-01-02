@@ -93,12 +93,6 @@ public class CharacterModule extends GenericGameModule<CharacterModel, Character
         modelList.stream().filter(CharacterModel::isDead).forEach(this::updateDeadCharacter);
         modelList.removeIf(CharacterModel::isDead);
 
-        // Execute action
-        double hourInterval = getTickInterval() / game.getTickPerHour();
-        modelList.forEach(character -> {
-            character.action(hourInterval);
-        });
-
     }
 
     /**

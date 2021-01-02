@@ -33,7 +33,7 @@ public class ApplicationConfig {
     public static class ApplicationConfigGameInfo {
         public int[]            ticksPerHour;
         public int              tickInterval;
-        public double           startGameTime;
+        public String           startGameTime;
         public int              startSpeed;
         public int              roofMaxDistance;
         public int              inventoryMaxQuantity;

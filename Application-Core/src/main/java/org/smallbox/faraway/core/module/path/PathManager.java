@@ -117,8 +117,8 @@ public class PathManager extends GameModule {
 
         Log.debug(PathManager.class, "GetPath (from: " + fromParcel.x + "x" + fromParcel.y + " to: " + toParcel.x + "x" + toParcel.y + ")");
 
-        // Non walkable origin / target parcel
-        if (!fromParcel.isWalkable() || !toParcel.isWalkable()) {
+        // Non walkable origin
+        if (!fromParcel.isWalkable()) {
             return null;
         }
 
@@ -139,6 +139,11 @@ public class PathManager extends GameModule {
         // Looking for new path
         PathModel path = PathModel.create(findPath(fromParcel, toParcel), minusOne);
 //        _cache.put(cacheId, path);
+
+        // Non walkable last parcel
+        if (!path.getLastParcelCharacter().isWalkable()) {
+            return null;
+        }
 
         return path;
     }

@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -59,6 +60,9 @@ public class CharacterNeedModule extends GameModule {
     @Inject
     private GameManager gameManager;
 
+    @Inject
+    private GameTime gameTime;
+
     private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
@@ -92,7 +96,7 @@ public class CharacterNeedModule extends GameModule {
             boolean hasSleepJob = (sleepJob != null && !sleepJob.isClose());
 
             // Récupère l'emploi du temps
-            CharacterTimetableExtra.State state = character.getExtra(CharacterTimetableExtra.class).getState(game.getTime().getHour());
+            CharacterTimetableExtra.State state = character.getExtra(CharacterTimetableExtra.class).getState(gameTime.getHour());
 
             // Check: le personnage est en période SLEEP mais le job n'est pas lancé
             // Envoi le personnage ne coucher
