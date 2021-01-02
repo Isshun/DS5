@@ -9,7 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
 
 @GameObject

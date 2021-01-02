@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;

@@ -9,10 +9,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -139,7 +138,7 @@ public class DependencyInjector {
         _init = true;
 
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
-            Log.verbose("Inject dependency to: " + host.getClass().getName());
+            Log.debug("Inject dependency to: " + host.getClass().getName());
             doInjectShortcut(host);
             doInjectDependency(host, false);
             callInitMethod(host, false);
@@ -161,7 +160,7 @@ public class DependencyInjector {
         objects.addAll(_applicationObjectPoolByClass.values());
         objects.addAll(_gameObjectPoolByClass.values());
         objects.stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
-            Log.verbose("Inject dependency to: " + host.getClass().getName());
+            Log.debug("Inject dependency to: " + host.getClass().getName());
             doInjectShortcut(host);
             doInjectDependency(host, true);
             callInitMethod(host, true);
@@ -178,7 +177,7 @@ public class DependencyInjector {
                     GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
                     if (gameShortcut != null) {
 
-                        Log.verbose(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
+                        Log.debug(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
                         _clientInterface.onShortcutBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
                             try {
                                 method.invoke(host);
@@ -197,7 +196,7 @@ public class DependencyInjector {
             try {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Inject.class)) {
-                    Log.verbose(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
+                    Log.debug(String.format("Try to inject %s to %s", field.getType().getSimpleName(), host.getClass().getSimpleName()));
 
                     // TODO: authorize injection of null objects ?
                     //Objects.requireNonNull(_objectPoolByClass.get(field.getType()), "Unable to find field to inject: " + field.getType().getName());
@@ -261,12 +260,14 @@ public class DependencyInjector {
                 _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency),
                 _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency)
         ).forEach(dependency ->
-                Stream.of(dependency.getClass().getMethods())
+                Stream.of(dependency.getClass().getDeclaredMethods())
                         .filter(method -> method.isAnnotationPresent(baseClass))
                         .forEach(method -> results.put(method.getAnnotation(baseClass), objectModel -> {
                             try {
+                                method.setAccessible(true);
                                 method.invoke(dependency, objectModel);
                             } catch (IllegalAccessException | InvocationTargetException e) {
+                                Log.error(e);
                                 e.printStackTrace();
                             }
                         }))

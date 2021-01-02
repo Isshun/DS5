@@ -8,7 +8,7 @@ import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.*;
 import org.smallbox.faraway.modules.characterBuff.BuffInfo;
 import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
 import java.util.stream.Collectors;

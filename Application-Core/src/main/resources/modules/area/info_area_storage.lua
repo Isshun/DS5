@@ -32,8 +32,8 @@ ui:extend({
             }},
         }},
 
---        { type = "label", text = "Space", text_color = color1, text_size = 12, size = {35, 24}},
---        { type = "label", id = "lb_space", text_color = color2, text_size = 16, text_align = "center", position = {0, 16}, size = {35, 24}},
+--        { type = "label", text = "Space", text_color = blue_light_2, text_size = 12, size = {35, 24}},
+--        { type = "label", id = "lb_space", text_color = blue_light_5, text_size = 16, text_align = "center", position = {0, 16}, size = {35, 24}},
 
     }
 })

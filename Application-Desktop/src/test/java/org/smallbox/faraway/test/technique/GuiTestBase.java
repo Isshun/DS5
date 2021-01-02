@@ -7,7 +7,7 @@
 //import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 //import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 //import org.smallbox.faraway.util.FileUtils;
-//import org.smallbox.faraway.util.Log;
+//import org.smallbox.faraway.util.log.Log;
 //
 //import java.awt.*;
 //

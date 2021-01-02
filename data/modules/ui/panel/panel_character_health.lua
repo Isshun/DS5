@@ -7,7 +7,7 @@ ui:extend({
         { type = "list", views = {
 
             -- Diseases
-            { type = "label", text = "Diseases", text_color = color1, size = {0, 30}, text_size = 24},
+            { type = "label", text = "Diseases", text_color = blue_light_2, size = {0, 30}, text_size = 24},
             { type = "list", id = "list_diseases"},
 
             { type = "image", src = "[base]/graphics/icons/character/body.jpg", size = {256, 306}, position = {0, 100}},

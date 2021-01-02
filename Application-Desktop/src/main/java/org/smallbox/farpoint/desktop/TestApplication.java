@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 public class TestApplication extends ApplicationAdapter {
     public Sprite[]             sprites;

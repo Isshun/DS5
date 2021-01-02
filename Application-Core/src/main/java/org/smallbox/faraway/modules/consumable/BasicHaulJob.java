@@ -11,7 +11,7 @@ import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobTaskReturn;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;

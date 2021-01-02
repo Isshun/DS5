@@ -20,10 +20,7 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Log;
-
-import java.util.Collection;
-import java.util.concurrent.LinkedBlockingQueue;
+import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 @ModuleSerializer(ItemModuleSerializer.class)

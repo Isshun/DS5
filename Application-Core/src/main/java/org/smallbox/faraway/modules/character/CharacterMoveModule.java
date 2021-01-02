@@ -12,7 +12,7 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.MoveListener;
 
 @GameObject

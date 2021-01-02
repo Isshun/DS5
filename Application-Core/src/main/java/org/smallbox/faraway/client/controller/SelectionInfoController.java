@@ -53,7 +53,7 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
     }
 
     @OnGameSelectAction(ParcelModel.class)
-    public void onSelectParcel(ParcelModel parcel) {
+    private void onSelectParcel(ParcelModel parcel) {
         setVisible(true);
 
         lbParcel.setText(parcel.x + "x" + parcel.y + "x" + parcel.z);

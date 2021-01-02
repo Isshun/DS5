@@ -11,7 +11,7 @@ ui:extend(
                 type = "view",
                 position = {1, 1},
                 size = {798, 598},
-                background = color3,
+                background = blue_dark_4,
                 views = {
                     { type = "label", id = "lb_name", text = "name", text_size = 32, padding = 18},
                     { type = "label", id = "lb_content", text = "name", text_size = 16, position = {0, 40}, padding = 18},

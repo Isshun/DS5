@@ -35,9 +35,6 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "application = a\n" +
                         "data = d\n" +
                         "ui = u\n" +
-                        "color1 = 0x2ab8baff\n" +
-                        "color2 = 0x9afbffff\n" +
-                        "color3 = 0x132733ff\n" +
 
                         "blue_light_1 = " + RawColors.RAW_BLUE_LIGHT_1 + "\n" +
                         "blue_light_2 = " + RawColors.RAW_BLUE_LIGHT_2 + "\n" +

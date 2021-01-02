@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.characterBuff.handler.BuffHandler;
 import org.smallbox.faraway.modules.characterDisease.DiseaseInfo;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 

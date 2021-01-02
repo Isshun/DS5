@@ -25,7 +25,7 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Strings;
 
 import java.lang.reflect.Constructor;

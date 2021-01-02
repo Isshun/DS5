@@ -7,7 +7,7 @@ ui:extend({
     in_game = false,
     visible = false,
     views = {
-        { type = "label", text = "Save", text_size = 22, padding = 16, background = color3, size = {280, 48}, margin = {10, 0, 0, 10}, on_click = function() open_menu("base.menu.save") end},
+        { type = "label", text = "Save", text_size = 22, padding = 16, background = blue_dark_4, size = {280, 48}, margin = {10, 0, 0, 10}, on_click = function() open_menu("base.menu.save") end},
     },
 
     on_event = function(view, event, data)

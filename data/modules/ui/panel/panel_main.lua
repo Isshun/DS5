@@ -20,8 +20,8 @@ ui:extend({
             { type = "view", size = {348, 307}, position = {0, 10}, background = blue_light_1, views = {
 
                 { type = "view", id = "map_header", position = {1, 1}, size = {346, 44}, background = blue_dark_3, views = {
-                    { type = "label", id = "lb_planet", text_size = 16, text_color = color2, padding = 10 },
-                    { type = "label", id = "lb_floor", text_size = 16, text_color = color2, padding = 10, position = {250, 0} },
+                    { type = "label", id = "lb_planet", text_size = 16, text_color = blue_light_5, padding = 10 },
+                    { type = "label", id = "lb_floor", text_size = 16, text_color = blue_light_5, padding = 10, position = {250, 0} },
                 }},
                 { type = "view", id = "map_container", position = {1, 40}, size = {346, 228}, background = blue_dark_3, views = {
                     { type = "minimap"},

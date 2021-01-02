@@ -8,7 +8,7 @@ ui:extend({
     visible = false,
     views = {
         { type = "list", size = {800, 600}, background = 0x25c9cbbb, position = {application.screen_width / 2 - 800 / 2, application.screen_height / 2 - 200}, views = {
-            { type = "grid", id = "grid_settings_sections", columns = 4, column_width = 200, row_height = 50, background = color3, size = {800, 50}, views = {
+            { type = "grid", id = "grid_settings_sections", columns = 4, column_width = 200, row_height = 50, background = blue_dark_4, size = {800, 50}, views = {
                 { type = "label", id = "btGraphic", action = "onOpenGraphic", text = "Graphic", text_size = 28, padding = 16, size = {200, 50}, padding = 14, background = 0x25c9cbff},
                 { type = "label", id = "btSound", action = "onOpenSound", text = "Sound", text_size = 28, padding = 16, size = {200, 50}, padding = 14},
                 { type = "label", id = "btBindings", action = "onOpenBindings", text = "Bindings", text_size = 28, padding = 16, size = {200, 50}, padding = 14},

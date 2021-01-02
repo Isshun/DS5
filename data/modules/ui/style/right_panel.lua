@@ -5,7 +5,7 @@
 --        align = {"top", "right"},
 --        position = {0, 38},
 --        background = 0xff882233,
-----        background = color3,
+----        background = blue_dark_4,
 --        size = {372, 800},
 --    }
 --})

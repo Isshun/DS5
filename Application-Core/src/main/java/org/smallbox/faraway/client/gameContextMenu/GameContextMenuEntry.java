@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.gameContextMenu;
 
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Optional;
 

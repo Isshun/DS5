@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,15 +47,19 @@ public class ConsoleDashboardLayer extends DashboardLayerBase {
             String text = message.substring(0, Math.min(lineLength, message.length()));
             Color color = Color.WHITE;
 
-            if (message.startsWith("[WARNING]")) {
+            if (message.contains("[WARNING]")) {
                 color = Color.ORANGE;
             }
 
-            if (message.startsWith("[ERROR]")) {
+            if (message.contains("[ERROR]")) {
                 color = Color.RED;
             }
 
-            if (message.startsWith("[DEBUG]")) {
+            if (message.contains("[FATAL]")) {
+                color = Color.FIREBRICK;
+            }
+
+            if (message.contains("[DEBUG]")) {
                 color = Color.GRAY;
             }
 

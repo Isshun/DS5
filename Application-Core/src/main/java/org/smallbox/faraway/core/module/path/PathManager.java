@@ -13,7 +13,7 @@ import org.smallbox.faraway.core.module.path.parcel.ParcelGraph;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.ArrayList;
 import java.util.Map;

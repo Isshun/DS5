@@ -10,10 +10,9 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.modules.world.factory.WorldFactory;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -97,7 +96,7 @@ public class GameManager implements GameObserver {
 
 //        worldFactory.createLandSite(game);
 
-        Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+        Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
     public void loadGame(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo, GameListener listener) {
@@ -129,7 +128,7 @@ public class GameManager implements GameObserver {
                 // Launch background thread
                 _game.launchBackgroundThread(listener);
 
-                Log.notice("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+                Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
 
             });
         } catch (Exception e) {
@@ -198,7 +197,7 @@ public class GameManager implements GameObserver {
 
     @GameShortcut(key = Input.Keys.F5)
     public void actionQuickSaveGame() {
-        Log.notice("quickSaveGame");
+        Log.info("quickSaveGame");
         gameSaveManager.saveGame(_game, _game.getInfo(), GameInfo.Type.FAST);
     }
 

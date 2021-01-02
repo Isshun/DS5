@@ -1,38 +1,28 @@
 package org.smallbox.faraway.client.gameContextMenu;
 
-import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.module.job.MoveJobFactory;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.modules.job.JobModule;
 
-import java.util.Optional;
+import java.util.Collection;
 
 @GameObject
 public class GameContextMenuManager {
 
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private MoveJobFactory moveJobFactory;
-
-    @Inject
-    private JobModule jobModule;
-
+    private Collection<GameContextMenuAction> actions;
     private GameContextMenu menu;
 
-    public void open(int mouseX, int mouseY, ParcelModel parcel) {
+    @OnInit
+    public void init() {
+        actions = DependencyInjector.getInstance().getSubTypesOf(GameContextMenuAction.class);
+    }
+
+    public void open(ParcelModel parcel, int mouseX, int mouseY) {
         menu = new GameContextMenu(mouseX, mouseY);
-
-        Optional.ofNullable(gameSelectionManager.getSelected(CharacterModel.class)).ifPresent(character ->
-                menu.addEntry("Move character", mouseX, mouseY, () -> jobModule.addJob(moveJobFactory.createJob(parcel, character))));
-
-        menu.addEntry("Take object", mouseX, mouseY);
-        menu.addEntry("Use object", mouseX, mouseY);
-        menu.addEntry("Attack", mouseX, mouseY);
+        actions.stream()
+                .filter(action -> action.check(parcel, mouseX, mouseY))
+                .forEach(action -> menu.addEntry(action.getLabel(), mouseX, mouseY, action.getRunnable(parcel, mouseX, mouseY)));
     }
 
     public GameContextMenu getMenu() {

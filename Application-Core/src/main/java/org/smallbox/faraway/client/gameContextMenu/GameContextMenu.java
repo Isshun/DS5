@@ -25,10 +25,6 @@ public class GameContextMenu {
         return y;
     }
 
-    public void addEntry(String label, int mouseX, int mouseY) {
-        addEntry(label, mouseX, mouseY, null);
-    }
-
     public void addEntry(String label, int mouseX, int mouseY, Runnable runnable) {
         entries.add(new GameContextMenuEntry(label, mouseX + OFFSET_X, mouseY + OFFSET_Y + GameContextMenuEntry.ENTRY_HEIGHT * index++, runnable));
     }

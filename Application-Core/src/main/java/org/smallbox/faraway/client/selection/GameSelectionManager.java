@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.selection;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
@@ -15,6 +16,7 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
+import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -23,7 +25,7 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,6 +70,8 @@ public class GameSelectionManager extends GameManager {
     }
 
     public <T extends ObjectModel> void select(T object) {
+        Log.info("Select item: " + object.getClass().getSimpleName());
+
         _selected.clear();
         _selected.add(object);
 
@@ -142,18 +146,13 @@ public class GameSelectionManager extends GameManager {
                 gameActionManager.selectParcel(parcel);
             } else {
                 List<AreaModuleBase> matchingAreaModules = specializedAreaModules.stream().filter(areaModuleBase -> areaModuleBase.hasArea(parcel)).collect(Collectors.toList());
+                AreaModel area = CollectionUtils.isNotEmpty(matchingAreaModules) ? matchingAreaModules.get(0).getArea(parcel) : null;
                 CharacterModel character = characterModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
                 ConsumableItem consumable = consumableModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
                 UsableItem item = itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
                 StructureItem structure = structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
 
-                if (CollectionUtils.isNotEmpty(matchingAreaModules)) {
-                    select(matchingAreaModules.get(0).getArea(parcel));
-                } else if (character != null) {
-                    select(character);
-                } else {
-                    select(parcel);
-                }
+                select(ObjectUtils.firstNonNull(area, character, consumable, item, structure, parcel));
             }
         }
     }

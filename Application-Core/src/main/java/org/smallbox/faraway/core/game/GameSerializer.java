@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.SQLManager;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 public abstract class GameSerializer<T_MODULE> {
     public abstract void onSave(SQLManager sqlManager, T_MODULE module, Game game);

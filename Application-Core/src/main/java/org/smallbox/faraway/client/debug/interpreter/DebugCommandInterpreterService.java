@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.impl.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

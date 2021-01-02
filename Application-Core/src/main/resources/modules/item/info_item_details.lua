@@ -34,8 +34,8 @@ ui:extend({
 
             -- Actions
             { type = "list", id = "frame_actions", margin = {10, 0, 0, 10}, views = {
-                { type = "label", text = "Actions", text_color = color1, text_size = 22, size = {400, 26}},
-                { type = "label", id = "current_action", text_color = color2, size = {400, 20}},
+                { type = "label", text = "Actions", text_color = blue_light_2, text_size = 22, size = {400, 26}},
+                { type = "label", id = "current_action", text_color = blue_light_5, size = {400, 20}},
                 { type = "list", id = "list_actions"},
             }},
 

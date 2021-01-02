@@ -5,6 +5,6 @@ ui:extend({
     parent = "base.ui.info.room.content",
     visible = false,
     views = {
-        { type = "label", text = "CELL", text_color = color1, text_size = 12, position = {12, 8}},
+        { type = "label", text = "CELL", text_color = blue_light_2, text_size = 12, position = {12, 8}},
     }
 })

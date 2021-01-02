@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 import static com.badlogic.gdx.Input.Buttons;
 import static com.badlogic.gdx.Input.Keys;
@@ -171,7 +170,7 @@ public class InputManager implements InputProcessor {
         _touchDrag = false;
 
         if (!gameActionManager.hasAction() && button == Buttons.RIGHT) {
-            gameContextMenuManager.open(x, y, WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor()));
+            gameContextMenuManager.open(WorldHelper.getParcel(viewport.getWorldPosX(x), viewport.getWorldPosY(y), viewport.getFloor()), x, y);
             return true;
         }
 

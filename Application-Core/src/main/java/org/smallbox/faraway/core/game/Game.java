@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.Collection;
@@ -226,7 +226,13 @@ public class Game {
                     _tick += 1;
                     _gameTime.add(1 / _tickPerHour);
 
-                    _modules.forEach(module -> module.updateGame(Game.this));
+                    _modules.forEach(module -> {
+                        try {
+                            module.updateGame(Game.this);
+                        } catch (Exception e) {
+                            Log.error(e);
+                        }
+                    });
 
                     Application.notify(gameObserver -> gameObserver.onGameUpdate(Game.this));
 

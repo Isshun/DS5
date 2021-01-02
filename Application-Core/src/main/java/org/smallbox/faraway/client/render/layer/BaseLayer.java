@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     private final boolean       _isThirdParty;
@@ -129,7 +129,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
 
     public void dump() {
         if (_nbDraw != 0) {
-            Log.notice("Layer: " + this.getClass().getSimpleName() + ",\tdrawPixel: " + _nbDraw + ",\tavg time: " + _totalDrawDelay / _nbDraw);
+            Log.info("Layer: " + this.getClass().getSimpleName() + ",\tdrawPixel: " + _nbDraw + ",\tavg time: " + _totalDrawDelay / _nbDraw);
         }
     }
 

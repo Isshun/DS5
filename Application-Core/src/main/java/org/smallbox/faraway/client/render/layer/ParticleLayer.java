@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.weather.WeatherModule;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 @GameLayer(level = LayerManager.PARTICLE_LAYER_LEVEL, visible = true)

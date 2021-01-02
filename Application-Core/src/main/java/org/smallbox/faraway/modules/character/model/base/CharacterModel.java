@@ -10,7 +10,7 @@ import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.MoveListener;
 
 import java.util.Map;

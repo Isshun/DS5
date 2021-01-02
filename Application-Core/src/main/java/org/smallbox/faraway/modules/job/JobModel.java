@@ -14,7 +14,7 @@ import org.smallbox.faraway.modules.consumable.BasicHaulJob;
 import org.smallbox.faraway.modules.job.taskAction.PrerequisiteTaskAction;
 import org.smallbox.faraway.modules.job.taskAction.TechnicalTaskAction;
 import org.smallbox.faraway.modules.storage.StoreJob;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Collection;
 import java.util.Objects;

@@ -22,7 +22,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 import java.nio.file.Paths;

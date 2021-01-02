@@ -1,8 +1,6 @@
 package org.smallbox.faraway.client.gameAction;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.controller.SelectionInfoController;
-import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -17,7 +15,7 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.modules.building.BuildJobFactory;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
@@ -31,9 +29,6 @@ public class GameActionManager extends GameManager {
 
     @Inject
     private AreaModule areaModule;
-
-    @Inject
-    private SelectionInfoController selectionInfoController;
 
     @Inject
     private JobModule jobModule;
@@ -137,7 +132,9 @@ public class GameActionManager extends GameManager {
     }
 
     public void callActions(Class<? extends Annotation> annotation, ObjectModel object) {
-        gameActionsConsumers.get(annotation).entrySet().stream().filter(entry -> entry.getKey().value().isInstance(object)).forEach(entry -> entry.getValue().accept(object));
+        gameActionsConsumers.get(annotation).entrySet().stream()
+                .filter(entry -> entry.getKey().value().isInstance(object))
+                .forEach(entry -> entry.getValue().accept(object));
     }
 
 }

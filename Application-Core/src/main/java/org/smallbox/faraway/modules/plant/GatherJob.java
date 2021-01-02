@@ -9,7 +9,7 @@
 //import org.smallbox.faraway.modules.job.JobModel;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //import org.smallbox.faraway.modules.flora.model.PlantItem;
-//import org.smallbox.faraway.util.Log;
+//import org.smallbox.faraway.util.log.Log;
 //
 //public class GatherJob extends JobModel {
 //    public enum Mode {PLANT_SEED, NOURISH, HARVEST, CUT}

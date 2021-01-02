@@ -4,11 +4,11 @@ ui:extend({
     parent = "base.ui.info_character.content",
     controller = "org.smallbox.faraway.client.controller.character.CharacterInfoStatusController",
     views = {
-        { type = "label", text = "Current occupation", text_color = color1, text_size = 24},
+        { type = "label", text = "Current occupation", text_color = blue_light_2, text_size = 24},
         { type = "view", size = {200, 40}, views = {
-            { type = "label", id = "lb_job", text_size = 18, text_color = color2, padding = {10, 0}},
-            { type = "label", id = "lb_job_progress", text_size = 18, text_color = color2, padding = {10, 0}, position = {250, 0}},
-            { type = "view", id = "frame_job", background = color2, postion = {0, 20}, size = {0, 1}},
+            { type = "label", id = "lb_job", text_size = 18, text_color = blue_light_5, padding = {10, 0}},
+            { type = "label", id = "lb_job_progress", text_size = 18, text_color = blue_light_5, padding = {10, 0}, position = {250, 0}},
+            { type = "view", id = "frame_job", background = blue_light_5, postion = {0, 20}, size = {0, 1}},
             { type = "image", id = "img_job", size = {32, 32}, position = {280, 0}},
         }},
 

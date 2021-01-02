@@ -11,7 +11,7 @@ import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.util.FileUtils;
-import org.smallbox.faraway.util.Log;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -124,7 +124,7 @@ public class GameSaveManager {
                 });
 
         sqlManager.closeDB();
-        Log.notice("Create onSave game (" + (System.currentTimeMillis() - time) + "ms)");
+        Log.info("Create onSave game (" + (System.currentTimeMillis() - time) + "ms)");
 
         sqlManager.post(db -> {
             try {
@@ -146,7 +146,7 @@ public class GameSaveManager {
                     throw new IOException("Unable to delete DB file: " + dbFile.getAbsolutePath());
                 }
 
-                Log.notice("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
+                Log.info("Zip onSave game (" + (System.currentTimeMillis() - time) + "ms)");
                 Application.notify(observer -> observer.onCustomEvent("save_game.complete", null));
             } catch (IOException | ArchiveException e) {
                 throw new GameException(GameSaveManager.class, e, "Error during game save");

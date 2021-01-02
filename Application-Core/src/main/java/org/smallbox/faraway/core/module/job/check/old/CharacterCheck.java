@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 //import org.smallbox.faraway.modules.job.JobModel;
-//import org.smallbox.faraway.util.Log;
+//import org.smallbox.faraway.util.log.Log;
 //
 //public abstract class CharacterCheck {
 //    protected abstract JobModel onCreateJob(CharacterModel character);

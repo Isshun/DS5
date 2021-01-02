@@ -4,7 +4,7 @@
 //import org.smallbox.faraway.game.org.smallbox.faraway.core.module.room.model.org.smallbox.faraway.core.module.room.model.base.CharacterModel;
 //import org.smallbox.faraway.game.model.isJobLaunchable.old.CharacterCheck;
 //import org.smallbox.faraway.game.model.job.BaseJobModel;
-//import org.smallbox.faraway.util.Log;
+//import org.smallbox.faraway.util.log.Log;
 //
 //import java.util.Collections;
 //import java.util.List;

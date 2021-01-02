@@ -1,3 +1,7 @@
+local window_width = 348
+local window_height = 200
+local header_height = 32
+
 ui:extend({
     type = "list",
     id = "base.ui.info_consumable",
@@ -5,15 +9,27 @@ ui:extend({
     parent = "base.ui.right_panel.sub_controller",
     visible = false,
     views = {
-        { type = "label", text = "Consomable", text_color = color1, text_size = 12, margin = {12, 12, 0, 12}},
-        { type = "label", id = "lb_label", text = "name", text_size = 28, text_color = color2, margin = {12, 12} },
-
-        { type = "list", position = {12, 0}, views = {
-            { type = "label", id = "lb_name", text_size = 16},
-            { type = "label", id = "lb_quantity", text_size = 16},
-            { type = "label", id = "lb_job", text_size = 16},
-            { type = "label", id = "lb_storage_area", text_size = 16},
+        { type = "view", size = {window_width, header_height}, background = blue_light_5, views = {
+            { type = "label", id = "lb_label", position = {28, 0}, text = "consumable", text_size = 22, text_color = blue_dark_1, margin = {10, 7}},
+            { type = "image", id = "image", position = {4, 4}},
         }},
 
+        { type = "view", size = {window_width, window_height}, background = blue_light_5, views = {
+
+            { type = "view", size = {1, 40}, position = {0, 0}, background = blue_light_5},
+            { type = "view", size = {1, 40}, position = {347, 0}, background = blue_light_5},
+
+            { type = "list", size = {window_width - 2, window_height - 1}, position = {1, 0}, background = blue_dark_3, views = {
+
+                { type = "list", position = {12, 0}, views = {
+                    { type = "label", id = "lb_name", text_size = 16},
+                    { type = "label", id = "lb_quantity", text_size = 16},
+                    { type = "label", id = "lb_job", text_size = 16},
+                    { type = "label", text = "Products", text_size = 22, text_color = blue_light_5 },
+                    { type = "label", id = "lb_product", text_size = 16, text_color = blue_light_2 },
+                }},
+
+            }},
+        }},
     }
 })
