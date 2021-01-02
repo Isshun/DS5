@@ -3,13 +3,11 @@ package org.smallbox.faraway.modules.job;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.building.BuildJob;
-import org.smallbox.faraway.modules.character.CharacterMoveModule;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.taskAction.PrerequisiteTaskAction;
@@ -19,9 +17,11 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED_STOP;
+import static org.smallbox.faraway.modules.job.JobTaskReturn.TASK_COMPLETED;
 
 public class JobModel extends ObjectModel {
 
@@ -309,7 +309,6 @@ public class JobModel extends ObjectModel {
      * @param jobTaskAction Action
      */
     public void addTask(String label, JobTask.JobTaskAction jobTaskAction) {
-
         if (_tasks.isEmpty()) {
             _label = label;
         }
@@ -321,33 +320,12 @@ public class JobModel extends ObjectModel {
         ParcelModel getParcel();
     }
 
-    /**
-     * Add move task
-     */
     public void addMoveTask(String label, ParcelCallback parcelCallback) {
-        if (_tasks.isEmpty()) {
-            _label = label;
-        }
-
-        _tasks.add(new JobTask(label, (character, hourInterval) -> {
-            ParcelModel targetParcel = parcelCallback.getParcel();
-            Objects.requireNonNull(targetParcel);
-
-            if (character.getPath() == null || character.getPath().getLastParcel() != targetParcel) {
-                DependencyInjector.getInstance().getDependency(CharacterMoveModule.class).move(character, targetParcel, true);
-                return JobTaskReturn.TASK_CONTINUE;
-            }
-
-            if (character.getParcel() == character.getPath().getLastParcelCharacter()) {
-                return JobTaskReturn.TASK_COMPLETE;
-            }
-
-            return JobTaskReturn.TASK_CONTINUE;
-        }));
+        _tasks.add(new JobTask(label, TASK_COMPLETED_STOP, () -> _targetParcel = parcelCallback.getParcel()));
     }
 
     public void addTechnicalTask(TechnicalTaskAction technicalTaskAction) {
-        _tasks.add(new JobTask("Technical", technicalTaskAction));
+        _tasks.add(new JobTask("Technical", TASK_COMPLETED, technicalTaskAction));
     }
 
     public void addInitTask(TechnicalTaskAction technicalTaskAction) {
@@ -386,8 +364,13 @@ public class JobModel extends ObjectModel {
                 case TASK_CONTINUE:
                     return;
 
+                // Task return TASK_COMPLETED_STOP, stop to execute action until next update
+                case TASK_COMPLETED_STOP:
+                    _tasks.poll();
+                    return;
+
                 // Task is complete, take next task
-                case TASK_COMPLETE:
+                case TASK_COMPLETED:
                     _tasks.poll();
                     break;
 
@@ -416,7 +399,7 @@ public class JobModel extends ObjectModel {
 
         if (task.technicalAction != null) {
             task.technicalAction.onExecuteTask();
-            return JobTaskReturn.TASK_COMPLETE;
+            return task.taskReturn;
         }
 
         _lastTaskReturn = task.action.onExecuteTask(character, hourInterval);

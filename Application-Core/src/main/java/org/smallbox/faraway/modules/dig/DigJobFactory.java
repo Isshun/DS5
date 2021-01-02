@@ -36,11 +36,13 @@ public class DigJobFactory {
             job.setIcon("[base]/graphics/jobs/ic_mining.png");
             job.setColor(new Color(0x80391eff));
 
+            job.addMoveTask("Move to parcel", () -> digParcel);
+
             // Dig action
             job.addTask("Dig", (character, hourInterval) -> {
                 job._time += hourInterval;
                 job.setProgress(job._time, applicationConfig.game.digTime);
-                return job._time >= applicationConfig.game.digTime ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE;
+                return job._time >= applicationConfig.game.digTime ? JobTaskReturn.TASK_COMPLETED : JobTaskReturn.TASK_CONTINUE;
             });
 
             // - Create output products

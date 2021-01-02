@@ -33,7 +33,7 @@ public class BasicDumpJob extends JobModel {
             }
 
             itemModule.removeObject(mapObject);
-            return JobTaskReturn.TASK_COMPLETE;
+            return JobTaskReturn.TASK_COMPLETED;
         });
     }
 

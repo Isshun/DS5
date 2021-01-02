@@ -25,34 +25,38 @@ public class JobLayer extends BaseLayer {
 
         jobModule.getJobs().forEach(job -> {
 
-            if (job instanceof StoreJob) {
-                if (((StoreJob)job).sourceConsumable.getFreeQuantity() > 0) {
-                    renderer.drawOnMap(((StoreJob)job).sourceConsumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
-                    renderer.drawTextOnMap(job.getTargetParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
+            if (job.getTargetParcel() != null) {
+
+                if (job instanceof StoreJob) {
+                    if (((StoreJob)job).sourceConsumable.getFreeQuantity() > 0) {
+                        renderer.drawOnMap(((StoreJob)job).sourceConsumable.getParcel(), spriteManager.getIcon("graphics/jobs/ic_store.png"));
+                        renderer.drawTextOnMap(job.getTargetParcel(), "store", 10, Color.CHARTREUSE, 0, 0);
+                    }
                 }
-            }
 
 //            if (job instanceof BasicHaulJob) {
 //                renderer.drawOnMap(job.getJobParcel(), spriteManager.getIcon("graphics/jobs/ic_haul.png"));
 //                renderer.drawTextOnMap(job.getJobParcel(), "hauling", 10, Color.CHARTREUSE, 0, 0);
 //            }
 
-            if (job instanceof BuildJob) {
-                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
-                renderer.drawTextOnMap(job.getTargetParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
-            }
+                if (job instanceof BuildJob) {
+                    renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_build.png"));
+                    renderer.drawTextOnMap(job.getTargetParcel(), "building", 10, Color.CHARTREUSE, 0, 0);
+                }
 
 //            if (job instanceof BasicCraftJob) {
 //                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon("graphics/jobs/ic_craft.png"));
 //                renderer.drawTextOnMap(job.getJobParcel(), "craft", 10, Color.CHARTREUSE, 0, 0);
 //            }
 
-            if (job.getIcon() != null) {
-                renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
-            }
+                if (job.getIcon() != null) {
+                    renderer.drawOnMap(job.getTargetParcel(), spriteManager.getIcon(job.getIcon()));
+                }
 
-            if (job.getColor() != null) {
-                renderer.drawTextOnMap(job.getTargetParcel(), "gather", 10, job.getColor(), 0, 0);
+                if (job.getColor() != null) {
+                    renderer.drawTextOnMap(job.getTargetParcel(), "gather", 10, job.getColor(), 0, 0);
+                }
+
             }
 
         });

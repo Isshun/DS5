@@ -14,7 +14,7 @@ public class BasicAndroidSelfCheckJob extends JobModel {
         setMainLabel("BasicAndroidSelfCheckJob");
         setVisible(false);
 
-        addTask("BasicAndroidSelfCheckJob", (character1, hourInterval) -> (_time += hourInterval) > 1 ? JobTaskReturn.TASK_COMPLETE : JobTaskReturn.TASK_CONTINUE);
+        addTask("BasicAndroidSelfCheckJob", (character1, hourInterval) -> (_time += hourInterval) > 1 ? JobTaskReturn.TASK_COMPLETED : JobTaskReturn.TASK_CONTINUE);
     }
 
     @Override

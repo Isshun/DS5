@@ -43,7 +43,7 @@ public class UseJob extends JobModel {
                 return JobTaskReturn.TASK_CONTINUE;
             }
 
-            return JobTaskReturn.TASK_COMPLETE;
+            return JobTaskReturn.TASK_COMPLETED;
         });
 
     }

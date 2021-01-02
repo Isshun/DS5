@@ -36,8 +36,13 @@ public class CharacterJobModule extends GameModule<CharacterModuleObserver> {
                 .filter(character -> character.getJob() != null)
                 .forEach(character -> {
 
+                    // No target parcel
+                    if (character.getJob().getTargetParcel() == null) {
+                        character.getJob().action(character, hourInterval);
+                    }
+
                     // Character is on job parcel or next to them, do job action
-                    if (WorldHelper.isSurrounded(SurroundedPattern.SQUARE, character.getJob().getTargetParcel(), character.getParcel())) {
+                    else if (WorldHelper.isSurrounded(SurroundedPattern.SQUARE, character.getJob().getTargetParcel(), character.getParcel())) {
                         character.getJob().action(character, hourInterval);
                     }
 

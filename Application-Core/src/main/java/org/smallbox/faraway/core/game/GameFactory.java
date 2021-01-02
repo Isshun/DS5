@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.modules.character.CharacterModule;
+import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
@@ -75,7 +76,10 @@ public class GameFactory {
 
                 if (GameFactory.this.scenario != null) {
                     if (GameFactory.this.scenario.characters != null) {
-                        GameFactory.this.scenario.characters.forEach(characterEntity -> characterModule.addRandom());
+                        GameFactory.this.scenario.characters.forEach(characterEntity -> {
+                            CharacterModel character = characterModule.addRandom();
+                            character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));
+                        });
                     }
 
                     if (GameFactory.this.scenario.consumables != null) {

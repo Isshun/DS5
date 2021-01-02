@@ -50,7 +50,7 @@ public class BuildJobFactory {
                 return JobTaskReturn.TASK_CONTINUE;
             }
 
-            return JobTaskReturn.TASK_COMPLETE;
+            return JobTaskReturn.TASK_COMPLETED;
         });
 
         // Close
