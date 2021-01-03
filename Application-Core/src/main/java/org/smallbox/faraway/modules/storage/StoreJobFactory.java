@@ -31,7 +31,8 @@ public class StoreJobFactory {
             StoreJob job = new StoreJob();
 
             job.sourceConsumable = consumable;
-            job._targetParcel = targetParcel;
+            job._targetParcel = consumable.getParcel();
+            consumable.setStoreJob(job);
             job.setMainLabel("Store");
             job.setIcon("[base]/graphics/jobs/ic_haul.png");
             job.setSkillType(CharacterSkillExtra.SkillType.STORE);
@@ -45,8 +46,8 @@ public class StoreJobFactory {
             // Job
             job.addMoveTask("Move to consumable", () -> job.sourceConsumable.getParcel()); // Move character to sourceConsumable
             job.addTechnicalTask(() -> takeConsumable(job.sourceConsumable, job.getCharacter())); // Move consumable to character's inventory
-            job.addMoveTask("Move to storage", () -> targetParcel); // Apporte les composants à la zone de stockage
-            job.addTechnicalTask(() -> dropConsumable(job.targetConsumable, job.getCharacter(), job._targetParcel)); // Ajoute les composants à la zone de stockage
+            job.addMoveTask("Move to storage", () -> job.targetConsumable.getParcel()); // Apporte les composants à la zone de stockage
+            job.addTechnicalTask(() -> dropConsumable(job.targetConsumable, job.getCharacter())); // Ajoute les composants à la zone de stockage
 
             // Close
             job.addCloseTask(() -> job.targetConsumable.removeStoreJob(job)); // Remove job on targetConsumable when job is closed
@@ -71,9 +72,8 @@ public class StoreJobFactory {
     /**
      * Drop consumable from character's inventory to storageArea's parcel
      */
-    private void dropConsumable(ConsumableItem consumable, CharacterModel character, ParcelModel parcel) {
-        ConsumableItem inventoryConsumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(consumable.getInfo());
-        ConsumableItem targetConsumable = consumableModule.getConsumable(parcel);
+    private void dropConsumable(ConsumableItem targetConsumable, CharacterModel character) {
+        ConsumableItem inventoryConsumable = character.getExtra(CharacterInventoryExtra.class).takeInventory(targetConsumable.getInfo());
         targetConsumable.addQuantity(inventoryConsumable.getTotalQuantity());
     }
 

@@ -10,9 +10,10 @@ public class Constant {
     public static String            NAME    = "FarPoint";
     public static String            VERSION    = "0.1";
 
-    public static final int         MODULE_JOB_PRIORITY = 100;
-    public static final int         MODULE_CHARACTER_PRIORITY = 101;
-    public static final int         MODULE_WORLD_PRIORITY = 102;
+    public static final int         MODULE_ITEM_PRIORITY = 200;
+    public static final int         MODULE_JOB_PRIORITY = 300;
+    public static final int         MODULE_CHARACTER_PRIORITY = 100;
+    public static final int         MODULE_WORLD_PRIORITY = 0;
 
     public static final int         TILE_WIDTH                = 32;
     public static final int         TILE_HEIGHT                = 32;

@@ -48,6 +48,8 @@ public class GameManager implements GameObserver {
         void onGameUpdate(Game game);
     }
 
+    private static enum Mode {CREATE, LOAD}
+
     public void createGame(GameInfo gameInfo, GameListener listener) {
         long time = System.currentTimeMillis();
 
@@ -57,8 +59,35 @@ public class GameManager implements GameObserver {
             return;
         }
 
-        _game = new Game(gameInfo, applicationConfig);
+        phase1(gameInfo);
+        worldFactory.buildMap();
+//        worldFactory.createLandSite(game);
+//        gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
+        phase2(listener);
+
+        Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
+    }
+
+    public void loadGame(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo, GameListener listener) {
+        try {
+            long time = System.currentTimeMillis();
+
+            phase1(gameInfo);
+
+            gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
+                phase2(listener);
+                Log.info("Load game (" + (System.currentTimeMillis() - time) + "ms)");
+            });
+
+        } catch (Exception e) {
+            Log.error(e);
+        }
+    }
+
+    private void phase1(GameInfo gameInfo) {
         DependencyInjector.getInstance().destroyGameObjects();
+
+        _game = new Game(gameInfo, applicationConfig);
 
         // For now game is created and register to DI manually because ctor need GameInfo
         DependencyInjector.getInstance().register(_game);
@@ -71,9 +100,9 @@ public class GameManager implements GameObserver {
         DependencyInjector.getInstance().injectGameDependencies();
         DependencyInjector.getInstance().callMethodAnnotatedBy(OnGameLayerInit.class);
         DependencyInjector.getInstance().callMethodAnnotatedBy(AfterGameLayerInit.class);
+    }
 
-        worldFactory.buildMap();
-
+    private void phase2(GameListener listener) {
         _game.createModules();
 
         if (listener != null) {
@@ -82,12 +111,7 @@ public class GameManager implements GameObserver {
 
         pathManager.initParcels();
 
-//        gameSaveManager.saveGame(_game, gameInfo, GameInfo.Type.INIT);
-
-        // TODO: qui à la rsp de l'envoi des events ?
-//        Application.runOnMainThread(() -> {
-            Application.notify(observer -> observer.onGameStart(_game));
-//        });
+        Application.notify(observer -> observer.onGameStart(_game));
 
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
@@ -96,47 +120,6 @@ public class GameManager implements GameObserver {
 
         // Launch background thread
         _game.launchBackgroundThread(listener);
-
-//        worldFactory.createLandSite(game);
-
-        Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
-    }
-
-    public void loadGame(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo, GameListener listener) {
-        try {
-            long time = System.currentTimeMillis();
-
-            _game = new Game(gameInfo, applicationConfig);
-            DependencyInjector.getInstance().register(_game);
-
-            _game.loadModules();
-
-            DependencyInjector.getInstance().injectGameDependencies();
-
-            _game.createModules();
-
-            if (listener != null) {
-                listener.onGameCreate(_game);
-            }
-
-            gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
-
-                Application.notify(observer -> observer.onGameStart(_game));
-
-                _game.start();
-                _game.getModules().forEach(module -> module.startGame(_game));
-
-                Application.clientListener.onInitComplete();
-
-                // Launch background thread
-                _game.launchBackgroundThread(listener);
-
-                Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
-
-            });
-        } catch (Exception e) {
-            Log.error(e);
-        }
     }
 
     public void closeGame() {

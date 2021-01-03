@@ -40,22 +40,27 @@ public class DigJobFactory {
 
             // Dig action
             job.addTask("Dig", (character, hourInterval) -> {
-                job._time += hourInterval;
-                job.setProgress(job._time, applicationConfig.game.digTime);
-                return job._time >= applicationConfig.game.digTime ? JobTaskReturn.TASK_COMPLETED : JobTaskReturn.TASK_CONTINUE;
+                if (digParcel.getRockInfo() != null) {
+                    job._time += hourInterval;
+                    job.setProgress(job._time, applicationConfig.game.digTime);
+                    return job._time >= applicationConfig.game.digTime ? JobTaskReturn.TASK_COMPLETED : JobTaskReturn.TASK_CONTINUE;
+                }
+                return JobTaskReturn.TASK_COMPLETED;
             });
 
             // - Create output products
             // - Remove rock from parcel
             // - Refresh GraphNode connections
             job.addTechnicalTask(() -> {
-                digParcel.getRockInfo().actions.stream()
-                        .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
-                        .flatMap(action -> action.products.stream())
-                        .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, digParcel));
-                digParcel.setRockInfo(null);
-                pathManager.refreshConnections(digParcel);
-                Application.notify(gameObserver -> gameObserver.onRemoveRock(digParcel));
+                if (digParcel.getRockInfo() != null) {
+                    digParcel.getRockInfo().actions.stream()
+                            .filter(action -> action.type == ItemInfo.ItemInfoAction.ActionType.MINE)
+                            .flatMap(action -> action.products.stream())
+                            .forEach(product -> consumableModule.addConsumable(product.item, product.quantity, digParcel));
+                    digParcel.setRockInfo(null);
+                    pathManager.refreshConnections(digParcel);
+                    Application.notify(gameObserver -> gameObserver.onRemoveRock(digParcel));
+                }
             });
 
             job.onNewInit();

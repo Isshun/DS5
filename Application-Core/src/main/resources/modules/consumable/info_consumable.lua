@@ -9,8 +9,9 @@ ui:extend({
     parent = "base.ui.right_panel.sub_controller",
     visible = false,
     views = {
+
         { type = "view", size = {window_width, header_height}, background = blue_light_5, views = {
-            { type = "label", id = "lb_label", position = {28, 0}, text = "consumable", text_size = 22, text_color = blue_dark_1, margin = {10, 7}},
+            { type = "label", id = "lb_name", position = {28, 0}, text = "consumable", text_size = 22, text_color = blue_dark_1, margin = {10, 7}},
             { type = "image", id = "image", position = {4, 4}},
         }},
 
@@ -22,7 +23,6 @@ ui:extend({
             { type = "list", size = {window_width - 2, window_height - 1}, position = {1, 0}, background = blue_dark_3, views = {
 
                 { type = "list", position = {12, 0}, views = {
-                    { type = "label", id = "lb_name", text_size = 16},
                     { type = "label", id = "lb_quantity", text_size = 16},
                     { type = "label", id = "lb_job", text_size = 16},
                     { type = "label", text = "Products", text_size = 22, text_color = blue_light_5 },

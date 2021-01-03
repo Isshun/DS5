@@ -3,6 +3,8 @@ package org.smallbox.faraway.modules.item;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
@@ -11,13 +13,23 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.util.Constant;
 
-public class ItemModuleSerializer extends GameSerializer<ItemModule> {
+@GameObject
+public class ItemModuleSerializer extends GameSerializer {
+
+    @Inject
+    private Game game;
+
+    @Inject
+    private Data data;
+
+    @Inject
+    private ItemModule module;
 
     @Override
-    public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
+    public int getModulePriority() { return Constant.MODULE_ITEM_PRIORITY; }
 
     @Override
-    public void onSave(SQLManager sqlManager, ItemModule module, Game game) {
+    public void onSave(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_item (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, buildProgress INTEGER, health REAL)");
@@ -48,7 +60,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
         });
     }
 
-    public void onLoad(SQLManager sqlManager, ItemModule itemModule, Game game, Data data) {
+    public void onLoad(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, buildProgress, health FROM WorldModule_item");
@@ -61,7 +73,7 @@ public class ItemModuleSerializer extends GameSerializer<ItemModule> {
                             item.setBuildProgress(stItem.columnInt(5));
                             item.setHealth(stItem.columnInt(6));
                             item.init();
-                            itemModule.addItem(item);
+                            module.addItem(item);
                         }
                     }
                 } finally {

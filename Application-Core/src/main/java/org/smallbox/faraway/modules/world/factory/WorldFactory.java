@@ -45,7 +45,7 @@ public class WorldFactory {
         }
         cleanMap(parcelList, parcelsMap);
 
-        worldModule.init(game, parcelsMap, parcelList);
+        worldModule.init(parcelsMap, parcelList);
 
 //        // Add region terrains
 //        for (RegionInfo.RegionTerrain terrain: regionInfo.terrains) {

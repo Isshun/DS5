@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.area.AreaPanelController;
@@ -45,29 +46,17 @@ public class MainPanelController extends LuaController {
     @Inject
     private JobController jobController;
 
-    @BindLua
-    private UIGrid mainGrid;
+    @Inject
+    private Viewport viewport;
 
-    @BindLua
-    private UILabel lbPlanet;
-
-    @BindLua
-    private UILabel lbFloor;
-
-    @BindLua
-    private View btCrew;
-
-    @BindLua
-    private View btBuild;
-
-    @BindLua
-    private View btArea;
-
-    @BindLua
-    private View btJobs;
-
-    @BindLua
-    private View mapContainer;
+    @BindLua private UIGrid mainGrid;
+    @BindLua private UILabel lbPlanet;
+    @BindLua private UILabel lbFloor;
+    @BindLua private View btCrew;
+    @BindLua private View btBuild;
+    @BindLua private View btArea;
+    @BindLua private View btJobs;
+    @BindLua private View mapContainer;
 
     private LuaController _currentPaneController;
 
@@ -83,7 +72,7 @@ public class MainPanelController extends LuaController {
     @Override
     public void onGameUpdate(Game game) {
         lbPlanet.setText(game.getPlanetInfo().label + " / " + game.getRegionInfo().label);
-        lbFloor.setText("Floor " + layerManager.getViewport().getFloor());
+        lbFloor.setText("Floor " + viewport.getFloor());
     }
 
     @Override

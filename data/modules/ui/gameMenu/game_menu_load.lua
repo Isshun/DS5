@@ -1,20 +1,15 @@
 ui:extend({
     type = "view",
-    id = "base.ui.game_menu.pause",
+    id = "base.ui.game_menu.load",
     size = {application.screen_width, application.screen_height},
-    controller = "org.smallbox.faraway.client.controller.PauseMenuController",
+    controller = "org.smallbox.faraway.client.controller.gameMenu.GameMenuLoadController",
     visible = false,
     level = 100,
     views = {
 
         -- Pause frame
-        { type = "view", id = "view_pause", background = 0x8800ffff, size = {application.screen_width, application.screen_height}, views = {
-            { type = "list", background = 0x00ff00ff, border = blue_light_2, position = {application.screen_width / 2 - 150, 200}, size = {250, 350}, views = {
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Resume", action="onActionResume"},
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Save"},
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Load"},
-                { type = "label", size = {240, 50}, background = 0x349394ff, margin = {5, 0, 0, 5}, text_size = 20, text_align = "center", text = "Exit", action="onActionExit"},
-            }}
+        { type = "view", id = "view_load", background = 0x8800ffff, size = {application.screen_width, application.screen_height}, views = {
+            { type = "list", id = "load_entries", background = 0x00ff00ff, border = blue_light_2, position = {application.screen_width / 2 - 150, 200}, size = {250, 350}}
         }},
 --
 --         { type = "label", text = "Stand-by", text_size = 42, text_color = 0x25c9cbff, position = {20, application.screen_height - 52}},

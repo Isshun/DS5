@@ -1,18 +1,18 @@
 package org.smallbox.faraway.modules.room;
 
-import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.game.GameSerializer;
 import org.smallbox.faraway.core.module.world.SQLManager;
 
-public class RoomSerializer extends GameSerializer<RoomModule> {
+@GameObject
+public class RoomSerializer extends GameSerializer {
 
     @Override
-    public void onSave(SQLManager sqlManager, RoomModule module, Game game) {
+    public void onSave(SQLManager sqlManager) {
     }
 
     @Override
-    public void onLoad(SQLManager sqlManager, RoomModule module, Game game, Data data) {
+    public void onLoad(SQLManager sqlManager) {
     }
 
 }

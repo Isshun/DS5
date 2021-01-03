@@ -3,6 +3,8 @@ package org.smallbox.faraway.modules.world;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
@@ -13,13 +15,23 @@ import org.smallbox.faraway.util.Constant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldModuleSerializer extends GameSerializer<WorldModule> {
+@GameObject
+public class WorldModuleSerializer extends GameSerializer {
+
+    @Inject
+    private Game game;
+
+    @Inject
+    private Data data;
+
+    @Inject
+    private WorldModule module;
 
     @Override
     public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
 
     @Override
-    public void onSave(SQLManager sqlManager, WorldModule module, Game game) {
+    public void onSave(SQLManager sqlManager) {
         sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
@@ -113,7 +125,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
         });
     }
 
-    public void onLoad(SQLManager sqlManager, WorldModule worldModule, Game game, Data data) {
+    public void onLoad(SQLManager sqlManager) {
         sqlManager.post(db -> {
             int width = game.getInfo().worldWidth;
             int height = game.getInfo().worldHeight;
@@ -171,7 +183,7 @@ public class WorldModuleSerializer extends GameSerializer<WorldModule> {
 //                    stStructure.dispose();
                 }
 
-                worldModule.init(game, parcels, parcelsList);
+                module.init(parcels, parcelsList);
             } catch (SQLiteException e) {
                 throw new GameException(WorldModuleSerializer.class, "Error during load");
             }

@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.log.Log;
 
@@ -21,7 +20,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DependencyInjector {
@@ -138,7 +136,7 @@ public class DependencyInjector {
         _init = true;
 
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
-            Log.debug("Inject dependency to: " + host.getClass().getName());
+            Log.debug("Inject dependency to: " + host.getClass().getSimpleName());
             doInjectShortcut(host);
             doInjectDependency(host, false);
             callInitMethod(host, false);
@@ -160,7 +158,7 @@ public class DependencyInjector {
         objects.addAll(_applicationObjectPoolByClass.values());
         objects.addAll(_gameObjectPoolByClass.values());
         objects.stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
-            Log.debug("Inject dependency to: " + host.getClass().getName());
+            Log.info("Inject dependency to game object: " + host.getClass().getSimpleName());
             doInjectShortcut(host);
             doInjectDependency(host, true);
             callInitMethod(host, true);
@@ -203,7 +201,7 @@ public class DependencyInjector {
                     DependencyInfo<?> toInject = getDependencyInfo(field.getType());
 
                     if (field.getType().isAnnotationPresent(ApplicationObject.class) || gameExists) {
-                        Objects.requireNonNull(toInject, "Try to inject null value for " + field.getType().getName() + " in " + host.getClass().getTypeName());
+                        Objects.requireNonNull(toInject, "Try to inject null value for " + field.getType().getSimpleName() + " in " + host.getClass().getSimpleName());
                     }
 
                     if (toInject != null) {
@@ -273,15 +271,6 @@ public class DependencyInjector {
                         }))
         );
         return results;
-    }
-
-    @Deprecated
-    public List<AbsGameModule> getGameModules() {
-        return _gameObjectPoolByClass.values().stream()
-                .map(dependencyInfo -> dependencyInfo.dependency)
-                .filter(o -> o instanceof AbsGameModule)
-                .map(o -> (AbsGameModule)o)
-                .collect(Collectors.toList());
     }
 
     public Collection<DependencyInfo<?>> getGameDependencies() {

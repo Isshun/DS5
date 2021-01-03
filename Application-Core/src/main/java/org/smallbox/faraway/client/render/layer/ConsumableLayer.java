@@ -66,6 +66,7 @@ public class ConsumableLayer extends BaseLayer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         consumableModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
+                .filter(item -> item.getTotalQuantity() > 0)
                 .forEach(consumable -> {
                     renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()));
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);

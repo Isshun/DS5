@@ -1,9 +1,8 @@
 package org.smallbox.faraway.client.render.layer;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.GameEventManager;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
@@ -14,6 +13,9 @@ import org.smallbox.faraway.core.game.Game;
 @GameObject
 @GameLayer(level = LayerManager.TOP, visible = true)
 public class GameSelectionLayer extends BaseLayer {
+
+    private Color COLOR1 = new Color(0x4569d5ff);
+    private Color COLOR2 = new Color(0x01013a55);
 
     @Inject
     private GameEventManager gameEventManager;
@@ -37,9 +39,8 @@ public class GameSelectionLayer extends BaseLayer {
     }
 
     private void drawSelection(GDXRenderer renderer, int fromX, int fromY, int width, int height, Color color) {
-        for (int i = 0; i < 4; i++) {
-            renderer.drawRectangle(fromX + i, fromY + i, width, height, color, false);
-        }
+        renderer.drawRectangle(fromX, fromY, width, height, COLOR2, true);
+        renderer.drawRectangle(fromX, fromY, width, height, COLOR1, false);
     }
 
 }

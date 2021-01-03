@@ -9,7 +9,6 @@ import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.*;
 import org.smallbox.faraway.modules.character.model.PathModel;
@@ -18,14 +17,13 @@ import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
 import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
-@ModuleSerializer(ConsumableSerializer.class)
 public class ConsumableModule extends GenericGameModule<ConsumableItem, ConsumableModuleObserver> {
 
     @Inject

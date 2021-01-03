@@ -11,13 +11,10 @@ import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.PlanetModel;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.log.Log;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +53,7 @@ public class Game {
     private Map<String, Boolean>            _displays;
     private int                             _speed;
     private int                             _lastSpeed;
-    private List<AbsGameModule>             _modules;
+    private List<AbsGameModule> _modules;
     private GameStatus                      _status = GameStatus.UNINITIALIZED;
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
@@ -128,30 +125,7 @@ public class Game {
     public void loadModules() {
         Log.info("Load game modules");
 
-//        // Find game modules
-//        new Reflections("org.smallbox.faraway").getSubTypesOf(AbsGameModule.class).stream()
-//                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-////                .filter(cls -> _allowedModulesNames.contains(cls.getSimpleName()))
-//                .forEach(cls -> {
-//                    try {
-//                        Log.info("Find game module: " + cls.getSimpleName());
-//                        AbsGameModule module = cls.getConstructor().newInstance();
-//
-//                        if (cls.isAnnotationPresent(ModuleInfoAnnotation.class)) {
-//                            Log.info("Find game module: " + cls.getAnnotation(ModuleInfoAnnotation.class).name());
-//                            module.setUpdateInterval(cls.getAnnotation(ModuleInfoAnnotation.class).updateInterval());
-//                        }
-//
-//                        module.setInfo(ModuleInfo.fromName(cls.getSimpleName()));
-//                        _modules.add(module);
-//                    } catch (NoSuchMethodException e) {
-//                        Log.warning(ModuleManager.class, "Unable to instantiate " + cls.getName() + " - No default constructor");
-//                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-//                        e.printStackTrace();
-//                    }
-//                });
-
-        _modules = DependencyInjector.getInstance().getGameModules();
+        _modules = new ArrayList<>(DependencyInjector.getInstance().getSubTypesOf(AbsGameModule.class));
 
         // Load game modules
         boolean moduleHasBeenLoaded;

@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.job.JobModule;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @GameObject
-@ModuleSerializer(WorldModuleSerializer.class)
 public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObserver> {
 
     @Inject
@@ -29,6 +27,9 @@ public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObser
 
     @Inject
     private PathManager pathManager;
+
+    @Inject
+    private Game game;
 
     private ParcelModel[][][]                   _parcels;
     private int                                 _width;
@@ -61,7 +62,7 @@ public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObser
 //        });
 //    }
 
-    public void init(Game game, ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
+    public void init(ParcelModel[][][] parcels, List<ParcelModel> parcelList) {
         WorldHelper.init(game.getInfo(), parcels);
 
         _width = game.getInfo().worldWidth;

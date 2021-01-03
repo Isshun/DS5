@@ -7,7 +7,6 @@ import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -23,9 +22,7 @@ import org.smallbox.faraway.util.log.Log;
 import java.util.Collection;
 import java.util.concurrent.LinkedBlockingQueue;
 
-@ModuleSerializer(StructureModuleSerializer.class)
 @GameObject
-//@ModuleLayer({StructureBottomLayer.class, StructureTopLayer.class})
 public class StructureModule extends GenericGameModule<StructureItem, StructureModuleObserver> {
 
     @Inject

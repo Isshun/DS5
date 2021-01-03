@@ -5,7 +5,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.room.model.*;
 import org.smallbox.faraway.modules.weather.WeatherModule;
@@ -21,8 +20,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @GameObject
-@ModuleSerializer(RoomSerializer.class)
-@SuppressWarnings("Duplicates")
 public class RoomModule extends GameModule {
 
     @Inject

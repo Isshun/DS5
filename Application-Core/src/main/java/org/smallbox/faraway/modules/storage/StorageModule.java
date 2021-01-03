@@ -11,7 +11,6 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
@@ -67,7 +66,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     private void checkConsumable(ConsumableItem consumable) {
         StoreJob storeJob = consumable.getStoreJob();
         StorageArea storageArea = areas.stream()
-                .filter(area -> area.haveParcel(storeJob != null ? storeJob.getTargetParcel() : consumable.getParcel()))
+                .filter(area -> area.haveParcel(storeJob != null ? storeJob.getStorageParcel() : consumable.getParcel()))
                 .findFirst().orElse(null);
 
         StorageArea bestArea = getBestArea(consumable.getInfo(), consumable.getFreeQuantity());
@@ -75,7 +74,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
         if (bestArea != null) {
 
             // Consumable have no StoreJob or StoreArea
-            if (storageArea == null) {
+            if (storageArea == null && storeJob == null) {
                 jobModule.addJob(storeJobFactory.createJob(bestArea, consumable));
             }
 

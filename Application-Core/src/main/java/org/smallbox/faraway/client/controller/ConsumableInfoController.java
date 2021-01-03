@@ -26,10 +26,9 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
     @Inject
     private ConsumableModule consumableModule;
 
-    @BindLua private UILabel lbLabel;
+    @BindLua private UILabel lbName;
     @BindLua private UILabel lbQuantity;
     @BindLua private UILabel lbJob;
-    @BindLua private UILabel lbName;
     @BindLua private UIImage image;
 
     @Override
@@ -45,7 +44,7 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
             closePanel();
         }
 
-        lbLabel.setText(consumable.getLabel() + " x" + consumable.getTotalQuantity());
+        lbName.setText(consumable.getLabel() + " x" + consumable.getTotalQuantity());
         image.setImage(consumable.getGraphic());
 //        lbName.setText(consumableItem.getName());
 //        lbQuantity.setText(String.valueOf(consumableItem.getTotalQuantity()));
@@ -57,7 +56,7 @@ public class ConsumableInfoController extends AbsInfoLuaController<ConsumableIte
 
     @Override
     protected void onDisplayMultiple(Queue<ConsumableItem> objects) {
-        lbLabel.setText("MULTIPLE");
+        lbName.setText("MULTIPLE");
     }
 
     @Override

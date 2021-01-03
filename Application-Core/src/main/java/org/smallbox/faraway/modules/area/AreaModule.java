@@ -1,12 +1,8 @@
 package org.smallbox.faraway.modules.area;
 
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.NotImplementedException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.module.GameModule;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +12,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@ModuleSerializer(AreaSerializer.class)
 @GameObject
 public class AreaModule extends GameModule {
 

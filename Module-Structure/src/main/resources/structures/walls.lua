@@ -11,10 +11,7 @@ data:extend({
         parent = "base.wall",
         type = "structure",
         health = 200,
-        build = {
-            cost = 1,
-            components = {{ item = "base.consumable.wood_log", quantity = 10}}
-        },
+        receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/wood.png", components = { item = "base.consumable.wood_log", quantity = 10} },
         permeability = 0.2,
         graphics = {path = "[base]/graphics/items/structures/wall_wood.png", type = "wall"},
         walkable = false

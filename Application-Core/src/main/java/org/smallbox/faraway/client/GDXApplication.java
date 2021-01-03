@@ -18,9 +18,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplica
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
@@ -40,8 +38,6 @@ public class GDXApplication extends ApplicationAdapter {
     private MenuRender menuRender;
     private MinimalRender minimalRender;
     private ErrorRender errorRender;
-    private GameFactory gameFactory;
-    private ApplicationConfig applicationConfig;
 
     public GDXApplication(GameTestCallback callback) {
         _callback = callback;
@@ -70,15 +66,14 @@ public class GDXApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Load sprites", true, di.getDependency(SpriteManager.class)::init);
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(OnApplicationLayerInit.class));
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(AfterApplicationLayerInit.class));
-        taskManager.addLoadTask("Resume game", false, this::resumeGame);
+        taskManager.addLoadTask("Application ready", false, () -> Application.isLoaded = true);
+        taskManager.addLoadTask("(debug) Resume game", false, () -> { if (_callback != null) { _callback.onApplicationReady(); }});
 
         gameManager = di.getDependency(GameManager.class);
-        gameFactory = di.getDependency(GameFactory.class);
         gameRender = di.getDependency(GameRender.class);
         menuRender = di.getDependency(MenuRender.class);
         minimalRender = di.getDependency(MinimalRender.class);
         errorRender = di.getDependency(ErrorRender.class);
-        applicationConfig = di.getDependency(ApplicationConfig.class);
     }
 
     private void generateFonts() {
@@ -88,21 +83,6 @@ public class GDXApplication extends ApplicationAdapter {
             fonts[i] = fontGen.createFont(new FileHandle(new File(FileUtils.BASE_PATH, "data/fonts/font.ttf")), "font-" + i, i);
             fonts[i].getData().flipped = true;
         }
-    }
-
-    private void resumeGame() {
-        //            ApplicationClient.uiManager.findById("base.ui.menu_main").setVisible(true);
-//            Application.gameManager.loadLastGame();
-//            Application.notify(observer -> observer.onCustomEvent("load_game.last_game", null));
-//            gameManager.createGame(Application.data.getRegion("base.planet.corrin", "mountain"));
-//                Application.gameManager.loadGame();
-        gameFactory.create(applicationConfig.debug.scenario);
-
-        if (_callback != null) {
-            taskManager.addLoadTask("Test callback onApplicationReady", false, _callback::onApplicationReady);
-        }
-
-        Application.isLoaded = true;
     }
 
     @Override
@@ -118,8 +98,4 @@ public class GDXApplication extends ApplicationAdapter {
         errorRender.render(batch);
     }
 
-    @Override
-    public void dispose () {
-//        Application.dependencyInjector.getObject(PathManager.class).close();
-    }
 }

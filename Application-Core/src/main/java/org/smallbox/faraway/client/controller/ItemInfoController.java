@@ -1,13 +1,14 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.gameAction.OnGameSelectAction;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
@@ -53,6 +54,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private View regularActions;
     @BindLua private UILabel progressBuild;
     @BindLua private UIList listBuildComponents;
+    @BindLua private UIImage image;
 
     @Inject
     private ItemInfoReceiptController itemInfoReceiptController;
@@ -68,12 +70,13 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         gameSelectionManager.registerSelection(this);
     }
 
-    @Override
-    protected void onDisplayUnique(UsableItem item) {
-        getRootView().setVisible(true);
+    @OnGameSelectAction(UsableItem.class)
+    protected void onSelectItem(UsableItem item) {
+        setVisible(true);
 
         lbName.setText(item.getLabel());
         lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
+        image.setImage(item.getGraphic());
         progressHealth.setWidth(80 * item.getHealth() / item.getMaxHealth());
 
         if (!item.isComplete()) {
@@ -157,6 +160,10 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
             label.setText(consumable.getInfo().label + " x " + consumable.getFreeQuantity());
             listFactoryInventory.addView(label);
         });
+    }
+
+    @Override
+    protected void onDisplayUnique(UsableItem usableItem) {
     }
 
     @Override

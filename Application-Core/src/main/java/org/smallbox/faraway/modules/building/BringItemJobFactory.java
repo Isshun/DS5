@@ -30,7 +30,14 @@ public class BringItemJobFactory {
         job.setColor(new Color(0xbb391eff));
 
         // Init
-        job.addPrerequisiteTask(() -> (job.sourceConsumable = consumableModule.find(itemInfo)) != null);
+        job.addPrerequisiteTask(() -> {
+            job.sourceConsumable = consumableModule.find(itemInfo);
+            if (job.sourceConsumable != null) {
+                job._targetParcel = job.sourceConsumable.getParcel();
+                return true;
+            }
+            return false;
+        });
 
         // Job
         job.addMoveTask("Move to consumable", () -> job.sourceConsumable.getParcel()); // Move character to sourceConsumable

@@ -3,6 +3,8 @@ package org.smallbox.faraway.modules.consumable;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameSerializer;
@@ -11,13 +13,23 @@ import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.util.Constant;
 
-public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
+@GameObject
+public class ConsumableSerializer extends GameSerializer {
+
+    @Inject
+    private Game game;
+
+    @Inject
+    private Data data;
+
+    @Inject
+    private ConsumableModule module;
 
     @Override
-    public int getModulePriority() { return Constant.MODULE_WORLD_PRIORITY; }
+    public int getModulePriority() { return Constant.MODULE_ITEM_PRIORITY; }
 
     @Override
-    public void onSave(SQLManager sqlManager, ConsumableModule module, Game game) {
+    public void onSave(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
                 db.exec("CREATE TABLE WorldModule_consumable (_id INTEGER, x INTEGER, y INTEGER, z INTEGER, name TEXT, quantity INTEGER)");
@@ -47,7 +59,7 @@ public class ConsumableSerializer extends GameSerializer<ConsumableModule> {
         });
     }
 
-    public void onLoad(SQLManager sqlManager, ConsumableModule module, Game game, Data data) {
+    public void onLoad(SQLManager sqlManager) {
         sqlManager.post(db -> {
             try {
                 SQLiteStatement stItem = db.prepare("SELECT _id, x, y, z, name, quantity FROM WorldModule_consumable");

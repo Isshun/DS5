@@ -5,17 +5,20 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.AbsGameModule;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ApplicationObject
 public class GameSaveManager {
@@ -26,8 +29,17 @@ public class GameSaveManager {
     @Inject
     private Data data;
 
+    @Inject
+    private Game game;
+
     public interface GameSerializerInterface {
         void onSerializerComplete();
+    }
+
+    public List<String> getSaves() {
+        File gameSaveDirectory = FileUtils.getSaveDirectory(game.getInfo().name);
+
+        return Stream.of(gameSaveDirectory.listFiles()).map(File::getName).collect(Collectors.toList());
     }
 
     public void load(Game game, File gameDirectory, String filename, GameSerializerInterface listener) {
@@ -55,16 +67,9 @@ public class GameSaveManager {
             sqlManager.openDB(dbFile);
 
             // Call modules serializers
-            game.getModules().stream()
-                    .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
-                    .forEach(module -> {
-                        GameSerializer<AbsGameModule> serializer = GameSerializer.createSerializer(module);
-                        if (serializer != null) {
-                            serializer.load(sqlManager, module, game, data);
-                        } else {
-                            throw new RuntimeException("Unable to find serializer for module: " + module);
-                        }
-                    });
+            DependencyInjector.getInstance().getSubTypesOf(GameSerializer.class).stream()
+                    .sorted(Comparator.comparingInt(GameSerializer::getModulePriority))
+                    .forEach(serializer -> serializer.load(sqlManager));
 
             sqlManager.closeDB();
 
@@ -112,16 +117,7 @@ public class GameSaveManager {
         File dbFile = new  File(gameDirectory, filename + ".db");
         sqlManager.openDB(dbFile);
 
-        game.getModules().stream()
-                .filter(module -> module.getClass().isAnnotationPresent(ModuleSerializer.class))
-                .forEach(module -> {
-                    GameSerializer<AbsGameModule> serializer = GameSerializer.createSerializer(module);
-                    if (serializer != null) {
-                        serializer.save(sqlManager, module, game);
-                    } else {
-                        throw new RuntimeException("Unable to find serializer");
-                    }
-                });
+        DependencyInjector.getInstance().getSubTypesOf(GameSerializer.class).forEach(gameSerializer -> gameSerializer.save(sqlManager));
 
         sqlManager.closeDB();
         Log.info("Create onSave game (" + (System.currentTimeMillis() - time) + "ms)");

@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.module.world;
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 import java.util.Queue;
@@ -18,8 +19,12 @@ public class SQLManager {
     }
 
     public void update() {
-        if (!_queue.isEmpty()) {
-            _queue.poll().run(_db);
+        try {
+            if (!_queue.isEmpty()) {
+                _queue.poll().run(_db);
+            }
+        } catch (Exception e) {
+            Log.error(e);
         }
     }
 

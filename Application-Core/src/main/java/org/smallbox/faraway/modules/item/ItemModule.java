@@ -8,7 +8,6 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.ModuleSerializer;
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.building.BasicDumpJob;
@@ -23,7 +22,6 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.log.Log;
 
 @GameObject
-@ModuleSerializer(ItemModuleSerializer.class)
 public class ItemModule extends GenericGameModule<UsableItem, ItemModuleObserver> {
 
     @Inject

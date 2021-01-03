@@ -152,7 +152,7 @@ public class GameSelectionManager extends GameManager {
                 UsableItem item = itemModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
                 StructureItem structure = structureModule.getAll().stream().filter(c -> c.getParcel() == parcel).findFirst().orElse(null);
 
-                select(ObjectUtils.firstNonNull(area, character, consumable, item, structure, parcel));
+                select(ObjectUtils.firstNonNull(character, consumable, item, structure, area, parcel));
             }
         }
     }

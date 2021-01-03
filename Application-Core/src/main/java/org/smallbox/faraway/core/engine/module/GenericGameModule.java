@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.modules.item.UsableItem;
 
 import java.util.Collection;
 import java.util.Random;
@@ -32,7 +31,7 @@ public abstract class GenericGameModule<T_MODEL extends ObjectModel, T extends M
     }
 
     public void remove(T_MODEL model) {
-        modelList.add(model);
+        modelList.remove(model);
     }
 
     public boolean contains(T_MODEL model) {
