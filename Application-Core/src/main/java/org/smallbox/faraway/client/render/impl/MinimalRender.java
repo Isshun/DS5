@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.task.LoadTask;
 import org.smallbox.faraway.core.task.TaskManager;
 import org.smallbox.faraway.util.FileUtils;
@@ -17,7 +18,11 @@ import java.util.function.Consumer;
 @ApplicationObject
 public class MinimalRender {
 
+    @Inject
+    private TaskManager taskManager;
+
     private final BitmapFont systemFont;
+    private SpriteBatch batch = new SpriteBatch();
 
     public MinimalRender() {
         systemFont = new BitmapFont(
@@ -26,7 +31,7 @@ public class MinimalRender {
                 false);
     }
 
-    public void render(SpriteBatch batch, TaskManager taskManager) {
+    public void render() {
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.debug.dashboard.content;
 
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;

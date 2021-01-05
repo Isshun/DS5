@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
@@ -32,16 +32,6 @@ public class UILabel extends View {
 
     public View setSize(int width, int height) {
         return super.setSize(width, height != -1 ? height : 18);
-    }
-
-    @Override
-    public int hashCode() {
-        return _text.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        return _text.equals(object);
     }
 
     public UILabel setText(String string) {
@@ -214,7 +204,7 @@ public class UILabel extends View {
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
-            renderer.drawFont((batch, font) -> {
+            renderer.drawFontUI((batch, font) -> {
                 int finalX = getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft;
                 int finalY = getAlignedY() + y + _offsetY + _paddingTop + _marginTop;
 

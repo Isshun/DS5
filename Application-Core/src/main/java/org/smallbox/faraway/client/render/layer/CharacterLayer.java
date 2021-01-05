@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.module.CharacterClientModule;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.common.CharacterCommon;

@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.module.CharacterClientModule;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;
@@ -45,9 +46,9 @@ public class CursorLayer extends BaseLayer {
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (gameActionManager.getMode() != GameActionMode.NONE) {
-            renderer.drawText(inputManager.getMouseX() + 2, inputManager.getMouseY() + 2, 22, Color.BLACK, gameActionManager.getActionLabel());
-            renderer.drawText(inputManager.getMouseX() + 1, inputManager.getMouseY() + 1, 22, Color.BLACK, gameActionManager.getActionLabel());
-            renderer.drawText(inputManager.getMouseX(), inputManager.getMouseY(), 22, gameActionManager.getActionColor(), gameActionManager.getActionLabel());
+            renderer.drawTextUI(inputManager.getMouseX() + 2, inputManager.getMouseY() + 2, 22, Color.BLACK, gameActionManager.getActionLabel());
+            renderer.drawTextUI(inputManager.getMouseX() + 1, inputManager.getMouseY() + 1, 22, Color.BLACK, gameActionManager.getActionLabel());
+            renderer.drawTextUI(inputManager.getMouseX(), inputManager.getMouseY(), 22, gameActionManager.getActionColor(), gameActionManager.getActionLabel());
         }
 
         if (gameActionManager.getMode() == GameActionMode.BUILD) {

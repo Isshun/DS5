@@ -15,17 +15,40 @@ import java.io.IOException;
 @ApplicationObject
 public class ApplicationConfigService {
 
+    private ApplicationConfig applicationConfig;
+
     @OnInit
     public void onInit() {
         Log.info("Load application applicationConfig");
 
+        FileUtils.createRoamingDirectory();
+
         File configFile = FileUtils.getUserDataFile("settings.json");
         if (configFile.exists()) {
             try (FileReader fileReader = new FileReader(configFile)) {
-                DependencyInjector.getInstance().register(new Gson().fromJson(fileReader, ApplicationConfig.class));
+                DependencyInjector.getInstance().register(applicationConfig = new Gson().fromJson(fileReader, ApplicationConfig.class));
             } catch (IOException e) {
                 throw new GameException(ApplicationConfigService.class, e, "Unable to read config file");
             }
+        }
+
+        initScreenResolution();
+
+    }
+
+    private void initScreenResolution() {
+        if (applicationConfig.screen.resolution == null) {
+
+            // Get native screen resolution
+            java.awt.GraphicsDevice gd = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            int width = gd.getDisplayMode().getWidth();
+            int height = gd.getDisplayMode().getHeight();
+            double ratio = (double)width / height;
+            Log.info("Screen resolution: " + width + "x" + height + " (" + ratio + ")");
+
+            applicationConfig.screen.resolution = new int[2];
+            applicationConfig.screen.resolution[0] = width - 60;
+            applicationConfig.screen.resolution[1] = height - 140;
         }
 
     }

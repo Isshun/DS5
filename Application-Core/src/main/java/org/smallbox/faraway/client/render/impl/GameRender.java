@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -14,7 +14,7 @@ import org.smallbox.faraway.core.game.GameManager;
 public class GameRender {
 
     @Inject
-    private GDXRenderer gdxRenderer;
+    private GameRender gameRender;
 
     @Inject
     private GameManager gameManager;
@@ -24,6 +24,9 @@ public class GameRender {
 
     @Inject
     private InputManager inputManager;
+
+    @Inject
+    private GDXRenderer gdxRenderer;
 
     @Inject
     private Game game;

@@ -3,7 +3,7 @@ package org.smallbox.faraway.client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 
 public class RotateAnimation {
     private float   _rotation;

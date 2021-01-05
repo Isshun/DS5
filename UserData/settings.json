@@ -1,6 +1,6 @@
 {
   "debug": {
-    "actionOnLoad": "LAST_SAVE",
+    "actionOnLoad": "NEW_GAME",
     "scenario": "data/scenarios/test1.json",
     "log": true,
     "logFontSize": 16,
@@ -9,7 +9,6 @@
     "logLevel": "INFO"
   },
   "screen": {
-    "resolution": [3400, 1300],
     "position": [20, 20],
     "mode": "WINDOW",
     "foregroundFPS": 60,

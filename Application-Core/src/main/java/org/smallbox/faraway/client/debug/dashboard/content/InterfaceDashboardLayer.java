@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayerBase;
 import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;

@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.render.layer;
 
 import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;

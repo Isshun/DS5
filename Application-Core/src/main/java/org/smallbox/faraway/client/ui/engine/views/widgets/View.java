@@ -7,7 +7,7 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
@@ -325,15 +325,15 @@ public abstract class View implements Comparable<View> {
             _finalY = getAlignedY() + _marginTop + y;
 
             if (_backgroundFocusColor != null && _isFocus) {
-                renderer.drawPixel(_backgroundFocusColor, _finalX, _finalY, _width, _height);
+                renderer.drawPixelUI(_finalX, _finalY, _width, _height, _backgroundFocusColor);
             }
 
             else if (_backgroundColor != null) {
-                renderer.drawPixel(_backgroundColor, _finalX, _finalY, _width, _height);
+                renderer.drawPixelUI(_finalX, _finalY, _width, _height, _backgroundColor);
             }
 
             if (_borderColor != null) {
-                renderer.drawRectangle(_finalX, _finalY, _width, _height, _borderColor, false);
+                renderer.drawRectangleUI(_finalX, _finalY, _width, _height, _borderColor, false);
             }
 
 //            if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
@@ -354,7 +354,7 @@ public abstract class View implements Comparable<View> {
 //            }
 
             if (Config.onDebugView) {
-                renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name);
+                renderer.drawTextUI(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name);
             }
         }
     }
@@ -441,8 +441,10 @@ public abstract class View implements Comparable<View> {
     }
 
     public View setOnClickListener(OnClickListener onClickListener) {
-        _onClickListener = onClickListener;
-        uiEventManager.setOnClickListener(this, onClickListener);
+//        if (_path != null && _path.contains("game_menu.pause")) {
+            _onClickListener = onClickListener;
+            uiEventManager.setOnClickListener(this, onClickListener);
+//        }
         return this;
     }
 

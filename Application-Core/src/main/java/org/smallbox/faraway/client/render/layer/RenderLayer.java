@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 

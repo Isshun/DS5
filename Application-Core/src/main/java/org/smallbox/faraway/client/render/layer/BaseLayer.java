@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.render.layer;
 
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.Viewport;

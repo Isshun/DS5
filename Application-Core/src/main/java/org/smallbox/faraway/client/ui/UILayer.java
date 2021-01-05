@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui;
 
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;

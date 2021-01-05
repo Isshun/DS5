@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.render;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.common.ParcelCommon;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -23,6 +23,9 @@ public class Viewport {
 
     @Inject
     private GameManager gameManager;
+
+    @Inject
+    private GDXRenderer gdxRenderer;
 
     private final static int    ANIM_FRAME = 10;
     public final static float[]       ZOOM_LEVELS = new float[] {
@@ -75,11 +78,11 @@ public class Viewport {
         }
     }
 
-    public void moveTo(int x, int y) {
-        setPosition(
-                (-x * Constant.TILE_WIDTH) + (50/2 * Constant.TILE_WIDTH),
-                (-y * Constant.TILE_HEIGHT) + (40/2 * Constant.TILE_HEIGHT));
-    }
+//    public void moveTo(int x, int y) {
+//        setPosition(
+//                (-x * Constant.TILE_WIDTH) + (50/2 * Constant.TILE_WIDTH),
+//                (-y * Constant.TILE_HEIGHT) + (40/2 * Constant.TILE_HEIGHT));
+//    }
 
     public void setPosition(int x, int y) {
         Log.debug("set position to: " + x + "x" + y);
@@ -96,33 +99,40 @@ public class Viewport {
     public int  getWidth() { return _width; }
     public int  getHeight() { return _height; }
 
-    public int  getWorldPosX() { return getWorldPosX(0); }
-    public int  getWorldPosX(int x) { return (int) ((-getPosX() + x) / getScale() / Constant.TILE_WIDTH); }
-    public int  getWorldPosY() { return getWorldPosY(0); }
-    public int  getWorldPosY(int y) { return (int) ((-getPosY() + y) / getScale() / Constant.TILE_HEIGHT); }
+    public int  getWorldPosX(int x) {
+        double viewportOffset = (getPosX() / gdxRenderer.getZoom() + applicationConfig.getResolutionWidth() / 2f - x) / (Constant.TILE_WIDTH / gdxRenderer.getZoom());
+        double cameraOffset = (gdxRenderer.getCamera().position.x / Constant.TILE_WIDTH);
+        return (int) (cameraOffset - viewportOffset);
+    }
+
+    public int  getWorldPosY(int y) {
+        double viewportOffset = (getPosY() / gdxRenderer.getZoom() + applicationConfig.getResolutionHeight() / 2f - y) / (Constant.TILE_HEIGHT / gdxRenderer.getZoom());
+        double cameraOffset = (gdxRenderer.getCamera().position.y / Constant.TILE_HEIGHT);
+        return (int) (cameraOffset - viewportOffset);
+    }
 
     public int  getScreenPosX(int parcelX) { return parcelX * Constant.TILE_WIDTH + getPosX(); }
     public int  getScreenPosY(int parcelY) { return parcelY * Constant.TILE_HEIGHT + getPosY(); }
 
-    public void setZoom(int zoom) {
-        setPosition(
-                (int)(_posX + ((ZOOM_LEVELS[_zoom] * 1500) - (ZOOM_LEVELS[zoom] * 1500))),
-                (int)(_posY + ((ZOOM_LEVELS[_zoom] * 1200) - (ZOOM_LEVELS[zoom] * 1200))));
-        _zoom = zoom;
-    }
+//    public void setZoom(int zoom) {
+//        setPosition(
+//                (int)(_posX + ((ZOOM_LEVELS[_zoom] * 1500) - (ZOOM_LEVELS[zoom] * 1500))),
+//                (int)(_posY + ((ZOOM_LEVELS[_zoom] * 1200) - (ZOOM_LEVELS[zoom] * 1200))));
+//        _zoom = zoom;
+//    }
 
     public float getScale() {
         return ZOOM_LEVELS[_zoom];
     }
 
-    public void startMove(int x, int y) {
-        _lastPosX = (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
-        _lastPosY = (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
-    }
+//    public void startMove(int x, int y) {
+//        _lastPosX = (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
+//        _lastPosY = (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 4);
+//    }
 
     public void move(int x, int y) {
-        _posX += (int) ((x * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 1);
-        _posY += (int) ((y * (1 + (1 - ZOOM_LEVELS[_zoom]))) * 1);
+        _posX += (int) ((x * (1 + (1 - 0.5))) * 1);
+        _posY += (int) ((y * (1 + (1 - 0.5))) * 1);
     }
 
     public int getFloor() {
@@ -133,15 +143,15 @@ public class Viewport {
         if (gameManager.isRunning()) {
             if (floor >= 0 && floor < game.getInfo().worldFloors) {
                 _floor = floor;
-                ApplicationClient.notify(gameObserver -> gameObserver.onFloorChange(_floor));
+                Application.notifyClient(gameObserver -> gameObserver.onFloorChange(_floor));
             }
         }
     }
 
-    public void setPosition(int x, int y, int z) {
-        setPosition(x, y);
-        _floor = z;
-    }
+//    public void setPosition(int x, int y, int z) {
+//        setPosition(x, y);
+//        _floor = z;
+//    }
 
     public boolean hasParcel(ParcelCommon parcel) {
         return parcel != null

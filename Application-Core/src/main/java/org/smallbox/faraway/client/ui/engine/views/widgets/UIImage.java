@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 
@@ -88,7 +88,7 @@ public class UIImage extends View {
                 if (_textureHeight != 0) {
                     _sprite.getTexture().setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.ClampToEdge);
                     _sprite.setRegion(_textureX, _textureY, _textureWidth, _textureHeight);
-                    renderer.drawRegion(_finalX, _finalY, _sprite);
+                    renderer.drawRegionUI(_finalX, _finalY, _sprite);
 //                    renderer.drawRegion(_x + x, _y + y, _sprite);
                 }
 
@@ -98,7 +98,7 @@ public class UIImage extends View {
                     } else if (_animation != null) {
                         _animation.draw(renderer, _sprite, _finalX, _finalY);
                     } else {
-                        renderer.draw(_finalX, _finalY, _sprite);
+                        renderer.drawUI(_finalX, _finalY, _sprite);
 //                        renderer.draw(_x + x, _y + y, _sprite);
                     }
                 }

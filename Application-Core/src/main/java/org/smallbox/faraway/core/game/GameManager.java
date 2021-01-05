@@ -1,7 +1,6 @@
 package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.menu.MenuManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -38,9 +37,6 @@ public class GameManager implements GameObserver {
 
     @Inject
     private GameFileManager gameFileManager;
-
-    @Inject
-    private MenuManager menuManager;
 
     @Inject
     private Data data;
@@ -122,8 +118,6 @@ public class GameManager implements GameObserver {
 
         // Launch background thread
         _game.launchBackgroundThread(listener);
-
-        menuManager.setVisible(false);
     }
 
     public void closeGame() {

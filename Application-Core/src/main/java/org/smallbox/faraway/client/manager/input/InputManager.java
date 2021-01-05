@@ -1,17 +1,18 @@
 package org.smallbox.faraway.client.manager.input;
 
 import com.badlogic.gdx.InputProcessor;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
 import org.smallbox.faraway.client.manager.ShortcutManager;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
@@ -57,10 +58,12 @@ public class InputManager implements InputProcessor {
     @Inject
     private Viewport viewport;
 
+    @Inject
+    private GDXRenderer gdxRenderer;
+
     private GameEventListener.Modifier _modifier = GameEventListener.Modifier.NONE;
-    private int                 _lastMouseButton;
-    private int                 _lastPosX;
-    private int                 _lastPosY;
+    private int _lastPosX;
+    private int _lastPosY;
     private int _touchDownX;
     private int _touchDownY;
     private int _touchDragX;
@@ -98,7 +101,8 @@ public class InputManager implements InputProcessor {
     public boolean keyUp(int keycode) {
 
         if (keycode == Keys.GRAVE) {
-            debugService.toggleDebugMode();;
+            debugService.toggleDebugMode();
+            ;
             return false;
         }
 
@@ -133,8 +137,8 @@ public class InputManager implements InputProcessor {
 
         if (gameManager.isLoaded()) {
             GameEvent event = new GameEvent(keycode);
-            ApplicationClient.notify(observer -> observer.onKeyPressWithEvent(event, keycode));
-            ApplicationClient.notify(observer -> observer.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier));
+            Application.notifyClient(observer -> observer.onKeyPressWithEvent(event, keycode));
+            Application.notifyClient(observer -> observer.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier));
         }
 
         // TODO: A deplacer dans ApplicationShortcutManage
@@ -156,27 +160,29 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-
-        if (debugService.isDebugMode()) {
-            return false;
-        }
-
-        _lastMouseButton = button;
         _touchDownX = _touchDragX = x;
         _touchDownY = _touchDragY = y;
 
-        if (gameContextMenuManager.getMenu() != null) {
-            return true;
-        }
+        if (button == Buttons.LEFT) {
 
-        // Passe l'evenement à l'ui event manager
-        if (uiEventManager.onMousePress(x, y, button)) {
-            return false;
-        }
+            if (debugService.isDebugMode()) {
+                return false;
+            }
 
-        // Passe l'evenement au game event manager
-        if (gameEventManager.onMousePress(x, y, button)) {
-            return false;
+            if (gameContextMenuManager.getMenu() != null) {
+                return true;
+            }
+
+            // Passe l'evenement à l'ui event manager
+            if (uiEventManager.onMousePress(x, y, button)) {
+                return false;
+            }
+
+            // Passe l'evenement au game event manager
+            if (gameEventManager.onMousePress(x, y, button)) {
+                return false;
+            }
+
         }
 
         return false;
@@ -243,7 +249,7 @@ public class InputManager implements InputProcessor {
             return false;
         }
 
-        ApplicationClient.notify(observer -> observer.onMouseMove(x, y, -1));
+        Application.notifyClient(observer -> observer.onMouseMove(x, y, -1));
 
         return false;
     }
@@ -252,22 +258,25 @@ public class InputManager implements InputProcessor {
     @Override
     public boolean scrolled(float amountX, float amountY) {
 
-        if (amountX < 0) {
+        if (amountY < 0) {
 
-            // Passe l'evenement à l'ui manager
-            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false)) {
-                return true;
-            }
+//            // Passe l'evenement à l'ui manager
+//            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false)) {
+//                return true;
+//            }
+
+            gdxRenderer.zoomDown();
 
             return true;
         }
 
-        if (amountX > 0) {
+        if (amountY > 0) {
 
-            // Passe l'evenement à l'ui manager
-            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false)) {
-                return true;
-            }
+            gdxRenderer.zoomUp();
+//            // Passe l'evenement à l'ui manager
+//            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false)) {
+//                return true;
+//            }
 
             return true;
         }
@@ -275,15 +284,32 @@ public class InputManager implements InputProcessor {
         return false;
     }
 
-    public int getMouseX() { return _lastPosX; }
-    public int getMouseY() { return _lastPosY; }
+    public int getMouseX() {
+        return _lastPosX;
+    }
 
-    public int getTouchDownX() { return _touchDownX; }
-    public int getTouchDownY() { return _touchDownY; }
+    public int getMouseY() {
+        return _lastPosY;
+    }
 
-    public int getTouchDragX() { return _touchDragX; }
-    public int getTouchDragY() { return _touchDragY; }
+    public int getTouchDownX() {
+        return _touchDownX;
+    }
 
-    public boolean getTouchDrag() { return _touchDrag; }
+    public int getTouchDownY() {
+        return _touchDownY;
+    }
+
+    public int getTouchDragX() {
+        return _touchDragX;
+    }
+
+    public int getTouchDragY() {
+        return _touchDragY;
+    }
+
+    public boolean getTouchDrag() {
+        return _touchDrag;
+    }
 
 }

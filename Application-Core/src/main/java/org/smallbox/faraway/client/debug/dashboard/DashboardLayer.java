@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.debug.dashboard.content.*;
 import org.smallbox.faraway.client.debug.layer.*;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -180,10 +180,10 @@ public class DashboardLayer extends BaseLayer {
     }
 
     private void drawButton(GDXRenderer renderer, int x, int y, String label, boolean isActive) {
-        renderer.drawRectangle(x, y, label.length() * 10, 30, BUTTON_BG_COLOR, true);
-        renderer.drawText(x + 2, y + 5, 18, Color.BLACK, label);
-        renderer.drawText(x + 1, y + 6, 18, Color.BLACK, label);
-        renderer.drawText(x, y + 7, 18, isActive ? Color.CORAL : Color.WHITE, label);
+        renderer.drawRectangleUI(x, y, label.length() * 10, 30, BUTTON_BG_COLOR, true);
+        renderer.drawTextUI(x + 2, y + 5, 18, Color.BLACK, label);
+        renderer.drawTextUI(x + 1, y + 6, 18, Color.BLACK, label);
+        renderer.drawTextUI(x, y + 7, 18, isActive ? Color.CORAL : Color.WHITE, label);
     }
 
     @Override

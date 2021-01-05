@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 
 public class FadeEffect {
     private Sprite  _from;

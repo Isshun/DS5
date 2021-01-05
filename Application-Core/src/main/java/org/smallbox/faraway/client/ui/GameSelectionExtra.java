@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui;
 
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.GameClientObserver;
+import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.core.module.world.model.StructureItem;
@@ -22,7 +22,7 @@ public class GameSelectionExtra {
     }
 
     public void clear() {
-        ApplicationClient.notify(GameClientObserver::onDeselect);
+        Application.notifyClient(GameClientObserver::onDeselect);
 
         _selectedCharacter = null;
 

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core;
 
 import com.badlogic.gdx.Gdx;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.core.game.GameObserverPriority;
 
@@ -22,10 +22,6 @@ public class Application {
 
     public static boolean isLoaded = false;
 
-    public Application() {
-        DependencyInjector.getInstance().findAndCreateApplicationObjects();
-    }
-
     public static void          addTask(Runnable runnable) { Gdx.app.postRunnable(runnable); }
     public static void          setRunning(boolean isRunning) {
         if (!isRunning && Gdx.app != null) {
@@ -45,6 +41,13 @@ public class Application {
         } catch (Error | RuntimeException e) {
             e.printStackTrace();
         }
+    }
+    public static void notifyClient(Consumer<GameClientObserver> action) {
+        Application.getObservers().forEach(observer -> {
+            if (observer instanceof GameClientObserver) {
+                action.accept((GameClientObserver) observer);
+            }
+        });
     }
 
     public static void exitWithError() {

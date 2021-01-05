@@ -9,7 +9,7 @@ import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.RootView;

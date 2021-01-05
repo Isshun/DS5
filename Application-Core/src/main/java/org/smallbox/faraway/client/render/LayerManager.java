@@ -5,7 +5,6 @@ import org.smallbox.faraway.client.GameClientObserver;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.manager.input.WorldInputManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;

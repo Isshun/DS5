@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.render.layer;
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameLayer;

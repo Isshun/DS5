@@ -40,7 +40,7 @@ ui:extend({
 
             }},
 
-            { type = "view", size = {300, 0}, position = {0, 20}, views = {
+            { type = "view", size = {300, 40}, position = {0, 20}, views = {
                 { type = "view", id = "bt_crew", size = {72, 84}, position = {0, 5}, views = {
                     { type = "image", id = "gauge_food", position = {0, 0}, size = {72, 84}, src = "[base]/graphics/icons/crewmate.png"},
                 }},

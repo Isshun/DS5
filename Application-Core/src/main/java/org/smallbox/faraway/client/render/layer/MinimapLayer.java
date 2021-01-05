@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.controller.MainPanelController;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -117,7 +118,7 @@ public class MinimapLayer extends BaseLayer {
             }
 
             if (_spriteMap != null) {
-                renderer.draw(_spriteMap);
+                renderer.drawUI(_spriteMap);
             }
 
             drawViewport(renderer);
@@ -128,16 +129,16 @@ public class MinimapLayer extends BaseLayer {
     private void drawViewport(GDXRenderer renderer) {
         int x = _mainPosX + (int)((Math.min(gameWidth -38-1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
         int y = _mainPosY + (int)((Math.min(gameHeight -32-1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
-        renderer.drawPixel(x, y, (int) (38 * ratioX), 2, COLOR_VIEWPORT);
-        renderer.drawPixel(x, y, 2, (int) (32 * ratioY), COLOR_VIEWPORT);
-        renderer.drawPixel(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 2, COLOR_VIEWPORT);
-        renderer.drawPixel((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 2, COLOR_VIEWPORT);
+        renderer.drawPixelUI(x, y, (int) (38 * ratioX), 2, COLOR_VIEWPORT);
+        renderer.drawPixelUI(x, y, 2, (int) (32 * ratioY), COLOR_VIEWPORT);
+        renderer.drawPixelUI(x, (int) (y + 32 * ratioY), (int)(38 * ratioX), 2, COLOR_VIEWPORT);
+        renderer.drawPixelUI((int) (x + 38 * ratioX), y, 1, (int)(32 * ratioY) + 2, COLOR_VIEWPORT);
     }
 
     private void drawCharacters(GDXRenderer renderer) {
         characterModule.getAll().stream()
                 .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
-                .forEach(character -> renderer.drawPixel(
+                .forEach(character -> renderer.drawPixelUI(
                         (int) (_mainPosX + (character.getParcel().x * ratioX)),
                         (int) (_mainPosY + (character.getParcel().y * ratioY)),
                         3,

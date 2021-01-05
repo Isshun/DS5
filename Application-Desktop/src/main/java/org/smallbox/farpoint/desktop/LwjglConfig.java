@@ -1,31 +1,44 @@
 package main.java.org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfigService;
 import org.smallbox.faraway.util.Constant;
 
+@ApplicationObject
 public class LwjglConfig {
-    public static LwjglApplicationConfiguration from(ApplicationConfig config) {
-        LwjglApplicationConfiguration lwjglConfig = new LwjglApplicationConfiguration();
-//        applicationConfig.samples = 2;
 
-        lwjglConfig.foregroundFPS = config.screen.foregroundFPS;
-        lwjglConfig.backgroundFPS = config.screen.backgroundFPS;
+    private LwjglApplicationConfiguration lwjglConfig;
 
-        lwjglConfig.x = config.screen.position[0];
-        lwjglConfig.y = config.screen.position[1];
-        lwjglConfig.width = config.screen.resolution[0];
-        lwjglConfig.height = config.screen.resolution[1];
-        lwjglConfig.fullscreen = "fullscreen".equals(config.screen.mode);
+    @OnInit
+    public void onInit() {
+        DependencyInjector.getInstance().createAndInit(ApplicationConfigService.class);
+        ApplicationConfig applicationConfig = DependencyInjector.getInstance().getDependency(ApplicationConfig.class);
+
+        lwjglConfig = new LwjglApplicationConfiguration();
+
+        lwjglConfig.foregroundFPS = applicationConfig.screen.foregroundFPS;
+        lwjglConfig.backgroundFPS = applicationConfig.screen.backgroundFPS;
+
+        lwjglConfig.x = applicationConfig.screen.position[0];
+        lwjglConfig.y = applicationConfig.screen.position[1];
+        lwjglConfig.width = applicationConfig.screen.resolution[0];
+        lwjglConfig.height = applicationConfig.screen.resolution[1];
+        lwjglConfig.fullscreen = "fullscreen".equals(applicationConfig.screen.mode);
         lwjglConfig.resizable = false;
         lwjglConfig.vSyncEnabled = false;
 //        applicationConfig.useGL30 = true;
         lwjglConfig.title = Constant.NAME + " " + Constant.VERSION;
 
-        if ("borderless".equals(config.screen.mode)) {
+        if ("borderless".equals(applicationConfig.screen.mode)) {
             System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
         }
+    }
 
+    public LwjglApplicationConfiguration getLwjglConfig() {
         return lwjglConfig;
     }
 }
