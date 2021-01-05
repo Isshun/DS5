@@ -52,7 +52,7 @@ public class DigJobSerializer extends GenericGameSerializer<DigJob> {
         try {
             while (selectStatement.step()) {
                 Optional.ofNullable(WorldHelper.getParcel(selectStatement.columnInt(1), selectStatement.columnInt(2), selectStatement.columnInt(3)))
-                        .ifPresent(parcel -> jobModule.addJob(digJobFactory.createJob(parcel)));
+                        .ifPresent(parcel -> jobModule.add(digJobFactory.createJob(parcel)));
             }
         } finally {
             selectStatement.dispose();

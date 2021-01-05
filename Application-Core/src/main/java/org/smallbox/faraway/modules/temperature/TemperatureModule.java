@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.temperature;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.room.RoomModule;
@@ -13,7 +13,7 @@ import org.smallbox.faraway.modules.weather.WeatherModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameObject
-public class TemperatureModule extends GameModule {
+public class TemperatureModule extends SuperGameModule {
 
     @Inject
     private WorldModule worldModule;

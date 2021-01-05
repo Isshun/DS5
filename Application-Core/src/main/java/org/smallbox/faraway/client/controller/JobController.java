@@ -32,7 +32,7 @@ public class JobController extends LuaController {
 
     @Override
     public void onControllerUpdate() {
-        jobModule.getJobs().stream().filter(JobModel::isVisible).forEach(job ->
+        jobModule.getAll().stream().filter(JobModel::isVisible).forEach(job ->
                 listJobs.addNextView(new UIFrame(null)
                         .setSize(300, 28)
                         .addView(UIImage.create(null)

@@ -2,26 +2,16 @@ package org.smallbox.faraway.core.engine.module;
 
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameObserver;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule implements GameObserver {
+public abstract class SuperGameModule2<T_OBSERVER extends ModuleObserver> extends AbsGameModule implements GameObserver {
 
-    private List<T> _observers = new ArrayList<>();
+    private List<T_OBSERVER> _observers = new ArrayList<>();
 
-    public boolean onSelectParcel(ParcelModel parcel) {
-        return false;
-    }
-
-    public boolean onSelectCharacter(CharacterModel character) {
-        return false;
-    }
-
-    public void addObserver(T observer) {
+    public void addObserver(T_OBSERVER observer) {
         // TODO
 //        if (Application.gameManager.getGame().getState() != Game.GameStatus.JOB_INITIALIZED) {
 //            throw new GameException("GameModule: Add observer from initialized module (module: %s)", getClass().getName());
@@ -30,11 +20,10 @@ public abstract class GameModule<T extends ModuleObserver> extends AbsGameModule
         _observers.add(observer);
     }
 
-    public void notifyObservers(Consumer<T> action) {
+    public void notifyObservers(Consumer<T_OBSERVER> action) {
         try {
             _observers.forEach(action);
         } catch (Error | RuntimeException e) {
-            Application.setRunning(false);
             e.printStackTrace();
         }
     }

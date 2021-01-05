@@ -28,6 +28,6 @@ public class DigRockAction implements GameContextMenuAction {
 
     @Override
     public Runnable getRunnable(ParcelModel parcel, int mouseX, int mouseY) {
-        return () -> jobModule.addJob(digJobFactory.createJob(parcel));
+        return () -> jobModule.add(digJobFactory.createJob(parcel));
     }
 }

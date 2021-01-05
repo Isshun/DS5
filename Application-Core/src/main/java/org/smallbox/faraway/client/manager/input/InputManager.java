@@ -6,12 +6,16 @@ import org.smallbox.faraway.client.GameEventManager;
 import org.smallbox.faraway.client.debug.DebugService;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameContextMenu.GameContextMenuManager;
+import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.GameEvent;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.GameEventListener;
+import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 
 import static com.badlogic.gdx.Input.Buttons;
@@ -39,12 +43,21 @@ public class InputManager implements InputProcessor {
     private UIEventManager uiEventManager;
 
     @Inject
+    private UIManager uiManager;
+
+    @Inject
     private WorldInputManager worldInputManager;
+
+    @Inject
+    private GameManager gameManager;
+
+    @Inject
+    private ShortcutManager shortcutManager;
 
     @Inject
     private Viewport viewport;
 
-    private GameEventListener.Modifier _modifier;
+    private GameEventListener.Modifier _modifier = GameEventListener.Modifier.NONE;
     private int                 _lastMouseButton;
     private int                 _lastPosX;
     private int                 _lastPosY;
@@ -53,10 +66,6 @@ public class InputManager implements InputProcessor {
     private int _touchDragX;
     private int _touchDragY;
     private boolean _touchDrag;
-
-    public InputManager() {
-        _modifier = GameEventListener.Modifier.NONE;
-    }
 
     @Override
     public boolean keyDown(int keycode) {
@@ -118,7 +127,20 @@ public class InputManager implements InputProcessor {
             return false;
         }
 
-        ApplicationClient.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier);
+        if (uiManager.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier)) {
+            return false;
+        }
+
+        if (gameManager.isLoaded()) {
+            GameEvent event = new GameEvent(keycode);
+            ApplicationClient.notify(observer -> observer.onKeyPressWithEvent(event, keycode));
+            ApplicationClient.notify(observer -> observer.onKeyEvent(GameEventListener.Action.RELEASED, keycode, _modifier));
+        }
+
+        // TODO: A deplacer dans ApplicationShortcutManage
+        // Call shortcut strategy
+        shortcutManager.action(keycode);
+
         return false;
     }
 
@@ -231,12 +253,22 @@ public class InputManager implements InputProcessor {
     public boolean scrolled(float amountX, float amountY) {
 
         if (amountX < 0) {
-            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false);
+
+            // Passe l'evenement à l'ui manager
+            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.FORWARD, _lastPosX, _lastPosY, false)) {
+                return true;
+            }
+
             return true;
         }
 
         if (amountX > 0) {
-            ApplicationClient.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false);
+
+            // Passe l'evenement à l'ui manager
+            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false)) {
+                return true;
+            }
+
             return true;
         }
 

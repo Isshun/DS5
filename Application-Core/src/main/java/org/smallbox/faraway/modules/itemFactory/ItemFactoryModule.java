@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.itemFactory;
 import org.smallbox.faraway.core.ModuleInfoAnnotation;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
@@ -17,7 +17,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 
 @GameObject
 @ModuleInfoAnnotation(name = "ItemFactoryModule", updateInterval = 1)
-public class ItemFactoryModule extends GameModule {
+public class ItemFactoryModule extends SuperGameModule {
 
     @Inject
     private WorldModule worldModule;

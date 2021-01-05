@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.dependencyInjector;
 
 import org.reflections.Reflections;
+import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
@@ -29,7 +30,6 @@ public class DependencyInjector {
     private final Map<Class<?>, DependencyInfo<?>> _gameObjectPoolByClass = new ConcurrentHashMap<>();
     private boolean _init = false;
     private boolean _initGame = false;
-    private ApplicationClientInterface _clientInterface;
 
     public static DependencyInjector getInstance() { return _self; }
 
@@ -167,16 +167,14 @@ public class DependencyInjector {
 
     // TODO: methode appelée plusieurs fois (2)
     private void doInjectShortcut(Object host) {
-        if (_clientInterface != null) {
             if (!_gameShortcut.contains(host)) {
                 _gameShortcut.add(host);
                 for (Method method : host.getClass().getDeclaredMethods()) {
                     method.setAccessible(true);
                     GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
                     if (gameShortcut != null) {
-
                         Log.debug(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                        _clientInterface.onShortcutBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
+                        getDependency(ShortcutManager.class).addBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
                             try {
                                 method.invoke(host);
                             } catch (IllegalAccessException | InvocationTargetException e) {
@@ -186,7 +184,6 @@ public class DependencyInjector {
                     }
                 }
             }
-        }
     }
 
     private void doInjectDependency(Object host, Class<?> cls, boolean gameExists) {
@@ -280,14 +277,6 @@ public class DependencyInjector {
 
     public Collection<DependencyInfo<?>> getGameDependencies() {
         return _gameObjectPoolByClass.values();
-    }
-
-    public interface ApplicationClientInterface {
-        void onShortcutBinding(String label, int key, Runnable runnable);
-    }
-
-    public void setClientInterface(ApplicationClientInterface clientInterface) {
-        _clientInterface = clientInterface;
     }
 
     private <T> void callInitMethod(T model, boolean gameExists) {

@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.item;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @GameObject
-public class ItemFinderModule extends GameModule {
+public class ItemFinderModule extends SuperGameModule {
 
     @Inject
     private PathManager pathManager;

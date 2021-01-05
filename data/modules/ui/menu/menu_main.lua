@@ -2,7 +2,7 @@ ui:extend({
     type = "view",
     id = "base.ui.menu.main",
     background = 0xdd121c1e,
-    controller = "org.smallbox.faraway.client.controller.menu.MenuMainController",
+    controller = "org.smallbox.faraway.client.menu.controller.MenuMainController",
     in_game = false,
     visible = false,
     views = {

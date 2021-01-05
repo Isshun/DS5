@@ -1,9 +1,6 @@
 package org.smallbox.faraway.modules.character;
 
-import org.smallbox.faraway.GameSerializer;
 import org.smallbox.faraway.GameTask;
-import org.smallbox.faraway.GameTaskSerializer;
-import org.smallbox.faraway.common.GameTaskDeserializer;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -13,8 +10,6 @@ import static org.smallbox.faraway.util.Utils.second;
 /**
  * Created by 300206 on 14/09/2017.
  */
-@GameDeserializer(GameTaskDeserializer.class)
-@GameSerializer(GameTaskSerializer.class)
 public class RandomMoveTask extends GameTask {
 
     private final ParcelModel initialParcel;

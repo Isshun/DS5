@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @GameObject
-public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObserver> {
+public class WorldModule extends GenericGameModule<ParcelModel> {
 
     @Inject
     private JobModule jobModule;
@@ -43,12 +43,6 @@ public class WorldModule extends GenericGameModule<ParcelModel, WorldModuleObser
 
     @Override
     public void onModuleUpdate(Game game) {
-    }
-
-    @Override
-    public boolean onSelectParcel(ParcelModel parcel) {
-//        _infoParcel2Controller.select(parcel);
-        return false;
     }
 
 //    @Override

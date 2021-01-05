@@ -1,6 +1,6 @@
 package org.smallbox.faraway;
 
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.common.UUIDUtils;
 
 public abstract class GameTask {
     public final long id;
@@ -11,7 +11,7 @@ public abstract class GameTask {
 
     public GameTask(String name, String label, long duration) {
         this.name = name;
-        this.id = ++Application.id;
+        this.id = UUIDUtils.getUUID();
         this.label = label;
         this.duration = duration;
     }

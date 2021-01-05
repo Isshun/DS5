@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.characterDisease;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule2;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.CharacterModuleObserver;
@@ -12,7 +12,7 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import java.util.Collection;
 
 @GameObject
-public class CharacterDiseaseModule extends GameModule<CharacterModuleObserver> {
+public class CharacterDiseaseModule extends SuperGameModule2<CharacterModuleObserver> {
 
     @Inject
     private CharacterModule characterModule;

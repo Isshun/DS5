@@ -59,7 +59,6 @@ public class ParcelModel extends ParcelCommon {
         _groundInfo = groundInfo;
     }
     public void                     setRockInfo(ItemInfo rockInfo) { _rockInfo = rockInfo; _connectionDirty = true; }
-    public void                     setRockName(String rockName) { _rockInfo = Application.data.getItemInfo(rockName); }
     public void                     setTile(int tile) { _tile = tile; }
     public void                     setLiquidInfo(ItemInfo liquidInfo, double value) { _liquidInfo = liquidInfo; _liquidValue = value; }
 

@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule2;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -17,7 +17,7 @@ import org.smallbox.faraway.util.MoveListener;
 import org.smallbox.faraway.util.log.Log;
 
 @GameObject
-public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
+public class CharacterMoveModule extends SuperGameModule2<CharacterModuleObserver> {
 
     @Inject
     private CharacterModule characterModule;

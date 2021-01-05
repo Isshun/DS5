@@ -23,7 +23,7 @@ public class JobLayer extends BaseLayer {
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
 
-        jobModule.getJobs().forEach(job -> {
+        jobModule.getAll().forEach(job -> {
 
             if (job.getTargetParcel() != null) {
 

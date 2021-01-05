@@ -34,6 +34,6 @@ public class MoveCharacterAction implements GameContextMenuAction {
     @Override
     public Runnable getRunnable(ParcelModel parcel, int mouseX, int mouseY) {
         CharacterModel character = gameSelectionManager.getSelected(CharacterModel.class);
-        return () -> jobModule.addJob(moveJobFactory.createJob(parcel, character));
+        return () -> jobModule.add(moveJobFactory.createJob(parcel, character));
     }
 }

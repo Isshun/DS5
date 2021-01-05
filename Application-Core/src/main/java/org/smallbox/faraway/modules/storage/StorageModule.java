@@ -75,17 +75,17 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
 
             // Consumable have no StoreJob or StoreArea
             if (storageArea == null && storeJob == null) {
-                jobModule.addJob(storeJobFactory.createJob(bestArea, consumable));
+                jobModule.add(storeJobFactory.createJob(bestArea, consumable));
             }
 
             // Consumable have StoreJob or StoreArea but not the best one
             else if (storageArea != bestArea) {
 
                 if (storeJob != null) {
-                    jobModule.removeJob(storeJob);
+                    jobModule.remove(storeJob);
                 }
 
-                jobModule.addJob(storeJobFactory.createJob(bestArea, consumable));
+                jobModule.add(storeJobFactory.createJob(bestArea, consumable));
             }
 
         }
@@ -112,7 +112,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
         jobModule.getJobs(StoreJob.class)
                 .filter(job -> area.getParcels().contains(job.getTargetParcel()))
                 .filter(job -> !area.isAccepted(job.sourceConsumable))
-                .forEach(job -> jobModule.removeJob(job));
+                .forEach(job -> jobModule.remove(job));
     }
 
     @Override

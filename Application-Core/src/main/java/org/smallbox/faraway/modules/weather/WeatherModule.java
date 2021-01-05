@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule2;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
@@ -16,14 +16,14 @@ import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import org.smallbox.faraway.core.game.modelInfo.WeatherInfo.WeatherSunModel;
 import org.smallbox.faraway.util.CollectionUtils;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Collections;
 import java.util.List;
 
 @GameObject
-public class WeatherModule extends GameModule<WeatherModuleObserver> implements GameObserver {
+public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> implements GameObserver {
     private int                                 _duration;
     private int                                 _floors;
     private WeatherInfo                         _weather;

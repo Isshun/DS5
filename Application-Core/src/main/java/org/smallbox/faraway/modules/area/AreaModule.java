@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.area;
 
 import org.smallbox.faraway.core.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @GameObject
-public class AreaModule extends GameModule {
+public class AreaModule extends SuperGameModule {
 
     private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
 

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public abstract class GenericGameModule<T_MODEL extends ObjectModel, T extends ModuleObserver> extends GameModule<T> {
+public abstract class GenericGameModule<T_MODEL extends ObjectModel> extends AbsGameModule {
     protected Collection<T_MODEL> modelList = new LinkedBlockingQueue<>();
 
     public int getCount() {

@@ -18,7 +18,7 @@ public class WorldModuleConsoleInterpreter extends ConsoleInterpreterBase {
 
     @ConsoleCommand("list")
     public Collection<String> getList() {
-        return jobModule.getJobs().stream().map(c -> "#" + c.getId() + " " + c.getLabel()).collect(Collectors.toList());
+        return jobModule.getAll().stream().map(c -> "#" + c.getId() + " " + c.getLabel()).collect(Collectors.toList());
     }
 
     @ConsoleCommand("info")

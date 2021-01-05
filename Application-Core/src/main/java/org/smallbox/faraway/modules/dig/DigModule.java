@@ -34,7 +34,7 @@ public class DigModule extends AreaModuleBase<DigArea> {
     @Override
     protected void onModuleUpdate(Game game) {
         List<ParcelModel> parcelInDigArea = areaModule.getParcelsByType(DigArea.class);
-        List<ParcelModel> parcelInDigJob = jobModule.getJobs().stream()
+        List<ParcelModel> parcelInDigJob = jobModule.getAll().stream()
                 .filter(job -> job instanceof DigJob)
                 .map(JobModel::getTargetParcel)
                 .collect(Collectors.toList());
@@ -43,7 +43,7 @@ public class DigModule extends AreaModuleBase<DigArea> {
         parcelInDigArea.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
                 .filter(parcel -> CollectionUtils.notContains(parcelInDigJob, parcel))
-                .forEach(parcel -> jobModule.addJob(digJobFactory.createJob(parcel)));
+                .forEach(parcel -> jobModule.add(digJobFactory.createJob(parcel)));
     }
 
     @Override

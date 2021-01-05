@@ -14,13 +14,12 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
-import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 
 import java.util.Optional;
 
 @GameObject
-public class PlantModule extends GenericGameModule<PlantItem, StructureModuleObserver> {
+public class PlantModule extends GenericGameModule<PlantItem> {
 
     @Inject
     private Data data;
@@ -64,7 +63,7 @@ public class PlantModule extends GenericGameModule<PlantItem, StructureModuleObs
         modelList.stream()
                 .filter(plant -> plant.getJob() == null)
                 .filter(plant -> plant.getMaturity() >= 1)
-                .forEach(plant -> jobModule.addJob(harvestJobFactory.create(plant)));
+                .forEach(plant -> jobModule.add(harvestJobFactory.create(plant)));
 
         // TODO: ajout auto de la graine
         modelList.forEach(plant -> plant.setSeed(true));

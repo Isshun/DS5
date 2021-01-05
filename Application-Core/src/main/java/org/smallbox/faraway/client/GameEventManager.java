@@ -107,6 +107,7 @@ public class GameEventManager implements EventManager {
         }
 
         ApplicationClient.notify(obs -> obs.onMouseRelease(x, y, button));
+
         return false;
     }
 

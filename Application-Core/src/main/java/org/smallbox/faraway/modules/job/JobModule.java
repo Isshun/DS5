@@ -4,7 +4,7 @@ import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
@@ -18,15 +18,13 @@ import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
 @GameObject
-public class JobModule extends GameModule<JobModuleObserver> {
+public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
     private BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
-    private BlockingQueue<JobModel>         _jobs = new LinkedBlockingQueue<>();
 
     @Inject
     private ConsumableModule consumableModule;
@@ -44,26 +42,24 @@ public class JobModule extends GameModule<JobModuleObserver> {
     protected void onModuleUpdate(Game game) {
 
         // Check all jobs
-        _jobs.forEach(JobModel::check);
-        _jobs.forEach(JobModel::update);
+        modelList.forEach(JobModel::check);
+        modelList.forEach(JobModel::update);
 
-        _jobs.stream().filter(JobModel::isBlocked).filter(jobModel -> jobModel.getBlocked().isBefore(gameTime.getTime())).forEach(JobModel::unblock);
+        modelList.stream().filter(JobModel::isBlocked).filter(jobModel -> jobModel.getBlocked().isBefore(gameTime.getTime())).forEach(JobModel::unblock);
 
-        _jobs.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
-        _jobs.removeIf(JobModel::isClose);
+        modelList.removeIf(job -> job.getReason() == JobAbortReason.INVALID);
+        modelList.removeIf(JobModel::isClose);
 
         // Run auto job
         double hourInterval = getTickInterval() * game.getTickPerHour();
-        _jobs.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null, hourInterval));
+        modelList.stream().filter(job -> job.isAuto() && job.check(null)).forEach(job -> job.action(null, hourInterval));
 
         // Assign job to inactive character
         jobOrchestratorModule.assign();
     }
 
-    public Collection<JobModel> getJobs() { return _jobs; }
-
     public <T extends JobModel> Stream<T> getJobs(Class<T> cls) {
-        return _jobs.stream().filter(cls::isInstance).map(cls::cast);
+        return modelList.stream().filter(cls::isInstance).map(cls::cast);
     }
 
     @Deprecated
@@ -77,19 +73,20 @@ public class JobModule extends GameModule<JobModuleObserver> {
                 return null;
             }
 
-            addJob(job);
+            add(job);
             return job;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             throw new GameException(JobModule.class, e, "Unable to create job");
         }
     }
 
-    public void addJob(JobModel job) {
+    @Override
+    public void add(JobModel job) {
         if (job == null) {
             throw new GameException(JobModule.class, "Cannot create null job", job);
         }
 
-        if (_jobs.contains(job)) {
+        if (modelList.contains(job)) {
             throw new GameException(JobModule.class, "Trying to create a job already existing", job);
         }
 
@@ -101,10 +98,10 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
         job.executeInitTasks();
 
-        _jobs.add(job);
+        super.add(job);
 
         if (CollectionUtils.isNotEmpty(job.getSubJob())) {
-            _jobs.addAll(job.getSubJob());
+            job.getSubJob().forEach(super::add);
         }
 
         sortJobs();
@@ -114,8 +111,8 @@ public class JobModule extends GameModule<JobModuleObserver> {
 
     private void sortJobs() {
         _unordonnedJobs.clear();
-        _unordonnedJobs.addAll(_jobs);
-        _jobs.clear();
+        _unordonnedJobs.addAll(modelList);
+        modelList.clear();
 
 //        Arrays.asList(BasicCraftJob.class, BasicHarvestJob.class, BasicHaulJob.class)
 //                .forEach(cls ->
@@ -126,7 +123,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
 //                                    _unordonnedJobs.remove(job);
 //                                }));
 
-        _jobs.addAll(_unordonnedJobs);
+        modelList.addAll(_unordonnedJobs);
     }
 
     public void quitJob(JobModel job, JobAbortReason reason) {
@@ -141,7 +138,7 @@ public class JobModule extends GameModule<JobModuleObserver> {
     // TODO: utile ?
     @Override
     public void onCancelJobs(ParcelModel parcel, Object object) {
-        _jobs.stream().filter(JobModel::isOpen).forEach(job -> {
+        modelList.stream().filter(JobModel::isOpen).forEach(job -> {
             if (object == null && job.getTargetParcel() == parcel) {
                 job.close();
             }
@@ -153,21 +150,22 @@ public class JobModule extends GameModule<JobModuleObserver> {
     }
 
     public boolean hasJob(JobModel job) {
-        return _jobs.contains(job);
+        return modelList.contains(job);
     }
 
     public JobModel getJob(int jobId) {
-        return _jobs.stream().filter(jobModel -> jobModel.getId() == jobId).findFirst().orElse(null);
+        return modelList.stream().filter(jobModel -> jobModel.getId() == jobId).findFirst().orElse(null);
     }
 
     public interface JobInitCallback<T> {
         boolean onInit(T job);
     }
 
-    public void removeJob(JobModel job) {
+    @Override
+    public void remove(JobModel job) {
         Log.debug("Remove job " + job + ", status: " + job.getStatus());
 
         job.close();
-        _jobs.remove(job);
+        super.remove(job);
     }
 }

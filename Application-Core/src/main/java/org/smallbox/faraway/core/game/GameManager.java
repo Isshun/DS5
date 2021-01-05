@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.MenuManager;
+import org.smallbox.faraway.client.menu.MenuManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -119,8 +119,6 @@ public class GameManager implements GameObserver {
 
         _game.start();
         _game.getModules().forEach(module -> module.startGame(_game));
-
-        Application.clientListener.onInitComplete();
 
         // Launch background thread
         _game.launchBackgroundThread(listener);

@@ -1,12 +1,12 @@
-package org.smallbox.faraway.client;
+package org.smallbox.faraway.client.menu;
 
 import com.google.common.base.CaseFormat;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.controller.menu.MenuMainController;
-import org.smallbox.faraway.client.controller.menu.MenuSettingsController;
+import org.smallbox.faraway.client.menu.controller.MenuMainController;
+import org.smallbox.faraway.client.menu.controller.MenuSettingsController;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;

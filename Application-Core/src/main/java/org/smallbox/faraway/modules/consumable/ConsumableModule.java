@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.consumable;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GenericGameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
-public class ConsumableModule extends GenericGameModule<ConsumableItem, ConsumableModuleObserver> {
+public class ConsumableModule extends SuperGameModule<ConsumableItem, ConsumableModuleObserver> {
 
     @Inject
     private PathManager pathManager;

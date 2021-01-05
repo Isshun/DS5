@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.character;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule2;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameTime;
 import org.smallbox.faraway.core.game.helper.SurroundedPattern;
@@ -12,7 +12,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.concurrent.TimeUnit;
 
 @GameObject
-public class CharacterJobModule extends GameModule<CharacterModuleObserver> {
+public class CharacterJobModule extends SuperGameModule2<CharacterModuleObserver> {
 
     @Inject
     private CharacterModule characterModule;

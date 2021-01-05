@@ -56,7 +56,7 @@ public class JobOrchestratorModule {
         if (_characterInnactiveDuration.getOrDefault(character, 0) > 2) {
             _characterInnactiveDuration.put(character, 0);
 
-            List<JobModel> availableJobs = jobModule.getJobs().stream()
+            List<JobModel> availableJobs = jobModule.getAll().stream()
                     .filter(JobModel::isAvailable)
                     .filter(JobModel::isFree)
                     .filter(JobModel::isSubJobCompleted)
@@ -82,7 +82,7 @@ public class JobOrchestratorModule {
                 character.getExtra(CharacterFreeTimeExtra.class).getTypes().stream().findAny().ifPresent(type -> {
                     try {
                         JobModel freeTimeJob = type.getConstructor(CharacterModel.class).newInstance(character);
-                        jobModule.addJob(freeTimeJob);
+                        jobModule.add(freeTimeJob);
                         assign(character, freeTimeJob);
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         Log.error(e);

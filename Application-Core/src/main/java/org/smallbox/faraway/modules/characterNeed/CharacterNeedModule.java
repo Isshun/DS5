@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.characterNeed;
 
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.*;
 
 @GameObject
-public class CharacterNeedModule extends GameModule {
+public class CharacterNeedModule extends SuperGameModule {
 
     @Inject private Game game;
     @Inject private Data data;
@@ -194,7 +194,7 @@ public class CharacterNeedModule extends GameModule {
         }
 
         _jobs.put(need, job);
-        jobModule.addJob(job);
+        jobModule.add(job);
         return true;
     }
 }

@@ -14,18 +14,16 @@ public class JobDashboardLayer extends DashboardLayerBase {
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
-        if (jobModule != null && jobModule.getJobs() != null) {
-            jobModule.getJobs().forEach(job -> {
-                drawDebug(renderer, "JOB",
-                        String.format("%s, %.2f, %s",
-                                job.getMainLabel(),
-                                job.getProgress(),
-                                job.getLastReturn()
-                        )
-                );
-                job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));
-            });
-        }
+        jobModule.getAll().forEach(job -> {
+            drawDebug(renderer, "JOB",
+                    String.format("%s, %.2f, %s",
+                            job.getMainLabel(),
+                            job.getProgress(),
+                            job.getLastReturn()
+                    )
+            );
+            job.getTasks().forEach(task -> drawDebug(renderer, "JOB", "  - " + task.label));
+        });
     }
 
 }

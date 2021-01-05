@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.area;
 
 import org.smallbox.faraway.client.gameAction.GameActionAreaListener;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
-public abstract class AreaModuleBase<T_AREA extends AreaModel> extends GameModule implements GameActionAreaListener {
+public abstract class AreaModuleBase<T_AREA extends AreaModel> extends SuperGameModule implements GameActionAreaListener {
     protected Queue<T_AREA> areas = new ConcurrentLinkedQueue<>();
 
     public void addParcel(ParcelModel parcel) {

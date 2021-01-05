@@ -60,7 +60,7 @@ public class BringItemJobFactory {
         if (availableQuantity < quantity) {
             BringItemJob bringItemJob = createJob(parent, mapObject, consumable.getInfo(), quantity - availableQuantity);
             parent.addSubJob(bringItemJob);
-            jobModule.addJob(bringItemJob);
+            jobModule.add(bringItemJob);
         }
     }
 

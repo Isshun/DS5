@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.item;
 import org.smallbox.faraway.common.NotImplementedException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.module.GenericGameModule;
+import org.smallbox.faraway.core.engine.module.SuperGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -22,7 +22,7 @@ import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.log.Log;
 
 @GameObject
-public class ItemModule extends GenericGameModule<UsableItem, ItemModuleObserver> {
+public class ItemModule extends SuperGameModule<UsableItem, ItemModuleObserver> {
 
     @Inject
     private WorldModule worldModule;
@@ -52,7 +52,7 @@ public class ItemModule extends GenericGameModule<UsableItem, ItemModuleObserver
      */
     public UseJob createUseJob(UsableItem item, double totalDuration, UseJob.OnUseCallback callback) {
         UseJob useJob = new UseJob(this, item, totalDuration, callback);
-        jobModule.addJob(useJob);
+        jobModule.add(useJob);
         return useJob;
     }
 
@@ -168,8 +168,8 @@ public class ItemModule extends GenericGameModule<UsableItem, ItemModuleObserver
     }
 
     public void dumpItem(UsableItem item) {
-        if (jobModule.getJobs().stream().noneMatch(job -> job instanceof BasicDumpJob && ((BasicDumpJob)job).getObject() == item)) {
-            jobModule.addJob(new BasicDumpJob(this, item));
+        if (jobModule.getAll().stream().noneMatch(job -> job instanceof BasicDumpJob && ((BasicDumpJob)job).getObject() == item)) {
+            jobModule.add(new BasicDumpJob(this, item));
         }
     }
 }

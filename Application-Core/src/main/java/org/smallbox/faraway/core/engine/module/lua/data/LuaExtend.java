@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.engine.module.lua.data;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.core.Application;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
 
@@ -102,7 +102,7 @@ public abstract class LuaExtend {
     protected <T> void readAsync(LuaValue value, String key, Class<T> cls, ReadCallback<T> callback) {
         LuaValue v = value.get(key);
         if (!v.isnil()) {
-            Application.data.getAsync(v.tojstring(), cls, callback::onReadCallback);
+            DependencyInjector.getInstance().getDependency(Data.class).getAsync(v.tojstring(), cls, callback::onReadCallback);
         }
     }
 
