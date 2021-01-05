@@ -166,7 +166,7 @@ public class UIMultiCheckBox extends View {
     public UIMultiCheckBox setTextSize(int size) {
         _textSize = size;
         if (_height == -1) {
-            _height = (int)(gdxRenderer.getFont(_textSize).getLineHeight() * 1.2);
+            _height = (int)(fontManager.getFont(_textSize).getLineHeight() * 1.2);
         }
         return this;
     }
@@ -231,8 +231,8 @@ public class UIMultiCheckBox extends View {
     @Override
     public int getContentWidth() {
         if (_string != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).width;
-            return (int) (_string.length() * gdxRenderer.getFont(_textSize).getRegion().getRegionWidth());
+//            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_string).width;
+            return (int) (_string.length() * fontManager.getFont(_textSize).getRegion().getRegionWidth());
         }
         return 0;
     }
@@ -240,8 +240,8 @@ public class UIMultiCheckBox extends View {
     @Override
     public int getContentHeight() {
         if (_string != null) {
-//            return (int) ApplicationClient.gdxRenderer.getFont(_textSize).getBounds(_string).height;
-            return (int) gdxRenderer.getFont(_textSize).getLineHeight();
+//            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_string).height;
+            return (int) fontManager.getFont(_textSize).getLineHeight();
         }
         return 0;
     }

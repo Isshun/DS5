@@ -9,7 +9,7 @@ import org.smallbox.faraway.util.FileUtils;
 import java.io.File;
 
 @ApplicationObject
-public class FontGenerator {
+public class FontManager {
     private BitmapFont[] fonts;
 
     public void generateFonts() {
@@ -21,7 +21,7 @@ public class FontGenerator {
         }
     }
 
-    public BitmapFont[] getFonts() {
-        return fonts;
+    public BitmapFont getFont(int textSize) {
+        return fonts[textSize];
     }
 }

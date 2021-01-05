@@ -1,4 +1,4 @@
-package main.java.org.smallbox.farpoint.desktop;
+package org.smallbox.farpoint.desktop;
 
 public class TestLauncher {
     public static void main (String[] arg) {

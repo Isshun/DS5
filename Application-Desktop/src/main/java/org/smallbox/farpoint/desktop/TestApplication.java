@@ -1,4 +1,4 @@
-package main.java.org.smallbox.farpoint.desktop;
+package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

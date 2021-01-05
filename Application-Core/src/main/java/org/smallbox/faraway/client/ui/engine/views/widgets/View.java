@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
+import org.smallbox.faraway.client.FontManager;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.manager.SpriteManager;
@@ -30,6 +31,7 @@ public abstract class View implements Comparable<View> {
     protected final UIManager uiManager;
     protected final SpriteManager spriteManager;
     protected final GDXRenderer gdxRenderer;
+    protected final FontManager fontManager;
     protected final Data applicationData;
 
     protected int _originWidth;
@@ -49,6 +51,7 @@ public abstract class View implements Comparable<View> {
         spriteManager = DependencyInjector.getInstance().getDependency(SpriteManager.class);
         gdxRenderer = DependencyInjector.getInstance().getDependency(GDXRenderer.class);
         applicationData = DependencyInjector.getInstance().getDependency(Data.class);
+        fontManager = DependencyInjector.getInstance().getDependency(FontManager.class);
 
         _module = module;
         _isVisible = true;

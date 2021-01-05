@@ -61,8 +61,8 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                         "red_dark_5 = " + RawColors.RAW_RED_DARK_5 + "\n" +
 
                         "math.round = function(num, idp)\n" +
-                        "local mult = 10^(idp or 0)\n" +
-                        "return math.floor(num * mult + 0.5) / mult\n" +
+                        "  local mult = 10^(idp or 0)\n" +
+                        "  return math.floor(num * mult + 0.5) / mult\n" +
                         "end end",
                 "main").call();
 

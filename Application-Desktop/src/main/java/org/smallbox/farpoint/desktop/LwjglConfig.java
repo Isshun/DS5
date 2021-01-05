@@ -1,4 +1,4 @@
-package main.java.org.smallbox.farpoint.desktop;
+package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;

@@ -19,13 +19,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class DependencyInjector {
     private static final DependencyInjector _self = new DependencyInjector();
-    private final Collection<Object> _gameShortcut = new LinkedBlockingQueue<>();
     private final Map<Class<?>, DependencyInfo<?>> _applicationObjectPoolByClass = new ConcurrentHashMap<>();
     private final Map<Class<?>, DependencyInfo<?>> _gameObjectPoolByClass = new ConcurrentHashMap<>();
     private boolean _init = false;
@@ -167,23 +165,20 @@ public class DependencyInjector {
 
     // TODO: methode appelée plusieurs fois (2)
     private void doInjectShortcut(Object host) {
-            if (!_gameShortcut.contains(host)) {
-                _gameShortcut.add(host);
-                for (Method method : host.getClass().getDeclaredMethods()) {
-                    method.setAccessible(true);
-                    GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
-                    if (gameShortcut != null) {
-                        Log.debug(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
-                        getDependency(ShortcutManager.class).addBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
-                            try {
-                                method.invoke(host);
-                            } catch (IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
-                            }
-                        });
+        for (Method method : host.getClass().getDeclaredMethods()) {
+            method.setAccessible(true);
+            GameShortcut gameShortcut = method.getAnnotation(GameShortcut.class);
+            if (gameShortcut != null) {
+                Log.debug(String.format("Try to inject %s to %s", method.getName(), host.getClass().getSimpleName()));
+                getDependency(ShortcutManager.class).addBinding(host.getClass().getName() + "." + method.getName(), gameShortcut.key(), () -> {
+                    try {
+                        method.invoke(host);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
                     }
-                }
+                });
             }
+        }
     }
 
     private void doInjectDependency(Object host, Class<?> cls, boolean gameExists) {

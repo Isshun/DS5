@@ -27,7 +27,7 @@ public class GDXApplication extends ApplicationAdapter {
 
         TaskManager taskManager = di.getDependency(TaskManager.class);
         taskManager.addLoadTask("Calling dependency injector", false, di::injectApplicationDependencies);
-        taskManager.addLoadTask("Generate fonts", true, () -> di.getDependency(FontGenerator.class).generateFonts());
+        taskManager.addLoadTask("Generate fonts", true, () -> di.getDependency(FontManager.class).generateFonts());
         taskManager.addLoadTask("Init groovy manager", false, () -> di.getDependency(GroovyManager.class).init());
         taskManager.addLoadTask("Create layer", true, () -> di.getDependency(GDXRenderer.class).init());
         taskManager.addLoadTask("Launch DB thread", false, () -> taskManager.launchBackgroundThread(di.getDependency(SQLManager.class)::update, 16));

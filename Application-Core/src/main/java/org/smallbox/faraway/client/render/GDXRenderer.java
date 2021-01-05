@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.client.FontGenerator;
+import org.smallbox.faraway.client.FontManager;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.common.ParcelCommon;
@@ -25,14 +25,26 @@ public class GDXRenderer {
     private ApplicationConfig applicationConfig;
 
     @Inject
-    private FontGenerator fontGenerator;
+    private FontManager fontManager;
 
-    private SpriteBatch           _batch;
-    private BitmapFont[]          _fonts;
-    private OrthographicCamera    _camera;
-    private OrthographicCamera    _cameraUI;
-    private OrthographicCamera    _cameraWorld;
-    private ShapeRenderer           _drawPixelShapeLayer;
+    private SpriteBatch _batch;
+    private OrthographicCamera _camera;
+    private OrthographicCamera _cameraUI;
+    private ShapeRenderer _drawPixelShapeLayer;
+
+    public void init() {
+        _batch = new SpriteBatch();
+        _drawPixelShapeLayer = new ShapeRenderer();
+        _drawPixelShapeLayer.setProjectionMatrix(_batch.getProjectionMatrix());
+
+        _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _camera.zoom = 0.75f;
+
+        _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        _cameraUI.zoom = 1f;
+    }
 
     public float getZoom() {
         return _camera.zoom;
@@ -40,24 +52,6 @@ public class GDXRenderer {
 
     public float getUiScale() {
         return (float) applicationConfig.uiScale;
-    }
-
-    public void init() {
-        _batch = new SpriteBatch();
-        _fonts = fontGenerator.getFonts();
-        _drawPixelShapeLayer = new ShapeRenderer();
-        _drawPixelShapeLayer.setProjectionMatrix(_batch.getProjectionMatrix());
-
-        _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.zoom = 0.5f;
-
-        _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _cameraUI.zoom = 1f;
-
-        _cameraWorld = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _cameraWorld.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void draw(int x, int y, TextureRegion textureRegion) {
@@ -202,7 +196,7 @@ public class GDXRenderer {
         _batch.begin();
         _batch.setProjectionMatrix(camera.combined);
         fontSize *= getUiScale();
-        callback.onDraw(_batch, _fonts[fontSize]);
+        callback.onDraw(_batch, fontManager.getFont(fontSize));
         _batch.end();
     }
 
@@ -221,8 +215,8 @@ public class GDXRenderer {
             _batch.begin();
 //            _cameraUI.updateGame();
             _batch.setProjectionMatrix(camera.combined);
-            _fonts[textSize].setColor(color != null ? color : Color.WHITE);
-            _fonts[textSize].draw(_batch, string, x, y);
+            fontManager.getFont(textSize).setColor(color != null ? color : Color.WHITE);
+            fontManager.getFont(textSize).draw(_batch, string, x, y);
 //            _fonts[textSize].drawMultiLine(_batch, string, x, y);
             _batch.end();
         }
@@ -283,11 +277,11 @@ public class GDXRenderer {
         if (color != null) {
             drawRectangleUI(
                     (int) (layerManager.getViewport().getPosX() * (1 / _camera.zoom) + (x * Constant.TILE_WIDTH * (1 / _camera.zoom)) + offsetX)
-                            + (int)(applicationConfig.screen.resolution[0] / 2 - (applicationConfig.screen.resolution[0] / 2 / _camera.zoom)),
+                            + (int) (applicationConfig.screen.resolution[0] / 2 - (applicationConfig.screen.resolution[0] / 2 / _camera.zoom)),
                     (int) (layerManager.getViewport().getPosY() * (1 / _camera.zoom) + (y * Constant.TILE_HEIGHT * (1 / _camera.zoom)) + offsetY)
-                            + (int)(applicationConfig.screen.resolution[1] / 2 - (applicationConfig.screen.resolution[1] /2 / _camera.zoom)),
-                    (int)(width * (1 / _camera.zoom)),
-                    (int)(height * (1 / _camera.zoom)),
+                            + (int) (applicationConfig.screen.resolution[1] / 2 - (applicationConfig.screen.resolution[1] / 2 / _camera.zoom)),
+                    (int) (width * (1 / _camera.zoom)),
+                    (int) (height * (1 / _camera.zoom)),
                     color,
                     filled
             );
@@ -324,10 +318,6 @@ public class GDXRenderer {
 
     public Batch getBatch() {
         return _batch;
-    }
-
-    public BitmapFont getFont(int size) {
-        return _fonts != null ? _fonts[size] : null;
     }
 
     public void drawOnMap(int x, int y, TextureRegion region) {
