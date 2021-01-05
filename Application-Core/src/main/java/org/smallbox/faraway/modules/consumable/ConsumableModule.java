@@ -10,12 +10,14 @@ import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
-import org.smallbox.faraway.core.module.world.model.*;
+import org.smallbox.faraway.core.module.world.model.ConsumableItem;
+import org.smallbox.faraway.core.module.world.model.ItemFilter;
+import org.smallbox.faraway.core.module.world.model.MapObjectModel;
+import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.structure.StructureModule;
-import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
@@ -260,15 +262,6 @@ public class ConsumableModule extends GenericGameModule<ConsumableItem, Consumab
 
     @Override
     public void onGameCreate(Game game) {
-        structureModule.addObserver(new StructureModuleObserver() {
-            @Override
-            public void onStructureComplete(StructureItem structure) {
-                if (!structure.isWalkable() && hasConsumable(structure.getParcel())) {
-                    moveConsumableToParcel(WorldHelper.getNearestFreeParcel(structure.getParcel(), true, true), structure.getParcel().getItem(ConsumableItem.class));
-                }
-            }
-        });
-
 //        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
 //            private ConsumableItem _lastConsumable;
 //            private ConsumableItem _currentConsumable;
@@ -290,10 +283,6 @@ public class ConsumableModule extends GenericGameModule<ConsumableItem, Consumab
 //                _lastConsumable = _currentConsumable;
 //            }
 //        });
-    }
-
-    private boolean hasConsumable(ParcelModel parcel) {
-        return getConsumable(parcel) != null;
     }
 
     @Override

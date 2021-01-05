@@ -19,9 +19,6 @@ import org.smallbox.faraway.modules.job.JobModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.log.Log;
 
-import java.util.Collection;
-import java.util.concurrent.LinkedBlockingQueue;
-
 @GameObject
 public class StructureModule extends GenericGameModule<StructureItem, StructureModuleObserver> {
 
@@ -43,17 +40,8 @@ public class StructureModule extends GenericGameModule<StructureItem, StructureM
     @Inject
     private Data data;
 
-//    @Inject
-//    private WorldInteractionModule worldInteractionModule;
-
-    private Collection<StructureItem> _structures;
-
-    public Collection<StructureItem> getStructures() { return _structures; }
-
     @Override
     public void onGameCreate(Game game) {
-        _structures = new LinkedBlockingQueue<>();
-
 //        worldInteractionModule.addObserver(new WorldInteractionModuleObserver() {
 //            public StructureItem _lastStructure;
 //
@@ -80,12 +68,12 @@ public class StructureModule extends GenericGameModule<StructureItem, StructureM
         jobModule.addObserver(new JobModuleObserver() {
             @Override
             public void onJobCancel(JobModel job) {
-                _structures.removeIf(item -> item.getBuildJob() == job);
+                modelList.removeIf(item -> item.getBuildJob() == job);
             }
 
             @Override
             public void onJobComplete(JobModel job) {
-                _structures.removeIf(item -> item.getBuildJob() == job);
+                modelList.removeIf(item -> item.getBuildJob() == job);
             }
         });
     }
@@ -153,7 +141,7 @@ public class StructureModule extends GenericGameModule<StructureItem, StructureM
             }
 
             moveStructureToParcel(parcel, structure);
-            _structures.add(structure);
+            modelList.add(structure);
 
             pathManager.refreshConnections(structure.getParcel());
 
@@ -181,7 +169,7 @@ public class StructureModule extends GenericGameModule<StructureItem, StructureM
         StructureItem structure = new StructureItem(itemInfo);
         structure.setBuildProgress(0);
         structure.setParcel(parcel);
-        _structures.add(structure);
+        modelList.add(structure);
     }
 
     public StructureItem addStructure(String itemName, int x, int y, int z) {
@@ -194,13 +182,13 @@ public class StructureModule extends GenericGameModule<StructureItem, StructureM
         ParcelModel parcel = worldModule.getParcel(x, y, z);
         if (parcel != null) {
             structure.setParcel(parcel);
-            _structures.add(structure);
+            modelList.add(structure);
         }
         return structure;
     }
 
     public StructureItem getStructure(ParcelModel parcel) {
-        for (StructureItem structure: _structures) {
+        for (StructureItem structure: modelList) {
             if (structure.getParcel() == parcel) {
                 return structure;
             }

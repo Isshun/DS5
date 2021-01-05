@@ -20,7 +20,7 @@ public class PlantLayer extends BaseLayer {
     private SpriteManager spriteManager;
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        plantModule.getPlants().stream()
+        plantModule.getAll().stream()
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .forEach(plant -> drawPlant(renderer, plant));
 

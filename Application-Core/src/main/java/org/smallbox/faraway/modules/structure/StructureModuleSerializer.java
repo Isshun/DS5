@@ -64,7 +64,7 @@ public class StructureModuleSerializer extends GenericGameSerializer<StructureIt
 
     @Override
     public Collection<StructureItem> getEntries() {
-        return structureModule.getStructures();
+        return structureModule.getAll();
     }
 
 }

@@ -14,9 +14,7 @@ public class PlantDashboardLayer extends DashboardLayerBase {
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
-        if (plantModule != null && plantModule.getPlants() != null) {
-            plantModule.getPlants().forEach(plant -> drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity()));
-        }
+        plantModule.getAll().forEach(plant -> drawDebug(renderer, "Plant", plant.getLabel() + " " + plant.getMaturity()));
     }
 
 }

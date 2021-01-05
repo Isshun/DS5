@@ -46,7 +46,7 @@ public class StructureTopLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        structureModule.getStructures().stream()
+        structureModule.getAll().stream()
                 .filter(structure -> viewport.hasParcel(structure.getParcel()))
                 .forEach(structure -> {
 

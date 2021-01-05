@@ -4,7 +4,7 @@ import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.engine.module.GameModule;
+import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
@@ -14,14 +14,13 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
+import org.smallbox.faraway.modules.structure.StructureModuleObserver;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.util.Collection;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 @GameObject
-public class PlantModule extends GameModule {
+public class PlantModule extends GenericGameModule<PlantItem, StructureModuleObserver> {
 
     @Inject
     private Data data;
@@ -44,8 +43,6 @@ public class PlantModule extends GameModule {
     @Inject
     private HarvestJobFactory harvestJobFactory;
 
-    private Collection<PlantItem> _plants = new ConcurrentLinkedQueue<>();
-
     @OnInit
     public void init() {
         areaModule.addAreaClass(GardenArea.class);
@@ -54,23 +51,23 @@ public class PlantModule extends GameModule {
     @Override
     public void onModuleUpdate(Game game) {
         // Fait pousser les plantes
-        _plants.stream()
+        modelList.stream()
                 .filter(plant -> plant.task == null && plant.hasSeed() && computeGrowingInfo(plant))
                 .forEach(plant -> gameTaskManager.startTask(new PlantGrowTask(plant)));
 
         // Fait pousser les plantes
-        _plants.stream()
+        modelList.stream()
                 .filter(plant -> plant.hasSeed() && computeGrowingInfo(plant))
                 .forEach(plant -> plant.grow(getHourInterval()));
 
         // Récolte les plantes arrivées à maturité
-        _plants.stream()
+        modelList.stream()
                 .filter(plant -> plant.getJob() == null)
                 .filter(plant -> plant.getMaturity() >= 1)
                 .forEach(plant -> jobModule.addJob(harvestJobFactory.create(plant)));
 
         // TODO: ajout auto de la graine
-        _plants.forEach(plant -> plant.setSeed(true));
+        modelList.forEach(plant -> plant.setSeed(true));
     }
 
     public void addPlant(String plantName, int x, int y, int z) { addPlant(data.getItemInfo(plantName), WorldHelper.getParcel(x, y, z)); }
@@ -86,13 +83,13 @@ public class PlantModule extends GameModule {
     public void addPlant(ItemInfo item, ParcelModel parcel) {
 
         // Remove existing plant
-        _plants.removeIf(plant -> plant.getParcel() == parcel);
+        modelList.removeIf(plant -> plant.getParcel() == parcel);
 
         // Add new one
         PlantItem plant = new PlantItem(item);
         plant.setParcel(parcel);
         plant.setMaturity(0);
-        _plants.add(plant);
+        modelList.add(plant);
     }
 
     private boolean computeGrowingInfo(PlantItem plant) {
@@ -124,12 +121,8 @@ public class PlantModule extends GameModule {
         return true;
     }
 
-    public Collection<PlantItem> getPlants() {
-        return _plants;
-    }
-
     public PlantItem getPlant(ParcelModel parcel) {
-        Optional<PlantItem> optional = _plants.stream().filter(plant -> plant.getParcel() == parcel).findAny();
+        Optional<PlantItem> optional = modelList.stream().filter(plant -> plant.getParcel() == parcel).findAny();
         return optional.isPresent() ? optional.get() : null;
     }
 
