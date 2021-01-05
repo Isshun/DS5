@@ -43,6 +43,9 @@ public class LayerManager implements GameClientObserver {
     @Inject
     private WorldInputManager worldInputManager;
 
+    @Inject
+    private Game game;
+
     public static final int                 TOP = 999;
     public static final int                 MINI_MAP_LEVEL = 100;
     public static final int                 PARTICLE_LAYER_LEVEL = -99;
@@ -144,7 +147,7 @@ public class LayerManager implements GameClientObserver {
         if (render.isLoaded()) {
             render.unload();
         } else {
-            render.gameStart(gameManager.getGame());
+            render.gameStart(game);
         }
     }
 

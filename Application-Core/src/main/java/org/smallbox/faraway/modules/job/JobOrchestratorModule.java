@@ -36,7 +36,7 @@ public class JobOrchestratorModule {
     private GameTime gameTime;
 
     public void assign() {
-        characterModule.getCharacters().stream()
+        characterModule.getAll().stream()
                 .filter(CharacterModel::isFree)
                 .forEach(this::assign);
     }

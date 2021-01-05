@@ -153,20 +153,6 @@ public class ConsumableModule extends GenericGameModule<ConsumableItem, Consumab
         return consumableOnTargetParcel.getInfo() == itemInfo && consumableOnTargetParcel.getTotalQuantity() + quantity < itemInfo.stack;
     }
 
-    /**
-     * Crée un ConsumeJob
-     *
-     * @param consumable
-     * @param totalDuration
-     * @param callback
-     * @return Le job créé
-     */
-    public ConsumeJob createConsumeJob(ConsumableItem consumable, double totalDuration, ConsumeJob.OnConsumeCallback callback) {
-        ConsumeJob consumeJob = new ConsumeJob(this, consumable, totalDuration, callback);
-        jobModule.addJob(consumeJob);
-        return consumeJob;
-    }
-
 //    public boolean createHaulToFactoryJobs(MapObjectModel item, ItemInfo itemInfo, int quantity) {
 //
 //        // Compte le nombre de consomables qui seront rapportés par les jobs existants

@@ -32,7 +32,7 @@ public class CharacterJobModule extends GameModule<CharacterModuleObserver> {
     public void onModuleUpdate(Game game) {
         double hourInterval = getTickInterval() / game.getTickPerHour();
 
-        characterModule.getCharacters().stream()
+        characterModule.getAll().stream()
                 .filter(character -> character.getJob() != null)
                 .forEach(character -> {
 

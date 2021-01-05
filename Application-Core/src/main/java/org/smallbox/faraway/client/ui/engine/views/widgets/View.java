@@ -430,6 +430,11 @@ public abstract class View implements Comparable<View> {
         return this;
     }
 
+    public View setBackgroundFocusColor(Color color) {
+        _backgroundFocusColor = color;
+        return this;
+    }
+
     public View setOnDragListener(UIEventManager.OnDragListener onDragListener) {
         _onDragListener = onDragListener;
         uiEventManager.setOnDragListener(this, _onDragListener);

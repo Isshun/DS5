@@ -7,9 +7,9 @@
 //import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 //import org.smallbox.faraway.core.game.Game;
-//import org.smallbox.faraway.core.game.GameInfo;
+//import org.smallbox.faraway.core.game.save.GameInfo;
 //import org.smallbox.faraway.core.game.GameObserverPriority;
-//import org.smallbox.faraway.core.game.GameSaveManager;
+//import org.smallbox.faraway.core.game.save.GameSaveManager;
 //
 ///**
 // * Created by Alex

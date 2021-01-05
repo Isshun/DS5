@@ -15,9 +15,7 @@ public class CharacterDashboardLayer extends DashboardLayerBase {
 
     @Override
     protected void onDraw(GDXRenderer renderer, int frame) {
-        if (characterModule != null && characterModule.getCharacters() != null) {
-            characterModule.getCharacters().forEach(character -> drawDebugCharacter(renderer, character));
-        }
+        characterModule.getAll().forEach(character -> drawDebugCharacter(renderer, character));
     }
 
     private void drawDebugCharacter(GDXRenderer renderer, CharacterModel character) {

@@ -37,9 +37,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 @GameObject
 public class CharacterModule extends GenericGameModule<CharacterModel, CharacterModuleObserver> {
 
-//    @Inject
-//    private WorldInteractionModule worldInteractionModule;
-
     @Inject
     private Data data;
 
@@ -59,11 +56,7 @@ public class CharacterModule extends GenericGameModule<CharacterModel, Character
     private WorldModule worldModule;
 
     private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
-    private List<CharacterModel>                _visitors = new ArrayList<>();
     private int                                 _count;
-
-    public Collection<CharacterModel>     getCharacters() { return modelList; }
-    public Collection<CharacterModel>     getVisitors() { return _visitors; }
 
     @OnInit
     private void init() {

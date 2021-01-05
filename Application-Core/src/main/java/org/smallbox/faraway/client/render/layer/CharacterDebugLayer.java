@@ -31,8 +31,7 @@ public class CharacterDebugLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        _characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
-        _characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
+        _characterModule.getAll().forEach(character -> drawCharacter(renderer, viewport, character));
     }
 
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {

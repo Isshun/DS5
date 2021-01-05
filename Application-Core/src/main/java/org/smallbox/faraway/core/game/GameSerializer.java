@@ -9,12 +9,12 @@ public abstract class GameSerializer {
     public int getModulePriority() { return 999; }
 
     public void save(SQLManager sqlManager) {
-        Log.info("Serializer: call onSave on " + getClass().getName());
+        Log.info("Call onSave on " + getClass().getSimpleName());
         onSave(sqlManager);
     }
 
     public void load(SQLManager sqlManager) {
-        Log.info("Serializer: call onLoadModule " + getClass().getName());
+        Log.info("Call onLoadModule on " + getClass().getSimpleName());
         onLoad(sqlManager);
     }
 

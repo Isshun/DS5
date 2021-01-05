@@ -1,30 +1,20 @@
-package org.smallbox.faraway.core.game;
+package org.smallbox.faraway.core.game.save;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
 import org.smallbox.faraway.core.game.model.planet.RegionInfo;
 import org.smallbox.faraway.util.Constant;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class GameInfo {
     public boolean generateMountains;
-
-    public enum Type {INIT, AUTO, FAST, REGULAR}
-
-    public static class GameSaveInfo {
-        public GameInfo         game;
-        public Type             type;
-        public String           filename;
-        public String           label;
-        public Date             date;
-    }
 
     public PlanetInfo           planet;
     public RegionInfo           region;
@@ -47,11 +37,7 @@ public class GameInfo {
 
         JSONArray saveArray = new JSONArray();
         for (GameSaveInfo saveInfo: saveFiles) {
-            JSONObject saveJson = new JSONObject();
-            saveJson.put("type", saveInfo.type.toString());
-            saveJson.put("filename", saveInfo.filename);
-            saveJson.put("date", new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.ENGLISH).format(saveInfo.date));
-            saveArray.put(saveJson);
+            saveArray.put(saveInfo.toJSON());
         }
         json.put("saves", saveArray);
 
@@ -73,17 +59,8 @@ public class GameInfo {
 
         if (json.has("saves")) {
             for (int i = 0; i < json.getJSONArray("saves").length(); i++) {
-                JSONObject jsonSave = json.getJSONArray("saves").getJSONObject(i);
-                GameSaveInfo saveInfo = new GameSaveInfo();
+                GameSaveInfo saveInfo = GameSaveInfo.fromJSON(json.getJSONArray("saves").getJSONObject(i));
                 saveInfo.game = gameInfo;
-                saveInfo.type = Type.valueOf(jsonSave.getString("type").toUpperCase());
-                saveInfo.filename = jsonSave.getString("filename");
-                try {
-                    saveInfo.date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.ENGLISH).parse(jsonSave.getString("date"));
-                    saveInfo.label = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss", Locale.ENGLISH).format(saveInfo.date);
-                } catch (ParseException e) {
-                    throw new GameException(GameInfo.class, "Cannot read GameInfo json");
-                }
                 gameInfo.saveFiles.add(saveInfo);
             }
         }

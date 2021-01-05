@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.ApplicationClient;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -45,7 +44,7 @@ public class CrewController extends LuaController {
     @Override
     public void onControllerUpdate() {
         if (listCrew != null) {
-            characterModule.getCharacters().forEach(character -> {
+            characterModule.getAll().forEach(character -> {
 
                 View view = new UIFrame(null);
                 view.setSize(200, 60);

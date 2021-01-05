@@ -31,6 +31,9 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
     @Inject
     private GameManager gameManager;
 
+    @Inject
+    private Game game;
+
 //    private Map<CharacterModel, PathModel> paths = new ConcurrentHashMap<>();
 
     @Override
@@ -42,7 +45,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
     public void onModuleUpdate(Game game) {
 //        fixCharacterPosition();
 
-        characterModule.getCharacters().forEach(character -> {
+        characterModule.getAll().forEach(character -> {
             character.setDirection(MovableModel.Direction.NONE);
             doMove(character);
         });
@@ -88,7 +91,7 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
             }
 
             // Increase move progress
-            character.setMoveStep(applicationConfig.game.characterSpeed / gameManager.getGame().getTickPerHour());
+            character.setMoveStep(applicationConfig.game.characterSpeed / game.getTickPerHour());
 //            _moveStep = 1 * getExtra(CharacterStatsExtra.class).speed * (_job != null ? _job.getSpeedModifier() : 1);
 
             // Character has reach next parcel
@@ -160,13 +163,13 @@ public class CharacterMoveModule extends GameModule<CharacterModuleObserver> {
 //    }
 
     public boolean havePeopleOnProximity(CharacterModel character) {
-        return characterModule.getCharacters().stream()
+        return characterModule.getAll().stream()
                 .anyMatch(c -> c != character
                         && WorldHelper.getApproxDistance(character.getParcel(), c.getParcel()) < 4);
     }
 
     public boolean hasCharacterOnParcel(ParcelModel parcel) {
-        return characterModule.getCharacters().stream().anyMatch(c -> c.getParcel() == parcel);
+        return characterModule.getAll().stream().anyMatch(c -> c.getParcel() == parcel);
     }
 
     private MovableModel.Direction getDirection(int fromX, int fromY, int toX, int toY) {

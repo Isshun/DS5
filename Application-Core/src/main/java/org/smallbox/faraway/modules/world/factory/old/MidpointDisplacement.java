@@ -1,7 +1,7 @@
 //package org.smallbox.faraway.core.module.world.factory;
 //
 //import com.badlogic.gdx.math.MathUtils;
-//import org.smallbox.faraway.core.game.GameInfo;
+//import org.smallbox.faraway.core.game.save.GameInfo;
 //import org.smallbox.faraway.core.module.world.model.ParcelModel;
 //
 //public class MidpointDisplacement {

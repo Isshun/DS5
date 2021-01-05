@@ -133,7 +133,6 @@ public class JobModel extends ObjectModel {
     public String                   getMessage() { return _message; }
     public String                   getLabel() { return _mainLabel; }
     public String                   getMainLabel() { return _mainLabel; }
-    public int                      getId() { return _id; }
     public CharacterModel           getCharacter() { return _character; }
     public CharacterModel           getCharacterRequire() { return _characterRequire; }
     public int                      getFail() { return _fail; }

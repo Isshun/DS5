@@ -20,12 +20,14 @@ public class GameContextMenuManager {
     }
 
     public void open(ParcelModel parcel, int mouseX, int mouseY) {
-        GameContextMenu menu = new GameContextMenu(mouseX, mouseY);
-        actions.stream()
-                .filter(action -> action.check(parcel, mouseX, mouseY))
-                .forEach(action -> menu.addEntry(action.getLabel(), mouseX, mouseY, action.getRunnable(parcel, mouseX, mouseY)));
-        if (CollectionUtils.isNotEmpty(menu.getEntries())) {
-            this.menu = menu;
+        if (parcel != null) {
+            GameContextMenu menu = new GameContextMenu(mouseX, mouseY);
+            actions.stream()
+                    .filter(action -> action.check(parcel, mouseX, mouseY))
+                    .forEach(action -> menu.addEntry(action.getLabel(), mouseX, mouseY, action.getRunnable(parcel, mouseX, mouseY)));
+            if (CollectionUtils.isNotEmpty(menu.getEntries())) {
+                this.menu = menu;
+            }
         }
     }
 

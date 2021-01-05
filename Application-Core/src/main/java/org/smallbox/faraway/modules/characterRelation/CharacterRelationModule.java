@@ -21,7 +21,7 @@ public class CharacterRelationModule extends GameModule {
 
     @Override
     public void onModuleUpdate(Game game) {
-        characterModule.getCharacters().forEach(this::updateCharacter);
+        characterModule.getAll().forEach(this::updateCharacter);
     }
 
     private void updateCharacter(CharacterModel character) {

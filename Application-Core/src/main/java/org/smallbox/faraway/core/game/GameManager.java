@@ -1,7 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import com.badlogic.gdx.Input;
-import org.json.JSONObject;
+import org.smallbox.faraway.client.MenuManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.game.save.*;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.modules.world.factory.WorldFactory;
@@ -16,12 +17,6 @@ import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @ApplicationObject
 public class GameManager implements GameObserver {
@@ -33,10 +28,19 @@ public class GameManager implements GameObserver {
     private GameSaveManager gameSaveManager;
 
     @Inject
+    private GameLoadManager gameLoadManager;
+
+    @Inject
     private ApplicationConfig applicationConfig;
 
     @Inject
     private PathManager pathManager;
+
+    @Inject
+    private GameFileManager gameFileManager;
+
+    @Inject
+    private MenuManager menuManager;
 
     @Inject
     private Data data;
@@ -68,13 +72,13 @@ public class GameManager implements GameObserver {
         Log.info("Create new game (" + (System.currentTimeMillis() - time) + "ms)");
     }
 
-    public void loadGame(GameInfo gameInfo, GameInfo.GameSaveInfo gameSaveInfo, GameListener listener) {
+    public void loadGame(GameInfo gameInfo, GameSaveInfo gameSaveInfo, GameListener listener) {
         try {
             long time = System.currentTimeMillis();
 
             phase1(gameInfo);
 
-            gameSaveManager.load(_game, FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
+            gameLoadManager.load(FileUtils.getSaveDirectory(gameInfo.name), gameSaveInfo.filename, () -> {
                 phase2(listener);
                 Log.info("Load game (" + (System.currentTimeMillis() - time) + "ms)");
             });
@@ -120,6 +124,8 @@ public class GameManager implements GameObserver {
 
         // Launch background thread
         _game.launchBackgroundThread(listener);
+
+        menuManager.setVisible(false);
     }
 
     public void closeGame() {
@@ -144,35 +150,12 @@ public class GameManager implements GameObserver {
         return _game != null ? _game.getState() : null;
     }
 
-    public Game getGame() {
-        return _game;
-    }
-
     public boolean isRunning() {
         return _game != null && _game.isRunning();
     }
 
-    private List<GameInfo> buildGameList() {
-        return FileUtils.list(FileUtils.getSaveDirectory()).stream()
-                .filter(File::isDirectory)
-                .map(gameDirectory -> {
-                    File file = new File(gameDirectory, "game.json");
-                    if (file.exists()) {
-                        try {
-                            Log.info("Load game directory: " + gameDirectory.getName());
-                            return GameInfo.fromJSON(new JSONObject(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8)));
-                        } catch (IOException e) {
-                            Log.warning("Cannot load gameInfo for: " + file.getAbsolutePath());
-                        }
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
     public void loadLastGame() {
-        buildGameList().stream()
+        gameFileManager.buildGameList().stream()
                 .flatMap(gameInfo -> gameInfo.saveFiles.stream())
                 .min((o1, o2) -> o2.date.compareTo(o1.date))
                 .ifPresent(saveInfo -> {
@@ -184,7 +167,7 @@ public class GameManager implements GameObserver {
     @GameShortcut(key = Input.Keys.F5)
     public void actionQuickSaveGame() {
         Log.info("quickSaveGame");
-        gameSaveManager.saveGame(_game, _game.getInfo(), GameInfo.Type.FAST);
+        gameSaveManager.saveGame(GameSaveType.FAST);
     }
 
 }

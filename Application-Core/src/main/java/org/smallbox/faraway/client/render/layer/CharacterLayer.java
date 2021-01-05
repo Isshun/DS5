@@ -13,6 +13,7 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.ColorUtils;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -40,7 +41,8 @@ public class CharacterLayer extends BaseLayer {
     @Inject
     private GameManager gameManager;
 
-    private int                     _floor;
+    @Inject
+    private Game game;
 
     private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
     private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00ff);
@@ -61,13 +63,11 @@ public class CharacterLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-
         characterClientModule.characters.values().forEach(character -> {
             renderer.drawRectangleOnMap(character.parcelX, character.parcelY, 16, 16, Color.BROWN, true, 0, 0);
         });
 
-        characterModule.getCharacters().forEach(character -> drawCharacter(renderer, viewport, character));
-        characterModule.getVisitors().forEach(visitor -> drawCharacter(renderer, viewport, visitor));
+        characterModule.getAll().forEach(character -> drawCharacter(renderer, viewport, character));
     }
 
     private void drawCharacter(GDXRenderer renderer, Viewport viewport, CharacterModel character) {
@@ -154,7 +154,7 @@ public class CharacterLayer extends BaseLayer {
     private void drawPath(CharacterModel character, Viewport viewport, GDXRenderer renderer) {
         int viewPortX = viewport.getPosX();
         int viewPortY = viewport.getPosY();
-        int framePerTick = gameManager.getGame().getTickInterval() / (1000 / 60);
+        int framePerTick = game.getTickInterval() / (1000 / 60);
 //
 //        if (character.getPath().getSections().peek().p1 == character.getParcel()) {
 //            character.getPath().getSections().poll();
@@ -187,7 +187,7 @@ public class CharacterLayer extends BaseLayer {
 //            System.out.println("start index: " + path.getIndex());
         }
 
-        int tickInterval = gameManager.getGame().getTickInterval();
+        int tickInterval = game.getTickInterval();
 
 //        Interpolation easAlpha;
 //        int lifeTime;
@@ -284,11 +284,6 @@ public class CharacterLayer extends BaseLayer {
 //                (int) (viewPortX + (section.p1.x * 32) + (alpha * section.length * 32 * section.dirX)),
 //                (int) (viewPortY + (section.p1.y * 32) + (alpha * section.length * 32 * section.dirY)),
 //                spriteManager.getCharacter(character, 0, 0));
-    }
-
-    @Override
-    public void onFloorChange(int floor) {
-        _floor = floor;
     }
 
 }

@@ -48,6 +48,11 @@ public class MenuManager {
 //        });
     }
 
+    public void setVisible(boolean visible) {
+        menuMainController.setVisible(visible);
+        menuSettingsController.setVisible(visible);
+    }
+
     public void display(String viewName) {
         uiManager.getMenuViews().get(viewName).getView().setVisible(true);
     }
@@ -142,4 +147,5 @@ public class MenuManager {
             }
         }
     }
+
 }

@@ -321,7 +321,7 @@ public class UILabel extends View {
         return label;
     }
 
-    public static View createFast(String text, Color textColor) {
+    public static UILabel createFast(String text, Color textColor) {
         return create(null)
                 .setText(text)
                 .setTextColor(textColor);

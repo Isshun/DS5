@@ -135,7 +135,7 @@ public class MinimapLayer extends BaseLayer {
     }
 
     private void drawCharacters(GDXRenderer renderer) {
-        characterModule.getCharacters().stream()
+        characterModule.getAll().stream()
                 .filter(character -> character.getParcel().z == WorldHelper.getCurrentFloor())
                 .forEach(character -> renderer.drawPixel(
                         (int) (_mainPosX + (character.getParcel().x * ratioX)),

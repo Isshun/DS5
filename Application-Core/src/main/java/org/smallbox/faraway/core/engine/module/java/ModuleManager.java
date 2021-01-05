@@ -9,6 +9,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.log.Log;
@@ -25,6 +26,9 @@ public class ModuleManager implements GameObserver {
 
     @Inject
     private GameManager gameManager;
+
+    @Inject
+    private Game game;
 
     public interface OnLoadModuleListener {
         void onLoadModule(String message);
@@ -173,8 +177,8 @@ public class ModuleManager implements GameObserver {
             return optionalApplicationModule.get();
         }
 
-        if (gameManager != null && gameManager.getGame() != null) {
-            Optional<T> optionalGameModule = (Optional<T>) gameManager.getGame().getModules().stream().filter(cls::isInstance).findFirst();
+        if (game != null) {
+            Optional<T> optionalGameModule = (Optional<T>) game.getModules().stream().filter(cls::isInstance).findFirst();
             if (optionalGameModule.isPresent()) {
                 return optionalGameModule.get();
             }

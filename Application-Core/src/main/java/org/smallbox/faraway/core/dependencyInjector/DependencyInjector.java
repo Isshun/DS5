@@ -138,7 +138,7 @@ public class DependencyInjector {
         _applicationObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.debug("Inject dependency to: " + host.getClass().getSimpleName());
             doInjectShortcut(host);
-            doInjectDependency(host, false);
+            doInjectDependency(host, host.getClass(), false);
             callInitMethod(host, false);
         });
     }
@@ -160,7 +160,7 @@ public class DependencyInjector {
         objects.stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> {
             Log.info("Inject dependency to game object: " + host.getClass().getSimpleName());
             doInjectShortcut(host);
-            doInjectDependency(host, true);
+            doInjectDependency(host, host.getClass(), true);
             callInitMethod(host, true);
         });
     }
@@ -189,8 +189,13 @@ public class DependencyInjector {
         }
     }
 
-    private void doInjectDependency(Object host, boolean gameExists) {
-        for (Field field: host.getClass().getDeclaredFields()) {
+    private void doInjectDependency(Object host, Class<?> cls, boolean gameExists) {
+        for (Field field: cls.getDeclaredFields()) {
+
+            if (cls.getSuperclass() != null) {
+                doInjectDependency(host, cls.getSuperclass(), gameExists);
+            }
+
             try {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Inject.class)) {

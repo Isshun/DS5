@@ -26,9 +26,9 @@ public class DigJobFactory {
     @Inject
     private PathManager pathManager;
 
-    public JobModel createJob(ParcelModel digParcel) {
+    public DigJob createJob(ParcelModel digParcel) {
         if (digParcel.getRockInfo() != null) {
-            JobModel job = new DigJob();
+            DigJob job = new DigJob();
 
             job._targetParcel = digParcel;
             job.setMainLabel("Dig");

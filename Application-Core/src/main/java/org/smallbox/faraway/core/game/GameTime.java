@@ -17,6 +17,7 @@ public class GameTime {
     @Inject
     private ApplicationConfig applicationConfig;
 
+    private LocalDateTime startGameTime;
     private LocalDateTime localDateTime;
     private int _minute;
     private int _hour;
@@ -26,6 +27,7 @@ public class GameTime {
 
     @OnInit
     private void init() {
+        startGameTime = LocalDateTime.parse(applicationConfig.game.startGameTime, FORMATTER);
         localDateTime = LocalDateTime.parse(applicationConfig.game.startGameTime, FORMATTER);
     }
 
@@ -37,6 +39,10 @@ public class GameTime {
 
     public LocalDateTime getTime() {
         return localDateTime;
+    }
+
+    public LocalDateTime getStartGameTime() {
+        return startGameTime;
     }
 
     public String format(LocalDateTime localDateTime) {

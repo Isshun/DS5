@@ -19,6 +19,7 @@ import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.characterRelation.CharacterRelationModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.ConsumeJob;
+import org.smallbox.faraway.modules.consumable.ConsumeJobFactory;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.item.job.UseJob;
@@ -33,41 +34,23 @@ import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsEx
 @GameObject
 public class CharacterNeedModule extends GameModule {
 
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
-
-    @Inject
-    private JobModule jobModule;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private CharacterRelationModule characterRelationModule;
-
-    @Inject
-    private CharacterBuffModule buffModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GameTime gameTime;
+    @Inject private Game game;
+    @Inject private Data data;
+    @Inject private JobModule jobModule;
+    @Inject private CharacterModule characterModule;
+    @Inject private CharacterRelationModule characterRelationModule;
+    @Inject private CharacterBuffModule buffModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private ConsumeJobFactory consumeJobFactory;
+    @Inject private ItemModule itemModule;
+    @Inject private GameManager gameManager;
+    @Inject private GameTime gameTime;
 
     private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
     public void onModuleUpdate(Game game) {
-        characterModule.getCharacters().forEach(character -> {
+        characterModule.getAll().forEach(character -> {
             if (character.hasExtra(CharacterNeedsExtra.class)) {
                 CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
                 decreaseNeeds(character, needs);
@@ -140,7 +123,7 @@ public class CharacterNeedModule extends GameModule {
     }
 
     private double byHour(double value) {
-        return value / gameManager.getGame().getTickPerHour();
+        return value / game.getTickPerHour();
     }
 
     /**
@@ -201,15 +184,17 @@ public class CharacterNeedModule extends GameModule {
         }
 
         // Create consume job
-        ConsumeJob job = consumableModule.createConsumeJob(bestConsumable, bestConsumable.getInfo().consume.duration, (consumable, durationLeft) -> {
+        ConsumeJob job = consumeJobFactory.create(bestConsumable, bestConsumable.getInfo().consume.duration, (consumable, durationLeft) -> {
             ItemInfo itemInfo = bestConsumable.getInfo();
             character.getExtra(CharacterNeedsExtra.class).use(itemInfo.consume, game.getTickPerHour());
         });
+
         if (job == null) {
             return false;
         }
 
         _jobs.put(need, job);
+        jobModule.addJob(job);
         return true;
     }
 }

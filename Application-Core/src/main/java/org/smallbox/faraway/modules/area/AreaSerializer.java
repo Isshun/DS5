@@ -21,20 +21,19 @@ public class AreaSerializer extends GameSerializer {
     private Data data;
 
     @Inject
-    private AreaModule module;
+    private AreaModule areaModule;
+
+    @Inject
+    private SQLManager sqlManager;
 
     @Override
     public void onSave(SQLManager sqlManager) {
-//        Application.sqlManager.post(db -> {
-//            AreaModule areaModule = (AreaModule) Application.moduleManager.getModule(AreaModule.class);
-//            try {
-//                // Save areas
-//                db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
-//                SQLiteStatement stParcel = db.prepare("INSERT INTO area_parcel (x, y, z, area_id) VALUES (?, ?, ?, ?)");
-//
-//                db.exec("CREATE TABLE area_storage_item (item TEXT, area_id INTEGER, priority INTEGER)");
-//                SQLiteStatement stItem = db.prepare("INSERT INTO area_storage_item (item, area_id, priority) VALUES (?, ?, ?)");
-//
+        sqlManager.post(db -> {
+            try {
+                // Save areas
+                db.exec("CREATE TABLE area_parcel (x INTEGER, y INTEGER, z INTEGER, area_id INTEGER)");
+                SQLiteStatement stParcel = db.prepare("INSERT INTO area_parcel (x, y, z, area_id) VALUES (?, ?, ?, ?)");
+
 //                try {
 //                    // Save garden areas
 //                    db.exec("CREATE TABLE area_garden (id INTEGER, plant TEXT)");
@@ -61,33 +60,13 @@ public class AreaSerializer extends GameSerializer {
 //                        stGarden.dispose();
 //                    }
 //
-//                    // Save storage areas
-//                    db.exec("CREATE TABLE area_storage (id INTEGER, plant TEXT)");
-//                    SQLiteStatement stStorage = db.prepare("INSERT INTO area_storage (id) VALUES (?)");
-//                    try {
-//                        db.exec("begin transaction");
-//                        areaModule.getStorages().forEach(storage -> {
-//                            try {
-//                                stStorage.bind(1, storage.getId());
-//                                stStorage.step();
-//                                stStorage.reset(false);
-//                                insertAreaParcels(storage, stParcel);
-//                                insertStorageAreaItems(storage, stItem);
-//                            } catch (SQLiteException e) {
-//                                e.printStackTrace();
-//                            }
-//                        });
-//                        db.exec("end transaction");
-//                    } finally {
-//                        stStorage.dispose();
-//                    }
 //                } finally {
 //                    stParcel.dispose();
 //                }
-//            } catch (SQLiteException e) {
-//                e.printStackTrace();
-//            }
-//        });
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void onLoad(SQLManager sqlManager) {
@@ -106,20 +85,6 @@ public class AreaSerializer extends GameSerializer {
 //                    }
 //                } finally {
 //                    stGarden.dispose();
-//                }
-//
-//                List<StorageArea> storageAreas = new ArrayList<>();
-//                SQLiteStatement stStorage = db.prepare("SELECT id FROM area_storage");
-//                SQLiteStatement stStorageItem = db.prepare("SELECT item, area_id, priority FROM area_storage_item where area_id = ?");
-//                try {
-//                    while (stStorage.step()) {
-//                        StorageArea storage = new StorageArea();
-//                        getAreaParcels(storage, stParcel, stStorage.columnInt(0));
-//                        getAreaStorageItems(storage, stStorageItem, stStorage.columnInt(0));
-//                        storageAreas.add(storage);
-//                    }
-//                } finally {
-//                    stStorage.dispose();
 //                }
 //
 //            } catch (SQLiteException e) {

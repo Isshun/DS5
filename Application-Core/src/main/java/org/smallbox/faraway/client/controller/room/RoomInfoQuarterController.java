@@ -66,7 +66,7 @@ public class RoomInfoQuarterController extends AbsInfoLuaController<RoomModel> {
     private void onDefineOwner(View view) {
         listCharacters.removeAllViews();
 
-        characterModule.getCharacters().forEach(character -> listCharacters.addView(UILabel.create(null)
+        characterModule.getAll().forEach(character -> listCharacters.addView(UILabel.create(null)
                 .setText(character.getName())
                 .setTextColor(0x5588bbff)
                 .setSize(100, 20)

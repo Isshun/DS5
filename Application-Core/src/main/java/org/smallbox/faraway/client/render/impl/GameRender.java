@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.layer.GDXRenderer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
 
 @ApplicationObject
@@ -24,6 +25,9 @@ public class GameRender {
     @Inject
     private InputManager inputManager;
 
+    @Inject
+    private Game game;
+
     public void render() {
         Gdx.input.setInputProcessor(inputManager);
         Gdx.gl.glClearColor(.07f, 0.1f, 0.12f, 1);
@@ -35,7 +39,7 @@ public class GameRender {
 
         // Render game
         if (gameManager.isLoaded()) {
-            layerManager.render(gameManager.getGame());
+            layerManager.render(game);
         }
 //        fpsLogger.log();
     }

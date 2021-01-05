@@ -19,7 +19,7 @@ public class CharacterModuleConsoleInterpreter extends ConsoleInterpreterBase {
 
     @ConsoleCommand("list")
     public Collection<String> getList() {
-        return characterModule.getCharacters().stream().map(c -> "#" + c.getId() + " " + c.getName()).collect(Collectors.toList());
+        return characterModule.getAll().stream().map(c -> "#" + c.getId() + " " + c.getName()).collect(Collectors.toList());
     }
 
     @ConsoleCommand("add")

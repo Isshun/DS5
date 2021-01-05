@@ -131,7 +131,7 @@ public class Viewport {
 
     public void setFloor(int floor) {
         if (gameManager.isRunning()) {
-            if (floor >= 0 && floor < gameManager.getGame().getInfo().worldFloors) {
+            if (floor >= 0 && floor < game.getInfo().worldFloors) {
                 _floor = floor;
                 ApplicationClient.notify(gameObserver -> gameObserver.onFloorChange(_floor));
             }

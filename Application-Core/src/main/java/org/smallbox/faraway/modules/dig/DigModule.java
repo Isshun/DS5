@@ -3,10 +3,10 @@ package org.smallbox.faraway.modules.dig;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
-import org.smallbox.faraway.core.engine.module.GameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.area.AreaModule;
+import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.util.CollectionUtils;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @GameObject
-public class DigModule extends GameModule {
+public class DigModule extends AreaModuleBase<DigArea> {
 
     @Inject
     private JobModule jobModule;
@@ -46,4 +46,8 @@ public class DigModule extends GameModule {
                 .forEach(parcel -> jobModule.addJob(digJobFactory.createJob(parcel)));
     }
 
+    @Override
+    public DigArea onNewArea() {
+        return new DigArea();
+    }
 }
