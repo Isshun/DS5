@@ -2,7 +2,6 @@ package org.smallbox.faraway.modules.character.model.base;
 
 import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.util.Constant;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,13 +23,13 @@ public class CharacterNeedsExtra extends CharacterExtra {
         super(character);
 
         // TODO: add each need to lua file
-        _values.put(TAG_FOOD, new NeedEntry(TAG_FOOD, Constant.CHARACTER_INIT_FOOD, needsInfo.food));
-        _values.put(TAG_DRINK, new NeedEntry(TAG_DRINK, Constant.CHARACTER_INIT_DRINK, needsInfo.drink));
-        _values.put(TAG_ENERGY, new NeedEntry(TAG_ENERGY, Constant.CHARACTER_INIT_ENERGY, needsInfo.energy));
-        _values.put(TAG_OXYGEN, new NeedEntry(TAG_OXYGEN, Constant.CHARACTER_INIT_OXYGEN, needsInfo.oxygen));
-        _values.put(TAG_HAPPINESS, new NeedEntry(TAG_HAPPINESS, Constant.CHARACTER_INIT_HAPPINESS, needsInfo.happiness));
-        _values.put(TAG_ENTERTAINMENT, new NeedEntry(TAG_ENTERTAINMENT, Constant.CHARACTER_INIT_ENTERTAINMENT, needsInfo.entertainment));
-        _values.put(TAG_RELATION, new NeedEntry(TAG_RELATION, Constant.CHARACTER_INIT_RELATION, needsInfo.relation));
+        _values.put(TAG_FOOD, new NeedEntry(TAG_FOOD, 1, needsInfo.food));
+        _values.put(TAG_DRINK, new NeedEntry(TAG_DRINK, 1, needsInfo.drink));
+        _values.put(TAG_ENERGY, new NeedEntry(TAG_ENERGY, 1, needsInfo.energy));
+        _values.put(TAG_OXYGEN, new NeedEntry(TAG_OXYGEN, 1, needsInfo.oxygen));
+        _values.put(TAG_HAPPINESS, new NeedEntry(TAG_HAPPINESS, 1, needsInfo.happiness));
+        _values.put(TAG_ENTERTAINMENT, new NeedEntry(TAG_ENTERTAINMENT, 1, needsInfo.entertainment));
+        _values.put(TAG_RELATION, new NeedEntry(TAG_RELATION, 1, needsInfo.relation));
     }
 
     public NeedEntry get(String name) {

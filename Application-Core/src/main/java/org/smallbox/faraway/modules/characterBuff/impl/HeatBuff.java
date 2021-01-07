@@ -20,14 +20,14 @@ public class HeatBuff extends BuffFactory {
 
         buff.setName(name());
         buff.setBuffType(BuffType.DEBUFF);
-        buff.addLevel(1, "Feeling hot", -5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("temperature") > 40);
+        buff.addLevel(1, "Feeling hot", -5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("temperature") > 0.4);
 
         return buff;
     }
 
     @Override
     protected boolean check(CharacterModel character) {
-        return character.getExtra(CharacterNeedsExtra.class).getValue("temperature") > 40;
+        return character.getExtra(CharacterNeedsExtra.class).getValue("temperature") > 0.4;
     }
 
     @Override

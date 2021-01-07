@@ -20,16 +20,16 @@ public class DehydratationBuff extends BuffFactory {
 
         buff.setName(name());
         buff.setBuffType(BuffType.DEBUFF);
-        buff.addLevel(1, "Is a little thirsty", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 75);
-        buff.addLevel(2, "Is very thirsty", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 50);
-        buff.addLevel(3, "Dying of thirst", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 25);
+        buff.addLevel(1, "Is a little thirsty", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 0.75);
+        buff.addLevel(2, "Is very thirsty", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 0.5);
+        buff.addLevel(3, "Dying of thirst", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 0.25);
 
         return buff;
     }
 
     @Override
     protected boolean check(CharacterModel character) {
-        return character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 75;
+        return character.getExtra(CharacterNeedsExtra.class).getValue("drink") < 0.75;
     }
 
     @Override

@@ -36,7 +36,7 @@ public class DarkBuff extends BuffFactory {
 
     @Override
     protected boolean check(CharacterModel character) {
-        return character.getExtra(CharacterNeedsExtra.class).getValue("light") < 1;
+        return character.getExtra(CharacterNeedsExtra.class).getValue("light") < 0.01;
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.log.Log;
 
 @ApplicationObject
 public class GDXRenderer {
@@ -40,7 +41,7 @@ public class GDXRenderer {
 
         _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.zoom = 1f;
+        _camera.zoom = 1.5f;
 
         _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -106,10 +107,12 @@ public class GDXRenderer {
 
     public void zoomOut() {
         _camera.zoom = Math.min(_camera.zoom + 0.125f, 3f);
+        Log.info("Set zoom: " + _camera.zoom);
     }
 
     public void zoomIn() {
         _camera.zoom = Math.max(_camera.zoom - 0.125f, 1f);
+        Log.info("Set zoom: " + _camera.zoom);
     }
 
     public void drawUI(int x, int y, Sprite sprite) {

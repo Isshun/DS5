@@ -20,15 +20,15 @@ public class SuffocatingBuff extends BuffFactory {
 
         buff.setName(name());
         buff.setBuffType(BuffType.DEBUFF);
-        buff.addLevel(1, "It's hard to breath", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("oxygen") < 50);
-        buff.addLevel(2, "Suffocating", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("oxygen") < 20);
+        buff.addLevel(1, "It's hard to breath", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("oxygen") < 0.5);
+        buff.addLevel(2, "Suffocating", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("oxygen") < 0.2);
 
         return buff;
     }
 
     @Override
     protected boolean check(CharacterModel character) {
-        return character.getExtra(CharacterNeedsExtra.class).getValue("oxygen") < 50;
+        return character.getExtra(CharacterNeedsExtra.class).getValue("oxygen") < 0.5;
     }
 
     @Override

@@ -20,15 +20,15 @@ public class EntertainmentBuff extends BuffFactory {
 
         buff.setName(name());
         buff.setBuffType(BuffType.BUFF);
-        buff.addLevel(1, "Have entertainment", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("entertainment") >= 30);
-        buff.addLevel(2, "Have a lot of fun", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("entertainment") >= 60);
+        buff.addLevel(1, "Have entertainment", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("entertainment") >= 0.3);
+        buff.addLevel(2, "Have a lot of fun", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("entertainment") >= 0.6);
 
         return buff;
     }
 
     @Override
     protected boolean check(CharacterModel character) {
-        return character.getExtra(CharacterNeedsExtra.class).getValue("entertainment") >= 30;
+        return character.getExtra(CharacterNeedsExtra.class).getValue("entertainment") >= 0.3;
     }
 
     @Override

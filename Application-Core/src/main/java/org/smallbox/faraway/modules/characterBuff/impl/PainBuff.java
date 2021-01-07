@@ -20,17 +20,17 @@ public class PainBuff extends BuffFactory {
 
         buff.setName(name());
         buff.setBuffType(BuffType.DEBUFF);
-        buff.addLevel(1, "Suffers from woundings", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 20);
-        buff.addLevel(2, "Suffers enormously from woundings", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 50);
-        buff.addLevel(3, "Is in agony", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 80);
-        buff.addLevel(4, "Fainted because of the pain", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 95);
+        buff.addLevel(1, "Suffers from woundings", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 0.2);
+        buff.addLevel(2, "Suffers enormously from woundings", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 0.5);
+        buff.addLevel(3, "Is in agony", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 0.8);
+        buff.addLevel(4, "Fainted because of the pain", 5, character -> character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 0.95);
 
         return buff;
     }
 
     @Override
     protected boolean check(CharacterModel character) {
-        return character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 20;
+        return character.getExtra(CharacterNeedsExtra.class).getValue("pain") > 0.2;
     }
 
     @Override
