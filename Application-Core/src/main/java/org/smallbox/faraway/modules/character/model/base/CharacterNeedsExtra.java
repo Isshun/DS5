@@ -7,6 +7,7 @@ import org.smallbox.faraway.util.Constant;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class CharacterNeedsExtra extends CharacterExtra {
     public final static String TAG_ENERGY = "energy";
@@ -34,6 +35,10 @@ public class CharacterNeedsExtra extends CharacterExtra {
 
     public NeedEntry get(String name) {
         return _values.get(name);
+    }
+
+    public double getValue(String name) {
+        return Optional.ofNullable(_values.get(name)).map(NeedEntry::value).orElse(0.0);
     }
 
     public Collection<NeedEntry> getAll() {

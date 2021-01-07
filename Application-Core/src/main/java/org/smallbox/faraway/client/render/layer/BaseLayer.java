@@ -78,7 +78,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelectionOnMap(GDXRenderer renderer, SpriteManager spriteManager, Viewport viewport, ObjectModel object, int mapX, int mapY, int width, int height, int offsetX, int offsetY) {
-        drawSelection(renderer, spriteManager, object, viewport.getPosX() + (mapX * 32), viewport.getPosY() + (mapY * 32), width, height, offsetX, offsetY);
+        drawSelection(renderer, spriteManager, object, viewport.getPosX() + (mapX * Constant.TILE_SIZE), viewport.getPosY() + (mapY * Constant.TILE_SIZE), width, height, offsetX, offsetY);
     }
 
     public void toggleVisibility() { _isVisible = !_isVisible; }
@@ -109,8 +109,8 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
 
             _frame++;
             _floor = viewport.getFloor();
-            _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
-            _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
+            _fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_SIZE) * viewport.getScale());
+            _fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_SIZE) * viewport.getScale());
             _toX = Math.min(_width, _fromX + 50);
             _toY = Math.min(_height, _fromY + 40);
 

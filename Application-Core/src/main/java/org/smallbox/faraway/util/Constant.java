@@ -15,10 +15,9 @@ public class Constant {
     public static final int         MODULE_CHARACTER_PRIORITY = 100;
     public static final int         MODULE_WORLD_PRIORITY = 0;
 
-    public static final int         TILE_WIDTH                = 32;
-    public static final int         TILE_HEIGHT                = 32;
-    public static final int         CHAR_HEIGHT                = 32;
-    public static final int         CHAR_WIDTH                = 32;
+    public static final int TILE_SIZE = 64;
+    public static final int CHARACTER_HEIGHT = 64;
+    public static final int CHARACTER_WIDTH = 64;
     public static final double      CHARACTER_INIT_FOOD     = 1;
     public static final double      CHARACTER_INIT_DRINK     = 1;
     public static final double      CHARACTER_INIT_OXYGEN     = 1;

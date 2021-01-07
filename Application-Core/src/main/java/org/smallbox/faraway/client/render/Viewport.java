@@ -63,8 +63,8 @@ public class Viewport {
     }
 
     private void centerOnMap(int parcelX, int parcelY) {
-        _posX = (_width / 2) - (parcelX * Constant.TILE_WIDTH);
-        _posY = (_height / 2) - (parcelY * Constant.TILE_HEIGHT);
+        _posX = (_width / 2) - (parcelX * Constant.TILE_SIZE);
+        _posY = (_height / 2) - (parcelY * Constant.TILE_SIZE);
     }
 
     public void update(int x, int y) {
@@ -90,8 +90,8 @@ public class Viewport {
         _posX = x;
         _posY = y;
 
-        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_WIDTH) * getScale());
-        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_HEIGHT) * getScale());
+        _worldX = (int) Math.max(0, (-_posX / Constant.TILE_SIZE) * getScale());
+        _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
     }
 
     public int  getPosX() { return _posX; }
@@ -100,19 +100,19 @@ public class Viewport {
     public int  getHeight() { return _height; }
 
     public int  getWorldPosX(int x) {
-        double viewportOffset = (getPosX() / gdxRenderer.getZoom() + applicationConfig.getResolutionWidth() / 2f - x) / (Constant.TILE_WIDTH / gdxRenderer.getZoom());
-        double cameraOffset = (gdxRenderer.getCamera().position.x / Constant.TILE_WIDTH);
+        double viewportOffset = (getPosX() / gdxRenderer.getZoom() + applicationConfig.getResolutionWidth() / 2f - x) / (Constant.TILE_SIZE / gdxRenderer.getZoom());
+        double cameraOffset = (gdxRenderer.getCamera().position.x / Constant.TILE_SIZE);
         return (int) (cameraOffset - viewportOffset);
     }
 
     public int  getWorldPosY(int y) {
-        double viewportOffset = (getPosY() / gdxRenderer.getZoom() + applicationConfig.getResolutionHeight() / 2f - y) / (Constant.TILE_HEIGHT / gdxRenderer.getZoom());
-        double cameraOffset = (gdxRenderer.getCamera().position.y / Constant.TILE_HEIGHT);
+        double viewportOffset = (getPosY() / gdxRenderer.getZoom() + applicationConfig.getResolutionHeight() / 2f - y) / (Constant.TILE_SIZE / gdxRenderer.getZoom());
+        double cameraOffset = (gdxRenderer.getCamera().position.y / Constant.TILE_SIZE);
         return (int) (cameraOffset - viewportOffset);
     }
 
-    public int  getScreenPosX(int parcelX) { return parcelX * Constant.TILE_WIDTH + getPosX(); }
-    public int  getScreenPosY(int parcelY) { return parcelY * Constant.TILE_HEIGHT + getPosY(); }
+    public int  getScreenPosX(int parcelX) { return parcelX * Constant.TILE_SIZE + getPosX(); }
+    public int  getScreenPosY(int parcelY) { return parcelY * Constant.TILE_SIZE + getPosY(); }
 
 //    public void setZoom(int zoom) {
 //        setPosition(

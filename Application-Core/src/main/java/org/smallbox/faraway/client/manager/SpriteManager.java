@@ -146,14 +146,14 @@ public class SpriteManager {
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
             Texture texture = new Texture(new FileHandle(new File("data", "graphics/items/structures/blueprint.png")));
-            sprite = new Sprite(texture, 0, 0, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+            sprite = new Sprite(texture, 0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
             sprite.setFlip(false, true);
             _sprites.put(sum, sprite);
         }
         return sprite;
     }
 
-    public Sprite getItem(NetworkItem networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, 32, 32); }
+    public Sprite getItem(NetworkItem networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, Constant.TILE_SIZE, Constant.TILE_SIZE); }
 //    public Sprite getItem(UsableItem item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
 //    public Sprite getItem(UsableItem item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
 
@@ -190,7 +190,7 @@ public class SpriteManager {
         if (sprite == null) {
             Texture txTerrain = _manager.get(graphicInfo.path);
             if (txTerrain != null) {
-                Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+                Pixmap pixmap = new Pixmap(Constant.TILE_SIZE, Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
 
                 txTerrain.getTextureData().prepare();
                 Pixmap texturePixmap = txTerrain.getTextureData().consumePixmap();
@@ -369,7 +369,7 @@ public class SpriteManager {
                     sprite.setFlip(false, true);
                     sprite.setColor(new Color(255, 255, 255, alpha));
                     if (isIcon) {
-                        switch (Math.max(width/32, height/32)) {
+                        switch (Math.max(width/Constant.TILE_SIZE, height/Constant.TILE_SIZE)) {
                             case 2: sprite.setScale(0.85f, 0.85f); break;
                             case 3: sprite.setScale(0.55f, 0.55f); break;
                             case 4: sprite.setScale(0.35f, 0.35f); break;
@@ -508,7 +508,7 @@ public class SpriteManager {
         if (sprite == null) {
             Texture texture = new Texture(FileUtils.getFileHandle(c.getType().path));
 
-            sprite = new Sprite(texture, 0, 0, Constant.CHAR_WIDTH, Constant.CHAR_HEIGHT);
+            sprite = new Sprite(texture, 0, 0, Constant.CHARACTER_WIDTH, Constant.CHARACTER_HEIGHT);
             sprite.setFlip(false, true);
 
 //            sprite = new Sprite(texture,

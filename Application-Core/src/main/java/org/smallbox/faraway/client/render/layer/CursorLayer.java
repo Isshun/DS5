@@ -58,7 +58,7 @@ public class CursorLayer extends BaseLayer {
                     viewport.getFloor()
             );
             if (parcel != null) {
-                renderer.drawRectangleOnMap(parcel.x, parcel.y, Constant.TILE_WIDTH, Constant.TILE_HEIGHT, Color.BLUE, true, 0, 0);
+                renderer.drawRectangleOnMap(parcel.x, parcel.y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLUE, true, 0, 0);
             }
         }
     }

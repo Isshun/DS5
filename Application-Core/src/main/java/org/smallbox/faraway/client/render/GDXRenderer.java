@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.client.FontManager;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
+import org.smallbox.faraway.client.render.layer.WorldGroundLayer;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -39,7 +40,7 @@ public class GDXRenderer {
 
         _camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _camera.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        _camera.zoom = 0.75f;
+        _camera.zoom = 1f;
 
         _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -103,16 +104,12 @@ public class GDXRenderer {
         view.draw(this, x, y);
     }
 
-    public void zoomUp() {
-        _camera.zoom = Math.min(_camera.zoom + 0.25f, 2);
-//        _zoom = Math.max(0, _zoom - 1);
-//        layerManager.getViewport().setZoom(_zoom);
+    public void zoomOut() {
+        _camera.zoom = Math.min(_camera.zoom + 0.125f, 3f);
     }
 
-    public void zoomDown() {
-        _camera.zoom = Math.max(_camera.zoom - 0.25f, 0.5f);
-//        _zoom = Math.min(Viewport.ZOOM_LEVELS.length - 1, _zoom + 1);
-//        layerManager.getViewport().setZoom(_zoom);
+    public void zoomIn() {
+        _camera.zoom = Math.max(_camera.zoom - 0.125f, 1f);
     }
 
     public void drawUI(int x, int y, Sprite sprite) {
@@ -173,7 +170,11 @@ public class GDXRenderer {
     public void drawChunk(int x, int y, Texture texture) {
         if (texture != null) {
             _batch.begin();
-            _batch.draw(texture, x, y, 512, 512, 0, 0, 512, 512, false, true);
+            _batch.draw(texture, x, y,
+                    WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE, WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE,
+                    0, 0,
+                    WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE, WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE,
+                    false, true);
             _batch.end();
         }
     }
@@ -276,9 +277,9 @@ public class GDXRenderer {
     public void drawRectangleOnMap(int x, int y, int width, int height, Color color, boolean filled, int offsetX, int offsetY) {
         if (color != null) {
             drawRectangleUI(
-                    (int) (layerManager.getViewport().getPosX() * (1 / _camera.zoom) + (x * Constant.TILE_WIDTH * (1 / _camera.zoom)) + offsetX)
+                    (int) (layerManager.getViewport().getPosX() * (1 / _camera.zoom) + (x * Constant.TILE_SIZE * (1 / _camera.zoom)) + offsetX)
                             + (int) (applicationConfig.screen.resolution[0] / 2 - (applicationConfig.screen.resolution[0] / 2 / _camera.zoom)),
-                    (int) (layerManager.getViewport().getPosY() * (1 / _camera.zoom) + (y * Constant.TILE_HEIGHT * (1 / _camera.zoom)) + offsetY)
+                    (int) (layerManager.getViewport().getPosY() * (1 / _camera.zoom) + (y * Constant.TILE_SIZE * (1 / _camera.zoom)) + offsetY)
                             + (int) (applicationConfig.screen.resolution[1] / 2 - (applicationConfig.screen.resolution[1] / 2 / _camera.zoom)),
                     (int) (width * (1 / _camera.zoom)),
                     (int) (height * (1 / _camera.zoom)),
@@ -291,8 +292,8 @@ public class GDXRenderer {
     public void drawCircleOnMap(int x, int y, int radius, Color color, boolean filled, int offsetX, int offsetY) {
         if (color != null) {
             drawCircle(
-                    layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
-                    layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                    layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE) + offsetX,
+                    layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE) + offsetY,
                     radius,
                     color,
                     filled
@@ -321,11 +322,11 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(int x, int y, TextureRegion region) {
-        draw(layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH), layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), region);
+        draw(layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE), layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE), region);
     }
 
     public void drawOnMap(int x, int y, Color color) {
-        drawPixel(layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH), layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT), 32, 32, color);
+        drawPixel(layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE), layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE), Constant.TILE_SIZE, Constant.TILE_SIZE, color);
     }
 
     public void drawTextOnMap(ParcelModel parcel, String string, int size, Color color) {
@@ -342,19 +343,19 @@ public class GDXRenderer {
 
     public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
         drawText(
-                layerManager.getViewport().getPosX() + (x * Constant.TILE_WIDTH) + offsetX,
-                layerManager.getViewport().getPosY() + (y * Constant.TILE_HEIGHT) + offsetY,
+                layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE) + offsetX,
+                layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE) + offsetY,
                 size,
                 color,
                 string);
     }
 
     public void drawOnMap(ParcelCommon parcel, Sprite itemSprite) {
-        draw((parcel.x * Constant.TILE_WIDTH) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + layerManager.getViewport().getPosY(), itemSprite);
+        draw((parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY(), itemSprite);
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw((parcel.x * Constant.TILE_WIDTH) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_HEIGHT) + layerManager.getViewport().getPosY(), itemSprite);
+        draw((parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY(), itemSprite);
     }
 
     public Camera getCamera() {

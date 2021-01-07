@@ -17,7 +17,7 @@ public class AnimDrawable extends GDXDrawable {
         _nbTile = nbTile;
         _textureRegion = new TextureRegion[nbTile];
         for (int i = 0; i < nbTile; i++) {
-            _textureRegion[i] = new TextureRegion(DependencyInjector.getInstance().getDependency(SpriteManager.class).getTexture(path), i * Constant.TILE_WIDTH, 0, Constant.TILE_WIDTH, Constant.TILE_HEIGHT);
+            _textureRegion[i] = new TextureRegion(DependencyInjector.getInstance().getDependency(SpriteManager.class).getTexture(path), i * Constant.TILE_SIZE, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
             _textureRegion[i].flip(false, true);
         }
     }

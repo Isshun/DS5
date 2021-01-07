@@ -35,8 +35,8 @@ public class WorldTopLayer extends BaseLayer {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale());
-        int fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale());
+        int fromX = (int) Math.max(0, (-viewport.getPosX() / Constant.TILE_SIZE) * viewport.getScale());
+        int fromY = (int) Math.max(0, (-viewport.getPosY() / Constant.TILE_SIZE) * viewport.getScale());
         int toX = Math.min(_width, fromX + 50);
         int toY = Math.min(_height, fromY + 40);
 
@@ -48,15 +48,15 @@ public class WorldTopLayer extends BaseLayer {
             for (int y = toY-1; y >= fromY; y--) {
                 ParcelModel parcel = parcels[x][y][_floor];
                 if (parcel.hasItem(StructureItem.class)) {
-                    renderer.draw((x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY, _spriteManager.getItem(parcel.getItem(StructureItem.class)));
+                    renderer.draw((x * Constant.TILE_SIZE) + viewportX, (y * Constant.TILE_SIZE) + viewportY, _spriteManager.getItem(parcel.getItem(StructureItem.class)));
                 }
                 if (parcel.getNetworkObjects() != null) {
                     for (NetworkItem networkObject: parcel.getNetworkObjects()) {
-                        renderer.draw((x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY, _spriteManager.getItem(networkObject));
+                        renderer.draw((x * Constant.TILE_SIZE) + viewportX, (y * Constant.TILE_SIZE) + viewportY, _spriteManager.getItem(networkObject));
                     }
                 }
                 if (parcel.hasItem(ConsumableItem.class)) {
-                    renderer.draw((x * Constant.TILE_WIDTH) + viewportX, (y * Constant.TILE_HEIGHT) + viewportY, _spriteManager.getItem(parcel.getItem(ConsumableItem.class)));
+                    renderer.draw((x * Constant.TILE_SIZE) + viewportX, (y * Constant.TILE_SIZE) + viewportY, _spriteManager.getItem(parcel.getItem(ConsumableItem.class)));
                 }
             }
         }
@@ -85,8 +85,8 @@ public class WorldTopLayer extends BaseLayer {
                 toY = (int)(rect.getY() + rect.getHeight()) - 8;
             }
 
-            int x = _itemSelected.getParcel().x * Constant.TILE_WIDTH + viewport.getPosX();
-            int y = _itemSelected.getParcel().y * Constant.TILE_HEIGHT + viewport.getPosY();
+            int x = _itemSelected.getParcel().x * Constant.TILE_SIZE + viewport.getPosX();
+            int y = _itemSelected.getParcel().y * Constant.TILE_SIZE + viewport.getPosY();
             renderer.draw(x - offset + fromX, y - offset + fromY, _spriteManager.getSelectorCorner(0));
             renderer.draw(x + offset + toX, y - offset + fromY, _spriteManager.getSelectorCorner(1));
             renderer.draw(x - offset + fromX, y + offset + toY, _spriteManager.getSelectorCorner(2));
@@ -94,7 +94,7 @@ public class WorldTopLayer extends BaseLayer {
 
             if (_itemSelected.getInfo().slots != null) {
                 for (int[] slot: _itemSelected.getInfo().slots) {
-                    renderer.draw((_itemSelected.getParcel().x + slot[0])* Constant.TILE_WIDTH + viewport.getPosX(), (_itemSelected.getParcel().y + slot[1])* Constant.TILE_HEIGHT + viewport.getPosY(), _spriteManager.getIcon("data/res/ic_slot.png")
+                    renderer.draw((_itemSelected.getParcel().x + slot[0])* Constant.TILE_SIZE + viewport.getPosX(), (_itemSelected.getParcel().y + slot[1])* Constant.TILE_SIZE + viewport.getPosY(), _spriteManager.getIcon("data/res/ic_slot.png")
                     );
                 }
             }

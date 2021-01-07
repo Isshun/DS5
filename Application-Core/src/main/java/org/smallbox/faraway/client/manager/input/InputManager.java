@@ -265,14 +265,14 @@ public class InputManager implements InputProcessor {
 //                return true;
 //            }
 
-            gdxRenderer.zoomDown();
+            gdxRenderer.zoomIn();
 
             return true;
         }
 
         if (amountY > 0) {
 
-            gdxRenderer.zoomUp();
+            gdxRenderer.zoomOut();
 //            // Passe l'evenement à l'ui manager
 //            if (uiManager.onMouseEvent(GameEventListener.Action.RELEASED, Buttons.BACK, _lastPosX, _lastPosY, false)) {
 //                return true;

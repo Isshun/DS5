@@ -1,17 +1,15 @@
 package org.smallbox.faraway.client.controller.area;
 
-import com.badlogic.gdx.Input;
-import org.smallbox.faraway.client.gameAction.GameActionManager;
-import org.smallbox.faraway.client.gameAction.GameActionMode;
-import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
+import org.smallbox.faraway.client.gameAction.GameActionManager;
+import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.render.layer.AreaLayer;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -25,29 +23,15 @@ import java.util.Comparator;
 @GameObject
 public class AreaPanelController extends LuaController {
 
-    @Inject
-    private UIEventManager uiEventManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private AreaModule areaModule;
+    @Inject private MainPanelController mainPanelController;
+    @Inject private AreaLayer areaLayer;
+    @Inject private GameActionManager gameActionManager;
 
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private AreaModule areaModule;
-
-    @BindLua
-    private UIList listAreasAdd;
-
-    @BindLua
-    private UIList listAreasSub;
-
-    @Inject
-    private MainPanelController mainPanelController;
-
-    @Inject
-    private AreaLayer areaLayer;
-
-    @Inject
-    private GameActionManager gameActionManager;
+    @BindLua private UIList listAreasAdd;
+    @BindLua private UIList listAreasSub;
 
     @AfterGameLayerInit
     public void afterGameLayerInit() {
@@ -112,8 +96,4 @@ public class AreaPanelController extends LuaController {
     public void onMouseMove(int x, int y, int button) {
     }
 
-    @GameShortcut(key = Input.Keys.A)
-    public void onPressT() {
-        setVisible(true);
-    }
 }

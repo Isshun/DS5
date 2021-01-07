@@ -32,7 +32,7 @@ import java.util.concurrent.Executors;
 @GameObject
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldGroundLayer extends BaseLayer {
-    private static final int CHUNK_SIZE = 16;
+    public static final int CHUNK_SIZE = 16;
     private static final int TOP_LEFT = 0b10000000;
     private static final int TOP = 0b01000000;
     private static final int TOP_RIGHT = 0b00100000;
@@ -129,12 +129,12 @@ public class WorldGroundLayer extends BaseLayer {
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = Math.max((int) ((-viewport.getPosX() / Constant.TILE_WIDTH) * viewport.getScale()), 0);
-        int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_HEIGHT) * viewport.getScale()), 0);
+        int fromX = Math.max((int) ((-viewport.getPosX() / Constant.TILE_SIZE) * viewport.getScale()), 0);
+        int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_SIZE) * viewport.getScale()), 0);
 
         // TODO: take right panel in consideration
-        int tileWidthCount = (int) (applicationConfig.getResolutionWidth() / (Constant.TILE_WIDTH * viewport.getScale()));
-        int tileHeightCount = (int) (applicationConfig.getResolutionHeight() / (Constant.TILE_HEIGHT * viewport.getScale()));
+        int tileWidthCount = (int) (applicationConfig.getResolutionWidth() / (Constant.TILE_SIZE * viewport.getScale()));
+        int tileHeightCount = (int) (applicationConfig.getResolutionHeight() / (Constant.TILE_SIZE * viewport.getScale()));
         int toX = Math.min(fromX + tileWidthCount, game.getInfo().worldWidth);
         int toY = Math.min(fromY + tileHeightCount, game.getInfo().worldHeight);
 
@@ -153,15 +153,10 @@ public class WorldGroundLayer extends BaseLayer {
                     _rockLayersUpToDate[col][row] = true;
                     createGround(col, row);
                 }
-                renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_WIDTH), viewportY + (row * CHUNK_SIZE * Constant.TILE_HEIGHT), _groundLayers[col][row]);
-                renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_WIDTH), viewportY + (row * CHUNK_SIZE * Constant.TILE_HEIGHT), _rockLayers[col][row]);
+                renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_SIZE), viewportY + (row * CHUNK_SIZE * Constant.TILE_SIZE), _groundLayers[col][row]);
+                renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_SIZE), viewportY + (row * CHUNK_SIZE * Constant.TILE_SIZE), _rockLayers[col][row]);
             }
         }
-    }
-
-    private boolean repeatTile(int x, int y, int z) {
-        ParcelModel parcel = WorldHelper.getParcel(x, y, z);
-        return parcel == null || parcel.hasRock() || parcel.hasLiquid() || WorldHelper.hasWall(parcel) || WorldHelper.hasDoor(parcel);
     }
 
     private void createGround(int col, int row) {
@@ -172,8 +167,8 @@ public class WorldGroundLayer extends BaseLayer {
             final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, game.getInfo().worldHeight);
 
             _worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, viewport.getFloor(), viewport.getFloor(), parcels -> {
-                Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
-                Pixmap pxRockOut = new Pixmap(CHUNK_SIZE * 32, CHUNK_SIZE * 32, Pixmap.Format.RGBA8888);
+                Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * Constant.TILE_SIZE, CHUNK_SIZE * Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
+                Pixmap pxRockOut = new Pixmap(CHUNK_SIZE * Constant.TILE_SIZE, CHUNK_SIZE * Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
 
                 for (ParcelModel parcel: parcels) {
 
@@ -182,18 +177,18 @@ public class WorldGroundLayer extends BaseLayer {
                         addGround(pxGroundOut, parcel, fromX, fromY);
                         addDecoration(pxGroundOut, parcel, fromX, fromY);
                     } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 1)) {
-                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 1)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 32, 32, 32, 32);
+                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 1)), (parcel.x - fromX) * Constant.TILE_SIZE, (parcel.y - fromY) * Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
                     } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 2)) {
-                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 2)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 64, 32, 32, 32);
+                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 2)), (parcel.x - fromX) * Constant.TILE_SIZE, (parcel.y - fromY) * Constant.TILE_SIZE, Constant.TILE_SIZE * 2, Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
                     } else if (WorldHelper.hasGround(parcel.x, parcel.y, parcel.z - 3)) {
-                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 3)), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 96, 32, 32, 32);
+                        pxGroundOut.drawPixmap(_pxGrounds.get(WorldHelper.getGroundInfo(parcel.x, parcel.y, parcel.z - 3)), (parcel.x - fromX) * Constant.TILE_SIZE, (parcel.y - fromY) * Constant.TILE_SIZE, Constant.TILE_SIZE * 3, Constant.TILE_SIZE, Constant.TILE_SIZE, Constant.TILE_SIZE);
                     }
 
                     // Draw liquid
                     if (parcel.hasLiquid()) {
-                        int offsetX = (parcel.x % parcel.getLiquidInfo().width) * 32;
-                        int offsetY = (parcel.y % parcel.getLiquidInfo().height) * 32;
-                        pxGroundOut.drawPixmap(_pxLiquids.get(parcel.getLiquidInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 32);
+                        int offsetX = (parcel.x % parcel.getLiquidInfo().width) * Constant.TILE_SIZE;
+                        int offsetY = (parcel.y % parcel.getLiquidInfo().height) * Constant.TILE_SIZE;
+                        pxGroundOut.drawPixmap(_pxLiquids.get(parcel.getLiquidInfo()), (parcel.x - fromX) * Constant.TILE_SIZE, (parcel.y - fromY) * Constant.TILE_SIZE, offsetX, offsetY, Constant.TILE_SIZE, Constant.TILE_SIZE);
                     } else if (WorldHelper.hasLiquid(parcel.x, parcel.y, parcel.z - 1)) {
 //                        int offsetX = (parcel.x % parcel.getLiquidInfo().width) * 32;
 //                        int offsetY = (parcel.y % parcel.getLiquidInfo().height) * 32;
@@ -217,7 +212,7 @@ public class WorldGroundLayer extends BaseLayer {
 //                        Pixmap pxRock = _pxGrounds.entrySet().stream().filter(entry -> StringUtils.equals(entry.getKey().name, parcel.getRockInfo().name)).map(Map.Entry::getValue).findFirst().orElse(null);
                         Pixmap pxRock = _pxRocks.get(parcel.getRockInfo());
                         if (pxRock != null) {
-                            pxRockOut.drawPixmap(pxRock, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
+                            pxRockOut.drawPixmap(pxRock, (parcel.x - fromX) * Constant.TILE_SIZE, (parcel.y - fromY) * Constant.TILE_SIZE, 0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
                         }
 //                        } else {
 //                        Gdx.app.postRunnable(() -> {
@@ -257,21 +252,21 @@ public class WorldGroundLayer extends BaseLayer {
 
     private void addGround(Pixmap pxGroundOut, ParcelModel parcel, int fromX, int fromY) {
         if (_pxGrounds.get(parcel.getGroundInfo()) != null) {
-            int offsetX = (parcel.x % parcel.getGroundInfo().width) * 32;
-            int offsetY = (parcel.y % parcel.getGroundInfo().height) * 32;
-            pxGroundOut.drawPixmap(_pxGrounds.get(parcel.getGroundInfo()), (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, offsetX, offsetY, 32, 32);
+            int offsetX = (parcel.x % parcel.getGroundInfo().width) * Constant.TILE_SIZE;
+            int offsetY = (parcel.y % parcel.getGroundInfo().height) * Constant.TILE_SIZE;
+            pxGroundOut.drawPixmap(_pxGrounds.get(parcel.getGroundInfo()), (parcel.x - fromX) * Constant.TILE_SIZE, (parcel.y - fromY) * Constant.TILE_SIZE, offsetX, offsetY, Constant.TILE_SIZE, Constant.TILE_SIZE);
         }
     }
 
     private void addDecoration(Pixmap pxGroundOut, ParcelModel parcel, int fromX, int fromY) {
         if (MathUtils.randomBoolean(0.1f) && _pxGroundDecorations.containsKey(parcel.getGroundInfo())) {
             pxGroundOut.drawPixmap(_pxGroundDecorations.get(parcel.getGroundInfo()),
-                    (parcel.x - fromX) * 32,
-                    (parcel.y - fromY) * 32,
-                    MathUtils.random(0, 3) * 32,
-                    MathUtils.random(0, 5) * 32,
-                    32,
-                    32);
+                    (parcel.x - fromX) * Constant.TILE_SIZE,
+                    (parcel.y - fromY) * Constant.TILE_SIZE,
+                    MathUtils.random(0, 3) * Constant.TILE_SIZE,
+                    MathUtils.random(0, 5) * Constant.TILE_SIZE,
+                    Constant.TILE_SIZE,
+                    Constant.TILE_SIZE);
         }
     }
 

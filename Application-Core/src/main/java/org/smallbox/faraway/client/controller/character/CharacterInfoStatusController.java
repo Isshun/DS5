@@ -1,28 +1,28 @@
 package org.smallbox.faraway.client.controller.character;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
+import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
+import org.smallbox.faraway.modules.characterBuff.BuffType;
 import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.storage.StoreJob;
 import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Utils;
 
+import java.util.List;
+
 @GameObject
 public class CharacterInfoStatusController extends LuaController {
-
-    @Inject
-    private CharacterBuffModule buffModule;
 
     @Inject
     private SpriteManager spriteManager;
@@ -31,25 +31,53 @@ public class CharacterInfoStatusController extends LuaController {
     @BindLua private UILabel lbJobProgress;
     @BindLua private UIFrame frameJob;
     @BindLua private UIImage imgJob;
-
-    @BindLua private UILabel lbNeedFood;
-    @BindLua private UIImage gaugeFood;
-
-    @BindLua private UILabel lbNeedDrink;
-    @BindLua private UIImage gaugeDrink;
-
-    @BindLua private UILabel lbNeedEnergy;
-    @BindLua private UIImage gaugeEnergy;
-
-    @BindLua private UILabel lbNeedJoy;
-    @BindLua private UIImage gaugeJoy;
-
-    @BindLua private UILabel lbNeedRelation;
-    @BindLua private UIImage gaugeRelation;
-
-    @BindLua private UIList listBuffs;
+    @BindLua private UIGrid gridNeeds;
 
     private CharacterModel _selected;
+    private List<UIFrame> needs;
+
+    @OnInit
+    public void init() {
+        needs = List.of(
+                createNeedFrame(CharacterNeedsExtra.TAG_ENERGY),
+                createNeedFrame(CharacterNeedsExtra.TAG_OXYGEN),
+                createNeedFrame(CharacterNeedsExtra.TAG_FOOD),
+                createNeedFrame(CharacterNeedsExtra.TAG_DRINK),
+                createNeedFrame(CharacterNeedsExtra.TAG_RELATION),
+                createNeedFrame(CharacterNeedsExtra.TAG_ENTERTAINMENT),
+                createNeedFrame(CharacterNeedsExtra.TAG_HAPPINESS)
+        );
+    }
+
+    private UIFrame createNeedFrame(String key) {
+        UIFrame frame = new UIFrame(null);
+        frame.setId(key);
+
+        UILabel lbName = new UILabel(null);
+        lbName.setId("lb_name");
+        lbName.setText(key);
+        lbName.setTextSize(14);
+        frame.addView(lbName);
+
+        UILabel lbValue = new UILabel(null);
+        lbValue.setId("lb_value");
+        lbValue.setTextSize(14);
+        lbValue.setPositionX(114);
+        frame.addView(lbValue);
+
+        UIImage imageGauge = new UIImage(null);
+        imageGauge.setId("img_gauge");
+        imageGauge.setPositionY(16);
+        imageGauge.setImage("[base]/graphics/needbar.png");
+        frame.addView(imageGauge);
+
+        return frame;
+    }
+
+    @AfterGameLayerInit
+    public void initUI() {
+        needs.forEach(frame -> gridNeeds.addView(frame));
+    }
 
     @Override
     public void onControllerUpdate() {
@@ -63,17 +91,12 @@ public class CharacterInfoStatusController extends LuaController {
 
         displayJob(character);
         displayNeeds(character);
-        displayBuffs(character);
     }
 
     private void displayNeeds(CharacterModel character) {
         if (character.hasExtra(CharacterNeedsExtra.class)) {
-            CharacterNeedsExtra needs = character.getExtra(CharacterNeedsExtra.class);
-            displayNeed(lbNeedFood,     gaugeFood,      "Food",         needs.get(CharacterNeedsExtra.TAG_FOOD));
-            displayNeed(lbNeedDrink,    gaugeDrink,     "Drink",        needs.get(CharacterNeedsExtra.TAG_DRINK));
-            displayNeed(lbNeedEnergy,   gaugeEnergy,    "Energy",       needs.get(CharacterNeedsExtra.TAG_ENERGY));
-            displayNeed(lbNeedJoy,      gaugeJoy,       "Entertainment",needs.get(CharacterNeedsExtra.TAG_ENTERTAINMENT));
-            displayNeed(lbNeedRelation, gaugeRelation,  "Relation",     needs.get(CharacterNeedsExtra.TAG_RELATION));
+            CharacterNeedsExtra needsExtra = character.getExtra(CharacterNeedsExtra.class);
+            needs.forEach(frame -> displayNeed(frame, needsExtra.get(frame.getId())));
         }
     }
 
@@ -125,40 +148,34 @@ public class CharacterInfoStatusController extends LuaController {
         }
     }
 
-    private void displayNeed(UILabel label, UIImage gauge, String text, NeedEntry entry) {
+    private void displayNeed(UIFrame frame, NeedEntry entry) {
+        UILabel lbName = (UILabel) frame.findById("lb_name");
+        UILabel lbValue = (UILabel) frame.findById("lb_value");
+        UIImage gauge = (UIImage) frame.findById("img_gauge");
+
+        lbName.setText(frame.getId());
+        lbValue.setText(StringUtils.leftPad(String.valueOf((int)Math.round(entry.value() * 100)), 3) + "%");
 
         // Display optimal
         if (entry.value() > entry.warning) {
-//            label.setTextColor(0xbbd3ff07).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
-            gauge.setTextureRect(0, 80, Utils.round(entry.value() * 170, 10), 8);
+            gauge.setTextureRect(0, 80, Utils.round(entry.value() * 160, 10), 8);
+            lbName.setTextColor(0xbbff31ff);
+            lbValue.setTextColor(0xbbff31ff);
         }
 
         // Display warning
         else if (entry.value() > entry.critical) {
-//            label.setTextColor(0xbbfeb60b).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
-            gauge.setTextureRect(0, 32, Utils.round(entry.value() * 170, 10), 8);
+            gauge.setTextureRect(0, 32, Utils.round(entry.value() * 160, 10), 8);
+            lbName.setTextColor(0xbbfeb6ff);
+            lbValue.setTextColor(0xbbfeb6ff);
         }
 
         // Display critical
         else {
-//            label.setTextColor(0xbbff3131).setDashedString(text, String.valueOf((int) Math.floor(entry.value() * 100)), 21);
-            gauge.setTextureRect(0, 48, Math.max(10, Utils.round(entry.value() * 170, 10)), 8);
+            gauge.setTextureRect(0, 48, Math.max(10, Utils.round(entry.value() * 160, 10)), 8);
+            lbName.setTextColor(0xff3131ff);
+            lbValue.setTextColor(0xff3131ff);
         }
-    }
-
-    private void displayBuffs(CharacterModel character) {
-        buffModule.getBuffs(character)
-                .stream()
-                .sorted((o1, o2) -> o2.mood - o1.mood)
-                .forEach(buff ->
-                        listBuffs.addNextView(UILabel
-                                .create(null)
-                                .setText("[" + (buff.mood > 0 ? "+" : "") + buff.mood  + "] " + buff.message)
-                                .setTextSize(14)
-                                .setTextColor(buff.mood > 0 ? 0x33bb88ff : 0xbb5555ff)
-                                .setSize(300, 22)));
-
-        listBuffs.switchViews();
     }
 
 }

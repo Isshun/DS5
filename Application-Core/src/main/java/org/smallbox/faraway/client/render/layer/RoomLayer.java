@@ -65,10 +65,10 @@ public class RoomLayer extends BaseLayer {
 
     @Override
     public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        int fromX = -viewport.getPosX() / Constant.TILE_WIDTH;
-        int fromY = -viewport.getPosY() / Constant.TILE_HEIGHT;
-        int toX = fromX + viewport.getWidth() / Constant.TILE_WIDTH;
-        int toY = fromY + viewport.getHeight() / Constant.TILE_HEIGHT;
+        int fromX = -viewport.getPosX() / Constant.TILE_SIZE;
+        int fromY = -viewport.getPosY() / Constant.TILE_SIZE;
+        int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
+        int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
         roomModule.getRooms().forEach(Room ->
                 Room.getParcels().forEach(parcel ->
