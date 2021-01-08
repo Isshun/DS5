@@ -3,24 +3,11 @@ package org.smallbox.faraway.util;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class Utils {
-
-    public static long getLastDataModified() {
-        long lastModified = 0;
-
-        for (File file: FileUtils.listRecursively(FileUtils.getDataFile("modules"))) {
-            if (file.lastModified() > lastModified) {
-                lastModified = file.lastModified();
-            }
-        }
-
-        return lastModified;
-    }
 
     public static int getRandom(int[] interval) {
         if (interval[0] == interval[1]) {
@@ -43,10 +30,6 @@ public class Utils {
 
     public static int round(double value, int round) {
         return (int) (Math.floor(value / round) * round);
-    }
-
-    public static double progress(int from, int to, int current) {
-        return (double)(current - from) / (to - from);
     }
 
     public static long day(int value) {

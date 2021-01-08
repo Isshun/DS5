@@ -1,7 +1,5 @@
 package org.smallbox.faraway.modules.character.model.base;
 
-import org.smallbox.faraway.util.Strings;
-
 public class CharacterRelation {
     public enum Relation {
         MATE,
@@ -35,16 +33,16 @@ public class CharacterRelation {
     public String getRelationLabel() {
         String string = null;
 
-        switch (_relation) {
-        case CHILDREN: string = Strings.LB_RELATION_CHILDREN; break;
-        case FRIEND: string = Strings.LB_RELATION_FRIEND; break;
-        case MATE: string = Strings.LB_RELATION_MATE; break;
-        case PARENT: string = Strings.LB_RELATION_PARENT; break;
-        case BROTHER: string = Strings.LB_RELATION_BROTHER; break;
-        case HALF_BROTHER: string = Strings.LB_RELATION_HALF_BROTHER; break;
-        case SISTER: string = Strings.LB_RELATION_SISTER; break;
-        case HALF_SISTER: string = Strings.LB_RELATION_HALF_SISTER; break;
-        }
+//        switch (_relation) {
+//        case CHILDREN: string = Strings.LB_RELATION_CHILDREN; break;
+//        case FRIEND: string = Strings.LB_RELATION_FRIEND; break;
+//        case MATE: string = Strings.LB_RELATION_MATE; break;
+//        case PARENT: string = Strings.LB_RELATION_PARENT; break;
+//        case BROTHER: string = Strings.LB_RELATION_BROTHER; break;
+//        case HALF_BROTHER: string = Strings.LB_RELATION_HALF_BROTHER; break;
+//        case SISTER: string = Strings.LB_RELATION_SISTER; break;
+//        case HALF_SISTER: string = Strings.LB_RELATION_HALF_SISTER; break;
+//        }
 
         return string;
     }

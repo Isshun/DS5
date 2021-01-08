@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Queue;
 

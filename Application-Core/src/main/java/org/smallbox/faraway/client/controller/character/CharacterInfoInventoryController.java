@@ -1,12 +1,12 @@
 package org.smallbox.faraway.client.controller.character;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.CollectionUtils;
 
 @GameObject
 public class CharacterInfoInventoryController extends LuaController {

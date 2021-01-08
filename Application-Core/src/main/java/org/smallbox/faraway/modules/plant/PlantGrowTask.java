@@ -1,6 +1,5 @@
 package org.smallbox.faraway.modules.plant;
 
-import org.smallbox.faraway.GameSerializer;
 import org.smallbox.faraway.GameTask;
 import org.smallbox.faraway.modules.plant.model.PlantItem;
 

@@ -13,7 +13,6 @@ import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-import org.smallbox.faraway.core.groovy.GroovyManager;
 import org.smallbox.faraway.core.module.world.SQLManager;
 import org.smallbox.faraway.core.task.TaskManager;
 
@@ -28,7 +27,6 @@ public class GDXApplication extends ApplicationAdapter {
         TaskManager taskManager = di.getDependency(TaskManager.class);
         taskManager.addLoadTask("Calling dependency injector", false, di::injectApplicationDependencies);
         taskManager.addLoadTask("Generate fonts", true, () -> di.getDependency(FontManager.class).generateFonts());
-        taskManager.addLoadTask("Init groovy manager", false, () -> di.getDependency(GroovyManager.class).init());
         taskManager.addLoadTask("Create layer", true, () -> di.getDependency(GDXRenderer.class).init());
         taskManager.addLoadTask("Launch DB thread", false, () -> taskManager.launchBackgroundThread(di.getDependency(SQLManager.class)::update, 16));
         taskManager.addLoadTask("Load modules", false, () -> di.getDependency(ModuleManager.class).loadModules(null));

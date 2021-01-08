@@ -1,10 +1,14 @@
 package org.smallbox.faraway.client.controller.character;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
@@ -12,11 +16,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.character.model.base.NeedEntry;
-import org.smallbox.faraway.modules.characterBuff.BuffType;
-import org.smallbox.faraway.modules.characterBuff.CharacterBuffModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.storage.StoreJob;
-import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Utils;
 
 import java.util.List;

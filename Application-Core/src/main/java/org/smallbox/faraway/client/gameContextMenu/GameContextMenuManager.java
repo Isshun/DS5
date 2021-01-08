@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.gameContextMenu;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
 

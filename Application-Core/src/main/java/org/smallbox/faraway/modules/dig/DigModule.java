@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.dig;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -9,7 +10,6 @@ import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaModuleBase;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class DigModule extends AreaModuleBase<DigArea> {
         // Create missing dig job
         parcelInDigArea.stream()
                 .filter(parcel -> parcel.getRockInfo() != null)
-                .filter(parcel -> CollectionUtils.notContains(parcelInDigJob, parcel))
+                .filter(parcel -> !CollectionUtils.containsAny(parcelInDigJob, parcel))
                 .forEach(parcel -> jobModule.add(digJobFactory.createJob(parcel)));
     }
 

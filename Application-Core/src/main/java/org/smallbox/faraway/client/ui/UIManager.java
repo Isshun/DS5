@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import org.apache.commons.collections4.CollectionUtils;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
@@ -18,7 +19,6 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -180,7 +180,7 @@ public class UIManager {
     }
 
     public void addView(View view) {
-        if (CollectionUtils.notContains(_views, view)) {
+        if (!CollectionUtils.containsAny(_views, view)) {
             if (view.getPath() != null && _views.stream().noneMatch(v -> view.getPath().equals(v.getPath()))) {
                 _views.add(view);
             }

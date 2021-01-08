@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.job;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -13,7 +14,6 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.job.JobModel.JobAbortReason;
 import org.smallbox.faraway.modules.job.JobModel.JobStatus;
-import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 

@@ -1,5 +1,6 @@
 package org.smallbox.faraway.modules.character;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.common.UUIDUtils;
 import org.smallbox.faraway.core.GameException;
@@ -22,9 +23,7 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.Strings;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.Constructor;
@@ -106,7 +105,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     public void remove(CharacterModel c) {
         c.setIsDead();
         if (c.hasExtra(CharacterPersonalsExtra.class)) {
-            c.getExtra(CharacterPersonalsExtra.class).setName(Strings.LB_DECEADED);
+            c.getExtra(CharacterPersonalsExtra.class).setName("dead");
         }
     }
 

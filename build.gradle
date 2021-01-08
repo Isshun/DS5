@@ -66,9 +66,11 @@ project(":Application-Core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 
+        compile 'commons-io:commons-io:2.8.0'
         compile 'org.apache.commons:commons-compress:1.10'
         compile 'org.apache.commons:commons-lang3:3.4'
-        compile 'commons-io:commons-io:2.4'
+        compile 'org.apache.commons:commons-collections4:4.4'
+
         compile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
         compile 'org.luaj:luaj-jse:3.0.1'
         compile 'org.reflections:reflections:0.9.10'
@@ -106,9 +108,11 @@ project(":Application-Client") {
         compile project(":Application-Core")
         compile project(":Application-Common")
 
+        compile 'commons-io:commons-io:2.8.0'
         compile 'org.apache.commons:commons-compress:1.10'
         compile 'org.apache.commons:commons-lang3:3.4'
-        compile 'commons-io:commons-io:2.4'
+        compile 'org.apache.commons:commons-collections4:4.4'
+
         compile 'com.almworks.sqlite4java:sqlite4java:1.0.392'
         compile 'org.luaj:luaj-jse:3.0.1'
         compile 'org.reflections:reflections:0.9.10'
@@ -120,7 +124,6 @@ project(":Application-Client") {
         compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.7'
 
         compile group: 'io.jsonwebtoken', name: 'jjwt', version:'0.6.0'
-        compile group: 'commons-io', name: 'commons-io', version:'2.4'
 
         compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-http', version:'2.22.2'
         compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-jetty-http', version:'2.23.2'

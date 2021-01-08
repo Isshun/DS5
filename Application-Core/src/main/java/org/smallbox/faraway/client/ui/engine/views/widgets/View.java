@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -19,7 +20,6 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -396,7 +396,7 @@ public abstract class View implements Comparable<View> {
     public final View addView(View view) {
         view.setParent(this);
 
-        if (CollectionUtils.notContains(_views, view)) {
+        if (!CollectionUtils.containsAny(_views, view)) {
             _views.add(view);
         }
 

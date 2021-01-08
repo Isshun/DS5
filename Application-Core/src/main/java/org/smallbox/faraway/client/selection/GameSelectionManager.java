@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.selection;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.smallbox.faraway.client.controller.AbsInfoLuaController;
 import org.smallbox.faraway.client.controller.LuaController;
@@ -24,7 +25,6 @@ import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.structure.StructureModule;
-import org.smallbox.faraway.util.CollectionUtils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;

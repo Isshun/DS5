@@ -1,11 +1,11 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.List;

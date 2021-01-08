@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.Input;
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -8,10 +9,8 @@ import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
-import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.Map;

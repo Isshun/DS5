@@ -11,8 +11,6 @@ import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 @GameObject
 public class CharacterRelationModule extends SuperGameModule {
 
-    private CharacterRelationConfig config = new CharacterRelationConfig();
-
     @Inject
     private CharacterModule characterModule;
 
@@ -28,10 +26,11 @@ public class CharacterRelationModule extends SuperGameModule {
     }
 
     public double getScore(CharacterModel character) {
-        if (characterMoveModule.havePeopleOnProximity(character)) {
-            return config.hourlyRelationChangeWithPeopleAtProximity;
-        }
-        return config.hourlyRelationChange;
+//        if (characterMoveModule.havePeopleOnProximity(character)) {
+//            return config.hourlyRelationChangeWithPeopleAtProximity;
+//        }
+//        return config.hourlyRelationChange;
+        return 0;
     }
 
 //    public void meet(CharacterModel c1, CharacterModel c2) {

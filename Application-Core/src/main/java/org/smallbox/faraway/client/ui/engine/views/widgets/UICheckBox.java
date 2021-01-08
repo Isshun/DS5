@@ -177,11 +177,6 @@ public class UICheckBox extends View {
         return _textColor;
     }
 
-    public UICheckBox setDashedString(String label, String value, int nbColumns) {
-        _string = StringUtils.getDashedString(label, value, nbColumns);
-        return this;
-    }
-
     @Override
     public String getString() {
         return _string;

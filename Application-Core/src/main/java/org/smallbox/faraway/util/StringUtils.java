@@ -26,29 +26,4 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String getPlanetStatsText(int level) {
-        switch (level) {
-            case -3: return "non-existent";
-            case -2: return "rare";
-            case -1: return "low";
-            default: return "regular";
-            case 1: return "abundant";
-            case 2: return "extreme";
-        }
-    }
-
-    public static String getPlanetStatsSymbol(int level) {
-        switch (level) {
-            case -3: return "---";
-            case -2: return "--";
-            case -1: return "-";
-            default: return "+";
-            case 1: return "++";
-            case 2: return "+++";
-        }
-    }
-
-    public static double formatNumber(double value) {
-        return ((int)(value * 100)) / 100.0;
-    }
 }

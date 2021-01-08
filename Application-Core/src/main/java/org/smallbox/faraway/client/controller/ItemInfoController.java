@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.controller;
 
 import com.badlogic.gdx.graphics.Color;
+import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
@@ -14,7 +15,6 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.item.UsableItem;
 import org.smallbox.faraway.modules.itemFactory.ItemFactoryModel;
 import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.Queue;
