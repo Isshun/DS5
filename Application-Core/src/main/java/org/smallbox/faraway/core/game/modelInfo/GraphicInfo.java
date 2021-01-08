@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game.modelInfo;
 import com.badlogic.gdx.math.Rectangle;
 
 public class GraphicInfo {
-    public enum Type { NONE, TERRAIN, WALL, DOOR, STRUCTURE, PLANT }
+    public enum Type { NONE, TERRAIN, WALL, DOOR, STRUCTURE, PLANT, ICON }
 
     public int              spriteId = -1;
     public final String     packageName;

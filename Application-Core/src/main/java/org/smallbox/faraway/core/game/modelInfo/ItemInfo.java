@@ -21,6 +21,10 @@ public class ItemInfo extends ObjectInfo {
         return this.graphics != null && !this.graphics.isEmpty();
     }
 
+    public boolean hasIcon() {
+        return this.icon != null;
+    }
+
     public static class ItemInfoStorage {
         public int[]                    components;
         public int[]                    crafts;
@@ -244,6 +248,7 @@ public class ItemInfo extends ObjectInfo {
     public List<ItemComponentInfo>      components;
     public List<ItemInfo>               childs = new ArrayList<>();
     public List<GraphicInfo>            graphics = new ArrayList<>();
+    public GraphicInfo                  icon;
     public ItemInfoFactory              factory;
     public ItemInfo                     parent;
     public String                       parentName;

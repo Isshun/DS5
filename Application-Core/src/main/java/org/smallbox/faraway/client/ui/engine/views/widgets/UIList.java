@@ -15,7 +15,11 @@ public class UIList extends View implements AutoCloseable {
     @Override
     protected void onAddView(View view) {
         view.setDeep(_deep + 1);
+        updateSize();
+    }
 
+    @Override
+    protected void updateSize() {
         int offset = 0;
         for (View subView : _views) {
             offset += subView.getHeight() + subView.getMarginTop() + subView.getMarginBottom();

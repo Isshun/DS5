@@ -90,7 +90,10 @@ public class LuaItemExtend extends LuaExtend {
                     itemInfo.graphics.add(readGraphic(luaGraphics.get(i), itemInfo));
                 }
             }
+            itemInfo.icon = itemInfo.graphics.stream().filter(graphicInfo -> graphicInfo.type == GraphicInfo.Type.ICON).findFirst().orElse(null);
         }
+
+
         if (itemInfo.graphics.isEmpty()) {
             GraphicInfo graphicInfo = new GraphicInfo("base", "/graphics/missing.png");
             graphicInfo.width = 32;

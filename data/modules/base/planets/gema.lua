@@ -44,7 +44,7 @@ data:extend({
     },
     regions = {{
         name = "island",
-        label = "island",
+        label = "Island",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},
@@ -69,7 +69,7 @@ data:extend({
         },
     }, {
         name = "ocean",
-        label = "ocean",
+        label = "Ocean",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},

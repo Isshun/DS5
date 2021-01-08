@@ -44,7 +44,7 @@ data:extend({
     },
     regions = {{
         name = "frozen",
-        label = "frozen",
+        label = "Frozen",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},

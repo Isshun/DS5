@@ -9,10 +9,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -22,6 +19,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.GameFactory;
 import org.smallbox.faraway.core.game.GameManager;
 import org.smallbox.faraway.core.game.model.planet.PlanetInfo;
+import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 @ApplicationObject
@@ -69,7 +67,7 @@ public class MenuPlanetController extends LuaController {
     private void selectPlanet(PlanetInfo planet) {
         if (planet.graphics.background != null) {
             imgPlanet.setImage(planet.graphics.background.path);
-            listPlanets.getViews().stream().map(view -> ((UILabel)view)).forEach(view -> view.setTextColor(view.getId().equals(planet.name) ? Colors.BLUE_LIGHT_5 : Colors.BLUE_LIGHT_3));
+            listPlanets.getViews().stream().map(view -> ((UILabel)view)).forEach(view -> view.setTextColor(view.getId().equals(planet.name) ? Colors.BLUE_LIGHT_5 : Colors.BLUE_DARK_1));
             this.planet = planet;
 
             infoPlanet.setVisible(true);
@@ -77,11 +75,25 @@ public class MenuPlanetController extends LuaController {
             listInfoRegions.getViews().clear();
 
             planet.regions.forEach(region -> {
-                UILabel lbRegion = new UILabel(null);
-                lbRegion.setText(region.label);
-                lbRegion.setTextSize(22);
-                lbRegion.setTextColor(Colors.BLUE_LIGHT_3);
-                listInfoRegions.addNextView(lbRegion);
+                View viewRegion = listInfoRegions.createFromTemplate();
+                ((UILabel)viewRegion.findById("lb_region_name")).setText(region.label);
+                ((UILabel)viewRegion.findById("lb_hostility")).setText("low");
+                ((UILabel)viewRegion.findById("lb_fertility")).setText("high");
+                ((UILabel)viewRegion.findById("lb_atmosphere")).setText("o2, nitrogen");
+                ((UILabel)viewRegion.findById("lb_temperature")).setText("-5° +50");
+
+                UIGrid listResource = ((UIGrid)viewRegion.findById("grid_info_resources"));
+                region.terrains.stream().filter(terrain -> terrain.resource != null).forEach(terrain -> {
+                    View viewResource = listResource.createFromTemplate();
+                    ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
+                    if (resourceInfo.hasIcon()) {
+                        ((UIImage)viewResource.findById("img_resource")).setImage(resourceInfo.icon);
+                    }
+                    listResource.addNextView(viewResource);
+                });
+                listResource.switchViews();
+
+                listInfoRegions.addNextView(viewRegion);
             });
 
             listInfoRegions.switchViews();

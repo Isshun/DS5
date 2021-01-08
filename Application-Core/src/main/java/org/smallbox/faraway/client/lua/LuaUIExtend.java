@@ -340,6 +340,10 @@ public class LuaUIExtend extends LuaExtend {
     }
 
     public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, String path, int index, boolean isGameView) {
+        return createView(module, globals, value, inGame, deep, parent, path, index, isGameView, true);
+    }
+
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, String path, int index, boolean isGameView, boolean runAfter) {
 
         // Create view for type
         View view = createViewFromType(module, value);
@@ -356,10 +360,18 @@ public class LuaUIExtend extends LuaExtend {
         customizeViewMandatory(module, globals, value, inGame, deep, parent, view);
 
         // Apply style
-        clientLuaModuleManager.runAfter(() -> readString(value, "style", styleName -> applyStyle(module, globals, value, inGame, deep, parent, view, styleName)));
+        if (runAfter) {
+            clientLuaModuleManager.runAfter(() -> readString(value, "style", styleName -> applyStyle(module, globals, value, inGame, deep, parent, view, styleName)));
+        } else {
+            readString(value, "style", styleName -> applyStyle(module, globals, value, inGame, deep, parent, view, styleName));
+        }
 
         // Apply cosmetic value
-        clientLuaModuleManager.runAfter(() -> customizeViewCosmetic(module, globals, value, inGame, deep, parent, view));
+        if (runAfter) {
+            clientLuaModuleManager.runAfter(() -> customizeViewCosmetic(module, globals, value, inGame, deep, parent, view));
+        } else {
+            customizeViewCosmetic(module, globals, value, inGame, deep, parent, view);
+        }
 
         // Add listeners
         customizeViewListeners(module, globals, value, inGame, deep, parent, view);
@@ -367,12 +379,28 @@ public class LuaUIExtend extends LuaExtend {
         // Add subviews
         LuaValue subViews = value.get("views");
         if (!subViews.isnil()) {
-            if (subViews.get("type").isnil()) {
+            if (subViews.istable()) {
                 for (int i = 1; i <= subViews.length(); i++) {
-                    view.addView(createView(module, globals, subViews.get(i), inGame, deep + 1, view, path + "." + i, i, isGameView));
+                    view.addView(createView(module, globals, subViews.get(i), inGame, deep + 1, view, path + "." + i, i, isGameView, runAfter));
                 }
             } else {
-                view.addView(createView(module, globals, subViews, inGame, deep + 1, view, path + "." + 1, 1, isGameView));
+                view.addView(createView(module, globals, subViews, inGame, deep + 1, view, path + "." + 1, 1, isGameView, runAfter));
+            }
+        }
+
+        // Add template
+        LuaValue template = value.get("template");
+        if (!template.isnil()) {
+            if (template.istable()) {
+                view.setTemplate(() -> {
+                    UIList list = new UIList(module);
+                    for (int i = 1; i <= template.length(); i++) {
+                        list.addView(createView(module, globals, template.get(i), inGame, deep + 1, view, path + "." + i, i, isGameView, false));
+                    }
+                    return list;
+                });
+            } else {
+                view.setTemplate(() -> createView(module, globals, template, inGame, deep + 1, view, path + "." + 1, 1, isGameView, false));
             }
         }
 
@@ -397,7 +425,7 @@ public class LuaUIExtend extends LuaExtend {
             case "label": return new UILabel(module);
         }
 
-        throw new GameException(LuaUIExtend.class, "Unknown view type");
+        throw new GameException(LuaUIExtend.class, "Unknown view type: " + value.get("type").toString());
     }
 
     private View createDropDownView(ModuleBase module, LuaValue value) {

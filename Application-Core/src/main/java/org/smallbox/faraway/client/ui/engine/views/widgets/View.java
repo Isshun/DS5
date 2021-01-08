@@ -148,6 +148,10 @@ public abstract class View implements Comparable<View> {
         _isGameView = isGameView;
     }
 
+    public View createFromTemplate() {
+        return _template != null ? _template.createFromTemplate() : null;
+    }
+
     public enum HorizontalAlign {LEFT, RIGHT, CENTER}
     public enum VerticalAlign {TOP, BOTTOM, CENTER}
 
@@ -184,8 +188,13 @@ public abstract class View implements Comparable<View> {
 
     protected final ModuleBase  _module;
 
+    public interface TemplateCallback {
+        View createFromTemplate();
+    }
+
 //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
     protected Collection<View>  _views = new LinkedBlockingQueue<>();
+    protected TemplateCallback  _template;
     protected Collection<View>  _nextViews = new ConcurrentLinkedQueue<>();
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
@@ -373,8 +382,15 @@ public abstract class View implements Comparable<View> {
 
     public final void switchViews() {
         removeAllViews();
-        _views.addAll(_nextViews);
+        _nextViews.forEach(this::addView);
         _nextViews.clear();
+
+        if (_parent != null) {
+            _parent.updateSize();
+        }
+    }
+
+    protected void updateSize() {
     }
 
     public final View addView(View view) {
@@ -388,6 +404,11 @@ public abstract class View implements Comparable<View> {
 
         onAddView(view);
 
+        return this;
+    }
+
+    public final View setTemplate(TemplateCallback templateCallback) {
+        _template = templateCallback;
         return this;
     }
 

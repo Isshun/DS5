@@ -14,9 +14,9 @@ ui:extend({
     views = {
         { type = "image", src = "[base]/background/17520.jpg", size = {application.screen_width, application.screen_height}},
 
---        { type = "view", background = 0x080808ff, size = {1920, 1080}, position = {application.screen_width / 2 - 1920 / 2, application.screen_height / 2 - 1080 / 2}},
---        { type = "view", background = 0x111111ff, size = {1360, 768}, position = {application.screen_width / 2 - 1360 / 2, application.screen_height / 2 - 768 / 2}},
---        { type = "view", background = 0x222222ff, size = {1280, 720}, position = {application.screen_width / 2 - 1280 / 2, application.screen_height / 2 - 720 / 2}},
+        --        { type = "view", background = 0x080808ff, size = {1920, 1080}, position = {application.screen_width / 2 - 1920 / 2, application.screen_height / 2 - 1080 / 2}},
+        --        { type = "view", background = 0x111111ff, size = {1360, 768}, position = {application.screen_width / 2 - 1360 / 2, application.screen_height / 2 - 768 / 2}},
+        --        { type = "view", background = 0x222222ff, size = {1280, 720}, position = {application.screen_width / 2 - 1280 / 2, application.screen_height / 2 - 720 / 2}},
 
         { type = "view", background = blue_light_1,
             size = {max_width + window_border_size * 2, max_height + window_border_size * 2},
@@ -28,16 +28,49 @@ ui:extend({
 
             { type = "view", background = blue_dark_4, size = {left_pane_width, max_height}, position = {0, 0}, views = {
                 { type = "list", id = "list_planets"},
---                { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 650}, text_size = 22, size = {100, 40}, action = "onActionBack"},
---                { type = "label", id = "bt_next", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "next", position = {200, 650}, text_size = 22, size = {100, 40}, action = "onActionNext"},
+                --                { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 650}, text_size = 22, size = {100, 40}, action = "onActionBack"},
+                --                { type = "label", id = "bt_next", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "next", position = {200, 650}, text_size = 22, size = {100, 40}, action = "onActionNext"},
             }},
 
             { type = "view", background = blue_dark_3, size = {right_pane_width, max_height}, position = {left_pane_width, 0}, views = {
 
                 { type = "list", id = "info_planet", position = {20, 0}, views = {
-                    { type = "label", id = "lb_info_name", text_color = blue_light_3, text_size = 60, padding = {20, 0, 10, 0}},
-                    { type = "label", text = "Biomes", text_color = blue_light_3, text_size = 30, padding = {0, 0, 10, 0}},
-                    { type = "list", id = "list_info_regions"},
+                    { type = "label", id = "lb_info_name", text_color = blue_light_3, text_size = 60, padding = {20, 0, 0, 0}},
+
+                    -- Regions
+                    { type = "list", id = "list_info_regions", template = {
+                        { type = "label", id = "lb_region_name", text_color = blue_light_3, text_size = 36, padding = {30, 0, 0, 0}},
+
+                        -- Biome
+                        { type = "label", text = "Biome", text_color = blue_light_3, text_size = 22, padding = {10, 0, 10, 0}},
+                        { type = "grid", columns = 2, column_width = 200, row_height = 30, views = {
+                            { type = "view", views = {
+                                { type = "image", src = "[base]/graphics/icons/hostility.png", size = {24, 24}},
+                                { type = "label", id = "lb_hostility", text_color = blue_light_3, text_size = 16, padding = 7, position = {30, 0}},
+                            }},
+                            { type = "view", views = {
+                                { type = "image", src = "[base]/graphics/icons/fertility.png", size = {24, 24}},
+                                { type = "label", id = "lb_fertility", text_color = blue_light_3, text_size = 16, padding = 7, position = {30, 0}},
+                            }},
+                            { type = "view", views = {
+                                { type = "image", src = "[base]/graphics/icons/temperature.png", size = {24, 24}},
+                                { type = "label", id = "lb_temperature", text_color = blue_light_3, text_size = 16, padding = 7, position = {30, 0}},
+                            }},
+                            { type = "view", views = {
+                                { type = "image", src = "[base]/graphics/icons/o2.png", size = {24, 24}},
+                                { type = "label", id = "lb_atmosphere", text_color = blue_light_3, text_size = 16, padding = 7, position = {30, 0}},
+                            }},
+                        }},
+
+                        -- Resources
+                        { type = "label", text = "Resources", text_color = blue_light_3, text_size = 22, padding = {20, 0, 0, 0}},
+                        { type = "grid", id = "grid_info_resources", columns = 20, column_width = 32, row_height = 30, template = {
+                            { type = "image", id = "img_resource", size = {24, 24}},
+                        }},
+
+                        { type = "view", size = {0, 30}}
+
+                    }},
                 }},
 
                 { type = "image", id = "img_planet", position = {right_pane_width / 2, 60}, size = {right_pane_width / 2, max_height - 60}},

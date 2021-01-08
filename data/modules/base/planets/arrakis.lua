@@ -24,7 +24,7 @@ data:extend({
     },
     regions = {{
         name = "mountain",
-        label = "mountain",
+        label = "Mountain",
         color = 0x804f15ff,
         hostility = 3,
         fertility = 2,
