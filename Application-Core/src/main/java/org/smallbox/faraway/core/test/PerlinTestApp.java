@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.smallbox.faraway.modules.world.factory.old.MapFactoryConfig;
 import org.smallbox.faraway.modules.world.factory.old.PerlingGenerator;
 
+import java.util.List;
 import java.util.Random;
 
 public class PerlinTestApp extends ApplicationAdapter {
@@ -23,10 +24,10 @@ public class PerlinTestApp extends ApplicationAdapter {
     public void render () {
 
         if (_sprite == null) {
-            _sprite = new Sprite[4];
+            _sprite = new Sprite[8];
 
-            MapFactoryConfig config = MapFactoryConfig.createMountains();
-            int size = 512;
+            MapFactoryConfig config = MapFactoryConfig.createMountains2();
+            int size = 3000;
 
             float[][] image = PerlingGenerator.GenerateWhiteNoise(size, size);
             float[][] perlinNoise = PerlingGenerator.GeneratePerlinNoise(image, config.perlinOctave);
@@ -34,37 +35,39 @@ public class PerlinTestApp extends ApplicationAdapter {
                 perlinNoise = PerlingGenerator.AdjustLevels(perlinNoise, adjustment.min, adjustment.max);
             }
 
-            Texture t1 = new Texture("data/res/g1.png");
-            t1.getTextureData().prepare();
-            Texture t2 = new Texture("data/res/g2.png");
-            t2.getTextureData().prepare();
+            float[][] perlinNoise2 = PerlingGenerator.GeneratePerlinNoise(image, 10);
+            for (MapFactoryConfig.AdjustmentValue adjustment :  List.of(
+                    new MapFactoryConfig.AdjustmentValue(0.2f, 0.68f),
+                    new MapFactoryConfig.AdjustmentValue(0.2f, 0.68f),
+                    new MapFactoryConfig.AdjustmentValue(0.2f, 0.68f),
+                    new MapFactoryConfig.AdjustmentValue(0.2f, 0.68f)
+            )) {
+                perlinNoise2 = PerlingGenerator.AdjustLevels(perlinNoise2, adjustment.min, adjustment.max);
+            }
 
-            Pixmap p1 = t1.getTextureData().consumePixmap();
-            Pixmap p2 = t2.getTextureData().consumePixmap();
+            Pixmap p1 = createPixmap("data/graphics/texture/sand.png");
+            Pixmap p2 = createPixmap("data/graphics/texture/sand2.png");
+            Pixmap p3 = createPixmap("data/graphics/texture/water.png");
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 1; i++) {
                 Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
                 for (int x = 0; x < size; x++) {
                     for (int y = 0; y < size; y++) {
-                        int relX = i == 0 || i == 1 ? x : size - x - 1;
-                        int relY = i == 0 || i == 2 ? y : size - y - 1;
-
                         {
                             int alpha = (0xffffff << 8) + (int) (perlinNoise[x][y] * 255);
-                            int color = p1.getPixel(x, y) & alpha;
-                            pixmap.drawPixel(relX, relY, color);
+                            int color = p1.getPixel(x % 512, y % 512) & alpha;
+                            pixmap.drawPixel(x, y, color);
                         }
-
                         {
                             int alpha = (0xffffff << 8) + (int) ((1 - perlinNoise[x][y]) * 255);
-                            int color = p2.getPixel(x, y) & alpha;
-                            pixmap.drawPixel(relX, relY, color);
+                            int color = p2.getPixel(x % 512, y % 512) & alpha;
+                            pixmap.drawPixel(x, y, color);
                         }
-
-//                    {
-//                        int alpha = (0xffffff << 8) + (int) (perlinNoise[x][y] * 255);
-//                        pixmap.drawPixel(x, y, alpha);
-//                    }
+                        {
+                            int alpha = (0xffffff << 8) + (int) ((1 - perlinNoise2[x][y]) * 255);
+                            int color = p3.getPixel(x % 512, y % 512) & alpha;
+                            pixmap.drawPixel(x, y, color);
+                        }
                     }
                 }
 
@@ -76,14 +79,20 @@ public class PerlinTestApp extends ApplicationAdapter {
 
         Random r = new Random(42);
 
-        for (int x = 0; x < 10; x++) {
-            for (int y = 0; y < 10; y++) {
-                int i = 0;//r.nextInt(4);
-                _sprite[i].setPosition(512 * x, 512 * y);
-                _sprite[i].draw(_batch);
+        for (int x = 0; x < 1; x++) {
+            for (int y = 0; y < 1; y++) {
+                int i = r.nextInt(8);
+                _sprite[0].setPosition(0, 0);
+                _sprite[0].draw(_batch);
             }
         }
 
         _batch.end();
+    }
+
+    private Pixmap createPixmap(String internalPath) {
+        Texture texture = new Texture(internalPath);
+        texture.getTextureData().prepare();
+        return texture.getTextureData().consumePixmap();
     }
 }

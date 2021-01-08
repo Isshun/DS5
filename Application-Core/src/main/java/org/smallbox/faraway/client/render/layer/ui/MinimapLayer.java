@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -8,6 +8,7 @@ import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;

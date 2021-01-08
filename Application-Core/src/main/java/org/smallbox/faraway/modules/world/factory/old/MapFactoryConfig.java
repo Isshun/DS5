@@ -50,4 +50,12 @@ public class MapFactoryConfig {
         return config;
     }
 
+    public static MapFactoryConfig createMountains2() {
+        MapFactoryConfig config = new MapFactoryConfig();
+        config.perlinOctave = 8;
+        config.addAdjustment(0.25f, 0.55f);
+
+        return config;
+    }
+
 }

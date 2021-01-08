@@ -4,7 +4,7 @@ import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.render.layer.RoomLayer;
+import org.smallbox.faraway.client.render.layer.area.RoomLayer;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;

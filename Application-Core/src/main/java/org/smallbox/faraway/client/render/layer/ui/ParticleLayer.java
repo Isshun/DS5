@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;

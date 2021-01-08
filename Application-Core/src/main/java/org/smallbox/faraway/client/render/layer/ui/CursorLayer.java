@@ -1,14 +1,14 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.gameAction.GameActionMode;
 import org.smallbox.faraway.client.manager.input.InputManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.module.CharacterClientModule;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -24,9 +24,6 @@ public class CursorLayer extends BaseLayer {
 
     @Inject
     private SpriteManager spriteManager;
-
-    @Inject
-    private CharacterClientModule characterClientModule;
 
     @Inject
     private CharacterModule characterModule;

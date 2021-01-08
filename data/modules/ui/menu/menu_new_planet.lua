@@ -28,8 +28,14 @@ ui:extend({
 
             { type = "view", background = blue_dark_4, size = {left_pane_width, max_height}, position = {0, 0}, views = {
                 { type = "list", id = "list_planets"},
-                --                { type = "label", id = "bt_back", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "back", position = {0, 650}, text_size = 22, size = {100, 40}, action = "onActionBack"},
-                --                { type = "label", id = "bt_next", padding = 10, background = {regular = 0x55ffffff, focus = 0x8814dcb9}, text = "next", position = {200, 650}, text_size = 22, size = {100, 40}, action = "onActionNext"},
+
+                { type = "label", id = "bt_back", text = "Back", padding = 16, text_size = 22,
+                    background = {regular = 0x55ffffff, focus = 0x8814dcb9},
+                    position = {10, max_height - 60},
+                    size = {140, 50},
+                    action = "onActionBack"
+                },
+
             }},
 
             { type = "view", background = blue_dark_3, size = {right_pane_width, max_height}, position = {left_pane_width, 0}, views = {
@@ -74,7 +80,12 @@ ui:extend({
                 }},
 
                 { type = "image", id = "img_planet", position = {right_pane_width / 2, 60}, size = {right_pane_width / 2, max_height - 60}},
-
+                { type = "label", id = "bt_next", text = "Embark", padding = 16, text_size = 22,
+                    background = {regular = 0x55ffffff, focus = 0x8814dcb9},
+                    position = {right_pane_width - 150, max_height - 60},
+                    size = {140, 50},
+                    action = "onActionNext"
+                },
             }},
 
         }}

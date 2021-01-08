@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.client.ClientLuaModuleManager;
+import org.smallbox.faraway.client.controller.LuaController;
+import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
@@ -12,9 +15,12 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.util.CollectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -76,6 +82,22 @@ public class UIManager {
 
     public void addMenuView(RootView view) {
         _menuViews.put(view.getName(), view);
+    }
+
+    public void refresh(LuaController controller, String fileName) {
+        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().remove(controller.getRootView().getName());
+        DependencyInjector.getInstance().getDependency(UIManager.class).getRootViews().removeIf(rootView -> rootView.getView() == controller.getRootView());
+        DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class).loadLuaFile(fileName);
+        DependencyInjector.getInstance().getDependency(LuaControllerManager.class).initController(controller);
+        Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterApplicationLayerInit.class)).forEach(method -> {
+            try {
+                method.setAccessible(true);
+                method.invoke(controller);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
+        controller.setVisible(true);
     }
 
     private static class ContextEntry {

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,13 +6,14 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.area.AreaModel;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
-import org.smallbox.faraway.modules.storage.StorageModule;
+import org.smallbox.faraway.modules.plant.GardenModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
@@ -20,13 +21,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
 @GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
-public class StorageLayer extends BaseLayer {
+public class GardenLayer extends BaseLayer {
 
     @Inject
     private SpriteManager spriteManager;
 
     @Inject
-    private StorageModule storageModule;
+    private GardenModule gardenModule;
 
     private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
@@ -42,7 +43,7 @@ public class StorageLayer extends BaseLayer {
     @Override
     public void onGameStart(Game game) {
         _regions = new TextureRegion[5];
-        _regions[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 0, 32, 32);
+        _regions[0] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
         _regions[1] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 32, 32, 32);
         _regions[2] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 64, 32, 32);
         _regions[3] = new TextureRegion(spriteManager.getTexture("data/res/bg_area.png"), 0, 96, 32, 32);
@@ -62,7 +63,7 @@ public class StorageLayer extends BaseLayer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
         int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
-        storageModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawOnMap(parcel.x, parcel.y, _regions[0]));
+        gardenModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawOnMap(parcel.x, parcel.y, _regions[0]));
 
         if (_mode == Mode.ADD) {
             renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");

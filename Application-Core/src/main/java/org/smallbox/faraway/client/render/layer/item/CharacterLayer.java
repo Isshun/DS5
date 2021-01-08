@@ -1,13 +1,13 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.item;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.client.module.CharacterClientModule;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.GameLayer;
@@ -23,6 +23,7 @@ import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
 
@@ -32,9 +33,6 @@ public class CharacterLayer extends BaseLayer {
 
     @Inject
     private SpriteManager spriteManager;
-
-    @Inject
-    private CharacterClientModule characterClientModule;
 
     @Inject
     private CharacterModule characterModule;
@@ -64,10 +62,6 @@ public class CharacterLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        characterClientModule.characters.values().forEach(character -> {
-            renderer.drawRectangleOnMap(character.parcelX, character.parcelY, 16, 16, Color.BROWN, true, 0, 0);
-        });
-
         characterModule.getAll().forEach(character -> drawCharacter(renderer, viewport, character));
     }
 
@@ -81,12 +75,12 @@ public class CharacterLayer extends BaseLayer {
                 Vector2 out = new Vector2();
                 position.myCatmull.valueAt(out, (float) position._moveProgress2 / position.pathLength);
                 doDraw(renderer, character,
-                        (int) (viewPortX + out.x * 32),
-                        (int) (viewPortY + out.y * 32));
+                        (int) (viewPortX + out.x * Constant.TILE_SIZE),
+                        (int) (viewPortY + out.y * Constant.TILE_SIZE));
             } else {
                 doDraw(renderer, character,
-                        viewPortX + character.getParcel().x * 32,
-                        viewPortY + character.getParcel().y * 32);
+                        viewPortX + character.getParcel().x * Constant.TILE_SIZE,
+                        viewPortY + character.getParcel().y * Constant.TILE_SIZE);
             }
         }
     }
@@ -95,7 +89,7 @@ public class CharacterLayer extends BaseLayer {
 //        if (positionCommon.isAlive()) {
         drawCharacter(renderer, character, posX, posY);
         drawLabel(renderer, character, posX, posY);
-        drawSelection(renderer, spriteManager, character, posX, posY, 32, 36, 0, 0);
+        drawSelection(renderer, spriteManager, character, posX, posY, Constant.TILE_SIZE, (int) (Constant.TILE_SIZE * 1.25), 0, 0);
         drawInventory(renderer, character, posX, posY);
         drawJob(renderer, character, posX, posY);
 //        }
@@ -113,9 +107,9 @@ public class CharacterLayer extends BaseLayer {
         if (job != null) {
 
             if (job.getProgress() > 0) {
-                renderer.drawRectangle(posX, posY, 32, 6, Color.CYAN, true);
-                renderer.drawRectangle(posX, posY, (int) (32 * job.getProgress()), 6, Color.BLUE, true);
-                renderer.drawRectangle(posX, posY, 32, 6, Color.YELLOW, false);
+                renderer.drawRectangle(posX, posY, Constant.TILE_SIZE, 6, Color.CYAN, true);
+                renderer.drawRectangle(posX, posY, (int) (Constant.TILE_SIZE * job.getProgress()), 6, Color.BLUE, true);
+                renderer.drawRectangle(posX, posY, Constant.TILE_SIZE, 6, Color.YELLOW, false);
             }
 
             if (job.getMainLabel() != null) {
@@ -269,15 +263,15 @@ public class CharacterLayer extends BaseLayer {
 //        }
 
             doDraw(renderer, character,
-                    (int) (viewPortX + (parcel.x * 32) + (dirX * 32 * decimal)),
-                    (int) (viewPortY + (parcel.y * 32) + (dirY * 32 * decimal))
+                    (int) (viewPortX + (parcel.x * Constant.TILE_SIZE) + (dirX * Constant.TILE_SIZE * decimal)),
+                    (int) (viewPortY + (parcel.y * Constant.TILE_SIZE) + (dirY * Constant.TILE_SIZE * decimal))
             );
         }
 
         else {
             doDraw(renderer, character,
-                    viewPortX + (character.getParcel().x * 32),
-                    viewPortY + (character.getParcel().y * 32)
+                    viewPortX + (character.getParcel().x * Constant.TILE_SIZE),
+                    viewPortY + (character.getParcel().y * Constant.TILE_SIZE)
             );
         }
 

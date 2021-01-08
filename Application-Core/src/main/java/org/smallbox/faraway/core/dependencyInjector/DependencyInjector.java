@@ -163,7 +163,6 @@ public class DependencyInjector {
         });
     }
 
-    // TODO: methode appelée plusieurs fois (2)
     private void doInjectShortcut(Object host) {
         for (Method method : host.getClass().getDeclaredMethods()) {
             method.setAccessible(true);

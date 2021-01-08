@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,27 +6,28 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
-import org.smallbox.faraway.modules.room.RoomModule;
-import org.smallbox.faraway.modules.room.model.RoomModel;
-import org.smallbox.faraway.modules.room.model.RoomTypeInfo;
+import org.smallbox.faraway.modules.area.AreaModel;
+import org.smallbox.faraway.modules.area.AreaModule;
+import org.smallbox.faraway.modules.area.AreaTypeInfo;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
-@GameLayer(level = LayerManager.ROOM_LAYER_LEVEL, visible = true)
-public class RoomLayer extends BaseLayer {
+@GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
+public class AreaLayer extends BaseLayer {
 
     @Inject
     private SpriteManager spriteManager;
 
     @Inject
-    private RoomModule roomModule;
+    private AreaModule areaModule;
 
     private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
@@ -37,7 +38,7 @@ public class RoomLayer extends BaseLayer {
     public enum Mode {NONE, ADD, SUB}
 
     private Mode _mode;
-    private Class<? extends RoomModel> _cls;
+    private Class<? extends AreaModel> _cls;
 
     private Color[] COLORS = new Color[] {
             new Color(0.5f, 0.5f, 1f, 0.4f),
@@ -70,20 +71,20 @@ public class RoomLayer extends BaseLayer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
         int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
-        roomModule.getRooms().forEach(Room ->
-                Room.getParcels().forEach(parcel ->
-                        renderer.drawOnMap(parcel.x, parcel.y, getTexture(Room.getClass()))));
+        areaModule.getAreas().forEach(area ->
+                area.getParcels().forEach(parcel ->
+                        renderer.drawOnMap(parcel.x, parcel.y, getTexture(area.getClass()))));
 
         if (_mode == Mode.ADD) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(RoomTypeInfo.class).label() + " Room");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
         }
 
         if (_mode == Mode.SUB) {
-            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(RoomTypeInfo.class).label() + " Room");
+            renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Sub " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");
         }
     }
 
-    private TextureRegion getTexture(Class<? extends RoomModel> cls) {
+    private TextureRegion getTexture(Class<? extends AreaModel> cls) {
         if (!_textureByClass.containsKey(cls)) {
             _textureByClass.put(cls, _regions[Math.min(_textureByClass.size(), 4)]);
         }

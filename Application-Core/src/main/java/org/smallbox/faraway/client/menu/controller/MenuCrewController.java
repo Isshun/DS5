@@ -26,16 +26,22 @@ public class MenuCrewController extends LuaController {
     private MenuSettingsController menuSettingsController;
 
     @Inject
-    private MenuCrewController menuCrewController;
+    private MenuPlanetController menuPlanetController;
 
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
     }
 
     @BindLuaAction
+    private void onActionBack(View view) {
+        setVisible(false);
+        menuPlanetController.setVisible(true);
+    }
+
+    @BindLuaAction
     private void onActionNext(View view) {
         setVisible(false);
-        menuCrewController.setVisible(true);
+        gameFactory.create(applicationConfig.debug.scenario);
     }
 
 //

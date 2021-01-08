@@ -2,11 +2,9 @@ package org.smallbox.faraway.client.menu.controller;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.ClientLuaModuleManager;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
@@ -36,6 +34,9 @@ public class MenuPlanetController extends LuaController {
 
     @Inject
     private MenuCrewController menuCrewController;
+
+    @Inject
+    private MenuMainController menuMainController;
 
     @Inject
     private Data data;
@@ -101,14 +102,15 @@ public class MenuPlanetController extends LuaController {
     }
 
     @BindLuaAction
-    private void onActionNext(View view) {
+    private void onActionBack(View view) {
         setVisible(false);
-//        menuCrewController.setVisible(true);
-        gameFactory.create(applicationConfig.debug.scenario);
+        menuMainController.setVisible(true);
     }
 
     @BindLuaAction
-    private void onActionBack(View view) {
+    private void onActionNext(View view) {
+        setVisible(false);
+        menuCrewController.setVisible(true);
     }
 
     @GameShortcut(key = Input.Keys.UP)
@@ -123,12 +125,7 @@ public class MenuPlanetController extends LuaController {
 
     @GameShortcut(key = Input.Keys.F1)
     public void onRefreshUI() {
-        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().remove(getRootView().getName());
-        DependencyInjector.getInstance().getDependency(UIManager.class).getRootViews().removeIf(rootView -> rootView.getView() == getRootView());
-        DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class).loadLuaFile("menu_new_planet.lua");
-        DependencyInjector.getInstance().getDependency(LuaControllerManager.class).initController(this);
-        afterApplicationLayerInit();
-        setVisible(true);
+        DependencyInjector.getInstance().getDependency(UIManager.class).refresh(this, "menu_new_planet.lua");
         selectPlanet(planet);
     }
 

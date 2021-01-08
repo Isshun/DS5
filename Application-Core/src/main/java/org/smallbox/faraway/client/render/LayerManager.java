@@ -20,54 +20,40 @@ import java.util.stream.Collectors;
 
 @ApplicationObject
 public class LayerManager implements GameClientObserver {
+    public static final int TOP = 999;
+    public static final int MINI_MAP_LEVEL = 100;
+    public static final int PARTICLE_LAYER_LEVEL = -99;
+    public static final int JOB_LAYER_LEVEL = -100;
+    public static final int CHARACTER_LAYER_LEVEL = -101;
+    public static final int CONSUMABLE_LAYER_LEVEL = -102;
+    public static final int PLANT_LAYER_LEVEL = -103;
+    public static final int ITEM_LAYER_LEVEL = -103;
+    public static final int STRUCTURE_LAYER_LEVEL = -104;
+    public static final int AREA_LAYER_LEVEL = -105;
+    public static final int ROOM_LAYER_LEVEL = -105;
+    public static final int WORLD_GROUND_LAYER_LEVEL = -106;
+    public static final int WORLD_TOP_LAYER_LEVEL = -107;
 
-    @Inject
-    private LayerManager layerManager;
+    @Inject private LayerManager layerManager;
+    @Inject private InputManager inputManager;
+    @Inject private UIManager uiManager;
+    @Inject private Viewport viewport;
+    @Inject private GameManager gameManager;
+    @Inject private GDXRenderer gdxRenderer;
+    @Inject private WorldInputManager worldInputManager;
+    @Inject private Game game;
 
-    @Inject
-    private InputManager inputManager;
-
-    @Inject
-    private UIManager uiManager;
-
-    @Inject
-    private Viewport viewport;
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private GDXRenderer gdxRenderer;
-
-    @Inject
-    private WorldInputManager worldInputManager;
-
-    @Inject
-    private Game game;
-
-    public static final int                 TOP = 999;
-    public static final int                 MINI_MAP_LEVEL = 100;
-    public static final int                 PARTICLE_LAYER_LEVEL = -99;
-    public static final int                 JOB_LAYER_LEVEL = -100;
-    public static final int                 CHARACTER_LAYER_LEVEL = -101;
-    public static final int                 CONSUMABLE_LAYER_LEVEL = -102;
-    public static final int                 PLANT_LAYER_LEVEL = -103;
-    public static final int                 ITEM_LAYER_LEVEL = -103;
-    public static final int                 STRUCTURE_LAYER_LEVEL = -104;
-    public static final int                 AREA_LAYER_LEVEL = -105;
-    public static final int                 ROOM_LAYER_LEVEL = -105;
-    public static final int                 WORLD_GROUND_LAYER_LEVEL = -106;
-    public static final int                 WORLD_TOP_LAYER_LEVEL = -107;
-
-    private long                            _renderTime;
-    private int                             _frame;
+    private long _renderTime;
+    private int _frame;
 
     // Render
-    private double                          _animationProgress;
+    private double _animationProgress;
 
-    private Collection<BaseLayer>           _layers;
+    private Collection<BaseLayer> _layers;
 
-    public Viewport getViewport() { return viewport; }
+    public Viewport getViewport() {
+        return viewport;
+    }
 
     @OnGameLayerInit
     public void onGameInitLayers() {
@@ -111,10 +97,18 @@ public class LayerManager implements GameClientObserver {
 
         // Move viewport
         if (game.isRunning()) {
-            if (worldInputManager.getDirection()[0]) { viewport.move(20, 0); }
-            if (worldInputManager.getDirection()[1]) { viewport.move(0, 20); }
-            if (worldInputManager.getDirection()[2]) { viewport.move(-20, 0); }
-            if (worldInputManager.getDirection()[3]) { viewport.move(0, -20); }
+            if (worldInputManager.getDirection()[0]) {
+                viewport.move(20, 0);
+            }
+            if (worldInputManager.getDirection()[1]) {
+                viewport.move(0, 20);
+            }
+            if (worldInputManager.getDirection()[2]) {
+                viewport.move(-20, 0);
+            }
+            if (worldInputManager.getDirection()[3]) {
+                viewport.move(0, -20);
+            }
         }
 
         uiManager.onRefresh(_frame);
@@ -134,9 +128,13 @@ public class LayerManager implements GameClientObserver {
         _renderTime += System.currentTimeMillis() - time;
     }
 
-    public int getFrame() { return _frame; }
+    public int getFrame() {
+        return _frame;
+    }
 
-    public long getRenderTime() { return _frame > 0 ? _renderTime / _frame : 0; }
+    public long getRenderTime() {
+        return _frame > 0 ? _renderTime / _frame : 0;
+    }
 
     public Collection<BaseLayer> getLayers() {
         return _layers;

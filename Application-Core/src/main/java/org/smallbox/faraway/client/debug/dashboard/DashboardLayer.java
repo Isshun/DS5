@@ -23,59 +23,24 @@ import java.util.function.BiConsumer;
 @GameLayer(level = 999, visible = false)
 public class DashboardLayer extends BaseLayer {
 
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private ShortcutDashboardLayer shortcutDashboardLayer;
-
-    @Inject
-    private CharacterDashboardLayer characterDashboardLayer;
-
-    @Inject
-    private ConsoleDashboardLayer consoleDashboardLayer;
-
-    @Inject
-    private ConsumableDashboardLayer consumableDashboardLayer;
-
-    @Inject
-    private TaskDashboardLayer taskDashboardLayer;
-
-    @Inject
-    private ItemDashboardLayer itemDashboardLayer;
-
-    @Inject
-    private PlantDashboardLayer plantDashboardLayer;
-
-    @Inject
-    private ModuleDashboardLayer moduleDashboardLayer;
-
-    @Inject
-    private LayerDashboardLayer layerDashboardLayer;
-
-    @Inject
-    private JobDashboardLayer jobDashboardLayer;
-
-    @Inject
-    private InterfaceDashboardLayer interfaceDashboardLayer;
-
-    @Inject
-    private DebugPathLayer debugPathLayer;
-
-    @Inject
-    private DebugCharacterLayer debugCharacterLayer;
-
-    @Inject
-    private DebugConsumableLayer debugConsumableLayer;
-
-    @Inject
-    private DebugGroundLayer debugGroundLayer;
-
-    @Inject
-    private DebugItemLayer debugItemLayer;
-
-    @Inject
-    private DebugViewLayer debugViewLayer;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private ShortcutDashboardLayer shortcutDashboardLayer;
+    @Inject private CharacterDashboardLayer characterDashboardLayer;
+    @Inject private ConsoleDashboardLayer consoleDashboardLayer;
+    @Inject private ConsumableDashboardLayer consumableDashboardLayer;
+    @Inject private TaskDashboardLayer taskDashboardLayer;
+    @Inject private ItemDashboardLayer itemDashboardLayer;
+    @Inject private PlantDashboardLayer plantDashboardLayer;
+    @Inject private ModuleDashboardLayer moduleDashboardLayer;
+    @Inject private LayerDashboardLayer layerDashboardLayer;
+    @Inject private JobDashboardLayer jobDashboardLayer;
+    @Inject private InterfaceDashboardLayer interfaceDashboardLayer;
+    @Inject private DebugPathLayer debugPathLayer;
+    @Inject private DebugCharacterLayer debugCharacterLayer;
+    @Inject private DebugConsumableLayer debugConsumableLayer;
+    @Inject private DebugGroundLayer debugGroundLayer;
+    @Inject private DebugItemLayer debugItemLayer;
+    @Inject private DebugViewLayer debugViewLayer;
 
     private static class DashboardLayerButton {
         public String label;

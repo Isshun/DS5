@@ -27,27 +27,27 @@ public class Viewport {
     @Inject
     private GDXRenderer gdxRenderer;
 
-    private final static int    ANIM_FRAME = 10;
-    public final static float[]       ZOOM_LEVELS = new float[] {
+    private final static int ANIM_FRAME = 10;
+    public final static float[] ZOOM_LEVELS = new float[]{
             0.1f,
             0.25f,
             0.5f,
             1f
     };
 
-    private int         _posX;
-    private int         _posY;
-    private int         _lastPosX;
-    private int         _lastPosY;
-    private int         _width;
-    private int         _toScale;
-    private int         _height;
-    private int         _fromScale;
-    private int         _scaleAnim;
-    private int         _zoom = ZOOM_LEVELS.length - 1;
-    private int         _floor;
-    private int         _worldX;
-    private int         _worldY;
+    private int _posX;
+    private int _posY;
+    private int _lastPosX;
+    private int _lastPosY;
+    private int _width;
+    private int _toScale;
+    private int _height;
+    private int _fromScale;
+    private int _scaleAnim;
+    private int _zoom = ZOOM_LEVELS.length - 1;
+    private int _floor;
+    private int _worldX;
+    private int _worldY;
 
     public Viewport() {
         _lastPosX = 0;
@@ -94,25 +94,41 @@ public class Viewport {
         _worldY = (int) Math.max(0, (-_posY / Constant.TILE_SIZE) * getScale());
     }
 
-    public int  getPosX() { return _posX; }
-    public int  getPosY() { return _posY; }
-    public int  getWidth() { return _width; }
-    public int  getHeight() { return _height; }
+    public int getPosX() {
+        return _posX;
+    }
 
-    public int  getWorldPosX(int x) {
+    public int getPosY() {
+        return _posY;
+    }
+
+    public int getWidth() {
+        return _width;
+    }
+
+    public int getHeight() {
+        return _height;
+    }
+
+    public int getWorldPosX(int x) {
         double viewportOffset = (getPosX() / gdxRenderer.getZoom() + applicationConfig.getResolutionWidth() / 2f - x) / (Constant.TILE_SIZE / gdxRenderer.getZoom());
         double cameraOffset = (gdxRenderer.getCamera().position.x / Constant.TILE_SIZE);
         return (int) (cameraOffset - viewportOffset);
     }
 
-    public int  getWorldPosY(int y) {
+    public int getWorldPosY(int y) {
         double viewportOffset = (getPosY() / gdxRenderer.getZoom() + applicationConfig.getResolutionHeight() / 2f - y) / (Constant.TILE_SIZE / gdxRenderer.getZoom());
         double cameraOffset = (gdxRenderer.getCamera().position.y / Constant.TILE_SIZE);
         return (int) (cameraOffset - viewportOffset);
     }
 
-    public int  getScreenPosX(int parcelX) { return parcelX * Constant.TILE_SIZE + getPosX(); }
-    public int  getScreenPosY(int parcelY) { return parcelY * Constant.TILE_SIZE + getPosY(); }
+    public int getScreenPosX(int parcelX) {
+        return parcelX * Constant.TILE_SIZE + getPosX();
+    }
+
+    public int getScreenPosY(int parcelY) {
+        return parcelY * Constant.TILE_SIZE + getPosY();
+    }
 
 //    public void setZoom(int zoom) {
 //        setPosition(

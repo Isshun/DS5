@@ -1,5 +1,6 @@
 package org.smallbox.faraway.client.manager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.util.log.Log;
 
@@ -24,6 +25,7 @@ public class ShortcutManager {
     private static Collection<ShortcutStrategy> shortcutStrategies = new LinkedBlockingQueue<>();
 
     public void addBinding(String label, int key, Runnable runnable) {
+        shortcutStrategies.removeIf(shortcutStrategy -> StringUtils.equals(shortcutStrategy.label, label));
         shortcutStrategies.add(new ShortcutStrategy(label, key, runnable));
     }
 

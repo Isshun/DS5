@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.render.layer;
+package org.smallbox.faraway.client.render.layer.area;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,13 +6,14 @@ import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
+import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.area.AreaModel;
-import org.smallbox.faraway.modules.area.AreaModule;
 import org.smallbox.faraway.modules.area.AreaTypeInfo;
+import org.smallbox.faraway.modules.storage.StorageModule;
 import org.smallbox.faraway.util.Constant;
 
 import java.util.Map;
@@ -20,13 +21,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
 @GameLayer(level = LayerManager.AREA_LAYER_LEVEL, visible = true)
-public class AreaLayer extends BaseLayer {
+public class StorageLayer extends BaseLayer {
 
     @Inject
     private SpriteManager spriteManager;
 
     @Inject
-    private AreaModule areaModule;
+    private StorageModule storageModule;
 
     private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
@@ -38,14 +39,6 @@ public class AreaLayer extends BaseLayer {
 
     private Mode _mode;
     private Class<? extends AreaModel> _cls;
-
-    private Color[] COLORS = new Color[] {
-            new Color(0.5f, 0.5f, 1f, 0.4f),
-            new Color(1, 1, 0, 0.4f),
-            new Color(1, 0, 1, 0.4f),
-            new Color(0, 1, 1, 0.4f),
-            new Color(1, 0.5f, 0.5f, 0.4f)
-    };
 
     @Override
     public void onGameStart(Game game) {
@@ -70,9 +63,7 @@ public class AreaLayer extends BaseLayer {
         int toX = fromX + viewport.getWidth() / Constant.TILE_SIZE;
         int toY = fromY + viewport.getHeight() / Constant.TILE_SIZE;
 
-        areaModule.getAreas().forEach(area ->
-                area.getParcels().forEach(parcel ->
-                        renderer.drawOnMap(parcel.x, parcel.y, getTexture(area.getClass()))));
+        storageModule.getAreas().stream().flatMap(area -> area.getParcels().stream()).forEach(parcel -> renderer.drawOnMap(parcel.x, parcel.y, _regions[0]));
 
         if (_mode == Mode.ADD) {
             renderer.drawText(_mouseX - 20, _mouseY - 20, 16, Color.CHARTREUSE, "Add " + _cls.getAnnotation(AreaTypeInfo.class).label() + " area");

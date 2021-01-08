@@ -7,9 +7,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by 300206 on 14/09/2017.
- */
 @GameObject
 public class TaskClientModule {
 

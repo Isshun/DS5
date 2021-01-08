@@ -4,6 +4,7 @@ data:extend({
         name = "base.ground.sand",
         type = "ground",
         color = 0xfff9bdff,
+        size = {16, 16},
         fertility = 0.1,
         permeability = 0.5,
         graphics = { path = "[base]/graphics/grounds/sand.png" }
