@@ -42,7 +42,7 @@ public class UILabel extends View {
 
         int hash = string.hashCode();
         if (hash != _hash1) {
-            setStringValue(applicationData != null && applicationData.hasString(hash) ? applicationData.getString(hash) : string);
+            setStringValue(data != null && data.hasString(hash) ? data.getString(hash) : string);
         }
         return this;
     }
@@ -54,8 +54,8 @@ public class UILabel extends View {
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2) {
-            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
-            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
+            str1 = data != null && data.hasString(hash1) ? data.getString(hash1) : str1;
+            str2 = data != null && data.hasString(hash2) ? data.getString(hash2) : str2;
             setStringValue(str1 + str2);
         }
     }
@@ -73,9 +73,9 @@ public class UILabel extends View {
         int hash2 = str2.hashCode();
         int hash3 = str3.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3) {
-            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
-            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
-            str3 = applicationData != null && applicationData.hasString(hash3) ? applicationData.getString(hash3) : str3;
+            str1 = data != null && data.hasString(hash1) ? data.getString(hash1) : str1;
+            str2 = data != null && data.hasString(hash2) ? data.getString(hash2) : str2;
+            str3 = data != null && data.hasString(hash3) ? data.getString(hash3) : str3;
             setStringValue(str1 + str2 + str3);
         }
     }
@@ -91,10 +91,10 @@ public class UILabel extends View {
         int hash3 = str3.hashCode();
         int hash4 = str4.hashCode();
         if (hash1 != _hash1 || hash2 != _hash2 || hash3 != _hash3 || hash4 != _hash4) {
-            str1 = applicationData != null && applicationData.hasString(hash1) ? applicationData.getString(hash1) : str1;
-            str2 = applicationData != null && applicationData.hasString(hash2) ? applicationData.getString(hash2) : str2;
-            str3 = applicationData != null && applicationData.hasString(hash3) ? applicationData.getString(hash3) : str3;
-            str4 = applicationData != null && applicationData.hasString(hash4) ? applicationData.getString(hash4) : str4;
+            str1 = data != null && data.hasString(hash1) ? data.getString(hash1) : str1;
+            str2 = data != null && data.hasString(hash2) ? data.getString(hash2) : str2;
+            str3 = data != null && data.hasString(hash3) ? data.getString(hash3) : str3;
+            str4 = data != null && data.hasString(hash4) ? data.getString(hash4) : str4;
             setStringValue(str1 + str2 + str3 + str4);
         }
     }
@@ -108,7 +108,7 @@ public class UILabel extends View {
         // TODO
         int hash = string.hashCode();
 //        if (hash != _hash1) {
-        string = applicationData != null && applicationData.hasString(hash) ? applicationData.getString(hash) : string;
+        string = data != null && data.hasString(hash) ? data.getString(hash) : string;
         setStringValue(String.format(string, value));
 //        }
     }

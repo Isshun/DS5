@@ -20,6 +20,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,41 +28,33 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 public abstract class View implements Comparable<View> {
-    protected final UIEventManager uiEventManager;
-    protected final UIManager uiManager;
-    protected final SpriteManager spriteManager;
-    protected final GDXRenderer gdxRenderer;
-    protected final FontManager fontManager;
-    protected final Data applicationData;
 
+    // Inject all dependency to view once for all, waiting for a clever solution
+    protected final ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
+    protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
+    protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
+    protected final GDXRenderer gdxRenderer = DependencyManager.getInstance().getDependency(GDXRenderer.class);
+    protected final FontManager fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
+    protected final UIManager uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
+    protected final Data data = DependencyManager.getInstance().getDependency(Data.class);
+
+    protected double uiScale = applicationConfig.uiScale;
     protected int _originWidth;
     protected int _originHeight;
     private String _group;
     private String _path;
     private int _index;
-    private boolean _sorted;
     private Color _borderColor;
     private LuaController _controller;
     private boolean _isGameView;
 
     public View(ModuleBase module) {
-        // Inject all dependency to view once for all, waiting for a clever solution
-        uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
-        uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
-        spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
-        gdxRenderer = DependencyManager.getInstance().getDependency(GDXRenderer.class);
-        applicationData = DependencyManager.getInstance().getDependency(Data.class);
-        fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
-
         _module = module;
         _isVisible = true;
         _borderSize = 2;
         _x = 0;
         _y = 0;
     }
-
-    // TODO: use value from application config
-    protected float uiScale = 1;
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
@@ -166,8 +159,6 @@ public abstract class View implements Comparable<View> {
 
     public void setFocusable(boolean focusable) { _focusable = focusable; }
     public void setSorted(boolean sorted) {
-        _sorted = sorted;
-
         if (sorted) {
             Collection<View> views = _views;
              _views = new PriorityBlockingQueue<>(10, View::compareTo);
