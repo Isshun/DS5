@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.menu.controller.MenuMainController;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
@@ -26,6 +27,9 @@ public class MenuRender {
     private MenuMainController menuMainController;
 
     @Inject
+    private ShortcutManager shortcutManager;
+
+    @Inject
     private UIManager uiManager;
 
     private boolean _menuInit;
@@ -38,6 +42,12 @@ public class MenuRender {
             uiManager.getMenuViews().values().forEach(rootView -> clickOn(rootView.getView(), screenX, screenY));
             return false;
         }
+
+        public boolean keyUp (int keycode) {
+            shortcutManager.action(keycode);
+            return false;
+        }
+
     };
 
     public void render() {

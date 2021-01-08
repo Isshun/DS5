@@ -147,11 +147,11 @@ public class UILabel extends View {
         _text = string;
     }
 
+    private int lineHeight;
+
     public UILabel setTextSize(int size) {
         _textSize = size;
-        if (_height == -1) {
-            _height = (int)(fontManager.getFont(_textSize).getLineHeight() * 1.2);
-        }
+        lineHeight = (int) fontManager.getFont(_textSize).getLineHeight();
         return this;
     }
 
@@ -291,7 +291,7 @@ public class UILabel extends View {
     public int getContentWidth() {
         if (_text != null) {
 //            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_text).width;
-            return (int) (_text.length() * fontManager.getFont(_textSize).getRegion().getRegionWidth());
+            return (int) (_text.length() * fontManager.getFont(_textSize).getRegion().getRegionWidth()) + _paddingLeft + _paddingRight;
         }
         return 0;
     }
@@ -300,9 +300,14 @@ public class UILabel extends View {
     public int getContentHeight() {
         if (_text != null) {
 //            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_text).height;
-            return (int) fontManager.getFont(_textSize).getLineHeight();
+            return (int) fontManager.getFont(_textSize).getLineHeight() + _paddingTop + _paddingBottom;
         }
         return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        return _height != -1 ? _height : lineHeight + _paddingTop + _paddingBottom;
     }
 
     public static UILabel create(ModuleBase module) {

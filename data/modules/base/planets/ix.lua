@@ -1,11 +1,11 @@
 data:extend({
-    label = "Corrin",
-    name = "base.planet.corrin",
+    label = "Ix",
+    name = "base.planet.ix",
     type = "planet",
     class = "minshara",
     description = "Corrin description",
     graphics = {
-        background = {path = "[base]/planets/corrin_raw.png"},
+        background = {path = "[base]/planets/ix_raw.png"},
     },
     stats = {
         water = -2,
@@ -43,33 +43,8 @@ data:extend({
         { hour = 23, name = "night", color = 0xbb5588ff },
     },
     regions = {{
-        name = "continental",
-        label = "continental",
-        color = 0x804f15ff,
-        temperatures = {
-            {floors = {-99, -1}, value = {15, 15}},
-            {floors = {0, 0}, value = {20, 20}},
-        },
-        spots = {{latitude = {-90, 90}, frequency = 1}},
-        terrains = {
-            { ground = "base.ground.grass" },
-            { ground = "base.ground.dirt", pattern = "ground_large" },
-            { resource = "base.granite", ground = "base.ground.granite", pattern = "mountain", condition = "ground" },
-            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
-            { ground = "base.ground.sand", liquid = "base.liquid.water", pattern = "ground_large", condition = "ground" },
-        },
-        weather = {
---            {name = "base.weather.sandwhirl", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.coldwave", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.snow", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.storm", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.lightrain", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.thunderstorm", frequency = {2, 10}, duration = {1, 1}},
-        },
-    }, {
-        name = "ocean",
-        label = "ocean",
+        name = "unknow",
+        label = "unknow",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},

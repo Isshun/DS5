@@ -1,11 +1,11 @@
 data:extend({
-    label = "Corrin",
-    name = "base.planet.corrin",
+    label = "Gema",
+    name = "base.planet.gema",
     type = "planet",
     class = "minshara",
     description = "Corrin description",
     graphics = {
-        background = {path = "[base]/planets/corrin_raw.png"},
+        background = {path = "[base]/planets/gema_raw.png"},
     },
     stats = {
         water = -2,
@@ -43,8 +43,8 @@ data:extend({
         { hour = 23, name = "night", color = 0xbb5588ff },
     },
     regions = {{
-        name = "continental",
-        label = "continental",
+        name = "island",
+        label = "island",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},

@@ -26,6 +26,9 @@ public class MenuMainController extends LuaController {
     @Inject
     private MenuSettingsController menuSettingsController;
 
+    @Inject
+    private MenuPlanetController menuPlanetController;
+
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
         setVisible(true);
@@ -34,7 +37,7 @@ public class MenuMainController extends LuaController {
     @BindLuaAction
     private void onActionNewGame(View view) {
         setVisible(false);
-        gameFactory.create(applicationConfig.debug.scenario);
+        menuPlanetController.setVisible(true);
     }
 
     @BindLuaAction

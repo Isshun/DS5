@@ -10,15 +10,18 @@ import java.io.File;
 
 @ApplicationObject
 public class FontManager {
+    private final static int MAX_SIZE = 100;
+
     private BitmapFont[] fonts;
 
     public void generateFonts() {
         SmartFontGenerator fontGen = new SmartFontGenerator();
-        fonts = new BitmapFont[50];
-        for (int i = 5; i < 50; i++) {
+        fonts = new BitmapFont[MAX_SIZE + 2];
+        for (int i = 5; i <= MAX_SIZE; i++) {
             fonts[i] = fontGen.createFont(new FileHandle(new File(FileUtils.BASE_PATH, "data/fonts/font.ttf")), "font-" + i, i);
             fonts[i].getData().flipped = true;
         }
+        fonts[MAX_SIZE + 1] = fontGen.createFont(new FileHandle(new File(FileUtils.BASE_PATH, "data/fonts/font.ttf")), "font-" + 101, 200);
     }
 
     public BitmapFont getFont(int textSize) {

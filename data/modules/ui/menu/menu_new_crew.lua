@@ -1,12 +1,12 @@
 ui:extend({
     type = "view",
     id = "base.ui.menu.new_crew",
+    controller = "org.smallbox.faraway.client.menu.controller.MenuCrewController",
     size = {300, -1},
-    background = 0x121c1edd,
     in_game = false,
     visible = false,
     views = {
-        { type = "image", id = "img_background", size = {1920, 1200}},
+        { type = "image", src = "[base]/background/17520.jpg", size = {application.screen_width, application.screen_height}},
         { type = "view", position = {application.screen_width / 2 - 300 / 2, application.screen_height / 2 - 200}, views = {
             { type = "label", text = "Crew", text_size = 38},
             { type = "list", id = "list_crew", position = {0, 40}},
@@ -23,17 +23,4 @@ ui:extend({
         }}
     },
 
-    on_game_start = function(view)
-    end,
-
-    on_event = function(view, event, data)
-        if event == "new_game.planet" then
-            if data.graphics.background then
-                ui:find("base.ui.menu_new_crew"):findById("img_background"):setVisible(true)
-                ui:find("base.ui.menu_new_crew"):findById("img_background"):setImage(data.graphics.background.path)
-            else
-                ui:find("base.ui.menu_new_crew"):findById("img_background"):setVisible(false)
-            end
-        end
-    end,
 })

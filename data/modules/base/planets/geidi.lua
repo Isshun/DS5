@@ -1,11 +1,11 @@
 data:extend({
-    label = "Corrin",
-    name = "base.planet.corrin",
+    label = "Geidi",
+    name = "base.planet.geidi",
     type = "planet",
     class = "minshara",
     description = "Corrin description",
     graphics = {
-        background = {path = "[base]/planets/corrin_raw.png"},
+        background = {path = "[base]/planets/geidi_raw.png"},
     },
     stats = {
         water = -2,
@@ -43,8 +43,8 @@ data:extend({
         { hour = 23, name = "night", color = 0xbb5588ff },
     },
     regions = {{
-        name = "continental",
-        label = "continental",
+        name = "mountain",
+        label = "mountain",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},
@@ -68,8 +68,8 @@ data:extend({
             {name = "base.weather.thunderstorm", frequency = {2, 10}, duration = {1, 1}},
         },
     }, {
-        name = "ocean",
-        label = "ocean",
+        name = "frozen",
+        label = "frozen",
         color = 0x804f15ff,
         temperatures = {
             {floors = {-99, -1}, value = {15, 15}},

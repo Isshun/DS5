@@ -102,7 +102,6 @@ public class InputManager implements InputProcessor {
 
         if (keycode == Keys.GRAVE) {
             debugService.toggleDebugMode();
-            ;
             return false;
         }
 

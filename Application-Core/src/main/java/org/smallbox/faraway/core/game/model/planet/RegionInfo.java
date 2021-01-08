@@ -5,6 +5,7 @@ import org.smallbox.faraway.core.game.modelInfo.WeatherInfo;
 import java.util.List;
 
 public class RegionInfo {
+
     public static class RegionDistribution {
         public int[]                latitude;
         public double               frequency;
@@ -42,6 +43,8 @@ public class RegionInfo {
     public String                   name;
     public String                   label;
     public int                      color;
+    public int                      hostility;
+    public int                      fertility;
     public List<RegionDistribution> spots;
     public List<RegionTerrain>      terrains;
     public List<RegionWeather>      weather;

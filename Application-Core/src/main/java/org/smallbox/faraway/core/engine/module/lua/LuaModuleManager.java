@@ -218,6 +218,47 @@ public abstract class LuaModuleManager implements GameObserver {
         _runAfterList.forEach(Runnable::run);
     }
 
+    public void loadLuaFile(String fileName) {
+        File dataDirectory = new File(FileUtils.BASE_PATH);
+        Globals globals = createGlobals(null, dataDirectory);
+
+        // Load lua files
+        FileUtils.listRecursively(dataDirectory).stream()
+                .filter(f -> f.getName().endsWith(".lua"))
+                .filter(f -> f.getName().equals(fileName))
+                .forEach(f -> {
+                    Log.debug(LuaModuleManager.class, "Load lua file: %s", f.getAbsolutePath());
+                    try (FileReader fileReader = new FileReader(f)) {
+                        globals.load(fileReader, f.getName()).call();
+                    } catch (LuaError | IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+        // TODO
+//        // Load css files
+//        FileUtils.listRecursively(dataDirectory.getAbsolutePath()).stream().filter(f -> f.getName().endsWith(".css")).forEach(f -> {
+//            Log.info("Found css file: %s", f.getName());
+//
+//            try {
+//                InputSource source = new InputSource(new FileReader(f));
+//                CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
+//                CSSStyleSheet sheet = parser.parseStyleSheet(source, null, null);
+//                CSSRuleList rules = sheet.getCssRules();
+//                for (int i = 0; i < rules.getLength(); i++) {
+//                    final CSSRule rule = rules.item(i);
+//                    if (rule instanceof CSSStyleRuleImpl) {
+//                        LuaStyleManager.getInstance().addRule(((CSSStyleRuleImpl)rule).getSelectorText(), ((CSSStyleRuleImpl)rule).getStyle());
+//                    }
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+
+        _runAfterList.forEach(Runnable::run);
+    }
+
     public void runAfter(Runnable runnable) {
         _runAfterList.add(runnable);
     }

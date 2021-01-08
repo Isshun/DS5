@@ -1,19 +1,16 @@
 package org.smallbox.faraway.client.menu;
 
-import com.google.common.base.CaseFormat;
 import org.smallbox.faraway.client.controller.LuaController;
-import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
+import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.menu.controller.MenuMainController;
 import org.smallbox.faraway.client.menu.controller.MenuSettingsController;
-import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.Field;
@@ -35,19 +32,6 @@ public class MenuManager {
     @Inject
     private UIManager uiManager;
 
-    @OnApplicationLayerInit
-    public void onApplicationLayerInit() {
-        luaControllerManager.initController(menuMainController);
-        luaControllerManager.initController(menuSettingsController);
-//        uiManager.getMenuViews().forEach((name, rootView) -> {
-//            if (rootView.getView().getController() != null) {
-//                bindControllerFields(rootView.getView().getController(), rootView.getView());
-//                bindControllerMethods(rootView.getView().getController(), rootView.getView());
-//                bindControllerSubControllers(rootView.getView().getController());
-//            }
-//        });
-    }
-
     public void setVisible(boolean visible) {
         menuMainController.setVisible(visible);
         menuSettingsController.setVisible(visible);
@@ -56,43 +40,43 @@ public class MenuManager {
     public void display(String viewName) {
         uiManager.getMenuViews().get(viewName).getView().setVisible(true);
     }
-
-    /**
-     * Bind controller fields
-     *
-     * @param controller Controller receiving binding
-     * @param rootView Root view
-     */
-    private void bindControllerFields(LuaController controller, View rootView) {
-        for (Field field : controller.getClass().getDeclaredFields()) {
-            if (field.getAnnotation(BindLua.class) != null) {
-                field.setAccessible(true);
-                try {
-                    // Bind by field name
-                    {
-                        View view = rootView.findById(field.getName());
-                        if (view != null) {
-                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getName());
-                            field.set(controller, view);
-                        }
-                    }
-                    // Bind by lower underscore converted field name
-                    {
-                        View view = rootView.findById(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()));
-                        if (view != null) {
-                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getName());
-                            field.set(controller, view);
-                        }
-                    }
-                    if (field.get(controller) == null) {
-                        throw new GameException(LuaControllerManager.class, "Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
-                    }
-                } catch (IllegalAccessException e) {
-                    throw new GameException(LuaControllerManager.class, e);
-                }
-            }
-        }
-    }
+//
+//    /**
+//     * Bind controller fields
+//     *
+//     * @param controller Controller receiving binding
+//     * @param rootView Root view
+//     */
+//    private void bindControllerFields(LuaController controller, View rootView) {
+//        for (Field field : controller.getClass().getDeclaredFields()) {
+//            if (field.getAnnotation(BindLua.class) != null) {
+//                field.setAccessible(true);
+//                try {
+//                    // Bind by field name
+//                    {
+//                        View view = rootView.findById(field.getName());
+//                        if (view != null) {
+//                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getName());
+//                            field.set(controller, view);
+//                        }
+//                    }
+//                    // Bind by lower underscore converted field name
+//                    {
+//                        View view = rootView.findById(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()));
+//                        if (view != null) {
+//                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getName());
+//                            field.set(controller, view);
+//                        }
+//                    }
+//                    if (field.get(controller) == null) {
+//                        throw new GameException(LuaControllerManager.class, "Unable to bind field: " + field.getName() + " in controller: " + controller.getClass().getName());
+//                    }
+//                } catch (IllegalAccessException e) {
+//                    throw new GameException(LuaControllerManager.class, e);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Bind sub controllers

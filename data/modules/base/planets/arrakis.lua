@@ -5,8 +5,7 @@ data:extend({
     class = "desert",
     description = "Arrakis is a hostile desertic planet, its sands contains rare resource carefully protected by strong local forces",
     graphics = {
-        thumb = {path = "[base]/graphics/planets/arrakis_thumb.png", credit = { author = "Adam Koebel", site = "http://nightvisions.ca/2012/08/planet-arrakis/" }},
-        background = {path = "[base]/graphics/planets/arrakis_bg.jpg"},
+        background = {path = "[base]/planets/arrakis_raw.png"},
     },
     stats = {
         water = -2,
@@ -27,6 +26,8 @@ data:extend({
         name = "mountain",
         label = "mountain",
         color = 0x804f15ff,
+        hostility = 3,
+        fertility = 2,
         temperatures = {
             {floors = {-99, -1}, value = {20, 20}},
             {floors = {0, 0}, value = {30, 40}},
@@ -52,39 +53,11 @@ data:extend({
             {name = "desert_hawk", frequency = 1, count = {5, 8}},
         },
     }, {
-        name = "valley",
-        label = "Valley",
-        color = 0xa06f35ff,
-        temperatures = {
-            {floors = {-99, -1}, value = {20, 20}},
-            {floors = {0, 0}, value = {30, 40}},
-        },
-        spots = {
-            {latitude = {40, 90}, frequency = 0.5},
-            {latitude = {-90, 40}, frequency = 0.2}},
-        terrains = {
-            { ground = "base.ground.sand" },
-            { resource = "base.granite", pattern = "valley" },
-            { resource = "base.iron", pattern = "mineral_common_light", condition = "rock" },
-            { resource = "base.raw_spice", pattern = "mineral_rare_light", condition = "ground" },
-        },
-        weather = {
-            {name = "base.weather.regular", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.sandstorm", frequency = {2, 10}, duration = {1, 1}},
-            {name = "base.weather.el_sayal", frequency = {2, 10}, duration = {0.5, 0.5}},
-        },
-        fauna = {
-            {name = "kulon", frequency = 0.4, count = {5, 8}},
-            {name = "muad_dib", frequency = 1, count = {5, 8}},
-            {name = "desert_hare", frequency = 1, count = {5, 8}},
-            {name = "desert_owl", frequency = 1, count = {5, 8}},
-            {name = "muad_dib", frequency = 1, count = {5, 8}},
-            {name = "desert_hawk", frequency = 1, count = {5, 8}},
-        },
-    }, {
         name = "desert",
         label = "Desert",
         color = 0xffda3bff,
+        hostility = 4,
+        fertility = 1,
         temperatures = {
             {floors = {-99, -1}, value = {20, 30}},
             {floors = {0, 0}, value = {30, 50}},
