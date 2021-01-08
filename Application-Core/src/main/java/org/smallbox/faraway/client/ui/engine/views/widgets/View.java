@@ -16,7 +16,7 @@ import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
 import org.smallbox.faraway.core.config.Config;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
@@ -46,12 +46,12 @@ public abstract class View implements Comparable<View> {
 
     public View(ModuleBase module) {
         // Inject all dependency to view once for all, waiting for a clever solution
-        uiEventManager = DependencyInjector.getInstance().getDependency(UIEventManager.class);
-        uiManager = DependencyInjector.getInstance().getDependency(UIManager.class);
-        spriteManager = DependencyInjector.getInstance().getDependency(SpriteManager.class);
-        gdxRenderer = DependencyInjector.getInstance().getDependency(GDXRenderer.class);
-        applicationData = DependencyInjector.getInstance().getDependency(Data.class);
-        fontManager = DependencyInjector.getInstance().getDependency(FontManager.class);
+        uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
+        uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
+        spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
+        gdxRenderer = DependencyManager.getInstance().getDependency(GDXRenderer.class);
+        applicationData = DependencyManager.getInstance().getDependency(Data.class);
+        fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
 
         _module = module;
         _isVisible = true;

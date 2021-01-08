@@ -7,7 +7,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
@@ -29,6 +29,9 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 public class GameSaveManager {
     
     @Inject
+    private GameInfoFactory gameInfoFactory;
+
+    @Inject
     private SQLManager sqlManager;
 
     @Inject
@@ -42,6 +45,9 @@ public class GameSaveManager {
 
     @Inject
     private CharacterModule characterModule;
+
+    @Inject
+    private DependencyManager dependencyManager;
 
     public void saveGame(GameSaveType type) {
         long time = System.currentTimeMillis();
@@ -84,7 +90,7 @@ public class GameSaveManager {
         // Write game.json
         try {
             FileUtils.write(saveInfoFile, saveInfo.toJSON().toString(4));
-            FileUtils.write(gameInfoFile, game.getInfo().toJSON().toString(4));
+            FileUtils.write(gameInfoFile, gameInfoFactory.toJSON(game.getInfo()).toString(4));
         } catch (IOException e) {
             throw new GameException(GameSaveManager.class, e, "Unable to write game meta info");
         }
@@ -96,7 +102,7 @@ public class GameSaveManager {
         sqlManager.openDB(dbFile);
 
         // Call modules serializers
-        DependencyInjector.getInstance().getSubTypesOf(GameSerializer.class).forEach(gameSerializer -> gameSerializer.save(sqlManager));
+        dependencyManager.getSubTypesOf(GameSerializer.class).forEach(gameSerializer -> gameSerializer.save(sqlManager));
 
         sqlManager.closeDB();
     }

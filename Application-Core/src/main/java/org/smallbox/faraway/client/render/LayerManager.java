@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.manager.input.WorldInputManager;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
@@ -41,6 +41,7 @@ public class LayerManager implements GameClientObserver {
     @Inject private GameManager gameManager;
     @Inject private GDXRenderer gdxRenderer;
     @Inject private WorldInputManager worldInputManager;
+    @Inject private DependencyManager dependencyManager;
     @Inject private Game game;
 
     private long _renderTime;
@@ -58,7 +59,7 @@ public class LayerManager implements GameClientObserver {
     @OnGameLayerInit
     public void onGameInitLayers() {
         // Find GameLayer annotated class
-        _layers = DependencyInjector.getInstance().getSubTypesOf(BaseLayer.class).stream()
+        _layers = dependencyManager.getSubTypesOf(BaseLayer.class).stream()
 //                new Reflections("org.smallbox.faraway").getSubTypesOf(BaseLayer.class).stream()
 //                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
 //                .map(cls -> {

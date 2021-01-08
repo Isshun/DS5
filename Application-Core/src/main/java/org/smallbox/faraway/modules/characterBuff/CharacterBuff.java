@@ -3,7 +3,7 @@ package org.smallbox.faraway.modules.characterBuff;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 
@@ -36,7 +36,7 @@ public class CharacterBuff extends ObjectModel {
         if (this.character.isAlive()) {
             this.info.update(this, tick);
         }
-        if (tick % DependencyInjector.getInstance().getDependency(Game.class).getTickPerHour() == 0) {
+        if (tick % DependencyManager.getInstance().getDependency(Game.class).getTickPerHour() == 0) {
             this.info.updateHourly(this, tick);
         }
     }

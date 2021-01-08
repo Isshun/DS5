@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.gameAction.GameActionManager;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -53,13 +53,16 @@ public class GameSelectionManager extends GameManager {
     @Inject
     private StructureModule structureModule;
 
+    @Inject
+    private DependencyManager dependencyManager;
+
 //    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
     private Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();
     private Collection<AreaModuleBase> specializedAreaModules;
 
     @OnInit
     private void init() {
-        specializedAreaModules = DependencyInjector.getInstance().getSubTypesOf(AreaModuleBase.class);
+        specializedAreaModules = dependencyManager.getSubTypesOf(AreaModuleBase.class);
     }
 
     public <T extends ObjectModel> void setSelected(Collection<T> selected) {

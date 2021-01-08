@@ -1,7 +1,7 @@
 package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
@@ -15,8 +15,8 @@ public class LwjglConfig {
 
     @OnInit
     public void onInit() {
-        DependencyInjector.getInstance().createAndInit(ApplicationConfigService.class);
-        ApplicationConfig applicationConfig = DependencyInjector.getInstance().getDependency(ApplicationConfig.class);
+        DependencyManager.getInstance().createAndInit(ApplicationConfigService.class);
+        ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
 
         lwjglConfig = new LwjglApplicationConfiguration();
 

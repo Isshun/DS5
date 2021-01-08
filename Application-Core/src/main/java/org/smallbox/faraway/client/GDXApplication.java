@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.render.impl.MainRender;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ServerLuaModuleManager;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
@@ -21,7 +21,7 @@ public class GDXApplication extends ApplicationAdapter {
 
     @Override
     public void create () {
-        DependencyInjector di = DependencyInjector.getInstance();
+        DependencyManager di = DependencyManager.getInstance();
         di.findAndCreateApplicationObjects();
 
         TaskManager taskManager = di.getDependency(TaskManager.class);
@@ -42,15 +42,15 @@ public class GDXApplication extends ApplicationAdapter {
     }
 
     private static void onCreateCompleted() {
-        ApplicationConfig applicationConfig = DependencyInjector.getInstance().getDependency(ApplicationConfig.class);
+        ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
 
         if (applicationConfig.debug != null && applicationConfig.debug.actionOnLoad != null) {
             switch (applicationConfig.debug.actionOnLoad) {
                 case LAST_SAVE:
-                    DependencyInjector.getInstance().getDependency(GameManager.class).loadLastGame();
+                    DependencyManager.getInstance().getDependency(GameManager.class).loadLastGame();
                     break;
                 case NEW_GAME:
-                    GameFactory factory = DependencyInjector.getInstance().getDependency(GameFactory.class);
+                    GameFactory factory = DependencyManager.getInstance().getDependency(GameFactory.class);
                     factory.create(applicationConfig.debug.scenario);
                     break;
             }

@@ -10,7 +10,7 @@ import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
@@ -29,6 +29,7 @@ public class AreaPanelController extends LuaController {
     @Inject private MainPanelController mainPanelController;
     @Inject private AreaLayer areaLayer;
     @Inject private GameActionManager gameActionManager;
+    @Inject private DependencyManager dependencyManager;
 
     @BindLua private UIList listAreasAdd;
     @BindLua private UIList listAreasSub;
@@ -38,7 +39,7 @@ public class AreaPanelController extends LuaController {
 
         mainPanelController.addShortcut("Areas", this);
 
-        DependencyInjector.getInstance().getGameDependencies().stream()
+        dependencyManager.getGameDependencies().stream()
                 .map(dependencyInfo -> dependencyInfo.dependency)
                 .filter(dependency -> dependency.getClass().isAnnotationPresent(AreaTypeInfo.class))
                 .sorted(Comparator.comparing(o -> o.getClass().getAnnotation(AreaTypeInfo.class).label()))

@@ -1,6 +1,6 @@
 package org.smallbox.faraway.util.log;
 
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class Log {
     private static void print(LogLevel level, String message) {
         String date = LocalDateTime.now().format(dateTimeFormatter);
 
-        ApplicationConfig applicationConfig = DependencyInjector.getInstance().getDependency(ApplicationConfig.class);
+        ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
         if (Objects.nonNull(applicationConfig)) {
             while (_history.size() > applicationConfig.debug.logLineNumber) {
                 _history.poll();

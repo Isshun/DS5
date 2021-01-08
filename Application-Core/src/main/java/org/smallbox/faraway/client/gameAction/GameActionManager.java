@@ -2,7 +2,7 @@ package org.smallbox.faraway.client.gameAction;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -36,6 +36,9 @@ public class GameActionManager extends GameManager {
     @Inject
     private BuildJobFactory buildJobFactory;
 
+    @Inject
+    private DependencyManager dependencyManager;
+
     private Map<Class<? extends Annotation>, Map<OnGameSelectAction, Consumer<ObjectModel>>> gameActionsConsumers;
     private Collection<GameActionAreaListener> specializedAreaModules;
     private GameActionMode mode = GameActionMode.NONE;
@@ -47,9 +50,9 @@ public class GameActionManager extends GameManager {
 
     @OnInit
     private void init() {
-        specializedAreaModules = DependencyInjector.getInstance().getSubTypesOf(GameActionAreaListener.class);
+        specializedAreaModules = dependencyManager.getSubTypesOf(GameActionAreaListener.class);
         gameActionsConsumers = new ConcurrentHashMap<>();
-        gameActionsConsumers.put(OnGameSelectAction.class, DependencyInjector.getInstance().getMethodsAnnotatedBy(OnGameSelectAction.class));
+        gameActionsConsumers.put(OnGameSelectAction.class, dependencyManager.getMethodsAnnotatedBy(OnGameSelectAction.class));
     }
 
     public void clearAction() {

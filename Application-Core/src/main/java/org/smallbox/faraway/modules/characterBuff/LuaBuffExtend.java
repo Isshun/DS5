@@ -2,7 +2,7 @@ package org.smallbox.faraway.modules.characterBuff;
 
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -48,7 +48,7 @@ public class LuaBuffExtend extends LuaExtend {
         if (!value.get("class").isnil()) {
             try {
                 buff.handler = (BuffHandler) Class.forName(value.get("class").tojstring()).newInstance();
-                DependencyInjector.getInstance().register(buff.handler);
+                DependencyManager.getInstance().register(buff.handler);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 Log.error(e);
             }

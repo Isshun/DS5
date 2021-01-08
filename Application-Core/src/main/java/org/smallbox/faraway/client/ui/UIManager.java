@@ -16,8 +16,8 @@ import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +32,12 @@ import static org.smallbox.faraway.core.engine.GameEventListener.Modifier;
 
 @ApplicationObject
 public class UIManager {
+
+    @Inject
+    private ClientLuaModuleManager clientLuaModuleManager;
+
+    @Inject
+    private LuaControllerManager luaControllerManager;
 
     private Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
     private UIEventManager.OnDragListener _dragListener;
@@ -85,10 +91,10 @@ public class UIManager {
     }
 
     public void refresh(LuaController controller, String fileName) {
-        DependencyInjector.getInstance().getDependency(UIManager.class).getMenuViews().remove(controller.getRootView().getName());
-        DependencyInjector.getInstance().getDependency(UIManager.class).getRootViews().removeIf(rootView -> rootView.getView() == controller.getRootView());
-        DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class).loadLuaFile(fileName);
-        DependencyInjector.getInstance().getDependency(LuaControllerManager.class).initController(controller);
+        _menuViews.remove(controller.getRootView().getName());
+        _rootViews.removeIf(rootView -> rootView.getView() == controller.getRootView());
+        clientLuaModuleManager.loadLuaFile(fileName);
+        luaControllerManager.initController(controller);
         Arrays.stream(controller.getClass().getDeclaredMethods()).filter(method -> method.isAnnotationPresent(AfterApplicationLayerInit.class)).forEach(method -> {
             try {
                 method.setAccessible(true);

@@ -8,8 +8,9 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
 import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnApplicationLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Game;
@@ -28,24 +29,19 @@ import java.util.stream.Collectors;
 @ApplicationObject
 public class LuaControllerManager implements GameObserver {
 
+    @Inject
+    private DependencyManager dependencyManager;
+
     private final Map<String, View>         _viewByControllerName = new HashMap<>();
     private Map<String, LuaController>      _controllers;
     private long                            _lastUpdate;
 
     public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
 
-    public Map<String, LuaController> getControllers() {
-        return _controllers;
-    }
-
     @OnGameLayerInit
     @OnApplicationLayerInit
     public void onGameInitLayers() {
-
-        // Get controllers from DI
-        _controllers = DependencyInjector.getInstance().getSubTypesOf(LuaController.class).stream()
-                .collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
-
+        _controllers = dependencyManager.getSubTypesOf(LuaController.class).stream().collect(Collectors.toConcurrentMap(LuaController::getCanonicalName, o -> o));
         _controllers.values().forEach(this::initController);
     }
 

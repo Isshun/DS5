@@ -1,6 +1,6 @@
 {
   "debug": {
-    "actionOnLoad": "",
+    "actionOnLoad": "NEW_GAME",
     "scenario": "data/scenarios/test1.json",
     "log": true,
     "logFontSize": 16,

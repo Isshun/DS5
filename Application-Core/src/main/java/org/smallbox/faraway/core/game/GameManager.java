@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.game;
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
@@ -19,27 +19,14 @@ import java.io.File;
 
 @ApplicationObject
 public class GameManager implements GameObserver {
-
-    @Inject
-    private WorldFactory worldFactory;
-
-    @Inject
-    private GameSaveManager gameSaveManager;
-
-    @Inject
-    private GameLoadManager gameLoadManager;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private PathManager pathManager;
-
-    @Inject
-    private GameFileManager gameFileManager;
-
-    @Inject
-    private Data data;
+    @Inject private WorldFactory worldFactory;
+    @Inject private GameSaveManager gameSaveManager;
+    @Inject private GameLoadManager gameLoadManager;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private PathManager pathManager;
+    @Inject private GameFileManager gameFileManager;
+    @Inject private DependencyManager dependencyManager;
+    @Inject private Data data;
 
     private Game _game;
 
@@ -47,8 +34,6 @@ public class GameManager implements GameObserver {
         void onGameCreate(Game game);
         void onGameUpdate(Game game);
     }
-
-    private static enum Mode {CREATE, LOAD}
 
     public void createGame(GameInfo gameInfo, GameListener listener) {
         long time = System.currentTimeMillis();
@@ -85,21 +70,21 @@ public class GameManager implements GameObserver {
     }
 
     private void phase1(GameInfo gameInfo) {
-        DependencyInjector.getInstance().destroyGameObjects();
+        dependencyManager.destroyGameObjects();
 
         _game = new Game(gameInfo, applicationConfig);
 
         // For now game is created and register to DI manually because ctor need GameInfo
-        DependencyInjector.getInstance().register(_game);
-        DependencyInjector.getInstance().createGameObjects();
+        dependencyManager.register(_game);
+        dependencyManager.createGameObjects();
 
         _game.loadModules();
         _game.loadLayers();
 
         // Inject GameObjects
-        DependencyInjector.getInstance().injectGameDependencies();
-        DependencyInjector.getInstance().callMethodAnnotatedBy(OnGameLayerInit.class);
-        DependencyInjector.getInstance().callMethodAnnotatedBy(AfterGameLayerInit.class);
+        dependencyManager.injectGameDependencies();
+        dependencyManager.callMethodAnnotatedBy(OnGameLayerInit.class);
+        dependencyManager.callMethodAnnotatedBy(AfterGameLayerInit.class);
     }
 
     private void phase2(GameListener listener) {
@@ -124,7 +109,7 @@ public class GameManager implements GameObserver {
         _game.stop();
         _game = null;
 
-        DependencyInjector.getInstance().destroyGameObjects();
+        dependencyManager.destroyGameObjects();
     }
 
     /**

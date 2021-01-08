@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.characterBuff;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
@@ -34,11 +34,14 @@ public class CharacterBuffModule extends GenericGameModule<BuffModel> {
     @Inject
     private CharacterNeedModule characterNeedModule;
 
+    @Inject
+    private DependencyManager dependencyManager;
+
     private Collection<BuffFactory> buffFactories;
 
     @OnInit
     private void init() {
-        buffFactories = DependencyInjector.getInstance().getSubTypesOf(BuffFactory.class);
+        buffFactories = dependencyManager.getSubTypesOf(BuffFactory.class);
     }
 
     @Override

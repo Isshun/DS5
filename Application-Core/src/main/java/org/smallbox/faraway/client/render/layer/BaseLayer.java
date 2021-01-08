@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameLayer;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
@@ -62,7 +62,7 @@ public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
     }
 
     protected void drawSelection(GDXRenderer renderer, SpriteManager spriteManager, ObjectModel object, int posX, int posY, int width, int height, int offsetX, int offsetY) {
-        if (DependencyInjector.getInstance().getDependency(GameSelectionManager.class).selectContains(object)) {
+        if (DependencyManager.getInstance().getDependency(GameSelectionManager.class).selectContains(object)) {
             if (_selectionOffset > 2) {
                 _selectionChange = -0.2;
             } else if (_selectionOffset < -2) {

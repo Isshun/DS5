@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.drawable;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import org.smallbox.faraway.client.manager.SpriteManager;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.util.Constant;
 
 public class AnimDrawable extends GDXDrawable {
@@ -17,7 +17,7 @@ public class AnimDrawable extends GDXDrawable {
         _nbTile = nbTile;
         _textureRegion = new TextureRegion[nbTile];
         for (int i = 0; i < nbTile; i++) {
-            _textureRegion[i] = new TextureRegion(DependencyInjector.getInstance().getDependency(SpriteManager.class).getTexture(path), i * Constant.TILE_SIZE, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
+            _textureRegion[i] = new TextureRegion(DependencyManager.getInstance().getDependency(SpriteManager.class).getTexture(path), i * Constant.TILE_SIZE, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
             _textureRegion[i].flip(false, true);
         }
     }
@@ -27,7 +27,7 @@ public class AnimDrawable extends GDXDrawable {
         _nbTile = nbTile;
         _textureRegion = new TextureRegion[nbTile];
         for (int i = 0; i < nbTile; i++) {
-            _textureRegion[i] = new TextureRegion(DependencyInjector.getInstance().getDependency(SpriteManager.class).getTexture(path), x + i * width, y, width, height);
+            _textureRegion[i] = new TextureRegion(DependencyManager.getInstance().getDependency(SpriteManager.class).getTexture(path), x + i * width, y, width, height);
             _textureRegion[i].flip(false, true);
         }
     }

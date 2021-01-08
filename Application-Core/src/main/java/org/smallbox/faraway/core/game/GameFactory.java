@@ -5,7 +5,7 @@ import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.save.GameInfo;
+import org.smallbox.faraway.core.game.save.GameInfoFactory;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
@@ -13,99 +13,46 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Optional;
 
 @ApplicationObject
 public class GameFactory {
-
-    @Inject
-    private GameManager gameManager;
-
-    @Inject
-    private CharacterModule characterModule;
-
-    @Inject
-    private ConsumableModule consumableModule;
-
-    @Inject
-    private ItemModule itemModule;
-
-    @Inject
-    private PlantModule plantModule;
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private Data data;
-
-    private GameScenario scenario;
-    private String planet = "base.planet.corrin";
-    private String region = "mountain";
-    private int width = 20;
-    private int height = 20;
-    private int level = 2;
-    private boolean generateMountains;
-
-    public void setScenario(GameScenario scenario) {
-        this.scenario = scenario;
-        this.planet = scenario.planet != null ? scenario.planet : this.planet;
-        this.region = scenario.region != null ? scenario.region : this.region;
-        this.width = scenario.width != 0 ? scenario.width : this.width;
-        this.height = scenario.height != 0 ? scenario.height : this.height;
-        this.level = scenario.level != 0 ? scenario.level : this.level;
-        this.generateMountains = scenario.generateMountains;
-    }
+    @Inject private GameInfoFactory gameInfoFactory;
+    @Inject private GameManager gameManager;
+    @Inject private CharacterModule characterModule;
+    @Inject private ConsumableModule consumableModule;
+    @Inject private ItemModule itemModule;
+    @Inject private PlantModule plantModule;
+    @Inject private WorldModule worldModule;
+    @Inject private Data data;
 
     private GameScenario loadScenario(String scenarioPath) {
-        if (scenarioPath != null) {
-            try {
-                return new Gson().fromJson(new FileReader(scenarioPath), GameScenario.class);
-            } catch (FileNotFoundException ignored) {
-            }
+        try {
+            return new Gson().fromJson(new FileReader(scenarioPath), GameScenario.class);
+        } catch (Exception e) {
+            throw new GameException(GameFactory.class, e, "Unable to load scenario");
         }
-        throw new GameException(GameFactory.class, "Unable to load scenario");
     }
 
     public void create(String scenarioPath) {
-        setScenario(loadScenario(scenarioPath));
+        GameScenario scenario = loadScenario(scenarioPath);
 
-        gameManager.createGame(GameInfo.create(this.scenario), new GameManager.GameListener() {
+        gameManager.createGame(gameInfoFactory.create(scenario), new GameManager.GameListener() {
             @Override
             public void onGameCreate(Game game) {
-
-                if (GameFactory.this.scenario != null) {
-                    if (GameFactory.this.scenario.characters != null) {
-                        GameFactory.this.scenario.characters.forEach(characterEntity -> {
-                            CharacterModel character = characterModule.addRandom();
-                            character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));
-                        });
-                    }
-
-                    if (GameFactory.this.scenario.consumables != null) {
-                        GameFactory.this.scenario.consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z));
-                    }
-
-                    if (GameFactory.this.scenario.items != null) {
-                        GameFactory.this.scenario.items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z));
-                    }
-
-                    if (GameFactory.this.scenario.plants != null) {
-                        GameFactory.this.scenario.plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z));
-                    }
-
-                    if (GameFactory.this.scenario.resources != null) {
-                        GameFactory.this.scenario.resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(data.getItemInfo("base.granite")));
-                    }
-
-                }
-
+                Optional.ofNullable(scenario.characters).ifPresent(characters -> characters.forEach(characterEntity -> {
+                    CharacterModel character = characterModule.addRandom();
+                    character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));
+                }));
+                Optional.ofNullable(scenario.consumables).ifPresent(consumables -> consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z)));
+                Optional.ofNullable(scenario.items).ifPresent(items -> items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z)));
+                Optional.ofNullable(scenario.plants).ifPresent(plants -> plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z)));
+                Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(data.getItemInfo("base.granite"))));
             }
 
             @Override
             public void onGameUpdate(Game game) {
-
             }
         });
     }

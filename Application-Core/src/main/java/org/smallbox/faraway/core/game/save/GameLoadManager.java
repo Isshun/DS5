@@ -6,7 +6,7 @@ import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.utils.IOUtils;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
@@ -21,6 +21,9 @@ import java.util.Comparator;
 @ApplicationObject
 public class GameLoadManager {
     
+    @Inject
+    private DependencyManager dependencyManager;
+
     @Inject
     private SQLManager sqlManager;
 
@@ -58,7 +61,7 @@ public class GameLoadManager {
         sqlManager.openDB(dbFile);
 
         // Call modules serializers
-        DependencyInjector.getInstance().getSubTypesOf(GameSerializer.class).stream()
+        dependencyManager.getSubTypesOf(GameSerializer.class).stream()
                 .sorted(Comparator.comparingInt(GameSerializer::getModulePriority))
                 .forEach(serializer -> serializer.load(sqlManager));
 

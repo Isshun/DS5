@@ -2,7 +2,7 @@ package org.smallbox.faraway.core.game;
 
 import org.smallbox.faraway.GameTaskManager;
 import org.smallbox.faraway.core.Application;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.AbsGameModule;
@@ -126,7 +126,7 @@ public class Game {
     public void loadModules() {
         Log.info("Load game modules");
 
-        _modules = new ArrayList<>(DependencyInjector.getInstance().getSubTypesOf(AbsGameModule.class));
+        _modules = new ArrayList<>(DependencyManager.getInstance().getSubTypesOf(AbsGameModule.class));
 
         // Load game modules
         boolean moduleHasBeenLoaded;

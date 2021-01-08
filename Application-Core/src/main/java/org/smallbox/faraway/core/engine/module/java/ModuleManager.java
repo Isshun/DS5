@@ -3,7 +3,7 @@ package org.smallbox.faraway.core.engine.module.java;
 import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ApplicationModule;
@@ -26,6 +26,9 @@ public class ModuleManager implements GameObserver {
 
     @Inject
     private GameManager gameManager;
+
+    @Inject
+    private DependencyManager dependencyManager;
 
     @Inject
     private Game game;
@@ -154,7 +157,7 @@ public class ModuleManager implements GameObserver {
         }
 
         _applicationModules.forEach(Application::addObserver);
-        _applicationModules.forEach(DependencyInjector.getInstance()::register);
+        _applicationModules.forEach(dependencyManager::register);
         _applicationModules.forEach(ModuleBase::create);
     }
 

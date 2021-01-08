@@ -8,6 +8,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
@@ -26,6 +27,9 @@ import java.util.stream.Stream;
 
 @ApplicationObject
 public class GameFileManager {
+
+    @Inject
+    private GameInfoFactory gameInfoFactory;
 
     @Inject
     private Game game;
@@ -61,7 +65,7 @@ public class GameFileManager {
                     if (file.exists()) {
                         try {
                             Log.info("Load game directory: " + gameDirectory.getName());
-                            return GameInfo.fromJSON(new JSONObject(Files.readString(file.toPath(), StandardCharsets.UTF_8)));
+                            return gameInfoFactory.fromJSON(new JSONObject(Files.readString(file.toPath(), StandardCharsets.UTF_8)));
                         } catch (IOException e) {
                             Log.warning("Cannot load gameInfo for: " + file.getAbsolutePath());
                         }

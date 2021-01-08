@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.character.model;
 
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ConsumableItem;
@@ -65,7 +65,7 @@ public class CharacterInventoryExtra extends CharacterExtra {
     }
 
     public void addInventory(String itemName, int quantity) {
-        addInventory(DependencyInjector.getInstance().getDependency(Data.class).getItemInfo(itemName), quantity);
+        addInventory(DependencyManager.getInstance().getDependency(Data.class).getItemInfo(itemName), quantity);
     }
 
     public void clear() {

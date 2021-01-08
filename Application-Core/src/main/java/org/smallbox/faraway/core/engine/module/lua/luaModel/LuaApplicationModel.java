@@ -4,8 +4,9 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ServerLuaModuleManager;
 import org.smallbox.faraway.core.config.Config;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
-import org.smallbox.faraway.core.engine.lua.LuaCrewModel;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.java.ModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaModule;
@@ -17,37 +18,49 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 import org.smallbox.faraway.core.module.world.model.MapObjectModel;
 
 import java.util.Collection;
-import java.util.Optional;
 
+@ApplicationObject
 public class LuaApplicationModel {
-    public long                     tick;
-    public int                      day;
-    public int                      hour;
-    public int                      year;
-    public int                      screen_width;
-    public int                      screen_height;
-    public LuaCrewModel             crew;
-    public LuaEventsModel           events;
-    public Game                     game;
-    public Config                   config = new Config();
-    public Collection<LuaModule>    luaModules;
-    public Collection<ModuleBase>   modules;
-    public Collection<ModuleBase>   moduleThirds;
+
+    @Inject
+    private ServerLuaModuleManager serverLuaModuleManager;
+
+    @Inject
+    private ModuleManager moduleManager;
+
+    @Inject
+    private ApplicationConfig applicationConfig;
+
+    @Inject
+    private GameManager gameManager;
+
+    @Inject
+    public Game game;
+
+    @Inject
     private GameTime gameTime;
 
-    public LuaApplicationModel(LuaCrewModel luaCrew, LuaEventsModel luaEvents, ApplicationConfig.ApplicationConfigScreenInfo screenInfo) {
-        crew = luaCrew;
-        events = luaEvents;
-        luaModules = DependencyInjector.getInstance().getDependency(ServerLuaModuleManager.class).getModules();
-        modules = DependencyInjector.getInstance().getDependency(ModuleManager.class).getModules();
-        moduleThirds = DependencyInjector.getInstance().getDependency(ModuleManager.class).getModulesThird();
-        screen_width = screenInfo.resolution[0];
-        screen_height = screenInfo.resolution[1];
+    public long tick;
+    public int day;
+    public int hour;
+    public int year;
+    public int screen_width;
+    public int screen_height;
+    public Config config = new Config();
+    public Collection<LuaModule> luaModules;
+    public Collection<ModuleBase> modules;
+    public Collection<ModuleBase> moduleThirds;
+
+    @OnInit
+    public void init() {
+        luaModules = serverLuaModuleManager.getModules();
+        modules = moduleManager.getModules();
+        moduleThirds = moduleManager.getModulesThird();
+        screen_width = applicationConfig.getResolutionWidth();
+        screen_height = applicationConfig.getResolutionHeight();
     }
 
     public void update() {
-        this.game = DependencyInjector.getInstance().getDependency(Game.class);
-        this.gameTime = DependencyInjector.getInstance().getDependency(GameTime.class);
         this.tick = game.getTick();
         this.hour = gameTime.getHour();
         this.day = gameTime.getDay();
@@ -55,8 +68,7 @@ public class LuaApplicationModel {
     }
 
     public ModuleBase getModule(String name) {
-        Optional<ModuleBase> moduleOptional = this.modules.stream().filter(module -> module.getInfo().name.equals(name)).findFirst();
-        return moduleOptional.isPresent() ? moduleOptional.get() : null;
+        return this.modules.stream().filter(module -> module.getInfo().name.equals(name)).findFirst().orElse(null);
     }
 
     public void setDisplay(String display) {
@@ -82,7 +94,7 @@ public class LuaApplicationModel {
     }
 
     public void setSpeed(int speed) {
-        if (DependencyInjector.getInstance().getDependency(GameManager.class).isLoaded()) {
+        if (gameManager.isLoaded()) {
             game.setSpeed(speed);
         }
     }

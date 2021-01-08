@@ -1,12 +1,12 @@
 package org.smallbox.faraway.util;
 
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.Data;
 
 public class StringUtils {
 
     public static String getDashedString(String label, String value, int columns) {
-        Data data = DependencyInjector.getInstance().getDependency(Data.class);
+        Data data = DependencyManager.getInstance().getDependency(Data.class);
 
         int hash = label.hashCode();
         label = data != null && data.hasString(hash) ? data.getString(hash) : label;

@@ -1,7 +1,7 @@
 package org.smallbox.faraway.modules.itemFactory;
 
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
@@ -81,7 +81,7 @@ public class ItemFactoryModel {
                     .distinct()
                     .collect(Collectors.toList());
 
-            DependencyInjector.getInstance().getDependency(Data.class).consumables.stream()
+            DependencyManager.getInstance().getDependency(Data.class).consumables.stream()
                     .filter(itemInfo -> acceptedItems.stream().anyMatch(itemInfo::instanceOf))
                     .forEach(itemInfo -> acceptedComponents.put(itemInfo, true));
 

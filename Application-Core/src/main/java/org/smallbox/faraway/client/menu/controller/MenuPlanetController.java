@@ -9,7 +9,6 @@ import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
@@ -37,6 +36,9 @@ public class MenuPlanetController extends LuaController {
 
     @Inject
     private MenuMainController menuMainController;
+
+    @Inject
+    private UIManager uiManager;
 
     @Inject
     private Data data;
@@ -125,7 +127,7 @@ public class MenuPlanetController extends LuaController {
 
     @GameShortcut(key = Input.Keys.F1)
     public void onRefreshUI() {
-        DependencyInjector.getInstance().getDependency(UIManager.class).refresh(this, "menu_new_planet.lua");
+        uiManager.refresh(this, "menu_new_planet.lua");
         selectPlanet(planet);
     }
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.common.ObjectModel;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 
 import java.util.Collection;
@@ -13,6 +13,12 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaController {
+
+    @Inject
+    private MainPanelController mainPanelController;
+
+    @Inject
+    private GameSelectionManager gameSelectionManager;
 
     protected Queue<T> listSelected = new ConcurrentLinkedQueue<>();
 
@@ -67,13 +73,13 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
         if (CollectionUtils.isNotEmpty(listSelected)) {
             displayObjects();
         } else {
-            DependencyInjector.getInstance().getDependency(MainPanelController.class).setVisible(true);
+            mainPanelController.setVisible(true);
         }
     }
 
     protected void closePanel() {
         listSelected.clear();
-        DependencyInjector.getInstance().getDependency(MainPanelController.class).setVisible(true);
+        mainPanelController.setVisible(true);
     }
 
     private void displayObjects() {
@@ -83,9 +89,9 @@ public abstract class AbsInfoLuaController<T extends ObjectModel> extends LuaCon
             } else {
                 onDisplayMultiple(listSelected);
             }
-            DependencyInjector.getInstance().getDependency(GameSelectionManager.class).setSelected(listSelected);
+            gameSelectionManager.setSelected(listSelected);
         } else {
-            DependencyInjector.getInstance().getDependency(GameSelectionManager.class).setSelected(null);
+            gameSelectionManager.setSelected(null);
         }
     }
 

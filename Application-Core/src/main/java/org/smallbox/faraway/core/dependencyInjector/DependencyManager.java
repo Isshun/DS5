@@ -22,14 +22,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class DependencyInjector {
-    private static final DependencyInjector _self = new DependencyInjector();
+@ApplicationObject
+public class DependencyManager {
+    private static final DependencyManager _self = new DependencyManager();
     private final Map<Class<?>, DependencyInfo<?>> _applicationObjectPoolByClass = new ConcurrentHashMap<>();
     private final Map<Class<?>, DependencyInfo<?>> _gameObjectPoolByClass = new ConcurrentHashMap<>();
     private boolean _init = false;
     private boolean _initGame = false;
 
-    public static DependencyInjector getInstance() { return _self; }
+    public static DependencyManager getInstance() { return _self; }
+
+    private DependencyManager() {
+        register(this);
+    }
 
     /**
      * Automatically create object annotated with @ApplicationObject
@@ -72,7 +77,7 @@ public class DependencyInjector {
             register(object);
             return object;
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            throw new GameException(DependencyInjector.class, "Cannot create dependency: " + cls.getSimpleName() + "\n" + e.getMessage());
+            throw new GameException(DependencyManager.class, "Cannot create dependency: " + cls.getSimpleName() + "\n" + e.getMessage());
         }
     }
 
@@ -81,6 +86,8 @@ public class DependencyInjector {
      */
     public <T> T createAndInit(Class<T> cls) {
         T object = create(cls);
+        doInjectShortcut(object);
+        doInjectDependency(object, cls, false);
         callInitMethod(object, false);
         return object;
     }
@@ -207,7 +214,7 @@ public class DependencyInjector {
                     }
                 }
             } catch (IllegalAccessException e) {
-                throw new GameException(DependencyInjector.class, e);
+                throw new GameException(DependencyManager.class, e);
             }
         }
     }
@@ -235,7 +242,7 @@ public class DependencyInjector {
                         field.set(dependencyInfo.dependency, null);
                     }
                 } catch (IllegalAccessException e) {
-                    throw new GameException(DependencyInjector.class, e);
+                    throw new GameException(DependencyManager.class, e);
                 }
             }
         });
@@ -290,7 +297,7 @@ public class DependencyInjector {
                     method.invoke(model);
                 }
             } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new GameException(DependencyInjector.class, e);
+                throw new GameException(DependencyManager.class, e);
             }
         }
     }

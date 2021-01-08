@@ -15,7 +15,7 @@ import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameException;
-import org.smallbox.faraway.core.dependencyInjector.DependencyInjector;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
@@ -30,9 +30,9 @@ public class LuaUIExtend extends LuaExtend {
     private final LuaControllerManager luaControllerManager;
 
     public LuaUIExtend() {
-        uiManager = DependencyInjector.getInstance().getDependency(UIManager.class);
-        clientLuaModuleManager = DependencyInjector.getInstance().getDependency(ClientLuaModuleManager.class);
-        luaControllerManager = DependencyInjector.getInstance().getDependency(LuaControllerManager.class);
+        uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
+        clientLuaModuleManager = DependencyManager.getInstance().getDependency(ClientLuaModuleManager.class);
+        luaControllerManager = DependencyManager.getInstance().getDependency(LuaControllerManager.class);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class LuaUIExtend extends LuaExtend {
         if (value.get("parent").isnil() && rootName.startsWith("base.ui.menu.")) {
             if (!value.get("controller").isnil()) {
                 try {
-                    rootView.getView().setController((LuaController)DependencyInjector.getInstance().getDependency(Class.forName(value.get("controller").tojstring())));
+                    rootView.getView().setController((LuaController) DependencyManager.getInstance().getDependency(Class.forName(value.get("controller").tojstring())));
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
