@@ -178,23 +178,21 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     }
 
     private void displayConsumables(Collection<ItemInfo> items) {
-        items.forEach(itemInfo -> {
-            listStorage.addView(new UIFrame(null)
-                    .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).getGeometry().setPadding(5, 5, 5, 5))
-                    .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
-                            .setPosition(300, 0)
-                            .getEvents().setOnClickListener((int x, int y) -> {
-                                _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
-                                storageModule.notifyRulesChange(_area);
-                                displayTree();
-                            }))
-                    .setSize(200, 20)
-                    .getEvents().setOnClickListener((int x, int y) -> {
-                        _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
-                        displayTree();
-                    })
-            );
-        });
+        items.forEach(itemInfo -> listStorage.addView(new UIFrame(null)
+                .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).getGeometry().setPadding(5, 5, 5, 5))
+                .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
+                        .setPosition(300, 0)
+                        .getEvents().setOnClickListener((int x, int y) -> {
+                            _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
+                            storageModule.notifyRulesChange(_area);
+                            displayTree();
+                        }))
+                .setSize(200, 20)
+                .getEvents().setOnClickListener((int x, int y) -> {
+                    _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
+                    displayTree();
+                })
+        ));
     }
 
     private void clickOnBox(String categoryName, String subCategoryName) {

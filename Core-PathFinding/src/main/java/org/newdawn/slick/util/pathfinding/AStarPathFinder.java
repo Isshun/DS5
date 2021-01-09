@@ -50,7 +50,6 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
      * @param maxSearchDistance The maximum depth we'll search before giving up
      * @param allowDiagMovement True if the search should try diaganol movement
      * @param manhattanHeuristic
-     * @param _steps
      */
     public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement, Node[][] nodes, Step[][] steps, ManhattanHeuristic manhattanHeuristic) {
         this(map, maxSearchDistance, allowDiagMovement, nodes, steps, new ClosestHeuristic());
@@ -511,13 +510,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
             float f = heuristic + cost;
             float of = o.heuristic + o.cost;
 
-            if (f < of) {
-                return -1;
-            } else if (f > of) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return Float.compare(f, of);
         }
 
         /**

@@ -56,9 +56,7 @@ public class InterfaceDashboardLayer extends DashboardLayerBase {
         drawDebug(renderer, "Parcel isWalkable", parcel != null ? String.valueOf(parcel.isWalkable()) : "no parcel");
         drawDebug(renderer, "###############################", "");
 
-        uiManager.getRootViews().forEach(rootView -> {
-            drawDebug(renderer, rootView.getView().getPath(), rootView.getView().isVisible() ? "visible" : "");
-        });
+        uiManager.getRootViews().forEach(rootView -> drawDebug(renderer, rootView.getView().getPath(), rootView.getView().isVisible() ? "visible" : ""));
     }
 
 }

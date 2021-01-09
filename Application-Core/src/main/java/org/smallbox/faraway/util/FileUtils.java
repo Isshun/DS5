@@ -53,7 +53,7 @@ public class FileUtils {
     }
 
     public static String read(File file) throws IOException {
-        return new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
+        return Files.readString(file.toPath());
     }
 
     public static void createRoamingDirectory() {

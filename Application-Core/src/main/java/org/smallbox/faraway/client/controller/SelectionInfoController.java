@@ -87,15 +87,11 @@ public class SelectionInfoController extends AbsInfoLuaController<ParcelModel> {
     }
 
     private void displayItem(ParcelModel parcel) {
-        Optional.ofNullable(itemModule.getItem(parcel)).ifPresent(item -> {
-            lbItem.setText(item.getLabel());
-        });
+        Optional.ofNullable(itemModule.getItem(parcel)).ifPresent(item -> lbItem.setText(item.getLabel()));
     }
 
     private void displayConsumable(ParcelModel parcel) {
-        Optional.ofNullable(consumableModule.getConsumable(parcel)).ifPresent(consumable -> {
-            lbConsumable.setText(consumable.getLabel());
-        });
+        Optional.ofNullable(consumableModule.getConsumable(parcel)).ifPresent(consumable -> lbConsumable.setText(consumable.getLabel()));
     }
 
     @Override

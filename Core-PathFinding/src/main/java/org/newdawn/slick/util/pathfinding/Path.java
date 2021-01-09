@@ -67,8 +67,6 @@ public class Path implements Serializable {
     /**
      * Append a step to the path.
      *
-     * @param x The x coordinate of the new step
-     * @param y The y coordinate of the new step
      */
     public void appendStep(Step step) {
         steps.add(step);
@@ -77,8 +75,6 @@ public class Path implements Serializable {
     /**
      * Prepend a step to the path.
      *
-     * @param x The x coordinate of the new step
-     * @param y The y coordinate of the new step
      */
     public void prependStep(Step step) {
         steps.add(0, step);
@@ -87,8 +83,6 @@ public class Path implements Serializable {
     /**
      * Check if this path contains the given step
      *
-     * @param x The x coordinate of the step to check for
-     * @param y The y coordinate of the step to check for
      * @return True if the path contains the given step
      */
     public boolean contains(Step step) {

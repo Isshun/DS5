@@ -17,9 +17,7 @@ public class StringUtils {
         int valueHash = value.hashCode();
         value = data != null && data.hasString(valueHash) ? data.getString(valueHash) : value;
 
-        for (int i = columns - label.replace("_", "").length() - value.length(); i > 0; i--) {
-            sb.append('.');
-        }
+        sb.append(".".repeat(Math.max(0, columns - label.replace("_", "").length() - value.length())));
 
         sb.append(value);
 
