@@ -4,6 +4,7 @@ import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 public class ViewGeometry {
+    private final View view;
     protected double uiScale = DependencyManager.getInstance().getDependency(ApplicationConfig.class).uiScale;
     protected int finalX;
     protected int finalY;
@@ -25,6 +26,10 @@ public class ViewGeometry {
     protected int originHeight;
     protected int x;
     protected int y;
+
+    public ViewGeometry(View view) {
+        this.view = view;
+    }
 
     public int getFinalX() {
         return finalX;
@@ -144,6 +149,14 @@ public class ViewGeometry {
         this.marginLeft = (int) (marginLeft * uiScale);
     }
 
+    public View setMargin(int top, int right, int bottom, int left) {
+        setMarginTop(top);
+        setMarginRight(right);
+        setMarginBottom(bottom);
+        setMarginLeft(left);
+        return view;
+    }
+
     public void setX(int x) {
         this.x = x;
     }
@@ -188,11 +201,12 @@ public class ViewGeometry {
         return finalX <= x && finalX + width >= x && finalY <= y && finalY + height >= y;
     }
 
-    public void setPadding(int t, int r, int b, int l) {
+    public View setPadding(int t, int r, int b, int l) {
         this.paddingTop = (int) (t * uiScale);
         this.paddingRight = (int) (r * uiScale);
         this.paddingBottom = (int) (b * uiScale);
         this.paddingLeft = (int) (l * uiScale);
+        return view;
     }
 
     public void setFixedSize(int width, int height) {

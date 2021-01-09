@@ -60,14 +60,14 @@ public class CrewController extends LuaController {
                 if (character.hasExtra(CharacterNeedsExtra.class)) {
                     CharacterNeedsExtra need = character.getExtra(CharacterNeedsExtra.class);
                     if (need != null) {
-                        view.findById("gauge_food").setSize(10, (int) (30 * need.get(TAG_FOOD).value()));
-                        view.findById("gauge_food").setPosition(1, (int) (30 - 30 * need.get(TAG_FOOD).value()));
-                        view.findById("gauge_health").setSize(10, (int) (30 * need.get(TAG_ENERGY).value()));
-                        view.findById("gauge_health").setPosition(1, (int) (30 - 30 * need.get(TAG_ENERGY).value()));
-                        view.findById("gauge_social").setSize(10, (int) (30 * need.get(TAG_RELATION).value()));
-                        view.findById("gauge_social").setPosition(1, (int) (30 - 30 * need.get(TAG_RELATION).value()));
-                        view.findById("gauge_entertainment").setSize(10, (int) (30 * need.get(TAG_ENTERTAINMENT).value()));
-                        view.findById("gauge_entertainment").setPosition(1, (int) (30 - 30 * need.get(TAG_ENTERTAINMENT).value()));
+                        view.find("gauge_food").setSize(10, (int) (30 * need.get(TAG_FOOD).value()));
+                        view.find("gauge_food").setPosition(1, (int) (30 - 30 * need.get(TAG_FOOD).value()));
+                        view.find("gauge_health").setSize(10, (int) (30 * need.get(TAG_ENERGY).value()));
+                        view.find("gauge_health").setPosition(1, (int) (30 - 30 * need.get(TAG_ENERGY).value()));
+                        view.find("gauge_social").setSize(10, (int) (30 * need.get(TAG_RELATION).value()));
+                        view.find("gauge_social").setPosition(1, (int) (30 - 30 * need.get(TAG_RELATION).value()));
+                        view.find("gauge_entertainment").setSize(10, (int) (30 * need.get(TAG_ENTERTAINMENT).value()));
+                        view.find("gauge_entertainment").setPosition(1, (int) (30 - 30 * need.get(TAG_ENTERTAINMENT).value()));
                     }
                 }
 

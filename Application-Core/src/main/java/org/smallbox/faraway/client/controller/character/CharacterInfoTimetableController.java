@@ -2,11 +2,10 @@ package org.smallbox.faraway.client.controller.character;
 
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.Colors;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -49,40 +48,18 @@ public class CharacterInfoTimetableController extends LuaController {
 
             if (listTimetable.getViews().isEmpty()) {
                 game.getPlanet().getDayTimes().forEach(dayTime -> {
-                    UIFrame view = new UIFrame(null);
-                    view.setSize(32, 22);
 
-                    View subView = new UIFrame(null)
-                            .getStyle().setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)))
-                            .setSize(300, 21);
+                    UIFrame view = listTimetable.createFromTemplate(UIFrame.class);
+
+                    View subView = view.find("view_timetable");
+                    subView.getStyle().setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
                     subView.getEvents().setOnClickListener((x, y) -> {
                         timetable.nextState(dayTime.hour);
                         subView.getStyle().setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
                     });
-                    view.addView(subView);
 
-//                view.addView(new UIFrame(null)
-//                        .setSize(4, 16)
-//                        .setPosition(38, 1)
-//                        .setMargin(2, 0)
-//                        .setBackgroundColor(dayTime.color));
-//
-                    view.addView(new UILabel(null)
-                            .setText(dayTime.hour + "h")
-                            .setTextColor(Colors.COLOR2)
-                            .setTextSize(14)
-                            .setPadding(6, 6, 6, 6));
-//
-//                view.addView(new UIFrame(null)
-//                        .setSize(32, 14)
-//                        .setMargin(2, 0)
-//                        .setPosition(38, 1)
-//                        .setBorderColor(dayTime.hour == game.getTime().getHour() ? 0xff0000ff : 0xff88aadd)
-//                        .setBackgroundColor()
-//                        .setOnClickListener(event -> {
-//                            timetable.nextState(dayTime.hour);
-//                            event.view.setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)));
-//                        }));
+                    UILabel lbTimetable = view.findLabel("lb_timetable");
+                    lbTimetable.setText(dayTime.hour + "h");
 
                     listTimetable.addView(view);
                 });

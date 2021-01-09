@@ -4,14 +4,14 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.modules.character.model.CharacterSkillExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
-import org.smallbox.faraway.util.log.Log;
 import org.smallbox.faraway.util.Utils;
+import org.smallbox.faraway.util.log.Log;
 
 @GameObject
 public class CharacterInfoSkillsController extends LuaController {
@@ -42,27 +42,13 @@ public class CharacterInfoSkillsController extends LuaController {
 
         if (_selected.hasExtra(CharacterSkillExtra.class)) {
             _selected.getExtra(CharacterSkillExtra.class).getAll().forEach(skill -> {
-
-                UIFrame view = new UIFrame(null);
+                int width = Utils.round(skill.level * 10, 10);
+                UIFrame view = listSkills.createFromTemplate(UIFrame.class);
 
                 view.getStyle().setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff);
-                view.getStyle().setBorderColor(0x359f9fff);
-                view.setMargin(8, 0, 8, 0);
-                view.setSize(320, 28);
-
-                view.addView(UILabel.create(null)
-                        .setText(skill.name)
-                        .setTextColor(ColorUtils.fromHex(0x359f9fff))
-                        .setTextSize(16)
-                        .setPosition(8, 16)
-                        .setSize(320, 28));
-
-                int width = Utils.round(skill.level * 10, 10);
-                view.addView(UIImage.create(null)
-                        .setImage("[base]/graphics/needbar.png")
-                        .setTextureRect(0, 0, width, 8)
-                        .setPosition(314 - width, 18));
-
+                view.findLabel("lb_skill").setText(skill.name);
+                view.findImage("gauge_skill").setTextureRect(0, 0, width, 8);
+                view.findImage("gauge_skill").setPosition(314 - width, 18);
                 view.setData(skill);
 
                 view.getEvents().setOnDragListener(new UIEventManager.OnDragListener() {

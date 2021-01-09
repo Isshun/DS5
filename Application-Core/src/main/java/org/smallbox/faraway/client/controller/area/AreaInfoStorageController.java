@@ -134,7 +134,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
             UIFrame frameStorage = (UIFrame)listStorage.createFromTemplate();
             frameStorage.findLabel("lb_category").setText(categoryContainer.categoryName);
             frameStorage.findImage("img_category").setImage(getContainerImage(categoryContainer.categoryName));
-            frameStorage.findById("img_category").getEvents().setOnClickListener((int x, int y) -> {
+            frameStorage.find("img_category").getEvents().setOnClickListener((int x, int y) -> {
                 clickOnBox(categoryContainer.categoryName, null);
                 storageModule.notifyRulesChange(_area);
                 displayTree();
@@ -180,7 +180,7 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     private void displayConsumables(Collection<ItemInfo> items) {
         items.forEach(itemInfo -> {
             listStorage.addView(new UIFrame(null)
-                    .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).setPadding(5, 5, 5, 5))
+                    .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).getGeometry().setPadding(5, 5, 5, 5))
                     .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
                             .setPosition(300, 0)
                             .getEvents().setOnClickListener((int x, int y) -> {

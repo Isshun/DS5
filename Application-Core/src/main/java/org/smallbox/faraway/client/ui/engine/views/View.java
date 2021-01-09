@@ -6,17 +6,18 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 
 public abstract class View implements Comparable<View> {
 
     // Inject all dependency to view once for all, waiting for a clever solution
     protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
+    protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
     protected final GDXRenderer gdxRenderer = DependencyManager.getInstance().getDependency(GDXRenderer.class);
     protected final FontManager fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
     protected final UIManager uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
@@ -25,7 +26,7 @@ public abstract class View implements Comparable<View> {
     private final ModuleBase _module;
     private boolean _special = false;
     private boolean _inGame;
-    public boolean _isFocus;
+    private boolean _isFocus;
     private boolean _isActive = true;
     private Object _data;
     private int _layer;
@@ -46,7 +47,7 @@ public abstract class View implements Comparable<View> {
     protected String _actionName;
     protected FadeEffect _effect;
     protected int _deep;
-    protected ViewGeometry geometry = new ViewGeometry();
+    protected ViewGeometry geometry = new ViewGeometry(this);
     protected ViewEvents events = new ViewEvents(this);
     protected ViewStyle style = new ViewStyle(this);
     protected Align _align = Align.LEFT;
@@ -288,19 +289,6 @@ public abstract class View implements Comparable<View> {
 
     public boolean contains(int x, int y) {
         return geometry.contains(x, y);
-    }
-
-    public View setMargin(int top, int right, int bottom, int left) {
-        geometry.setMarginTop(top);
-        geometry.setMarginRight(right);
-        geometry.setMarginBottom(bottom);
-        geometry.setMarginLeft(left);
-        return this;
-    }
-
-    public View setPadding(int t, int r, int b, int l) {
-        geometry.setPadding(t, r, b, l);
-        return this;
     }
 
     public View setSize(int width, int height) {

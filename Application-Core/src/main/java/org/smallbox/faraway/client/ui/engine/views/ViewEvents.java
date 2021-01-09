@@ -78,14 +78,14 @@ public class ViewEvents {
     }
 
     public void onEnter() {
-        view._isFocus = true;
+        view.setFocus(true);
         if (_onFocusListener != null) {
             _onFocusListener.onEnter(view);
         }
     }
 
     public void onExit() {
-        view._isFocus = false;
+        view.setFocus(false);
         if (_onFocusListener != null) {
             _onFocusListener.onExit(view);
         }

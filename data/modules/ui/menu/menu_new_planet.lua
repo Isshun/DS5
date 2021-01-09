@@ -26,8 +26,11 @@ ui:extend({
         -- Inner view
         { type = "view", size = {max_width, max_height}, position = {application.screen_width / 2 - max_width / 2, application.screen_height / 2 - max_height / 2}, views = {
 
+            -- Left pane
             { type = "view", background = blue_dark_4, size = {left_pane_width, max_height}, position = {0, 0}, views = {
-                { type = "list", id = "list_planets"},
+                { type = "list", id = "list_planets", template = {
+                    { type = "label", text_color = 0x000000ff, text_size = 24, padding = 20, size = {300, 42}},
+                }},
 
                 { type = "label", id = "bt_back", text = "Back", padding = 16, text_size = 22,
                     background = {regular = 0x55ffffff, focus = 0x8814dcb9},
@@ -38,6 +41,7 @@ ui:extend({
 
             }},
 
+            -- Right pane
             { type = "view", background = blue_dark_3, size = {right_pane_width, max_height}, position = {left_pane_width, 0}, views = {
 
                 { type = "list", id = "info_planet", position = {20, 0}, views = {

@@ -150,9 +150,9 @@ public class CharacterInfoStatusController extends LuaController {
     }
 
     private void displayNeed(UIFrame frame, NeedEntry entry) {
-        UILabel lbName = (UILabel) frame.findById("lb_name");
-        UILabel lbValue = (UILabel) frame.findById("lb_value");
-        UIImage gauge = (UIImage) frame.findById("img_gauge");
+        UILabel lbName = (UILabel) frame.find("lb_name");
+        UILabel lbValue = (UILabel) frame.find("lb_value");
+        UIImage gauge = (UIImage) frame.find("img_gauge");
 
         lbName.setText(frame.getId());
         lbValue.setText(StringUtils.leftPad(String.valueOf((int)Math.round(entry.value() * 100)), 3) + "%");

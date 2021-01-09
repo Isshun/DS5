@@ -81,7 +81,7 @@ public class BuildController extends LuaController {
                 .forEach(itemInfo -> {
                     UIFrame frame = new UIFrame(null);
                     frame.addView(UIImage.create(null).setImage(spriteManager.getIcon(itemInfo)));
-                    frame.addView(UILabel.create(null).setText(itemInfo.label).setTextColor(0x9afbffff).setMargin(14, 0, 0, 38));
+                    frame.addView(UILabel.create(null).setText(itemInfo.label).setTextColor(0x9afbffff).getGeometry().setMargin(14, 0, 0, 38));
                     frame.setSize(300, 32);
                     frame.getEvents().setOnClickListener((int x, int y) -> setCurrentItem(itemInfo));
                     frame.getStyle().setBackgroundFocusColor(0xff2233ff);
@@ -102,7 +102,7 @@ public class BuildController extends LuaController {
                 .forEach(itemInfo -> {
                     UIFrame frame = new UIFrame(null);
                     frame.addView(UIImage.create(null).setImage(spriteManager.getIcon(itemInfo)));
-                    frame.addView(UILabel.create(null).setText(itemInfo.label).setTextColor(0x9afbffff).setMargin(14, 0, 0, 38));
+                    frame.addView(UILabel.create(null).setText(itemInfo.label).setTextColor(0x9afbffff).getGeometry().setMargin(14, 0, 0, 38));
                     frame.setSize(300, 32);
                     frame.getEvents().setOnClickListener((int x, int y) -> setCurrentItem(itemInfo));
                     frame.getStyle().setBackgroundFocusColor(0xff2233ff);
@@ -138,7 +138,7 @@ public class BuildController extends LuaController {
         UILabel uiLabel = UILabel.create(null);
         uiLabel.setText(label);
         uiLabel.setTextSize(16);
-        uiLabel.setPadding(5, 5, 5, 5);
+        uiLabel.getGeometry().setPadding(5, 5, 5, 5);
         uiLabel.setSize(350, 28);
         uiLabel.getStyle().setBackgroundColor(0x349394ff);
         uiLabel.setFocusBackgroundColor(0x25c9cbff);

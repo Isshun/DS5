@@ -182,9 +182,9 @@ public class LuaUIExtend extends LuaExtend {
         readLua(value, "animations", v -> view.setAnimation(new RotateAnimation(getInt(v, "duration", 0))));
 
         readLua(value, "margin", v -> {
-            if (v.length() == 4) { view.setMargin(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()); }
-            if (v.length() == 2) { view.setMargin(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint()); }
-            if (v.length() == 1) { view.setMargin(v.toint(), v.toint(), v.toint(), v.toint()); }
+            if (v.length() == 4) { view.getGeometry().setMargin(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()); }
+            if (v.length() == 2) { view.getGeometry().setMargin(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint()); }
+            if (v.length() == 1) { view.getGeometry().setMargin(v.toint(), v.toint(), v.toint(), v.toint()); }
         });
 
         readLua(value, "position", v -> view.setPosition(v.get(1).toint(), v.get(2).toint()));
@@ -218,10 +218,10 @@ public class LuaUIExtend extends LuaExtend {
         });
 
         readLua(value, "padding", v -> {
-            if (!v.istable()) { view.setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
-            else if (v.length() == 4) { view.setPadding(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()); }
-            else if (v.length() == 2) { view.setPadding(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint()); }
-            else if (v.length() == 1) { view.setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
+            if (!v.istable()) { view.getGeometry().setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
+            else if (v.length() == 4) { view.getGeometry().setPadding(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()); }
+            else if (v.length() == 2) { view.getGeometry().setPadding(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint()); }
+            else if (v.length() == 1) { view.getGeometry().setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
         });
 
 //        LuaValue paddingValue = value.get("padding");

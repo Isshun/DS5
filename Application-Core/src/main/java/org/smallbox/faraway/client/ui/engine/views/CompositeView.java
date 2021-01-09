@@ -58,6 +58,10 @@ public abstract class CompositeView extends View {
         return _template != null ? _template.createFromTemplate() : null;
     }
 
+    public <T extends View> T createFromTemplate(Class<T> cls) {
+        return _template != null ? cls.cast(_template.createFromTemplate()) : null;
+    }
+
     public void setSorted(boolean sorted) {
         if (sorted) {
             Collection<View> views = _views;
@@ -139,20 +143,20 @@ public abstract class CompositeView extends View {
     }
 
     public UILabel findLabel(String resId) {
-        return (UILabel)findById(resId);
+        return (UILabel) find(resId);
     }
 
     public UIImage findImage(String resId) {
-        return (UIImage)findById(resId);
+        return (UIImage) find(resId);
     }
 
-    public View findById(String resId) {
+    public View find(String resId) {
         for (View view: _views) {
             if (StringUtils.equals(view._id, resId)) {
                 return view;
             }
             if (view instanceof CompositeView) {
-                View ret = ((CompositeView)view).findById(resId);
+                View ret = ((CompositeView)view).find(resId);
                 if (ret != null) {
                     return ret;
                 }

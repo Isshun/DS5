@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.menu.controller;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
@@ -55,13 +54,9 @@ public class MenuPlanetController extends LuaController {
     @AfterApplicationLayerInit
     private void afterApplicationLayerInit() {
         data.planets.forEach(planet -> {
-            UILabel lbPlanet = new UILabel(null);
+            UILabel lbPlanet = listPlanets.createFromTemplate(UILabel.class);
             lbPlanet.setId(planet.name);
             lbPlanet.setText(planet.label);
-            lbPlanet.setTextSize(24);
-            lbPlanet.setTextColor(Color.BLACK);
-            lbPlanet.setPadding(20, 20, 20, 20);
-            lbPlanet.setSize(300, 42);
             lbPlanet.getEvents().setOnClickListener((x, y) -> selectPlanet(planet));
             listPlanets.addView(lbPlanet);
         });
@@ -80,13 +75,13 @@ public class MenuPlanetController extends LuaController {
 
             planet.regions.forEach(region -> {
                 CompositeView viewRegion = (CompositeView)listInfoRegions.createFromTemplate();
-                ((UILabel)viewRegion.findById("lb_region_name")).setText(region.label);
-                ((UILabel)viewRegion.findById("lb_hostility")).setText("low");
-                ((UILabel)viewRegion.findById("lb_fertility")).setText("high");
-                ((UILabel)viewRegion.findById("lb_atmosphere")).setText("o2, nitrogen");
-                ((UILabel)viewRegion.findById("lb_temperature")).setText("-5° +50");
+                ((UILabel)viewRegion.find("lb_region_name")).setText(region.label);
+                ((UILabel)viewRegion.find("lb_hostility")).setText("low");
+                ((UILabel)viewRegion.find("lb_fertility")).setText("high");
+                ((UILabel)viewRegion.find("lb_atmosphere")).setText("o2, nitrogen");
+                ((UILabel)viewRegion.find("lb_temperature")).setText("-5° +50");
 
-                UIGrid listResource = ((UIGrid)viewRegion.findById("grid_info_resources"));
+                UIGrid listResource = ((UIGrid)viewRegion.find("grid_info_resources"));
                 region.terrains.stream().filter(terrain -> terrain.resource != null).forEach(terrain -> {
                     UIImage viewResource = (UIImage)listResource.createFromTemplate();
                     ItemInfo resourceInfo = data.getItemInfo(terrain.resource);

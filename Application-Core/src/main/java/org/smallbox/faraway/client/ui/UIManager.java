@@ -307,7 +307,7 @@ public class UIManager {
                 View view = findById(ids[0]);
                 for (int i = 1; i < ids.length; i++) {
                     if (view instanceof CompositeView) {
-                        view = ((CompositeView)view).findById(ids[i]);
+                        view = ((CompositeView)view).find(ids[i]);
                     }
                 }
                 return view;
@@ -317,7 +317,7 @@ public class UIManager {
         else {
             for (RootView view : _rootViews) {
                 if (view.getView() instanceof CompositeView) {
-                    View v = ((CompositeView)view.getView()).findById(id);
+                    View v = ((CompositeView)view.getView()).find(id);
                     if (v != null) {
                         return v;
                     }

@@ -91,8 +91,8 @@ public class LuaControllerManager implements GameObserver {
                     try {
                         Log.debug(LuaControllerManager.class, "Bind field: " + field.getName());
                         View view = ObjectUtils.firstNonNull(
-                                controller.getRootView().findById(field.getName()),
-                                controller.getRootView().findById(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()))
+                                controller.getRootView().find(field.getName()),
+                                controller.getRootView().find(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, field.getName()))
                         );
 
                         if (view != null) {

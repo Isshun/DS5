@@ -3,10 +3,7 @@ package org.smallbox.faraway.client.controller;
 import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -43,19 +40,12 @@ public class ConsumableController extends LuaController {
 
         quantities.forEach((itemInfo, quantity) -> {
 
-            UIFrame view = new UIFrame(null);
-            view.setSize(100, 30);
+            UIFrame view = consumableList.createFromTemplate(UIFrame.class);
 
-            view.addView(UILabel.create(null)
-                    .setDashedString(itemInfo.label, " x " + quantity, 38)
-                    .setTextColor(Colors.COLOR2)
-                    .setTextSize(14)
-                    .setPadding(12, 12, 12, 12)
-                    .setPosition(25, 0));
+            view.findLabel("lb_consumable").setDashedString(itemInfo.label, " x " + quantity, 38);
 
             if (CollectionUtils.isNotEmpty(itemInfo.graphics)) {
-                view.addView(UIImage.create(null)
-                        .setImage(itemInfo.graphics.get(0)));
+                view.findImage("img_consumable").setImage(itemInfo.graphics.get(0));
             }
 
             consumableList.addNextView(view);
