@@ -6,7 +6,6 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
-import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -17,8 +16,6 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 public abstract class View implements Comparable<View> {
 
     // Inject all dependency to view once for all, waiting for a clever solution
-    protected final ApplicationConfig applicationConfig = DependencyManager.getInstance().getDependency(ApplicationConfig.class);
-    protected final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
     protected final SpriteManager spriteManager = DependencyManager.getInstance().getDependency(SpriteManager.class);
     protected final GDXRenderer gdxRenderer = DependencyManager.getInstance().getDependency(GDXRenderer.class);
     protected final FontManager fontManager = DependencyManager.getInstance().getDependency(FontManager.class);
@@ -49,8 +46,8 @@ public abstract class View implements Comparable<View> {
     protected String _actionName;
     protected FadeEffect _effect;
     protected int _deep;
-    protected ViewGeometry geometry = new ViewGeometry(applicationConfig.uiScale);
-    protected ViewEvents events = new ViewEvents(this, uiEventManager);
+    protected ViewGeometry geometry = new ViewGeometry();
+    protected ViewEvents events = new ViewEvents(this);
     protected ViewStyle style = new ViewStyle(this);
     protected Align _align = Align.LEFT;
 
@@ -327,9 +324,7 @@ public abstract class View implements Comparable<View> {
 
     public void remove() {
         _parent = null;
-        if (events._onClickListener != null) {
-            uiEventManager.removeOnClickListener(this);
-        }
+        events.remove();
     }
 
     public abstract int getContentWidth();

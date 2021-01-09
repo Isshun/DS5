@@ -6,9 +6,10 @@ import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 
 public class ViewEvents {
-    private final UIEventManager uiEventManager;
+    private final UIEventManager uiEventManager = DependencyManager.getInstance().getDependency(UIEventManager.class);
     private final View view;
 
     public OnClickListener _onClickListener;
@@ -17,9 +18,8 @@ public class ViewEvents {
     private OnClickListener _onMouseWheelDownListener;
     private OnFocusListener _onFocusListener;
 
-    public ViewEvents(View view, UIEventManager uiEventManager) {
+    public ViewEvents(View view) {
         this.view = view;
-        this.uiEventManager = uiEventManager;
     }
 
     public boolean hasClickListener() {
@@ -100,4 +100,9 @@ public class ViewEvents {
         }
     }
 
+    public void remove() {
+        if (_onClickListener != null) {
+            uiEventManager.removeOnClickListener(view);
+        }
+    }
 }

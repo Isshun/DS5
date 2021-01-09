@@ -1,42 +1,56 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+
 public class ViewGeometry {
-    protected double uiScale;
-    protected int               finalX;
-    protected int               finalY;
-    protected int               marginTop;
-    protected int               marginRight;
-    protected int               marginBottom;
-    protected int               marginLeft;
-    protected int               width = -1;
-    protected int               height = -1;
-    protected int               x;
-    protected int               y;
-    protected int               fixedWidth = -1;
-    protected int               fixedHeight = -1;
-    protected int               paddingLeft;
-    protected int               paddingBottom;
-    protected int               paddingRight;
-    protected int               paddingTop;
-    protected int               offsetX;
-    protected int               offsetY;
+    protected double uiScale = DependencyManager.getInstance().getDependency(ApplicationConfig.class).uiScale;
+    protected int finalX;
+    protected int finalY;
+    protected int marginTop;
+    protected int marginRight;
+    protected int marginBottom;
+    protected int marginLeft;
+    protected int width = -1;
+    protected int height = -1;
+    protected int fixedWidth = -1;
+    protected int fixedHeight = -1;
+    protected int paddingLeft;
+    protected int paddingBottom;
+    protected int paddingRight;
+    protected int paddingTop;
+    protected int offsetX;
+    protected int offsetY;
     protected int originWidth;
     protected int originHeight;
+    protected int x;
+    protected int y;
 
-    public ViewGeometry(double uiScale) {
-        this.uiScale = uiScale;
+    public int getFinalX() {
+        return finalX;
     }
 
-    public int          getPosX() { return x; }
-    public int          getPosY() { return y; }
-    public int          getFinalX() { return finalX; }
-    public int          getFinalY() { return finalY; }
-//    public int          getHeight() { return height; }
+    public int getFinalY() {
+        return finalY;
+    }
+
+    //    public int          getHeight() { return height; }
 //    public int          getWidth() { return width; }
-    public int          getMarginTop() { return marginTop; }
-    public int          getMarginRight() { return marginRight; }
-    public int          getMarginBottom() { return marginBottom; }
-    public int          getMarginLeft() { return marginLeft; }
+    public int getMarginTop() {
+        return marginTop;
+    }
+
+    public int getMarginRight() {
+        return marginRight;
+    }
+
+    public int getMarginBottom() {
+        return marginBottom;
+    }
+
+    public int getMarginLeft() {
+        return marginLeft;
+    }
 
     public int getWidth() {
         return width;
@@ -96,6 +110,14 @@ public class ViewGeometry {
 
     public int getOffsetY() {
         return offsetY;
+    }
+
+    public int getPosX() {
+        return x;
+    }
+
+    public int getPosY() {
+        return y;
     }
 
     public void setFinalX(int finalX) {
