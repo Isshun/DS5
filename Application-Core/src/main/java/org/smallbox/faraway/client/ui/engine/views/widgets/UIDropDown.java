@@ -17,7 +17,7 @@ public class UIDropDown extends CompositeView {
 
         _overlay = new UIFrame(module);
         _overlay.setDeep(100);
-        _overlay.setOnClickListener((x, y) -> {
+        _overlay.getEvents().setOnClickListener((x, y) -> {
             setOpen(true);
             uiEventManager.setCurrentDropDown(_isOpen ? UIDropDown.this : null);
         });

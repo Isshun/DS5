@@ -57,7 +57,7 @@ public class SystemInfoController extends LuaController {
         // Display weather, temperature and pressure
         WeatherInfo weatherInfo = weatherModule.getWeather();
         if (weatherInfo != null) {
-            viewWeather.setBackgroundColor(weatherInfo.color1);
+            viewWeather.getStyle().setBackgroundColor(weatherInfo.color1);
             lbWeather.setText(weatherInfo.label);
             lbWeather.setTextColor(weatherInfo.color2);
             imgWeather.setImage(weatherInfo.icon);

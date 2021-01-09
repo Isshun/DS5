@@ -105,11 +105,11 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                 .map(CategoryContainer::new)
                 .collect(Collectors.toList());
 
-        btPriority1.setOnClickListener((int x, int y) -> setPriority(1));
-        btPriority2.setOnClickListener((int x, int y) -> setPriority(2));
-        btPriority3.setOnClickListener((int x, int y) -> setPriority(3));
-        btPriority4.setOnClickListener((int x, int y) -> setPriority(4));
-        btPriority5.setOnClickListener((int x, int y) -> setPriority(5));
+        btPriority1.getEvents().setOnClickListener((int x, int y) -> setPriority(1));
+        btPriority2.getEvents().setOnClickListener((int x, int y) -> setPriority(2));
+        btPriority3.getEvents().setOnClickListener((int x, int y) -> setPriority(3));
+        btPriority4.getEvents().setOnClickListener((int x, int y) -> setPriority(4));
+        btPriority5.getEvents().setOnClickListener((int x, int y) -> setPriority(5));
     }
 
     private void setPriority(int priority) {
@@ -118,11 +118,11 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     }
 
     private void displayPriority(int priority) {
-        btPriority1.setBorderColor(priority == 1 ? Colors.COLOR1 : null);
-        btPriority2.setBorderColor(priority == 2 ? Colors.COLOR1 : null);
-        btPriority3.setBorderColor(priority == 3 ? Colors.COLOR1 : null);
-        btPriority4.setBorderColor(priority == 4 ? Colors.COLOR1 : null);
-        btPriority5.setBorderColor(priority == 5 ? Colors.COLOR1 : null);
+        btPriority1.getStyle().setBorderColor(priority == 1 ? Colors.COLOR1 : null);
+        btPriority2.getStyle().setBorderColor(priority == 2 ? Colors.COLOR1 : null);
+        btPriority3.getStyle().setBorderColor(priority == 3 ? Colors.COLOR1 : null);
+        btPriority4.getStyle().setBorderColor(priority == 4 ? Colors.COLOR1 : null);
+        btPriority5.getStyle().setBorderColor(priority == 5 ? Colors.COLOR1 : null);
     }
 
     private void displayTree() {
@@ -134,12 +134,12 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
             UIFrame frameStorage = (UIFrame)listStorage.createFromTemplate();
             frameStorage.findLabel("lb_category").setText(categoryContainer.categoryName);
             frameStorage.findImage("img_category").setImage(getContainerImage(categoryContainer.categoryName));
-            frameStorage.findById("img_category").setOnClickListener((int x, int y) -> {
+            frameStorage.findById("img_category").getEvents().setOnClickListener((int x, int y) -> {
                 clickOnBox(categoryContainer.categoryName, null);
                 storageModule.notifyRulesChange(_area);
                 displayTree();
             });
-            frameStorage.setOnClickListener((int x, int y) -> {
+            frameStorage.getEvents().setOnClickListener((int x, int y) -> {
                 categoryContainer.isOpen = !categoryContainer.isOpen;
                 displayTree();
             });
@@ -183,13 +183,13 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                     .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).setPadding(5, 5, 5, 5))
                     .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
                             .setPosition(300, 0)
-                            .setOnClickListener((int x, int y) -> {
+                            .getEvents().setOnClickListener((int x, int y) -> {
                                 _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
                                 storageModule.notifyRulesChange(_area);
                                 displayTree();
                             }))
                     .setSize(200, 20)
-                    .setOnClickListener((int x, int y) -> {
+                    .getEvents().setOnClickListener((int x, int y) -> {
                         _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
                         displayTree();
                     })

@@ -283,7 +283,7 @@ public class UIManager {
         _context.setVisible(true);
         _context.removeAllViews();
         _context.setPosition(x + 16, y + 16);
-        _context.setBackgroundColor(Color.BLUE);
+        _context.getStyle().setBackgroundColor(Color.BLUE);
 
         int index = 0;
         for (ContextEntry entry: entries) {
@@ -291,7 +291,7 @@ public class UIManager {
             lbEntry.setSize(100, 20);
             lbEntry.setTextSize(14);
             lbEntry.setText(entry.label);
-            lbEntry.setOnClickListener(entry.listener);
+            lbEntry.getEvents().setOnClickListener(entry.listener);
             lbEntry.setTextAlign(Align.CENTER_VERTICAL);
             lbEntry.setPosition(4, index++ * 20);
             _context.addView(lbEntry);

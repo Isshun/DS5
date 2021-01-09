@@ -27,7 +27,7 @@ public class LuaStyleManager {
                 int r = Integer.valueOf(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getRed().toString());
                 int g = Integer.valueOf(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getGreen().toString());
                 int b = Integer.valueOf(((RGBColorImpl)((CSSValueImpl)style.getPropertyCSSValue("background")).getValue()).getBlue().toString());
-                view.setBackgroundColor(ColorUtils.fromHex(r, g, b));
+                view.getStyle().setBackgroundColor(ColorUtils.fromHex(r, g, b));
             }
         }
     }

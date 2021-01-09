@@ -19,15 +19,15 @@ public class LuaCursorExtend extends LuaExtend {
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         final UIFrame resItem = new UIFrame(module);
         resItem.setSize(32, 32);
-        resItem.setBackgroundColor(value.get("default").get("color").tolong());
+        resItem.getStyle().setBackgroundColor(value.get("default").get("color").tolong());
 
         final UIFrame resOdd = new UIFrame(module);
         resOdd.setSize(32, 32);
-        resOdd.setBackgroundColor(value.get("odd").get("color").tolong());
+        resOdd.getStyle().setBackgroundColor(value.get("odd").get("color").tolong());
 
         final UIFrame resEden = new UIFrame(module);
         resEden.setSize(32, 32);
-        resEden.setBackgroundColor(value.get("eden").get("color").tolong());
+        resEden.getStyle().setBackgroundColor(value.get("eden").get("color").tolong());
 
         final LuaValue luaOnParcel = value.get("on_parcel");
 

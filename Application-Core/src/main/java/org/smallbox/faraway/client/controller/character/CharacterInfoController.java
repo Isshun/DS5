@@ -133,14 +133,14 @@ public class CharacterInfoController extends AbsInfoLuaController<CharacterModel
     }
 
     private void openPage(LuaController controller, View bg) {
-        bgStatus.setBackgroundColor(Colors.BLUE_DARK_4);
-        bgInventory.setBackgroundColor(Colors.BLUE_DARK_4);
-        bgHealth.setBackgroundColor(Colors.BLUE_DARK_4);
-        bgDetails.setBackgroundColor(Colors.BLUE_DARK_4);
-        bgTimetable.setBackgroundColor(Colors.BLUE_DARK_4);
-        bgSkills.setBackgroundColor(Colors.BLUE_DARK_4);
+        bgStatus.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        bgInventory.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        bgHealth.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        bgDetails.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        bgTimetable.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        bgSkills.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
         controller.setVisible(true);
-        bg.setBackgroundColor(Colors.BLUE_DARK_3);
+        bg.getStyle().setBackgroundColor(Colors.BLUE_DARK_3);
     }
 
     @Override

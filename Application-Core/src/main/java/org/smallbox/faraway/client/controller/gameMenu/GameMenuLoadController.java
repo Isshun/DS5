@@ -51,8 +51,8 @@ public class GameMenuLoadController extends LuaController {
             uiLabel.setTextSize(20);
             uiLabel.setSize(400, 40);
             uiLabel.setFocusBackgroundColor(0x225588ff);
-            uiLabel.setOnClickListener((x, y) -> displaySave(gameSaveInfo));
-            uiLabel.setBackgroundColor(Colors.BLUE_DARK_1);
+            uiLabel.getEvents().setOnClickListener((x, y) -> displaySave(gameSaveInfo));
+            uiLabel.getStyle().setBackgroundColor(Colors.BLUE_DARK_1);
             loadEntries.getViews().add(uiLabel);
 
             View view = new UIFrame(null);

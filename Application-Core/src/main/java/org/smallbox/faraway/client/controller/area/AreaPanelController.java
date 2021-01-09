@@ -46,7 +46,7 @@ public class AreaPanelController extends LuaController {
                 .forEach(dependency -> {
                     UILabel lbArea = (UILabel) listAreasAdd.createFromTemplate();
                     lbArea.setText(" + " + dependency.getClass().getAnnotation(AreaTypeInfo.class).label());
-                    lbArea.setOnClickListener((int x, int y) -> gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel) dependency));
+                    lbArea.getEvents().setOnClickListener((int x, int y) -> gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel) dependency));
                     listAreasAdd.addNextView(lbArea);
                 });
 

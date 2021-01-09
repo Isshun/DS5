@@ -43,10 +43,10 @@ public class MainPanelController extends LuaController {
     @Override
     public void onReloadUI() {
         gameSelectionManager.registerSelectionPre(this);
-        btCrew.setOnClickListener((x, y) -> crewController.getRootView().setVisible(true));
-        btArea.setOnClickListener((x, y) -> areaPanelController.getRootView().setVisible(true));
-        btBuild.setOnClickListener((x, y) -> buildController.getRootView().setVisible(true));
-        btJobs.setOnClickListener((x, y) -> jobController.getRootView().setVisible(true));
+        btCrew.getEvents().setOnClickListener((x, y) -> crewController.getRootView().setVisible(true));
+        btArea.getEvents().setOnClickListener((x, y) -> areaPanelController.getRootView().setVisible(true));
+        btBuild.getEvents().setOnClickListener((x, y) -> buildController.getRootView().setVisible(true));
+        btJobs.getEvents().setOnClickListener((x, y) -> jobController.getRootView().setVisible(true));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class MainPanelController extends LuaController {
         uiLabel.setId(id);
         uiLabel.setText(label);
         uiLabel.setName(mainGrid.getName() + "." + label);
-        uiLabel.setOnClickListener((x, y) -> controller.getRootView().setVisible(true));
+        uiLabel.getEvents().setOnClickListener((x, y) -> controller.getRootView().setVisible(true));
     }
 
     public View getMapContainer() {

@@ -45,8 +45,8 @@ public class CharacterInfoSkillsController extends LuaController {
 
                 UIFrame view = new UIFrame(null);
 
-                view.setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff);
-                view.setBorderColor(0x359f9fff);
+                view.getStyle().setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff);
+                view.getStyle().setBorderColor(0x359f9fff);
                 view.setMargin(8, 0, 8, 0);
                 view.setSize(320, 28);
 
@@ -65,7 +65,7 @@ public class CharacterInfoSkillsController extends LuaController {
 
                 view.setData(skill);
 
-                view.setOnDragListener(new UIEventManager.OnDragListener() {
+                view.getEvents().setOnDragListener(new UIEventManager.OnDragListener() {
                     @Override
                     public void onDrag(int x, int y) {
                         Log.info("drag at " + x + " x " + y);
@@ -84,12 +84,12 @@ public class CharacterInfoSkillsController extends LuaController {
 
                     @Override
                     public void onHover(int x, int y, View dropView) {
-                        dropView.setBackgroundColor(0xbb3647ff);
+                        dropView.getStyle().setBackgroundColor(0xbb3647ff);
                     }
 
                     @Override
                     public void onHoverExit(int x, int y, View dropView) {
-                        dropView.setBackgroundColor(0x1a3647ff);
+                        dropView.getStyle().setBackgroundColor(0x1a3647ff);
                     }
                 });
 

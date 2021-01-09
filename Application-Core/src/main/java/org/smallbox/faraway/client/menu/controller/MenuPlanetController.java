@@ -62,7 +62,7 @@ public class MenuPlanetController extends LuaController {
             lbPlanet.setTextColor(Color.BLACK);
             lbPlanet.setPadding(20, 20, 20, 20);
             lbPlanet.setSize(300, 42);
-            lbPlanet.setOnClickListener((x, y) -> selectPlanet(planet));
+            lbPlanet.getEvents().setOnClickListener((x, y) -> selectPlanet(planet));
             listPlanets.addView(lbPlanet);
         });
         selectPlanet(data.planets.get(0));

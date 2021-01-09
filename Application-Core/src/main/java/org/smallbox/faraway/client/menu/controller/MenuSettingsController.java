@@ -82,12 +82,12 @@ public class MenuSettingsController extends LuaController {
     }
 
     private void openSubMenu(View button, View subMenu) {
-        btGraphic.setBackgroundColor(COLOR3);
-        btSound.setBackgroundColor(COLOR3);
-        btBindings.setBackgroundColor(COLOR3);
-        btGameplay.setBackgroundColor(COLOR3);
+        btGraphic.getStyle().setBackgroundColor(COLOR3);
+        btSound.getStyle().setBackgroundColor(COLOR3);
+        btBindings.getStyle().setBackgroundColor(COLOR3);
+        btGameplay.getStyle().setBackgroundColor(COLOR3);
 
-        button.setBackgroundColor(0x25c9cbff);
+        button.getStyle().setBackgroundColor(0x25c9cbff);
 
         graphicSubMenu.setVisible(false);
         soundSubMenu.setVisible(false);

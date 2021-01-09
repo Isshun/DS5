@@ -192,10 +192,10 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
 
                 UILabel btInfo = UILabel.create(null);
                 btInfo.setText("[info]");
-                btInfo.setOnClickListener((x, y) -> itemInfoReceiptController.display(receiptGroup));
+                btInfo.getEvents().setOnClickListener((x, y) -> itemInfoReceiptController.display(receiptGroup));
                 btInfo.setPosition(220, 0);
                 btInfo.setSize(50, 20);
-                btInfo.setBackgroundColor(Color.CYAN);
+                btInfo.getStyle().setBackgroundColor(Color.CYAN);
                 lineReceiptGroup.addView(btInfo);
 
                 listActions.addView(lineReceiptGroup);

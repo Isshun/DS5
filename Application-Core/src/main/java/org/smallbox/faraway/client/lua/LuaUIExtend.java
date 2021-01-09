@@ -189,31 +189,31 @@ public class LuaUIExtend extends LuaExtend {
 
         readLua(value, "position", v -> view.setPosition(v.get(1).toint(), v.get(2).toint()));
 
-        readInt(value, "border", view::setBorderColor);
+        readInt(value, "border", v -> view.getStyle().setBorderColor(v));
 
         readLua(value, "background", v -> {
             if (v.istable()) {
                 readLong(v, "regular", view::setRegularBackgroundColor, -1);
                 if (view.getRegularBackground() != -1) {
-                    view.setBackgroundColor(view.getRegularBackground());
+                    view.getStyle().setBackgroundColor(view.getRegularBackground());
                 }
 
                 readInt(v, "focus", view::setFocusBackgroundColor, -1);
                 if (view.getFocusBackground() != -1) {
-                    view.setOnFocusListener(new OnFocusListener() {
+                    view.getEvents().setOnFocusListener(new OnFocusListener() {
                         @Override
                         public void onEnter(View view) {
-                            view.setBackgroundColor(view.getFocusBackground());
+                            view.getStyle().setBackgroundColor(view.getFocusBackground());
                         }
 
                         @Override
                         public void onExit(View view) {
-                            view.setBackgroundColor(view.getRegularBackground());
+                            view.getStyle().setBackgroundColor(view.getRegularBackground());
                         }
                     });
                 }
             } else {
-                view.setBackgroundColor(v.toint());
+                view.getStyle().setBackgroundColor(v.toint());
             }
         });
 
@@ -248,15 +248,15 @@ public class LuaUIExtend extends LuaExtend {
         if (!onFocus.isnil()) {
             int regularBackground = value.get("background").toint();
             int focusBackground = onFocus.get("background").toint();
-            view.setOnFocusListener(new OnFocusListener() {
+            view.getEvents().setOnFocusListener(new OnFocusListener() {
                 @Override
                 public void onEnter(View view) {
-                    view.setBackgroundColor(focusBackground);
+                    view.getStyle().setBackgroundColor(focusBackground);
                 }
 
                 @Override
                 public void onExit(View view) {
-                    view.setBackgroundColor(regularBackground);
+                    view.getStyle().setBackgroundColor(regularBackground);
                 }
             });
         }
@@ -287,7 +287,7 @@ public class LuaUIExtend extends LuaExtend {
 
         LuaValue onClick = value.get("on_click");
         if (!onClick.isnil()) {
-            view.setOnClickListener((int x, int y) -> {
+            view.getEvents().setOnClickListener((int x, int y) -> {
                 try {
                     if (onClick.isfunction()) {
                         onClick.call(luaView);

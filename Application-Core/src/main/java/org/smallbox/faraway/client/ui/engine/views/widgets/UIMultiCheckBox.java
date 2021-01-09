@@ -36,7 +36,7 @@ public class UIMultiCheckBox extends View {
     public UIMultiCheckBox setChecked(Value checked) { _checked = checked; return this; }
 
     public UIMultiCheckBox setOnCheckListener(OnCheckListener onCheckListener) {
-        setOnClickListener((x, y) -> {
+        events.setOnClickListener((x, y) -> {
             _checked = _checked == Value.TRUE ? Value.FALSE : Value.TRUE;
             onCheckListener.onCheck(_checked, x < geometry.getFinalX() + 32);
         });

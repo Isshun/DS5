@@ -78,18 +78,15 @@ public class BuildController extends LuaController {
 
         data.getItems().stream()
                 .filter(item -> item.isUserItem)
-                .forEach(itemInfo ->
-                        list.addView(new UIFrame(null)
-                                .addView(UIImage.create(null)
-                                        .setImage(spriteManager.getIcon(itemInfo)))
-                                .addView(UILabel.create(null)
-                                        .setText(itemInfo.label)
-                                        .setTextColor(0x9afbffff)
-                                        .setMargin(14, 0, 0, 38)))
-                                .setSize(300, 32)
-                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
-                                .setBackgroundFocusColor(0xff2233ff)
-                );
+                .forEach(itemInfo -> {
+                    UIFrame frame = new UIFrame(null);
+                    frame.addView(UIImage.create(null).setImage(spriteManager.getIcon(itemInfo)));
+                    frame.addView(UILabel.create(null).setText(itemInfo.label).setTextColor(0x9afbffff).setMargin(14, 0, 0, 38));
+                    frame.setSize(300, 32);
+                    frame.getEvents().setOnClickListener((int x, int y) -> setCurrentItem(itemInfo));
+                    frame.getStyle().setBackgroundFocusColor(0xff2233ff);
+                    list.addView(frame);
+                });
 
         list.addView(createListTitle("Structure", (int x, int y) -> onOpenStructures()));
         list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
@@ -102,18 +99,15 @@ public class BuildController extends LuaController {
 
         data.getItems().stream()
                 .filter(itemInfo -> itemInfo.isStructure)
-                .forEach(itemInfo ->
-                        list.addView(new UIFrame(null)
-                                .addView(UIImage.create(null)
-                                        .setImage(spriteManager.getIcon(itemInfo)))
-                                .addView(UILabel.create(null)
-                                        .setText(itemInfo.label)
-                                        .setTextColor(0x9afbffff)
-                                        .setMargin(14, 0, 0, 38)))
-                                .setSize(300, 32)
-                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
-                                .setBackgroundFocusColor(0xff2233ff)
-                );
+                .forEach(itemInfo -> {
+                    UIFrame frame = new UIFrame(null);
+                    frame.addView(UIImage.create(null).setImage(spriteManager.getIcon(itemInfo)));
+                    frame.addView(UILabel.create(null).setText(itemInfo.label).setTextColor(0x9afbffff).setMargin(14, 0, 0, 38));
+                    frame.setSize(300, 32);
+                    frame.getEvents().setOnClickListener((int x, int y) -> setCurrentItem(itemInfo));
+                    frame.getStyle().setBackgroundFocusColor(0xff2233ff);
+                    list.addView(frame);
+                });
 
         list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
     }
@@ -124,31 +118,32 @@ public class BuildController extends LuaController {
         list.addView(createListTitle("Structure", (int x, int y) -> onOpenStructures()));
         list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
 
-        data.getItems().stream()
-                .filter(item -> item.isNetworkItem)
-                .forEach(itemInfo ->
-                        list.addView(new UIFrame(null)
-                                .addView(UIImage.create(null)
-                                        .setImage(spriteManager.getIcon(itemInfo)))
-                                .addView(UILabel.create(null)
-                                        .setText(itemInfo.label)
-                                        .setTextColor(0x9afbffff)
-                                        .setMargin(14, 0, 0, 38)))
-                                .setSize(300, 32)
-                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
-                                .setBackgroundFocusColor(0xff2233ff)
-                );
+//        data.getItems().stream()
+//                .filter(item -> item.isNetworkItem)
+//                .forEach(itemInfo ->
+//                        list.addView(new UIFrame(null)
+//                                .addView(UIImage.create(null)
+//                                        .setImage(spriteManager.getIcon(itemInfo)))
+//                                .addView(UILabel.create(null)
+//                                        .setText(itemInfo.label)
+//                                        .setTextColor(0x9afbffff)
+//                                        .setMargin(14, 0, 0, 38)))
+//                                .setSize(300, 32)
+//                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+//                                .setBackgroundFocusColor(0xff2233ff)
+//                );
     }
 
     private View createListTitle(String label, OnClickListener clickListener) {
-        return UILabel.create(null)
-                .setText(label)
-                .setTextSize(16)
-                .setPadding(5, 5, 5, 5)
-                .setSize(350, 28)
-                .setBackgroundColor(0x349394ff)
-                .setFocusBackgroundColor(0x25c9cbff)
-                .setOnClickListener(clickListener);
+        UILabel uiLabel = UILabel.create(null);
+        uiLabel.setText(label);
+        uiLabel.setTextSize(16);
+        uiLabel.setPadding(5, 5, 5, 5);
+        uiLabel.setSize(350, 28);
+        uiLabel.getStyle().setBackgroundColor(0x349394ff);
+        uiLabel.setFocusBackgroundColor(0x25c9cbff);
+        uiLabel.getEvents().setOnClickListener(clickListener);
+        return uiLabel;
     }
 
     public void setCurrentItem(ItemInfo itemInfo) {

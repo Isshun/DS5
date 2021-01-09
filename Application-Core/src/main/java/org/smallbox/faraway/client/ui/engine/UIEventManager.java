@@ -254,9 +254,9 @@ public class UIEventManager implements EventManager {
                 .filter(view -> view.isVisible() && view.isActive() && hasVisibleHierarchy(view))
                 .forEach(view -> {
                     if (hasVisibleHierarchy(view) && view.contains(x, y)) {
-                        view.onEnter();
+                        view.getEvents().onEnter();
                     } else if (view.isFocus()) {
-                        view.onExit();
+                        view.getEvents().onExit();
                     }
                 });
 

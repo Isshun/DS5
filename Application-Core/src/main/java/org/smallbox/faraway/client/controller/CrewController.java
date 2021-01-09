@@ -71,7 +71,7 @@ public class CrewController extends LuaController {
                     }
                 }
 
-                view.setOnClickListener((x, y) -> {
+                view.getEvents().setOnClickListener((x, y) -> {
                     gameSelectionManager.select(character);
 //                    ApplicationClient.notify(obs -> obs.onSelectCharacter(character));
 //                    characterInfoController.display(character);
