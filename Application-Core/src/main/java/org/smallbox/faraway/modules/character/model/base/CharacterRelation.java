@@ -12,9 +12,9 @@ public class CharacterRelation {
         HALF_SISTER
     }
 
-    private Relation     _relation;
-    private CharacterModel _c1;
-    private CharacterModel _c2;
+    private final Relation     _relation;
+    private final CharacterModel _c1;
+    private final CharacterModel _c2;
 
     public CharacterRelation(CharacterModel c1, CharacterModel c2, Relation relation) {
         _relation = relation;

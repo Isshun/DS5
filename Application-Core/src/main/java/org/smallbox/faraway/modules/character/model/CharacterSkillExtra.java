@@ -46,8 +46,8 @@ public class CharacterSkillExtra extends CharacterExtra {
         CLEAN
     }
 
-    private HashMap<SkillType, SkillEntry>    _skillsMap;
-    private Queue<SkillEntry> _skills;
+    private final HashMap<SkillType, SkillEntry>    _skillsMap;
+    private final Queue<SkillEntry> _skills;
 
     public CharacterSkillExtra(CharacterModel character) {
         super(character);

@@ -42,7 +42,7 @@ public class StorageModule extends AreaModuleBase<StorageArea> {
     @Inject
     private StoreJobFactory storeJobFactory;
 
-    private Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<ConsumableItem> _checkQueue = new ConcurrentLinkedQueue<>();
 
     @OnInit
     public void init() {

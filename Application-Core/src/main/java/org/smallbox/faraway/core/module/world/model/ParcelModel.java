@@ -3,7 +3,6 @@ package org.smallbox.faraway.core.module.world.model;
 import com.badlogic.gdx.ai.pfa.Connection;
 import com.badlogic.gdx.utils.Array;
 import org.smallbox.faraway.common.ParcelCommon;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
@@ -34,7 +33,7 @@ public class ParcelModel extends ParcelCommon {
     public List<NetworkItem>                _networks;
     private ItemInfo                        _liquidInfo;
 
-    private Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
+    private final Map<Class<? extends MapObjectModel>, MapObjectModel> _items = new ConcurrentHashMap<>();
     private boolean _connectionDirty;
 
     public ParcelModel(int index, int x, int y, int z) {

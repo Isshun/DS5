@@ -15,21 +15,21 @@ import java.util.List;
  */
 public class AStarPathFinder implements PathFinder, PathFindingContext {
     /** The set of nodes that have been searched through */
-    private ArrayList closed = new ArrayList();
+    private final ArrayList closed = new ArrayList();
     /** The set of nodes that we do not yet consider fully searched */
-    private PriorityList open = new PriorityList();
+    private final PriorityList open = new PriorityList();
 
     /** The old being searched */
-    private TileBasedMap map;
+    private final TileBasedMap map;
     /** The maximum depth of search we're willing to accept before giving up */
-    private int maxSearchDistance;
+    private final int maxSearchDistance;
 
     /** The complete set of nodes across the old */
-    private Node[][] nodes;
+    private final Node[][] nodes;
     /** True if we allow diaganol movement */
-    private boolean allowDiagMovement;
+    private final boolean allowDiagMovement;
     /** The heuristic we're applying to determine which nodes to search first */
-    private AStarHeuristic heuristic;
+    private final AStarHeuristic heuristic;
     /** The node we're currently searching from */
     private Node current;
 
@@ -41,7 +41,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
     private int sourceY;
     /** The distance searched so far */
     private int distance;
-    private Step[][] steps;
+    private final Step[][] steps;
 
     /**
      * Create a path finder with the default heuristic - closest to target.
@@ -381,7 +381,7 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
      */
     private class PriorityList {
         /** The list of elements */
-        private List list = new LinkedList();
+        private final List list = new LinkedList();
 
         /**
          * Retrieve the first element from the list
@@ -462,9 +462,9 @@ public class AStarPathFinder implements PathFinder, PathFindingContext {
      */
     public class Node implements Comparable {
         /** The x coordinate of the node */
-        private int x;
+        private final int x;
         /** The y coordinate of the node */
-        private int y;
+        private final int y;
         /** The path cost for this node */
         private float cost;
         /** The parent of this node, how we reached it in the search */

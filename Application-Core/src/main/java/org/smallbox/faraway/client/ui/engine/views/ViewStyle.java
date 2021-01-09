@@ -21,14 +21,12 @@ public class ViewStyle {
         _borderColor = color;
     }
 
-    public View setBackgroundColor(long color) {
+    public void setBackgroundColor(long color) {
         _backgroundColor = ColorUtils.fromHex(color);
-        return view;
     }
 
-    public View setBackgroundColor(Color color) {
+    public void setBackgroundColor(Color color) {
         _backgroundColor = color;
-        return view;
     }
 
     public Color getBackgroundColor() {

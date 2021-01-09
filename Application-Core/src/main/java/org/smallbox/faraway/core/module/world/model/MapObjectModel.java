@@ -20,7 +20,7 @@ public abstract class MapObjectModel extends ObjectModel {
     protected ParcelModel       _parcel;
     private Set<JobModel>       _jobs;
     private GraphicInfo         _graphic;
-    private Collection<ConsumableItem>      _inventory = new ConcurrentLinkedQueue<>();
+    private final Collection<ConsumableItem>      _inventory = new ConcurrentLinkedQueue<>();
 
     public void removeInventory(ItemInfo itemInfo, int quantity) {
         _inventory.forEach(consumable -> {

@@ -14,7 +14,7 @@ import org.smallbox.faraway.core.game.GameObserver;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
-public abstract class BaseLayer<T> implements GameObserver, GameClientObserver {
+public abstract class BaseLayer implements GameObserver, GameClientObserver {
     private final boolean       _isThirdParty;
     private long                _totalDrawDelay;
     private long                _lastDrawDelay;

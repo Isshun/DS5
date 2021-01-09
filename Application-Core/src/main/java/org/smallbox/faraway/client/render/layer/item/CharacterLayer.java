@@ -43,9 +43,9 @@ public class CharacterLayer extends BaseLayer {
     @Inject
     private Game game;
 
-    private static Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
-    private static Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00ff);
-    private static Color COLOR_OK = ColorUtils.fromHex(0x448800ff);
+    private static final Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
+    private static final Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00ff);
+    private static final Color COLOR_OK = ColorUtils.fromHex(0x448800ff);
 
     @Override
     public void onUpdate(Object object) {

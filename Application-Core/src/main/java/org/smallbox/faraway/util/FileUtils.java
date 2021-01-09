@@ -21,7 +21,7 @@ public class FileUtils {
 
     public static void write(File file, String str) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file)) {
-            fos.write(str.getBytes("UTF-8"));
+            fos.write(str.getBytes(StandardCharsets.UTF_8));
         }
     }
 

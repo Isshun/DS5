@@ -12,7 +12,7 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
  */
 public class ManhattanHeuristic implements AStarHeuristic {
     /** The minimum movement cost from any one square to the next */
-    private int minimumCost;
+    private final int minimumCost;
 
     /**
      * Create a new heuristic

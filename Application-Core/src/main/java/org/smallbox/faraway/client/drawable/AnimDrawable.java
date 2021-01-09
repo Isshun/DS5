@@ -8,8 +8,8 @@ import org.smallbox.faraway.util.Constant;
 
 public class AnimDrawable extends GDXDrawable {
     private final int       _interval;
-    private TextureRegion[] _textureRegion;
-    private int             _nbTile;
+    private final TextureRegion[] _textureRegion;
+    private final int             _nbTile;
     private int             _count;
 
     public AnimDrawable(String path, int nbTile) {

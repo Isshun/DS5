@@ -15,9 +15,9 @@ import java.util.stream.Stream;
 @GameObject
 public class AreaModule extends SuperGameModule {
 
-    private Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
+    private final Collection<AreaModel> _areas = new LinkedBlockingQueue<>();
 
-    private Collection<Class<? extends AreaModel>> _areaClasses = new LinkedBlockingQueue<>();
+    private final Collection<Class<? extends AreaModel>> _areaClasses = new LinkedBlockingQueue<>();
 
     public Collection<AreaModel> getAreas() {
         return _areas;

@@ -118,9 +118,8 @@ public abstract class CompositeView extends View {
         return this;
     }
 
-    public final CompositeView setTemplate(TemplateCallback templateCallback) {
+    public final void setTemplate(TemplateCallback templateCallback) {
         _template = templateCallback;
-        return this;
     }
 
     protected abstract void onAddView(View view);

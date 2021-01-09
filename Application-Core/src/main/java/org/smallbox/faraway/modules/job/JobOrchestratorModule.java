@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @GameObject
 public class JobOrchestratorModule {
-    private Map<CharacterModel, Integer> _characterInnactiveDuration = new ConcurrentHashMap<>();
+    private final Map<CharacterModel, Integer> _characterInnactiveDuration = new ConcurrentHashMap<>();
 
     @Inject
     private CharacterModule characterModule;

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CharacterInventoryExtra extends CharacterExtra {
 
-    private Map<ItemInfo, Integer> _inventory = new ConcurrentHashMap<>();
+    private final Map<ItemInfo, Integer> _inventory = new ConcurrentHashMap<>();
 
     public CharacterInventoryExtra(CharacterModel character) {
         super(character);

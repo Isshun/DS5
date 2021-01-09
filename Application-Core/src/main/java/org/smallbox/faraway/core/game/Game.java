@@ -45,13 +45,13 @@ public class Game {
 
     // Update
     private long                            _nextUpdate;
-    private int                             _tickInterval;
+    private final int                             _tickInterval;
 
     private boolean                         _isRunning;
     private final GameInfo                  _info;
     private PlanetModel                     _planet;
     private int                             _tick;
-    private Map<String, Boolean>            _displays;
+    private final Map<String, Boolean>            _displays;
     private int                             _speed;
     private int                             _lastSpeed;
     private List<AbsGameModule> _modules;

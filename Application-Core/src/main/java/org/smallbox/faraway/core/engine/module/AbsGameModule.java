@@ -24,7 +24,7 @@ public abstract class AbsGameModule extends ModuleBase implements GameObserver {
     private Game game;
 
     protected int           _updateInterval = 1;
-    private List<Long>      _updateTimeHistory = new ArrayList<>();
+    private final List<Long>      _updateTimeHistory = new ArrayList<>();
     private long            _updateTime;
     private int             _nbUpdate;
     private long            _totalTime;

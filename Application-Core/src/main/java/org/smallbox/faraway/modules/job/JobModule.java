@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 @GameObject
 public class JobModule extends SuperGameModule<JobModel, JobModuleObserver> {
-    private BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
+    private final BlockingQueue<JobModel>         _unordonnedJobs = new LinkedBlockingQueue<>();
 
     @Inject
     private ConsumableModule consumableModule;

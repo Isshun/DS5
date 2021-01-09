@@ -7,11 +7,11 @@ package org.newdawn.slick.util.pathfinding.navmesh;
  */
 public class Link {
     /** The x coordinate of the joining point */
-    private float px;
+    private final float px;
     /** The y coordinate of the joining point */
-    private float py;
+    private final float py;
     /** The target space we'd be linking to */
-    private Space target;
+    private final Space target;
 
     /**
      * Create a new link

@@ -29,7 +29,7 @@ public class StorageLayer extends BaseLayer {
     @Inject
     private StorageModule storageModule;
 
-    private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
+    private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
     private int _mouseX;

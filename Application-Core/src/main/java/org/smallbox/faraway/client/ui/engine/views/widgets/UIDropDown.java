@@ -9,7 +9,7 @@ public class UIDropDown extends CompositeView {
     private int     _count;
     private boolean _isOpen;
     private View    _current;
-    private View    _overlay;
+    private final View    _overlay;
     private int     _currentIndex = -1;
 
     public UIDropDown(ModuleBase module) {

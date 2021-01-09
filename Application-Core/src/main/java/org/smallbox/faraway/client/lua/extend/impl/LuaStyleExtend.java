@@ -16,9 +16,8 @@ public class LuaStyleExtend extends LuaExtend {
 
     @Override
     public boolean accept(String type) {
-        switch (type) {
-            case "style":
-                return true;
+        if ("style".equals(type)) {
+            return true;
         }
         return false;
     }

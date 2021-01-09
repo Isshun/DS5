@@ -53,7 +53,7 @@ public class CharacterModule extends SuperGameModule<CharacterModel, CharacterMo
     @Inject
     private WorldModule worldModule;
 
-    private List<CharacterModel>                _addOnUpdate = new ArrayList<>();
+    private final List<CharacterModel>                _addOnUpdate = new ArrayList<>();
     private int                                 _count;
 
     @OnInit

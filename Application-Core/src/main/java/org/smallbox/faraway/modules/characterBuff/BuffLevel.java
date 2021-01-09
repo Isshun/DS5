@@ -7,9 +7,9 @@ import java.util.function.Predicate;
 public class BuffLevel {
     private final BuffModel buff;
     private final Predicate<CharacterModel> predicate;
-    private String label;
-    private int index;
-    private int mood;
+    private final String label;
+    private final int index;
+    private final int mood;
 
     public BuffLevel(BuffModel buff, int index, String label, int mood, Predicate<CharacterModel> predicate) {
         this.buff = buff;

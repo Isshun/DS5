@@ -13,7 +13,7 @@ import org.smallbox.faraway.modules.job.JobTaskReturn;
  */
 public class BasicDumpJob extends JobModel {
 
-    private MapObjectModel _mapObject;
+    private final MapObjectModel _mapObject;
 
     public BasicDumpJob(ItemModule itemModule, BuildableMapObject mapObject) {
         super(null, mapObject.getParcel());

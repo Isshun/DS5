@@ -18,7 +18,7 @@ public abstract class GameTask {
 
     public boolean isComplete() {
         return elapsed >= duration;
-    };
+    }
 
     public void update() {
 

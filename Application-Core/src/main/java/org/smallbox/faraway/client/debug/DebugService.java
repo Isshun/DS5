@@ -15,7 +15,7 @@ public class DebugService {
 
     private boolean debugMode;
     private final StringBuilder commandInputSb = new StringBuilder();
-    private List<String> history = new ArrayList<>();
+    private final List<String> history = new ArrayList<>();
     private int historyIndex;
 
     @Inject

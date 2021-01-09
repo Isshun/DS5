@@ -22,7 +22,7 @@ public class ShortcutManager {
         }
     }
 
-    private static Collection<ShortcutStrategy> shortcutStrategies = new LinkedBlockingQueue<>();
+    private static final Collection<ShortcutStrategy> shortcutStrategies = new LinkedBlockingQueue<>();
 
     public void addBinding(String label, int key, Runnable runnable) {
         shortcutStrategies.removeIf(shortcutStrategy -> StringUtils.equals(shortcutStrategy.label, label));

@@ -6,7 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 
 @ApplicationObject
 public class WorldInputManager implements InputProcessor {
-    private boolean[] keyDirections = new boolean[4];
+    private final boolean[] keyDirections = new boolean[4];
 
     public boolean[] getDirection() {
         return keyDirections;

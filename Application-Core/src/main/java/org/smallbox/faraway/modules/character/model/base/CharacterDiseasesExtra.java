@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CharacterDiseasesExtra extends CharacterExtra {
 
-    private Map<DiseaseInfo, CharacterDisease> _diseases = new ConcurrentHashMap<>();
+    private final Map<DiseaseInfo, CharacterDisease> _diseases = new ConcurrentHashMap<>();
 
     public CharacterDiseasesExtra(CharacterModel character) {
         super(character);

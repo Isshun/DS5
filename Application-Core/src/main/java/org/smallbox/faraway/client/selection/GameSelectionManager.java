@@ -57,7 +57,7 @@ public class GameSelectionManager extends GameManager {
     private DependencyManager dependencyManager;
 
 //    private Collection<SelectionParcelListener> selectionParcelListeners = new ConcurrentLinkedQueue<>();
-    private Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();
+    private final Collection<SelectionAreaListener> selectionAreaListeners = new ConcurrentLinkedQueue<>();
     private Collection<AreaModuleBase> specializedAreaModules;
 
     @OnInit
@@ -102,11 +102,11 @@ public class GameSelectionManager extends GameManager {
     }
 
     private ParcelModel                     _lastParcel;
-    private Queue<AbsInfoLuaController<?>> _lastControllers;
+    private final Queue<AbsInfoLuaController<?>> _lastControllers;
     private LuaController _selectionPreController;
     private OnSelectionListener _selectionListener;
-    private Collection<AbsInfoLuaController<?>> _infoControllers;
-    private Map<AbsInfoLuaController<?>, AbsInfoLuaController<?>> _infoSubControllers;
+    private final Collection<AbsInfoLuaController<?>> _infoControllers;
+    private final Map<AbsInfoLuaController<?>, AbsInfoLuaController<?>> _infoSubControllers;
     private final Collection<ObjectModel> _selected = new ConcurrentLinkedQueue<>();
 
     public GameSelectionManager() {
@@ -193,7 +193,7 @@ public class GameSelectionManager extends GameManager {
             _lastControllers.clear();
             _infoControllers.stream()
                     .filter(controller -> controller.getObjectOnParcel(parcel) != null)
-                    .forEach(controller -> _lastControllers.add(controller));
+                    .forEach(_lastControllers::add);
 
             if (CollectionUtils.isNotEmpty(_lastControllers)) {
                 displayController(_lastControllers.peek(), Collections.singletonList(parcel));

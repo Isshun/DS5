@@ -305,9 +305,8 @@ public abstract class View implements Comparable<View> {
         return _data;
     }
 
-    public View setData(Object data) {
+    public void setData(Object data) {
         _data = data;
-        return this;
     }
 
     public void remove() {

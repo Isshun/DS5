@@ -50,7 +50,7 @@ public class WorldGroundLayer extends BaseLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private ApplicationConfig applicationConfig;
 
-    private ExecutorService         _executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService         _executor = Executors.newSingleThreadExecutor();
     private boolean[][]             _rockLayersUpToDate;
     private int                     _rows;
     private int                     _cols;

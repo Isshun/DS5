@@ -258,7 +258,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
         }
     }
 
-    private Collection<ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
+    private final Collection<ConsumableJobLock> _locks = new ConcurrentLinkedQueue<>();
 
     @Override
     public void onGameCreate(Game game) {

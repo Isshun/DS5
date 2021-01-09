@@ -28,7 +28,7 @@ public class RoomModel extends ObjectModel {
     private double                      _lightValue;
     private double                      _permeability;
     private List<RoomConnectionModel>   _connections;
-    private RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
+    private final RoomTemperatureModel        _temperatureInfo = new RoomTemperatureModel();
     private String                      _autoName;
     private String                      _name;
     private double                      _oxygen;

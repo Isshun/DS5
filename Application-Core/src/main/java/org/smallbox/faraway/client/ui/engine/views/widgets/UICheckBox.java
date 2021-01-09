@@ -162,12 +162,11 @@ public class UICheckBox extends View {
         _string = string;
     }
 
-    public UICheckBox setTextSize(int size) {
+    public void setTextSize(int size) {
         _textSize = size;
         if (getHeight() == -1) {
             geometry.setHeight((int)(fontManager.getFont(_textSize).getLineHeight() * 1.2));
         }
-        return this;
     }
 
     public void setStyle(int style) {
@@ -206,7 +205,7 @@ public class UICheckBox extends View {
             }
 
             if (_align == Align.CENTER_VERTICAL) {
-                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);;
+                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
             }
 
             renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(), getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _textSize, _textColor, _checked ? "[x]" : "[ ]");

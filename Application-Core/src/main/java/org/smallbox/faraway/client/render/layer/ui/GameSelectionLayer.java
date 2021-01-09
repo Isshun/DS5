@@ -16,8 +16,8 @@ import org.smallbox.faraway.core.game.Game;
 @GameLayer(level = LayerManager.TOP, visible = true)
 public class GameSelectionLayer extends BaseLayer {
 
-    private Color COLOR1 = new Color(0x4569d5ff);
-    private Color COLOR2 = new Color(0x01013a55);
+    private final Color COLOR1 = new Color(0x4569d5ff);
+    private final Color COLOR2 = new Color(0x01013a55);
 
     @Inject
     private GameEventManager gameEventManager;

@@ -19,15 +19,15 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @ApplicationObject
 public class UIEventManager implements EventManager {
 
-    private Map<View, OnDragListener>       _onDragListeners;
-    private Map<View, OnClickListener>      _onClickListeners;
-    private Map<View, OnClickListener>      _onRightClickListeners;
-    private Map<View, OnClickListener>      _onMouseWheelUpListeners;
-    private Map<View, OnClickListener>      _onMouseWheelDownListeners;
-    private Map<View, OnFocusListener>      _onFocusListeners;
-    private Map<View, OnKeyListener>        _onKeysListeners;
+    private final Map<View, OnDragListener>       _onDragListeners;
+    private final Map<View, OnClickListener>      _onClickListeners;
+    private final Map<View, OnClickListener>      _onRightClickListeners;
+    private final Map<View, OnClickListener>      _onMouseWheelUpListeners;
+    private final Map<View, OnClickListener>      _onMouseWheelDownListeners;
+    private final Map<View, OnFocusListener>      _onFocusListeners;
+    private final Map<View, OnKeyListener>        _onKeysListeners;
     private UIDropDown                      _currentDropDown;
-    private Map<View, Object>               _dropViews;
+    private final Map<View, Object>               _dropViews;
     private OnDragListener                  _dragListener;
 
     @Inject

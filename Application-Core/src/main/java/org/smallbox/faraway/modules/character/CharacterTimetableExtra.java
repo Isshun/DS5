@@ -14,7 +14,7 @@ public class CharacterTimetableExtra extends CharacterExtra {
 
     public enum State { FREE, WORK, SLEEP }
 
-    private Map<Integer, State> _states = new ConcurrentHashMap<>();
+    private final Map<Integer, State> _states = new ConcurrentHashMap<>();
 
     public State getState(int hour) {
         if (_states.containsKey(hour)) {

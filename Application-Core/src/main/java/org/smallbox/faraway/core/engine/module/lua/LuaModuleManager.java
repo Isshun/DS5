@@ -26,13 +26,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class LuaModuleManager implements GameObserver {
-    private Collection<LuaEventListener> _luaEventListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaEventListener> _luaEventInGameListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaRefreshListener> _luaRefreshListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaLoadListener> _luaLoadListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaModule> _luaModules = new LinkedBlockingQueue<>();
+    private final Collection<LuaEventListener> _luaEventListeners = new LinkedBlockingQueue<>();
+    private final Collection<LuaEventListener> _luaEventInGameListeners = new LinkedBlockingQueue<>();
+    private final Collection<LuaRefreshListener> _luaRefreshListeners = new LinkedBlockingQueue<>();
+    private final Collection<LuaLoadListener> _luaLoadListeners = new LinkedBlockingQueue<>();
+    private final Collection<LuaModule> _luaModules = new LinkedBlockingQueue<>();
     protected Collection<LuaExtend> _extends;
-    private Queue<Runnable> _runAfterList = new ConcurrentLinkedQueue<>();
+    private final Queue<Runnable> _runAfterList = new ConcurrentLinkedQueue<>();
 
     @Inject
     private DependencyManager dependencyManager;

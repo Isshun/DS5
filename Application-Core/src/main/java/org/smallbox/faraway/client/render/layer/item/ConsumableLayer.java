@@ -29,7 +29,7 @@ public class ConsumableLayer extends BaseLayer {
     @Inject
     private ConsumableModule consumableModule;
 
-    private Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();
+    private final Queue<TagDraw> tags = new ConcurrentLinkedQueue<>();
 
     private abstract class TagDraw {
         public int frameLeft = 100;

@@ -18,7 +18,7 @@ import java.util.*;
 @ApplicationObject
 public class LuaItemExtend extends LuaExtend {
 
-    private static Map<String, LuaValue> _cache = new HashMap<>();
+    private static final Map<String, LuaValue> _cache = new HashMap<>();
 
     @Override
     public boolean accept(String type) {

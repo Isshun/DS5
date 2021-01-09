@@ -28,7 +28,7 @@ public class JobModel extends ObjectModel {
     public double _time;
     private String icon;
     private Color color;
-    private Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
+    private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
 
     public void setIcon(String icon) {
         this.icon = icon;
@@ -292,10 +292,10 @@ public class JobModel extends ObjectModel {
         return ret == JobCheckReturn.OK;
     }
 
-    private Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
-    private Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
-    private Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
-    private Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
+    private final Queue<JobTask> _tasks = new ConcurrentLinkedQueue<>();
+    private final Queue<TechnicalTaskAction> initTasks = new ConcurrentLinkedQueue<>();
+    private final Queue<PrerequisiteTaskAction> prerequisiteTasks = new ConcurrentLinkedQueue<>();
+    private final Queue<TechnicalTaskAction> closeTasks = new ConcurrentLinkedQueue<>();
 
     public Collection<JobTask> getTasks() {
         return _tasks;

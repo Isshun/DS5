@@ -55,9 +55,9 @@ public class PathModel {
     }
 
     private ParcelModel                 _currentParcel;
-    private ParcelModel                 _firstParcel;
-    private ParcelModel                 _lastParcel;
-    private int                         _length;
+    private final ParcelModel                 _firstParcel;
+    private final ParcelModel                 _lastParcel;
+    private final int                         _length;
     private int                         _index;
     public GraphPath<ParcelModel>      _nodes;
     private final Queue<PathSection>    _smooth = new ConcurrentLinkedQueue<>();

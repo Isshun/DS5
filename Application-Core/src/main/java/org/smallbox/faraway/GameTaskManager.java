@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @GameObject
 public class GameTaskManager {
 
-    private List<GameTask> gameTasksToRemove = new ArrayList<>();
-    private Queue<GameTask> gameTasks = new ConcurrentLinkedQueue<>();
+    private final List<GameTask> gameTasksToRemove = new ArrayList<>();
+    private final Queue<GameTask> gameTasks = new ConcurrentLinkedQueue<>();
 
     public void startTask(GameTask task) {
         System.out.println("Start task: " + task.label);

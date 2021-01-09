@@ -20,7 +20,7 @@ public class GameException extends RuntimeException {
         stringBuilder.append("\n").append("Message: ").append(message);
         stringBuilder.append("\n").append("Values: ");
         for (Object arg: args) {
-            stringBuilder.append("\n").append("  - ").append(arg.getClass().getSimpleName()).append(" = ").append(String.valueOf(arg));
+            stringBuilder.append("\n").append("  - ").append(arg.getClass().getSimpleName()).append(" = ").append(arg);
         }
         stringBuilder.append("\n").append("Stack: ");
         return stringBuilder.toString();

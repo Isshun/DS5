@@ -25,7 +25,7 @@ public class DebugCharacterLayer extends BaseLayer {
     @Inject
     private CharacterModule characterModule;
 
-    private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
+    private static final Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
     private int _index;
 
@@ -43,9 +43,9 @@ public class DebugCharacterLayer extends BaseLayer {
             drawDebug(renderer, "Parcel", _character.getParcel() != null ? _character.getParcel() : "--");
             drawDebug(renderer, "Job", _character.getJob() != null ? _character.getJob() : "--");
             drawDebug(renderer, "Inventory2", _character.hasExtra(CharacterInventoryExtra.class) ? "--" :
-                    String.join(", ", _character.getExtra(CharacterInventoryExtra.class).getAll().entrySet().stream()
+                    _character.getExtra(CharacterInventoryExtra.class).getAll().entrySet().stream()
                             .map(entry -> entry.getKey().label + "x" + entry.getValue())
-                            .collect(Collectors.toList())));
+                            .collect(Collectors.joining(", ")));
         }
     }
 

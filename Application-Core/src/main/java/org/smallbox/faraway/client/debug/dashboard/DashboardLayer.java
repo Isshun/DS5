@@ -52,12 +52,12 @@ public class DashboardLayer extends BaseLayer {
         }
     }
 
-    private static Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
-    private static Color BUTTON_BG_COLOR = new Color(0f, 0.5f, 0.7f, 0.5f);
+    private static final Color BG_COLOR = new Color(0f, 0f, 0f, 0.5f);
+    private static final Color BUTTON_BG_COLOR = new Color(0f, 0.5f, 0.7f, 0.5f);
 
     private long _lastUpdate;
 
-    private Map<String, String> _data = new HashMap<>();
+    private final Map<String, String> _data = new HashMap<>();
     private DashboardMode dashboardMode = DashboardMode.CONSOLE;
     private List<BiConsumer<Integer, Integer>> buttons;
     private List<DashboardLayerButton> debugLayers;

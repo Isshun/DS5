@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class NetworkModel {
     private final NetworkInfo _info;
-    private Set<NetworkItem> _objects = new HashSet<>();
+    private final Set<NetworkItem> _objects = new HashSet<>();
     private double                  _quantity;
     private double                  _maxQuantity;
 

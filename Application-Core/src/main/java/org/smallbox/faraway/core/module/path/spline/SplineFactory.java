@@ -132,7 +132,7 @@ public class SplineFactory {
  */
 abstract class Spline
 {
-    protected double controlPoints_[];
+    protected double[] controlPoints_;
     protected int    nParts_;
 
     abstract double[] generate();
@@ -180,7 +180,7 @@ class BezierSpline extends Spline
      * @param controlPoints  Control points of spline (x0,y0,z0,x1,y1,z1,...)
      * @param nParts         Number of parts in generated spline.
      */
-    BezierSpline (double controlPoints[], int nParts)
+    BezierSpline (double[] controlPoints, int nParts)
     {
         controlPoints_ = controlPoints;
         nParts_ = nParts;
@@ -203,7 +203,7 @@ class BezierSpline extends Spline
 
         int n = controlPoints_.length / 3;
         int length = (n - 3) * nParts_ + 1;
-        double spline[] = new double[length * 3];
+        double[] spline = new double[length * 3];
 
         p (0, 0, controlPoints_, spline, 0);
 
@@ -220,7 +220,7 @@ class BezierSpline extends Spline
 
 
 
-    private void p (int i, double t, double cp[], double spline[], int index)
+    private void p (int i, double t, double[] cp, double[] spline, int index)
     {
         double x = 0.0;
         double y = 0.0;
@@ -290,14 +290,14 @@ class CubicSpline extends Spline
      * @param controlPoints  Control points of spline (x0,y0,z0,x1,y1,z1,...)
      * @param nParts         Number of parts in generated spline.
      */
-    CubicSpline (double controlPoints[], int nParts)
+    CubicSpline (double[] controlPoints, int nParts)
     {
         initialize (controlPoints, nParts);
     }
 
 
 
-    protected void initialize (double controlPoints[], int nParts)
+    protected void initialize (double[] controlPoints, int nParts)
     {
         nParts_ = nParts;
 
@@ -335,7 +335,7 @@ class CubicSpline extends Spline
     {
         int n = controlPoints_.length / 3;
         int length = (n - 3) * nParts_ + 1;
-        double spline[] = new double[length * 3];
+        double[] spline = new double[length * 3];
 
         p (2, 0, controlPoints_, spline, 0);
 
@@ -352,7 +352,7 @@ class CubicSpline extends Spline
 
 
 
-    private void p (int i, double t, double cp[], double spline[], int index)
+    private void p (int i, double t, double[] cp, double[] spline, int index)
     {
         double x = 0.0;
         double y = 0.0;
@@ -423,14 +423,14 @@ class CatmullRomSpline extends CubicSpline
      * @param controlPoints  Control points of spline (x0,y0,z0,x1,y1,z1,...)
      * @param nParts         Number of parts in generated spline.
      */
-    CatmullRomSpline (double controlPoints[], int nParts)
+    CatmullRomSpline (double[] controlPoints, int nParts)
     {
         super (controlPoints, nParts);
     }
 
 
 
-    protected void initialize (double controlPoints[], int nParts)
+    protected void initialize (double[] controlPoints, int nParts)
     {
         nParts_ = nParts;
 

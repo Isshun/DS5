@@ -50,12 +50,11 @@ public class UIImage extends View {
         _scaleY = scaleY;
     }
 
-    public UIImage setTextureRect(int textureX, int textureY, int textureWidth, int textureHeight) {
+    public void setTextureRect(int textureX, int textureY, int textureWidth, int textureHeight) {
         _textureX = textureX;
         _textureY = textureY;
         _textureWidth = textureWidth;
         _textureHeight = textureHeight;
-        return this;
     }
 
     @Override

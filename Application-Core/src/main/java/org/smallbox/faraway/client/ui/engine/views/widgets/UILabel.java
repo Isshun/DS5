@@ -332,9 +332,8 @@ public class UILabel extends View {
         _isAlignTop = isAlignTop;
     }
 
-    public View setTextAlign(Align align) {
+    public void setTextAlign(Align align) {
         _align = align;
-        return this;
     }
 
     public View setTextAlign(String align) {

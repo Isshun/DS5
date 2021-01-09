@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.menu.controller;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
+import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -10,10 +11,6 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
 @ApplicationObject
 public class MenuSettingsController extends LuaController {
-
-    private final int COLOR1 = 0x2ab8baff;
-    private final int COLOR2 = 0x9afbffff;
-    private final int COLOR3 = 0x132733ff;
 
     @Inject
     private MenuMainController menuMainController;
@@ -82,10 +79,10 @@ public class MenuSettingsController extends LuaController {
     }
 
     private void openSubMenu(View button, View subMenu) {
-        btGraphic.getStyle().setBackgroundColor(COLOR3);
-        btSound.getStyle().setBackgroundColor(COLOR3);
-        btBindings.getStyle().setBackgroundColor(COLOR3);
-        btGameplay.getStyle().setBackgroundColor(COLOR3);
+        btGraphic.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        btSound.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        btBindings.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
+        btGameplay.getStyle().setBackgroundColor(Colors.BLUE_DARK_4);
 
         button.getStyle().setBackgroundColor(0x25c9cbff);
 

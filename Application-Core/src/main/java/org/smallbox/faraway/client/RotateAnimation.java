@@ -7,7 +7,7 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 
 public class RotateAnimation {
     private float   _rotation;
-    private int     _duration;
+    private final int     _duration;
 
     public RotateAnimation(int duration) {
         _duration = duration;

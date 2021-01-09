@@ -29,7 +29,7 @@ public class RoomLayer extends BaseLayer {
     @Inject
     private RoomModule roomModule;
 
-    private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
+    private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
     private int _mouseX;
@@ -40,7 +40,7 @@ public class RoomLayer extends BaseLayer {
     private Mode _mode;
     private Class<? extends RoomModel> _cls;
 
-    private Color[] COLORS = new Color[] {
+    private final Color[] COLORS = new Color[] {
             new Color(0.5f, 0.5f, 1f, 0.4f),
             new Color(1, 1, 0, 0.4f),
             new Color(1, 0, 1, 0.4f),

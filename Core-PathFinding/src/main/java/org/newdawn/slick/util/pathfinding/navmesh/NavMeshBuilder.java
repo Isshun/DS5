@@ -18,7 +18,7 @@ public class NavMeshBuilder implements PathFindingContext {
     /** The current y position we've searching */
     private int sy;
     /** The smallest space allowed */
-    private float smallestSpace = 0.2f;
+    private final float smallestSpace = 0.2f;
     /** True if we're working tile based */
     private boolean tileBased;
 

@@ -6,12 +6,7 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleIn
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
-import org.smallbox.faraway.modules.job.JobModel;
-import org.smallbox.faraway.modules.job.JobModule;
 import org.smallbox.faraway.modules.weather.WeatherModule;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 @GameObject
 public class WeatherModuleConsoleInterpreter extends ConsoleInterpreterBase {

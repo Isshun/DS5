@@ -56,12 +56,10 @@ public class DebugPathLayer extends BaseLayer {
 
         characterModule.getAll().stream()
                 .filter(characterModel -> characterModel.getPath() != null)
-                .forEach(character -> {
-                    character.getPath().getNodes().forEach(parcel -> {
-                        renderer.drawCircleOnMap(parcel.x, parcel.y, 5, Color.BLACK, true, 16, 16);
-                        renderer.drawCircleOnMap(parcel.x, parcel.y, 4, Color.WHITE, true, 16, 16);
-                    });
-                });
+                .forEach(character -> character.getPath().getNodes().forEach(parcel -> {
+                    renderer.drawCircleOnMap(parcel.x, parcel.y, 5, Color.BLACK, true, 16, 16);
+                    renderer.drawCircleOnMap(parcel.x, parcel.y, 4, Color.WHITE, true, 16, 16);
+                }));
     }
 
 }

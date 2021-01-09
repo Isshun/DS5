@@ -44,7 +44,7 @@ public class Viewport {
     private int _height;
     private int _fromScale;
     private int _scaleAnim;
-    private int _zoom = ZOOM_LEVELS.length - 1;
+    private final int _zoom = ZOOM_LEVELS.length - 1;
     private int _floor;
     private int _worldX;
     private int _worldY;

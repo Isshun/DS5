@@ -122,7 +122,7 @@ public class PlantModule extends GenericGameModule<PlantItem> {
 
     public PlantItem getPlant(ParcelModel parcel) {
         Optional<PlantItem> optional = modelList.stream().filter(plant -> plant.getParcel() == parcel).findAny();
-        return optional.isPresent() ? optional.get() : null;
+        return optional.orElse(null);
     }
 
 }

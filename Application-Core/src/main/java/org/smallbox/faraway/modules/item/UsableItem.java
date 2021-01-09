@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class UsableItem extends BuildableMapObject {
     private int                             _targetTemperature = 21;
     private boolean                         _isFunctional = true;
-    private boolean                         _isActive = true;
+    private final boolean                         _isActive = true;
     private int                             _potencyUse;
     private List<ItemSlot>                  _slots;
     private int                             _nbFreeSlot = -1;

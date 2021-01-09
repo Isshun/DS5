@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CharacterFreeTimeExtra extends CharacterExtra {
 
-    private Collection<Class<? extends JobModel>>   _types = new ConcurrentLinkedQueue<>();
+    private final Collection<Class<? extends JobModel>>   _types = new ConcurrentLinkedQueue<>();
 
     public CharacterFreeTimeExtra(CharacterModel character) {
         super(character);

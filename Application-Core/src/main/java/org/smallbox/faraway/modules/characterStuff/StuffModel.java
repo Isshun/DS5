@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StuffModel {
-    private List<ItemInfo> _items = new ArrayList<>();
+    private final List<ItemInfo> _items = new ArrayList<>();
 
     public void add(ItemInfo info) {
         _items.add(info);

@@ -14,7 +14,7 @@ public class ConsumableItem extends MapObjectModel {
     private StoreJob storeJob;
     private int _freeQuantity;
     private int _totalQuantity;
-    private Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
+    private final Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
 
     public ConsumableItem(ItemInfo info) {
         super(info);

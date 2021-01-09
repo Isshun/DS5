@@ -43,14 +43,14 @@ public class SpriteManager {
     private static final int                BOTTOM = 0b00000010;
     private static final int                BOTTOM_RIGHT = 0b00000001;
 
-    private Map<Integer, Sprite>            _spritesCharacters;
-    private Map<Long, Sprite>               _sprites;
+    private final Map<Integer, Sprite>            _spritesCharacters;
+    private final Map<Long, Sprite>               _sprites;
     private Sprite[]                        _selectors;
-    private Map<String, Sprite>             _icons;
+    private final Map<String, Sprite>             _icons;
     private Map<String, Texture>            _textures;
 
     private int _spriteCount;
-    private AssetManager _manager;
+    private final AssetManager _manager;
     
     @Inject
     private Data data;

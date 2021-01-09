@@ -30,11 +30,11 @@ public class RoomModule extends SuperGameModule {
 
     private final List<RoomModel>                               _exteriorRooms = new ArrayList<>();
     private final Collection<RoomModel>                         _rooms = new ConcurrentLinkedQueue<>();
-    private Collection<Class<? extends RoomModel>>              _roomClasses = new LinkedBlockingQueue<>();
+    private final Collection<Class<? extends RoomModel>>              _roomClasses = new LinkedBlockingQueue<>();
     private boolean                                             _needRefresh;
     private AsyncTask<List<RoomModel>>                          _task;
     private boolean[]                                           _refresh;
-    private HashSet<ParcelModel>                                _closeList = new HashSet<>();
+    private final HashSet<ParcelModel>                                _closeList = new HashSet<>();
 
     public boolean runOnMainThread() { return false; }
 

@@ -33,7 +33,8 @@ public class UIMultiCheckBox extends View {
         void onCheck(Value checked, boolean clickOnBox);
     }
 
-    public UIMultiCheckBox setChecked(Value checked) { _checked = checked; return this; }
+    public void setChecked(Value checked) { _checked = checked;
+    }
 
     public UIMultiCheckBox setOnCheckListener(OnCheckListener onCheckListener) {
         events.setOnClickListener((x, y) -> {
@@ -51,17 +52,16 @@ public class UIMultiCheckBox extends View {
         return super.setSize(width, height != -1 ? height : 18);
     }
 
-    public UIMultiCheckBox setText(String string) {
+    public void setText(String string) {
         if (string == null) {
             setStringValue("");
-            return this;
+            return;
         }
 
         int hash = string.hashCode();
         if (hash != _hash1) {
             setStringValue(data != null && data.hasString(hash) ? data.getString(hash) : string);
         }
-        return this;
     }
 
     public void setText(String str1, String str2) {

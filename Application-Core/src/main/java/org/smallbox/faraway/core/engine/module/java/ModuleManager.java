@@ -37,8 +37,8 @@ public class ModuleManager implements GameObserver {
         void onLoadModule(String message);
     }
 
-    private List<ModuleBase>            _modulesThird = new ArrayList<>();
-    private List<ApplicationModule>     _applicationModules = new ArrayList<>();
+    private final List<ModuleBase>            _modulesThird = new ArrayList<>();
+    private final List<ApplicationModule>     _applicationModules = new ArrayList<>();
     private List<ModuleBase>            _modules;
 
     public void loadModules(OnLoadModuleListener onLoad) {

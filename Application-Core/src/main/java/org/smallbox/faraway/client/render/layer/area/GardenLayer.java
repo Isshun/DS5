@@ -29,7 +29,7 @@ public class GardenLayer extends BaseLayer {
     @Inject
     private GardenModule gardenModule;
 
-    private Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
+    private final Map<Class, TextureRegion> _textureByClass = new ConcurrentHashMap<>();
     private TextureRegion[] _regions;
     private TextureRegion[] _regionsSelected;
     private int _mouseX;

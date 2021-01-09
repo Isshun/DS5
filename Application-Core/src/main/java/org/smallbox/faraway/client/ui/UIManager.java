@@ -41,7 +41,7 @@ public class UIManager {
     @Inject
     private LuaControllerManager luaControllerManager;
 
-    private Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
+    private final Map<String, LuaValue> _styles = new ConcurrentHashMap<>();
     private UIEventManager.OnDragListener _dragListener;
 
     public void clearViews() {
@@ -120,15 +120,15 @@ public class UIManager {
 
     private long                        _lastLeftClick;
     private int                         _update;
-    private UIFrame                     _context;
+    private final UIFrame                     _context;
 
-    private Map<String, RootView>       _menuViews = new ConcurrentHashMap<>();
-    private Queue<RootView>             _rootViews = new LinkedBlockingQueue<>();
-    private Map<View, String>           _subViews = new ConcurrentHashMap<>();
-    private Set<View>                   _views = new ConcurrentSkipListSet<>();
-    private Queue<UIDropDown>           _dropsDowns = new ConcurrentLinkedQueue<>();
-    private Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
-    private Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
+    private final Map<String, RootView>       _menuViews = new ConcurrentHashMap<>();
+    private final Queue<RootView>             _rootViews = new LinkedBlockingQueue<>();
+    private final Map<View, String>           _subViews = new ConcurrentHashMap<>();
+    private final Set<View>                   _views = new ConcurrentSkipListSet<>();
+    private final Queue<UIDropDown>           _dropsDowns = new ConcurrentLinkedQueue<>();
+    private final Queue<Integer>              _visibleViews = new ConcurrentLinkedQueue<>();
+    private final Map<String, List<View>>     _groups = new ConcurrentHashMap<>();
 
     public UIManager() {
         _context = new UIFrame(null);

@@ -31,8 +31,8 @@ public class Data {
     public List<DiseaseInfo>                    diseases = new ArrayList<>();
     public List<ItemInfo>                       consumables;
     public List<BindingInfo>                    bindings = new ArrayList<>();
-    private List<DataAsyncEntry> _async = new LinkedList<>();
-    private ConcurrentReaderHashMap _all = new ConcurrentReaderHashMap();
+    private final List<DataAsyncEntry> _async = new LinkedList<>();
+    private final ConcurrentReaderHashMap _all = new ConcurrentReaderHashMap();
 
     private boolean hasObject(List<NetworkInfo> objects, String name) {
         for (ObjectInfo object: objects) {
@@ -83,7 +83,7 @@ public class Data {
     public void fix() {
         _async.forEach(entry -> {
             Object object = _all.get(entry.name);
-            if (entry.listener != null && object != null && entry.cls.isInstance(object)) {
+            if (entry.listener != null && entry.cls.isInstance(object)) {
                 entry.listener.onGetAsync(entry.cls.cast(object));
             }
         });

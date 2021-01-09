@@ -33,7 +33,7 @@ public class ItemFactoryModel {
     private String _message;
     private JobModel _craftJob;
     private int _costRemaining;
-    private Map<ItemInfo, Boolean> acceptedComponents = new ConcurrentHashMap<>();
+    private final Map<ItemInfo, Boolean> acceptedComponents = new ConcurrentHashMap<>();
 
     public Map<ItemInfo, Boolean> getAcceptedComponents() {
         return acceptedComponents;

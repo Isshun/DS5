@@ -46,7 +46,7 @@ public class CharacterNeedModule extends SuperGameModule {
     @Inject private GameManager gameManager;
     @Inject private GameTime gameTime;
 
-    private Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
+    private final Map<NeedEntry, JobModel> _jobs = new ConcurrentHashMap<>();
 
     @Override
     public void onModuleUpdate(Game game) {

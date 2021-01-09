@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BezierPath {
-    private int SEGMENTS_PER_CURVE = 64;
-    private float MINIMUM_SQR_DISTANCE = 0.01f;
+    private final int SEGMENTS_PER_CURVE = 64;
+    private final float MINIMUM_SQR_DISTANCE = 0.01f;
 
     // This corresponds to about 172 degrees, 8 degrees from a traight line
-    private float DIVISION_THRESHOLD = -0.99f;
+    private final float DIVISION_THRESHOLD = -0.99f;
 
-    private List<Vector3> controlPoints;
+    private final List<Vector3> controlPoints;
 
     private int curveCount; //how many bezier curves in this path?
 

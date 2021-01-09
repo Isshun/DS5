@@ -1,6 +1,5 @@
 package org.smallbox.faraway.core.engine.module;
 
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.game.GameObserver;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.function.Consumer;
 
 public abstract class SuperGameModule2<T_OBSERVER extends ModuleObserver> extends AbsGameModule implements GameObserver {
 
-    private List<T_OBSERVER> _observers = new ArrayList<>();
+    private final List<T_OBSERVER> _observers = new ArrayList<>();
 
     public void addObserver(T_OBSERVER observer) {
         // TODO

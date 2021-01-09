@@ -17,7 +17,7 @@ public class CharacterNeedsExtra extends CharacterExtra {
     public final static String TAG_ENTERTAINMENT = "entertainment";
     public final static String TAG_HAPPINESS = "happiness";
 
-    private Map<String, NeedEntry> _values = new HashMap<>();
+    private final Map<String, NeedEntry> _values = new HashMap<>();
 
     public CharacterNeedsExtra(CharacterModel character, CharacterInfo.NeedsInfo needsInfo) {
         super(character);

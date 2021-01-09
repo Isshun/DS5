@@ -13,11 +13,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @ApplicationObject
 public class TaskManager {
-    private static int BACKGROUND_THREAD_LIMIT = 2;
+    private static final int BACKGROUND_THREAD_LIMIT = 2;
 
-    private LoaderThreadExecutor                _loadExecutor = new LoaderThreadExecutor();
-    private ExecutorService                     _backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);
-    private Collection<LoadTask>                _loadTasks = new LinkedBlockingQueue<>();
+    private final LoaderThreadExecutor                _loadExecutor = new LoaderThreadExecutor();
+    private final ExecutorService                     _backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);
+    private final Collection<LoadTask>                _loadTasks = new LinkedBlockingQueue<>();
     private boolean                             _running = true;
     private int                                 _backgroundThreadCount;
 

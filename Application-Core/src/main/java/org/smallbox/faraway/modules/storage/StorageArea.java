@@ -17,7 +17,7 @@ import java.util.Set;
 @AreaTypeInfo(label = "Storage", color = 0xff0000ff)
 public class StorageArea extends AreaModel {
     private static int                  _count;
-    private int                         _index;
+    private final int                         _index;
     private int                         _priority = 1;
     protected Set<ItemInfo> _items;
 

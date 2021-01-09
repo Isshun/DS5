@@ -22,7 +22,7 @@ public class MinimalRender {
     private TaskManager taskManager;
 
     private final BitmapFont systemFont;
-    private SpriteBatch batch = new SpriteBatch();
+    private final SpriteBatch batch = new SpriteBatch();
 
     public MinimalRender() {
         systemFont = new BitmapFont(

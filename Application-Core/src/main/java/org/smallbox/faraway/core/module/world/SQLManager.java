@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @ApplicationObject
 public class SQLManager {
-    private Queue<DBRunnable>   _queue = new LinkedBlockingQueue<>();
+    private final Queue<DBRunnable>   _queue = new LinkedBlockingQueue<>();
     private SQLiteConnection    _db;
 
     public void post(DBRunnable runnable) {

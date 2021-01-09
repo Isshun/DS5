@@ -10,18 +10,18 @@ import java.util.HashMap;
  */
 public class Space {
     /** The x coordinate of the top corner of the space */
-    private float x;
+    private final float x;
     /** The y coordinate of the top corner of the space */
-    private float y;
+    private final float y;
     /** The width of the space */
-    private float width;
+    private final float width;
     /** The height of the space */
-    private float height;
+    private final float height;
 
     /** A old from spaces to the links that connect them to this space */
-    private HashMap links = new HashMap();
+    private final HashMap links = new HashMap();
     /** A list of the links from this space to others */
-    private ArrayList linksList = new ArrayList();
+    private final ArrayList linksList = new ArrayList();
     /** The cost to get to this node */
     private float cost;
 
