@@ -7,6 +7,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -79,15 +80,16 @@ public class BuildController extends LuaController {
                 .filter(item -> item.isUserItem)
                 .forEach(itemInfo ->
                         list.addView(new UIFrame(null)
-                                .setSize(300, 32)
-                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
-                                .setBackgroundFocusColor(0xff2233ff)
                                 .addView(UIImage.create(null)
                                         .setImage(spriteManager.getIcon(itemInfo)))
                                 .addView(UILabel.create(null)
                                         .setText(itemInfo.label)
                                         .setTextColor(0x9afbffff)
-                                        .setMargin(14, 0, 0, 38))));
+                                        .setMargin(14, 0, 0, 38)))
+                                .setSize(300, 32)
+                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+                                .setBackgroundFocusColor(0xff2233ff)
+                );
 
         list.addView(createListTitle("Structure", (int x, int y) -> onOpenStructures()));
         list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
@@ -102,15 +104,16 @@ public class BuildController extends LuaController {
                 .filter(itemInfo -> itemInfo.isStructure)
                 .forEach(itemInfo ->
                         list.addView(new UIFrame(null)
-                                .setSize(300, 32)
-                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
-                                .setBackgroundFocusColor(0xff2233ff)
                                 .addView(UIImage.create(null)
                                         .setImage(spriteManager.getIcon(itemInfo)))
                                 .addView(UILabel.create(null)
                                         .setText(itemInfo.label)
                                         .setTextColor(0x9afbffff)
-                                        .setMargin(14, 0, 0, 38))));
+                                        .setMargin(14, 0, 0, 38)))
+                                .setSize(300, 32)
+                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+                                .setBackgroundFocusColor(0xff2233ff)
+                );
 
         list.addView(createListTitle("Network", (int x, int y) -> onOpenNetworks()));
     }
@@ -125,15 +128,16 @@ public class BuildController extends LuaController {
                 .filter(item -> item.isNetworkItem)
                 .forEach(itemInfo ->
                         list.addView(new UIFrame(null)
-                                .setSize(300, 32)
-                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
-                                .setBackgroundFocusColor(0xff2233ff)
                                 .addView(UIImage.create(null)
                                         .setImage(spriteManager.getIcon(itemInfo)))
                                 .addView(UILabel.create(null)
                                         .setText(itemInfo.label)
                                         .setTextColor(0x9afbffff)
-                                        .setMargin(14, 0, 0, 38))));
+                                        .setMargin(14, 0, 0, 38)))
+                                .setSize(300, 32)
+                                .setOnClickListener((int x, int y) -> setCurrentItem(itemInfo))
+                                .setBackgroundFocusColor(0xff2233ff)
+                );
     }
 
     private View createListTitle(String label, OnClickListener clickListener) {

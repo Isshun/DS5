@@ -8,7 +8,8 @@ import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -53,9 +54,11 @@ public class DebugViewLayer extends BaseLayer {
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 10, 12, Color.RED, view.getPath());
 //            renderer.drawText(view.getFinalX(), view.getFinalY() + 20, 12, Color.RED, "size: " + view.getViews().size());
 
-            if (CollectionUtils.isNotEmpty(view.getViews())) {
-                view.getViews().forEach(v -> drawViewRecurse(renderer, v));
-            }
+            CompositeView.instanceOf(view).ifPresent(compositeView -> {
+                if (CollectionUtils.isNotEmpty(compositeView.getViews())) {
+                    compositeView.getViews().forEach(v -> drawViewRecurse(renderer, v));
+                }
+            });
         }
     }
 

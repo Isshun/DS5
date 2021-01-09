@@ -4,7 +4,10 @@ import com.badlogic.gdx.Input;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.Colors;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -40,7 +43,8 @@ public class ConsumableController extends LuaController {
 
         quantities.forEach((itemInfo, quantity) -> {
 
-            View view = new UIFrame(null).setSize(100, 30);
+            UIFrame view = new UIFrame(null);
+            view.setSize(100, 30);
 
             view.addView(UILabel.create(null)
                     .setDashedString(itemInfo.label, " x " + quantity, 38)

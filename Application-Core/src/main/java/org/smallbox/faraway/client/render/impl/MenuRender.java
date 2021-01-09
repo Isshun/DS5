@@ -8,8 +8,9 @@ import org.smallbox.faraway.client.manager.ShortcutManager;
 import org.smallbox.faraway.client.menu.controller.MenuMainController;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 
@@ -61,8 +62,8 @@ public class MenuRender {
             return true;
         }
 
-        if (view.getViews() != null) {
-            for (View subView: view.getViews()) {
+        if (view instanceof CompositeView && ((CompositeView)view).getViews() != null) {
+            for (View subView: ((CompositeView)view).getViews()) {
                 if (clickOn(subView, screenX, screenY)) {
                     return true;
                 }

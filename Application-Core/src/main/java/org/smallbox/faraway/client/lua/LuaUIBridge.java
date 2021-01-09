@@ -1,6 +1,7 @@
 package org.smallbox.faraway.client.lua;
 
 import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
@@ -17,7 +18,7 @@ public abstract class LuaUIBridge implements LuaExtendInterface {
     }
 
     // Factories
-    public View     createView() { return new UIFrame(_module); }
+    public View createView() { return new UIFrame(_module); }
     public UILabel  createLabel() { return new UILabel(_module); }
     public UIImage createImage() { return new UIImage(_module); }
     public UIGrid createGrid() { return new UIGrid(_module); }

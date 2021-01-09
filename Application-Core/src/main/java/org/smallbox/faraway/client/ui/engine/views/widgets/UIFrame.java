@@ -1,11 +1,14 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.views.Align;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;
 
-public class UIFrame extends View {
+public class UIFrame extends CompositeView {
     public UIFrame(ModuleBase module) {
         super(module);
     }
@@ -38,7 +41,7 @@ public class UIFrame extends View {
     }
 
     @Override
-    protected void remove() {
+    public void remove() {
         super.remove();
         _views.forEach(View::remove);
         _views.clear();

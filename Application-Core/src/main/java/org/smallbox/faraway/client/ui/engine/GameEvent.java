@@ -1,7 +1,7 @@
 package org.smallbox.faraway.client.ui.engine;
 
 import org.smallbox.faraway.MouseEvent;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.View;
 
 public class GameEvent {
     public MouseEvent mouseEvent;

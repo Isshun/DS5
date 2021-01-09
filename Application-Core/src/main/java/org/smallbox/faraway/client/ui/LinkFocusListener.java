@@ -3,7 +3,7 @@ package org.smallbox.faraway.client.ui;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.View;
 
 public class LinkFocusListener implements OnFocusListener {
     @Override

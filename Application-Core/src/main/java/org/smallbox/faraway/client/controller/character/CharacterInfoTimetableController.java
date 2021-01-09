@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
@@ -49,8 +49,8 @@ public class CharacterInfoTimetableController extends LuaController {
 
             if (listTimetable.getViews().isEmpty()) {
                 game.getPlanet().getDayTimes().forEach(dayTime -> {
-                    View view = new UIFrame(null)
-                            .setSize(32, 22);
+                    UIFrame view = new UIFrame(null);
+                    view.setSize(32, 22);
 
                     View subView = new UIFrame(null)
                             .setBackgroundColor(getStateColor(timetable.getState(dayTime.hour)))
@@ -94,9 +94,12 @@ public class CharacterInfoTimetableController extends LuaController {
 
     private long getStateColor(CharacterTimetableExtra.State state) {
         switch (state) {
-            case FREE: return 0x225aff5a;
-            case WORK: return 0x22ff7a7a;
-            case SLEEP: return 0x229abbff;
+            case FREE:
+                return 0x225aff5a;
+            case WORK:
+                return 0x22ff7a7a;
+            case SLEEP:
+                return 0x229abbff;
         }
         return 0;
     }

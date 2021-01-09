@@ -3,7 +3,10 @@ package org.smallbox.faraway.client.controller.character;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
@@ -22,7 +25,7 @@ public class CharacterInfoInventoryController extends LuaController {
 
         if (_character != null && _character.hasExtra(CharacterInventoryExtra.class)) {
             _character.getExtra(CharacterInventoryExtra.class).getAll().forEach((itemInfo, quantity) -> {
-                View view = new UIFrame(null);
+                UIFrame view = new UIFrame(null);
                 view.setSize(300, 32);
 
                 if (CollectionUtils.isNotEmpty(itemInfo.graphics)) {

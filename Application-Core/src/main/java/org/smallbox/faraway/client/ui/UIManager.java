@@ -11,11 +11,13 @@ import org.smallbox.faraway.client.lua.LuaControllerManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.Align;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.RootView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterApplicationLayerInit;
@@ -158,20 +160,22 @@ public class UIManager {
             _views.stream()
                     .filter(view -> parentName.equals(view.getName()))
                     .findAny()
-                    .ifPresent(view -> {
-                        if (view.getViews().stream().noneMatch(v -> subView == v)) {
-                            view.addView(subView);
-                            subView.setParent(view);
+                    .flatMap(CompositeView::instanceOf)
+                    .ifPresent(compositeView -> {
+                        if (compositeView.getViews().stream().noneMatch(v -> subView == v)) {
+                            compositeView.addView(subView);
+                            subView.setParent(compositeView);
                         }
                     });
             _rootViews.stream()
                     .map(RootView::getView)
                     .filter(view -> parentName.equals(view.getName()))
                     .findAny()
-                    .ifPresent(view -> {
-                        if (view.getViews().stream().noneMatch(v -> subView == v)) {
-                            view.addView(subView);
-                            subView.setParent(view);
+                    .flatMap(CompositeView::instanceOf)
+                    .ifPresent(compositeView -> {
+                        if (compositeView.getViews().stream().noneMatch(v -> subView == v)) {
+                            compositeView.addView(subView);
+                            subView.setParent(compositeView);
                         }
                     });
         });
@@ -288,7 +292,7 @@ public class UIManager {
             lbEntry.setTextSize(14);
             lbEntry.setText(entry.label);
             lbEntry.setOnClickListener(entry.listener);
-            lbEntry.setTextAlign(View.Align.CENTER_VERTICAL);
+            lbEntry.setTextAlign(Align.CENTER_VERTICAL);
             lbEntry.setPosition(4, index++ * 20);
             _context.addView(lbEntry);
         }
@@ -302,8 +306,8 @@ public class UIManager {
             if (ids.length >= 1) {
                 View view = findById(ids[0]);
                 for (int i = 1; i < ids.length; i++) {
-                    if (view != null) {
-                        view = view.findById(ids[i]);
+                    if (view instanceof CompositeView) {
+                        view = ((CompositeView)view).findById(ids[i]);
                     }
                 }
                 return view;
@@ -312,9 +316,11 @@ public class UIManager {
 
         else {
             for (RootView view : _rootViews) {
-                View v = view.getView().findById(id);
-                if (v != null) {
-                    return v;
+                if (view.getView() instanceof CompositeView) {
+                    View v = ((CompositeView)view.getView()).findById(id);
+                    if (v != null) {
+                        return v;
+                    }
                 }
             }
         }

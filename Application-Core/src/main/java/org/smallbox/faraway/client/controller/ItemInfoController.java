@@ -6,6 +6,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -33,7 +34,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
     @BindLua private View           progressHealth;
 
     @BindLua private View           frameContent;
-    @BindLua private View           frameWorkers;
+    @BindLua private View frameWorkers;
     @BindLua private View           frameComponents;
     @BindLua private UILabel        lbBuildCost;
     @BindLua private UILabel        lbBuildProgress;

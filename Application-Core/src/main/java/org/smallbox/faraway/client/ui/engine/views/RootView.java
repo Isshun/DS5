@@ -1,14 +1,13 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
 import org.smallbox.faraway.client.render.GDXRenderer;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 public class RootView {
 
-    private View _view;
+    private CompositeView _view;
 
-    public void setView(View view) {
+    public void setView(CompositeView view) {
         _view = view;
     }
 
@@ -28,7 +27,7 @@ public class RootView {
         _view.draw(renderer, x, y);
     }
 
-    public View getView() {
+    public CompositeView getView() {
         return _view;
     }
 

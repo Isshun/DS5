@@ -7,6 +7,8 @@ import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -78,7 +80,7 @@ public class MenuPlanetController extends LuaController {
             listInfoRegions.getViews().clear();
 
             planet.regions.forEach(region -> {
-                View viewRegion = listInfoRegions.createFromTemplate();
+                CompositeView viewRegion = (CompositeView)listInfoRegions.createFromTemplate();
                 ((UILabel)viewRegion.findById("lb_region_name")).setText(region.label);
                 ((UILabel)viewRegion.findById("lb_hostility")).setText("low");
                 ((UILabel)viewRegion.findById("lb_fertility")).setText("high");
@@ -87,7 +89,7 @@ public class MenuPlanetController extends LuaController {
 
                 UIGrid listResource = ((UIGrid)viewRegion.findById("grid_info_resources"));
                 region.terrains.stream().filter(terrain -> terrain.resource != null).forEach(terrain -> {
-                    View viewResource = listResource.createFromTemplate();
+                    CompositeView viewResource = (CompositeView)listResource.createFromTemplate();
                     ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
                     if (resourceInfo.hasIcon()) {
                         ((UIImage)viewResource.findById("img_resource")).setImage(resourceInfo.icon);

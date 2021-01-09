@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.controller.character;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -42,11 +43,12 @@ public class CharacterInfoSkillsController extends LuaController {
         if (_selected.hasExtra(CharacterSkillExtra.class)) {
             _selected.getExtra(CharacterSkillExtra.class).getAll().forEach(skill -> {
 
-                View view = new UIFrame(null)
-                        .setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff)
-                        .setBorderColor(0x359f9fff)
-                        .setMargin(8, 0)
-                        .setSize(320, 28);
+                UIFrame view = new UIFrame(null);
+
+                view.setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff);
+                view.setBorderColor(0x359f9fff);
+                view.setMargin(8, 0);
+                view.setSize(320, 28);
 
                 view.addView(UILabel.create(null)
                         .setText(skill.name)

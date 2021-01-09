@@ -1,7 +1,6 @@
-package org.smallbox.faraway.client.ui.engine.views.widgets;
+package org.smallbox.faraway.client.ui.engine.views;
 
 import com.badlogic.gdx.graphics.Color;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
@@ -14,18 +13,14 @@ import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
-import org.smallbox.faraway.client.ui.engine.views.UIAdapter;
+import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
-
-import java.util.Collection;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
 
 public abstract class View implements Comparable<View> {
 
@@ -47,6 +42,7 @@ public abstract class View implements Comparable<View> {
     private Color _borderColor;
     private LuaController _controller;
     private boolean _isGameView;
+    protected int               _deep;
 
     public View(ModuleBase module) {
         _module = module;
@@ -60,23 +56,11 @@ public abstract class View implements Comparable<View> {
         _verticalAlign = verticalAlign;
         _horizontalAlign = horizontalAlign;
     }
-
-    public final void removeAllViews() {
-        _views.forEach(view -> {
-            uiManager.removeView(view);
-            uiEventManager.removeListeners(view);
-            view.removeAllViews();
-            onRemoveView(view);
-        });
-        _views.clear();
-    }
+    public void         setDeep(int deep) { _deep = deep; }
+    public int          getDeep() { return _deep; }
 
     public String getGroup() {
         return _group;
-    }
-
-    public boolean isLeaf() {
-        return _views.isEmpty();
     }
 
     public void setSpecial(boolean special) {
@@ -141,13 +125,6 @@ public abstract class View implements Comparable<View> {
         _isGameView = isGameView;
     }
 
-    public View createFromTemplate() {
-        return _template != null ? _template.createFromTemplate() : null;
-    }
-
-    public enum HorizontalAlign {LEFT, RIGHT, CENTER}
-    public enum VerticalAlign {TOP, BOTTOM, CENTER}
-
     protected RotateAnimation _animation;
     protected boolean _focusable;
     private long _regularBackground;
@@ -158,13 +135,6 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setFocusable(boolean focusable) { _focusable = focusable; }
-    public void setSorted(boolean sorted) {
-        if (sorted) {
-            Collection<View> views = _views;
-             _views = new PriorityBlockingQueue<>(10, View::compareTo);
-             _views.addAll(views);
-        }
-    }
 
     public void click(int x, int y) {
         assert _onClickListener != null;
@@ -175,18 +145,9 @@ public abstract class View implements Comparable<View> {
         }
     }
 
-    public enum Align { CENTER, LEFT, CENTER_VERTICAL, RIGHT }
-
     protected final ModuleBase  _module;
 
-    public interface TemplateCallback {
-        View createFromTemplate();
-    }
-
-//    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
-    protected Collection<View>  _views = new LinkedBlockingQueue<>();
-    protected TemplateCallback  _template;
-    protected Collection<View>  _nextViews = new ConcurrentLinkedQueue<>();
+    //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
     protected boolean           _isAlignLeft = true;
     protected boolean           _isAlignTop = true;
     protected boolean           _special = false;
@@ -204,8 +165,6 @@ public abstract class View implements Comparable<View> {
     protected int               _fixedHeight = -1;
     protected String            _name;
     protected boolean           _inGame;
-    protected int               _deep;
-    protected int               _level;
     protected Color             _backgroundFocusColor;
     protected int               _width = -1;
     protected int               _height = -1;
@@ -216,7 +175,7 @@ public abstract class View implements Comparable<View> {
     protected int               _paddingBottom;
     protected int               _paddingRight;
     protected int               _paddingTop;
-    protected View              _parent;
+    protected CompositeView              _parent;
     protected OnClickListener   _onClickListener;
     protected UIEventManager.OnDragListener _onDragListener;
     protected OnClickListener   _onRightClickListener;
@@ -234,7 +193,7 @@ public abstract class View implements Comparable<View> {
     protected int               _offsetY;
     protected int               _layer;
     protected Color             _backgroundColor;
-    protected FadeEffect        _effect;
+    protected FadeEffect _effect;
     protected HorizontalAlign   _horizontalAlign = HorizontalAlign.LEFT;
     protected VerticalAlign     _verticalAlign = VerticalAlign.TOP;
 
@@ -246,10 +205,10 @@ public abstract class View implements Comparable<View> {
 
     public View         setId(String id) { _id = id; return this; }
     public View         setTextAlign(Align align) { _align = align; return this; }
-    public View         setTextAlign(String align) { _align = View.Align.valueOf(StringUtils.upperCase(align)); return this; }
+    public View         setTextAlign(String align) { _align = Align.valueOf(StringUtils.upperCase(align)); return this; }
     public void         setFocus(boolean focus) { _isFocus = focus; }
     public void         setActive(boolean active) { _isActive = active; }
-    public void         setParent(View parent) {
+    public void         setParent(CompositeView parent) {
         _parent = parent;
     }
     public void         setAdapter(UIAdapter adapter) {
@@ -257,8 +216,6 @@ public abstract class View implements Comparable<View> {
     }
     public View         setName(String name) { _name = name; return this; }
     public void         setInGame(boolean inGame) { _inGame = inGame; }
-    public void         setDeep(int deep) { _deep = deep; if (_views != null) _views.forEach(view -> view.setDeep(deep + 1));}
-    public void         setLevel(int level) { _level = level; }
     public View         setBackgroundColor(long color) { _backgroundColor = ColorUtils.fromHex(color); return this; }
     public View         setBackgroundColor(Color color) { _backgroundColor = color; return this; }
 
@@ -289,19 +246,16 @@ public abstract class View implements Comparable<View> {
     public void         setLayer(int layer) { _layer = layer; }
     public Color        getBackgroundColor() { return _backgroundColor; }
     public int          getLayer() { return _layer; }
-    public View         getParent() { return _parent; }
+    public CompositeView getParent() { return _parent; }
     public String       getId() { return _id; }
     public int          getPosX() { return _x; }
     public int          getPosY() { return _y; }
     public int          getFinalX() { return _finalX; }
     public int          getFinalY() { return _finalY; }
-    public int          getDeep() { return _deep; }
-    public int          getLevel() { return _level; }
     public long         getRegularBackground() { return _regularBackground; }
     public int          getFocusBackground() { return _focusBackground; }
     public String       getName() { return _name; }
 
-    public Collection<View> getViews() { return _views; }
     public ModuleBase   getModule() { return _module; }
     protected String    getString() { return null; }
     public int          getHeight() { return _height; }
@@ -314,8 +268,6 @@ public abstract class View implements Comparable<View> {
     public FadeEffect   getEffect() { return _effect; }
 
     public String       getActionName() { return _actionName; }
-
-    public int          compareLevel(View view) { return _deep != view.getDeep() ? _deep - view.getDeep() : hashCode() - view.hashCode(); }
 
     @Override
     public int compareTo(View view) {
@@ -367,45 +319,8 @@ public abstract class View implements Comparable<View> {
         _isAlignTop = isAlignTop;
     }
 
-    public final void addNextView(View view) {
-        _nextViews.add(view);
-    }
-
-    public final void switchViews() {
-        removeAllViews();
-        _nextViews.forEach(this::addView);
-        _nextViews.clear();
-
-        if (_parent != null) {
-            _parent.updateSize();
-        }
-    }
-
     protected void updateSize() {
     }
-
-    public final View addView(View view) {
-        view.setParent(this);
-
-        if (!CollectionUtils.containsAny(_views, view)) {
-            _views.add(view);
-        }
-
-        uiManager.addView(view);
-
-        onAddView(view);
-
-        return this;
-    }
-
-    public final View setTemplate(TemplateCallback templateCallback) {
-        _template = templateCallback;
-        return this;
-    }
-
-    protected abstract void onAddView(View view);
-
-    protected abstract void onRemoveView(View view);
 
     public boolean contains(int x, int y) {
         return (_finalX <= x && _finalX + _width >= x && _finalY <= y && _finalY + _height >= y);
@@ -603,7 +518,7 @@ public abstract class View implements Comparable<View> {
         return this;
     }
 
-    protected void remove() {
+    public void remove() {
         _parent = null;
         if (_onClickListener != null) {
             uiEventManager.removeOnClickListener(this);
@@ -613,32 +528,6 @@ public abstract class View implements Comparable<View> {
     public abstract int getContentWidth();
     public abstract int getContentHeight();
     public void init(){}
-
-    public View findByAction(String actionName) {
-        for (View view: _views) {
-            if (view._actionName != null && view._actionName.equals(actionName)) {
-                return view;
-            }
-            View ret = view.findByAction(actionName);
-            if (ret != null) {
-                return ret;
-            }
-        }
-        return null;
-    }
-
-    public View findById(String resId) {
-        for (View view: _views) {
-            if (StringUtils.equals(view._id, resId)) {
-                return view;
-            }
-            View ret = view.findById(resId);
-            if (ret != null) {
-                return ret;
-            }
-        }
-        return null;
-    }
 
     protected int getAlignedX() {
 

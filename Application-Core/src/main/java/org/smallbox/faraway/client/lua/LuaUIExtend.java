@@ -6,13 +6,12 @@ import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ClientLuaModuleManager;
-import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
-import org.smallbox.faraway.client.ui.engine.views.RootView;
+import org.smallbox.faraway.client.ui.engine.views.*;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
@@ -90,7 +89,7 @@ public class LuaUIExtend extends LuaExtend {
         View view = createView(module, globals, value, true, 0, null, rootName, 1, isGameView);
 
         RootView rootView = new RootView();
-        rootView.setView(view);
+        rootView.setView((CompositeView) view);
 
 //        frame.addView(view);
 //        frame.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -116,12 +115,11 @@ public class LuaUIExtend extends LuaExtend {
         }
     }
 
-    private void customizeViewMandatory(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {
+    private void customizeViewMandatory(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, View view) {
         view.setParent(parent);
         view.setDeep(deep);
         view.setInGame(inGame);
         view.setFocusable(getBoolean(value, "focusable", false));
-        view.setSorted(getBoolean(value, "sorted", false));
         view.setActive(getBoolean(value, "active", true));
 
         readString(value, "id", v -> {
@@ -140,6 +138,8 @@ public class LuaUIExtend extends LuaExtend {
         readInt(value, "layer", view::setLayer);
         readString(value, "group", view::setGroup);
         readBoolean(value, "visible", view::setVisible, true);
+
+        CompositeView.instanceOf(view).ifPresent(compositeView -> readBoolean(value, "sorted", compositeView::setSorted));
     }
 
     private void customizeViewCosmetic(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {
@@ -175,8 +175,8 @@ public class LuaUIExtend extends LuaExtend {
         });
 
         readLua(value, "align", v -> view.setAlign(
-                View.VerticalAlign.valueOf(v.get(1).toString().toUpperCase()),
-                View.HorizontalAlign.valueOf(v.get(2).toString().toUpperCase())));
+                VerticalAlign.valueOf(v.get(1).toString().toUpperCase()),
+                HorizontalAlign.valueOf(v.get(2).toString().toUpperCase())));
 
         readLua(value, "effects", v -> view.setEffect(new FadeEffect(getInt(v, "duration", 0))));
         readLua(value, "animations", v -> view.setAnimation(new RotateAnimation(getInt(v, "duration", 0))));
@@ -339,11 +339,11 @@ public class LuaUIExtend extends LuaExtend {
 //        }
     }
 
-    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, String path, int index, boolean isGameView) {
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView) {
         return createView(module, globals, value, inGame, deep, parent, path, index, isGameView, true);
     }
 
-    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, String path, int index, boolean isGameView, boolean runAfter) {
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
 
         // Create view for type
         View view = createViewFromType(module, value);
@@ -381,10 +381,10 @@ public class LuaUIExtend extends LuaExtend {
         if (!subViews.isnil()) {
             if (subViews.istable()) {
                 for (int i = 1; i <= subViews.length(); i++) {
-                    view.addView(createView(module, globals, subViews.get(i), inGame, deep + 1, view, path + "." + i, i, isGameView, runAfter));
+                    ((CompositeView)view).addView(createView(module, globals, subViews.get(i), inGame, deep + 1, (CompositeView) view, path + "." + i, i, isGameView, runAfter));
                 }
             } else {
-                view.addView(createView(module, globals, subViews, inGame, deep + 1, view, path + "." + 1, 1, isGameView, runAfter));
+                ((CompositeView)view).addView(createView(module, globals, subViews, inGame, deep + 1, (CompositeView) view, path + "." + 1, 1, isGameView, runAfter));
             }
         }
 
@@ -392,20 +392,20 @@ public class LuaUIExtend extends LuaExtend {
         LuaValue template = value.get("template");
         if (!template.isnil()) {
             if (template.istable()) {
-                view.setTemplate(() -> {
+                ((CompositeView)view).setTemplate(() -> {
                     UIList list = new UIList(module);
                     for (int i = 1; i <= template.length(); i++) {
-                        list.addView(createView(module, globals, template.get(i), inGame, deep + 1, view, path + "." + i, i, isGameView, false));
+                        list.addView(createView(module, globals, template.get(i), inGame, deep + 1, (CompositeView) view, path + "." + i, i, isGameView, false));
                     }
                     return list;
                 });
             } else {
-                view.setTemplate(() -> createView(module, globals, template, inGame, deep + 1, view, path + "." + 1, 1, isGameView, false));
+                ((CompositeView)view).setTemplate(() -> createView(module, globals, template, inGame, deep + 1, (CompositeView) view, path + "." + 1, 1, isGameView, false));
             }
         }
 
         // Set controller
-        readString(value, "controller", controllerName -> luaControllerManager.setControllerView(controllerName, view));
+        readString(value, "controller", controllerName -> luaControllerManager.setControllerView(controllerName, (CompositeView) view));
 
         // Add to ui manager
 //        ApplicationClient.uiManager.addView(view);
@@ -443,14 +443,6 @@ public class LuaUIExtend extends LuaExtend {
                     _finalX = getAlignedX() + _marginLeft + x;
                     _finalY = _y + _marginTop + y;
                 }
-            }
-
-            @Override
-            protected void onAddView(View view) {
-            }
-
-            @Override
-            protected void onRemoveView(View view) {
             }
 
             @Override

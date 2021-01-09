@@ -3,6 +3,8 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.views.Align;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
@@ -277,14 +279,6 @@ public class UILabel extends View {
                 }
             }, _textSize);
         }
-    }
-
-    @Override
-    protected void onAddView(View view) {
-    }
-
-    @Override
-    protected void onRemoveView(View view) {
     }
 
     @Override

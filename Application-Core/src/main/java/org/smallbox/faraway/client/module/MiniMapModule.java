@@ -2,7 +2,7 @@
 //
 //import org.smallbox.faraway.client.ApplicationClient;
 //import org.smallbox.faraway.client.GameClientModule;
-//import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+//import org.smallbox.faraway.client.ui.engine.views.View;
 //import org.smallbox.faraway.core.Application;
 //import org.smallbox.faraway.core.engine.GameEventListener;
 //import org.smallbox.faraway.core.game.Game;

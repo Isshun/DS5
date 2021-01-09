@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 
@@ -104,14 +105,6 @@ public class UIImage extends View {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onAddView(View view) {
-    }
-
-    @Override
-    protected void onRemoveView(View view) {
     }
 
     @Override

@@ -2,6 +2,8 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.views.Align;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
@@ -210,14 +212,6 @@ public class UICheckBox extends View {
             renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _checked ? "[x]" : "[ ]");
             renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _string);
         }
-    }
-
-    @Override
-    protected void onAddView(View view) {
-    }
-
-    @Override
-    protected void onRemoveView(View view) {
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UICheckBox;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
@@ -24,7 +24,8 @@ public class ItemInfoFactoryComponentsController extends LuaController {
 
         item.getFactory().getAcceptedComponents()
                 .forEach((itemInfo, accepted) -> {
-                    View view = new UIFrame(null).setSize(400, 24);
+                    UIFrame view = new UIFrame(null);
+                    view.setSize(400, 24);
 
 //                    view.addView(UIImage.create(null)
 //                            .setImage(CollectionUtils.isNotEmpty(itemInfo.graphics) ? itemInfo.graphics.get(0) : null));

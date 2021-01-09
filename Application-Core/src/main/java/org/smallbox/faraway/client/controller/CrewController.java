@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.*;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -46,7 +47,7 @@ public class CrewController extends LuaController {
         if (listCrew != null) {
             characterModule.getAll().forEach(character -> {
 
-                View view = new UIFrame(null);
+                UIFrame view = new UIFrame(null);
                 view.setSize(200, 60);
 
                 view.addView(UILabel.create(null)
@@ -89,7 +90,7 @@ public class CrewController extends LuaController {
     }
 
     private View createGaugeView(String iconPath, double value) {
-        View view = new UIFrame(null);
+        UIFrame view = new UIFrame(null);
 
         view.addView(new UIFrame(null)
                 .setSize(10, 30)

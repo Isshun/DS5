@@ -10,7 +10,7 @@
 //import com.badlogic.gdx.math.Matrix4;
 //import org.smallbox.faraway.client.FontGenerator;
 //import org.smallbox.faraway.client.drawable.GDXDrawable;
-//import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+//import org.smallbox.faraway.client.ui.engine.views.View;
 //import org.smallbox.faraway.common.ParcelCommon;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 //import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;

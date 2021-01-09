@@ -1,9 +1,11 @@
 package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
-public class UIDropDown extends View {
+public class UIDropDown extends CompositeView {
     private int     _count;
     private boolean _isOpen;
     private View    _current;

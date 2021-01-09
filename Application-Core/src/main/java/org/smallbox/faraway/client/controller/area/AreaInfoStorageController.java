@@ -132,11 +132,6 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
         // Display categories
         _tree.forEach(categoryContainer -> {
             listStorage.addView(new UIFrame(null)
-                    .setSize(200, 20)
-                    .setOnClickListener((int x, int y) -> {
-                        categoryContainer.isOpen = !categoryContainer.isOpen;
-                        displayTree();
-                    })
                     .addView(UILabel.createFast(categoryContainer.categoryName, Colors.COLOR1).setPadding(5))
                     .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName), 16, 16)
                             .setPosition(300, 0)
@@ -146,17 +141,17 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                                 displayTree();
                             })
                     )
+                    .setSize(200, 20)
+                    .setOnClickListener((int x, int y) -> {
+                        categoryContainer.isOpen = !categoryContainer.isOpen;
+                        displayTree();
+                    })
             );
 
             // Display sub categories
             if (categoryContainer.isOpen) {
                 categoryContainer.subCategories.forEach(subCategoryContainer -> {
                     listStorage.addView(new UIFrame(null)
-                            .setSize(200, 20)
-                            .setOnClickListener((int x, int y) -> {
-                                subCategoryContainer.isOpen = !subCategoryContainer.isOpen;
-                                displayTree();
-                            })
                             .addView(UILabel.createFast((subCategoryContainer.isOpen ? " + " : " - ") + subCategoryContainer.subCategoryName, Colors.COLOR2).setPadding(5).setMargin(0, 0))
                             .addView(UIImage.createFast(getContainerImage(categoryContainer.categoryName, subCategoryContainer.subCategoryName), 16, 16)
                                     .setPosition(300, 0)
@@ -165,6 +160,11 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                                         storageModule.notifyRulesChange(_area);
                                         displayTree();
                                     }))
+                            .setSize(200, 20)
+                            .setOnClickListener((int x, int y) -> {
+                                subCategoryContainer.isOpen = !subCategoryContainer.isOpen;
+                                displayTree();
+                            })
                     );
 
                     // Display items
@@ -183,11 +183,6 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
     private void displayConsumables(Collection<ItemInfo> items) {
         items.forEach(itemInfo -> {
             listStorage.addView(new UIFrame(null)
-                    .setSize(200, 20)
-                    .setOnClickListener((int x, int y) -> {
-                        _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
-                        displayTree();
-                    })
                     .addView(UILabel.createFast("   " + itemInfo.label, Color.WHITE).setPadding(5).setMargin(0, 0))
                     .addView(UIImage.createFast(getItemImage(itemInfo), 16, 16)
                             .setPosition(300, 0)
@@ -196,6 +191,11 @@ public class AreaInfoStorageController extends AbsInfoLuaController<AreaModel> {
                                 storageModule.notifyRulesChange(_area);
                                 displayTree();
                             }))
+                    .setSize(200, 20)
+                    .setOnClickListener((int x, int y) -> {
+                        _area.setAccept(itemInfo, !_area.isAccepted(itemInfo));
+                        displayTree();
+                    })
             );
         });
     }

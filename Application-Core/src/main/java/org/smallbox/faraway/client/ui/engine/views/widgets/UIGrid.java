@@ -2,11 +2,13 @@ package org.smallbox.faraway.client.ui.engine.views.widgets;
 
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.OnKeyListener;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.stream.Collectors;
 
-public class UIGrid extends View {
+public class UIGrid extends CompositeView {
     private int         _columns;
     private int         _rowHeight;
     private int         _columnWidth;

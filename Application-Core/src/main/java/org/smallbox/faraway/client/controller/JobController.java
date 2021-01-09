@@ -34,7 +34,6 @@ public class JobController extends LuaController {
     public void onControllerUpdate() {
         jobModule.getAll().stream().filter(JobModel::isVisible).forEach(job ->
                 listJobs.addNextView(new UIFrame(null)
-                        .setSize(300, 28)
                         .addView(UIImage.create(null)
                                 .setImage(job.getIcon())
                                 .setPosition(-19, -19)
@@ -44,6 +43,7 @@ public class JobController extends LuaController {
                                 .setTextColor(job.getCharacter() != null ? 0x9afbffff : 0xB4D4D3ff)
                                 .setSize(300, 22)
                                 .setPosition(24, 0))
+                        .setSize(300, 28)
                 )
         );
         listJobs.switchViews();

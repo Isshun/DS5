@@ -6,7 +6,8 @@ import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
 import org.smallbox.faraway.client.controller.annotation.BindLuaController;
-import org.smallbox.faraway.client.ui.engine.views.widgets.View;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -32,11 +33,11 @@ public class LuaControllerManager implements GameObserver {
     @Inject
     private DependencyManager dependencyManager;
 
-    private final Map<String, View>         _viewByControllerName = new HashMap<>();
+    private final Map<String, CompositeView>         _viewByControllerName = new HashMap<>();
     private Map<String, LuaController>      _controllers;
     private long                            _lastUpdate;
 
-    public void setControllerView(String controllerName, View view) { _viewByControllerName.put(controllerName, view); }
+    public void setControllerView(String controllerName, CompositeView view) { _viewByControllerName.put(controllerName, view); }
 
     @OnGameLayerInit
     @OnApplicationLayerInit
@@ -72,7 +73,7 @@ public class LuaControllerManager implements GameObserver {
 
     private void bindRootViewToController(LuaController controller) {
         String controllerClassName = controller.getClass().getCanonicalName();
-        View rootView = _viewByControllerName.get(controllerClassName);
+        CompositeView rootView = _viewByControllerName.get(controllerClassName);
         Objects.requireNonNull(rootView, "Unable to find rootView for controller " + controllerClassName);
         controller.setRootView(rootView);
     }
