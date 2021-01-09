@@ -24,18 +24,10 @@ import org.smallbox.faraway.util.log.Log;
 import java.io.File;
 
 public abstract class LuaUIExtend extends LuaExtend {
-
-    @Inject
-    protected UIManager uiManager;
-
-    @Inject
-    protected ClientLuaModuleManager clientLuaModuleManager;
-
-    @Inject
-    protected LuaControllerManager luaControllerManager;
-
-    @Inject
-    protected LuaStyleManager luaStyleManager;
+    @Inject protected UIManager uiManager;
+    @Inject protected ClientLuaModuleManager clientLuaModuleManager;
+    @Inject protected LuaControllerManager luaControllerManager;
+    @Inject protected LuaStyleManager luaStyleManager;
 
     protected abstract void readSpecific(LuaValue value, View view);
 
