@@ -4,8 +4,11 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
-import org.smallbox.faraway.client.lua.LuaUIBridge;
+import org.smallbox.faraway.client.lua.ui.LuaUIBridge;
+import org.smallbox.faraway.client.lua.ui.LuaUIExtend;
 import org.smallbox.faraway.client.ui.engine.RawColors;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -14,8 +17,10 @@ import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
+import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
+import java.util.Optional;
 
 @ApplicationObject
 public class ClientLuaModuleManager extends LuaModuleManager {
@@ -89,6 +94,25 @@ public class ClientLuaModuleManager extends LuaModuleManager {
                 }));
 
         return globals;
+    }
+
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
+        String type = value.get("type").toString();
+
+        Optional<LuaUIExtend> optional = _extends.stream()
+                .filter(extend -> extend instanceof LuaUIExtend)
+                .filter(extend -> extend.accept(type))
+                .map(extend -> (LuaUIExtend) extend)
+                .findAny();
+
+        if (optional.isPresent()) {
+            Log.debug(LuaModuleManager.class, "Found lua extend: %s", optional.get().getClass());
+            return optional.get().createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter);
+        } else {
+            Log.warning(LuaModuleManager.class, "No extend for type: %s", type);
+        }
+
+        return null;
     }
 
 }

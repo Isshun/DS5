@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.lua;
+package org.smallbox.faraway.client.lua.ui;
 
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.views.View;

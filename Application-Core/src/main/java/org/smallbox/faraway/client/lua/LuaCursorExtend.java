@@ -3,13 +3,16 @@ package org.smallbox.faraway.client.lua;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIFrame;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
 import org.smallbox.faraway.core.game.Data;
 
 import java.io.File;
 
+@ApplicationObject
 public class LuaCursorExtend extends LuaExtend {
+
     @Override
     public boolean accept(String type) {
         return "cursor".equals(type);

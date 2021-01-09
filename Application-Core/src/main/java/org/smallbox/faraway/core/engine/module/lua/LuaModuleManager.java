@@ -3,9 +3,9 @@ package org.smallbox.faraway.core.engine.module.lua;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;
-import org.reflections.Reflections;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.ModuleInfo;
@@ -19,24 +19,23 @@ import org.smallbox.faraway.util.Utils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
 
 public abstract class LuaModuleManager implements GameObserver {
-    private Collection<LuaEventListener>        _luaEventListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaEventListener>        _luaEventInGameListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaRefreshListener>      _luaRefreshListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaLoadListener>         _luaLoadListeners = new LinkedBlockingQueue<>();
-    private Collection<LuaModule>               _luaModules = new LinkedBlockingQueue<>();
-    private List<LuaExtend>                     _extends;
-    private Queue<Runnable>                     _runAfterList = new ConcurrentLinkedQueue<>();
+    private Collection<LuaEventListener> _luaEventListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaEventListener> _luaEventInGameListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaRefreshListener> _luaRefreshListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaLoadListener> _luaLoadListeners = new LinkedBlockingQueue<>();
+    private Collection<LuaModule> _luaModules = new LinkedBlockingQueue<>();
+    protected Collection<LuaExtend> _extends;
+    private Queue<Runnable> _runAfterList = new ConcurrentLinkedQueue<>();
+
+    @Inject
+    private DependencyManager dependencyManager;
 
     @Inject
     private Data data;
@@ -84,7 +83,7 @@ public abstract class LuaModuleManager implements GameObserver {
         return _luaModules;
     }
 
-    public List<LuaExtend> getExtends() {
+    public Collection<LuaExtend> getExtends() {
         return _extends;
     }
 
@@ -96,18 +95,7 @@ public abstract class LuaModuleManager implements GameObserver {
 
     public void init(boolean initGui) {
         // Invoke extenders
-        _extends = new Reflections("org.smallbox.faraway").getSubTypesOf(LuaExtend.class).stream()
-                .filter(cls -> !Modifier.isAbstract(cls.getModifiers()))
-                .filter(cls -> initGui || !cls.getSimpleName().equals("LuaUIExtend"))
-                .map(cls -> {
-                    Log.info("Find extend class: " + cls.getSimpleName());
-                    try {
-                        return cls.getConstructor().newInstance();
-                    } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                        throw new GameException(LuaModuleManager.class, "Unable to create extend cls: " + cls.getSimpleName());
-                    }
-                })
-                .collect(Collectors.toList());
+        _extends = dependencyManager.getSubTypesOf(LuaExtend.class);
 
         // TODO: wrong emplacement
         data.bindings.clear();
@@ -310,9 +298,9 @@ public abstract class LuaModuleManager implements GameObserver {
     }
 
     private boolean hasRequiredModules(ModuleInfo info) {
-        for (ModuleInfo.Required required: info.required) {
+        for (ModuleInfo.Required required : info.required) {
             boolean requiredOk = false;
-            for (LuaModule module: _luaModules) {
+            for (LuaModule module : _luaModules) {
                 if (module.getInfo().id.equals(required.id) && module.getInfo().version >= required.minVersion) {
                     requiredOk = true;
                 }
@@ -342,11 +330,12 @@ public abstract class LuaModuleManager implements GameObserver {
     }
 
     private boolean broadcast(Collection<LuaEventListener> listeners, int eventId, LuaValue tag, LuaValue value) {
-        for (LuaEventListener listener: listeners) {
+        for (LuaEventListener listener : listeners) {
             if (listener.onEvent(eventId, tag, value)) {
                 return true;
             }
         }
         return false;
     }
+
 }

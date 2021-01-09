@@ -3,6 +3,7 @@ package org.smallbox.faraway.modules.characterBuff;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -14,6 +15,7 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.io.File;
 
+@ApplicationObject
 public class LuaBuffExtend extends LuaExtend {
 
     @Override

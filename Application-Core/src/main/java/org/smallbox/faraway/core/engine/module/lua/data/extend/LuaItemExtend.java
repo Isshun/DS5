@@ -2,6 +2,7 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -14,6 +15,7 @@ import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
 import java.io.File;
 import java.util.*;
 
+@ApplicationObject
 public class LuaItemExtend extends LuaExtend {
 
     private static Map<String, LuaValue> _cache = new HashMap<>();

@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.character;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
 import org.smallbox.faraway.core.engine.module.lua.data.LuaExtend;
@@ -10,6 +11,7 @@ import org.smallbox.faraway.core.game.modelInfo.CharacterInfo;
 
 import java.io.File;
 
+@ApplicationObject
 public class LuaCharacterExtend extends LuaExtend {
 
     @Override

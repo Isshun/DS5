@@ -188,11 +188,11 @@ public class DependencyManager {
     }
 
     private void doInjectDependency(Object host, Class<?> cls, boolean gameExists) {
-        for (Field field: cls.getDeclaredFields()) {
+        for (Class<?> superClass = cls.getSuperclass(); superClass != null; superClass = superClass.getSuperclass()) {
+            doInjectDependency(host, superClass, gameExists);
+        }
 
-            if (cls.getSuperclass() != null) {
-                doInjectDependency(host, cls.getSuperclass(), gameExists);
-            }
+        for (Field field: cls.getDeclaredFields()) {
 
             try {
                 field.setAccessible(true);

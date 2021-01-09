@@ -3,6 +3,7 @@ package org.smallbox.faraway.core.engine.module.lua.data.extend;
 import com.badlogic.gdx.Input;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
+import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.GameEventListener;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.data.DataExtendException;
@@ -12,7 +13,9 @@ import org.smallbox.faraway.core.game.modelInfo.BindingInfo;
 
 import java.io.File;
 
+@ApplicationObject
 public class LuaBindingsExtend extends LuaExtend {
+
     @Override
     public boolean accept(String type) {
         return "binding".equals(type);
