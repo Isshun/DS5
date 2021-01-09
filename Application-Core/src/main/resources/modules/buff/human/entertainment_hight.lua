@@ -1,6 +1,6 @@
 data:extend({
     label = "Entertainment",
-    name = "base.buff.entertainemnt_hight",
+    id = "base.buff.entertainemnt_hight",
     type = "buff",
     on_check = function (character, data)
         return character:getNeeds():get("entertainment") >= 80

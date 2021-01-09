@@ -1,6 +1,6 @@
 data:extend({
     label = "Sleep",
-    name = "base.buff.sleep_in_bed",
+    id = "base.buff.sleep_in_bed",
     type = "buff",
     duration = 12 * 50,
     on_check = function (character, data)

@@ -1,6 +1,6 @@
 data:extend({
     type = "weather",
-    name = "base.weather.blizzard",
+    id = "base.weather.blizzard",
     label = "Blizzard",
     icon = "[base]/graphics/icons/weather/snow.png",
     color1 = 0x206161ff,

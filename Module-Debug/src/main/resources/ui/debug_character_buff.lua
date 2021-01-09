@@ -1,6 +1,6 @@
 ui:extend({
     type = "list",
-    name = "debug_character_buff",
+    id = "debug_character_buff",
     position = {200, 20},
     size = {400, 600},
     background = 0x121c1e,

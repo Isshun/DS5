@@ -36,7 +36,7 @@ public class LuaBindingsExtend extends LuaExtend {
             }
 
             bindingInfo.label = getString(value, "label", null);
-            bindingInfo.name = getString(value, "name", null);
+            bindingInfo.name = getString(value, "id", null);
             bindingInfo.check = () -> {
                 LuaValue ret = value.get("on_check").call();
                 return !ret.isnil() && ret.toboolean();

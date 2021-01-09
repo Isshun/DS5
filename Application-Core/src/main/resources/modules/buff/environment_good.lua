@@ -1,6 +1,6 @@
 data:extend({
     label = "Environment",
-    name = "base.buff.environment_good",
+    id = "base.buff.environment_good",
     type = "buff",
     levels = {
         { message = "Pleasant environment", mood = 5 },

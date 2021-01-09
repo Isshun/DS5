@@ -6,7 +6,7 @@ RESOURCES = {
 
 data:extend({
     label = "Crash",
-    name = "base.quest.crash",
+    id = "base.quest.crash",
     type = "quest",
 
     open_message = "Un cargo de marchandise s'est écrasé à proximité de votre base",

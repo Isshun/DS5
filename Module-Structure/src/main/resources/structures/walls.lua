@@ -1,13 +1,13 @@
 data:extend({
     { label = "Wall",
-        name = "base.wall",
+        id = "base.wall",
         type = "structure_group",
         category = "Wall",
         is_wall = true,
         walkable = false
     },
     { label = "Wood wall",
-        name = "base.wood_wall",
+        id = "base.wood_wall",
         parent = "base.wall",
         type = "structure",
         health = 200,
@@ -17,7 +17,7 @@ data:extend({
         walkable = false
     },
     { label = "Sandstone wall",
-        name = "base.sandstone_wall",
+        id = "base.sandstone_wall",
         parent = "base.wall",
         type = "structure",
         health = 250,
@@ -25,7 +25,7 @@ data:extend({
         receipts = {label = "Sandstone", icon = "[base]/graphics/icons/material/sandstone.png", components = { item = "base.sandstone_brick", quantity = 10} }
     },
     { label = "Calcite wall",
-        name = "base.calcite_wall",
+        id = "base.calcite_wall",
         parent = "base.wall",
         type = "structure",
         health = 350,
@@ -33,7 +33,7 @@ data:extend({
         receipts = {label = "Calcite", icon = "[base]/graphics/icons/material/calcite.png", components = { item = "base.calcite_brick", quantity = 10} }
     },
     { label = "Granite wall",
-        name = "base.granite_wall",
+        id = "base.granite_wall",
         parent = "base.wall",
         type = "structure",
         health = 500,
@@ -41,7 +41,7 @@ data:extend({
         receipts = {label = "Granite", icon = "[base]/graphics/icons/material/granite.png", components = { item = "base.granite_brick", quantity = 10} }
     },
     { label = "Iron wall",
-        name = "base.metal_wall",
+        id = "base.metal_wall",
         parent = "base.wall",
         type = "structure",
         health = 450,
@@ -49,7 +49,7 @@ data:extend({
         receipts = {label = "Iron", icon = "[base]/graphics/icons/material/iron.png", components = { item = "base.iron_plate", quantity = 10} }
     },
     { label = "Carbon fiber wall",
-        name = "base.carbon_fiber_wall",
+        id = "base.carbon_fiber_wall",
         parent = "base.wall",
         type = "structure",
         health = 800,

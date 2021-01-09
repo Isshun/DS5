@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Iron",
-        name = "base.iron",
+        id = "base.iron",
         type = "resource",
         permeability = 0.1,
         walkable = false,
@@ -13,7 +13,7 @@ data:extend({
     },
     {
         label = "Copper",
-        name = "base.copper",
+        id = "base.copper",
         type = "resource",
         permeability = 0.1,
         walkable = false,

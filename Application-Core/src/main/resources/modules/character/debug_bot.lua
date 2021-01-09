@@ -1,6 +1,6 @@
 data:extend({
     label = "Debug bot",
-    name = "base.character.debug_bot",
+    id = "base.character.debug_bot",
     type = "character",
     needs = {
         energy = {

@@ -32,11 +32,11 @@ public class RootView {
     }
 
     public String toString() {
-        return _view.getName();
+        return _view.getId();
     }
 
     public String getName() {
-        return _view.getName();
+        return _view.getId();
     }
 
     public void setVisible(boolean visible) { _view.setVisible(visible); }

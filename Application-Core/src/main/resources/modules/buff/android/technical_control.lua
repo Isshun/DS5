@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Health",
-        name = "base.buff_health",
+        id = "base.buff_health",
         type = "buff",
         on_start = function (character, data)
             return character.type == 'android' or character.type == 'droid'

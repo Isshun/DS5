@@ -61,7 +61,7 @@ public class MainPanelController extends LuaController {
     }
 
     public void addShortcut(String label, LuaController controller) {
-        String id = mainGrid.getName() + "." + controller.getClass().getCanonicalName();
+        String id = mainGrid.getId() + "." + controller.getClass().getCanonicalName();
 
         // Remove old entries and listeners if exists
         mainGrid.getViews().stream()
@@ -71,7 +71,7 @@ public class MainPanelController extends LuaController {
         UILabel uiLabel = (UILabel)mainGrid.createFromTemplate();
         uiLabel.setId(id);
         uiLabel.setText(label);
-        uiLabel.setName(mainGrid.getName() + "." + label);
+        uiLabel.setId(mainGrid.getId() + "." + label);
         uiLabel.getEvents().setOnClickListener((x, y) -> controller.getRootView().setVisible(true));
     }
 

@@ -1,6 +1,6 @@
 data:extend({
     type = "weather",
-    name = "base.weather.regular",
+    id = "base.weather.regular",
     icon = "[base]/graphics/icons/weather/regular.png";
     label = "Sunny",
     color1 = 0x734c09ff,

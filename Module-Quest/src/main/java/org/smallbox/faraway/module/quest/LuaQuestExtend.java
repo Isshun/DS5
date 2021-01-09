@@ -22,13 +22,13 @@ public class LuaQuestExtend extends LuaExtend {
 
     @Override
     public void extend(ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
+        String id = getString(value, "id", null);
 
-        Log.debug("Extend quest: " + name);
+        Log.debug("Extend quest: " + id);
 
         QuestInfo questInfo = null;
         for (QuestInfo info: _questInfos) {
-            if (name.equals(info.name)) {
+            if (id.equals(info.name)) {
                 questInfo = info;
             }
         }

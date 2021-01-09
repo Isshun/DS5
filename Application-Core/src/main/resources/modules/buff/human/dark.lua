@@ -1,6 +1,6 @@
 data:extend({
     label = "Dark",
-    name = "base.buff.dark",
+    id = "base.buff.dark",
     type = "buff",
     on_check = function (character, data)
         return character:getParcel():getLight() < 0.5

@@ -77,5 +77,5 @@ public class UIList extends CompositeView implements AutoCloseable {
     }
 
     @Override
-    public String toString() { return "" + getName() + " [" + _views.stream().map(View::toString).collect(Collectors.joining(", ")) + "]"; }
+    public String toString() { return "" + getId() + " [" + _views.stream().map(View::toString).collect(Collectors.joining(", ")) + "]"; }
 }

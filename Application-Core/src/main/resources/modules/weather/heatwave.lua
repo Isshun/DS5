@@ -1,6 +1,6 @@
 data:extend({
     type = "weather",
-    name = "base.weather.heatwave",
+    id = "base.weather.heatwave",
     label = "Heatwave",
     icon = "[base]/graphics/icons/weather/heat.png",
     color1 = 0x750909ff,

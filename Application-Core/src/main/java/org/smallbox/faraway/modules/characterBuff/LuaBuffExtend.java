@@ -25,20 +25,20 @@ public class LuaBuffExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
-        if (name == null) {
+        String id = getString(value, "id", null);
+        if (id == null) {
             return;
         }
 
         for (BuffInfo buff: data.buffs) {
-            if (name.equals(buff.getName())) {
+            if (id.equals(buff.getName())) {
                 return;
             }
         }
 
         BuffInfo buff = new BuffInfo();
 
-        buff.setName(name);
+        buff.setName(id);
         buff.setVisible(value.get("visible").isnil() || value.get("visible").toboolean());
         buff.setDuration(value.get("duration").isnil() ? value.get("duration").toint() : 0);
 
@@ -142,7 +142,7 @@ public class LuaBuffExtend extends LuaExtend {
         switch (luaEffect.get("type").tojstring()) {
 
             case "need":
-                effectInfo.needs.put(luaEffect.get("name").tojstring(), luaEffect.get("value").todouble());
+                effectInfo.needs.put(luaEffect.get("id").tojstring(), luaEffect.get("value").todouble());
                 break;
 
             case "disease":

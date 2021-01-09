@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "O2 Recycler",
-        name = "base.items.o2_recycler",
+        id = "base.items.o2_recycler",
         type = "item",
         category = "Oxygen",
         size = {1, 2},

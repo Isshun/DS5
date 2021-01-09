@@ -2,7 +2,7 @@
 --{
 --    {
 --        type = "list",
---        name = "ui-debug",
+--        id = "ui-debug",
 --        position = {100, 100},
 --        size = {200, 500},
 --        background = 0x552200,

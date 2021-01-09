@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Masonry Workshop",
-        name = "base.item.masonry_workshop",
+        id = "base.item.masonry_workshop",
         type = "item",
         category = "workshop",
         graphics = { path = "[base]/graphics/items/workshop/masonry.png" },

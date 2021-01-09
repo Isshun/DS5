@@ -1,6 +1,6 @@
 data:extend({
     type = "weather",
-    name = "base.weather.el_sayal",
+    id = "base.weather.el_sayal",
     label = "El Sayal",
     icon = "[base]/graphics/icons/weather/sand.png",
     color1 = 0x734c09ff,

@@ -2,7 +2,7 @@
 --
 --ui:extend({
 --    type = "view",
---    name = "info_room",
+--    id = "info_room",
 --    position = {0, 620},
 --    size = {372, 280},
 --    background = 0x121c1e,

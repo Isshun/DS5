@@ -23,11 +23,11 @@ public class LuaPlanetExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
+        String id = getString(value, "id", null);
 
         PlanetInfo planetInfo = null;
         for (PlanetInfo info: data.planets) {
-            if (info.name != null && info.name.equals(name)) {
+            if (info.name != null && info.name.equals(id)) {
                 planetInfo = info;
             }
         }
@@ -41,7 +41,7 @@ public class LuaPlanetExtend extends LuaExtend {
     }
 
     private void readPlanet(Data data, PlanetInfo planetInfo, LuaValue value) throws DataExtendException {
-        planetInfo.name = getString(value, "name", null);
+        planetInfo.name = getString(value, "id", null);
         planetInfo.label = getString(value, "label", null);
         planetInfo.cls = getString(value, "class", null);
         planetInfo.desc = getString(value, "description", null);
@@ -73,7 +73,7 @@ public class LuaPlanetExtend extends LuaExtend {
         RegionInfo regionInfo = new RegionInfo();
 
         regionInfo.planet = planetInfo;
-        regionInfo.name = getString(value, "name", null);
+        regionInfo.name = getString(value, "id", null);
         regionInfo.label = getString(value, "label", regionInfo.name);
         regionInfo.color = getInt(value, "color", 0x000000ff);
         regionInfo.hostility = getInt(value, "hostility", 2);
@@ -124,7 +124,7 @@ public class LuaPlanetExtend extends LuaExtend {
             for (int i = 1; i <= value.get("weather").length(); i++) {
                 LuaValue luaWeather = value.get("weather").get(i);
                 RegionInfo.RegionWeather regionWeatherInfo = new RegionInfo.RegionWeather();
-                data.getAsync(luaWeather.get("name").toString(), WeatherInfo.class, weatherInfo -> regionWeatherInfo.info = weatherInfo);
+                data.getAsync(luaWeather.get("id").toString(), WeatherInfo.class, weatherInfo -> regionWeatherInfo.info = weatherInfo);
                 regionWeatherInfo.frequency = new double[] {
                         luaWeather.get("frequency").get(1).todouble(),
                         luaWeather.get("frequency").get(2).todouble(),
@@ -159,7 +159,7 @@ public class LuaPlanetExtend extends LuaExtend {
         dayTimes.add(new PlanetInfo.DayTime(
                 value.get("hour").toint(),
                 value.get("color").optlong(0),
-                value.get("name").tojstring()
+                value.get("id").tojstring()
         ));
     }
 

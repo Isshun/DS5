@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Sandstone",
-        name = "base.sandstone",
+        id = "base.sandstone",
         type = "resource",
         permeability = 0.1,
         walkable = false,
@@ -13,7 +13,7 @@ data:extend({
     },
     {
         label = "Calcite",
-        name = "base.calcite",
+        id = "base.calcite",
         type = "resource",
         permeability = 0.1,
         walkable = false,
@@ -25,7 +25,7 @@ data:extend({
     },
     {
         label = "Granite",
-        name = "base.granite",
+        id = "base.granite",
         type = "resource",
         permeability = 0.1,
         walkable = false,

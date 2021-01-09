@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Tree",
-        name = "base.tree",
+        id = "base.tree",
         type = "resource",
         size = {1, 2},
         graphics = { path = "[base]/graphics/plants/tree.png"},

@@ -1,6 +1,6 @@
 data:extend({
     label = "Android",
-    name = "base.character.android",
+    id = "base.character.android",
     type = "character",
     needs = {
         energy = {

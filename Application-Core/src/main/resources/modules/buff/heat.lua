@@ -1,10 +1,10 @@
 data:extend({
     label = "Hypothermia",
-    name = "base.buff.heat",
+    id = "base.buff.heat",
     type = "buff",
     levels = {
         { message = "Heat 1", effects = {
-            {type = "need", name = "drink", value = -0.01},
+            {type = "need", id = "drink", value = -0.01},
         }},
         { message = "Heat 2" },
         { message = "Heat 3", effect = {

@@ -1,6 +1,6 @@
 data:extend({
     type = "weather",
-    name = "base.weather.sandwhirl",
+    id = "base.weather.sandwhirl",
     label = "Sandwhirl",
     particle = "sand",
     icon = "[base]/graphics/icons/weather/sand.png";

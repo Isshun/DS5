@@ -1,6 +1,6 @@
 data:extend({
     label = "Suffocating",
-    name = "base.buff.suffocating_light",
+    id = "base.buff.suffocating_light",
     type = "buff",
     on_check = function (character, data)
         return character:getNeeds():get("oxygen") < 75 and character:getNeeds():get("oxygen") > 25

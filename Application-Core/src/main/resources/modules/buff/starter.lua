@@ -1,6 +1,6 @@
 data:extend({
     label = "Starter",
-    name = "base.buff.starter",
+    id = "base.buff.starter",
     type = "buff",
     encyclopedia = {
         title = "Excited by new colony",

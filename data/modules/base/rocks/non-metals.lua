@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Carbon",
-        name = "base.carbon",
+        id = "base.carbon",
         type = "resource",
         walkable = false,
         graphics = { path = "[base]/graphics/items/resources/carbon.png" },

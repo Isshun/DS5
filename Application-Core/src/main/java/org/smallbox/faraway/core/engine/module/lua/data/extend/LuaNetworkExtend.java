@@ -23,17 +23,17 @@ public class LuaNetworkExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
+        String id = getString(value, "id", null);
 
         NetworkInfo networkInfo;
-        if (data.hasNetwork(name)) {
-            networkInfo = data.getNetwork(name);
+        if (data.hasNetwork(id)) {
+            networkInfo = data.getNetwork(id);
         } else {
             networkInfo = new NetworkInfo();
             data.networks.add(networkInfo);
         }
 
-        networkInfo.name = getString(value, "name", null);
+        networkInfo.name = getString(value, "id", null);
         networkInfo.label = getString(value, "label", null);
 
         if (!value.get("items").isnil()) {

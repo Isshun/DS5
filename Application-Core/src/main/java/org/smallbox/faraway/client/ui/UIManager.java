@@ -93,7 +93,7 @@ public class UIManager {
     }
 
     public void refresh(LuaController controller, String fileName) {
-        _menuViews.remove(controller.getRootView().getName());
+        _menuViews.remove(controller.getRootView().getId());
         _rootViews.removeIf(rootView -> rootView.getView() == controller.getRootView());
         clientLuaModuleManager.loadLuaFile(fileName);
         luaControllerManager.initController(controller);
@@ -158,7 +158,7 @@ public class UIManager {
     private void fixRootAndSubViews() {
         _subViews.forEach((subView, parentName) -> {
             _views.stream()
-                    .filter(view -> parentName.equals(view.getName()))
+                    .filter(view -> parentName.equals(view.getId()))
                     .findAny()
                     .flatMap(CompositeView::instanceOf)
                     .ifPresent(compositeView -> {
@@ -169,7 +169,7 @@ public class UIManager {
                     });
             _rootViews.stream()
                     .map(RootView::getView)
-                    .filter(view -> parentName.equals(view.getName()))
+                    .filter(view -> parentName.equals(view.getId()))
                     .findAny()
                     .flatMap(CompositeView::instanceOf)
                     .ifPresent(compositeView -> {
@@ -182,7 +182,7 @@ public class UIManager {
     }
 
     public void addSubView(View subViewToAdd, String parentName) {
-        if (_subViews.keySet().stream().noneMatch(subView -> subView.getName().equals(subViewToAdd.getName()))) {
+        if (_subViews.keySet().stream().noneMatch(subView -> subView.getId().equals(subViewToAdd.getId()))) {
             _subViews.put(subViewToAdd, parentName);
         }
 

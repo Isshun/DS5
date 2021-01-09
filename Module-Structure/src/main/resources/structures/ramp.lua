@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Ramp",
-        name = "base.structure.ramp",
+        id = "base.structure.ramp",
         type = "structure",
         category = "ramp",
         floor = {

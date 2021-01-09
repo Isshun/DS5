@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Pain",
-        name = "base.buff_pain",
+        id = "base.buff_pain",
         type = "buff",
         on_update = function (character, data)
             if character.needs.pain >= 100 then

@@ -37,7 +37,6 @@ public abstract class View implements Comparable<View> {
     private int _index;
     private LuaController _controller;
     private boolean _isGameView;
-    private String _name;
 
     protected boolean _isVisible = true;
     protected boolean _isAlignLeft = true;
@@ -161,10 +160,6 @@ public abstract class View implements Comparable<View> {
         _parent = parent;
     }
 
-    public void setName(String name) {
-        _name = name;
-    }
-
     public void setInGame(boolean inGame) {
         _inGame = inGame;
     }
@@ -233,10 +228,6 @@ public abstract class View implements Comparable<View> {
         return _focusBackground;
     }
 
-    public String getName() {
-        return _name;
-    }
-
     public ModuleBase getModule() {
         return _module;
     }
@@ -279,7 +270,7 @@ public abstract class View implements Comparable<View> {
                         getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(),
                         12,
                         com.badlogic.gdx.graphics.Color.CYAN,
-                        _name);
+                        _id);
             }
         }
     }
@@ -391,4 +382,5 @@ public abstract class View implements Comparable<View> {
     public ViewStyle getStyle() {
         return style;
     }
+
 }

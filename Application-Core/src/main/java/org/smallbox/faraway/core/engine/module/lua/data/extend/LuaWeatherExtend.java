@@ -19,13 +19,13 @@ public class LuaWeatherExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
+        String id = getString(value, "id", null);
 
-        WeatherInfo weatherInfo = data.weathers.get(name);
+        WeatherInfo weatherInfo = data.weathers.get(id);
         if (weatherInfo == null) {
             weatherInfo = new WeatherInfo();
-            data.weathers.put(name, weatherInfo);
-            data.add(name, weatherInfo);
+            data.weathers.put(id, weatherInfo);
+            data.add(id, weatherInfo);
         }
 
         readWeather(weatherInfo, value);
@@ -34,7 +34,7 @@ public class LuaWeatherExtend extends LuaExtend {
     }
 
     private void readWeather(WeatherInfo weatherInfo, LuaValue value) throws DataExtendException {
-        weatherInfo.name = getString(value, "name", null);
+        weatherInfo.name = getString(value, "id", null);
         weatherInfo.label = getString(value, "label", null);
         weatherInfo.icon = getString(value, "icon", null);
         weatherInfo.particle = value.get("particle").optjstring(null);

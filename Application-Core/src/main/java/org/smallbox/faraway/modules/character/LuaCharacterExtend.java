@@ -21,8 +21,8 @@ public class LuaCharacterExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
-        CharacterInfo characterInfo = data.characters.computeIfAbsent(name, k -> new CharacterInfo(name));
+        String id = getString(value, "id", null);
+        CharacterInfo characterInfo = data.characters.computeIfAbsent(id, k -> new CharacterInfo(id));
 
         characterInfo.path = "data/characters/human.png";
 

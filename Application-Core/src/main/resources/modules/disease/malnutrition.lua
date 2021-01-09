@@ -1,6 +1,6 @@
 data:extend({
     label = "Malnutrition",
-    name = "base.disease.malnutrition",
+    id = "base.disease.malnutrition",
     type = "disease",
     on_start = function (character, data)
         data.duration = 0

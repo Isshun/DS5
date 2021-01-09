@@ -1,6 +1,6 @@
 data:extend({
     label = "Dehydration",
-    name = "base.buff.dehydration",
+    id = "base.buff.dehydration",
     type = "buff",
     on_check = function (character, data)
         return character:getNeeds():get("drink") == 0

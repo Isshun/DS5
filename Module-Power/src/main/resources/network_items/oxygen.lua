@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Small oxygen pipe",
-        name = "base.network_item.small_oxygen_pipe",
+        id = "base.network_item.small_oxygen_pipe",
         type = "network_item",
         category = "oxygen",
         network = "base.network.oxygen",
@@ -10,7 +10,7 @@ data:extend({
     },
     {
         label = "Main oxygen pipe",
-        name = "base.network_item.main_oxygen_pipe",
+        id = "base.network_item.main_oxygen_pipe",
         type = "network_item",
         category = "oxygen",
         network = "base.network.oxygen",

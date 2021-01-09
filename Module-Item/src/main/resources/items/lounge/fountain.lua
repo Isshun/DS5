@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Fountain",
-        name = "base.fountain",
+        id = "base.fountain",
         type = "item",
         category = "common",
         slots = {{-1, 1},{0, 1},{1, 1},{-1, 0},{1, 0},{-1, -1},{0, -1},{1, -1},},

@@ -38,14 +38,14 @@ public abstract class LuaUIExtend extends LuaExtend {
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) {
         String rootName =
-                StringUtils.isNotBlank(getString(value, "name", null)) ? getString(value, "name", null) :
+                StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) :
                         StringUtils.isNotBlank(getString(value, "id", null)) ? getString(value, "id", null) : "";
 
-        if (uiManager.getRootViews().stream().anyMatch(rootView -> rootView.getView().getName().equals(rootName))) {
+        if (uiManager.getRootViews().stream().anyMatch(rootView -> rootView.getView().getId().equals(rootName))) {
             return;
         }
 
-        if (uiManager.getSubViews().stream().anyMatch(subView -> subView.getName().equals(rootName))) {
+        if (uiManager.getSubViews().stream().anyMatch(subView -> subView.getId().equals(rootName))) {
             return;
         }
 
@@ -80,18 +80,8 @@ public abstract class LuaUIExtend extends LuaExtend {
         view.setFocusable(getBoolean(value, "focusable", false));
         view.setActive(getBoolean(value, "active", true));
 
-        readString(value, "id", v -> {
-            view.setId(v);
-            view.setName(v);
-            luaStyleManager.applyStyleFromId(v, view);
-        });
-
-        readString(value, "name", v -> {
-            view.setId(v);
-            view.setName(v);
-            Log.debug("Deprecated parameter: " + v);
-        });
-
+        readString(value, "id", view::setId);
+        readString(value, "id", v -> luaStyleManager.applyStyleFromId(v, view));
         readString(value, "action", view::setActionName);
         readInt(value, "layer", view::setLayer);
         readString(value, "group", view::setGroup);

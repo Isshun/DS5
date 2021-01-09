@@ -1,6 +1,6 @@
 data:extend({
     label = "Windtrap",
-    name = "base.windtrap",
+    id = "base.windtrap",
     type = "item",
     category = "common",
     graphics = { path = "[base]/graphics/items/windtrap.png" },

@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Small water pipe",
-        name = "base.network_item.small_water_pipe",
+        id = "base.network_item.small_water_pipe",
         type = "network_item",
         category = "water",
         network = "base.network.water",
@@ -10,7 +10,7 @@ data:extend({
     },
     {
         label = "Main water pipe",
-        name = "base.network_item.main_water_pipe",
+        id = "base.network_item.main_water_pipe",
         type = "network_item",
         category = "water",
         network = "base.network.water",

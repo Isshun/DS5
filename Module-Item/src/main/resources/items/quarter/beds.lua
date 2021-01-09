@@ -1,6 +1,6 @@
 data:extend({
     { label = "Bed",
-        name = "base.item.bed",
+        id = "base.item.bed",
         type = "item_group",
         category = "quarter",
         build = { cost = 100 },
@@ -11,7 +11,7 @@ data:extend({
         use = { duration = 6, effects = {{type = "energy", quantity = 1}} }
     },
     { label = "Wood Bed",
-        name = "base.item.bed.wood",
+        id = "base.item.bed.wood",
         type = "item",
         category = "quarter",
         build = { cost = 20 },
@@ -22,7 +22,7 @@ data:extend({
         use = { duration = 6, effects = {{type = "energy", quantity = 1}} }
     },
     { label = "Sandstone Bed",
-        name = "base.item.bed.sandstone",
+        id = "base.item.bed.sandstone",
         type = "item",
         category = "quarter",
         build = { cost = 100 },

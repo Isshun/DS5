@@ -23,13 +23,13 @@ public class LuaReceiptExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
+        String id = getString(value, "id", null);
         ReceiptGroupInfo receiptGroupInfo = new ReceiptGroupInfo();
 
-        data.add(name, receiptGroupInfo);
+        data.add(id, receiptGroupInfo);
         data.receipts.add(receiptGroupInfo);
 
-        readString(value, "name", v -> receiptGroupInfo.name = v);
+        readString(value, "id", v -> receiptGroupInfo.name = v);
         readString(value, "label", v -> receiptGroupInfo.label = v);
         readInt(value, "cost", v -> receiptGroupInfo.cost = v, 1);
 
@@ -49,7 +49,7 @@ public class LuaReceiptExtend extends LuaExtend {
                     for (int j = 1; j <= luaInputs.length(); j++) {
                         LuaValue luaInput = luaInputs.get(j);
                         ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo componentInfo = new ReceiptGroupInfo.ReceiptInfo.ReceiptInputInfo();
-                        readAsync(luaInput, "name", ItemInfo.class, itemInfo -> componentInfo.item = itemInfo);
+                        readAsync(luaInput, "id", ItemInfo.class, itemInfo -> componentInfo.item = itemInfo);
                         componentInfo.quantity = luaInput.get("quantity").toint();
                         receiptInfo.inputs.add(componentInfo);
                     }
@@ -61,7 +61,7 @@ public class LuaReceiptExtend extends LuaExtend {
                     for (int j = 1; j <= luaOutputs.length(); j++) {
                         LuaValue luaComponent = luaOutputs.get(j);
                         ReceiptGroupInfo.ReceiptInfo.ReceiptOutputInfo productItemInfo = new ReceiptGroupInfo.ReceiptInfo.ReceiptOutputInfo();
-                        readAsync(luaComponent, "name", ItemInfo.class, itemInfo -> productItemInfo.item = itemInfo);
+                        readAsync(luaComponent, "id", ItemInfo.class, itemInfo -> productItemInfo.item = itemInfo);
                         if (luaComponent.get("quantity").istable()) {
                             productItemInfo.quantity = new int[] {
                                     luaComponent.get("quantity").get(1).toint(),

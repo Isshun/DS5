@@ -38,13 +38,13 @@ public class LuaItemExtend extends LuaExtend {
 
     @Override
     public void extend(Data data, ModuleBase module, Globals globals, LuaValue value, File dataDirectory) throws DataExtendException {
-        String name = getString(value, "name", null);
+        String id = getString(value, "id", null);
 
-        _cache.put(name, value);
+        _cache.put(id, value);
 
         ItemInfo itemInfo = null;
         for (ItemInfo info: data.items) {
-            if (info.name != null && info.name.equals(name)) {
+            if (info.name != null && info.name.equals(id)) {
                 itemInfo = info;
             }
         }
@@ -53,7 +53,7 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo = new ItemInfo();
             itemInfo.dataDirectory = dataDirectory;
             data.items.add(itemInfo);
-            data.add(name, itemInfo);
+            data.add(id, itemInfo);
         }
 
         if (!value.get("parent").isnil()) {
@@ -68,7 +68,7 @@ public class LuaItemExtend extends LuaExtend {
     }
 
     private void readItem(Data data, ItemInfo itemInfo, LuaValue value) throws DataExtendException {
-        itemInfo.name = getString(value, "name", null);
+        itemInfo.name = getString(value, "id", null);
         itemInfo.label = getString(value, "label", null);
         itemInfo.category = value.get("category").optjstring(null);
         itemInfo.subCategory = value.get("sub_category").optjstring(null);
@@ -461,7 +461,7 @@ public class LuaItemExtend extends LuaExtend {
         itemInfo.plant.states = new ArrayList<>();
         for (int i = 1; i <= values.length(); i++) {
             ItemInfo.ItemInfoPlant.GrowingInfo growingInfo = new ItemInfo.ItemInfoPlant.GrowingInfo();
-            growingInfo.name = getString(values.get(i), "name", null);
+            growingInfo.name = getString(values.get(i), "id", null);
             growingInfo.value = getDouble(values.get(i), "value", 0);
 
             readLua(values.get(i), "temperature", value -> growingInfo.temperature = new double[] { value.get(1).todouble(), value.get(2).todouble() });

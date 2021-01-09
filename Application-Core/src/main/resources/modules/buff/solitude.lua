@@ -1,6 +1,6 @@
 data:extend({
     label = "Solitude",
-    name = "base.buff.solitude",
+    id = "base.buff.solitude",
     type = "buff",
     on_update = function (character, data)
         if character.needs:get("relation") < 1 then

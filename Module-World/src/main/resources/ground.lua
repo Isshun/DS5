@@ -1,7 +1,7 @@
 data:extend({
     {
         label = "Sand",
-        name = "base.ground.sand",
+        id = "base.ground.sand",
         type = "ground",
         color = 0xfff9bdff,
         size = {16, 16},
@@ -11,7 +11,7 @@ data:extend({
     },
     {
         label = "Grass",
-        name = "base.ground.grass",
+        id = "base.ground.grass",
         type = "ground",
         color = 0x87943cff,
         size = {16, 16},
@@ -24,7 +24,7 @@ data:extend({
     },
     {
         label = "Dirt",
-        name = "base.ground.dirt",
+        id = "base.ground.dirt",
         type = "ground",
         color = 0x6d7c1dff,
         size = {16, 16},
@@ -38,7 +38,7 @@ data:extend({
     },
     {
         label = "Granite",
-        name = "base.ground.granite",
+        id = "base.ground.granite",
         type = "ground",
         color = 0xfff9bdff,
         fertility = 0,
@@ -47,7 +47,7 @@ data:extend({
     },
     {
         label = "Link to down stair",
-        name = "base.ground.link",
+        id = "base.ground.link",
         type = "ground",
         color = 0xfff9bdff,
         fertility = 0,
@@ -57,7 +57,7 @@ data:extend({
     },
     {
         label = "Water surface",
-        name = "base.ground.water_surface",
+        id = "base.ground.water_surface",
         type = "ground",
         color = 0x8794bcff,
         fertility = 0,

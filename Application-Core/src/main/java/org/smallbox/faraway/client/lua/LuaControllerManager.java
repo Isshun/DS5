@@ -96,7 +96,7 @@ public class LuaControllerManager implements GameObserver {
                         );
 
                         if (view != null) {
-                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getName());
+                            Log.debug(LuaControllerManager.class, "LuaController: Bind view %s", view.getId());
                             field.setAccessible(true);
                             field.set(controller, view);
                         } else {
@@ -152,7 +152,7 @@ public class LuaControllerManager implements GameObserver {
                     view.getEvents().setOnClickListener((int x, int y) -> {
                         try {
                             Log.debug(LuaControllerManager.class, "Method: %s", method.getName());
-                            Log.debug(LuaControllerManager.class, "View: %s", view.getName());
+                            Log.debug(LuaControllerManager.class, "View: %s", view.getId());
                             method.invoke(controller, view);
                         } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
                             throw new GameException(LuaControllerManager.class, e);

@@ -23,7 +23,7 @@ public class LuaCharacterDiseaseExtend extends LuaExtend {
         DiseaseInfo disease = new DiseaseInfo();
 
         disease.label = value.get("label").toString();
-        disease.name = value.get("name").toString();
+        disease.name = value.get("id").toString();
         disease.setVisible(value.get("visible").isnil() || value.get("visible").toboolean());
 
         LuaValue onStart = value.get("on_start");

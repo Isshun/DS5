@@ -1,6 +1,6 @@
 data:extend({
     label = "Human",
-    name = "base.character.human",
+    id = "base.character.human",
     type = "character",
     needs = {
         energy = {
