@@ -1,7 +1,7 @@
-package org.smallbox.faraway.client.lua.ui.impl;
+package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.lua.ui.LuaUIExtend;
+import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;

@@ -1,7 +1,7 @@
-package org.smallbox.faraway.client.lua.ui.impl;
+package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.lua.ui.LuaUICompositeExtend;
+import org.smallbox.faraway.client.lua.extend.LuaUICompositeExtend;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;

@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.lua.ui;
+package org.smallbox.faraway.client.lua.extend;
 
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;

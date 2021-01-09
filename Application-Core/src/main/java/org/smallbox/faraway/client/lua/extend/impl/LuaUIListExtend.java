@@ -1,18 +1,18 @@
-package org.smallbox.faraway.client.lua.ui.impl;
+package org.smallbox.faraway.client.lua.extend.impl;
 
 import org.luaj.vm2.LuaValue;
-import org.smallbox.faraway.client.lua.ui.LuaUICompositeExtend;
+import org.smallbox.faraway.client.lua.extend.LuaUICompositeExtend;
 import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 @ApplicationObject
-public class LuaUIDropdownExtend extends LuaUICompositeExtend {
+public class LuaUIListExtend extends LuaUICompositeExtend {
 
     @Override
     public boolean accept(String type) {
-        return "dropdown".equals(type);
+        return "list".equals(type);
     }
 
     @Override
@@ -21,9 +21,7 @@ public class LuaUIDropdownExtend extends LuaUICompositeExtend {
 
     @Override
     protected View createViewFromType(ModuleBase module, LuaValue value) {
-        View view = new UIDropDown(module);
-        uiManager.addDropsDowns((UIDropDown) view);
-        return view;
+        return new UIList(module);
     }
 
 }

@@ -4,8 +4,7 @@ import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.luaj.vm2.lib.jse.JsePlatform;
-import org.smallbox.faraway.client.lua.ui.LuaUIBridge;
-import org.smallbox.faraway.client.lua.ui.LuaUIExtend;
+import org.smallbox.faraway.client.lua.extend.LuaUIExtend;
 import org.smallbox.faraway.client.ui.engine.RawColors;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.View;
@@ -13,6 +12,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.core.engine.module.lua.LuaDataModel;
+import org.smallbox.faraway.core.engine.module.lua.LuaExtendInterface;
 import org.smallbox.faraway.core.engine.module.lua.LuaModuleManager;
 import org.smallbox.faraway.core.engine.module.lua.luaModel.LuaApplicationModel;
 import org.smallbox.faraway.core.game.Data;
@@ -75,15 +75,12 @@ public class ClientLuaModuleManager extends LuaModuleManager {
 
         globals.get("main").call(
                 CoerceJavaToLua.coerce(luaApplicationModel),
-                CoerceJavaToLua.coerce(new LuaUIBridge(null) {
-                    @Override
-                    public void extend(LuaValue values) {
-                        if (!values.get("type").isnil()) {
-                            extendLuaValue(module, values, globals, dataDirectory);
-                        } else {
-                            for (int i = 1; i <= values.length(); i++) {
-                                extendLuaValue(module, values.get(i), globals, dataDirectory);
-                            }
+                CoerceJavaToLua.coerce((LuaExtendInterface) values -> {
+                    if (!values.get("type").isnil()) {
+                        extendLuaValue(module, values, globals, dataDirectory);
+                    } else {
+                        for (int i = 1; i <= values.length(); i++) {
+                            extendLuaValue(module, values.get(i), globals, dataDirectory);
                         }
                     }
                 }),

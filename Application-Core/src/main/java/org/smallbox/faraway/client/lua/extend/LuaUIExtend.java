@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.lua.ui;
+package org.smallbox.faraway.client.lua.extend;
 
 import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.Globals;
@@ -34,8 +34,13 @@ public abstract class LuaUIExtend extends LuaExtend {
     @Inject
     protected LuaControllerManager luaControllerManager;
 
+    @Inject
+    protected LuaStyleManager luaStyleManager;
+
     protected abstract void readSpecific(LuaValue value, View view);
+
     protected abstract View createViewFromType(ModuleBase module, LuaValue value);
+
     public abstract boolean accept(String type);
 
     @Override
@@ -76,7 +81,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         }
     }
 
-    private void readViewMandatory(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, View view) {
+    private void readViewMandatory(LuaValue value, boolean inGame, int deep, CompositeView parent, View view) {
         view.setParent(parent);
         view.setDeep(deep);
         view.setInGame(inGame);
@@ -86,7 +91,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         readString(value, "id", v -> {
             view.setId(v);
             view.setName(v);
-            LuaStyleManager.getInstance().applyStyleFromId(v, view);
+            luaStyleManager.applyStyleFromId(v, view);
         });
 
         readString(value, "name", v -> {
@@ -103,7 +108,7 @@ public abstract class LuaUIExtend extends LuaExtend {
         CompositeView.instanceOf(view).ifPresent(compositeView -> readBoolean(value, "sorted", compositeView::setSorted));
     }
 
-    void customizeViewCosmetic(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {
+    void customizeViewCosmetic(LuaValue value, View view) {
         readSpecific(value, view);
 
         readLua(value, "align", v -> view.setAlign(VerticalAlign.valueOf(v.get(1).toString().toUpperCase()), HorizontalAlign.valueOf(v.get(2).toString().toUpperCase())));
@@ -139,7 +144,7 @@ public abstract class LuaUIExtend extends LuaExtend {
 
     }
 
-    private void readEvents(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {
+    private void readEvents(Globals globals, LuaValue value, View view) {
         LuaValue luaView = CoerceJavaToLua.coerce(view);
 
         LuaValue onFocus = value.get("on_focus");
@@ -193,11 +198,11 @@ public abstract class LuaUIExtend extends LuaExtend {
         view.setGameView(isGameView);
 
         // Add mandatory value
-        readViewMandatory(module, globals, value, inGame, deep, parent, view);
+        readViewMandatory(value, inGame, deep, parent, view);
         readBoolean(value, "special", view::setSpecial);
-        customizeViewCosmetic(module, globals, value, inGame, deep, parent, view);
-        readGeometry(module, globals, value, inGame, deep, parent, view);
-        readEvents(module, globals, value, inGame, deep, parent, view);
+        customizeViewCosmetic(value, view);
+        readGeometry(value, view);
+        readEvents(globals, value, view);
         readTemplate(module, globals, value, inGame, deep, view, path, isGameView);
 
         // Add subviews
@@ -208,24 +213,24 @@ public abstract class LuaUIExtend extends LuaExtend {
         // Set controller
         readString(value, "controller", controllerName -> luaControllerManager.setControllerView(controllerName, (CompositeView) view));
 
-        readString(value, "style", styleName -> applyStyle(module, globals, value, inGame, deep, parent, view, styleName));
+        readString(value, "style", styleName -> applyStyle(view, styleName));
 
         return view;
     }
 
-    private void applyStyle(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view, String styleName) {
-        value = uiManager.getStyle(styleName);
+    private void applyStyle(View view, String styleName) {
+        LuaValue value = uiManager.getStyle(styleName);
         Log.warning("Unable to find style: " + styleName);
         if (value != null) {
-            customizeViewCosmetic(module, globals, value, inGame, deep, parent, view);
-            readGeometry(module, globals, value, inGame, deep, parent, view);
+            customizeViewCosmetic(value, view);
+            readGeometry(value, view);
         }
     }
 
     protected void readTemplate(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View view, String path, boolean isGameView) {
     }
 
-    private void readGeometry(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View parent, View view) {
+    private void readGeometry(LuaValue value, View view) {
         readLua(value, "size", v -> view.setSize(v.get(1).toint(), v.get(2).toint()));
         readLua(value, "size", v -> view.getGeometry().setFixedSize(v.get(1).toint(), v.get(2).toint()));
         readLua(value, "position", v -> view.setPosition(v.get(1).toint(), v.get(2).toint()));
