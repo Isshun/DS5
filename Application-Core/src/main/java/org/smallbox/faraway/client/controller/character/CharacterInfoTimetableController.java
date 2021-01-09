@@ -71,7 +71,7 @@ public class CharacterInfoTimetableController extends LuaController {
                             .setText(dayTime.hour + "h")
                             .setTextColor(Colors.COLOR2)
                             .setTextSize(14)
-                            .setPadding(6));
+                            .setPadding(6, 6, 6, 6));
 //
 //                view.addView(new UIFrame(null)
 //                        .setSize(32, 14)
@@ -88,7 +88,7 @@ public class CharacterInfoTimetableController extends LuaController {
                 });
             }
 
-            marker.setPositionY((22 * 24) * (gameTime.getHour() * 60 + gameTime.getMinute()) / (24 * 60));
+            marker.getGeometry().setPositionY((22 * 24) * (gameTime.getHour() * 60 + gameTime.getMinute()) / (24 * 60));
         }
     }
 

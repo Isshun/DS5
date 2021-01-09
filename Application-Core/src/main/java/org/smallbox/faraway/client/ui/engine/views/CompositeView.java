@@ -2,6 +2,8 @@ package org.smallbox.faraway.client.ui.engine.views;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.Collection;
@@ -136,6 +138,14 @@ public abstract class CompositeView extends View {
         return null;
     }
 
+    public UILabel findLabel(String resId) {
+        return (UILabel)findById(resId);
+    }
+
+    public UIImage findImage(String resId) {
+        return (UIImage)findById(resId);
+    }
+
     public View findById(String resId) {
         for (View view: _views) {
             if (StringUtils.equals(view._id, resId)) {
@@ -149,56 +159,6 @@ public abstract class CompositeView extends View {
             }
         }
         return null;
-    }
-
-    protected int getAlignedX() {
-
-        // Alignement par rapport au parent
-        if (_parent != null) {
-            if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (_parent.getWidth() / 2) - (_width / 2) + _x;
-            }
-            if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return _parent.getWidth() - _width - _x;
-            }
-        }
-
-        // Alignement par rapport à l'écran
-        else {
-            if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
-            }
-            if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return gdxRenderer.getWidth() - _width - _x;
-            }
-        }
-
-        return _x;
-    }
-
-    protected int getAlignedY() {
-
-        // Alignement par rapport au parent
-        if (_parent != null) {
-            if (_verticalAlign == VerticalAlign.CENTER) {
-                return (_parent.getHeight() / 2) - (_height / 2) + _y;
-            }
-            if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return _parent.getHeight() - _y;
-            }
-        }
-
-        // Alignement par rapport à l'écran
-        else {
-            if (_verticalAlign == VerticalAlign.CENTER) {
-                return (gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
-            }
-            if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return gdxRenderer.getHeight() - _y;
-            }
-        }
-
-        return _y;
     }
 
 }

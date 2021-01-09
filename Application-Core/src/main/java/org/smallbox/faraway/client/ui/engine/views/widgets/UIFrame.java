@@ -16,8 +16,8 @@ public class UIFrame extends CompositeView {
     @Override
     public void init() {
         if (_align == Align.CENTER && _parent != null) {
-            _offsetX = (_parent.getContentWidth() - _width) / 2;
-            _offsetY = (_parent.getContentHeight() - _height) / 2;
+            geometry.setOffsetX((_parent.getContentWidth() - getWidth()) / 2);
+            geometry.setOffsetY((_parent.getContentHeight() - getHeight()) / 2);
         }
 
         _views.forEach(View::init);
@@ -63,5 +63,5 @@ public class UIFrame extends CompositeView {
     }
 
     @Override
-    public String toString() { return "" + _name + " [" + String.join(", ", _views.stream().map(View::toString).collect(Collectors.toList()))+ "]"; }
+    public String toString() { return "" + getName() + " [" + _views.stream().map(View::toString).collect(Collectors.joining(", ")) + "]"; }
 }

@@ -18,36 +18,16 @@ import org.smallbox.faraway.core.game.Game;
 
 @GameObject
 public class MainPanelController extends LuaController {
-
-    @Inject
-    private GameSelectionManager gameSelectionManager;
-
-    @Inject
-    private UIEventManager uiEventManager;
-
-    @Inject
-    private UIManager uiManager;
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private CrewController crewController;
-
-    @Inject
-    private AreaPanelController areaPanelController;
-
-    @Inject
-    private BuildController buildController;
-
-    @Inject
-    private JobController jobController;
-
-    @Inject
-    private Viewport viewport;
+    @Inject private GameSelectionManager gameSelectionManager;
+    @Inject private UIEventManager uiEventManager;
+    @Inject private UIManager uiManager;
+    @Inject private Game game;
+    @Inject private LayerManager layerManager;
+    @Inject private CrewController crewController;
+    @Inject private AreaPanelController areaPanelController;
+    @Inject private BuildController buildController;
+    @Inject private JobController jobController;
+    @Inject private Viewport viewport;
 
     @BindLua private UIGrid mainGrid;
     @BindLua private UILabel lbPlanet;
@@ -88,31 +68,11 @@ public class MainPanelController extends LuaController {
                 .filter(view -> StringUtils.equals(view.getId(), id))
                 .forEach(oldView -> uiManager.removeView(oldView));
 
-//        mainGrid.getViews().removeIf(view -> StringUtils.equals(view.getId(), id));
-
-
-//        mainGrid.getViews().stream().filter(view -> StringUtils.equals(view.getId(), id)).forEach(oldView -> {
-//            uiEventManager.removeListeners(oldView);
-//            uiManager.getViews().remove(oldView);
-//            mainGrid.getViews().remove(oldView);
-//        });
-
-        mainGrid.addView(UILabel.create(null)
-                .setText(label)
-                .setTextSize(18)
-                .setPadding(10)
-                .setSize(170, 40)
-                .setId(id)
-                .setName(mainGrid.getName() + "." + label)
-                .setBackgroundColor(0x349394ff)
-                .setFocusBackgroundColor(0x25c9cbff)
-                .setOnClickListener((x, y) -> {
-//                    mainContent.removeAllViews();
-//                    mainContent.addView(controller.getRootView());
-                    controller.getRootView().setVisible(true);
-//                    _currentPaneController = controller;
-//                    _currentPaneController.setVisible(true);
-                }));
+        UILabel uiLabel = (UILabel)mainGrid.createFromTemplate();
+        uiLabel.setId(id);
+        uiLabel.setText(label);
+        uiLabel.setName(mainGrid.getName() + "." + label);
+        uiLabel.setOnClickListener((x, y) -> controller.getRootView().setVisible(true));
     }
 
     public View getMapContainer() {

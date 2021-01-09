@@ -78,7 +78,7 @@ public class ItemInfoController extends AbsInfoLuaController<UsableItem> {
         lbName.setText(item.getLabel());
         lbHealth.setText(item.getHealth() + " / " + item.getMaxHealth());
         image.setImage(item.getGraphic());
-        progressHealth.setWidth(80 * item.getHealth() / item.getMaxHealth());
+        progressHealth.getGeometry().setWidth(80 * item.getHealth() / item.getMaxHealth());
 
         if (!item.isComplete()) {
             frameBuild.setVisible(true);

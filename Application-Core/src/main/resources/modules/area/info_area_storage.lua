@@ -27,7 +27,12 @@ ui:extend({
                 }},
 
                 { type = "label", text = "Items", text_color = red_dark_3, text_size = 12, position = {0, 55}},
-                { type = "list", id = "list_storage", position = {0, 71}},
+                { type = "list", id = "list_storage", position = {0, 71}, template = {
+                    {type = "view", size = {200, 20}, views = {
+                        { type = "label", id = "lb_category", text_color = blue_light_3, text_size = 14, padding = 5 },
+                        {type = "image", id = "img_category", size = {16, 16}, position = {300, 0}},
+                    }}
+                }},
 
             }},
         }},

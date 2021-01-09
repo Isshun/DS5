@@ -44,7 +44,7 @@ public class StructureInfoController extends AbsInfoLuaController<StructureItem>
     protected void onDisplayUnique(StructureItem structure) {
         lbName.setText(structure.getLabel());
         lbHealth.setText(String.valueOf(structure.getHealth()));
-        progressHealth.setWidth(80 * structure.getHealth() / structure.getMaxHealth());
+        progressHealth.getGeometry().setWidth(80 * structure.getHealth() / structure.getMaxHealth());
 
         if (!structure.isComplete()) {
             frameBuild.setVisible(true);

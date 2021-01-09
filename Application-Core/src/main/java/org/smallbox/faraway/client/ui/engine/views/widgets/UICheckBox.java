@@ -36,7 +36,7 @@ public class UICheckBox extends View {
     public UICheckBox setOnCheckListener(OnCheckListener onCheckListener) {
         setOnClickListener((x, y) -> {
             _checked = !_checked;
-            onCheckListener.onCheck(_checked, x < _finalX + 32);
+            onCheckListener.onCheck(_checked, x < geometry.getFinalX() + 32);
         });
         return this;
     }
@@ -164,8 +164,8 @@ public class UICheckBox extends View {
 
     public UICheckBox setTextSize(int size) {
         _textSize = size;
-        if (_height == -1) {
-            _height = (int)(fontManager.getFont(_textSize).getLineHeight() * 1.2);
+        if (getHeight() == -1) {
+            geometry.setHeight((int)(fontManager.getFont(_textSize).getLineHeight() * 1.2));
         }
         return this;
     }
@@ -201,16 +201,16 @@ public class UICheckBox extends View {
 
         if (_isVisible) {
             if (_align == Align.CENTER) {
-                _offsetX = (_width - getContentWidth()) / 2;
-                _offsetY = (_height - getContentHeight()) / 2;
+                geometry.setOffsetX((getWidth() - getContentWidth()) / 2);
+                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
             }
 
             if (_align == Align.CENTER_VERTICAL) {
-                _offsetY = (_height - getContentHeight()) / 2;
+                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);;
             }
 
-            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _checked ? "[x]" : "[ ]");
-            renderer.drawText(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft + 32, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _textColor, _string);
+            renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(), getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _textSize, _textColor, _checked ? "[x]" : "[ ]");
+            renderer.drawText(getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft() + 32, getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(), _textSize, _textColor, _string);
         }
     }
 

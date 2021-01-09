@@ -65,7 +65,7 @@ public class UIDropDown extends CompositeView {
 
         if (_isVisible) {
             if (_current != null) {
-                _current.draw(renderer, _x + x, _y + y);
+                _current.draw(renderer, geometry.getX() + x, geometry.getY() + y);
             }
         }
     }
@@ -73,13 +73,13 @@ public class UIDropDown extends CompositeView {
     public void drawDropDown(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
             if (_isOpen) {
-                int offsetY = _height;
+                int offsetY = getHeight();
                 for (View view : _views) {
-                    view.draw(renderer, _finalX, _finalY + offsetY);
+                    view.draw(renderer, geometry.getFinalX(), geometry.getFinalY() + offsetY);
                     offsetY += view.getHeight();
                 }
             }
-            _overlay.draw(renderer, _finalX, _finalY);
+            _overlay.draw(renderer, geometry.getFinalX(), geometry.getFinalY());
         }
     }
 

@@ -171,7 +171,7 @@ public class LuaUIExtend extends LuaExtend {
 
         readLua(value, "size", v -> {
             view.setSize(v.get(1).toint(), v.get(2).toint());
-            view.setFixedSize(v.get(1).toint(), v.get(2).toint());
+            view.getGeometry().setFixedSize(v.get(1).toint(), v.get(2).toint());
         });
 
         readLua(value, "align", v -> view.setAlign(
@@ -218,7 +218,7 @@ public class LuaUIExtend extends LuaExtend {
         });
 
         readLua(value, "padding", v -> {
-            if (!v.istable()) { view.setPadding(v.toint()); }
+            if (!v.istable()) { view.setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
             else if (v.length() == 4) { view.setPadding(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint()); }
             else if (v.length() == 2) { view.setPadding(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint()); }
             else if (v.length() == 1) { view.setPadding(v.toint(), v.toint(), v.toint(), v.toint()); }
@@ -391,7 +391,7 @@ public class LuaUIExtend extends LuaExtend {
         // Add template
         LuaValue template = value.get("template");
         if (!template.isnil()) {
-            if (template.istable()) {
+            if (template.istable() && template.length() > 1) {
                 ((CompositeView)view).setTemplate(() -> {
                     UIList list = new UIList(module);
                     for (int i = 1; i <= template.length(); i++) {
@@ -400,7 +400,7 @@ public class LuaUIExtend extends LuaExtend {
                     return list;
                 });
             } else {
-                ((CompositeView)view).setTemplate(() -> createView(module, globals, template, inGame, deep + 1, (CompositeView) view, path + "." + 1, 1, isGameView, false));
+                ((CompositeView)view).setTemplate(() -> createView(module, globals, template.get(1), inGame, deep + 1, (CompositeView) view, path + "." + 1, 1, isGameView, false));
             }
         }
 
@@ -440,8 +440,8 @@ public class LuaUIExtend extends LuaExtend {
             @Override
             public void draw(GDXRenderer renderer, int x, int y) {
                 if (_isVisible) {
-                    _finalX = getAlignedX() + _marginLeft + x;
-                    _finalY = _y + _marginTop + y;
+                    geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
+                    geometry.setFinalY(geometry.getY() + geometry.getMarginTop() + y);
                 }
             }
 

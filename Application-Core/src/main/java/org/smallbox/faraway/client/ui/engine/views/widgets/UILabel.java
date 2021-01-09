@@ -10,19 +10,19 @@ import org.smallbox.faraway.core.engine.module.ModuleBase;
 import org.smallbox.faraway.util.StringUtils;
 
 public class UILabel extends View {
-    public static final int    REGULAR = 0;
-    public static final int    BOLD = 1;
-    public static final int    ITALIC = 2;
-    public static final int    UNDERLINED = 3;
+    public static final int REGULAR = 0;
+    public static final int BOLD = 1;
+    public static final int ITALIC = 2;
+    public static final int UNDERLINED = 3;
     private int _hash1;
     private int _hash2;
     private int _hash3;
     private int _hash4;
 
-    private String      _text = "";
-    private int         _textSize = 14;
-    private Color       _textColor = Color.BLACK;
-    private int         _maxLength;
+    private String _text = "";
+    private int _textSize = 14;
+    private Color _textColor = Color.BLACK;
+    private int _maxLength;
 
     public UILabel(ModuleBase module) {
         super(module);
@@ -50,8 +50,12 @@ public class UILabel extends View {
     }
 
     public void setText(String str1, String str2) {
-        if (str1 == null) { str1 = ""; }
-        if (str2 == null) { str2 = ""; }
+        if (str1 == null) {
+            str1 = "";
+        }
+        if (str2 == null) {
+            str2 = "";
+        }
 
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
@@ -67,9 +71,15 @@ public class UILabel extends View {
     }
 
     public void setText(String str1, String str2, String str3) {
-        if (str1 == null) { str1 = ""; }
-        if (str2 == null) { str2 = ""; }
-        if (str3 == null) { str3 = ""; }
+        if (str1 == null) {
+            str1 = "";
+        }
+        if (str2 == null) {
+            str2 = "";
+        }
+        if (str3 == null) {
+            str3 = "";
+        }
 
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
@@ -83,10 +93,18 @@ public class UILabel extends View {
     }
 
     public void setText(String str1, String str2, String str3, String str4) {
-        if (str1 == null) { str1 = ""; }
-        if (str2 == null) { str2 = ""; }
-        if (str3 == null) { str3 = ""; }
-        if (str4 == null) { str4 = ""; }
+        if (str1 == null) {
+            str1 = "";
+        }
+        if (str2 == null) {
+            str2 = "";
+        }
+        if (str3 == null) {
+            str3 = "";
+        }
+        if (str4 == null) {
+            str4 = "";
+        }
 
         int hash1 = str1.hashCode();
         int hash2 = str2.hashCode();
@@ -143,7 +161,7 @@ public class UILabel extends View {
         if (_maxLength > 0) {
             int index = string.indexOf(' ', _maxLength / 2);
             if (index != -1) {
-                string = string.substring(0, index) + '\n' + string.substring(index+1);
+                string = string.substring(0, index) + '\n' + string.substring(index + 1);
             }
         }
         _text = string;
@@ -193,22 +211,22 @@ public class UILabel extends View {
 
         if (_isVisible) {
             if (_align == Align.CENTER) {
-                _offsetX = (_width - getContentWidth()) / 2;
-                _offsetY = (_height - getContentHeight()) / 2;
+                geometry.setOffsetX((getWidth() - getContentWidth()) / 2);
+                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
             }
 
             if (_align == Align.RIGHT) {
-                _offsetX = (_width - getContentWidth());
+                geometry.setOffsetX((getWidth() - getContentWidth()));
             }
 
             if (_align == Align.CENTER_VERTICAL) {
-                _offsetY = (_height - getContentHeight()) / 2;
+                geometry.setOffsetY((getHeight() - getContentHeight()) / 2);
             }
 
 //            renderer.drawPixel(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, _textSize, _gdxTextColor, _text);
             renderer.drawFontUI((batch, font) -> {
-                int finalX = getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft;
-                int finalY = getAlignedY() + y + _offsetY + _paddingTop + _marginTop;
+                int finalX = getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft();
+                int finalY = getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop();
 
                 int tagOffsetX = 0;
 
@@ -222,9 +240,7 @@ public class UILabel extends View {
                     for (int i = 0; i < _text.length(); i++) {
                         if (_text.charAt(i) == '{') {
                             inTagMeta = true;
-                        }
-
-                        else if (_text.charAt(i) == '}') {
+                        } else if (_text.charAt(i) == '}') {
                             inTag = false;
 
                             if (sbTagMeta.toString().contains("icon")) {
@@ -247,33 +263,23 @@ public class UILabel extends View {
                                 font.draw(batch, sbTag.toString(), finalX + tagOffsetX, finalY);
                                 sbTag = null;
                             }
-                        }
-
-                        else if (inTagMeta && _text.charAt(i) == ';') {
+                        } else if (inTagMeta && _text.charAt(i) == ';') {
                             inTag = true;
                             inTagMeta = false;
                             sbTag = new StringBuilder();
-                        }
-
-                        else if (inTagMeta) {
+                        } else if (inTagMeta) {
                             sbTagMeta.append(_text.charAt(i));
-                        }
-
-                        else if (inTag) {
+                        } else if (inTag) {
                             sb.append(' ');
                             sbTag.append(_text.charAt(i));
-                        }
-
-                        else {
+                        } else {
                             sb.append(_text.charAt(i));
                         }
                     }
 
                     font.setColor(_textColor);
                     font.draw(batch, sb.toString(), finalX, finalY);
-                }
-
-                else {
+                } else {
                     font.setColor(_textColor);
                     font.draw(batch, _text, finalX, finalY);
                 }
@@ -285,7 +291,7 @@ public class UILabel extends View {
     public int getContentWidth() {
         if (_text != null) {
 //            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_text).width;
-            return (int) (_text.length() * fontManager.getFont(_textSize).getRegion().getRegionWidth()) + _paddingLeft + _paddingRight;
+            return (int) (_text.length() * fontManager.getFont(_textSize).getRegion().getRegionWidth()) + geometry.getPaddingLeft() + geometry.getPaddingRight();
         }
         return 0;
     }
@@ -294,14 +300,14 @@ public class UILabel extends View {
     public int getContentHeight() {
         if (_text != null) {
 //            return (int) ApplicationClient.fontGenerator.getFont(_textSize).getBounds(_text).height;
-            return (int) fontManager.getFont(_textSize).getLineHeight() + _paddingTop + _paddingBottom;
+            return (int) fontManager.getFont(_textSize).getLineHeight() + geometry.getPaddingTop() + geometry.getPaddingBottom();
         }
         return 0;
     }
 
     @Override
     public int getHeight() {
-        return _height != -1 ? _height : lineHeight + _paddingTop + _paddingBottom;
+        return super.getHeight() != -1 ? super.getHeight() : lineHeight + geometry.getPaddingTop() + geometry.getPaddingBottom();
     }
 
     public static UILabel create(ModuleBase module) {
@@ -317,6 +323,23 @@ public class UILabel extends View {
     }
 
     @Override
-    public String toString() { return _text; }
+    public String toString() {
+        return _text;
+    }
+
+    public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
+        _isAlignLeft = isAlignLeft;
+        _isAlignTop = isAlignTop;
+    }
+
+    public View setTextAlign(Align align) {
+        _align = align;
+        return this;
+    }
+
+    public View setTextAlign(String align) {
+        _align = Align.valueOf(org.apache.commons.lang3.StringUtils.upperCase(align));
+        return this;
+    }
 
 }

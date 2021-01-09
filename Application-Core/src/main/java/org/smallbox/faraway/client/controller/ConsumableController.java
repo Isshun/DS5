@@ -50,7 +50,7 @@ public class ConsumableController extends LuaController {
                     .setDashedString(itemInfo.label, " x " + quantity, 38)
                     .setTextColor(Colors.COLOR2)
                     .setTextSize(14)
-                    .setPadding(12)
+                    .setPadding(12, 12, 12, 12)
                     .setPosition(25, 0));
 
             if (CollectionUtils.isNotEmpty(itemInfo.graphics)) {

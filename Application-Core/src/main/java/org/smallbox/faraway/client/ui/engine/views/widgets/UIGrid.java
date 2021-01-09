@@ -101,7 +101,7 @@ public class UIGrid extends CompositeView {
             int offsetX = 0, offsetY = 0;
             int index = 0;
             for (View view : _views) {
-                view.draw(renderer, _x + x + offsetX, _y + y + offsetY);
+                view.draw(renderer, geometry.getX() + x + offsetX, geometry.getY() + y + offsetY);
 
                 if (++index % _columns == 0) {
                     offsetX = 0;
@@ -133,11 +133,11 @@ public class UIGrid extends CompositeView {
     }
 
     public void setRowHeight(int rowHeight) {
-        _rowHeight = (int) (rowHeight * uiScale);
+        _rowHeight = (int) (rowHeight * geometry.getUiScale());
     }
 
     public void setColumnWidth(int columnWidth) {
-        _columnWidth = (int) (columnWidth * uiScale);
+        _columnWidth = (int) (columnWidth * geometry.getUiScale());
     }
 
     public int getColumnWidth() {
@@ -153,5 +153,5 @@ public class UIGrid extends CompositeView {
     }
 
     @Override
-    public String toString() { return "" + _name + " [" + String.join(", ", _views.stream().map(View::toString).collect(Collectors.toList()))+ "]"; }
+    public String toString() { return "" + getName() + " [" + _views.stream().map(View::toString).collect(Collectors.joining(", ")) + "]"; }
 }

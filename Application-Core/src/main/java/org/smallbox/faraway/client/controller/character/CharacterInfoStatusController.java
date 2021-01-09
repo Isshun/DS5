@@ -63,12 +63,12 @@ public class CharacterInfoStatusController extends LuaController {
         UILabel lbValue = new UILabel(null);
         lbValue.setId("lb_value");
         lbValue.setTextSize(14);
-        lbValue.setPositionX(114);
+        lbValue.getGeometry().setPositionX(114);
         frame.addView(lbValue);
 
         UIImage imageGauge = new UIImage(null);
         imageGauge.setId("img_gauge");
-        imageGauge.setPositionY(16);
+        imageGauge.getGeometry().setPositionY(16);
         imageGauge.setImage("[base]/graphics/needbar.png");
         frame.addView(imageGauge);
 
@@ -112,7 +112,7 @@ public class CharacterInfoStatusController extends LuaController {
             }
 
             frameJob.setVisible(true);
-            frameJob.setWidth((int) (job.getProgress() * 300));
+            frameJob.getGeometry().setWidth((int) (job.getProgress() * 300));
 
 //            if (job instanceof BasicHaulJob) {
 //                ((BasicHaulJob) job).getConsumables().forEach((consumable, quantity) -> {

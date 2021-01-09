@@ -4,9 +4,11 @@ import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.character.CharacterInfoController;
 import org.smallbox.faraway.client.selection.GameSelectionManager;
-import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.UIManager;
+import org.smallbox.faraway.client.ui.engine.views.CompositeView;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
@@ -14,7 +16,7 @@ import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra;
 import org.smallbox.faraway.modules.characterNeed.CharacterNeedModule;
 
-import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.TAG_FOOD;
+import static org.smallbox.faraway.modules.character.model.base.CharacterNeedsExtra.*;
 
 @GameObject
 public class CrewController extends LuaController {
@@ -47,33 +49,25 @@ public class CrewController extends LuaController {
         if (listCrew != null) {
             characterModule.getAll().forEach(character -> {
 
-                UIFrame view = new UIFrame(null);
-                view.setSize(200, 60);
+                CompositeView view = (CompositeView)listCrew.createFromTemplate();
 
-                view.addView(UILabel.create(null)
-                        .setText(character.getName())
-                        .setTextSize(18)
-                        .setTextColor(0xB4D4D3ff)
-                        .setSize(300, 28)
-                        .setPadding(8, 0));
+                view.findLabel("lb_character_name").setText(character.getName());
 
                 if (character.getJob() != null) {
-                    view.addView(UILabel.create(null)
-                            .setText(character.getJob().getLabel())
-                            .setTextSize(14)
-                            .setTextColor(0xB4D4D3ff)
-                            .setSize(300, 28)
-                            .setPosition(0, 22)
-                            .setPadding(8, 0));
+                    view.findLabel("lb_character_job").setText(character.getJob().getLabel());
                 }
 
                 if (character.hasExtra(CharacterNeedsExtra.class)) {
                     CharacterNeedsExtra need = character.getExtra(CharacterNeedsExtra.class);
                     if (need != null) {
-                        view.addView(createGaugeView("[base]/graphics/needs/ic_food.png", need.get(TAG_FOOD).value()).setPosition(270, 10));
-                        view.addView(createGaugeView("[base]/graphics/needs/ic_health.png", 0.50).setPosition(270 + 20, 10));
-                        view.addView(createGaugeView("[base]/graphics/needs/ic_social.png", 0.75).setPosition(270 + 40, 10));
-                        view.addView(createGaugeView("[base]/graphics/needs/ic_entertainment.png", 0.75).setPosition(270 + 60, 10));
+                        view.findById("gauge_food").setSize(10, (int) (30 * need.get(TAG_FOOD).value()));
+                        view.findById("gauge_food").setPosition(1, (int) (30 - 30 * need.get(TAG_FOOD).value()));
+                        view.findById("gauge_health").setSize(10, (int) (30 * need.get(TAG_ENERGY).value()));
+                        view.findById("gauge_health").setPosition(1, (int) (30 - 30 * need.get(TAG_ENERGY).value()));
+                        view.findById("gauge_social").setSize(10, (int) (30 * need.get(TAG_RELATION).value()));
+                        view.findById("gauge_social").setPosition(1, (int) (30 - 30 * need.get(TAG_RELATION).value()));
+                        view.findById("gauge_entertainment").setSize(10, (int) (30 * need.get(TAG_ENTERTAINMENT).value()));
+                        view.findById("gauge_entertainment").setPosition(1, (int) (30 - 30 * need.get(TAG_ENTERTAINMENT).value()));
                     }
                 }
 
@@ -89,25 +83,9 @@ public class CrewController extends LuaController {
         }
     }
 
-    private View createGaugeView(String iconPath, double value) {
-        UIFrame view = new UIFrame(null);
-
-        view.addView(new UIFrame(null)
-                .setSize(10, 30)
-                .setPosition(1, 0)
-                .setBackgroundColor(0x0D4D4Bff));
-
-        view.addView(new UIFrame(null)
-                .setSize(10, (int) (30 * value))
-                .setBackgroundColor(0x679B99ff)
-                .setPosition(1, (int) (30 - 30 * value)));
-
-        view.addView(UIImage.create(null)
-                .setImage(iconPath)
-                .setPosition(0, 34)
-                .setSize(12, 12));
-
-        return view;
+    @GameShortcut(key = Input.Keys.F1)
+    public void onRefreshUI() {
+        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "panel_crew.lua");
     }
 
     @GameShortcut(key = Input.Keys.C)

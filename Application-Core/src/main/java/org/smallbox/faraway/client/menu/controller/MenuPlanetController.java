@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.controller.annotation.BindLua;
 import org.smallbox.faraway.client.controller.annotation.BindLuaAction;
-import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.client.ui.engine.views.CompositeView;
 import org.smallbox.faraway.client.ui.engine.views.View;
-import org.smallbox.faraway.client.ui.engine.views.widgets.*;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIGrid;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIImage;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UILabel;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIList;
 import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -40,9 +42,6 @@ public class MenuPlanetController extends LuaController {
     private MenuMainController menuMainController;
 
     @Inject
-    private UIManager uiManager;
-
-    @Inject
     private Data data;
 
     @BindLua private UIList listPlanets;
@@ -61,7 +60,7 @@ public class MenuPlanetController extends LuaController {
             lbPlanet.setText(planet.label);
             lbPlanet.setTextSize(24);
             lbPlanet.setTextColor(Color.BLACK);
-            lbPlanet.setPadding(20);
+            lbPlanet.setPadding(20, 20, 20, 20);
             lbPlanet.setSize(300, 42);
             lbPlanet.setOnClickListener((x, y) -> selectPlanet(planet));
             listPlanets.addView(lbPlanet);
@@ -89,10 +88,10 @@ public class MenuPlanetController extends LuaController {
 
                 UIGrid listResource = ((UIGrid)viewRegion.findById("grid_info_resources"));
                 region.terrains.stream().filter(terrain -> terrain.resource != null).forEach(terrain -> {
-                    CompositeView viewResource = (CompositeView)listResource.createFromTemplate();
+                    UIImage viewResource = (UIImage)listResource.createFromTemplate();
                     ItemInfo resourceInfo = data.getItemInfo(terrain.resource);
                     if (resourceInfo.hasIcon()) {
-                        ((UIImage)viewResource.findById("img_resource")).setImage(resourceInfo.icon);
+                        viewResource.setImage(resourceInfo.icon);
                     }
                     listResource.addNextView(viewResource);
                 });
@@ -127,11 +126,11 @@ public class MenuPlanetController extends LuaController {
         selectPlanet(safePlanet(data.planets.indexOf(planet) + 1));
     }
 
-    @GameShortcut(key = Input.Keys.F1)
-    public void onRefreshUI() {
-        uiManager.refresh(this, "menu_new_planet.lua");
-        selectPlanet(planet);
-    }
+//    @GameShortcut(key = Input.Keys.F1)
+//    public void onRefreshUI() {
+//        DependencyManager.getInstance().getDependency(UIManager.class).refresh(this, "menu_new_planet.lua");
+//        selectPlanet(planet);
+//    }
 
     private PlanetInfo safePlanet(int index) {
         return data.planets.get(Math.max(Math.min(index, data.planets.size()), 0));

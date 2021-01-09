@@ -144,7 +144,7 @@ public class BuildController extends LuaController {
         return UILabel.create(null)
                 .setText(label)
                 .setTextSize(16)
-                .setPadding(5)
+                .setPadding(5, 5, 5, 5)
                 .setSize(350, 28)
                 .setBackgroundColor(0x349394ff)
                 .setFocusBackgroundColor(0x25c9cbff)

@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
 import com.badlogic.gdx.graphics.Color;
-import org.apache.commons.lang3.StringUtils;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.FontManager;
@@ -33,31 +32,57 @@ public abstract class View implements Comparable<View> {
     protected final UIManager uiManager = DependencyManager.getInstance().getDependency(UIManager.class);
     protected final Data data = DependencyManager.getInstance().getDependency(Data.class);
 
-    protected double uiScale = applicationConfig.uiScale;
-    protected int _originWidth;
-    protected int _originHeight;
+    private final ModuleBase _module;
+    private boolean _special = false;
+    private boolean _inGame;
+    private Color _backgroundFocusColor;
+    private OnClickListener _onClickListener;
+    private UIEventManager.OnDragListener _onDragListener;
+    private OnClickListener _onMouseWheelUpListener;
+    private OnClickListener _onMouseWheelDownListener;
+    private OnFocusListener _onFocusListener;
+    private boolean _isFocus;
+    private boolean _isActive = true;
+    private Object _data;
+    private int _layer;
+    private Color _backgroundColor;
+    private HorizontalAlign _horizontalAlign = HorizontalAlign.LEFT;
+    private VerticalAlign _verticalAlign = VerticalAlign.TOP;
     private String _group;
     private String _path;
     private int _index;
     private Color _borderColor;
     private LuaController _controller;
     private boolean _isGameView;
-    protected int               _deep;
+    private String _name;
+
+    protected boolean _isVisible = true;
+    protected boolean _isAlignLeft = true;
+    protected boolean _isAlignTop = true;
+    protected CompositeView _parent;
+    protected String _id;
+    protected String _actionName;
+    protected FadeEffect _effect;
+    protected int _deep;
+    protected ViewGeometry geometry = new ViewGeometry(applicationConfig.uiScale);
+    protected Align _align = Align.LEFT;
 
     public View(ModuleBase module) {
         _module = module;
-        _isVisible = true;
-        _borderSize = 2;
-        _x = 0;
-        _y = 0;
     }
 
     public void setAlign(VerticalAlign verticalAlign, HorizontalAlign horizontalAlign) {
         _verticalAlign = verticalAlign;
         _horizontalAlign = horizontalAlign;
     }
-    public void         setDeep(int deep) { _deep = deep; }
-    public int          getDeep() { return _deep; }
+
+    public void setDeep(int deep) {
+        _deep = deep;
+    }
+
+    public int getDeep() {
+        return _deep;
+    }
 
     public String getGroup() {
         return _group;
@@ -76,7 +101,6 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setSpecialTop(View specialTop) {
-        _specialTop = specialTop;
     }
 
     public void setPath(String path) {
@@ -95,14 +119,12 @@ public abstract class View implements Comparable<View> {
         return _index;
     }
 
-    public View setBorderColor(long color) {
+    public void setBorderColor(long color) {
         _borderColor = color == 0 ? null : ColorUtils.fromHex(color);
-        return this;
     }
 
-    public View setBorderColor(Color color) {
+    public void setBorderColor(Color color) {
         _borderColor = color;
-        return this;
     }
 
     public void setController(LuaController controller) {
@@ -111,14 +133,6 @@ public abstract class View implements Comparable<View> {
 
     public LuaController getController() {
         return _controller;
-    }
-
-    public boolean hasClickListener() {
-        return _onClickListener != null;
-    }
-
-    public boolean isGameView() {
-        return _isGameView;
     }
 
     public void setGameView(boolean isGameView) {
@@ -134,93 +148,57 @@ public abstract class View implements Comparable<View> {
         _animation = animation;
     }
 
-    public void setFocusable(boolean focusable) { _focusable = focusable; }
-
-    public void click(int x, int y) {
-        assert _onClickListener != null;
-        _onClickListener.onClick(x, y);
-
-        if (_parent != null && _parent instanceof UIDropDown) {
-            ((UIDropDown)_parent).setCurrent(this);
-        }
+    public void setFocusable(boolean focusable) {
+        _focusable = focusable;
     }
 
-    protected final ModuleBase  _module;
+    public boolean isFocus() {
+        return _isFocus;
+    }
 
-    //    protected Set<View>         _views = new ConcurrentSkipListSet<>((o1, o2) -> Integer.compare(o1.getIndex(), o2.getIndex()));
-    protected boolean           _isAlignLeft = true;
-    protected boolean           _isAlignTop = true;
-    protected boolean           _special = false;
-    private View _specialTop;
-    protected int               _finalX;
-    protected int               _finalY;
-    protected int               _marginTop;
-    protected int               _marginRight;
-    protected int               _marginBottom;
-    protected int               _marginLeft;
-    protected UIAdapter _adapter;
-    protected int               _objectId;
-    protected int               _hash;
-    protected int               _fixedWidth = -1;
-    protected int               _fixedHeight = -1;
-    protected String            _name;
-    protected boolean           _inGame;
-    protected Color             _backgroundFocusColor;
-    protected int               _width = -1;
-    protected int               _height = -1;
-    protected int               _x;
-    protected int               _y;
-    protected boolean           _isVisible;
-    protected int               _paddingLeft;
-    protected int               _paddingBottom;
-    protected int               _paddingRight;
-    protected int               _paddingTop;
-    protected CompositeView              _parent;
-    protected OnClickListener   _onClickListener;
-    protected UIEventManager.OnDragListener _onDragListener;
-    protected OnClickListener   _onRightClickListener;
-    protected OnClickListener   _onMouseWheelUpListener;
-    protected OnClickListener   _onMouseWheelDownListener;
-    protected OnFocusListener _onFocusListener;
-    protected boolean           _isFocus;
-    protected boolean           _isActive = true;
-    protected String            _id;
-    protected String            _actionName;
-    protected int               _borderSize;
-    protected Object            _data;
-    protected Align             _align = Align.LEFT;
-    protected int               _offsetX;
-    protected int               _offsetY;
-    protected int               _layer;
-    protected Color             _backgroundColor;
-    protected FadeEffect _effect;
-    protected HorizontalAlign   _horizontalAlign = HorizontalAlign.LEFT;
-    protected VerticalAlign     _verticalAlign = VerticalAlign.TOP;
+    public boolean isVisible() {
+        return _isVisible && (_parent == null || _parent.isVisible());
+    }
 
-    public boolean      isFocus() { return _isFocus; }
-    public boolean      isVisible() { return _isVisible && (_parent == null || _parent.isVisible()); }
-    //    public boolean      isVisible() { return _isVisible; }
-    public boolean      isActive() { return _isActive; }
-    public boolean      inGame() { return _inGame; }
+    public boolean isActive() {
+        return _isActive;
+    }
 
-    public View         setId(String id) { _id = id; return this; }
-    public View         setTextAlign(Align align) { _align = align; return this; }
-    public View         setTextAlign(String align) { _align = Align.valueOf(StringUtils.upperCase(align)); return this; }
-    public void         setFocus(boolean focus) { _isFocus = focus; }
-    public void         setActive(boolean active) { _isActive = active; }
-    public void         setParent(CompositeView parent) {
+    public void setId(String id) {
+        _id = id;
+    }
+
+    public void setFocus(boolean focus) {
+        _isFocus = focus;
+    }
+
+    public void setActive(boolean active) {
+        _isActive = active;
+    }
+
+    public void setParent(CompositeView parent) {
         _parent = parent;
     }
-    public void         setAdapter(UIAdapter adapter) {
-        _adapter = adapter;
-    }
-    public View         setName(String name) { _name = name; return this; }
-    public void         setInGame(boolean inGame) { _inGame = inGame; }
-    public View         setBackgroundColor(long color) { _backgroundColor = ColorUtils.fromHex(color); return this; }
-    public View         setBackgroundColor(Color color) { _backgroundColor = color; return this; }
 
-    public void         toggleVisible() { setVisible(!isVisible()); }
-    public void         setVisible(boolean visible) {
+    public void setName(String name) {
+        _name = name;
+    }
+
+    public void setInGame(boolean inGame) {
+        _inGame = inGame;
+    }
+
+    public View setBackgroundColor(long color) {
+        _backgroundColor = ColorUtils.fromHex(color);
+        return this;
+    }
+
+    public View setBackgroundColor(Color color) {
+        _backgroundColor = color;
+        return this;
+    }
+
+    public void setVisible(boolean visible) {
 
 //        // Masque les vues appartenemt au même groupe
 //        if (visible && _group != null) {
@@ -238,36 +216,75 @@ public abstract class View implements Comparable<View> {
         _isVisible = visible;
     }
 
-    public void         setGroup(String group) { _group = group; }
-    public void         setEffect(FadeEffect effect) { _effect = effect; }
-    public View         setRegularBackgroundColor(long regularBackground) { _regularBackground = regularBackground; return this; }
-    public View         setFocusBackgroundColor(int focusBackground) { _focusBackground = focusBackground; return this; }
-    public void         setActionName(String actionName) { _actionName = actionName; }
-    public void         setLayer(int layer) { _layer = layer; }
-    public Color        getBackgroundColor() { return _backgroundColor; }
-    public int          getLayer() { return _layer; }
-    public CompositeView getParent() { return _parent; }
-    public String       getId() { return _id; }
-    public int          getPosX() { return _x; }
-    public int          getPosY() { return _y; }
-    public int          getFinalX() { return _finalX; }
-    public int          getFinalY() { return _finalY; }
-    public long         getRegularBackground() { return _regularBackground; }
-    public int          getFocusBackground() { return _focusBackground; }
-    public String       getName() { return _name; }
+    public void setGroup(String group) {
+        _group = group;
+    }
 
-    public ModuleBase   getModule() { return _module; }
-    protected String    getString() { return null; }
-    public int          getHeight() { return _height; }
-    public int          getWidth() { return _width; }
-    public int          getMarginTop() { return _marginTop; }
-    public int          getMarginRight() { return _marginRight; }
-    public int          getMarginBottom() { return _marginBottom; }
-    public int          getMarginLeft() { return _marginLeft; }
+    public void setEffect(FadeEffect effect) {
+        _effect = effect;
+    }
 
-    public FadeEffect   getEffect() { return _effect; }
+    public View setRegularBackgroundColor(long regularBackground) {
+        _regularBackground = regularBackground;
+        return this;
+    }
 
-    public String       getActionName() { return _actionName; }
+    public View setFocusBackgroundColor(int focusBackground) {
+        _focusBackground = focusBackground;
+        return this;
+    }
+
+    public void setActionName(String actionName) {
+        _actionName = actionName;
+    }
+
+    public void setLayer(int layer) {
+        _layer = layer;
+    }
+
+    public Color getBackgroundColor() {
+        return _backgroundColor;
+    }
+
+    public int getLayer() {
+        return _layer;
+    }
+
+    public CompositeView getParent() {
+        return _parent;
+    }
+
+    public String getId() {
+        return _id;
+    }
+
+    public long getRegularBackground() {
+        return _regularBackground;
+    }
+
+    public int getFocusBackground() {
+        return _focusBackground;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public ModuleBase getModule() {
+        return _module;
+    }
+
+    protected String getString() {
+        return null;
+    }
+
+    public FadeEffect getEffect() {
+        return _effect;
+    }
+
+    public String getActionName() {
+        return _actionName;
+    }
 
     @Override
     public int compareTo(View view) {
@@ -276,87 +293,47 @@ public abstract class View implements Comparable<View> {
 
     public void draw(GDXRenderer renderer, int x, int y) {
         if (_isVisible) {
-            _finalX = getAlignedX() + _marginLeft + x;
-            _finalY = getAlignedY() + _marginTop + y;
+            geometry.setFinalX(getAlignedX() + geometry.getMarginLeft() + x);
+            geometry.setFinalY(getAlignedY() + geometry.getMarginTop() + y);
 
             if (_backgroundFocusColor != null && _isFocus) {
-                renderer.drawPixelUI(_finalX, _finalY, _width, _height, _backgroundFocusColor);
-            }
-
-            else if (_backgroundColor != null) {
-                renderer.drawPixelUI(_finalX, _finalY, _width, _height, _backgroundColor);
+                renderer.drawPixelUI(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), _backgroundFocusColor);
+            } else if (_backgroundColor != null) {
+                renderer.drawPixelUI(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), _backgroundColor);
             }
 
             if (_borderColor != null) {
-                renderer.drawRectangleUI(_finalX, _finalY, _width, _height, _borderColor, false);
+                renderer.drawRectangleUI(geometry.getFinalX(), geometry.getFinalY(), getWidth(), getHeight(), _borderColor, false);
             }
-
-//            if (_adapter != null && _adapter.getData() != null && needRefresh(_adapter)) {
-//                removeAllViews();
-//                _adapter.setRefresh();
-//                Iterator<ObjectModel> iterator = _adapter.getData().iterator();
-//                try {
-//                    while (iterator.hasNext()) {
-//                        ObjectModel data = iterator.next();
-//                        View subview = _adapter.getCallback().onCreateView();
-//                        subview.setObjectId(data.id);
-//                        _adapter.getCallback().onBindView(subview, data);
-//                        addView(subview);
-//                    }
-//                } catch (ConcurrentModificationException e) {
-//                    e.printStackTrace();
-//                }
-//            }
 
             if (Config.onDebugView) {
-                renderer.drawTextUI(getAlignedX() + x + _offsetX + _paddingLeft + _marginLeft, getAlignedY() + y + _offsetY + _paddingTop + _marginTop, 12, com.badlogic.gdx.graphics.Color.CYAN, _name);
+                renderer.drawTextUI(
+                        getAlignedX() + x + geometry.getOffsetX() + geometry.getPaddingLeft() + geometry.getMarginLeft(),
+                        getAlignedY() + y + geometry.getOffsetY() + geometry.getPaddingTop() + geometry.getMarginTop(),
+                        12,
+                        com.badlogic.gdx.graphics.Color.CYAN,
+                        _name);
             }
         }
-    }
-
-    public void setTextAlign(boolean isAlignLeft, boolean isAlignTop) {
-        _isAlignLeft = isAlignLeft;
-        _isAlignTop = isAlignTop;
     }
 
     protected void updateSize() {
     }
 
     public boolean contains(int x, int y) {
-        return (_finalX <= x && _finalX + _width >= x && _finalY <= y && _finalY + _height >= y);
+        return geometry.contains(x, y);
     }
 
     public View setMargin(int top, int right, int bottom, int left) {
-        _marginTop = (int) (top * uiScale);
-        _marginRight = (int) (right * uiScale);
-        _marginBottom = (int) (bottom * uiScale);
-        _marginLeft = (int) (left * uiScale);
+        geometry.setMarginTop(top);
+        geometry.setMarginRight(right);
+        geometry.setMarginBottom(bottom);
+        geometry.setMarginLeft(left);
         return this;
     }
 
-    public View setMargin(int top, int right) {
-        return setMargin(top, right, top, right);
-    }
-
-    public UIAdapter getAdapter() {
-        return _adapter;
-    }
-
-    private void setObjectId(int objectId) {
-        _objectId = objectId;
-    }
-
-    private boolean needRefresh(UIAdapter adapter) {
-        return true;
-    }
-
-    private int getObjectId() {
-        return _objectId;
-    }
-
-    public View setBackgroundFocusColor(long color) {
+    public void setBackgroundFocusColor(long color) {
         _backgroundFocusColor = ColorUtils.fromHex(color);
-        return this;
     }
 
     public View setBackgroundFocusColor(Color color) {
@@ -364,22 +341,27 @@ public abstract class View implements Comparable<View> {
         return this;
     }
 
-    public View setOnDragListener(UIEventManager.OnDragListener onDragListener) {
+    public boolean hasClickListener() {
+        return _onClickListener != null;
+    }
+
+    public void click(int x, int y) {
+        assert _onClickListener != null;
+        _onClickListener.onClick(x, y);
+
+        if (_parent != null && _parent instanceof UIDropDown) {
+            ((UIDropDown) _parent).setCurrent(this);
+        }
+    }
+
+    public void setOnDragListener(UIEventManager.OnDragListener onDragListener) {
         _onDragListener = onDragListener;
         uiEventManager.setOnDragListener(this, _onDragListener);
-        return this;
     }
 
     public View setOnClickListener(OnClickListener onClickListener) {
-//        if (_path != null && _path.contains("game_menu.pause")) {
-            _onClickListener = onClickListener;
-            uiEventManager.setOnClickListener(this, onClickListener);
-//        }
-        return this;
-    }
-
-    public View setOnClickListener2(OnClickListener onClickListener) {
         _onClickListener = onClickListener;
+        uiEventManager.setOnClickListener(this, onClickListener);
         return this;
     }
 
@@ -387,12 +369,6 @@ public abstract class View implements Comparable<View> {
     public void setOnClickListener(LuaValue value) {
         _onClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
         uiEventManager.setOnClickListener(this, _onClickListener);
-    }
-
-    // TODO: crash in lua throw on main thread
-    public void setOnRightClickListener(LuaValue value) {
-        _onRightClickListener = (int x, int y) -> value.call(CoerceJavaToLua.coerce(this));
-        uiEventManager.setOnRightClickListener(this, _onRightClickListener);
     }
 
     // TODO: crash in lua throw on main thread
@@ -423,75 +399,24 @@ public abstract class View implements Comparable<View> {
         uiEventManager.setOnFocusListener(this, _onFocusListener);
     }
 
-    public void setOnRightClickListener(OnClickListener onClickListener) {
-        assert onClickListener != null;
-        _onRightClickListener = onClickListener;
-        uiEventManager.setOnRightClickListener(this, onClickListener);
-    }
-
     public void setOnFocusListener(OnFocusListener onFocusListener) {
         assert onFocusListener != null;
         _onFocusListener = onFocusListener;
         uiEventManager.setOnFocusListener(this, onFocusListener);
     }
 
-    public void setPadding(int t, int r, int b, int l) {
-        _paddingTop = (int) (t * uiScale);
-        _paddingRight = (int) (r * uiScale);
-        _paddingBottom = (int) (b * uiScale);
-        _paddingLeft = (int) (l * uiScale);
-    }
-
-    public View setPadding(int t, int r) {
-        _paddingTop = _paddingBottom = (int) (t * uiScale);
-        _paddingRight = _paddingLeft = (int) (r * uiScale);
-        return this;
-    }
-
-    public View setPadding(int padding) {
-        _paddingTop = _paddingBottom = _paddingRight = _paddingLeft = (int) (padding * uiScale);
-        return this;
-    }
-
-    public View setFixedSize(int width, int height) {
-        _fixedWidth = (int) (width * uiScale);
-        _fixedHeight = (int) (height * uiScale);
+    public View setPadding(int t, int r, int b, int l) {
+        geometry.setPadding(t, r, b, l);
         return this;
     }
 
     public View setSize(int width, int height) {
-        _width = (int) (width * uiScale);
-        _height = (int) (height * uiScale);
-        _originWidth = width;
-        _originHeight = height;
-        return this;
-    }
-
-    public View setWidth(int width) {
-        _width = (int) (width * uiScale);
-        _originWidth = width;
-        return this;
-    }
-
-    public View setHeight(int height) {
-        _height = (int) (height * uiScale);
-        _originHeight = height;
-        return this;
-    }
-
-    public View setPositionX(int x) {
-        _x = (int) (x * uiScale);
-        return this;
-    }
-
-    public View setPositionY(int y) {
-        _y = (int) (y * uiScale);
+        geometry.setSize(width, height);
         return this;
     }
 
     public View setPosition(int x, int y) {
-        _x = (int) (x * uiScale);
-        _y = (int) (y * uiScale);
+        geometry.setPosition(x, y);
         return this;
     }
 
@@ -526,32 +451,39 @@ public abstract class View implements Comparable<View> {
     }
 
     public abstract int getContentWidth();
+
     public abstract int getContentHeight();
-    public void init(){}
+
+    public void init() {
+    }
+
+    public ViewGeometry getGeometry() {
+        return geometry;
+    }
 
     protected int getAlignedX() {
 
         // Alignement par rapport au parent
         if (_parent != null) {
             if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (_parent.getWidth() / 2) - (_width / 2) + _x;
+                return (_parent.getWidth() / 2) - (getWidth() / 2) + geometry.getX();
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return _parent.getWidth() - _width - _x;
+                return _parent.getWidth() - getWidth() - geometry.getX();
             }
         }
 
         // Alignement par rapport à l'écran
         else {
             if (_horizontalAlign == HorizontalAlign.CENTER) {
-                return (gdxRenderer.getWidth() / 2) - (_width / 2) + _x;
+                return (gdxRenderer.getWidth() / 2) - (getWidth() / 2) + geometry.getX();
             }
             if (_horizontalAlign == HorizontalAlign.RIGHT) {
-                return gdxRenderer.getWidth() - _width - _x;
+                return gdxRenderer.getWidth() - getWidth() - geometry.getX();
             }
         }
 
-        return _x;
+        return geometry.getX();
     }
 
     protected int getAlignedY() {
@@ -559,26 +491,37 @@ public abstract class View implements Comparable<View> {
         // Alignement par rapport au parent
         if (_parent != null) {
             if (_verticalAlign == VerticalAlign.CENTER) {
-                return (_parent.getHeight() / 2) - (_height / 2) + _y;
+                return (_parent.getHeight() / 2) - (getHeight() / 2) + geometry.getY();
             }
             if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return _parent.getHeight() - _y;
+                return _parent.getHeight() - geometry.getY();
             }
         }
 
         // Alignement par rapport à l'écran
         else {
             if (_verticalAlign == VerticalAlign.CENTER) {
-                return (gdxRenderer.getHeight() / 2) - (_width / 2) + _y;
+                return (gdxRenderer.getHeight() / 2) - (getHeight() / 2) + geometry.getY();
             }
             if (_verticalAlign == VerticalAlign.BOTTOM) {
-                return gdxRenderer.getHeight() - _y;
+                return gdxRenderer.getHeight() - geometry.getY();
             }
         }
 
-        return _y;
+        return geometry.getY();
     }
 
     @Override
-    public String toString() { return _path; }
+    public String toString() {
+        return _path;
+    }
+
+    public int getHeight() {
+        return geometry.getHeight();
+    }
+
+    public int getWidth() {
+        return geometry.getWidth();
+    }
+
 }

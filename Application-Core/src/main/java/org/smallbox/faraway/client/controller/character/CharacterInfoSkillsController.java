@@ -47,7 +47,7 @@ public class CharacterInfoSkillsController extends LuaController {
 
                 view.setBackgroundColor(skill.available ? 0x1a3647ff : 0x0f1f29ff);
                 view.setBorderColor(0x359f9fff);
-                view.setMargin(8, 0);
+                view.setMargin(8, 0, 8, 0);
                 view.setSize(320, 28);
 
                 view.addView(UILabel.create(null)

@@ -44,48 +44,13 @@ public class AreaPanelController extends LuaController {
                 .filter(dependency -> dependency.getClass().isAnnotationPresent(AreaTypeInfo.class))
                 .sorted(Comparator.comparing(o -> o.getClass().getAnnotation(AreaTypeInfo.class).label()))
                 .forEach(dependency -> {
-
-                    listAreasAdd.addView(UILabel.create(null)
-                            .setText(" + " + dependency.getClass().getAnnotation(AreaTypeInfo.class).label())
-                            .setTextColor(0xB4D4D3ff)
-                            .setTextSize(18)
-                            .setPadding(10)
-                            .setSize(160, 40)
-                            .setFocusBackgroundColor(0x25c9cbff)
-                            .setRegularBackgroundColor(0x121c1eff)
-                            .setOnClickListener((int x, int y) -> {
-                                gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel)dependency);
-//                                areaLayer.setMode(AreaLayer.Mode.ADD, cls);
-//                                selectionManager.setSelectionListener(parcels -> {
-//                                    areaLayer.setMode(AreaLayer.Mode.NONE, cls);
-//                                    areaModule.addArea(cls, parcels);
-//                                    return true;
-//                                });
-                            })
-                    );
-
-//                    listAreasSub.addView(UILabel.create(null)
-//                            .setText(" - " + cls.getAnnotation(AreaTypeInfo.class).label())
-//                            .setTextColor(0xB4D4D3ff)
-//                            .setTextSize(18)
-//                            .setPadding(10)
-//                            .setSize(160, 40)
-//                            .setFocusBackgroundColor(0x25c9cbff)
-//                            .setRegularBackgroundColor(0x121c1eff)
-//                            .setOnClickListener((int x, int y) -> {
-//                                areaLayer.setMode(AreaLayer.Mode.SUB, cls);
-//                                selectionManager.setSelectionListener(parcels -> {
-//                                    areaLayer.setMode(AreaLayer.Mode.NONE, cls);
-//                                    areaModule.removeArea(parcels);
-//                                    gameActionManager.setMode(GameActionManager.Mode.REMOVE_AREA);
-//                                    return true;
-//                                });
-//                                //            Application.gameManager.getGame().getInteraction().set(GameActionExtra.Action.REMOVE_AREA, AreaType.GARDEN);
-//                            })
-//                    );
-
+                    UILabel lbArea = (UILabel) listAreasAdd.createFromTemplate();
+                    lbArea.setText(" + " + dependency.getClass().getAnnotation(AreaTypeInfo.class).label());
+                    lbArea.setOnClickListener((int x, int y) -> gameActionManager.setAreaAction(GameActionMode.ADD_AREA, (AreaModel) dependency));
+                    listAreasAdd.addNextView(lbArea);
                 });
 
+        listAreasAdd.switchViews();
     }
 
     @Override

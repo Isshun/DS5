@@ -24,11 +24,11 @@ public class UIList extends CompositeView implements AutoCloseable {
     protected void updateSize() {
         int offset = 0;
         for (View subView : _views) {
-            offset += subView.getHeight() + subView.getMarginTop() + subView.getMarginBottom();
+            offset += subView.getHeight() + subView.getGeometry().getMarginTop() + subView.getGeometry().getMarginBottom();
         }
 
-        if (_fixedWidth == -1 || _fixedHeight == -1) {
-            setSize(_width, offset);
+        if (geometry.getFixedWidth() == -1 || geometry.getFixedHeight() == -1) {
+            setSize(getWidth(), offset);
         }
     }
 
@@ -45,8 +45,8 @@ public class UIList extends CompositeView implements AutoCloseable {
                 int offset = 0;
                 for (View view : _views) {
                     if (view.isVisible()) {
-                        view.draw(renderer, getAlignedX() + x + _marginLeft, offset + getAlignedY() + y + _marginTop);
-                        offset += view.getHeight() + view.getMarginTop() + view.getMarginBottom();
+                        view.draw(renderer, getAlignedX() + x + geometry.getMarginLeft(), offset + getAlignedY() + y + geometry.getMarginTop());
+                        offset += view.getHeight() + view.getGeometry().getMarginTop() + view.getGeometry().getMarginBottom();
                     }
                 }
             } catch (ConcurrentModificationException e) {
@@ -58,12 +58,12 @@ public class UIList extends CompositeView implements AutoCloseable {
 
     @Override
     public int getContentWidth() {
-        return _width;
+        return getWidth();
     }
 
     @Override
     public int getContentHeight() {
-        return _height;
+        return getHeight();
     }
 
     @Override
@@ -71,5 +71,5 @@ public class UIList extends CompositeView implements AutoCloseable {
     }
 
     @Override
-    public String toString() { return "" + _name + " [" + String.join(", ", _views.stream().map(View::toString).collect(Collectors.toList()))+ "]"; }
+    public String toString() { return "" + getName() + " [" + _views.stream().map(View::toString).collect(Collectors.joining(", ")) + "]"; }
 }

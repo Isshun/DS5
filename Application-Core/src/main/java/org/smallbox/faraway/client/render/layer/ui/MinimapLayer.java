@@ -149,8 +149,8 @@ public class MinimapLayer extends BaseLayer {
 
     private void createMap() {
         if (gameManager.isLoaded()) {
-            _mainPosX = mainPanelController.getMapContainer().getFinalX();
-            _mainPosY = mainPanelController.getMapContainer().getFinalY();
+            _mainPosX = mainPanelController.getMapContainer().getGeometry().getFinalX();
+            _mainPosY = mainPanelController.getMapContainer().getGeometry().getFinalY();
 
             float scaleX = (float)miniMapWidth / gameWidth;
             float scaleY = (float)miniMapHeight / gameHeight;
@@ -184,8 +184,8 @@ public class MinimapLayer extends BaseLayer {
             _spriteMap.flip(false, true);
             _spriteMap.setScale(scale, scale);
             _spriteMap.setPosition(
-                    mainPanelController.getMapContainer().getFinalX() + miniMapWidth / 2f - displayWidth / 2f,
-                    mainPanelController.getMapContainer().getFinalY() + miniMapHeight / 2f - displayHeight / 2f);
+                    mainPanelController.getMapContainer().getGeometry().getFinalX() + miniMapWidth / 2f - displayWidth / 2f,
+                    mainPanelController.getMapContainer().getGeometry().getFinalY() + miniMapHeight / 2f - displayHeight / 2f);
             _spriteMap.setOrigin(0, 0);
         }
     }

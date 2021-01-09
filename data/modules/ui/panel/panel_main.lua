@@ -40,7 +40,7 @@ ui:extend({
 
             }},
 
-            { type = "view", size = {300, 40}, position = {0, 20}, views = {
+            { type = "view", size = {300, 120}, position = {0, 20}, views = {
                 { type = "view", id = "bt_crew", size = {72, 84}, position = {0, 5}, views = {
                     { type = "image", id = "gauge_food", position = {0, 0}, size = {72, 84}, src = "[base]/graphics/icons/crewmate.png"},
                 }},
@@ -54,8 +54,12 @@ ui:extend({
                     { type = "image", id = "gauge_food", position = {0, 0}, size = {72, 84}, src = "[base]/graphics/icons/jobs.png"},
                 }},
             }},
-            { type = "grid", id = "main_grid", position = {0, 3200}, columns = 2, column_width = 180, row_height = 50, focusable = true, sorted = true},
-            { type = "view", id = "base.ui.right_panel.sub_controller", position = {0, 0}, size = {350, 600}, special = true},
+
+            { type = "grid", id = "main_grid", position = {0, 3200}, columns = 2, column_width = 180, row_height = 50, focusable = true, sorted = true, template = {
+                { type = "label", text_size = 18, padding = 10, size = {170, 40}, background = {regular = 0x349394ff, focus = 0x25c9cbff}},
+            }},
+
+            { type = "view", id = "base.ui.right_panel.sub_controller", size = {350, 600}, special = true},
         }},
     },
 
