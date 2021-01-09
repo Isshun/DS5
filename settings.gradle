@@ -2,9 +2,7 @@ rootProject.name = 'Void'
 
 include 'Application-Desktop'
 include 'Application-Core'
-include 'Application-Client'
 include 'Application-Common'
 
 include 'Core-PathFinding'
 include 'Core-SmartFontGenerator'
-include 'Core-Debug'

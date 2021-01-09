@@ -12,12 +12,19 @@ import java.util.List;
 
 public abstract class LuaUICompositeExtend extends LuaUIExtend {
 
+    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
+        View view = super.createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter);
+
+        readTemplate(module, globals, value, inGame, deep, view, path, isGameView);
+
+        return view;
+    }
+
     /**
      * Read template from lua.
      * When template contains several views, they are encapsulated in UIList
      */
-    @Override
-    protected void readTemplate(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View view, String path, boolean isGameView) {
+    private void readTemplate(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View view, String path, boolean isGameView) {
         if (!value.get("template").isnil()) {
             ((CompositeView) view).setTemplate(() -> {
                 List<View> templateViews = new ArrayList<>();

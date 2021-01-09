@@ -51,7 +51,7 @@ public abstract class LuaUIExtend extends LuaExtend {
 
         boolean isGameView = !rootName.startsWith("base.ui.menu.");
 
-        View view = createView(module, globals, value, true, 0, null, rootName, 1, isGameView);
+        View view = createView(module, globals, value, true, 0, null, rootName, 1, isGameView, true);
 
         RootView rootView = new RootView();
         rootView.setView((CompositeView) view);
@@ -172,14 +172,6 @@ public abstract class LuaUIExtend extends LuaExtend {
         }
     }
 
-    public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView) {
-        return createView(module, globals, value, inGame, deep, parent, path, index, isGameView, true);
-    }
-
-    public View createSubView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
-        return clientLuaModuleManager.createView(module, globals, value, inGame, deep, parent, path, index, isGameView, runAfter);
-    }
-
     public View createView(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, CompositeView parent, String path, int index, boolean isGameView, boolean runAfter) {
 
         // Create view for type
@@ -195,11 +187,10 @@ public abstract class LuaUIExtend extends LuaExtend {
         customizeViewCosmetic(value, view);
         readGeometry(value, view);
         readEvents(globals, value, view);
-        readTemplate(module, globals, value, inGame, deep, view, path, isGameView);
 
         // Add subviews
         readTable(value, "views", (subValue, i) -> ((CompositeView) view).addView(
-                createSubView(module, globals, subValue, inGame, deep + 1, (CompositeView) view, path + "." + i, i, isGameView, runAfter)
+                clientLuaModuleManager.createView(module, globals, subValue, inGame, deep + 1, (CompositeView) view, path + "." + i, i, isGameView, runAfter)
         ));
 
         // Set controller
@@ -219,24 +210,15 @@ public abstract class LuaUIExtend extends LuaExtend {
         }
     }
 
-    protected void readTemplate(ModuleBase module, Globals globals, LuaValue value, boolean inGame, int deep, View view, String path, boolean isGameView) {
-    }
-
     private void readGeometry(LuaValue value, View view) {
         readLua(value, "size", v -> view.setSize(v.get(1).toint(), v.get(2).toint()));
         readLua(value, "size", v -> view.getGeometry().setFixedSize(v.get(1).toint(), v.get(2).toint()));
         readLua(value, "position", v -> view.setPosition(v.get(1).toint(), v.get(2).toint()));
 
         readLua(value, "margin", v -> {
-            if (v.length() == 4) {
-                view.getGeometry().setMargin(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint());
-            }
-            if (v.length() == 2) {
-                view.getGeometry().setMargin(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint());
-            }
-            if (v.length() == 1) {
-                view.getGeometry().setMargin(v.toint(), v.toint(), v.toint(), v.toint());
-            }
+            if (v.length() == 4) view.getGeometry().setMargin(v.get(1).toint(), v.get(2).toint(), v.get(3).toint(), v.get(4).toint());
+            if (v.length() == 2) view.getGeometry().setMargin(v.get(1).toint(), v.get(2).toint(), v.get(1).toint(), v.get(2).toint());
+            if (v.length() == 1) view.getGeometry().setMargin(v.toint(), v.toint(), v.toint(), v.toint());
         });
 
         readLua(value, "padding", v -> {
