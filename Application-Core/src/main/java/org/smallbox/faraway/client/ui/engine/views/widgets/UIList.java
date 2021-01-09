@@ -6,12 +6,18 @@ import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
 
 import java.util.ConcurrentModificationException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class UIList extends CompositeView implements AutoCloseable {
 
     public UIList(ModuleBase module) {
         super(module);
+    }
+
+    public UIList(ModuleBase module, List<View> views) {
+        super(module);
+        views.forEach(this::addView);
     }
 
     @Override

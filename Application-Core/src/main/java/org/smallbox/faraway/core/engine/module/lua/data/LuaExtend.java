@@ -49,6 +49,10 @@ public abstract class LuaExtend {
         void onReadCallback(T value);
     }
 
+    protected interface ReadTableCallback {
+        void onReadCallback(LuaValue subValue, int index);
+    }
+
     protected void readInt(LuaValue value, String key, ReadCallback<Integer> callback, int... def) {
         LuaValue v = value.get(key);
         if (!v.isnil()) {
@@ -80,6 +84,19 @@ public abstract class LuaExtend {
         LuaValue v = value.get(key);
         if (!v.isnil()) {
             callback.onReadCallback(v.tojstring());
+        }
+    }
+
+    protected void readTable(LuaValue value, String key, ReadTableCallback callback) {
+        LuaValue subValues = value.get(key);
+        if (!subValues.isnil()) {
+            if (subValues.istable()) {
+                for (int index = 1; index <= subValues.length(); index++) {
+                    callback.onReadCallback(subValues.get(index), index);
+                }
+            } else {
+                callback.onReadCallback(subValues.get(1), 1);
+            }
         }
     }
 
