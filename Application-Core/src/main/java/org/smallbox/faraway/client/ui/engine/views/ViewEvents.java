@@ -5,6 +5,7 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 import org.smallbox.faraway.client.ui.engine.OnClickListener;
 import org.smallbox.faraway.client.ui.engine.OnFocusListener;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
+import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 
 public class ViewEvents {
     private final UIEventManager uiEventManager;
@@ -87,6 +88,15 @@ public class ViewEvents {
         view._isFocus = false;
         if (_onFocusListener != null) {
             _onFocusListener.onExit(view);
+        }
+    }
+
+    public void click(int x, int y) {
+        assert _onClickListener != null;
+        _onClickListener.onClick(x, y);
+
+        if (view.getParent() != null && view.getParent() instanceof UIDropDown) {
+            ((UIDropDown)view.getParent()).setCurrent(view);
         }
     }
 

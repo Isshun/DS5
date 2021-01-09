@@ -8,7 +8,6 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.ui.UIManager;
 import org.smallbox.faraway.client.ui.engine.UIEventManager;
 import org.smallbox.faraway.client.ui.engine.views.widgets.FadeEffect;
-import org.smallbox.faraway.client.ui.engine.views.widgets.UIDropDown;
 import org.smallbox.faraway.core.config.Config;
 import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.engine.module.ModuleBase;
@@ -57,15 +56,6 @@ public abstract class View implements Comparable<View> {
 
     public ViewEvents getEvents() {
         return events;
-    }
-
-    public void click(int x, int y) {
-        assert events._onClickListener != null;
-        events._onClickListener.onClick(x, y);
-
-        if (_parent != null && _parent instanceof UIDropDown) {
-            ((UIDropDown) _parent).setCurrent(this);
-        }
     }
 
     public View(ModuleBase module) {

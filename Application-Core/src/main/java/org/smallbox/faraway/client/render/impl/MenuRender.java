@@ -58,7 +58,7 @@ public class MenuRender {
 
     private boolean clickOn(View view, int screenX, int screenY) {
         if (view.getEvents().hasClickListener() && view.isVisible() && hasHierarchyVisible(view) && view.contains(screenX, screenY)) {
-            view.click(screenX, screenY);
+            view.getEvents().click(screenX, screenY);
             return true;
         }
 

@@ -150,7 +150,7 @@ public class UIEventManager implements EventManager {
 
         // Click on UI
         if (bestView != null) {
-            bestView.click(x, y);
+            bestView.getEvents().click(x, y);
 //            _onClickListeners.get(bestView).onClick();
             return true;
         }
