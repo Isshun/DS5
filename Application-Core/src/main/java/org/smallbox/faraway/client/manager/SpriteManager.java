@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.smallbox.faraway.core.GameException;
@@ -76,10 +77,18 @@ public class SpriteManager {
                 .forEach(graphicInfo -> assetManager.load("data" + graphicInfo.path, Texture.class));
     }
 
+    public boolean updateAssetManager() {
+        if (assetManager.update()) {
+            assetManager.getAll(Texture.class, new Array<>()).forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
+            return true;
+        }
+        return false;
+    }
+
     public Sprite getIcon(String path) {
         if (!_icons.containsKey(path)) {
             String realPath = "data" + path.replace("[base]", "");
-            Texture texture = lazyLoad(realPath);
+            Texture texture = getTexture(realPath);
             Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
             sprite.flip(false, true);
             _icons.put(path, sprite);
@@ -87,7 +96,26 @@ public class SpriteManager {
         return _icons.get(path);
     }
 
+    /** TODO
+     * Depending of the available resources:
+     * - Use graphic info with type 'icon'
+     * - Use regular texture scaled to fit in a single tile
+     */
     public Sprite getIcon(ItemInfo info) {
+//        if (info.icon == null) {
+//            Sprite sprite = getNewSprite(info.graphics.get(0));
+//            switch ((int) Math.max(sprite.getWidth() / Constant.TILE_SIZE, sprite.getHeight() / Constant.TILE_SIZE)) {
+//                case 2: sprite.setScale(0.85f, 0.85f); break;
+//                case 3: sprite.setScale(0.55f, 0.55f); break;
+//                case 4: sprite.setScale(0.35f, 0.35f); break;
+//                case 5: sprite.setScale(0.32f, 0.32f); break;
+//                case 6: sprite.setScale(0.3f, 0.3f); break;
+//                case 7: sprite.setScale(0.25f, 0.25f); break;
+//                case 8: sprite.setScale(0.2f, 0.2f); break;
+//            }
+//        }
+//
+//        return getNewSprite(info.icon);
         return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;
     }
 
@@ -108,7 +136,6 @@ public class SpriteManager {
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
             Texture texture = getTexture(graphicInfo.packageName + graphicInfo.path);
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
             if (texture != null) {
                 if (graphicInfo.type == GraphicInfo.Type.DOOR) {
@@ -268,6 +295,7 @@ public class SpriteManager {
                 paths.add(path);
                 assetManager.load(path, Texture.class);
                 assetManager.finishLoading();
+                assetManager.get(path, Texture.class).setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
                 Log.warning(SpriteManager.class, "Lazy load " + path);
             } catch (GdxRuntimeException e) {
                 Log.error(SpriteManager.class, "Unable to find " + path);
@@ -317,17 +345,6 @@ public class SpriteManager {
                         graphicInfo.tileHeight);
                 sprite.setFlip(false, true);
                 sprite.setColor(new Color(255, 255, 255, 1));
-//                if (isIcon) {
-//                    switch (Math.max(width/32, height/32)) {
-//                        case 2: sprite.setScale(0.85f, 0.85f); break;
-//                        case 3: sprite.setScale(0.55f, 0.55f); break;
-//                        case 4: sprite.setScale(0.35f, 0.35f); break;
-//                        case 5: sprite.setScale(0.32f, 0.32f); break;
-//                        case 6: sprite.setScale(0.3f, 0.3f); break;
-//                        case 7: sprite.setScale(0.25f, 0.25f); break;
-//                        case 8: sprite.setScale(0.2f, 0.2f); break;
-//                    }
-//                }
 
                 _sprites.put(sum, sprite);
             }
@@ -339,4 +356,5 @@ public class SpriteManager {
     public AssetManager getAssetManager() {
         return assetManager;
     }
+
 }
