@@ -24,8 +24,6 @@ public abstract class View implements Comparable<View> {
     protected final Data data = DependencyManager.getInstance().getDependency(Data.class);
 
     private final ModuleBase _module;
-    private boolean _special = false;
-    private boolean _inGame;
     private boolean _isFocus;
     private boolean _isActive = true;
     private Object _data;
@@ -37,12 +35,12 @@ public abstract class View implements Comparable<View> {
     private int _index;
     private LuaController _controller;
     private boolean _isGameView;
+    private String _id;
 
     protected boolean _isVisible = true;
     protected boolean _isAlignLeft = true;
     protected boolean _isAlignTop = true;
     protected CompositeView _parent;
-    protected String _id;
     protected String _actionName;
     protected FadeEffect _effect;
     protected int _deep;
@@ -77,18 +75,6 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setSpecial(boolean special) {
-        _special = special;
-    }
-
-    public void actionSpecial() {
-        _parent.setSpecialTop(this);
-    }
-
-    public boolean hasSpecial() {
-        return _special;
-    }
-
-    public void setSpecialTop(View specialTop) {
     }
 
     public void setPath(String path) {
@@ -161,7 +147,6 @@ public abstract class View implements Comparable<View> {
     }
 
     public void setInGame(boolean inGame) {
-        _inGame = inGame;
     }
 
     public void setVisible(boolean visible) {

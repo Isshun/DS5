@@ -1,30 +1,51 @@
 package org.smallbox.faraway.client;
 
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import org.jrenner.smartfont.SmartFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
-import org.smallbox.faraway.util.FileUtils;
-
-import java.io.File;
 
 @ApplicationObject
 public class FontManager {
     private final static int MAX_SIZE = 100;
 
-    private BitmapFont[] fonts;
+    private BitmapFont[] fonts = new BitmapFont[MAX_SIZE + 2];
+    private BitmapFont[] outlinedFonts = new BitmapFont[MAX_SIZE + 2];
 
     public void generateFonts() {
-        SmartFontGenerator fontGen = new SmartFontGenerator();
-        fonts = new BitmapFont[MAX_SIZE + 2];
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/fonts/font.ttf"));
         for (int i = 5; i <= MAX_SIZE; i++) {
-            fonts[i] = fontGen.createFont(new FileHandle(new File(FileUtils.BASE_PATH, "data/fonts/font.ttf")), "font-" + i, i);
-            fonts[i].getData().flipped = true;
+            fonts[i] = generateNormalFont(generator, i);
+            outlinedFonts[i] = generateOutlinedFont(generator, i);
         }
-        fonts[MAX_SIZE + 1] = fontGen.createFont(new FileHandle(new File(FileUtils.BASE_PATH, "data/fonts/font.ttf")), "font-" + 101, 200);
+        fonts[MAX_SIZE + 1] = generateNormalFont(generator, 200);
+        outlinedFonts[MAX_SIZE + 1] = generateOutlinedFont(generator, 200);
+        generator.dispose();
+    }
+
+    private BitmapFont generateNormalFont(FreeTypeFontGenerator generator, int size) {
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = size;
+        parameter.flip = true;
+        return generator.generateFont(parameter);
+    }
+
+    private BitmapFont generateOutlinedFont(FreeTypeFontGenerator generator, int size) {
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = (size / 12f);
+        parameter.size = size;
+        parameter.flip = true;
+        return generator.generateFont(parameter);
     }
 
     public BitmapFont getFont(int textSize) {
         return fonts[textSize];
     }
+
+    public BitmapFont getOutlinedFont(int textSize) {
+        return outlinedFonts[textSize];
+    }
+
 }

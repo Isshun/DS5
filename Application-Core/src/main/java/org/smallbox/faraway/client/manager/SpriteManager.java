@@ -272,30 +272,32 @@ public class SpriteManager {
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
             Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
             if (texture != null) {
                 if (graphicInfo.type == GraphicInfo.Type.DOOR) {
 
                     if ((parcelTile & RIGHT) > 0 && (parcelTile & LEFT) > 0) {
-                        sprite = new Sprite(texture, 0, 32, width, height);
+                        sprite = new Sprite(texture, 0, Constant.TILE_SIZE, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
                     }
 
                     else if ((parcelTile & TOP) > 0 && (parcelTile & BOTTOM) > 0) {
-                        sprite = new Sprite(texture, 32, 32, width, height);
+                        sprite = new Sprite(texture, Constant.TILE_SIZE, Constant.TILE_SIZE, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
                     }
 
                     else {
-                        sprite = new Sprite(texture, 0, 32, width, height);
+                        sprite = new Sprite(texture, 0, Constant.TILE_SIZE, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
                     }
                 }
 
                 else if (graphicInfo.type == GraphicInfo.Type.WALL) {
-                    Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+                    Pixmap pixmap = new Pixmap(Constant.TILE_SIZE, Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
 
                     texture.getTextureData().prepare();
                     Pixmap texturePixmap = texture.getTextureData().consumePixmap();
@@ -564,6 +566,7 @@ public class SpriteManager {
 //            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
             Texture texture = _manager.get("data" + graphicInfo.path, Texture.class);
             if (texture != null) {
+                texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
                 sprite = new Sprite(texture,
                         (graphicInfo.x + tile) * graphicInfo.tileWidth,

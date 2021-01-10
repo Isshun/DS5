@@ -34,24 +34,9 @@ public abstract class CompositeView extends View {
         _views.clear();
     }
 
-    public boolean isLeaf() {
-        return _views.isEmpty();
-    }
-
+    @Override
     public void setSpecial(boolean special) {
         _special = special;
-    }
-
-    public void actionSpecial() {
-        _parent.setSpecialTop(this);
-    }
-
-    public boolean hasSpecial() {
-        return _special;
-    }
-
-    public void setSpecialTop(CompositeView specialTop) {
-        _specialTop = specialTop;
     }
 
     public View createFromTemplate() {
@@ -75,7 +60,6 @@ public abstract class CompositeView extends View {
     protected TemplateCallback  _template;
     protected Collection<View>  _nextViews = new ConcurrentLinkedQueue<>();
     protected boolean           _special = false;
-    private CompositeView _specialTop;
     protected int               _level;
 
     public void         setLevel(int level) { _level = level; }
@@ -151,7 +135,7 @@ public abstract class CompositeView extends View {
 
     public View find(String resId) {
         for (View view: _views) {
-            if (StringUtils.equals(view._id, resId)) {
+            if (StringUtils.equals(view.getId(), resId)) {
                 return view;
             }
             if (view instanceof CompositeView) {

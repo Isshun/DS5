@@ -30,6 +30,7 @@ public class LwjglConfig {
         lwjglConfig.fullscreen = "fullscreen".equals(applicationConfig.screen.mode);
         lwjglConfig.resizable = false;
         lwjglConfig.vSyncEnabled = false;
+        lwjglConfig.samples = 2;
 //        applicationConfig.useGL30 = true;
         lwjglConfig.title = Constant.NAME + " " + Constant.VERSION;
 

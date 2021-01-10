@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.NetworkInfo;
 import org.smallbox.faraway.core.game.modelInfo.ReceiptGroupInfo;
+import org.smallbox.faraway.util.Constant;
 
 import java.io.File;
 import java.util.*;
@@ -95,11 +96,10 @@ public class LuaItemExtend extends LuaExtend {
             itemInfo.icon = itemInfo.graphics.stream().filter(graphicInfo -> graphicInfo.type == GraphicInfo.Type.ICON).findFirst().orElse(null);
         }
 
-
         if (itemInfo.graphics.isEmpty()) {
             GraphicInfo graphicInfo = new GraphicInfo("base", "/graphics/missing.png");
-            graphicInfo.width = 32;
-            graphicInfo.height = 32;
+            graphicInfo.width = Constant.TILE_SIZE;
+            graphicInfo.height = Constant.TILE_SIZE;
             itemInfo.graphics.add(graphicInfo);
         }
 
@@ -328,24 +328,15 @@ public class LuaItemExtend extends LuaExtend {
         } else {
             throw new DataExtendException(DataExtendException.Type.MANDATORY, "graphics.path");
         }
-        if (!luaGraphic.get("type").isnil()) {
-            graphicInfo.type = GraphicInfo.Type.valueOf(luaGraphic.get("type").toString().toUpperCase());
-        }
-        if (!luaGraphic.get("x").isnil()) {
-            graphicInfo.x = luaGraphic.get("x").toint();
-        }
-        if (!luaGraphic.get("y").isnil()) {
-            graphicInfo.y = luaGraphic.get("y").toint();
-        }
-        if (!luaGraphic.get("tile_width").isnil()) {
-            graphicInfo.tileWidth = luaGraphic.get("tile_width").toint();
-        }
-        if (!luaGraphic.get("tile_height").isnil()) {
-            graphicInfo.tileHeight = luaGraphic.get("tile_height").toint();
-        }
 
-        graphicInfo.width = itemInfo.width * 32;
-        graphicInfo.height = itemInfo.height * 32;
+        readString(luaGraphic, "type", value -> graphicInfo.type = GraphicInfo.Type.valueOf(value.toUpperCase()));
+        readInt(luaGraphic, "tile_width", value -> graphicInfo.tileWidth = value, Constant.TILE_SIZE);
+        readInt(luaGraphic, "tile_height", value -> graphicInfo.tileHeight = value, Constant.TILE_SIZE);
+        readInt(luaGraphic, "x", value -> graphicInfo.x = value);
+        readInt(luaGraphic, "y", value -> graphicInfo.y = value);
+
+        graphicInfo.width = itemInfo.width * Constant.TILE_SIZE;
+        graphicInfo.height = itemInfo.height * Constant.TILE_SIZE;
 
         return graphicInfo;
     }

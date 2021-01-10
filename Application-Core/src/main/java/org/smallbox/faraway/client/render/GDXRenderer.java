@@ -204,24 +204,39 @@ public class GDXRenderer {
         _batch.end();
     }
 
+    public void drawTextUI(int x, int y, int textSize, Color color, String string, boolean outlined) {
+        drawText(x, y, textSize, color, string, _cameraUI, outlined);
+    }
+
     public void drawTextUI(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _cameraUI);
+        drawText(x, y, textSize, color, string, _cameraUI, false);
+    }
+
+    public void drawText(int x, int y, int textSize, Color color, String string, boolean outlined) {
+        drawText(x, y, textSize, color, string, _camera, outlined);
     }
 
     public void drawText(int x, int y, int textSize, Color color, String string) {
-        drawText(x, y, textSize, color, string, _camera);
+        drawText(x, y, textSize, color, string, _camera, false);
     }
 
-    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera) {
+    private void drawText(int x, int y, int textSize, Color color, String string, OrthographicCamera camera, boolean outlined) {
         textSize *= getUiScale();
 
         if (string != null) {
             _batch.begin();
 //            _cameraUI.updateGame();
             _batch.setProjectionMatrix(camera.combined);
-            fontManager.getFont(textSize).setColor(color != null ? color : Color.WHITE);
-            fontManager.getFont(textSize).draw(_batch, string, x, y);
-//            _fonts[textSize].drawMultiLine(_batch, string, x, y);
+
+            if (outlined) {
+                fontManager.getOutlinedFont(textSize).setColor(color != null ? color : Color.WHITE);
+                fontManager.getOutlinedFont(textSize).draw(_batch, string, x, y);
+            } else {
+                fontManager.getFont(textSize).setColor(color != null ? color : Color.WHITE);
+                fontManager.getFont(textSize).draw(_batch, string, x, y);
+            }
+
+            //            _fonts[textSize].drawMultiLine(_batch, string, x, y);
             _batch.end();
         }
     }
@@ -344,13 +359,30 @@ public class GDXRenderer {
         drawTextOnMap(parcel.x, parcel.y, string, size, color, offsetX, offsetY);
     }
 
-    public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
+    public void drawTextOnMapUI(int x, int y, String string, int size, Color color, int offsetX, int offsetY, boolean outlined) {
+        drawTextUI(
+                (int) (layerManager.getViewport().getPosX() * (1 / _camera.zoom) + (x * Constant.TILE_SIZE * (1 / _camera.zoom)) + (offsetX * (1 / _camera.zoom)))
+                        + (int) (applicationConfig.screen.resolution[0] / 2 - (applicationConfig.screen.resolution[0] / 2 / _camera.zoom)),
+                (int) (layerManager.getViewport().getPosY() * (1 / _camera.zoom) + (y * Constant.TILE_SIZE * (1 / _camera.zoom)) + (offsetY * (1 / _camera.zoom)))
+                        + (int) (applicationConfig.screen.resolution[1] / 2 - (applicationConfig.screen.resolution[1] / 2 / _camera.zoom)),
+                size,
+                color,
+                string,
+                outlined);
+    }
+
+    public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY, boolean outlined) {
         drawText(
                 layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE) + offsetX,
                 layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE) + offsetY,
                 size,
                 color,
-                string);
+                string,
+                outlined);
+    }
+
+    public void drawTextOnMap(int x, int y, String string, int size, Color color, int offsetX, int offsetY) {
+        drawTextOnMap(x, y, string, size, color, offsetX, offsetY, false);
     }
 
     public void drawOnMap(ParcelCommon parcel, Sprite itemSprite) {
