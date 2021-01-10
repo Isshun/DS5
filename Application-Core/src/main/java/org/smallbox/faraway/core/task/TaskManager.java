@@ -7,25 +7,29 @@ import org.smallbox.faraway.util.log.Log;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Supplier;
 
 @ApplicationObject
 public class TaskManager {
     private static final int BACKGROUND_THREAD_LIMIT = 2;
 
-    private final LoaderThreadExecutor                _loadExecutor = new LoaderThreadExecutor();
-    private final ExecutorService                     _backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);
-    private final Collection<LoadTask>                _loadTasks = new LinkedBlockingQueue<>();
-    private boolean                             _running = true;
-    private int                                 _backgroundThreadCount;
+    private final LoaderThreadExecutor loadExecutor = new LoaderThreadExecutor();
+    private final ExecutorService backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);
+    private final Queue<Task> tasks = new LinkedBlockingQueue<>();
+    private boolean running = true;
+    private int backgroundThreadCount;
 
     public TaskManager() {
         launchBackgroundThread(() -> {
-            for (LoadTask task: _loadTasks) {
-                if (task.state == LoadTask.State.NONE) {
-                    task.state = LoadTask.State.WAITING;
+            for (Task task : tasks) {
+                if (task.state == State.NONE || task.state == State.BLOCKING || (task instanceof WaitTask && task.state == State.WAITING)) {
+                    if (task instanceof LoadTask) {
+                        task.state = State.WAITING;
+                    }
                     startTask(task);
                     return;
                 }
@@ -33,7 +37,7 @@ public class TaskManager {
         }, 10);
     }
 
-    private void startTask(LoadTask task) {
+    private void startTask(Task task) {
 //        if (task.onMainThread) {
 //            _loadExecutor.submit(() -> Application.runOnMainThread(() -> runLoadTask(task)));
 //        } else {
@@ -41,24 +45,21 @@ public class TaskManager {
 //        }
 
         // TODO: no bg thread during early dev
-        Application.runOnMainThread(() -> runLoadTask(task));
+        Application.runOnMainThread(() -> runTask(task));
     }
 
-    public void addLoadTask(String label, boolean onMainThread, Task task) {
-        _loadTasks.add(new LoadTask(label, true) {
-            @Override
-            protected void onRun() {
-                task.run();
-            }
-        });
-    }
-
-    private void runLoadTask(LoadTask task) {
-        if (_running) {
+    private void runTask(Task task) {
+        if (running) {
             Log.info("Run load task:" + task.label);
-            task.state = LoadTask.State.RUNNING;
-            task.run();
-            task.state = LoadTask.State.COMPLETE;
+            if (task instanceof WaitTask) {
+                task.state = State.BLOCKING;
+            }
+            if (task instanceof LoadTask) {
+                task.state = State.RUNNING;
+            }
+            if (task.state != State.COMPLETE && task.run()) {
+                task.state = State.COMPLETE;
+            }
             if (task.throwable != null) {
                 System.out.println("Run load task:" + task.label + " has throw an exception");
                 System.out.println(task.throwable.getMessage());
@@ -71,23 +72,23 @@ public class TaskManager {
     }
 
     private void exitWithError(Throwable throwable) {
-        _running = false;
-        _loadExecutor.shutdown();
+        running = false;
+        loadExecutor.shutdown();
         Application.exitWithError();
     }
 
-    public Collection<LoadTask> getLoadTasks() {
-        return _loadTasks;
+    public Collection<Task> getLoadTasks() {
+        return tasks;
     }
 
-    public void launchBackgroundThread(Task task, int timeInterval) {
-        if (_backgroundThreadCount++ < BACKGROUND_THREAD_LIMIT) {
+    public void launchBackgroundThread(Runnable runnable, int timeInterval) {
+        if (backgroundThreadCount++ < BACKGROUND_THREAD_LIMIT) {
 
             Log.info("Launch background thread");
 
-            _backgroundExecutor.submit(() -> {
-                while (_running) {
-                    task.run();
+            backgroundExecutor.submit(() -> {
+                while (running) {
+                    runnable.run();
                     try {
                         Thread.sleep(timeInterval);
                     } catch (InterruptedException e) {
@@ -102,6 +103,24 @@ public class TaskManager {
         } else {
             throw new GameException(TaskManager.class, "BACKGROUND_THREAD_LIMIT exceeded");
         }
+    }
+
+    public void addLoadTask(String label, boolean onMainThread, Runnable runnable) {
+        tasks.add(new LoadTask(label, true) {
+            @Override
+            protected void onRun() {
+                runnable.run();
+            }
+        });
+    }
+
+    public void addWaitTask(String label, boolean onMainThread, Supplier<Boolean> runnable) {
+        tasks.add(new WaitTask(label, true) {
+            @Override
+            protected boolean onRun() {
+                return runnable.get();
+            }
+        });
     }
 
 }

@@ -321,10 +321,7 @@ public class LuaItemExtend extends LuaExtend {
         GraphicInfo graphicInfo;
         if (!luaGraphic.get("path").isnil()) {
             String path = luaGraphic.get("path").toString();
-            graphicInfo = new GraphicInfo(
-                    path.substring(1, path.indexOf(']')),
-                    path.substring(path.indexOf(']') + 1, path.length())
-            );
+            graphicInfo = new GraphicInfo(path.substring(1, path.indexOf(']')), path.substring(path.indexOf(']') + 1));
         } else {
             throw new DataExtendException(DataExtendException.Type.MANDATORY, "graphics.path");
         }

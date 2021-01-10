@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.client.FontManager;
+import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.render.layer.ground.WorldGroundLayer;
 import org.smallbox.faraway.client.ui.engine.views.View;

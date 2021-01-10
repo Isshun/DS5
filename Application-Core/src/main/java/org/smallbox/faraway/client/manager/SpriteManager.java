@@ -1,71 +1,59 @@
 package org.smallbox.faraway.client.manager;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.NotImplementedException;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ConsumableItem;
-import org.smallbox.faraway.core.module.world.model.NetworkItem;
-import org.smallbox.faraway.core.module.world.model.StructureItem;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
 
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @ApplicationObject
 public class SpriteManager {
-    private static final int                NB_SELECTOR_TILE = 4;
+    private final AssetManager assetManager = new AssetManager();
 
-    private static final int                TOP_LEFT = 0b10000000;
-    private static final int                TOP = 0b01000000;
-    private static final int                TOP_RIGHT = 0b00100000;
-    private static final int                LEFT = 0b00010000;
-    private static final int                RIGHT = 0b00001000;
-    private static final int                BOTTOM_LEFT = 0b00000100;
-    private static final int                BOTTOM = 0b00000010;
-    private static final int                BOTTOM_RIGHT = 0b00000001;
+    private static final int NB_SELECTOR_TILE = 4;
 
-    private final Map<Integer, Sprite>            _spritesCharacters;
-    private final Map<Long, Sprite>               _sprites;
-    private Sprite[]                        _selectors;
-    private final Map<String, Sprite>             _icons;
-    private Map<String, Texture>            _textures;
+    private static final int TOP_LEFT = 0b10000000;
+    private static final int TOP = 0b01000000;
+    private static final int TOP_RIGHT = 0b00100000;
+    private static final int LEFT = 0b00010000;
+    private static final int RIGHT = 0b00001000;
+    private static final int BOTTOM_LEFT = 0b00000100;
+    private static final int BOTTOM = 0b00000010;
+    private static final int BOTTOM_RIGHT = 0b00000001;
 
-    private int _spriteCount;
-    private final AssetManager _manager;
-    
+    private final Map<Integer, Sprite> _spritesCharacters;
+    protected final Map<Long, Sprite> _sprites;
+    private Sprite[] _selectors;
+    private final Map<String, Sprite> _icons;
+    private final Set<String> paths = new ConcurrentSkipListSet<>();
+
+    protected int _spriteCount;
+
     @Inject
     private Data data;
 
     public SpriteManager() {
         _icons = new HashMap<>();
-        _manager = new AssetManager();
 
         _sprites = new HashMap<>();
         _spritesCharacters = new HashMap<>();
-    }
-
-    public void reload() {
-        _sprites.clear();
-        _spriteCount = 0;
     }
 
     public void init() {
@@ -81,45 +69,17 @@ public class SpriteManager {
         _selectors[3] = new Sprite(itemSelector, 8, 8, 8, 8);
         _selectors[3].flip(false, true);
 
-        _textures = new ConcurrentHashMap<>();
-
-        _textures.put("data/res/bg_area.png", new Texture(FileUtils.getFileHandle("data/res/bg_area.png")));
-//        _textures.put("data/graphics/jobs/ic_build.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_build.png")));
-//        _textures.put("data/graphics/jobs/ic_craft.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_craft.png")));
-//        _textures.put("data/graphics/jobs/ic_dump.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_dump.png")));
-//        _textures.put("data/graphics/jobs/ic_gather.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_gather.png")));
-//        _textures.put("data/graphics/jobs/ic_haul.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_haul.png")));
-//        _textures.put("data/graphics/jobs/ic_mining.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_mining.png")));
-//        _textures.put("data/graphics/jobs/ic_store.png", new Texture(FileUtils.getFileHandle("data/graphics/jobs/ic_store.png")));
-
-//        _textures = FileUtils.listRecursively("data/res").stream()
-//                .filter(file -> file.getName().endsWith(".png"))
-//                .collect(Collectors.toMap(file -> file.getPath().replace("\\", "/"), file -> new Texture(new FileHandle(file))));
-
-        if (CollectionUtils.isNotEmpty(data.getItems())) {
-            data.getItems().forEach(itemInfo -> {
-                if (itemInfo.graphics != null && !itemInfo.graphics.isEmpty()) {
-                    itemInfo.graphics.forEach(graphicInfo -> {
-                        _manager.load("data" + graphicInfo.path, Texture.class);
-                        File file = getFile(itemInfo, graphicInfo);
-                        if (file.exists()) {
-                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(new FileHandle(file)));
-                        } else {
-                            _textures.put(graphicInfo.packageName + graphicInfo.path, new Texture(FileUtils.getFileHandle("data/graphics/missing.png")));
-                            Log.warning("Impossible de trouver la texture de l'item: " + itemInfo.name);
-                        }
-                    });
-                }
-            });
-        } else {
-            throw new GameException(SpriteManager.class, "Data collection should not be empty");
-        }
+        data.getItems().stream()
+                .map(itemInfo -> itemInfo.graphics)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .forEach(graphicInfo -> assetManager.load("data" + graphicInfo.path, Texture.class));
     }
 
     public Sprite getIcon(String path) {
         if (!_icons.containsKey(path)) {
-            File file = getFile(path);
-            Texture texture = new Texture(new FileHandle(file));
+            String realPath = "data" + path.replace("[base]", "");
+            Texture texture = lazyLoad(realPath);
             Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
             sprite.flip(false, true);
             _icons.put(path, sprite);
@@ -127,139 +87,15 @@ public class SpriteManager {
         return _icons.get(path);
     }
 
-    public Sprite getIcon(String path, int width, int height) {
-        if (!_icons.containsKey(path)) {
-            File file = getFile(path);
-            Texture texture = new Texture(new FileHandle(file));
-            Sprite sprite = new Sprite(texture, 0, 0, width, height);
-            sprite.flip(false, true);
-            _icons.put(path, sprite);
-        }
-        return _icons.get(path);
-    }
-
-    public Sprite getItem(ItemInfo info) { return getSprite(info, info.graphics != null ? info.graphics.get(0) : null, 0, 0, 255, false); }
-    public Sprite getItem(StructureItem structure) { return structure.isComplete() ? getSprite(structure.getInfo(), structure.getGraphic(), structure.getParcel().getTile(), 0, 255, false) : getBluePrint(); }
-
-    private Sprite getBluePrint() {
-        long sum = getSum(-1, 0, 0, 0);
-        Sprite sprite = _sprites.get(sum);
-        if (sprite == null) {
-            Texture texture = new Texture(new FileHandle(new File("data", "graphics/items/structures/blueprint.png")));
-            sprite = new Sprite(texture, 0, 0, Constant.TILE_SIZE, Constant.TILE_SIZE);
-            sprite.setFlip(false, true);
-            _sprites.put(sum, sprite);
-        }
-        return sprite;
-    }
-
-    public Sprite getItem(NetworkItem networkObject) { return getSprite(networkObject.getGraphic(), networkObject.isComplete() ? 1 : 0, 0, 255, false, Constant.TILE_SIZE, Constant.TILE_SIZE); }
-//    public Sprite getItem(UsableItem item) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? item.getInfo().height : 0, 0, 255, false); }
-//    public Sprite getItem(UsableItem item, int currentFrame) { return getSprite(item.getInfo(), item.getGraphic(), item.isComplete() ? 1 : 0, 0, 255, false); }
-
-    public Sprite getItem(GraphicInfo graphicInfo, int parcelTile, int itemTile) {
-        if (graphicInfo.type == GraphicInfo.Type.TERRAIN) {
-            return getRock(graphicInfo, parcelTile);
-        }
-        return getSprite(graphicInfo, parcelTile, itemTile, 255, false);
-    }
-
-    public Sprite getItem(ConsumableItem consumable) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
-    public Sprite getItem(ConsumableItem consumable, int currentFrame) { return getSprite(consumable.getInfo(), consumable.getGraphic(), 0, 0, 255, false); }
-
     public Sprite getIcon(ItemInfo info) {
         return info.graphics != null ? getSprite(info, info.graphics.get(0), 0, 0, 255, true) : null;
     }
 
-    public Sprite getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
-        return getSprite(graphicInfo, tile, state, alpha, isIcon, graphicInfo.width, graphicInfo.height);
-    }
-
-    private Sprite getSprite(GraphicInfo graphicInfo, int tile, int state, int alpha, boolean isIcon) {
-        return getSprite(graphicInfo, tile, state, alpha, isIcon, graphicInfo.width, graphicInfo.height);
-    }
-
-    public Sprite getRock(GraphicInfo graphicInfo, int tile) {
-        assert graphicInfo != null && graphicInfo.type == GraphicInfo.Type.TERRAIN;
-
-        if (graphicInfo.spriteId == -1) {
-            graphicInfo.spriteId = ++_spriteCount;
-        }
-
-        Sprite sprite = _sprites.get(getSum(graphicInfo.spriteId, tile, 0, 0));
-        if (sprite == null) {
-            Texture txTerrain = _manager.get(graphicInfo.path);
-            if (txTerrain != null) {
-                Pixmap pixmap = new Pixmap(Constant.TILE_SIZE, Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
-
-                txTerrain.getTextureData().prepare();
-                Pixmap texturePixmap = txTerrain.getTextureData().consumePixmap();
-
-                // Top left
-                if ((tile & TOP_LEFT) > 0 && (tile & TOP) > 0 && (tile & LEFT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 0, 16, 16, 16, 16);
-                } else if ((tile & TOP) > 0 && (tile & LEFT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 0, 64, 32, 16, 16);
-                } else if ((tile & LEFT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 0, 32, 0, 16, 16);
-                } else if ((tile & TOP) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 0, 0, 32, 16, 16);
-                } else {
-                    pixmap.drawPixmap(texturePixmap, 0, 0, 0, 0, 16, 16);
-                }
-
-                // Top right
-                if ((tile & TOP_RIGHT) > 0 && (tile & TOP) > 0 && (tile & RIGHT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 0, 16, 16, 16, 16);
-                } else if ((tile & TOP) > 0 && (tile & RIGHT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 0, 80, 32, 16, 16);
-                } else if ((tile & RIGHT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 0, 16, 0, 16, 16);
-                } else if ((tile & TOP) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 0, 48, 32, 16, 16);
-                } else {
-                    pixmap.drawPixmap(texturePixmap, 16, 0, 48, 0, 16, 16);
-                }
-
-                // Bottom left
-                if ((tile & BOTTOM_LEFT) > 0 && (tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 16, 16, 16, 16, 16);
-                } else if ((tile & BOTTOM) > 0 && (tile & LEFT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 16, 64, 48, 16, 16);
-                } else if ((tile & LEFT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 16, 32, 48, 16, 16);
-                } else if ((tile & BOTTOM) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 0, 16, 0, 16, 16, 16);
-                } else {
-                    pixmap.drawPixmap(texturePixmap, 0, 16, 0, 48, 16, 16);
-                }
-
-                // Bottom right
-                if ((tile & BOTTOM_RIGHT) > 0 && (tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 16, 16, 16, 16, 16);
-                } else if ((tile & BOTTOM) > 0 && (tile & RIGHT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 16, 80, 48, 16, 16);
-                } else if ((tile & RIGHT) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 16, 16, 48, 16, 16);
-                } else if ((tile & BOTTOM) > 0) {
-                    pixmap.drawPixmap(texturePixmap, 16, 16, 48, 16, 16, 16);
-                } else {
-                    pixmap.drawPixmap(texturePixmap, 16, 16, 48, 48, 16, 16);
-                }
-
-                txTerrain.getTextureData().disposePixmap();
-
-                sprite = new Sprite(new Texture(pixmap));
-                sprite.setFlip(false, true);
-                _sprites.put(getSum(graphicInfo.spriteId, tile, 0, 0), sprite);
-            }
-        }
-
-        return sprite;
-    }
-
-    private Sprite getSprite(GraphicInfo graphicInfo, int parcelTile, int itemTile, int alpha, boolean isIcon, int width, int height) {
+    public Sprite getSprite(ItemInfo itemInfo, GraphicInfo graphicInfo, int parcelTile, int state, int alpha, boolean isIcon) {
         assert graphicInfo != null;
+
+        int width = graphicInfo.width;
+        int height = graphicInfo.height;
 
         if (graphicInfo.spriteId == -1) {
             graphicInfo.spriteId = ++_spriteCount;
@@ -271,7 +107,7 @@ public class SpriteManager {
 
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
-            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
+            Texture texture = getTexture(graphicInfo.packageName + graphicInfo.path);
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
             if (texture != null) {
@@ -281,104 +117,42 @@ public class SpriteManager {
                         sprite = new Sprite(texture, 0, Constant.TILE_SIZE, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
-                    }
-
-                    else if ((parcelTile & TOP) > 0 && (parcelTile & BOTTOM) > 0) {
+                    } else if ((parcelTile & TOP) > 0 && (parcelTile & BOTTOM) > 0) {
                         sprite = new Sprite(texture, Constant.TILE_SIZE, Constant.TILE_SIZE, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
-                    }
-
-                    else {
+                    } else {
                         sprite = new Sprite(texture, 0, Constant.TILE_SIZE, width, height);
                         sprite.setFlip(false, true);
                         _sprites.put(sum, sprite);
                     }
-                }
-
-                else if (graphicInfo.type == GraphicInfo.Type.WALL) {
-                    Pixmap pixmap = new Pixmap(Constant.TILE_SIZE, Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
-
-                    texture.getTextureData().prepare();
-                    Pixmap texturePixmap = texture.getTextureData().consumePixmap();
-
-                    // Top left
-                    if ((parcelTile & TOP_LEFT) > 0 && (parcelTile & TOP) > 0 && (parcelTile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 32, 32, 16, 16);
-                    } else if ((parcelTile & TOP) > 0 && (parcelTile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 64, 16, 16);
-                    } else if ((parcelTile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 0, 16, 16);
-                    } else if ((parcelTile & TOP) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 64, 48, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 0, 0, 0, 0, 16, 16);
-                    }
-
-                    // Top right
-                    if ((parcelTile & TOP_RIGHT) > 0 && (parcelTile & TOP) > 0 && (parcelTile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 32, 32, 16, 16);
-                    } else if ((parcelTile & TOP) > 0 && (parcelTile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 16, 64, 16, 16);
-                    } else if ((parcelTile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 16, 0, 16, 16);
-                    } else if ((parcelTile & TOP) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 80, 64, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 16, 0, 80, 0, 16, 16);
-                    }
-
-                    // Bottom left
-                    if ((parcelTile & BOTTOM_LEFT) > 0 && (parcelTile & BOTTOM) > 0 && (parcelTile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 32, 32, 16, 16);
-                    } else if ((parcelTile & BOTTOM) > 0 && (parcelTile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 16, 16, 16);
-                    } else if ((parcelTile & LEFT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 80, 16, 16);
-                    } else if ((parcelTile & BOTTOM) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 64, 32, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 0, 16, 0, 80, 16, 16);
-                    }
-
-                    // Bottom right
-                    if ((parcelTile & BOTTOM_RIGHT) > 0 && (parcelTile & BOTTOM) > 0 && (parcelTile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 32, 32, 16, 16);
-                    } else if ((parcelTile & BOTTOM) > 0 && (parcelTile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 16, 16, 16, 16);
-                    } else if ((parcelTile & RIGHT) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 16, 80, 16, 16);
-                    } else if ((parcelTile & BOTTOM) > 0) {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 80, 16, 16, 16);
-                    } else {
-                        pixmap.drawPixmap(texturePixmap, 16, 16, 80, 80, 16, 16);
-                    }
-
-                    texture.getTextureData().disposePixmap();
-
-                    sprite = new Sprite(new Texture(pixmap), 0, 0, 32, 32);
-                    sprite.setColor(new Color(255, 255, 255, alpha));
-                    sprite.setFlip(false, true);
-                    _sprites.put(sum, sprite);
-
-//                    sprite = new Sprite(texture, (tile % 3) * 32, (tile / 3) * 32, 32, 32);
-//                    sprite.setColor(new Color(255, 255, 255, alpha));
-//                    _sprites.put(sum, sprite);
-                }
-
-                else {
+                } else {
                     sprite = new Sprite(texture, 0, 0, width, height);
                     sprite.setFlip(false, true);
                     sprite.setColor(new Color(255, 255, 255, alpha));
                     if (isIcon) {
-                        switch (Math.max(width/Constant.TILE_SIZE, height/Constant.TILE_SIZE)) {
-                            case 2: sprite.setScale(0.85f, 0.85f); break;
-                            case 3: sprite.setScale(0.55f, 0.55f); break;
-                            case 4: sprite.setScale(0.35f, 0.35f); break;
-                            case 5: sprite.setScale(0.32f, 0.32f); break;
-                            case 6: sprite.setScale(0.3f, 0.3f); break;
-                            case 7: sprite.setScale(0.25f, 0.25f); break;
-                            case 8: sprite.setScale(0.2f, 0.2f); break;
+                        switch (Math.max(width / Constant.TILE_SIZE, height / Constant.TILE_SIZE)) {
+                            case 2:
+                                sprite.setScale(0.85f, 0.85f);
+                                break;
+                            case 3:
+                                sprite.setScale(0.55f, 0.55f);
+                                break;
+                            case 4:
+                                sprite.setScale(0.35f, 0.35f);
+                                break;
+                            case 5:
+                                sprite.setScale(0.32f, 0.32f);
+                                break;
+                            case 6:
+                                sprite.setScale(0.3f, 0.3f);
+                                break;
+                            case 7:
+                                sprite.setScale(0.25f, 0.25f);
+                                break;
+                            case 8:
+                                sprite.setScale(0.2f, 0.2f);
+                                break;
                         }
 
                     }
@@ -392,29 +166,6 @@ public class SpriteManager {
         }
 
         return sprite;
-    }
-
-    public static File getFile(ItemInfo itemInfo, GraphicInfo graphicInfo) {
-        if ("base".equals(graphicInfo.packageName)) {
-            return FileUtils.getFile("data", graphicInfo.path);
-        } else {
-            return Paths.get(itemInfo.dataDirectory.getAbsolutePath(), "data", graphicInfo.path).toFile();
-        }
-    }
-
-    private File getFile(String path) {
-        String packageName = "base";
-        if (path.startsWith("[")) {
-            packageName = path.substring(1, path.indexOf(']'));
-            path = path.substring(path.indexOf(']') + 1, path.length());
-        }
-
-        if ("base".equals(packageName)) {
-            return FileUtils.getFile("data", path);
-        } else {
-            throw new NotImplementedException("");
-//            return new File("mods/" + packageName + "/items/" + path);
-        }
     }
 
     private void getTextureRect(GraphicInfo item, Sprite sprite) {
@@ -431,7 +182,7 @@ public class SpriteManager {
             }
         }
         int endX = -1;
-        for (int x = (int)(sprite.getWidth() - 1); x >= 0; x--) {
+        for (int x = (int) (sprite.getWidth() - 1); x >= 0; x--) {
             for (int y = 0; y < sprite.getHeight(); y++) {
                 if (endX == -1 && (pixmap.getPixel(x, y) & 0x000000ff) != 0) endX = x + 1;
             }
@@ -443,7 +194,7 @@ public class SpriteManager {
             }
         }
         int endY = -1;
-        for (int y = (int)(sprite.getHeight() - 1); y >= 0; y--) {
+        for (int y = (int) (sprite.getHeight() - 1); y >= 0; y--) {
             for (int x = 0; x < sprite.getWidth(); x++) {
                 if (endY == -1 && (pixmap.getPixel(x, y) & 0x000000ff) != 0) endY = y + 1;
             }
@@ -456,24 +207,7 @@ public class SpriteManager {
         textureData.disposePixmap();
     }
 
-//    private File foundImageFile(String fileName) {
-//        // TODO: clean
-//        for (File file: new File("data/items/").listFiles()) {
-//            if (file.isDirectory() && !file.getName().equals("24")) {
-//                for (File subFile: file.listFiles()) {
-//                    if (subFile.getName().equals(fileName)) {
-//                        return subFile;
-//                    }
-//                }
-//            }
-//            if (file.getName().equals(fileName)) {
-//                return file;
-//            }
-//        }
-//        return null;
-//    }
-
-    private long getSum(int spriteId, int tile, int state, int extra) {
+    protected long getSum(int spriteId, int tile, int state, int extra) {
         if (spriteId > 4096 || tile > 4096 || extra > 4096 || state > 4096) {
             throw new GameException(SpriteManager.class, "SpriteManager.getSum -> out of bounds values");
         }
@@ -488,15 +222,6 @@ public class SpriteManager {
         sum = sum << 12;
 
         return sum;
-    }
-
-    public Sprite getAnimal(String path) {
-        if (!_icons.containsKey(path)) {
-            Texture texture = new Texture(path);
-            Sprite sprite = new Sprite(texture, 0, 0, texture.getWidth(), texture.getHeight());
-            _icons.put(path, sprite);
-        }
-        return _icons.get(path);
     }
 
     public Sprite getCharacter(CharacterModel c, int direction, int frame) {
@@ -534,8 +259,25 @@ public class SpriteManager {
     }
 
     public Texture getTexture(String path) {
-        assert _textures.containsKey(path);
-        return _textures.get(path);
+        return lazyLoad(path);
+    }
+
+    private Texture lazyLoad(String path) {
+        if (!assetManager.contains(path) && !paths.contains(path)) {
+            try {
+                paths.add(path);
+                assetManager.load(path, Texture.class);
+                assetManager.finishLoading();
+                Log.warning(SpriteManager.class, "Lazy load " + path);
+            } catch (GdxRuntimeException e) {
+                Log.error(SpriteManager.class, "Unable to find " + path);
+            }
+        }
+        return assetManager.contains(path) ? assetManager.get(path) : assetManager.get("data/graphics/missing.png");
+    }
+
+    public Texture getTexture(GraphicInfo graphicInfo) {
+        return getTexture(graphicInfo.packageName + graphicInfo.path);
     }
 
     public Sprite getNewSprite(ItemInfo itemInfo) {
@@ -547,7 +289,7 @@ public class SpriteManager {
     }
 
     public Sprite getNewSprite(GraphicInfo graphicInfo, int tile) {
-        _manager.finishLoading();
+        //assetManager.finishLoading();
 
         assert graphicInfo != null;
 
@@ -564,7 +306,7 @@ public class SpriteManager {
         Sprite sprite = _sprites.get(sum);
         if (sprite == null) {
 //            Texture texture = _textures.get(graphicInfo.packageName + graphicInfo.path);
-            Texture texture = _manager.get("data" + graphicInfo.path, Texture.class);
+            Texture texture = lazyLoad("data" + graphicInfo.path);
             if (texture != null) {
                 texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
@@ -592,5 +334,9 @@ public class SpriteManager {
         }
 
         return _sprites.get(sum);
+    }
+
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 }

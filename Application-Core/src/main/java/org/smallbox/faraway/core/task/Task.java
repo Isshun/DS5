@@ -1,5 +1,15 @@
 package org.smallbox.faraway.core.task;
 
-public interface Task {
-    void run();
+public abstract class Task {
+    public final String     label;
+    public final boolean    onMainThread;
+    public Throwable        throwable;
+    public State            state = State.NONE;
+
+    public Task(String label, boolean onMainThread) {
+        this.onMainThread = onMainThread;
+        this.label = label;
+    }
+
+    public abstract boolean run();
 }

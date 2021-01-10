@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.task.LoadTask;
+import org.smallbox.faraway.core.task.Task;
 import org.smallbox.faraway.core.task.TaskManager;
 import org.smallbox.faraway.util.FileUtils;
 
@@ -20,6 +21,9 @@ public class MinimalRender {
 
     @Inject
     private TaskManager taskManager;
+
+    @Inject
+    private SpriteManager spriteManager;
 
     private final BitmapFont systemFont;
     private final SpriteBatch batch = new SpriteBatch();
@@ -43,16 +47,18 @@ public class MinimalRender {
 
         // Display tasks message
         taskManager.getLoadTasks().forEach(new Consumer<>() {
-
             private int taskIndex;
 
             @Override
-            public void accept(LoadTask task) {
+            public void accept(Task task) {
 
                 switch (task.state) {
                     case NONE:
                     case WAITING:
                         systemFont.setColor(1f, 1f, 1f, 0.5f);
+                        break;
+                    case BLOCKING:
+                        systemFont.setColor(0.6f, 0.6f, 1f, 1);
                         break;
                     case RUNNING:
                         systemFont.setColor(0.5f, 0.9f, 0.8f, 1);
@@ -65,6 +71,8 @@ public class MinimalRender {
                 systemFont.draw(batch, task.label, 12, Gdx.graphics.getHeight() - (++taskIndex * 20 + 12));
             }
         });
+
+        systemFont.draw(batch, String.valueOf(spriteManager.getAssetManager().getProgress()), 12, 500);
 
         batch.end();
     }

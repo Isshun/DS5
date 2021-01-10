@@ -1,6 +1,6 @@
 package org.smallbox.faraway.client.ui.engine.views;
 
-import org.smallbox.faraway.client.FontManager;
+import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.RotateAnimation;
 import org.smallbox.faraway.client.controller.LuaController;
 import org.smallbox.faraway.client.manager.SpriteManager;

@@ -2,21 +2,14 @@ package org.smallbox.faraway.core.task;
 
 import org.smallbox.faraway.core.GameException;
 
-public abstract class LoadTask implements Task {
-    public enum State {NONE, WAITING, RUNNING, COMPLETE}
-
-    public final boolean    onMainThread;
-    public final String     label;
-    public Throwable        throwable;
-    public State            state = State.NONE;
+public abstract class LoadTask extends Task {
 
     public LoadTask(String label, boolean onMainThread) {
-        this.label = label;
-        this.onMainThread = onMainThread;
+        super(label, onMainThread);
     }
 
     @Override
-    public void run() {
+    public boolean run() {
         if (state == State.RUNNING) {
             try {
                 onRun();
@@ -27,6 +20,7 @@ public abstract class LoadTask implements Task {
         } else {
             throw new GameException(LoadTask.class, "Only task with JOB_RUNNING status can be run");
         }
+        return true;
     }
 
     protected abstract void onRun();

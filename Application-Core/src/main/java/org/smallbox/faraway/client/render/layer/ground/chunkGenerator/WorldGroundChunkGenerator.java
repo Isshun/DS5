@@ -1,7 +1,6 @@
 package org.smallbox.faraway.client.render.layer.ground.chunkGenerator;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
@@ -26,6 +25,7 @@ import java.util.Map;
 public class WorldGroundChunkGenerator {
     public static final int CHUNK_SIZE = 16;
 
+    @Inject private SpriteManager spriteManager;
     @Inject private WorldModule worldModule;
     @Inject private Viewport viewport;
     @Inject private Game game;
@@ -50,7 +50,7 @@ public class WorldGroundChunkGenerator {
                 _pxGrounds.put(itemInfo, pixmapOut);
 
                 if (itemInfo.graphics.size() >= 2) {
-                    Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(1))));
+                    Texture textureDecoration = spriteManager.getTexture(itemInfo.graphics.get(1));
                     textureDecoration.getTextureData().prepare();
                     _pxGroundDecorations.put(itemInfo, textureDecoration.getTextureData().consumePixmap());
                 }
