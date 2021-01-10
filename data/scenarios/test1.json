@@ -14,7 +14,15 @@
     {"x": 2, "y": 0, "z": 1, "name": "base.consumable.vegetable.carrot", "quantity": 50},
     {"x": 3, "y": 0, "z": 1, "name": "base.consumable.vegetable.rice", "quantity": 40},
     {"x": 4, "y": 0, "z": 1, "name": "base.consumable.wood_log", "quantity": 5},
-    {"x": 5, "y": 0, "z": 1, "name": "base.consumable.wood_log", "quantity": 5}
+    {"x": 5, "y": 0, "z": 1, "name": "base.consumable.wood_log", "quantity": 5},
+    {"x": 6, "y": 0, "z": 1, "name": "base.consumable.vegetable.wheat", "quantity": 50},
+    {"x": 7, "y": 0, "z": 1, "name": "base.consumable.vegetable.potato", "quantity": 50},
+    {"x": 8, "y": 0, "z": 1, "name": "base.consumable.vegetable.tomato", "quantity": 50},
+    {"x": 0, "y": 1, "z": 1, "name": "base.granite_rubble", "quantity": 1000},
+    {"x": 1, "y": 1, "z": 1, "name": "base.granite_rubble", "quantity": 800},
+    {"x": 2, "y": 1, "z": 1, "name": "base.granite_rubble", "quantity": 50},
+    {"x": 3, "y": 1, "z": 1, "name": "base.granite_rubble", "quantity": 40},
+    {"x": 4, "y": 1, "z": 1, "name": "base.granite_rubble", "quantity": 5}
   ],
   "items": [
     {"x": 0, "y": 2, "z": 1, "name": "base.item.bed.wood"}

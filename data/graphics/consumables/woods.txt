@@ -1,1 +1,5 @@
-https://assetstore.unity.com/packages/2d/gui/icons/icons-wood-timber-lumber-125074#description
+https://assetstore.unity.com/packages/2d/gui/icons/icons-gems-stone-minerals-125076
+https://assetstore.unity.com/packages/2d/gui/icons/icons-wood-timber-lumber-125074
+https://assetstore.unity.com/packages/2d/gui/icons/icons-food-spices-drinks-125120
+https://assetstore.unity.com/packages/2d/gui/icons/icons-strategic-resources-goods-96509
+https://assetstore.unity.com/packages/2d/gui/icons/icons-crafts-tools-foraging-125006

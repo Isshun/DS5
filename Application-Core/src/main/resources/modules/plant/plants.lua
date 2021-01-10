@@ -39,7 +39,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.carrot", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/consumables/vegetables.png", x = 10, y = 4, tile_width = 24, tile_height = 24 },
+            { path = "[module]/graphics/consumables/64/carrot_1.png", x = 0, y = 0, tile_width = 64, tile_height = 64 },
         }
     },
 
@@ -99,7 +99,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.corn", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/consumables/vegetables.png", x = 9, y = 4, tile_width = 24, tile_height = 24 },
+            { path = "[module]/graphics/consumables/foods.png", x = 4, y = 0, tile_width = 64, tile_height = 64 },
         }
     },
 
@@ -119,7 +119,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.potato", quantity = {1, 1}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/consumables/vegetables.png", x = 5, y = 4, tile_width = 24, tile_height = 24 },
+            { path = "[module]/graphics/consumables/foods.png", x = 7, y = 0, tile_width = 64, tile_height = 64 },
         }
     },
 
@@ -159,7 +159,7 @@ data:extend({
             type = "gather", cost = 20, products = {{ item = "base.consumable.vegetable.tomato", quantity = {4, 6}, rate = 1 } }
         },
         graphics = {
-            { path = "[module]/graphics/plants/tomato.png" },
+            { path = "[module]/graphics/consumables/foods.png", x = 7, y = 5, tile_width = 64, tile_height = 64 },
         }
     },
 
