@@ -119,8 +119,8 @@ public class WorldGroundLayer extends BaseLayer {
         int viewportY = viewport.getPosY();
 
         // Draw chunks
-        for (int col = fromCol; col < toCol; col++) {
-            for (int row = fromRow; row < toRow; row++) {
+        for (int col = 0; col < _cols; col++) {
+            for (int row = 0; row < _rows; row++) {
                 if (!_rockLayersUpToDate[col][row]) {
                     _rockLayersUpToDate[col][row] = true;
                     createGround(col, row);

@@ -46,7 +46,11 @@ public class WorldGroundChunkGenerator {
                 Texture textureIn = new Texture("data/graphics/texture/sand.png");
 
                 Pixmap pixmapIn = createPixmapFromTexture(textureIn);
+                textureIn.dispose();
+
                 Pixmap pixmapOut = createPixmapFromPixmap(pixmapIn, CHUNK_SIZE * Constant.TILE_SIZE);
+                pixmapIn.dispose();
+
                 _pxGrounds.put(itemInfo, pixmapOut);
 
                 if (itemInfo.graphics.size() >= 2) {
@@ -103,7 +107,6 @@ public class WorldGroundChunkGenerator {
 
         worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, viewport.getFloor(), viewport.getFloor(), parcels -> {
             Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * Constant.TILE_SIZE, CHUNK_SIZE * Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
-            Pixmap pxRockOut = new Pixmap(CHUNK_SIZE * Constant.TILE_SIZE, CHUNK_SIZE * Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
 
             for (ParcelModel parcel: parcels) {
 
@@ -127,6 +130,7 @@ public class WorldGroundChunkGenerator {
                     _groundLayers[col][row].dispose();
                 }
                 _groundLayers[col][row] = new Texture(pxGroundOut);
+                pxGroundOut.dispose();
             });
         });
     }

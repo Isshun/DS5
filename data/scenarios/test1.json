@@ -1,8 +1,8 @@
 {
   "planet": "base.planet.arrakis",
   "region": "desert",
-  "width": 40,
-  "height": 22,
+  "width": 100,
+  "height": 60,
   "level": 2,
   "generateMountains": false,
   "characters": [

@@ -1,6 +1,11 @@
 package org.smallbox.faraway.client.render.layer.item;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
@@ -13,6 +18,7 @@ import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
@@ -42,10 +48,25 @@ public class CharacterLayer extends BaseLayer {
 
     @Inject
     private Game game;
+    float stateTime;
 
     private static final Color COLOR_CRITICAL = ColorUtils.fromHex(0xbb0000ff);
     private static final Color COLOR_WARNING = ColorUtils.fromHex(0xbbbb00ff);
     private static final Color COLOR_OK = ColorUtils.fromHex(0x448800ff);
+
+    public Animation<TextureRegion> runningAnimation;
+
+    @AfterGameLayerInit
+    public void init() {
+        TextureAtlas atlas;
+        atlas = new TextureAtlas(Gdx.files.internal("data/graphics/player/player.atlas"));
+        atlas.getTextures().forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
+        atlas.getRegions().forEach(region -> region.flip(false, true));
+//        TextureAtlas.AtlasRegion region = atlas.findRegion("hero_walk");
+//        Sprite sprite = atlas.createSprite("otherimagename");
+//        NinePatch patch = atlas.createPatch("patchimagename");
+        runningAnimation = new Animation<>(0.045f, atlas.findRegions("hero_walk"), Animation.PlayMode.LOOP);
+    }
 
     @Override
     public void onUpdate(Object object) {
@@ -129,7 +150,11 @@ public class CharacterLayer extends BaseLayer {
      * Draw characters
      */
     private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
-        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
+//        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
+
+        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+        TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
+        renderer.draw(currentFrame, posX, posY);
     }
 
     /**

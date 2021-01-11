@@ -2,6 +2,7 @@ package org.smallbox.faraway.client;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import org.smallbox.faraway.client.font.FontManager;
+import org.smallbox.faraway.client.manager.BackgroundMusicManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.impl.MainRender;
@@ -41,6 +42,7 @@ public class GDXApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(ClientLuaModuleManager.class).init(true));
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(OnApplicationLayerInit.class));
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(AfterApplicationLayerInit.class));
+        taskManager.addLoadTask("Background music", true, () -> di.getDependency(BackgroundMusicManager.class).start());
         taskManager.addLoadTask("Application ready", false, () -> Application.isLoaded = true);
         taskManager.addLoadTask("(debug) Resume game", false, GDXApplication::onCreateCompleted);
 

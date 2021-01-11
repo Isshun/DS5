@@ -78,7 +78,7 @@ public class SpriteManager {
     }
 
     public boolean updateAssetManager() {
-        if (assetManager.update()) {
+        if (assetManager.update(16)) {
             assetManager.getAll(Texture.class, new Array<>()).forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
             return true;
         }

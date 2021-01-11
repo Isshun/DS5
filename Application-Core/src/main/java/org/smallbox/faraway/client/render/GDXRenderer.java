@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
+import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.render.layer.ground.WorldGroundLayer;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.common.ParcelCommon;
@@ -117,6 +117,13 @@ public class GDXRenderer {
 
     public void drawUI(int x, int y, Sprite sprite) {
         draw(x, y, sprite, _cameraUI);
+    }
+
+    public void draw(TextureRegion currentFrame, int x, int y) {
+        _batch.begin();
+        _batch.setProjectionMatrix(_camera.combined);
+        _batch.draw(currentFrame, x, y);
+        _batch.end();
     }
 
     public void draw(int x, int y, Sprite sprite) {

@@ -40,6 +40,7 @@ public class WorldRockChunkGenerator {
                 Texture textureIn = new Texture("data/graphics/texture/g2.png");
                 textureIn.getTextureData().prepare();
                 _pxRocks.put(itemInfo, textureIn.getTextureData().consumePixmap());
+                textureIn.dispose();
             });
 
             int _cols = game.getInfo().worldWidth / CHUNK_SIZE + 1;
@@ -56,7 +57,6 @@ public class WorldRockChunkGenerator {
         final int toY = Math.min(row * CHUNK_SIZE + CHUNK_SIZE, game.getInfo().worldHeight);
 
         worldModule.getParcels(fromX, fromX + CHUNK_SIZE - 1, fromY, fromY + CHUNK_SIZE - 1, viewport.getFloor(), viewport.getFloor(), parcels -> {
-            Pixmap pxGroundOut = new Pixmap(CHUNK_SIZE * Constant.TILE_SIZE, CHUNK_SIZE * Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
             Pixmap pxRockOut = new Pixmap(CHUNK_SIZE * Constant.TILE_SIZE, CHUNK_SIZE * Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
 
             for (ParcelModel parcel: parcels) {
@@ -112,6 +112,7 @@ public class WorldRockChunkGenerator {
                     _rockLayers[col][row].dispose();
                 }
                 _rockLayers[col][row] = new Texture(pxRockOut);
+                pxRockOut.dispose();
             });
         });
     }

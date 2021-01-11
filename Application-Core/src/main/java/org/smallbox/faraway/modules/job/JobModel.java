@@ -1,8 +1,10 @@
 package org.smallbox.faraway.modules.job;
 
 import com.badlogic.gdx.graphics.Color;
+import org.smallbox.faraway.client.manager.SoundManager;
 import org.smallbox.faraway.common.ObjectModel;
 import org.smallbox.faraway.core.GameException;
+import org.smallbox.faraway.core.dependencyInjector.DependencyManager;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo.ItemInfoAction;
 import org.smallbox.faraway.core.module.world.model.ItemFilter;
@@ -27,8 +29,17 @@ public class JobModel extends ObjectModel {
 
     public double _time;
     private String icon;
+    private long soundId;
     private Color color;
     private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
+
+    public long getSoundId() {
+        return soundId;
+    }
+
+    public void setSoundId(long soundId) {
+        this.soundId = soundId;
+    }
 
     public void setIcon(String icon) {
         this.icon = icon;
@@ -259,6 +270,8 @@ public class JobModel extends ObjectModel {
 
         _isClose = true;
         _status = JobStatus.JOB_COMPLETE;
+
+        DependencyManager.getInstance().getDependency(SoundManager.class).stop(soundId);
     }
 
     public void check() {
@@ -361,6 +374,9 @@ public class JobModel extends ObjectModel {
 
                 // Task isn't complete
                 case TASK_CONTINUE:
+                    if (soundId == 0) {
+                        soundId = DependencyManager.getInstance().getDependency(SoundManager.class).start();
+                    }
                     return;
 
                 // Task return TASK_COMPLETED_STOP, stop to execute action until next update
