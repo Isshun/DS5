@@ -17,9 +17,16 @@ public class WeatherModuleConsoleInterpreter extends ConsoleInterpreterBase {
     @Inject
     private Data data;
 
+    private int index;
+
     @ConsoleCommand("random")
-    public void getList() {
+    public void actionRandom() {
         data.weathers.values().stream().skip(RandomUtils.nextInt(0, data.weathers.size() - 1)).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
+    }
+
+    @ConsoleCommand("next")
+    public void actionNext() {
+        data.weathers.values().stream().skip(index++ % data.weathers.size() - 1).findFirst().ifPresent(weatherInfo -> weatherModule.loadWeather(weatherInfo));
     }
 
 }

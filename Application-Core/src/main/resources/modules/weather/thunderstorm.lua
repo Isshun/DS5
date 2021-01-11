@@ -3,6 +3,7 @@ data:extend({
     id = "base.weather.thunderstorm",
     label = "Thunderstorm",
     icon = "[base]/graphics/icons/weather/thunder.png",
+    music = "[base]/musics/Thunder_strikes_loop.wav",
     color1 = 0x090e6dff,
     color2 = 0x3e46ecff,
     particle = "rain",

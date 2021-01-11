@@ -15,6 +15,7 @@ public class WeatherInfo extends ObjectInfo {
     public String           label;
     public String           particle;
     public String           icon;
+    public String           music;
     public long             color1;
     public long             color2;
     public WeatherSunModel  sun;

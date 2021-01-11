@@ -2,6 +2,7 @@ package org.smallbox.faraway.modules.weather;
 
 import com.badlogic.gdx.graphics.Color;
 import org.apache.commons.collections4.CollectionUtils;
+import org.smallbox.faraway.client.manager.BackgroundMusicManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -50,6 +51,9 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
 
     @Inject
     private GameTime gameTime;
+
+    @Inject
+    private BackgroundMusicManager backgroundMusicManager;
 
     @Override
     public void onGameStart(Game game) {
@@ -161,6 +165,10 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
     }
 
     public void loadWeather(WeatherInfo weather) {
+        if (_weather != null && _weather.music != null && weather.music == null) {
+            backgroundMusicManager.playRandom();
+        }
+
         _weather = weather;
 
         Log.info(WeatherModule.class, "Start weather: " + _weather.name);
@@ -173,6 +181,10 @@ public class WeatherModule extends SuperGameModule2<WeatherModuleObserver> imple
 
         // Set temperature offset
         _temperatureOffset = _weather.temperatureChange != null ? weather.temperatureChange[0] + Utils.getRandom(_weather.temperatureChange) : 0;
+
+        if (weather.music != null) {
+            backgroundMusicManager.play(weather.music);
+        }
     }
 
     /**
