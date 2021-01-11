@@ -256,6 +256,21 @@ public class GDXRenderer {
         drawPixel(x, y, width, height, color, _cameraUI);
     }
 
+    public void drawLine(float x1, float y1, float x2, float y2, Color color) {
+        if (color != null) {
+            _batch.begin();
+            _batch.setProjectionMatrix(_camera.combined);
+
+            //Gdx.gl.glEnable(GL20.GL_BLEND);
+            _drawPixelShapeLayer.begin(ShapeRenderer.ShapeType.Line);
+            _drawPixelShapeLayer.setProjectionMatrix(_batch.getProjectionMatrix());
+            _drawPixelShapeLayer.setColor(color);
+            _drawPixelShapeLayer.line(x1, y1, x2, y2);
+            _drawPixelShapeLayer.end();
+            _batch.end();
+        }
+    }
+
     private void drawPixel(int x, int y, int width, int height, Color color, OrthographicCamera camera) {
         if (color != null) {
             _batch.begin();

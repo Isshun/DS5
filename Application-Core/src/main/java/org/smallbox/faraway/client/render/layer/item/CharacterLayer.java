@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.ui.engine.Colors;
 import org.smallbox.faraway.common.CharacterCommon;
 import org.smallbox.faraway.common.CharacterPositionCommon;
 import org.smallbox.faraway.core.GameLayer;
@@ -22,14 +22,14 @@ import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLay
 import org.smallbox.faraway.core.engine.ColorUtils;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.GameManager;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
-import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.character.CharacterModule;
 import org.smallbox.faraway.modules.character.model.CharacterInventoryExtra;
-import org.smallbox.faraway.modules.character.model.PathModel;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.modules.job.JobModel;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Map;
 
@@ -45,6 +45,12 @@ public class CharacterLayer extends BaseLayer {
 
     @Inject
     private GameManager gameManager;
+
+    @Inject
+    private GDXRenderer gdxRenderer;
+
+    @Inject
+    private Viewport viewport;
 
     @Inject
     private Game game;
@@ -92,23 +98,25 @@ public class CharacterLayer extends BaseLayer {
             int viewPortY = viewport.getPosY();
             CharacterPositionCommon position = character.position;
 
-            if (position.pathLength > 0 && position._curve != null) {
+            if (character.getPath() != null && position.pathLength > 0) {
                 Vector2 out = new Vector2();
-                position.myCatmull.valueAt(out, (float) position._moveProgress2 / position.pathLength);
+                character.getPath().myCatmull.valueAt(out, (float) character._moveProgress2 / position.pathLength);
+                Vector2 dout = new Vector2();
+                character.getPath().myCatmull.derivativeAt(dout, (float) character._moveProgress2 / position.pathLength);
                 doDraw(renderer, character,
                         (int) (viewPortX + out.x * Constant.TILE_SIZE),
-                        (int) (viewPortY + out.y * Constant.TILE_SIZE));
+                        (int) (viewPortY + out.y * Constant.TILE_SIZE), dout);
             } else {
                 doDraw(renderer, character,
                         viewPortX + character.getParcel().x * Constant.TILE_SIZE,
-                        viewPortY + character.getParcel().y * Constant.TILE_SIZE);
+                        viewPortY + character.getParcel().y * Constant.TILE_SIZE, null);
             }
         }
     }
 
-    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+    private void doDraw(GDXRenderer renderer, CharacterModel character, int posX, int posY, Vector2 dout) {
 //        if (positionCommon.isAlive()) {
-        drawCharacter(renderer, character, posX, posY);
+        drawCharacter(renderer, character, posX, posY, dout);
         drawLabel(renderer, character, posX, posY);
         drawSelection(renderer, spriteManager, character, posX, posY, Constant.TILE_SIZE, (int) (Constant.TILE_SIZE * 1.25), 0, 0);
         drawInventory(renderer, character, posX, posY);
@@ -149,12 +157,36 @@ public class CharacterLayer extends BaseLayer {
     /**
      * Draw characters
      */
-    private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
+    private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY, Vector2 dout) {
 //        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
 
-        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-        TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
-        renderer.draw(currentFrame, posX, posY);
+        if (character.getPath() != null) {
+            stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
+            TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);
+
+            if (dout != null) {
+                Log.info(String.valueOf(dout.angleDeg()));
+            }
+
+            MovableModel.Direction direction = MovableModel.Direction.RIGHT;
+            if (dout != null && dout.angleDeg() % 360 > 90 && dout.angleDeg() % 360 < 270) {
+                direction = MovableModel.Direction.LEFT;
+            }
+
+            if (direction == MovableModel.Direction.LEFT && !currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
+            }
+
+            if (direction == MovableModel.Direction.RIGHT && currentFrame.isFlipX()) {
+                currentFrame.flip(true, false);
+            }
+
+            renderer.draw(currentFrame, posX, posY);
+
+            drawPath(character);
+        } else {
+            renderer.draw(runningAnimation.getKeyFrame(0, true), posX, posY);
+        }
     }
 
     /**
@@ -162,7 +194,7 @@ public class CharacterLayer extends BaseLayer {
      */
     private void drawInventory(GDXRenderer renderer, CharacterModel character, int posX, int posY) {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
-            for (Map.Entry<ItemInfo, Integer> entry: character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
+            for (Map.Entry<ItemInfo, Integer> entry : character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
                 if (entry.getValue() > 0) {
                     renderer.draw(posX, posY + 2, spriteManager.getNewSprite(entry.getKey()));
                 }
@@ -170,140 +202,166 @@ public class CharacterLayer extends BaseLayer {
         }
     }
 
+    int k = 100; //increase k for more fidelity to the spline
+    Vector2[] points = new Vector2[k];
+    boolean init = false;
+
     // TODO: https://github.com/libgdx/libgdx/wiki/Path-interface-%26-Splines
-    private void drawPath(CharacterModel character, Viewport viewport, GDXRenderer renderer) {
-        int viewPortX = viewport.getPosX();
-        int viewPortY = viewport.getPosY();
-        int framePerTick = game.getTickInterval() / (1000 / 60);
-//
-//        if (character.getPath().getSections().peek().p1 == character.getParcel()) {
-//            character.getPath().getSections().poll();
-//        }
-//
-        PathModel.PathSection section = character.getPath().getSections().peek();
-        if (section.startTime == 0) {
-            section.startTime = System.currentTimeMillis();
-//            section.lastTime = _frame + (section.length * framePerTick);
+    private void drawPath(CharacterModel character) {
+
+        if (character.getPath() != null) {
+
+            if (!init) {
+                init = true;
+                for (int i = 0; i < k; ++i) {
+                    points[i] = new Vector2();
+                    character.getPath().myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
+                }
+            }
+
+            for (int i = 0; i < k - 1; ++i) {
+                Vector2 v1 = character.getPath().myCatmull.valueAt(points[i], ((float) i) / ((float) k - 1));
+                Vector2 v2 = character.getPath().myCatmull.valueAt(points[i + 1], ((float) (i + 1)) / ((float) k - 1));
+
+                gdxRenderer.drawLine(
+                        (int) (viewport.getPosX() + v1.x * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
+                        (int) (viewport.getPosY() + v1.y * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
+                        (int) (viewport.getPosX() + v2.x * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
+                        (int) (viewport.getPosY() + v2.y * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
+                        Colors.BLUE_LIGHT_3);
+            }
         }
 //
-//        int posX = section.p1.x * Constant.TILE_WIDTH;
-//        int posY = section.p1.y * Constant.TILE_HEIGHT;
-//        double progress = Utils.progress(section.startFrame, section.lastFrame, _frame);
-//        System.out.println("progress: " + progress);
-//
-//        double xPerFrame = section.x * 32.0 * section.length;
-//        double yPerFrame = section.y * 32.0 * section.length;
-//        renderer.draw(
-//                (int)(viewPortX + posX + progress * xPerFrame),
-//                (int)(viewPortY + posY + progress * yPerFrame),
-//                spriteManager.getCharacter(character, 0, 0));
-
-//        renderer.draw((int) (posX + _frame * 32 / character.getPath().getLength()), posY, spriteManager.getCharacter(character, 0, 0));
-
-        PathModel path = character.getPath();
-
-        if (path.getStartTime() == 0) {
-            path.setStartTime(System.currentTimeMillis());
-//            System.out.println("start index: " + path.getIndex());
-        }
-
-        int tickInterval = game.getTickInterval();
-
-//        Interpolation easAlpha;
-//        int lifeTime;
-//        float elapsed;
-//        float progress;
-//        double progressInterpolation;
-//        int index;
-//        int length1 = 2;
-//        int length2 = path.getLength() - 4;
-//        int length3 = 2;
-//
-//        if (path.getIndex() < 2) {
-//            System.out.println("P1");
-//            easAlpha = Interpolation.circleIn;
-//            lifeTime = length1 * tickInterval;
-//            elapsed = System.currentTimeMillis() - character.getPath().getStartTime();
-//            progress = Math.min(1f, elapsed / lifeTime);
-//            progressInterpolation = easAlpha.apply(progress);
-//            index = (int) (length1 * progressInterpolation);
-//        }
-//
-//        else if (path.getIndex() >= 2 && path.getIndex() <= path.getLength() - 3) {
-//            System.out.println("P2");
-//            easAlpha = Interpolation.linear;
-//            lifeTime = length2 * tickInterval;
-//            elapsed = System.currentTimeMillis() - (character.getPath().getStartTime() + (tickInterval * length1));
-//            progress = Math.min(1f, elapsed / lifeTime);
-//            progressInterpolation = easAlpha.apply(progress);
-//            index = (int) (length2 * progressInterpolation) + length1;
-//        }
-//
-//        else {
-//            System.out.println("P3");
-//            easAlpha = Interpolation.circleOut;
-//            lifeTime = length3 * Application.gameManager.getGame().getTickInterval();
-//            elapsed = System.currentTimeMillis() - (character.getPath().getStartTime() + (tickInterval * (length1 + length2)));
-//            progress = Math.min(1f, elapsed / lifeTime);
-//            progressInterpolation = easAlpha.apply(progress);
-//            index = (int) (length3 * progressInterpolation) + length1 + length2;
-//        }
-
-//        int lifeTime = section.length * Application.gameManager.getGame().getTickInterval();
-//        float elapsed = System.currentTimeMillis() - section.startTime;
-
-//        elapsed += delta
-
-        Interpolation easAlpha = new Interpolation() {
-            @Override
-            public float apply(float a) {
-                int power = 2;
-                if (a <= 0.5f) return (float)Math.pow(a * 2, power) / 2;
-                return (float)Math.pow((a - 1) * 2, power) / (power % 2 == 0 ? -2 : 2) + 1;
-            }
-        };
-//        Interpolation easAlpha = Interpolation.pow2;
-        long lifeTime = path.getLength() * tickInterval;
-        float elapsed = System.currentTimeMillis() - character.getPath().getStartTime();
-        float progress = Math.min(1f, elapsed / lifeTime);
-        double progressInterpolation = easAlpha.apply(progress);
-        int index = (int) (path.getLength() * progressInterpolation);
-
-        if (index < path.getLength()) {
-            double decimal = (path.getLength() * progressInterpolation) - index;
-//            double decimal = 0;
-//            System.out.println("index: " + index + ", progress: " + progressInterpolation);
-            ParcelModel parcel = path.getNodes().get(index);
-
-            int dirX = 0;
-            int dirY = 0;
-            if (index + 1 < path.getLength()) {
-                ParcelModel nextParcel = path.getNodes().get(index + 1);
-                dirX = nextParcel.x - parcel.x;
-                dirY = nextParcel.y - parcel.y;
-            }
-//        if (progress >= 1) {
+//        int viewPortX = viewport.getPosX();
+//        int viewPortY = viewport.getPosY();
+//        int framePerTick = game.getTickInterval() / (1000 / 60);
+////
 ////        if (character.getPath().getSections().peek().p1 == character.getParcel()) {
-//            character.getPath().getSections().poll();
+////            character.getPath().getSections().poll();
+////        }
+////
+//        PathModel.PathSection section = character.getPath().getSections().peek();
+//        if (section.startTime == 0) {
+//            section.startTime = System.currentTimeMillis();
+////            section.lastTime = _frame + (section.length * framePerTick);
 //        }
-
-            doDraw(renderer, character,
-                    (int) (viewPortX + (parcel.x * Constant.TILE_SIZE) + (dirX * Constant.TILE_SIZE * decimal)),
-                    (int) (viewPortY + (parcel.y * Constant.TILE_SIZE) + (dirY * Constant.TILE_SIZE * decimal))
-            );
-        }
-
-        else {
-            doDraw(renderer, character,
-                    viewPortX + (character.getParcel().x * Constant.TILE_SIZE),
-                    viewPortY + (character.getParcel().y * Constant.TILE_SIZE)
-            );
-        }
-
-        //        renderer.draw(
-//                (int) (viewPortX + (section.p1.x * 32) + (alpha * section.length * 32 * section.dirX)),
-//                (int) (viewPortY + (section.p1.y * 32) + (alpha * section.length * 32 * section.dirY)),
-//                spriteManager.getCharacter(character, 0, 0));
+////
+////        int posX = section.p1.x * Constant.TILE_WIDTH;
+////        int posY = section.p1.y * Constant.TILE_HEIGHT;
+////        double progress = Utils.progress(section.startFrame, section.lastFrame, _frame);
+////        System.out.println("progress: " + progress);
+////
+////        double xPerFrame = section.x * 32.0 * section.length;
+////        double yPerFrame = section.y * 32.0 * section.length;
+////        renderer.draw(
+////                (int)(viewPortX + posX + progress * xPerFrame),
+////                (int)(viewPortY + posY + progress * yPerFrame),
+////                spriteManager.getCharacter(character, 0, 0));
+//
+////        renderer.draw((int) (posX + _frame * 32 / character.getPath().getLength()), posY, spriteManager.getCharacter(character, 0, 0));
+//
+//        PathModel path = character.getPath();
+//
+//        if (path.getStartTime() == 0) {
+//            path.setStartTime(System.currentTimeMillis());
+////            System.out.println("start index: " + path.getIndex());
+//        }
+//
+//        int tickInterval = game.getTickInterval();
+//
+////        Interpolation easAlpha;
+////        int lifeTime;
+////        float elapsed;
+////        float progress;
+////        double progressInterpolation;
+////        int index;
+////        int length1 = 2;
+////        int length2 = path.getLength() - 4;
+////        int length3 = 2;
+////
+////        if (path.getIndex() < 2) {
+////            System.out.println("P1");
+////            easAlpha = Interpolation.circleIn;
+////            lifeTime = length1 * tickInterval;
+////            elapsed = System.currentTimeMillis() - character.getPath().getStartTime();
+////            progress = Math.min(1f, elapsed / lifeTime);
+////            progressInterpolation = easAlpha.apply(progress);
+////            index = (int) (length1 * progressInterpolation);
+////        }
+////
+////        else if (path.getIndex() >= 2 && path.getIndex() <= path.getLength() - 3) {
+////            System.out.println("P2");
+////            easAlpha = Interpolation.linear;
+////            lifeTime = length2 * tickInterval;
+////            elapsed = System.currentTimeMillis() - (character.getPath().getStartTime() + (tickInterval * length1));
+////            progress = Math.min(1f, elapsed / lifeTime);
+////            progressInterpolation = easAlpha.apply(progress);
+////            index = (int) (length2 * progressInterpolation) + length1;
+////        }
+////
+////        else {
+////            System.out.println("P3");
+////            easAlpha = Interpolation.circleOut;
+////            lifeTime = length3 * Application.gameManager.getGame().getTickInterval();
+////            elapsed = System.currentTimeMillis() - (character.getPath().getStartTime() + (tickInterval * (length1 + length2)));
+////            progress = Math.min(1f, elapsed / lifeTime);
+////            progressInterpolation = easAlpha.apply(progress);
+////            index = (int) (length3 * progressInterpolation) + length1 + length2;
+////        }
+//
+////        int lifeTime = section.length * Application.gameManager.getGame().getTickInterval();
+////        float elapsed = System.currentTimeMillis() - section.startTime;
+//
+////        elapsed += delta
+//
+//        Interpolation easAlpha = new Interpolation() {
+//            @Override
+//            public float apply(float a) {
+//                int power = 2;
+//                if (a <= 0.5f) return (float) Math.pow(a * 2, power) / 2;
+//                return (float) Math.pow((a - 1) * 2, power) / (power % 2 == 0 ? -2 : 2) + 1;
+//            }
+//        };
+////        Interpolation easAlpha = Interpolation.pow2;
+//        long lifeTime = path.getLength() * tickInterval;
+//        float elapsed = System.currentTimeMillis() - character.getPath().getStartTime();
+//        float progress = Math.min(1f, elapsed / lifeTime);
+//        double progressInterpolation = easAlpha.apply(progress);
+//        int index = (int) (path.getLength() * progressInterpolation);
+//
+//        if (index < path.getLength()) {
+//            double decimal = (path.getLength() * progressInterpolation) - index;
+////            double decimal = 0;
+////            System.out.println("index: " + index + ", progress: " + progressInterpolation);
+//            ParcelModel parcel = path.getNodes().get(index);
+//
+//            int dirX = 0;
+//            int dirY = 0;
+//            if (index + 1 < path.getLength()) {
+//                ParcelModel nextParcel = path.getNodes().get(index + 1);
+//                dirX = nextParcel.x - parcel.x;
+//                dirY = nextParcel.y - parcel.y;
+//            }
+////        if (progress >= 1) {
+//////        if (character.getPath().getSections().peek().p1 == character.getParcel()) {
+////            character.getPath().getSections().poll();
+////        }
+//
+//            doDraw(renderer, character,
+//                    (int) (viewPortX + (parcel.x * Constant.TILE_SIZE) + (dirX * Constant.TILE_SIZE * decimal)),
+//                    (int) (viewPortY + (parcel.y * Constant.TILE_SIZE) + (dirY * Constant.TILE_SIZE * decimal))
+//            );
+//        } else {
+//            doDraw(renderer, character,
+//                    viewPortX + (character.getParcel().x * Constant.TILE_SIZE),
+//                    viewPortY + (character.getParcel().y * Constant.TILE_SIZE)
+//            );
+//        }
+//
+//        //        renderer.draw(
+////                (int) (viewPortX + (section.p1.x * 32) + (alpha * section.length * 32 * section.dirX)),
+////                (int) (viewPortY + (section.p1.y * 32) + (alpha * section.length * 32 * section.dirY)),
+////                spriteManager.getCharacter(character, 0, 0));
     }
 
 }
