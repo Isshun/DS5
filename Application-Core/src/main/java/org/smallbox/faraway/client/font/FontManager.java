@@ -6,30 +6,29 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import org.smallbox.faraway.client.manager.SpriteManager;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.util.log.Log;
 
 @ApplicationObject
 public class FontManager {
     private final static int MIN_SIZE = 10;
-    private final static int MAX_SIZE = 40;
+    private final static int MAX_SIZE = 60;
 
-    @Inject private SpriteManager spriteManager;
+    @Inject private AssetManager assetManager;
     @Inject private RegularFontLoaderParameter regularFontLoaderParameter;
     @Inject private OutlinedFontLoaderParameter outlinedFontLoaderParameter;
 
     public void generateFonts() {
         FileHandleResolver resolver = new InternalFileHandleResolver();
-        spriteManager.getAssetManager().setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-        spriteManager.getAssetManager().setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+        assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         for (int i = MIN_SIZE; i <= MAX_SIZE; i++) {
-            spriteManager.getAssetManager().load("data/fonts/regular-" + i + "-font.ttf", BitmapFont.class, regularFontLoaderParameter.getParameter(i));
-            spriteManager.getAssetManager().load("data/fonts/outlined-" + i + "-font.ttf", BitmapFont.class, outlinedFontLoaderParameter.getParameter(i));
+            assetManager.load("data/fonts/regular-" + i + "-font.ttf", BitmapFont.class, regularFontLoaderParameter.getParameter(i));
+            assetManager.load("data/fonts/outlined-" + i + "-font.ttf", BitmapFont.class, outlinedFontLoaderParameter.getParameter(i));
         }
-
-        spriteManager.getAssetManager().finishLoading();
     }
 
     public BitmapFont getFont(int fontSize) {
@@ -41,12 +40,13 @@ public class FontManager {
     }
 
     private BitmapFont lazyLoad(String key, int fontSize, FontLoaderParameterInterface fontLoaderParameterInterface) {
-        if (!spriteManager.getAssetManager().contains(key)) {
-            spriteManager.getAssetManager().load(key, BitmapFont.class, fontLoaderParameterInterface.getParameter(fontSize));
-            spriteManager.getAssetManager().finishLoading();
+        if (!assetManager.contains(key)) {
+            assetManager.load(key, BitmapFont.class, fontLoaderParameterInterface.getParameter(fontSize));
+            assetManager.finishLoading();
+            Log.warning("Lazy load: " + key);
         }
 
-        return spriteManager.getAssetManager().get(key);
+        return assetManager.get(key);
     }
 
 }

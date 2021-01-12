@@ -227,10 +227,10 @@ public class CharacterLayer extends BaseLayer {
                 Vector2 v2 = character.getPath().myCatmull.valueAt(points[i + 1], ((float) (i + 1)) / ((float) k - 1));
 
                 gdxRenderer.drawLine(
-                        (int) (viewport.getPosX() + v1.x * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
-                        (int) (viewport.getPosY() + v1.y * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
-                        (int) (viewport.getPosX() + v2.x * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
-                        (int) (viewport.getPosY() + v2.y * Constant.TILE_SIZE + Constant.TILE_SIZE / 2),
+                        (int) (viewport.getPosX() + v1.x * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
+                        (int) (viewport.getPosY() + v1.y * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
+                        (int) (viewport.getPosX() + v2.x * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
+                        (int) (viewport.getPosY() + v2.y * Constant.TILE_SIZE + Constant.HALF_TILE_SIZE),
                         Colors.BLUE_LIGHT_3);
             }
         }

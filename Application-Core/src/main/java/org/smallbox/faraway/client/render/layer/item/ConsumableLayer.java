@@ -74,8 +74,8 @@ public class ConsumableLayer extends BaseLayer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .filter(item -> item.getTotalQuantity() > 0)
                 .forEach(consumable -> {
-                    int offsetX = consumable.getStack() == 1 || consumable.getStack() == 3 ? Constant.TILE_SIZE / 2 : 0;
-                    int offsetY = consumable.getStack() == 2 || consumable.getStack() == 3 ? Constant.TILE_SIZE / 2 : 0;
+                    int offsetX = consumable.getStack() == 1 || consumable.getStack() == 3 ? Constant.HALF_TILE_SIZE : 0;
+                    int offsetY = consumable.getStack() == 2 || consumable.getStack() == 3 ? Constant.HALF_TILE_SIZE : 0;
 
                     renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()), offsetX, offsetY);
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);

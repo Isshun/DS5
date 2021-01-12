@@ -11,5 +11,9 @@ public abstract class Task {
         this.label = label;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
     public abstract boolean run();
 }

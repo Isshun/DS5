@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.PerlinGenerator;
+import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.WorldGroundChunkGenerator;
@@ -50,7 +50,7 @@ public class WorldGroundLayer extends BaseLayer {
     @Inject private Data data;
     @Inject private SpriteManager spriteManager;
     @Inject private ApplicationConfig applicationConfig;
-    @Inject private PerlinGenerator perlinGenerator;
+    @Inject private TerrainManager terrainManager;
 
     private final ExecutorService         _executor = Executors.newSingleThreadExecutor();
     private boolean[][]             _rockLayersUpToDate;

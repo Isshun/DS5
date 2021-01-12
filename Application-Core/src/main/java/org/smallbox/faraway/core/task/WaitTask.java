@@ -2,10 +2,19 @@ package org.smallbox.faraway.core.task;
 
 import org.smallbox.faraway.core.GameException;
 
+import java.util.function.Supplier;
+
 public abstract class WaitTask extends Task {
 
-    public WaitTask(String label, boolean onMainThread) {
+    private final Supplier<Float> progressSupplier;
+
+    public WaitTask(String label, boolean onMainThread, Supplier<Float> progressSupplier) {
         super(label, onMainThread);
+        this.progressSupplier = progressSupplier;
+    }
+
+    public String getLabel() {
+        return label + " " + (int)(progressSupplier.get() * 100);
     }
 
     @Override

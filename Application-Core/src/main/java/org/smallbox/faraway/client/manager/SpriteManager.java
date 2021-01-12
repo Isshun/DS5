@@ -1,6 +1,5 @@
 package org.smallbox.faraway.client.manager;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.apache.commons.collections4.CollectionUtils;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -26,8 +26,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @ApplicationObject
 public class SpriteManager {
-    private final AssetManager assetManager = new AssetManager();
-
     private static final int NB_SELECTOR_TILE = 4;
 
     private static final int TOP_LEFT = 0b10000000;
@@ -49,6 +47,9 @@ public class SpriteManager {
 
     @Inject
     private Data data;
+
+    @Inject
+    private AssetManager assetManager;
 
     public SpriteManager() {
         _icons = new HashMap<>();
@@ -77,12 +78,8 @@ public class SpriteManager {
                 .forEach(graphicInfo -> assetManager.load("data" + graphicInfo.path, Texture.class));
     }
 
-    public boolean updateAssetManager() {
-        if (assetManager.update(16)) {
-            assetManager.getAll(Texture.class, new Array<>()).forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
-            return true;
-        }
-        return false;
+    public void setTexturesFilter() {
+        assetManager.getAll(Texture.class, new Array<>()).forEach(texture -> texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear));
     }
 
     public Sprite getIcon(String path) {
@@ -351,10 +348,6 @@ public class SpriteManager {
         }
 
         return _sprites.get(sum);
-    }
-
-    public AssetManager getAssetManager() {
-        return assetManager;
     }
 
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -24,6 +25,9 @@ public class MinimalRender {
 
     @Inject
     private SpriteManager spriteManager;
+
+    @Inject
+    private AssetManager assetManager;
 
     private final BitmapFont systemFont;
     private final SpriteBatch batch = new SpriteBatch();
@@ -72,7 +76,7 @@ public class MinimalRender {
             }
         });
 
-        systemFont.draw(batch, String.valueOf(spriteManager.getAssetManager().getProgress()), 12, 500);
+        systemFont.draw(batch, String.valueOf(assetManager.getProgress()), 12, 500);
 
         batch.end();
     }

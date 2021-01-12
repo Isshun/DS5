@@ -50,7 +50,7 @@ public class TaskManager {
 
     private void runTask(Task task) {
         if (running) {
-            Log.info("Run load task:" + task.label);
+            Log.info("Run load task:" + task.getLabel());
             if (task instanceof WaitTask) {
                 task.state = State.BLOCKING;
             }
@@ -114,8 +114,8 @@ public class TaskManager {
         });
     }
 
-    public void addWaitTask(String label, boolean onMainThread, Supplier<Boolean> runnable) {
-        tasks.add(new WaitTask(label, true) {
+    public void addWaitTask(String label, boolean onMainThread, Supplier<Boolean> runnable, Supplier<Float> progressSupplier) {
+        tasks.add(new WaitTask(label, true, progressSupplier) {
             @Override
             protected boolean onRun() {
                 return runnable.get();

@@ -5,6 +5,7 @@ import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.manager.BackgroundMusicManager;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.client.render.impl.MainRender;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.ServerLuaModuleManager;
@@ -38,7 +39,9 @@ public class GDXApplication extends ApplicationAdapter {
         taskManager.addLoadTask("Load modules", false, () -> di.getDependency(ModuleManager.class).loadModules(null));
         taskManager.addLoadTask("Load server lua modules", false, () -> di.getDependency(ServerLuaModuleManager.class).init(true));
         taskManager.addLoadTask("Load sprites", false, () -> di.getDependency(SpriteManager.class).init());
-        taskManager.addWaitTask("Loading sprites", false, () -> di.getDependency(SpriteManager.class).updateAssetManager());
+        taskManager.addLoadTask("Load terrains", false, () -> di.getDependency(TerrainManager.class).init());
+        taskManager.addWaitTask("Loading sprites", false, () -> di.getDependency(AssetManager.class).update(16), () -> di.getDependency(AssetManager.class).getProgress());
+        taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(SpriteManager.class).setTexturesFilter());
         taskManager.addLoadTask("Load client lua modules", false, () -> di.getDependency(ClientLuaModuleManager.class).init(true));
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(OnApplicationLayerInit.class));
         taskManager.addLoadTask("Calling layer init", false, () -> di.callMethodAnnotatedBy(AfterApplicationLayerInit.class));

@@ -111,7 +111,7 @@ public class GDXRenderer {
     }
 
     public void zoomIn() {
-        _camera.zoom = Math.max(_camera.zoom - 0.125f, 0.5f);
+        _camera.zoom = Math.max(_camera.zoom - 0.125f, 1f);
         Log.info("Set zoom: " + _camera.zoom);
     }
 

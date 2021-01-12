@@ -6,6 +6,7 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.engine.module.GenericGameModule;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.helper.WorldHelper;
+import org.smallbox.faraway.core.game.model.MovableModel.Direction;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.path.PathManager;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -16,6 +17,8 @@ import org.smallbox.faraway.util.Constant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @GameObject
 public class WorldModule extends GenericGameModule<ParcelModel> {
@@ -146,4 +149,27 @@ public class WorldModule extends GenericGameModule<ParcelModel> {
     public Optional<ParcelModel> getOptional(int x, int y, int z) {
         return Optional.ofNullable(WorldHelper.getParcel(x, y, z));
     }
+
+    public ParcelModel getParcel(ParcelModel parcel, Direction direction) {
+        switch (direction) {
+            case TOP: return WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z);
+            case LEFT: return WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z);
+            case RIGHT: return WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z);
+            case BOTTOM: return WorldHelper.getParcel(parcel.x, parcel.y + 1, parcel.z);
+            case TOP_LEFT: return WorldHelper.getParcel(parcel.x - 1, parcel.y - 1, parcel.z);
+            case TOP_RIGHT: return WorldHelper.getParcel(parcel.x + 1, parcel.y - 1, parcel.z);
+            case BOTTOM_LEFT: return WorldHelper.getParcel(parcel.x - 1, parcel.y + 1, parcel.z);
+            case BOTTOM_RIGHT: return WorldHelper.getParcel(parcel.x + 1, parcel.y + 1, parcel.z);
+        }
+        return null;
+    }
+
+    public Optional<ParcelModel> getOptional(ParcelModel parcel, Direction direction) {
+        return Optional.ofNullable(getParcel(parcel, direction));
+    }
+
+    public boolean check(ParcelModel parcel, Predicate<ParcelModel> predicate, Direction... directions) {
+        return Stream.of(directions).map(direction -> getParcel(parcel, direction)).allMatch(predicate);
+    }
+
 }
