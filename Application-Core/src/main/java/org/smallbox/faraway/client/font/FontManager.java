@@ -33,7 +33,7 @@ public class FontManager {
     }
 
     public BitmapFont getFont(int fontSize) {
-        return lazyLoad("data/fonts/regular-" + fontSize + "-font.ttf", fontSize, regularFontLoaderParameter);
+        return lazyLoad("data/fonts/regular-" + Math.max(fontSize, 1) + "-font.ttf", Math.max(fontSize, 1), regularFontLoaderParameter);
     }
 
     public BitmapFont getOutlinedFont(int fontSize) {

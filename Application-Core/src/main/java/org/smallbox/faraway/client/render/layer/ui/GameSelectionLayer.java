@@ -11,6 +11,7 @@ import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.util.Constant;
 
 @GameObject
 @GameLayer(level = LayerManager.TOP, visible = true)
@@ -25,12 +26,15 @@ public class GameSelectionLayer extends BaseLayer {
     @Inject
     private GameActionManager gameActionManager;
 
+    @Inject
+    private Viewport viewport;
+
     @Override
     public void onGameStart(Game game) {
     }
 
     @Override
-    public void    onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
+    public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         if (gameEventManager.isMousePressed()) {
             int fromX = gameEventManager.getMouseDownX();
             int fromY = gameEventManager.getMouseDownY();
@@ -41,8 +45,20 @@ public class GameSelectionLayer extends BaseLayer {
     }
 
     private void drawSelection(GDXRenderer renderer, int fromX, int fromY, int width, int height, Color color) {
-        renderer.drawRectangleUI(fromX, fromY, width, height, COLOR2, true);
-        renderer.drawRectangleUI(fromX, fromY, width, height, COLOR1, false);
+//        renderer.drawRectangleUI(fromX, fromY, width, height, COLOR2, true);
+//        renderer.drawRectangleUI(fromX, fromY, width, height, COLOR1, false);
+
+        int fromMapX = viewport.getWorldPosX(fromX);
+        int fromMapY = viewport.getWorldPosY(fromY);
+        int toMapX = viewport.getWorldPosX(fromX + width);
+        int toMapY = viewport.getWorldPosY(fromY + height);
+
+        for (int x = fromMapX; x <= toMapX; x++) {
+            for (int y = fromMapY; y <= toMapY; y++) {
+                renderer.drawRectangleOnMap(x, y, Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLUE, true, 0, 0);
+            }
+        }
+//        renderer.drawRectangleUI(viewport.getWorldPosX(fromX), viewport.getWorldPosX(fromY), width, height, COLOR2, true);
     }
 
 }

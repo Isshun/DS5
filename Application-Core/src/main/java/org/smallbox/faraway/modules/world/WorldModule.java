@@ -15,6 +15,7 @@ import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @GameObject
 public class WorldModule extends GenericGameModule<ParcelModel> {
@@ -142,4 +143,7 @@ public class WorldModule extends GenericGameModule<ParcelModel> {
         return weatherModule.getLight();
     }
 
+    public Optional<ParcelModel> getOptional(int x, int y, int z) {
+        return Optional.ofNullable(WorldHelper.getParcel(x, y, z));
+    }
 }

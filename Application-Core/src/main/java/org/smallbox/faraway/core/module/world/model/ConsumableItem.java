@@ -15,6 +15,7 @@ public class ConsumableItem extends MapObjectModel {
     private int _freeQuantity;
     private int _totalQuantity;
     private final Collection<ConsumableModule.ConsumableJobLock>    _locks = new ConcurrentLinkedQueue<>();
+    private int stack;
 
     public ConsumableItem(ItemInfo info) {
         super(info);
@@ -23,6 +24,12 @@ public class ConsumableItem extends MapObjectModel {
     public ConsumableItem(ItemInfo info, int quantity) {
         super(info);
         _totalQuantity = _freeQuantity = quantity;
+    }
+
+    public ConsumableItem(ItemInfo info, int quantity, int stack) {
+        super(info);
+        _totalQuantity = _freeQuantity = quantity;
+        this.stack = stack;
     }
 
     public StoreJob getStoreJob() {
@@ -133,4 +140,9 @@ public class ConsumableItem extends MapObjectModel {
         _locks.remove(lock);
         _totalQuantity = _freeQuantity + _locks.stream().mapToInt(l -> l.quantity).sum();
     }
+
+    public int getStack() {
+        return stack;
+    }
+
 }

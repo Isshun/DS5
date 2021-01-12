@@ -62,7 +62,7 @@ public class Viewport {
         centerOnMap(game.getInfo().worldWidth / 2, game.getInfo().worldHeight / 2);
     }
 
-    private void centerOnMap(int parcelX, int parcelY) {
+    public void centerOnMap(int parcelX, int parcelY) {
         _posX = (_width / 2) - (parcelX * Constant.TILE_SIZE);
         _posY = (_height / 2) - (parcelY * Constant.TILE_SIZE);
     }

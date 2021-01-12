@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.render.layer.ground.chunkGenerator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import org.smallbox.faraway.client.render.PerlinGenerator;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -26,6 +27,7 @@ public class WorldRockChunkGenerator {
     @Inject private Viewport viewport;
     @Inject private Game game;
     @Inject private Data data;
+    @Inject private PerlinGenerator perlinGenerator;
 
     private Map<ItemInfo, Pixmap> _pxRocks;
     public Texture[][]             _rockLayers;
@@ -77,13 +79,28 @@ public class WorldRockChunkGenerator {
 //                        Pixmap pxRock = _pxGrounds.entrySet().stream().filter(entry -> StringUtils.equals(entry.getKey().name, parcel.getRockInfo().name)).map(Map.Entry::getValue).findFirst().orElse(null);
                     Pixmap pxRock = _pxRocks.get(parcel.getRockInfo());
                     if (pxRock != null) {
-                        pxRockOut.drawPixmap(pxRock,
-                                (parcel.x - fromX) * Constant.TILE_SIZE,
-                                (parcel.y - fromY) * Constant.TILE_SIZE,
-                                ((parcel.x - fromX) * Constant.TILE_SIZE) % 512,
-                                ((parcel.y - fromY) * Constant.TILE_SIZE) % 512,
-                                Constant.TILE_SIZE,
-                                Constant.TILE_SIZE);
+
+                        if (worldModule.getOptional(parcel.x, parcel.y - 1, parcel.z).filter(p -> p.getRockInfo() == null).isPresent()) {
+                            Application.runOnMainThread(() -> {
+//                                Gdx.app.postRunnable(() -> {
+                                pxRockOut.drawPixmap(perlinGenerator.render(),
+                                        (parcel.x - fromX) * Constant.TILE_SIZE,
+                                        (parcel.y - fromY) * Constant.TILE_SIZE,
+                                        0,
+                                        0,
+                                        Constant.TILE_SIZE,
+                                        Constant.TILE_SIZE);
+                            });
+                        } else {
+                            pxRockOut.drawPixmap(pxRock,
+                                    (parcel.x - fromX) * Constant.TILE_SIZE,
+                                    (parcel.y - fromY) * Constant.TILE_SIZE,
+                                    ((parcel.x - fromX) * Constant.TILE_SIZE) % 512,
+                                    ((parcel.y - fromY) * Constant.TILE_SIZE) % 512,
+                                    Constant.TILE_SIZE,
+                                    Constant.TILE_SIZE);
+                        }
+
                     }
 //                        } else {
 //                        Gdx.app.postRunnable(() -> {

@@ -33,6 +33,7 @@ public class LayerManager implements GameClientObserver {
     public static final int ROOM_LAYER_LEVEL = -105;
     public static final int WORLD_GROUND_LAYER_LEVEL = -106;
     public static final int WORLD_TOP_LAYER_LEVEL = -107;
+    public static final int MOVE_OFFSET = 30;
 
     @Inject private LayerManager layerManager;
     @Inject private InputManager inputManager;
@@ -99,16 +100,16 @@ public class LayerManager implements GameClientObserver {
         // Move viewport
         if (game.isRunning()) {
             if (worldInputManager.getDirection()[0]) {
-                viewport.move(20, 0);
+                viewport.move(MOVE_OFFSET, 0);
             }
             if (worldInputManager.getDirection()[1]) {
-                viewport.move(0, 20);
+                viewport.move(0, MOVE_OFFSET);
             }
             if (worldInputManager.getDirection()[2]) {
-                viewport.move(-20, 0);
+                viewport.move(-MOVE_OFFSET, 0);
             }
             if (worldInputManager.getDirection()[3]) {
-                viewport.move(0, -20);
+                viewport.move(0, -MOVE_OFFSET);
             }
         }
 

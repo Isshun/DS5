@@ -32,6 +32,7 @@ public class JobModel extends ObjectModel {
     private long soundId;
     private Color color;
     private final Collection<JobModel> subJob = new ConcurrentLinkedQueue<>();
+    private boolean exactParcel;
 
     public long getSoundId() {
         return soundId;
@@ -52,6 +53,10 @@ public class JobModel extends ObjectModel {
         if (this instanceof BuildJob) return "[base]/graphics/jobs/ic_build.png";
 //        if (this instanceof BasicRepairJob) return "[base]/graphics/jobs/ic_build.png";
         return icon;
+    }
+
+    public boolean isExactParcel() {
+        return exactParcel;
     }
 
     public void setColor(Color color) {
@@ -81,6 +86,10 @@ public class JobModel extends ObjectModel {
     public void unblock() {
         _status = JobStatus.JOB_WAITING;
         _blocked = null;
+    }
+
+    public void setExactParcel(boolean exactParcel) {
+        this.exactParcel = exactParcel;
     }
 
     public enum JobCheckReturn {

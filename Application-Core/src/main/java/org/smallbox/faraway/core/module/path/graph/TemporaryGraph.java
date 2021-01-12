@@ -20,18 +20,22 @@ public class TemporaryGraph implements IndexedGraph<ParcelModel> {
     private final ObjectMap<ParcelModel, Array<Connection<ParcelModel>>> connections = new ObjectMap<>();
     private final ParcelHeuristic parcelHeuristic = new ParcelHeuristic();
     private final ParcelGraph parcelGraph;
+    private final boolean minusOne;
 
-    public TemporaryGraph(ParcelGraph parcelGraph, ParcelModel toParcel) {
+    public TemporaryGraph(ParcelGraph parcelGraph, ParcelModel toParcel, boolean minusOne) {
         this.parcelGraph = parcelGraph;
+        this.minusOne = minusOne;
 
-        connections.put(toParcel, new Array<>());
-        WorldHelper.getParcelAround(toParcel, SurroundedPattern.CROSS, parcel -> {
-            if (parcel.isWalkable()) {
-                connections.put(parcel, new Array<>());
-                connections.get(parcel).add(new ParcelConnection(parcel, toParcel));
-                connections.get(toParcel).add(new ParcelConnection(toParcel, parcel));
-            }
-        });
+        if (minusOne) {
+            connections.put(toParcel, new Array<>());
+            WorldHelper.getParcelAround(toParcel, SurroundedPattern.CROSS, parcel -> {
+                if (parcel.isWalkable()) {
+                    connections.put(parcel, new Array<>());
+                    connections.get(parcel).add(new ParcelConnection(parcel, toParcel));
+                    connections.get(toParcel).add(new ParcelConnection(toParcel, parcel));
+                }
+            });
+        }
     }
 
     public GraphPath<ParcelModel> findPath(ParcelModel startParcel, ParcelModel goalParcel) {

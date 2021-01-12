@@ -142,7 +142,7 @@ public class PathManager extends SuperGameModule {
 
         // Looking for new path
         try {
-            PathModel path = PathModel.create(findPath(fromParcel, toParcel), minusOne);
+            PathModel path = PathModel.create(findPath(fromParcel, toParcel, minusOne), minusOne);
 //        _cache.put(cacheId, path);
 
             // Non walkable last parcel
@@ -158,11 +158,11 @@ public class PathManager extends SuperGameModule {
         return null;
     }
 
-    public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel) {
+    public GraphPath<ParcelModel> findPath(ParcelModel fromParcel, ParcelModel toParcel, boolean minusOne) {
         assert fromParcel != null;
         assert toParcel != null;
 
-        return new TemporaryGraph(parcelGraph, toParcel).findPath(fromParcel, toParcel);
+        return new TemporaryGraph(parcelGraph, toParcel, minusOne).findPath(fromParcel, toParcel);
 //
 //        if (_finder == null) {
 //            parcelGraph = new IndexedGraph(worldModule.getAll());

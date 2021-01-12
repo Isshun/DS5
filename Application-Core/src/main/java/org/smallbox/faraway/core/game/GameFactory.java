@@ -1,6 +1,7 @@
 package org.smallbox.faraway.core.game;
 
 import com.google.gson.Gson;
+import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.core.GameException;
 import org.smallbox.faraway.core.GameScenario;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -25,6 +26,7 @@ public class GameFactory {
     @Inject private ItemModule itemModule;
     @Inject private PlantModule plantModule;
     @Inject private WorldModule worldModule;
+    @Inject private Viewport viewport;
     @Inject private Data data;
 
     private GameScenario loadScenario(String scenarioPath) {
@@ -44,8 +46,9 @@ public class GameFactory {
                 Optional.ofNullable(scenario.characters).ifPresent(characters -> characters.forEach(characterEntity -> {
                     CharacterModel character = characterModule.addRandom();
                     character.setParcel(worldModule.getParcel(characterEntity.x, characterEntity.y, characterEntity.z));
+                    viewport.centerOnMap(characterEntity.x, characterEntity.y);
                 }));
-                Optional.ofNullable(scenario.consumables).ifPresent(consumables -> consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z)));
+                Optional.ofNullable(scenario.consumables).ifPresent(consumables -> consumables.forEach(c -> consumableModule.addConsumable(c.name, c.quantity, c.x, c.y, c.z, c.stack)));
                 Optional.ofNullable(scenario.items).ifPresent(items -> items.forEach(i -> itemModule.addItem(i.name, true, i.x, i.y, i.z)));
                 Optional.ofNullable(scenario.plants).ifPresent(plants -> plants.forEach(i -> plantModule.addPlant(i.name, i.x, i.y, i.z)));
                 Optional.ofNullable(scenario.resources).ifPresent(resources -> resources.forEach(i -> worldModule.getParcel(i.x, i.y, i.z).setRockInfo(data.getItemInfo("base.granite"))));

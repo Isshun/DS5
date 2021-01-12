@@ -166,8 +166,8 @@ public class DependencyManager {
             Log.info("Inject dependency to game object: " + host.getClass().getSimpleName());
             doInjectShortcut(host);
             doInjectDependency(host, host.getClass(), true);
-            callInitMethod(host, true);
         });
+        _gameObjectPoolByClass.values().stream().map(dependencyInfo -> dependencyInfo.dependency).forEach(host -> callInitMethod(host, true));
     }
 
     private void doInjectShortcut(Object host) {

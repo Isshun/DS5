@@ -47,7 +47,11 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
     private ApplicationConfig applicationConfig;
 
     public void addConsumable(String itemName, int quantity, int x, int y, int z) {
-        addConsumable(data.getItemInfo(itemName), quantity, x, y, z);
+        addConsumable(data.getItemInfo(itemName), quantity, WorldHelper.getParcel(x, y, z), 0);
+    }
+
+    public void addConsumable(String itemName, int quantity, int x, int y, int z, int stack) {
+        addConsumable(data.getItemInfo(itemName), quantity, WorldHelper.getParcel(x, y, z), stack);
     }
 
     public void addConsumable(String itemName, int quantity, ParcelModel parcel) {
@@ -68,13 +72,17 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
     // TODO à clean et tester
     public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel) {
+        return addConsumable(itemInfo, quantity, targetParcel, 0);
+    }
+
+    public ConsumableItem addConsumable(ItemInfo itemInfo, int quantity, ParcelModel targetParcel, int stack) {
 
         if (quantity < 0) {
             throw new GameException(ConsumableModule.class, "addConsumable: invalid quantity (%d)", quantity);
         }
 
         ParcelModel finalParcel = WorldHelper.move(targetParcel, parcel -> {
-            ConsumableItem consumable = getConsumable(parcel);
+            ConsumableItem consumable = getConsumable(parcel, stack);
 
             // La parcel ne contient pas le bon consomable
             if (consumable != null && consumable.getInfo() != itemInfo) {
@@ -87,7 +95,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
         // Ajout du consomable à la parcel
         if (finalParcel != null) {
-            ConsumableItem consumable = getConsumable(finalParcel);
+            ConsumableItem consumable = getConsumable(finalParcel, stack);
 
             // Ajout de la quantité à un consomable déjà existant
             if (consumable != null) {
@@ -96,7 +104,7 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
             // Ajout d'un nouveau consomable
             else {
-                consumable = new ConsumableItem(itemInfo, quantity);
+                consumable = new ConsumableItem(itemInfo, quantity, stack);
                 consumable.setParcel(finalParcel);
                 add(consumable);
             }
@@ -520,7 +528,14 @@ public class ConsumableModule extends SuperGameModule<ConsumableItem, Consumable
 
     // TODO: perfs
     public ConsumableItem getConsumable(ParcelModel parcel) {
-        return getAll().stream().filter(consumableItem -> consumableItem.getParcel() == parcel).findFirst().orElse(null);
+        return getConsumable(parcel, 0);
+    }
+
+    public ConsumableItem getConsumable(ParcelModel parcel, int s) {
+        return getAll().stream()
+                .filter(consumableItem -> consumableItem.getParcel() == parcel)
+                .filter(consumableItem -> consumableItem.getStack() == s)
+                .findFirst().orElse(null);
     }
 
     public ConsumableItem getConsumable(int x, int y, int z) {

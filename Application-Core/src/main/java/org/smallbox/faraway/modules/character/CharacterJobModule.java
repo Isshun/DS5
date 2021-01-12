@@ -48,7 +48,7 @@ public class CharacterJobModule extends SuperGameModule2<CharacterModuleObserver
 
                     // Character is far away from job parcel, move to position
                     else {
-                        CharacterMoveStatus status = characterMoveModule.move(character, character.getJob().getTargetParcel(), true);
+                        CharacterMoveStatus status = characterMoveModule.move(character, character.getJob().getTargetParcel(), !character.getJob().isExactParcel());
 
                         if (status == CharacterMoveStatus.BLOCKED) {
                             character.getJob().block(character, gameTime.plus(5, TimeUnit.MINUTES));

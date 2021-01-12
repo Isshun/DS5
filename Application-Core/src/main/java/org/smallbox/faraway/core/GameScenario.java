@@ -16,6 +16,7 @@ public class GameScenario {
         public int x;
         public int y;
         public int z;
+        public int stack;
     }
 
     public static class ScenarioItemEntity {

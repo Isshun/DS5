@@ -160,6 +160,9 @@ public class CharacterLayer extends BaseLayer {
     private void drawCharacter(GDXRenderer renderer, CharacterModel character, int posX, int posY, Vector2 dout) {
 //        renderer.draw(posX, posY, spriteManager.getCharacter(character, 0, 0));
 
+        posX -= 40;
+        posY -= 70;
+
         if (character.getPath() != null) {
             stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
             TextureRegion currentFrame = runningAnimation.getKeyFrame(stateTime, true);

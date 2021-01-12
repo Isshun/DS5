@@ -46,6 +46,10 @@ public class CursorLayer extends BaseLayer {
             renderer.drawTextUI(inputManager.getMouseX() + 2, inputManager.getMouseY() + 2, 22, Color.BLACK, gameActionManager.getActionLabel());
             renderer.drawTextUI(inputManager.getMouseX() + 1, inputManager.getMouseY() + 1, 22, Color.BLACK, gameActionManager.getActionLabel());
             renderer.drawTextUI(inputManager.getMouseX(), inputManager.getMouseY(), 22, gameActionManager.getActionColor(), gameActionManager.getActionLabel());
+            renderer.drawRectangleOnMap(
+                    viewport.getWorldPosX(inputManager.getMouseX()),
+                    viewport.getWorldPosY(inputManager.getMouseY()),
+                    Constant.TILE_SIZE, Constant.TILE_SIZE, Color.BLUE, true, 0, 0);
         }
 
         if (gameActionManager.getMode() == GameActionMode.BUILD) {

@@ -15,6 +15,7 @@ import org.smallbox.faraway.core.module.world.model.ConsumableItem;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.consumable.ConsumableModule;
 import org.smallbox.faraway.modules.consumable.ConsumableModuleObserver;
+import org.smallbox.faraway.util.Constant;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -73,11 +74,15 @@ public class ConsumableLayer extends BaseLayer {
                 .filter(item -> viewport.hasParcel(item.getParcel()))
                 .filter(item -> item.getTotalQuantity() > 0)
                 .forEach(consumable -> {
-                    renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()));
+                    int offsetX = consumable.getStack() == 1 || consumable.getStack() == 3 ? Constant.TILE_SIZE / 2 : 0;
+                    int offsetY = consumable.getStack() == 2 || consumable.getStack() == 3 ? Constant.TILE_SIZE / 2 : 0;
+
+                    renderer.drawOnMap(consumable.getParcel(), spriteManager.getNewSprite(consumable.getGraphic()), offsetX, offsetY);
 //                    renderer.drawRectangleOnMap(consumable.getParcel().x, consumable.getParcel().y, 40, 10, new Color(0x75D0D4FF), true, 0, 0);
                     String stringQuantity = consumable.getTotalQuantity() >= 1000 ? consumable.getTotalQuantity() / 1000 + "k" : String.valueOf(consumable.getTotalQuantity());
 //                    renderer.drawTextOnMap(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, 30, Color.WHITE, 1, 51, true);
-                    renderer.drawTextOnMapUI(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, (int) (8 * (4 - gdxRenderer.getZoom())), Color.WHITE, 0, 50, true);
+
+                    renderer.drawTextOnMapUI(consumable.getParcel().x, consumable.getParcel().y, stringQuantity, (int) (8 * (4 - gdxRenderer.getZoom())), Color.WHITE, offsetX, offsetY + 50, true);
 
                     drawSelectionOnMap(renderer, spriteManager, viewport, consumable, consumable.getParcel().x, consumable.getParcel().y, 20, 20, 6, 6);
                 });

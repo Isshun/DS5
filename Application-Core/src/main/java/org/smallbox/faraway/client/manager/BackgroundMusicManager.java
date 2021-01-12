@@ -25,7 +25,6 @@ public class BackgroundMusicManager {
         load(getRandom(), false);
     }
 
-    @OnGameLayerInit
     public void start() {
         music.play();
     }

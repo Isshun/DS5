@@ -111,7 +111,7 @@ public class GDXRenderer {
     }
 
     public void zoomIn() {
-        _camera.zoom = Math.max(_camera.zoom - 0.125f, 1f);
+        _camera.zoom = Math.max(_camera.zoom - 0.125f, 0.5f);
         Log.info("Set zoom: " + _camera.zoom);
     }
 
@@ -162,6 +162,9 @@ public class GDXRenderer {
 
     public void draw(Sprite sprite) {
         if (sprite != null) {
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
             _batch.begin();
             sprite.draw(_batch);
             _batch.end();
@@ -382,6 +385,10 @@ public class GDXRenderer {
     }
 
     public void drawTextOnMapUI(int x, int y, String string, int size, Color color, int offsetX, int offsetY, boolean outlined) {
+        drawTextOnMapUI(x, y, string, size, color, offsetX, offsetY, outlined, 0);
+    }
+
+    public void drawTextOnMapUI(int x, int y, String string, int size, Color color, int offsetX, int offsetY, boolean outlined, int stack) {
         drawTextUI(
                 (int) (layerManager.getViewport().getPosX() * (1 / _camera.zoom) + (x * Constant.TILE_SIZE * (1 / _camera.zoom)) + (offsetX * (1 / _camera.zoom)))
                         + (int) (applicationConfig.screen.resolution[0] / 2 - (applicationConfig.screen.resolution[0] / 2 / _camera.zoom)),
@@ -412,7 +419,13 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
-        draw((parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY(), itemSprite);
+        drawOnMap(parcel, itemSprite, 0, 0);
+    }
+
+    public void drawOnMap(ParcelModel parcel, Sprite itemSprite, int offsetX, int offsetY) {
+        draw((parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX() + offsetX,
+                (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY() + offsetY,
+                itemSprite);
     }
 
     public Camera getCamera() {
