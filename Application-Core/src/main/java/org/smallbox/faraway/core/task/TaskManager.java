@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 @ApplicationObject
 public class TaskManager {
-    private static final int BACKGROUND_THREAD_LIMIT = 2;
+    private static final int BACKGROUND_THREAD_LIMIT = 20;
 
     private final LoaderThreadExecutor loadExecutor = new LoaderThreadExecutor();
     private final ExecutorService backgroundExecutor = Executors.newFixedThreadPool(BACKGROUND_THREAD_LIMIT);

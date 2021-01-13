@@ -78,6 +78,7 @@ project(":Application-Core") {
         compile 'org.json:json:20150729'
         compile group: 'com.google.guava', name: 'guava', version: '20.0'
         compile 'net.sourceforge.cssparser:cssparser:0.9.19'
+        compile 'com.profesorfalken:WMI4Java:1.6.3'
 
         // https://mvnrepository.com/artifact/org.codehaus.groovy/groovy
         compile group: 'org.codehaus.groovy', name: 'groovy', version: '2.4.7'
