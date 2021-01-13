@@ -43,7 +43,7 @@ public class WorldGroundChunkGenerator {
 
             data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
 //                Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
-                Texture textureIn = new Texture("data/graphics/texture/sand.png");
+                Texture textureIn = new Texture("data/graphics/texture/grass.png");
 
                 Pixmap pixmapIn = createPixmapFromTexture(textureIn);
                 textureIn.dispose();

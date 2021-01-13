@@ -90,7 +90,7 @@ public class WorldRockChunkGenerator {
                         else if (worldModule.check(parcel, ParcelModel::hasRock, TOP, LEFT) && worldModule.check(parcel, p -> !p.hasRock(), TOP_LEFT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_BOTTOM_RIGHT, 0);
                         }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP, LEFT, TOP_LEFT)) {
+                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP, LEFT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_TOP_LEFT, 0);
                         }
                         else if (worldModule.check(parcel, p -> !p.hasRock(), TOP)) {
@@ -107,7 +107,7 @@ public class WorldRockChunkGenerator {
                         else if (worldModule.check(parcel, ParcelModel::hasRock, TOP, RIGHT) && worldModule.check(parcel, p -> !p.hasRock(), TOP_RIGHT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_BOTTOM_LEFT, 1);
                         }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP, RIGHT, TOP_RIGHT)) {
+                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP, RIGHT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_TOP_RIGHT, 1);
                         }
                         else if (worldModule.check(parcel, p -> !p.hasRock(), TOP)) {
@@ -124,7 +124,7 @@ public class WorldRockChunkGenerator {
                         else if (worldModule.check(parcel, ParcelModel::hasRock, BOTTOM, LEFT) && worldModule.check(parcel, p -> !p.hasRock(), BOTTOM_LEFT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_TOP_RIGHT, 2);
                         }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM, LEFT, BOTTOM_LEFT)) {
+                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM, LEFT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_BOTTOM_LEFT, 2);
                         }
                         else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM)) {
@@ -141,7 +141,7 @@ public class WorldRockChunkGenerator {
                         else if (worldModule.check(parcel, ParcelModel::hasRock, BOTTOM, RIGHT) && worldModule.check(parcel, p -> !p.hasRock(), BOTTOM_RIGHT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_TOP_LEFT, 3);
                         }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM, RIGHT, BOTTOM_RIGHT)) {
+                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM, RIGHT)) {
                             drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_BOTTOM_RIGHT, 3);
                         }
                         else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM)) {

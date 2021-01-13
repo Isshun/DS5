@@ -29,9 +29,13 @@ public class TerrainManager {
 
     private Map<String, TerrainLoaderParameters> parameters;
     private Pixmap p2Dark;
+    private Pixmap p2Sand;
+    private Pixmap maskTransition;
 
     public void init() {
         p2Dark = createPixmap("data/graphics/texture/g2_dark.png", RGBA8888);
+        p2Sand = createPixmap("data/graphics/texture/sand.png", RGBA8888);
+        maskTransition = createPixmap("data/graphics/texture/mask/blend_mask_transition_5.png", RGBA8888);
 
         List<Pixmap> alphaMasks = Arrays.asList(
                 createPixmap("data/graphics/texture/mask/blend_mask_border_0.png", RGBA8888),
@@ -93,18 +97,20 @@ public class TerrainManager {
                 int alphaValue = (alphaMask.getPixel(maskX, maskY) & 0x000000ff);
                 int darkValue = (parameter.getDarkMask().getPixel(maskX % 128, maskY) & 0x000000ff);
                 int darkColor = p2Dark.getPixel((x + outX) % 512, (y + outY) % 512);
+//                int transitionValue = (maskTransition.getPixel(maskX % 64, maskY) & 0x000000ff);
+//                int transitionColor = p2Sand.getPixel((x + outX) % 512, (y + outY) % 512);
                 int regularColor = pxRock.getPixel((x + outX) % 512, (y + outY) % 512);
-                int color = mergeColor(regularColor, darkColor, darkValue, alphaValue);
-                pxRockOut.drawPixel(outX + x, outY + y, color);
+                int color = mergeColor(regularColor, darkColor, darkValue);
+//                int color2 = mergeColor(color, transitionColor, transitionValue);
+                pxRockOut.drawPixel(outX + x, outY + y, color + alphaValue);
             }
         }
     }
 
-    private int mergeColor(int regularColor, int darkColor, int ratio, int alphaValue) {
+    private int mergeColor(int regularColor, int darkColor, int ratio) {
         return (((((darkColor >> 24) & 0x000000ff) * ratio / 255) + (((regularColor >> 24) & 0x000000ff) * (255 - ratio) / 255)) << 24) +
                 (((((darkColor >> 16) & 0x000000ff) * ratio / 255) + (((regularColor >> 16) & 0x000000ff) * (255 - ratio) / 255)) << 16) +
-                (((((darkColor >> 8) & 0x000000ff) * ratio / 255) + (((regularColor >> 8) & 0x000000ff) * (255 - ratio) / 255)) << 8) +
-                alphaValue;
+                (((((darkColor >> 8) & 0x000000ff) * ratio / 255) + (((regularColor >> 8) & 0x000000ff) * (255 - ratio) / 255)) << 8);
     }
 
     private Pixmap createPixmap(String internalPath, Pixmap.Format format) {
