@@ -16,6 +16,7 @@ import org.smallbox.faraway.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -169,7 +170,7 @@ public class WorldModule extends GenericGameModule<ParcelModel> {
     }
 
     public boolean check(ParcelModel parcel, Predicate<ParcelModel> predicate, Direction... directions) {
-        return Stream.of(directions).map(direction -> getParcel(parcel, direction)).allMatch(predicate);
+        return Stream.of(directions).map(direction -> getParcel(parcel, direction)).filter(Objects::nonNull).allMatch(predicate);
     }
 
 }

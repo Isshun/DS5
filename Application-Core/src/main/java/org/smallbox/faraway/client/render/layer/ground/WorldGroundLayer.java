@@ -21,6 +21,7 @@ import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfi
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
+import org.smallbox.faraway.util.log.Log;
 
 import java.util.Map;
 import java.util.Random;
@@ -137,8 +138,13 @@ public class WorldGroundLayer extends BaseLayer {
 
     private void createGround(int col, int row) {
         _executor.submit(() -> {
-            worldGroundChunkGenerator.createGround(col, row);
-            worldRockChunkGenerator.createGround(col, row);
+            try {
+                worldGroundChunkGenerator.createGround(col, row);
+                worldRockChunkGenerator.createGround(col, row);
+            } catch (Exception e) {
+                Log.warning(e.getMessage());
+                e.printStackTrace();
+            }
         });
     }
 

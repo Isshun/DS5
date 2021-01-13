@@ -8,6 +8,7 @@ import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
+import org.smallbox.faraway.modules.world.FastNoise;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.modules.world.factory.old.MapFactoryConfig;
 import org.smallbox.faraway.modules.world.factory.old.PerlingGenerator;
@@ -41,7 +42,7 @@ public class WorldFactory {
         initRegionRockAndGround(parcelList, floors);
 
         if (game.getInfo().generateMountains) {
-            computeGroundFloorMountains(parcelsMap, width, height);
+            computeGroundFloorMountains(parcelsMap, width, height, floors);
         }
         cleanMap(parcelList, parcelsMap);
 
@@ -84,11 +85,12 @@ public class WorldFactory {
             for (int y = 0; y < height; y++) {
                 for (int f = 0; f < floors; f++) {
                     ParcelModel parcel = new ParcelModel(x + (y * width) + (f * width * height), x, y, f);
-                    if (parcel.z < floors - 1) {
-                        parcel.setRockInfo(defaultRockInfo);
-                    } else {
-                        parcel.setGroundInfo(defaultGroundInfo);
-                    }
+//                    if (parcel.z < floors - 1) {
+//                        parcel.setRockInfo(defaultRockInfo);
+//                    } else {
+//                        parcel.setGroundInfo(defaultGroundInfo);
+//                    }
+                    parcel.setGroundInfo(defaultGroundInfo);
                     parcelsMap[x][y][f] = parcel;
                     parcelList.add(parcel);
                 }
@@ -105,20 +107,25 @@ public class WorldFactory {
             ItemInfo regionGroundInfo = data.getItemInfo(game.getInfo().region.terrains.get(0).ground);
 
             parcelList.forEach(parcel -> {
-                if (parcel.z < floors - 1) {
-                    parcel.setRockInfo(defaultRockInfo);
-                    parcel.setGroundInfo(defaultRockInfo);
-                } else {
-                    parcel.setGroundInfo(regionGroundInfo);
-                }
+//                if (parcel.z < floors - 1) {
+//                    parcel.setRockInfo(defaultRockInfo);
+//                    parcel.setGroundInfo(defaultRockInfo);
+//                } else {
+//                    parcel.setGroundInfo(regionGroundInfo);
+//                }
+                parcel.setGroundInfo(regionGroundInfo);
             });
         }
     }
 
-    private void computeGroundFloorMountains(ParcelModel[][][] _parcels, int width, int height) {
+    private void computeGroundFloorMountains(ParcelModel[][][] _parcels, int width, int height, int floors) {
         ItemInfo defaultRockInfo = data.getItemInfo("base.granite");
 
         MapFactoryConfig config = MapFactoryConfig.createMountains();
+
+        // Create and configure FastNoise object
+        FastNoise noise = new FastNoise();
+        noise.SetNoiseType(FastNoise.NoiseType.Simplex);
 
         float[][] image = PerlingGenerator.GenerateWhiteNoise(width * 10, height * 10);
         float[][] perlinNoise = PerlingGenerator.GeneratePerlinNoise(image, config.perlinOctave);
@@ -126,10 +133,13 @@ public class WorldFactory {
             perlinNoise = PerlingGenerator.AdjustLevels(perlinNoise, adjustment.min, adjustment.max);
         }
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (perlinNoise[x * 10][y * 10] < 0.7) {
-                    _parcels[x][y][1].setRockInfo(defaultRockInfo);
+        for (int z = 0; z < floors; z++) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (noise.GetNoise(x * 10, y * 10, z * 10) < 0.2) {
+//                if (perlinNoise[x * 10][y * 10] < 0.7) {
+                        _parcels[x][y][z].setRockInfo(defaultRockInfo);
+                    }
                 }
             }
         }

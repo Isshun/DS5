@@ -4,13 +4,11 @@ import java.util.Random;
 
 public class PerlingGenerator {
 
-    public static float Interpolate(float x0, float x1, float alpha)
-    {
+    public static float Interpolate(float x0, float x1, float alpha) {
         return x0 * (1 - alpha) + alpha * x1;
     }
 
-    public static float[][] GenerateSmoothNoise(float[][] baseNoise, int octave)
-    {
+    public static float[][] GenerateSmoothNoise(float[][] baseNoise, int octave) {
         int width = baseNoise.length;
         int height = baseNoise[0].length;
 
@@ -47,17 +45,14 @@ public class PerlingGenerator {
         return smoothNoise;
     }
 
-    public static float[][] AdjustLevels(float[][] image, float low, float high)
-    {
+    public static float[][] AdjustLevels(float[][] image, float low, float high) {
         int width = image.length;
         int height = image[0].length;
 
         float[][] newImage = new float[width][height];
 
-        for (int i = 0; i < width; i++)
-        {
-            for(int j = 0; j < height; j++)
-            {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 float col = image[i][j];
 
                 if (col <= low) {
@@ -73,8 +68,7 @@ public class PerlingGenerator {
         return newImage;
     }
 
-    public static float[][] GeneratePerlinNoise(float[][] baseNoise, int octaveCount)
-    {
+    public static float[][] GeneratePerlinNoise(float[][] baseNoise, int octaveCount) {
         int width = baseNoise.length;
         int height = baseNoise[0].length;
 
@@ -83,8 +77,7 @@ public class PerlingGenerator {
         float persistance = 0.5f;
 
         //generate smooth noise
-        for (int i = 0; i < octaveCount; i++)
-        {
+        for (int i = 0; i < octaveCount; i++) {
             smoothNoise[i] = GenerateSmoothNoise(baseNoise, i);
         }
 
@@ -93,25 +86,20 @@ public class PerlingGenerator {
         float totalAmplitude = 0.0f;
 
         //blend noise together
-        for (int octave = octaveCount - 1; octave >= 0; octave--)
-        {
+        for (int octave = octaveCount - 1; octave >= 0; octave--) {
             amplitude *= persistance;
             totalAmplitude += amplitude;
 
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < height; j++)
-                {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
                     perlinNoise[i][j] += smoothNoise[octave][i][j] * amplitude;
                 }
             }
         }
 
         //normalisation
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 perlinNoise[i][j] /= totalAmplitude;
             }
         }
@@ -119,16 +107,13 @@ public class PerlingGenerator {
         return perlinNoise;
     }
 
-    public static float[][] GenerateWhiteNoise(int width, int height)
-    {
+    public static float[][] GenerateWhiteNoise(int width, int height) {
         Random random = new Random(0); //Seed to 0 for testing
         float[][] noise = new float[width][height];
 
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                noise[i][j] = (float)Math.random();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                noise[i][j] = (float) Math.random();
             }
         }
 
