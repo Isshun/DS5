@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888;
 import static org.smallbox.faraway.util.Constant.HALF_TILE_SIZE;
@@ -86,6 +87,8 @@ public class TerrainManager {
 
     }
 
+    private Map<String, Pixmap> cache = new ConcurrentHashMap<>();
+
     public void generate(Pixmap pxRock, Pixmap pxRockOut, String key, int position, int outX, int outY) {
         TerrainLoaderParameters parameter = parameters.get(key);
         Pixmap alphaMask = parameter.getAlphaMasks().get(RANDS[(outX + position + outY * 42) % RANDS.length] % parameter.getAlphaMasks().size());
@@ -97,12 +100,11 @@ public class TerrainManager {
                 int alphaValue = (alphaMask.getPixel(maskX, maskY) & 0x000000ff);
                 int darkValue = (parameter.getDarkMask().getPixel(maskX % 128, maskY) & 0x000000ff);
                 int darkColor = p2Dark.getPixel((x + outX) % 512, (y + outY) % 512);
-//                int transitionValue = (maskTransition.getPixel(maskX % 64, maskY) & 0x000000ff);
-//                int transitionColor = p2Sand.getPixel((x + outX) % 512, (y + outY) % 512);
                 int regularColor = pxRock.getPixel((x + outX) % 512, (y + outY) % 512);
                 int color = mergeColor(regularColor, darkColor, darkValue);
-//                int color2 = mergeColor(color, transitionColor, transitionValue);
+                Pixmap pixmap = new Pixmap(HALF_TILE_SIZE, HALF_TILE_SIZE, RGBA8888);
                 pxRockOut.drawPixel(outX + x, outY + y, color + alphaValue);
+                cache.put(key + "#" + position, pixmap);
             }
         }
     }

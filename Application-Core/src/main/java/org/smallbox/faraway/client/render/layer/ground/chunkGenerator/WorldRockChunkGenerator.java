@@ -11,13 +11,17 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.util.Constant;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static org.smallbox.faraway.client.render.terrain.TerrainManager.*;
 import static org.smallbox.faraway.core.game.model.MovableModel.Direction.*;
@@ -34,6 +38,43 @@ public class WorldRockChunkGenerator {
 
     private Map<ItemInfo, Pixmap> _pxRocks;
     public Texture[][] _rockLayers;
+    public List<Rule> rules;
+
+    private static class Rule {
+        public final int position;
+        public final String key;
+        public final Predicate<ParcelModel> predicate;
+        public final MovableModel.Direction[] directions;
+        public final MovableModel.Direction directionEx;
+
+        public Rule(int position, String key, Predicate<ParcelModel> predicate, MovableModel.Direction... directions) {
+            this.position = position;
+            this.key = key;
+            this.predicate = predicate;
+            this.directionEx = null;
+            this.directions = directions;
+        }
+
+        public Rule(int position, String key, MovableModel.Direction directionEx, MovableModel.Direction... directions) {
+            this.position = position;
+            this.key = key;
+            this.predicate = null;
+            this.directionEx = directionEx;
+            this.directions = directions;
+        }
+
+        public boolean check(WorldModule worldModule, ParcelModel parcel) {
+            if (predicate != null) {
+                return worldModule.check(parcel, predicate, directions);
+            }
+            return worldModule.check(parcel, ParcelModel::hasRock, directions) && worldModule.check(parcel, p -> !p.hasRock(), directionEx);
+        }
+
+        public void draw(WorldRockChunkGenerator worldRockChunkGenerator, Pixmap pxRockOut, ParcelModel parcel, int fromX, int fromY) {
+            worldRockChunkGenerator.drawPixmap(pxRockOut, parcel, fromX, fromY, key, position);
+        }
+
+    }
 
     @OnGameLayerInit
     public void onGameLayerInit() {
@@ -68,107 +109,38 @@ public class WorldRockChunkGenerator {
 
                 // Draw rock
                 if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
-//                        int tile = 0;
-//                        if (repeatTile(parcel.x - 1, parcel.y - 1, parcel.z)) { tile |= 0b10000000; }
-//                        if (repeatTile(parcel.x,     parcel.y - 1, parcel.z)) { tile |= 0b01000000; }
-//                        if (repeatTile(parcel.x + 1, parcel.y - 1, parcel.z)) { tile |= 0b00100000; }
-//                        if (repeatTile(parcel.x - 1, parcel.y,     parcel.z)) { tile |= 0b00010000; }
-//                        if (repeatTile(parcel.x + 1, parcel.y,     parcel.z)) { tile |= 0b00001000; }
-//                        if (repeatTile(parcel.x - 1, parcel.y + 1, parcel.z)) { tile |= 0b00000100; }
-//                        if (repeatTile(parcel.x,     parcel.y + 1, parcel.z)) { tile |= 0b00000010; }
-//                        if (repeatTile(parcel.x + 1, parcel.y + 1, parcel.z)) { tile |= 0b00000001; }
-//                        parcel.setTile(tile);
-
-//                        Pixmap pxRock = _pxGrounds.entrySet().stream().filter(entry -> StringUtils.equals(entry.getKey().name, parcel.getRockInfo().name)).map(Map.Entry::getValue).findFirst().orElse(null);
                     Pixmap pxRock = _pxRocks.get(parcel.getRockInfo());
                     if (pxRock != null) {
 
-                        // Position 0
-                        if (worldModule.check(parcel, ParcelModel::hasRock, TOP, LEFT, TOP_LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_FULL, 0);
-                        }
-                        else if (worldModule.check(parcel, ParcelModel::hasRock, TOP, LEFT) && worldModule.check(parcel, p -> !p.hasRock(), TOP_LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_BOTTOM_RIGHT, 0);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP, LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_TOP_LEFT, 0);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_TOP, 0);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_LEFT, 0);
-                        }
+                        rules = Arrays.asList(
+                                new Rule(0, TERRAIN_FULL, ParcelModel::hasRock, TOP, LEFT, TOP_LEFT),
+                                new Rule(0, TERRAIN_INNER_BOTTOM_RIGHT, TOP_LEFT, TOP, LEFT),
+                                new Rule(0, TERRAIN_TOP_LEFT, p -> !p.hasRock(), TOP, LEFT),
+                                new Rule(0, TERRAIN_TOP, p -> !p.hasRock(), TOP),
+                                new Rule(0, TERRAIN_LEFT, p -> !p.hasRock(), LEFT),
+                                new Rule(1, TERRAIN_FULL, ParcelModel::hasRock, TOP, RIGHT, TOP_RIGHT),
+                                new Rule(1, TERRAIN_INNER_BOTTOM_LEFT, TOP_RIGHT, TOP, RIGHT),
+                                new Rule(1, TERRAIN_TOP_RIGHT, p -> !p.hasRock(), TOP, RIGHT),
+                                new Rule(1, TERRAIN_TOP, p -> !p.hasRock(), TOP),
+                                new Rule(1, TERRAIN_RIGHT, p -> !p.hasRock(), RIGHT),
+                                new Rule(2, TERRAIN_FULL, ParcelModel::hasRock, BOTTOM, LEFT, BOTTOM_LEFT),
+                                new Rule(2, TERRAIN_INNER_TOP_RIGHT, BOTTOM_LEFT, BOTTOM, LEFT),
+                                new Rule(2, TERRAIN_BOTTOM_LEFT, p -> !p.hasRock(), BOTTOM, LEFT),
+                                new Rule(2, TERRAIN_BOTTOM, p -> !p.hasRock(), BOTTOM),
+                                new Rule(2, TERRAIN_LEFT, p -> !p.hasRock(), LEFT),
+                                new Rule(3, TERRAIN_FULL, ParcelModel::hasRock, BOTTOM, RIGHT, BOTTOM_RIGHT),
+                                new Rule(3, TERRAIN_INNER_TOP_LEFT, BOTTOM_RIGHT, BOTTOM, RIGHT),
+                                new Rule(3, TERRAIN_BOTTOM_RIGHT, p -> !p.hasRock(), BOTTOM, RIGHT),
+                                new Rule(3, TERRAIN_BOTTOM, p -> !p.hasRock(), BOTTOM),
+                                new Rule(3, TERRAIN_RIGHT, p -> !p.hasRock(), RIGHT)
+                        );
 
-                        // Position 1
-                        if (worldModule.check(parcel, ParcelModel::hasRock, TOP, RIGHT, TOP_RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_FULL, 1);
-                        }
-                        else if (worldModule.check(parcel, ParcelModel::hasRock, TOP, RIGHT) && worldModule.check(parcel, p -> !p.hasRock(), TOP_RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_BOTTOM_LEFT, 1);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP, RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_TOP_RIGHT, 1);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), TOP)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_TOP, 1);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_RIGHT, 1);
-                        }
-
-                        // Position 2
-                        if (worldModule.check(parcel, ParcelModel::hasRock, BOTTOM, LEFT, BOTTOM_LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_FULL, 2);
-                        }
-                        else if (worldModule.check(parcel, ParcelModel::hasRock, BOTTOM, LEFT) && worldModule.check(parcel, p -> !p.hasRock(), BOTTOM_LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_TOP_RIGHT, 2);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM, LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_BOTTOM_LEFT, 2);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_BOTTOM, 2);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), LEFT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_LEFT, 2);
-                        }
-
-                        // Position 3
-                        if (worldModule.check(parcel, ParcelModel::hasRock, BOTTOM, RIGHT, BOTTOM_RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_FULL, 3);
-                        }
-                        else if (worldModule.check(parcel, ParcelModel::hasRock, BOTTOM, RIGHT) && worldModule.check(parcel, p -> !p.hasRock(), BOTTOM_RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_INNER_TOP_LEFT, 3);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM, RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_BOTTOM_RIGHT, 3);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), BOTTOM)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_BOTTOM, 3);
-                        }
-                        else if (worldModule.check(parcel, p -> !p.hasRock(), RIGHT)) {
-                            drawPixmap(pxRockOut, parcel, fromX, fromY, TERRAIN_RIGHT, 3);
-                        }
-
+                        rules.stream().filter(rule -> rule.position == 0).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> rule.draw(this, pxRockOut, parcel, fromX, fromY));
+                        rules.stream().filter(rule -> rule.position == 1).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> rule.draw(this, pxRockOut, parcel, fromX, fromY));
+                        rules.stream().filter(rule -> rule.position == 2).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> rule.draw(this, pxRockOut, parcel, fromX, fromY));
+                        rules.stream().filter(rule -> rule.position == 3).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> rule.draw(this, pxRockOut, parcel, fromX, fromY));
                     }
-//                        } else {
-//                        Gdx.app.postRunnable(() -> {
-//                            if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
-//                                Sprite sprite = spriteManager.getRock(parcel.getRockInfo().graphics.get(0), parcel.getTile());
-//                                if (sprite != null) {
-//                                    TextureData textureData = sprite.getTexture().getTextureData();
-//                                    if (!textureData.isPrepared()) {
-//                                        textureData.prepare();
-//                                    }
-//                                    Pixmap pxRockDo = textureData.consumePixmap();
-//                                    _pxRocks.put(parcel.getRockInfo(), pxRockDo);
-//                                    textureData.disposePixmap();
-//                                    pxOut.drawPixmap(pxRockDo, (parcel.x - fromX) * 32, (parcel.y - fromY) * 32, 0, 0, 32, 32);
-//                                }
-//                            }
-//                        });
-//                        }
+
                 }
 
 //                    Pixmap.setBlending(Pixmap.Blending.None);
@@ -188,6 +160,12 @@ public class WorldRockChunkGenerator {
         int outX = (parcel.x % CHUNK_SIZE) * Constant.TILE_SIZE + (position == 1 || position == 3 ? Constant.HALF_TILE_SIZE : 0);
         int outY = (parcel.y % CHUNK_SIZE) * Constant.TILE_SIZE + (position == 2 || position == 3 ? Constant.HALF_TILE_SIZE : 0);
         Pixmap pxRock = _pxRocks.get(parcel.getRockInfo());
+//        for (int x = 0; x < HALF_TILE_SIZE; x++) {
+//            for (int y = 0; y < HALF_TILE_SIZE; y++) {
+//                pxRockOut.drawPixel(outX + x, outY + y, 0xff0000ff);
+//            }
+//        }
+
         terrainManager.generate(pxRock, pxRockOut, key, position, outX, outY);
 
 //        pxRockOut.drawPixmap(pixmapSource,
