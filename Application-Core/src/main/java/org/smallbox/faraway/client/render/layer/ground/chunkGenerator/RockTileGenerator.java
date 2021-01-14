@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.smallbox.faraway.client.render.layer.ground.chunkGenerator.TileGeneratorRule.*;
 import static org.smallbox.faraway.client.render.terrain.TerrainManager.*;
 import static org.smallbox.faraway.core.game.model.MovableModel.Direction.*;
 
@@ -26,26 +27,26 @@ public class RockTileGenerator {
     @Inject private AssetManager assetManager;
 
     public List<TileGeneratorRule> rules = Arrays.asList(
-            new TileGeneratorRule(0, TERRAIN_FULL, ParcelModel::hasRock, TOP, LEFT, TOP_LEFT),
-            new TileGeneratorRule(0, TERRAIN_INNER_BOTTOM_RIGHT, TOP_LEFT, TOP, LEFT),
-            new TileGeneratorRule(0, TERRAIN_CORNER_TOP_LEFT, p -> !p.hasRock(), TOP, LEFT),
-            new TileGeneratorRule(0, TERRAIN_TOP, p -> !p.hasRock(), TOP),
-            new TileGeneratorRule(0, TERRAIN_LEFT, p -> !p.hasRock(), LEFT),
-            new TileGeneratorRule(1, TERRAIN_FULL, ParcelModel::hasRock, TOP, RIGHT, TOP_RIGHT),
-            new TileGeneratorRule(1, TERRAIN_INNER_BOTTOM_LEFT, TOP_RIGHT, TOP, RIGHT),
-            new TileGeneratorRule(1, TERRAIN_CORNER_TOP_RIGHT, p -> !p.hasRock(), TOP, RIGHT),
-            new TileGeneratorRule(1, TERRAIN_TOP, p -> !p.hasRock(), TOP),
-            new TileGeneratorRule(1, TERRAIN_RIGHT, p -> !p.hasRock(), RIGHT),
-            new TileGeneratorRule(2, TERRAIN_FULL, ParcelModel::hasRock, BOTTOM, LEFT, BOTTOM_LEFT),
-            new TileGeneratorRule(2, TERRAIN_INNER_TOP_RIGHT, BOTTOM_LEFT, BOTTOM, LEFT),
-            new TileGeneratorRule(2, TERRAIN_CORNER_BOTTOM_LEFT, p -> !p.hasRock(), BOTTOM, LEFT),
-            new TileGeneratorRule(2, TERRAIN_BOTTOM, p -> !p.hasRock(), BOTTOM),
-            new TileGeneratorRule(2, TERRAIN_LEFT, p -> !p.hasRock(), LEFT),
-            new TileGeneratorRule(3, TERRAIN_FULL, ParcelModel::hasRock, BOTTOM, RIGHT, BOTTOM_RIGHT),
-            new TileGeneratorRule(3, TERRAIN_INNER_TOP_LEFT, BOTTOM_RIGHT, BOTTOM, RIGHT),
-            new TileGeneratorRule(3, TERRAIN_CORNER_BOTTOM_RIGHT, p -> !p.hasRock(), BOTTOM, RIGHT),
-            new TileGeneratorRule(3, TERRAIN_BOTTOM, p -> !p.hasRock(), BOTTOM),
-            new TileGeneratorRule(3, TERRAIN_RIGHT, p -> !p.hasRock(), RIGHT)
+            new TileGeneratorRule(0, TERRAIN_FULL, has(TOP), has(LEFT), has(TOP_LEFT)),
+            new TileGeneratorRule(0, TERRAIN_INNER_BOTTOM_RIGHT, not(TOP_LEFT), has(TOP), has(LEFT)),
+            new TileGeneratorRule(0, TERRAIN_CORNER_TOP_LEFT, not(TOP), not(LEFT)),
+            new TileGeneratorRule(0, TERRAIN_TOP, not(TOP)),
+            new TileGeneratorRule(0, TERRAIN_LEFT, not(LEFT)),
+            new TileGeneratorRule(1, TERRAIN_FULL, has(TOP), has(RIGHT), has(TOP_RIGHT)),
+            new TileGeneratorRule(1, TERRAIN_INNER_BOTTOM_LEFT, not(TOP_RIGHT), has(TOP), has(RIGHT)),
+            new TileGeneratorRule(1, TERRAIN_CORNER_TOP_RIGHT, not(TOP), not(RIGHT)),
+            new TileGeneratorRule(1, TERRAIN_TOP, not(TOP)),
+            new TileGeneratorRule(1, TERRAIN_RIGHT, not(RIGHT)),
+            new TileGeneratorRule(2, TERRAIN_FULL, has(BOTTOM), has(LEFT), has(BOTTOM_LEFT)),
+            new TileGeneratorRule(2, TERRAIN_INNER_TOP_RIGHT, not(BOTTOM_LEFT), has(BOTTOM), has(LEFT)),
+            new TileGeneratorRule(2, TERRAIN_CORNER_BOTTOM_LEFT, not(BOTTOM), not(LEFT)),
+            new TileGeneratorRule(2, TERRAIN_BOTTOM, not(BOTTOM)),
+            new TileGeneratorRule(2, TERRAIN_LEFT, not(LEFT)),
+            new TileGeneratorRule(3, TERRAIN_FULL, has(BOTTOM), has(RIGHT), has(BOTTOM_RIGHT)),
+            new TileGeneratorRule(3, TERRAIN_INNER_TOP_LEFT, not(BOTTOM_RIGHT), has(BOTTOM), has(RIGHT)),
+            new TileGeneratorRule(3, TERRAIN_CORNER_BOTTOM_RIGHT, not(BOTTOM), not(RIGHT)),
+            new TileGeneratorRule(3, TERRAIN_BOTTOM, not(BOTTOM)),
+            new TileGeneratorRule(3, TERRAIN_RIGHT, not(RIGHT))
     );
 
     private final Map<Integer, Texture> cachedTextures = new HashMap<>();

@@ -4,36 +4,42 @@ import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class TileGeneratorRule {
+    private final BoxTileGeneratorRule[] boxedDirections;
     public final int position;
     public final String key;
-    public final Predicate<ParcelModel> predicate;
-    public final MovableModel.Direction[] directions;
-    public final MovableModel.Direction directionEx;
 
-    public TileGeneratorRule(int position, String key, Predicate<ParcelModel> predicate, MovableModel.Direction... directions) {
-        this.position = position;
-        this.key = key;
-        this.predicate = predicate;
-        this.directionEx = null;
-        this.directions = directions;
+    public static class BoxTileGeneratorRule {
+        public final MovableModel.Direction direction;
+        public final boolean hasRequired;
+
+        public BoxTileGeneratorRule(MovableModel.Direction direction, boolean hasRequired) {
+            this.direction = direction;
+            this.hasRequired = hasRequired;
+        }
     }
 
-    public TileGeneratorRule(int position, String key, MovableModel.Direction directionEx, MovableModel.Direction... directions) {
+    public TileGeneratorRule(int position, String key, BoxTileGeneratorRule... boxedDirections) {
         this.position = position;
         this.key = key;
-        this.predicate = null;
-        this.directionEx = directionEx;
-        this.directions = directions;
+        this.boxedDirections = boxedDirections;
     }
 
     public boolean check(WorldModule worldModule, ParcelModel parcel) {
-        if (predicate != null) {
-            return worldModule.check(parcel, predicate, directions);
-        }
-        return worldModule.check(parcel, ParcelModel::hasRock, directions) && worldModule.check(parcel, p -> !p.hasRock(), directionEx);
+        return Stream.of(boxedDirections).allMatch(box -> box.hasRequired
+                ? worldModule.checkOrNull(parcel, ParcelModel::hasRock, box.direction)
+                : worldModule.check(parcel, p -> !p.hasRock(), box.direction)
+        );
+    }
+
+    public static BoxTileGeneratorRule not(MovableModel.Direction direction) {
+        return new BoxTileGeneratorRule(direction, false);
+    }
+
+    public static BoxTileGeneratorRule has(MovableModel.Direction direction) {
+        return new BoxTileGeneratorRule(direction, true);
     }
 
 }

@@ -159,7 +159,6 @@ public class WorldFactory {
         caveGenerator.addCave(_parcels, 35, floors, 30, 30, 4);
     }
 
-
     private void cleanMap(List<ParcelModel> parcelList, ParcelModel[][][] parcels) {
         parcelList.forEach(parcel -> {
             ParcelModel r = safeParcel(parcels, parcel.x + 1, parcel.y, parcel.z);
