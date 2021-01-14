@@ -3,10 +3,10 @@ package org.smallbox.faraway.client.render.terrain;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.graphics.Pixmap;
 
-import static org.smallbox.faraway.client.render.terrain.TerrainLoaderParameters.Type.*;
-import static org.smallbox.faraway.client.render.terrain.TerrainLoaderParameters.Type.INNER_BOTTOM_RIGHT;
+import static org.smallbox.faraway.client.render.terrain.TerrainMaskLoaderParameters.Type.*;
+import static org.smallbox.faraway.client.render.terrain.TerrainMaskLoaderParameters.Type.INNER_BOTTOM_RIGHT;
 
-public class TerrainLoaderParameters extends AssetLoaderParameters<Pixmap> {
+public class TerrainMaskLoaderParameters extends AssetLoaderParameters<Pixmap> {
 
     public enum Type {
         FULL,
@@ -24,10 +24,10 @@ public class TerrainLoaderParameters extends AssetLoaderParameters<Pixmap> {
         INNER_BOTTOM_RIGHT
     }
 
-    private int index;
-    private Type type;
+    private final int index;
+    private final Type type;
 
-    public TerrainLoaderParameters(Type type, int index) {
+    public TerrainMaskLoaderParameters(Type type, int index) {
         this.type = type;
         this.index = index;
     }

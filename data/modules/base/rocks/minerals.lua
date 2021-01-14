@@ -30,7 +30,7 @@ data:extend({
         permeability = 0.1,
         walkable = false,
         graphics = {
-            {path = "[base]/graphics/items/resources/granite.png", type = "terrain"},
+            {path = "[base]/graphics/texture/g2.png", type = "terrain"},
             {path = "[base]/graphics/icons/material/granite.png", type = "icon"},
         },
         actions = { type = "mine", cost = 20, products = {{item = "base.granite_rubble", quantity = {0, 5}}} }

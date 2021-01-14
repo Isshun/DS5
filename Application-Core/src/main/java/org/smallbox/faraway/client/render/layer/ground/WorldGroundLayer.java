@@ -8,7 +8,7 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.WorldRockChunkGenerator;
+import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.RockTileGenerator;
 import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -35,7 +35,7 @@ import java.util.concurrent.Executors;
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldGroundLayer extends BaseLayer {
     @Inject private WorldModule worldModule;
-    @Inject private WorldRockChunkGenerator worldRockChunkGenerator;
+    @Inject private RockTileGenerator rockTileGenerator;
     @Inject private Viewport viewport;
     @Inject private Game game;
     @Inject private Data data;
@@ -53,14 +53,12 @@ public class WorldGroundLayer extends BaseLayer {
     private Map<ItemInfo, Pixmap> _pxGroundBorders;
     private Map<ParcelModel, Texture> parcelTextures = new HashMap<>();
     private Texture textureIn;
-    private Texture textureRock;
     private Sprite groundSprite;
     private Sprite groundSprite2;
 
     @OnGameLayerInit
     public void onGameLayerInit() {
         textureIn = new Texture("data/graphics/texture/grass.png");
-        textureRock = new Texture("data/graphics/texture/g2.png");
 
         groundSprite = new Sprite(textureIn);
         groundSprite.setSize(Constant.TILE_SIZE, Constant.TILE_SIZE);
@@ -98,7 +96,7 @@ public class WorldGroundLayer extends BaseLayer {
                 if (parcel.hasRock()) {
                     if (!parcelTextures.containsKey(parcel)) {
                         int neighborhood = computeNeighborhood(parcel);
-                        parcelTextures.put(parcel, worldRockChunkGenerator.getTexture(parcel, neighborhood, textureRock));
+                        parcelTextures.put(parcel, rockTileGenerator.getTexture(parcel, neighborhood));
                     }
                     renderer.draw(viewportX + (x * Constant.TILE_SIZE), viewportY + (y * Constant.TILE_SIZE), parcelTextures.get(parcel));
                 }

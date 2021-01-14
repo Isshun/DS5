@@ -138,23 +138,25 @@ public class WorldFactory {
 //            perlinNoise = PerlingGenerator.AdjustLevels(perlinNoise, adjustment.min, adjustment.max);
 //        }
 
-        for (int z = 0; z < floors; z++) {
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
+        float max = 0;
+        float min = 1;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
 //                    float value = noise.GetNoise(x, y, z) * getIslandMask(width, height, x, y);
-//                    float value = noise.GetNoise(x, y, z);
+                float value = noise.GetNoise(x, y) + 0.5f;
+                max = Math.max(max, value);
+                min = Math.min(min, value);
 //                    pixmap.drawPixel(x, y, 0xffffff00 + (int)(getIslandMask(40, 40, x, y) * 255));
 //                    pixmap.drawPixel(x, y, 0xffffff00 + (int)(value * 255));
-//                    if (value > 0.25) {
+                if (value > 0.45) {
 //                if (perlinNoise[x * 10][y * 10] < 0.7) {
-                    _parcels[x][y][z].setRockInfo(defaultRockInfo);
-//                    }
+                    _parcels[x][y][floors - 1].setRockInfo(defaultRockInfo);
                 }
             }
         }
 
-        caveGenerator.addCave(_parcels, width, height, floors, 10, 10);
-        caveGenerator.addCave(_parcels, width, height, floors, 30, 30);
+        caveGenerator.addCave(_parcels, 20, floors, 10, 10, 0);
+        caveGenerator.addCave(_parcels, 35, floors, 30, 30, 4);
     }
 
 
