@@ -1,14 +1,16 @@
 package org.smallbox.faraway.client.render.layer.ground;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.manager.SpriteManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
-import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.WorldGroundChunkGenerator;
 import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.WorldRockChunkGenerator;
+import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
@@ -20,6 +22,8 @@ import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
+import org.smallbox.faraway.modules.world.factory.WorldFactory;
+import org.smallbox.faraway.modules.world.factory.WorldFactoryDebug;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
@@ -52,13 +56,15 @@ public class WorldGroundLayer extends BaseLayer {
     @Inject private SpriteManager spriteManager;
     @Inject private ApplicationConfig applicationConfig;
     @Inject private TerrainManager terrainManager;
+    @Inject private WorldFactory worldFactory;
+    @Inject private WorldFactoryDebug worldFactoryDebug;
 
-    private final ExecutorService         _executor = Executors.newSingleThreadExecutor();
-    private boolean[][]             _rockLayersUpToDate;
-    private int                     _rows;
-    private int                     _cols;
-    private Map<ItemInfo, Pixmap>   _pxLiquids;
-    private Map<ItemInfo, Pixmap>   _pxGroundBorders;
+    private final ExecutorService _executor = Executors.newSingleThreadExecutor();
+    private boolean[][] _rockLayersUpToDate;
+    private int _rows;
+    private int _cols;
+    private Map<ItemInfo, Pixmap> _pxLiquids;
+    private Map<ItemInfo, Pixmap> _pxGroundBorders;
 
     @OnGameLayerInit
     public void onGameLayerInit() {
@@ -133,23 +139,38 @@ public class WorldGroundLayer extends BaseLayer {
             }
         }
 
+        Sprite sprite = new Sprite(new Texture(worldFactoryDebug.getPixmap()));
+        sprite.setPosition(100, 0);
+        sprite.setScale(1);
+        renderer.drawUI(sprite);
+
 //        renderer.draw(perlinGenerator.render());
     }
 
     private void createGround(int col, int row) {
-        _executor.submit(() -> {
-            try {
-                worldGroundChunkGenerator.createGround(col, row);
-                worldRockChunkGenerator.createGround(col, row);
-            } catch (Exception e) {
-                Log.warning(e.getMessage());
-                e.printStackTrace();
-            }
-        });
+//        _executor.submit(() -> {
+//            try {
+//                worldGroundChunkGenerator.createGround(col, row);
+//                worldRockChunkGenerator.createGround(col, row);
+//            } catch (Exception e) {
+//                Log.warning(e.getMessage());
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     @Override
     public void onFloorChange(int floor) {
-        _rockLayersUpToDate = new boolean[_cols][_rows];
+//        _rockLayersUpToDate = new boolean[_cols][_rows];
+        long startTime = System.currentTimeMillis();
+        for (int col = 0; col < _cols; col++) {
+            for (int row = 0; row < _rows; row++) {
+                long time = System.currentTimeMillis();
+//                worldGroundChunkGenerator.createGround(col, row);
+                worldRockChunkGenerator.createGround(col, row);
+                Log.info("generate tile " + col + "x" + row + " in " + ((System.currentTimeMillis() - time)) + "ms");
+            }
+        }
+        Log.info("generate all tiles in " + ((System.currentTimeMillis() - startTime) / 1000) + "sec.");
     }
 }

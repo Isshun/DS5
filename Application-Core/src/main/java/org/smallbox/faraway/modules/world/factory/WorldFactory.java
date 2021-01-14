@@ -11,22 +11,16 @@ import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.FastNoise;
 import org.smallbox.faraway.modules.world.WorldModule;
 import org.smallbox.faraway.modules.world.factory.old.MapFactoryConfig;
-import org.smallbox.faraway.modules.world.factory.old.PerlingGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationObject
 public class WorldFactory {
-
-    @Inject
-    private WorldModule worldModule;
-
-    @Inject
-    private Game game;
-
-    @Inject
-    private Data data;
+    @Inject private WorldModule worldModule;
+    @Inject private CaveGenerator caveGenerator;
+    @Inject private Game game;
+    @Inject private Data data;
 
     public void buildMap() {
         MathUtils.random.setSeed(42);
@@ -104,7 +98,8 @@ public class WorldFactory {
         ItemInfo defaultGroundInfo = data.getItemInfo("base.ground.grass");
 
         if (game.getInfo().region != null) {
-            ItemInfo regionGroundInfo = data.getItemInfo(game.getInfo().region.terrains.get(0).ground);
+            ItemInfo regionGroundInfo = data.getItemInfo("base.ground.rock");
+//            ItemInfo regionGroundInfo = data.getItemInfo(game.getInfo().region.terrains.get(0).ground);
 
             parcelList.forEach(parcel -> {
 //                if (parcel.z < floors - 1) {
@@ -125,25 +120,43 @@ public class WorldFactory {
 
         // Create and configure FastNoise object
         FastNoise noise = new FastNoise();
-        noise.SetNoiseType(FastNoise.NoiseType.Simplex);
-
-        float[][] image = PerlingGenerator.GenerateWhiteNoise(width * 10, height * 10);
-        float[][] perlinNoise = PerlingGenerator.GeneratePerlinNoise(image, config.perlinOctave);
-        for (MapFactoryConfig.AdjustmentValue adjustment : config.adjustments) {
-            perlinNoise = PerlingGenerator.AdjustLevels(perlinNoise, adjustment.min, adjustment.max);
-        }
+        noise.SetSeed(1337);
+        noise.SetNoiseType(FastNoise.NoiseType.PerlinFractal);
+        noise.SetFrequency(0.004f);
+        noise.SetFractalType(FastNoise.FractalType.FBM);
+        noise.SetFractalOctaves(7);
+        noise.SetFractalLacunarity(2);
+        noise.SetFractalGain(0.5f);
+//        noise.SetNoiseType(FastNoise.NoiseType.Cellular);
+//        noise.SetFrequency(0.35f);
+//        noise.SetFractalOctaves(1);
+//        noise.SetFractalType(FastNoise.FractalType.RigidMulti);
+//
+//        float[][] image = PerlingGenerator.GenerateWhiteNoise(width * 10, height * 10);
+//        float[][] perlinNoise = PerlingGenerator.GeneratePerlinNoise(image, config.perlinOctave);
+//        for (MapFactoryConfig.AdjustmentValue adjustment : config.adjustments) {
+//            perlinNoise = PerlingGenerator.AdjustLevels(perlinNoise, adjustment.min, adjustment.max);
+//        }
 
         for (int z = 0; z < floors; z++) {
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
-                    if (noise.GetNoise(x * 10, y * 10, z * 10) < 0.2) {
+//                    float value = noise.GetNoise(x, y, z) * getIslandMask(width, height, x, y);
+//                    float value = noise.GetNoise(x, y, z);
+//                    pixmap.drawPixel(x, y, 0xffffff00 + (int)(getIslandMask(40, 40, x, y) * 255));
+//                    pixmap.drawPixel(x, y, 0xffffff00 + (int)(value * 255));
+//                    if (value > 0.25) {
 //                if (perlinNoise[x * 10][y * 10] < 0.7) {
-                        _parcels[x][y][z].setRockInfo(defaultRockInfo);
-                    }
+                    _parcels[x][y][z].setRockInfo(defaultRockInfo);
+//                    }
                 }
             }
         }
+
+        caveGenerator.addCave(_parcels, width, height, floors, 10, 10);
+        caveGenerator.addCave(_parcels, width, height, floors, 30, 30);
     }
+
 
     private void cleanMap(List<ParcelModel> parcelList, ParcelModel[][][] parcels) {
         parcelList.forEach(parcel -> {
@@ -187,7 +200,7 @@ public class WorldFactory {
         });
     }
 
-    private ParcelModel safeParcel(ParcelModel[][][] parcels, int x, int y, int z) {
+    public ParcelModel safeParcel(ParcelModel[][][] parcels, int x, int y, int z) {
         return (x < 0 || x >= game.getInfo().worldWidth || y < 0 || y >= game.getInfo().worldHeight || z < 0 || z >= game.getInfo().worldFloors) ? null : parcels[x][y][z];
     }
 //

@@ -23,6 +23,18 @@ data:extend({
         }
     },
     {
+        label = "Rock",
+        id = "base.ground.rock",
+        type = "ground",
+        color = 0x87943cff,
+        size = {16, 16},
+        fertility = 1,
+        permeability = 0.5,
+        graphics = {
+            { path = "[base]/graphics/texture/stone.png" }
+        }
+    },
+    {
         label = "Dirt",
         id = "base.ground.dirt",
         type = "ground",
