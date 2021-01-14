@@ -1,13 +1,14 @@
 package org.smallbox.faraway.client.render;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.font.FontManager;
-import org.smallbox.faraway.client.render.layer.ground.WorldGroundLayer;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -33,6 +34,7 @@ public class GDXRenderer {
     private OrthographicCamera _camera;
     private OrthographicCamera _cameraUI;
     private ShapeRenderer _drawPixelShapeLayer;
+    private ShaderProgram shader;
 
     public void init() {
         _batch = new SpriteBatch();
@@ -46,6 +48,23 @@ public class GDXRenderer {
         _cameraUI = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         _cameraUI.zoom = 1f;
+
+        FileHandle vertexShader = Gdx.files.internal("data/shader/vertex.glsl");
+        FileHandle fragmentShader = Gdx.files.internal("data/shader/fragment.glsl");
+
+        shader = new ShaderProgram(vertexShader, fragmentShader);
+        if (!shader.isCompiled()) {
+            Gdx.app.log("Shader", shader.getLog());
+            Gdx.app.exit();
+        }
+
+        _batch.setShader(shader);
+
+        shader.begin();
+        shader.setUniformi("u_texture", 0);
+        shader.setUniformi("u_mask", 1);
+        shader.end();
+
     }
 
     public float getZoom() {
@@ -59,6 +78,12 @@ public class GDXRenderer {
     public void draw(int x, int y, TextureRegion textureRegion) {
         _batch.begin();
         _batch.draw(textureRegion, x, y);
+        _batch.end();
+    }
+
+    public void draw(int x, int y, Texture texture) {
+        _batch.begin();
+        _batch.draw(texture, x, y);
         _batch.end();
     }
 
@@ -130,6 +155,16 @@ public class GDXRenderer {
         draw(x, y, sprite, _camera);
     }
 
+    public void drawMap(int x, int y, Texture t1, Texture t2) {
+//        Gdx.gl.glClearColor(1, 1, 1, 1);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        _batch.begin();
+        _batch.draw(t1, x, y);
+        _batch.draw(t2, x, y);
+        _batch.end();
+    }
+
     private void draw(int x, int y, Sprite sprite, OrthographicCamera camera) {
         if (sprite != null) {
             _batch.begin();
@@ -176,18 +211,6 @@ public class GDXRenderer {
             _batch.begin();
             _batch.setProjectionMatrix(_cameraUI.combined);
             sprite.draw(_batch);
-            _batch.end();
-        }
-    }
-
-    public void drawChunk(int x, int y, Texture texture) {
-        if (texture != null) {
-            _batch.begin();
-            _batch.draw(texture, x, y,
-                    WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE, WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE,
-                    0, 0,
-                    WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE, WorldGroundLayer.CHUNK_SIZE * Constant.TILE_SIZE,
-                    false, true);
             _batch.end();
         }
     }

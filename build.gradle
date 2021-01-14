@@ -48,9 +48,7 @@ project(":Application-Core") {
 
     dependencies {
         implementation project(":Application-Common")
-        implementation project(":Core-SmartFontGenerator")
         implementation project(":Core-PathFinding")
-//    compile project(":Core-SmartFontGenerator")
 //    compile project(":Core-PathFinding")
 //    compile project(":Core-Debug")
 
@@ -127,17 +125,5 @@ project(":Application-Common") {
 
         compile group: 'com.esotericsoftware.kryo', name: 'kryo5', version: '5.0.2'
         compile 'org.json:json:20180130'
-    }
-}
-
-project(":Core-SmartFontGenerator") {
-    apply plugin: "java-library"
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }

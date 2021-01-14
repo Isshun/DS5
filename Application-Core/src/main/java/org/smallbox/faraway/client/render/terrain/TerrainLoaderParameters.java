@@ -3,35 +3,53 @@ package org.smallbox.faraway.client.render.terrain;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.graphics.Pixmap;
 
-import java.util.List;
-import java.util.function.BiFunction;
+import static org.smallbox.faraway.client.render.terrain.TerrainLoaderParameters.Type.*;
+import static org.smallbox.faraway.client.render.terrain.TerrainLoaderParameters.Type.INNER_BOTTOM_RIGHT;
 
 public class TerrainLoaderParameters extends AssetLoaderParameters<Pixmap> {
-    private List<Pixmap> alphaMasks;
-    private Pixmap darkMask;
-    private BiFunction<Integer, Integer, Integer> xFunc;
-    private BiFunction<Integer, Integer, Integer> yFunc;
 
-    public TerrainLoaderParameters(List<Pixmap> alphaMasks, Pixmap darkMask, BiFunction<Integer, Integer, Integer> xFunc, BiFunction<Integer, Integer, Integer> yFunc) {
-        this.alphaMasks = alphaMasks;
-        this.darkMask = darkMask;
-        this.xFunc = xFunc;
-        this.yFunc = yFunc;
+    public enum Type {
+        FULL,
+        BORDER_TOP,
+        BORDER_BOTTOM,
+        BORDER_LEFT,
+        BORDER_RIGHT,
+        CORNER_TOP_LEFT,
+        CORNER_TOP_RIGHT,
+        CORNER_BOTTOM_LEFT,
+        CORNER_BOTTOM_RIGHT,
+        INNER_TOP_LEFT,
+        INNER_TOP_RIGHT,
+        INNER_BOTTOM_LEFT,
+        INNER_BOTTOM_RIGHT
     }
 
-    public List<Pixmap> getAlphaMasks() {
-        return alphaMasks;
+    private int index;
+    private Type type;
+
+    public TerrainLoaderParameters(Type type, int index) {
+        this.type = type;
+        this.index = index;
     }
 
-    public Pixmap getDarkMask() {
-        return darkMask;
+    public int getIndex() {
+        return index;
     }
 
-    public BiFunction<Integer, Integer, Integer> getXFunc() {
-        return xFunc;
+    public Type getType() {
+        return type;
     }
 
-    public BiFunction<Integer, Integer, Integer> getYFunc() {
-        return yFunc;
+    public boolean isBorder() {
+        return type == BORDER_TOP || type == BORDER_BOTTOM || type == BORDER_LEFT || type == BORDER_RIGHT;
     }
+
+    public boolean isCorner() {
+        return type == CORNER_TOP_LEFT || type == CORNER_TOP_RIGHT || type == CORNER_BOTTOM_LEFT || type == CORNER_BOTTOM_RIGHT;
+    }
+
+    public boolean isInner() {
+        return type == INNER_TOP_LEFT || type == INNER_TOP_RIGHT || type == INNER_BOTTOM_LEFT || type == INNER_BOTTOM_RIGHT;
+    }
+
 }

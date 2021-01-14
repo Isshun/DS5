@@ -153,6 +153,7 @@ public class WorldModule extends GenericGameModule<ParcelModel> {
 
     public ParcelModel getParcel(ParcelModel parcel, Direction direction) {
         switch (direction) {
+            case NONE: return parcel;
             case TOP: return WorldHelper.getParcel(parcel.x, parcel.y - 1, parcel.z);
             case LEFT: return WorldHelper.getParcel(parcel.x - 1, parcel.y, parcel.z);
             case RIGHT: return WorldHelper.getParcel(parcel.x + 1, parcel.y, parcel.z);
@@ -171,6 +172,10 @@ public class WorldModule extends GenericGameModule<ParcelModel> {
 
     public boolean check(ParcelModel parcel, Predicate<ParcelModel> predicate, Direction... directions) {
         return Stream.of(directions).map(direction -> getParcel(parcel, direction)).filter(Objects::nonNull).allMatch(predicate);
+    }
+
+    public boolean checkOrNull(ParcelModel parcel, Predicate<ParcelModel> predicate, Direction... directions) {
+        return Stream.of(directions).map(direction -> getParcel(parcel, direction)).allMatch(p -> p == null || predicate.test(p));
     }
 
 }

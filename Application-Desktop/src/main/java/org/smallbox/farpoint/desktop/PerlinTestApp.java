@@ -1,4 +1,4 @@
-package org.smallbox.faraway.core.test;
+package org.smallbox.farpoint.desktop;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.Pixmap;

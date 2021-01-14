@@ -8,16 +8,15 @@ import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.WorldGroundChunkGenerator;
 import org.smallbox.faraway.client.render.layer.ground.chunkGenerator.WorldRockChunkGenerator;
 import org.smallbox.faraway.client.render.terrain.TerrainManager;
-import org.smallbox.faraway.core.Application;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
 import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
@@ -27,28 +26,15 @@ import org.smallbox.faraway.modules.world.factory.WorldFactoryDebug;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @GameObject
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldGroundLayer extends BaseLayer {
-    public static final int CHUNK_SIZE = 16;
-    private static final int TOP_LEFT = 0b10000000;
-    private static final int TOP = 0b01000000;
-    private static final int TOP_RIGHT = 0b00100000;
-    private static final int LEFT = 0b00010000;
-    private static final int RIGHT = 0b00001000;
-    private static final int BOTTOM_LEFT = 0b00000100;
-    private static final int BOTTOM = 0b00000010;
-    private static final int BOTTOM_RIGHT = 0b00000001;
-
-    private static final Random random = new Random(42);
-
-    @Inject private WorldModule _worldModule;
-    @Inject private WorldGroundChunkGenerator worldGroundChunkGenerator;
+    @Inject private WorldModule worldModule;
     @Inject private WorldRockChunkGenerator worldRockChunkGenerator;
     @Inject private Viewport viewport;
     @Inject private Game game;
@@ -65,48 +51,25 @@ public class WorldGroundLayer extends BaseLayer {
     private int _cols;
     private Map<ItemInfo, Pixmap> _pxLiquids;
     private Map<ItemInfo, Pixmap> _pxGroundBorders;
+    private Map<ParcelModel, Texture> parcelTextures = new HashMap<>();
+    private Texture textureIn;
+    private Texture textureRock;
+    private Sprite groundSprite;
+    private Sprite groundSprite2;
 
     @OnGameLayerInit
     public void onGameLayerInit() {
-        Application.runOnMainThread(() -> {
-//            _pxLiquids = new HashMap<>();
-//
-//            _pxGroundBorders = new HashMap<>();
-//
-//            data.items.stream().filter(itemInfo -> itemInfo.isGround).forEach(itemInfo -> {
-//                Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
-//                textureIn.getTextureData().prepare();
-//                _pxGrounds.put(itemInfo, textureIn.getTextureData().consumePixmap());
-//
-//                if (itemInfo.graphics.size() >= 2) {
-//                    Texture textureDecoration = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(1))));
-//                    textureDecoration.getTextureData().prepare();
-//                    _pxGroundDecorations.put(itemInfo, textureDecoration.getTextureData().consumePixmap());
-//                }
-//
-////                if (itemInfo.graphics.size() == 3) {
-////                    Texture textureBorders = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(2))));
-////                    textureBorders.getTextureData().prepare();
-////                    _pxGroundBorders.put(itemInfo, textureBorders.getTextureData().consumePixmap());
-////                }
-//            });
-//
-//            data.items.stream().filter(itemInfo -> itemInfo.isLiquid).forEach(itemInfo -> {
-//                Texture textureIn = new Texture(new FileHandle(SpriteManager.getFile(itemInfo, itemInfo.graphics.get(0))));
-//                textureIn.getTextureData().prepare();
-//                _pxLiquids.put(itemInfo, textureIn.getTextureData().consumePixmap());
-//            });
+        textureIn = new Texture("data/graphics/texture/grass.png");
+        textureRock = new Texture("data/graphics/texture/g2.png");
 
-            _cols = game.getInfo().worldWidth / CHUNK_SIZE + 1;
-            _rows = game.getInfo().worldHeight / CHUNK_SIZE + 1;
-
-            _rockLayersUpToDate = new boolean[_cols][_rows];
-        });
+        groundSprite = new Sprite(textureIn);
+        groundSprite.setSize(Constant.TILE_SIZE, Constant.TILE_SIZE);
+        groundSprite2 = new Sprite(new Texture("data/graphics/texture/g2_ground.png"));
+        groundSprite2.setSize(Constant.TILE_SIZE, Constant.TILE_SIZE);
     }
 
     @Override
     public void onRemoveRock(ParcelModel parcel) {
-        _rockLayersUpToDate[parcel.x / CHUNK_SIZE][parcel.y / CHUNK_SIZE] = false;
     }
 
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
@@ -119,23 +82,26 @@ public class WorldGroundLayer extends BaseLayer {
         int toX = Math.min(fromX + tileWidthCount, game.getInfo().worldWidth);
         int toY = Math.min(fromY + tileHeightCount, game.getInfo().worldHeight);
 
-        int fromCol = Math.max(fromX / CHUNK_SIZE, 0);
-        int fromRow = Math.max(fromY / CHUNK_SIZE, 0);
-        int toCol = Math.min(toX / CHUNK_SIZE + 1, _cols);
-        int toRow = Math.min(toY / CHUNK_SIZE + 1, _rows);
-
         int viewportX = viewport.getPosX();
         int viewportY = viewport.getPosY();
 
-        // Draw chunks
-        for (int col = 0; col < _cols; col++) {
-            for (int row = 0; row < _rows; row++) {
-                if (!_rockLayersUpToDate[col][row]) {
-                    _rockLayersUpToDate[col][row] = true;
-                    createGround(col, row);
+        for (int x = 0; x < worldModule.getWidth(); x++) {
+            for (int y = 0; y < worldModule.getHeight(); y++) {
+                ParcelModel parcel = worldModule.getParcel(x, y, viewport.getFloor());
+
+                if (parcel.getGroundInfo().name.equals("base.ground.grass")) {
+                    renderer.draw(viewportX + (x * Constant.TILE_SIZE), viewportY + (y * Constant.TILE_SIZE), groundSprite);
+                } else {
+                    renderer.draw(viewportX + (x * Constant.TILE_SIZE), viewportY + (y * Constant.TILE_SIZE), groundSprite2);
                 }
-                renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_SIZE), viewportY + (row * CHUNK_SIZE * Constant.TILE_SIZE), worldGroundChunkGenerator._groundLayers[col][row]);
-                renderer.drawChunk(viewportX + (col * CHUNK_SIZE * Constant.TILE_SIZE), viewportY + (row * CHUNK_SIZE * Constant.TILE_SIZE), worldRockChunkGenerator._rockLayers[col][row]);
+
+                if (parcel.hasRock()) {
+                    if (!parcelTextures.containsKey(parcel)) {
+                        int neighborhood = computeNeighborhood(parcel);
+                        parcelTextures.put(parcel, worldRockChunkGenerator.getTexture(parcel, neighborhood, textureRock));
+                    }
+                    renderer.draw(viewportX + (x * Constant.TILE_SIZE), viewportY + (y * Constant.TILE_SIZE), parcelTextures.get(parcel));
+                }
             }
         }
 
@@ -143,20 +109,20 @@ public class WorldGroundLayer extends BaseLayer {
         sprite.setPosition(100, 0);
         sprite.setScale(1);
         renderer.drawUI(sprite);
-
-//        renderer.draw(perlinGenerator.render());
     }
 
-    private void createGround(int col, int row) {
-//        _executor.submit(() -> {
-//            try {
-//                worldGroundChunkGenerator.createGround(col, row);
-//                worldRockChunkGenerator.createGround(col, row);
-//            } catch (Exception e) {
-//                Log.warning(e.getMessage());
-//                e.printStackTrace();
-//            }
-//        });
+    private int computeNeighborhood(ParcelModel parcel) {
+        int neighborhood = 0;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_LEFT)       ? 0b100000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP)            ? 0b010000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_RIGHT)      ? 0b001000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.LEFT)           ? 0b000100000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.NONE)           ? 0b000010000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.RIGHT)          ? 0b000001000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_LEFT)    ? 0b000000100 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM)         ? 0b000000010 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_RIGHT)   ? 0b000000001 : 0b000000000;
+        return neighborhood;
     }
 
     @Override
@@ -167,10 +133,10 @@ public class WorldGroundLayer extends BaseLayer {
             for (int row = 0; row < _rows; row++) {
                 long time = System.currentTimeMillis();
 //                worldGroundChunkGenerator.createGround(col, row);
-                worldRockChunkGenerator.createGround(col, row);
-                Log.info("generate tile " + col + "x" + row + " in " + ((System.currentTimeMillis() - time)) + "ms");
+//                worldRockChunkGenerator.createGround(col, row, floor);
+//                Log.info("generate tile " + col + "x" + row + " in " + ((System.currentTimeMillis() - time)) + "ms");
             }
         }
-        Log.info("generate all tiles in " + ((System.currentTimeMillis() - startTime) / 1000) + "sec.");
+        Log.info("generate all tiles in " + ((System.currentTimeMillis() - startTime)) + "ms");
     }
 }

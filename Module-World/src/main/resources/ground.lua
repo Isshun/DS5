@@ -31,7 +31,7 @@ data:extend({
         fertility = 1,
         permeability = 0.5,
         graphics = {
-            { path = "[base]/graphics/texture/stone.png" }
+            { path = "[base]/graphics/texture/g2_ground.png" }
         }
     },
     {

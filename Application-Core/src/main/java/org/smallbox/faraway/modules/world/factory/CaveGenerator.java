@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.game.Data;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.FastNoise;
 
@@ -16,6 +17,7 @@ public class CaveGenerator {
 
     @Inject private WorldFactoryDebug worldFactoryDebug;
     @Inject private WorldFactory worldFactory;
+    @Inject private Data data;
 
     private Pixmap caveMask;
 
@@ -61,6 +63,7 @@ public class CaveGenerator {
                         ParcelModel parcel = worldFactory.safeParcel(_parcels, offsetX + x, offsetY + y, z);
                         if (parcel != null) {
                             parcel.setRockInfo(null);
+                            parcel.setGroundInfo(data.getItemInfo("base.ground.rock"));
                         }
                     }
 

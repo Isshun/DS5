@@ -1,0 +1,23 @@
+{
+  "alphaBorder": [
+    "data/graphics/texture/mask/blend_mask_border_0.png",
+    "data/graphics/texture/mask/blend_mask_border_1.png",
+    "data/graphics/texture/mask/blend_mask_border_2.png",
+    "data/graphics/texture/mask/blend_mask_border_3.png",
+    "data/graphics/texture/mask/blend_mask_border_4.png",
+    "data/graphics/texture/mask/blend_mask_border_5.png"
+  ],
+  "alphaCorner": [
+    "data/graphics/texture/mask/blend_mask_corner_0.png"
+  ],
+  "alphaInner": [
+    "data/graphics/texture/mask/blend_mask_inner_0.png"
+  ],
+  "alphaFull": [
+    "data/graphics/texture/mask/blend_mask_full_0.png"
+  ],
+  "darkBorder": "data/graphics/texture/mask/gradient_mask_border_0.png",
+  "darkCorner": "data/graphics/texture/mask/gradient_mask_corner_0.png",
+  "darkInner": "data/graphics/texture/mask/gradient_mask_inner_0.png",
+  "darkFull": "data/graphics/texture/mask/gradient_mask_full_0.png"
+}
