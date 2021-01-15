@@ -98,7 +98,7 @@ public class UIImage extends View {
                     } else if (_animation != null) {
                         _animation.draw(renderer, _sprite, geometry.getFinalX(), geometry.getFinalY());
                     } else {
-                        renderer.drawUI(geometry.getFinalX(), geometry.getFinalY(), _sprite);
+                        renderer.drawUI(_sprite, geometry.getFinalX(), geometry.getFinalY());
 //                        renderer.draw(_x + x, _y + y, _sprite);
                     }
                 }

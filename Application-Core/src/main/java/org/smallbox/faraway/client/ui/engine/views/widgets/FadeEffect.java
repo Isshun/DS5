@@ -31,8 +31,8 @@ public class FadeEffect {
                 _from.setAlpha(0f);
                 _to.setAlpha(1f);
             }
-            renderer.draw(x, y, _from);
-            renderer.draw(x, y, _to);
+            renderer.draw(_from, x, y);
+            renderer.draw(_to, x, y);
         }
 
         else if (_to != null) {

@@ -263,6 +263,10 @@ public class ItemInfo extends ObjectInfo {
     public boolean                      isWall = false;
     public int                          color;
 
+    public GraphicInfo getGraphicInfo(GraphicInfo.Type type) {
+        return graphics.stream().filter(graphicInfo -> graphicInfo.type == type).findFirst().orElse(null);
+    }
+
     public ItemInfo() {
         width = 1;
         height = 1;

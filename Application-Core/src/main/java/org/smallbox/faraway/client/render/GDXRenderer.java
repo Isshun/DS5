@@ -75,25 +75,32 @@ public class GDXRenderer {
         return (float) applicationConfig.uiScale;
     }
 
-    public void draw(int x, int y, TextureRegion textureRegion) {
+    public void draw(TextureRegion currentFrame, int x, int y) {
         _batch.begin();
-        _batch.draw(textureRegion, x, y);
+        _batch.setProjectionMatrix(_camera.combined);
+        _batch.draw(currentFrame, x, y);
         _batch.end();
     }
 
-    public void draw(int x, int y, Texture texture) {
+    public void draw(Texture texture, int x, int y) {
         _batch.begin();
         _batch.draw(texture, x, y);
         _batch.end();
     }
 
-    public void draw(int x, int y, GDXDrawable drawable) {
+    public void draw(Texture texture, int x, int y, int width, int height) {
+        _batch.begin();
+        _batch.draw(texture, x, y, 0, 0, width, height);
+        _batch.end();
+    }
+
+    public void draw(GDXDrawable drawable, int x, int y) {
         _batch.begin();
         drawable.draw(_batch, x, y);
         _batch.end();
     }
 
-    public void draw(int x, int y, Sprite sprite, float alpha) {
+    public void draw(Sprite sprite, int x, int y, float alpha) {
         if (sprite != null) {
             _batch.begin();
             sprite.setPosition(x, y);
@@ -126,7 +133,7 @@ public class GDXRenderer {
         return Gdx.graphics.getHeight();
     }
 
-    public void draw(int x, int y, View view) {
+    public void draw(View view, int x, int y) {
         view.draw(this, x, y);
     }
 
@@ -140,18 +147,11 @@ public class GDXRenderer {
         Log.info("Set zoom: " + _camera.zoom);
     }
 
-    public void drawUI(int x, int y, Sprite sprite) {
+    public void drawUI(Sprite sprite, int x, int y) {
         draw(x, y, sprite, _cameraUI);
     }
 
-    public void draw(TextureRegion currentFrame, int x, int y) {
-        _batch.begin();
-        _batch.setProjectionMatrix(_camera.combined);
-        _batch.draw(currentFrame, x, y);
-        _batch.end();
-    }
-
-    public void draw(int x, int y, Sprite sprite) {
+    public void draw(Sprite sprite, int x, int y) {
         draw(x, y, sprite, _camera);
     }
 
@@ -388,7 +388,7 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(int x, int y, TextureRegion region) {
-        draw(layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE), layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE), region);
+        draw(region, layerManager.getViewport().getPosX() + (x * Constant.TILE_SIZE), layerManager.getViewport().getPosY() + (y * Constant.TILE_SIZE));
     }
 
     public void drawOnMap(int x, int y, Color color) {
@@ -438,7 +438,7 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(ParcelCommon parcel, Sprite itemSprite) {
-        draw((parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY(), itemSprite);
+        draw(itemSprite, (parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX(), (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY());
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite) {
@@ -446,9 +446,9 @@ public class GDXRenderer {
     }
 
     public void drawOnMap(ParcelModel parcel, Sprite itemSprite, int offsetX, int offsetY) {
-        draw((parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX() + offsetX,
-                (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY() + offsetY,
-                itemSprite);
+        draw(itemSprite, (parcel.x * Constant.TILE_SIZE) + layerManager.getViewport().getPosX() + offsetX,
+                (parcel.y * Constant.TILE_SIZE) + layerManager.getViewport().getPosY() + offsetY
+        );
     }
 
     public Camera getCamera() {

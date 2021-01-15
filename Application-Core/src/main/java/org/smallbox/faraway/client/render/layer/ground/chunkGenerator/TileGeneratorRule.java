@@ -34,7 +34,7 @@ public class TileGeneratorRule {
         );
     }
 
-    public static BoxTileGeneratorRule not(MovableModel.Direction direction) {
+    public static BoxTileGeneratorRule hasNot(MovableModel.Direction direction) {
         return new BoxTileGeneratorRule(direction, false);
     }
 

@@ -199,7 +199,7 @@ public class CharacterLayer extends BaseLayer {
         if (character.hasExtra(CharacterInventoryExtra.class)) {
             for (Map.Entry<ItemInfo, Integer> entry : character.getExtra(CharacterInventoryExtra.class).getAll().entrySet()) {
                 if (entry.getValue() > 0) {
-                    renderer.draw(posX, posY + 2, spriteManager.getNewSprite(entry.getKey()));
+                    renderer.draw(spriteManager.getNewSprite(entry.getKey()), posX, posY + 2);
                 }
             }
         }

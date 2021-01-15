@@ -7,7 +7,7 @@ data:extend({
         size = {16, 16},
         fertility = 0.1,
         permeability = 0.5,
-        graphics = { path = "[base]/graphics/grounds/sand.png" }
+        graphics = { path = "[base]/graphics/grounds/sand.png", type = "TERRAIN" }
     },
     {
         label = "Grass",
@@ -18,7 +18,7 @@ data:extend({
         fertility = 1,
         permeability = 0.5,
         graphics = {
-            { path = "[base]/graphics/grounds/grass.png" },
+            { path = "[base]/graphics/grounds/grass.png", type = "TERRAIN" },
             { path = "[base]/graphics/grounds/grass_decoration.png" },
         }
     },
@@ -31,7 +31,7 @@ data:extend({
         fertility = 1,
         permeability = 0.5,
         graphics = {
-            { path = "[base]/graphics/texture/g2_ground.png" }
+            { path = "[base]/graphics/texture/g2_ground.png", type = "TERRAIN" }
         }
     },
     {
@@ -43,7 +43,7 @@ data:extend({
         fertility = 0.5,
         permeability = 0.5,
         graphics = {
-            { path = "[base]/graphics/grounds/dirt.png" },
+            { path = "[base]/graphics/grounds/dirt.png", type = "TERRAIN" },
             { path = "[base]/graphics/grounds/dirt_decoration.png" },
             { path = "[base]/graphics/grounds/dirt_borders.png" },
         }
@@ -55,7 +55,7 @@ data:extend({
         color = 0xfff9bdff,
         fertility = 0,
         permeability = 0.3,
-        graphics = { path = "[base]/graphics/grounds/granite.png" }
+        graphics = { path = "[base]/graphics/grounds/granite.png", type = "TERRAIN" }
     },
     {
         label = "Link to down stair",
@@ -65,7 +65,7 @@ data:extend({
         fertility = 0,
         permeability = 1,
         is_link_down = true,
-        graphics = { path = "[base]/graphics/grounds/link_down.png" }
+        graphics = { path = "[base]/graphics/grounds/link_down.png", type = "TERRAIN" }
     },
     {
         label = "Water surface",
@@ -75,6 +75,6 @@ data:extend({
         fertility = 0,
         permeability = 1,
         walkable = false,
-        graphics = { path = "[base]/graphics/liquids/water.png" }
+        graphics = { path = "[base]/graphics/liquids/water.png", type = "TERRAIN" }
     },
 })

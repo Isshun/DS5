@@ -70,10 +70,10 @@ public abstract class BaseLayer implements GameObserver, GameClientObserver {
             }
             _selectionOffset += _selectionChange;
             int index = (int)_selectionOffset;
-            renderer.draw(offsetX - 4 + posX - index,            offsetY - 4 + posY - index,              spriteManager.getSelectorCorner(0));
-            renderer.draw(offsetX - 4 + posX + width + index,    offsetY - 4 + posY - index,              spriteManager.getSelectorCorner(1));
-            renderer.draw(offsetX - 4 + posX - index,            offsetY - 4 + posY + height + index,     spriteManager.getSelectorCorner(2));
-            renderer.draw(offsetX - 4 + posX + width + index,    offsetY - 4 + posY + height + index,     spriteManager.getSelectorCorner(3));
+            renderer.draw(spriteManager.getSelectorCorner(0), offsetX - 4 + posX - index,            offsetY - 4 + posY - index);
+            renderer.draw(spriteManager.getSelectorCorner(1), offsetX - 4 + posX + width + index,    offsetY - 4 + posY - index);
+            renderer.draw(spriteManager.getSelectorCorner(2), offsetX - 4 + posX - index,            offsetY - 4 + posY + height + index);
+            renderer.draw(spriteManager.getSelectorCorner(3), offsetX - 4 + posX + width + index,    offsetY - 4 + posY + height + index);
         }
     }
 

@@ -22,7 +22,6 @@ import java.util.function.BiConsumer;
 @GameObject
 @GameLayer(level = 999, visible = false)
 public class DashboardLayer extends BaseLayer {
-
     @Inject private GameSelectionManager gameSelectionManager;
     @Inject private ShortcutDashboardLayer shortcutDashboardLayer;
     @Inject private CharacterDashboardLayer characterDashboardLayer;
