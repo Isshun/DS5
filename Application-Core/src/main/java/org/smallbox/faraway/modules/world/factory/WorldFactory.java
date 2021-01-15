@@ -38,7 +38,7 @@ public class WorldFactory {
         if (game.getInfo().generateMountains) {
             computeGroundFloorMountains(parcelsMap, width, height, floors);
         }
-        cleanMap(parcelList, parcelsMap);
+//        cleanMap(parcelList, parcelsMap);
 
         worldModule.init(parcelsMap, parcelList);
 
@@ -84,6 +84,7 @@ public class WorldFactory {
 //                    } else {
 //                        parcel.setGroundInfo(defaultGroundInfo);
 //                    }
+                    parcel.setRockInfo(defaultRockInfo);
                     parcel.setGroundInfo(defaultGroundInfo);
                     parcelsMap[x][y][f] = parcel;
                     parcelList.add(parcel);
@@ -148,10 +149,8 @@ public class WorldFactory {
                 min = Math.min(min, value);
 //                    pixmap.drawPixel(x, y, 0xffffff00 + (int)(getIslandMask(40, 40, x, y) * 255));
 //                    pixmap.drawPixel(x, y, 0xffffff00 + (int)(value * 255));
-                if (value > 0.45) {
 //                if (perlinNoise[x * 10][y * 10] < 0.7) {
-                    _parcels[x][y][floors - 1].setRockInfo(defaultRockInfo);
-                }
+                    _parcels[x][y][floors - 1].setRockInfo(value > 0.45 ? defaultRockInfo : null);
             }
         }
 

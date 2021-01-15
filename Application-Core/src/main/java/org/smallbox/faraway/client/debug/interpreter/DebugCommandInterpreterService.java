@@ -6,7 +6,7 @@ import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.ConsoleIn
 import org.smallbox.faraway.client.debug.interpreter.moduleInterpreter.impl.*;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
 import org.smallbox.faraway.util.log.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -53,7 +53,7 @@ public class DebugCommandInterpreterService {
 
     private String commandInput;
 
-    @OnInit
+    @OnGameStart
     private void onInit() {
 //        EXTRA_COMMANDS.put("area", characterModuleConsoleInterpreter);
 //        EXTRA_COMMANDS.put("building", characterModuleConsoleInterpreter);

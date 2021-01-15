@@ -26,7 +26,7 @@ data:extend({
         label = "Rock",
         id = "base.ground.rock",
         type = "ground",
-        color = 0x87943cff,
+        color = 0x80644dff,
         size = {16, 16},
         fertility = 1,
         permeability = 0.5,

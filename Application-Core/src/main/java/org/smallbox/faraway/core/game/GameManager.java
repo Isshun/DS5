@@ -8,6 +8,8 @@ import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.AfterGameLayerInit;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStart;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
 import org.smallbox.faraway.core.game.save.*;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.path.PathManager;
@@ -103,12 +105,15 @@ public class GameManager implements GameObserver {
 
         // Launch background thread
         _game.launchBackgroundThread(listener);
+
+        dependencyManager.callMethodAnnotatedBy(OnGameStart.class);
     }
 
     public void closeGame() {
         _game.stop();
         _game = null;
 
+        dependencyManager.callMethodAnnotatedBy(OnGameStop.class);
         dependencyManager.destroyGameObjects();
     }
 

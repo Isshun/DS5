@@ -1,4 +1,4 @@
-package org.smallbox.faraway.client.render.layer.ground.chunkGenerator;
+package org.smallbox.faraway.client.render.layer.ground;
 
 import org.smallbox.faraway.core.game.model.MovableModel;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;

@@ -1,8 +1,6 @@
 package org.smallbox.faraway.client.render.terrain;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.render.terrain.TerrainMaskLoaderParameters.Type;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
@@ -78,14 +76,6 @@ public class TerrainManager {
         return ((((regularColor >> 24) & 0x000000ff) * (255 - ratio) / 255) << 24) +
                 ((((regularColor >> 16) & 0x000000ff) * (255 - ratio) / 255) << 16) +
                 ((((regularColor >> 8) & 0x000000ff) * (255 - ratio) / 255) << 8);
-    }
-
-    private Pixmap createPixmap(String internalPath, Pixmap.Format format) {
-        Texture texture = new Texture(Gdx.files.internal(internalPath), format, false);
-        texture.getTextureData().prepare();
-        Pixmap pixmap = texture.getTextureData().consumePixmap();
-        texture.dispose();
-        return pixmap;
     }
 
 }

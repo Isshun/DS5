@@ -2,18 +2,18 @@ package org.smallbox.faraway.modules.world.factory;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
 
 @GameObject
 @GameLayer(level = 999, visible = true)
 public class WorldFactoryDebug extends BaseLayer {
-
+    private Texture texture;
     private Pixmap pixmap;
     private int offset;
 
@@ -22,12 +22,22 @@ public class WorldFactoryDebug extends BaseLayer {
         pixmap = new Pixmap(50 * 10, 100 * 10, Pixmap.Format.RGBA8888);
     }
 
+    @OnGameStop
+    private void gameStop() {
+        pixmap.dispose();
+    }
+
     public void drawPixel(int x, int y, int color) {
         pixmap.drawPixel(offset + x, y, color);
     }
 
     public void next() {
+        if (texture != null) {
+            texture.dispose();
+        }
+
         offset += 50;
+        texture = new Texture(pixmap);
     }
 
     public Pixmap getPixmap() {
@@ -36,9 +46,6 @@ public class WorldFactoryDebug extends BaseLayer {
 
     @Override
     protected void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        Sprite sprite = new Sprite(new Texture(pixmap));
-        sprite.setPosition(100, 0);
-        sprite.setScale(1);
-        renderer.drawUI(sprite);
+        renderer.drawUI(texture, 100, 0);
     }
 }

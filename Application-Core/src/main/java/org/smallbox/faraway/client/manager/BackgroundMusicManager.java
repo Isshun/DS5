@@ -1,10 +1,10 @@
 package org.smallbox.faraway.client.manager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import org.apache.commons.lang3.RandomUtils;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
-import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameLayerInit;
+import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 
 import java.util.Arrays;
@@ -12,6 +12,8 @@ import java.util.List;
 
 @ApplicationObject
 public class BackgroundMusicManager {
+
+    @Inject private AssetManager assetManager;
 
     private List<String> randoms = Arrays.asList(
             "data/musics/Western Inside Loop.wav",
@@ -34,7 +36,7 @@ public class BackgroundMusicManager {
             music.dispose();
         }
 
-        music = Gdx.audio.newMusic(Gdx.files.internal(path.replace("[base]", "data")));
+        music = assetManager.lazyLoad(path.replace("[base]", "data"), Music.class);
         music.setLooping(true);
         music.setVolume(0.5f);
 

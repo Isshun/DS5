@@ -18,7 +18,6 @@ import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.modelInfo.ItemInfo;
 import org.smallbox.faraway.modules.character.model.base.CharacterModel;
 import org.smallbox.faraway.util.Constant;
-import org.smallbox.faraway.util.FileUtils;
 import org.smallbox.faraway.util.log.Log;
 
 import java.util.*;
@@ -59,8 +58,7 @@ public class SpriteManager {
     }
 
     public void init() {
-
-        Texture itemSelector = new Texture(FileUtils.getFileHandle("data/res/item_selector.png"));
+        Texture itemSelector = assetManager.lazyLoad("data/res/item_selector.png", Texture.class);
         _selectors = new Sprite[NB_SELECTOR_TILE];
         _selectors[0] = new Sprite(itemSelector, 0, 0, 8, 8);
         _selectors[0].flip(false, true);
@@ -257,7 +255,7 @@ public class SpriteManager {
 
         Sprite sprite = _spritesCharacters.get(sum);
         if (sprite == null) {
-            Texture texture = new Texture(FileUtils.getFileHandle(c.getType().path));
+            Texture texture = assetManager.lazyLoad(c.getType().path, Texture.class);
 
             sprite = new Sprite(texture, 0, 0, Constant.CHARACTER_WIDTH, Constant.CHARACTER_HEIGHT);
             sprite.setFlip(false, true);

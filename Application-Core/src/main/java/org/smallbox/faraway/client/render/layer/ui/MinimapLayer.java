@@ -27,11 +27,14 @@ import org.smallbox.faraway.modules.item.ItemModule;
 import org.smallbox.faraway.modules.plant.PlantModule;
 import org.smallbox.faraway.modules.world.WorldModule;
 
+import static org.smallbox.faraway.util.Constant.TILE_SIZE;
+
 @GameObject
 @GameLayer(level = LayerManager.MINI_MAP_LEVEL, visible = true)
 public class MinimapLayer extends BaseLayer {
     //    private static final int    COLOR_background = 0xfffff9bdff;
     private static final int COLOR_ROCK = 0x60442dff;
+    private static final int COLOR_ROCK_GROUND = 0x80644dff;
     private static final int COLOR_PLANT = 0x9bcd4dff;
     private static final int COLOR_STRUCTURE = 0x333333ff;
     private static final Color COLOR_ITEM = new Color(0xff3333ff);
@@ -81,6 +84,11 @@ public class MinimapLayer extends BaseLayer {
     }
 
     @Override
+    public void onGameStop(Game game) {
+        _pixmap.dispose();
+    }
+
+    @Override
     public void onFloorChange(int floor) {
         _floor = floor;
         _dirty = true;
@@ -109,12 +117,14 @@ public class MinimapLayer extends BaseLayer {
     }
 
     private void drawViewport(GDXRenderer renderer) {
-        int x = _mainPosX + (int) ((Math.min(gameWidth - 38 - 1, Math.max(0, -viewport.getPosX() / 32))) * ratioX);
-        int y = _mainPosY + (int) ((Math.min(gameHeight - 32 - 1, Math.max(0, -viewport.getPosY() / 32))) * ratioY);
-        renderer.drawPixelUI(x, y, (int) (38 * ratioX), 2, COLOR_VIEWPORT);
-        renderer.drawPixelUI(x, y, 2, (int) (32 * ratioY), COLOR_VIEWPORT);
-        renderer.drawPixelUI(x, (int) (y + 32 * ratioY), (int) (38 * ratioX), 2, COLOR_VIEWPORT);
-        renderer.drawPixelUI((int) (x + 38 * ratioX), y, 1, (int) (32 * ratioY) + 2, COLOR_VIEWPORT);
+        int x = _mainPosX + (int) ((Math.min(gameWidth - 38 - 1, Math.max(0, -viewport.getPosX() / TILE_SIZE))) * ratioX);
+        int y = _mainPosY + (int) ((Math.min(gameHeight - 32 - 1, Math.max(0, -viewport.getPosY() / TILE_SIZE))) * ratioY);
+        int rectWidth = (int) (38 * ratioX);
+        int rectHeight = (int) (32 * ratioY);
+        renderer.drawPixelUI(x, y, rectWidth, 2, COLOR_VIEWPORT);
+        renderer.drawPixelUI(x, y, 2, rectHeight, COLOR_VIEWPORT);
+        renderer.drawPixelUI(x, y + rectHeight, rectWidth, 2, COLOR_VIEWPORT);
+        renderer.drawPixelUI(x + rectWidth, y, 2, rectHeight + 2, COLOR_VIEWPORT);
     }
 
     private void drawCharacters(GDXRenderer renderer) {

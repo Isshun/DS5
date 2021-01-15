@@ -8,6 +8,7 @@ public class GraphicInfo {
     public int              spriteId = -1;
     public final String     packageName;
     public final String     path;
+    public final String     absolutePath;
     public int              x;
     public int              y;
     public int              width;
@@ -20,5 +21,6 @@ public class GraphicInfo {
     public GraphicInfo(String packageName, String path) {
         this.packageName = packageName;
         this.path = path;
+        this.absolutePath = "data" + path;
     }
 }

@@ -215,6 +215,15 @@ public class GDXRenderer {
         }
     }
 
+    public void drawUI(Texture texture, int x, int y) {
+        if (texture != null) {
+            _batch.begin();
+            _batch.setProjectionMatrix(_cameraUI.combined);
+            _batch.draw(texture, x, y);
+            _batch.end();
+        }
+    }
+
     public void draw(DrawCallback callback) {
         _batch.begin();
         callback.onDraw(_batch);

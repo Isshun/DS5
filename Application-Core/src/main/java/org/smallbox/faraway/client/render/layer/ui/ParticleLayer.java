@@ -18,8 +18,8 @@ import org.smallbox.faraway.util.log.Log;
 @GameObject
 @GameLayer(level = LayerManager.PARTICLE_LAYER_LEVEL, visible = true)
 public class ParticleLayer extends BaseLayer {
-    private ParticleEffect          _effect;
-    private String                  _name;
+    private ParticleEffect effect;
+    private String name;
 
     @Inject
     private WeatherModule weatherModule;
@@ -31,44 +31,44 @@ public class ParticleLayer extends BaseLayer {
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         loadEffect(weatherModule.getWeather().particle);
 
-        if (_effect != null) {
+        if (effect != null) {
             renderer.getBatch().begin();
-            _effect.draw(renderer.getBatch());
+            effect.draw(renderer.getBatch());
             renderer.getBatch().end();
 
-            _effect.update(Gdx.graphics.getDeltaTime());
-            if (_effect.isComplete()) {
-                _effect.reset();
+            effect.update(Gdx.graphics.getDeltaTime());
+            if (effect.isComplete()) {
+                effect.reset();
             }
         }
     }
 
     private void loadEffect(String name) {
-        if (!StringUtils.equals(name, _name)) {
+        if (!StringUtils.equals(name, this.name)) {
             Application.addTask(() -> {
 
                 // Dispose old buffEffect
-                if (_effect != null) {
-                    _effect.dispose();
-                    _effect = null;
+                if (effect != null) {
+                    effect.dispose();
+                    effect = null;
                 }
 
                 // Load new one
                 if (name != null) {
                     Log.info(ParticleLayer.class, "Load new particle effect: %s", name);
-                    _effect = new ParticleEffect();
-                    _effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
-                    _effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-                    _effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
-                    _effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
-                    _effect.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
-                    _effect.getEmitters().first().getSpawnHeight().setLow(Gdx.graphics.getHeight());
-                    _effect.flipY();
-                    _effect.start();
+                    effect = new ParticleEffect();
+                    effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
+                    effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+                    effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
+                    effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
+                    effect.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
+                    effect.getEmitters().first().getSpawnHeight().setLow(Gdx.graphics.getHeight());
+                    effect.flipY();
+                    effect.start();
                 }
 
             });
         }
-        _name = name;
+        this.name = name;
     }
 }

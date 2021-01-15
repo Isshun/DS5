@@ -1,32 +1,33 @@
-package org.smallbox.faraway.client.render.layer.ground.chunkGenerator;
+package org.smallbox.faraway.client.render.layer.ground.impl;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.AssetManager;
+import org.smallbox.faraway.client.render.layer.ground.TileGeneratorRule;
 import org.smallbox.faraway.client.render.terrain.TerrainManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnGameStop;
 import org.smallbox.faraway.core.game.model.MovableModel;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
-import org.smallbox.faraway.util.Constant;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.smallbox.faraway.client.render.layer.ground.chunkGenerator.TileGeneratorRule.has;
-import static org.smallbox.faraway.client.render.layer.ground.chunkGenerator.TileGeneratorRule.hasNot;
+import static com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888;
+import static org.smallbox.faraway.client.render.layer.ground.TileGeneratorRule.has;
+import static org.smallbox.faraway.client.render.layer.ground.TileGeneratorRule.hasNot;
 import static org.smallbox.faraway.client.render.terrain.TerrainManager.*;
 import static org.smallbox.faraway.core.game.model.MovableModel.Direction.*;
+import static org.smallbox.faraway.core.game.modelInfo.GraphicInfo.Type.TERRAIN;
+import static org.smallbox.faraway.util.Constant.HALF_TILE_SIZE;
+import static org.smallbox.faraway.util.Constant.TILE_SIZE;
 
 @GameObject
 public class RockTileGenerator {
-    @Inject private WorldModule worldModule;
     @Inject private TerrainManager terrainManager;
     @Inject private AssetManager assetManager;
+    @Inject private WorldModule worldModule;
 
     public List<TileGeneratorRule> rules = Arrays.asList(
             new TileGeneratorRule(0, TERRAIN_FULL, has(TOP), has(LEFT), has(TOP_LEFT)),
@@ -57,24 +58,31 @@ public class RockTileGenerator {
         int neighborhood = computeNeighborhood(parcel);
 
         if (!cachedTextures.containsKey(neighborhood)) {
-            GraphicInfo graphicInfo = parcel.getRockInfo().graphics.stream().filter(g -> g.type == GraphicInfo.Type.TERRAIN).findFirst().orElse(null);
-            Texture textureIn = assetManager.lazyLoad("data" + graphicInfo.path, Texture.class);
-            Pixmap pixmapIn = textureToPixmap(textureIn);
-            Pixmap pixmap = new Pixmap(Constant.TILE_SIZE, Constant.TILE_SIZE, Pixmap.Format.RGBA8888);
+            Optional.ofNullable(parcel.getRockInfo().getGraphicInfo(TERRAIN)).ifPresent(graphicInfo -> {
+                Texture textureIn = assetManager.lazyLoad(graphicInfo.absolutePath, Texture.class);
+                assetManager.temporaryPixmap(textureIn, pixmapIn -> {
+                    assetManager.temporaryPixmap(TILE_SIZE, TILE_SIZE, RGBA8888, pixmap -> {
 
-            // Draw rock
-            if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
-                rules.stream().filter(rule -> rule.position == 0).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                rules.stream().filter(rule -> rule.position == 1).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                rules.stream().filter(rule -> rule.position == 2).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                rules.stream().filter(rule -> rule.position == 3).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-            }
+                        // Draw rock
+                        if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
+                            rules.stream().filter(rule -> rule.position == 0).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+                            rules.stream().filter(rule -> rule.position == 1).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+                            rules.stream().filter(rule -> rule.position == 2).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+                            rules.stream().filter(rule -> rule.position == 3).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+                        }
 
-            cachedTextures.put(neighborhood, new Texture(pixmap));
-            pixmap.dispose();
+                        cachedTextures.put(neighborhood, new Texture(pixmap));
+                    });
+                });
+            });
         }
 
         return cachedTextures.get(neighborhood);
+    }
+
+    @OnGameStop
+    private void gameStop() {
+        cachedTextures.values().forEach(Texture::dispose);
     }
 
     private int computeNeighborhood(ParcelModel parcel) {
@@ -99,8 +107,8 @@ public class RockTileGenerator {
     }
 
     private void draw(TileGeneratorRule rule, Pixmap pixmapOut, Pixmap pixmapIn, ParcelModel parcel) {
-        int outX = rule.position == 1 || rule.position == 3 ? Constant.HALF_TILE_SIZE : 0;
-        int outY = rule.position == 2 || rule.position == 3 ? Constant.HALF_TILE_SIZE : 0;
+        int outX = rule.position == 1 || rule.position == 3 ? HALF_TILE_SIZE : 0;
+        int outY = rule.position == 2 || rule.position == 3 ? HALF_TILE_SIZE : 0;
         terrainManager.generate(pixmapOut, pixmapIn, rule.key, rule.position, outX, outY);
     }
 
