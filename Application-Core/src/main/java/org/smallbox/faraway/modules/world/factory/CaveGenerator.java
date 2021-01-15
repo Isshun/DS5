@@ -1,7 +1,6 @@
 package org.smallbox.faraway.modules.world.factory;
 
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -26,16 +25,9 @@ public class CaveGenerator {
 
     @OnInit
     private void init() {
-        caveMasks.add(textureToPixmap(assetManager.lazyLoad("data/worldFactory/cave_mask_0.png", Texture.class)));
-        caveMasks.add(textureToPixmap(assetManager.lazyLoad("data/worldFactory/cave_mask_1.png", Texture.class)));
-        caveMasks.add(textureToPixmap(assetManager.lazyLoad("data/worldFactory/cave_mask_2.png", Texture.class)));
-    }
-
-    private Pixmap textureToPixmap(Texture textureIn) {
-        textureIn.getTextureData().prepare();
-        Pixmap pixmap = textureIn.getTextureData().consumePixmap();
-        textureIn.dispose();
-        return pixmap;
+        caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_0.png"));
+        caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_1.png"));
+        caveMasks.add(assetManager.createPixmapFromTexture("data/worldFactory/cave_mask_2.png"));
     }
 
     public void addCave(ParcelModel[][][] _parcels, int size, int floors, int offsetX, int offsetY, int offsetZ) {

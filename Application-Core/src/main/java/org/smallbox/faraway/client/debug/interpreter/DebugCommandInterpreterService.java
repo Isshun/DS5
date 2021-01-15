@@ -21,35 +21,16 @@ import java.util.stream.Stream;
 public class DebugCommandInterpreterService {
     private final static Map<String, ConsoleInterpreterBase> EXTRA_COMMANDS = new HashMap<>();
 
-    @Inject
-    private CharacterModuleConsoleInterpreter characterModuleConsoleInterpreter;
-
-    @Inject
-    private ConsumableModuleConsoleInterpreter consumableModuleConsoleInterpreter;
-
-    @Inject
-    private ItemModuleConsoleInterpreter itemModuleConsoleInterpreter;
-
-    @Inject
-    private JobModuleConsoleInterpreter jobModuleConsoleInterpreter;
-
-    @Inject
-    private ModuleConsoleInterpreter moduleConsoleInterpreter;
-
-    @Inject
-    private RoomModuleConsoleInterpreter roomModuleConsoleInterpreter;
-
-    @Inject
-    private StructureModuleConsoleInterpreter structureModuleConsoleInterpreter;
-
-    @Inject
-    private StorageModuleConsoleInterpreter storageModuleConsoleInterpreter;
-
-    @Inject
-    private WeatherModuleConsoleInterpreter weatherModuleConsoleInterpreter;
-
-    @Inject
-    private WorldModuleConsoleInterpreter worldModuleConsoleInterpreter;
+    @Inject private CharacterModuleConsoleInterpreter characterModuleConsoleInterpreter;
+    @Inject private ConsumableModuleConsoleInterpreter consumableModuleConsoleInterpreter;
+    @Inject private ItemModuleConsoleInterpreter itemModuleConsoleInterpreter;
+    @Inject private JobModuleConsoleInterpreter jobModuleConsoleInterpreter;
+    @Inject private ModuleConsoleInterpreter moduleConsoleInterpreter;
+    @Inject private RoomModuleConsoleInterpreter roomModuleConsoleInterpreter;
+    @Inject private StructureModuleConsoleInterpreter structureModuleConsoleInterpreter;
+    @Inject private StorageModuleConsoleInterpreter storageModuleConsoleInterpreter;
+    @Inject private WeatherModuleConsoleInterpreter weatherModuleConsoleInterpreter;
+    @Inject private WorldModuleConsoleInterpreter worldModuleConsoleInterpreter;
 
     private String commandInput;
 

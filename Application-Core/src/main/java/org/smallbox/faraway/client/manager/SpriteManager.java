@@ -226,6 +226,7 @@ public class SpriteManager {
 
         item.textureRect = new Rectangle(startX, startY, endX, endY);
 
+        pixmap.dispose();
         textureData.disposePixmap();
     }
 

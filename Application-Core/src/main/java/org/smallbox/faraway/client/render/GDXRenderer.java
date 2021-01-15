@@ -7,28 +7,28 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.drawable.GDXDrawable;
 import org.smallbox.faraway.client.font.FontManager;
 import org.smallbox.faraway.client.ui.engine.views.View;
 import org.smallbox.faraway.common.ParcelCommon;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
+import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
 import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.util.Constant;
 import org.smallbox.faraway.util.log.Log;
 
+import static org.smallbox.faraway.util.Constant.TILE_SIZE;
+
 @ApplicationObject
 public class GDXRenderer {
-
-    @Inject
-    private LayerManager layerManager;
-
-    @Inject
-    private ApplicationConfig applicationConfig;
-
-    @Inject
-    private FontManager fontManager;
+    @Inject private LayerManager layerManager;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private FontManager fontManager;
+    @Inject private AssetManager assetManager;
+    @Inject private Viewport viewport;
 
     private SpriteBatch _batch;
     private OrthographicCamera _camera;
@@ -462,6 +462,20 @@ public class GDXRenderer {
 
     public Camera getCamera() {
         return _camera;
+    }
+
+    public void drawOnMap(Texture texture, ParcelModel parcel) {
+        draw(texture,
+                viewport.getPosX() + (parcel.x * TILE_SIZE),
+                viewport.getPosY() + (parcel.y * TILE_SIZE),
+                TILE_SIZE, TILE_SIZE);
+    }
+
+    public void drawOnMap(GraphicInfo graphicInfo, ParcelModel parcel) {
+        draw(assetManager.lazyLoad("data" + graphicInfo.path, Texture.class),
+                viewport.getPosX() + (parcel.x * TILE_SIZE),
+                viewport.getPosY() + (parcel.y * TILE_SIZE),
+                TILE_SIZE, TILE_SIZE);
     }
 
 //    public void drawOnMap(ParcelModel parcel, Texture texture) {

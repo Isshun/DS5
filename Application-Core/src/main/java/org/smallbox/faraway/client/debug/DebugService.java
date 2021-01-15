@@ -2,6 +2,7 @@ package org.smallbox.faraway.client.debug;
 
 import com.badlogic.gdx.Input;
 import org.smallbox.faraway.client.debug.dashboard.DashboardLayer;
+import org.smallbox.faraway.client.debug.dashboard.MiniDashboardLayer;
 import org.smallbox.faraway.client.debug.interpreter.DebugCommandInterpreterService;
 import org.smallbox.faraway.core.dependencyInjector.annotation.ApplicationObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
@@ -18,15 +19,14 @@ public class DebugService {
     private final List<String> history = new ArrayList<>();
     private int historyIndex;
 
-    @Inject
-    private DashboardLayer dashboardLayer;
-
-    @Inject
-    private DebugCommandInterpreterService debugCommandInterpreterService;
+    @Inject private DashboardLayer dashboardLayer;
+    @Inject private MiniDashboardLayer miniDashboardLayer;
+    @Inject private DebugCommandInterpreterService debugCommandInterpreterService;
 
     public void toggleDebugMode() {
         debugMode = !debugMode;
         dashboardLayer.setVisibility(debugMode);
+        miniDashboardLayer.setVisibility(!debugMode);
     }
 
     public boolean isDebugMode() {
@@ -69,6 +69,14 @@ public class DebugService {
                     commandInputSb.setLength(0);
                     commandInputSb.append(fullCommand);
                 }
+                break;
+
+            case Input.Keys.PAGE_UP:
+                dashboardLayer.pageUp();
+                break;
+
+            case Input.Keys.PAGE_DOWN:
+                dashboardLayer.pageDown();
                 break;
 
         }

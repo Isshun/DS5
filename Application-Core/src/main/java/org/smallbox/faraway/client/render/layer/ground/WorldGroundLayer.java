@@ -1,55 +1,57 @@
 package org.smallbox.faraway.client.render.layer.ground;
 
 import com.badlogic.gdx.graphics.Texture;
-import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
+import org.smallbox.faraway.client.render.layer.ground.impl.GroundTileGenerator;
 import org.smallbox.faraway.client.render.layer.ground.impl.RockTileGenerator;
 import org.smallbox.faraway.core.GameLayer;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
-import org.smallbox.faraway.core.game.modelInfo.GraphicInfo;
+import org.smallbox.faraway.core.game.Game;
+import org.smallbox.faraway.core.game.service.applicationConfig.ApplicationConfig;
 import org.smallbox.faraway.core.module.world.model.ParcelModel;
 import org.smallbox.faraway.modules.world.WorldModule;
 
-import java.util.Optional;
-
-import static org.smallbox.faraway.util.Constant.TILE_SIZE;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @GameObject
 @GameLayer(level = LayerManager.WORLD_GROUND_LAYER_LEVEL, visible = true)
 public class WorldGroundLayer extends BaseLayer {
-    @Inject private WorldModule worldModule;
+    @Inject private GroundTileGenerator groundTileGenerator;
     @Inject private RockTileGenerator rockTileGenerator;
-    @Inject private AssetManager assetManager;
+    @Inject private ApplicationConfig applicationConfig;
+    @Inject private WorldModule worldModule;
+
+    private final Map<ParcelModel, Texture> cachedGrounds = new ConcurrentHashMap<>();
+    private final Map<ParcelModel, Texture> cachedRocks = new ConcurrentHashMap<>();
+
+    @Override
+    public void onGameLongUpdate(Game game) {
+        cachedGrounds.clear();
+        cachedRocks.clear();
+    }
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-//        int fromX = Math.max((int) ((-viewport.getPosX() / Constant.TILE_SIZE) * viewport.getScale()), 0);
-//        int fromY = Math.max((int) ((-viewport.getPosY() / Constant.TILE_SIZE) * viewport.getScale()), 0);
-//
-//        // TODO: take right panel in consideration
-//        int tileWidthCount = (int) (applicationConfig.getResolutionWidth() / (Constant.TILE_SIZE * viewport.getScale()));
-//        int tileHeightCount = (int) (applicationConfig.getResolutionHeight() / (Constant.TILE_SIZE * viewport.getScale()));
-//        int toX = Math.min(fromX + tileWidthCount, game.getInfo().worldWidth);
-//        int toY = Math.min(fromY + tileHeightCount, game.getInfo().worldHeight);
+        int fromX = Math.max(viewport.getWorldPosX(0), 0);
+        int fromY = Math.max(viewport.getWorldPosY(0), 0);
+        int toX = Math.min(viewport.getWorldPosX(applicationConfig.getResolutionWidth()) + 2, worldModule.getWidth());
+        int toY = Math.min(viewport.getWorldPosY(applicationConfig.getResolutionHeight()) + 2, worldModule.getWidth());
 
-        int viewportX = viewport.getPosX();
-        int viewportY = viewport.getPosY();
-
-        for (int x = 0; x < worldModule.getWidth(); x++) {
-            for (int y = 0; y < worldModule.getHeight(); y++) {
+        for (int x = fromX; x < toX; x++) {
+            for (int y = fromY; y < toY; y++) {
                 ParcelModel parcel = worldModule.getParcel(x, y, viewport.getFloor());
-                Optional.ofNullable(parcel.getGroundInfo().getGraphicInfo(GraphicInfo.Type.TERRAIN)).ifPresent(graphicInfo ->
-                        renderer.draw(
-                                assetManager.lazyLoad("data" + graphicInfo.path, Texture.class), viewportX + (parcel.x * TILE_SIZE),
-                                viewportY + (parcel.y * TILE_SIZE),
-                                TILE_SIZE, TILE_SIZE));
 
-                if (parcel.hasRock()) {
-                    renderer.draw(rockTileGenerator.getTexture(parcel), viewportX + (x * TILE_SIZE), viewportY + (y * TILE_SIZE));
+                if (parcel != null && parcel.hasGround()) {
+                    renderer.drawOnMap(cachedGrounds.computeIfAbsent(parcel, p -> groundTileGenerator.getTexture(p)), parcel);
+                }
+
+                if (parcel != null && parcel.hasRock()) {
+                    renderer.drawOnMap(cachedRocks.computeIfAbsent(parcel, p -> rockTileGenerator.getTexture(p)), parcel);
                 }
             }
         }

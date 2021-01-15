@@ -58,26 +58,23 @@ public class RockTileGenerator {
         int neighborhood = computeNeighborhood(parcel);
 
         if (!cachedTextures.containsKey(neighborhood)) {
-            Optional.ofNullable(parcel.getRockInfo().getGraphicInfo(TERRAIN)).ifPresent(graphicInfo -> {
-                Texture textureIn = assetManager.lazyLoad(graphicInfo.absolutePath, Texture.class);
-                assetManager.temporaryPixmap(textureIn, pixmapIn -> {
-                    assetManager.temporaryPixmap(TILE_SIZE, TILE_SIZE, RGBA8888, pixmap -> {
-
-                        // Draw rock
-                        if (parcel.hasRock() && parcel.getRockInfo().hasGraphics()) {
-                            rules.stream().filter(rule -> rule.position == 0).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                            rules.stream().filter(rule -> rule.position == 1).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                            rules.stream().filter(rule -> rule.position == 2).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                            rules.stream().filter(rule -> rule.position == 3).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
-                        }
-
-                        cachedTextures.put(neighborhood, new Texture(pixmap));
-                    });
-                });
-            });
+            Optional.ofNullable(parcel.getRockInfo().getGraphicInfo(TERRAIN)).ifPresent(
+                    terrainGraphicInfo -> assetManager.temporaryPixmap(terrainGraphicInfo.absolutePath,
+                            pixmapIn -> cachedTextures.put(neighborhood, buildTexture(pixmapIn, parcel))
+                    )
+            );
         }
 
         return cachedTextures.get(neighborhood);
+    }
+
+    private Texture buildTexture(Pixmap pixmapIn, ParcelModel parcel) {
+        return assetManager.createTextureFromPixmap(TILE_SIZE, TILE_SIZE, RGBA8888, pixmap -> {
+            rules.stream().filter(rule -> rule.position == 0).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+            rules.stream().filter(rule -> rule.position == 1).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+            rules.stream().filter(rule -> rule.position == 2).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+            rules.stream().filter(rule -> rule.position == 3).filter(rule -> rule.check(worldModule, parcel)).findFirst().ifPresent(rule -> draw(rule, pixmap, pixmapIn, parcel));
+        });
     }
 
     @OnGameStop
@@ -87,23 +84,16 @@ public class RockTileGenerator {
 
     private int computeNeighborhood(ParcelModel parcel) {
         int neighborhood = 0;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_LEFT)       ? 0b100000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP)            ? 0b010000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_RIGHT)      ? 0b001000000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.LEFT)           ? 0b000100000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.NONE)           ? 0b000010000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.RIGHT)          ? 0b000001000 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_LEFT)    ? 0b000000100 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM)         ? 0b000000010 : 0b000000000;
-        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_RIGHT)   ? 0b000000001 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_LEFT) ? 0b100000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP) ? 0b010000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.TOP_RIGHT) ? 0b001000000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.LEFT) ? 0b000100000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.NONE) ? 0b000010000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.RIGHT) ? 0b000001000 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_LEFT) ? 0b000000100 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM) ? 0b000000010 : 0b000000000;
+        neighborhood |= worldModule.checkOrNull(parcel, ParcelModel::hasRock, MovableModel.Direction.BOTTOM_RIGHT) ? 0b000000001 : 0b000000000;
         return neighborhood;
-    }
-
-    private Pixmap textureToPixmap(Texture textureIn) {
-        textureIn.getTextureData().prepare();
-        Pixmap pixmap = textureIn.getTextureData().consumePixmap();
-        textureIn.dispose();
-        return pixmap;
     }
 
     private void draw(TileGeneratorRule rule, Pixmap pixmapOut, Pixmap pixmapIn, ParcelModel parcel) {

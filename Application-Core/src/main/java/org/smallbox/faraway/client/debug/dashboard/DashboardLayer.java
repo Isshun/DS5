@@ -1,22 +1,21 @@
 package org.smallbox.faraway.client.debug.dashboard;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.client.debug.dashboard.content.*;
 import org.smallbox.faraway.client.debug.layer.*;
+import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.Viewport;
 import org.smallbox.faraway.client.render.layer.BaseLayer;
-import org.smallbox.faraway.client.render.GDXRenderer;
+import org.smallbox.faraway.client.selection.GameSelectionManager;
 import org.smallbox.faraway.core.GameLayer;
+import org.smallbox.faraway.core.GameShortcut;
 import org.smallbox.faraway.core.dependencyInjector.annotation.GameObject;
 import org.smallbox.faraway.core.dependencyInjector.annotation.Inject;
 import org.smallbox.faraway.core.dependencyInjector.annotationEvent.OnInit;
 import org.smallbox.faraway.core.game.Game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 @GameObject
@@ -33,6 +32,8 @@ public class DashboardLayer extends BaseLayer {
     @Inject private ModuleDashboardLayer moduleDashboardLayer;
     @Inject private LayerDashboardLayer layerDashboardLayer;
     @Inject private JobDashboardLayer jobDashboardLayer;
+    @Inject private TextureAssetsDashboardLayer textureAssetsDashboardLayer;
+    @Inject private PixmapAssetsDashboardLayer pixmapAssetsDashboardLayer;
     @Inject private InterfaceDashboardLayer interfaceDashboardLayer;
     @Inject private DebugPathLayer debugPathLayer;
     @Inject private DebugCharacterLayer debugCharacterLayer;
@@ -106,25 +107,28 @@ public class DashboardLayer extends BaseLayer {
 
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
-        renderer.drawPixel(0, 0, 2000, 2000, BG_COLOR);
-
         drawHeaders(renderer);
         drawDebugLayer(renderer);
+        Optional.ofNullable(currentDashboard()).ifPresent(dashboardLayer -> dashboardLayer.draw(renderer, frame));
+    }
 
+    private DashboardLayerBase currentDashboard() {
         switch (dashboardMode) {
-            case CONSOLE: consoleDashboardLayer.draw(renderer, frame); break;
-            case TASKS: taskDashboardLayer.draw(renderer, frame); break;
-            case CONSUMABLE: consumableDashboardLayer.draw(renderer, frame); break;
-            case ITEM: itemDashboardLayer.draw(renderer, frame); break;
-            case PLANT: plantDashboardLayer.draw(renderer, frame); break;
-            case LAYER: layerDashboardLayer.draw(renderer, frame); break;
-            case JOB: jobDashboardLayer.draw(renderer, frame); break;
-            case CHARACTER: characterDashboardLayer.draw(renderer, frame); break;
-            case MODULE: moduleDashboardLayer.draw(renderer, frame); break;
-            case SHORTCUTS: shortcutDashboardLayer.draw(renderer, frame); break;
-            case UI: interfaceDashboardLayer.draw(renderer, frame); break;
+            case CONSOLE: return consoleDashboardLayer;
+            case TASKS: return taskDashboardLayer;
+            case CONSUMABLE: return consumableDashboardLayer;
+            case ITEM: return itemDashboardLayer;
+            case PLANT: return plantDashboardLayer;
+            case LAYER: return layerDashboardLayer;
+            case JOB: return jobDashboardLayer;
+            case CHARACTER: return characterDashboardLayer;
+            case MODULE: return moduleDashboardLayer;
+            case SHORTCUTS: return shortcutDashboardLayer;
+            case UI: return interfaceDashboardLayer;
+            case TEXTURE: return textureAssetsDashboardLayer;
+            case PIXMAP: return pixmapAssetsDashboardLayer;
         }
-
+        return null;
     }
 
     private void drawDebugLayer(GDXRenderer renderer) {
@@ -153,6 +157,14 @@ public class DashboardLayer extends BaseLayer {
     @Override
     public void onGameUpdate(Game game) {
         _lastUpdate = System.currentTimeMillis();
+    }
+
+    public void pageUp() {
+        Optional.ofNullable(currentDashboard()).ifPresent(DashboardLayerBase::pageUp);
+    }
+
+    public void pageDown() {
+        Optional.ofNullable(currentDashboard()).ifPresent(DashboardLayerBase::pageDown);
     }
 
     public void setMode(DashboardMode dashboardMode) {

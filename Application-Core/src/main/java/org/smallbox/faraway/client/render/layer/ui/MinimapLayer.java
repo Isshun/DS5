@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.controller.MainPanelController;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
@@ -52,6 +53,7 @@ public class MinimapLayer extends BaseLayer {
     @Inject private Viewport viewport;
     @Inject private MainPanelController mainPanelController;
     @Inject private GameManager gameManager;
+    @Inject private AssetManager assetManager;
 
     private int _mainPosX;
     private int _mainPosY;
@@ -79,7 +81,7 @@ public class MinimapLayer extends BaseLayer {
         ratioX = ((float) miniMapWidth / gameWidth);
         ratioY = ((float) miniMapHeight / gameHeight);
 
-        _pixmap = new Pixmap(gameWidth, gameHeight, Pixmap.Format.RGB888);
+        _pixmap = assetManager.createPixmap(gameWidth, gameHeight, Pixmap.Format.RGB888);
         _floor = WorldHelper.getCurrentFloor();
     }
 

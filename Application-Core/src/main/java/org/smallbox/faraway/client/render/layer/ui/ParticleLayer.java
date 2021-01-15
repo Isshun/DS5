@@ -3,6 +3,7 @@ package org.smallbox.faraway.client.render.layer.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import org.apache.commons.lang3.StringUtils;
+import org.smallbox.faraway.client.AssetManager;
 import org.smallbox.faraway.client.render.GDXRenderer;
 import org.smallbox.faraway.client.render.LayerManager;
 import org.smallbox.faraway.client.render.Viewport;
@@ -27,6 +28,9 @@ public class ParticleLayer extends BaseLayer {
     @Inject
     private Game game;
 
+    @Inject
+    private AssetManager assetManager;
+
     @Override
     public void onDraw(GDXRenderer renderer, Viewport viewport, double animProgress, int frame) {
         loadEffect(weatherModule.getWeather().particle);
@@ -47,23 +51,15 @@ public class ParticleLayer extends BaseLayer {
         if (!StringUtils.equals(name, this.name)) {
             Application.addTask(() -> {
 
-                // Dispose old buffEffect
-                if (effect != null) {
-                    effect.dispose();
-                    effect = null;
-                }
-
                 // Load new one
                 if (name != null) {
                     Log.info(ParticleLayer.class, "Load new particle effect: %s", name);
-                    effect = new ParticleEffect();
-                    effect.load(Gdx.files.internal("data/particles/" + name), Gdx.files.internal("data/particles/"));
+                    effect = assetManager.lazyLoad("data/particles/" + name, ParticleEffect.class, ParticleEffect::flipY);
                     effect.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
                     effect.getEmitters().first().getSpawnWidth().setHigh(Gdx.graphics.getWidth());
                     effect.getEmitters().first().getSpawnWidth().setLow(Gdx.graphics.getWidth());
                     effect.getEmitters().first().getSpawnHeight().setHigh(Gdx.graphics.getHeight());
                     effect.getEmitters().first().getSpawnHeight().setLow(Gdx.graphics.getHeight());
-                    effect.flipY();
                     effect.start();
                 }
 

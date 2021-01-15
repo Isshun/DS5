@@ -29,6 +29,7 @@ public interface GameObserver {
     default void onGameStart(Game game) {}
     default void onGameStop(Game game) {}
     default void onGameUpdate(Game game) {}
+    default void onGameLongUpdate(Game game) {}
     default void onGameRender(Game game) {}
 //    default void onInjectDependency(Object object) {}
     default void onDisplayChange(String displayName, boolean isVisible) {}

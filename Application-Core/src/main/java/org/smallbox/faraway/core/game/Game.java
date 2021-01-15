@@ -59,6 +59,7 @@ public class Game {
     private final ScheduledExecutorService  _moduleScheduler = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService  _moduleScheduler2 = Executors.newScheduledThreadPool(1);
     private final ScheduledExecutorService  _moduleScheduler3 = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService  _moduleScheduler4 = Executors.newScheduledThreadPool(1);
     private final PlanetInfo                _planetInfo;
     private final RegionInfo                _regionInfo;
 
@@ -242,6 +243,18 @@ public class Game {
                 e.printStackTrace();
             }
         }, 0, 16, TimeUnit.MILLISECONDS);
+
+        _moduleScheduler4.scheduleAtFixedRate(() -> {
+            try {
+                if (_isRunning) {
+                    gameTaskManager.update();
+                    Application.notify(gameObserver -> gameObserver.onGameLongUpdate(Game.this));
+                }
+            } catch (Error e) {
+                Log.error(e);
+                e.printStackTrace();
+            }
+        }, 0, 1, TimeUnit.SECONDS);
 
     }
 }
